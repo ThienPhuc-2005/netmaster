@@ -82,7 +82,15 @@ Những điểm này đã được người dùng duyệt — không tự ý đ�
 - Cờ `noFlashcard` cho khái niệm meta (đang bật cho "Bản đồ lộ trình");
   thiếu flashcard mà không khai cờ là lỗi nội dung.
 
-## Deploy GitHub Pages (đã chuẩn bị, chưa push)
+## Deploy GitHub Pages — ĐÃ LIVE
+
+- Repo: https://github.com/ThienPhuc-2005/netmaster (public)
+- App: https://thienphuc-2005.github.io/netmaster/
+- Commit đầu `a87155b` "NetMaster Phase 1: pedagogy engine + Module 1-3
+  + deploy", author Nguyen Van Thien Phuc. Workflow run đầu xanh cả
+  build lẫn deploy; đã kiểm app live + deep-link /on-tap render đúng.
+
+### Ghi chú kỹ thuật deploy (giữ để tra sau)
 
 - `vite.config.ts` đọc `GHPAGES_BASE`; workflow `.github/workflows/deploy.yml`
   truyền `/<tên-repo>/` tự động → đổi tên repo không phải sửa code.
@@ -93,9 +101,9 @@ Những điểm này đã được người dùng duyệt — không tự ý đ�
 - Pipeline: push `main` → test + typecheck (đỏ là dừng) → build → deploy.
   Lần đầu cần bật Settings → Pages → Source → GitHub Actions.
 - README.md (4 ảnh chụp thật trong `docs/`), LICENSE (MIT, Nguyen Van
-  Thien Phuc), .gitignore, `git init -b main` đã xong. Git identity cấp
-  repo: Nguyen Van Thien Phuc / thienphuc.security@gmail.com (GitHub:
-  ThienPhuc-2005).
+  Thien Phuc). Git identity cấp repo: Nguyen Van Thien Phuc /
+  thienphuc.security@gmail.com (GitHub: ThienPhuc-2005). Pages bật qua
+  API (`build_type: workflow`), không cần bấm tay trong Settings.
   CHƯA commit/push — người dùng tự làm để giữ authorship.
 
 ## Khối 6 còn lại làm gì
