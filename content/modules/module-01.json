@@ -1,0 +1,799 @@
+{
+  "id": "module-1",
+  "order": 1,
+  "part": "A",
+  "title": { "vi": "Mạng là gì? — Câu chuyện bưu điện" },
+  "stages": [
+    { "id": "m1-chang-1", "title": { "vi": "Phong bì đầu tiên" }, "lessonIds": ["m1-bai-1"] },
+    { "id": "m1-chang-2", "title": { "vi": "Địa chỉ và căn hộ" }, "lessonIds": ["m1-bai-2", "m1-bai-3"] },
+    { "id": "m1-chang-3", "title": { "vi": "Bưu tá lên đường" }, "lessonIds": ["m1-bai-4"] },
+    { "id": "m1-chang-4", "title": { "vi": "Luật chơi chung" }, "lessonIds": ["m1-bai-5"] },
+    { "id": "m1-chang-5", "title": { "vi": "Gửi trọn lá thư" }, "lessonIds": ["m1-bai-6"] }
+  ],
+  "lessons": [
+    {
+      "id": "m1-bai-1",
+      "missionTitle": { "vi": "Đóng gói tấm ảnh đầu tiên" },
+      "steps": [
+        {
+          "type": "hook",
+          "question": {
+            "vi": "Bạn gửi cho Mai — cô bạn ở thành phố khác — một tấm ảnh sinh nhật. Tấm ảnh không hề đi \"nguyên tấm\": nó bị xé nhỏ ra rồi ráp lại ở máy Mai. Vì sao phải phiền phức vậy?"
+          },
+          "visualId": "vis-phong-bi-thu"
+        },
+        {
+          "type": "pretest",
+          "questions": [
+            {
+              "kind": "mcq",
+              "id": "m1-b1-pre-1",
+              "prompt": { "vi": "Đoán thử nhé: khi tấm ảnh đi qua mạng, nó sẽ..." },
+              "choices": [
+                { "vi": "Đi nguyên tấm tới máy Mai" },
+                { "vi": "Bị chia thành nhiều gói nhỏ rồi ráp lại ở máy Mai" }
+              ],
+              "answerIndex": 1,
+              "explain": {
+                "vi": "Tấm ảnh được cắt thành nhiều gói tin, mỗi gói tự mang địa chỉ để đi, rồi được ráp lại ở máy nhận — bài này sẽ cho bạn thấy vì sao làm vậy lại khôn ngoan."
+              }
+            }
+          ],
+          "encouragement": { "vi": "Sai là bình thường — não bạn vừa được \"mồi\" để học phần tiếp theo tốt hơn." }
+        },
+        {
+          "type": "teach",
+          "screens": [
+            {
+              "conceptId": "goi-tin",
+              "visualId": "vis-phong-bi-thu",
+              "body": {
+                "vi": "Dữ liệu không đi qua mạng \"nguyên khối\". Tấm ảnh của bạn bị chia thành từng gói tin — như một bức thư dài được tách ra nhiều phong bì, mỗi phong bì tự mang địa chỉ, nên trạm nào cầm nó cũng biết phải chuyển tiếp đi đâu."
+              },
+              "deepDive": {
+                "vi": "Mỗi gói tin gồm header (phần \"ngoài phong bì\": địa chỉ, số thứ tự) và payload (phần nội dung thật). Nhờ số thứ tự, máy Mai ráp các gói về đúng trật tự dù chúng đến lộn xộn. Còn một lý do nữa để chia nhỏ: đường truyền là của chung — gói nhỏ của bạn chen vai với gói của hàng xóm trên cùng một sợi dây, nhiều cuộc trò chuyện dùng chung một đường mà không ai phải chờ một \"kiện hàng\" khổng lồ chắn lối."
+              }
+            }
+          ]
+        },
+        {
+          "type": "practice",
+          "fadingLevel": 0,
+          "workedExample": {
+            "vi": "Muốn gửi câu \"chúc mừng sinh nhật\" sang máy Mai, mình bọc từng phần câu chữ lại rồi ghi thông tin chuyển phát ra NGOÀI lớp bọc — như lời chúc nằm kín bên trong, còn địa chỉ ghi ngoài bì để ai cầm cũng biết chuyển đi đâu. Nội dung ở trong, thông tin dẫn đường ở ngoài."
+          },
+          "exercises": [
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m1-b1-prac-1",
+                "prompt": { "vi": "Trong ẩn dụ bưu điện, phong bì thư tương ứng với thứ gì trong mạng?" },
+                "accept": ["gói tin", "packet"],
+                "hintTopic": { "vi": "vai trò của phong bì khi gửi thư" }
+              },
+              "hint": { "vi": "Thứ đó \"bọc\" một phần dữ liệu lại và ghi thông tin chuyển phát bên ngoài." },
+              "solution": {
+                "vi": "Phong bì tương ứng với gói tin (packet): dữ liệu được bọc lại, bên ngoài ghi thông tin để mạng biết chuyển đi đâu."
+              }
+            },
+            {
+              "question": {
+                "kind": "mcq",
+                "id": "m1-b1-prac-2",
+                "prompt": { "vi": "Một gói tin trên đường đi bị thất lạc. Máy gửi phải làm gì?" },
+                "choices": [
+                  { "vi": "Gửi lại toàn bộ tấm ảnh từ đầu" },
+                  { "vi": "Chỉ gửi lại đúng gói bị thất lạc" },
+                  { "vi": "Bỏ cuộc, báo lỗi cho người dùng" }
+                ],
+                "answerIndex": 1,
+                "hintTopic": { "vi": "lợi ích của việc chia nhỏ" }
+              },
+              "hint": { "vi": "Nhớ lại lý do người ta chịu khó chia nhỏ: mất một phong bì thì chỉ mất... bao nhiêu?" },
+              "solution": {
+                "vi": "Chỉ cần gửi lại đúng gói thất lạc — đây chính là lý do lớn nhất để chia nhỏ: hỏng đâu vá đó, không làm lại từ đầu."
+              }
+            }
+          ]
+        },
+        {
+          "type": "retrieval",
+          "questions": [
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m1-b1-ret-1",
+                "prompt": { "vi": "Không nhìn lại bài: đơn vị dữ liệu được chia nhỏ để gửi qua mạng gọi là gì?" },
+                "accept": ["gói tin", "packet"]
+              },
+              "hint": { "vi": "Chính là \"phong bì\" trong câu chuyện bưu điện của mình." },
+              "solution": { "vi": "Đó là gói tin (packet) — mỗi gói mang một phần dữ liệu kèm thông tin chuyển phát." }
+            }
+          ],
+          "selfExplain": {
+            "prompt": { "vi": "Giải thích bằng lời của bạn: vì sao dữ liệu không đi \"nguyên khối\" qua mạng?" },
+            "keywords": [
+              ["chia nhỏ", "nhiều gói", "tách ra"],
+              ["gửi lại", "thất lạc", "hỏng đâu vá đó"],
+              ["dùng chung", "chia sẻ", "nhiều cuộc"]
+            ],
+            "exampleAnswer": {
+              "vi": "Chia nhỏ để nhiều cuộc trò chuyện dùng chung một đường dây, và nếu một gói thất lạc thì chỉ cần gửi lại đúng gói đó thay vì gửi lại toàn bộ."
+            }
+          }
+        },
+        {
+          "type": "summary",
+          "bullets": [
+            { "vi": "Dữ liệu đi qua mạng dưới dạng gói tin, như thư bỏ trong phong bì." },
+            { "vi": "Mỗi gói tin tự mang địa chỉ — trạm nào cầm nó cũng biết nên chuyển đi đâu." },
+            { "vi": "Chia nhỏ giúp gửi lại phần thất lạc mà không phải làm lại từ đầu." }
+          ],
+          "nextTeaser": { "vi": "Phong bì đã dán kín — nhưng ghi địa chỉ thế nào để thư không lạc giữa hàng tỷ máy? Bài sau mình mở chuyện địa chỉ IP." }
+        }
+      ]
+    },
+    {
+      "id": "m1-bai-2",
+      "missionTitle": { "vi": "Ghi địa chỉ ngoài phong bì" },
+      "steps": [
+        {
+          "type": "hook",
+          "question": {
+            "vi": "Trên Internet có hàng tỷ chiếc máy. Phong bì của bạn rời khỏi nhà và tìm đến ĐÚNG máy của Mai — không nhầm sang máy hàng xóm. Nhờ dòng chữ nào ngoài phong bì?"
+          },
+          "visualId": "vis-dia-chi-nha"
+        },
+        {
+          "type": "pretest",
+          "questions": [
+            {
+              "kind": "mcq",
+              "id": "m1-b2-pre-1",
+              "prompt": { "vi": "Đoán thử nhé: mỗi máy trên mạng được nhận ra nhờ..." },
+              "choices": [
+                { "vi": "Tên chủ nhân đặt cho máy" },
+                { "vi": "Một dãy số định danh gọi là địa chỉ IP" },
+                { "vi": "Màu vỏ máy" }
+              ],
+              "answerIndex": 1,
+              "explain": {
+                "vi": "Mỗi máy mang một địa chỉ IP — dãy số định danh như địa chỉ nhà, để gói tin biết giao đến đâu giữa hàng tỷ máy."
+              }
+            }
+          ],
+          "encouragement": { "vi": "Sai là bình thường — não bạn vừa được \"mồi\" để học phần tiếp theo tốt hơn." }
+        },
+        {
+          "type": "teach",
+          "screens": [
+            {
+              "conceptId": "dia-chi-ip",
+              "visualId": "vis-dia-chi-nha",
+              "body": {
+                "vi": "Mỗi máy trên mạng có một địa chỉ IP, như mỗi ngôi nhà có một địa chỉ đường. Bưu tá không cần biết trong thư viết gì — chỉ cần địa chỉ ngoài phong bì là đúng, thư sẽ về đúng cửa."
+              },
+              "deepDive": {
+                "vi": "IPv4 là dạng địa chỉ phổ biến nhất hiện nay: 4 con số 0-255 ngăn bởi dấu chấm, ví dụ 192.168.1.10. Module 3 mình sẽ mổ xẻ từng con số này."
+              }
+            }
+          ]
+        },
+        {
+          "type": "practice",
+          "fadingLevel": 1,
+          "exercises": [
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m1-b2-prac-1",
+                "prompt": { "vi": "Trong ẩn dụ bưu điện, \"địa chỉ nhà\" ghi ngoài phong bì tương ứng với thứ gì trong mạng?" },
+                "accept": ["địa chỉ ip", "ip", "ip address"],
+                "hintTopic": { "vi": "thứ giúp bưu tá biết giao thư đến đâu" }
+              },
+              "hint": { "vi": "Là dãy số định danh của máy nhận — thứ mà thiếu nó thì gói tin không biết đi đâu." },
+              "solution": {
+                "vi": "Đó là địa chỉ IP: dãy số định danh máy nhận, ghi trong header gói tin như địa chỉ nhà ghi ngoài phong bì."
+              }
+            }
+          ]
+        },
+        {
+          "type": "retrieval",
+          "questions": [
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m1-b2-ret-1",
+                "prompt": { "vi": "Không nhìn lại bài: dãy số định danh một máy trên mạng, ghi ngoài \"phong bì\" gói tin, gọi là gì?" },
+                "accept": ["địa chỉ ip", "ip", "ip address"]
+              },
+              "hint": { "vi": "Nó đóng vai địa chỉ nhà trong câu chuyện bưu điện." },
+              "solution": { "vi": "Đó là địa chỉ IP — mỗi máy một địa chỉ, gói tin nhìn nó để tìm đường về đúng máy." }
+            }
+          ],
+          "selfExplain": {
+            "prompt": { "vi": "Giải thích bằng lời của bạn: vì sao bưu tá không cần đọc nội dung thư mà thư vẫn tới đúng nhà?" },
+            "keywords": [
+              ["địa chỉ", "ngoài phong bì", "header"],
+              ["không cần mở", "nội dung", "bên trong"]
+            ],
+            "exampleAnswer": {
+              "vi": "Vì mọi thông tin cần cho việc chuyển phát — địa chỉ người nhận — nằm NGOÀI phong bì. Bưu tá chỉ đọc phần ngoài đó và giao thư; nội dung bên trong không liên quan đến đường đi."
+            }
+          }
+        },
+        {
+          "type": "summary",
+          "bullets": [
+            { "vi": "Mỗi máy trên mạng mang một địa chỉ IP — như địa chỉ nhà của nó." },
+            { "vi": "Địa chỉ nằm ngoài \"phong bì\" (header) để mạng đọc mà không cần mở nội dung." },
+            { "vi": "Nhờ địa chỉ IP, gói tin tìm đúng một máy giữa hàng tỷ máy." }
+          ],
+          "nextTeaser": { "vi": "Thư đã về đúng nhà. Nhưng \"nhà\" của Mai là một chung cư mấy chục ứng dụng cùng ở — làm sao thư gõ đúng cửa căn hộ? Bài sau: số port." }
+        }
+      ]
+    },
+    {
+      "id": "m1-bai-3",
+      "missionTitle": { "vi": "Gõ đúng cửa căn hộ" },
+      "steps": [
+        {
+          "type": "hook",
+          "question": {
+            "vi": "Máy Mai vừa mở trình duyệt, vừa nghe nhạc, vừa chat — cùng MỘT địa chỉ IP. Tấm ảnh của bạn đến nơi... sao nó không giao nhầm vào ứng dụng nghe nhạc?"
+          },
+          "visualId": "vis-so-can-ho"
+        },
+        {
+          "type": "pretest",
+          "questions": [
+            {
+              "kind": "mcq",
+              "id": "m1-b3-pre-1",
+              "prompt": { "vi": "Đoán thử nhé: hai ứng dụng chạy trên cùng một máy được phân biệt nhờ..." },
+              "choices": [
+                { "vi": "Địa chỉ IP khác nhau" },
+                { "vi": "Số port khác nhau" }
+              ],
+              "answerIndex": 1,
+              "explain": {
+                "vi": "Cả máy chỉ có một địa chỉ IP, nhưng mỗi ứng dụng lắng nghe trên một số port riêng — nhờ đó dữ liệu không giao nhầm cửa."
+              }
+            }
+          ],
+          "encouragement": { "vi": "Sai là bình thường — não bạn vừa được \"mồi\" để học phần tiếp theo tốt hơn." }
+        },
+        {
+          "type": "teach",
+          "screens": [
+            {
+              "conceptId": "port",
+              "visualId": "vis-so-can-ho",
+              "body": {
+                "vi": "Một máy chạy nhiều ứng dụng cùng lúc, nên chỉ địa chỉ IP là chưa đủ — cần thêm số port, như số căn hộ trong một chung cư đông hộ: đúng tòa nhà rồi vẫn phải gõ đúng cửa."
+              },
+              "deepDive": {
+                "vi": "Port là số từ 0 đến 65535. Web thường dùng 443 (HTTPS) và 80 (HTTP); mỗi kết nối được định danh bằng cặp IP:port ở cả hai đầu. Phần B của khóa học có hẳn một \"tòa nhà 15 phòng\" để bạn thuộc các port thông dụng."
+              }
+            }
+          ]
+        },
+        {
+          "type": "practice",
+          "fadingLevel": 1,
+          "exercises": [
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m1-b3-prac-1",
+                "prompt": { "vi": "Trong ẩn dụ chung cư, số căn hộ tương ứng với thứ gì trong mạng?" },
+                "accept": ["port", "cổng", "số port"],
+                "hintTopic": { "vi": "cách phân biệt các ứng dụng trên cùng một máy" }
+              },
+              "hint": { "vi": "Đúng tòa nhà (địa chỉ IP) rồi vẫn cần một con số nữa để tới đúng cửa." },
+              "solution": {
+                "vi": "Số căn hộ tương ứng với port: địa chỉ IP đưa gói tin tới đúng máy, port đưa nó tới đúng ứng dụng."
+              }
+            }
+          ]
+        },
+        {
+          "type": "retrieval",
+          "questions": [
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m1-b3-ret-1",
+                "prompt": { "vi": "Không nhìn lại bài: con số giúp gói tin tìm đúng ỨNG DỤNG trên một máy gọi là gì?" },
+                "accept": ["port", "cổng", "số port", "số cổng"]
+              },
+              "hint": { "vi": "Nó giống số căn hộ trong một chung cư." },
+              "solution": { "vi": "Đó là port — mỗi ứng dụng lắng nghe trên một số port riêng." }
+            }
+          ],
+          "selfExplain": {
+            "prompt": { "vi": "Giải thích bằng lời của bạn: vì sao có địa chỉ IP rồi vẫn cần port?" },
+            "keywords": [
+              ["nhiều ứng dụng", "cùng một máy", "cùng máy"],
+              ["phân biệt", "đúng ứng dụng", "đúng cửa"]
+            ],
+            "exampleAnswer": {
+              "vi": "Một máy chạy nhiều ứng dụng cùng lúc; địa chỉ IP chỉ đưa dữ liệu tới đúng máy, còn port phân biệt dữ liệu đó thuộc ứng dụng nào — như địa chỉ đưa thư tới đúng chung cư, số căn hộ đưa tới đúng cửa."
+            }
+          }
+        },
+        {
+          "type": "summary",
+          "bullets": [
+            { "vi": "Địa chỉ IP đưa gói tin tới đúng máy, port đưa nó tới đúng ứng dụng." },
+            { "vi": "Port như số căn hộ trong một chung cư nhiều hộ." },
+            { "vi": "Mỗi kết nối được nhận diện bằng cặp IP và port ở hai đầu." }
+          ],
+          "nextTeaser": { "vi": "Địa chỉ đủ cả số nhà lẫn căn hộ rồi — giờ ai là người thật sự cầm phong bì băng qua thành phố? Bài sau mình theo chân \"bưu tá\" router." }
+        }
+      ]
+    },
+    {
+      "id": "m1-bai-4",
+      "missionTitle": { "vi": "Theo chân bưu tá giao phong bì" },
+      "steps": [
+        {
+          "type": "hook",
+          "question": {
+            "vi": "Gói tin từ nhà bạn tới máy Mai ở thành phố khác đi qua cả chục \"trạm\" trung gian — ai đứng ở mỗi trạm quyết định rẽ trái hay rẽ phải?"
+          },
+          "visualId": "vis-buu-ta"
+        },
+        {
+          "type": "pretest",
+          "questions": [
+            {
+              "kind": "mcq",
+              "id": "m1-b4-pre-1",
+              "prompt": { "vi": "Đoán thử nhé: thiết bị chuyển gói tin từ mạng này sang mạng khác là..." },
+              "choices": [
+                { "vi": "Màn hình" },
+                { "vi": "Router" },
+                { "vi": "Bàn phím" }
+              ],
+              "answerIndex": 1,
+              "explain": {
+                "vi": "Router là thiết bị đứng giữa các mạng: đọc địa chỉ đích của gói tin rồi quyết định chặng kế tiếp — như bưu tá đọc phong bì."
+              }
+            }
+          ],
+          "encouragement": { "vi": "Sai là bình thường — não bạn vừa được \"mồi\" để học phần tiếp theo tốt hơn." }
+        },
+        {
+          "type": "teach",
+          "screens": [
+            {
+              "conceptId": "router",
+              "visualId": "vis-buu-ta",
+              "body": {
+                "vi": "Router là bưu tá của mạng: nhận gói tin, đọc địa chỉ IP đích ngoài \"phong bì\", rồi chuyển nó sang chặng kế tiếp gần đích hơn. Mỗi bưu tá chỉ cần biết chặng kế tiếp — không ai cần thuộc cả con đường."
+              },
+              "deepDive": {
+                "vi": "Router giữ bảng định tuyến (routing table) — như sổ tay các tuyến đường của bưu tá, được cập nhật khi đường sá thay đổi. Nhờ vậy nếu một tuyến nghẽn, gói tin có thể đi vòng đường khác."
+              }
+            }
+          ]
+        },
+        {
+          "type": "practice",
+          "fadingLevel": 2,
+          "exercises": [
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m1-b4-prac-1",
+                "prompt": { "vi": "Trong ẩn dụ bưu điện, bưu tá tương ứng với thiết bị nào trong mạng?" },
+                "accept": ["router", "bộ định tuyến"],
+                "hintTopic": { "vi": "ai đọc địa chỉ trên phong bì và chọn đường đi" }
+              },
+              "hint": { "vi": "Thiết bị này đọc địa chỉ IP đích rồi quyết định chặng kế tiếp." },
+              "solution": {
+                "vi": "Bưu tá tương ứng với router: nó đọc địa chỉ IP đích trên gói tin và chuyển gói sang chặng gần đích hơn."
+              }
+            },
+            {
+              "question": {
+                "kind": "mcq",
+                "id": "m1-b4-prac-2",
+                "prompt": { "vi": "Một router trên đường đi cần biết những gì để làm việc?" },
+                "choices": [
+                  { "vi": "Toàn bộ con đường từ máy gửi đến máy nhận" },
+                  { "vi": "Chỉ chặng kế tiếp gần đích hơn" },
+                  { "vi": "Nội dung bên trong gói tin" }
+                ],
+                "answerIndex": 1,
+                "hintTopic": { "vi": "bưu tá có cần thuộc cả nước không" }
+              },
+              "hint": { "vi": "Bưu tá quận này chỉ cần đưa thư sang quận gần hơn — người tiếp theo lo phần còn lại." },
+              "solution": {
+                "vi": "Mỗi router chỉ cần biết chặng kế tiếp. Chính vì thế mạng chịu lỗi rất giỏi: một trạm hỏng, các trạm khác tự tìm đường vòng."
+              }
+            }
+          ]
+        },
+        {
+          "type": "retrieval",
+          "questions": [
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m1-b4-ret-1",
+                "prompt": { "vi": "Không nhìn lại bài: thiết bị đọc địa chỉ IP đích và chọn chặng kế tiếp cho gói tin gọi là gì?" },
+                "accept": ["router", "bộ định tuyến"]
+              },
+              "hint": { "vi": "Chính là \"bưu tá\" trong câu chuyện gửi thư." },
+              "solution": { "vi": "Đó là router (bộ định tuyến) — mỗi router đưa gói tin gần đích thêm một chặng." }
+            }
+          ],
+          "selfExplain": {
+            "prompt": { "vi": "Giải thích bằng lời của bạn: router làm gì khi nhận được một gói tin?" },
+            "keywords": [
+              ["địa chỉ", "ip", "đích"],
+              ["chuyển tiếp", "chặng", "gần đích"]
+            ],
+            "exampleAnswer": {
+              "vi": "Router đọc địa chỉ IP đích trên gói tin, tra \"sổ tay đường đi\" của nó rồi chuyển gói sang chặng kế tiếp gần đích hơn — như bưu tá đọc phong bì rồi đưa thư về đúng tuyến."
+            }
+          }
+        },
+        {
+          "type": "summary",
+          "bullets": [
+            { "vi": "Router là bưu tá: đọc địa chỉ đích rồi chuyển gói tin đi tiếp." },
+            { "vi": "Một gói tin thường qua nhiều router trước khi tới nơi." },
+            { "vi": "Mỗi router chỉ cần biết chặng kế tiếp — nên mạng hỏng một trạm vẫn chạy." }
+          ],
+          "nextTeaser": { "vi": "Địa chỉ chuẩn, bưu tá giỏi — nhưng nếu bạn viết thư bằng tiếng Việt mà Mai chỉ đọc được tiếng Pháp thì sao? Bài sau: luật chơi chung giữa hai máy." }
+        }
+      ]
+    },
+    {
+      "id": "m1-bai-5",
+      "missionTitle": { "vi": "Thống nhất luật chơi giữa hai máy" },
+      "steps": [
+        {
+          "type": "hook",
+          "question": {
+            "vi": "Bạn biết địa chỉ Mai, bưu tá giao thư chuẩn từng nhà — nhưng thư viết bằng thứ tiếng Mai không đọc nổi thì vẫn vô dụng. Máy tính tránh chuyện này thế nào?"
+          },
+          "visualId": "vis-quy-uoc-viet-thu"
+        },
+        {
+          "type": "pretest",
+          "questions": [
+            {
+              "kind": "mcq",
+              "id": "m1-b5-pre-1",
+              "prompt": { "vi": "Đoán thử nhé: bộ quy tắc chung để hai máy hiểu được nhau gọi là..." },
+              "choices": [
+                { "vi": "Mật khẩu" },
+                { "vi": "Giao thức" },
+                { "vi": "Địa chỉ IP" }
+              ],
+              "answerIndex": 1,
+              "explain": {
+                "vi": "Bộ quy tắc chung đó gọi là giao thức — thư tới đúng địa chỉ nhưng sai quy ước thì bên nhận vẫn không đọc nổi."
+              }
+            }
+          ],
+          "encouragement": { "vi": "Sai là bình thường — não bạn vừa được \"mồi\" để học phần tiếp theo tốt hơn." }
+        },
+        {
+          "type": "teach",
+          "screens": [
+            {
+              "conceptId": "giao-thuc",
+              "visualId": "vis-quy-uoc-viet-thu",
+              "body": {
+                "vi": "Hai máy muốn hiểu nhau phải theo cùng một bộ quy tắc gọi là giao thức (protocol) — như hai người viết thư phải cùng ngôn ngữ, cùng quy ước trình bày thì mới đọc được thư của nhau."
+              },
+              "deepDive": {
+                "vi": "Mỗi việc có giao thức riêng, xếp chồng lên nhau: HTTP lo nội dung web, TCP lo gửi đủ và đúng thứ tự, IP lo địa chỉ và đường đi. Một lần bạn mở trang web là cả chồng giao thức cùng làm việc."
+              }
+            }
+          ]
+        },
+        {
+          "type": "practice",
+          "fadingLevel": 2,
+          "exercises": [
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m1-b5-prac-1",
+                "prompt": { "vi": "Bộ quy tắc chung mà hai máy phải cùng tuân theo để hiểu nhau gọi là gì?" },
+                "accept": ["giao thức", "protocol"],
+                "hintTopic": { "vi": "quy ước chung khi hai bên trao đổi" }
+              },
+              "hint": { "vi": "Giống quy ước viết thư: cùng ngôn ngữ, cùng cách trình bày." },
+              "solution": {
+                "vi": "Đó là giao thức (protocol): tập quy tắc thống nhất về cách đóng gói, gửi và diễn giải dữ liệu."
+              }
+            }
+          ]
+        },
+        {
+          "type": "retrieval",
+          "questions": [
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m1-b5-ret-1",
+                "prompt": { "vi": "Không nhìn lại bài: HTTP, TCP, IP được gọi chung là các..." },
+                "accept": ["giao thức", "protocol"]
+              },
+              "hint": { "vi": "Là \"luật chơi chung\" giữa các máy." },
+              "solution": { "vi": "Chúng là các giao thức — mỗi giao thức phụ trách một việc trên đường đi của dữ liệu." }
+            }
+          ],
+          "selfExplain": {
+            "prompt": { "vi": "Giải thích bằng lời của bạn: vì sao hai máy phải dùng chung giao thức mới trao đổi được?" },
+            "keywords": [
+              ["quy tắc", "quy ước", "luật chung"],
+              ["hiểu", "diễn giải", "đọc được"]
+            ],
+            "exampleAnswer": {
+              "vi": "Không có quy tắc chung thì bên nhận không biết cách diễn giải dãy tín hiệu 0-1 (bit) nhận được — như nhận lá thư viết bằng thứ tiếng mình không đọc nổi. Giao thức là quy ước chung giúp hai bên hiểu nhau."
+            }
+          }
+        },
+        {
+          "type": "summary",
+          "bullets": [
+            { "vi": "Giao thức là luật chơi chung để hai máy hiểu nhau." },
+            { "vi": "Thư tới đúng địa chỉ nhưng sai quy ước thì vẫn vô dụng." },
+            { "vi": "Các giao thức xếp chồng: HTTP lo nội dung, TCP lo đủ và đúng thứ tự, IP lo đường đi." }
+          ],
+          "nextTeaser": { "vi": "Bạn đã có đủ bộ tứ: phong bì, địa chỉ, bưu tá, luật chơi. Bài cuối: ghép tất cả lại — tiễn một lá thư đi trọn hành trình từ máy bạn đến máy Mai." }
+        }
+      ]
+    },
+    {
+      "id": "m1-bai-6",
+      "missionTitle": { "vi": "Tiễn lá thư đi trọn hành trình" },
+      "steps": [
+        {
+          "type": "hook",
+          "question": {
+            "vi": "Đã đến lúc gửi thật tấm ảnh sinh nhật. Nhắm mắt hình dung thử: từ cú bấm \"Gửi\" của bạn đến tiếng \"ting\" trên máy Mai, chuyện gì xảy ra theo thứ tự nào?"
+          },
+          "visualId": "vis-hanh-trinh-tong-quan"
+        },
+        {
+          "type": "pretest",
+          "questions": [
+            {
+              "kind": "mcq",
+              "id": "m1-b6-pre-1",
+              "prompt": { "vi": "Đoán thử nhé: việc ĐẦU TIÊN máy bạn làm khi bấm \"Gửi\" tấm ảnh là..." },
+              "choices": [
+                { "vi": "Chia tấm ảnh thành các gói tin và ghi địa chỉ" },
+                { "vi": "Gửi nguyên tấm ảnh cho router" },
+                { "vi": "Gửi nguyên tấm ảnh không chia, vì ảnh nhỏ thì khỏi cần đóng gói" }
+              ],
+              "answerIndex": 0,
+              "explain": {
+                "vi": "Bước đầu tiên luôn là đóng gói: chia dữ liệu thành các gói tin, mỗi gói ghi địa chỉ IP máy nhận — có phong bì đúng địa chỉ rồi mới nói đến chuyện lên đường."
+              }
+            }
+          ],
+          "encouragement": { "vi": "Sai là bình thường — não bạn vừa được \"mồi\" để học phần tiếp theo tốt hơn." }
+        },
+        {
+          "type": "teach",
+          "screens": [
+            {
+              "conceptId": "hanh-trinh-goi-tin",
+              "visualId": "vis-hanh-trinh-tong-quan",
+              "body": {
+                "vi": "Ghép cả câu chuyện lại: máy bạn CHIA ảnh vào các gói tin và ghi địa chỉ IP của Mai — các gói rời nhà, được các ROUTER chuyền tay nhau, mỗi trạm một chặng gần hơn — đến máy Mai, PORT đưa chúng vào đúng ứng dụng — và nhờ cùng GIAO THỨC, máy Mai ráp lại thành đúng tấm ảnh."
+              },
+              "deepDive": {
+                "vi": "Các gói có thể đi những con đường khác nhau và đến lộn xộn — số thứ tự trong header giúp máy nhận ráp về đúng trật tự. Đó là lý do mạng vừa nhanh vừa bền: không có con đường nào là duy nhất."
+              }
+            }
+          ]
+        },
+        {
+          "type": "practice",
+          "fadingLevel": 2,
+          "exercises": [
+            {
+              "question": {
+                "kind": "order",
+                "id": "m1-b6-prac-1",
+                "prompt": { "vi": "Sắp xếp hành trình tấm ảnh từ máy bạn đến máy Mai theo đúng thứ tự." },
+                "items": [
+                  { "vi": "Máy bạn chia tấm ảnh vào các gói tin, ghi địa chỉ IP của máy Mai" },
+                  { "vi": "Các gói tin rời máy bạn, đến router đầu tiên" },
+                  { "vi": "Các router lần lượt chuyển gói tin về gần máy Mai" },
+                  { "vi": "Máy Mai nhận các gói, port đưa vào đúng ứng dụng, ráp lại thành tấm ảnh" }
+                ],
+                "hintTopic": { "vi": "trình tự đóng gói — lên đường — chuyển tiếp — ráp lại" }
+              },
+              "hint": { "vi": "Chưa đóng gói thì chưa có gì để gửi — vậy bắt đầu từ đâu?" },
+              "solution": {
+                "vi": "Đóng gói và ghi địa chỉ → rời máy đến router đầu tiên → các router chuyền dần về gần đích → máy nhận ráp lại và giao cho đúng ứng dụng qua port."
+              }
+            }
+          ]
+        },
+        {
+          "type": "retrieval",
+          "questions": [
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m1-b6-ret-1",
+                "prompt": { "vi": "Không nhìn lại bài: trên máy NHẬN, thứ gì đưa dữ liệu vào đúng ứng dụng đang chờ nó?" },
+                "accept": ["port", "cổng", "số port", "số cổng"]
+              },
+              "hint": { "vi": "Đến đúng chung cư rồi — còn phải gõ đúng cửa." },
+              "solution": { "vi": "Là port: địa chỉ IP đưa gói tin tới đúng máy, port đưa nó vào đúng ứng dụng." }
+            }
+          ],
+          "selfExplain": {
+            "prompt": {
+              "vi": "Bài tốt nghiệp của module: KỂ LẠI bằng lời của bạn — như kể cho đứa em — hành trình tấm ảnh đi từ máy bạn đến máy Mai."
+            },
+            "keywords": [
+              ["gói tin", "chia nhỏ", "đóng gói"],
+              ["địa chỉ", "ip"],
+              ["router", "bưu tá", "chuyển tiếp"],
+              ["ráp lại", "port", "đúng ứng dụng"]
+            ],
+            "exampleAnswer": {
+              "vi": "Máy mình chia tấm ảnh thành nhiều gói tin, mỗi gói ghi địa chỉ IP của máy Mai. Các gói rời nhà, được các router — như bưu tá — chuyền tay nhau, mỗi trạm một chặng gần hơn. Đến máy Mai, số port đưa chúng vào đúng ứng dụng, và các gói được ráp lại thành đúng tấm ảnh ban đầu."
+            }
+          }
+        },
+        {
+          "type": "summary",
+          "bullets": [
+            { "vi": "Một lần gửi = đóng gói, ghi địa chỉ, bưu tá chuyền tay, ráp lại ở đích." },
+            { "vi": "Bạn vừa kể lại được cả hành trình bằng lời của mình — đó là thứ ở lại lâu nhất." },
+            { "vi": "Bốn nhân vật chính: gói tin, địa chỉ IP, router, giao thức — sẽ theo bạn suốt khóa học." }
+          ],
+          "nextTeaser": {
+            "vi": "Bài kiểm tra module đang chờ ngay bên ngoài — qua được là mở Module 2: theo chân một cú gõ \"google.com\" xuyên qua cả thành phố Internet."
+          }
+        }
+      ]
+    }
+  ],
+  "concepts": [
+    {
+      "id": "goi-tin",
+      "term": "Packet",
+      "glossVi": "Gói tin — đơn vị dữ liệu nhỏ được gửi qua mạng",
+      "metaphor": { "vi": "Gói tin như phong bì thư: bên trong là nội dung, bên ngoài ghi thông tin chuyển phát." },
+      "iconId": "icon-goi-tin",
+      "flashcard": {
+        "front": { "vi": "Gói tin (packet) là gì?" },
+        "back": { "vi": "Đơn vị dữ liệu nhỏ được gửi qua mạng — như một phong bì thư mang một phần nội dung kèm địa chỉ." }
+      }
+    },
+    {
+      "id": "dia-chi-ip",
+      "term": "IP address",
+      "glossVi": "Địa chỉ IP — dãy số định danh một máy trên mạng",
+      "metaphor": { "vi": "Địa chỉ IP như địa chỉ nhà: bưu tá chỉ cần nhìn nó để biết giao thư đến đâu." },
+      "iconId": "icon-dia-chi-ip",
+      "flashcard": {
+        "front": { "vi": "Địa chỉ IP dùng để làm gì?" },
+        "back": { "vi": "Định danh một máy trên mạng để gói tin tìm đến đúng nơi — như địa chỉ nhà ghi trên phong bì." }
+      }
+    },
+    {
+      "id": "port",
+      "term": "Port",
+      "glossVi": "Cổng — con số phân biệt các ứng dụng trên cùng một máy",
+      "metaphor": { "vi": "Port như số căn hộ trong chung cư: đúng tòa nhà rồi vẫn phải gõ đúng cửa." },
+      "iconId": "icon-port",
+      "flashcard": {
+        "front": { "vi": "Port dùng để làm gì?" },
+        "back": { "vi": "Phân biệt các ứng dụng trên cùng một máy — IP tìm đúng máy, port tìm đúng ứng dụng." }
+      }
+    },
+    {
+      "id": "router",
+      "term": "Router",
+      "glossVi": "Bộ định tuyến — thiết bị chuyển gói tin giữa các mạng",
+      "metaphor": { "vi": "Router như bưu tá: đọc địa chỉ trên phong bì rồi chọn chặng tiếp theo cho lá thư." },
+      "iconId": "icon-router",
+      "flashcard": {
+        "front": { "vi": "Router làm nhiệm vụ gì?" },
+        "back": { "vi": "Đọc địa chỉ IP đích của gói tin và chuyển nó sang chặng kế tiếp gần đích hơn." }
+      }
+    },
+    {
+      "id": "giao-thuc",
+      "term": "Protocol",
+      "glossVi": "Giao thức — bộ quy tắc chung để hai máy hiểu nhau",
+      "metaphor": { "vi": "Giao thức như quy ước viết thư: cùng ngôn ngữ, cùng cách trình bày thì mới đọc được thư của nhau." },
+      "iconId": "icon-giao-thuc",
+      "flashcard": {
+        "front": { "vi": "Giao thức (protocol) là gì?" },
+        "back": { "vi": "Bộ quy tắc chung mà hai máy cùng tuân theo để đóng gói, gửi và diễn giải dữ liệu." }
+      }
+    },
+    {
+      "id": "hanh-trinh-goi-tin",
+      "term": "Hành trình gói tin",
+      "glossVi": "Đường đi trọn vẹn của dữ liệu từ máy gửi đến máy nhận",
+      "metaphor": { "vi": "Một lần gửi thư trọn vẹn: đóng phong bì, ghi địa chỉ, bưu tá chuyền tay, người nhận mở đúng căn hộ." },
+      "iconId": "icon-hanh-trinh",
+      "flashcard": {
+        "front": { "vi": "Kể ngắn gọn hành trình một tin nhắn từ máy A đến máy B?" },
+        "back": { "vi": "Chia thành gói tin ghi địa chỉ IP → các router chuyền tay nhau → máy nhận ráp lại, port đưa vào đúng ứng dụng." }
+      }
+    }
+  ],
+  "masteryTest": [
+    {
+      "kind": "typed",
+      "id": "m1-mt-1",
+      "prompt": { "vi": "Bạn vào Wi-Fi quán cà phê. Quán cấp cho máy bạn một dãy số định danh để dữ liệu tìm về đúng máy giữa hàng chục khách — dãy số đó gọi là gì?" },
+      "accept": ["địa chỉ ip", "ip", "ip address", "ipv4", "địa chỉ ipv4"],
+      "explain": { "vi": "Địa chỉ IP định danh máy bạn trên mạng — như địa chỉ nhà ghi ngoài phong bì để dữ liệu biết giao về đâu." }
+    },
+    {
+      "kind": "typed",
+      "id": "m1-mt-2",
+      "prompt": { "vi": "Một file 10MB rời máy bạn dưới dạng hàng nghìn mảnh nhỏ, mỗi mảnh tự mang địa chỉ. Mỗi mảnh như vậy gọi là gì?" },
+      "accept": ["gói tin", "packet"],
+      "explain": { "vi": "Gói tin (packet): dữ liệu được chia nhỏ, mỗi gói mang một phần nội dung kèm thông tin chuyển phát." }
+    },
+    {
+      "kind": "typed",
+      "id": "m1-mt-3",
+      "prompt": { "vi": "Gói tin của bạn đang dừng ở một trạm giữa đường. Thiết bị tại trạm đọc địa chỉ đích rồi đẩy nó sang chặng kế tiếp — thiết bị đó gọi là gì?" },
+      "accept": ["router", "bộ định tuyến"],
+      "explain": { "vi": "Router đọc địa chỉ IP đích trên gói tin rồi chuyển nó sang chặng kế tiếp gần đích hơn — như bưu tá đọc phong bì." }
+    },
+    {
+      "kind": "typed",
+      "id": "m1-mt-4",
+      "prompt": { "vi": "Máy Mai mở 3 ứng dụng cùng lúc. Tấm ảnh về đến máy — con số nào đưa nó vào đúng ứng dụng chat thay vì trình duyệt?" },
+      "accept": ["port", "cổng", "số port", "số cổng"],
+      "explain": { "vi": "IP đưa gói tin tới đúng máy, port đưa nó tới đúng ứng dụng — như số căn hộ trong một chung cư." }
+    },
+    {
+      "kind": "order",
+      "id": "m1-mt-5",
+      "prompt": { "vi": "Lần này Mai gửi ảnh đáp lễ cho BẠN. Sắp xếp hành trình tấm ảnh từ máy Mai về máy bạn." },
+      "items": [
+        { "vi": "Máy Mai chia tấm ảnh vào các gói tin, ghi địa chỉ IP máy bạn" },
+        { "vi": "Gói tin rời máy Mai, đến router đầu tiên" },
+        { "vi": "Các router lần lượt chuyển gói tin về gần máy bạn" },
+        { "vi": "Máy bạn nhận đủ các gói và ráp lại thành tấm ảnh" }
+      ],
+      "explain": { "vi": "Chiều nào cũng cùng một kịch bản: chia gói → rời máy gửi → qua từng router gần đích dần → máy nhận ráp lại." }
+    },
+    {
+      "kind": "typed",
+      "id": "m1-mt-6",
+      "prompt": { "vi": "Máy bạn gửi yêu cầu theo đúng khuôn HTTP, server đáp lại đúng khuôn ấy — hai bên hiểu nhau nhờ cùng tuân theo thứ gì?" },
+      "accept": ["giao thức", "protocol"],
+      "explain": { "vi": "Giao thức là luật chơi chung: cùng quy ước đóng gói và diễn giải thì hai máy mới đọc hiểu dữ liệu của nhau." }
+    },
+    {
+      "kind": "mcq",
+      "id": "m1-mt-7",
+      "prompt": { "vi": "Một gói tin bị thất lạc giữa đường. Nhờ đâu máy gửi KHÔNG phải gửi lại toàn bộ dữ liệu?" },
+      "choices": [
+        { "vi": "Vì dữ liệu đã được chia thành nhiều gói — chỉ cần gửi lại gói mất" },
+        { "vi": "Vì router giữ một bản sao của mọi thứ" },
+        { "vi": "Vì máy nhận tự đoán được phần thiếu" }
+      ],
+      "answerIndex": 0,
+      "explain": { "vi": "Chia nhỏ là để hỏng đâu vá đó: mất gói nào gửi lại đúng gói ấy, các gói còn lại không phải đi lần hai." }
+    }
+  ]
+}

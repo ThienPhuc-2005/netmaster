@@ -1,0 +1,58 @@
+# Deploy GitHub Pages: push lên main → test + typecheck → build → deploy.
+# Test hoặc typecheck đỏ thì job build fail → không bao giờ deploy bản hỏng.
+
+name: deploy-pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run typecheck
+
+      - run: npm test
+
+      # Base lấy thẳng từ tên repo — đổi tên repo không phải sửa code.
+      - run: npm run build
+        env:
+          GHPAGES_BASE: /${{ github.event.repository.name }}/
+
+      # SPA trên Pages: path lạ (vd /bai/m1-bai-1) được serve bằng 404.html;
+      # dùng chính index.html làm 404.html để react-router nhận route.
+      - run: cp dist/index.html dist/404.html
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

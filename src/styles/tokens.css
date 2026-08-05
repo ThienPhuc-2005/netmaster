@@ -1,0 +1,83 @@
+/*
+ * Design tokens — hướng "phòng điều hành mạng" (đã duyệt ở kế hoạch):
+ * nền xanh đen, panel phẳng viền 1px, nhấn cyan, số liệu dùng mono.
+ *
+ * Quy tắc 60-30-10 (spec 4.1): 60% --surface (nền), 30% --panel (card),
+ * 10% màu nhấn (--accent + ok/warn). Đỏ CHỈ cho lỗi hệ thống — trả lời
+ * sai dùng hổ phách (--warn), không bao giờ dùng đỏ.
+ *
+ * Dark là mặc định (:root); light bật qua :root[data-theme='light'].
+ * MỌI cặp chữ/nền ở cả hai theme phải đạt WCAG AA (>= 4.5:1) — được đo
+ * bằng test thật trong tokens.test.ts, đổi màu mà rớt chuẩn là test đỏ.
+ *
+ * Tông nhấn phụ theo PHẦN (spec 4.1): A cyan, B teal, C cam — gắn qua
+ * [data-part] để màn hình module tự đổi tông, tạo cảm giác tiến trình.
+ */
+
+:root {
+  /* 60% — nền */
+  --surface: #0d1421;
+  /* 30% — panel/card */
+  --panel: #16202d;
+  --panel-hover: #1c2938;
+  --edge: #2a3a4d;
+  /* chữ */
+  --ink: #e8eef6;
+  --ink-muted: #9dafc4;
+  /* 10% — nhấn */
+  --accent: #38bdf8;
+  --accent-contrast: #0d1421;
+  --ok: #34d399;
+  --warn: #fbbf24;
+  --danger: #f87171;
+  /* tông phụ theo Phần A/B/C */
+  --part-a: #38bdf8;
+  --part-b: #2dd4bf;
+  --part-c: #fb923c;
+
+  --font-ui: 'Be Vietnam Pro', 'Segoe UI', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', Consolas, monospace;
+
+  /* Chuyển động 200-300ms ease-out, chỉ để chỉ quan hệ (spec 4.2) */
+  --dur: 220ms;
+  --ease: cubic-bezier(0, 0, 0.2, 1);
+
+  color-scheme: dark;
+}
+
+:root[data-theme='light'] {
+  --surface: #f4f7fa;
+  --panel: #ffffff;
+  --panel-hover: #eef2f7;
+  --edge: #d7dee8;
+  --ink: #17202b;
+  --ink-muted: #51637a;
+  --accent: #0369a1;
+  --accent-contrast: #ffffff;
+  --ok: #047857;
+  --warn: #92400e;
+  --danger: #b91c1c;
+  --part-a: #0369a1;
+  --part-b: #0f766e;
+  --part-c: #c2410c;
+
+  color-scheme: light;
+}
+
+/* Tông nhấn phụ đổi theo Phần đang học (dùng từ Khối 3 trở đi) */
+[data-part='A'] {
+  --part-accent: var(--part-a);
+}
+[data-part='B'] {
+  --part-accent: var(--part-b);
+}
+[data-part='C'] {
+  --part-accent: var(--part-c);
+}
+
+/* Người dùng tắt chuyển động ở HĐH thì app im theo */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur: 0ms;
+  }
+}

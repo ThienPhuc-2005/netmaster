@@ -1,0 +1,453 @@
+// Hình minh họa khái niệm (dual coding — spec 2.1 bước 3: mỗi khái niệm
+// 1 hình, chữ ngắn đặt NGAY CẠNH hình). Registry ánh xạ visualId trong
+// nội dung → hình SVG vẽ tay theo hệ ẩn dụ bưu điện; visualId chưa có
+// hình riêng dùng hình thư chung để bài vẫn dạy được, và Khối 5 bổ sung
+// dần hình cho nội dung mới.
+
+import type { ReactNode } from 'react'
+import { motion } from 'motion/react'
+
+function Frame({ children, title }: { children: ReactNode; title?: string }) {
+  return (
+    <svg
+      viewBox="0 0 220 130"
+      role="img"
+      aria-label={title}
+      className="h-40 w-full rounded-md border border-edge bg-panel"
+    >
+      {children}
+    </svg>
+  )
+}
+
+const stroke = { fill: 'none', stroke: 'currentColor', strokeWidth: 2, strokeLinejoin: 'round' } as const
+
+/** Phong bì lớn tách thành các gói nhỏ — gói tin. */
+function EnvelopePackets({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <rect x="18" y="35" width="76" height="52" rx="4" {...stroke} />
+        <path d="M18 40 56 68 94 40" {...stroke} />
+      </g>
+      <g className="text-accent">
+        <path d="M104 61 h18" {...stroke} markerEnd="url(#cv-arrow)" />
+        {[0, 1, 2].map((i) => (
+          <g key={i} transform={`translate(${132 + i * 26} ${47 + (i % 2) * 10})`}>
+            <rect width="20" height="16" rx="3" {...stroke} />
+            <path d="M0 3 10 11 20 3" {...stroke} strokeWidth={1.5} />
+          </g>
+        ))}
+      </g>
+      <defs>
+        <marker id="cv-arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0 0 6 3 0 6" fill="none" stroke="currentColor" strokeWidth="1.5" />
+        </marker>
+      </defs>
+    </Frame>
+  )
+}
+
+/** Ngôi nhà + biển địa chỉ — địa chỉ IP. */
+function HouseAddress({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <path d="M60 62 110 28 160 62" {...stroke} />
+        <path d="M72 58 v40 h76 v-40" {...stroke} />
+        <rect x="100" y="72" width="20" height="26" {...stroke} />
+      </g>
+      <g className="text-accent">
+        <rect x="66" y="104" width="88" height="16" rx="3" {...stroke} />
+        <text x="110" y="116" textAnchor="middle" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          192.168.1.10
+        </text>
+      </g>
+    </Frame>
+  )
+}
+
+/** Chung cư với các cửa đánh số — port. */
+function ApartmentPorts({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <rect x="60" y="20" width="100" height="90" rx="4" {...stroke} />
+      </g>
+      {[
+        { x: 72, label: '80' },
+        { x: 102, label: '443' },
+        { x: 132, label: '22' },
+      ].map(({ x, label }) => (
+        <g key={label}>
+          <rect x={x} y="66" width="24" height="44" className="text-ink-muted" {...stroke} />
+          <text
+            x={x + 12}
+            y="58"
+            textAnchor="middle"
+            fontSize="11"
+            className="text-accent"
+            fill="currentColor"
+            style={{ fontFamily: 'var(--font-mono)' }}
+          >
+            {label}
+          </text>
+        </g>
+      ))}
+    </Frame>
+  )
+}
+
+/** Nút router với các mũi tên rẽ hướng — bưu tá của mạng. */
+function RouterNode({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-accent">
+        <circle cx="110" cy="65" r="20" {...stroke} />
+        <path d="M102 65 h16 M110 57 v16" {...stroke} strokeWidth={1.5} />
+      </g>
+      <g className="text-ink-muted">
+        <path d="M30 65 H86" {...stroke} markerEnd="url(#cv-arrow2)" />
+        <path d="M130 55 176 30" {...stroke} markerEnd="url(#cv-arrow2)" />
+        <path d="M130 75 176 100" {...stroke} markerEnd="url(#cv-arrow2)" />
+        <rect x="16" y="57" width="18" height="14" rx="2" {...stroke} />
+        <path d="M16 59 25 66 34 59" {...stroke} strokeWidth={1.5} />
+      </g>
+      <defs>
+        <marker id="cv-arrow2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0 0 6 3 0 6" fill="none" stroke="currentColor" strokeWidth="1.5" />
+        </marker>
+      </defs>
+    </Frame>
+  )
+}
+
+/** Hai lá thư cùng khuôn dạng — giao thức (luật chơi chung). */
+function MatchingLetters({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      {[36, 124].map((x) => (
+        <g key={x} className="text-ink-muted">
+          <rect x={x} y="30" width="60" height="74" rx="4" {...stroke} />
+          <path d={`M${x + 10} 46 h40 M${x + 10} 58 h40 M${x + 10} 70 h28`} {...stroke} strokeWidth={1.5} />
+        </g>
+      ))}
+      <g className="text-ok">
+        <path d="M104 66 h12" {...stroke} />
+        <path d="M106 90 l5 5 9 -11" {...stroke} />
+      </g>
+    </Frame>
+  )
+}
+
+// ---------------------------------------------------------------
+// Module 2 — hành trình "gõ google.com": một sơ đồ, mỗi màn dạy sáng
+// đúng chặng đang giảng, các chặng khác mờ 40% (signaling, spec 4.2);
+// gói tin trượt vào vị trí bằng motion (240ms ease-out).
+// ---------------------------------------------------------------
+
+type JourneyLeg = 'dns' | 'gateway' | 'routers' | 've-dich' | 'tong-quan'
+
+function MiniPacket({ x, y }: { x: number; y: number }) {
+  return (
+    <motion.g
+      initial={{ x: x - 16, y, opacity: 0 }}
+      animate={{ x, y, opacity: 1 }}
+      transition={{ duration: 0.24, ease: 'easeOut' }}
+      className="text-accent"
+    >
+      <rect x="-8" y="-6" width="16" height="12" rx="2" fill="var(--panel)" stroke="currentColor" strokeWidth="1.8" />
+      <path d="M-8 -3.5 0 3 8 -3.5" fill="none" stroke="currentColor" strokeWidth="1.3" />
+    </motion.g>
+  )
+}
+
+function Journey({ leg, title }: { leg: JourneyLeg; title?: string }) {
+  const dim = (active: boolean) => (leg === 'tong-quan' || active ? undefined : 0.4)
+  return (
+    <Frame title={title}>
+      {/* Máy bạn */}
+      <g className="text-ink-muted" opacity={dim(leg === 'dns' || leg === 'gateway' || leg === 've-dich')}>
+        <rect x="16" y="66" width="22" height="16" rx="2" {...stroke} />
+        <path d="M18 86 h18" {...stroke} strokeWidth={1.5} />
+      </g>
+      {/* DNS — danh bạ, hỏi đáp bằng nét đứt TRƯỚC chuyến đi */}
+      <g className="text-ink-muted" opacity={dim(leg === 'dns')}>
+        <rect x="34" y="18" width="16" height="20" rx="2" {...stroke} stroke={leg === 'dns' ? 'var(--accent)' : 'currentColor'} />
+        <path d="M38 24 h8 M38 29 h8 M38 34 h5" {...stroke} strokeWidth={1.2} />
+        <path d="M31 62 38 42" {...stroke} strokeDasharray="3 3" strokeWidth={1.5} />
+      </g>
+      {/* Gateway — cánh cổng */}
+      <g className="text-ink-muted" opacity={dim(leg === 'gateway')}>
+        <path d="M84 82 V60 q8 -10 16 0 V82" {...stroke} stroke={leg === 'gateway' ? 'var(--accent)' : 'currentColor'} />
+      </g>
+      {/* Router trung chuyển */}
+      <g className="text-ink-muted" opacity={dim(leg === 'routers')}>
+        <circle cx="130" cy="66" r="9" {...stroke} stroke={leg === 'routers' ? 'var(--accent)' : 'currentColor'} />
+        <circle cx="154" cy="80" r="9" {...stroke} stroke={leg === 'routers' ? 'var(--accent)' : 'currentColor'} />
+        <path d="M126 66 h8 M130 62 v8 M150 80 h8 M154 76 v8" {...stroke} strokeWidth={1.2} />
+      </g>
+      {/* Server — tòa nhà dịch vụ */}
+      <g className="text-ink-muted" opacity={dim(leg === 'routers' || leg === 've-dich')}>
+        <rect x="186" y="52" width="18" height="34" rx="2" {...stroke} />
+        <path d="M189 60 h12 M189 68 h12 M189 76 h12" {...stroke} strokeWidth={1.2} />
+      </g>
+      {/* Tuyến đi */}
+      <path d="M38 74 H84" {...stroke} opacity={dim(leg === 'gateway')} stroke={leg === 'gateway' ? 'var(--accent)' : 'var(--edge)'} />
+      <path d="M100 74 121 68 M139 70 146 76 M163 80 186 76" {...stroke} opacity={dim(leg === 'routers')} stroke={leg === 'routers' ? 'var(--accent)' : 'var(--edge)'} />
+      {/* Tuyến về — vòng dưới */}
+      <path
+        d="M195 90 Q110 122 30 86"
+        {...stroke}
+        opacity={dim(leg === 've-dich')}
+        stroke={leg === 've-dich' ? 'var(--accent)' : 'var(--edge)'}
+        strokeDasharray={leg === 've-dich' ? undefined : '3 4'}
+      />
+      {leg === 'dns' && <MiniPacket x={26} y={52} />}
+      {leg === 'gateway' && <MiniPacket x={61} y={74} />}
+      {leg === 'routers' && <MiniPacket x={142} y={62} />}
+      {leg === 've-dich' && <MiniPacket x={112} y={106} />}
+      {leg === 'tong-quan' && <MiniPacket x={61} y={74} />}
+    </Frame>
+  )
+}
+
+/** Bản đồ khóa học 12 module (advance organizer, spec Module 2): Phần A
+ *  sáng — "bạn ở đây", B/C chờ phía trước, mỗi phần đúng tông màu riêng. */
+function CourseMap({ title }: { title?: string }) {
+  const cell = (x: number, y: number, color: string, filled: boolean) => (
+    <rect
+      key={`${x}-${y}`}
+      x={x}
+      y={y}
+      width="18"
+      height="18"
+      rx="3"
+      fill={filled ? color : 'none'}
+      stroke={color}
+      strokeWidth="2"
+      opacity={filled ? 1 : 0.55}
+    />
+  )
+  return (
+    <Frame title={title}>
+      {/* Phần A: 3 module (đang học) */}
+      {[0, 1, 2].map((i) => cell(28 + i * 26, 30, 'var(--part-a)', true))}
+      {/* Phần B: 4 module */}
+      {[0, 1, 2, 3].map((i) => cell(28 + i * 26, 58, 'var(--part-b)', false))}
+      {/* Phần C: 5 module */}
+      {[0, 1, 2, 3, 4].map((i) => cell(28 + i * 26, 86, 'var(--part-c)', false))}
+      <text x="140" y="43" fontSize="10" fill="var(--part-a)" style={{ fontFamily: 'var(--font-mono)' }}>A · 1-3</text>
+      <text x="166" y="71" fontSize="10" fill="var(--part-b)" style={{ fontFamily: 'var(--font-mono)' }}>B · 4-7</text>
+      <text x="192" y="99" fontSize="10" fill="var(--part-c)" style={{ fontFamily: 'var(--font-mono)' }}>C · 8-12</text>
+    </Frame>
+  )
+}
+
+// ---------------------------------------------------------------
+// Module 3 — địa chỉ: số khung/biển số, octet, private/public,
+// subnet mask, magic number, IPv6. Chữ trong hình chỉ dùng SỐ/mã
+// (mono) — mọi lời giảng nằm ở body cạnh hình.
+// ---------------------------------------------------------------
+
+const monoText = { fontSize: 10, fill: 'var(--ink-muted)', style: { fontFamily: 'var(--font-mono)' } } as const
+
+/** MAC = số khung đóng chết vào khung xe; IP = biển số tháo lắp được. */
+function ChassisPlate({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <rect x="50" y="28" width="120" height="40" rx="6" {...stroke} />
+        <circle cx="78" cy="76" r="9" {...stroke} />
+        <circle cx="142" cy="76" r="9" {...stroke} />
+        <text x="62" y="52" {...monoText}>MAC aa:bb:cc:11:22:33</text>
+        <path d="M56 34 l4 4 M164 34 l-4 4" {...stroke} strokeWidth={1.2} />
+      </g>
+      <g className="text-accent">
+        <rect x="66" y="96" width="88" height="20" rx="3" {...stroke} />
+        <text x="76" y="110" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>IP 192.168.1.10</text>
+        <circle cx="72" cy="106" r="1.6" fill="currentColor" />
+        <circle cx="148" cy="106" r="1.6" fill="currentColor" />
+      </g>
+    </Frame>
+  )
+}
+
+/** IPv4 = 4 ô số 0-255; ba ô đầu (phần mạng) cùng tông, ô cuối là số nhà. */
+function FourOctets({ title }: { title?: string }) {
+  const octets = ['192', '168', '1', '10']
+  return (
+    <Frame title={title}>
+      {octets.map((o, i) => (
+        <g key={i}>
+          <rect
+            x={26 + i * 46}
+            y={48}
+            width="38"
+            height="30"
+            rx="4"
+            fill={i < 3 ? 'var(--panel-hover)' : 'none'}
+            stroke={i < 3 ? 'var(--accent)' : 'var(--ink-muted)'}
+            strokeWidth="2"
+          />
+          <text x={26 + i * 46 + 19} y={68} textAnchor="middle" fontSize="12" fill={i < 3 ? 'var(--accent)' : 'var(--ink)'} style={{ fontFamily: 'var(--font-mono)' }}>
+            {o}
+          </text>
+          {i < 3 && <circle cx={26 + i * 46 + 42} cy={63} r="1.6" fill="var(--ink-muted)" />}
+        </g>
+      ))}
+      <text x={26} y={96} {...monoText}>0-255 · 0-255 · 0-255 · 0-255</text>
+    </Frame>
+  )
+}
+
+/** Hai nhà khác nhau dùng CÙNG địa chỉ private — chỉ public là duy nhất. */
+function PrivatePublic({ title }: { title?: string }) {
+  const house = (x: number) => (
+    <g key={x} className="text-ink-muted">
+      <rect x={x} y={44} width="56" height="42" rx="4" {...stroke} />
+      <path d={`M${x + 10} 58 L${x + 28} 48 L${x + 46} 58`} {...stroke} strokeWidth={1.5} />
+      <text x={x + 28} y={78} textAnchor="middle" fontSize="8.5" fill="var(--ink-muted)" style={{ fontFamily: 'var(--font-mono)' }}>
+        192.168.1.10
+      </text>
+    </g>
+  )
+  return (
+    <Frame title={title}>
+      {house(20)}
+      {house(144)}
+      <g className="text-accent">
+        <circle cx="110" cy="62" r="14" {...stroke} />
+        <path d="M96 62 h28 M110 48 a20 20 0 0 1 0 28 M110 48 a20 20 0 0 0 0 28" {...stroke} strokeWidth={1.2} />
+        <text x="110" y="98" textAnchor="middle" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          203.113.5.7
+        </text>
+      </g>
+    </Frame>
+  )
+}
+
+/** Subnet mask kẻ ranh: 255 = phần khu phố, 0 = phần số nhà. */
+function MaskFence({ title }: { title?: string }) {
+  const boxes = ['255', '255', '255', '0']
+  return (
+    <Frame title={title}>
+      {boxes.map((b, i) => (
+        <g key={i}>
+          <rect
+            x={26 + i * 46}
+            y={54}
+            width="38"
+            height="28"
+            rx="4"
+            fill={i < 3 ? 'var(--panel-hover)' : 'none'}
+            stroke={i < 3 ? 'var(--accent)' : 'var(--ink-muted)'}
+            strokeWidth="2"
+          />
+          <text x={26 + i * 46 + 19} y={73} textAnchor="middle" fontSize="12" fill={i < 3 ? 'var(--accent)' : 'var(--ink)'} style={{ fontFamily: 'var(--font-mono)' }}>
+            {b}
+          </text>
+        </g>
+      ))}
+      {/* Hàng rào giữa phần mạng và phần host */}
+      <path d="M162 44 v52" stroke="var(--warn)" strokeWidth="2" strokeDasharray="5 4" fill="none" />
+      <text x={26} y={40} {...monoText}>/24</text>
+      <text x={168} y={40} {...monoText}>host</text>
+    </Frame>
+  )
+}
+
+/** Magic number: trục 0→256, mốc nhảy theo bước 64 (ví dụ /26). */
+function MagicNumber({ title }: { title?: string }) {
+  const ticks = [0, 64, 128, 192, 256]
+  const x = (v: number) => 24 + (v / 256) * 172
+  return (
+    <Frame title={title}>
+      <path d={`M${x(0)} 78 H${x(256)}`} stroke="var(--edge)" strokeWidth="2" fill="none" />
+      {ticks.map((v) => (
+        <g key={v}>
+          <path d={`M${x(v)} 72 v12`} stroke="var(--accent)" strokeWidth="2" fill="none" />
+          <text x={x(v)} y={98} textAnchor="middle" fontSize="9" fill="var(--ink-muted)" style={{ fontFamily: 'var(--font-mono)' }}>
+            {v}
+          </text>
+        </g>
+      ))}
+      {/* IP .130 rơi vào block bắt đầu ở 128 */}
+      <circle cx={x(130)} cy={78} r="4" fill="var(--warn)" />
+      <text x={x(130) + 6} y={66} fontSize="9" fill="var(--warn)" style={{ fontFamily: 'var(--font-mono)' }}>.130</text>
+      <text x={24} y={40} fontSize="11" fill="var(--ink)" style={{ fontFamily: 'var(--font-mono)' }}>256 − 192 = 64</text>
+    </Frame>
+  )
+}
+
+/** IPv6: biển số dài — đặt cạnh biển IPv4 cho thấy độ chênh. */
+function Ipv6Plate({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <rect x="62" y="26" width="96" height="20" rx="3" {...stroke} />
+        <text x="110" y="40" textAnchor="middle" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          192.168.1.10
+        </text>
+      </g>
+      <g className="text-accent">
+        <rect x="18" y="66" width="184" height="24" rx="3" {...stroke} />
+        <text x="110" y="82" textAnchor="middle" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          2001:0db8:85a3::8a2e:1
+        </text>
+      </g>
+      <text x="110" y="108" textAnchor="middle" {...monoText}>32 bit → 128 bit</text>
+    </Frame>
+  )
+}
+
+/** Hình thư chung cho visualId chưa có hình riêng. */
+function GenericMail({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-accent">
+        <rect x="70" y="42" width="80" height="52" rx="4" {...stroke} />
+        <path d="M70 47 110 76 150 47" {...stroke} />
+      </g>
+      <g className="text-ink-muted">
+        <path d="M40 68 H62 M158 68 H180" {...stroke} strokeDasharray="4 4" />
+      </g>
+    </Frame>
+  )
+}
+
+type VisualComponent = (props: { title?: string }) => ReactNode
+
+// visualId của nội dung → hình. Hook của mỗi bài dùng lại hình của khái
+// niệm chính (cùng một hình cho một khái niệm ở mọi nơi — spec 4.2).
+const REGISTRY: Record<string, VisualComponent> = {
+  // Module 1 — bưu điện
+  'vis-phong-bi-thu': EnvelopePackets,
+  'vis-hook-goi-tin': EnvelopePackets,
+  'vis-dia-chi-nha': HouseAddress,
+  'vis-so-can-ho': ApartmentPorts,
+  'vis-hook-port': ApartmentPorts,
+  'vis-buu-ta': RouterNode,
+  'vis-hook-router': RouterNode,
+  'vis-quy-uoc-viet-thu': MatchingLetters,
+  'vis-hook-giao-thuc': MatchingLetters,
+  'vis-hanh-trinh-tong-quan': (p) => <Journey leg="tong-quan" {...p} />,
+  // Module 2 — hành trình gõ google.com (mỗi màn sáng một chặng)
+  'vis-hanh-trinh-dns': (p) => <Journey leg="dns" {...p} />,
+  'vis-hanh-trinh-gateway': (p) => <Journey leg="gateway" {...p} />,
+  'vis-hanh-trinh-router': (p) => <Journey leg="routers" {...p} />,
+  'vis-hanh-trinh-ve-dich': (p) => <Journey leg="ve-dich" {...p} />,
+  'vis-ban-do-khoa-hoc': CourseMap,
+  // Module 3 — địa chỉ
+  'vis-so-khung-bien-so': ChassisPlate,
+  'vis-bon-o-so': FourOctets,
+  'vis-nha-rieng-cong-cong': PrivatePublic,
+  'vis-hang-rao-khu-pho': MaskFence,
+  'vis-magic-number': MagicNumber,
+  'vis-ipv6-bien-so-dai': Ipv6Plate,
+}
+
+export function ConceptVisual({ visualId, title }: { visualId: string; title?: string }) {
+  const Visual = REGISTRY[visualId] ?? GenericMail
+  return <Visual title={title} />
+}
