@@ -50,12 +50,12 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
-    # Hàng đợi Pages có hôm chậm quá 10 phút (timeout MẶC ĐỊNH của
-    # deploy-pages@v4) — action bỏ cuộc rồi hủy deployment dù nó vẫn đang
-    # xếp hàng lành lặn, có lần còn để lại deployment kẹt "in progress"
-    # chặn mọi lần deploy sau (lỗi 400 "cancel ... first"). Nâng trần chờ
-    # lên 30 phút; đắt nhất là phút chạy runner, rẻ hơn nhiều so với một
-    # chuỗi deploy fail dây chuyền.
+    # Hàng đợi Pages có hôm chậm quá 10 phút, mà deploy-pages@v4 KHÓA
+    # CỨNG trần chờ ở 10 phút mỗi lượt (truyền timeout lớn hơn bị hạ về
+    # 600000ms kèm warning). Hết 10 phút nó tự hủy deployment đang xếp
+    # hàng lành lặn. Thuốc duy nhất phía mình: THỬ NHIỀU LƯỢT — 3 lượt ×
+    # 10 phút; action tự hủy deployment cũ khi bỏ cuộc nên lượt sau vào
+    # hàng sạch (nghỉ 30 giây cho lệnh hủy kịp ngấm).
     timeout-minutes: 40
     environment:
       name: github-pages
@@ -63,6 +63,26 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
+        continue-on-error: true
         with:
-          timeout: 1800000 # 30 phút, tính bằng ms
+          reporting_interval: 15000
+
+      - if: steps.deployment.outcome == 'failure'
+        run: sleep 30
+
+      - id: deployment_lan_2
+        if: steps.deployment.outcome == 'failure'
+        uses: actions/deploy-pages@v4
+        continue-on-error: true
+        with:
+          reporting_interval: 15000
+
+      - if: steps.deployment.outcome == 'failure' && steps.deployment_lan_2.outcome == 'failure'
+        run: sleep 30
+
+      # Lượt cuối KHÔNG continue-on-error: rớt nốt thì job đỏ thật.
+      - id: deployment_lan_3
+        if: steps.deployment.outcome == 'failure' && steps.deployment_lan_2.outcome == 'failure'
+        uses: actions/deploy-pages@v4
+        with:
           reporting_interval: 15000
