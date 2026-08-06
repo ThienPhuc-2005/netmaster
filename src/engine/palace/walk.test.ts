@@ -9,6 +9,7 @@ import {
   startTour,
   startWalk,
   submitRoomAnswer,
+  walkPassed,
   walkScore,
   walkTier,
   type WalkRuntime,
@@ -158,10 +159,67 @@ describe('đo kết quả chuyến đi', () => {
     for (const room of ROUTE.slice(0, 3)) {
       rt = submitRoomAnswer(rt, PORT_PALACE, correctAnswer(room)).runtime
     }
-    expect(walkScore(rt, PORT_PALACE)).toEqual({ recalled: 3, visited: 3, total: ROOM_COUNT, pct: 20 })
+    expect(walkScore(rt)).toEqual({ recalled: 3, visited: 3, total: ROOM_COUNT, pct: 20 })
   })
 
   it('đi trọn và nhớ hết là 100%', () => {
-    expect(walkScore(walkAllCorrect(), PORT_PALACE).pct).toBe(100)
+    expect(walkScore(walkAllCorrect()).pct).toBe(100)
+  })
+})
+
+describe('đạt hay chưa khi nộp làm một câu hỏi', () => {
+  it('chưa đi trọn thì chưa đạt', () => {
+    const rt = submitRoomAnswer(startWalk(PORT_PALACE), PORT_PALACE, correctAnswer(ROUTE[0]!)).runtime
+    expect(walkPassed(rt)).toBe(false)
+  })
+
+  it('đi trọn và không phải mở đáp án lần nào thì đạt', () => {
+    expect(walkPassed(walkAllCorrect())).toBe(true)
+  })
+
+  it('quên một nhịp rồi tự nhớ ra vẫn đạt — đó vẫn là nhớ lại thành công', () => {
+    const floor1 = ROUTE.slice(0, 3)
+    let rt = startWalk(PORT_PALACE, floor1.map((r) => r.id))
+    rt = submitRoomAnswer(rt, PORT_PALACE, { ports: [1], service: 'sai' }).runtime
+    for (const room of floor1) rt = submitRoomAnswer(rt, PORT_PALACE, correctAnswer(room)).runtime
+    expect(walkPassed(rt)).toBe(true)
+  })
+
+  it('đã phải mở đáp án ở một phòng thì lượt này chưa đạt', () => {
+    const floor1 = ROUTE.slice(0, 3)
+    let rt = startWalk(PORT_PALACE, floor1.map((r) => r.id))
+    for (let i = 0; i < 3; i += 1) rt = submitRoomAnswer(rt, PORT_PALACE, { ports: [1], service: 'sai' }).runtime
+    for (const room of floor1) rt = submitRoomAnswer(rt, PORT_PALACE, correctAnswer(room)).runtime
+    expect(rt.completed).toBe(true)
+    expect(walkPassed(rt)).toBe(false)
+  })
+})
+
+describe('đi một đoạn của tòa nhà', () => {
+  const floor2 = ROUTE.slice(3, 6).map((r) => r.id)
+
+  it('chuyến đi chỉ gồm các phòng được chọn', () => {
+    const rt = startWalk(PORT_PALACE, floor2)
+    expect(rt.route).toEqual(floor2)
+    expect(walkScore(rt).total).toBe(3)
+  })
+
+  it('đoạn nào cũng đi theo ĐÚNG thứ tự lộ trình gốc, kể cả khi khai lộn xộn', () => {
+    const rt = startWalk(PORT_PALACE, [...floor2].reverse())
+    expect(rt.route).toEqual(floor2)
+  })
+
+  it('đi tour cũng chia đoạn được — không nhồi 15 phòng vào một màn hình', () => {
+    const rt = startTour(PORT_PALACE, floor2)
+    expect(currentTourRoom(rt, PORT_PALACE)?.id).toBe(floor2[0])
+    let walking = rt
+    for (let i = 0; i < 3; i += 1) walking = seeNextRoom(walking, PORT_PALACE)
+    expect(walking.completed).toBe(true)
+  })
+
+  it('phòng không thuộc tòa nhà, danh sách rỗng hoặc trùng đều bị chặn', () => {
+    expect(() => startWalk(PORT_PALACE, ['khong-co-phong-nay'])).toThrow(/không thuộc cung điện/)
+    expect(() => startWalk(PORT_PALACE, [])).toThrow(/ít nhất một phòng/)
+    expect(() => startWalk(PORT_PALACE, ['r-http', 'r-http'])).toThrow(/trùng/)
   })
 })

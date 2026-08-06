@@ -196,7 +196,7 @@ xong thì Module 5/6/7 chỉ còn là viết JSON.
 | Khối | Nội dung | Trạng thái |
 |------|----------|-----------|
 | 6.1 | Engine cung điện ký ức thuần TS (`src/engine/palace/`) | Xong |
-| 6.2 | UI đi tour + màn đi lại từ trí nhớ, cắm vào pipeline 6 bước | Chưa |
+| 6.2 | UI hai chuyến đi + cắm vào pipeline 6 bước | Xong |
 | 6.3 | Nội dung Module 5 (TCP/UDP/Port) + 15 hình gợi nhớ | Chưa |
 | 6.4 | Nội dung Module 6 (DNS phân cấp, DHCP DORA, DoH) | Chưa |
 | 6.5 | Nội dung Module 7 (NAT/PAT, port forwarding, firewall, mạng nhà) | Chưa |
@@ -229,6 +229,38 @@ xong thì Module 5/6/7 chỉ còn là viết JSON.
   nguyên cụm "SMTP" nên bộ chấm tính đúng cho cả phòng 25; đã đổi thành
   "Mail Submission" và khóa ca này bằng test.
 - 652/652 test xanh (+56), typecheck sạch.
+
+**Khối 6.2 đã làm gì** (cung điện thành thứ chơi được thật):
+- **Đã chốt hướng A**: chuyến đi xem là một MÀN DẠY (`palaceTour` trên
+  màn dạy — vẫn "một màn = một khái niệm", khái niệm ở đây là cung điện);
+  chuyến đi lại từ trí nhớ là nhánh thứ NĂM của `QuestionSchema`
+  (`kind: 'palace-walk'`). `lessonMachine.ts` lại KHÔNG bị sửa dòng nào.
+- Engine thêm khả năng đi TỪNG ĐOẠN (`startTour/startWalk(palace, roomIds)`):
+  nội dung chia 15 phòng ra học dần, không nhồi một lượt (nguyên tắc 3).
+  Đoạn nào cũng đi theo đúng thứ tự lộ trình gốc dù khai lộn xộn.
+- Luật chấm chuyến đi: **đạt = đi trọn đúng đoạn đề bài đòi và không
+  phòng nào phải mở đáp án**. Quên một nhịp rồi tự nhớ ra vẫn đạt (đó vẫn
+  là nhớ lại thành công); không đặt thêm ngưỡng phần trăm mới nào.
+- `src/features/palace/` — `PalaceTour` (đi xem: hình + số + chuyện),
+  `PalaceWalk` (đi lại: chỉ chỗ và HÌNH làm gợi ý, tầng 2 mới kể chuyện,
+  tầng 3 mới nói số), `PalaceMap` (sơ đồ 5 tầng, lật ngửa dần theo bước
+  chân — vừa là mỏ neo không gian vừa là thanh tiến độ), `RoomGlyph`
+  (15 hình vẽ tay, registry KHÔNG có hình dự phòng: thiếu hình là lỗi
+  soạn bài, có test chặn), `parsePorts` (người thật gõ "67 và 68").
+- Schema cấp module ép **thứ tự sư phạm**: phòng phải được dẫn đi xem
+  TRƯỚC khi bị hỏi lại; mỗi phòng chỉ dạy một lần; dạy rồi thì phải có
+  câu bắt nhớ lại (nguyên tắc 1). `validateModules` thêm luật id phòng
+  duy nhất toàn cục.
+- Hộp ôn tập: học xong bài nào thì các phòng bài đó dẫn qua thành thẻ
+  SM-2 riêng; `ReviewPage` biết lật hai loại mặt thẻ (khái niệm và
+  phòng) — SM-2, hàng đợi, luật "mở app là ôn trước" không phải sửa gì.
+- `render-content-review.mjs` tả được cung điện, màn đi xem và câu đi
+  lại; `/design` trưng cả hai chuyến cạnh nhau (tự dùng tòa nhà thật khi
+  Module 5 có mặt).
+- 707/707 test xanh (+55), typecheck sạch, build qua. Đã kiểm trên trình
+  duyệt thật: đi trọn tầng 1, gõ không dấu ("web thuong") vẫn được chấm
+  đúng, bản đồ lật ngửa đúng nhịp, kết quả "đạt — nhớ được cả đoạn" kèm
+  "nhớ được ngay 2/3 phòng"; mobile 375px không tràn ngang.
 
 ## Lệnh hay dùng
 

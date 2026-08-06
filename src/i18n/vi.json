@@ -279,6 +279,37 @@
     "narrowTitle": "Phòng lab cần màn hình rộng hơn",
     "narrowBody": "Bạn vẫn thao tác được đầy đủ bằng bảng cấu hình bên dưới — sơ đồ chỉ hiển thị nhỏ lại thôi."
   },
+  "palace": {
+    "mapAria": "Sơ đồ tòa nhà 15 phòng",
+    "floorShort": "Tầng {floor}",
+    "roomOf": "Phòng {index}/{total}",
+    "location": "Tầng {floor}, phòng số {position}",
+    "transport": {
+      "tcp": "Chạy trên TCP",
+      "udp": "Chạy trên UDP",
+      "both": "Chạy trên cả TCP và UDP"
+    },
+    "tourNext": "Sang phòng kế",
+    "tourDone": "Đi hết rồi",
+    "tourCompleted": "Bạn đã đi hết đoạn này — lát nữa mình đi lại từ trí nhớ nhé.",
+    "cueAria": "Hình gợi nhớ của phòng này",
+    "walkPrompt": "Bạn đang đứng trước cửa phòng này. Trong phòng có gì?",
+    "portsLabel": "Số cổng",
+    "portsPlaceholder": "ví dụ 443",
+    "serviceLabel": "Dịch vụ",
+    "servicePlaceholder": "ví dụ HTTPS",
+    "walkCheck": "Trả lời",
+    "walkDone": "Xong chuyến đi!",
+    "walkScore": "Bạn nhớ được ngay {recalled}/{total} phòng.",
+    "topicPorts": "con số ghi trên cửa",
+    "topicService": "việc người ta làm trong phòng",
+    "topicBoth": "hình bạn thấy trong phòng",
+    "solutionLine": "Phòng này là cổng {ports} — {service}.",
+    "missingRooms": "Chưa nạp được tòa nhà của chuyến đi này.",
+    "tourGate": "Đi hết đoạn này rồi mình qua bước sau nhé — lát nữa bạn sẽ đi lại chính đoạn này từ trí nhớ.",
+    "cardFrontHint": "Trong phòng này có gì?",
+    "cardBack": "Cổng {ports} — {service}"
+  },
   "clinic": {
     "title": "Phòng khám",
     "lockedTitle": "Phòng khám chưa mở cửa",

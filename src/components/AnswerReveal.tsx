@@ -13,6 +13,8 @@ import { useT } from '../i18n'
  * Trả `null` cho bài lab: một sơ đồ mạng không rút gọn được thành một
  * dòng chữ, và mọi lời giải chạy được đều hợp lệ (chấm theo hành vi chứ
  * không so với sơ đồ mẫu). Với lab, phần "vì sao" mới là thứ đáng đọc.
+ * Cũng trả `null` cho chuyến đi cung điện: đáp án của từng phòng đã hiện
+ * ngay tại phòng đó trong lúc đi, nhắc lại cả chuyến ở đây là thừa.
  */
 export function canonicalAnswer(q: Question): string | null {
   switch (q.kind) {
@@ -23,6 +25,7 @@ export function canonicalAnswer(q: Question): string | null {
     case 'order':
       return q.items.map((it) => it.vi).join(' → ')
     case 'lab':
+    case 'palace-walk':
       return null
   }
 }
@@ -38,6 +41,9 @@ export function formatResponse(q: Question, r: QuestionResponse): string | null 
       return q.kind === 'order' ? r.order.map((i) => q.items[i]?.vi ?? '').join(' → ') : ''
     case 'lab':
       // Sơ đồ người học lắp được xem lại ngay trên phòng lab, không phải ở đây.
+      return null
+    case 'palace-walk':
+      // Chuyến đi đã tự kể lại kết quả từng phòng trên bản đồ tòa nhà.
       return null
   }
 }

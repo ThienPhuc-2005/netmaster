@@ -22,6 +22,7 @@ import { ConceptVisual } from '../../components/ConceptVisual'
 import { EmptyState } from '../../components/EmptyState'
 import { FeedbackBanner, type FeedbackState } from '../../components/FeedbackBanner'
 import { QuestionInput } from '../../components/QuestionInput'
+import { PalaceTour } from '../palace/PalaceTour'
 
 const STEP_LABEL_KEYS = [
   'lesson.stepHook',
@@ -146,10 +147,18 @@ function TeachView({ module, lesson, runtime }: StepProps) {
   // runtime.teachScreenIndex là màn XA NHẤT đã đọc — điều kiện qua bước
   // chỉ nhìn con số này, nên lùi xem lại không đổi bất kỳ state chấm nào.
   const [viewIndex, setViewIndex] = useState(runtime.teachScreenIndex)
+  // Màn dạy nào là chuyến đi xem cung điện thì phải ĐI HẾT đoạn mới được
+  // qua — bước Dạy của cung điện chính là phần mã hóa, đi nửa chừng thì
+  // câu hỏi nhớ lại phía sau mất chỗ dựa. Lưu theo chỉ số màn nên lật
+  // lại trang cũ không bắt đi lại từ đầu.
+  const [toursDone, setToursDone] = useState<number[]>([])
   const screens = lesson.steps[2].screens
   const maxSeen = runtime.teachScreenIndex
   const screen = screens[viewIndex]
   if (!screen) return null
+  const palace = module.palace
+  const tourRooms = screen.palaceTour
+  const tourPending = tourRooms !== undefined && palace !== undefined && !toursDone.includes(viewIndex)
   const concept = module.concepts.find((c) => c.id === screen.conceptId)
   const atFurthest = viewIndex >= maxSeen
   const isLast = viewIndex >= screens.length - 1
@@ -182,9 +191,18 @@ function TeachView({ module, lesson, runtime }: StepProps) {
           </button>
         )}
       </div>
-      <div className="text-ink-muted">
-        <ConceptVisual visualId={screen.visualId} title={concept?.term} />
-      </div>
+      {tourRooms !== undefined && palace !== undefined ? (
+        <PalaceTour
+          key={`${lesson.id}-${viewIndex}`}
+          palace={palace}
+          roomIds={tourRooms}
+          onComplete={() => setToursDone((done) => (done.includes(viewIndex) ? done : [...done, viewIndex]))}
+        />
+      ) : (
+        <div className="text-ink-muted">
+          <ConceptVisual visualId={screen.visualId} title={concept?.term} />
+        </div>
+      )}
       {concept && (
         <p className="font-mono text-sm font-semibold text-accent">
           {concept.term}
@@ -209,7 +227,9 @@ function TeachView({ module, lesson, runtime }: StepProps) {
         </div>
       )}
 
-      {isLast ? (
+      {tourPending ? (
+        <p className="text-sm text-ink-muted">{t('palace.tourGate')}</p>
+      ) : isLast ? (
         <ContinueButton module={module} lesson={lesson} runtime={runtime} />
       ) : (
         <Button onClick={goForward}>

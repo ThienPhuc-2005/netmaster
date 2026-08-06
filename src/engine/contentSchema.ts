@@ -17,6 +17,7 @@
 
 import { z } from 'zod'
 import { LabSpecSchema } from './lab/labSchema'
+import { PalaceSchema } from './palace/palaceSchema'
 import { LTextSchema, type LText } from './ltext'
 
 /** Chuỗi hiển thị cho người học — định nghĩa ở `./ltext` (dùng chung với
@@ -106,11 +107,27 @@ const LabQuestionSchema = z.object({
   explain: explainField,
 })
 
+/**
+ * Đi lại một đoạn cung điện ký ức từ trí nhớ (spec Module 5). Cũng như
+ * lab, đây VẪN LÀ MỘT CÂU HỎI — có id, có đề, chấm ra đúng/sai — nên
+ * máy trạng thái 6 bước, thang 3 tầng, XP và mastery gate dùng lại
+ * nguyên vẹn. `rooms` là đoạn đường phải đi; tòa nhà khai ở cấp module.
+ */
+const PalaceWalkQuestionSchema = z.object({
+  kind: z.literal('palace-walk'),
+  id: idSchema,
+  prompt: LTextSchema,
+  rooms: z.array(idSchema).min(1),
+  hintTopic: LTextSchema.optional(),
+  explain: explainField,
+})
+
 export const QuestionSchema = z.discriminatedUnion('kind', [
   TypedQuestionSchema,
   McqQuestionSchema,
   OrderQuestionSchema,
   LabQuestionSchema,
+  PalaceWalkQuestionSchema,
 ])
 
 // ---------------------------------------------------------------
@@ -170,6 +187,13 @@ export const TeachScreenSchema = z.object({
   body: LTextSchema,
   /** Chi tiết nâng cao giấu sau nút "Đào sâu hơn" (progressive disclosure). */
   deepDive: LTextSchema.optional(),
+  /**
+   * Màn dạy này là một chuyến ĐI XEM cung điện ký ức: liệt kê các phòng
+   * của chuyến (spec Module 5). Vẫn đúng "một màn = một khái niệm" —
+   * khái niệm ở đây chính là cung điện; và vì nội dung tự chọn đoạn
+   * đường nên 15 phòng chia ra học dần được, không nhồi một lượt.
+   */
+  palaceTour: z.array(idSchema).min(1).optional(),
 })
 
 /** Bước 3 — Dạy. */
@@ -265,6 +289,12 @@ const ModuleBaseSchema = z.object({
   masteryTest: z.array(QuestionSchema).min(5),
   /** Module 3 bật chế độ drill subnetting hằng ngày. */
   drill: z.literal('subnet').optional(),
+  /**
+   * Cung điện ký ức của module (spec Module 5 — tòa nhà 15 phòng). Khai
+   * ở cấp module chứ không ở từng bài: tòa nhà là MỘT, các bài chỉ đi
+   * những đoạn khác nhau của nó.
+   */
+  palace: PalaceSchema.optional(),
 })
 
 // ---------------------------------------------------------------
@@ -274,6 +304,12 @@ const ModuleBaseSchema = z.object({
 type ModuleBase = z.infer<typeof ModuleBaseSchema>
 type QuestionT = z.infer<typeof QuestionSchema>
 type LessonT = z.infer<typeof LessonSchema>
+
+/** Các phòng cung điện được ĐI XEM trong một bài (từ bước Dạy). */
+export function palaceRoomsInLesson(lesson: LessonT): string[] {
+  const teach = lesson.steps[2]
+  return [...new Set(teach.screens.flatMap((s) => s.palaceTour ?? []))]
+}
 
 /** Các conceptId được dạy trong một bài (từ các màn hình bước Dạy). */
 export function conceptIdsInLesson(lesson: LessonT): string[] {
@@ -307,6 +343,108 @@ function collectQuestions(mod: ModuleBase): { q: QuestionT; where: string; stand
   }
   mod.masteryTest.forEach((q, i) => out.push({ q, where: `masteryTest[${i}]`, standalone: true }))
   return out
+}
+
+type IssueFn = (path: (string | number)[], message: string) => void
+
+/**
+ * Ràng buộc của cung điện ký ức ở cấp module (spec Module 5).
+ *
+ * Điều quan trọng nhất ép ở đây là THỨ TỰ: phòng nào cũng phải được đi
+ * xem TRƯỚC khi bị hỏi lại từ trí nhớ. Hỏi một phòng chưa từng dẫn qua
+ * không phải là "đề khó" — đó là bắt đoán mò, và nó phá đúng cái cơ chế
+ * mà cung điện dựng lên. Đây là bản sao của luật "concept phải được dạy
+ * mới sinh flashcard" đang có, chỉ khác đơn vị.
+ */
+function palaceCrossChecks(mod: ModuleBase, issue: IssueFn): void {
+  const tourScreens = mod.lessons.flatMap((lesson, li) =>
+    lesson.steps[2].screens.flatMap((screen, si) =>
+      screen.palaceTour === undefined ? [] : [{ lessonId: lesson.id, li, si, rooms: screen.palaceTour }],
+    ),
+  )
+  const walkQuestions = collectQuestions(mod).flatMap(({ q, where }) =>
+    q.kind === 'palace-walk' ? [{ q, where }] : [],
+  )
+
+  if (mod.palace === undefined) {
+    for (const screen of tourScreens) {
+      issue(['lessons', screen.li, 'steps', 2, 'screens', screen.si], 'Màn dạy khai palaceTour nhưng module không có cung điện')
+    }
+    for (const { q, where } of walkQuestions) {
+      issue([where], `Câu "${q.id}" đi lại cung điện nhưng module không có cung điện`)
+    }
+    return
+  }
+
+  const palace = mod.palace
+  const roomIds = new Set(palace.rooms.map((r) => r.id))
+  const tourOrder: string[] = []
+  const touredIn = new Map<string, string>()
+
+  for (const screen of tourScreens) {
+    const path = ['lessons', screen.li, 'steps', 2, 'screens', screen.si]
+    for (const roomId of screen.rooms) {
+      if (!roomIds.has(roomId)) {
+        issue(path, `Chuyến đi xem nhắc tới phòng "${roomId}" không có trong cung điện "${palace.id}"`)
+        continue
+      }
+      const owner = touredIn.get(roomId)
+      if (owner !== undefined) {
+        issue(path, `Phòng "${roomId}" được đi xem ở cả bài "${owner}" lẫn bài "${screen.lessonId}" — mỗi phòng chỉ dạy một lần`)
+        continue
+      }
+      touredIn.set(roomId, screen.lessonId)
+      tourOrder.push(roomId)
+    }
+  }
+
+  // Thứ tự học chuẩn của module, dùng để trả lời câu "tour trước hay
+  // câu hỏi trước". Trong CÙNG một bài thì bước Dạy (index 2) luôn đứng
+  // trước bước Làm (3) và Nhớ lại (4), nên chỉ cần so ở mức bài học.
+  const lessonRank = new Map(orderedLessonIds(mod).map((id, i) => [id, i]))
+  const rankOfTour = (roomId: string): number => {
+    const lessonId = touredIn.get(roomId)
+    return lessonId === undefined ? Number.POSITIVE_INFINITY : (lessonRank.get(lessonId) ?? Number.POSITIVE_INFINITY)
+  }
+
+  const askedRooms = new Set<string>()
+  for (const { q, where } of walkQuestions) {
+    if (q.kind !== 'palace-walk') continue
+    if (new Set(q.rooms).size !== q.rooms.length) {
+      issue([where], `Câu "${q.id}" liệt kê trùng phòng`)
+    }
+    // Bài kiểm tra module đứng sau MỌI bài học, nên nó được hỏi tất cả.
+    const isMasteryTest = where.startsWith('masteryTest')
+    const lessonIndex = Number(where.match(/^lessons\[(\d+)\]/)?.[1] ?? '-1')
+    const askedInRank = isMasteryTest
+      ? Number.POSITIVE_INFINITY
+      : (lessonRank.get(mod.lessons[lessonIndex]?.id ?? '') ?? Number.POSITIVE_INFINITY)
+
+    for (const roomId of q.rooms) {
+      if (!roomIds.has(roomId)) {
+        issue([where], `Câu "${q.id}" nhắc tới phòng "${roomId}" không có trong cung điện "${palace.id}"`)
+        continue
+      }
+      askedRooms.add(roomId)
+      if (rankOfTour(roomId) > askedInRank) {
+        issue(
+          [where],
+          `Câu "${q.id}" hỏi phòng "${roomId}" trước khi người học được dẫn qua phòng đó — cung điện chỉ hoạt động khi đi xem trước rồi mới nhớ lại`,
+        )
+      }
+    }
+  }
+
+  // Có tòa nhà thì phải dùng nó, và dạy tới đâu phải nhớ lại tới đó
+  // (nguyên tắc 1 — không có gì "học xong là qua").
+  if (tourOrder.length === 0) {
+    issue(['palace'], `Module khai cung điện "${palace.id}" nhưng không bài nào dẫn người học đi xem`)
+  }
+  for (const roomId of tourOrder) {
+    if (!askedRooms.has(roomId)) {
+      issue(['palace'], `Phòng "${roomId}" được đi xem nhưng không câu hỏi nào bắt nhớ lại`)
+    }
+  }
 }
 
 function moduleCrossChecks(mod: ModuleBase, ctx: z.RefinementCtx): void {
@@ -391,6 +529,8 @@ function moduleCrossChecks(mod: ModuleBase, ctx: z.RefinementCtx): void {
     }
   }
 
+  palaceCrossChecks(mod, issue)
+
   // Worked example fading: bài ĐẦU module bắt buộc mức 0 kèm ví dụ giải sẵn
   // (spec 2.1 bước 4: "Bài đầu module: có ví dụ giải sẵn").
   const ordered = orderedLessonIds(mod)
@@ -420,6 +560,8 @@ export type Question = z.infer<typeof QuestionSchema>
 export type TypedQuestion = Extract<Question, { kind: 'typed' }>
 export type McqQuestion = Extract<Question, { kind: 'mcq' }>
 export type OrderQuestion = Extract<Question, { kind: 'order' }>
+export type LabQuestion = Extract<Question, { kind: 'lab' }>
+export type PalaceWalkQuestion = Extract<Question, { kind: 'palace-walk' }>
 export type Concept = z.infer<typeof ConceptSchema>
 export type HookStep = z.infer<typeof HookStepSchema>
 export type PretestStep = z.infer<typeof PretestStepSchema>
@@ -474,6 +616,11 @@ export function validateModules(modules: readonly Module[]): void {
   const conceptIds = new Map<string, string>()
   const lessonIds = new Map<string, string>()
   const questionIds = new Map<string, string>()
+  // Phòng cung điện cũng phải duy nhất toàn cục: thẻ ôn của nó nằm CÙNG
+  // một hộp với thẻ khái niệm (khóa `palace:<roomId>`), và tầng nội dung
+  // tra ngược phòng theo id để dựng mặt thẻ.
+  const palaceIds = new Map<string, string>()
+  const roomIds = new Map<string, string>()
   for (const mod of modules) {
     if (moduleIds.has(mod.id)) problems.push(`Trùng module id "${mod.id}"`)
     moduleIds.add(mod.id)
@@ -483,6 +630,10 @@ export function validateModules(modules: readonly Module[]): void {
     for (const c of mod.concepts) claim(conceptIds, c.id, mod.id, 'Concept')
     for (const l of mod.lessons) claim(lessonIds, l.id, mod.id, 'Lesson')
     for (const { q } of collectQuestions(mod)) claim(questionIds, q.id, mod.id, 'Question')
+    if (mod.palace !== undefined) {
+      claim(palaceIds, mod.palace.id, mod.id, 'Cung điện')
+      for (const room of mod.palace.rooms) claim(roomIds, room.id, mod.id, 'Phòng cung điện')
+    }
   }
   if (problems.length > 0) {
     throw new Error(`Nội dung liên-module không hợp lệ:\n${problems.map((p) => `- ${p}`).join('\n')}`)

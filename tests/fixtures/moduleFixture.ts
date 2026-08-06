@@ -14,6 +14,7 @@ import type {
   TeachScreen,
 } from '../../src/engine/contentSchema'
 import { vlanRepairLab } from './labFixture'
+import { clonePalace } from './palaceFixture'
 
 export interface MakeLessonOpts {
   /** Mức worked example fading: 0 = ví dụ giải sẵn đầy đủ (bắt buộc ở bài đầu module). */
@@ -551,4 +552,38 @@ export function makeValidModule(): Module {
       },
     ],
   }
+}
+
+/** Đoạn đường mẫu: tầng 1 của cung điện (3 phòng). */
+export const PALACE_FLOOR_1 = ['r-http', 'r-https', 'r-dns']
+
+/**
+ * Module có CUNG ĐIỆN KÝ ỨC: bài 1 dẫn đi xem tầng 1 ở bước Dạy, rồi
+ * bắt đi lại đúng ba phòng đó ở bước Nhớ lại. Đây là hình dạng dữ liệu
+ * mà Module 5 sẽ khai thật — và cũng là ca kiểm luật "đi xem trước, nhớ
+ * lại sau" của schema.
+ */
+export function makeModuleWithPalace(): Module {
+  const mod = makeValidModule()
+  const lesson = mod.lessons.find((l) => l.id === 'bai-1')
+  if (lesson === undefined) throw new Error('makeModuleWithPalace: thiếu bài 1')
+
+  const firstScreen = lesson.steps[2].screens[0]
+  if (firstScreen === undefined) throw new Error('makeModuleWithPalace: bài 1 không có màn dạy')
+  firstScreen.palaceTour = [...PALACE_FLOOR_1]
+
+  lesson.steps[4].questions.push({
+    question: {
+      kind: 'palace-walk',
+      id: 'pw-tang-1',
+      prompt: { vi: 'Đi lại tầng 1 của tòa nhà từ trí nhớ: mỗi phòng là cổng nào, dịch vụ gì?' },
+      rooms: [...PALACE_FLOOR_1],
+      hintTopic: { vi: 'hình bạn thấy trong từng phòng' },
+    },
+    hint: { vi: 'Nhớ lại thứ đặt trong phòng trước đã — con số thường đi theo hình.' },
+    solution: { vi: 'Tầng 1: cửa mở toang là 80 (HTTP), ổ khóa vàng là 443 (HTTPS), cuốn danh bạ là 53 (DNS).' },
+  })
+
+  mod.palace = clonePalace()
+  return mod
 }

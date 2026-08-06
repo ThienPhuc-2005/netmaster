@@ -5,6 +5,7 @@
 import type { LText, Question } from '../contentSchema'
 import { isLabSolved } from '../lab/gradeLab'
 import type { Topology } from '../lab/topology'
+import { walkOutcomesPassed, type RoomOutcome } from '../palace/walk'
 import { typedAnswerMatches } from './normalize'
 
 /** Câu trả lời người học nộp lên — kind phải trùng kind của Question. */
@@ -20,6 +21,12 @@ export type QuestionResponse =
   | { kind: 'order'; order: number[] }
   /** `lab` = sơ đồ mạng người học lắp được; chấm bằng cách CHẠY nó. */
   | { kind: 'lab'; topology: Topology }
+  /**
+   * `palace-walk` = kết quả từng phòng của chuyến đi lại từ trí nhớ,
+   * theo đúng thứ tự đã đi. Đủ để chấm mà không cần biết người học gõ
+   * gì: từng phòng đã được cung điện chấm ngay lúc đi qua.
+   */
+  | { kind: 'palace-walk'; outcomes: RoomOutcome[] }
 
 /** Kind lệch nhau là bug ở tầng UI (nộp nhầm loại), không phải người học sai. */
 function kindMismatch(q: Question, r: QuestionResponse): Error {
@@ -61,5 +68,10 @@ export function gradeQuestion(q: Question, r: QuestionResponse): boolean {
       // Chấm HÀNH VI: chạy mô phỏng trên sơ đồ người học lắp và hỏi nó có
       // đạt mục tiêu của đề không — không so với sơ đồ mẫu (IKEA effect).
       return isLabSolved(q.spec, r.topology)
+    case 'palace-walk':
+      if (q.kind !== 'palace-walk') throw kindMismatch(q, r)
+      // Đạt = đi trọn đúng những phòng đề bài đòi và không phòng nào phải
+      // mở đáp án. Quên một nhịp rồi tự nhớ ra vẫn tính là nhớ được.
+      return walkOutcomesPassed(r.outcomes, q.rooms)
   }
 }

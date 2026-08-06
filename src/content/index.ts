@@ -57,6 +57,28 @@ export function findConcept(conceptId: string): ConceptRef | null {
   return null
 }
 
+export interface PalaceRoomRef {
+  module: Module
+  palace: NonNullable<Module['palace']>
+  room: NonNullable<Module['palace']>['rooms'][number]
+}
+
+/**
+ * Tra một phòng cung điện theo id — phòng duy nhất toàn cục
+ * (validateModules ép). Dùng ở hai chỗ: phòng ôn tập cần dựng mặt thẻ từ
+ * `palace:<roomId>`, và bộ nhập câu hỏi cần biết phòng thuộc tòa nhà nào
+ * (câu hỏi chỉ khai danh sách phòng, tòa nhà khai ở cấp module).
+ */
+export function findPalaceRoom(roomId: string): PalaceRoomRef | null {
+  for (const module of loadModules()) {
+    const palace = module.palace
+    if (palace === undefined) continue
+    const room = palace.rooms.find((r) => r.id === roomId)
+    if (room) return { module, palace, room }
+  }
+  return null
+}
+
 /**
  * Bài học của một module theo đúng thứ tự chặng. Trong module, bài học
  * mở TUẦN TỰ: chỉ bài chưa hoàn thành đầu tiên là bấm vào được — goal

@@ -15,7 +15,40 @@
 
 import { feedbackTier, type FeedbackTier } from '../lessonMachine'
 import { typedAnswerMatches } from '../grading/normalize'
-import { serviceAnswers, tourRoute, type Palace, type PalaceRoom } from './palace'
+import { roomById, serviceAnswers, tourRoute, type Palace, type PalaceRoom } from './palace'
+
+// ---------------------------------------------------------------
+// Đoạn đường của một chuyến đi
+// ---------------------------------------------------------------
+
+/**
+ * Một chuyến đi có thể chỉ qua MỘT ĐOẠN của tòa nhà (thường là một
+ * tầng). Vì sao cần: nguyên tắc 3 cấm nhồi 15 phòng mới vào một màn
+ * hình, nên nội dung chia cung điện ra học dần — bài này tầng 1, bài
+ * sau tầng 2. Nhưng đoạn nào cũng phải đi theo ĐÚNG thứ tự của lộ
+ * trình gốc: người học không bao giờ thấy hai trật tự khác nhau của
+ * cùng một tòa nhà.
+ *
+ * `roomIds` bỏ trống = đi cả tòa nhà.
+ */
+function resolveRoute(palace: Palace, roomIds?: readonly string[]): string[] {
+  const full = tourRoute(palace).map((r) => r.id)
+  if (roomIds === undefined) return full
+  if (roomIds.length === 0) throw new Error('Chuyến đi phải có ít nhất một phòng')
+  const wanted = new Set(roomIds)
+  if (wanted.size !== roomIds.length) throw new Error('Danh sách phòng của chuyến đi bị trùng')
+  for (const id of roomIds) {
+    if (roomById(palace, id) === null) {
+      throw new Error(`Phòng "${id}" không thuộc cung điện "${palace.id}"`)
+    }
+  }
+  return full.filter((id) => wanted.has(id))
+}
+
+function roomAtRoute(palace: Palace, route: readonly string[], index: number): PalaceRoom | null {
+  const id = route[index]
+  return id === undefined ? null : roomById(palace, id)
+}
 
 // ---------------------------------------------------------------
 // Chuyến 1 — đi xem (encoding)
@@ -23,19 +56,21 @@ import { serviceAnswers, tourRoute, type Palace, type PalaceRoom } from './palac
 
 export interface TourRuntime {
   palaceId: string
-  /** Phòng đang đứng, 0-based theo lộ trình. */
+  /** Các phòng của chuyến đi, theo đúng thứ tự lộ trình gốc. */
+  route: string[]
+  /** Phòng đang đứng, 0-based trong route. */
   index: number
-  /** Đã đi hết tòa nhà. */
+  /** Đã đi hết đoạn đường của chuyến này. */
   completed: boolean
 }
 
-export function startTour(palace: Palace): TourRuntime {
-  return { palaceId: palace.id, index: 0, completed: false }
+export function startTour(palace: Palace, roomIds?: readonly string[]): TourRuntime {
+  return { palaceId: palace.id, route: resolveRoute(palace, roomIds), index: 0, completed: false }
 }
 
 export function currentTourRoom(rt: TourRuntime, palace: Palace): PalaceRoom | null {
   assertSamePalace(rt.palaceId, palace)
-  return tourRoute(palace)[rt.index] ?? null
+  return roomAtRoute(palace, rt.route, rt.index)
 }
 
 /**
@@ -46,8 +81,7 @@ export function seeNextRoom(rt: TourRuntime, palace: Palace): TourRuntime {
   assertSamePalace(rt.palaceId, palace)
   if (rt.completed) return rt
   const nextIndex = rt.index + 1
-  const total = palace.rooms.length
-  if (nextIndex >= total) return { ...rt, index: total - 1, completed: true }
+  if (nextIndex >= rt.route.length) return { ...rt, index: rt.route.length - 1, completed: true }
   return { ...rt, index: nextIndex }
 }
 
@@ -78,6 +112,8 @@ export interface RoomOutcome {
 
 export interface WalkRuntime {
   palaceId: string
+  /** Các phòng của chuyến đi, theo đúng thứ tự lộ trình gốc. */
+  route: string[]
   index: number
   /** Số lần sai tại phòng ĐANG đứng — nguồn của thang 3 tầng. */
   failCount: number
@@ -86,14 +122,21 @@ export interface WalkRuntime {
   completed: boolean
 }
 
-export function startWalk(palace: Palace): WalkRuntime {
-  return { palaceId: palace.id, index: 0, failCount: 0, outcomes: [], completed: false }
+export function startWalk(palace: Palace, roomIds?: readonly string[]): WalkRuntime {
+  return {
+    palaceId: palace.id,
+    route: resolveRoute(palace, roomIds),
+    index: 0,
+    failCount: 0,
+    outcomes: [],
+    completed: false,
+  }
 }
 
 export function currentWalkRoom(rt: WalkRuntime, palace: Palace): PalaceRoom | null {
   assertSamePalace(rt.palaceId, palace)
   if (rt.completed) return null
-  return tourRoute(palace)[rt.index] ?? null
+  return roomAtRoute(palace, rt.route, rt.index)
 }
 
 /** Tầng phản hồi hiện tại của phòng đang đứng (0 = chưa sai lần nào). */
@@ -153,7 +196,7 @@ export function submitRoomAnswer(
   }
   const outcomes = [...rt.outcomes, outcome]
   const nextIndex = rt.index + 1
-  const completed = nextIndex >= palace.rooms.length
+  const completed = nextIndex >= rt.route.length
   return {
     runtime: {
       ...rt,
@@ -183,15 +226,14 @@ export interface WalkScore {
   recalled: number
   /** Số phòng đã đi qua. */
   visited: number
-  /** Tổng số phòng của tòa nhà. */
+  /** Tổng số phòng của chuyến đi. */
   total: number
   /** % nhớ được trên TỔNG số phòng (bỏ dở giữa chừng thì % thấp). */
   pct: number
 }
 
-export function walkScore(rt: WalkRuntime, palace: Palace): WalkScore {
-  assertSamePalace(rt.palaceId, palace)
-  const total = palace.rooms.length
+export function walkScore(rt: WalkRuntime): WalkScore {
+  const total = rt.route.length
   const recalled = roomsRecalledFirstTry(rt).length
   return {
     recalled,
@@ -199,6 +241,32 @@ export function walkScore(rt: WalkRuntime, palace: Palace): WalkScore {
     total,
     pct: total === 0 ? 0 : Math.round((recalled / total) * 100),
   }
+}
+
+/**
+ * Chuyến đi này có được tính là ĐẠT khi nộp làm một câu hỏi trong bài
+ * học không.
+ *
+ * Luật: đi trọn đoạn VÀ không phòng nào phải mở đáp án. Nghĩa là quên
+ * một hai nhịp rồi tự nhớ ra vẫn đạt (đó là retrieval thành công, còn
+ * quý hơn nhớ ngay); nhưng đã phải để app nói ra câu trả lời thì lượt
+ * này chưa thuộc — đi lại chuyến khác. Không đặt thêm ngưỡng phần trăm
+ * nào mới: "đã phải xem lời giải" vốn đã là mốc tầng 3 của cả app.
+ */
+export function walkPassed(rt: WalkRuntime): boolean {
+  return walkOutcomesPassed(rt.outcomes, rt.route)
+}
+
+/**
+ * Cùng luật, nhưng chấm từ KẾT QUẢ THÔ đã nộp lên thay vì từ runtime —
+ * đây là đường mà `gradeQuestion` đi. Phải tự kiểm rằng người học đã đi
+ * đúng những phòng đề bài đòi: một chuyến đi hai phòng không được tính
+ * là đạt cho đề bài năm phòng.
+ */
+export function walkOutcomesPassed(outcomes: readonly RoomOutcome[], route: readonly string[]): boolean {
+  if (route.length === 0 || outcomes.length !== route.length) return false
+  if (!route.every((roomId, i) => outcomes[i]?.roomId === roomId)) return false
+  return outcomes.every((o) => !o.usedSolution)
 }
 
 function assertSamePalace(runtimePalaceId: string, palace: Palace): void {

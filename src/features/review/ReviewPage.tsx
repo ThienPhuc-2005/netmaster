@@ -7,12 +7,53 @@ import { useMemo, useState } from 'react'
 import { Link } from 'react-router'
 import { Eye, Layers, ThumbsDown, ThumbsUp } from 'lucide-react'
 import { buildReviewSession } from '../../engine/reviewQueue'
-import { findConcept } from '../../content'
+import { roomIdFromCardId } from '../../engine/palace'
+import { findConcept, findPalaceRoom } from '../../content'
 import { todayIso, useProgress } from '../../store/progress'
-import { useT } from '../../i18n'
+import { useT, type TFunc } from '../../i18n'
+import { RoomGlyph } from '../palace/RoomGlyph'
 import { playEarcon } from '../../audio/earcons'
 import { Button } from '../../components/Button'
 import { EmptyState } from '../../components/EmptyState'
+
+interface CardFace {
+  /** Nhãn nhỏ phía trên: thuật ngữ, hoặc vị trí phòng trong tòa nhà. */
+  label: string
+  front: string
+  back: string
+  /** Hình gợi nhớ — chỉ thẻ cung điện mới có (chỗ + hình là gợi ý). */
+  imageId?: string
+}
+
+/**
+ * Hai loại thẻ nằm CHUNG một hộp ôn tập: thẻ khái niệm (khóa là
+ * conceptId) và thẻ phòng cung điện (khóa `palace:<roomId>`). Chỗ này là
+ * nơi duy nhất phân biệt chúng — SM-2, hàng đợi và luật "mở app là ôn
+ * trước" không cần biết gì về chuyện đó.
+ */
+function cardFace(cardId: string, t: TFunc): CardFace | null {
+  const roomId = roomIdFromCardId(cardId)
+  if (roomId !== null) {
+    const ref = findPalaceRoom(roomId)
+    if (ref === null) return null
+    const { room } = ref
+    return {
+      label: t('palace.location', { floor: String(room.floor), position: String(room.position) }),
+      front: t('palace.cardFrontHint'),
+      back: t('palace.cardBack', { ports: room.ports.join(', '), service: room.service }),
+      imageId: room.imageId,
+    }
+  }
+  const ref = findConcept(cardId)
+  // flashcard optional ở schema (concept noFlashcard) — nhưng thẻ ôn chỉ
+  // được store sinh cho concept CÓ flashcard, nên nhánh này là phòng thủ.
+  if (ref === null || ref.concept.flashcard === undefined) return null
+  return {
+    label: ref.concept.term,
+    front: ref.concept.flashcard.front.vi,
+    back: ref.concept.flashcard.back.vi,
+  }
+}
 
 export function ReviewPage() {
   const t = useT()
@@ -74,15 +115,14 @@ export function ReviewPage() {
     )
   }
 
-  const conceptId = sessionConceptIds[index]
-  const ref = conceptId !== undefined ? findConcept(conceptId) : null
-  // flashcard optional ở schema (concept noFlashcard) — nhưng thẻ ôn chỉ
-  // được store sinh cho concept CÓ flashcard, nên nhánh này là phòng thủ.
-  if (conceptId === undefined || ref === null || ref.concept.flashcard === undefined) return null
-  const flashcard = ref.concept.flashcard
+  const cardId = sessionConceptIds[index]
+  const face = cardId === undefined ? null : cardFace(cardId, t)
+  // Thẻ mồ côi (nội dung đổi sau khi người học đã có thẻ) — bỏ qua thay
+  // vì dựng nửa vời một mặt thẻ trống.
+  if (cardId === undefined || face === null) return null
 
   const grade = (remembered: boolean) => {
-    gradeReviewCard(conceptId, remembered)
+    gradeReviewCard(cardId, remembered)
     playEarcon(remembered ? 'correct' : 'incorrect')
     if (remembered) setCorrectCount((n) => n + 1)
     setRevealed(false)
@@ -103,13 +143,16 @@ export function ReviewPage() {
           {t('review.cardOf', { current: index + 1, total: sessionConceptIds.length })}
         </p>
 
-        <div className="flex min-h-44 flex-col justify-center gap-4 rounded-md border border-edge bg-panel px-6 py-8 text-center">
-          <p className="font-mono text-xs font-semibold uppercase tracking-wide text-accent">{ref.concept.term}</p>
-          <p className="text-base font-medium leading-relaxed text-ink">{flashcard.front.vi}</p>
+        <div className="flex min-h-44 flex-col items-center justify-center gap-4 rounded-md border border-edge bg-panel px-6 py-8 text-center">
+          <p className="font-mono text-xs font-semibold uppercase tracking-wide text-accent">{face.label}</p>
+          {face.imageId !== undefined && (
+            <div className="h-20 w-20 rounded-md border border-edge bg-bg p-1">
+              <RoomGlyph imageId={face.imageId} label={face.label} />
+            </div>
+          )}
+          <p className="text-base font-medium leading-relaxed text-ink">{face.front}</p>
           {revealed && (
-            <p className="border-t border-edge pt-4 text-sm leading-relaxed text-ink-muted">
-              {flashcard.back.vi}
-            </p>
+            <p className="border-t border-edge pt-4 text-sm leading-relaxed text-ink-muted">{face.back}</p>
           )}
         </div>
 

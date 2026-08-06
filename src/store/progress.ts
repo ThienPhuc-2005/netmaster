@@ -17,7 +17,8 @@
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
 import type { AnswerRecord, DrillResult, ISODate, ReviewCard, StreakState } from '../engine/types'
-import type { Lesson, Module } from '../engine/contentSchema'
+import { palaceRoomsInLesson, type Lesson, type Module } from '../engine/contentSchema'
+import { palaceCardId } from '../engine/palace'
 import { isoFromDate } from '../engine/dates'
 import {
   advance,
@@ -256,8 +257,14 @@ export const useProgress = create<ProgressState>()(
               const fresh = conceptsLearned(lesson)
                 .filter((cid) => !existing.has(cid) && !skipFlashcard.has(cid))
                 .map((cid) => createCard(cid, module.id, today))
+              // Phòng cung điện đã đi xem cũng vào Hộp ôn tập, mỗi phòng
+              // một thẻ (spec Module 5: "Port cũng vào Spaced Repetition").
+              const freshRooms = palaceRoomsInLesson(lesson)
+                .map(palaceCardId)
+                .filter((cardId) => !existing.has(cardId))
+                .map((cardId) => createCard(cardId, module.id, today))
               return {
-                reviewCards: [...s.reviewCards, ...fresh],
+                reviewCards: [...s.reviewCards, ...fresh, ...freshRooms],
                 completedLessons: { ...s.completedLessons, [lesson.id]: today },
               }
             })

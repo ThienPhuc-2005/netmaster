@@ -61,7 +61,21 @@ function describeAllowance(allow) {
   return yes.length === 0 ? 'KHÔNG cho phép thao tác nào (đề bài hỏng)' : yes.join(', ')
 }
 
-export function renderQuestion(q, indent = '') {
+/** Một dòng mô tả phòng cung điện cho người duyệt: chỗ, cổng, hình, chuyện. */
+function describeRoom(room) {
+  return `tầng ${room.floor} phòng ${room.position} · cổng ${room.ports.join('/')} · ${room.service} · hình \`${room.imageId}\` — ${vi(room.story)}`
+}
+
+function roomsOf(palace, roomIds) {
+  if (!palace) return roomIds.map((id) => `${id} *(không tra được — module không khai cung điện)*`)
+  const byId = new Map(palace.rooms.map((r) => [r.id, r]))
+  return roomIds.map((id) => {
+    const room = byId.get(id)
+    return room ? describeRoom(room) : `${id} *(không có phòng này trong cung điện)*`
+  })
+}
+
+export function renderQuestion(q, indent = '', palace = null) {
   const lines = []
   lines.push(`${indent}- **Đề:** ${vi(q.prompt)}`)
   if (q.kind === 'typed') {
@@ -79,6 +93,9 @@ export function renderQuestion(q, indent = '') {
     for (const goal of q.spec.goals) lines.push(`${indent}      - ${describeGoal(goal)}`)
     lines.push(`${indent}    - **Được phép:** ${describeAllowance(q.spec.allow)}`)
     lines.push(`${indent}    - **Lời giải mẫu:** ${describeTopology(q.spec.solution)}`)
+  } else if (q.kind === 'palace-walk') {
+    lines.push(`${indent}  - **Dạng:** đi lại cung điện từ trí nhớ (${q.rooms.length} phòng)`)
+    for (const line of roomsOf(palace, q.rooms)) lines.push(`${indent}    - ${line}`)
   } else {
     // Kind mới mà quên bổ sung nhánh render → NỔ NGAY, không im lặng bỏ
     // qua. Bản duyệt thiếu phần đáp án còn tệ hơn không có bản duyệt:
@@ -92,14 +109,14 @@ export function renderQuestion(q, indent = '') {
   return lines
 }
 
-function renderExercise(ex, indent = '') {
-  const lines = renderQuestion(ex.question, indent)
+function renderExercise(ex, indent = '', palace = null) {
+  const lines = renderQuestion(ex.question, indent, palace)
   lines.push(`${indent}  - **Gợi ý (tầng 2):** ${vi(ex.hint)}`)
   lines.push(`${indent}  - **Lời giải (tầng 3):** ${vi(ex.solution)}`)
   return lines
 }
 
-function renderLesson(lesson) {
+function renderLesson(lesson, palace = null) {
   const [hook, pretest, teach, practice, retrieval, summary] = lesson.steps
   const out = []
   out.push(`### Bài: ${vi(lesson.missionTitle)} \`${lesson.id}\``)
@@ -107,20 +124,24 @@ function renderLesson(lesson) {
   out.push(`**1 · Khởi động (hook):** ${vi(hook.question)}`)
   out.push('')
   out.push('**2 · Đoán thử (pretest):**')
-  for (const q of pretest.questions) out.push(...renderQuestion(q))
+  for (const q of pretest.questions) out.push(...renderQuestion(q, '', palace))
   out.push('')
   out.push('**3 · Khám phá (teach):**')
   for (const s of teach.screens) {
     out.push(`- *[${s.conceptId}]* ${vi(s.body)}`)
+    if (s.palaceTour) {
+      out.push(`  - **Đi xem cung điện (${s.palaceTour.length} phòng):**`)
+      for (const line of roomsOf(palace, s.palaceTour)) out.push(`    - ${line}`)
+    }
     if (s.deepDive) out.push(`  - **Đào sâu hơn:** ${vi(s.deepDive)}`)
   }
   out.push('')
   out.push(`**4 · Thử tay (practice, fading ${practice.fadingLevel}):**`)
   if (practice.workedExample) out.push(`- **Ví dụ giải sẵn:** ${vi(practice.workedExample)}`)
-  for (const ex of practice.exercises) out.push(...renderExercise(ex))
+  for (const ex of practice.exercises) out.push(...renderExercise(ex, '', palace))
   out.push('')
   out.push('**5 · Nhớ lại (retrieval):**')
-  for (const ex of retrieval.questions) out.push(...renderExercise(ex))
+  for (const ex of retrieval.questions) out.push(...renderExercise(ex, '', palace))
   out.push(`- **Tự giải thích:** ${vi(retrieval.selfExplain.prompt)}`)
   out.push(
     `  - **Nhóm ý cần chạm:** ${retrieval.selfExplain.keywords.map((g) => `[${g.join(', ')}]`).join(' · ')}`,
@@ -143,11 +164,20 @@ function renderModule(mod) {
   out.push('**Chặng:** ' + mod.stages.map((s) => `${vi(s.title)} (${s.lessonIds.join(', ')})`).join(' → '))
   out.push('')
 
+  const palace = mod.palace ?? null
+  if (palace) {
+    out.push(`### Cung điện ký ức: ${vi(palace.title)} \`${palace.id}\` (${palace.rooms.length} phòng)`)
+    out.push('')
+    const byFloor = [...palace.rooms].sort((a, b) => a.floor - b.floor || a.position - b.position)
+    for (const room of byFloor) out.push(`- \`${room.id}\` — ${describeRoom(room)}`)
+    out.push('')
+  }
+
   const byId = new Map(mod.lessons.map((l) => [l.id, l]))
   for (const stage of mod.stages) {
     for (const lid of stage.lessonIds) {
       const lesson = byId.get(lid)
-      if (lesson) out.push(...renderLesson(lesson))
+      if (lesson) out.push(...renderLesson(lesson, palace))
     }
   }
 
@@ -163,7 +193,7 @@ function renderModule(mod) {
 
   out.push(`### Bài kiểm tra module (${mod.masteryTest.length} câu, cần ≥ 85%)`)
   out.push('')
-  for (const q of mod.masteryTest) out.push(...renderQuestion(q))
+  for (const q of mod.masteryTest) out.push(...renderQuestion(q, '', palace))
   out.push('')
   return out
 }

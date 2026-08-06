@@ -10,6 +10,8 @@ import type { QuestionResponse } from '../engine/grading/gradeQuestion'
 import { useT } from '../i18n'
 import { Button } from './Button'
 import { NetworkLab } from '../features/lab/NetworkLab'
+import { PalaceWalk } from '../features/palace/PalaceWalk'
+import { findPalaceRoom } from '../content'
 
 interface QuestionInputProps {
   question: Question
@@ -140,5 +142,32 @@ export function QuestionInput({ question, onSubmit, disabled }: QuestionInputPro
           onSubmit={disabled === true ? undefined : (topology) => onSubmit({ kind: 'lab', topology })}
         />
       )
+    case 'palace-walk':
+      return <PalaceWalkInput question={question} onSubmit={onSubmit} disabled={disabled} />
   }
+}
+
+/**
+ * Chuyến đi cung điện: câu hỏi chỉ khai DANH SÁCH PHÒNG, còn tòa nhà
+ * khai một lần ở cấp module — nên chỗ này tra ngược từ phòng ra tòa nhà.
+ * Chuyến đi tự khép khi đi hết đoạn đường và trao kết quả thô lên thành
+ * một lượt trả lời, y như phòng lab trao sơ đồ.
+ */
+function PalaceWalkInput({
+  question,
+  onSubmit,
+  disabled,
+}: QuestionInputProps & { question: Extract<Question, { kind: 'palace-walk' }> }) {
+  const t = useT()
+  const first = question.rooms[0]
+  const ref = first === undefined ? null : findPalaceRoom(first)
+  if (ref === null) return <p className="text-sm text-ink-muted">{t('palace.missingRooms')}</p>
+  return (
+    <PalaceWalk
+      key={question.id}
+      palace={ref.palace}
+      roomIds={question.rooms}
+      onComplete={disabled === true ? undefined : (outcomes) => onSubmit({ kind: 'palace-walk', outcomes })}
+    />
+  )
 }

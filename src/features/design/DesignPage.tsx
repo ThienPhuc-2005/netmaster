@@ -13,6 +13,11 @@ import { playEarcon, type EarconKind } from '../../audio/earcons'
 import { XP_AMOUNTS } from '../../engine/xp'
 import { NetworkLab } from '../lab/NetworkLab'
 import { isLabSolved, parseLabSpec, type Topology } from '../../engine/lab'
+import { PalaceTour } from '../palace/PalaceTour'
+import { PalaceWalk } from '../palace/PalaceWalk'
+import { parsePalace, walkOutcomesPassed } from '../../engine/palace'
+import { PORT_PALACE } from '../../../tests/fixtures/palaceFixture'
+import { loadModules } from '../../content'
 
 const SWATCHES = [
   'surface',
@@ -126,6 +131,41 @@ function LabShowcase() {
   )
 }
 
+/**
+ * Cung điện ký ức: trưng cả hai chuyến đi cạnh nhau để duyệt bằng mắt
+ * xem chuyến "đi lại từ trí nhớ" có lỡ lộ đáp án không.
+ *
+ * Ưu tiên tòa nhà THẬT trong nội dung; chưa module nào khai cung điện
+ * thì dựng tạm tòa nhà mẫu (vẫn phải qua `parsePalace` nên nó hợp lệ y
+ * hệt cung điện thật). Nhờ vậy trang này không bao giờ trống, và tự
+ * chuyển sang nội dung thật ngay khi Module 5 có mặt.
+ */
+const DEMO_PALACE = loadModules().find((m) => m.palace !== undefined)?.palace ?? parsePalace(PORT_PALACE)
+const DEMO_FLOOR = DEMO_PALACE.rooms.filter((r) => r.floor === 1).map((r) => r.id)
+
+function PalaceShowcase() {
+  const [verdict, setVerdict] = useState<'chưa đi' | string>('chưa đi')
+  return (
+    <div className="space-y-4">
+      <PalaceTour palace={DEMO_PALACE} roomIds={DEMO_FLOOR} />
+      <p className="text-sm text-ink-muted">
+        Chuyến đi lại từ trí nhớ — kết quả: <strong className="text-ink">{verdict}</strong>
+      </p>
+      <PalaceWalk
+        palace={DEMO_PALACE}
+        roomIds={DEMO_FLOOR}
+        onComplete={(outcomes) =>
+          setVerdict(
+            walkOutcomesPassed(outcomes, DEMO_FLOOR)
+              ? 'đạt — nhớ được cả đoạn'
+              : 'chưa đạt — có phòng phải mở đáp án',
+          )
+        }
+      />
+    </div>
+  )
+}
+
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section className="flex flex-col gap-4">
@@ -203,6 +243,10 @@ export function DesignPage() {
 
       <Section title={t('lab.title')}>
         <LabShowcase />
+      </Section>
+
+      <Section title={DEMO_PALACE.title.vi}>
+        <PalaceShowcase />
       </Section>
 
       <Section title={t('design.earcons')}>
