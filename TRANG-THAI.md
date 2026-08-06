@@ -200,7 +200,7 @@ xong thì Module 5/6/7 chỉ còn là viết JSON.
 | 6.3 | Nội dung Module 5 (TCP/UDP/Port) + hình khái niệm | Xong |
 | 6.4 | Nội dung Module 6 (DNS phân cấp, DHCP DORA, DoH) | Xong |
 | 6.5 | Nội dung Module 7 (NAT/PAT, port forwarding, firewall, mạng nhà) | Xong |
-| 6.6 | Đối chiếu DoD + kiểm browser + cập nhật tài liệu | Chưa |
+| 6.6 | Đối chiếu DoD + kiểm browser + cập nhật tài liệu | Xong |
 
 **Khối 6.1 đã làm gì** (headless — app người dùng không đổi một pixel):
 - `src/engine/palace/palace.ts` — tòa nhà **5 tầng × 3 phòng = 15 phòng**,
@@ -325,6 +325,23 @@ xong thì Module 5/6/7 chỉ còn là viết JSON.
 - 710/710 test xanh, typecheck sạch, build qua. Đã GIẢI TRỌN bài lab
   trên trình duyệt thật bằng đường bấm chọn (nối 3 dây, đặt 2 địa chỉ) —
   hai mục tiêu chuyển "xong", nộp bài ra "Chuẩn luôn!".
+
+**Khối 6.6 đã làm gì** (khép hạng mục 6):
+- Kiểm end-to-end trên trình duyệt thật: **thi trọn bài mastery Module 5**
+  gồm 3 câu đi lại cung điện (6+7+2... phòng, phủ đủ 15) — đạt 100%, mở
+  module sau; cố tình quên một nhịp rồi tự nhớ ra vẫn được chấm đạt, đúng
+  luật đã chốt. Kiểm mobile 375px: bài học cung điện xếp một cột, không
+  tràn ngang, thanh đáy nguyên.
+- `KICH-BAN-TEST.md` thêm mục 8 — buổi test người thật cho Module 5, HAI
+  buổi cách một đêm (trí nhớ dài hạn chỉ đo được sau giấc ngủ). Tiêu chí
+  đậu: **điền lại ≥ 12/15 phòng trên giấy kẻ lưới, và khi hỏi "sao nhớ
+  được" phải nhắc tới HÌNH hoặc CHỖ** — chứng tỏ cung điện làm việc chứ
+  không phải học vẹt đè lên.
+- Hạng mục (6) XONG cả 6 khối. Phase 2 còn đúng một hạng mục: (7) flow
+  engine độ khó thích ứng.
+
+Kiểm tra hiện tại: **710/710 test xanh**, typecheck sạch, build qua,
+app live có đủ Module 1-7.
 
 ## Lệnh hay dùng
 

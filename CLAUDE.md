@@ -87,7 +87,7 @@ phá hoại cơ chế học của app, dù code chạy đúng.
 - `npm run test:watch` — test ở chế độ watch
 - `npm run typecheck` — kiểm tra kiểu TypeScript (`tsc --noEmit`)
 
-## Cấu trúc hiện tại (Phase 1 xong; Phase 2 xong hạng mục lab Module 4)
+## Cấu trúc hiện tại (Phase 1 xong; Phase 2 xong hạng mục 5 và 6 — còn flow engine)
 
 - `src/engine/` — pedagogy engine thuần TS: SM-2, hàng đợi ôn tập,
   mastery gate, máy trạng thái bài học 6 bước, XP/streak, bộ chấm,
@@ -159,7 +159,7 @@ phá hoại cơ chế học của app, dù code chạy đúng.
 - Layout: dưới 768px, menu 4 mục chuyển xuống THANH ĐÁY và canvas lab
   cuộn ngang trong khung riêng (giữ vùng chạm cổng ≥ 24px).
 
-### Phase 2 — hạng mục (6): cung điện ký ức Port (khối 6.1-6.5 xong)
+### Phase 2 — hạng mục (6): cung điện ký ức Port + Module 5-7 (XONG)
 
 - `src/engine/palace/` — cung điện ký ức THUẦN, không React: `palace.ts`
   (tòa nhà 5 tầng × 3 phòng + kiểm cấu trúc + lộ trình), `walk.ts` (đi

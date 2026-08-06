@@ -1,4 +1,7 @@
-# Kịch bản test người thật — Phase 1 (Module 1-2)
+# Kịch bản test người thật
+
+Phần lõi (mục 1-6): Phase 1, Module 1-2. Buổi bổ sung: Module 4 (mục 7)
+và Module 5 (mục 8) — làm sau khi người tham gia đã qua phần lõi.
 
 Mục tiêu: kiểm chứng Definition of Done cuối cùng của Phase 1 (spec mục 6):
 **một người chưa biết gì về mạng, sau khi tự học Module 1-2 trong app,
@@ -209,7 +212,79 @@ Buổi Module 4: bắt đầu …h — kết thúc …h
   (Nếu có thử trên điện thoại) thao tác được trọn vẹn: có/không; vướng ở đâu: …
 ```
 
-## 8. Sau buổi test
+## 8. Buổi bổ sung — Module 5 (cung điện ký ức)
+
+Chỉ làm **sau** buổi Module 4 (mục 7). Mục tiêu: kiểm xem cung điện ký
+ức có làm đúng việc của nó không — 15 con số rời rạc phải BÁM lại được
+sau ít nhất một đêm, nhờ chỗ và hình chứ không nhờ học vẹt.
+
+### Lịch — bắt buộc hai buổi cách nhau một đêm
+
+Trí nhớ dài hạn chỉ đo được sau giấc ngủ. Dồn một buổi là chỉ đo trí
+nhớ ngắn hạn — vô nghĩa với module này.
+
+| Buổi | Nội dung | Thời lượng |
+|------|----------|-----------|
+| A | Học hết 8 bài Module 5 + thi module | 60-90 phút |
+| B (hôm sau trở đi) | Ôn thẻ đến hạn + **bài đi lại trên giấy** | 20-30 phút |
+
+### Buổi A — các điểm quan sát
+
+1. Ba bài đầu (TCP, bắt tay, UDP, số cổng) quan sát như mọi bài thường.
+   Riêng câu SYN-ACK: họ có nhớ nhầm thứ tự không, và hình vẽ nhấn nhịp
+   giữa có được họ nhắc tới khi tự giải thích không?
+2. **Bài 4 — lần đầu gặp cung điện.** Quan sát kỹ:
+   - Ở chuyến đi xem, họ có ĐỌC câu chuyện từng phòng không hay bấm lướt
+     "Sang phòng kế" cho nhanh? (Bấm lướt là tín hiệu xấu — encoding
+     không xảy ra thì lát nữa chuyến đi lại sẽ lộ ngay.)
+   - Ở chuyến đi lại ngay trong bài, họ nhớ được mấy phòng ngay lần đầu?
+     Khi quên, phản hồi tầng 1 ("nghĩ lại về hình bạn thấy trong phòng")
+     có giúp họ tự nhớ ra không, hay phải tới tầng 2 (kể lại chuyện)?
+3. Các bài 5-8 (mỗi bài một tầng): ghi lại tầng nào vấp nhiều nhất.
+   Theo thiết kế, cặp 22/23 và cặp 25/587 là chỗ dễ lẫn — xem có đúng.
+4. Thi module: 3 câu cuối là đi lại cả tòa nhà. Ghi điểm lần 1, số phòng
+   phải mở đáp án (nếu có), số lần thi.
+
+### Buổi B — bài đi lại trên giấy (tiêu chí đậu chính)
+
+5. Mở app, ôn thẻ đến hạn (thẻ phòng sẽ chiếm phần lớn phiên ôn). Ghi
+   số thẻ nhớ được. Sau đó **đóng app**.
+6. Đưa giấy kẻ sẵn lưới 5 hàng × 3 cột (hàng dưới cùng ghi "Tầng 1"),
+   đọc đúng đề bài này:
+   > "Đây là tòa nhà trong app. Bạn đi lại nó từ trí nhớ: điền vào mỗi
+   > phòng số cổng và tên dịch vụ, theo đúng thứ tự bạn đã đi — tầng
+   > trệt lên nóc, trái sang phải. Nhớ hình trong phòng trước cũng được."
+   - Không nhắc, không gợi ý. Quá 10 phút thì dừng.
+7. Chấm: mỗi phòng ĐẠT khi đúng cả số lẫn dịch vụ (tên đời thường vẫn
+   tính: "web có khóa" = HTTPS). Đúng số sai chỗ = nửa điểm, ghi chú lại.
+
+Kết luận:
+
+- **ĐẬU: ≥ 12/15 phòng, và khi được hỏi "sao bạn nhớ được số này?" với
+  2 phòng bất kỳ, câu trả lời có nhắc tới HÌNH hoặc CHỖ** ("phòng có ổ
+  khóa vàng", "nó ở góc trái tầng hai") — chứng tỏ cung điện làm việc,
+  không phải học vẹt đè lên.
+- **ĐẬU CÓ GHI CHÚ:** ≥ 12/15 nhưng giải thích không nhắc hình/chỗ nào
+  (có thể họ nhớ theo cách riêng — không sao, nhưng ghi lại).
+- **RỚT:** < 12/15. Xem lại phòng nào rớt nhiều: nếu dồn vào một tầng
+  thì câu chuyện của tầng đó chưa đủ dính — mở issue nội dung cho đúng
+  các phòng đó, đừng đổ cho người học.
+
+### Mẫu ghi chép bổ sung
+
+```
+Buổi A: bắt đầu …h — kết thúc …h
+  Bài 4 chuyến đi xem: có đọc chuyện từng phòng: có/không
+  Chuyến đi lại trong bài: nhớ ngay …/3 phòng; tầng phản hồi cao nhất phải dùng: …
+  Tầng vấp nhiều nhất (bài 5-8): tầng … ; cặp bị lẫn: …
+  Thi M5: lần 1 …% ; số phòng phải mở đáp án: … ; số lần thi: …
+Buổi B: ôn thẻ: nhớ …/… thẻ
+  BÀI ĐI LẠI TRÊN GIẤY: đúng …/15 phòng (nửa điểm: …)
+  Hỏi "sao nhớ được": có nhắc hình/chỗ: có/không — nguyên văn: …
+  KẾT LUẬN: ĐẬU / ĐẬU CÓ GHI CHÚ / RỚT
+```
+
+## 9. Sau buổi test
 
 - Mỗi mục RỚT hoặc ghi chú hiểu sai → mở issue nội dung: ghi rõ khái
   niệm hiểu sai, bài nào dạy nó, và câu người tham gia đã nói.
