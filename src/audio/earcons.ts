@@ -31,6 +31,13 @@ interface Tone {
   gain: number
 }
 
+/**
+ * Hệ số âm lượng chung — nhân lên MỌI earcon, giữ nguyên cân bằng giữa
+ * các nốt. 1.3 = tăng 30% theo yêu cầu người dùng (06-08: bản gốc nghe
+ * hơi nhỏ). Muốn chỉnh tổng thể lần sau chỉ sửa một chỗ này.
+ */
+const MASTER_GAIN = 1.3
+
 function playTones(audio: AudioContext, tones: Tone[]): void {
   const now = audio.currentTime
   for (const t of tones) {
@@ -40,7 +47,7 @@ function playTones(audio: AudioContext, tones: Tone[]): void {
     osc.frequency.value = t.freq
     // Sharp attack, exponential decay — reads as a soft "blip", no click.
     amp.gain.setValueAtTime(0.0001, now + t.at)
-    amp.gain.exponentialRampToValueAtTime(t.gain, now + t.at + 0.012)
+    amp.gain.exponentialRampToValueAtTime(Math.min(t.gain * MASTER_GAIN, 1), now + t.at + 0.012)
     amp.gain.exponentialRampToValueAtTime(0.0001, now + t.at + t.dur)
     osc.connect(amp).connect(audio.destination)
     osc.start(now + t.at)
