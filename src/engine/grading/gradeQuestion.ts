@@ -6,6 +6,7 @@ import type { LText, Question } from '../contentSchema'
 import { isLabSolved } from '../lab/gradeLab'
 import type { Topology } from '../lab/topology'
 import { walkOutcomesPassed, type RoomOutcome } from '../palace/walk'
+import { openAcceptsOf } from '../flow'
 import { typedAnswerMatches } from './normalize'
 
 /** Câu trả lời người học nộp lên — kind phải trùng kind của Question. */
@@ -54,6 +55,11 @@ export function gradeQuestion(q: Question, r: QuestionResponse): boolean {
   // the guard inside each branch narrows `q` to the matching variant.
   switch (r.kind) {
     case 'typed':
+      // Flow engine (spec 2.3): người học đang thắng thế thì câu trắc
+      // nghiệm được hỏi ở dạng MỞ — nộp lên là chữ gõ tay, chấm bằng
+      // chữ của lựa chọn đúng. Đây là đường đi CHÍNH THỨC, không phải
+      // mismatch: một câu trắc nghiệm luôn trả lời mở được.
+      if (q.kind === 'mcq') return typedAnswerMatches(r.text, openAcceptsOf(q))
       if (q.kind !== 'typed') throw kindMismatch(q, r)
       return typedAnswerMatches(r.text, q.accept)
     case 'mcq':

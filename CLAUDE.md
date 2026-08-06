@@ -87,7 +87,7 @@ phá hoại cơ chế học của app, dù code chạy đúng.
 - `npm run test:watch` — test ở chế độ watch
 - `npm run typecheck` — kiểm tra kiểu TypeScript (`tsc --noEmit`)
 
-## Cấu trúc hiện tại (Phase 1 xong; Phase 2 xong hạng mục 5 và 6 — còn flow engine)
+## Cấu trúc hiện tại (Phase 1 + Phase 2 XONG; kế tiếp là Phase 3)
 
 - `src/engine/` — pedagogy engine thuần TS: SM-2, hàng đợi ôn tập,
   mastery gate, máy trạng thái bài học 6 bước, XP/streak, bộ chấm,
@@ -201,6 +201,25 @@ phá hoại cơ chế học của app, dù code chạy đúng.
 - `ConceptVisual`: đầu mũi tên `cv-arrow` khai ở `Frame` nên MỌI hình
   dùng được; `/design` có mục "Hình khái niệm" bày hết registry ra một
   trang để soi tràn chữ bằng mắt (và bằng `getBBox`).
+
+### Phase 2 — hạng mục (7): flow engine độ khó thích ứng (XONG)
+
+- `src/engine/flow.ts` — thuần TS: `flowMode` (chỉ kích hoạt khi cửa sổ
+  đầy 10 câu; > 90% harder, < 60% support, giữa hai ngưỡng không đụng
+  gì), `deriveOpenQuestion` (trắc nghiệm → gõ tay, CÙNG id; lựa chọn
+  đúng > 24 ký tự thì không suy), `foundationConceptIds` (nền gần-nhất-
+  trước; đầu module mượn module liền trước), `needsSupport` (thời gian
+  nguội 5 câu, đếm bằng câu trả lời chứ không bằng đồng hồ).
+- **Luật của flow engine, không được phá:**
+  - Phiên củng cố KHÔNG cộng XP, KHÔNG đụng lịch SM-2, và chỉ chặn bài
+    MỚI — bài đang dở không bị cắt ngang.
+  - Thi mastery không đổi độ khó — thang đo cố định thì 85% mới có nghĩa.
+  - `gradeQuestion(mcq, typed)` là đường chính thức (chấm bằng chữ của
+    lựa chọn đúng), không phải kind mismatch.
+  - `lessonMachine.ts` vẫn không biết flow engine tồn tại.
+- Store: `answerTotal` + `supportShownAtTotal` + `markSupportShown()`.
+  UI: `FoundationReview` chặn cửa trong LessonPlayer; ExerciseRunner đổi
+  dạng câu theo `flowMode` — đổi CÁCH RENDER, không đổi dữ liệu bài.
 
 ## Khi gặp mơ hồ
 

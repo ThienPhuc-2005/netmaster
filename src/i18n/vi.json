@@ -279,6 +279,14 @@
     "narrowTitle": "Phòng lab cần màn hình rộng hơn",
     "narrowBody": "Bạn vẫn thao tác được đầy đủ bằng bảng cấu hình bên dưới — sơ đồ chỉ hiển thị nhỏ lại thôi."
   },
+  "flow": {
+    "harderNote": "Bạn đang thắng thế — câu này thử tự gõ đáp án thay vì chọn nhé.",
+    "supportTitle": "Nhặt lại vài viên gạch nền đã",
+    "supportBody": "Mấy câu vừa rồi hơi trầy trật — chuyện bình thường thôi. Mình lướt lại vài khái niệm nền của bài này: tự nhớ trước rồi hãy lật, vững chân xong leo tiếp ngay.",
+    "supportCardOf": "Thẻ {current}/{total}",
+    "supportNext": "Thẻ tiếp",
+    "supportEnter": "Vào bài học"
+  },
   "palace": {
     "mapAria": "Sơ đồ tòa nhà 15 phòng",
     "floorShort": "Tầng {floor}",

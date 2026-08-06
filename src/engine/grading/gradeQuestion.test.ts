@@ -69,12 +69,24 @@ describe('gradeQuestion — order', () => {
   })
 })
 
+describe('gradeQuestion — mcq trả lời ở dạng MỞ (flow engine, spec 2.3)', () => {
+  it('chấm bằng chữ của lựa chọn đúng, nhân nhượng dấu như câu gõ tay', () => {
+    expect(gradeQuestion(mcqQ, { kind: 'typed', text: 'địa chỉ nhà' })).toBe(true)
+    expect(gradeQuestion(mcqQ, { kind: 'typed', text: 'dia chi nha' })).toBe(true)
+    expect(gradeQuestion(mcqQ, { kind: 'typed', text: 'là địa chỉ nhà' })).toBe(true)
+  })
+
+  it('gõ chữ của lựa chọn SAI thì không được điểm', () => {
+    expect(gradeQuestion(mcqQ, { kind: 'typed', text: 'bưu tá' })).toBe(false)
+    expect(gradeQuestion(mcqQ, { kind: 'typed', text: 'tem thư' })).toBe(false)
+  })
+})
+
 describe('gradeQuestion — kind mismatch is a programming error', () => {
   it('throws when response kind differs from question kind', () => {
     expect(() => gradeQuestion(typedQ, { kind: 'mcq', choiceIndex: 0 })).toThrow()
     expect(() => gradeQuestion(mcqQ, { kind: 'order', order: [0] })).toThrow()
     expect(() => gradeQuestion(orderQ, { kind: 'typed', text: 'x' })).toThrow()
-    expect(() => gradeQuestion(mcqQ, { kind: 'typed', text: 'địa chỉ nhà' })).toThrow()
   })
 })
 

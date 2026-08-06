@@ -74,6 +74,15 @@ export interface ProgressState {
   xpTotal: number
   streak: StreakState
   answerHistory: AnswerRecord[]
+  /**
+   * TỔNG số câu đã trả lời (đơn điệu tăng — answerHistory chỉ giữ 10 câu
+   * cuối nên không đếm được). Cùng supportShownAtTotal làm thời gian
+   * nguội của flow engine: sau một phiên củng cố phải có thêm ít nhất
+   * SUPPORT_COOLDOWN_ANSWERS câu mới rồi mới được chèn phiên nữa.
+   */
+  answerTotal: number
+  /** Giá trị answerTotal tại lần chèn phiên củng cố gần nhất. */
+  supportShownAtTotal: number | null
   drillHistory: DrillResult[]
   /** Ngày gần nhất hoàn thành phiên ôn — chốt luật "mở app là ôn trước". */
   lastReviewDate: ISODate | null
@@ -103,6 +112,12 @@ export interface ProgressState {
   completeOnboarding: () => void
 
   /**
+   * Ghi nhận người học vừa đi qua phiên củng cố nền (flow engine, spec
+   * 2.3) — mở lại đường vào bài mới và khởi động thời gian nguội.
+   */
+  markSupportShown: () => void
+
+  /**
    * Ghi nhận một lượt thi mastery test. Trả kèm newlyPassed để UI biết
    * lúc nào đáng nổi fanfare "mở module mới".
    */
@@ -122,7 +137,10 @@ export const useProgress = create<ProgressState>()(
         set((s) => ({ streak: recordQualifyingActivity(s.streak, todayIso(), source).state }))
 
       const recordAnswer = (correct: boolean) =>
-        set((s) => ({ answerHistory: pushAnswer(s.answerHistory, correct, Date.now()) }))
+        set((s) => ({
+          answerHistory: pushAnswer(s.answerHistory, correct, Date.now()),
+          answerTotal: s.answerTotal + 1,
+        }))
 
       const awardXp = (moduleId: string, amount: number) =>
         set((s) => ({
@@ -149,6 +167,8 @@ export const useProgress = create<ProgressState>()(
         xpTotal: 0,
         streak: initialStreak(todayIso()),
         answerHistory: [],
+        answerTotal: 0,
+        supportShownAtTotal: null,
         drillHistory: [],
         lastReviewDate: null,
         onboardingDone: false,
@@ -304,6 +324,11 @@ export const useProgress = create<ProgressState>()(
         // Onboarding là trải nghiệm, không phải bài học: KHÔNG cộng XP,
         // KHÔNG chạm streak (nguyên tắc 5 — xem animation không phải retrieval).
         completeOnboarding: () => set({ onboardingDone: true }),
+
+        // Phiên củng cố cũng không cộng XP, không đụng lịch SM-2: ôn sớm
+        // ngoài lịch mà ghi vào SM-2 sẽ phá interval, còn cộng XP thì
+        // thành đường farm bằng cách cố tình sai cho tụt điểm.
+        markSupportShown: () => set((s) => ({ supportShownAtTotal: s.answerTotal })),
 
         recordMasteryAttempt: (module, results) => {
           // Chốt chặn cuối của nguyên tắc 2: không tồn tại lượt thi hợp lệ

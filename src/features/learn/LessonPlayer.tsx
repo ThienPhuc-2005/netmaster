@@ -23,6 +23,8 @@ import { EmptyState } from '../../components/EmptyState'
 import { FeedbackBanner, type FeedbackState } from '../../components/FeedbackBanner'
 import { QuestionInput } from '../../components/QuestionInput'
 import { PalaceTour } from '../palace/PalaceTour'
+import { canDeriveOpen, deriveOpenQuestion, flowMode, needsSupport } from '../../engine/flow'
+import { FoundationReview } from './FoundationReview'
 
 const STEP_LABEL_KEYS = [
   'lesson.stepHook',
@@ -294,6 +296,9 @@ function ExerciseRunner({
   const t = useT()
   const submitAnswer = useProgress((s) => s.submitExerciseAnswer)
   const answers = useProgress((s) => s.lessonAnswers[lesson.id])
+  // Chế độ flow đọc sống theo cửa sổ 10 câu — mỗi câu trả lời có thể đổi
+  // chế độ cho câu kế tiếp, đúng chữ "theo dõi" của spec.
+  const mode = flowMode(useProgress((s) => s.answerHistory))
   // Gắn feedback với đúng câu đang làm — sang câu khác là banner cũ biến mất.
   const [feedback, setFeedback] = useState<{ questionId: string; state: FeedbackState } | null>(null)
   // Câu vừa giải xong đang hiện màn đáp án — bấm Tiếp tục mới sang câu sau.
@@ -322,6 +327,13 @@ function ExerciseRunner({
       </div>
     )
   } else if (current !== undefined) {
+    // Flow engine (spec 2.3): thắng thế (> 90% trên 10 câu) thì câu trắc
+    // nghiệm được hỏi ở dạng MỞ. Cùng id nên trạng thái chấm, thang 3
+    // tầng và XP không biết gì về chuyện đổi dạng — store chấm bản gõ
+    // tay bằng chữ của lựa chọn đúng (gradeQuestion đã học đường này).
+    const asOpen =
+      mode === 'harder' && current.question.kind === 'mcq' && canDeriveOpen(current.question)
+    const shownQuestion = asOpen && current.question.kind === 'mcq' ? deriveOpenQuestion(current.question) : current.question
     const handleSubmit = (resp: Parameters<typeof submitAnswer>[2]) => {
       const { correct, tier, nearMiss } = submitAnswer(lesson, current.question.id, resp)
       if (correct) {
@@ -346,7 +358,8 @@ function ExerciseRunner({
     main = (
       <div className="flex flex-col gap-4" key={current.question.id}>
         <p className="font-medium text-ink">{current.question.prompt.vi}</p>
-        <QuestionInput question={current.question} onSubmit={handleSubmit} />
+        {asOpen && <p className="text-xs text-ink-muted">{t('flow.harderNote')}</p>}
+        <QuestionInput question={shownQuestion} onSubmit={handleSubmit} />
         {feedback !== null && feedback.questionId === current.question.id && <FeedbackBanner state={feedback.state} />}
       </div>
     )
@@ -599,13 +612,26 @@ export function LessonPlayer() {
   // đầu và chưa hoàn thành mới bị chặn — bài đang học dở vẫn học tiếp được.
   const gate = newLessonGate(reviewCards, todayIso())
   const blockedByDebt = runtime === undefined && !lessonDone && !gate.allowed
+  // Flow engine (spec 2.3): tỷ lệ đúng tụt < 60% thì bài MỚI phải đi qua
+  // một phiên củng cố nền trước — bài đang học dở không bị cắt ngang.
+  const answerHistory = useProgress((s) => s.answerHistory)
+  const answerTotal = useProgress((s) => s.answerTotal)
+  const supportShownAtTotal = useProgress((s) => s.supportShownAtTotal)
+  const needsFoundation =
+    runtime === undefined && !lessonDone && needsSupport(answerHistory, answerTotal, supportShownAtTotal)
 
   // Khởi tạo/tiếp tục runtime khi vào bài (effect — không set state lúc render).
   useEffect(() => {
-    if (ref !== null && !blockedByOrder && !blockedByDebt && (runtime === undefined || runtime.completed)) {
+    if (
+      ref !== null &&
+      !blockedByOrder &&
+      !blockedByDebt &&
+      !needsFoundation &&
+      (runtime === undefined || runtime.completed)
+    ) {
       beginLesson(ref.lesson)
     }
-  }, [ref, runtime, blockedByOrder, blockedByDebt, beginLesson])
+  }, [ref, runtime, blockedByOrder, blockedByDebt, needsFoundation, beginLesson])
 
   if (ref === null) {
     return <EmptyState icon={ChevronLeft} title={t('lesson.notFound')} body="" action={<Link to="/" className="text-sm font-medium text-accent hover:underline">{t('lesson.backToLearn')}</Link>} />
@@ -639,6 +665,10 @@ export function LessonPlayer() {
         }
       />
     )
+  }
+
+  if (needsFoundation) {
+    return <FoundationReview module={ref.module} lesson={ref.lesson} />
   }
 
   if (runtime === undefined || runtime.completed) return null // effect đang khởi tạo runtime mới

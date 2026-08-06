@@ -1,4 +1,4 @@
-# Trạng thái dự án — NetMaster (Phase 1 xong, đang Phase 2)
+# Trạng thái dự án — NetMaster (Phase 1 + Phase 2 XONG)
 
 Cập nhật: 2026-08-06. File này chỉ để nắm nhanh tình hình khi mở lại dự
 án. Nguồn chân lý vẫn là `SPEC-APP-HOC-MANG.md`; luật làm việc ở
@@ -340,8 +340,42 @@ xong thì Module 5/6/7 chỉ còn là viết JSON.
 - Hạng mục (6) XONG cả 6 khối. Phase 2 còn đúng một hạng mục: (7) flow
   engine độ khó thích ứng.
 
-Kiểm tra hiện tại: **710/710 test xanh**, typecheck sạch, build qua,
-app live có đủ Module 1-7.
+## Phase 2 — hạng mục (7): flow engine độ khó thích ứng — XONG
+
+Ba quyết định đã chốt trước khi code: tăng độ khó bằng phép suy cơ học
+(trắc nghiệm → gõ tay, không viết thêm nội dung; "tình huống lạ hơn" để
+mở); phiên củng cố BẮT BUỘC đi qua; cửa sổ 10 câu trộn mọi nguồn
+retrieval.
+
+- `src/engine/flow.ts` — thuần TS: `flowMode` chỉ kích hoạt khi cửa sổ
+  ĐẦY 10 câu (đúng nghĩa đen spec, không phán người mới học); > 90% →
+  harder, < 60% → support, 60-90 không đụng gì (vùng flow là ĐÍCH, hai
+  ngưỡng là bộ truyền động). `deriveOpenQuestion` suy bản gõ tay từ câu
+  trắc nghiệm — cùng id nên trạng thái chấm/thang 3 tầng/XP không biết
+  gì về chuyện đổi dạng; lựa chọn đúng dài quá 24 ký tự thì KHÔNG suy
+  (bắt gõ nguyên mệnh đề là đánh đố trí gõ phím, không phải trí nhớ).
+  `foundationConceptIds` chọn khái niệm nền gần-nhất-trước; đầu module
+  thì mượn nền module liền trước. `needsSupport` có thời gian nguội 5
+  câu — người đang yếu không bị nhốt trong vòng ôn vô hạn.
+- `gradeQuestion` học một đường CHÍNH THỨC mới: câu mcq nhận câu trả lời
+  typed, chấm bằng chữ của lựa chọn đúng (một câu trắc nghiệm luôn trả
+  lời mở được — không phải kind mismatch nữa).
+- `FoundationReview` (`src/features/learn/`) — phiên củng cố ≤ 6 thẻ,
+  chặn cửa bài MỚI (bài dở dang không bị cắt ngang), KHÔNG cộng XP,
+  KHÔNG đụng lịch SM-2 (ôn sớm ghi vào SM-2 sẽ phá interval; cộng XP là
+  mở đường farm bằng cách cố tình sai). Vẫn giữ nhịp retrieval: tự nhớ
+  rồi mới lật. Bài đầu Module 1 không có nền → đi thẳng, không kẹt.
+- Thi mastery KHÔNG đổi độ khó — thang đo cố định thì ngưỡng 85% mới
+  có nghĩa. `lessonMachine.ts` tiếp tục không bị sửa dòng nào.
+- Store thêm `answerTotal` (đơn điệu tăng) + `supportShownAtTotal` làm
+  mốc thời gian nguội; `markSupportShown()`.
+- 732/732 test xanh (+22), typecheck sạch, build qua. Kiểm cả hai nhánh
+  trên trình duyệt thật: tụt 40% → thẻ nền chặn cửa bài mới, đi hết thẻ
+  vào bài, mốc nguội ghi, XP = 0; thắng 100% → câu trắc nghiệm "CNAME"
+  hiện thành ô gõ tay kèm lời nhắn, gõ "cname" được chấm "Chuẩn luôn!".
+
+Kiểm tra hiện tại: **732/732 test xanh**, typecheck sạch, build qua,
+app live có đủ Module 1-7. **Phase 2 XONG cả 3 hạng mục (5)(6)(7).**
 
 ## Lệnh hay dùng
 

@@ -279,6 +279,14 @@
     "narrowTitle": "The lab wants a wider screen",
     "narrowBody": "Everything still works through the configuration panel below — only the diagram gets smaller."
   },
+  "flow": {
+    "harderNote": "You're on a roll — try typing the answer for this one instead of picking.",
+    "supportTitle": "Let's pick up a few foundation bricks first",
+    "supportBody": "The last stretch was bumpy — that's perfectly normal. We'll glance back at a few concepts this lesson stands on: try to recall before you flip, then climb right on.",
+    "supportCardOf": "Card {current}/{total}",
+    "supportNext": "Next card",
+    "supportEnter": "Into the lesson"
+  },
   "palace": {
     "mapAria": "Map of the 15-room building",
     "floorShort": "Floor {floor}",
