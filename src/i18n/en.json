@@ -52,7 +52,9 @@
     "drillCardAction": "Practice now",
     "takeTest": "Module test",
     "retakeTest": "Retake test",
-    "passedScore": "Passed · {pct}%"
+    "passedScore": "Passed · {pct}%",
+    "vmLabProgress": "{done}/{total} steps",
+    "vmLabNoXp": "Real-world work outside the app — it can't be verified, so no XP."
   },
   "test": {
     "title": "Module test",

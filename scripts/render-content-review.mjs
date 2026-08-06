@@ -173,6 +173,16 @@ function renderModule(mod) {
     out.push('')
   }
 
+  // Checklist lab VMware là nội dung người học nhìn thấy — bản duyệt
+  // phải tả nó, không được nuốt im lặng (cùng luật với câu hỏi kind lạ).
+  if (mod.vmLab) {
+    out.push(`### Checklist lab VMware: ${vi(mod.vmLab.title)} (${mod.vmLab.steps.length} bước, không XP)`)
+    out.push('')
+    if (mod.vmLab.intro) out.push(`${vi(mod.vmLab.intro)}`, '')
+    for (const [i, step] of mod.vmLab.steps.entries()) out.push(`${i + 1}. ${vi(step.text)} \`${step.id}\``)
+    out.push('')
+  }
+
   const byId = new Map(mod.lessons.map((l) => [l.id, l]))
   for (const stage of mod.stages) {
     for (const lid of stage.lessonIds) {

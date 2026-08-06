@@ -52,7 +52,9 @@
     "drillCardAction": "Vào luyện",
     "takeTest": "Thi cuối module",
     "retakeTest": "Thi lại",
-    "passedScore": "Đã đạt · {pct}%"
+    "passedScore": "Đã đạt · {pct}%",
+    "vmLabProgress": "{done}/{total} bước",
+    "vmLabNoXp": "Việc thật ngoài app — không kiểm chứng được nên không tính XP."
   },
   "test": {
     "title": "Bài kiểm tra module",

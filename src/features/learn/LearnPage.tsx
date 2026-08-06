@@ -3,7 +3,7 @@
 // computeModuleStatuses — module sau khóa tới khi module trước đạt >= 85%.
 
 import { Link } from 'react-router'
-import { BookOpen, Check, GraduationCap, Lock, Play, RotateCcw, Timer } from 'lucide-react'
+import { BookOpen, Check, GraduationCap, Lock, Play, RotateCcw, Server, Timer } from 'lucide-react'
 import { loadModules, lessonsInOrder } from '../../content'
 import { computeModuleStatuses } from '../../engine/masteryGate'
 import { moduleXpTotal } from '../../engine/xp'
@@ -62,6 +62,51 @@ function LessonRow({
       {state === 'locked' && <span className="text-xs text-ink-muted">{t('learn.lessonLocked')}</span>}
       {state === 'active' && !startable && <span className="text-xs text-warn">{t('learn.goReview')} ↓</span>}
     </li>
+  )
+}
+
+/**
+ * Checklist lab VMware của module (spec Module 9: "app track tiến độ lab").
+ * App chỉ THEO DÕI — việc thật xảy ra ngoài app, không kiểm chứng được,
+ * nên tick xong KHÔNG cộng XP (nguyên tắc 5). Tick persist qua store.
+ */
+function VmLabChecklist({ vmLab }: { vmLab: NonNullable<Module['vmLab']> }) {
+  const t = useT()
+  const vmLabDone = useProgress((s) => s.vmLabDone)
+  const toggleVmLabStep = useProgress((s) => s.toggleVmLabStep)
+  const doneCount = vmLab.steps.filter((step) => vmLabDone[step.id] !== undefined).length
+
+  return (
+    <section className="rounded-md border border-edge bg-panel-hover p-4">
+      <div className="flex items-center gap-3">
+        <Server size={17} aria-hidden className="shrink-0 text-accent" />
+        <h3 className="flex-1 text-sm font-semibold text-ink">{vmLab.title.vi}</h3>
+        <span className="text-xs font-medium text-ink-muted">
+          {t('learn.vmLabProgress', { done: doneCount, total: vmLab.steps.length })}
+        </span>
+      </div>
+      {vmLab.intro !== undefined && <p className="mt-2 text-xs leading-relaxed text-ink-muted">{vmLab.intro.vi}</p>}
+      <ul className="mt-3 flex flex-col gap-2">
+        {vmLab.steps.map((step) => {
+          const checked = vmLabDone[step.id] !== undefined
+          return (
+            <li key={step.id}>
+              <label className="flex cursor-pointer items-start gap-3 rounded-md px-1 py-0.5 text-sm hover:bg-panel">
+                <input
+                  type="checkbox"
+                  checked={checked}
+                  onChange={() => toggleVmLabStep(step.id)}
+                  className="mt-1 shrink-0"
+                  style={{ accentColor: 'var(--accent)' }}
+                />
+                <span className={checked ? 'text-ink-muted line-through' : 'text-ink'}>{step.text.vi}</span>
+              </label>
+            </li>
+          )
+        })}
+      </ul>
+      <p className="mt-3 text-xs text-ink-muted">{t('learn.vmLabNoXp')}</p>
+    </section>
   )
 }
 
@@ -137,6 +182,8 @@ function ModuleCard({ module, status }: { module: Module; status: 'locked' | 'op
           <span className="text-xs font-semibold text-accent">→</span>
         </Link>
       )}
+
+      {module.vmLab !== undefined && status !== 'locked' && <VmLabChecklist vmLab={module.vmLab} />}
 
       {module.drill === 'subnet' && status !== 'locked' && (
         <Link

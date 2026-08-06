@@ -1486,6 +1486,250 @@ function DualStackPlates({ title }: { title?: string }) {
   )
 }
 
+/** Domain: nhiều máy chung một lá cờ luật — làng có luật. */
+function MienLangMay({ title }: { title?: string }) {
+  const pcs = [34, 96, 158]
+  return (
+    <Frame title={title}>
+      <g className="text-accent">
+        <path d="M110 18 v24" {...stroke} strokeWidth={1.5} />
+        <path d="M110 20 C120 16 126 24 136 20 V34 C126 38 120 30 110 34 z" {...stroke} strokeWidth={1.5} />
+        <text x="110" y="56" textAnchor="middle" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          lab.local
+        </text>
+      </g>
+      <g className="text-ink-muted">
+        {pcs.map((x) => (
+          <g key={x}>
+            <rect x={x} y="74" width="28" height="20" rx="3" {...stroke} strokeWidth={1.5} />
+            <path d={`M${x + 14} 74 V62 L110 46`} {...stroke} strokeWidth={1} strokeDasharray="3 3" />
+          </g>
+        ))}
+      </g>
+      <text x="110" y="120" textAnchor="middle" {...monoText}>
+        gia nhập miền = chịu luật chung
+      </text>
+    </Frame>
+  )
+}
+
+/** Domain Controller: máy chủ giữ sổ cái, mọi lượt đăng nhập phải qua. */
+function DcSoCai({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-accent">
+        <rect x="132" y="26" width="34" height="52" rx="4" {...stroke} />
+        <path d="M138 36 h22 M138 46 h22 M138 56 h14" {...stroke} strokeWidth={1.5} />
+        <text x="149" y="94" textAnchor="middle" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          DC
+        </text>
+      </g>
+      <g className="text-ink-muted">
+        <circle cx="38" cy="40" r="8" {...stroke} strokeWidth={1.5} />
+        <path d="M28 62 a10 10 0 0 1 20 0" {...stroke} strokeWidth={1.5} />
+        <circle cx="72" cy="44" r="8" {...stroke} strokeWidth={1.5} />
+        <path d="M62 66 a10 10 0 0 1 20 0" {...stroke} strokeWidth={1.5} />
+        <path d="M92 52 H124" {...stroke} strokeWidth={1.5} markerEnd="url(#cv-arrow)" />
+        <text x="108" y="44" textAnchor="middle" {...monoText}>ai đó?</text>
+      </g>
+      <text x="110" y="120" textAnchor="middle" {...monoText}>
+        sổ cái + gác cổng đăng nhập
+      </text>
+    </Frame>
+  )
+}
+
+/** User/Group: người vào nhóm, quyền cấp cho nhóm một lần. */
+function UserGroup({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        {[26, 46, 66].map((y, i) => (
+          <g key={y}>
+            <circle cx={30} cy={y + 4} r="6" {...stroke} strokeWidth={1.5} />
+            <path d={`M40 ${y + 4} H${i === 1 ? 74 : 66}`} {...stroke} strokeWidth={1} strokeDasharray="3 3" />
+          </g>
+        ))}
+      </g>
+      <g className="text-accent">
+        <rect x="80" y="34" width="56" height="30" rx="6" {...stroke} />
+        <text x="108" y="53" textAnchor="middle" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          KeToan
+        </text>
+        <path d="M140 49 H168" {...stroke} markerEnd="url(#cv-arrow)" />
+      </g>
+      <g className="text-ink-muted">
+        <rect x="174" y="38" width="24" height="22" rx="3" {...stroke} strokeWidth={1.5} />
+        <path d="M181 49 l4 4 8 -8" {...stroke} strokeWidth={1.5} />
+      </g>
+      <text x="110" y="118" textAnchor="middle" {...monoText}>
+        quyền cấp cho nhóm một lần
+      </text>
+    </Frame>
+  )
+}
+
+/** OU: tủ ngăn kéo phòng ban — xếp chỗ và dán luật lên ngăn. */
+function OuNganKeo({ title }: { title?: string }) {
+  const drawers = [
+    { y: 24, label: 'KeToan', accent: true },
+    { y: 52, label: 'NhanSu', accent: false },
+    { y: 80, label: 'VanHanh', accent: false },
+  ]
+  return (
+    <Frame title={title}>
+      {drawers.map((d) => (
+        <g key={d.label} className={d.accent ? 'text-accent' : 'text-ink-muted'}>
+          <rect x="56" y={d.y} width="108" height="24" rx="3" {...stroke} strokeWidth={d.accent ? 2 : 1.2} />
+          <path d={`M130 ${d.y + 12} h16`} {...stroke} strokeWidth={1.5} />
+          <text x="64" y={d.y + 16} fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+            {d.label}
+          </text>
+        </g>
+      ))}
+      <text x="110" y="122" textAnchor="middle" {...monoText}>
+        một hồ sơ nằm đúng một ngăn
+      </text>
+    </Frame>
+  )
+}
+
+/** GPO: tờ cáo thị viết một lần, phải TREO mới có tác dụng. */
+function GpoTreoLuat({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-accent">
+        <rect x="28" y="24" width="48" height="62" rx="3" {...stroke} />
+        <path d="M36 36 h32 M36 46 h32 M36 56 h32 M36 66 h20" {...stroke} strokeWidth={1.5} />
+        <text x="52" y="100" textAnchor="middle" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          GPO
+        </text>
+      </g>
+      <g className="text-ink-muted">
+        <path d="M84 54 H120" {...stroke} strokeWidth={1.5} markerEnd="url(#cv-arrow)" />
+        <text x="102" y="46" textAnchor="middle" {...monoText}>treo</text>
+        <rect x="128" y="30" width="72" height="20" rx="3" {...stroke} strokeWidth={1.2} />
+        <rect x="128" y="58" width="72" height="20" rx="3" {...stroke} strokeWidth={1.2} />
+        <text x="136" y="44" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          OU KeToan
+        </text>
+        <text x="136" y="72" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          OU NhanSu
+        </text>
+      </g>
+      <text x="110" y="120" textAnchor="middle" {...monoText}>
+        treo ở đâu, chỗ đó phải theo
+      </text>
+    </Frame>
+  )
+}
+
+/** LSDOU: tòa nhà bốn tầng, leo từ trệt lên nóc, sau đè trước. */
+function ToaNhaLsdou({ title }: { title?: string }) {
+  const floors = [
+    { y: 88, label: 'Local' },
+    { y: 66, label: 'Site' },
+    { y: 44, label: 'Domain' },
+    { y: 22, label: 'OU' },
+  ]
+  return (
+    <Frame title={title}>
+      {floors.map((f, i) => (
+        <g key={f.label} className={i === 3 ? 'text-accent' : 'text-ink-muted'}>
+          <rect x="62" y={f.y} width="96" height="20" rx="2" {...stroke} strokeWidth={i === 3 ? 2 : 1.2} />
+          <text x="110" y={f.y + 14} textAnchor="middle" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+            {f.label}
+          </text>
+        </g>
+      ))}
+      <g className="text-ink-muted">
+        <path d="M46 104 V30" {...stroke} strokeWidth={1.5} markerEnd="url(#cv-arrow)" />
+        <text x="30" y="70" textAnchor="middle" {...monoText}>áp</text>
+      </g>
+      <text x="110" y="122" textAnchor="middle" {...monoText}>
+        leo lên nóc — nói sau thì thắng
+      </text>
+    </Frame>
+  )
+}
+
+/** Kế thừa: thác luật chảy xuống, mái che Block, mũi khoan Enforced. */
+function KeThuaChan({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <rect x="72" y="16" width="76" height="18" rx="3" {...stroke} strokeWidth={1.2} />
+        <text x="110" y="29" textAnchor="middle" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          Domain
+        </text>
+        <path d="M88 34 V58" {...stroke} strokeWidth={1.2} markerEnd="url(#cv-arrow)" />
+        <rect x="58" y="64" width="52" height="18" rx="3" {...stroke} strokeWidth={1.2} />
+        <text x="84" y="77" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          OU A
+        </text>
+      </g>
+      <g className="text-warn">
+        <path d="M128 46 h32" {...stroke} strokeWidth={2.5} />
+        <path d="M134 34 V42" {...stroke} strokeWidth={1.2} />
+        <text x="168" y="50" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          block
+        </text>
+      </g>
+      <g className="text-accent">
+        <path d="M144 34 V58" {...stroke} markerEnd="url(#cv-arrow)" />
+        <rect x="122" y="64" width="52" height="18" rx="3" {...stroke} strokeWidth={1.2} />
+        <text x="148" y="77" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          OU B
+        </text>
+        <text x="148" y="96" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          enforced xuyên qua
+        </text>
+      </g>
+      <text x="110" y="120" textAnchor="middle" {...monoText}>
+        mái che chắn thường, thua mũi khoan
+      </text>
+    </Frame>
+  )
+}
+
+/** gpresult: cửa sổ lệnh kê luật đang dính — hết phải đoán. */
+function GpresultSoi({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <rect x="40" y="18" width="140" height="84" rx="4" {...stroke} strokeWidth={1.5} />
+        <path d="M40 32 h140" {...stroke} strokeWidth={1.2} />
+        <circle cx="50" cy="25" r="2" fill="currentColor" stroke="none" />
+        <circle cx="58" cy="25" r="2" fill="currentColor" stroke="none" />
+      </g>
+      <g className="text-accent">
+        <text x="48" y="46" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          &gt; gpresult /r
+        </text>
+      </g>
+      <g className="text-ink-muted">
+        <path d="M50 56 l3 3 6 -6" {...stroke} strokeWidth={1.5} />
+        <text x="64" y="60" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          HinhNen-CongTy
+        </text>
+        <path d="M50 70 l3 3 6 -6" {...stroke} strokeWidth={1.5} />
+        <text x="64" y="74" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          CamUSB-KeToan
+        </text>
+      </g>
+      <g className="text-warn">
+        <path d="M50 84 58 92 M58 84 50 92" {...stroke} strokeWidth={1.5} />
+        <text x="64" y="91" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          LuatCu (bị chặn)
+        </text>
+      </g>
+      <text x="110" y="120" textAnchor="middle" {...monoText}>
+        lần theo bảng kê, không đoán
+      </text>
+    </Frame>
+  )
+}
+
 /** Hình thư chung cho visualId chưa có hình riêng. */
 function GenericMail({ title }: { title?: string }) {
   return (
@@ -1594,6 +1838,20 @@ const REGISTRY: Record<string, VisualComponent> = {
   'vis-slaac-tu-ghep': SlaacAssemble,
   'vis-hook-slaac': SlaacAssemble,
   'vis-dual-stack-hai-bien': DualStackPlates,
+  // Module 9 — Windows Server: AD DS và GPO
+  'vis-mien-lang-may': MienLangMay,
+  'vis-hook-mien': MienLangMay,
+  'vis-dc-so-cai': DcSoCai,
+  'vis-user-group': UserGroup,
+  'vis-hook-user-group': UserGroup,
+  'vis-ou-ngan-keo': OuNganKeo,
+  'vis-gpo-treo-luat': GpoTreoLuat,
+  'vis-hook-gpo': GpoTreoLuat,
+  'vis-toa-nha-lsdou': ToaNhaLsdou,
+  'vis-hook-lsdou': ToaNhaLsdou,
+  'vis-ke-thua-chan': KeThuaChan,
+  'vis-hook-ke-thua': KeThuaChan,
+  'vis-gpresult-soi': GpresultSoi,
 }
 
 /**

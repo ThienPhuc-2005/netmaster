@@ -1,7 +1,10 @@
 import { describe, expect, it } from 'vitest'
 import { formatPorts, parseKeys, parsePorts } from './parsePorts'
-import { PORT_PALACE } from '../../../tests/fixtures/palaceFixture'
+import { GPO_PALACE, PORT_PALACE } from '../../../tests/fixtures/palaceFixture'
 import { hasRoomGlyph, roomGlyphIds } from './RoomGlyph'
+
+/** Mọi tòa nhà đang có trong app — thêm tòa mới thì thêm vào đây. */
+const ALL_PALACES = [PORT_PALACE, GPO_PALACE]
 
 describe('đọc số cổng người học gõ', () => {
   it('một số', () => {
@@ -34,18 +37,20 @@ describe('đọc số cổng người học gõ', () => {
 })
 
 describe('hình gợi nhớ: mỗi phòng một hình, không phòng nào thiếu', () => {
-  it('15 phòng của cung điện Module 5 đều có hình', () => {
-    const missing = PORT_PALACE.rooms.filter((r) => !hasRoomGlyph(r.imageId)).map((r) => r.id)
-    expect(missing).toEqual([])
+  it('mọi phòng của mọi tòa nhà đều có hình', () => {
+    for (const palace of ALL_PALACES) {
+      const missing = palace.rooms.filter((r) => !hasRoomGlyph(r.imageId)).map((r) => r.id)
+      expect(missing, `${palace.id}: phòng thiếu hình`).toEqual([])
+    }
   })
 
-  it('không hai phòng nào dùng chung một hình', () => {
-    const used = PORT_PALACE.rooms.map((r) => r.imageId)
+  it('không hai phòng nào dùng chung một hình (kể cả khác tòa)', () => {
+    const used = ALL_PALACES.flatMap((p) => p.rooms.map((r) => r.imageId))
     expect(new Set(used).size).toBe(used.length)
   })
 
   it('registry không chứa hình thừa — hình nào cũng thuộc về một phòng', () => {
-    const used = new Set(PORT_PALACE.rooms.map((r) => r.imageId))
+    const used = new Set(ALL_PALACES.flatMap((p) => p.rooms.map((r) => r.imageId)))
     expect(roomGlyphIds().filter((id) => !used.has(id))).toEqual([])
   })
 })

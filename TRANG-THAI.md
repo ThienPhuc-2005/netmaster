@@ -1,16 +1,17 @@
-# Trạng thái dự án — NetMaster (Phase 1 + 2 xong; Phase 3 đang khối 8.3)
+# Trạng thái dự án — NetMaster (Phase 1 + 2 xong; Phase 3 đang khối 8.4)
 
-Cập nhật: 2026-08-06 tối (muộn). File này chỉ để nắm nhanh tình hình khi
+Cập nhật: 2026-08-06 đêm. File này chỉ để nắm nhanh tình hình khi
 mở lại dự án. Nguồn chân lý vẫn là `SPEC-APP-HOC-MANG.md`; luật làm việc
 ở `CLAUDE.md`; nội dung bài đọc duyệt ở `REVIEW-NOI-DUNG.md`.
 
 ## MỞ PHIÊN MỚI THÌ ĐỌC ĐÂY TRƯỚC
 
 **Đang đứng đâu:** Phase 1 + Phase 2 xong hẳn (chi tiết bên dưới).
-Phase 3 hạng mục (8) đang dở: khối 8.1 + 8.2 XONG; **việc kế tiếp là
-khối 8.3 — Module 9 ⭐ (AD DS/GPO)** (bảng khối ở mục Phase 3 dưới).
-Kế hoạch 5 khối của hạng mục (8) đã được người dùng duyệt, ba quyết định
-đã chốt — KHÔNG hỏi lại, không đảo lại.
+Phase 3 hạng mục (8) đang dở: khối 8.1 + 8.2 + 8.3 XONG; **việc kế tiếp
+là khối 8.4 — Module 10 (VPC/Zero Trust, contrast cases với on-prem)**,
+rồi 8.5 — DoD + kiểm browser + tài liệu. Kế hoạch 5 khối của hạng mục
+(8) đã được người dùng duyệt, ba quyết định đã chốt — KHÔNG hỏi lại,
+không đảo lại.
 
 **Việc đang treo (không chặn code):**
 
@@ -27,15 +28,16 @@ Kế hoạch 5 khối của hạng mục (8) đã được người dùng duyệ
 2. **Buổi test người thật** (`KICH-BAN-TEST.md`) — cần người, không code
    được.
 
-**Khối 8.3 cần làm gì (việc kế tiếp):** Module 9 ⭐ (AD DS/GPO): cung
-điện GPO dùng `GPO_PALACE` trong `tests/fixtures/palaceFixture.ts` làm
-hình mẫu (4 tầng × 1 phòng, keyStyle 'text', đã có test); cần vẽ 4 hình
-`gpo-house-rules`/`gpo-office-floor`/`gpo-company-flag`/`gpo-department-door`
-vào `RoomGlyph` (registry KHÔNG có hình dự phòng — thiếu là test đỏ);
-worked example fading 0→1→2 rõ nhất app; khai `vmLab` (schema + store
-`toggleVmLabStep` đã sẵn từ 8.1, còn thiếu UI hiển thị checklist — làm
-trong 8.3). Rồi 8.4 — Module 10 (contrast cases cloud ↔ on-prem), 8.5 —
-DoD + browser + tài liệu.
+**Khối 8.4 cần làm gì (việc kế tiếp):** viết `content/modules/module-10.json`
+— Module 10 "Cloud Networking và Zero Trust", module cuối của Phần C có
+nội dung trong spec. Spec đòi: VPC/VNet, security group, VPN site-to-site
+vs client, Zero Trust ("không tin ai mặc định"), identity là biên giới
+mới, sơ lược Entra ID hybrid; kỹ thuật đặc thù là **contrast cases** —
+mỗi khái niệm cloud đặt cạnh khái niệm on-prem tương ứng đã học (VPC ↔
+VLAN/subnet Module 3-4, security group ↔ firewall Module 7, Entra ID ↔
+AD DS Module 9). Kèm hình SVG mới trong ConceptVisual (đo getBBox trên
+/design). Xong thì content:review, cập nhật file này, commit push. Sau
+đó 8.5 — đối chiếu DoD toàn Phase 3 + kiểm browser + tài liệu.
 
 ## Đang ở đâu
 
@@ -420,7 +422,7 @@ khai trong JSON module, tick persist, **không XP**.
 |------|----------|-----------|
 | 8.1 | Tổng quát hóa cung điện + schema/store checklist VMware | Xong |
 | 8.2 | Nội dung Module 8 (Wi-Fi, WPA, IPv6/SLAAC — interleaving IPv4↔IPv6) | Xong |
-| 8.3 | Nội dung Module 9 ⭐ (AD DS/GPO, cung điện LSDOU, fading đậm, checklist VMware) | Chưa |
+| 8.3 | Nội dung Module 9 ⭐ (AD DS/GPO, cung điện LSDOU, fading đậm, checklist VMware) | Xong |
 | 8.4 | Nội dung Module 10 (VPC/Zero Trust — contrast cases với on-prem) | Chưa |
 | 8.5 | DoD + kiểm browser + tài liệu | Chưa |
 
@@ -470,6 +472,44 @@ khai trong JSON module, tick persist, **không XP**.
   8 module. Kiểm browser bằng hồ sơ mới: trang Học liệt kê Module 8 đủ
   5 chặng (khóa tuần tự), deep-link `/bai/m8-bai-1` đi được: hook → đoán
   thử chấm + giải thích → màn dạy hiện hình mới + "Đào sâu hơn".
+- Deploy Pages đã HỒI hẳn phía GitHub: run của khối 8.2 xanh cả build
+  lẫn deploy — bản live đang có đủ Module 1-8.
+
+**Khối 8.3 đã làm gì** (Module 9 ⭐ — module trọng điểm của Phần C):
+- `content/modules/module-09.json` — 5 chặng, 5 bài, 8 khái niệm, bài
+  thi 9 câu. Bài 1 domain + DC (nối thẳng về phòng 389/636 cung điện
+  M5), bài 2 user/group vs OU (cặp chống nhầm "một OU, nhiều group"),
+  bài 3 GPO (bẫy chữ nghĩa "tên có Group nhưng không treo vào group"),
+  bài 4 LSDOU + cung điện, bài 5 kế thừa/Block/Enforced + gpupdate/
+  gpresult.
+- **Cung điện GPO** — tòa 4 tầng × 1 phòng, keyStyle 'text' (đúng
+  phương án A đã chốt, nội dung lấy từ hình mẫu `GPO_PALACE`): đi xem ở
+  bước Dạy bài 4, đi lại từ trí nhớ ở bước Nhớ lại, bài thi kết bằng
+  palace-walk phủ đủ 4 phòng. 4 hình mới trong `RoomGlyph`: bảng nội
+  quy / bảng tin / lá cờ / cửa phòng ban.
+- **Worked example fading 0→1→2 trên ba bài GPO liên tiếp** đúng câu
+  spec ("xem mẫu đầy đủ → điền chỗ trống → tự cấu hình từ yêu cầu
+  suông"): bài 3 fading 0 kèm ví dụ treo GPO từ A-Z, bài 4 fading 1
+  (điền tầng thiếu), bài 5 fading 2 (yêu cầu suông "cấm USB phòng Kế
+  toán"). `content.test.ts` khóa cả chuỗi này + cấu trúc tòa 4×1 + luật
+  "Module 9 phải có vmLab".
+- **Checklist lab VMware có UI**: thẻ trong ModuleCard (trang Học) khi
+  module mở — 8 bước dựng miền thật (cài Server → thăng DC → OU/user →
+  join client → treo GPO → gpupdate/gpresult), tick persist vào
+  `vmLabDone`, đếm "x/8 bước", KHÔNG cộng XP (đã kiểm: xpTotal đứng
+  nguyên khi tick). 2 chuỗi UI-chrome mới vào vi.json + en.json.
+- `render-content-review.mjs` học tả `vmLab` — bản duyệt không được
+  nuốt im lặng nội dung người học nhìn thấy (cùng luật với câu hỏi
+  kind lạ ở khối 2.1).
+- `parsePorts.test.ts` nâng cấp: bộ ba test hình gợi nhớ giờ quét MỌI
+  tòa nhà (Port + GPO) — mỗi phòng một hình, không hình thừa, không
+  hình trùng xuyên tòa.
+- 744/744 test xanh (+3), typecheck sạch, build qua, content:review
+  render 9 module. Kiểm browser: đo getBBox 93 hình khái niệm — 0 tràn;
+  đi trọn bài m9-bai-4 (tour 4 tầng, bản đồ lật đúng nhịp, điền "site"
+  được chấm, chuyến đi lại từ trí nhớ gõ "local"/"may cuc bo" không dấu
+  vẫn "Chuẩn luôn!", đi trọn 4 tầng đạt); checklist VMware tick được,
+  persist, XP không đổi.
 
 ## Lệnh hay dùng
 

@@ -164,6 +164,42 @@ const REGISTRY: Record<string, GlyphFn> = {
       <path d="M60 41 46 55" {...stroke} strokeWidth={1.5} />
     </Glyph>
   ),
+  // Tấm bảng nội quy kẹp giấy — GPO bậc Local (tòa nhà LSDOU).
+  'gpo-house-rules': (label) => (
+    <Glyph label={label}>
+      <rect x="26" y="20" width="44" height="58" rx="4" {...stroke} />
+      <path d="M40 20 v-4 h16 v4" {...stroke} strokeWidth={1.5} />
+      <rect x="40" y="14" width="16" height="10" rx="2" {...stroke} strokeWidth={1.5} />
+      <path d="M34 38 h28 M34 48 h28 M34 58 h18" {...stroke} strokeWidth={1.5} />
+    </Glyph>
+  ),
+  // Bảng tin đứng hai chân của tòa văn phòng — GPO bậc Site.
+  'gpo-office-floor': (label) => (
+    <Glyph label={label}>
+      <rect x="20" y="22" width="56" height="38" rx="3" {...stroke} />
+      <path d="M30 60 24 80 M66 60 72 80" {...stroke} />
+      <rect x="26" y="30" width="20" height="14" rx="1" {...stroke} strokeWidth={1.5} />
+      <path d="M52 32 h16 M52 40 h16 M52 48 h10" {...stroke} strokeWidth={1.5} />
+    </Glyph>
+  ),
+  // Lá cờ công ty tung bay trên cột — GPO bậc Domain.
+  'gpo-company-flag': (label) => (
+    <Glyph label={label}>
+      <path d="M34 80 V16" {...stroke} />
+      <path d="M34 20 C48 14 56 26 70 20 V44 C56 50 48 38 34 44 z" {...stroke} />
+      <path d="M26 80 h16" {...stroke} strokeWidth={1.5} />
+      <circle cx="34" cy="14" r="2.5" fill="currentColor" />
+    </Glyph>
+  ),
+  // Cửa phòng ban có biển tên và tay nắm — GPO bậc OU.
+  'gpo-department-door': (label) => (
+    <Glyph label={label}>
+      <path d="M28 80 V22 a6 6 0 0 1 6 -6 h28 a6 6 0 0 1 6 6 v58" {...stroke} />
+      <rect x="38" y="28" width="20" height="10" rx="2" {...stroke} strokeWidth={1.5} />
+      <circle cx="58" cy="54" r="2.5" fill="currentColor" />
+      <path d="M18 80 h60" {...stroke} />
+    </Glyph>
+  ),
 }
 
 export function hasRoomGlyph(imageId: string): boolean {

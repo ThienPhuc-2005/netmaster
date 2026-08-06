@@ -1,6 +1,6 @@
-# REVIEW NỘI DUNG — Module 1-8 (Phần A+B+C)
+# REVIEW NỘI DUNG — Module 1-9 (Phần A+B+C)
 
-> Sinh tự động từ `content/modules/module-01.json`, `content/modules/module-02.json`, `content/modules/module-03.json`, `content/modules/module-04.json`, `content/modules/module-05.json`, `content/modules/module-06.json`, `content/modules/module-07.json`, `content/modules/module-08.json` bằng `npm run content:review`.
+> Sinh tự động từ `content/modules/module-01.json`, `content/modules/module-02.json`, `content/modules/module-03.json`, `content/modules/module-04.json`, `content/modules/module-05.json`, `content/modules/module-06.json`, `content/modules/module-07.json`, `content/modules/module-08.json`, `content/modules/module-09.json` bằng `npm run content:review`.
 > Đây là bản để ĐỌC DUYỆT; muốn sửa thì sửa file JSON rồi render lại.
 
 ## Mạng là gì? — Câu chuyện bưu điện `module-1`
@@ -2422,3 +2422,322 @@ Phần C · 5 chặng · 5 bài · 10 khái niệm
 - **Đề:** Máy bạn đang mang đồng thời 192.168.1.10 và 2001:db8::5. Tình trạng này gọi là gì?
   - **Dạng:** trắc nghiệm · **Dual-stack — chạy song song hai hệ, ưu tiên IPv6 khi đích có** ✓ / Double NAT — hai lớp đổi địa chỉ / Link-local — hai biệt danh trong phòng
   - **Vì sao:** Dual-stack: hai biển số song song trên một card mạng. Double NAT (Module 7) là chuyện khác hẳn — hai lớp ĐỔI địa chỉ IPv4 lồng nhau.
+
+## Windows Server — AD DS và GPO `module-9`
+
+Phần C · 5 chặng · 5 bài · 8 khái niệm
+
+**Chặng:** Làng có luật (m9-bai-1) → Xếp cư dân (m9-bai-2) → Treo bộ luật (m9-bai-3) → Leo tòa LSDOU (m9-bai-4) → Phân xử và soi luật (m9-bai-5)
+
+### Cung điện ký ức: Tòa nhà 4 tầng LSDOU `m9-cung-dien-gpo` (4 phòng)
+
+- `m9-r-local` — tầng 1 phòng 1 · Local · chính máy đó · hình `gpo-house-rules` — Tầng trệt Local: tấm bảng nội quy dán ngay cửa nhà — luật của riêng máy đó, chưa ai ngoài nhìn thấy.
+- `m9-r-site` — tầng 2 phòng 1 · Site · cả văn phòng một chỗ · hình `gpo-office-floor` — Tầng hai Site: bảng tin của cả tòa văn phòng — máy nào ngồi trong tòa này đều phải đọc.
+- `m9-r-domain` — tầng 3 phòng 1 · Domain · toàn công ty · hình `gpo-company-flag` — Tầng ba Domain: lá cờ công ty treo giữa sảnh — luật chung cho mọi máy đã gia nhập miền.
+- `m9-r-ou` — tầng 4 phòng 1 · OU · từng phòng ban · hình `gpo-department-door` — Tầng nóc OU: cửa từng phòng ban có luật riêng — áp SAU CÙNG nên thắng hết các tầng dưới.
+
+### Checklist lab VMware: Lab thật: dựng làng AD trên VMware (8 bước, không XP)
+
+Song song với module này, hãy dựng một miền thật trên máy bạn — AD chỉ THẬT khi tự tay bạn thăng máy chủ lên DC. App chỉ theo dõi tiến độ; việc thật diễn ra ngoài app nên không tính XP.
+
+1. Tạo máy ảo Windows Server trên VMware Workstation (2 CPU, 4 GB RAM, 60 GB đĩa) và cài xong hệ điều hành. `m9-vm-1`
+2. Đặt IP tĩnh cho máy chủ, đổi tên máy thành DC01, khởi động lại. `m9-vm-2`
+3. Thêm role Active Directory Domain Services, thăng máy lên Domain Controller với miền mới (ví dụ lab.local). `m9-vm-3`
+4. Tạo OU "KeToan" và một user thử nằm trong OU đó (ví dụ an.nguyen). `m9-vm-4`
+5. Tạo máy ảo Windows client, trỏ DNS về địa chỉ của DC01 rồi join miền. `m9-vm-5`
+6. Tạo GPO đặt hình nền chung (hoặc cấm USB), treo vào OU KeToan. `m9-vm-6`
+7. Trên client, đăng nhập bằng user thử, chạy gpupdate /force và xác nhận luật đã ăn. `m9-vm-7`
+8. Chạy gpresult /r, đối chiếu danh sách GPO đang áp với những gì bạn đã treo. `m9-vm-8`
+
+### Bài: Nhận chức trưởng làng máy `m9-bai-1`
+
+**1 · Khởi động (hook):** Công ty có 200 máy. Sáng mai mọi máy phải theo luật mật khẩu mới. Chẳng lẽ ôm bàn phím đi từng bàn? Phải có ai đó là "trưởng làng" của cả 200 máy — bằng cách nào?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử nhé: để một người quản được 200 máy như một, các máy phải làm gì?
+  - **Dạng:** trắc nghiệm · **Cùng gia nhập một miền — chịu chung bộ luật từ máy chủ trung tâm** ✓ / Cài chung một phần mềm diệt virus / Nối chung vào một switch
+  - **Vì sao:** Đó là domain (miền): các máy ký giao kèo vào chung một làng, và từ đó luật chỉ cần sửa MỘT chỗ trên máy chủ.
+
+**3 · Khám phá (teach):**
+- *[m9-domain]* Domain (miền) là "làng có luật" của các máy Windows: máy nào GIA NHẬP miền là ký giao kèo chịu luật chung, và tài khoản đăng nhập từ đó là tài khoản của LÀNG chứ không của riêng máy. Trước khi gia nhập, mỗi máy là một nhà riêng tự quản — muốn gì phải tới từng bàn.
+  - **Đào sâu hơn:** Tên miền nội bộ thường dạng lab.local hay corp.congty.vn — nhìn giống tên web nhưng vai khác: nó là TÊN của làng, do DNS nội bộ phân giải. Vì thế dựng AD bao giờ cũng đi kèm máy chủ DNS — đó là lý do bạn phải học DNS (Module 6) trước khi bước vào đây.
+- *[m9-dc]* Domain Controller (DC) là máy chủ giữ SỔ CÁI của làng: danh sách người, máy, nhóm, luật. Bạn đăng nhập ở bất kỳ máy nào trong miền, máy đó đều chạy tới hỏi DC: "người này có thật không, mật khẩu đúng không?". Cuốn sổ ấy chính là sổ hộ khẩu bạn đã gặp — phòng 389 (LDAP) của tòa nhà 15 phòng.
+  - **Đào sâu hơn:** Làng nghiêm túc không bao giờ chỉ có MỘT DC: sổ cái được nhân bản sang DC thứ hai, lỡ một máy hỏng thì cả làng vẫn đăng nhập được. Sổ tra qua LDAP (389), bản niêm phong qua LDAPS (636) — đúng hai phòng tầng 5 của cung điện Module 5.
+
+**4 · Thử tay (practice, fading 0):**
+- **Ví dụ giải sẵn:** Ví dụ giải sẵn — đọc một miền đang chạy: công ty dùng miền lab.local. (1) Máy chủ DC01 giữ sổ cái và trả lời mọi lượt đăng nhập. (2) 200 máy nhân viên đã join miền — góc đăng nhập ghi LAB\ten-nhan-vien thay vì tên máy. (3) Muốn đổi luật mật khẩu: sửa MỘT chỗ trên DC01, cả 200 máy tự nhận. Đọc lại bước (3): sửa một chỗ, áp mọi nơi — đó là toàn bộ lý do miền tồn tại.
+- **Đề:** Máy đã gia nhập miền thì tài khoản đăng nhập là của ai?
+  - **Dạng:** trắc nghiệm · **Của miền — DC xác thực, ngồi máy nào trong miền cũng đăng nhập được** ✓ / Của riêng máy đó, như máy ở nhà / Của nhà cung cấp Internet
+  - **Chủ đề gợi ý (tầng 1):** ai là người đối chiếu mật khẩu
+  - **Gợi ý (tầng 2):** Khi bạn gõ mật khẩu, máy trước mặt không tự quyết — nó chạy đi hỏi ai đó.
+  - **Lời giải (tầng 3):** Tài khoản của MIỀN: DC đối chiếu mật khẩu, nên một tài khoản dùng được ở mọi máy đã gia nhập miền.
+- **Đề:** Máy chủ giữ sổ cái của miền và xác thực mọi lượt đăng nhập gọi là gì? (viết tắt được)
+  - **Dạng:** gõ tay · **Chấp nhận:** domain controller | dc
+  - **Chủ đề gợi ý (tầng 1):** trưởng làng giữ sổ
+  - **Gợi ý (tầng 2):** Hai chữ cái viết tắt — chữ đầu là Domain.
+  - **Lời giải (tầng 3):** Domain Controller (DC) — giữ sổ cái AD và gác cổng mọi lượt đăng nhập của miền.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: sổ cái của miền được tra qua giao thức nào — phòng 389 của tòa nhà 15 phòng?
+  - **Dạng:** gõ tay · **Chấp nhận:** ldap
+  - **Chủ đề gợi ý (tầng 1):** sổ hộ khẩu ở tầng 5 cung điện
+  - **Gợi ý (tầng 2):** Bốn chữ cái, phòng 389 — cuốn sổ ghi ai làm gì, thuộc phòng ban nào.
+  - **Lời giải (tầng 3):** LDAP — giao thức tra sổ cái; bản mã hóa là LDAPS ở phòng 636. Cung điện Module 5 giờ thành kiến thức đi làm.
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao công ty 200 máy cần miền, còn nhà bạn 5 thiết bị thì không?
+  - **Nhóm ý cần chạm:** [một chỗ, mot cho, trung tâm, trung tam, sửa một lần, sua mot lan, tập trung, tap trung] · [từng máy, tung may, từng bàn, tung ban, ít máy, it may, tự quản, tu quan]
+  - **Trả lời mẫu:** Với 200 máy, sửa từng bàn là bất khả thi — miền cho phép sửa một chỗ trên DC rồi mọi máy tự theo. Nhà 5 thiết bị thì đi từng máy còn nhanh hơn dựng cả một máy chủ để quản.
+
+**6 · Tổng kết:**
+- Domain là làng có luật: máy gia nhập là chịu luật chung, tài khoản là của làng.
+- DC giữ sổ cái và xác thực mọi lượt đăng nhập — sổ tra qua LDAP 389.
+- Sửa một chỗ, áp mọi nơi — toàn bộ lý do miền tồn tại.
+- *Úp mở bài sau:* Có làng rồi thì phải xếp CƯ DÂN: nhân viên mới vào phòng Kế toán cần đúng 37 quyền như đồng nghiệp. Gõ tay 37 lần, hay có cách một lần?
+
+### Bài: Xếp cư dân vào đúng ngăn `m9-bai-2`
+
+**1 · Khởi động (hook):** Nhân viên mới vào phòng Kế toán, cần đúng 37 quyền y như đồng nghiệp cùng phòng. Cấp tay từng quyền thì vừa lâu vừa sót. Người quản trị giỏi chỉ làm MỘT thao tác — thao tác gì?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử nhé: cách cấp quyền khôn ngoan trong miền là cấp cho ai?
+  - **Dạng:** trắc nghiệm · **Cho NHÓM — ai được thả vào nhóm là tự có đủ quyền của nhóm** ✓ / Cho từng người một, chắc chắn nhất / Cho từng máy tính
+  - **Vì sao:** Quyền cấp cho nhóm một lần duy nhất; người vào nhóm tự có, người rời nhóm tự mất — không sót, không thừa, kiểm toán được.
+
+**3 · Khám phá (teach):**
+- *[m9-user-group]* Trong miền, mỗi người một tài khoản (user) — nhưng quyền thì KHÔNG cấp cho từng người. Ta tạo NHÓM (group) "KeToan", cấp 37 quyền cho nhóm đúng một lần; nhân viên mới chỉ cần được thả vào nhóm là mang đủ quyền. Người chuyển phòng? Rút khỏi nhóm — mọi quyền tự rơi theo.
+  - **Đào sâu hơn:** Cấp quyền thẳng cho cá nhân là món nợ kỹ thuật: nửa năm sau không ai còn nhớ ai đang giữ gì, kiểm toán chỉ còn cách dò từng dòng. Nguyên tắc nhà nghề: tài khoản → nhóm → quyền, không bao giờ đi tắt.
+- *[m9-ou]* OU (Organizational Unit) là NGĂN KÉO của cây thư mục miền: xếp người và máy theo phòng ban — KeToan, NhanSu, VanHanh. Đừng nhầm với group: GROUP để CẤP QUYỀN, còn OU để XẾP CHỖ và TREO LUẬT — bài sau bạn sẽ treo nguyên một bộ luật lên đúng một ngăn kéo.
+  - **Đào sâu hơn:** Cặp so sánh chống nhầm: một người NẰM trong đúng MỘT OU (như một hồ sơ nằm một ngăn), nhưng THAM GIA được NHIỀU group (như một người vào nhiều câu lạc bộ). Nhớ được cặp này là hết lẫn hai khái niệm.
+
+**4 · Thử tay (practice, fading 1):**
+- **Đề:** Nhân viên mới vào phòng Kế toán. Cách chuẩn để họ có đủ quyền như đồng nghiệp?
+  - **Dạng:** trắc nghiệm · **Thả vào group KeToan — quyền đi theo nhóm** ✓ / Cấp lại từng quyền một cho chắc / Cho dùng chung tài khoản của đồng nghiệp
+  - **Chủ đề gợi ý (tầng 1):** tấm thẻ câu lạc bộ
+  - **Gợi ý (tầng 2):** Một thao tác duy nhất, và quyền không bao giờ sót — vì quyền chưa từng cấp cho cá nhân.
+  - **Lời giải (tầng 3):** Thả vào group KeToan. Quyền đã cấp cho nhóm từ trước, thành viên mới tự mang đủ 37 quyền.
+- **Đề:** Điền chỗ trống: GROUP để cấp ___, còn OU để xếp chỗ và treo luật.
+  - **Dạng:** gõ tay · **Chấp nhận:** quyền | quyen | permission
+  - **Chủ đề gợi ý (tầng 1):** thứ đi theo tấm thẻ câu lạc bộ
+  - **Gợi ý (tầng 2):** Thứ mà nhân viên mới cần đúng 37 cái.
+  - **Lời giải (tầng 3):** QUYỀN — group là đơn vị cấp quyền; OU là đơn vị xếp chỗ và treo luật (GPO).
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: cái ngăn kéo xếp người và máy theo phòng ban trong cây thư mục miền gọi là gì? (viết tắt được)
+  - **Dạng:** gõ tay · **Chấp nhận:** ou | organizational unit | đơn vị tổ chức | don vi to chuc
+  - **Chủ đề gợi ý (tầng 1):** ngăn kéo hồ sơ, không phải câu lạc bộ
+  - **Gợi ý (tầng 2):** Hai chữ cái — chữ đầu là Organizational.
+  - **Lời giải (tầng 3):** OU — Organizational Unit: ngăn kéo phòng ban, mỗi hồ sơ nằm đúng một ngăn, và luật thì dán lên ngăn.
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao cấp quyền cho nhóm lại hơn hẳn cấp cho từng người?
+  - **Nhóm ý cần chạm:** [một lần, mot lan, vào nhóm, vao nhom, tự có, tu co, theo nhóm, theo nhom] · [rời, roi nhom, rút, rut khoi, thu hồi, thu hoi, chuyển phòng, chuyen phong, kiểm toán, kiem toan]
+  - **Trả lời mẫu:** Quyền cấp cho nhóm đúng một lần: ai vào nhóm tự có đủ, ai rời nhóm tự mất sạch — không sót khi vào, không quên thu hồi khi đi, và kiểm toán chỉ cần đọc danh sách nhóm.
+
+**6 · Tổng kết:**
+- User là tài khoản của làng; quyền cấp cho GROUP, không cấp cho từng người.
+- OU là ngăn kéo phòng ban — để xếp chỗ và treo luật, đừng nhầm với group.
+- Một người nằm một OU, nhưng tham gia được nhiều group.
+- *Úp mở bài sau:* Ngăn kéo xếp xong rồi. Sáng thứ hai, 200 máy cùng đổi hình nền thành logo công ty — mà không ai chạm vào máy nào. Đêm qua đã xảy ra chuyện gì?
+
+### Bài: Treo bộ luật đầu tiên lên làng `m9-bai-3`
+
+**1 · Khởi động (hook):** Sáng thứ hai, cả 200 máy cùng đổi hình nền thành logo công ty — không ai đi từng bàn, không ai cài gì lên máy nào. Đêm qua, chuyện gì đã xảy ra trên máy chủ?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử nhé: GPO là gì?
+  - **Dạng:** trắc nghiệm · **Một TẬP LUẬT đặt trên máy chủ, máy trong miền tự tải về áp dụng** ✓ / Một phần mềm phải cài lên từng máy / Một loại bản ghi DNS
+  - **Vì sao:** GPO — Group Policy Object: bộ luật viết một lần ở trung tâm; máy trong phạm vi được treo cứ đến hẹn tự tải về áp, không cần ai đụng vào máy.
+
+**3 · Khám phá (teach):**
+- *[m9-gpo]* GPO (Group Policy Object) là một TẬP LUẬT viết một lần trên máy chủ: hình nền, luật mật khẩu, cấm USB, chặn cài phần mềm… Nhưng GPO tự nó chưa làm gì cả — nó chỉ CÓ TÁC DỤNG khi được TREO (link) vào một chỗ: cả miền, một site, hay một OU. Máy trong chỗ đó cứ đến hẹn lại tải luật về và tự áp.
+  - **Đào sâu hơn:** Tên có chữ "Group" nhưng GPO KHÔNG treo vào group được — chỗ treo chỉ có Site, Domain, OU. Đây là cái bẫy chữ nghĩa nổi tiếng nhất của AD, và là lý do bài trước bắt bạn tách bạch group với OU. Máy client tự làm mới luật quãng mỗi 90 phút — muốn ngay lập tức thì có một câu lệnh, bài cuối sẽ đưa.
+
+**4 · Thử tay (practice, fading 0):**
+- **Ví dụ giải sẵn:** Ví dụ giải sẵn — treo một GPO từ A tới Z: (1) Trên DC mở Group Policy Management. (2) Tạo GPO mới, đặt tên HinhNen-CongTy. (3) Mở GPO, sửa luật: User Configuration → Desktop → Wallpaper, trỏ về ảnh logo chung. (4) TREO GPO vào OU KeToan. (5) Chờ máy làm mới luật — hình nền cả phòng đổi. Đọc lại bước (4) lần nữa: quên treo thì luật nằm chết trên giấy, và treo Ở ĐÂU quyết định AI phải theo.
+- **Đề:** Viết xong một GPO thật đẹp nhưng chưa treo (link) vào đâu — chuyện gì xảy ra?
+  - **Dạng:** trắc nghiệm · **Không gì cả — GPO chỉ có tác dụng khi được treo vào miền, site hoặc OU** ✓ / Cả miền lập tức áp luật / Chỉ máy chủ DC áp luật
+  - **Chủ đề gợi ý (tầng 1):** bước (4) của ví dụ giải sẵn
+  - **Gợi ý (tầng 2):** Tờ cáo thị viết xong mà cất trong ngăn kéo thì dân làng đọc kiểu gì?
+  - **Lời giải (tầng 3):** Không gì xảy ra: GPO phải được TREO vào một chỗ (Site/Domain/OU) thì máy trong chỗ đó mới tải về áp.
+- **Đề:** Muốn luật chỉ áp cho riêng phòng Kế toán, bạn treo GPO vào đâu? (viết tắt được)
+  - **Dạng:** gõ tay · **Chấp nhận:** ou | ou ketoan | ou kế toán | ou ke toan | organizational unit
+  - **Chủ đề gợi ý (tầng 1):** ngăn kéo của phòng đó
+  - **Gợi ý (tầng 2):** Không phải group — chỗ treo là cái ngăn kéo chứa người và máy của phòng.
+  - **Lời giải (tầng 3):** Treo vào OU KeToan — phạm vi treo quyết định ai phải theo, và OU là mức khoanh vùng theo phòng ban.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: GPO treo được vào những chỗ nào?
+  - **Dạng:** trắc nghiệm · **Site, Domain, OU** ✓ / Group / Từng tệp tin trên máy
+  - **Chủ đề gợi ý (tầng 1):** cái bẫy nằm ngay trong tên GPO
+  - **Gợi ý (tầng 2):** Tên có chữ Group nhưng group KHÔNG nằm trong danh sách chỗ treo.
+  - **Lời giải (tầng 3):** Site, Domain, OU — ba loại chỗ treo duy nhất. GPO không treo vào group được, dù tên nó có chữ Group.
+- **Đề:** Vẫn từ trí nhớ: tập luật viết một lần trên máy chủ, máy trong miền tự tải về áp, gọi là gì? (viết tắt được)
+  - **Dạng:** gõ tay · **Chấp nhận:** gpo | group policy | group policy object
+  - **Chủ đề gợi ý (tầng 1):** tờ cáo thị của đình làng
+  - **Gợi ý (tầng 2):** Ba chữ cái, chữ cuối là Object.
+  - **Lời giải (tầng 3):** GPO — Group Policy Object: viết một lần, treo đúng chỗ, máy tự áp.
+- **Tự giải thích:** Giải thích bằng lời của bạn: GPO hơn gì việc đi từng máy chỉnh tay?
+  - **Nhóm ý cần chạm:** [một lần, mot lan, trung tâm, trung tam, tự tải, tu tai, tự áp, tu ap] · [treo, link, phạm vi, pham vi, chỗ nào, cho nao, ai phải theo, ai phai theo]
+  - **Trả lời mẫu:** Viết một lần ở trung tâm rồi máy tự tải về áp — 200 máy hay 2000 máy cũng chỉ một thao tác. Và nhờ chuyện treo theo phạm vi, mình chọn được chính xác ai phải theo luật nào thay vì áp bừa cả công ty.
+
+**6 · Tổng kết:**
+- GPO là tập luật viết một lần trên máy chủ; máy trong miền tự tải về áp.
+- GPO chỉ có tác dụng khi được TREO — vào Site, Domain hoặc OU, không vào group.
+- Treo ở đâu quyết định ai phải theo — phạm vi là một nửa của bộ luật.
+- *Úp mở bài sau:* Nhưng máy bạn không chỉ nhận luật từ một chỗ: chính nó, tòa nhà, công ty, phòng ban — BỐN tầng luật cùng đổ xuống. Bốn tầng cãi nhau thì ai thắng? Bài sau leo tòa nhà.
+
+### Bài: Leo tòa nhà bốn tầng LSDOU `m9-bai-4`
+
+**1 · Khởi động (hook):** Một máy trong phòng Kế toán nhận luật từ BỐN nơi cùng lúc: của chính nó, của văn phòng, của công ty, của phòng ban. Bốn luật cãi nhau về cùng một thứ — máy nghe ai?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử nhé: máy áp các bậc GPO theo thứ tự nào?
+  - **Dạng:** trắc nghiệm · **Local → Site → Domain → OU, bậc áp sau đè lên bậc trước** ✓ / OU trước, Local sau cùng / Thứ tự ngẫu nhiên mỗi lần khởi động
+  - **Vì sao:** LSDOU — leo từ tầng trệt lên nóc. Ai nói SAU người đó thắng, nên luật OU (gần người dùng nhất) là tiếng nói cuối cùng.
+
+**3 · Khám phá (teach):**
+- *[m9-lsdou]* Thứ tự áp GPO là một TÒA NHÀ BỐN TẦNG, leo từ trệt lên nóc: Local (luật riêng máy) → Site (cả văn phòng một chỗ) → Domain (toàn công ty) → OU (từng phòng ban). Tầng áp SAU ghi đè tầng trước, nên OU — nói cuối — thắng hết. Giờ đi thăm từng tầng; nhớ CHỖ của mỗi tầng, vì chính thứ tự là thứ phải nhớ.
+  - **Đi xem cung điện (4 phòng):**
+    - tầng 1 phòng 1 · Local · chính máy đó · hình `gpo-house-rules` — Tầng trệt Local: tấm bảng nội quy dán ngay cửa nhà — luật của riêng máy đó, chưa ai ngoài nhìn thấy.
+    - tầng 2 phòng 1 · Site · cả văn phòng một chỗ · hình `gpo-office-floor` — Tầng hai Site: bảng tin của cả tòa văn phòng — máy nào ngồi trong tòa này đều phải đọc.
+    - tầng 3 phòng 1 · Domain · toàn công ty · hình `gpo-company-flag` — Tầng ba Domain: lá cờ công ty treo giữa sảnh — luật chung cho mọi máy đã gia nhập miền.
+    - tầng 4 phòng 1 · OU · từng phòng ban · hình `gpo-department-door` — Tầng nóc OU: cửa từng phòng ban có luật riêng — áp SAU CÙNG nên thắng hết các tầng dưới.
+  - **Đào sâu hơn:** Vì sao xếp vậy? Càng lên cao, luật càng GẦN người dùng: luật phòng ban hiểu công việc của phòng hơn luật toàn công ty. Khi các OU lồng nhau, OU cha áp trước OU con — vẫn đúng tinh thần "cụ thể hơn thì nói sau".
+
+**4 · Thử tay (practice, fading 1):**
+- **Đề:** Điền tầng còn thiếu: Local → ___ → Domain → OU.
+  - **Dạng:** gõ tay · **Chấp nhận:** site
+  - **Chủ đề gợi ý (tầng 1):** tầng hai của tòa nhà
+  - **Gợi ý (tầng 2):** Bậc của "cả văn phòng một chỗ" — bảng tin của tòa nhà.
+  - **Lời giải (tầng 3):** Site — bậc áp cho mọi máy ngồi cùng một chỗ vật lý, đứng giữa Local và Domain.
+- **Đề:** GPO Domain đặt hình nền XANH, GPO treo ở OU KeToan đặt hình nền ĐỎ. Máy phòng Kế toán hiện nền màu gì?
+  - **Dạng:** trắc nghiệm · **Đỏ — OU áp sau nên đè lên luật Domain** ✓ / Xanh — Domain to hơn thì thắng / Máy báo xung đột và giữ nền cũ
+  - **Chủ đề gợi ý (tầng 1):** ai nói cuối trong tòa nhà
+  - **Gợi ý (tầng 2):** Leo tòa nhà từ trệt lên nóc — tầng nào ở trên nói sau?
+  - **Lời giải (tầng 3):** Đỏ. OU là bậc áp cuối cùng nên khi cãi nhau, luật OU đè luật Domain (trừ khi Domain dùng vũ khí đặc biệt — bài sau).
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Đóng sách lại và leo tòa nhà từ trí nhớ: đứng ở mỗi tầng, nói xem đó là bậc GPO nào và luật của nó áp cho ai.
+  - **Dạng:** đi lại cung điện từ trí nhớ (4 phòng)
+    - tầng 1 phòng 1 · Local · chính máy đó · hình `gpo-house-rules` — Tầng trệt Local: tấm bảng nội quy dán ngay cửa nhà — luật của riêng máy đó, chưa ai ngoài nhìn thấy.
+    - tầng 2 phòng 1 · Site · cả văn phòng một chỗ · hình `gpo-office-floor` — Tầng hai Site: bảng tin của cả tòa văn phòng — máy nào ngồi trong tòa này đều phải đọc.
+    - tầng 3 phòng 1 · Domain · toàn công ty · hình `gpo-company-flag` — Tầng ba Domain: lá cờ công ty treo giữa sảnh — luật chung cho mọi máy đã gia nhập miền.
+    - tầng 4 phòng 1 · OU · từng phòng ban · hình `gpo-department-door` — Tầng nóc OU: cửa từng phòng ban có luật riêng — áp SAU CÙNG nên thắng hết các tầng dưới.
+  - **Chủ đề gợi ý (tầng 1):** leo từ tầng trệt lên nóc, đúng thứ tự áp luật
+  - **Gợi ý (tầng 2):** Tầng trệt là luật của riêng máy; càng lên cao luật càng gần phòng ban của người dùng.
+  - **Lời giải (tầng 3):** Local (chính máy đó) → Site (cả văn phòng một chỗ) → Domain (toàn công ty) → OU (từng phòng ban).
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao bậc OU được xếp nói CUỐI CÙNG?
+  - **Nhóm ý cần chạm:** [gần, gan nguoi dung, cụ thể, cu the, phòng ban, phong ban, hiểu việc, hieu viec] · [sau, ghi đè, ghi de, thắng, thang, cuối, cuoi, chốt, chot]
+  - **Trả lời mẫu:** Vì OU gần người dùng nhất — luật phòng ban hiểu công việc của phòng hơn luật chung toàn công ty. Xếp nó nói sau cùng nghĩa là khi cãi nhau, luật cụ thể nhất thắng.
+
+**6 · Tổng kết:**
+- LSDOU: Local → Site → Domain → OU, leo từ tầng trệt lên nóc.
+- Bậc áp sau đè bậc trước — OU nói cuối nên thắng khi cãi nhau.
+- Càng lên cao luật càng gần người dùng: cụ thể hơn thì nói sau.
+- *Úp mở bài sau:* Nhưng có tầng không muốn nhận luật từ dưới đẩy lên, và có luật đòi xuyên thủng mọi tầng. Bài cuối: hai vũ khí đối đầu — và hai câu thần chú soi xem luật đang kẹt ở đâu.
+
+### Bài: Phân xử khi các tầng cãi nhau `m9-bai-5`
+
+**1 · Khởi động (hook):** Bạn treo GPO cẩn thận rồi mà máy client vẫn trơ trơ. Luật đang kẹt ở tầng nào? Bị chặn hay chưa kịp tải? Có hai câu lệnh trả lời được — và một cặp vũ khí đang đấu nhau ở giữa tòa nhà.
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử nhé: một OU không muốn nhận luật từ trên chảy xuống thì làm gì?
+  - **Dạng:** trắc nghiệm · **Bật Block Inheritance — dựng tấm chắn chặn dòng kế thừa** ✓ / Xóa GPO của miền đi / Rút hết máy khỏi miền
+  - **Vì sao:** Block Inheritance chặn luật thừa kế từ các bậc trên — trừ những GPO được đánh dấu Enforced, thứ xuyên qua mọi tấm chắn.
+
+**3 · Khám phá (teach):**
+- *[m9-ke-thua]* Luật KẾ THỪA: GPO treo ở miền tự chảy xuống mọi OU bên dưới. OU nào không muốn nhận thì bật BLOCK INHERITANCE — dựng tấm chắn, luật trên không lọt vào nữa. Nhưng quản trị miền có vũ khí sau cùng: đánh dấu một GPO là ENFORCED — luật ấy xuyên thủng mọi tấm chắn, và thắng cả luật OU khi hai bên cãi nhau.
+  - **Đào sâu hơn:** Enforced đảo cả luật "sau thắng trước": GPO enforced của miền đè luật OU dù OU nói sau. Nó dành cho thứ không được phép có ngoại lệ — luật mật khẩu, phần mềm bảo vệ. Lạm dụng enforced thì mô hình phân quyền theo tầng thành vô nghĩa, nên người giỏi dùng nó rất dè.
+- *[m9-gpresult]* Hai câu thần chú khi luật không ăn: gpupdate /force — "áp luật mới NGAY, đừng chờ chu kỳ 90 phút"; và gpresult /r — "kê ra máy này, người này đang dính những GPO nào, cái nào bị gạt". Có gpresult, bạn không phải ĐOÁN luật kẹt ở tầng nào — tấm bảng kê nói thẳng.
+  - **Đào sâu hơn:** Trong bảng gpresult, GPO bị Block Inheritance gạt ra nằm ở mục riêng kèm lý do bị từ chối — đọc mục đó TRƯỚC khi nghi ngờ bất cứ thứ gì khác. Đây chính là thói quen "nghi đúng chặng" của bài mạng nhà (Module 7), áp sang thế giới AD.
+
+**4 · Thử tay (practice, fading 2):**
+- **Đề:** Yêu cầu suông từ sếp: "mọi máy phòng Kế toán cấm cắm USB, các phòng khác không bị ảnh hưởng". Bạn làm gì?
+  - **Dạng:** trắc nghiệm · **Tạo GPO cấm USB rồi treo vào OU KeToan** ✓ / Treo vào Domain rồi nhắn các phòng khác bỏ qua / Đi khóa cổng USB từng máy của phòng Kế toán
+  - **Chủ đề gợi ý (tầng 1):** phạm vi treo quyết định ai phải theo
+  - **Gợi ý (tầng 2):** Tự dựng lời giải từ hai bài trước: luật viết ở đâu, và khoanh vùng bằng cái gì?
+  - **Lời giải (tầng 3):** Tạo GPO cấm USB, treo vào OU KeToan — luật tự áp cho đúng phòng đó, các OU khác không dính.
+- **Đề:** Treo xong luật, muốn máy client áp NGAY để nghiệm thu — bạn gõ lệnh gì?
+  - **Dạng:** gõ tay · **Chấp nhận:** gpupdate | gpupdate /force | gpupdate/force
+  - **Chủ đề gợi ý (tầng 1):** câu thần chú giục việc
+  - **Gợi ý (tầng 2):** Lệnh bắt đầu bằng gp, kết thúc bằng update — thêm /force cho dứt khoát.
+  - **Lời giải (tầng 3):** gpupdate /force — bắt máy tải và áp toàn bộ luật ngay, không chờ chu kỳ làm mới.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: lệnh nào kê ra các GPO đang áp lên máy và người đang đăng nhập?
+  - **Dạng:** gõ tay · **Chấp nhận:** gpresult | gpresult /r | gpresult/r
+  - **Chủ đề gợi ý (tầng 1):** tấm bảng kê thay cho việc đoán
+  - **Gợi ý (tầng 2):** Ghép gp với "kết quả" tiếng Anh.
+  - **Lời giải (tầng 3):** gpresult /r — bảng kê GPO đang áp và GPO bị gạt kèm lý do; hết phải đoán luật kẹt ở đâu.
+- **Đề:** Vẫn từ trí nhớ: GPO miền gắn Enforced gặp OU bật Block Inheritance — luật nào thắng?
+  - **Dạng:** trắc nghiệm · **Enforced xuyên qua tấm chắn — luật miền thắng** ✓ / Block chặn được tất cả, kể cả Enforced / Hai luật triệt tiêu nhau
+  - **Chủ đề gợi ý (tầng 1):** dòng nước khoan thủng mái che
+  - **Gợi ý (tầng 2):** Một bên là mái che, một bên là mũi khoan — mũi khoan sinh ra để làm gì?
+  - **Lời giải (tầng 3):** Enforced thắng: nó xuyên qua Block Inheritance và đè cả luật OU khi xung đột — vũ khí sau cùng của quản trị miền.
+- **Tự giải thích:** Giải thích bằng lời của bạn: khi một luật không ăn xuống máy client, bạn lần theo thứ tự nào để tìm ra chỗ kẹt?
+  - **Nhóm ý cần chạm:** [gpresult, bảng kê, bang ke, liệt kê, liet ke, đang dính, dang dinh, bị gạt, bi gat] · [gpupdate, làm mới, lam moi, block, enforced, chặn, chan, treo, tầng, tang]
+  - **Trả lời mẫu:** Trước hết gpupdate /force để loại trừ chuyện chưa kịp tải; rồi gpresult /r xem GPO có trong bảng kê không — nếu nằm ở mục bị gạt thì đọc lý do (thường là Block Inheritance), nếu vắng hẳn thì xem lại chỗ treo. Lần theo bảng kê, không đoán mò.
+
+**6 · Tổng kết:**
+- Luật kế thừa chảy từ miền xuống; Block Inheritance dựng tấm chắn ở OU.
+- Enforced xuyên mọi tấm chắn và đè cả luật OU — dùng dè, cho thứ không có ngoại lệ.
+- gpupdate /force áp ngay; gpresult /r kê luật đang dính — lần theo bảng, không đoán.
+- *Úp mở bài sau:* Lý thuyết đủ rồi — AD chỉ THẬT khi tự tay dựng: checklist lab VMware đang chờ ở trang Học, dựng làng của riêng bạn rồi hãy vào bài thi. Module sau: đem cả mạng lên mây.
+
+### Khái niệm & flashcard (8)
+
+- **Domain** `m9-domain` — Làng có luật của các máy Windows — gia nhập là chịu luật chung
+  - Ẩn dụ: Ký giao kèo vào làng: từ nay việc làng là việc mình, sổ sách làng giữ.
+  - Thẻ ôn: *Máy "gia nhập miền" thì điều gì thay đổi?* → Nó chịu bộ luật chung của miền, và tài khoản đăng nhập là của MIỀN — DC xác thực, ngồi máy nào trong miền cũng đăng nhập được.
+- **Domain Controller** `m9-dc` — Máy chủ giữ sổ cái của miền và xác thực mọi lượt đăng nhập
+  - Ẩn dụ: Trưởng làng giữ sổ cái: ai ra vào làng cũng phải qua tay ông đối chiếu.
+  - Thẻ ôn: *Domain Controller làm hai việc gì?* → Giữ sổ cái AD (người, máy, nhóm, luật — tra qua LDAP 389) và xác thực mọi lượt đăng nhập trong miền.
+- **User và Group** `m9-user-group` — Tài khoản của miền, và nhóm để cấp quyền một lần cho nhiều người
+  - Ẩn dụ: Thẻ câu lạc bộ: có thẻ là vào được mọi phòng của câu lạc bộ, trả thẻ là hết.
+  - Thẻ ôn: *Vì sao cấp quyền cho group thay vì cho từng người?* → Cấp một lần cho nhóm: ai vào nhóm tự có, ai rời nhóm tự mất — không sót khi vào, không quên thu hồi khi đi, kiểm toán được.
+- **OU** `m9-ou` — Ngăn kéo xếp người và máy theo phòng ban — chỗ để treo GPO
+  - Ẩn dụ: Ngăn kéo hồ sơ: một hồ sơ nằm đúng một ngăn, và luật thì dán lên từng ngăn.
+  - Thẻ ôn: *OU khác group ở chỗ nào?* → OU để XẾP CHỖ và TREO LUẬT (GPO); group để CẤP QUYỀN. Một người nằm đúng một OU nhưng tham gia được nhiều group.
+- **GPO** `m9-gpo` — Tập luật viết một lần trên máy chủ, máy trong miền tự tải về áp
+  - Ẩn dụ: Tờ cáo thị dán ở đình làng: dán chỗ nào, dân chỗ đó theo.
+  - Thẻ ôn: *GPO có tác dụng từ khi nào, và treo được vào đâu?* → Từ khi được TREO (link) vào Site, Domain hoặc OU — viết xong mà không treo thì nằm chết trên giấy. Không treo vào group được, dù tên có chữ Group.
+- **Thứ tự LSDOU** `m9-lsdou` — Local → Site → Domain → OU; bậc áp sau đè bậc trước
+  - Ẩn dụ: Tòa nhà bốn tầng leo từ trệt lên nóc — người nói cuối là người chốt.
+  - Thẻ ôn: *Bốn bậc GPO áp theo thứ tự nào, và ai thắng khi cãi nhau?* → Local → Site → Domain → OU. Bậc áp SAU ghi đè bậc trước nên OU thắng — trừ khi bậc trên gắn Enforced.
+- **Kế thừa GPO** `m9-ke-thua` — Luật trên chảy xuống dưới; Block Inheritance chặn, Enforced xuyên chắn
+  - Ẩn dụ: Thác nước chảy xuống các tầng: có tầng dựng mái che, và có dòng nước khoan thủng cả mái.
+  - Thẻ ôn: *Block Inheritance gặp GPO Enforced thì sao?* → Enforced xuyên qua tấm chắn và đè cả luật OU khi xung đột — vũ khí sau cùng của quản trị miền, dùng cho thứ không được có ngoại lệ.
+- **gpupdate và gpresult** `m9-gpresult` — gpupdate /force áp luật ngay; gpresult /r kê luật đang dính máy
+  - Ẩn dụ: Một câu giục "áp luôn đi", một tấm bảng kê "đang theo những luật nào".
+  - Thẻ ôn: *Luật không ăn xuống client — hai lệnh nào cứu bạn, mỗi lệnh làm gì?* → gpupdate /force: áp toàn bộ luật ngay, không chờ chu kỳ. gpresult /r: kê GPO đang áp và GPO bị gạt kèm lý do — lần theo bảng, không đoán.
+
+### Bài kiểm tra module (9 câu, cần ≥ 85%)
+
+- **Đề:** Máy "gia nhập miền" nghĩa là gì?
+  - **Dạng:** trắc nghiệm · **Chịu bộ luật chung của miền và xác thực đăng nhập qua DC** ✓ / Cài bản Windows mới nhất / Nối vào cùng switch với máy chủ
+  - **Vì sao:** Gia nhập miền là ký giao kèo vào làng: luật chung từ máy chủ, tài khoản là của làng, DC gác cổng đăng nhập.
+- **Đề:** Máy chủ giữ sổ cái của miền và xác thực mọi lượt đăng nhập gọi là gì? (viết tắt được)
+  - **Dạng:** gõ tay · **Chấp nhận:** domain controller | dc
+  - **Vì sao:** Domain Controller — giữ sổ cái AD (tra qua LDAP 389) và gác cổng mọi lượt đăng nhập.
+- **Đề:** GROUP và OU khác nhau thế nào?
+  - **Dạng:** trắc nghiệm · **Group để cấp quyền; OU để xếp chỗ và treo GPO** ✓ / Là một thứ với hai tên gọi / OU để cấp quyền; group để treo GPO
+  - **Vì sao:** Group = thẻ câu lạc bộ (quyền); OU = ngăn kéo hồ sơ (xếp chỗ, treo luật). Một người nằm một OU, thuộc nhiều group.
+- **Đề:** Điền tầng còn thiếu vào thứ tự áp GPO: Local → ___ → Domain → OU.
+  - **Dạng:** gõ tay · **Chấp nhận:** site
+  - **Vì sao:** LSDOU: Local → Site → Domain → OU — Site là bậc "cả văn phòng một chỗ", đứng ngay trên tầng trệt.
+- **Đề:** GPO Domain nói A, GPO treo ở OU nói B, không ai gắn Enforced. Máy trong OU theo luật nào?
+  - **Dạng:** trắc nghiệm · **B — OU áp sau nên đè lên luật Domain** ✓ / A — miền to hơn thì thắng / Cả hai luật cùng áp một lúc
+  - **Vì sao:** Bậc áp sau thắng: OU là tiếng nói cuối trong LSDOU nên luật B đè luật A — trừ khi A được gắn Enforced.
+- **Đề:** GPO miền gắn Enforced gặp OU bật Block Inheritance — kết quả?
+  - **Dạng:** trắc nghiệm · **Enforced xuyên qua tấm chắn — luật miền vẫn áp và thắng xung đột** ✓ / Block Inheritance chặn được tất cả / Máy client báo lỗi cấu hình
+  - **Vì sao:** Enforced là mũi khoan xuyên mái che: vượt Block Inheritance và đè cả luật OU — dùng cho thứ không được có ngoại lệ.
+- **Đề:** Lệnh nào bắt máy áp luật mới ngay lập tức, không chờ chu kỳ làm mới?
+  - **Dạng:** gõ tay · **Chấp nhận:** gpupdate | gpupdate /force | gpupdate/force
+  - **Vì sao:** gpupdate /force — tải và áp lại toàn bộ GPO ngay, dùng khi nghiệm thu luật vừa treo.
+- **Đề:** Lệnh nào kê ra các GPO đang áp lên máy và người đang đăng nhập?
+  - **Dạng:** gõ tay · **Chấp nhận:** gpresult | gpresult /r | gpresult/r
+  - **Vì sao:** gpresult /r — bảng kê GPO đang áp và GPO bị gạt kèm lý do; công cụ chẩn đoán số một khi luật không ăn.
+- **Đề:** Leo lại tòa nhà bốn tầng từ trí nhớ: mỗi tầng là bậc GPO nào, và luật của nó áp cho ai?
+  - **Dạng:** đi lại cung điện từ trí nhớ (4 phòng)
+    - tầng 1 phòng 1 · Local · chính máy đó · hình `gpo-house-rules` — Tầng trệt Local: tấm bảng nội quy dán ngay cửa nhà — luật của riêng máy đó, chưa ai ngoài nhìn thấy.
+    - tầng 2 phòng 1 · Site · cả văn phòng một chỗ · hình `gpo-office-floor` — Tầng hai Site: bảng tin của cả tòa văn phòng — máy nào ngồi trong tòa này đều phải đọc.
+    - tầng 3 phòng 1 · Domain · toàn công ty · hình `gpo-company-flag` — Tầng ba Domain: lá cờ công ty treo giữa sảnh — luật chung cho mọi máy đã gia nhập miền.
+    - tầng 4 phòng 1 · OU · từng phòng ban · hình `gpo-department-door` — Tầng nóc OU: cửa từng phòng ban có luật riêng — áp SAU CÙNG nên thắng hết các tầng dưới.
+  - **Vì sao:** Local (chính máy đó) → Site (cả văn phòng một chỗ) → Domain (toàn công ty) → OU (từng phòng ban) — chính thứ tự leo là thứ tự áp luật.

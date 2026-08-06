@@ -140,6 +140,43 @@ describe('bộ nội dung', () => {
     expect(ports).toEqual([21, 22, 23, 25, 53, 67, 68, 80, 123, 389, 443, 445, 587, 636, 3306, 3389])
   })
 
+  it('Module 9: cung điện GPO 4 tầng × 1 phòng, keyStyle text, đúng chuỗi LSDOU', () => {
+    // Spec Module 9: "tòa nhà 4 tầng Local → Site → Domain → OU, đi từ
+    // tầng trệt lên". Thứ tự tầng CHÍNH LÀ thứ tự áp luật — khai sai
+    // tầng là dạy sai kiến thức, không chỉ sai hình.
+    const m9 = moduleById('module-9')
+    expect(m9.palace, 'Module 9 phải có cung điện LSDOU').toBeDefined()
+    const palace = m9.palace!
+    expect(palace.floors).toBe(4)
+    expect(palace.roomsPerFloor).toBe(1)
+    expect(palace.keyStyle).toBe('text')
+    const keysByFloor = [...palace.rooms].sort((a, b) => a.floor - b.floor).flatMap((r) => r.keys)
+    expect(keysByFloor).toEqual(['Local', 'Site', 'Domain', 'OU'])
+  })
+
+  it('Module 9: khai checklist lab VMware (spec: app track tiến độ lab)', () => {
+    const m9 = moduleById('module-9')
+    expect(m9.vmLab, 'Module 9 phải có vmLab').toBeDefined()
+    expect(m9.vmLab!.steps.length).toBeGreaterThanOrEqual(3)
+  })
+
+  it('Module 9: worked example fading 0→1→2 trên ba bài GPO liên tiếp (spec: đậm nhất app)', () => {
+    // Spec: "bài 1 xem cấu hình GPO mẫu đầy đủ → bài 2 điền chỗ trống →
+    // bài 3 tự cấu hình từ yêu cầu suông". Ba bài GPO là ba bài dạy các
+    // concept m9-gpo → m9-lsdou → (m9-ke-thua + m9-gpresult).
+    const m9 = moduleById('module-9')
+    const fadingOfLessonTeaching = (conceptId: string) => {
+      const lesson = m9.lessons.find((l) => l.steps[2].screens.some((s) => s.conceptId === conceptId))
+      expect(lesson, `không bài nào dạy concept "${conceptId}"`).toBeDefined()
+      return lesson!.steps[3]
+    }
+    const gpoLesson = fadingOfLessonTeaching('m9-gpo')
+    expect(gpoLesson.fadingLevel, 'bài GPO đầu phải xem mẫu đầy đủ').toBe(0)
+    expect(gpoLesson.workedExample, 'bài GPO đầu phải có ví dụ giải sẵn').toBeDefined()
+    expect(fadingOfLessonTeaching('m9-lsdou').fadingLevel, 'bài LSDOU là bước điền chỗ trống').toBe(1)
+    expect(fadingOfLessonTeaching('m9-gpresult').fadingLevel, 'bài cuối phải tự làm từ yêu cầu suông').toBe(2)
+  })
+
   it('mastery test đủ dày để ngưỡng 85% có nghĩa (>= 7 câu mỗi module)', () => {
     for (const m of modules) {
       expect(m.masteryTest.length, `${m.id} cần >= 7 câu thi`).toBeGreaterThanOrEqual(7)
