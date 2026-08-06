@@ -1,6 +1,6 @@
 # Trạng thái dự án — NetMaster (Phase 1 xong, đang Phase 2)
 
-Cập nhật: 2026-08-05. File này chỉ để nắm nhanh tình hình khi mở lại dự
+Cập nhật: 2026-08-06. File này chỉ để nắm nhanh tình hình khi mở lại dự
 án. Nguồn chân lý vẫn là `SPEC-APP-HOC-MANG.md`; luật làm việc ở
 `CLAUDE.md`; nội dung bài đọc duyệt ở `REVIEW-NOI-DUNG.md`.
 
@@ -175,13 +175,60 @@ router mang đúng một IP.
   đoán được một mạng hỏng chưa từng gặp và nói được vì sao**.
 - `CLAUDE.md` cập nhật cấu trúc + các luật của phòng lab không được phá.
 
-Kiểm tra hiện tại: **596/596 test xanh** (+237 so với Phase 1),
+Kiểm tra khi khép hạng mục: **596/596 test xanh** (+237 so với Phase 1),
 `npm run typecheck` sạch, `npm run build` qua. Đã kiểm trên trình duyệt
 thật: sửa VLAN → mục tiêu chuyển xong, hoàn tác trả đúng trạng thái
 trước, vùng chạm cổng 24px cách nhau 30px (WCAG 2.5.8). Và kiểm
 end-to-end bằng cách thả tạm một module có bài lab vào `content/modules/`:
 bài đi trọn 6 bước, nộp lab đúng → "Chuẩn luôn!" → qua bước → **+10 XP
 đúng bằng XP bước Làm** — rồi xóa file tạm.
+
+Đã commit `3e0b3b4` và push: workflow xanh, **Module 4 đã lên bản live**
+(kiểm bằng cách tải bundle của Pages, có nội dung Module 4 và chuỗi của
+phòng lab).
+
+## Phase 2 — hạng mục (6): Module 5, 6, 7 + cung điện ký ức Port
+
+Kế hoạch chia 6 khối. Làm cung điện TRƯỚC nội dung: nó là mảnh kiến trúc
+mới duy nhất của hạng mục này (đúng vai trò phòng lab ở hạng mục 5), làm
+xong thì Module 5/6/7 chỉ còn là viết JSON.
+
+| Khối | Nội dung | Trạng thái |
+|------|----------|-----------|
+| 6.1 | Engine cung điện ký ức thuần TS (`src/engine/palace/`) | Xong |
+| 6.2 | UI đi tour + màn đi lại từ trí nhớ, cắm vào pipeline 6 bước | Chưa |
+| 6.3 | Nội dung Module 5 (TCP/UDP/Port) + 15 hình gợi nhớ | Chưa |
+| 6.4 | Nội dung Module 6 (DNS phân cấp, DHCP DORA, DoH) | Chưa |
+| 6.5 | Nội dung Module 7 (NAT/PAT, port forwarding, firewall, mạng nhà) | Chưa |
+| 6.6 | Đối chiếu DoD + kiểm browser + cập nhật tài liệu | Chưa |
+
+**Khối 6.1 đã làm gì** (headless — app người dùng không đổi một pixel):
+- `src/engine/palace/palace.ts` — tòa nhà **5 tầng × 3 phòng = 15 phòng**,
+  `validatePalace` trả mã lỗi CẤU TRÚC (lưới có lỗ, trùng cổng, hai phòng
+  chung một hình…). `tourRoute` chốt **lộ trình cố định** tầng trệt lên
+  nóc, trái sang phải — thứ tự phòng trong JSON không đổi được đường đi
+  của người học, vì bản thân thứ tự là một phần của cái được nhớ.
+- `src/engine/palace/walk.ts` — **hai chuyến đi tách bạch**: đi xem
+  (encoding, không chấm, không cộng điểm — nguyên tắc 5) và đi lại từ trí
+  nhớ (retrieval, thang 3 tầng dùng lại `feedbackTier` của bài học). Chấm
+  tách hai vế cổng/dịch vụ để phản hồi nói đúng chỗ hổng; sai 3 lần được
+  mở đáp án nhưng **vẫn phải tự gõ lại mới đi tiếp**.
+- `src/engine/palace/cards.ts` — **15 phòng = 15 thẻ SM-2 riêng**, khóa
+  `palace:<roomId>`. Nhờ tiền tố, hàng đợi ôn tập / SM-2 / dữ liệu đã lưu
+  của người học chạy nguyên, không phải sửa gì.
+- `src/engine/palace/palaceSchema.ts` — zod + chốt chặn nội dung: **câu
+  chuyện gợi nhớ phải nhắc đúng số cổng** (hình ảnh không dính số thì
+  người học nhớ ổ khóa vàng mà vẫn quên 443 — chỗ hay hỏng nhất của cung
+  điện làm ẩu), và **không hai phòng nào nhận chung một câu trả lời**,
+  kiểm bằng chính hàm chấm chứ không so chuỗi thô.
+- `src/engine/ltext.ts` — tách `LTextSchema` khỏi contentSchema để hai
+  schema nội dung dùng chung mà không import chéo. contentSchema re-export
+  nên nơi gọi cũ không phải sửa.
+- Fixture `tests/fixtures/palaceFixture.ts` dựng đủ **15 port của spec**
+  vào tòa nhà — chính lúc dựng đã lộ một ca thật: "SMTP Submission" chứa
+  nguyên cụm "SMTP" nên bộ chấm tính đúng cho cả phòng 25; đã đổi thành
+  "Mail Submission" và khóa ca này bằng test.
+- 652/652 test xanh (+56), typecheck sạch.
 
 ## Lệnh hay dùng
 

@@ -17,16 +17,12 @@
 
 import { z } from 'zod'
 import { LabSpecSchema } from './lab/labSchema'
+import { LTextSchema, type LText } from './ltext'
 
-/**
- * Chuỗi hiển thị cho người học. Phase 1 chỉ có tiếng Việt; trường `en`
- * chừa sẵn cho bản dịch sau (đã chốt: khung UI song ngữ VI/EN, nội dung
- * bài học VI trước, schema có chỗ cho EN).
- */
-export const LTextSchema = z.object({
-  vi: z.string().min(1),
-  en: z.string().min(1).optional(),
-})
+/** Chuỗi hiển thị cho người học — định nghĩa ở `./ltext` (dùng chung với
+ *  các schema nội dung khác); re-export để nơi gọi cũ không phải sửa. */
+export { LTextSchema }
+export type { LText }
 
 const idSchema = z.string().min(1)
 
@@ -420,7 +416,6 @@ export const ModuleSchema = ModuleBaseSchema.superRefine(moduleCrossChecks)
 // Kiểu suy ra & hàm parse
 // ---------------------------------------------------------------
 
-export type LText = z.infer<typeof LTextSchema>
 export type Question = z.infer<typeof QuestionSchema>
 export type TypedQuestion = Extract<Question, { kind: 'typed' }>
 export type McqQuestion = Extract<Question, { kind: 'mcq' }>

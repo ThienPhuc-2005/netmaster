@@ -159,6 +159,20 @@ phá hoại cơ chế học của app, dù code chạy đúng.
 - Layout: dưới 768px, menu 4 mục chuyển xuống THANH ĐÁY và canvas lab
   cuộn ngang trong khung riêng (giữ vùng chạm cổng ≥ 24px).
 
+### Phase 2 — hạng mục (6): cung điện ký ức Port (đang làm, khối 6.1 xong)
+
+- `src/engine/palace/` — cung điện ký ức THUẦN, không React: `palace.ts`
+  (tòa nhà 5 tầng × 3 phòng + kiểm cấu trúc + lộ trình), `walk.ts` (đi
+  xem và đi lại từ trí nhớ), `cards.ts` (15 phòng → 15 thẻ SM-2),
+  `palaceSchema.ts` (zod + chốt chặn nội dung).
+- **Luật của cung điện, không được phá:** tòa nhà và lộ trình CỐ ĐỊNH —
+  15 phòng kín lưới, luôn đi tầng trệt lên nóc, trái sang phải (bản thân
+  thứ tự là một phần của cái được nhớ). Đi xem KHÔNG cộng điểm, chỉ chuyến
+  đi lại từ trí nhớ mới là retrieval (nguyên tắc 5). Mỗi phòng một thẻ ôn
+  riêng, khóa `palace:<roomId>` — không gộp 15 port vào một thẻ.
+- `src/engine/ltext.ts` — `LTextSchema` dùng chung cho các schema nội
+  dung; contentSchema re-export nên nơi gọi cũ không đổi.
+
 ## Khi gặp mơ hồ
 
 Spec không nói rõ một chi tiết → KHÔNG đoán theo hướng đơn giản nhất.
