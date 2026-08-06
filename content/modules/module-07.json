@@ -59,7 +59,7 @@
         {
           "type": "practice",
           "fadingLevel": 0,
-          "workedExample": { "vi": "Ví dụ giải sẵn: máy tính 192.168.1.10 mở một trang web. (1) Gói đi ra mang địa chỉ nguồn 192.168.1.10 cổng 51344. (2) Router đổi nguồn thành 203.0.113.7 cổng 40001 và ghi cặp đó vào sổ. (3) Máy chủ trả lời về 203.0.113.7 cổng 40001. (4) Router tra sổ, đổi ngược lại và đưa gói lên đúng máy tính. Đọc kỹ bước 2 rồi thử tự gọi tên cuốn sổ ấy nhé." },
+          "workedExample": { "vi": "Máy tính 192.168.1.10 mở một trang web. (1) Gói đi ra mang địa chỉ nguồn 192.168.1.10 cổng 51344. (2) Router đổi nguồn thành 203.0.113.7 cổng 40001 và ghi cặp đó vào sổ. (3) Máy chủ trả lời về 203.0.113.7 cổng 40001. (4) Router tra sổ, đổi ngược lại và đưa gói lên đúng máy tính. Đọc kỹ bước 2 rồi thử tự gọi tên cuốn sổ ấy nhé." },
           "exercises": [
             {
               "question": {

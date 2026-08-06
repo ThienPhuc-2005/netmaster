@@ -1,4 +1,4 @@
-# Trạng thái dự án — NetMaster (Phase 1 + 2 xong; Phase 3 đang khối 8.5)
+# Trạng thái dự án — NetMaster (Phase 1 + 2 xong; Phase 3 xong hạng mục 8)
 
 Cập nhật: 2026-08-06 đêm. File này chỉ để nắm nhanh tình hình khi
 mở lại dự án. Nguồn chân lý vẫn là `SPEC-APP-HOC-MANG.md`; luật làm việc
@@ -6,11 +6,17 @@ mở lại dự án. Nguồn chân lý vẫn là `SPEC-APP-HOC-MANG.md`; luật 
 
 ## MỞ PHIÊN MỚI THÌ ĐỌC ĐÂY TRƯỚC
 
-**Đang đứng đâu:** Phase 1 + Phase 2 xong hẳn (chi tiết bên dưới).
-Phase 3 hạng mục (8) đang dở: khối 8.1 → 8.4 XONG; **việc kế tiếp là
-khối 8.5 — đối chiếu DoD toàn hạng mục + kiểm browser tổng + tài liệu**.
-Kế hoạch 5 khối của hạng mục (8) đã được người dùng duyệt, ba quyết định
-đã chốt — KHÔNG hỏi lại, không đảo lại.
+**Đang đứng đâu:** Phase 1 + Phase 2 xong hẳn; **Phase 3 hạng mục (8)
+XONG cả 5 khối** (Module 8-10 + cung điện GPO + checklist VMware — chi
+tiết bảng dưới). App có đủ Module 1-10. **Việc kế tiếp là hạng mục (9)
+— Phòng khám mạng (Module 11, terminal ảo, 100% productive failure) —
+CHƯA bắt đầu: đây là việc lớn đụng kiến trúc, cần trình kế hoạch và chờ
+người dùng duyệt trước khi code** (luật "việc lớn trình kế hoạch trước"
+trong CLAUDE.md).
+
+**Việc treo (cần người, không code được):** các buổi test người thật
+theo `KICH-BAN-TEST.md` (mục 1-6 Phase 1; mục 7 M4; mục 8 M5; mục 9
+Phần C mới thêm).
 
 **Luật deploy (người dùng đã dặn 06-08):** KHÔNG ngồi canh deploy. Push
 xong là làm việc tiếp; GitHub trục trặc thì lần push sau tự kéo mọi thứ
@@ -31,15 +37,14 @@ lên. Chỉ nhắc tới deploy khi nó thật sự chặn việc.
 2. **Buổi test người thật** (`KICH-BAN-TEST.md`) — cần người, không code
    được.
 
-**Khối 8.5 cần làm gì (việc kế tiếp):** khép hạng mục (8): đối chiếu
-từng tiêu chí Definition of Done (spec mục 6) cho Module 8-10, in rõ
-ĐẠT / CHƯA ĐẠT / LÀM KHÁC; kiểm browser tổng (đi xuyên một mạch nội
-dung mới, mobile 375px không tràn ngang, cả hai theme); bổ sung
-`KICH-BAN-TEST.md` cho Phần C nếu spec đòi buổi test người thật; cập
-nhật CLAUDE.md phần cấu trúc (Module 8-10 + checklist VMware + cung
-điện GPO); rồi cập nhật file này. Sau hạng mục (8) là hạng mục kế trong
-spec mục 6: Phòng khám mạng (Module 11) — CHƯA bắt đầu, chờ người dùng
-giao.
+**Hạng mục (9) khi được giao thì nhớ:** Phòng khám (tab đang khóa từ
+Phase 1, màn úp mở có sẵn ở `src/features/clinic/`); spec đòi terminal
+ảo (ping/ipconfig/traceroute/nslookup/netstat), mỗi bài một "bệnh
+nhân", KHÔNG lý thuyết trước, case trộn kiến thức mọi module (tổng ôn
+trá hình); nền tảng sẵn có: engine lab mô phỏng mạng (`src/engine/lab/`)
+đã có simulate ping theo chặng + mã bệnh — terminal ảo nhiều khả năng
+đứng được trên nó, nhưng phạm vi mô phỏng đang ĐÓNG BĂNG nên lệnh nào
+đòi vượt phạm vi (DNS chết, trùng IP…) phải bàn trước.
 
 ## Đang ở đâu
 
@@ -426,7 +431,7 @@ khai trong JSON module, tick persist, **không XP**.
 | 8.2 | Nội dung Module 8 (Wi-Fi, WPA, IPv6/SLAAC — interleaving IPv4↔IPv6) | Xong |
 | 8.3 | Nội dung Module 9 ⭐ (AD DS/GPO, cung điện LSDOU, fading đậm, checklist VMware) | Xong |
 | 8.4 | Nội dung Module 10 (VPC/Zero Trust — contrast cases với on-prem) | Xong |
-| 8.5 | DoD + kiểm browser + tài liệu | Chưa |
+| 8.5 | DoD + kiểm browser + tài liệu | Xong |
 
 **Khối 8.1 đã làm gì** (M5 không đổi hành vi — test cũ xanh nguyên):
 - Cung điện hết đóng đinh vào Port: kích thước (`floors`/`roomsPerFloor`)
@@ -538,6 +543,34 @@ khai trong JSON module, tick persist, **không XP**.
 - 744/744 test xanh, typecheck sạch, build qua, content:review render
   10 module. Kiểm browser: deep-link `/bai/m10-bai-1` render hook + hình
   cloud đúng.
+
+**Khối 8.5 đã làm gì** (khép hạng mục 8):
+- **Vá 2 lỗi thật tìm thấy khi kiểm tổng:** (1) chữ "Ví dụ giải sẵn"
+  hiện LẶP ĐÔI ở bước Thử tay — LessonPlayer tự thêm nhãn mà nội dung
+  M6-M10 cũng mở đầu bằng đúng cụm đó; đã cắt khỏi cả 6 workedExample
+  (M6, M7, M8, M9×2, M10) và ghi thành luật soạn bài trong CLAUDE.md.
+  (2) Trên 375px, hàng bài KHÓA bị ép tựa đề thành mỗi-từ-một-dòng vì
+  nhãn "Học xong bài trước…" chiếm nửa hàng — nhãn giờ co tối đa 40%.
+- Kiểm browser tổng: đi TRỌN bài m8-bai-1 cả 6 bước trên trình duyệt
+  thật (pretest → 2 màn dạy → worked example + 2 bài tập → retrieval +
+  tự giải thích được chấm keyword → tổng kết +30 XP, store ghi đúng);
+  mobile 375px: trang Học (bản đồ chặng + checklist VMware) và bài cung
+  điện GPO xếp một cột, scrollWidth = 375 không tràn; theme sáng render
+  sạch ở cả hai màn vừa kiểm.
+- `KICH-BAN-TEST.md` thêm mục 9 — buổi test người thật Phần C, hai buổi
+  cách một đêm, ĐO ĐÚNG BA KỸ THUẬT của ba module: 4 tình huống
+  interleaving IPv4↔IPv6 (đạt ≥ 3/4 nói đúng hệ + tên cơ chế), điền lại
+  tòa GPO 4 tầng trên giấy + câu "Domain bảo A, OU bảo B" (phải nhắc
+  hình/tầng khi hỏi "sao nhớ"), 3 cặp contrast cloud↔on-prem (≥ 2/3 nêu
+  đúng tên và một điểm khác).
+- `CLAUDE.md` cập nhật: cấu trúc hạng mục (8) hoàn chỉnh + luật
+  workedExample không tự viết nhãn.
+- Đối chiếu DoD (spec mục 6) cho Module 8-10: đủ 6 bước (schema tuple ép,
+  parse xanh), flashcard tự sinh đủ (8+8+10 concept + 4 thẻ phòng GPO),
+  một màn một khái niệm (schema ép, không màn nào lặp concept) — ĐẠT;
+  test người thật là việc treo cần người (kịch bản đã soạn).
+- 744/744 test xanh, typecheck sạch, build qua, content:review render
+  lại 10 module sau khi sửa workedExample.
 
 ## Lệnh hay dùng
 

@@ -59,7 +59,7 @@
         {
           "type": "practice",
           "fadingLevel": 0,
-          "workedExample": { "vi": "Ví dụ giải sẵn — đọc một VPC đang chạy: công ty khai VPC 10.0.0.0/16. (1) Subnet 10.0.1.0/24 đặt tên \"public\" — chứa máy chủ web cần nhìn ra Internet. (2) Subnet 10.0.2.0/24 đặt tên \"private\" — chứa cơ sở dữ liệu, không lối ra ngoài. (3) Toàn bộ là địa chỉ riêng lớp 10.x — đúng bảng private của Module 3. Để ý: bạn vừa đọc hiểu một mạng cloud bằng kiến thức subnet cũ, không cần học phép chia nào mới." },
+          "workedExample": { "vi": "Đọc một VPC đang chạy: công ty khai VPC 10.0.0.0/16. (1) Subnet 10.0.1.0/24 đặt tên \"public\" — chứa máy chủ web cần nhìn ra Internet. (2) Subnet 10.0.2.0/24 đặt tên \"private\" — chứa cơ sở dữ liệu, không lối ra ngoài. (3) Toàn bộ là địa chỉ riêng lớp 10.x — đúng bảng private của Module 3. Để ý: bạn vừa đọc hiểu một mạng cloud bằng kiến thức subnet cũ, không cần học phép chia nào mới." },
           "exercises": [
             {
               "question": {

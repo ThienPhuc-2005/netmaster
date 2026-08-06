@@ -59,7 +59,7 @@
         {
           "type": "practice",
           "fadingLevel": 0,
-          "workedExample": { "vi": "Ví dụ giải sẵn — bạn gõ example.com: (1) máy bạn hỏi resolver; (2) resolver hỏi máy chủ gốc, được chỉ sang máy chủ .com; (3) hỏi .com, được chỉ sang máy chủ có thẩm quyền của example.com; (4) hỏi nơi đó, nhận được địa chỉ IP; (5) resolver trả về cho máy bạn và nhớ tạm lại. Đọc lại một lượt, rồi thử tự gọi tên tầng đầu tiên xem." },
+          "workedExample": { "vi": "Bạn gõ example.com: (1) máy bạn hỏi resolver; (2) resolver hỏi máy chủ gốc, được chỉ sang máy chủ .com; (3) hỏi .com, được chỉ sang máy chủ có thẩm quyền của example.com; (4) hỏi nơi đó, nhận được địa chỉ IP; (5) resolver trả về cho máy bạn và nhớ tạm lại. Đọc lại một lượt, rồi thử tự gọi tên tầng đầu tiên xem." },
           "exercises": [
             {
               "question": {

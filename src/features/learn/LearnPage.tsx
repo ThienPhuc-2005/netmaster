@@ -59,7 +59,11 @@ function LessonRow({
           {started ? t('learn.lessonContinue') : t('learn.lessonStart')}
         </Link>
       )}
-      {state === 'locked' && <span className="text-xs text-ink-muted">{t('learn.lessonLocked')}</span>}
+      {/* Nhãn khóa co lại tối đa 40% hàng — không được ép tựa đề bài
+          thành mỗi từ một dòng trên màn hẹp (lỗi thấy khi kiểm 375px). */}
+      {state === 'locked' && (
+        <span className="max-w-[40%] shrink-0 text-right text-xs text-ink-muted">{t('learn.lessonLocked')}</span>
+      )}
       {state === 'active' && !startable && <span className="text-xs text-warn">{t('learn.goReview')} ↓</span>}
     </li>
   )

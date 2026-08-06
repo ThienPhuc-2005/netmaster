@@ -1584,7 +1584,7 @@ Phần B · 5 chặng · 5 bài · 8 khái niệm
   - **Đào sâu hơn:** Đọc tên miền từ PHẢI sang TRÁI mới đúng thứ tự hỏi: www.example.com nghĩa là gốc → .com → example.com → www. Dấu chấm cuối cùng (gốc) bị lược đi trong đời thường nên ít ai để ý.
 
 **4 · Thử tay (practice, fading 0):**
-- **Ví dụ giải sẵn:** Ví dụ giải sẵn — bạn gõ example.com: (1) máy bạn hỏi resolver; (2) resolver hỏi máy chủ gốc, được chỉ sang máy chủ .com; (3) hỏi .com, được chỉ sang máy chủ có thẩm quyền của example.com; (4) hỏi nơi đó, nhận được địa chỉ IP; (5) resolver trả về cho máy bạn và nhớ tạm lại. Đọc lại một lượt, rồi thử tự gọi tên tầng đầu tiên xem.
+- **Ví dụ giải sẵn:** Bạn gõ example.com: (1) máy bạn hỏi resolver; (2) resolver hỏi máy chủ gốc, được chỉ sang máy chủ .com; (3) hỏi .com, được chỉ sang máy chủ có thẩm quyền của example.com; (4) hỏi nơi đó, nhận được địa chỉ IP; (5) resolver trả về cho máy bạn và nhớ tạm lại. Đọc lại một lượt, rồi thử tự gọi tên tầng đầu tiên xem.
 - **Đề:** Máy chủ chỉ biết "ai đang quản .com, .vn, .org" nằm ở tầng nào của DNS?
   - **Dạng:** gõ tay · **Chấp nhận:** gốc | goc | root | máy chủ gốc | may chu goc | root server
   - **Chủ đề gợi ý (tầng 1):** tầng đứng trên cùng, biết ít nhất mà chỉ đường cho tất cả
@@ -1873,7 +1873,7 @@ Phần B · 5 chặng · 5 bài · 6 khái niệm
   - **Đào sâu hơn:** Vì bảng này chỉ có dòng khi có người TRONG nhà mở lời trước, nên mặc định người ngoài không tự gõ cửa vào được — router không biết đưa cho ai. Đó là lý do mạng nhà tự nhiên đã kín một nửa, dù bạn chưa cài tường lửa nào.
 
 **4 · Thử tay (practice, fading 0):**
-- **Ví dụ giải sẵn:** Ví dụ giải sẵn: máy tính 192.168.1.10 mở một trang web. (1) Gói đi ra mang địa chỉ nguồn 192.168.1.10 cổng 51344. (2) Router đổi nguồn thành 203.0.113.7 cổng 40001 và ghi cặp đó vào sổ. (3) Máy chủ trả lời về 203.0.113.7 cổng 40001. (4) Router tra sổ, đổi ngược lại và đưa gói lên đúng máy tính. Đọc kỹ bước 2 rồi thử tự gọi tên cuốn sổ ấy nhé.
+- **Ví dụ giải sẵn:** Máy tính 192.168.1.10 mở một trang web. (1) Gói đi ra mang địa chỉ nguồn 192.168.1.10 cổng 51344. (2) Router đổi nguồn thành 203.0.113.7 cổng 40001 và ghi cặp đó vào sổ. (3) Máy chủ trả lời về 203.0.113.7 cổng 40001. (4) Router tra sổ, đổi ngược lại và đưa gói lên đúng máy tính. Đọc kỹ bước 2 rồi thử tự gọi tên cuốn sổ ấy nhé.
 - **Đề:** Việc router đổi địa chỉ riêng thành địa chỉ công cộng khi gói tin đi ra gọi là gì? (viết tắt được)
   - **Dạng:** gõ tay · **Chấp nhận:** nat | network address translation
   - **Chủ đề gợi ý (tầng 1):** chuyện xảy ra với địa chỉ nguồn khi gói rời khỏi nhà
@@ -2146,7 +2146,7 @@ Phần C · 5 chặng · 5 bài · 10 khái niệm
   - **Đào sâu hơn:** Băng 2.4 GHz đông vì đủ thứ cùng chen vào đó: Bluetooth, lò vi sóng, chuột không dây… Router hai băng thường phát cả hai dưới một tên mạng; máy tự chọn băng — và đôi khi chọn dở, cứ bám 2.4 GHz dù đang đứng cạnh router.
 
 **4 · Thử tay (practice, fading 0):**
-- **Ví dụ giải sẵn:** Ví dụ giải sẵn: nhà hai tầng, router đặt phòng khách. (1) TV cạnh router cần xem phim nét — cho nó băng 5 GHz: nhanh, mà ngồi gần thì không sợ đuối. (2) Camera ngoài cổng cách hai bức tường — cho nó 2.4 GHz: chậm cũng được, quan trọng là sóng TỚI nơi. Quy tắc rút ra: gần ưu tiên nhanh, xa ưu tiên tới. Cầm quy tắc đó làm hai câu dưới nhé.
+- **Ví dụ giải sẵn:** Nhà hai tầng, router đặt phòng khách. (1) TV cạnh router cần xem phim nét — cho nó băng 5 GHz: nhanh, mà ngồi gần thì không sợ đuối. (2) Camera ngoài cổng cách hai bức tường — cho nó 2.4 GHz: chậm cũng được, quan trọng là sóng TỚI nơi. Quy tắc rút ra: gần ưu tiên nhanh, xa ưu tiên tới. Cầm quy tắc đó làm hai câu dưới nhé.
 - **Đề:** Camera lắp ngoài vườn, cách router hai bức tường. Cho nó vào băng tần nào?
   - **Dạng:** trắc nghiệm · **2.4 GHz — chậm nhưng đi xa, xuyên tường tốt** ✓ / 5 GHz — nhanh nhất có thể / 6 GHz — mới nhất chắc là tốt nhất
   - **Chủ đề gợi ý (tầng 1):** đánh đổi giữa đi xa và chạy nhanh
@@ -2465,7 +2465,7 @@ Song song với module này, hãy dựng một miền thật trên máy bạn �
   - **Đào sâu hơn:** Làng nghiêm túc không bao giờ chỉ có MỘT DC: sổ cái được nhân bản sang DC thứ hai, lỡ một máy hỏng thì cả làng vẫn đăng nhập được. Sổ tra qua LDAP (389), bản niêm phong qua LDAPS (636) — đúng hai phòng tầng 5 của cung điện Module 5.
 
 **4 · Thử tay (practice, fading 0):**
-- **Ví dụ giải sẵn:** Ví dụ giải sẵn — đọc một miền đang chạy: công ty dùng miền lab.local. (1) Máy chủ DC01 giữ sổ cái và trả lời mọi lượt đăng nhập. (2) 200 máy nhân viên đã join miền — góc đăng nhập ghi LAB\ten-nhan-vien thay vì tên máy. (3) Muốn đổi luật mật khẩu: sửa MỘT chỗ trên DC01, cả 200 máy tự nhận. Đọc lại bước (3): sửa một chỗ, áp mọi nơi — đó là toàn bộ lý do miền tồn tại.
+- **Ví dụ giải sẵn:** Đọc một miền đang chạy: công ty dùng miền lab.local. (1) Máy chủ DC01 giữ sổ cái và trả lời mọi lượt đăng nhập. (2) 200 máy nhân viên đã join miền — góc đăng nhập ghi LAB\ten-nhan-vien thay vì tên máy. (3) Muốn đổi luật mật khẩu: sửa MỘT chỗ trên DC01, cả 200 máy tự nhận. Đọc lại bước (3): sửa một chỗ, áp mọi nơi — đó là toàn bộ lý do miền tồn tại.
 - **Đề:** Máy đã gia nhập miền thì tài khoản đăng nhập là của ai?
   - **Dạng:** trắc nghiệm · **Của miền — DC xác thực, ngồi máy nào trong miền cũng đăng nhập được** ✓ / Của riêng máy đó, như máy ở nhà / Của nhà cung cấp Internet
   - **Chủ đề gợi ý (tầng 1):** ai là người đối chiếu mật khẩu
@@ -2550,7 +2550,7 @@ Song song với module này, hãy dựng một miền thật trên máy bạn �
   - **Đào sâu hơn:** Tên có chữ "Group" nhưng GPO KHÔNG treo vào group được — chỗ treo chỉ có Site, Domain, OU. Đây là cái bẫy chữ nghĩa nổi tiếng nhất của AD, và là lý do bài trước bắt bạn tách bạch group với OU. Máy client tự làm mới luật quãng mỗi 90 phút — muốn ngay lập tức thì có một câu lệnh, bài cuối sẽ đưa.
 
 **4 · Thử tay (practice, fading 0):**
-- **Ví dụ giải sẵn:** Ví dụ giải sẵn — treo một GPO từ A tới Z: (1) Trên DC mở Group Policy Management. (2) Tạo GPO mới, đặt tên HinhNen-CongTy. (3) Mở GPO, sửa luật: User Configuration → Desktop → Wallpaper, trỏ về ảnh logo chung. (4) TREO GPO vào OU KeToan. (5) Chờ máy làm mới luật — hình nền cả phòng đổi. Đọc lại bước (4) lần nữa: quên treo thì luật nằm chết trên giấy, và treo Ở ĐÂU quyết định AI phải theo.
+- **Ví dụ giải sẵn:** Treo một GPO từ A tới Z: (1) Trên DC mở Group Policy Management. (2) Tạo GPO mới, đặt tên HinhNen-CongTy. (3) Mở GPO, sửa luật: User Configuration → Desktop → Wallpaper, trỏ về ảnh logo chung. (4) TREO GPO vào OU KeToan. (5) Chờ máy làm mới luật — hình nền cả phòng đổi. Đọc lại bước (4) lần nữa: quên treo thì luật nằm chết trên giấy, và treo Ở ĐÂU quyết định AI phải theo.
 - **Đề:** Viết xong một GPO thật đẹp nhưng chưa treo (link) vào đâu — chuyện gì xảy ra?
   - **Dạng:** trắc nghiệm · **Không gì cả — GPO chỉ có tác dụng khi được treo vào miền, site hoặc OU** ✓ / Cả miền lập tức áp luật / Chỉ máy chủ DC áp luật
   - **Chủ đề gợi ý (tầng 1):** bước (4) của ví dụ giải sẵn
@@ -2764,7 +2764,7 @@ Phần C · 5 chặng · 5 bài · 8 khái niệm
   - **Đào sâu hơn:** AWS gọi là VPC, Azure gọi là VNet — cùng một ý. Hai VPC khác nhau mặc định không thấy nhau dù nằm chung một tòa data center, hệt như hai VLAN trên cùng một switch ở Module 4. Kỹ năng chia subnet và magic number của Module 3 dùng NGUYÊN, không đổi một ly.
 
 **4 · Thử tay (practice, fading 0):**
-- **Ví dụ giải sẵn:** Ví dụ giải sẵn — đọc một VPC đang chạy: công ty khai VPC 10.0.0.0/16. (1) Subnet 10.0.1.0/24 đặt tên "public" — chứa máy chủ web cần nhìn ra Internet. (2) Subnet 10.0.2.0/24 đặt tên "private" — chứa cơ sở dữ liệu, không lối ra ngoài. (3) Toàn bộ là địa chỉ riêng lớp 10.x — đúng bảng private của Module 3. Để ý: bạn vừa đọc hiểu một mạng cloud bằng kiến thức subnet cũ, không cần học phép chia nào mới.
+- **Ví dụ giải sẵn:** Đọc một VPC đang chạy: công ty khai VPC 10.0.0.0/16. (1) Subnet 10.0.1.0/24 đặt tên "public" — chứa máy chủ web cần nhìn ra Internet. (2) Subnet 10.0.2.0/24 đặt tên "private" — chứa cơ sở dữ liệu, không lối ra ngoài. (3) Toàn bộ là địa chỉ riêng lớp 10.x — đúng bảng private của Module 3. Để ý: bạn vừa đọc hiểu một mạng cloud bằng kiến thức subnet cũ, không cần học phép chia nào mới.
 - **Đề:** VPC giống NHẤT với thứ gì bạn đã học ở on-prem?
   - **Dạng:** trắc nghiệm · **VLAN + dải subnet riêng — một vùng cô lập, nhưng kẻ bằng khai báo thay vì dây và switch** ✓ / Một sợi cáp quang rất dài / Một bản ghi DNS đặc biệt
   - **Chủ đề gợi ý (tầng 1):** bức tường ngăn xóm của Module 4

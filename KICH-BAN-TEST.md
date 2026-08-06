@@ -1,7 +1,8 @@
 # Kịch bản test người thật
 
-Phần lõi (mục 1-6): Phase 1, Module 1-2. Buổi bổ sung: Module 4 (mục 7)
-và Module 5 (mục 8) — làm sau khi người tham gia đã qua phần lõi.
+Phần lõi (mục 1-6): Phase 1, Module 1-2. Buổi bổ sung: Module 4 (mục 7),
+Module 5 (mục 8) và Phần C — Module 8-9-10 (mục 9) — làm sau khi người
+tham gia đã qua phần lõi.
 
 Mục tiêu: kiểm chứng Definition of Done cuối cùng của Phase 1 (spec mục 6):
 **một người chưa biết gì về mạng, sau khi tự học Module 1-2 trong app,
@@ -284,7 +285,77 @@ Buổi B: ôn thẻ: nhớ …/… thẻ
   KẾT LUẬN: ĐẬU / ĐẬU CÓ GHI CHÚ / RỚT
 ```
 
-## 9. Sau buổi test
+## 9. Buổi bổ sung — Phần C (Module 8-9-10)
+
+Chỉ làm **sau** buổi Module 5 (mục 8), và người tham gia phải tự học
+xong Module 6-7 trước đó. Ba module Phần C dùng ba kỹ thuật khác nhau,
+nên buổi này đo ba thứ khác nhau — đừng gộp thành một bài kiểm chung.
+
+### Lịch — hai buổi cách nhau một đêm
+
+| Buổi | Nội dung | Thời lượng |
+|------|----------|-----------|
+| A | Học Module 8 + 9 (kèm thi từng module) | 2 buổi nhỏ hoặc 1 buổi dài 2-3 giờ |
+| B (hôm sau trở đi) | Ôn thẻ + Module 10 + ba bài đo cuối | 60-90 phút |
+
+Nếu người tham gia có máy đủ mạnh và VMware, khuyến khích họ làm
+checklist lab AD song song ở nhà giữa hai buổi (app có sẵn checklist ở
+trang Học, không tính điểm) — ghi lại họ tick được tới bước mấy.
+
+### Buổi A — điểm quan sát
+
+1. **Module 8, bài 4-5 (interleaving):** khi câu IPv4 chen giữa các câu
+   IPv6 ("đổi hệ quy chiếu"), họ có khựng lại không? Có nhận ra "câu
+   này là chuyện hệ cũ" trước khi trả lời không, hay trả lời máy móc?
+2. **Module 9, bài 4 (cung điện GPO):** như buổi Module 5 — có đọc
+   chuyện từng tầng không hay bấm lướt; chuyến đi lại trong bài nhớ
+   ngay mấy tầng.
+3. **Module 9, bài 3 → 5 (fading GPO):** ở bài 5, câu "yêu cầu suông"
+   (cấm USB phòng Kế toán) họ tự dựng được lời giải không, hay phải mở
+   gợi ý? Đây là phép đo trực tiếp của worked example fading.
+
+### Buổi B — ba bài đo cuối (làm sau khi ôn thẻ, ĐÓNG APP)
+
+4. **Đo interleaving (Module 8)** — đọc lần lượt 4 tình huống, yêu cầu
+   nói "chuyện của hệ nào, cơ chế tên gì":
+   - "Máy 192.168.1.10 mở web, địa chỉ nguồn bị đổi ở router" → IPv4, NAT
+   - "Máy vừa bật đã có địa chỉ bắt đầu fe80" → IPv6, link-local
+   - "Máy xin địa chỉ qua 4 nhịp hỏi–đề nghị–chốt–gật" → IPv4, DHCP/DORA
+   - "Máy nghe router rao tên khu phố rồi tự ghép địa chỉ" → IPv6, SLAAC
+   **ĐẠT: ≥ 3/4, nói đúng cả hệ lẫn tên cơ chế** (tên đời thường vẫn tính).
+5. **Đo cung điện GPO (Module 9)** — giấy kẻ 4 ô chồng dọc, đề bài:
+   "Điền lại tòa nhà bốn tầng từ trệt lên nóc: tầng nào, bậc GPO nào,
+   áp cho ai." Sau đó hỏi: "Domain bảo A, OU bảo B — máy nghe ai, vì
+   sao?" **ĐẠT: đủ 4 tầng đúng thứ tự + trả lời được \"OU thắng vì áp
+   sau\"; khi hỏi \"sao nhớ được\" có nhắc tới HÌNH hoặc TẦNG.**
+6. **Đo contrast cases (Module 10)** — hỏi 3 cặp: "Trên mây, cái tương
+   ứng với VLAN là gì?", "…với tường lửa nhà là gì?", "…với AD DS là
+   gì?" **ĐẠT: ≥ 2/3 nêu đúng tên cloud VÀ nói được một điểm khác**
+   ("security group thì bám từng máy" là đủ).
+
+Kết luận chung: ĐẬU khi đạt cả ba bài đo; đậu 2/3 là ĐẬU CÓ GHI CHÚ
+(ghi rõ bài rớt thuộc module nào — đó là nội dung phải sửa); dưới nữa
+là RỚT của module tương ứng, mở lại nội dung module đó, không đổ cho
+người học.
+
+### Mẫu ghi chép bổ sung
+
+```
+Buổi A: bắt đầu …h — kết thúc …h
+  M8 interleaving: có khựng khi đổi hệ: có/không; ghi chú: …
+  M9 cung điện: đọc chuyện từng tầng: có/không; đi lại nhớ ngay …/4
+  M9 bài 5 (yêu cầu suông): tự dựng lời giải: có/không
+  Thi M8 …% / M9 …% (lần 1)
+  Checklist VMware (nếu làm): tick tới bước …/8
+Buổi B: ôn thẻ nhớ …/…
+  Đo interleaving: …/4 — sai ở tình huống: …
+  Đo cung điện GPO: …/4 tầng; "OU thắng vì áp sau": có/không; nhắc hình/tầng: có/không
+  Đo contrast: …/3 — nguyên văn câu hay nhất: …
+  Thi M10 …% (lần 1)
+  KẾT LUẬN: ĐẬU / ĐẬU CÓ GHI CHÚ / RỚT (module: …)
+```
+
+## 10. Sau buổi test
 
 - Mỗi mục RỚT hoặc ghi chú hiểu sai → mở issue nội dung: ghi rõ khái
   niệm hiểu sai, bài nào dạy nó, và câu người tham gia đã nói.

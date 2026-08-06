@@ -87,7 +87,7 @@ phá hoại cơ chế học của app, dù code chạy đúng.
 - `npm run test:watch` — test ở chế độ watch
 - `npm run typecheck` — kiểm tra kiểu TypeScript (`tsc --noEmit`)
 
-## Cấu trúc hiện tại (Phase 1 + Phase 2 XONG; kế tiếp là Phase 3)
+## Cấu trúc hiện tại (Phase 1 + 2 XONG; Phase 3 xong hạng mục (8), kế tiếp là (9) Phòng khám)
 
 - `src/engine/` — pedagogy engine thuần TS: SM-2, hàng đợi ôn tập,
   mastery gate, máy trạng thái bài học 6 bước, XP/streak, bộ chấm,
@@ -226,14 +226,34 @@ phá hoại cơ chế học của app, dù code chạy đúng.
   UI: `FoundationReview` chặn cửa trong LessonPlayer; ExerciseRunner đổi
   dạng câu theo `flowMode` — đổi CÁCH RENDER, không đổi dữ liệu bài.
 
-### Phase 3 — hạng mục (8): Module 8-10 (đang làm, khối 8.1 xong)
+### Phase 3 — hạng mục (8): Module 8-10 + cung điện GPO + checklist VMware (XONG)
 
 - Ba quyết định đã chốt: cung điện tổng quát hóa (phương án A); tòa GPO
   **4 tầng × 1 phòng** (LSDOU mỗi tầng một bậc); checklist lab VMware
   khai `vmLab` trong JSON module, store track `vmLabDone`, **không XP**
   (việc thật ngoài app không kiểm chứng được — nguyên tắc 5).
-- `GPO_PALACE` trong palaceFixture là hình mẫu tòa chữ; nội dung thật
-  vào module-09.json ở khối 8.3.
+- Nội dung: `module-08.json` (Wi-Fi băng tần/thế hệ/WPA + IPv6
+  link-local/global/SLAAC/dual-stack — **interleaving mạnh**: từ bài 4
+  bài tập trộn xen kẽ câu IPv4/IPv6, bài thi xen kẽ câu 4-8);
+  `module-09.json` (AD DS/GPO — cung điện LSDOU 4×1 keyStyle 'text' đi
+  xem + đi lại trong bài 4, bài thi kết bằng palace-walk phủ 4 phòng;
+  **fading GPO 0→1→2 trên ba bài liên tiếp** bị content.test khóa;
+  vmLab 8 bước); `module-10.json` (cloud — **contrast cases**: mỗi màn
+  dạy là "SO SÁNH SONG SONG" cloud ↔ on-prem đã học, hình hai ô
+  nhà ↔ mây ngăn nét đứt).
+- UI checklist VMware: `VmLabChecklist` trong LearnPage (ModuleCard),
+  hiện khi module mở; tick gọi `toggleVmLabStep`, đếm x/y bước, KHÔNG
+  XP. Chuỗi UI-chrome ở i18n (`learn.vmLabProgress`/`vmLabNoXp`);
+  title/intro/steps là NỘI DUNG từ JSON.
+- 4 glyph GPO trong `RoomGlyph` (bảng nội quy / bảng tin / lá cờ / cửa
+  phòng ban); `parsePorts.test.ts` quét MỌI tòa (Port + GPO): không
+  hình thiếu/thừa/trùng xuyên tòa.
+- **Luật rút ra, không được phá:** `workedExample` trong JSON KHÔNG mở
+  đầu bằng "Ví dụ giải sẵn" — LessonPlayer tự thêm nhãn đó, viết vào
+  nội dung là chữ lặp đôi trên màn hình (lỗi thật đã vá ở M6-M10).
+- Kịch bản test người thật Phần C: `KICH-BAN-TEST.md` mục 9 (đo
+  interleaving 4 tình huống, điền lại tòa GPO trên giấy, hỏi 3 cặp
+  contrast).
 
 ## Khi gặp mơ hồ
 
