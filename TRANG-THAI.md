@@ -1,18 +1,25 @@
-# Trạng thái dự án — NetMaster (Phase 1 + 2 xong; Phase 3 xong hạng mục 8)
+# Trạng thái dự án — NetMaster (Phase 1 + 2 xong; Phase 3 đang hạng mục 9)
 
-Cập nhật: 2026-08-06 đêm. File này chỉ để nắm nhanh tình hình khi
+Cập nhật: 2026-08-06 khuya. File này chỉ để nắm nhanh tình hình khi
 mở lại dự án. Nguồn chân lý vẫn là `SPEC-APP-HOC-MANG.md`; luật làm việc
 ở `CLAUDE.md`; nội dung bài đọc duyệt ở `REVIEW-NOI-DUNG.md`.
 
 ## MỞ PHIÊN MỚI THÌ ĐỌC ĐÂY TRƯỚC
 
-**Đang đứng đâu:** Phase 1 + Phase 2 xong hẳn; **Phase 3 hạng mục (8)
-XONG cả 5 khối** (Module 8-10 + cung điện GPO + checklist VMware — chi
-tiết bảng dưới). App có đủ Module 1-10. **Việc kế tiếp là hạng mục (9)
-— Phòng khám mạng (Module 11, terminal ảo, 100% productive failure) —
-CHƯA bắt đầu: đây là việc lớn đụng kiến trúc, cần trình kế hoạch và chờ
-người dùng duyệt trước khi code** (luật "việc lớn trình kế hoạch trước"
-trong CLAUDE.md).
+**Đang đứng đâu:** Phase 1 + Phase 2 xong hẳn; Phase 3 hạng mục (8)
+XONG cả 5 khối (Module 8-10 + cung điện GPO + checklist VMware). App có
+đủ Module 1-10. **Hạng mục (9) — Phòng khám mạng (Module 11) — đang
+làm: kế hoạch 5 khối ĐÃ được người dùng duyệt kèm 3 quyết định (bảng
+dưới); khối 9.1 XONG, việc kế tiếp là khối 9.2 — UI terminal + cắm
+`kind: 'clinic'` vào pipeline.**
+
+**Ba quyết định hạng mục (9) đã chốt (06-08, không hỏi lại):**
+1. Kiến trúc: engine clinic BỌC lab engine (case = topology lab + "hồ
+   sơ bệnh" overlay) — KHÔNG mở phạm vi mô phỏng lab đã đóng băng.
+2. Tab Phòng khám mở khóa khi Module 11 mở (đậu Module 10) — phòng
+   luyện song song, làm lại case tự do.
+3. Wireshark cơ bản = lệnh `capture`: bảng bắt gói suy từ chuỗi chặng
+   simulatePing của lượt ping gần nhất.
 
 **Việc treo (cần người, không code được):** các buổi test người thật
 theo `KICH-BAN-TEST.md` (mục 1-6 Phase 1; mục 7 M4; mục 8 M5; mục 9
@@ -37,14 +44,52 @@ lên. Chỉ nhắc tới deploy khi nó thật sự chặn việc.
 2. **Buổi test người thật** (`KICH-BAN-TEST.md`) — cần người, không code
    được.
 
-**Hạng mục (9) khi được giao thì nhớ:** Phòng khám (tab đang khóa từ
-Phase 1, màn úp mở có sẵn ở `src/features/clinic/`); spec đòi terminal
-ảo (ping/ipconfig/traceroute/nslookup/netstat), mỗi bài một "bệnh
-nhân", KHÔNG lý thuyết trước, case trộn kiến thức mọi module (tổng ôn
-trá hình); nền tảng sẵn có: engine lab mô phỏng mạng (`src/engine/lab/`)
-đã có simulate ping theo chặng + mã bệnh — terminal ảo nhiều khả năng
-đứng được trên nó, nhưng phạm vi mô phỏng đang ĐÓNG BĂNG nên lệnh nào
-đòi vượt phạm vi (DNS chết, trùng IP…) phải bàn trước.
+## Phase 3 — hạng mục (9): Phòng khám mạng (Module 11)
+
+Kế hoạch 5 khối đã duyệt. Bệnh nhân là dạng câu hỏi thứ SÁU
+(`kind: 'clinic'`); "không lý thuyết trước" giữ bằng chiêu Module 4:
+bệnh nhân đầu của mỗi bài đặt ở bước Đoán thử. Chấm hai phần: chẩn đoán
+(chọn bệnh) + sửa (thao tác thật trên sơ đồ, chấm bằng gradeLab; ca
+ngoài mô hình thì chọn hành động). "Gửi thử" miễn phí / "Nộp" tính lượt.
+
+| Khối | Nội dung | Trạng thái |
+|------|----------|-----------|
+| 9.1 | Engine phòng khám thuần TS (`src/engine/clinic/`) | Xong |
+| 9.2 | UI terminal + khung bệnh nhân + cắm `kind: 'clinic'` vào pipeline + /design | Chưa |
+| 9.3 | Nội dung `module-11.json` (case dễ→khó theo spec) + hình khái niệm | Chưa |
+| 9.4 | Mở khóa tab Phòng khám (danh sách case, làm lại tự do, XP lần đầu) | Chưa |
+| 9.5 | DoD + kiểm browser + tài liệu | Chưa |
+
+**Khối 9.1 đã làm gì** (headless — app chưa đổi một pixel):
+- `src/engine/clinic/patient.ts` — ca bệnh = `topology` (dùng NGUYÊN mô
+  hình lab, không sửa lab một dòng) + `overlay` "hồ sơ bệnh" (bảng DNS
+  + cờ DNS chết, luật chặn ICMP trên máy theo chiều in/out kèm nguồn
+  gpo/firewall, bảng netstat, danh sách GPO cho gpresult) + `seatId`
+  (máy người học ngồi). `validatePatient` tách lỗi CẤU TRÚC (soạn sai)
+  khỏi lỗi CẤU HÌNH (bệnh cố ý — chính là bài học); luật chặn nguồn GPO
+  bắt buộc có mặt trong gpresult của máy đó (manh mối phải lôi ra được).
+- `src/engine/clinic/terminal.ts` — 8 lệnh thật: ipconfig, ping,
+  tracert, nslookup, netstat, arp, capture (Wireshark cơ bản), gpresult.
+  Output SUY TỪ MÔ PHỎNG (ping/tracert ủy quyền simulatePing; capture
+  đọc chuỗi chặng; arp đọc ARP cache học được), tiếng Anh nghề tất định
+  — microcopy tiếng Việt thuộc tầng UI (help/unknown trả outcome rỗng
+  lines để UI tự lo). Ca trùng IP: chủ IP LUÂN PHIÊN theo số lượt ping
+  (tất định) — ping hai lần thấy MAC đổi trong `arp`, đúng cách bắt
+  bệnh ngoài đời. Ca GPO chặn outbound: General failure tại chỗ, netstat
+  vẫn ESTABLISHED — cái bẫy "mạng sống mà ping chết".
+- `src/engine/clinic/gradeClinic.ts` — `checkSymptom` (3 kiểu triệu
+  chứng: ping-fails, resolve-fails, ping-flaps) chạy qua ĐÚNG terminal
+  để overlay được tính; `gradeClinicFix` chấm BA LỚP: goals gradeLab
+  xanh + `mustClearDiagnoses` sạch (chặn "sửa giả" ca trùng IP) + triệu
+  chứng gốc hết tái hiện.
+- `src/engine/clinic/clinicSchema.ts` — zod + chốt chặn nội dung noi
+  gương labSchema: bệnh nhân phải ỐM THẬT ở trạng thái đầu, lời giải
+  phải chữa được ca của chính nó, trạng thái đầu không được đạt sẵn,
+  mustClearDiagnoses không được khai khống, lời giải chỉ dùng thao tác
+  đề cho phép.
+- `tests/fixtures/clinicFixture.ts` — 5 ca THẬT đúng thang spec: rút
+  dây, sai gateway, DNS chết, trùng IP, GPO chặn nhầm. 766/766 test
+  xanh (+22), typecheck sạch, build qua.
 
 ## Đang ở đâu
 

@@ -1,0 +1,228 @@
+// Test engine Phòng khám (spec Module 11) — chạy trên 5 CA THẬT của
+// fixture (đúng thang dễ → khó spec liệt kê), không ca bịa dễ dãi.
+
+import { describe, expect, it } from 'vitest'
+import {
+  CASE_DNS_CHET,
+  CASE_GPO_CHAN,
+  CASE_RUT_DAY,
+  CASE_SAI_GATEWAY,
+  CASE_TRUNG_IP,
+  ALL_CLINIC_CASES,
+} from '../../../tests/fixtures/clinicFixture'
+import { validatePatient } from './patient'
+import { initialTerminalState, runCommand, type TerminalState } from './terminal'
+import { checkSymptom, gradeClinicFix, smellsOf } from './gradeClinic'
+import { parseClinicCase } from './clinicSchema'
+import type { ClinicCaseSpec } from './gradeClinic'
+
+/** Gõ một chuỗi lệnh liên tiếp, trả kết quả lệnh cuối + state cuối. */
+function type(spec: ClinicCaseSpec, ...inputs: string[]) {
+  let state: TerminalState = initialTerminalState()
+  let last = runCommand(spec.patient, state, inputs[0] ?? 'help')
+  for (const input of inputs) {
+    last = runCommand(spec.patient, state, input)
+    state = last.state
+  }
+  return { last, state }
+}
+
+describe('hồ sơ bệnh nhân — kiểm cấu trúc', () => {
+  it('cả 5 ca fixture đều sạch lỗi cấu trúc', () => {
+    for (const spec of ALL_CLINIC_CASES) {
+      expect(validatePatient(spec.patient), 'ca có lỗi cấu trúc').toEqual([])
+    }
+  })
+
+  it('seat không tồn tại / không phải PC thì báo lỗi soạn bài', () => {
+    expect(validatePatient({ ...CASE_RUT_DAY.patient, seatId: 'khong-co' }).map((p) => p.code)).toContain(
+      'seat-not-found',
+    )
+    expect(validatePatient({ ...CASE_RUT_DAY.patient, seatId: 'cl1-switch' }).map((p) => p.code)).toContain(
+      'seat-not-pc',
+    )
+  })
+
+  it('DNS server trỏ IP không ai giữ là lỗi soạn bài', () => {
+    const broken = {
+      ...CASE_DNS_CHET.patient,
+      overlay: { dns: { serverIp: '10.9.9.9', records: [] } },
+    }
+    expect(validatePatient(broken).map((p) => p.code)).toContain('dns-server-ip-unowned')
+  })
+
+  it('luật chặn nguồn GPO phải có mặt trong gpresult của máy đó', () => {
+    const broken = {
+      ...CASE_GPO_CHAN.patient,
+      overlay: { ...CASE_GPO_CHAN.patient.overlay, gpos: {} },
+    }
+    const codes = validatePatient(broken).map((p) => p.code)
+    expect(codes).toContain('block-gpo-unlisted')
+  })
+})
+
+describe('terminal — ipconfig và nslookup', () => {
+  it('ipconfig đọc thẳng cấu hình máy đang ngồi', () => {
+    const { last } = type(CASE_SAI_GATEWAY, 'ipconfig')
+    expect(last.outcome).toMatchObject({ kind: 'ipconfig', ip: '192.168.10.10', gateway: '192.168.10.99' })
+    expect(last.lines.join('\n')).toContain('192.168.10.99')
+  })
+
+  it('nslookup khi DNS chết: timeout, có tên server trong output', () => {
+    const { last } = type(CASE_DNS_CHET, 'nslookup web.noibo.vn')
+    expect(last.outcome).toMatchObject({ kind: 'nslookup', failure: 'dns-timeout', serverIp: '192.168.10.53' })
+    expect(last.lines.join('\n')).toContain('DNS request timed out')
+  })
+
+  it('nslookup tên không có trong bảng: Non-existent domain', () => {
+    const healthy = {
+      ...CASE_DNS_CHET,
+      patient: {
+        ...CASE_DNS_CHET.patient,
+        overlay: { dns: { serverIp: '192.168.10.53', records: [{ name: 'web.noibo.vn', ip: '192.168.10.80' }] } },
+      },
+    }
+    const { last } = type(healthy, 'nslookup khongco.noibo.vn')
+    expect(last.outcome).toMatchObject({ kind: 'nslookup', failure: 'nxdomain' })
+    const ok = type(healthy, 'nslookup web.noibo.vn')
+    expect(ok.last.outcome).toMatchObject({ kind: 'nslookup', answer: '192.168.10.80', failure: null })
+  })
+
+  it('máy không khai DNS: nslookup báo thẳng, ping theo tên cũng chịu', () => {
+    const { last } = type(CASE_RUT_DAY, 'nslookup web.noibo.vn')
+    expect(last.outcome).toMatchObject({ kind: 'nslookup', failure: 'no-dns-configured' })
+    const ping = type(CASE_RUT_DAY, 'ping web.noibo.vn')
+    expect(ping.last.outcome).toMatchObject({ kind: 'ping', resolveFailure: 'no-dns-configured' })
+    expect(ping.last.lines[0]).toContain('could not find host')
+  })
+})
+
+describe('terminal — ping suy từ mô phỏng', () => {
+  it('ca rút dây: ping báo transmit failed (máy không có dây)', () => {
+    const { last } = type(CASE_RUT_DAY, 'ping 192.168.10.20')
+    expect(last.outcome).toMatchObject({ kind: 'ping', replied: false })
+    // src-no-link: gói không rời nổi máy — không có reply nào.
+    expect(last.lines.join('\n')).toContain('Lost = 4')
+  })
+
+  it('ca sai gateway: ping ra ngoài chết, triệu chứng đúng như lời than', () => {
+    const { last } = type(CASE_SAI_GATEWAY, 'ping 203.0.113.1')
+    expect(last.outcome).toMatchObject({ kind: 'ping', replied: false })
+    const symptom = checkSymptom(CASE_SAI_GATEWAY, CASE_SAI_GATEWAY.patient.topology)
+    expect(symptom.sick).toBe(true)
+  })
+
+  it('mạng khỏe: ping thông, TTL trừ đúng số router, tracert kê đúng chặng', () => {
+    const fixed = CASE_SAI_GATEWAY.fix.kind === 'edit-network' ? CASE_SAI_GATEWAY.fix.solution : null
+    const healthy: ClinicCaseSpec = { ...CASE_SAI_GATEWAY, patient: { ...CASE_SAI_GATEWAY.patient, topology: fixed! } }
+    const ping = type(healthy, 'ping 203.0.113.1')
+    expect(ping.last.outcome).toMatchObject({ kind: 'ping', replied: true })
+    expect(ping.last.lines.join('\n')).toContain('TTL=127') // qua đúng 1 router
+    const trace = type(healthy, 'tracert 203.0.113.1')
+    expect(trace.last.outcome).toMatchObject({ kind: 'tracert', reachedDest: true, routerIps: ['192.168.10.1'] })
+  })
+
+  it('ca trùng IP: hai lượt ping liên tiếp, ARP đổi MAC — bệnh flap lộ ra', () => {
+    const first = type(CASE_TRUNG_IP, 'ping 192.168.10.20', 'arp')
+    expect(first.last.outcome.kind).toBe('arp')
+    const mac1 = first.last.outcome.kind === 'arp' ? first.last.outcome.entries.find((e) => e.ip === '192.168.10.20')?.mac : null
+
+    const second = type(CASE_TRUNG_IP, 'ping 192.168.10.20', 'ping 192.168.10.20', 'arp')
+    const mac2 = second.last.outcome.kind === 'arp' ? second.last.outcome.entries.find((e) => e.ip === '192.168.10.20')?.mac : null
+
+    expect(mac1).toBeTruthy()
+    expect(mac2).toBeTruthy()
+    expect(mac1).not.toBe(mac2)
+  })
+
+  it('ca GPO chặn outbound: ping General failure, netstat vẫn thấy web sống — đúng cái bẫy', () => {
+    const ping = type(CASE_GPO_CHAN, 'ping 192.168.10.80')
+    expect(ping.last.outcome).toMatchObject({ kind: 'ping', replied: false })
+    expect(ping.last.lines.join('\n')).toContain('General failure')
+    expect(ping.last.outcome.kind === 'ping' && ping.last.outcome.blockedBy?.ruleName).toBe('GPO-Chan-ICMP-Ra')
+
+    const netstat = type(CASE_GPO_CHAN, 'netstat')
+    expect(netstat.last.lines.join('\n')).toContain('ESTABLISHED')
+
+    const gp = type(CASE_GPO_CHAN, 'gpresult')
+    expect(gp.last.lines.join('\n')).toContain('GPO-Chan-ICMP-Ra')
+  })
+})
+
+describe('terminal — capture (Wireshark cơ bản) và arp', () => {
+  it('chưa ping thì capture trống; ping xong thấy đủ nhịp ARP + ICMP', () => {
+    const empty = type(CASE_DNS_CHET, 'capture')
+    expect(empty.last.outcome).toMatchObject({ kind: 'capture', empty: true })
+
+    const after = type(CASE_DNS_CHET, 'ping 192.168.10.80', 'capture')
+    expect(after.last.outcome.kind).toBe('capture')
+    if (after.last.outcome.kind === 'capture') {
+      const phases = after.last.outcome.rows.map((r) => r.phase)
+      expect(phases).toContain('arp-request')
+      expect(phases).toContain('echo-request')
+      expect(phases).toContain('echo-reply')
+    }
+  })
+
+  it('lệnh lạ và help không sinh output thiết bị — UI tự lo lời', () => {
+    const unknown = type(CASE_RUT_DAY, 'format c:')
+    expect(unknown.last.outcome).toMatchObject({ kind: 'unknown' })
+    expect(unknown.last.lines).toEqual([])
+    const help = type(CASE_RUT_DAY, 'help')
+    expect(help.last.outcome).toMatchObject({ kind: 'help' })
+  })
+})
+
+describe('chấm ca — gradeClinicFix ba lớp', () => {
+  it('ca rút dây: lời giải đạt, trạng thái đầu thì không', () => {
+    if (CASE_RUT_DAY.fix.kind !== 'edit-network') throw new Error('fixture đổi kiểu fix?')
+    expect(gradeClinicFix(CASE_RUT_DAY, CASE_RUT_DAY.fix.solution).passed).toBe(true)
+    expect(gradeClinicFix(CASE_RUT_DAY, CASE_RUT_DAY.patient.topology).passed).toBe(false)
+  })
+
+  it('ca trùng IP: goals xanh mà bệnh còn thì vẫn trượt (mustClearDiagnoses)', () => {
+    if (CASE_TRUNG_IP.fix.kind !== 'edit-network') throw new Error('fixture đổi kiểu fix?')
+    const result = gradeClinicFix(CASE_TRUNG_IP, CASE_TRUNG_IP.patient.topology)
+    expect(result.passed).toBe(false)
+    expect(result.remainingDiagnoses).toContain('duplicate-ip')
+    expect(gradeClinicFix(CASE_TRUNG_IP, CASE_TRUNG_IP.fix.solution).passed).toBe(true)
+  })
+
+  it('mùi bệnh đọc ra đúng loại ca — người soạn không khai nhầm', () => {
+    expect(smellsOf(CASE_TRUNG_IP)).toContain('duplicate-ip')
+    expect(smellsOf(CASE_DNS_CHET)).toContain('dns-down')
+    expect(smellsOf(CASE_GPO_CHAN)).toContain('host-block-gpo')
+  })
+})
+
+describe('clinicSchema — chốt chặn nội dung', () => {
+  it('cả 5 ca fixture qua schema', () => {
+    for (const spec of ALL_CLINIC_CASES) {
+      expect(() => parseClinicCase(spec)).not.toThrow()
+    }
+  })
+
+  it('bệnh nhân không ốm là đề bài nói dối — schema chặn', () => {
+    if (CASE_RUT_DAY.fix.kind !== 'edit-network') throw new Error('fixture đổi kiểu fix?')
+    const healthy = { ...CASE_RUT_DAY, patient: { ...CASE_RUT_DAY.patient, topology: CASE_RUT_DAY.fix.solution } }
+    expect(() => parseClinicCase(healthy)).toThrow(/không ốm|đạt sẵn/)
+  })
+
+  it('lời giải không chữa được ca của chính nó — schema chặn', () => {
+    if (CASE_RUT_DAY.fix.kind !== 'edit-network') throw new Error('fixture đổi kiểu fix?')
+    const broken = {
+      ...CASE_RUT_DAY,
+      fix: { ...CASE_RUT_DAY.fix, solution: CASE_RUT_DAY.patient.topology },
+    }
+    expect(() => parseClinicCase(broken)).toThrow(/không chữa được/)
+  })
+
+  it('mustClearDiagnoses khai khống bệnh không tồn tại — schema chặn', () => {
+    if (CASE_RUT_DAY.fix.kind !== 'edit-network') throw new Error('fixture đổi kiểu fix?')
+    const bogus = {
+      ...CASE_RUT_DAY,
+      fix: { ...CASE_RUT_DAY.fix, mustClearDiagnoses: ['duplicate-ip' as const] },
+    }
+    expect(() => parseClinicCase(bogus)).toThrow(/không hề có bệnh/)
+  })
+})
