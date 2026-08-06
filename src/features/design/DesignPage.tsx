@@ -18,6 +18,7 @@ import { PalaceWalk } from '../palace/PalaceWalk'
 import { parsePalace, walkOutcomesPassed } from '../../engine/palace'
 import { PORT_PALACE } from '../../../tests/fixtures/palaceFixture'
 import { loadModules } from '../../content'
+import { ConceptVisual, visualIds } from '../../components/ConceptVisual'
 
 const SWATCHES = [
   'surface',
@@ -247,6 +248,20 @@ export function DesignPage() {
 
       <Section title={DEMO_PALACE.title.vi}>
         <PalaceShowcase />
+      </Section>
+
+      {/* Bày HẾT hình khái niệm ra một chỗ: hình vẽ tay chỉ lộ lỗi khi
+          nhìn (chữ đè lên nét, nét tràn khung), mà đi từng bài để soi thì
+          không ai làm nổi. */}
+      <Section title={`Hình khái niệm (${visualIds().length})`}>
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {visualIds().map((id) => (
+            <div key={id} className="flex flex-col gap-1">
+              <ConceptVisual visualId={id} title={id} />
+              <p className="font-mono text-[11px] text-ink-muted">{id}</p>
+            </div>
+          ))}
+        </div>
       </Section>
 
       <Section title={t('design.earcons')}>

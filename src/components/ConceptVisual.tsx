@@ -16,6 +16,14 @@ function Frame({ children, title }: { children: ReactNode; title?: string }) {
       aria-label={title}
       className="h-40 w-full rounded-md border border-edge bg-panel"
     >
+      {/* Đầu mũi tên dùng chung: khai ở Frame nên MỌI hình đều có sẵn.
+          Trước đây nó chỉ nằm trong một hình, và hình nào vẽ mũi tên mà
+          quên khai lại thì nét đó cụt đầu — lỗi im lặng, chỉ nhìn mới thấy. */}
+      <defs>
+        <marker id="cv-arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0 0 6 3 0 6" fill="none" stroke="currentColor" strokeWidth="1.5" />
+        </marker>
+      </defs>
       {children}
     </svg>
   )
@@ -40,11 +48,6 @@ function EnvelopePackets({ title }: { title?: string }) {
           </g>
         ))}
       </g>
-      <defs>
-        <marker id="cv-arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-          <path d="M0 0 6 3 0 6" fill="none" stroke="currentColor" strokeWidth="1.5" />
-        </marker>
-      </defs>
     </Frame>
   )
 }
@@ -222,10 +225,13 @@ function Journey({ leg, title }: { leg: JourneyLeg; title?: string }) {
  * học "đây là toàn cảnh, bạn đang ở đâu" — đếm cứng 3 module Phần A sẽ
  * biến nó thành lời nói dối ngay khi module tiếp theo ra đời.
  */
+// labelX đặt ngay sau ô cuối của từng hàng (ô rộng 18, cách nhau 26,
+// hàng bắt đầu ở x=28). Hàng C dài nhất nên nhãn của nó là chỗ dễ tràn
+// khung nhất — đã từng tràn thật, chữ "C · 8-12" bị cắt mất đuôi.
 const COURSE_PARTS = [
-  { part: 'A', color: 'var(--part-a)', orders: [1, 2, 3], y: 30, labelX: 140, labelY: 43 },
-  { part: 'B', color: 'var(--part-b)', orders: [4, 5, 6, 7], y: 58, labelX: 166, labelY: 71 },
-  { part: 'C', color: 'var(--part-c)', orders: [8, 9, 10, 11, 12], y: 86, labelX: 192, labelY: 99 },
+  { part: 'A', color: 'var(--part-a)', orders: [1, 2, 3], y: 30, labelX: 106, labelY: 43 },
+  { part: 'B', color: 'var(--part-b)', orders: [4, 5, 6, 7], y: 58, labelX: 132, labelY: 71 },
+  { part: 'C', color: 'var(--part-c)', orders: [8, 9, 10, 11, 12], y: 86, labelX: 158, labelY: 99 },
 ] as const
 
 function CourseMap({ title }: { title?: string }) {
@@ -603,8 +609,8 @@ function Handshake3Way({ title }: { title?: string }) {
         <text x="186" y="118" textAnchor="middle" {...monoText}>
           máy chủ
         </text>
-        <path d="M56 44 H164" {...stroke} strokeWidth={1.5} markerEnd="url(#cv-arrow)" />
-        <text x="110" y="40" textAnchor="middle" {...monoText}>
+        <path d="M56 40 H164" {...stroke} strokeWidth={1.5} markerEnd="url(#cv-arrow)" />
+        <text x="110" y="34" textAnchor="middle" {...monoText}>
           SYN
         </text>
         <path d="M164 94 H56" {...stroke} strokeWidth={1.5} markerEnd="url(#cv-arrow)" />
@@ -668,7 +674,7 @@ function UdpFast({ title }: { title?: string }) {
         <rect x="166" y="82" width="18" height="14" rx="2" {...stroke} strokeWidth={1.5} strokeDasharray="3 3" />
         <path d="M175 60 v16" {...stroke} strokeWidth={1.5} strokeDasharray="3 3" />
         <text x="110" y="118" textAnchor="middle" {...monoText}>
-          rớt gói nào thì thôi — không ai đòi lại
+          rớt gói nào thì thôi
         </text>
       </g>
     </Frame>
@@ -727,7 +733,12 @@ function EphemeralTicket({ title }: { title?: string }) {
   )
 }
 
-/** Cung điện ký ức: tòa nhà 5 tầng × 3 phòng, lộ trình đi từ tầng trệt lên. */
+/**
+ * Cung điện ký ức: tòa nhà 5 tầng × 3 phòng. Lộ trình vẽ THÀNH MỘT MŨI
+ * TÊN RIÊNG bên trái chứ không kẻ đè lên các phòng — đè lên thì 15 ô
+ * thành một mớ rối, mà cái cần thấy ngay là "5 tầng, mỗi tầng 3 phòng,
+ * đi từ dưới lên".
+ */
 function PalaceBuilding({ title }: { title?: string }) {
   const floors = [0, 1, 2, 3, 4]
   return (
@@ -737,27 +748,266 @@ function PalaceBuilding({ title }: { title?: string }) {
           [0, 1, 2].map((p) => (
             <rect
               key={`${f}-${p}`}
-              x={62 + p * 34}
-              y={14 + f * 21}
-              width="30"
-              height="17"
+              x={80 + p * 40}
+              y={16 + f * 21}
+              width="34"
+              height="16"
               rx="2"
               {...stroke}
               strokeWidth={1.2}
             />
           )),
         )}
-        <path d="M56 14 v104 h114" {...stroke} strokeWidth={1.5} />
+        <text x="140" y="126" textAnchor="middle" {...monoText}>
+          5 tầng × 3 phòng
+        </text>
       </g>
       <g className="text-accent">
-        {/* Lộ trình: bắt đầu ở tầng trệt bên trái, đi lên nóc. */}
-        <path d="M77 110 h68 M77 89 h68 M77 68 h68 M77 47 h68 M77 26 h68" {...stroke} strokeWidth={1.5} strokeDasharray="3 4" />
-        <path d="M145 110 V26" {...stroke} strokeWidth={1.5} markerEnd="url(#cv-arrow)" strokeDasharray="3 4" />
-        <circle cx="77" cy="110" r="3.5" fill="currentColor" />
+        <path d="M62 108 V22" {...stroke} strokeWidth={2} markerEnd="url(#cv-arrow)" />
+        <circle cx="62" cy="108" r="3.5" fill="currentColor" />
+        <text x="30" y="66" textAnchor="middle" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          đi lên
+        </text>
       </g>
-      <text x="182" y="122" textAnchor="middle" {...monoText}>
-        15 phòng
-      </text>
+    </Frame>
+  )
+}
+
+/** Resolver: máy bạn hỏi một câu, anh này chạy vòng hỏi hộ. */
+function DnsResolver({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <rect x="14" y="52" width="40" height="30" rx="3" {...stroke} />
+        <text x="34" y="98" textAnchor="middle" {...monoText}>
+          máy bạn
+        </text>
+        <path d="M56 67 H84" {...stroke} strokeWidth={1.5} markerEnd="url(#cv-arrow)" />
+      </g>
+      <g className="text-accent">
+        <circle cx="106" cy="67" r="20" {...stroke} />
+        <path d="M99 67 h14 M106 60 v14" {...stroke} strokeWidth={1.5} />
+        <text x="106" y="104" textAnchor="middle" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          resolver
+        </text>
+      </g>
+      <g className="text-ink-muted">
+        <path d="M126 60 q30 -30 62 -20" {...stroke} strokeWidth={1.2} strokeDasharray="4 3" markerEnd="url(#cv-arrow)" />
+        <path d="M128 67 H188" {...stroke} strokeWidth={1.2} strokeDasharray="4 3" markerEnd="url(#cv-arrow)" />
+        <path d="M126 76 q30 28 62 18" {...stroke} strokeWidth={1.2} strokeDasharray="4 3" markerEnd="url(#cv-arrow)" />
+        <text x="176" y="24" textAnchor="middle" {...monoText}>
+          hỏi hộ ba nơi
+        </text>
+      </g>
+    </Frame>
+  )
+}
+
+/** Ba tầng DNS: gốc → TLD → có thẩm quyền. */
+function DnsHierarchy({ title }: { title?: string }) {
+  const levels = [
+    { y: 22, label: 'gốc', w: 54 },
+    { y: 56, label: '.com', w: 78 },
+    { y: 90, label: 'example.com', w: 108 },
+  ]
+  return (
+    <Frame title={title}>
+      {levels.map((lv, i) => (
+        <g key={lv.label} className={i === 2 ? 'text-accent' : 'text-ink-muted'}>
+          <rect x={110 - lv.w / 2} y={lv.y} width={lv.w} height="22" rx="4" {...stroke} strokeWidth={i === 2 ? 2 : 1.5} />
+          <text x="110" y={lv.y + 15} textAnchor="middle" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+            {lv.label}
+          </text>
+        </g>
+      ))}
+      <g className="text-ink-muted">
+        <path d="M110 44 v12" {...stroke} strokeWidth={1.5} markerEnd="url(#cv-arrow)" />
+        <path d="M110 78 v12" {...stroke} strokeWidth={1.5} markerEnd="url(#cv-arrow)" />
+        <text x="110" y="126" textAnchor="middle" {...monoText}>
+          nơi giữ câu trả lời thật
+        </text>
+      </g>
+    </Frame>
+  )
+}
+
+/** Bản ghi A: một dòng tên → địa chỉ. */
+function RecordA({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <rect x="20" y="26" width="180" height="78" rx="4" {...stroke} />
+        <path d="M20 48 H200" {...stroke} strokeWidth={1.2} />
+        <text x="40" y="42" {...monoText}>
+          TÊN
+        </text>
+        <text x="128" y="42" {...monoText}>
+          ĐỊA CHỈ
+        </text>
+      </g>
+      <g className="text-accent">
+        <text x="30" y="68" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          example.com
+        </text>
+        <text x="126" y="68" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          93.184.16.34
+        </text>
+        <text x="30" y="90" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          A
+        </text>
+        <text x="126" y="90" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          AAAA → IPv6
+        </text>
+      </g>
+    </Frame>
+  )
+}
+
+/** CNAME là biệt danh, MX là hòm thư. */
+function RecordCnameMx({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <rect x="16" y="24" width="86" height="30" rx="4" {...stroke} strokeWidth={1.5} />
+        <text x="59" y="43" textAnchor="middle" {...monoText}>
+          blog.example
+        </text>
+        <path d="M102 39 H150" {...stroke} strokeWidth={1.5} markerEnd="url(#cv-arrow)" strokeDasharray="4 3" />
+        <text x="126" y="32" textAnchor="middle" {...monoText}>
+          CNAME
+        </text>
+        <rect x="150" y="24" width="54" height="30" rx="4" {...stroke} strokeWidth={1.5} />
+        <text x="177" y="43" textAnchor="middle" {...monoText}>
+          example
+        </text>
+      </g>
+      <g className="text-accent">
+        <path d="M22 74 h56 v28 H22 z" {...stroke} />
+        <path d="M22 74 50 92 78 74" {...stroke} strokeWidth={1.5} />
+        <path d="M84 88 H140" {...stroke} strokeWidth={1.5} markerEnd="url(#cv-arrow)" />
+        <text x="112" y="80" textAnchor="middle" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          MX
+        </text>
+        <rect x="142" y="72" width="60" height="32" rx="4" {...stroke} />
+        <text x="172" y="92" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          máy chủ thư
+        </text>
+      </g>
+    </Frame>
+  )
+}
+
+/** DoH: câu hỏi DNS bọc trong phong bì niêm phong đi cổng 443. */
+function DohEnvelope({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <text x="52" y="30" textAnchor="middle" {...monoText}>
+          hỏi: example.com
+        </text>
+        <rect x="24" y="38" width="56" height="26" rx="3" {...stroke} strokeWidth={1.2} strokeDasharray="3 3" />
+        <text x="52" y="55" textAnchor="middle" {...monoText}>
+          DNS
+        </text>
+        <path d="M84 51 H108" {...stroke} strokeWidth={1.5} markerEnd="url(#cv-arrow)" />
+      </g>
+      <g className="text-accent">
+        <rect x="112" y="30" width="80" height="52" rx="4" {...stroke} strokeWidth={2} />
+        <path d="M112 34 152 62 192 34" {...stroke} strokeWidth={1.5} />
+        <rect x="140" y="66" width="24" height="18" rx="3" {...stroke} strokeWidth={1.5} />
+        <path d="M146 66 v-6 a6 6 0 0 1 12 0 v6" {...stroke} strokeWidth={1.5} />
+        <text x="152" y="104" textAnchor="middle" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          HTTPS · 443
+        </text>
+      </g>
+    </Frame>
+  )
+}
+
+/** Bốn nhịp DORA — nhịp Request (thứ ba) nói TO nên vẽ nhấn. */
+function DoraFourBeats({ title }: { title?: string }) {
+  const beats = [
+    { y: 24, label: 'Discover', dir: 1 },
+    { y: 48, label: 'Offer', dir: -1 },
+    { y: 72, label: 'Request', dir: 1 },
+    { y: 96, label: 'Ack', dir: -1 },
+  ]
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <rect x="10" y="18" width="34" height="94" rx="3" {...stroke} strokeWidth={1.2} />
+        <rect x="176" y="18" width="34" height="94" rx="3" {...stroke} strokeWidth={1.2} />
+      </g>
+      {beats.map((b) => {
+        const accent = b.label === 'Request'
+        return (
+          <g key={b.label} className={accent ? 'text-accent' : 'text-ink-muted'}>
+            <path
+              d={b.dir === 1 ? 'M48 ' + b.y + ' H172' : 'M172 ' + b.y + ' H48'}
+              {...stroke}
+              strokeWidth={accent ? 2.5 : 1.2}
+              markerEnd="url(#cv-arrow)"
+            />
+            <text
+              x="110"
+              y={b.y - 4}
+              textAnchor="middle"
+              fontSize={accent ? 10 : 8}
+              fill="currentColor"
+              style={{ fontFamily: 'var(--font-mono)' }}
+            >
+              {b.label}
+            </text>
+          </g>
+        )
+      })}
+    </Frame>
+  )
+}
+
+/** DHCP: chìa khóa kèm tờ giấy thuê có hạn. */
+function DhcpLease({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-accent">
+        <circle cx="52" cy="52" r="14" {...stroke} />
+        <path d="M62 62 88 88 v10 h10" {...stroke} />
+      </g>
+      <g className="text-ink-muted">
+        <rect x="112" y="26" width="80" height="76" rx="4" {...stroke} />
+        <path d="M124 46 h56 M124 62 h56 M124 78 h36" {...stroke} strokeWidth={1.2} />
+        <text x="110" y="112" textAnchor="middle" {...monoText}>
+          IP · mặt nạ
+        </text>
+        <text x="110" y="124" textAnchor="middle" {...monoText}>
+          gateway · DNS
+        </text>
+      </g>
+    </Frame>
+  )
+}
+
+/** Gia hạn: đi được nửa vạch thời gian là đã xin gia hạn. */
+function LeaseRenew({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <rect x="20" y="52" width="170" height="18" rx="9" {...stroke} strokeWidth={1.5} />
+        <text x="30" y="88" {...monoText}>
+          bắt đầu thuê
+        </text>
+        <text x="176" y="88" textAnchor="middle" {...monoText}>
+          hết hạn
+        </text>
+      </g>
+      <g className="text-accent">
+        <rect x="20" y="52" width="85" height="18" rx="9" {...stroke} strokeWidth={2} />
+        <path d="M105 44 v-16" {...stroke} strokeWidth={2} markerEnd="url(#cv-arrow)" />
+        <text x="105" y="22" textAnchor="middle" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          xin gia hạn
+        </text>
+        <circle cx="105" cy="61" r="4" fill="currentColor" />
+      </g>
     </Frame>
   )
 }
@@ -828,6 +1078,20 @@ const REGISTRY: Record<string, VisualComponent> = {
   'vis-hook-cong-so': WellKnownDoors,
   'vis-cong-tam-thoi': EphemeralTicket,
   'vis-cung-dien-toa-nha': PalaceBuilding,
+  // Module 6 — DNS và DHCP
+  'vis-nguoi-hoi-ho': DnsResolver,
+  'vis-dns-ba-tang': DnsHierarchy,
+  'vis-hook-dns-phan-cap': DnsHierarchy,
+  'vis-ban-ghi-a': RecordA,
+  'vis-hook-ban-ghi': RecordA,
+  'vis-ban-ghi-cname-mx': RecordCnameMx,
+  'vis-doh-phong-bi': DohEnvelope,
+  'vis-hook-doh': DohEnvelope,
+  'vis-dora-bon-nhip': DoraFourBeats,
+  'vis-hook-dora': DoraFourBeats,
+  'vis-dhcp-thue-nha': DhcpLease,
+  'vis-gia-han-thue': LeaseRenew,
+  'vis-hook-lease': LeaseRenew,
 }
 
 /**
@@ -837,6 +1101,11 @@ const REGISTRY: Record<string, VisualComponent> = {
  */
 export function hasVisual(visualId: string): boolean {
   return visualId in REGISTRY
+}
+
+/** Mọi visualId đang có hình — trang /design bày hết ra để duyệt bằng mắt. */
+export function visualIds(): string[] {
+  return Object.keys(REGISTRY)
 }
 
 export function ConceptVisual({ visualId, title }: { visualId: string; title?: string }) {

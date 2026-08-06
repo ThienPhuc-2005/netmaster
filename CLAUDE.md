@@ -159,7 +159,7 @@ phá hoại cơ chế học của app, dù code chạy đúng.
 - Layout: dưới 768px, menu 4 mục chuyển xuống THANH ĐÁY và canvas lab
   cuộn ngang trong khung riêng (giữ vùng chạm cổng ≥ 24px).
 
-### Phase 2 — hạng mục (6): cung điện ký ức Port (khối 6.1-6.3 xong)
+### Phase 2 — hạng mục (6): cung điện ký ức Port (khối 6.1-6.4 xong)
 
 - `src/engine/palace/` — cung điện ký ức THUẦN, không React: `palace.ts`
   (tòa nhà 5 tầng × 3 phòng + kiểm cấu trúc + lộ trình), `walk.ts` (đi
@@ -189,6 +189,13 @@ phá hoại cơ chế học của app, dù code chạy đúng.
   bài sau mỗi bài một TẦNG: đi xem ở bước Dạy, đi lại từ trí nhớ ở bước
   Nhớ lại. Bài thi 8 câu, ba câu cuối phủ hết 15 phòng — `content.test.ts`
   khóa luật "không phòng nào lọt qua cổng mastery".
+- Nội dung: `content/modules/module-06.json` (DNS ba tầng, bản ghi
+  A/AAAA/CNAME/MX, DNS over HTTPS, DHCP DORA kể thành chuyện hỏi cưới,
+  thời hạn thuê). Câu tự giải thích của bài DORA là câu spec chỉ đích
+  danh: "vì sao vẫn cần Request dù đã có Offer".
+- `ConceptVisual`: đầu mũi tên `cv-arrow` khai ở `Frame` nên MỌI hình
+  dùng được; `/design` có mục "Hình khái niệm" bày hết registry ra một
+  trang để soi tràn chữ bằng mắt (và bằng `getBBox`).
 
 ## Khi gặp mơ hồ
 

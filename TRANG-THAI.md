@@ -198,7 +198,7 @@ xong thì Module 5/6/7 chỉ còn là viết JSON.
 | 6.1 | Engine cung điện ký ức thuần TS (`src/engine/palace/`) | Xong |
 | 6.2 | UI hai chuyến đi + cắm vào pipeline 6 bước | Xong |
 | 6.3 | Nội dung Module 5 (TCP/UDP/Port) + hình khái niệm | Xong |
-| 6.4 | Nội dung Module 6 (DNS phân cấp, DHCP DORA, DoH) | Chưa |
+| 6.4 | Nội dung Module 6 (DNS phân cấp, DHCP DORA, DoH) | Xong |
 | 6.5 | Nội dung Module 7 (NAT/PAT, port forwarding, firewall, mạng nhà) | Chưa |
 | 6.6 | Đối chiếu DoD + kiểm browser + cập nhật tài liệu | Chưa |
 
@@ -284,6 +284,28 @@ xong thì Module 5/6/7 chỉ còn là viết JSON.
   m5-bai-4 trên trình duyệt thật: tour khóa nút đi tiếp tới khi đi hết
   đoạn, chuyến nhớ lại chấm "Chuẩn luôn!", +30 XP, Hộp ôn tập nhận đúng
   1 thẻ khái niệm + 3 thẻ phòng, và thẻ phòng lật ra "Cổng 53 — DNS".
+
+**Khối 6.4 đã làm gì** (nội dung thật của Module 6):
+- `content/modules/module-06.json` — Phần B, 5 chặng, 5 bài, 8 khái niệm.
+  DNS ba tầng (gốc → TLD → có thẩm quyền) và vai trò resolver; bản ghi
+  A/AAAA/CNAME/MX; **DNS over HTTPS** làm góc hiện đại, nối thẳng về
+  phòng 443 của cung điện Module 5; DHCP DORA; và tờ giấy thuê có hạn.
+- **DORA kể thành chuyện hỏi cưới** như spec đòi: Discover là chàng trai
+  hỏi to giữa sân, Offer là các nhà đánh tiếng, Request là chốt một nhà
+  TRƯỚC CẢ LÀNG, Ack là nhà ấy gật đầu. Hình vẽ nhấn riêng nhịp Request
+  (nét dày, màu nhấn) vì nó là nhịp khó hiểu nhất.
+- **Self-explanation đậm** đúng câu spec chỉ định: "tại sao DHCP vẫn phải
+  có nhịp Request dù đã nhận Offer?" — ba nhóm từ khóa (nhiều máy chủ /
+  chọn công khai / rút lời trả địa chỉ về kho).
+- 8 hình SVG mới; và **vá một lỗi thật của tầng hình**: đầu mũi tên
+  `cv-arrow` trước đây chỉ khai bên trong MỘT hình, hình nào vẽ mũi tên
+  mà quên khai lại thì nét đó cụt đầu — lỗi im lặng, chỉ nhìn mới thấy.
+  Nay khai ở `Frame` nên mọi hình đều có.
+- `/design` thêm mục **"Hình khái niệm"** bày hết 54 hình ra một trang.
+  Nhờ nó phát hiện thêm 3 chỗ chữ tràn khung (kể cả một chỗ có sẵn từ
+  Phase 1: nhãn "C · 8-12" của bản đồ khóa học bị cắt đuôi) — đã sửa cả.
+- 710/710 test xanh, typecheck sạch, build qua. Đã soi cả 54 hình trên
+  trình duyệt thật, đo bằng `getBBox` để chắc không còn chữ nào tràn.
 
 ## Lệnh hay dùng
 

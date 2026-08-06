@@ -1,6 +1,6 @@
-# REVIEW NỘI DUNG — Module 1-5 (Phần A+B)
+# REVIEW NỘI DUNG — Module 1-6 (Phần A+B)
 
-> Sinh tự động từ `content/modules/module-01.json`, `content/modules/module-02.json`, `content/modules/module-03.json`, `content/modules/module-04.json`, `content/modules/module-05.json` bằng `npm run content:review`.
+> Sinh tự động từ `content/modules/module-01.json`, `content/modules/module-02.json`, `content/modules/module-03.json`, `content/modules/module-04.json`, `content/modules/module-05.json`, `content/modules/module-06.json` bằng `npm run content:review`.
 > Đây là bản để ĐỌC DUYỆT; muốn sửa thì sửa file JSON rồi render lại.
 
 ## Mạng là gì? — Câu chuyện bưu điện `module-1`
@@ -1561,3 +1561,292 @@ Phần B · 5 chặng · 8 bài · 11 khái niệm
     - tầng 5 phòng 2 · cổng 636 · LDAPS · hình `palace-safe-book` — Phòng 636 cũng là cuốn sổ ấy, nhưng đặt trong két sắt và chỉ mở qua khe kính.
     - tầng 5 phòng 3 · cổng 67/68 · DHCP · hình `palace-key-pair` — Phòng 67 phát chìa khóa nhà, phòng 68 nhận lại biên nhận — cặp phòng này chuyên lo cho người mới đến.
   - **Vì sao:** Tầng 5: 389 LDAP, 636 LDAPS, 67/68 DHCP.
+
+## DNS và DHCP — Hỏi đường và thuê nhà `module-6`
+
+Phần B · 5 chặng · 5 bài · 8 khái niệm
+
+**Chặng:** Hỏi đường trước khi đi (m6-bai-1) → Trong cuốn sổ có gì (m6-bai-2) → Ai nghe được câu hỏi của bạn (m6-bai-3) → Chuyện hỏi cưới bốn nhịp (m6-bai-4) → Giấy thuê có hạn (m6-bai-5)
+
+### Bài: Lần theo ba tầng người biết đường `m6-bai-1`
+
+**1 · Khởi động (hook):** Không có một cuốn danh bạ khổng lồ nào chứa hết mọi tên miền trên đời — nếu có thì nó sập trong một giây. Vậy tại sao gõ tên nào máy bạn cũng tra ra được địa chỉ?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử nhé: khi bạn gõ một tên miền lạ, máy bạn hỏi ai đầu tiên?
+  - **Dạng:** trắc nghiệm · Hỏi thẳng máy chủ của trang web đó / **Hỏi một máy chủ chuyên đi hỏi hộ, thường là của nhà mạng** ✓ / Hỏi Google
+  - **Vì sao:** Máy bạn chỉ hỏi ĐÚNG MỘT chỗ: máy chủ phân giải (resolver). Nó mới là bên chạy đi hỏi vòng quanh rồi mang câu trả lời về.
+
+**3 · Khám phá (teach):**
+- *[m6-resolver]* Máy bạn lười một cách có chủ đích: nó gửi đúng một câu hỏi cho máy chủ PHÂN GIẢI (thường là của nhà mạng hoặc do bạn tự chọn), rồi ngồi chờ. Anh này mới là người chạy vòng quanh hỏi hộ, và mang về một câu trả lời gọn ghẽ.
+  - **Đào sâu hơn:** Hỏi hộ xong, resolver còn NHỚ TẠM câu trả lời trong một khoảng thời gian do chủ tên miền quy định (TTL). Nhờ vậy người thứ hai hỏi cùng tên miền được trả lời ngay, không phải chạy lại vòng nào.
+- *[m6-phan-cap]* Vòng hỏi ấy đi qua ba tầng, từ chung tới riêng: máy chủ GỐC chỉ biết "ai quản .com", máy chủ TLD của .com chỉ biết "ai quản example.com", và máy chủ có THẨM QUYỀN của example.com mới là nơi giữ câu trả lời thật. Không ai biết tất cả — mỗi tầng chỉ biết chỉ sang tầng sau.
+  - **Đào sâu hơn:** Đọc tên miền từ PHẢI sang TRÁI mới đúng thứ tự hỏi: www.example.com nghĩa là gốc → .com → example.com → www. Dấu chấm cuối cùng (gốc) bị lược đi trong đời thường nên ít ai để ý.
+
+**4 · Thử tay (practice, fading 0):**
+- **Ví dụ giải sẵn:** Ví dụ giải sẵn — bạn gõ example.com: (1) máy bạn hỏi resolver; (2) resolver hỏi máy chủ gốc, được chỉ sang máy chủ .com; (3) hỏi .com, được chỉ sang máy chủ có thẩm quyền của example.com; (4) hỏi nơi đó, nhận được địa chỉ IP; (5) resolver trả về cho máy bạn và nhớ tạm lại. Đọc lại một lượt, rồi thử tự gọi tên tầng đầu tiên xem.
+- **Đề:** Máy chủ chỉ biết "ai đang quản .com, .vn, .org" nằm ở tầng nào của DNS?
+  - **Dạng:** gõ tay · **Chấp nhận:** gốc | goc | root | máy chủ gốc | may chu goc | root server
+  - **Chủ đề gợi ý (tầng 1):** tầng đứng trên cùng, biết ít nhất mà chỉ đường cho tất cả
+  - **Gợi ý (tầng 2):** Nó là nơi vòng hỏi bắt đầu, và tên nó nghĩa là "gốc rễ".
+  - **Lời giải (tầng 3):** Đó là máy chủ gốc (root): nó không giữ địa chỉ nào cả, chỉ biết ai quản từng đuôi tên miền.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: xếp lại vòng đi hỏi của resolver theo đúng thứ tự.
+  - **Dạng:** xếp thứ tự (thứ tự đúng):
+    1. Máy bạn hỏi máy chủ phân giải
+    2. Resolver hỏi máy chủ gốc — được chỉ sang máy chủ .com
+    3. Resolver hỏi máy chủ .com — được chỉ sang máy chủ của example.com
+    4. Resolver hỏi máy chủ có thẩm quyền — nhận được địa chỉ IP
+    5. Resolver trả địa chỉ về cho máy bạn và nhớ tạm lại
+  - **Chủ đề gợi ý (tầng 1):** hướng đi từ chung tới riêng
+  - **Gợi ý (tầng 2):** Đọc tên miền từ phải sang trái: gốc trước, đuôi sau, tên riêng sau cùng.
+  - **Lời giải (tầng 3):** Máy bạn → resolver → gốc → TLD (.com) → máy chủ có thẩm quyền → resolver trả lời và nhớ tạm.
+- **Đề:** Máy chủ giữ câu trả lời THẬT cho một tên miền được gọi là máy chủ gì?
+  - **Dạng:** gõ tay · **Chấp nhận:** có thẩm quyền | co tham quyen | thẩm quyền | tham quyen | authoritative
+  - **Chủ đề gợi ý (tầng 1):** nơi duy nhất có quyền nói "địa chỉ đúng là đây"
+  - **Gợi ý (tầng 2):** Hai tầng trên chỉ biết chỉ đường; tầng này mới có quyền trả lời.
+  - **Lời giải (tầng 3):** Máy chủ có thẩm quyền (authoritative) — nơi chủ tên miền khai địa chỉ thật.
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao DNS phải chia ba tầng thay vì gom hết vào một cuốn sổ khổng lồ?
+  - **Nhóm ý cần chạm:** [quá nhiều, khổng lồ, hàng tỉ, không xuể, quá tải] · [chia, phân cấp, mỗi tầng, chia nhau, một phần]
+  - **Trả lời mẫu:** Vì số tên miền quá lớn để một chỗ giữ hết và một chỗ hỏng là cả thế giới mất mạng; chia ba tầng thì mỗi tầng chỉ giữ một phần và chỉ việc chỉ sang tầng sau.
+
+**6 · Tổng kết:**
+- Máy bạn chỉ hỏi resolver; resolver mới là bên chạy đi hỏi hộ.
+- Vòng hỏi đi từ chung tới riêng: gốc → TLD → máy chủ có thẩm quyền.
+- Không tầng nào biết tất cả — mỗi tầng chỉ biết chỉ sang tầng sau.
+- *Úp mở bài sau:* Tới nơi rồi, nhưng trong cuốn sổ của máy chủ có thẩm quyền ghi những gì? Bài sau mình mở sổ ra xem — có cả biệt danh lẫn địa chỉ hòm thư.
+
+### Bài: Mở cuốn sổ của tên miền `m6-bai-2`
+
+**1 · Khởi động (hook):** Cùng một tên miền vừa mở ra trang web, vừa nhận được thư điện tử, lại còn có mấy cái tên phụ trỏ về nó. Cuốn sổ nào chứa nổi mấy việc khác nhau như vậy trong một chỗ?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử nhé: bản ghi ghi thẳng "tên miền này ứng với địa chỉ IPv4 nào" tên là gì?
+  - **Dạng:** trắc nghiệm · **Bản ghi A** ✓ / Bản ghi MX / Bản ghi CNAME
+  - **Vì sao:** A là bản ghi cơ bản nhất: tên miền → một địa chỉ IPv4. Bản IPv6 của nó là AAAA, đọc là "quad A".
+
+**3 · Khám phá (teach):**
+- *[m6-ban-ghi-a]* Bản ghi A là dòng cơ bản nhất trong sổ: tên miền này ứng với địa chỉ IPv4 kia. Bản ghi AAAA làm đúng việc đó cho IPv6 — bốn chữ A vì địa chỉ IPv6 dài gấp bốn lần địa chỉ IPv4.
+  - **Đào sâu hơn:** Một tên miền có thể khai nhiều bản ghi A trỏ tới nhiều máy chủ khác nhau; resolver lần lượt phát cho mỗi người hỏi một địa chỉ, và thế là đã có một kiểu chia tải đơn giản nhất.
+- *[m6-ban-ghi-cname-mx]* CNAME là dòng ghi BIỆT DANH: "tên này thật ra là tên kia, đi hỏi tên kia ấy". Còn MX là dòng ghi riêng cho thư điện tử: "thư gửi tới tên miền này thì đưa cho máy chủ thư kia". Nhờ MX mà trang web và hòm thư của cùng một tên miền nằm ở hai nơi khác nhau vẫn chạy.
+  - **Đào sâu hơn:** Một biệt danh không được đứng ở gốc tên miền (example.com) vì chỗ đó còn phải khai MX và vài bản ghi bắt buộc khác — CNAME thì nuốt hết mọi thứ khác của cái tên nó đứng cạnh.
+
+**4 · Thử tay (practice, fading 1):**
+- **Đề:** Bạn muốn thư gửi tới công ty rơi đúng vào máy chủ thư của công ty. Phải khai bản ghi loại nào?
+  - **Dạng:** gõ tay · **Chấp nhận:** mx | bản ghi mx | ban ghi mx
+  - **Chủ đề gợi ý (tầng 1):** loại bản ghi dành riêng cho thư điện tử
+  - **Gợi ý (tầng 2):** Hai chữ cái, và chữ M đứng cho "mail".
+  - **Lời giải (tầng 3):** Bản ghi MX — nó chỉ ra máy chủ nhận thư cho tên miền đó.
+- **Đề:** "blog.example.com thật ra chính là example.com" — dòng này là bản ghi loại nào?
+  - **Dạng:** trắc nghiệm · **CNAME** ✓ / A / MX
+  - **Chủ đề gợi ý (tầng 1):** dòng ghi biệt danh, không ghi địa chỉ
+  - **Gợi ý (tầng 2):** Nó không nói địa chỉ, nó chỉ nói "đi hỏi cái tên kia ấy".
+  - **Lời giải (tầng 3):** CNAME — biệt danh trỏ về một tên khác, rồi tên đó mới có bản ghi A thật.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: bản ghi trỏ tên miền tới một địa chỉ IPv6 tên là gì?
+  - **Dạng:** gõ tay · **Chấp nhận:** aaaa | a a a a | quad a
+  - **Chủ đề gợi ý (tầng 1):** bản anh em của bản ghi A, dành cho địa chỉ dài hơn
+  - **Gợi ý (tầng 2):** Vẫn là chữ A, nhưng bốn lần — vì địa chỉ dài gấp bốn.
+  - **Lời giải (tầng 3):** AAAA — bản ghi trỏ tên miền tới địa chỉ IPv6.
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao có bản ghi A rồi mà vẫn cần CNAME?
+  - **Nhóm ý cần chạm:** [nhiều tên, tên phụ, biệt danh, trỏ về, bí danh] · [đổi, sửa một chỗ, một nơi, khỏi phải sửa, cập nhật]
+  - **Trả lời mẫu:** Vì nhiều tên phụ cùng trỏ về một chỗ; khai biệt danh thì lúc đổi địa chỉ chỉ phải sửa đúng một dòng A, còn dùng A cho từng tên thì phải sửa hết.
+
+**6 · Tổng kết:**
+- A trỏ tên miền tới địa chỉ IPv4; AAAA làm việc đó cho IPv6.
+- CNAME là biệt danh: "tên này thật ra là tên kia".
+- MX chỉ ra máy chủ nhận thư — nhờ nó web và hòm thư tách rời được.
+- *Úp mở bài sau:* Có một chuyện ít ai để ý: câu hỏi DNS của bạn đi trần trên đường, ai ngồi giữa cũng đọc được bạn đang vào trang nào. Bài sau mình bọc nó lại.
+
+### Bài: Bọc kín câu hỏi của mình `m6-bai-3`
+
+**1 · Khởi động (hook):** Trang web bạn vào đã khóa bằng HTTPS, không ai đọc được nội dung. Nhưng câu hỏi "trang đó ở đâu" mà máy bạn gửi đi trước đó thì sao?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử nhé: câu hỏi DNS thường (cổng 53) đi trên đường dưới dạng nào?
+  - **Dạng:** trắc nghiệm · **Chữ trần — ai chặn được gói tin là đọc được tên miền bạn hỏi** ✓ / Đã mã hóa sẵn từ đầu
+  - **Vì sao:** DNS ra đời khi chưa ai nghĩ tới chuyện rình mò: câu hỏi đi trần, nên nhà mạng hay bất kỳ ai ngồi giữa đều đọc được bạn đang tra tên miền nào.
+
+**3 · Khám phá (teach):**
+- *[m6-doh]* DNS over HTTPS đóng câu hỏi DNS vào một phong bì HTTPS rồi gửi qua cổng 443 — đúng cái phòng ổ khóa vàng ở tầng 1 tòa nhà bạn vừa học. Người ngồi giữa chỉ thấy bạn đang nói chuyện với một máy chủ nào đó, không đọc được bạn hỏi tên miền gì.
+  - **Đào sâu hơn:** Đổi lại, toàn bộ câu hỏi của bạn dồn về một nhà cung cấp DoH — riêng tư với nhà mạng, nhưng lộ hết với chỗ đó. Và vì lẫn vào lưu lượng 443 nên quản trị mạng công ty cũng khó lọc tên miền độc hại hơn: mỗi lựa chọn đều có cái giá của nó.
+
+**4 · Thử tay (practice, fading 1):**
+- **Đề:** DNS over HTTPS gửi câu hỏi qua cổng số mấy?
+  - **Dạng:** gõ tay · **Chấp nhận:** 443
+  - **Chủ đề gợi ý (tầng 1):** phòng ổ khóa vàng ở tầng 1 tòa nhà
+  - **Gợi ý (tầng 2):** Cùng cổng với mọi trang web có khóa — đó chính là mẹo để nó lẫn vào đám đông.
+  - **Lời giải (tầng 3):** Cổng 443 — câu hỏi DNS được bọc trong HTTPS nên trông không khác gì một lượt truy cập web.
+- **Đề:** Cái giá phải trả khi bật DNS over HTTPS là gì?
+  - **Dạng:** trắc nghiệm · **Toàn bộ câu hỏi dồn về một nhà cung cấp, và mạng công ty khó lọc tên miền độc hại hơn** ✓ / Tốc độ mạng giảm một nửa / Không vào được trang web dùng HTTP
+  - **Chủ đề gợi ý (tầng 1):** riêng tư với ai, và lộ với ai
+  - **Gợi ý (tầng 2):** Giấu được với người ngồi giữa, nhưng người nhận câu hỏi thì thấy hết.
+  - **Lời giải (tầng 3):** Riêng tư với nhà mạng nhưng dồn hết vào một nhà cung cấp DoH; và vì lẫn vào cổng 443 nên bộ lọc của mạng công ty khó làm việc hơn.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: kỹ thuật bọc câu hỏi DNS vào phong bì HTTPS tên là gì? (viết tắt cũng được)
+  - **Dạng:** gõ tay · **Chấp nhận:** doh | dns over https
+  - **Chủ đề gợi ý (tầng 1):** tên ghép của hai thứ bạn vừa học
+  - **Gợi ý (tầng 2):** Ghép tên giao thức tra tên miền với tên giao thức web có khóa.
+  - **Lời giải (tầng 3):** DNS over HTTPS (DoH) — câu hỏi DNS đi trong HTTPS qua cổng 443.
+- **Tự giải thích:** Giải thích bằng lời của bạn: HTTPS đã mã hóa nội dung rồi, vậy vì sao vẫn cần mã hóa cả câu hỏi DNS?
+  - **Nhóm ý cần chạm:** [trước, trước khi, đi trước, bước đầu] · [tên miền, trang nào, biết bạn vào, lộ, theo dõi]
+  - **Trả lời mẫu:** Vì câu hỏi DNS xảy ra TRƯỚC khi kết nối HTTPS được dựng lên; nó đi trần nên người ngồi giữa vẫn biết bạn vào trang nào, dù không đọc được bạn xem gì trong đó.
+
+**6 · Tổng kết:**
+- Câu hỏi DNS thường đi trần — ai ngồi giữa cũng đọc được tên miền bạn hỏi.
+- DoH bọc câu hỏi đó trong HTTPS và gửi qua cổng 443.
+- Đổi lại: riêng tư với nhà mạng, nhưng dồn hết vào một nhà cung cấp.
+- *Úp mở bài sau:* Xong chuyện hỏi đường. Còn cái địa chỉ IP của chính máy bạn — ai phát cho bạn, và vì sao phải qua tới bốn nhịp mới xong?
+
+### Bài: Nghe trọn chuyện hỏi cưới bốn nhịp `m6-bai-4`
+
+**1 · Khởi động (hook):** Cắm dây mạng vào là máy có địa chỉ ngay, chẳng phải gõ gì. Nhưng nếu trong nhà có HAI người cùng đứng ra phát địa chỉ thì sao — máy bạn nghe ai?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử nhé: máy vừa vào mạng, chưa có địa chỉ nào, thì gửi câu hỏi đầu tiên cho ai?
+  - **Dạng:** trắc nghiệm · Gửi cho router — nó biết địa chỉ router mà / **Hét cho cả mạng nghe, vì chưa biết ai là người phát địa chỉ** ✓
+  - **Vì sao:** Máy mới chưa có địa chỉ của mình, cũng chưa biết ai phát địa chỉ — nên nó chỉ còn một cách: hét lên cho cả mạng nghe (quảng bá).
+
+**3 · Khám phá (teach):**
+- *[m6-dhcp]* DHCP là dịch vụ phát địa chỉ cho máy mới vào mạng. Địa chỉ ấy không phải của bạn mà là THUÊ: có thời hạn, hết hạn thì phải xin gia hạn, không dùng nữa thì trả về cho người sau.
+  - **Đào sâu hơn:** Ngoài địa chỉ IP, gói cấp phát còn kèm mặt nạ mạng, địa chỉ gateway và địa chỉ máy chủ DNS — nên chỉ một lần hỏi là máy bạn có đủ mọi thứ cần để ra Internet.
+- *[m6-dora]* Bốn nhịp DORA đọc như một chuyện hỏi cưới: chàng trai đứng giữa sân hỏi to "có nhà nào gả không?" (Discover) — các nhà có con gái đánh tiếng "nhà tôi có" (Offer) — chàng chọn MỘT nhà và nói to tên nhà đó cho cả làng nghe (Request) — nhà ấy gật đầu, thế là xong (Ack).
+  - **Đào sâu hơn:** Vì sao Request phải nói TO cho cả làng nghe chứ không thì thầm riêng: những nhà kia đang giữ chỗ chờ bạn, nghe thấy bạn chọn người khác thì mới rút lời và trả địa chỉ về kho. Không có nhịp này, mạng có hai máy chủ DHCP sẽ dần cạn địa chỉ vì ai cũng giữ chỗ cho những người đã đi lấy chồng nơi khác.
+
+**4 · Thử tay (practice, fading 1):**
+- **Đề:** Xếp bốn nhịp DORA theo đúng thứ tự.
+  - **Dạng:** xếp thứ tự (thứ tự đúng):
+    1. Discover — máy mới hét cho cả mạng: "có ai phát địa chỉ không?"
+    2. Offer — máy chủ DHCP đánh tiếng: "tôi có địa chỉ này cho bạn"
+    3. Request — máy mới nói to: "tôi chọn địa chỉ của máy chủ ấy"
+    4. Ack — máy chủ được chọn gật đầu, địa chỉ chính thức thuộc về máy mới
+  - **Chủ đề gợi ý (tầng 1):** chuyện hỏi cưới: hỏi — đánh tiếng — chốt — gật đầu
+  - **Gợi ý (tầng 2):** Bốn chữ đầu ghép lại thành DORA, và thứ tự chữ cũng chính là thứ tự nhịp.
+  - **Lời giải (tầng 3):** Discover → Offer → Request → Ack.
+- **Đề:** Nhịp thứ ba của DHCP — nhịp máy mới chốt một máy chủ và nói to cho cả mạng nghe — tên là gì?
+  - **Dạng:** gõ tay · **Chấp nhận:** request
+  - **Chủ đề gợi ý (tầng 1):** nhịp chốt lời trong chuyện hỏi cưới
+  - **Gợi ý (tầng 2):** Chữ R trong DORA.
+  - **Lời giải (tầng 3):** Request — và nó cố tình nói to để những máy chủ không được chọn rút lời.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: bốn nhịp của DHCP ghép lại thành từ gì?
+  - **Dạng:** gõ tay · **Chấp nhận:** dora
+  - **Chủ đề gợi ý (tầng 1):** chữ đầu của bốn nhịp
+  - **Gợi ý (tầng 2):** Bốn chữ cái: hỏi — đánh tiếng — chốt — gật.
+  - **Lời giải (tầng 3):** DORA: Discover, Offer, Request, Ack.
+- **Tự giải thích:** Giải thích bằng lời của bạn: tại sao DHCP vẫn phải có nhịp Request dù máy bạn ĐÃ nhận được Offer rồi?
+  - **Nhóm ý cần chạm:** [nhiều máy chủ, hai máy chủ, nhiều lời, nhiều offer, vài nơi] · [chọn một, chốt, nói rõ, công khai] · [rút lời, trả lại, giải phóng, thu hồi, nhả ra]
+  - **Trả lời mẫu:** Vì có thể nhiều máy chủ cùng đánh tiếng, mỗi nơi đang giữ sẵn một địa chỉ cho bạn. Request nói to tên nơi bạn chọn để những nơi kia biết mà rút lời và trả địa chỉ về kho — nếu không, kho địa chỉ sẽ cạn dần vì bị giữ chỗ vô ích.
+
+**6 · Tổng kết:**
+- DHCP cho THUÊ địa chỉ, kèm mặt nạ, gateway và máy chủ DNS.
+- Bốn nhịp DORA: Discover → Offer → Request → Ack.
+- Request nói to để những máy chủ không được chọn rút lời và trả địa chỉ về kho.
+- *Úp mở bài sau:* Đã là thuê thì có hạn. Hết hạn mà bạn vẫn đang dùng máy thì chuyện gì xảy ra? Bài cuối module mình xem tờ giấy thuê.
+
+### Bài: Đọc kỹ tờ giấy thuê địa chỉ `m6-bai-5`
+
+**1 · Khởi động (hook):** Máy tính công ty để nguyên cả tuần không tắt vẫn giữ đúng một địa chỉ, còn điện thoại bạn ra quán cà phê một lát về nhà thì địa chỉ đã khác. Ai quyết định chuyện đó?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử nhé: máy bạn xin gia hạn địa chỉ vào lúc nào?
+  - **Dạng:** trắc nghiệm · Đúng lúc hết hạn / **Khi mới đi được nửa thời hạn — xin sớm cho chắc** ✓ / Chỉ khi mất mạng
+  - **Vì sao:** Máy xin gia hạn từ giữa thời hạn: xin sớm thì hỏng một lần vẫn còn nguyên nửa hạn để thử lại, chứ đợi tới phút chót là mất địa chỉ giữa chừng.
+
+**3 · Khám phá (teach):**
+- *[m6-lease]* Mỗi địa chỉ được cấp kèm một THỜI HẠN THUÊ. Đi được nửa hạn, máy bạn lặng lẽ xin gia hạn với chính máy chủ đã cấp — chỉ hai nhịp Request và Ack, không phải hỏi lại cả làng. Hỏng thì còn nguyên nửa hạn sau để thử tiếp; tới lúc cạn hạn thật mới quay về hét từ đầu.
+  - **Đào sâu hơn:** Mạng công ty hay đặt hạn dài (8 giờ tới vài ngày) vì máy ít thay đổi; quán cà phê đặt hạn ngắn (một hai giờ) vì khách vào ra liên tục — hạn dài ở đó sẽ khóa cứng kho địa chỉ cho những người đã về nhà từ lâu.
+
+**4 · Thử tay (practice, fading 2):**
+- **Đề:** Quán cà phê nên đặt thời hạn thuê địa chỉ thế nào?
+  - **Dạng:** trắc nghiệm · **Ngắn — khách vào ra liên tục, phải trả địa chỉ về kho sớm** ✓ / Dài — cho khách khỏi phải xin lại
+  - **Chủ đề gợi ý (tầng 1):** chuyện gì xảy ra với địa chỉ của khách đã về nhà
+  - **Gợi ý (tầng 2):** Nghĩ tới kho địa chỉ: ai đã đi rồi mà vẫn giữ chỗ thì người mới lấy đâu ra chỗ?
+  - **Lời giải (tầng 3):** Hạn ngắn, vì khách ra vào liên tục; hạn dài sẽ khóa cứng kho địa chỉ cho những người đã đi từ lâu.
+- **Đề:** Lúc gia hạn, máy bạn dùng mấy nhịp của DORA?
+  - **Dạng:** gõ tay · **Chấp nhận:** 2 | hai | 2 nhịp | hai nhịp
+  - **Chủ đề gợi ý (tầng 1):** gia hạn thì đã biết hỏi ai rồi
+  - **Gợi ý (tầng 2):** Không phải hỏi lại cả làng nữa — chỉ còn nhịp chốt và nhịp gật.
+  - **Lời giải (tầng 3):** Hai nhịp: Request và Ack, gửi thẳng cho máy chủ đã cấp.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: máy bạn bắt đầu xin gia hạn địa chỉ khi đã dùng hết bao nhiêu phần thời hạn?
+  - **Dạng:** gõ tay · **Chấp nhận:** một nửa | mot nua | nửa | nua | 50% | 1/2
+  - **Chủ đề gợi ý (tầng 1):** xin sớm để còn đường thử lại
+  - **Gợi ý (tầng 2):** Không đợi tới phút chót — mới đi được đúng một phần hai chặng đường.
+  - **Lời giải (tầng 3):** Một nửa thời hạn: xin sớm thì hỏng một lần vẫn còn nửa hạn sau để thử lại.
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao địa chỉ IP lại cho thuê có hạn thay vì cấp hẳn một lần cho mỗi máy?
+  - **Nhóm ý cần chạm:** [có hạn, hết hạn, thu hồi, trả lại, giải phóng] · [máy mới, người sau, dùng lại, tái sử dụng, kho địa chỉ]
+  - **Trả lời mẫu:** Vì kho địa chỉ có hạn: máy nào rời mạng mà không trả thì chỗ đó chết cứng. Cho thuê có hạn nên hết hạn không ai gia hạn là địa chỉ tự quay về kho cho người sau dùng.
+
+**6 · Tổng kết:**
+- Địa chỉ DHCP là đi thuê có thời hạn, không phải cấp hẳn.
+- Đi hết nửa hạn là máy tự xin gia hạn bằng hai nhịp Request + Ack.
+- Hạn dài cho mạng ổn định, hạn ngắn cho chỗ khách ra vào liên tục.
+- *Úp mở bài sau:* Cả nhà bạn có chục thiết bị, mỗi cái một địa chỉ riêng — vậy mà ra Internet lại chỉ thấy MỘT địa chỉ. Module sau mình mở chuyện NAT và tường lửa.
+
+### Khái niệm & flashcard (8)
+
+- **DNS resolver** `m6-resolver` — Máy chủ phân giải — bên đi hỏi hộ rồi mang câu trả lời về cho máy bạn
+  - Ẩn dụ: Như người quen rành đường: bạn hỏi một câu, anh ta chạy vòng quanh hỏi giúp rồi về báo lại.
+  - Thẻ ôn: *Máy bạn hỏi ai khi cần tra một tên miền, và bên đó làm gì?* → Hỏi máy chủ phân giải (resolver). Nó chạy vòng hỏi gốc → TLD → máy chủ có thẩm quyền, mang địa chỉ về và nhớ tạm cho lần sau.
+- **DNS hierarchy** `m6-phan-cap` — Ba tầng của DNS: gốc → TLD → máy chủ có thẩm quyền
+  - Ẩn dụ: Hỏi đường ba chặng: người ở ngã tư chỉ sang huyện, huyện chỉ sang xã, xã mới biết đúng nhà.
+  - Thẻ ôn: *Ba tầng của DNS theo đúng thứ tự hỏi là gì?* → Máy chủ gốc (biết ai quản .com) → máy chủ TLD (.com) → máy chủ có thẩm quyền của tên miền, nơi giữ câu trả lời thật.
+- **A / AAAA record** `m6-ban-ghi-a` — Bản ghi trỏ tên miền tới địa chỉ IPv4 (A) hoặc IPv6 (AAAA)
+  - Ẩn dụ: Dòng cơ bản nhất trong sổ danh bạ: tên này ở địa chỉ kia.
+  - Thẻ ôn: *Bản ghi A và AAAA khác nhau ở chỗ nào?* → A trỏ tên miền tới địa chỉ IPv4; AAAA trỏ tới địa chỉ IPv6 (bốn chữ A vì địa chỉ dài gấp bốn).
+- **CNAME / MX record** `m6-ban-ghi-cname-mx` — Bản ghi biệt danh (CNAME) và bản ghi máy chủ thư (MX)
+  - Ẩn dụ: CNAME là "tên này thật ra là tên kia"; MX là "thư của nhà này đưa cho bác kia giữ".
+  - Thẻ ôn: *CNAME và MX dùng để làm gì?* → CNAME khai biệt danh trỏ về một tên khác; MX chỉ ra máy chủ nhận thư cho tên miền đó.
+- **DNS over HTTPS** `m6-doh` — Bọc câu hỏi DNS trong HTTPS và gửi qua cổng 443
+  - Ẩn dụ: Thay vì hỏi to giữa đường, bạn viết câu hỏi vào phong bì niêm phong rồi mới gửi đi.
+  - Thẻ ôn: *DNS over HTTPS giải quyết chuyện gì, và đánh đổi cái gì?* → Giấu tên miền bạn hỏi khỏi người ngồi giữa (đi qua cổng 443). Đổi lại, câu hỏi dồn hết về một nhà cung cấp và bộ lọc của mạng công ty khó làm việc hơn.
+- **DHCP** `m6-dhcp` — Dịch vụ cho thuê địa chỉ IP cùng mặt nạ, gateway và máy chủ DNS
+  - Ẩn dụ: Như thuê nhà: có giấy, có thời hạn, hết hạn thì gia hạn hoặc trả lại chìa khóa.
+  - Thẻ ôn: *Ngoài địa chỉ IP, DHCP còn cấp cho máy bạn những gì?* → Mặt nạ mạng, địa chỉ gateway và địa chỉ máy chủ DNS — đủ để ra Internet chỉ sau một lần hỏi.
+- **DORA** `m6-dora` — Bốn nhịp cấp phát địa chỉ: Discover, Offer, Request, Ack
+  - Ẩn dụ: Chuyện hỏi cưới: hỏi to giữa sân — nhà có con gái đánh tiếng — chốt một nhà trước cả làng — nhà ấy gật đầu.
+  - Thẻ ôn: *Bốn nhịp DORA, và vì sao nhịp Request phải nói to cho cả mạng nghe?* → Discover → Offer → Request → Ack. Request nói to để những máy chủ không được chọn rút lời và trả địa chỉ đang giữ chỗ về kho.
+- **DHCP lease** `m6-lease` — Thời hạn thuê địa chỉ và việc gia hạn giữa chừng
+  - Ẩn dụ: Tờ giấy thuê có ngày hết hạn; đi được nửa hạn là đã đi xin gia hạn cho chắc.
+  - Thẻ ôn: *Khi nào máy bạn xin gia hạn địa chỉ, và bằng mấy nhịp?* → Khi dùng hết một nửa thời hạn, bằng hai nhịp Request + Ack gửi thẳng cho máy chủ đã cấp.
+
+### Bài kiểm tra module (8 câu, cần ≥ 85%)
+
+- **Đề:** Xếp lại vòng đi hỏi của một câu tra tên miền theo đúng thứ tự.
+  - **Dạng:** xếp thứ tự (thứ tự đúng):
+    1. Máy bạn hỏi máy chủ phân giải
+    2. Resolver hỏi máy chủ gốc
+    3. Resolver hỏi máy chủ TLD (.com)
+    4. Resolver hỏi máy chủ có thẩm quyền và nhận địa chỉ IP
+  - **Vì sao:** Vòng hỏi đi từ chung tới riêng; mỗi tầng chỉ biết chỉ sang tầng sau, không tầng nào biết tất cả.
+- **Đề:** Máy chủ giữ câu trả lời thật cho một tên miền gọi là máy chủ gì?
+  - **Dạng:** gõ tay · **Chấp nhận:** có thẩm quyền | co tham quyen | thẩm quyền | tham quyen | authoritative
+  - **Vì sao:** Máy chủ có thẩm quyền (authoritative) — nơi chủ tên miền khai địa chỉ thật; hai tầng trên chỉ chỉ đường.
+- **Đề:** Bạn muốn thư gửi tới tên miền công ty rơi đúng vào máy chủ thư. Khai bản ghi loại nào?
+  - **Dạng:** trắc nghiệm · **MX** ✓ / A / CNAME
+  - **Vì sao:** MX chỉ ra máy chủ nhận thư cho tên miền, nhờ đó web và hòm thư nằm hai nơi vẫn chạy.
+- **Đề:** Bản ghi trỏ tên miền tới một địa chỉ IPv6 tên là gì?
+  - **Dạng:** gõ tay · **Chấp nhận:** aaaa | quad a
+  - **Vì sao:** AAAA — bản anh em của A, dành cho địa chỉ IPv6 dài gấp bốn lần.
+- **Đề:** DNS over HTTPS gửi câu hỏi qua cổng nào, và giấu được điều gì?
+  - **Dạng:** trắc nghiệm · **Cổng 443 — giấu tên miền bạn hỏi khỏi người ngồi giữa** ✓ / Cổng 53 — giấu nội dung trang web / Cổng 80 — giấu địa chỉ IP của bạn
+  - **Vì sao:** Câu hỏi DNS được bọc trong HTTPS qua cổng 443 nên trông như một lượt truy cập web bình thường.
+- **Đề:** Xếp bốn nhịp DHCP theo đúng thứ tự.
+  - **Dạng:** xếp thứ tự (thứ tự đúng):
+    1. Discover
+    2. Offer
+    3. Request
+    4. Ack
+  - **Vì sao:** DORA: hỏi to giữa sân — nhà có thì đánh tiếng — chốt một nhà trước cả làng — nhà ấy gật đầu.
+- **Đề:** Vì sao nhịp Request của DHCP phải gửi dạng quảng bá cho cả mạng nghe?
+  - **Dạng:** trắc nghiệm · **Để những máy chủ không được chọn rút lời và trả địa chỉ đang giữ chỗ về kho** ✓ / Để router ghi lại địa chỉ mới của bạn / Vì máy bạn vẫn chưa biết địa chỉ của máy chủ DHCP
+  - **Vì sao:** Nhiều máy chủ có thể cùng đánh tiếng và mỗi nơi giữ sẵn một địa chỉ; Request nói to để những nơi không được chọn giải phóng chỗ đã giữ.
+- **Đề:** Máy bạn bắt đầu xin gia hạn địa chỉ khi đã dùng hết bao nhiêu phần thời hạn thuê?
+  - **Dạng:** gõ tay · **Chấp nhận:** một nửa | mot nua | nửa | nua | 50% | 1/2
+  - **Vì sao:** Một nửa — xin sớm thì hỏng một lần vẫn còn nửa hạn sau để thử lại, không mất địa chỉ giữa chừng.
