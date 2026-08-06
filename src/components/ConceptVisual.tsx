@@ -1730,6 +1730,228 @@ function GpresultSoi({ title }: { title?: string }) {
   )
 }
 
+/** Cloud: data center của người khác, bạn thuê một góc qua Internet. */
+function CloudMayChuNguoiKhac({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <path d="M66 66 a16 16 0 0 1 4 -31 a20 20 0 0 1 38 -6 a14 14 0 0 1 12 24 a12 12 0 0 1 -6 13 z" {...stroke} strokeWidth={1.5} />
+        <rect x="76" y="40" width="14" height="20" rx="2" {...stroke} strokeWidth={1.2} />
+        <path d="M79 46 h8 M79 52 h8" {...stroke} strokeWidth={1} />
+        <rect x="96" y="40" width="14" height="20" rx="2" {...stroke} strokeWidth={1.2} />
+        <path d="M99 46 h8 M99 52 h8" {...stroke} strokeWidth={1} />
+      </g>
+      <g className="text-accent">
+        <rect x="116" y="40" width="14" height="20" rx="2" {...stroke} strokeWidth={1.5} />
+        <path d="M119 46 h8 M119 52 h8" {...stroke} strokeWidth={1.2} />
+        <path d="M140 34 Q136 42 132 46" {...stroke} strokeWidth={1} markerEnd="url(#cv-arrow)" />
+        <text x="172" y="30" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          góc bạn thuê
+        </text>
+      </g>
+      <g className="text-ink-muted">
+        <rect x="30" y="88" width="30" height="18" rx="3" {...stroke} strokeWidth={1.5} />
+        <path d="M62 92 Q86 84 92 70" {...stroke} strokeWidth={1.2} strokeDasharray="4 3" markerEnd="url(#cv-arrow)" />
+      </g>
+      <text x="110" y="122" textAnchor="middle" {...monoText}>
+        thiết bị thành phần mềm khai báo
+      </text>
+    </Frame>
+  )
+}
+
+/** VPC hai ô so sánh: mạng nhà có rào ↔ vùng riêng kẻ trong mây. */
+function VpcGocRieng({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <path d="M110 14 V100" {...stroke} strokeWidth={1} strokeDasharray="3 4" />
+        <text x="58" y="24" textAnchor="middle" {...monoText}>nhà (VLAN)</text>
+        <rect x="24" y="34" width="68" height="52" rx="4" {...stroke} strokeWidth={1.2} />
+        <rect x="32" y="44" width="22" height="14" rx="2" {...stroke} strokeWidth={1.2} />
+        <rect x="62" y="44" width="22" height="14" rx="2" {...stroke} strokeWidth={1.2} />
+        <text x="58" y="78" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          dây + switch
+        </text>
+      </g>
+      <g className="text-accent">
+        <text x="163" y="24" textAnchor="middle" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          mây (VPC)
+        </text>
+        <rect x="128" y="34" width="70" height="52" rx="4" {...stroke} strokeDasharray="6 4" />
+        <rect x="136" y="44" width="24" height="14" rx="2" {...stroke} strokeWidth={1.2} />
+        <rect x="168" y="44" width="24" height="14" rx="2" {...stroke} strokeWidth={1.2} />
+        <text x="163" y="78" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          10.0.0.0/16
+        </text>
+      </g>
+      <text x="110" y="118" textAnchor="middle" {...monoText}>
+        cùng vùng cô lập — khác cách kẻ ranh
+      </text>
+    </Frame>
+  )
+}
+
+/** Security group: một gác ở cổng ↔ vệ sĩ kè kè từng máy. */
+function SgTungMay({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <path d="M110 14 V100" {...stroke} strokeWidth={1} strokeDasharray="3 4" />
+        <text x="58" y="24" textAnchor="middle" {...monoText}>nhà: gác ở cổng</text>
+        <rect x="24" y="34" width="68" height="52" rx="4" {...stroke} strokeWidth={1.2} />
+        <rect x="52" y="28" width="14" height="12" rx="2" {...stroke} strokeWidth={1.5} />
+        <rect x="34" y="56" width="20" height="14" rx="2" {...stroke} strokeWidth={1.2} />
+        <rect x="62" y="56" width="20" height="14" rx="2" {...stroke} strokeWidth={1.2} />
+      </g>
+      <g className="text-accent">
+        <text x="163" y="24" textAnchor="middle" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          mây: gác từng máy
+        </text>
+        <rect x="130" y="46" width="24" height="16" rx="2" {...stroke} strokeWidth={1.2} />
+        <path d="M142 74 c-7 0 -9 -6 -9 -10 l9 -4 9 4 c0 4 -2 10 -9 10 z" {...stroke} strokeWidth={1.5} />
+        <rect x="172" y="46" width="24" height="16" rx="2" {...stroke} strokeWidth={1.2} />
+        <path d="M184 74 c-7 0 -9 -6 -9 -10 l9 -4 9 4 c0 4 -2 10 -9 10 z" {...stroke} strokeWidth={1.5} />
+      </g>
+      <text x="110" y="118" textAnchor="middle" {...monoText}>
+        mặc định chặn — tự mở từng luật
+      </text>
+    </Frame>
+  )
+}
+
+/** VPN site-to-site: cây cầu kín nối hai mạng xuyên Internet. */
+function VpnS2sCau({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <rect x="16" y="44" width="44" height="34" rx="4" {...stroke} strokeWidth={1.2} />
+        <text x="38" y="92" textAnchor="middle" {...monoText}>văn phòng</text>
+        <rect x="160" y="44" width="44" height="34" rx="4" {...stroke} strokeWidth={1.2} />
+        <text x="182" y="92" textAnchor="middle" {...monoText}>VPC</text>
+        <path d="M66 96 q8 -6 16 0 q8 6 16 0 q8 -6 16 0 q8 6 16 0 q8 -6 16 0 q8 6 8 0" {...stroke} strokeWidth={1} />
+        <text x="110" y="110" textAnchor="middle" {...monoText}>Internet</text>
+      </g>
+      <g className="text-accent">
+        <path d="M60 52 H160 M60 70 H160" {...stroke} strokeWidth={1.5} />
+        <rect x="98" y="52" width="24" height="18" rx="3" {...stroke} strokeWidth={1.5} />
+        <path d="M104 52 v-5 a6 6 0 0 1 12 0 v5" {...stroke} strokeWidth={1.2} />
+      </g>
+      <text x="110" y="30" textAnchor="middle" {...monoText}>
+        mạng nối mạng — hầm dựng sẵn
+      </text>
+    </Frame>
+  )
+}
+
+/** Client VPN: một người đào hầm riêng từ quán về mạng công ty. */
+function VpnClientHam({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <rect x="22" y="52" width="30" height="20" rx="2" {...stroke} strokeWidth={1.5} />
+        <path d="M16 76 h42" {...stroke} strokeWidth={1.5} />
+        <text x="37" y="92" textAnchor="middle" {...monoText}>một người</text>
+        <rect x="158" y="42" width="46" height="40" rx="4" {...stroke} strokeWidth={1.2} />
+        <text x="181" y="96" textAnchor="middle" {...monoText}>mạng công ty</text>
+      </g>
+      <g className="text-accent">
+        <path d="M58 56 C90 40 130 40 158 52" {...stroke} strokeWidth={1.5} />
+        <path d="M58 70 C90 86 130 86 158 74" {...stroke} strokeWidth={1.5} />
+        <circle cx="108" cy="63" r="9" {...stroke} strokeWidth={1.5} />
+        <path d="M108 60 v4 M108 64 l3 3" {...stroke} strokeWidth={1.2} />
+      </g>
+      <text x="110" y="118" textAnchor="middle" {...monoText}>
+        cài phần mềm, bật khi cần
+      </text>
+    </Frame>
+  )
+}
+
+/** Mô hình vành đai: lâu đài một cổng, bên trong tin nhau. */
+function VanhDaiLauDai({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <path d="M40 96 q14 -8 35 0 q21 8 35 0 q21 -8 35 0 q21 8 35 0" {...stroke} strokeWidth={1} />
+        <path d="M56 82 V40 h12 v8 h12 v-8 h12 v8 h12 v-8 h12 v8 h12 v-8 h12 v8 h12 v-8 h12 v42 z" {...stroke} strokeWidth={1.5} />
+        <circle cx="86" cy="66" r="5" {...stroke} strokeWidth={1.2} />
+        <circle cx="112" cy="60" r="5" {...stroke} strokeWidth={1.2} />
+        <circle cx="138" cy="68" r="5" {...stroke} strokeWidth={1.2} />
+      </g>
+      <g className="text-warn">
+        <path d="M104 82 v-16 h12 v16" {...stroke} strokeWidth={1.5} />
+        <text x="110" y="30" textAnchor="middle" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          kiểm đúng một lần ở cổng
+        </text>
+      </g>
+      <text x="110" y="118" textAnchor="middle" {...monoText}>
+        lọt vào rồi thì đi ngang tự do
+      </text>
+    </Frame>
+  )
+}
+
+/** Zero Trust: bỏ tường thành, trạm kiểm ở từng cánh cửa. */
+function ZeroTrustMoiCua({ title }: { title?: string }) {
+  const doors = [40, 96, 152]
+  return (
+    <Frame title={title}>
+      {doors.map((x) => (
+        <g key={x}>
+          <g className="text-ink-muted">
+            <path d={`M${x} 84 V40 a6 6 0 0 1 6 -6 h16 a6 6 0 0 1 6 6 v44`} {...stroke} strokeWidth={1.2} />
+          </g>
+          <g className="text-accent">
+            <circle cx={x + 14} cy="58" r="7" {...stroke} strokeWidth={1.5} />
+            <path d={`M${x + 11} 58 l2 2 4 -4`} {...stroke} strokeWidth={1.2} />
+          </g>
+        </g>
+      ))}
+      <path d="M24 84 h172" className="text-ink-muted" {...stroke} strokeWidth={1.2} />
+      <text x="110" y="104" textAnchor="middle" {...monoText}>
+        xác minh mọi truy cập, mỗi lần
+      </text>
+      <text x="110" y="120" textAnchor="middle" {...monoText}>
+        danh tính là biên giới mới
+      </text>
+    </Frame>
+  )
+}
+
+/** Entra ID hybrid: sổ trong nhà và sổ trên mây tự chép cho nhau. */
+function EntraHaiSo({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-accent">
+        <circle cx="110" cy="26" r="8" {...stroke} strokeWidth={1.5} />
+        <path d="M98 46 a12 12 0 0 1 24 0" {...stroke} strokeWidth={1.5} />
+      </g>
+      <g className="text-ink-muted">
+        <rect x="30" y="56" width="52" height="40" rx="3" {...stroke} strokeWidth={1.5} />
+        <path d="M40 56 v40" {...stroke} strokeWidth={1.2} />
+        <path d="M48 68 h26 M48 78 h26 M48 88 h16" {...stroke} strokeWidth={1.2} />
+        <text x="56" y="110" textAnchor="middle" {...monoText}>AD (nhà)</text>
+      </g>
+      <g className="text-accent">
+        <rect x="138" y="56" width="52" height="40" rx="3" {...stroke} strokeWidth={1.5} />
+        <path d="M148 56 v40" {...stroke} strokeWidth={1.2} />
+        <path d="M156 68 h26 M156 78 h26 M156 88 h16" {...stroke} strokeWidth={1.2} />
+        <text x="164" y="110" textAnchor="middle" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          Entra (mây)
+        </text>
+      </g>
+      <g className="text-ink-muted">
+        <path d="M86 70 H134" {...stroke} strokeWidth={1.2} markerEnd="url(#cv-arrow)" />
+        <path d="M134 84 H86" {...stroke} strokeWidth={1.2} markerEnd="url(#cv-arrow)" />
+      </g>
+      <text x="110" y="124" textAnchor="middle" {...monoText}>
+        một danh tính, hai thế giới
+      </text>
+    </Frame>
+  )
+}
+
 /** Hình thư chung cho visualId chưa có hình riêng. */
 function GenericMail({ title }: { title?: string }) {
   return (
@@ -1852,6 +2074,20 @@ const REGISTRY: Record<string, VisualComponent> = {
   'vis-ke-thua-chan': KeThuaChan,
   'vis-hook-ke-thua': KeThuaChan,
   'vis-gpresult-soi': GpresultSoi,
+  // Module 10 — Cloud Networking và Zero Trust (hình hai-ô so sánh)
+  'vis-cloud-may-chu-nguoi-khac': CloudMayChuNguoiKhac,
+  'vis-hook-cloud': CloudMayChuNguoiKhac,
+  'vis-vpc-goc-rieng': VpcGocRieng,
+  'vis-sg-tung-may': SgTungMay,
+  'vis-hook-sg': SgTungMay,
+  'vis-vpn-s2s-cau': VpnS2sCau,
+  'vis-hook-vpn': VpnS2sCau,
+  'vis-vpn-client-ham': VpnClientHam,
+  'vis-vanh-dai-lau-dai': VanhDaiLauDai,
+  'vis-hook-zero-trust': VanhDaiLauDai,
+  'vis-zero-trust-moi-cua': ZeroTrustMoiCua,
+  'vis-entra-hai-so': EntraHaiSo,
+  'vis-hook-entra': EntraHaiSo,
 }
 
 /**

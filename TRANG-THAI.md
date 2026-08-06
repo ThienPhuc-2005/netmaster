@@ -1,4 +1,4 @@
-# Trạng thái dự án — NetMaster (Phase 1 + 2 xong; Phase 3 đang khối 8.4)
+# Trạng thái dự án — NetMaster (Phase 1 + 2 xong; Phase 3 đang khối 8.5)
 
 Cập nhật: 2026-08-06 đêm. File này chỉ để nắm nhanh tình hình khi
 mở lại dự án. Nguồn chân lý vẫn là `SPEC-APP-HOC-MANG.md`; luật làm việc
@@ -7,11 +7,14 @@ mở lại dự án. Nguồn chân lý vẫn là `SPEC-APP-HOC-MANG.md`; luật 
 ## MỞ PHIÊN MỚI THÌ ĐỌC ĐÂY TRƯỚC
 
 **Đang đứng đâu:** Phase 1 + Phase 2 xong hẳn (chi tiết bên dưới).
-Phase 3 hạng mục (8) đang dở: khối 8.1 + 8.2 + 8.3 XONG; **việc kế tiếp
-là khối 8.4 — Module 10 (VPC/Zero Trust, contrast cases với on-prem)**,
-rồi 8.5 — DoD + kiểm browser + tài liệu. Kế hoạch 5 khối của hạng mục
-(8) đã được người dùng duyệt, ba quyết định đã chốt — KHÔNG hỏi lại,
-không đảo lại.
+Phase 3 hạng mục (8) đang dở: khối 8.1 → 8.4 XONG; **việc kế tiếp là
+khối 8.5 — đối chiếu DoD toàn hạng mục + kiểm browser tổng + tài liệu**.
+Kế hoạch 5 khối của hạng mục (8) đã được người dùng duyệt, ba quyết định
+đã chốt — KHÔNG hỏi lại, không đảo lại.
+
+**Luật deploy (người dùng đã dặn 06-08):** KHÔNG ngồi canh deploy. Push
+xong là làm việc tiếp; GitHub trục trặc thì lần push sau tự kéo mọi thứ
+lên. Chỉ nhắc tới deploy khi nó thật sự chặn việc.
 
 **Việc đang treo (không chặn code):**
 
@@ -28,16 +31,15 @@ không đảo lại.
 2. **Buổi test người thật** (`KICH-BAN-TEST.md`) — cần người, không code
    được.
 
-**Khối 8.4 cần làm gì (việc kế tiếp):** viết `content/modules/module-10.json`
-— Module 10 "Cloud Networking và Zero Trust", module cuối của Phần C có
-nội dung trong spec. Spec đòi: VPC/VNet, security group, VPN site-to-site
-vs client, Zero Trust ("không tin ai mặc định"), identity là biên giới
-mới, sơ lược Entra ID hybrid; kỹ thuật đặc thù là **contrast cases** —
-mỗi khái niệm cloud đặt cạnh khái niệm on-prem tương ứng đã học (VPC ↔
-VLAN/subnet Module 3-4, security group ↔ firewall Module 7, Entra ID ↔
-AD DS Module 9). Kèm hình SVG mới trong ConceptVisual (đo getBBox trên
-/design). Xong thì content:review, cập nhật file này, commit push. Sau
-đó 8.5 — đối chiếu DoD toàn Phase 3 + kiểm browser + tài liệu.
+**Khối 8.5 cần làm gì (việc kế tiếp):** khép hạng mục (8): đối chiếu
+từng tiêu chí Definition of Done (spec mục 6) cho Module 8-10, in rõ
+ĐẠT / CHƯA ĐẠT / LÀM KHÁC; kiểm browser tổng (đi xuyên một mạch nội
+dung mới, mobile 375px không tràn ngang, cả hai theme); bổ sung
+`KICH-BAN-TEST.md` cho Phần C nếu spec đòi buổi test người thật; cập
+nhật CLAUDE.md phần cấu trúc (Module 8-10 + checklist VMware + cung
+điện GPO); rồi cập nhật file này. Sau hạng mục (8) là hạng mục kế trong
+spec mục 6: Phòng khám mạng (Module 11) — CHƯA bắt đầu, chờ người dùng
+giao.
 
 ## Đang ở đâu
 
@@ -423,7 +425,7 @@ khai trong JSON module, tick persist, **không XP**.
 | 8.1 | Tổng quát hóa cung điện + schema/store checklist VMware | Xong |
 | 8.2 | Nội dung Module 8 (Wi-Fi, WPA, IPv6/SLAAC — interleaving IPv4↔IPv6) | Xong |
 | 8.3 | Nội dung Module 9 ⭐ (AD DS/GPO, cung điện LSDOU, fading đậm, checklist VMware) | Xong |
-| 8.4 | Nội dung Module 10 (VPC/Zero Trust — contrast cases với on-prem) | Chưa |
+| 8.4 | Nội dung Module 10 (VPC/Zero Trust — contrast cases với on-prem) | Xong |
 | 8.5 | DoD + kiểm browser + tài liệu | Chưa |
 
 **Khối 8.1 đã làm gì** (M5 không đổi hành vi — test cũ xanh nguyên):
@@ -510,6 +512,32 @@ khai trong JSON module, tick persist, **không XP**.
   được chấm, chuyến đi lại từ trí nhớ gõ "local"/"may cuc bo" không dấu
   vẫn "Chuẩn luôn!", đi trọn 4 tầng đạt); checklist VMware tick được,
   persist, XP không đổi.
+- Deploy khối 8.3 đỏ MỘT lượt vì lỗi hạ tầng GitHub (không tải được
+  action — Service Unavailable), `gh run rerun --failed` là xanh ngay.
+  Code không liên quan.
+
+**Khối 8.4 đã làm gì** (Module 10 — khép phần nội dung của hạng mục 8):
+- `content/modules/module-10.json` — 5 chặng, 5 bài, 8 khái niệm, bài
+  thi 8 câu. Bài 1 cloud + VPC/VNet, bài 2 security group, bài 3 VPN
+  site-to-site vs client, bài 4 mô hình vành đai → Zero Trust (danh
+  tính là biên giới mới), bài 5 Entra ID hybrid.
+- **Contrast cases đúng spec** — mỗi khái niệm cloud dạy bằng màn
+  "SO SÁNH SONG SONG" đặt cạnh khái niệm on-prem đã học: VPC ↔ VLAN +
+  subnet (M3-4, kỹ năng CIDR dùng nguyên), security group ↔ tường lửa
+  stateful (M7, cùng chữ stateful), VPN site-to-site ↔ cây cầu router
+  (M4), client VPN ↔ bài mạng lạ WPA/HTTPS (M8), vành đai ↔ NAT + tường
+  lửa cổng (M7), Entra ID ↔ AD DS (M9 — bài tập "tạo user đúng OU" dùng
+  lại nguyên kỹ năng). Hình vẽ theo đúng ngôn ngữ đó: khung hai ô
+  "nhà ↔ mây" ngăn bằng nét đứt.
+- Zero Trust dạy bằng cặp tương phản perimeter-trước-đã (lâu đài–hào
+  nước, kèm điểm chết di chuyển ngang) rồi mới tới Zero Trust — bản
+  thân cách dạy cũng là contrast case.
+- 8 hình ConceptVisual mới; đo getBBox 106 hình trên /design — 0 tràn
+  khung. Không sửa engine, không i18n mới, không test đặc thù cần thêm
+  (bất biến chung + luật schema đã phủ; module này không lab/cung điện).
+- 744/744 test xanh, typecheck sạch, build qua, content:review render
+  10 module. Kiểm browser: deep-link `/bai/m10-bai-1` render hook + hình
+  cloud đúng.
 
 ## Lệnh hay dùng
 

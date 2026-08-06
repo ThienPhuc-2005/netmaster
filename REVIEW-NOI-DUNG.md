@@ -1,6 +1,6 @@
-# REVIEW NỘI DUNG — Module 1-9 (Phần A+B+C)
+# REVIEW NỘI DUNG — Module 1-10 (Phần A+B+C)
 
-> Sinh tự động từ `content/modules/module-01.json`, `content/modules/module-02.json`, `content/modules/module-03.json`, `content/modules/module-04.json`, `content/modules/module-05.json`, `content/modules/module-06.json`, `content/modules/module-07.json`, `content/modules/module-08.json`, `content/modules/module-09.json` bằng `npm run content:review`.
+> Sinh tự động từ `content/modules/module-01.json`, `content/modules/module-02.json`, `content/modules/module-03.json`, `content/modules/module-04.json`, `content/modules/module-05.json`, `content/modules/module-06.json`, `content/modules/module-07.json`, `content/modules/module-08.json`, `content/modules/module-09.json`, `content/modules/module-10.json` bằng `npm run content:review`.
 > Đây là bản để ĐỌC DUYỆT; muốn sửa thì sửa file JSON rồi render lại.
 
 ## Mạng là gì? — Câu chuyện bưu điện `module-1`
@@ -2741,3 +2741,285 @@ Song song với module này, hãy dựng một miền thật trên máy bạn �
     - tầng 3 phòng 1 · Domain · toàn công ty · hình `gpo-company-flag` — Tầng ba Domain: lá cờ công ty treo giữa sảnh — luật chung cho mọi máy đã gia nhập miền.
     - tầng 4 phòng 1 · OU · từng phòng ban · hình `gpo-department-door` — Tầng nóc OU: cửa từng phòng ban có luật riêng — áp SAU CÙNG nên thắng hết các tầng dưới.
   - **Vì sao:** Local (chính máy đó) → Site (cả văn phòng một chỗ) → Domain (toàn công ty) → OU (từng phòng ban) — chính thứ tự leo là thứ tự áp luật.
+
+## Cloud Networking và Zero Trust `module-10`
+
+Phần C · 5 chặng · 5 bài · 8 khái niệm
+
+**Chặng:** Thuê góc đám mây (m10-bai-1) → Gác sát từng máy (m10-bai-2) → Cầu và hầm (m10-bai-3) → Không tin ai mặc định (m10-bai-4) → Một danh tính hai thế giới (m10-bai-5)
+
+### Bài: Thuê một góc đám mây và kẻ mạng lên đó `m10-bai-1`
+
+**1 · Khởi động (hook):** Công ty bạn vừa "lên mây": không mua switch, không kéo một sợi dây nào, không có phòng máy chủ — vậy mà vẫn có một mạng riêng với các dải địa chỉ y như ở nhà. Mạng đó nằm ở đâu, và ai kẻ ra nó?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử nhé: "đám mây" thực chất là gì?
+  - **Dạng:** trắc nghiệm · **Máy chủ trong data center của người khác — bạn thuê qua Internet và tự phục vụ bằng phần mềm** ✓ / Một công nghệ mạng hoàn toàn mới, không liên quan gì mạng thường / Một loại Wi-Fi tầm xa
+  - **Vì sao:** Không có phép màu nào cả: đám mây là data center khổng lồ của nhà cung cấp. Cái mới là cách dùng — mọi thứ từng là THIẾT BỊ nay thành PHẦN MỀM bạn tự khai báo.
+
+**3 · Khám phá (teach):**
+- *[m10-cloud]* Đám mây là data center của nhà cung cấp (AWS, Azure, Google), bạn thuê một phần qua Internet. Điểm khác căn bản với phòng máy chủ ở nhà: mọi thứ từng là THIẾT BỊ phải mua và cắm — switch, router, tường lửa — nay thành PHẦN MỀM bạn khai trên màn hình, có trong vài giây, trả tiền theo lượng dùng.
+  - **Đào sâu hơn:** Vì hạ tầng là phần mềm, người ta khai nó bằng… tệp văn bản (infrastructure as code): cả một mạng công ty nằm gọn trong vài trang khai báo, xóa đi dựng lại trong một buổi trưa. Đó là điều phòng máy chủ vật lý không bao giờ làm được.
+- *[m10-vpc]* SO SÁNH SONG SONG — mạng nhà (đã học) ↔ VPC (mới): ở nhà bạn có dải địa chỉ riêng và VLAN ngăn cách hàng xóm (Module 3-4). Trên mây, thứ tương ứng là VPC/VNet: một vùng mạng RIÊNG kẻ ra trong data center của họ, có dải địa chỉ bạn tự chọn, chia subnet y hệt. GIỐNG: cô lập, dải riêng, chia subnet bằng CIDR. KHÁC: không dây, không switch — ranh giới kẻ hoàn toàn bằng khai báo.
+  - **Đào sâu hơn:** AWS gọi là VPC, Azure gọi là VNet — cùng một ý. Hai VPC khác nhau mặc định không thấy nhau dù nằm chung một tòa data center, hệt như hai VLAN trên cùng một switch ở Module 4. Kỹ năng chia subnet và magic number của Module 3 dùng NGUYÊN, không đổi một ly.
+
+**4 · Thử tay (practice, fading 0):**
+- **Ví dụ giải sẵn:** Ví dụ giải sẵn — đọc một VPC đang chạy: công ty khai VPC 10.0.0.0/16. (1) Subnet 10.0.1.0/24 đặt tên "public" — chứa máy chủ web cần nhìn ra Internet. (2) Subnet 10.0.2.0/24 đặt tên "private" — chứa cơ sở dữ liệu, không lối ra ngoài. (3) Toàn bộ là địa chỉ riêng lớp 10.x — đúng bảng private của Module 3. Để ý: bạn vừa đọc hiểu một mạng cloud bằng kiến thức subnet cũ, không cần học phép chia nào mới.
+- **Đề:** VPC giống NHẤT với thứ gì bạn đã học ở on-prem?
+  - **Dạng:** trắc nghiệm · **VLAN + dải subnet riêng — một vùng cô lập, nhưng kẻ bằng khai báo thay vì dây và switch** ✓ / Một sợi cáp quang rất dài / Một bản ghi DNS đặc biệt
+  - **Chủ đề gợi ý (tầng 1):** bức tường ngăn xóm của Module 4
+  - **Gợi ý (tầng 2):** Thứ gì ở Module 4 tạo ra một vùng mạng cô lập trên hạ tầng dùng chung?
+  - **Lời giải (tầng 3):** VLAN + subnet: cùng là vùng cô lập có dải địa chỉ riêng — VPC chỉ đổi cách dựng ranh giới từ thiết bị sang khai báo.
+- **Đề:** Vùng mạng riêng bạn kẻ ra trong data center của nhà cung cấp gọi là gì? (viết tắt được)
+  - **Dạng:** gõ tay · **Chấp nhận:** vpc | vnet | virtual private cloud | virtual network
+  - **Chủ đề gợi ý (tầng 1):** ba chữ cái, chữ giữa là private
+  - **Gợi ý (tầng 2):** Virtual Private Cloud — bên Azure gọi là VNet.
+  - **Lời giải (tầng 3):** VPC (Azure: VNet) — mạng riêng ảo trong data center của nhà cung cấp, chia subnet y như mạng nhà.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: kỹ năng nào của Module 3 được dùng NGUYÊN khi kẻ subnet trong VPC?
+  - **Dạng:** gõ tay · **Chấp nhận:** chia subnet | subnet | subnetting | cidr | magic number
+  - **Chủ đề gợi ý (tầng 1):** thứ bạn từng luyện bằng drill mỗi ngày
+  - **Gợi ý (tầng 2):** Chính là thứ có chế độ luyện riêng với đồng hồ bấm giờ.
+  - **Lời giải (tầng 3):** Chia subnet / CIDR — 10.0.0.0/16 cắt thành các /24 đúng bằng magic number của Module 3, không có phép chia mới nào.
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao đã học VLAN và subnet thì học VPC nhanh hơn hẳn?
+  - **Nhóm ý cần chạm:** [giống, giong, tương ứng, tuong ung, móc vào, moc vao, cái cũ, cai cu, đã học, da hoc] · [khai báo, khai bao, phần mềm, phan mem, không dây, khong day, cô lập, co lap]
+  - **Trả lời mẫu:** Vì VPC là cùng một Ý TƯỞNG với VLAN + subnet: vùng cô lập có dải địa chỉ riêng. Cái mới chỉ là ranh giới kẻ bằng khai báo thay vì dây và switch — não móc cái mới vào cái cũ nên nhớ nhanh hơn học từ số không.
+
+**6 · Tổng kết:**
+- Đám mây = data center của người khác; thiết bị thành phần mềm khai báo.
+- VPC/VNet ↔ VLAN + subnet: cùng là vùng cô lập có dải địa chỉ riêng.
+- Kỹ năng CIDR của Module 3 dùng nguyên trên mây, không đổi một ly.
+- *Úp mở bài sau:* Ở nhà, MỘT tường lửa đứng ở cổng che cả mạng. Trên mây, mỗi máy ảo lại có một người gác của riêng nó — vì sao phải cầu kỳ vậy?
+
+### Bài: Đặt người gác sát từng máy `m10-bai-2`
+
+**1 · Khởi động (hook):** Ở mạng nhà, một tường lửa đứng ở cổng là che được cả nhà (Module 7). Trên mây, người ta không làm vậy: MỖI máy ảo mang một người gác của riêng nó. Cầu kỳ thế để làm gì?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử nhé: security group trên mây mặc định xử lý lưu lượng ĐI VÀO máy ảo thế nào?
+  - **Dạng:** trắc nghiệm · **Chặn hết — bạn phải tự mở từng luật cho thứ mình cần** ✓ / Cho hết vào, chặn dần về sau / Chỉ chặn ban đêm
+  - **Vì sao:** Mặc định của security group là ĐÓNG: chưa khai luật nào thì không ai vào được. Muốn mở cổng 443 cho web? Tự tay thêm một dòng. An toàn nằm ở chỗ quên thì ĐÓNG chứ không phải quên thì mở.
+
+**3 · Khám phá (teach):**
+- *[m10-security-group]* SO SÁNH SONG SONG — tường lửa nhà (đã học) ↔ security group (mới): GIỐNG nhau ở chỗ cùng là stateful — nhớ kết nối đang mở, thư trả lời tự được vào (Module 7). KHÁC ở vị trí đứng: tường lửa nhà đứng ở MỘT cái cổng che cả mạng; security group bám SÁT TỪNG máy ảo, mỗi máy một bộ luật riêng, và mặc định chặn hết chiều vào.
+  - **Đào sâu hơn:** Vì sao phải bám từng máy? Vì trên mây không có "bên trong" đáng tin: hai máy ảo nằm cùng VPC vẫn phải qua security group của nhau mới nói chuyện được. Kẻ xấu chiếm một máy không có nghĩa là được tự do đi ngang — bạn sẽ gặp lại ý này ở bài Zero Trust, nó chính là mầm mống của cả triết lý đó.
+
+**4 · Thử tay (practice, fading 1):**
+- **Đề:** Điền vào chỗ khác biệt: tường lửa nhà đứng ở một cổng vành đai, còn security group…
+  - **Dạng:** trắc nghiệm · **…bám sát từng máy ảo — mỗi máy một bộ luật riêng** ✓ / …đứng ở cổng data center của nhà cung cấp / …chỉ hoạt động khi máy tắt
+  - **Chủ đề gợi ý (tầng 1):** vị trí đứng của người gác
+  - **Gợi ý (tầng 2):** Nhìn lại hình so sánh: bên trái một người gác ở cổng, bên phải thì sao?
+  - **Lời giải (tầng 3):** Bám sát từng máy ảo: mỗi máy một security group, hai máy chung VPC vẫn phải qua luật của nhau.
+- **Đề:** Security group giống tường lửa Module 7 ở tính chất nào — nhớ các kết nối đang mở? (tính từ tiếng Anh)
+  - **Dạng:** gõ tay · **Chấp nhận:** stateful
+  - **Chủ đề gợi ý (tầng 1):** tính từ đã học ở bài người gác cửa nhớ mặt
+  - **Gợi ý (tầng 2):** Ghép "state" với đuôi "-ful" — đúng chữ của Module 7.
+  - **Lời giải (tầng 3):** Stateful — cùng cơ chế nhớ kết nối: bạn mở lời thì thư trả lời tự được vào, không cần khai luật chiều về.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: security group chưa khai luật nào thì lưu lượng đi vào máy ảo ra sao?
+  - **Dạng:** gõ tay · **Chấp nhận:** chặn hết | chan het | bị chặn | bi chan | chặn | chan | deny | đóng | dong
+  - **Chủ đề gợi ý (tầng 1):** mặc định đóng hay mở
+  - **Gợi ý (tầng 2):** An toàn kiểu mây: quên khai thì mọi thứ ở trạng thái nào?
+  - **Lời giải (tầng 3):** Chặn hết — mặc định đóng; muốn gì phải tự mở từng luật. Quên là đóng, không phải quên là hở.
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao trên mây người ta đặt người gác sát từng máy thay vì một người gác ở cổng?
+  - **Nhóm ý cần chạm:** [bên trong, ben trong, đi ngang, di ngang, chiếm một máy, chiem mot may, tin nhau] · [từng máy, tung may, riêng, rieng, mỗi máy, moi may, sát máy, sat may]
+  - **Trả lời mẫu:** Vì trên mây không có "bên trong" đáng tin: một cổng vành đai mà thủng thì kẻ xấu đi ngang tự do. Gác sát từng máy thì chiếm được một máy cũng chỉ dừng ở đó — mỗi bước đi tiếp lại vấp một bộ luật khác.
+
+**6 · Tổng kết:**
+- Security group ↔ tường lửa nhà: cùng stateful, thư trả lời tự vào.
+- Khác chỗ đứng: không ở cổng vành đai mà bám sát từng máy ảo.
+- Mặc định chặn hết chiều vào — quên là đóng, không phải quên là hở.
+- *Úp mở bài sau:* VPC ở trên mây, văn phòng ở dưới đất — hai mạng hai thế giới. Kế toán ngồi văn phòng muốn đọc máy chủ trên mây như máy trong nhà thì nối bằng gì?
+
+### Bài: Bắc cầu và đào hầm về văn phòng `m10-bai-3`
+
+**1 · Khởi động (hook):** Văn phòng có mạng riêng dưới đất, công ty lại có VPC trên mây — hai thế giới cách nhau cả một Internet công cộng đầy người lạ. Làm sao nối chúng thành một mà không ai đọc trộm được?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử nhé: VPN nghĩa là gì?
+  - **Dạng:** trắc nghiệm · **Đường hầm MÃ HÓA đi xuyên qua Internet công cộng — bên ngoài chỉ thấy vỏ, không đọc được ruột** ✓ / Một đường cáp riêng phải thuê kéo tận nơi / Phần mềm đổi quốc gia để xem phim
+  - **Vì sao:** VPN dựng một đường hầm mã hóa giữa hai đầu: gói tin thật được bọc trong lớp vỏ mã hóa rồi mới đi qua Internet — ai bắt được dọc đường cũng chỉ thấy chuỗi loạn xạ, như WPA làm với sóng Wi-Fi (Module 8).
+
+**3 · Khám phá (teach):**
+- *[m10-vpn-s2s]* SO SÁNH SONG SONG — cây cầu router (đã học) ↔ VPN site-to-site (mới): ở Module 4, router là cây cầu nối hai xóm trong cùng tòa nhà. Site-to-site VPN cũng là cây cầu ấy, nhưng bắc giữa HAI MẠNG cách nhau cả Internet: router văn phòng và cổng VPN của VPC bắt tay, dựng đường hầm mã hóa cố định. Từ đó hai mạng như một — máy văn phòng gọi 10.0.2.5 trên mây tự nhiên như gọi máy cùng phòng, người dùng không phải cài gì.
+  - **Đào sâu hơn:** Cầu nối MẠNG với MẠNG, dựng một lần chạy cả năm — đó là dấu hiệu nhận biết site-to-site. Khi cần băng thông lớn và độ trễ ổn định hơn nữa, công ty thuê hẳn đường riêng vào data center (Direct Connect / ExpressRoute) — vẫn ý tưởng cây cầu, chỉ đổi vật liệu.
+- *[m10-vpn-client]* Còn nhân viên ngồi quán cà phê thì không có router văn phòng nào bên cạnh. Họ dùng CLIENT VPN: phần mềm trên laptop tự đào một đường hầm riêng về mạng công ty — nối MỘT NGƯỜI vào mạng, chứ không phải mạng vào mạng. Wi-Fi quán có xấu bụng cỡ nào cũng chỉ thấy vỏ hầm, vì lớp mã hóa là của riêng bạn — đúng bài học mạng lạ của Module 8.
+  - **Đào sâu hơn:** Cách phân biệt không bao giờ lẫn: đếm xem đường hầm nối GÌ với GÌ. Mạng ↔ mạng, dựng sẵn, người dùng vô cảm = site-to-site. Người ↔ mạng, bật khi cần, phải cài phần mềm = client. Một công ty thường dùng cả hai cùng lúc.
+
+**4 · Thử tay (practice, fading 1):**
+- **Đề:** Chi nhánh Đà Nẵng cần thấy VPC trên mây mọi lúc, 40 nhân viên trong đó không ai phải cài gì. Chọn kiểu nào?
+  - **Dạng:** trắc nghiệm · **Site-to-site — router chi nhánh bắc cầu cố định tới VPC** ✓ / Phát cho mỗi người một client VPN / Mở hết security group cho nhanh
+  - **Chủ đề gợi ý (tầng 1):** đường hầm nối gì với gì
+  - **Gợi ý (tầng 2):** Cả một MẠNG cần nối, và người dùng phải vô cảm — đó là dấu hiệu của kiểu nào?
+  - **Lời giải (tầng 3):** Site-to-site: cầu mạng-nối-mạng dựng một lần, mọi máy trong chi nhánh tự nhiên thấy VPC, không ai phải cài gì.
+- **Đề:** Điền chỗ trống: site-to-site nối mạng với mạng, còn ___ VPN nối một người với mạng.
+  - **Dạng:** gõ tay · **Chấp nhận:** client
+  - **Chủ đề gợi ý (tầng 1):** phần mềm cài trên laptop
+  - **Gợi ý (tầng 2):** Chữ tiếng Anh chỉ máy của người dùng cuối.
+  - **Lời giải (tầng 3):** Client VPN — laptop tự đào hầm riêng về mạng công ty, bật khi cần.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: kiểu VPN nào nối trọn HAI MẠNG thành một qua Internet, người dùng không phải cài gì?
+  - **Dạng:** gõ tay · **Chấp nhận:** site-to-site | site to site | s2s
+  - **Chủ đề gợi ý (tầng 1):** cây cầu của Module 4, bắc xa hơn
+  - **Gợi ý (tầng 2):** Tên tiếng Anh có chữ "site" xuất hiện hai lần.
+  - **Lời giải (tầng 3):** Site-to-site — hai thiết bị đầu mạng bắt tay dựng hầm cố định, hai mạng như một.
+- **Đề:** Vẫn từ trí nhớ: vì sao ngồi Wi-Fi quán cà phê bật client VPN thì chủ quán không đọc trộm được dữ liệu công ty?
+  - **Dạng:** trắc nghiệm · **Vì dữ liệu được bọc trong lớp mã hóa của đường hầm — quán chỉ thấy vỏ** ✓ / Vì VPN làm mạng chạy nhanh hơn / Vì quán không có tường lửa
+  - **Chủ đề gợi ý (tầng 1):** ai giữ chìa của lớp khóa
+  - **Gợi ý (tầng 2):** Giống HTTPS và WPA: nội dung bị khóa trước khi rời máy bạn.
+  - **Lời giải (tầng 3):** Lớp mã hóa của hầm là của riêng bạn và công ty — mạng quán chỉ chuyển hộ cái vỏ, không mở được ruột.
+- **Tự giải thích:** Giải thích bằng lời của bạn: làm sao phân biệt site-to-site với client VPN mà không bao giờ lẫn?
+  - **Nhóm ý cần chạm:** [mạng với mạng, mang voi mang, hai mạng, hai mang, cố định, co dinh, dựng sẵn, dung san] · [một người, mot nguoi, laptop, cài, cai phan mem, khi cần, khi can]
+  - **Trả lời mẫu:** Đếm xem hầm nối gì với gì: nối mạng với mạng, dựng sẵn chạy quanh năm, người dùng không cài gì — là site-to-site; nối một người với mạng, phải cài phần mềm và bật khi cần — là client VPN.
+
+**6 · Tổng kết:**
+- VPN = đường hầm mã hóa xuyên Internet — ngoài thấy vỏ, không đọc được ruột.
+- Site-to-site ↔ cây cầu router: mạng nối mạng, cố định, người dùng vô cảm.
+- Client VPN: một người nối vào mạng, cài phần mềm, bật khi cần.
+- *Úp mở bài sau:* Cầu với hầm đều dẫn về một giả định cũ: "vào được bên trong là người nhà". Bài sau chính giả định đó bị đập bỏ — và cả cách phòng thủ mạng thay đổi theo.
+
+### Bài: Đập bỏ tường thành, kiểm từng cánh cửa `m10-bai-4`
+
+**1 · Khởi động (hook):** Mô hình cũ: vượt qua tường lửa là thành "người nhà", muốn đi đâu thì đi. Một kẻ trộm lọt vào là khoắng cả kho. Zero Trust tuyên bố một câu nghe rất lạnh lùng: không ai là người nhà cả. Vì sao ngành bảo mật lại đi đến nước đó?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử nhé: nguyên tắc cốt lõi của Zero Trust là gì?
+  - **Dạng:** trắc nghiệm · **Không tin ai mặc định — xác minh MỌI truy cập, dù đến từ "bên trong"** ✓ / Mua tường lửa đắt tiền hơn / Cấm nhân viên làm việc từ xa
+  - **Vì sao:** Zero Trust bỏ hẳn khái niệm "bên trong an toàn": mọi truy cập đều phải chứng minh bạn là ai, máy có sạch không, có quyền với đúng thứ đó không — mỗi lần, chứ không phải một lần ở cổng.
+
+**3 · Khám phá (teach):**
+- *[m10-perimeter]* Mô hình cũ bạn đã sống trong nó suốt Phần B: LÂU ĐÀI VÀ HÀO NƯỚC. Mọi phòng thủ dồn ở vành đai — tường lửa đứng ở cổng (Module 7), NAT che bên trong, ai vượt qua được là "người nhà", đi ngang tự do. Nó chạy tốt khi mọi thứ đáng giá đều nằm trong một tòa nhà và nhân viên ngồi cả trong đó.
+  - **Đào sâu hơn:** Điểm chết của lâu đài nằm ở chính chữ "trong": chỉ cần MỘT lần lọt — một email lừa, một mật khẩu lộ, một laptop nhiễm mang từ nhà vào — kẻ tấn công thành người nhà và di chuyển ngang (lateral movement) tới kho quý nhất. Các vụ rò rỉ lớn nhất thập kỷ đều đi đúng kịch bản đó.
+- *[m10-zero-trust]* SO SÁNH SONG SONG — lâu đài (cũ) ↔ Zero Trust (mới): ngày nay dữ liệu ở trên mây, nhân viên ở quán cà phê — vành đai nào bao cho xuể? Zero Trust trả lời: bỏ tường thành, đặt trạm kiểm ở TỪNG cánh cửa. Không tin ai mặc định; mọi truy cập đều xác minh: bạn LÀ AI, máy có sạch không, có quyền với đúng thứ này không. Biên giới mới của mạng không còn là tường lửa — mà là DANH TÍNH.
+  - **Đào sâu hơn:** Bạn đã gặp tinh thần này hai lần mà chưa gọi tên: security group bám từng máy (bài 2) là Zero Trust cho máy chủ; văn phòng hiện đại bỏ VPN, cho ứng dụng tự kiểm danh tính từng lượt, là Zero Trust cho con người. "Verify, then trust — every time" thay cho "trust the inside".
+
+**4 · Thử tay (practice, fading 2):**
+- **Đề:** Kẻ tấn công lừa được MỘT nhân viên và chiếm laptop của họ. Ở mô hình lâu đài, chuyện gì xảy ra tiếp?
+  - **Dạng:** trắc nghiệm · **Hắn thành "người nhà", di chuyển ngang tự do tới các máy khác — vành đai không cản nữa** ✓ / Không sao, tường lửa vành đai sẽ chặn hắn lại / Máy tự khóa vì phát hiện người lạ
+  - **Chủ đề gợi ý (tầng 1):** vành đai kiểm ở đâu, và sau đó thì sao
+  - **Gợi ý (tầng 2):** Lâu đài chỉ kiểm MỘT lần ở cổng — mà hắn thì đã ở trong cổng rồi.
+  - **Lời giải (tầng 3):** Di chuyển ngang tự do: vành đai chỉ kiểm ở cổng, bên trong tin nhau — đó chính là điểm chết khiến Zero Trust ra đời.
+- **Đề:** Trong Zero Trust, biên giới mới của mạng là gì?
+  - **Dạng:** gõ tay · **Chấp nhận:** danh tính | danh tinh | identity
+  - **Chủ đề gợi ý (tầng 1):** câu hỏi đổi từ "bạn đứng đâu" sang…
+  - **Gợi ý (tầng 2):** Không còn là chỗ đứng hay tường lửa — mà là câu hỏi "bạn LÀ AI".
+  - **Lời giải (tầng 3):** Danh tính (identity) — mọi quyết định cho/chặn xoay quanh bạn là ai và máy bạn có sạch không, không phải bạn đang đứng trong hay ngoài.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: Zero Trust đòi làm gì với MỌI truy cập, kể cả từ "bên trong"?
+  - **Dạng:** gõ tay · **Chấp nhận:** xác minh | xac minh | verify | kiểm tra | kiem tra | chứng minh | chung minh
+  - **Chủ đề gợi ý (tầng 1):** một động từ, làm mỗi lần chứ không phải một lần ở cổng
+  - **Gợi ý (tầng 2):** Trạm kiểm ở từng cánh cửa làm gì với từng người tới?
+  - **Lời giải (tầng 3):** Xác minh — mỗi truy cập, mỗi lần: bạn là ai, máy có sạch không, có quyền với đúng thứ này không.
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao mô hình lâu đài hết thời khi công ty lên mây và nhân viên làm việc từ xa?
+  - **Nhóm ý cần chạm:** [bên trong, ben trong, vành đai, vanh dai, tường, tuong thanh, bao, cổng, cong] · [mây, may, từ xa, tu xa, quán, quan ca phe, khắp nơi, khap noi, danh tính, danh tinh]
+  - **Trả lời mẫu:** Lâu đài chỉ có nghĩa khi mọi thứ quý nằm gọn trong một vành đai. Giờ dữ liệu ở trên mây, người làm ở quán cà phê — chẳng còn "bên trong" nào để bao. Nên phòng thủ chuyển sang xác minh từng truy cập theo danh tính, thay vì tin theo chỗ đứng.
+
+**6 · Tổng kết:**
+- Lâu đài–hào nước: kiểm một lần ở cổng, bên trong tin nhau — lọt một lần là đi ngang tự do.
+- Zero Trust: không tin ai mặc định, xác minh mọi truy cập, mọi lần.
+- Biên giới mới là danh tính — bạn là ai, không phải bạn đứng đâu.
+- *Úp mở bài sau:* Danh tính là biên giới — vậy ai đang GIỮ danh tính? Ở văn phòng là AD DS của Module 9; trên mây lại có một cuốn sổ khác. Hai cuốn sổ, một con người — gỡ thế nào?
+
+### Bài: Gộp hai cuốn sổ danh tính làm một `m10-bai-5`
+
+**1 · Khởi động (hook):** Công ty có AD DS giữ sổ nhân sự cho mọi máy trong văn phòng (Module 9), rồi lại dùng cả chục ứng dụng trên mây. Chẳng lẽ mỗi người hai bộ tài khoản, hai mật khẩu — và quên gấp đôi?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử nhé: cách gọn nhất để một người dùng được cả hệ trong nhà lẫn ứng dụng trên mây là gì?
+  - **Dạng:** trắc nghiệm · **Đồng bộ sổ danh tính trong nhà với sổ trên mây — một danh tính dùng cả hai thế giới** ✓ / Mỗi người tự nhớ hai bộ tài khoản / Bỏ hẳn AD, ai thích đặt mật khẩu gì thì đặt
+  - **Vì sao:** Đó là mô hình hybrid: sổ AD trong nhà đồng bộ với sổ trên mây (Entra ID) — một con người, một danh tính, đăng nhập được cả hai thế giới.
+
+**3 · Khám phá (teach):**
+- *[m10-entra-hybrid]* SO SÁNH SONG SONG — AD DS (đã học) ↔ Entra ID (mới): AD DS là sổ cái TRONG NHÀ — xác thực cho máy join miền, GPO, thư mục nội bộ. Entra ID là sổ cái TRÊN MÂY — xác thực cho ứng dụng web: Microsoft 365, và hàng nghìn dịch vụ khác. HYBRID là cầu đồng bộ giữa hai sổ: tài khoản tạo trong AD tự chảy lên Entra — một con người, MỘT danh tính, đăng nhập cả hai thế giới.
+  - **Đào sâu hơn:** Đây chính là hạ tầng của Zero Trust bài trước: khi mọi truy cập đều phải xác minh danh tính, cuốn sổ danh tính thành trái tim của cả hệ thống — nên nó phải là MỘT cuốn (đồng bộ), và đăng nhập được bồi thêm lớp xác nhận qua điện thoại (MFA). Chiếm được mật khẩu mà không có máy điện thoại thì vẫn đứng ngoài.
+
+**4 · Thử tay (practice, fading 2):**
+- **Đề:** Yêu cầu suông: nhân viên mới cần vào được máy văn phòng LẪN Microsoft 365, chỉ một tài khoản. Công ty đang chạy AD DS + Entra ID hybrid — bạn làm gì?
+  - **Dạng:** trắc nghiệm · **Tạo user trong AD (đúng OU của phòng ban) — đồng bộ tự đẩy lên Entra, một tài khoản dùng cả hai** ✓ / Tạo hai tài khoản riêng ở hai nơi / Đưa tài khoản chung của phòng cho dùng tạm
+  - **Chủ đề gợi ý (tầng 1):** sổ nào là gốc, sổ nào là bản đồng bộ
+  - **Gợi ý (tầng 2):** Trong mô hình hybrid, tài khoản sinh ở sổ trong nhà rồi tự chảy lên mây — bạn chỉ phải làm đúng một việc của Module 9.
+  - **Lời giải (tầng 3):** Tạo user trong AD, đặt vào đúng OU (kỹ năng Module 9) — cầu đồng bộ tự đưa danh tính lên Entra ID, một tài khoản đăng nhập cả hai thế giới.
+- **Đề:** Sổ danh tính TRÊN MÂY của Microsoft, anh em đồng bộ với AD DS, tên là gì?
+  - **Dạng:** gõ tay · **Chấp nhận:** entra | entra id | azure ad | azure active directory
+  - **Chủ đề gợi ý (tầng 1):** tên mới của Azure AD
+  - **Gợi ý (tầng 2):** Tên hiện nay bắt đầu bằng E — tên cũ là Azure AD.
+  - **Lời giải (tầng 3):** Entra ID (tên cũ: Azure AD) — sổ danh tính trên mây, xác thực cho ứng dụng web.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: mô hình đồng bộ sổ AD trong nhà với sổ trên mây, cho một danh tính dùng cả hai thế giới, gọi là gì?
+  - **Dạng:** gõ tay · **Chấp nhận:** hybrid | lai | hybrid identity | entra hybrid
+  - **Chủ đề gợi ý (tầng 1):** từ tiếng Anh nghĩa là "lai" giữa hai thế giới
+  - **Gợi ý (tầng 2):** Một từ tiếng Anh, chỉ xe vừa chạy xăng vừa chạy điện cũng dùng từ này.
+  - **Lời giải (tầng 3):** Hybrid — AD DS trong nhà đồng bộ với Entra ID trên mây; tài khoản sinh một nơi, dùng mọi nơi.
+- **Đề:** Vẫn từ trí nhớ: vì sao trong thế giới Zero Trust, cuốn sổ danh tính thành thứ phải bảo vệ nhất?
+  - **Dạng:** trắc nghiệm · **Vì mọi quyết định cho/chặn đều dựa vào danh tính — chiếm được sổ là chiếm được biên giới** ✓ / Vì nó chứa nhiều dung lượng nhất / Vì nó thay thế được tường lửa hoàn toàn
+  - **Chủ đề gợi ý (tầng 1):** biên giới mới nằm ở đâu thì kho quý nằm ở đó
+  - **Gợi ý (tầng 2):** Bài 4 nói biên giới mới là gì? Vậy thứ GIỮ biên giới đó quan trọng cỡ nào?
+  - **Lời giải (tầng 3):** Danh tính là biên giới mới, nên sổ danh tính là cánh cổng của mọi thứ — vì thế mới cần MFA bồi thêm sau mật khẩu.
+- **Tự giải thích:** Giải thích bằng lời của bạn: Entra ID hybrid giải quyết nỗi khổ nào của người dùng lẫn người quản trị?
+  - **Nhóm ý cần chạm:** [hai tài khoản, hai tai khoan, hai mật khẩu, hai mat khau, một danh tính, mot danh tinh, một tài khoản, mot tai khoan] · [đồng bộ, dong bo, tạo một nơi, tao mot noi, quản một chỗ, quan mot cho, thu hồi, thu hoi]
+  - **Trả lời mẫu:** Người dùng khỏi nhớ hai bộ mật khẩu — một danh tính đăng nhập cả văn phòng lẫn mây. Người quản trị tạo và thu hồi tài khoản ở đúng MỘT chỗ (AD, như Module 9 đã học), đồng bộ lo phần còn lại — nghỉ việc là khóa được cả hai thế giới trong một thao tác.
+
+**6 · Tổng kết:**
+- AD DS giữ sổ trong nhà; Entra ID giữ sổ trên mây; hybrid đồng bộ hai sổ làm một.
+- Một danh tính cho cả hai thế giới — tạo và thu hồi ở đúng một chỗ.
+- Danh tính là biên giới mới nên sổ danh tính là thứ phải bảo vệ nhất — MFA bồi thêm.
+- *Úp mở bài sau:* Bạn đã có đủ đồ nghề của người đi làm: từ sợi dây đồng tới đám mây. Phía trước là Phòng khám mạng — nơi các bệnh nhân là những mạng hỏng thật sự chờ bạn chẩn đoán.
+
+### Khái niệm & flashcard (8)
+
+- **Cloud** `m10-cloud` — Data center của nhà cung cấp — thiết bị thành phần mềm tự khai báo
+  - Ẩn dụ: Thuê một góc nhà kho khổng lồ của người khác, kê đồ bằng cách điền phiếu.
+  - Thẻ ôn: *"Đám mây" thực chất là gì, và điểm khác căn bản với phòng máy chủ ở nhà?* → Data center của nhà cung cấp, thuê qua Internet. Khác căn bản: mọi thứ từng là thiết bị (switch, router, tường lửa) thành phần mềm khai báo, có trong vài giây, trả theo lượng dùng.
+- **VPC / VNet** `m10-vpc` — Mạng riêng kẻ trong data center của nhà cung cấp — VLAN + subnet phiên bản khai báo
+  - Ẩn dụ: Một khoảnh đất riêng có rào, kẻ trong trang trại của người khác.
+  - Thẻ ôn: *VPC tương ứng với thứ gì đã học ở on-prem — giống và khác chỗ nào?* → ↔ VLAN + dải subnet riêng. Giống: vùng cô lập, dải địa chỉ riêng, chia bằng CIDR. Khác: không dây không switch — ranh giới kẻ hoàn toàn bằng khai báo.
+- **Security group** `m10-security-group` — Tường lửa stateful bám sát từng máy ảo, mặc định chặn chiều vào
+  - Ẩn dụ: Mỗi máy một vệ sĩ riêng kè kè bên cạnh, thay vì một bảo vệ chung ở cổng khu phố.
+  - Thẻ ôn: *Security group giống và khác tường lửa nhà (Module 7) thế nào?* → Giống: stateful — nhớ kết nối, thư trả lời tự vào. Khác: bám sát TỪNG máy ảo thay vì đứng một cổng vành đai, và mặc định chặn hết chiều vào.
+- **VPN site-to-site** `m10-vpn-s2s` — Đường hầm mã hóa cố định nối trọn hai mạng qua Internet
+  - Ẩn dụ: Cây cầu router của Module 4, bắc xuyên qua quảng trường đông người, có mái che kín.
+  - Thẻ ôn: *Dấu hiệu nhận biết VPN site-to-site?* → Nối MẠNG với MẠNG: hai thiết bị đầu mạng dựng hầm cố định chạy quanh năm, mọi máy hai bên thấy nhau, người dùng không phải cài gì.
+- **Client VPN** `m10-vpn-client` — Đường hầm mã hóa nối MỘT người vào mạng công ty
+  - Ẩn dụ: Ống kín riêng của một người, đào từ bàn quán cà phê về tới văn phòng.
+  - Thẻ ôn: *Client VPN khác site-to-site chỗ nào?* → Nối NGƯỜI với mạng: cài phần mềm trên laptop, bật khi cần. Site-to-site nối mạng với mạng, cố định, người dùng vô cảm.
+- **Mô hình vành đai** `m10-perimeter` — Lâu đài–hào nước: phòng thủ dồn ở cổng, bên trong tin nhau
+  - Ẩn dụ: Lâu đài có hào sâu và một cổng đá — nhưng vượt được cổng thì mọi cánh cửa bên trong đều mở.
+  - Thẻ ôn: *Điểm chết của mô hình vành đai (lâu đài–hào nước)?* → Chỉ kiểm MỘT lần ở cổng, bên trong tin nhau — kẻ tấn công lọt một lần là di chuyển ngang tự do tới kho quý nhất.
+- **Zero Trust** `m10-zero-trust` — Không tin ai mặc định — xác minh mọi truy cập; danh tính là biên giới mới
+  - Ẩn dụ: Bỏ tường thành, đặt trạm kiểm ở từng cánh cửa — ai tới cũng phải trình mặt, mỗi lần.
+  - Thẻ ôn: *Zero Trust thay đổi câu hỏi phòng thủ từ gì sang gì?* → Từ "bạn đứng trong hay ngoài?" sang "bạn LÀ AI, máy có sạch không, có quyền với đúng thứ này không?" — xác minh mọi truy cập, mọi lần; danh tính là biên giới mới.
+- **Entra ID hybrid** `m10-entra-hybrid` — Sổ danh tính trên mây đồng bộ với AD DS — một danh tính cho hai thế giới
+  - Ẩn dụ: Sổ cái của trưởng làng có bản sao trên mây, hai sổ tự chép cho nhau từng dòng.
+  - Thẻ ôn: *Entra ID hybrid là gì, giải quyết chuyện gì?* → Cầu đồng bộ giữa AD DS (sổ trong nhà) và Entra ID (sổ trên mây): tài khoản tạo một nơi dùng cả hai thế giới, thu hồi một thao tác khóa được cả hai.
+
+### Bài kiểm tra module (8 câu, cần ≥ 85%)
+
+- **Đề:** Vùng mạng riêng bạn kẻ ra trong data center của nhà cung cấp gọi là gì? (viết tắt được)
+  - **Dạng:** gõ tay · **Chấp nhận:** vpc | vnet | virtual private cloud
+  - **Vì sao:** VPC (Azure: VNet) — phiên bản khai báo của VLAN + dải subnet riêng; chia subnet bằng đúng CIDR của Module 3.
+- **Đề:** VPC tương ứng với cặp khái niệm on-prem nào bạn đã học?
+  - **Dạng:** trắc nghiệm · **VLAN + dải subnet riêng — vùng cô lập có dải địa chỉ riêng** ✓ / Bảng MAC + ARP / DHCP + DNS
+  - **Vì sao:** Cùng một ý tưởng cô lập vùng mạng — VPC chỉ đổi cách dựng ranh giới từ dây và switch sang khai báo.
+- **Đề:** Security group khác tường lửa nhà (Module 7) ở điểm nào?
+  - **Dạng:** trắc nghiệm · **Bám sát từng máy ảo và mặc định chặn hết chiều vào, thay vì đứng một cổng vành đai** ✓ / Không có khả năng nhớ kết nối / Chỉ hoạt động với IPv6
+  - **Vì sao:** Cùng là stateful, nhưng chỗ đứng khác hẳn: mỗi máy một bộ luật riêng — hai máy chung VPC vẫn phải qua luật của nhau.
+- **Đề:** Nối trọn hai mạng (văn phòng ↔ VPC) qua Internet, người dùng không phải cài gì — kiểu VPN nào?
+  - **Dạng:** gõ tay · **Chấp nhận:** site-to-site | site to site | s2s
+  - **Vì sao:** Site-to-site: hai thiết bị đầu mạng dựng đường hầm mã hóa cố định — cây cầu router của Module 4 bắc xuyên Internet.
+- **Đề:** Laptop ở quán cà phê muốn chui vào mạng công ty — kiểu VPN nào?
+  - **Dạng:** gõ tay · **Chấp nhận:** client | client vpn | vpn client
+  - **Vì sao:** Client VPN — nối MỘT người vào mạng: cài phần mềm, bật khi cần, lớp mã hóa riêng bất chấp Wi-Fi quán.
+- **Đề:** Điểm chết của mô hình vành đai (lâu đài–hào nước) là gì?
+  - **Dạng:** trắc nghiệm · **Kiểm một lần ở cổng, bên trong tin nhau — lọt một lần là di chuyển ngang tự do** ✓ / Tường lửa vành đai quá đắt / Không chạy được với IPv4
+  - **Vì sao:** Chữ "trong" chính là điểm chết: một email lừa hay một mật khẩu lộ biến kẻ tấn công thành "người nhà".
+- **Đề:** Trong Zero Trust, biên giới mới của mạng là gì?
+  - **Dạng:** gõ tay · **Chấp nhận:** danh tính | danh tinh | identity
+  - **Vì sao:** Danh tính — mọi quyết định cho/chặn dựa trên bạn là ai và máy có sạch không, thay vì bạn đứng trong hay ngoài tường lửa.
+- **Đề:** Entra ID hybrid nghĩa là gì?
+  - **Dạng:** trắc nghiệm · **Đồng bộ sổ AD DS trong nhà với sổ Entra ID trên mây — một danh tính dùng cả hai thế giới** ✓ / Thay Domain Controller bằng router / Một loại VPN của Microsoft
+  - **Vì sao:** Tài khoản tạo trong AD (đúng kỹ năng Module 9) tự chảy lên Entra ID — người dùng một mật khẩu, quản trị một chỗ tạo và thu hồi.
