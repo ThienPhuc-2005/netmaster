@@ -50,9 +50,19 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
+    # Hàng đợi Pages có hôm chậm quá 10 phút (timeout MẶC ĐỊNH của
+    # deploy-pages@v4) — action bỏ cuộc rồi hủy deployment dù nó vẫn đang
+    # xếp hàng lành lặn, có lần còn để lại deployment kẹt "in progress"
+    # chặn mọi lần deploy sau (lỗi 400 "cancel ... first"). Nâng trần chờ
+    # lên 30 phút; đắt nhất là phút chạy runner, rẻ hơn nhiều so với một
+    # chuỗi deploy fail dây chuyền.
+    timeout-minutes: 40
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
+        with:
+          timeout: 1800000 # 30 phút, tính bằng ms
+          reporting_interval: 15000
