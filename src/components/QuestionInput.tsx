@@ -9,6 +9,7 @@ import type { Question } from '../engine/contentSchema'
 import type { QuestionResponse } from '../engine/grading/gradeQuestion'
 import { useT } from '../i18n'
 import { Button } from './Button'
+import { NetworkLab } from '../features/lab/NetworkLab'
 
 interface QuestionInputProps {
   question: Question
@@ -128,5 +129,16 @@ export function QuestionInput({ question, onSubmit, disabled }: QuestionInputPro
       return <McqInput question={question} onSubmit={onSubmit} disabled={disabled} />
     case 'order':
       return <OrderInput question={question} onSubmit={onSubmit} disabled={disabled} />
+    case 'lab':
+      // Phòng lab tự lo phần thử nghiệm ("Gửi thử" không tính); chỉ khi
+      // người học bấm "Nộp bài" nó mới trao sơ đồ lên đây thành một lượt
+      // trả lời như mọi dạng câu hỏi khác.
+      return (
+        <NetworkLab
+          key={question.id}
+          spec={question.spec}
+          onSubmit={disabled === true ? undefined : (topology) => onSubmit({ kind: 'lab', topology })}
+        />
+      )
   }
 }

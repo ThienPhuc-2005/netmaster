@@ -47,8 +47,11 @@ export function translate(lang: Lang, key: string, params?: Record<string, strin
   return interpolate(hit, params)
 }
 
+/** Hàm dịch mà component nhận từ `useT` — đặt tên để truyền xuống helper thuần. */
+export type TFunc = (key: string, params?: Record<string, string | number>) => string
+
 /** Hook cho component: t() gắn với ngôn ngữ hiện tại, đổi lang là re-render. */
-export function useT(): (key: string, params?: Record<string, string | number>) => string {
+export function useT(): TFunc {
   const lang = useSettings((s) => s.lang)
   return useCallback((key, params) => translate(lang, key, params), [lang])
 }

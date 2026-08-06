@@ -1,0 +1,333 @@
+// Phòng lab mô phỏng mạng (spec Module 4).
+//
+// Vỏ ngoài giữ toàn bộ trạng thái và nối ba mảnh lại: phiên soạn thảo
+// của engine (topology + undo), bố cục trên mặt bàn, và một lượt chạy
+// mô phỏng.
+//
+// HAI NÚT TÁCH BẠCH (đã chốt với người dùng): "Gửi thử" bắn gói tin xem
+// chơi bao nhiêu lần cũng được và KHÔNG tính; chỉ "Nộp bài" mới tính một
+// lượt trong thang phản hồi 3 tầng. Nhờ vậy spec 4.5 ("mọi thao tác undo
+// được — khuyến khích thử nghiệm") và nguyên tắc 4 (lời giải sau 3 lần
+// sai) không giẫm lên nhau.
+//
+// Bố cục KHÔNG nằm trong lịch sử undo: kéo thiết bị sang chỗ khác không
+// đổi gì về mạng, và undo nên dành cho những thao tác người học sợ làm
+// hỏng. Xóa thiết bị vẫn giữ lại vị trí cũ, nên undo trả nó về đúng chỗ.
+
+import { useMemo, useState } from 'react'
+import { AlertCircle } from 'lucide-react'
+import { Button } from '../../components/Button'
+import { useT } from '../../i18n'
+import {
+  ALLOW_EVERYTHING,
+  applyLabAction,
+  canApplyLabAction,
+  canRedo,
+  canUndo,
+  findDevice,
+  gradeLab,
+  portIdsOf,
+  redoLab,
+  resetLab,
+  samePort,
+  simulatePing,
+  startLab,
+  undoLab,
+  type Device,
+  type LabAction,
+  type LabRejection,
+  type LabSpec,
+  type PingResult,
+  type PortRef,
+  type Topology,
+} from '../../engine/lab'
+import { LabCanvas, pointOfPort } from './LabCanvas'
+import {
+  ConfigPanel,
+  DeviceTray,
+  DiagnosisList,
+  GoalList,
+  HopLog,
+  LabToolbar,
+  SendPanel,
+  flattenHops,
+} from './LabPanels'
+import { autoLayout, wirePath, type Point } from './geometry'
+import { usePacketFlight } from './usePacketFlight'
+
+/** VLAN nào được chọn trong bảng cấu hình: những VLAN đề bài đang dùng. */
+function vlanChoicesOf(spec: LabSpec): number[] {
+  const found = new Set<number>()
+  for (const topo of [spec.initial, spec.solution]) {
+    for (const device of topo.devices) {
+      if (device.kind === 'switch') for (const port of device.ports) found.add(port.vlan)
+    }
+  }
+  if (found.size === 0) found.add(1)
+  return [...found].sort((a, b) => a - b)
+}
+
+/** Cặp máy mặc định cho ô "Gửi thử": lấy từ mục tiêu đầu tiên có ping. */
+function defaultPair(spec: LabSpec): { from: string; to: string } {
+  for (const goal of spec.goals) {
+    if (goal.kind === 'ping' || goal.kind === 'pathThrough') return { from: goal.from, to: goal.to }
+  }
+  const hosts = spec.initial.devices.filter((d) => d.kind !== 'switch')
+  return { from: hosts[0]?.id ?? '', to: hosts[1]?.id ?? hosts[0]?.id ?? '' }
+}
+
+function newDeviceOf(kind: Device['kind'], index: number): Device {
+  const suffix = index + 1
+  if (kind === 'pc') {
+    return {
+      kind: 'pc',
+      id: `pc-new-${suffix}`,
+      hostname: `PC-${suffix}`,
+      // MAC sinh theo số thứ tự nên tất định, không trùng dải AA:BB:CC:00:00:xx của đề.
+      port: { id: 'eth0', mac: `AA:BB:CC:10:00:${String(suffix).padStart(2, '0')}` },
+      ipConfig: null,
+      gateway: null,
+    }
+  }
+  if (kind === 'switch') {
+    return {
+      kind: 'switch',
+      id: `sw-new-${suffix}`,
+      hostname: `Switch-${suffix}`,
+      ports: [1, 2, 3, 4].map((n) => ({ id: `p${n}`, vlan: 1 })),
+    }
+  }
+  return {
+    kind: 'router',
+    id: `r-new-${suffix}`,
+    hostname: `Router-${suffix}`,
+    ports: [0, 1].map((n) => ({
+      id: `g${n}`,
+      mac: `AA:BB:CC:20:0${n}:${String(suffix).padStart(2, '0')}`,
+      ipConfig: null,
+    })),
+    staticRoutes: [],
+  }
+}
+
+export interface NetworkLabProps {
+  spec: LabSpec
+  /**
+   * Nộp bài. Có truyền thì hiện nút "Nộp bài" — tầng gọi tự quyết việc
+   * chấm và đếm lượt sai; phòng lab chỉ trao lại sơ đồ hiện tại.
+   */
+  onSubmit?: (topology: Topology) => void
+}
+
+export function NetworkLab({ spec, onSubmit }: NetworkLabProps) {
+  const t = useT()
+  const [session, setSession] = useState(() => startLab(spec.initial, spec.allow))
+  const [layout, setLayout] = useState<Record<string, Point>>(() => autoLayout(spec.initial.devices))
+  const [selectedId, setSelectedId] = useState<string | null>(null)
+  const [armedPort, setArmedPort] = useState<PortRef | null>(null)
+  const [refusal, setRefusal] = useState<LabRejection | null>(null)
+  const [run, setRun] = useState<PingResult | null>(null)
+  const [pair, setPair] = useState(() => defaultPair(spec))
+
+  const topology = session.present
+  const vlanChoices = useMemo(() => vlanChoicesOf(spec), [spec])
+  const evaluation = useMemo(() => gradeLab(spec, topology), [spec, topology])
+
+  const hops = useMemo(() => flattenHops(run), [run])
+  const flight = usePacketFlight(hops.length, (index) => {
+    const entry = hops[index]
+    if (entry === undefined) return ''
+    const from = pointOfPort(topology, layout, entry.hop.from)
+    const to = pointOfPort(topology, layout, entry.hop.to)
+    return from === null || to === null ? '' : wirePath(from, to)
+  })
+
+  const phase = flight.phase
+  const flightActive = phase.kind === 'arming' || phase.kind === 'flying' || phase.kind === 'atNode'
+  // Hai thiết bị hai đầu chặng đang bay sáng lên; phần còn lại mờ đi
+  // (signaling — spec 4.2 "phần đang giảng sáng, phần khác mờ 40%").
+  const activeDeviceIds = useMemo(() => {
+    if (phase.kind !== 'arming' && phase.kind !== 'flying' && phase.kind !== 'atNode') return []
+    const entry = hops[phase.hop]
+    return entry === undefined ? [] : [entry.hop.from.deviceId, entry.hop.to.deviceId]
+  }, [phase, hops])
+
+  /** Mọi thay đổi mạng đi qua đây: hỏi engine trước, từ chối thì nói tử tế. */
+  const dispatch = (action: LabAction) => {
+    const rejection = canApplyLabAction(session, action)
+    if (rejection !== null) {
+      setRefusal(rejection)
+      return
+    }
+    setRefusal(null)
+    setSession(applyLabAction(session, action))
+  }
+
+  const selected = selectedId === null ? null : findDevice(topology, selectedId)
+
+  const handlePickPort = (ref: PortRef) => {
+    setRefusal(null)
+    if (armedPort === null) {
+      setArmedPort(ref)
+      setSelectedId(ref.deviceId)
+      return
+    }
+    // Bấm lại chính cổng đang cầm = buông ra. Luôn có đường thoát.
+    if (samePort(armedPort, ref)) {
+      setArmedPort(null)
+      return
+    }
+    dispatch({
+      kind: 'add-link',
+      link: { id: `w-${armedPort.deviceId}-${armedPort.portId}-${ref.deviceId}-${ref.portId}`, a: armedPort, b: ref },
+    })
+    setArmedPort(null)
+  }
+
+  const handleAddDevice = (kind: Device['kind']) => {
+    const device = newDeviceOf(kind, topology.devices.length)
+    const taken = Object.values(layout)
+    const spot = taken.length === 0 ? { x: 200, y: 200 } : { x: 200 + (taken.length % 4) * 160, y: 200 }
+    dispatch({ kind: 'add-device', device })
+    setLayout((current) => ({ ...current, [device.id]: spot }))
+  }
+
+  const handleSend = () => {
+    const result = simulatePing(topology, { from: pair.from, to: pair.to })
+    setRun(result)
+    setRefusal(null)
+    flight.start()
+  }
+
+  const wireCanBeChanged = spec.allow.addLinks || spec.allow.removeLinks
+
+  return (
+    <div className="space-y-4">
+      <div className="grid gap-4 lg:grid-cols-[minmax(0,2fr)_minmax(280px,1fr)]">
+        <div className="space-y-3">
+          <LabCanvas
+            topology={topology}
+            layout={layout}
+            selectedId={selectedId}
+            armedPort={armedPort}
+            activeDeviceIds={activeDeviceIds}
+            flightActive={flightActive}
+            flight={flight}
+            onSelectDevice={(id) => {
+              setSelectedId(id)
+              setRefusal(null)
+            }}
+            onPickPort={handlePickPort}
+            onMoveDevice={(id, point) => setLayout((current) => ({ ...current, [id]: point }))}
+          />
+          <LabToolbar
+            canUndo={canUndo(session)}
+            canRedo={canRedo(session)}
+            onUndo={() => {
+              setSession(undoLab(session))
+              setArmedPort(null)
+              setRefusal(null)
+            }}
+            onRedo={() => {
+              setSession(redoLab(session))
+              setArmedPort(null)
+              setRefusal(null)
+            }}
+            onReset={() => {
+              setSession(resetLab(session))
+              setArmedPort(null)
+              setRefusal(null)
+            }}
+          />
+          {/* Lời từ chối: hổ phách + giọng tử tế, không bao giờ chữ "SAI" (spec 4.4). */}
+          {refusal !== null && (
+            <div
+              role="status"
+              className="flex items-start gap-2 rounded-md border border-warn/40 bg-warn/10 px-4 py-3 text-sm text-ink"
+            >
+              <AlertCircle size={16} aria-hidden className="mt-0.5 shrink-0 text-warn" />
+              <span>{t(`lab.refusal.${refusal}`)}</span>
+            </div>
+          )}
+          <p className="text-xs text-ink-muted lg:hidden">{t('lab.narrowBody')}</p>
+        </div>
+
+        <div className="space-y-4">
+          <GoalList topology={topology} outcomes={evaluation.goals} />
+          <DeviceTray kinds={spec.allow.addDevices} onAdd={handleAddDevice} />
+          <ConfigPanel
+            topology={topology}
+            device={selected}
+            armedPort={armedPort}
+            canSetVlan={spec.allow.setVlan}
+            canSetIp={spec.allow.setIp}
+            canRemoveDevice={spec.allow.removeDevices}
+            canWire={wireCanBeChanged}
+            vlanChoices={vlanChoices}
+            onPickPort={handlePickPort}
+            onRemoveWire={(linkId) => dispatch({ kind: 'remove-link', linkId })}
+            onSetVlan={(portId, vlan) =>
+              selected !== null && dispatch({ kind: 'set-switch-port-vlan', deviceId: selected.id, portId, vlan })
+            }
+            onSetPcIp={(ip, prefix, gateway) =>
+              selected !== null &&
+              dispatch({
+                kind: 'set-pc-ip',
+                deviceId: selected.id,
+                ipConfig: ip === '' ? null : { ip, prefix },
+                gateway: gateway === '' ? null : gateway,
+              })
+            }
+            onSetRouterIp={(portId, ip, prefix) =>
+              selected !== null &&
+              dispatch({
+                kind: 'set-router-port-ip',
+                deviceId: selected.id,
+                portId,
+                ipConfig: ip === '' ? null : { ip, prefix },
+              })
+            }
+            onRemoveDevice={() => {
+              if (selected === null) return
+              dispatch({ kind: 'remove-device', deviceId: selected.id })
+              setSelectedId(null)
+            }}
+          />
+        </div>
+      </div>
+
+      <div className="grid gap-4 lg:grid-cols-2">
+        <SendPanel
+          topology={topology}
+          from={pair.from}
+          to={pair.to}
+          running={flightActive}
+          hasRun={run !== null}
+          onChangeFrom={(id) => setPair((p) => ({ ...p, from: id }))}
+          onChangeTo={(id) => setPair((p) => ({ ...p, to: id }))}
+          onSend={handleSend}
+          onSkip={flight.skip}
+        />
+        <HopLog topology={topology} result={run} visibleCount={flight.visibleHops} />
+      </div>
+
+      <DiagnosisList codes={evaluation.diagnosis} />
+
+      {onSubmit !== undefined && (
+        <div className="flex flex-wrap items-center gap-3 rounded-md border border-edge bg-panel px-4 py-3">
+          <Button onClick={() => onSubmit(topology)}>{t('lab.submit')}</Button>
+          <span className="text-xs text-ink-muted">{t('lab.submitHint')}</span>
+        </div>
+      )}
+    </div>
+  )
+}
+
+/** Danh sách cổng của một thiết bị — tiện cho nơi gọi muốn dựng menu riêng. */
+export function portsOfDevice(topology: Topology, deviceId: string): string[] {
+  const device = findDevice(topology, deviceId)
+  return device === null ? [] : portIdsOf(device)
+}
+
+/** Quyền rộng nhất, dùng cho trang trưng bày design system. */
+export { ALLOW_EVERYTHING }

@@ -16,6 +16,7 @@
 //   bắt đầu từ mức 0 (spec 2.1 bước 4).
 
 import { z } from 'zod'
+import { LabSpecSchema } from './lab/labSchema'
 
 /**
  * Chuỗi hiển thị cho người học. Phase 1 chỉ có tiếng Việt; trường `en`
@@ -91,10 +92,29 @@ const OrderQuestionSchema = z.object({
   explain: explainField,
 })
 
+/**
+ * Bài lab: người học lắp/sửa một sơ đồ mạng thay vì gõ chữ (spec Module
+ * 4). Về mặt hợp đồng nó VẪN LÀ MỘT CÂU HỎI — có id, có đề, chấm ra
+ * đúng/sai — nên toàn bộ máy trạng thái 6 bước, thang phản hồi 3 tầng,
+ * XP và mastery gate dùng lại được nguyên vẹn, không sửa một dòng nào.
+ *
+ * Phần mô tả mạng nằm trong `spec` (schema riêng ở engine/lab), thuần
+ * kỹ thuật; mọi chuỗi hiển thị vẫn ở tầng câu hỏi như các dạng khác.
+ */
+const LabQuestionSchema = z.object({
+  kind: z.literal('lab'),
+  id: idSchema,
+  prompt: LTextSchema,
+  spec: LabSpecSchema,
+  hintTopic: LTextSchema.optional(),
+  explain: explainField,
+})
+
 export const QuestionSchema = z.discriminatedUnion('kind', [
   TypedQuestionSchema,
   McqQuestionSchema,
   OrderQuestionSchema,
+  LabQuestionSchema,
 ])
 
 // ---------------------------------------------------------------
@@ -441,6 +461,10 @@ export function parseModule(data: unknown): Module {
  * trong Hộp ôn tập. Lesson id và question id cũng phải duy nhất toàn cục
  * (khóa của LessonProgress và dữ liệu trả lời). Lỗi dành cho người soạn
  * bài lúc dev/build, không bao giờ hiển thị cho người học.
+ *
+ * `order` cũng phải duy nhất: thứ tự module CHÍNH LÀ chuỗi mở khóa của
+ * mastery gate (nguyên tắc 2). Hai module trùng `order` khiến phép sắp
+ * xếp không xác định được ai trước ai — gate có thể mở nhầm module.
  */
 export function validateModules(modules: readonly Module[]): void {
   const problems: string[] = []
@@ -451,12 +475,16 @@ export function validateModules(modules: readonly Module[]): void {
   }
 
   const moduleIds = new Set<string>()
+  const orders = new Map<number, string>()
   const conceptIds = new Map<string, string>()
   const lessonIds = new Map<string, string>()
   const questionIds = new Map<string, string>()
   for (const mod of modules) {
     if (moduleIds.has(mod.id)) problems.push(`Trùng module id "${mod.id}"`)
     moduleIds.add(mod.id)
+    const orderOwner = orders.get(mod.order)
+    if (orderOwner === undefined) orders.set(mod.order, mod.id)
+    else problems.push(`Trùng order ${mod.order} giữa module "${orderOwner}" và "${mod.id}"`)
     for (const c of mod.concepts) claim(conceptIds, c.id, mod.id, 'Concept')
     for (const l of mod.lessons) claim(lessonIds, l.id, mod.id, 'Lesson')
     for (const { q } of collectQuestions(mod)) claim(questionIds, q.id, mod.id, 'Question')

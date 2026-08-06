@@ -1,6 +1,6 @@
-# REVIEW NỘI DUNG — Module 1-3 (Phần A)
+# REVIEW NỘI DUNG — Module 1-4 (Phần A+B)
 
-> Sinh tự động từ `content/modules/module-01.json`, `content/modules/module-02.json`, `content/modules/module-03.json` bằng `npm run content:review`.
+> Sinh tự động từ `content/modules/module-01.json`, `content/modules/module-02.json`, `content/modules/module-03.json`, `content/modules/module-04.json` bằng `npm run content:review`.
 > Đây là bản để ĐỌC DUYỆT; muốn sửa thì sửa file JSON rồi render lại.
 
 ## Mạng là gì? — Câu chuyện bưu điện `module-1`
@@ -820,3 +820,270 @@ Phần A · 6 chặng · 6 bài · 7 khái niệm · drill: subnet
 - **Đề:** Ký hiệu rút gọn một chuỗi nhóm 0 liên tiếp trong địa chỉ IPv6 là gì?
   - **Dạng:** gõ tay · **Chấp nhận:** ::
   - **Vì sao:** Ký hiệu "::" thay cho chuỗi nhóm 0 liên tiếp — và chỉ được dùng đúng MỘT lần trong một địa chỉ, vì có hai chỗ "::" thì máy không biết mỗi chỗ giấu bao nhiêu nhóm 0.
+
+## Switch, Router, VLAN — Thiết bị trong làng `module-4`
+
+Phần B · 5 chặng · 5 bài · 6 khái niệm
+
+**Chặng:** Bưu cục của làng (m4-bai-1) → Cuốn sổ nhớ mặt (m4-bai-2) → Hỏi tên trước khi trao (m4-bai-3) → Dựng tường chia xóm (m4-bai-4) → Bắc cầu qua tường (m4-bai-5)
+
+### Bài: Gom cả phòng về một mối `m4-bai-1`
+
+**1 · Khởi động (hook):** Một phòng có 10 máy, máy nào cũng cần nói chuyện được với máy nào. Nếu kéo dây thẳng từng cặp thì hết 45 sợi. Người ta làm cách nào để chỉ cần 10 sợi?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử: cái hộp mà mọi máy trong phòng đều cắm dây vào, nó làm gì với dữ liệu đi qua?
+  - **Dạng:** trắc nghiệm · Phát mọi thứ cho mọi máy, máy nào không phải của mình thì tự bỏ qua / **Nhìn địa chỉ rồi chuyển đúng cho một máy** ✓ / Lưu lại toàn bộ rồi gửi vào cuối ngày
+  - **Vì sao:** Nó nhìn địa chỉ rồi chuyển đúng chỗ. Đúng là lúc mới bật nó chưa biết ai ở đâu nên phát rộng thật — nhưng nó học rất nhanh, và bài sau mình sẽ xem nó học kiểu gì.
+
+**3 · Khám phá (teach):**
+- *[switch]* Switch là cái bưu cục đặt giữa làng: thay vì mỗi nhà tự chạy sang nhà kia, mọi lá thư đều đưa vào bưu cục, rồi bưu cục chuyển tới đúng nhà nhận. Mỗi máy chỉ cần một sợi dây cắm vào một cổng của switch là nói chuyện được với cả phòng.
+  - **Đào sâu hơn:** Kéo dây thẳng từng cặp cho n máy cần n×(n−1)/2 sợi — 10 máy đã là 45, 30 máy là 435. Dùng switch thì mỗi máy đúng một sợi. Đây là lý do mọi mạng thật đều hình sao quanh switch chứ không phải mạng nhện.
+
+**4 · Thử tay (practice, fading 0):**
+- **Ví dụ giải sẵn:** Ví dụ đã giải: phòng có 4 máy. Mỗi máy cắm một sợi vào switch, tổng 4 sợi. Máy 1 gửi cho máy 3: thư đi vào switch qua cổng 1, switch nhìn địa chỉ đích rồi đẩy ra cổng 3. Máy 2 và máy 4 không nhận được gì cả — thư không đi lạc sang chỗ chúng.
+- **Đề:** Thiết bị đóng vai bưu cục — nối nhiều máy trong CÙNG một mạng lại với nhau — gọi là gì?
+  - **Dạng:** gõ tay · **Chấp nhận:** switch | bộ chuyển mạch
+  - **Chủ đề gợi ý (tầng 1):** cái hộp nhiều cổng mà mọi máy trong phòng cắm dây vào
+  - **Gợi ý (tầng 2):** Nó là hộp có nhiều cổng, mỗi máy cắm một sợi. Tên tiếng Anh của nó cũng là từ mình vẫn dùng cho công tắc điện.
+  - **Lời giải (tầng 3):** Đó là switch. Mỗi máy một sợi dây cắm vào một cổng, và switch lo phần chuyển thư giữa các cổng.
+- **Đề:** Phòng đang có 6 máy nối qua switch. Thêm máy thứ 7 thì phải kéo thêm mấy sợi dây?
+  - **Dạng:** trắc nghiệm · 6 sợi — nối tới từng máy cũ / **1 sợi — cắm vào switch là xong** ✓ / 7 sợi
+  - **Gợi ý (tầng 2):** Máy mới cần nói chuyện với ai? Và nó cần chạm tới ai để làm được điều đó?
+  - **Lời giải (tầng 3):** Đúng một sợi. Máy mới chỉ cần chạm tới switch, còn switch đã chạm tới mọi máy khác rồi — đó chính là cái lợi của hình sao.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: tên thiết bị nối nhiều máy trong cùng một mạng là gì?
+  - **Dạng:** gõ tay · **Chấp nhận:** switch | bộ chuyển mạch
+  - **Gợi ý (tầng 2):** Hộp nhiều cổng, đóng vai bưu cục của làng.
+  - **Lời giải (tầng 3):** Switch — mỗi máy một sợi dây, nó lo việc chuyển thư giữa các cổng.
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao dùng switch lại đỡ dây hơn nhiều so với nối thẳng từng cặp máy?
+  - **Nhóm ý cần chạm:** [một sợi, 1 sợi, một dây, mỗi máy một] · [switch, bưu cục, hộp] · [từng cặp, nối thẳng, nối trực tiếp, mọi máy khác]
+  - **Trả lời mẫu:** Nối thẳng từng cặp thì mỗi máy phải có dây tới mọi máy còn lại, càng đông càng rối. Có switch thì mỗi máy chỉ cần một sợi cắm vào nó, còn switch chạm tới tất cả — thêm máy mới cũng chỉ thêm đúng một sợi.
+
+**6 · Tổng kết:**
+- Switch là bưu cục của làng: mọi máy cắm vào nó, nó chuyển thư giữa các cổng.
+- Mỗi máy chỉ cần một sợi dây, thay vì nối chằng chịt tới từng máy khác.
+- Nó chuyển đúng cho một máy chứ không phát bừa cho cả phòng.
+- *Úp mở bài sau:* Nhưng khoan — switch làm sao biết máy nào đang ngồi ở cổng nào? Không ai khai báo với nó cả. Bài sau mình mở cuốn sổ mà nó tự ghi.
+
+### Bài: Mở cuốn sổ nhớ mặt của switch `m4-bai-2`
+
+**1 · Khởi động (hook):** Người mới chuyển đến xóm, lá thư đầu tiên bưu tá phải hỏi khắp nơi mới tìm ra nhà. Nhưng từ lá thứ hai thì đi thẳng. Switch cũng làm y như vậy — nó nhớ bằng cách nào?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử: switch vừa bật, chưa biết gì. Máy A gửi thư cho máy B. Switch làm gì?
+  - **Dạng:** trắc nghiệm · Vứt lá thư đi vì chưa biết B ở đâu / **Đẩy ra tất cả các cổng còn lại, ai đúng thì nhận** ✓ / Hỏi máy A xem B cắm ở cổng nào
+  - **Vì sao:** Chưa biết thì nó phát ra mọi cổng còn lại — gọi là flood. Hơi phí, nhưng chỉ phí đúng lần đầu: khi B trả lời, switch nhìn thấy B ở cổng nào và ghi nhớ luôn.
+
+**3 · Khám phá (teach):**
+- *[mac-table]* Switch giữ một cuốn sổ hai cột: địa chỉ MAC của máy, và cổng mà máy đó đang cắm. Mỗi khi có thư đi qua, nó nhìn địa chỉ NGƯỜI GỬI rồi ghi: 'à, máy này đang ở cổng 3'. Không ai khai báo cả — nó tự học từ chính dòng thư chạy qua mình.
+  - **Đào sâu hơn:** Vì học từ địa chỉ người GỬI nên switch chỉ biết một máy sau khi máy đó đã gửi ít nhất một lần. Lá thư đầu tiên tới một máy còn im lặng luôn bị phát rộng ra mọi cổng — đó là lý do lần đầu bao giờ cũng 'ồn' hơn các lần sau.
+
+**4 · Thử tay (practice, fading 1):**
+- **Đề:** Hai máy và một switch đang nằm rời trên bàn. Cắm dây cho chúng nói chuyện được với nhau, rồi bấm Gửi thử để xem switch học được gì.
+  - **Dạng:** phòng lab (lắp/sửa sơ đồ mạng)
+    - **Sơ đồ đề bài:** Máy A [192.168.1.10/24] · Máy B [192.168.1.20/24] · Switch-1 [p1:VLAN 1, p2:VLAN 1, p3:VLAN 1, p4:VLAN 1] — dây: chưa cắm dây nào
+    - **Mục tiêu:**
+      - pc-a PHẢI gọi được pc-b
+      - đường pc-a → pc-b phải qua sw-1
+    - **Được phép:** cắm dây, gỡ dây
+    - **Lời giải mẫu:** Máy A [192.168.1.10/24] · Máy B [192.168.1.20/24] · Switch-1 [p1:VLAN 1, p2:VLAN 1, p3:VLAN 1, p4:VLAN 1] — dây: Máy A·eth0 — Switch-1·p1 | Máy B·eth0 — Switch-1·p2
+  - **Chủ đề gợi ý (tầng 1):** đường mà thư phải đi để tới được máy kia
+  - **Gợi ý (tầng 2):** Mỗi máy cần đúng một sợi dây nối tới một cổng còn trống của switch. Chọn thiết bị trên sơ đồ rồi bấm Nối dây ở bảng bên phải.
+  - **Lời giải (tầng 3):** Cắm Máy A vào một cổng switch, Máy B vào một cổng khác. Khi bạn Gửi thử, để ý nhật ký: lần đầu switch phát rộng vì chưa biết ai ở đâu, sau đó nó gửi thẳng đúng một cổng.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: switch nhìn vào địa chỉ NÀO trong lá thư để học ra 'máy này đang ở cổng nào'?
+  - **Dạng:** gõ tay · **Chấp nhận:** địa chỉ nguồn | mac nguồn | địa chỉ người gửi | mac người gửi | địa chỉ gửi | nguồn
+  - **Gợi ý (tầng 2):** Nó không đoán từ nơi thư định đến, mà từ nơi thư vừa đi ra.
+  - **Lời giải (tầng 3):** Địa chỉ MAC của người GỬI. Thư đi vào cổng nào thì máy gửi đang ở cổng đó — switch ghi cặp đó vào sổ.
+- **Tự giải thích:** Bằng lời của bạn: vì sao lá thư ĐẦU TIÊN gửi tới một máy thường bị switch phát ra mọi cổng, còn các lá sau thì không?
+  - **Nhóm ý cần chạm:** [chưa biết, chưa học, chưa có trong sổ, chưa nhớ] · [phát ra mọi cổng, phát rộng, flood, tất cả các cổng] · [địa chỉ nguồn, người gửi, mac nguồn, khi trả lời, khi máy kia gửi]
+  - **Trả lời mẫu:** Lúc đầu cuốn sổ của switch chưa có tên máy nhận, nên nó không biết đẩy ra cổng nào và đành phát ra mọi cổng. Nhưng khi máy nhận trả lời, thư của máy đó đi qua switch và nó nhìn địa chỉ người gửi để ghi vào sổ. Từ đó trở đi nó gửi thẳng đúng một cổng.
+
+**6 · Tổng kết:**
+- Switch tự học bằng cách nhìn địa chỉ NGƯỜI GỬI của mỗi lá thư đi qua.
+- Cuốn sổ đó ghi hai cột: địa chỉ MAC và cổng mà máy đó đang cắm.
+- Chưa có trong sổ thì nó phát ra mọi cổng — chỉ tốn đúng lần đầu.
+- *Úp mở bài sau:* Có điều máy gửi lấy đâu ra địa chỉ MAC của máy nhận để ghi lên thư? Nó mới chỉ biết địa chỉ IP thôi. Bài sau: tiếng gọi giữa sân làng.
+
+### Bài: Hỏi tên người giữ địa chỉ `m4-bai-3`
+
+**1 · Khởi động (hook):** Bạn biết số nhà cần giao, nhưng thư lại phải đề tên người nhận mới trao tận tay được. Máy tính cũng vướng đúng chỗ này: nó biết địa chỉ IP, nhưng cần địa chỉ MAC. Nó hỏi ai?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử: máy A muốn gửi cho địa chỉ 192.168.1.20 nhưng chưa biết MAC của máy đó. Nó làm gì?
+  - **Dạng:** trắc nghiệm · **Hỏi to cả mạng: ai đang giữ 192.168.1.20?** ✓ / Gửi thư đi rồi hy vọng máy nào đó chuyển hộ / Tra một danh sách có sẵn trong máy từ lúc cài đặt
+  - **Vì sao:** Nó hỏi to cả mạng. Câu hỏi được gửi tới mọi máy, và chỉ đúng máy đang giữ địa chỉ đó lên tiếng trả lời kèm MAC của mình.
+
+**3 · Khám phá (teach):**
+- *[arp]* ARP là tiếng gọi giữa sân làng: 'ai đang giữ địa chỉ 192.168.1.20 thì cho tôi biết tên với!'. Câu hỏi này gửi tới MỌI máy trong mạng. Chỉ đúng máy giữ địa chỉ đó trả lời, kèm địa chỉ MAC của nó. Hỏi xong máy nhớ luôn vào bộ nhớ tạm để lần sau khỏi hỏi lại.
+  - **Đào sâu hơn:** Address Resolution Protocol — giao thức phân giải địa chỉ. Nó bắc cầu giữa hai tầng: IP là địa chỉ logic do người đặt, MAC là địa chỉ vật lý gắn với card mạng. Không có ARP thì biết số nhà cũng chẳng trao được thư.
+
+**4 · Thử tay (practice, fading 1):**
+- **Đề:** Giao thức đi hỏi 'ai đang giữ địa chỉ IP này?' để lấy về địa chỉ MAC tên là gì?
+  - **Dạng:** gõ tay · **Chấp nhận:** arp
+  - **Chủ đề gợi ý (tầng 1):** tiếng gọi giữa sân làng để tìm chủ của một địa chỉ
+  - **Gợi ý (tầng 2):** Tên viết tắt gồm ba chữ cái, từ đầy đủ có nghĩa là 'phân giải địa chỉ'.
+  - **Lời giải (tầng 3):** ARP. Nó hỏi to cả mạng 'ai giữ IP này?' và nhận về địa chỉ MAC của đúng máy đó.
+- **Đề:** Máy A vừa hỏi ARP xong và đã biết MAC của máy B. Lát sau A gửi tiếp cho B thì sao?
+  - **Dạng:** trắc nghiệm · Phải hỏi lại từ đầu mỗi lần gửi / **Dùng luôn địa chỉ đã nhớ, không cần hỏi nữa** ✓ / Hỏi switch thay vì hỏi cả mạng
+  - **Gợi ý (tầng 2):** Hỏi xong rồi thì người ta thường làm gì với câu trả lời?
+  - **Lời giải (tầng 3):** Dùng luôn cái đã nhớ. Máy giữ một bộ nhớ tạm các cặp IP–MAC, nên chỉ lần đầu mới phải hỏi.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: ARP dùng để tìm ra thứ gì?
+  - **Dạng:** gõ tay · **Chấp nhận:** địa chỉ mac | mac | địa chỉ vật lý
+  - **Gợi ý (tầng 2):** Nó bắt đầu từ địa chỉ IP và cần lấy về địa chỉ gắn cứng với card mạng.
+  - **Lời giải (tầng 3):** Địa chỉ MAC — địa chỉ vật lý của máy đang giữ địa chỉ IP mà mình hỏi.
+- **Tự giải thích:** Bằng lời của bạn: vì sao biết địa chỉ IP thôi vẫn chưa đủ để gửi thư trong cùng một mạng?
+  - **Nhóm ý cần chạm:** [mac, địa chỉ vật lý, card mạng] · [ip, địa chỉ logic, số nhà] · [arp, hỏi, hỏi to, tìm ra]
+  - **Trả lời mẫu:** Trong cùng một mạng, thư được trao tay theo địa chỉ MAC chứ không phải IP. Biết IP mới là biết số nhà, còn muốn trao tận tay thì phải biết tên chủ nhà. ARP chính là bước hỏi để đổi từ IP sang MAC, và máy nhớ lại câu trả lời cho những lần sau.
+
+**6 · Tổng kết:**
+- ARP hỏi cả mạng 'ai giữ địa chỉ IP này?' và nhận về địa chỉ MAC.
+- Chỉ đúng máy giữ địa chỉ đó lên tiếng; các máy khác im lặng bỏ qua.
+- Hỏi một lần rồi nhớ, những lần sau khỏi hỏi lại.
+- *Úp mở bài sau:* Tiếng gọi ARP lan tới mọi máy trong mạng. Nhưng nếu công ty muốn kế toán và kỹ thuật không nghe thấy nhau, dù cắm chung một switch, thì làm thế nào? Bài sau mình dựng một bức tường.
+
+### Bài: Dựng tường ngăn giữa hai xóm `m4-bai-4`
+
+**1 · Khởi động (hook):** Hai máy cắm chung một switch, địa chỉ cùng một dải, dây cắm chắc chắn — mà vẫn không gọi được nhau. Không hỏng gì cả. Vậy ai đang chắn đường?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đây chính là ca đó: Máy A không gọi được Máy B dù nhìn đâu cũng thấy đúng. Cứ vọc thử xem — bấm Gửi thử, đọc nhật ký, và thử sửa nếu bạn đoán ra. Phần này không tính điểm, mình chỉ muốn bạn chạm tay vào vấn đề trước khi đọc lý thuyết.
+  - **Dạng:** phòng lab (lắp/sửa sơ đồ mạng)
+    - **Sơ đồ đề bài:** Máy A [192.168.1.10/24] · Máy B [192.168.1.20/24] · Switch-1 [p1:VLAN 10, p2:VLAN 20] — dây: Máy A·eth0 — Switch-1·p1 | Máy B·eth0 — Switch-1·p2
+    - **Mục tiêu:**
+      - pc-a PHẢI gọi được pc-b
+    - **Được phép:** đổi VLAN
+    - **Lời giải mẫu:** Máy A [192.168.1.10/24] · Máy B [192.168.1.20/24] · Switch-1 [p1:VLAN 10, p2:VLAN 10] — dây: Máy A·eth0 — Switch-1·p1 | Máy B·eth0 — Switch-1·p2
+  - **Vì sao:** Thủ phạm là con số VLAN trên từng cổng switch: cổng của Máy A ghi 10, cổng của Máy B ghi 20. Switch coi hai con số đó là hai mạng hoàn toàn tách rời, nên tiếng gọi ARP của A không bao giờ tới tai B. Ngay sau đây mình sẽ xem VLAN là gì.
+
+**3 · Khám phá (teach):**
+- *[vlan]* VLAN là bức tường vô hình dựng bên trong switch. Mỗi cổng được gán một số VLAN, và switch chỉ chuyển thư giữa những cổng CÙNG SỐ. Một switch 24 cổng gán hai số khác nhau thì hoạt động y như hai switch riêng biệt đặt cạnh nhau — dù bên ngoài vẫn là một cái hộp.
+  - **Đào sâu hơn:** Virtual LAN — mạng cục bộ ảo. Người ta dùng nó để tách phòng ban, tách máy khách khỏi máy nội bộ, tách camera khỏi máy nhân viên. Tách bằng phần mềm nên đổi lại chỉ mất vài giây, không phải đi kéo lại dây.
+- *[mien-quang-ba]* Tiếng gọi ARP lan tới đâu thì miền quảng bá rộng tới đó — và nó dừng lại đúng ở bức tường VLAN. Đây là lý do sâu xa khiến hai máy khác VLAN không thấy nhau: không phải thư bị chặn, mà là câu hỏi 'ai giữ địa chỉ này?' không bao giờ tới tai người kia.
+  - **Đào sâu hơn:** Mạng càng đông máy trong một miền quảng bá, tiếng ồn nền càng lớn vì mọi máy đều phải nghe mọi tiếng gọi. Chia VLAN vừa để cách ly về bảo mật, vừa để cắt bớt tiếng ồn đó.
+
+**4 · Thử tay (practice, fading 2):**
+- **Đề:** Công ty có hai phòng: kế toán (Máy A, Máy B) và kỹ thuật (Máy C, Máy D). Hai máy kế toán PHẢI gọi được nhau, còn kế toán và kỹ thuật thì KHÔNG được thấy nhau. Sửa lại cho đúng cả hai yêu cầu.
+  - **Dạng:** phòng lab (lắp/sửa sơ đồ mạng)
+    - **Sơ đồ đề bài:** Máy A (kế toán) [192.168.1.10/24] · Máy B (kế toán) [192.168.1.20/24] · Máy C (kỹ thuật) [192.168.1.30/24] · Máy D (kỹ thuật) [192.168.1.40/24] · Switch-1 [p1:VLAN 10, p2:VLAN 20, p3:VLAN 20, p4:VLAN 20] — dây: Máy A (kế toán)·eth0 — Switch-1·p1 | Máy B (kế toán)·eth0 — Switch-1·p2 | Máy C (kỹ thuật)·eth0 — Switch-1·p3 | Máy D (kỹ thuật)·eth0 — Switch-1·p4
+    - **Mục tiêu:**
+      - pc-a PHẢI gọi được pc-b
+      - pc-a phải KHÔNG gọi được pc-c
+    - **Được phép:** đổi VLAN
+    - **Lời giải mẫu:** Máy A (kế toán) [192.168.1.10/24] · Máy B (kế toán) [192.168.1.20/24] · Máy C (kỹ thuật) [192.168.1.30/24] · Máy D (kỹ thuật) [192.168.1.40/24] · Switch-1 [p1:VLAN 10, p2:VLAN 10, p3:VLAN 20, p4:VLAN 20] — dây: Máy A (kế toán)·eth0 — Switch-1·p1 | Máy B (kế toán)·eth0 — Switch-1·p2 | Máy C (kỹ thuật)·eth0 — Switch-1·p3 | Máy D (kỹ thuật)·eth0 — Switch-1·p4
+  - **Chủ đề gợi ý (tầng 1):** con số VLAN trên từng cổng, và yêu cầu THỨ HAI của đề
+  - **Gợi ý (tầng 2):** Máy A đang ở VLAN 10 một mình. Kéo cổng của Máy B về cùng số với A. Nhưng coi chừng: nếu gộp luôn cả C và D vào đó thì yêu cầu 'kế toán và kỹ thuật không được thấy nhau' sẽ hỏng.
+  - **Lời giải (tầng 3):** Đặt cổng của Máy B về VLAN 10 cho khớp Máy A, giữ nguyên C và D ở VLAN 20. Gộp tất cả vào một VLAN cũng làm A gọi được B — nhưng nó phá mất yêu cầu tách hai phòng ban, nên chỉ đúng một nửa là chưa đạt.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: cách chia một switch thành nhiều mạng tách biệt bằng phần mềm gọi là gì?
+  - **Dạng:** gõ tay · **Chấp nhận:** vlan | mạng lan ảo | lan ảo
+  - **Gợi ý (tầng 2):** Bốn chữ cái, chữ đầu là chữ V — nghĩa là 'ảo'.
+  - **Lời giải (tầng 3):** VLAN. Mỗi cổng mang một số VLAN, và switch chỉ chuyển thư giữa các cổng cùng số.
+- **Tự giải thích:** Bằng lời của bạn: vì sao hai máy cùng dải địa chỉ, cắm chung một switch, mà vẫn không gọi được nhau?
+  - **Nhóm ý cần chạm:** [vlan, số vlan, hai xóm, bức tường] · [khác nhau, hai số, không cùng, khác vlan] · [tách, hai mạng riêng, không thấy, không tới, chặn, không nghe]
+  - **Trả lời mẫu:** Vì hai cổng của chúng được gán hai số VLAN khác nhau. Switch coi mỗi số là một mạng riêng, nên nó không chuyển thư qua lại giữa hai bên — kể cả tiếng gọi ARP cũng dừng ở bức tường đó. Địa chỉ IP nhìn có vẻ hợp lý nhưng không cứu được, vì rào cản nằm ở tầng dưới.
+
+**6 · Tổng kết:**
+- VLAN là bức tường vô hình trong switch: cổng chỉ nói chuyện với cổng cùng số.
+- Một switch chia VLAN hoạt động như nhiều switch riêng đặt cạnh nhau.
+- Tiếng gọi ARP dừng lại ở tường — nên hai bên không hề biết nhau tồn tại.
+- *Úp mở bài sau:* Tách xong rồi, nhưng kế toán vẫn cần gửi báo cáo cho kỹ thuật. Ai được phép bắc cầu qua bức tường vừa dựng? Bài cuối module.
+
+### Bài: Bắc cầu giữa hai mạng `m4-bai-5`
+
+**1 · Khởi động (hook):** Switch chỉ chuyển thư trong cùng một mạng, và VLAN còn dựng thêm tường. Vậy khi cần gửi từ mạng này sang mạng kia, ai đứng ra làm cầu?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử: gói tin đi từ mạng 192.168.1.x sang mạng 10.0.0.x qua router. Cái gì thay đổi trên đường đi?
+  - **Dạng:** trắc nghiệm · Địa chỉ IP đích đổi theo từng chặng / **Địa chỉ MAC đổi từng chặng, còn IP giữ nguyên** ✓ / Không có gì đổi cả
+  - **Vì sao:** MAC đổi, IP giữ nguyên. MAC là địa chỉ trao tay giữa hai thiết bị cạnh nhau nên mỗi chặng một khác; còn IP là địa chỉ đầu–cuối, nó phải giữ nguyên thì gói mới biết đích đến cuối cùng ở đâu.
+
+**3 · Khám phá (teach):**
+- *[dinh-tuyen]* Router là cây cầu giữa hai mạng khác dải địa chỉ. Nó có một chân cắm ở mỗi bên, mỗi chân mang một địa chỉ IP thuộc mạng bên đó. Nhận gói từ bên này, nó đọc địa chỉ đích, tra bảng định tuyến xem nên đẩy sang chân nào, rồi đóng gói lại và trao tay tiếp.
+  - **Đào sâu hơn:** Mỗi lần trao tay, router thay địa chỉ MAC nguồn và đích thành cặp mới của chặng kế — nhưng địa chỉ IP nguồn và đích thì giữ y nguyên từ đầu đến cuối. Đó là lý do người ta nói MAC là địa chỉ 'chặng', còn IP là địa chỉ 'chuyến'.
+
+**4 · Thử tay (practice, fading 2):**
+- **Đề:** Thiết bị nối HAI mạng khác dải địa chỉ với nhau và chuyển gói giữa chúng gọi là gì?
+  - **Dạng:** gõ tay · **Chấp nhận:** router | bộ định tuyến
+  - **Chủ đề gợi ý (tầng 1):** cây cầu giữa hai dải địa chỉ khác nhau
+  - **Gợi ý (tầng 2):** Ở Module 1 mình từng gọi nó là bưu tá liên tỉnh; tên tiếng Anh của nó cũng là tên cục thiết bị phát wifi ở nhà bạn.
+  - **Lời giải (tầng 3):** Router. Mỗi chân của nó nằm ở một mạng, và nó tra bảng định tuyến để biết đẩy gói sang chân nào.
+- **Đề:** Gói tin vừa được router chuyển sang mạng bên kia. So với lúc mới rời máy gửi, cái gì đã khác?
+  - **Dạng:** trắc nghiệm · Địa chỉ IP đích / **Địa chỉ MAC nguồn và đích** ✓ / Cả IP lẫn MAC đều đổi
+  - **Gợi ý (tầng 2):** Cái nào là địa chỉ của chặng trước mắt, cái nào là địa chỉ của cả chuyến đi?
+  - **Lời giải (tầng 3):** Chỉ cặp địa chỉ MAC đổi — vì mỗi chặng là một lần trao tay giữa hai thiết bị cạnh nhau. Địa chỉ IP giữ nguyên suốt chuyến để gói không quên đích đến.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: khi gói tin đi qua router, địa chỉ nào GIỮ NGUYÊN suốt chuyến?
+  - **Dạng:** gõ tay · **Chấp nhận:** địa chỉ ip | ip | ip nguồn và đích | địa chỉ ip đích
+  - **Gợi ý (tầng 2):** Địa chỉ của cả chuyến đi, không phải của từng chặng trao tay.
+  - **Lời giải (tầng 3):** Địa chỉ IP. MAC đổi ở từng chặng vì nó chỉ dùng để trao tay giữa hai thiết bị cạnh nhau.
+- **Tự giải thích:** Bằng lời của bạn: vì sao qua mỗi router thì địa chỉ MAC đổi mà địa chỉ IP lại không?
+  - **Nhóm ý cần chạm:** [mac, địa chỉ vật lý] · [từng chặng, trao tay, hai thiết bị cạnh nhau, mỗi chặng] · [ip, địa chỉ ip] · [đầu cuối, giữ nguyên, đích cuối, cả chuyến, không đổi]
+  - **Trả lời mẫu:** MAC chỉ có nghĩa giữa hai thiết bị nằm cạnh nhau trên cùng một chặng, nên mỗi lần trao tay là một cặp MAC mới. Còn IP là địa chỉ của cả chuyến đi từ máy gửi tới máy nhận — nếu router sửa nó thì gói sẽ quên mất mình đang đi đâu.
+
+**6 · Tổng kết:**
+- Router là cây cầu giữa hai mạng khác dải, mỗi chân nằm ở một bên.
+- Nó tra bảng định tuyến để biết nên đẩy gói ra chân nào.
+- MAC đổi ở từng chặng trao tay; IP giữ nguyên suốt chuyến.
+- *Úp mở bài sau:* Bài kiểm tra Module 4 đang đợi — và câu cuối là một phòng lab thật. Vượt qua rồi, Module 5 sẽ mở cánh cửa TCP, UDP và những con số cổng mà bạn đã gặp thoáng qua từ Module 1.
+
+### Khái niệm & flashcard (6)
+
+- **Switch** `switch` — Bộ chuyển mạch — thiết bị nối nhiều máy trong cùng một mạng
+  - Ẩn dụ: Switch như bưu cục giữa làng: thay vì mỗi nhà tự chạy sang nhà kia, mọi lá thư đưa vào bưu cục rồi được chuyển tới đúng nhà.
+  - Thẻ ôn: *Switch làm nhiệm vụ gì?* → Nối nhiều máy trong CÙNG một mạng và chuyển thư tới đúng cổng của máy nhận — mỗi máy chỉ cần một sợi dây cắm vào nó.
+- **MAC address table** `mac-table` — Bảng MAC — cuốn sổ switch ghi 'máy nào đang ở cổng nào'
+  - Ẩn dụ: Như cuốn sổ của bác bảo vệ chung cư: ai vừa đi qua cửa nào thì ghi lại, lần sau khỏi phải hỏi cả tòa nhà.
+  - Thẻ ôn: *Switch học bảng MAC bằng cách nào?* → Nhìn địa chỉ MAC NGƯỜI GỬI của mỗi lá thư đi qua rồi ghi lại 'máy này ở cổng đó'. Chưa có trong sổ thì nó phát ra mọi cổng.
+- **ARP** `arp` — Address Resolution Protocol — giao thức đổi địa chỉ IP thành địa chỉ MAC
+  - Ẩn dụ: Như đứng giữa sân hỏi to: 'ai đang ở số nhà 20 thế?' — đúng người đó lên tiếng, còn lại im lặng.
+  - Thẻ ôn: *ARP dùng để làm gì?* → Hỏi cả mạng 'ai đang giữ địa chỉ IP này?' để lấy về địa chỉ MAC của máy đó — vì trong cùng một mạng, thư được trao tay theo MAC.
+- **VLAN** `vlan` — Virtual LAN — mạng cục bộ ảo, chia một switch thành nhiều mạng tách biệt
+  - Ẩn dụ: Như dựng tường ngăn giữa tòa nhà: vẫn một tòa, nhưng hai bên không qua lại được với nhau.
+  - Thẻ ôn: *VLAN là gì?* → Cách chia một switch thành nhiều mạng tách biệt bằng phần mềm: mỗi cổng mang một số VLAN, và switch chỉ chuyển thư giữa các cổng cùng số.
+- **Broadcast domain** `mien-quang-ba` — Miền quảng bá — vùng mà một tiếng gọi chung lan tới được
+  - Ẩn dụ: Như tiếng loa phường: nghe được tới đâu thì miền tới đó, và nó dừng lại ở bức tường.
+  - Thẻ ôn: *Miền quảng bá là gì, và VLAN ảnh hưởng thế nào tới nó?* → Là vùng mà một tiếng gọi chung (như ARP) lan tới được. Mỗi VLAN là một miền quảng bá riêng — tiếng gọi dừng ở ranh giới VLAN.
+- **Routing** `dinh-tuyen` — Định tuyến — việc router chọn đường đẩy gói sang mạng khác
+  - Ẩn dụ: Như cây cầu giữa hai bờ: mỗi chân cầu đặt ở một bờ, và người gác cầu quyết định cho đi hướng nào.
+  - Thẻ ôn: *Khi gói tin đi qua router, địa chỉ nào đổi và địa chỉ nào giữ nguyên?* → MAC đổi ở từng chặng (nó chỉ dùng để trao tay giữa hai thiết bị cạnh nhau), còn IP nguồn và đích giữ nguyên suốt chuyến.
+
+### Bài kiểm tra module (8 câu, cần ≥ 85%)
+
+- **Đề:** Văn phòng mới có 12 máy cần nói chuyện với nhau. Cách nối tiết kiệm dây nhất là gì?
+  - **Dạng:** trắc nghiệm · Nối thẳng từng cặp máy với nhau / **Mỗi máy một sợi cắm vào switch** ✓ / Nối vòng tròn, máy này sang máy kia
+  - **Vì sao:** Mỗi máy một sợi vào switch: 12 sợi. Nối thẳng từng cặp cần tới 66 sợi, còn nối vòng tròn thì đứt một chỗ là chia đôi cả mạng.
+- **Đề:** Switch ghi vào cuốn sổ của nó hai thứ: cổng, và cái gì nữa?
+  - **Dạng:** gõ tay · **Chấp nhận:** địa chỉ mac | mac | địa chỉ vật lý
+  - **Vì sao:** Địa chỉ MAC. Cuốn sổ đó tên là bảng MAC, ghi cặp 'địa chỉ MAC — cổng đang cắm'.
+- **Đề:** Switch nhận một lá thư gửi tới địa chỉ MAC mà nó CHƯA có trong sổ. Nó làm gì?
+  - **Dạng:** trắc nghiệm · Bỏ lá thư đi / **Đẩy ra mọi cổng còn lại** ✓ / Giữ lại chờ tới khi biết đường
+  - **Vì sao:** Đẩy ra mọi cổng còn lại. Cách này hơi phí nhưng bảo đảm thư tới nơi, và ngay sau đó switch học được đường nhờ thư trả lời.
+- **Đề:** Máy biết địa chỉ IP của máy kia nhưng chưa biết địa chỉ MAC. Nó dùng giao thức nào để hỏi?
+  - **Dạng:** gõ tay · **Chấp nhận:** arp
+  - **Vì sao:** ARP — nó hỏi to cả mạng 'ai đang giữ địa chỉ IP này?' và đúng máy đó trả lời kèm MAC của mình.
+- **Đề:** Hai máy cắm chung một switch, địa chỉ đều thuộc dải 192.168.1.x, dây cắm tốt. Chúng vẫn không ping được nhau. Nghi ngờ đầu tiên nên là gì?
+  - **Dạng:** trắc nghiệm · **Hai cổng đang ở hai VLAN khác nhau** ✓ / Switch bị hỏng / Địa chỉ IP đặt sai dải
+  - **Vì sao:** VLAN khác nhau là nghi ngờ số một: mọi thứ nhìn đều đúng, nhưng switch coi hai số VLAN là hai mạng riêng nên tiếng gọi ARP không qua được.
+- **Đề:** Thiết bị nối hai mạng khác dải địa chỉ và chuyển gói giữa chúng tên là gì?
+  - **Dạng:** gõ tay · **Chấp nhận:** router | bộ định tuyến
+  - **Vì sao:** Router. Mỗi chân của nó nằm ở một mạng, và nó tra bảng định tuyến để biết đẩy gói sang chân nào.
+- **Đề:** Gói tin đi từ máy A qua hai router rồi tới máy B. Trên đường đi, thứ gì KHÔNG đổi?
+  - **Dạng:** trắc nghiệm · Địa chỉ MAC nguồn / Địa chỉ MAC đích / **Địa chỉ IP nguồn và đích** ✓
+  - **Vì sao:** Cặp địa chỉ IP giữ nguyên suốt chuyến vì đó là địa chỉ đầu–cuối. Hai địa chỉ MAC thì đổi mới ở từng chặng trao tay.
+- **Đề:** Câu cuối là một ca thật: cả ba máy đang chung một VLAN nên máy khách (Máy K) nhìn thấy luôn hai máy nội bộ. Hãy tách Máy K ra, nhưng giữ hai máy nội bộ vẫn nói chuyện được với nhau.
+  - **Dạng:** phòng lab (lắp/sửa sơ đồ mạng)
+    - **Sơ đồ đề bài:** Máy nội bộ A [192.168.5.10/24] · Máy nội bộ B [192.168.5.20/24] · Máy khách K [192.168.5.30/24] · Switch-1 [p1:VLAN 10, p2:VLAN 10, p3:VLAN 10] — dây: Máy nội bộ A·eth0 — Switch-1·p1 | Máy nội bộ B·eth0 — Switch-1·p2 | Máy khách K·eth0 — Switch-1·p3
+    - **Mục tiêu:**
+      - pc-a PHẢI gọi được pc-b
+      - pc-a phải KHÔNG gọi được pc-k
+    - **Được phép:** đổi VLAN
+    - **Lời giải mẫu:** Máy nội bộ A [192.168.5.10/24] · Máy nội bộ B [192.168.5.20/24] · Máy khách K [192.168.5.30/24] · Switch-1 [p1:VLAN 10, p2:VLAN 10, p3:VLAN 99] — dây: Máy nội bộ A·eth0 — Switch-1·p1 | Máy nội bộ B·eth0 — Switch-1·p2 | Máy khách K·eth0 — Switch-1·p3
+  - **Vì sao:** Chuyển cổng của Máy khách K sang một số VLAN khác (ví dụ 99) là đủ: nó bị tách khỏi miền quảng bá của hai máy nội bộ, trong khi A và B vẫn cùng VLAN 10 nên vẫn gọi được nhau.

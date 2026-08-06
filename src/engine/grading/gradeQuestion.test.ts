@@ -2,6 +2,12 @@ import { describe, expect, it } from 'vitest'
 import { findNearMiss } from './gradeQuestion'
 import type { Question } from '../contentSchema'
 import { gradeQuestion } from './gradeQuestion'
+import {
+  teamsAllOneVlan,
+  teamsFixed,
+  teamsNetwork,
+  vlanRepairLab,
+} from '../../../tests/fixtures/labFixture'
 
 // Câu hỏi mẫu tối thiểu, đúng kiểu suy ra từ contentSchema
 const typedQ: Question = {
@@ -100,5 +106,37 @@ describe('findNearMiss — câu trả lời cận-đúng nhận phản hồi may
   it('câu không khai nearMisses hoặc không phải typed → null', () => {
     expect(findNearMiss(typedQ, { kind: 'typed', text: 'bừa' })).toBeNull()
     expect(findNearMiss(mcqQ, { kind: 'mcq', choiceIndex: 1 })).toBeNull()
+  })
+})
+
+describe('câu lab — chấm bằng cách CHẠY sơ đồ người học lắp', () => {
+  const labQ: Question = {
+    kind: 'lab',
+    id: 'q-lab',
+    prompt: { vi: 'Sửa lại để hai máy kế toán gọi được nhau.' },
+    spec: vlanRepairLab(),
+  }
+
+  it('sơ đồ đạt mục tiêu → đúng', () => {
+    expect(gradeQuestion(labQ, { kind: 'lab', topology: teamsFixed() })).toBe(true)
+  })
+
+  it('sơ đồ đề bài chưa sửa → sai', () => {
+    expect(gradeQuestion(labQ, { kind: 'lab', topology: teamsNetwork() })).toBe(false)
+  })
+
+  it('lời giải rẻ tiền gộp một VLAN → sai (mục tiêu "phải chặn" hỏng)', () => {
+    expect(gradeQuestion(labQ, { kind: 'lab', topology: teamsAllOneVlan() })).toBe(false)
+  })
+
+  it('nộp nhầm loại câu trả lời là lỗi lập trình ở tầng UI, không phải người học sai', () => {
+    expect(() => gradeQuestion(labQ, { kind: 'typed', text: 'gói tin' })).toThrowError(/lỗi lập trình ở tầng UI/)
+    expect(() => gradeQuestion(typedQ, { kind: 'lab', topology: teamsFixed() })).toThrowError(
+      /lỗi lập trình ở tầng UI/,
+    )
+  })
+
+  it('câu lab không có khái niệm cận-đúng', () => {
+    expect(findNearMiss(labQ, { kind: 'lab', topology: teamsNetwork() })).toBeNull()
   })
 })

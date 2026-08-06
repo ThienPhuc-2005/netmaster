@@ -139,7 +139,77 @@ Buổi 3: nhớ …/… thẻ
 Điều bất ngờ nhất quan sát được: …
 ```
 
-## 7. Sau buổi test
+## 7. Buổi bổ sung — Module 4 (phòng lab)
+
+Chỉ làm buổi này **sau khi** người tham gia đã qua bài vẽ ở mục 5. Mục
+tiêu khác hẳn: không kiểm trí nhớ nữa mà kiểm **năng lực chẩn đoán** —
+người học có tự tìm ra bệnh của một mạng hỏng không.
+
+### Chuẩn bị thêm
+
+- Máy có màn hình rộng (lab thao tác thoải mái nhất từ 1280px trở lên).
+- **Nếu muốn kiểm cả điện thoại**: chuẩn bị thêm một máy 375px. Lab được
+  thiết kế để hoàn thành được trên mobile (mọi thao tác có đường bấm
+  chọn, sơ đồ cuộn ngang) — buổi test là chỗ để xác nhận điều đó có đúng
+  với người thật hay không.
+
+### Các bước và điểm quan sát
+
+1. Để họ học bài 1 → 3 của Module 4 (switch, bảng MAC, ARP).
+   - **Quan sát bài 2:** đây là lab đầu tiên — lắp mạng từ thiết bị rời.
+     Họ tìm ra cách nối dây trong bao lâu? Có bấm "Gửi thử" trước khi
+     hiểu đề không? Có đọc nhật ký chặng không, hay chỉ nhìn kết quả?
+2. **Bài 4 — quan sát kỹ nhất buổi này.** Bước Đoán thử mở ra một mạng
+   hỏng TRƯỚC khi dạy chữ nào về VLAN.
+   - Họ có tự bấm "Gửi thử" không, hay ngồi chờ hướng dẫn?
+   - Họ đoán bệnh gì? Ghi **nguyên văn** câu họ nói. Nhiều người sẽ nghi
+     dây, nghi IP, nghi switch hỏng — đó chính là dữ liệu quý.
+   - Họ có mò ra VLAN không? Không mò ra cũng **hoàn toàn đạt** — bước
+     này thiết kế để gây tò mò, không phải để đúng.
+   - Sau khi đọc lời giải thích ở màn đáp án, nét mặt có "à ra thế" không?
+3. Để họ học tiếp phần lý thuyết VLAN rồi làm lab ở bước Thử tay.
+   - **Điểm quan sát quan trọng:** lab này có hai yêu cầu — hai máy kế
+     toán phải gọi được nhau, VÀ kế toán không được thấy kỹ thuật. Rất
+     nhiều người sẽ gộp tất cả vào một VLAN cho nhanh. Khi bài báo chưa
+     đạt, họ có tự nhận ra mình vừa phá yêu cầu thứ hai không?
+   - Họ dùng "Gửi thử" mấy lần trước khi bấm "Nộp bài"? Có hiểu rằng gửi
+     thử không tính điểm không?
+4. Học nốt bài 5 rồi thi Module 4. Câu cuối bài thi là một lab.
+   - Ghi điểm lần 1 và số lần thi lại.
+
+### Tiêu chí đậu của buổi này
+
+Sau khi học xong Module 4, đưa họ **một mạng hỏng chưa từng gặp** (mở
+lại bài 4, bấm "Về sơ đồ ban đầu", rồi tự tay đổi một cổng sang VLAN
+khác trước khi giao máy). Yêu cầu: tìm ra chỗ hỏng và sửa.
+
+- **ĐẬU:** tự tìm ra trong vòng 5 phút, và **nói được vì sao** — đại ý
+  "hai máy này đang ở hai VLAN khác nhau nên không nghe thấy nhau". Diễn
+  đạt đời thường vẫn tính; không cần dùng đúng từ "miền quảng bá".
+- **ĐẬU CÓ GHI CHÚ:** sửa đúng nhưng giải thích sai cơ chế (ví dụ nói
+  "vì IP khác dải") — ghi lại để sửa nội dung bài.
+- **RỚT:** không tìm ra, hoặc sửa bằng cách thử ngẫu nhiên từng cổng cho
+  tới khi xanh. Rớt nghĩa là bài 4 chưa dạy được cách chẩn đoán — mở lại
+  nội dung bài đó, đừng đổ cho người học.
+
+### Mẫu ghi chép bổ sung
+
+```
+Buổi Module 4: bắt đầu …h — kết thúc …h
+  Bài 2 (lab lắp mạng): nối xong sau … phút; có đọc nhật ký chặng: có/không
+  Bài 4 bước Đoán thử: tự bấm Gửi thử: có/không
+    Đoán bệnh gì (nguyên văn): …
+    Có mò ra VLAN không: có/không
+  Bài 4 bước Thử tay: có gộp hết vào một VLAN không: có/không
+    Số lần Gửi thử trước khi Nộp: …
+  Thi M4: lần 1 …% ; số lần thi: … ; làm được câu lab cuối: có/không
+  BÀI CHẨN ĐOÁN CUỐI: tìm ra sau … phút
+    Giải thích (nguyên văn): …
+    KẾT LUẬN: ĐẬU / ĐẬU CÓ GHI CHÚ / RỚT
+  (Nếu có thử trên điện thoại) thao tác được trọn vẹn: có/không; vướng ở đâu: …
+```
+
+## 8. Sau buổi test
 
 - Mỗi mục RỚT hoặc ghi chú hiểu sai → mở issue nội dung: ghi rõ khái
   niệm hiểu sai, bài nào dạy nó, và câu người tham gia đã nói.

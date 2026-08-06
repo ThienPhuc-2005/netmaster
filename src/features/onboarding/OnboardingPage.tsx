@@ -20,6 +20,9 @@ import { useSettings } from '../../store/settings'
 import { useProgress } from '../../store/progress'
 import { playEarcon } from '../../audio/earcons'
 import { Button } from '../../components/Button'
+import { PacketShape } from '../../components/PacketShape'
+import { DeviceGlyph } from '../../components/DeviceGlyph'
+import { samplePath } from '../../components/packetFlight'
 
 type Phase = 'idle' | 'hop1' | 'atRouter' | 'hop2' | 'delivered'
 
@@ -30,37 +33,11 @@ const B = { x: 620, y: 150 }
 const HOP1_D = `M ${A.x + 34} ${A.y - 6} Q ${(A.x + R.x) / 2} ${R.y - 26} ${R.x - 26} ${R.y}`
 const HOP2_D = `M ${R.x + 26} ${R.y} Q ${(R.x + B.x) / 2} ${R.y - 26} ${B.x - 34} ${B.y - 6}`
 
-/** Ease-out (~cubic-bezier(0,0,.2,1)) nướng sẵn vào mẫu điểm lấy trên path. */
-const easeOut = (t: number) => 1 - (1 - t) ** 2.2
-
-/** Lấy n điểm dọc path với easing nướng sẵn — motion phát lại tuyến tính. */
-function samplePath(path: SVGPathElement, n = 28): { xs: number[]; ys: number[] } {
-  const total = path.getTotalLength()
-  const xs: number[] = []
-  const ys: number[] = []
-  for (let i = 0; i <= n; i++) {
-    const p = path.getPointAtLength(total * easeOut(i / n))
-    xs.push(p.x)
-    ys.push(p.y)
-  }
-  return { xs, ys }
-}
-
-/** Hình gói tin chuẩn của app: phong bì nhỏ (rect + nắp). */
-function Packet() {
-  return (
-    <g className="text-accent">
-      <rect x="-11" y="-8" width="22" height="16" rx="3" fill="var(--panel)" stroke="currentColor" strokeWidth="2" />
-      <path d="M-11 -5 0 4 11 -5" fill="none" stroke="currentColor" strokeWidth="1.5" />
-    </g>
-  )
-}
-
+/** Máy tính trên sơ đồ: hình dùng chung toàn app + nhãn tên máy. */
 function Machine({ x, y, label }: { x: number; y: number; label: string }) {
   return (
-    <g className="text-ink-muted" transform={`translate(${x} ${y})`}>
-      <rect x="-30" y="-26" width="60" height="40" rx="4" fill="none" stroke="currentColor" strokeWidth="2" />
-      <path d="M-38 24 H38 M-14 14 v6 M14 14 v6" fill="none" stroke="currentColor" strokeWidth="2" />
+    <g transform={`translate(${x} ${y})`}>
+      <DeviceGlyph kind="pc" />
       <text y="44" textAnchor="middle" fontSize="12" fill="var(--ink-muted)" style={{ fontFamily: 'var(--font-mono)' }}>
         {label}
       </text>
@@ -80,15 +57,16 @@ export function OnboardingPage() {
   const [frames, setFrames] = useState<{ xs: number[]; ys: number[] } | null>(null)
 
   const send = () => {
-    const hop1 = hop1Ref.current
-    // Không đo được path (reduced motion, hoặc môi trường không có SVG
-    // geometry như test) → gói tin tới thẳng đích, vẫn trọn thông điệp.
-    if (reducedMotion === true || hop1 === null || typeof hop1.getTotalLength !== 'function') {
+    // samplePath trả null khi không đo được: người dùng tắt chuyển động,
+    // hoặc môi trường không có SVG geometry (jsdom). Cả hai đi cùng một
+    // nhánh — gói tin tới thẳng đích, thông điệp vẫn trọn vẹn.
+    const measured = reducedMotion === true ? null : samplePath(hop1Ref.current)
+    if (measured === null) {
       setPhase('delivered')
       playEarcon('correct')
       return
     }
-    setFrames(samplePath(hop1))
+    setFrames(measured)
     setPhase('hop1')
   }
 
@@ -96,13 +74,13 @@ export function OnboardingPage() {
   useEffect(() => {
     if (phase !== 'atRouter') return
     const timer = setTimeout(() => {
-      const hop2 = hop2Ref.current
-      if (hop2 === null || typeof hop2.getTotalLength !== 'function') {
+      const measured = samplePath(hop2Ref.current)
+      if (measured === null) {
         setPhase('delivered')
         playEarcon('correct')
         return
       }
-      setFrames(samplePath(hop2))
+      setFrames(measured)
       setPhase('hop2')
     }, 380)
     return () => clearTimeout(timer)
@@ -184,11 +162,11 @@ export function OnboardingPage() {
                 }
               }}
             >
-              <Packet />
+              <PacketShape />
             </motion.g>
           ) : packetStatic !== null ? (
             <g transform={`translate(${packetStatic.x} ${packetStatic.y})`}>
-              <Packet />
+              <PacketShape />
             </g>
           ) : null)}
       </svg>

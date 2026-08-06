@@ -1,4 +1,4 @@
-# Trạng thái dự án — NetMaster (Phase 1)
+# Trạng thái dự án — NetMaster (Phase 1 xong, đang Phase 2)
 
 Cập nhật: 2026-08-05. File này chỉ để nắm nhanh tình hình khi mở lại dự
 án. Nguồn chân lý vẫn là `SPEC-APP-HOC-MANG.md`; luật làm việc ở
@@ -21,13 +21,167 @@ code được.
 | 5 | Nội dung thật Module 1-3, màn thi mastery, REVIEW-NOI-DUNG.md | Xong |
 | 6 | Đối chiếu Definition of Done + kịch bản test người thật (`KICH-BAN-TEST.md`) | Xong |
 
-Kiểm tra hiện tại: **359/359 test xanh**, `npm run typecheck` sạch,
-`npm run build` qua. Khối 6 đã đối chiếu DoD trên browser thật (đi trọn
-bài học 6 bước, phiên ôn SM-2, luật "mở app là ôn trước", drill, mobile
-không tràn ngang) và vá 1 lỗi tìm thấy khi đối chiếu: màn Phòng khám
-hiện key i18n trần vì vi/en.json thiếu mục `clinic.*` — đã bổ sung chuỗi
-và thêm test quét key mồ côi (key gọi trong code phải tồn tại trong
-dictionary) để không tái diễn.
+Khối 6 đã đối chiếu DoD trên browser thật (đi trọn bài học 6 bước, phiên
+ôn SM-2, luật "mở app là ôn trước", drill, mobile không tràn ngang) và vá
+1 lỗi tìm thấy khi đối chiếu: màn Phòng khám hiện key i18n trần vì
+vi/en.json thiếu mục `clinic.*` — đã bổ sung chuỗi và thêm test quét key
+mồ côi (key gọi trong code phải tồn tại trong dictionary).
+
+## Phase 2 — hạng mục (5): simulation lab kéo-thả Module 4
+
+Kế hoạch chia 6 khối, đã duyệt. Quyết định đã chốt: lab đặt ở **bước
+Đoán thử** (giữ nguyên tuple 6 bước); hai nút tách bạch **"Gửi thử"
+(miễn phí) / "Nộp bài" (tính lượt)**; **mobile phải hoàn thành được lab**
+(mọi thao tác có đường bấm-chọn, kéo-thả chỉ là đường phụ); phạm vi mô
+phỏng đóng băng ở **MAC table + ARP + VLAN cổng access + router** (không
+trunk, không router-on-a-stick); bài thi mastery Module 4 có **đúng 1 câu
+lab đặt cuối**.
+
+| Khối | Nội dung | Trạng thái |
+|------|----------|-----------|
+| 2.1 | Dọn đường: bỏ mọi chỗ đếm cứng số module ở tầng nội dung | Xong |
+| 2.2 | Bộ mô phỏng mạng thuần `src/engine/lab/` (topology, ping từng chặng, undo) | Xong |
+| 2.3 | `gradeLab` + `LabSpecSchema` (chưa cắm vào union câu hỏi) | Xong |
+| 2.4a | UI lab `src/features/lab/` — chơi được thật, trưng ở `/design` | Xong |
+| 2.4b | Cắm lab vào pipeline 6 bước (`kind:'lab'` trong union câu hỏi) | Xong |
+| 2.5 | Nội dung `content/modules/module-04.json` + hình khái niệm | Xong |
+| 2.6 | Đối chiếu DoD + kiểm browser + cập nhật tài liệu | Xong |
+
+**Khối 2.1 đã làm gì** (không đổi hành vi người học):
+- `validateModules` ép **`order` duy nhất** giữa các module — trùng order
+  khiến thứ tự sắp xếp không xác định, mastery gate có thể mở nhầm module
+  (lỗ hổng nguyên tắc 2, tồn tại độc lập với Module 4).
+- `content.test.ts` bỏ mảng id hard-code và điều kiện "mọi module Phần A";
+  thay bằng bất biến suy từ dữ liệu (order liên tục từ 1, phần không lùi
+  A→B→C) và tra module theo id thay vì chỉ số mảng.
+- `render-content-review.mjs`: `renderQuestion` thêm nhánh **ném lỗi khi
+  gặp `kind` lạ** (trước đây im lặng nuốt mất phần đáp án — người duyệt ký
+  vào bản review thiếu dữ liệu); tiêu đề sinh từ dữ liệu; tách `main()`
+  sau cờ chạy-như-lệnh để test import được mà không ghi đè file.
+- `ConceptVisual`: bản đồ khóa học (advance organizer Module 2) giữ lưới
+  12 module theo spec nhưng **tô sáng theo số module thật đang có**; thêm
+  `hasVisual()` và test chặn visualId không có hình (trước đây rơi âm
+  thầm về hình thư chung).
+
+Đã chứng minh dứt điểm bằng cách thả tạm một `module-04.json` thứ tư vào
+`content/modules/`: test vẫn xanh, `content:review` tự đổi tiêu đề thành
+"Module 1-4 (Phần A+B)", bản đồ khóa học tự sáng 4 ô — rồi xóa file tạm.
+
+**Khối 2.2 đã làm gì** (headless — app người dùng không đổi một pixel):
+- `src/engine/lab/topology.ts` — mô hình mạng + `validateTopology` trả mã
+  lỗi CẤU TRÚC (dây trỏ cổng không có, một cổng hai dây, trùng MAC…).
+  Phân biệt rạch ròi với lỗi CẤU HÌNH (thiếu gateway, sai VLAN): lỗi cấu
+  hình là thứ người học phải tự tìm, không phải bug.
+- `src/engine/lab/simulate.ts` — `simulatePing` trả **chuỗi chặng có thứ
+  tự** để UI phát lại thành animation. Bốn khoảnh khắc dạy học được mã
+  hóa thành `HopReason`: `broadcast-flood` (ARP hỏi cả phòng),
+  `unknown-unicast-flood` (switch chưa học → phát tán), `mac-table-hit`
+  (đã học → đi đúng một cổng), `routed` (router đổi MAC, giữ nguyên IP).
+  Thất bại trả mã chẩn đoán: `arp-unresolved` (chính là ca hai máy khác
+  VLAN), `no-gateway`, `gateway-off-subnet`, `no-route`,
+  `broadcast-storm`, `hop-budget-exceeded`.
+- `src/engine/lab/session.ts` — trình soạn thảo + **undo dạng ảnh chụp**
+  (spec 4.5). `LabAllowance` cho phép đề bài giới hạn thao tác, engine ÉP
+  chứ không chỉ để UI ẩn nút. `classifyDiff` + `allowanceViolations` là
+  nguyên liệu cho cross-check nội dung ở khối 2.3.
+- `tests/fixtures/labFixture.ts` — 5 topology mẫu, gồm **ca hỏng của spec
+  Module 4** (hai máy cùng dải IP nhưng khác VLAN) và lời giải của nó.
+
+Ba đơn giản hóa CỐ Ý so với thiết bị thật, đã ghi trong đầu file
+`topology.ts`: không trunk (hai switch nối nhau bằng cổng access, khung
+chỉ qua khi hai đầu cùng VLAN); switch không có IP quản trị; mỗi cổng
+router mang đúng một IP.
+
+**Khối 2.3 đã làm gì** (vẫn headless — `QuestionSchema` chưa có nhánh lab):
+- `src/engine/lab/gradeLab.ts` — chấm **hành vi, không chấm hình dạng**:
+  chạy mô phỏng rồi hỏi "mạng này có làm được việc đề bài yêu cầu không",
+  không so sơ đồ người học với sơ đồ mẫu. Mọi lời giải chạy được đều được
+  công nhận (IKEA effect). Bốn loại mục tiêu: `ping` (reach/blocked),
+  `pathThrough`, `macLearned`, `arpResolved`.
+- **Cặp `reach` + `blocked` là mấu chốt sư phạm**: thiếu goal `blocked`
+  thì bài VLAN bị "giải" bằng cách gộp tất cả vào một VLAN — đúng kết
+  quả, sai bài học. Đã khóa bằng test.
+- `diagnose()` bám MỤC TIÊU của đề, không chỉ nhìn sơ đồ: bài chia phòng
+  ban cố ý có hai VLAN trong cùng dải địa chỉ, nên triệu chứng "cùng dải
+  khác VLAN" chỉ được nêu cho đúng cặp máy mà đề đòi phải thông nhau.
+- `src/engine/lab/labSchema.ts` — zod cho đề lab, ép các ràng buộc mà
+  schema thuần cấu trúc không nói được: **lời giải phải thật sự giải
+  được** (chạy `gradeLab` lên chính nó), **đề bài chưa được giải sẵn**
+  (productive failure ép ở tầng dữ liệu), **lời giải chỉ dùng thao tác mà
+  đề cho phép** (đề không được đòi thứ chính nó cấm).
+- Fixture thêm 2 đề lab mẫu: "sửa VLAN chia phòng ban" và "lắp mạng từ
+  thiết bị rời" — chính là hình dạng dữ liệu Module 4 sẽ khai trong JSON.
+
+**Khối 2.4a đã làm gì** (lab chơi được thật; pipeline 6 bước chưa đụng):
+- `src/features/lab/` — mặt bàn ba tầng: dây vẽ SVG, thiết bị và cổng là
+  `<button>` thật, gói tin bay ở tầng trên. Thiết bị KHÔNG nằm trong SVG
+  để chúng là nút thật — nhờ đó bàn phím, trình đọc màn hình và test đi
+  chung một đường mã với chuột.
+- **Một action, hai đường vào**: mọi thao tác (nối dây, đổi VLAN, đặt địa
+  chỉ, gỡ thiết bị) làm trọn được bằng BẤM CHỌN; kéo-thả chỉ để sắp xếp
+  cho dễ nhìn. Đây là lý do lab dùng được trên điện thoại (đã chốt).
+- **Toạ độ bằng một hệ số, không dùng `getScreenCTM()`** (jsdom không có
+  API đó): canvas co giãn đều nên quy đổi con trỏ chỉ là một phép chia,
+  và `width === 0` chốt hệ số 1 — chính điều này làm kéo-thả test được.
+- Hai nút tách bạch: **"Gửi thử" miễn phí, "Nộp bài" mới tính lượt**.
+- **Nhật ký chặng LUÔN render đầy đủ**, kể cả khi tắt chuyển động hoặc
+  trong jsdom. Animation là lớp dual-coding đắp thêm, không phải nơi
+  chứa tải trọng sư phạm.
+- Rút `PacketShape` / `DeviceGlyph` / `samplePath` thành dùng chung với
+  onboarding — spec 4.2 đòi "gói tin luôn cùng một hình dạng ở mọi
+  module", giờ là component thật chứ không phải lời hứa.
+- Trưng bày ở `/design` với một đề lab đi qua `parseLabSpec` nên nó phải
+  hợp lệ y hệt đề thật.
+
+**Khối 2.4b đã làm gì** (bật công tắc — lab thành một dạng câu hỏi thật):
+- `QuestionSchema` có nhánh thứ tư `kind: 'lab'`; `QuestionResponse` thêm
+  `{kind:'lab', topology}`; `gradeQuestion` ủy quyền cho `isLabSolved`.
+- `QuestionInput` render phòng lab; `AnswerReveal` cho `canonicalAnswer`
+  trả `null` với lab (một sơ đồ không rút gọn thành một dòng chữ được, và
+  mọi lời giải chạy được đều hợp lệ).
+- `render-content-review.mjs` diễn đạt đề lab thành chữ: sơ đồ, mục tiêu,
+  quyền thao tác, lời giải mẫu — người duyệt không phải mở JSON topology.
+- **`lessonMachine.ts` vẫn KHÔNG bị sửa một dòng nào** — bất biến của cả
+  hạng mục còn nguyên. `labInPipeline.test.ts` khóa lời hứa đó: thang 3
+  tầng, cổng qua bước, XP và lịch sử trả lời chạy y hệt câu gõ tay.
+
+**Khối 2.5 đã làm gì** (nội dung thật của Module 4):
+- `content/modules/module-04.json` — Phần B, 5 chặng × 1 bài, 6 khái niệm
+  (switch, bảng MAC, ARP, VLAN, miền quảng bá, định tuyến), bài thi 8 câu
+  **kết bằng đúng 1 câu lab** như đã chốt.
+- Ba bài lab đặt đúng chỗ spec đòi: bài 2 có lab **lắp mạng từ thiết bị
+  rời** (IKEA effect); bài 4 có lab **sửa mạng hỏng ngay ở bước Đoán thử**
+  — người học vọc trước khi đọc lý thuyết VLAN (productive failure), sai
+  không chặn và không trừ điểm; bài 4 bước Thử tay có lab đầy đủ với cặp
+  mục tiêu "phải thông + phải chặn".
+- Hệ ẩn dụ bưu điện nối tiếp từ Module 1-3: switch là bưu cục của làng,
+  bảng MAC là cuốn sổ nhớ mặt, ARP là tiếng gọi giữa sân, VLAN là bức
+  tường ngăn xóm, router là cây cầu.
+- 6 hình SVG mới trong `ConceptVisual` REGISTRY.
+- **PHÉP THỬ KIẾN TRÚC ĐẠT: khối này KHÔNG sửa file nào trong
+  `src/engine/`.** Thêm module mới đúng là chỉ thêm một file JSON.
+
+**Khối 2.6 đã làm gì** (khép hạng mục):
+- **Vá một lỗi thật phát hiện khi kiểm mobile:** sidebar dọc ăn 224px
+  trong màn 375px, chỉ chừa ~87px cho nội dung — lab không thao tác nổi.
+  Dưới 768px, menu 4 mục giờ chuyển xuống **thanh đáy** và canvas lab
+  **cuộn ngang trong khung riêng** (giữ chiều rộng tối thiểu 560px để hai
+  vùng chạm cổng không dính nhau). Lỗi này có từ Phase 1 nhưng khi đó
+  mobile chỉ cần đọc; quyết định "lab phải hoàn thành được trên điện
+  thoại" biến nó thành mục CHƯA ĐẠT.
+- Đã kiểm trên máy 375px: giải trọn bài lab bằng đường bấm chọn, chip
+  VLAN 72×26px, không tràn ngang. Desktop không hồi quy.
+- `KICH-BAN-TEST.md` thêm buổi test Module 4: tiêu chí đậu là **tự chẩn
+  đoán được một mạng hỏng chưa từng gặp và nói được vì sao**.
+- `CLAUDE.md` cập nhật cấu trúc + các luật của phòng lab không được phá.
+
+Kiểm tra hiện tại: **596/596 test xanh** (+237 so với Phase 1),
+`npm run typecheck` sạch, `npm run build` qua. Đã kiểm trên trình duyệt
+thật: sửa VLAN → mục tiêu chuyển xong, hoàn tác trả đúng trạng thái
+trước, vùng chạm cổng 24px cách nhau 30px (WCAG 2.5.8). Và kiểm
+end-to-end bằng cách thả tạm một module có bài lab vào `content/modules/`:
+bài đi trọn 6 bước, nộp lab đúng → "Chuẩn luôn!" → qua bước → **+10 XP
+đúng bằng XP bước Làm** — rồi xóa file tạm.
 
 ## Lệnh hay dùng
 

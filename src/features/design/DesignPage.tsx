@@ -3,6 +3,7 @@
 // không nằm trong menu 4 tab). Dữ liệu minh họa mô phỏng nội dung bài
 // học nên để tiếng Việt như nội dung thật.
 
+import { useState } from 'react'
 import { useT } from '../../i18n'
 import { Button } from '../../components/Button'
 import { FeedbackBanner } from '../../components/FeedbackBanner'
@@ -10,6 +11,8 @@ import { ProgressBar } from '../../components/ProgressBar'
 import { StageMap } from '../../components/StageMap'
 import { playEarcon, type EarconKind } from '../../audio/earcons'
 import { XP_AMOUNTS } from '../../engine/xp'
+import { NetworkLab } from '../lab/NetworkLab'
+import { isLabSolved, parseLabSpec, type Topology } from '../../engine/lab'
 
 const SWATCHES = [
   'surface',
@@ -44,6 +47,84 @@ const EARCON_KEYS: { kind: EarconKind; labelKey: string }[] = [
   { kind: 'lessonComplete', labelKey: 'design.earconLessonComplete' },
   { kind: 'stageUp', labelKey: 'design.earconStageUp' },
 ]
+
+// Đề lab trưng bày: chính là ca của spec Module 4 — hai máy cùng dải địa
+// chỉ mà không gọi được nhau vì bị xếp nhầm VLAN. Viết thẳng ở đây như
+// mọi dữ liệu minh họa khác của trang này, nhưng vẫn đi qua parseLabSpec
+// nên nó phải hợp lệ y hệt một đề bài thật (lời giải giải được, đề chưa
+// giải sẵn, lời giải nằm trong quyền cho phép).
+const mac = (n: number) => `AA:BB:CC:00:00:${String(n).padStart(2, '0')}`
+
+function demoPc(id: string, hostname: string, macIndex: number, ip: string) {
+  return {
+    kind: 'pc' as const,
+    id,
+    hostname,
+    port: { id: 'eth0', mac: mac(macIndex) },
+    ipConfig: { ip, prefix: 24 },
+    gateway: null,
+  }
+}
+
+function demoTopology(vlanOfPortTwo: number): Topology {
+  return {
+    devices: [
+      demoPc('pc-a', 'PC-A (kế toán)', 1, '192.168.1.10'),
+      demoPc('pc-b', 'PC-B (kế toán)', 2, '192.168.1.20'),
+      demoPc('pc-c', 'PC-C (kỹ thuật)', 3, '192.168.1.30'),
+      {
+        kind: 'switch' as const,
+        id: 'sw-1',
+        hostname: 'Switch-1',
+        ports: [
+          { id: 'p1', vlan: 10 },
+          { id: 'p2', vlan: vlanOfPortTwo },
+          { id: 'p3', vlan: 20 },
+          { id: 'p4', vlan: 20 },
+        ],
+      },
+    ],
+    links: [
+      { id: 'l1', a: { deviceId: 'pc-a', portId: 'eth0' }, b: { deviceId: 'sw-1', portId: 'p1' } },
+      { id: 'l2', a: { deviceId: 'pc-b', portId: 'eth0' }, b: { deviceId: 'sw-1', portId: 'p2' } },
+      { id: 'l3', a: { deviceId: 'pc-c', portId: 'eth0' }, b: { deviceId: 'sw-1', portId: 'p3' } },
+    ],
+  }
+}
+
+const DEMO_LAB = parseLabSpec({
+  initial: demoTopology(20),
+  goals: [
+    { kind: 'ping', from: 'pc-a', to: 'pc-b', expect: 'reach' },
+    { kind: 'ping', from: 'pc-a', to: 'pc-c', expect: 'blocked' },
+  ],
+  allow: {
+    addDevices: [],
+    removeDevices: false,
+    addLinks: false,
+    removeLinks: false,
+    setVlan: true,
+    setIp: false,
+    setRoutes: false,
+    maxDevices: 6,
+  },
+  solution: demoTopology(10),
+})
+
+function LabShowcase() {
+  const [verdict, setVerdict] = useState<'chưa nộp' | 'đạt' | 'chưa đạt'>('chưa nộp')
+  return (
+    <div className="space-y-3">
+      <p className="text-sm text-ink-muted">
+        Kết quả lần nộp gần nhất: <strong className="text-ink">{verdict}</strong>
+      </p>
+      <NetworkLab
+        spec={DEMO_LAB}
+        onSubmit={(topology) => setVerdict(isLabSolved(DEMO_LAB, topology) ? 'đạt' : 'chưa đạt')}
+      />
+    </div>
+  )
+}
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
@@ -118,6 +199,10 @@ export function DesignPage() {
         <div className="rounded-md border border-edge bg-panel p-5">
           <StageMap stages={SAMPLE_STAGES} />
         </div>
+      </Section>
+
+      <Section title={t('lab.title')}>
+        <LabShowcase />
       </Section>
 
       <Section title={t('design.earcons')}>

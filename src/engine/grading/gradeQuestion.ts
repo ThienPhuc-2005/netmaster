@@ -3,6 +3,8 @@
 // quả này cộng với hintTopic/hint/solution có sẵn trong nội dung bài.
 
 import type { LText, Question } from '../contentSchema'
+import { isLabSolved } from '../lab/gradeLab'
+import type { Topology } from '../lab/topology'
 import { typedAnswerMatches } from './normalize'
 
 /** Câu trả lời người học nộp lên — kind phải trùng kind của Question. */
@@ -16,6 +18,8 @@ export type QuestionResponse =
    * là [0, 1, 2, ...] bất kể xáo trộn thế nào.
    */
   | { kind: 'order'; order: number[] }
+  /** `lab` = sơ đồ mạng người học lắp được; chấm bằng cách CHẠY nó. */
+  | { kind: 'lab'; topology: Topology }
 
 /** Kind lệch nhau là bug ở tầng UI (nộp nhầm loại), không phải người học sai. */
 function kindMismatch(q: Question, r: QuestionResponse): Error {
@@ -52,5 +56,10 @@ export function gradeQuestion(q: Question, r: QuestionResponse): boolean {
       if (q.kind !== 'order') throw kindMismatch(q, r)
       // Đúng khi xếp lại đủ và đúng thứ tự gốc: order[i] === i với mọi i.
       return r.order.length === q.items.length && r.order.every((itemIndex, pos) => itemIndex === pos)
+    case 'lab':
+      if (q.kind !== 'lab') throw kindMismatch(q, r)
+      // Chấm HÀNH VI: chạy mô phỏng trên sơ đồ người học lắp và hỏi nó có
+      // đạt mục tiêu của đề không — không so với sơ đồ mẫu (IKEA effect).
+      return isLabSolved(q.spec, r.topology)
   }
 }

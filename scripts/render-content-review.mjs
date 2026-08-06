@@ -6,14 +6,62 @@
 
 import { readFileSync, readdirSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
-import { fileURLToPath } from 'node:url'
+import { fileURLToPath, pathToFileURL } from 'node:url'
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')
 const modulesDir = join(root, 'content', 'modules')
 
 const vi = (ltext) => (ltext && typeof ltext.vi === 'string' ? ltext.vi : '')
 
-function renderQuestion(q, indent = '') {
+// --- Diễn đạt một đề lab thành chữ để người duyệt đọc được ---------
+
+const hostnameOf = (topo, id) => topo.devices.find((d) => d.id === id)?.hostname ?? id
+
+function describeTopology(topo) {
+  const parts = topo.devices.map((d) => {
+    if (d.kind === 'switch') {
+      const vlans = d.ports.map((p) => `${p.id}:VLAN ${p.vlan}`).join(', ')
+      return `${d.hostname} [${vlans}]`
+    }
+    if (d.kind === 'router') {
+      const ips = d.ports.map((p) => `${p.id}:${p.ipConfig ? `${p.ipConfig.ip}/${p.ipConfig.prefix}` : 'chưa đặt'}`)
+      return `${d.hostname} [${ips.join(', ')}]`
+    }
+    const ip = d.ipConfig ? `${d.ipConfig.ip}/${d.ipConfig.prefix}` : 'chưa đặt IP'
+    return `${d.hostname} [${ip}${d.gateway ? `, gw ${d.gateway}` : ''}]`
+  })
+  const wires = topo.links.map(
+    (l) => `${hostnameOf(topo, l.a.deviceId)}·${l.a.portId} — ${hostnameOf(topo, l.b.deviceId)}·${l.b.portId}`,
+  )
+  return `${parts.join(' · ')} — dây: ${wires.length === 0 ? 'chưa cắm dây nào' : wires.join(' | ')}`
+}
+
+function describeGoal(goal) {
+  if (goal.kind === 'ping') {
+    return goal.expect === 'reach'
+      ? `${goal.from} PHẢI gọi được ${goal.to}`
+      : `${goal.from} phải KHÔNG gọi được ${goal.to}`
+  }
+  if (goal.kind === 'pathThrough') return `đường ${goal.from} → ${goal.to} phải qua ${goal.via.join(', ')}`
+  if (goal.kind === 'macLearned') {
+    return `${goal.switchId} học được ${goal.mac} ở cổng ${goal.portId} (VLAN ${goal.vlan})`
+  }
+  return `${goal.deviceId} phân giải được ${goal.ip} → ${goal.mac}`
+}
+
+function describeAllowance(allow) {
+  const yes = []
+  if (allow.addDevices.length > 0) yes.push(`thêm thiết bị (${allow.addDevices.join('/')})`)
+  if (allow.removeDevices) yes.push('gỡ thiết bị')
+  if (allow.addLinks) yes.push('cắm dây')
+  if (allow.removeLinks) yes.push('gỡ dây')
+  if (allow.setVlan) yes.push('đổi VLAN')
+  if (allow.setIp) yes.push('đặt địa chỉ')
+  if (allow.setRoutes) yes.push('đặt tuyến tĩnh')
+  return yes.length === 0 ? 'KHÔNG cho phép thao tác nào (đề bài hỏng)' : yes.join(', ')
+}
+
+export function renderQuestion(q, indent = '') {
   const lines = []
   lines.push(`${indent}- **Đề:** ${vi(q.prompt)}`)
   if (q.kind === 'typed') {
@@ -24,6 +72,20 @@ function renderQuestion(q, indent = '') {
   } else if (q.kind === 'order') {
     lines.push(`${indent}  - **Dạng:** xếp thứ tự (thứ tự đúng):`)
     q.items.forEach((it, i) => lines.push(`${indent}    ${i + 1}. ${vi(it)}`))
+  } else if (q.kind === 'lab') {
+    lines.push(`${indent}  - **Dạng:** phòng lab (lắp/sửa sơ đồ mạng)`)
+    lines.push(`${indent}    - **Sơ đồ đề bài:** ${describeTopology(q.spec.initial)}`)
+    lines.push(`${indent}    - **Mục tiêu:**`)
+    for (const goal of q.spec.goals) lines.push(`${indent}      - ${describeGoal(goal)}`)
+    lines.push(`${indent}    - **Được phép:** ${describeAllowance(q.spec.allow)}`)
+    lines.push(`${indent}    - **Lời giải mẫu:** ${describeTopology(q.spec.solution)}`)
+  } else {
+    // Kind mới mà quên bổ sung nhánh render → NỔ NGAY, không im lặng bỏ
+    // qua. Bản duyệt thiếu phần đáp án còn tệ hơn không có bản duyệt:
+    // người duyệt sẽ ký vào thứ họ chưa hề nhìn thấy.
+    throw new Error(
+      `renderQuestion: chưa biết render câu kind "${q.kind}" (câu "${q.id}") — bổ sung nhánh trong scripts/render-content-review.mjs`,
+    )
   }
   if (q.hintTopic) lines.push(`${indent}  - **Chủ đề gợi ý (tầng 1):** ${vi(q.hintTopic)}`)
   if (q.explain) lines.push(`${indent}  - **Vì sao:** ${vi(q.explain)}`)
@@ -106,18 +168,37 @@ function renderModule(mod) {
   return out
 }
 
-const files = readdirSync(modulesDir).filter((f) => f.endsWith('.json')).sort()
-const lines = [
-  '# REVIEW NỘI DUNG — Module 1-3 (Phần A)',
-  '',
-  `> Sinh tự động từ ${files.map((f) => `\`content/modules/${f}\``).join(', ')} bằng \`npm run content:review\`.`,
-  '> Đây là bản để ĐỌC DUYỆT; muốn sửa thì sửa file JSON rồi render lại.',
-  '',
-]
-for (const f of files) {
-  const mod = JSON.parse(readFileSync(join(modulesDir, f), 'utf8'))
-  lines.push(...renderModule(mod))
+/** Tiêu đề sinh từ chính bộ nội dung — thêm module không phải sửa tay. */
+function renderTitle(mods) {
+  const orders = mods.map((m) => m.order).sort((a, b) => a - b)
+  const parts = [...new Set(mods.map((m) => m.part))].sort()
+  const span = orders.length === 1 ? `Module ${orders[0]}` : `Module ${orders[0]}-${orders.at(-1)}`
+  const partLabel = parts.length === 1 ? `Phần ${parts[0]}` : `Phần ${parts.join('+')}`
+  return `# REVIEW NỘI DUNG — ${span} (${partLabel})`
 }
 
-writeFileSync(join(root, 'REVIEW-NOI-DUNG.md'), lines.join('\n'), 'utf8')
-console.log(`Đã render ${files.length} module → REVIEW-NOI-DUNG.md`)
+export function renderReview(mods, files) {
+  // Render theo THỨ TỰ HỌC (order), giống loadModules — không theo tên file.
+  const ordered = [...mods].sort((a, b) => a.order - b.order)
+  const lines = [
+    renderTitle(ordered),
+    '',
+    `> Sinh tự động từ ${files.map((f) => `\`content/modules/${f}\``).join(', ')} bằng \`npm run content:review\`.`,
+    '> Đây là bản để ĐỌC DUYỆT; muốn sửa thì sửa file JSON rồi render lại.',
+    '',
+  ]
+  for (const mod of ordered) lines.push(...renderModule(mod))
+  return lines.join('\n')
+}
+
+function main() {
+  const files = readdirSync(modulesDir).filter((f) => f.endsWith('.json')).sort()
+  const mods = files.map((f) => JSON.parse(readFileSync(join(modulesDir, f), 'utf8')))
+  writeFileSync(join(root, 'REVIEW-NOI-DUNG.md'), renderReview(mods, files), 'utf8')
+  console.log(`Đã render ${files.length} module → REVIEW-NOI-DUNG.md`)
+}
+
+// Chỉ ghi file khi chạy như một lệnh; import từ test thì không đụng đĩa.
+if (process.argv[1] !== undefined && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  main()
+}

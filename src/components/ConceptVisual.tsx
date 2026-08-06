@@ -6,6 +6,7 @@
 
 import type { ReactNode } from 'react'
 import { motion } from 'motion/react'
+import { loadModules } from '../content'
 
 function Frame({ children, title }: { children: ReactNode; title?: string }) {
   return (
@@ -212,9 +213,23 @@ function Journey({ leg, title }: { leg: JourneyLeg; title?: string }) {
   )
 }
 
-/** Bản đồ khóa học 12 module (advance organizer, spec Module 2): Phần A
- *  sáng — "bạn ở đây", B/C chờ phía trước, mỗi phần đúng tông màu riêng. */
+/**
+ * Bản đồ khóa học 12 module (advance organizer, spec Module 2).
+ *
+ * Lưới 12 ô là LỘ TRÌNH theo spec mục 3 — cố định, luôn đúng. Nhưng ô
+ * nào được TÔ ĐẶC thì suy từ nội dung thật đang có trong app: module đã
+ * viết xong thì sáng, module chưa có thì để rỗng. Hình này nói với người
+ * học "đây là toàn cảnh, bạn đang ở đâu" — đếm cứng 3 module Phần A sẽ
+ * biến nó thành lời nói dối ngay khi module tiếp theo ra đời.
+ */
+const COURSE_PARTS = [
+  { part: 'A', color: 'var(--part-a)', orders: [1, 2, 3], y: 30, labelX: 140, labelY: 43 },
+  { part: 'B', color: 'var(--part-b)', orders: [4, 5, 6, 7], y: 58, labelX: 166, labelY: 71 },
+  { part: 'C', color: 'var(--part-c)', orders: [8, 9, 10, 11, 12], y: 86, labelX: 192, labelY: 99 },
+] as const
+
 function CourseMap({ title }: { title?: string }) {
+  const published = new Set(loadModules().map((m) => m.order))
   const cell = (x: number, y: number, color: string, filled: boolean) => (
     <rect
       key={`${x}-${y}`}
@@ -231,15 +246,14 @@ function CourseMap({ title }: { title?: string }) {
   )
   return (
     <Frame title={title}>
-      {/* Phần A: 3 module (đang học) */}
-      {[0, 1, 2].map((i) => cell(28 + i * 26, 30, 'var(--part-a)', true))}
-      {/* Phần B: 4 module */}
-      {[0, 1, 2, 3].map((i) => cell(28 + i * 26, 58, 'var(--part-b)', false))}
-      {/* Phần C: 5 module */}
-      {[0, 1, 2, 3, 4].map((i) => cell(28 + i * 26, 86, 'var(--part-c)', false))}
-      <text x="140" y="43" fontSize="10" fill="var(--part-a)" style={{ fontFamily: 'var(--font-mono)' }}>A · 1-3</text>
-      <text x="166" y="71" fontSize="10" fill="var(--part-b)" style={{ fontFamily: 'var(--font-mono)' }}>B · 4-7</text>
-      <text x="192" y="99" fontSize="10" fill="var(--part-c)" style={{ fontFamily: 'var(--font-mono)' }}>C · 8-12</text>
+      {COURSE_PARTS.map(({ part, color, orders, y, labelX, labelY }) => (
+        <g key={part}>
+          {orders.map((order, i) => cell(28 + i * 26, y, color, published.has(order)))}
+          <text x={labelX} y={labelY} fontSize="10" fill={color} style={{ fontFamily: 'var(--font-mono)' }}>
+            {`${part} · ${orders[0]}-${orders.at(-1)}`}
+          </text>
+        </g>
+      ))}
     </Frame>
   )
 }
@@ -401,6 +415,176 @@ function Ipv6Plate({ title }: { title?: string }) {
   )
 }
 
+// ---------------------------------------------------------------
+// Module 4 — thiết bị trong làng: switch, bảng MAC, ARP, VLAN, miền
+// quảng bá, định tuyến. Nối tiếp hệ ẩn dụ bưu điện: switch là bưu cục
+// trong làng, VLAN là hai xóm có tường ngăn, router là cây cầu.
+// ---------------------------------------------------------------
+
+/** Switch: một hộp nhiều cổng, mọi máy cắm vào đó thay vì nối chằng chịt. */
+function SwitchHub({ title }: { title?: string }) {
+  const seats = [46, 84, 136, 174]
+  return (
+    <Frame title={title}>
+      <g className="text-accent">
+        <rect x="70" y="58" width="80" height="24" rx="4" {...stroke} />
+        <path d="M84 82 v8 M108 82 v8 M132 82 v8" {...stroke} strokeWidth={1.5} />
+      </g>
+      <g className="text-ink-muted">
+        {seats.map((x) => (
+          <rect key={x} x={x - 12} y="22" width="24" height="17" rx="2" {...stroke} />
+        ))}
+        {seats.map((x) => (
+          <path key={x} d={`M${x} 39 Q ${x} 52 110 58`} {...stroke} strokeWidth={1.5} />
+        ))}
+      </g>
+      <text x="110" y="112" textAnchor="middle" {...monoText}>
+        1 hộp · nhiều cổng
+      </text>
+    </Frame>
+  )
+}
+
+/** Bảng MAC: cuốn sổ switch ghi "máy nào đang ở cổng nào". */
+function MacTable({ title }: { title?: string }) {
+  const rows = [
+    ['aa:...:01', 'cổng 1'],
+    ['aa:...:02', 'cổng 2'],
+  ]
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <rect x="42" y="28" width="136" height="74" rx="4" {...stroke} />
+        <path d="M42 46 H178 M110 28 V102" {...stroke} strokeWidth={1.5} />
+      </g>
+      <text x="60" y="41" {...monoText}>
+        MAC
+      </text>
+      <text x="128" y="41" {...monoText}>
+        cổng
+      </text>
+      {rows.map(([mac, port], i) => (
+        <g key={mac}>
+          <text x="52" y={64 + i * 20} {...monoText}>
+            {mac}
+          </text>
+          <text x="122" y={64 + i * 20} fontSize="10" fill="var(--accent)" style={{ fontFamily: 'var(--font-mono)' }}>
+            {port}
+          </text>
+        </g>
+      ))}
+    </Frame>
+  )
+}
+
+/** ARP: hỏi to giữa sân "ai đang giữ địa chỉ này?" rồi chờ một người giơ tay. */
+function ArpShout({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-accent">
+        <rect x="18" y="52" width="30" height="22" rx="3" {...stroke} />
+        <path d="M52 63 h26" {...stroke} strokeDasharray="4 3" markerEnd="url(#cv-arp)" />
+      </g>
+      <g className="text-ink-muted">
+        {[92, 134, 176].map((x, i) => (
+          <rect key={x} x={x - 14} y={i === 1 ? 40 : 52} width="28" height="22" rx="3" {...stroke} />
+        ))}
+      </g>
+      <g className="text-ok">
+        <path d="M134 76 Q 90 100 48 78" {...stroke} markerEnd="url(#cv-arp-ok)" />
+      </g>
+      <text x="110" y="116" textAnchor="middle" {...monoText}>
+        ai giữ .20? — tôi đây
+      </text>
+      <defs>
+        <marker id="cv-arp" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0 0 6 3 0 6" fill="none" stroke="currentColor" strokeWidth="1.5" />
+        </marker>
+        <marker id="cv-arp-ok" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0 0 6 3 0 6" fill="none" stroke="currentColor" strokeWidth="1.5" />
+        </marker>
+      </defs>
+    </Frame>
+  )
+}
+
+/** VLAN: một switch bị vạch đôi thành hai xóm, thư không đi xuyên tường. */
+function VlanSplit({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <rect x="30" y="52" width="160" height="26" rx="4" {...stroke} />
+      </g>
+      {/* Bức tường giữa hai VLAN */}
+      <path d="M110 44 v42" fill="none" stroke="var(--warn)" strokeWidth="3" strokeDasharray="5 4" />
+      <g style={{ color: 'var(--part-a)' }}>
+        <rect x="42" y="20" width="26" height="18" rx="2" {...stroke} />
+        <path d="M55 38 v14" {...stroke} strokeWidth={1.5} />
+        <text x="55" y="102" textAnchor="middle" fontSize="10" fill="var(--part-a)" style={{ fontFamily: 'var(--font-mono)' }}>
+          VLAN 10
+        </text>
+      </g>
+      <g style={{ color: 'var(--part-c)' }}>
+        <rect x="152" y="20" width="26" height="18" rx="2" {...stroke} />
+        <path d="M165 38 v14" {...stroke} strokeWidth={1.5} />
+        <text x="165" y="102" textAnchor="middle" fontSize="10" fill="var(--part-c)" style={{ fontFamily: 'var(--font-mono)' }}>
+          VLAN 20
+        </text>
+      </g>
+    </Frame>
+  )
+}
+
+/** Miền quảng bá: tiếng gọi lan tới đâu thì miền tới đó. */
+function BroadcastDomain({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-accent">
+        <circle cx="72" cy="65" r="10" {...stroke} />
+        {[22, 34, 46].map((r) => (
+          <circle key={r} cx="72" cy="65" r={r} fill="none" stroke="currentColor" strokeWidth="1.5" opacity={0.5 - r / 140} />
+        ))}
+      </g>
+      <path d="M150 24 v82" fill="none" stroke="var(--warn)" strokeWidth="3" strokeDasharray="5 4" />
+      <g className="text-ink-muted">
+        <rect x="166" y="54" width="26" height="20" rx="3" {...stroke} />
+      </g>
+      <text x="110" y="116" textAnchor="middle" {...monoText}>
+        tiếng gọi dừng ở tường
+      </text>
+    </Frame>
+  )
+}
+
+/** Định tuyến: cây cầu nối hai xóm, mỗi bên một dải địa chỉ. */
+function RoutingBridge({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g style={{ color: 'var(--part-a)' }}>
+        <rect x="16" y="46" width="56" height="34" rx="4" {...stroke} />
+        <text x="44" y="98" textAnchor="middle" fontSize="9" fill="var(--part-a)" style={{ fontFamily: 'var(--font-mono)' }}>
+          192.168.1.x
+        </text>
+      </g>
+      <g style={{ color: 'var(--part-c)' }}>
+        <rect x="148" y="46" width="56" height="34" rx="4" {...stroke} />
+        <text x="176" y="98" textAnchor="middle" fontSize="9" fill="var(--part-c)" style={{ fontFamily: 'var(--font-mono)' }}>
+          10.0.0.x
+        </text>
+      </g>
+      <g className="text-accent">
+        <circle cx="110" cy="63" r="18" {...stroke} />
+        <path d="M102 63 h16 M110 55 v16" {...stroke} strokeWidth={1.5} />
+        <path d="M72 63 H90" {...stroke} />
+        <path d="M130 63 H148" {...stroke} />
+      </g>
+      <text x="110" y="30" textAnchor="middle" {...monoText}>
+        IP giữ nguyên · MAC đổi
+      </text>
+    </Frame>
+  )
+}
+
 /** Hình thư chung cho visualId chưa có hình riêng. */
 function GenericMail({ title }: { title?: string }) {
   return (
@@ -445,6 +629,27 @@ const REGISTRY: Record<string, VisualComponent> = {
   'vis-hang-rao-khu-pho': MaskFence,
   'vis-magic-number': MagicNumber,
   'vis-ipv6-bien-so-dai': Ipv6Plate,
+  // Module 4 — thiết bị trong làng
+  'vis-switch-nhieu-cong': SwitchHub,
+  'vis-hook-switch': SwitchHub,
+  'vis-so-mac': MacTable,
+  'vis-hook-mac-table': MacTable,
+  'vis-hoi-ten-arp': ArpShout,
+  'vis-hook-arp': ArpShout,
+  'vis-chia-vlan': VlanSplit,
+  'vis-hook-vlan': VlanSplit,
+  'vis-mien-quang-ba': BroadcastDomain,
+  'vis-cau-noi-router': RoutingBridge,
+  'vis-hook-dinh-tuyen': RoutingBridge,
+}
+
+/**
+ * visualId này đã có hình riêng chưa? Hình chung GenericMail là lưới an
+ * toàn lúc chạy (bài vẫn dạy được), nhưng nó im lặng — nội dung gõ sai
+ * visualId sẽ không ai biết. Test nội dung dùng hàm này làm cổng chặn.
+ */
+export function hasVisual(visualId: string): boolean {
+  return visualId in REGISTRY
 }
 
 export function ConceptVisual({ visualId, title }: { visualId: string; title?: string }) {

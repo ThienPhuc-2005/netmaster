@@ -1,33 +1,109 @@
 // Cổng chất lượng cho NỘI DUNG THẬT (content/modules/*.json).
-// Schema đã ép cấu trúc; file này ép thêm các yêu cầu của Khối 5:
-// đúng 3 module Phần A, Module 3 đủ 6 chặng + bật drill, và các
-// quy ước nội dung mà schema thuần không diễn đạt được.
+// Schema đã ép cấu trúc; file này ép thêm các quy ước nội dung mà schema
+// thuần không diễn đạt được.
+//
+// Các bất biến ở đây SUY TỪ DỮ LIỆU, không đếm cứng số module: thêm một
+// module mới vào content/modules/ không được làm đỏ file này vì lý do
+// "có thêm module". Chỉ nội dung SAI mới được làm đỏ.
 
 import { describe, expect, it } from 'vitest'
 import { findConcept, findLesson, loadModules } from './index'
 
 const modules = loadModules() // parse + validateModules ném lỗi nếu hỏng
 
-describe('bộ nội dung Phần A', () => {
-  it('đủ 3 module, đúng thứ tự 1-2-3, đều thuộc Phần A', () => {
-    expect(modules.map((m) => m.id)).toEqual(['module-1', 'module-2', 'module-3'])
-    expect(modules.map((m) => m.order)).toEqual([1, 2, 3])
-    expect(modules.every((m) => m.part === 'A')).toBe(true)
+/** Tra module theo id — không dùng chỉ số mảng, để thêm module không lệch. */
+function moduleById(id: string) {
+  const found = modules.find((m) => m.id === id)
+  expect(found, `không tìm thấy module "${id}"`).toBeDefined()
+  return found!
+}
+
+const PART_RANK = { A: 0, B: 1, C: 2 } as const
+
+describe('bộ nội dung', () => {
+  it('order liên tục từ 1, không đứt quãng', () => {
+    // Đứt quãng nghĩa là thiếu một module giữa chuỗi mở khóa — mastery
+    // gate sẽ nối hai module không liền mạch về nội dung (nguyên tắc 2).
+    expect(modules.map((m) => m.order)).toEqual(modules.map((_, i) => i + 1))
+  })
+
+  it('phần không lùi: A đứng trước B, B trước C', () => {
+    const ranks = modules.map((m) => PART_RANK[m.part])
+    const sorted = [...ranks].sort((a, b) => a - b)
+    expect(ranks, 'thứ tự phần phải là A → B → C theo order').toEqual(sorted)
   })
 
   it('Module 3: đúng 6 chặng (spec: module dài nhất Phần A) + bật drill subnetting', () => {
-    const m3 = modules[2]!
+    const m3 = moduleById('module-3')
     expect(m3.stages).toHaveLength(6)
     expect(m3.drill).toBe('subnet')
   })
 
   it('Module 2: retrieval có câu xếp thứ tự 8 chặng hành trình (spec Module 2)', () => {
-    const m2 = modules[1]!
+    const m2 = moduleById('module-2')
     const orderQuestions = m2.lessons.flatMap((l) =>
       l.steps[4].questions.filter((e) => e.question.kind === 'order'),
     )
     const eightSteps = orderQuestions.some((e) => e.question.kind === 'order' && e.question.items.length === 8)
     expect(eightSteps).toBe(true)
+  })
+
+  it('Module 4: bài VLAN có lab NGAY Ở BƯỚC ĐOÁN THỬ (productive failure trước lý thuyết)', () => {
+    // Spec Module 4 đòi "đưa sơ đồ mạng lỗi và yêu cầu sửa TRƯỚC khi dạy
+    // lý thuyết VLAN". Đặt lab ở bước 2 là cách giữ đúng yêu cầu đó mà
+    // không phá tuple 6 bước — nếu ai đó dời nó xuống sau bước Dạy thì
+    // test này đỏ.
+    const m4 = moduleById('module-4')
+    const vlanLesson = m4.lessons.find((l) => l.steps[1].questions.some((q) => q.kind === 'lab'))
+    expect(vlanLesson, 'Module 4 phải có bài mở đầu bằng lab ở bước Đoán thử').toBeDefined()
+
+    const teachConcepts = vlanLesson!.steps[2].screens.map((s) => s.conceptId)
+    expect(teachConcepts, 'lab ở bước 2 phải đứng TRƯỚC màn dạy VLAN').toContain('vlan')
+  })
+
+  it('Module 4: bài VLAN có lab đầy đủ ở bước Thử tay, với cặp mục tiêu thông + phải chặn', () => {
+    const m4 = moduleById('module-4')
+    const labExercises = m4.lessons.flatMap((l) => l.steps[3].exercises.filter((e) => e.question.kind === 'lab'))
+    expect(labExercises.length).toBeGreaterThan(0)
+
+    // Ít nhất một lab phải có cặp reach + blocked: thiếu "blocked" thì bài
+    // VLAN bị giải bằng cách gộp tất cả vào một VLAN — đúng kết quả, sai bài.
+    const hasPairedGoals = labExercises.some((e) => {
+      if (e.question.kind !== 'lab') return false
+      const pings = e.question.spec.goals.filter((g) => g.kind === 'ping')
+      return pings.some((g) => g.expect === 'reach') && pings.some((g) => g.expect === 'blocked')
+    })
+    expect(hasPairedGoals, 'cần một lab có cả mục tiêu "phải thông" lẫn "phải chặn"').toBe(true)
+  })
+
+  it('bài thi Module 4 kết bằng đúng một câu lab (đã chốt)', () => {
+    const m4 = moduleById('module-4')
+    const labs = m4.masteryTest.filter((q) => q.kind === 'lab')
+    expect(labs).toHaveLength(1)
+    expect(m4.masteryTest.at(-1)?.kind, 'câu lab phải đặt cuối bài thi').toBe('lab')
+  })
+
+  it('mọi bài lab đều cho người học ít nhất một cách thao tác', () => {
+    for (const m of modules) {
+      const allQuestions = m.lessons.flatMap((l) => [
+        ...l.steps[1].questions,
+        ...l.steps[3].exercises.map((e) => e.question),
+        ...l.steps[4].questions.map((e) => e.question),
+      ])
+      for (const q of [...allQuestions, ...m.masteryTest]) {
+        if (q.kind !== 'lab') continue
+        const allow = q.spec.allow
+        const canDoSomething =
+          allow.addDevices.length > 0 ||
+          allow.removeDevices ||
+          allow.addLinks ||
+          allow.removeLinks ||
+          allow.setVlan ||
+          allow.setIp ||
+          allow.setRoutes
+        expect(canDoSomething, `${m.id}: lab "${q.id}" không cho thao tác gì`).toBe(true)
+      }
+    }
   })
 
   it('mastery test đủ dày để ngưỡng 85% có nghĩa (>= 7 câu mỗi module)', () => {

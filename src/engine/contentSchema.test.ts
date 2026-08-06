@@ -442,6 +442,26 @@ describe('noFlashcard — ngoại lệ phải khai tường minh (spec 2.2 vẫn
   })
 })
 
+/**
+ * Nhân bản một module thành bản độc lập hoàn toàn: thêm hậu tố vào mọi
+ * định danh (`id`, `conceptId`, `lessonIds`) để hai bản không đụng nhau
+ * ở BẤT KỲ khóa nào — nhờ vậy test cô lập được đúng một loại xung đột.
+ */
+function reidModule(mod: object, suffix: string): Record<string, unknown> {
+  const walk = (node: unknown): unknown => {
+    if (Array.isArray(node)) return node.map(walk)
+    if (node === null || typeof node !== 'object') return node
+    const out: Record<string, unknown> = {}
+    for (const [key, value] of Object.entries(node)) {
+      if ((key === 'id' || key === 'conceptId') && typeof value === 'string') out[key] = value + suffix
+      else if (key === 'lessonIds' && Array.isArray(value)) out[key] = value.map((v) => `${String(v)}${suffix}`)
+      else out[key] = walk(value)
+    }
+    return out
+  }
+  return walk(mod) as Record<string, unknown>
+}
+
 describe('validateModules', () => {
   it('một module hợp lệ đứng riêng thì qua', () => {
     expect(() => validateModules([parseModule(makeValidModule())])).not.toThrow()
@@ -458,5 +478,21 @@ describe('validateModules', () => {
     const b = parseModule({ ...(makeValidModule() as object), id: 'module-2' })
     expect(() => validateModules([a, b])).toThrowError(/Concept ".+" xuất hiện ở cả module "module-1" và "module-2"/)
     expect(() => validateModules([a, b])).toThrowError(/Nội dung liên-module không hợp lệ/)
+  })
+
+  // Thứ tự module CHÍNH LÀ chuỗi mở khóa của mastery gate (nguyên tắc 2).
+  // Trùng `order` khiến phép sắp xếp không xác định được ai đứng trước —
+  // gate có thể mở nhầm module. Hai test dưới dùng module đã đổi hết id
+  // nên thứ DUY NHẤT còn xung đột là `order`.
+  it('hai module độc lập nhưng trùng order thì ném lỗi', () => {
+    const a = parseModule(makeValidModule())
+    const b = parseModule(reidModule(makeValidModule(), '-b'))
+    expect(() => validateModules([a, b])).toThrowError(/Trùng order 1 giữa module "module-1" và "module-1-b"/)
+  })
+
+  it('đổi order thì bộ đôi độc lập đó hợp lệ', () => {
+    const a = parseModule(makeValidModule())
+    const b = parseModule({ ...reidModule(makeValidModule(), '-b'), order: 2 })
+    expect(() => validateModules([a, b])).not.toThrow()
   })
 })

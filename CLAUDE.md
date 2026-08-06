@@ -87,7 +87,7 @@ phá hoại cơ chế học của app, dù code chạy đúng.
 - `npm run test:watch` — test ở chế độ watch
 - `npm run typecheck` — kiểm tra kiểu TypeScript (`tsc --noEmit`)
 
-## Cấu trúc hiện tại (sau Khối 5)
+## Cấu trúc hiện tại (Phase 1 xong; Phase 2 xong hạng mục lab Module 4)
 
 - `src/engine/` — pedagogy engine thuần TS: SM-2, hàng đợi ôn tập,
   mastery gate, máy trạng thái bài học 6 bước, XP/streak, bộ chấm,
@@ -128,6 +128,36 @@ phá hoại cơ chế học của app, dù code chạy đúng.
 - Khối 6 đã xong: bảng đối chiếu DoD nằm trong báo cáo lượt làm việc,
   kịch bản test người thật ở `KICH-BAN-TEST.md`. Phase 1 chỉ còn treo
   buổi test người thật (cần người, không code được).
+
+### Phase 2 — hạng mục (5): phòng lab Module 4
+
+- `src/engine/lab/` — bộ mô phỏng mạng THUẦN, không React: `topology.ts`
+  (mô hình + kiểm cấu trúc), `simulate.ts` (ping trả CHUỖI CHẶNG để UI
+  phát lại; mã lý do từng chặng và mã bệnh khi hỏng), `session.ts`
+  (soạn thảo + undo dạng ảnh chụp + quyền thao tác), `gradeLab.ts`
+  (chấm theo MỤC TIÊU, không so sơ đồ mẫu; chẩn đoán bám mục tiêu đề
+  bài), `labSchema.ts` (zod + chốt chặn nội dung).
+- **Phạm vi mô phỏng đã ĐÓNG BĂNG** (đã chốt): MAC table, ARP, VLAN cổng
+  access, router + tuyến tĩnh. KHÔNG trunk, KHÔNG router-on-a-stick,
+  không STP/DHCP/NAT/IPv6. Ba đơn giản hóa cố ý ghi ở đầu `topology.ts`.
+- `src/features/lab/` — phòng lab: canvas ba tầng (dây SVG / thiết bị và
+  cổng là `<button>` thật / gói tin bay), `geometry.ts` (toạ độ bằng MỘT
+  hệ số, không `getScreenCTM` — nếu không sẽ mất khả năng test kéo-thả),
+  `usePacketFlight.ts` (phát N chặng động).
+- **Luật của phòng lab, không được phá:** mọi thao tác có ĐƯỜNG BẤM CHỌN
+  (kéo-thả chỉ là đường phụ) — nhờ đó mobile, bàn phím, trình đọc màn
+  hình và test dùng chung một đường mã. Hai nút tách bạch: "Gửi thử"
+  miễn phí, "Nộp bài" mới tính một lượt trong thang 3 tầng. Nhật ký chặng
+  LUÔN render đầy đủ kể cả khi không có animation — tải trọng sư phạm
+  nằm ở đó, animation chỉ là lớp đắp thêm.
+- `kind: 'lab'` là nhánh thứ tư của `QuestionSchema` — lab là MỘT DẠNG
+  CÂU HỎI, nên `lessonMachine.ts` không biết nó tồn tại và không được
+  sửa vì nó.
+- Nội dung: `content/modules/module-04.json` (Phần B, 5 chặng, 6 khái
+  niệm, thi 8 câu kết bằng 1 câu lab). Lab sửa-mạng-hỏng đặt ở **bước
+  Đoán thử** của bài VLAN — productive failure trước lý thuyết.
+- Layout: dưới 768px, menu 4 mục chuyển xuống THANH ĐÁY và canvas lab
+  cuộn ngang trong khung riêng (giữ vùng chạm cổng ≥ 24px).
 
 ## Khi gặp mơ hồ
 

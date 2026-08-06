@@ -7,8 +7,14 @@ import type { Question } from '../engine/contentSchema'
 import type { QuestionResponse } from '../engine/grading/gradeQuestion'
 import { useT } from '../i18n'
 
-/** Đáp án chuẩn dạng chữ để hiển thị. */
-export function canonicalAnswer(q: Question): string {
+/**
+ * Đáp án chuẩn dạng chữ để hiển thị.
+ *
+ * Trả `null` cho bài lab: một sơ đồ mạng không rút gọn được thành một
+ * dòng chữ, và mọi lời giải chạy được đều hợp lệ (chấm theo hành vi chứ
+ * không so với sơ đồ mẫu). Với lab, phần "vì sao" mới là thứ đáng đọc.
+ */
+export function canonicalAnswer(q: Question): string | null {
   switch (q.kind) {
     case 'typed':
       return q.accept[0] ?? ''
@@ -16,11 +22,13 @@ export function canonicalAnswer(q: Question): string {
       return q.choices[q.answerIndex]?.vi ?? ''
     case 'order':
       return q.items.map((it) => it.vi).join(' → ')
+    case 'lab':
+      return null
   }
 }
 
-/** Câu trả lời của người học dạng chữ. */
-export function formatResponse(q: Question, r: QuestionResponse): string {
+/** Câu trả lời của người học dạng chữ; `null` khi không diễn đạt bằng chữ được. */
+export function formatResponse(q: Question, r: QuestionResponse): string | null {
   switch (r.kind) {
     case 'typed':
       return r.text
@@ -28,6 +36,9 @@ export function formatResponse(q: Question, r: QuestionResponse): string {
       return q.kind === 'mcq' ? (q.choices[r.choiceIndex]?.vi ?? '') : ''
     case 'order':
       return q.kind === 'order' ? r.order.map((i) => q.items[i]?.vi ?? '').join(' → ') : ''
+    case 'lab':
+      // Sơ đồ người học lắp được xem lại ngay trên phòng lab, không phải ở đây.
+      return null
   }
 }
 
@@ -42,18 +53,22 @@ export function AnswerReveal({
   explanation?: string
 }) {
   const t = useT()
+  const learnerAnswer = response === undefined ? null : formatResponse(question, response)
+  const answer = canonicalAnswer(question)
   return (
     <div className="flex flex-col gap-1.5 rounded-md border border-edge bg-panel px-4 py-3 text-sm">
-      {response !== undefined && (
+      {learnerAnswer !== null && (
         <p className="text-ink-muted">
           <span className="font-semibold">{t('lesson.yourAnswerLabel')}: </span>
-          {formatResponse(question, response)}
+          {learnerAnswer}
         </p>
       )}
-      <p className="text-ink">
-        <span className="font-semibold text-accent">{t('lesson.answerLabel')}: </span>
-        {canonicalAnswer(question)}
-      </p>
+      {answer !== null && (
+        <p className="text-ink">
+          <span className="font-semibold text-accent">{t('lesson.answerLabel')}: </span>
+          {answer}
+        </p>
+      )}
       {explanation !== undefined && <p className="leading-relaxed text-ink-muted">{explanation}</p>}
     </div>
   )

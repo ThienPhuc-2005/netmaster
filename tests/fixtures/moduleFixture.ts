@@ -13,12 +13,19 @@ import type {
   PracticeStep,
   TeachScreen,
 } from '../../src/engine/contentSchema'
+import { vlanRepairLab } from './labFixture'
 
 export interface MakeLessonOpts {
   /** Mức worked example fading: 0 = ví dụ giải sẵn đầy đủ (bắt buộc ở bài đầu module). */
   fadingLevel?: 0 | 1 | 2
   /** Các conceptId bài này dạy — mỗi concept đúng 1 màn hình (nguyên tắc 3). */
   conceptIds?: string[]
+  /**
+   * Bước Làm dùng một BÀI LAB thay vì câu gõ tay (spec Module 4). Bật cờ
+   * này để chứng minh bài có lab vẫn đi trọn pipeline 6 bước mà máy trạng
+   * thái không phải sửa gì.
+   */
+  labPractice?: boolean
 }
 
 // ---------------------------------------------------------------
@@ -313,6 +320,31 @@ export function makeLesson(id: string, opts: MakeLessonOpts = {}): Lesson {
   // Mức 0 = có ví dụ giải sẵn đầy đủ (worked example fading bắt đầu từ 0).
   if (fadingLevel === 0) {
     practice.workedExample = { vi: t.workedExample }
+  }
+
+  if (opts.labPractice === true) {
+    practice.exercises = [
+      {
+        question: {
+          kind: 'lab',
+          id: `${id}-prac-lab`,
+          prompt: {
+            vi: 'Hai máy kế toán đang không gọi được nhau dù địa chỉ trông đúng hết. Sửa lại giúp mình, nhưng nhớ giữ máy kỹ thuật ở riêng.',
+          },
+          spec: vlanRepairLab(),
+          hintTopic: { vi: 'nhóm mà mỗi cổng switch đang thuộc về' },
+          explain: {
+            vi: 'Hai máy cùng dải địa chỉ vẫn không gọi được nhau nếu cổng của chúng nằm ở hai VLAN khác nhau — switch coi đó là hai mạng tách rời.',
+          },
+        },
+        hint: {
+          vi: 'Nhìn từng cổng switch xem nó đang thuộc VLAN số mấy. Hai máy muốn nói chuyện được thì phải cùng một số.',
+        },
+        solution: {
+          vi: 'Kéo cổng của PC-B về VLAN 10 cho khớp PC-A. Giữ PC-C ở VLAN 20 để hai phòng ban vẫn tách nhau — gộp tất cả vào một VLAN là hỏng yêu cầu thứ hai.',
+        },
+      },
+    ]
   }
 
   return {
