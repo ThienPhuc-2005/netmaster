@@ -1,8 +1,52 @@
-# Trạng thái dự án — NetMaster (Phase 1 + Phase 2 XONG)
+# Trạng thái dự án — NetMaster (Phase 1 + 2 xong; Phase 3 đang khối 8.2)
 
-Cập nhật: 2026-08-06. File này chỉ để nắm nhanh tình hình khi mở lại dự
-án. Nguồn chân lý vẫn là `SPEC-APP-HOC-MANG.md`; luật làm việc ở
+Cập nhật: 2026-08-06 tối. File này chỉ để nắm nhanh tình hình khi mở lại
+dự án. Nguồn chân lý vẫn là `SPEC-APP-HOC-MANG.md`; luật làm việc ở
 `CLAUDE.md`; nội dung bài đọc duyệt ở `REVIEW-NOI-DUNG.md`.
+
+## MỞ PHIÊN MỚI THÌ ĐỌC ĐÂY TRƯỚC
+
+**Đang đứng đâu:** Phase 1 + Phase 2 xong hẳn (chi tiết bên dưới).
+Phase 3 hạng mục (8) đang dở: khối 8.1 XONG và đã push; **việc kế tiếp
+là khối 8.2 — viết nội dung Module 8** (bảng khối ở mục Phase 3 dưới).
+Kế hoạch 5 khối của hạng mục (8) đã được người dùng duyệt, ba quyết định
+đã chốt — KHÔNG hỏi lại, không đảo lại.
+
+**Việc đang treo (không chặn code):**
+
+1. **Deploy GitHub Pages đang nghẽn phía GitHub** (tối 06-08): mọi
+   deployment nằm im ở `deployment_queued` hàng giờ, dù build luôn xanh.
+   ĐÃ chẩn đoán xong và vá xong phía mình: `deploy-pages@v4` khóa cứng
+   trần chờ 10 phút/lượt, nên workflow giờ tự thử 3 lượt × 10 phút
+   (commit `a79338d`). Bản live vẫn lành, đang phục vụ đủ Module 1-7 +
+   flow engine; các commit chưa lên chỉ là refactor headless. **Phiên
+   mới không cần làm gì** — lần push kế tiếp tự kéo mọi thứ lên khi
+   GitHub hồi; nếu muốn đẩy sớm thì `gh run rerun <run-id> --failed`.
+   Nếu gặp lỗi 400 "cancel ... first": hủy deployment kẹt bằng
+   `gh api -X POST repos/ThienPhuc-2005/netmaster/pages/deployments/<sha>/cancel`.
+2. **Buổi test người thật** (`KICH-BAN-TEST.md`) — cần người, không code
+   được.
+
+**Khối 8.2 cần làm gì (việc kế tiếp):** viết `content/modules/module-08.json`
+— Module 8 "Wi-Fi và IPv6 chuyên sâu", Phần C đầu tiên. Spec đòi: chuẩn
+Wi-Fi 6/6E/7, băng tần, WPA2/WPA3, IPv6 addressing, SLAAC, dual-stack;
+kỹ thuật đặc thù là **interleaving mạnh** — bài tập trộn câu IPv4/IPv6
+để người học phân biệt khi nào dùng kiến thức nào (IPv4 đã học ở Module
+3). Kèm hình SVG mới trong `ConceptVisual` (nhớ chạy `/design` mục
+"Hình khái niệm" + đo `getBBox` soi chữ tràn khung). Xong thì
+`npm run content:review`, cập nhật file này, commit push. Mẫu tham khảo
+tốt nhất về giọng văn + cấu trúc: `content/modules/module-06.json` và
+`module-07.json`.
+
+**Sau 8.2:** khối 8.3 — Module 9 ⭐ (AD DS/GPO): cung điện GPO dùng
+`GPO_PALACE` trong `tests/fixtures/palaceFixture.ts` làm hình mẫu (4
+tầng × 1 phòng, keyStyle 'text', đã có test); cần vẽ 4 hình
+`gpo-house-rules`/`gpo-office-floor`/`gpo-company-flag`/`gpo-department-door`
+vào `RoomGlyph` (registry KHÔNG có hình dự phòng — thiếu là test đỏ);
+worked example fading 0→1→2 rõ nhất app; khai `vmLab` (schema + store
+`toggleVmLabStep` đã sẵn từ 8.1, còn thiếu UI hiển thị checklist — làm
+trong 8.3). Rồi 8.4 — Module 10 (contrast cases cloud ↔ on-prem), 8.5 —
+DoD + browser + tài liệu.
 
 ## Đang ở đâu
 
