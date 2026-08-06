@@ -1,6 +1,6 @@
-# REVIEW NỘI DUNG — Module 1-4 (Phần A+B)
+# REVIEW NỘI DUNG — Module 1-5 (Phần A+B)
 
-> Sinh tự động từ `content/modules/module-01.json`, `content/modules/module-02.json`, `content/modules/module-03.json`, `content/modules/module-04.json` bằng `npm run content:review`.
+> Sinh tự động từ `content/modules/module-01.json`, `content/modules/module-02.json`, `content/modules/module-03.json`, `content/modules/module-04.json`, `content/modules/module-05.json` bằng `npm run content:review`.
 > Đây là bản để ĐỌC DUYỆT; muốn sửa thì sửa file JSON rồi render lại.
 
 ## Mạng là gì? — Câu chuyện bưu điện `module-1`
@@ -1087,3 +1087,477 @@ Phần B · 5 chặng · 5 bài · 6 khái niệm
     - **Được phép:** đổi VLAN
     - **Lời giải mẫu:** Máy nội bộ A [192.168.5.10/24] · Máy nội bộ B [192.168.5.20/24] · Máy khách K [192.168.5.30/24] · Switch-1 [p1:VLAN 10, p2:VLAN 10, p3:VLAN 99] — dây: Máy nội bộ A·eth0 — Switch-1·p1 | Máy nội bộ B·eth0 — Switch-1·p2 | Máy khách K·eth0 — Switch-1·p3
   - **Vì sao:** Chuyển cổng của Máy khách K sang một số VLAN khác (ví dụ 99) là đủ: nó bị tách khỏi miền quảng bá của hai máy nội bộ, trong khi A và B vẫn cùng VLAN 10 nên vẫn gọi được nhau.
+
+## TCP, UDP và Port — Cửa nào của ngôi nhà `module-5`
+
+Phần B · 5 chặng · 8 bài · 11 khái niệm
+
+**Chặng:** Bắt tay rồi mới nói (m5-bai-1) → Nhanh hay chắc (m5-bai-2) → Số nhà của dịch vụ (m5-bai-3) → Đi tour tòa nhà (m5-bai-4, m5-bai-5, m5-bai-6) → Lên nóc tòa nhà (m5-bai-7, m5-bai-8)
+
+### Cung điện ký ức: Tòa nhà 15 phòng `m5-cung-dien-port` (15 phòng)
+
+- `m5-r-http` — tầng 1 phòng 1 · cổng 80 · HTTP · hình `palace-door-open` — Cửa chính số 80 mở toang cả ngày, ai đi ngang cũng nhìn thấy hết bên trong.
+- `m5-r-https` — tầng 1 phòng 2 · cổng 443 · HTTPS · hình `palace-golden-lock` — Phòng 443 treo một ổ khóa vàng, thư vào đây được niêm phong trước khi ra.
+- `m5-r-dns` — tầng 1 phòng 3 · cổng 53 · DNS · hình `palace-phonebook` — Quầy lễ tân phòng 53 giữ cuốn danh bạ dày, tra tên ra số nhà trong một nốt nhạc.
+- `m5-r-ssh` — tầng 2 phòng 1 · cổng 22 · SSH · hình `palace-seashell` — Phòng 22 bày một vỏ sò, ghé tai vào là ra lệnh được cho máy ở tận đâu.
+- `m5-r-telnet` — tầng 2 phòng 2 · cổng 23 · Telnet · hình `palace-glass-wall` — Phòng 23 làm y hệt phòng bên cạnh nhưng bốn vách bằng kính, ai đi ngang cũng đọc được lệnh.
+- `m5-r-rdp` — tầng 2 phòng 3 · cổng 3389 · RDP · hình `palace-mirror-screen` — Phòng 3389 có tấm gương lớn chiếu nguyên màn hình của một máy tính ở xa.
+- `m5-r-smb` — tầng 3 phòng 1 · cổng 445 · SMB · hình `palace-shared-drive` — Phòng 445 là kho chung của tòa nhà, ổ đĩa nhà này cắm thẳng sang nhà kia.
+- `m5-r-ftp` — tầng 3 phòng 2 · cổng 21 · FTP · hình `palace-conveyor` — Phòng 21 có băng chuyền chở nguyên thùng tệp qua lại, thùng nào cũng không dán kín.
+- `m5-r-mysql` — tầng 3 phòng 3 · cổng 3306 · MySQL · hình `palace-file-cabinet` — Phòng 3306 xếp kín tủ hồ sơ, hỏi câu nào cũng có người tra ra đúng bảng.
+- `m5-r-smtp` — tầng 4 phòng 1 · cổng 25 · SMTP · hình `palace-mailbox` — Phòng 25 là thùng thư bưu cục, thư chạy từ bưu cục này sang bưu cục kia suốt đêm.
+- `m5-r-submission` — tầng 4 phòng 2 · cổng 587 · Mail Submission · hình `palace-id-check` — Phòng 587 bắt xuất trình thẻ nhân viên rồi mới nhận lá thư bạn muốn gửi đi.
+- `m5-r-ntp` — tầng 4 phòng 3 · cổng 123 · NTP · hình `palace-big-clock` — Phòng 123 chỉ có mỗi cái đồng hồ to, cả tòa nhà chỉnh giờ theo nó.
+- `m5-r-ldap` — tầng 5 phòng 1 · cổng 389 · LDAP · hình `palace-registry-book` — Phòng 389 giữ sổ hộ khẩu của tòa nhà: ai làm gì, thuộc phòng ban nào.
+- `m5-r-ldaps` — tầng 5 phòng 2 · cổng 636 · LDAPS · hình `palace-safe-book` — Phòng 636 cũng là cuốn sổ ấy, nhưng đặt trong két sắt và chỉ mở qua khe kính.
+- `m5-r-dhcp` — tầng 5 phòng 3 · cổng 67/68 · DHCP · hình `palace-key-pair` — Phòng 67 phát chìa khóa nhà, phòng 68 nhận lại biên nhận — cặp phòng này chuyên lo cho người mới đến.
+
+### Bài: Bắt tay ba nhịp trước khi nói chuyện `m5-bai-1`
+
+**1 · Khởi động (hook):** Trước khi bạn kịp thấy chữ đầu tiên của một trang web, máy bạn và máy chủ đã trao đổi xong ba gói tin ngắn. Ba gói đó nói gì với nhau, và vì sao thiếu một gói là cả cuộc trò chuyện không bắt đầu được?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử nhé: trước khi gửi dữ liệu thật, TCP làm gì đầu tiên?
+  - **Dạng:** trắc nghiệm · Gửi luôn dữ liệu, hỏng đâu sửa đó / **Trao đổi vài gói tin ngắn để hai bên xác nhận đã sẵn sàng** ✓ / Hỏi router xem đường có thông không
+  - **Vì sao:** TCP mở đầu bằng ba gói tin ngắn — cái bắt tay — để hai bên xác nhận nghe được nhau trước khi tốn công gửi dữ liệu thật.
+
+**3 · Khám phá (teach):**
+- *[m5-tcp]* TCP là kiểu gửi thư BẢO ĐẢM: mỗi gói tin được đánh số, bên nhận phải báo đã nhận, thiếu gói nào bên gửi gửi lại đúng gói đó. Chậm hơn một nhịp, nhưng dữ liệu tới nơi đủ và đúng thứ tự.
+  - **Đào sâu hơn:** Bên nhận báo bằng gói ACK kèm số thứ tự nó đang chờ. Bên gửi không đợi từng gói một mà gửi trước cả một cụm rồi mới chờ báo — cụm đó gọi là cửa sổ, và nó co giãn theo tình trạng đường truyền.
+- *[m5-bat-tay]* Cái bắt tay có ba nhịp: máy bạn gửi SYN ("tôi muốn nói chuyện"), máy chủ đáp SYN-ACK, rồi máy bạn gửi ACK. Nhịp giữa là nhịp DUY NHẤT mang hai vai một lúc — vừa trả lời câu hỏi của bạn, vừa hỏi ngược lại — nên nó cũng là nhịp hay bị nhớ nhầm thứ tự nhất.
+  - **Đào sâu hơn:** Vì sao cần đủ ba nhịp: sau nhịp hai thì mới chỉ MÁY BẠN biết chắc cả hai chiều đều thông. Nhịp ba là để máy chủ cũng biết điều đó. Thiếu nó, máy chủ phải giữ nửa kết nối chờ vô thời hạn — đúng chỗ mà kiểu tấn công SYN flood nhắm vào.
+
+**4 · Thử tay (practice, fading 0):**
+- **Ví dụ giải sẵn:** Ví dụ giải sẵn: bạn mở một trang web. Máy bạn gửi SYN → máy chủ đáp SYN-ACK → máy bạn gửi ACK. Xong ba nhịp, kết nối mới mở và trình duyệt mới bắt đầu tải trang. Đọc lại một lượt rồi tự gọi tên nhịp giữa xem nhé.
+- **Đề:** Nhịp giữa của cái bắt tay ba bước tên là gì?
+  - **Dạng:** gõ tay · **Chấp nhận:** syn-ack | syn ack | synack
+  - **Chủ đề gợi ý (tầng 1):** nhịp vừa trả lời vừa hỏi ngược lại
+  - **Gợi ý (tầng 2):** Nó là một gói duy nhất nhưng ghép tên của hai gói kia lại.
+  - **Lời giải (tầng 3):** Đó là SYN-ACK: máy chủ vừa xác nhận đã nghe thấy bạn (ACK), vừa hỏi ngược lại để mở chiều còn lại (SYN).
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: xếp ba nhịp của cái bắt tay theo đúng thứ tự.
+  - **Dạng:** xếp thứ tự (thứ tự đúng):
+    1. Máy bạn gửi SYN — "tôi muốn mở kết nối"
+    2. Máy chủ đáp SYN-ACK — "nghe rồi, và tôi cũng muốn mở chiều ngược lại"
+    3. Máy bạn gửi ACK — "rõ, bắt đầu thôi"
+  - **Chủ đề gợi ý (tầng 1):** ai là người mở lời trước
+  - **Gợi ý (tầng 2):** Người gõ địa chỉ trang web là người mở lời — và cũng là người chốt câu cuối.
+  - **Lời giải (tầng 3):** SYN → SYN-ACK → ACK. Máy bạn mở lời, máy chủ đáp bằng gói mang hai vai, máy bạn chốt lại.
+- **Đề:** Giao thức gửi kiểu "thư bảo đảm" — đánh số từng gói, thiếu là đòi gửi lại — tên là gì?
+  - **Dạng:** gõ tay · **Chấp nhận:** tcp
+  - **Chủ đề gợi ý (tầng 1):** giao thức lo chuyện đủ và đúng thứ tự
+  - **Gợi ý (tầng 2):** Ba chữ cái, và nó chính là chữ đầu trong cụm "TCP/IP" bạn hay thấy.
+  - **Lời giải (tầng 3):** Đó là TCP — nó lo cho dữ liệu tới đủ và đúng thứ tự, còn IP lo chuyện tìm đường.
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao phải bắt tay ba nhịp thay vì gửi luôn dữ liệu?
+  - **Nhóm ý cần chạm:** [sẵn sàng, xác nhận, đồng ý, chắc chắn] · [hai chiều, cả hai bên, hai bên, ngược lại]
+  - **Trả lời mẫu:** Ba nhịp để cả hai bên cùng biết chắc đường đi VÀ đường về đều thông, rồi mới tốn công gửi dữ liệu thật; gửi bừa mà bên kia chưa sẵn sàng thì mất công gửi lại từ đầu.
+
+**6 · Tổng kết:**
+- TCP là thư bảo đảm: đánh số, báo nhận, thiếu thì gửi lại.
+- Kết nối mở bằng ba nhịp SYN → SYN-ACK → ACK.
+- Nhịp giữa SYN-ACK mang hai vai — đó là nhịp hay bị nhớ nhầm.
+- *Úp mở bài sau:* Nhưng xem bóng đá trực tuyến mà cứ dừng lại đòi gửi lại từng khung hình thì còn gì là trận đấu? Bài sau mình gặp kẻ chịu mất để đổi lấy nhanh.
+
+### Bài: Chọn giữa nhanh và chắc `m5-bai-2`
+
+**1 · Khởi động (hook):** Khi bạn gọi video, một mẩu tiếng bị rớt thì thà mất luôn còn hơn dừng cả cuộc gọi để chờ gửi lại. Vậy có giao thức nào cố tình KHÔNG bảo đảm không?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử nhé: gọi video và chơi game trực tuyến thường dùng giao thức nào?
+  - **Dạng:** trắc nghiệm · TCP / **UDP** ✓
+  - **Vì sao:** UDP: gói nào rớt thì thôi, không dừng lại đòi gửi lại — đổi một chút chất lượng lấy độ trễ thấp.
+
+**3 · Khám phá (teach):**
+- *[m5-udp]* UDP là gửi thư THƯỜNG: không bắt tay, không đánh số, không đòi lại. Gói tới được thì tới, rớt thì thôi. Đổi lại, nó không có nhịp chờ nào — thứ mà cuộc gọi và trận game cần hơn là sự hoàn hảo.
+  - **Đào sâu hơn:** DNS cũng chọn UDP: một câu hỏi, một câu trả lời, gọn trong một gói. Bắt tay ba nhịp chỉ để hỏi một câu ngắn thì phần thủ tục còn dài hơn phần nội dung — mất công hơn là hỏi lại khi lỡ rớt.
+
+**4 · Thử tay (practice, fading 1):**
+- **Đề:** Giao thức chấp nhận mất gói để đổi lấy độ trễ thấp tên là gì?
+  - **Dạng:** gõ tay · **Chấp nhận:** udp
+  - **Chủ đề gợi ý (tầng 1):** kiểu gửi không đòi báo nhận
+  - **Gợi ý (tầng 2):** Ba chữ cái, và nó là kẻ đối lập của TCP trong chuyện bảo đảm.
+  - **Lời giải (tầng 3):** Đó là UDP — gửi xong là xong, không chờ báo nhận, không gửi lại.
+- **Đề:** Tải một tệp cài đặt 2GB thì nên đi bằng giao thức nào?
+  - **Dạng:** trắc nghiệm · **TCP — thiếu một mẩu là tệp hỏng, phải bảo đảm** ✓ / UDP — cho nhanh
+  - **Chủ đề gợi ý (tầng 1):** hậu quả khi mất một mẩu dữ liệu
+  - **Gợi ý (tầng 2):** Thử hỏi: mất một khung hình trong cuộc gọi thì sao, mất một mẩu trong tệp cài đặt thì sao?
+  - **Lời giải (tầng 3):** TCP. Với tệp, thiếu một mẩu là hỏng cả tệp — nên phải chọn kiểu bảo đảm dù chậm hơn.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: giao thức nào KHÔNG bắt tay, không đánh số, không gửi lại gói rớt?
+  - **Dạng:** gõ tay · **Chấp nhận:** udp
+  - **Chủ đề gợi ý (tầng 1):** kiểu gửi thư thường
+  - **Gợi ý (tầng 2):** Nó là lựa chọn của cuộc gọi video và trận game.
+  - **Lời giải (tầng 3):** UDP — bỏ hết thủ tục để không có nhịp chờ nào.
+- **Tự giải thích:** Giải thích bằng lời của bạn: khi nào nên chọn TCP, khi nào nên chọn UDP?
+  - **Nhóm ý cần chạm:** [đủ, chính xác, bảo đảm, không mất, gửi lại] · [nhanh, độ trễ, thời gian thực, trực tiếp]
+  - **Trả lời mẫu:** Việc nào mà thiếu một mẩu là hỏng cả — tải tệp, mở trang web, gửi thư — thì chọn TCP vì nó gửi lại phần thiếu. Việc nào mà chậm một nhịp còn tệ hơn mất một mẩu — gọi video, chơi game, hỏi DNS — thì chọn UDP.
+
+**6 · Tổng kết:**
+- UDP bỏ hết thủ tục: không bắt tay, không báo nhận, không gửi lại.
+- Mất gói với UDP là chuyện bình thường, đổi lại là không có nhịp chờ.
+- Chọn theo hậu quả: thiếu một mẩu là hỏng thì TCP, chậm một nhịp là hỏng thì UDP.
+- *Úp mở bài sau:* Cả hai đều phải ghi một con số lên phong bì để biết giao cho ứng dụng nào. Con số đó có luật chơi riêng — bài sau mình mở ra xem.
+
+### Bài: Đọc luật của những con số cổng `m5-bai-3`
+
+**1 · Khởi động (hook):** Máy chủ web luôn ngồi ở cổng 443 không bao giờ đổi, còn máy bạn thì mỗi lần mở một trang lại dùng một số cổng khác. Vì sao một bên cố định, một bên đổi liên tục?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử nhé: số cổng nằm trong khoảng nào?
+  - **Dạng:** trắc nghiệm · 0 đến 255 / **0 đến 65535** ✓ / 0 đến vô hạn
+  - **Vì sao:** Cổng là số 16 bit nên chạy từ 0 đến 65535 — đúng bằng số căn hộ tối đa của "chung cư" một địa chỉ IP.
+
+**3 · Khám phá (teach):**
+- *[m5-cong-noi-tieng]* Dải 0-1023 là những cổng NỔI TIẾNG: mỗi số được cả thế giới quy ước dành cho một dịch vụ. Máy chủ phải ngồi đúng số đó, vì người tới gõ cửa cần biết trước phải gõ ở đâu — không ai đi hỏi từng nhà xem web nằm ở cửa số mấy.
+  - **Đào sâu hơn:** Trên Linux và các hệ họ Unix, chỉ tài khoản quản trị mới mở được cổng dưới 1024. Đó là lớp bảo vệ cũ nhưng vẫn còn: một chương trình bất kỳ không tự nhận mình là máy chủ web của cả máy được.
+- *[m5-cong-tam-thoi]* Phía bạn thì ngược lại: mỗi lần mở một kết nối, hệ điều hành cấp cho nó một cổng TẠM THỜI lấy từ dải số lớn. Nhờ vậy mở mười tab cùng lúc vẫn không lẫn — mười cổng khác nhau, mười cuộc trò chuyện riêng.
+  - **Đào sâu hơn:** Một kết nối được nhận diện bằng bốn thứ: IP nguồn, cổng nguồn, IP đích, cổng đích. Chỉ cần một trong bốn khác đi là một cuộc trò chuyện khác — đó là lý do một máy chủ ở cổng 443 phục vụ được hàng nghìn người cùng lúc.
+
+**4 · Thử tay (practice, fading 1):**
+- **Đề:** Dải cổng 0-1023 được gọi là dải cổng gì? (nói bằng tiếng Việt cũng được)
+  - **Dạng:** gõ tay · **Chấp nhận:** nổi tiếng | noi tieng | well-known | well known | cổng nổi tiếng | cong noi tieng
+  - **Chủ đề gợi ý (tầng 1):** vì sao máy chủ phải ngồi đúng số quy ước
+  - **Gợi ý (tầng 2):** Cả thế giới đã quy ước sẵn nên ai cũng biết — bởi vậy mới gọi tên như thế.
+  - **Lời giải (tầng 3):** Đó là dải cổng nổi tiếng (well-known): mỗi số đã có chủ theo quy ước chung, ví dụ 443 của HTTPS.
+- **Đề:** Bạn mở ba tab cùng vào một trang web. Ba kết nối đó khác nhau ở chỗ nào?
+  - **Dạng:** trắc nghiệm · **Khác cổng TẠM THỜI phía máy bạn** ✓ / Khác cổng phía máy chủ / Khác địa chỉ IP của máy bạn
+  - **Chủ đề gợi ý (tầng 1):** bên nào là bên đổi số mỗi lần mở kết nối
+  - **Gợi ý (tầng 2):** Máy chủ vẫn ngồi nguyên ở 443 — vậy thứ phải khác nhau nằm ở đầu bên kia.
+  - **Lời giải (tầng 3):** Ba tab dùng ba cổng tạm thời khác nhau ở phía máy bạn; máy chủ vẫn ở nguyên cổng 443.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: số cổng lớn nhất có thể là bao nhiêu?
+  - **Dạng:** gõ tay · **Chấp nhận:** 65535
+  - **Chủ đề gợi ý (tầng 1):** sức chứa của một con số 16 bit
+  - **Gợi ý (tầng 2):** Đếm từ 0, và tổng cộng có 65536 chỗ.
+  - **Lời giải (tầng 3):** 65535 — cổng là số 16 bit nên đánh số từ 0 đến 65535.
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao máy chủ phải ngồi cổng cố định còn máy bạn thì không?
+  - **Nhóm ý cần chạm:** [biết trước, quy ước, cố định, tìm được] · [nhiều kết nối, nhiều tab, phân biệt, không lẫn]
+  - **Trả lời mẫu:** Máy chủ ngồi cố định để ai cũng biết trước phải gõ cửa số mấy; máy bạn mỗi kết nối lấy một cổng tạm thời khác nhau để mở nhiều tab cùng lúc mà dữ liệu không lẫn vào nhau.
+
+**6 · Tổng kết:**
+- Cổng là số từ 0 đến 65535 — chung cư một địa chỉ IP có ngần ấy căn.
+- Dải 0-1023 là cổng nổi tiếng: đã có chủ theo quy ước toàn cầu.
+- Phía bạn dùng cổng tạm thời, mỗi kết nối một số, nên nhiều tab không lẫn nhau.
+- *Úp mở bài sau:* Còn 15 con số nổi tiếng nhất thì học kiểu gì cho vào đầu? Bài sau mình bước vào một tòa nhà.
+
+### Bài: Bước vào tòa nhà mười lăm phòng `m5-bai-4`
+
+**1 · Khởi động (hook):** 15 con số rời rạc, không suy ra được từ nguyên lý nào. Học thuộc lòng thì mai quên — vậy người ta nhớ hàng trăm thứ vụn vặt bằng cách gì?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử nhé: cách nào giúp nhớ một danh sách dài rời rạc lâu nhất?
+  - **Dạng:** trắc nghiệm · Đọc đi đọc lại danh sách cho tới khi thuộc / **Gắn mỗi mẩu vào một CHỖ trong một không gian quen thuộc rồi đi lại con đường đó** ✓ / Chép lại danh sách ra giấy vài lần
+  - **Vì sao:** Trí nhớ không gian khỏe hơn trí nhớ danh sách rất nhiều: gắn mẩu kiến thức vào một chỗ cụ thể rồi đi lại con đường ấy là kỹ thuật cung điện ký ức, dùng cả nghìn năm nay.
+
+**3 · Khám phá (teach):**
+- *[m5-cung-dien]* Mình sẽ dựng một tòa nhà 5 tầng, mỗi tầng 3 phòng — đúng 15 phòng cho 15 cổng. Mỗi phòng có một hình ảnh kỳ quặc gắn với con số của nó. Luật chơi: lúc nào cũng đi cùng một đường, từ tầng trệt lên nóc, trái sang phải. Chính THỨ TỰ đó là sợi dây móc trí nhớ.
+  - **Đào sâu hơn:** Hình càng lạ càng dễ nhớ — não bỏ qua cái quen thuộc và ghim lại cái bất thường. Đó cũng là lý do các hình trong tòa nhà này hơi vô lý một chút: ổ khóa vàng, vỏ sò, tấm gương chiếu màn hình máy khác.
+- *[m5-cong-web]* Tầng 1 là ba cánh cửa bạn dùng mỗi ngày mà không để ý: một cửa mở toang (web thường), một cửa khóa vàng (web bảo mật), một quầy danh bạ (tra tên ra địa chỉ). Đi qua từng phòng một nhé — đừng vội.
+  - **Đi xem cung điện (3 phòng):**
+    - tầng 1 phòng 1 · cổng 80 · HTTP · hình `palace-door-open` — Cửa chính số 80 mở toang cả ngày, ai đi ngang cũng nhìn thấy hết bên trong.
+    - tầng 1 phòng 2 · cổng 443 · HTTPS · hình `palace-golden-lock` — Phòng 443 treo một ổ khóa vàng, thư vào đây được niêm phong trước khi ra.
+    - tầng 1 phòng 3 · cổng 53 · DNS · hình `palace-phonebook` — Quầy lễ tân phòng 53 giữ cuốn danh bạ dày, tra tên ra số nhà trong một nốt nhạc.
+
+**4 · Thử tay (practice, fading 1):**
+- **Đề:** Ba phòng tầng 1 phục vụ chung một việc gì?
+  - **Dạng:** trắc nghiệm · **Đưa bạn tới một trang web: tra tên miền rồi mở trang** ✓ / Điều khiển máy tính ở xa / Chia sẻ tệp trong mạng nội bộ
+  - **Chủ đề gợi ý (tầng 1):** việc bạn làm mỗi lần gõ một địa chỉ web
+  - **Gợi ý (tầng 2):** Nghĩ lại Module 2: gõ google.com xong thì việc đầu tiên là hỏi ai?
+  - **Lời giải (tầng 3):** Cả ba lo chuyện mở một trang web: 53 tra tên ra địa chỉ, rồi 80 hoặc 443 tải trang về.
+- **Đề:** Phòng có ổ khóa vàng là cổng số mấy?
+  - **Dạng:** gõ tay · **Chấp nhận:** 443
+  - **Chủ đề gợi ý (tầng 1):** cửa nào được niêm phong trước khi thư đi ra
+  - **Gợi ý (tầng 2):** Nó là cửa thứ hai của tầng 1, và là cửa mà trình duyệt hiện hình ổ khóa nhỏ trên thanh địa chỉ.
+  - **Lời giải (tầng 3):** Cổng 443 — HTTPS, phiên bản có khóa của web.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Đóng sách lại và đi lại tầng 1 từ trí nhớ: đứng trước mỗi cửa, nói xem trong phòng có số mấy và ai ở đó.
+  - **Dạng:** đi lại cung điện từ trí nhớ (3 phòng)
+    - tầng 1 phòng 1 · cổng 80 · HTTP · hình `palace-door-open` — Cửa chính số 80 mở toang cả ngày, ai đi ngang cũng nhìn thấy hết bên trong.
+    - tầng 1 phòng 2 · cổng 443 · HTTPS · hình `palace-golden-lock` — Phòng 443 treo một ổ khóa vàng, thư vào đây được niêm phong trước khi ra.
+    - tầng 1 phòng 3 · cổng 53 · DNS · hình `palace-phonebook` — Quầy lễ tân phòng 53 giữ cuốn danh bạ dày, tra tên ra số nhà trong một nốt nhạc.
+  - **Chủ đề gợi ý (tầng 1):** hình bạn vừa thấy trong phòng
+  - **Gợi ý (tầng 2):** Nhớ hình trước, con số bám theo hình — cửa mở toang, ổ khóa vàng, cuốn danh bạ.
+  - **Lời giải (tầng 3):** Tầng 1: cửa mở toang là 80 (HTTP), ổ khóa vàng là 443 (HTTPS), quầy danh bạ là 53 (DNS).
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao gắn con số vào một hình ảnh trong một căn phòng lại dễ nhớ hơn học thuộc danh sách?
+  - **Nhóm ý cần chạm:** [hình ảnh, hình, hình dung, tưởng tượng] · [chỗ, vị trí, căn phòng, không gian, đường đi]
+  - **Trả lời mẫu:** Vì trí nhớ về nơi chốn và hình ảnh khỏe hơn trí nhớ về những con số trơ trọi: mình nhớ được cái ổ khóa vàng ở phòng thứ hai tầng một, rồi con số 443 tự bám theo hình ấy.
+
+**6 · Tổng kết:**
+- Tòa nhà có 5 tầng, mỗi tầng 3 phòng, và luôn đi cùng một đường.
+- Tầng 1 lo chuyện web: 80 cửa mở toang, 443 ổ khóa vàng, 53 quầy danh bạ.
+- Nhớ hình trước, con số bám theo hình — đừng cố nhớ số trần trụi.
+- *Úp mở bài sau:* Lên tầng 2, có một phòng bốn vách bằng kính mà ai đi ngang cũng đọc được mọi thứ bên trong. Bạn sẽ không muốn dùng phòng đó đâu.
+
+### Bài: Lên tầng hai: điều khiển máy ở xa `m5-bai-5`
+
+**1 · Khởi động (hook):** Hai căn phòng cạnh nhau làm đúng một việc: gõ lệnh cho máy ở xa. Một phòng kín, một phòng bốn vách kính. Vì sao phòng kính vẫn còn tồn tại?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử nhé: SSH và Telnet khác nhau chủ yếu ở chỗ nào?
+  - **Dạng:** trắc nghiệm · **SSH mã hóa đường truyền, Telnet gửi trần** ✓ / SSH nhanh hơn Telnet / Telnet dùng cho Windows, SSH cho Linux
+  - **Vì sao:** Cùng một việc — gõ lệnh từ xa — nhưng Telnet gửi cả mật khẩu dưới dạng chữ thường, ai bắt được gói tin là đọc được hết.
+
+**3 · Khám phá (teach):**
+- *[m5-cong-dieu-khien]* Tầng 2 dành cho việc ngồi đây mà điều khiển máy ở chỗ khác: một phòng có vỏ sò (gõ lệnh an toàn), một phòng vách kính ngay bên cạnh (cũng gõ lệnh, nhưng ai cũng đọc được), và một phòng có gương lớn chiếu nguyên màn hình máy kia.
+  - **Đi xem cung điện (3 phòng):**
+    - tầng 2 phòng 1 · cổng 22 · SSH · hình `palace-seashell` — Phòng 22 bày một vỏ sò, ghé tai vào là ra lệnh được cho máy ở tận đâu.
+    - tầng 2 phòng 2 · cổng 23 · Telnet · hình `palace-glass-wall` — Phòng 23 làm y hệt phòng bên cạnh nhưng bốn vách bằng kính, ai đi ngang cũng đọc được lệnh.
+    - tầng 2 phòng 3 · cổng 3389 · RDP · hình `palace-mirror-screen` — Phòng 3389 có tấm gương lớn chiếu nguyên màn hình của một máy tính ở xa.
+  - **Đào sâu hơn:** Telnet ra đời khi mạng còn là chuyện của vài trường đại học tin nhau. Ngày nay nó chỉ còn dùng để thử xem một cổng có mở không, chứ không ai đăng nhập bằng nó nữa.
+
+**4 · Thử tay (practice, fading 1):**
+- **Đề:** Phòng có vỏ sò — gõ lệnh từ xa an toàn — là cổng số mấy?
+  - **Dạng:** gõ tay · **Chấp nhận:** 22
+  - **Chủ đề gợi ý (tầng 1):** cửa đầu tiên của tầng hai
+  - **Gợi ý (tầng 2):** Vỏ sò trong tiếng Anh là shell, và tên giao thức cũng có chữ đó.
+  - **Lời giải (tầng 3):** Cổng 22 — SSH (secure shell).
+- **Đề:** Phòng vách kính (Telnet, cổng 23) nguy hiểm ở chỗ nào?
+  - **Dạng:** trắc nghiệm · **Mật khẩu đi qua mạng dưới dạng chữ thường, ai bắt được gói tin là đọc được** ✓ / Nó làm máy chủ chạy chậm đi / Nó chỉ chạy được trên mạng nội bộ
+  - **Chủ đề gợi ý (tầng 1):** ý nghĩa của bốn vách kính trong hình
+  - **Gợi ý (tầng 2):** Vách kính nghĩa là người đi ngang nhìn thấy hết những gì bạn gõ.
+  - **Lời giải (tầng 3):** Telnet không mã hóa gì cả: tên đăng nhập và mật khẩu đi trần trên đường truyền.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Đi lại tầng 2 từ trí nhớ: vỏ sò, vách kính, tấm gương — mỗi phòng là cổng nào?
+  - **Dạng:** đi lại cung điện từ trí nhớ (3 phòng)
+    - tầng 2 phòng 1 · cổng 22 · SSH · hình `palace-seashell` — Phòng 22 bày một vỏ sò, ghé tai vào là ra lệnh được cho máy ở tận đâu.
+    - tầng 2 phòng 2 · cổng 23 · Telnet · hình `palace-glass-wall` — Phòng 23 làm y hệt phòng bên cạnh nhưng bốn vách bằng kính, ai đi ngang cũng đọc được lệnh.
+    - tầng 2 phòng 3 · cổng 3389 · RDP · hình `palace-mirror-screen` — Phòng 3389 có tấm gương lớn chiếu nguyên màn hình của một máy tính ở xa.
+  - **Chủ đề gợi ý (tầng 1):** hình trong từng phòng của tầng hai
+  - **Gợi ý (tầng 2):** Hai phòng đầu là hai số liền nhau — chúng làm cùng một việc mà.
+  - **Lời giải (tầng 3):** Tầng 2: vỏ sò là 22 (SSH), vách kính là 23 (Telnet), tấm gương là 3389 (RDP).
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao 22 và 23 lại là hai số liền nhau trong tòa nhà này?
+  - **Nhóm ý cần chạm:** [cùng việc, giống nhau, cùng một việc, gõ lệnh, điều khiển] · [mã hóa, an toàn, trần, bảo mật]
+  - **Trả lời mẫu:** Vì hai phòng làm đúng một việc là gõ lệnh cho máy ở xa, chỉ khác nhau ở chỗ một bên mã hóa còn một bên gửi trần — nên đặt cạnh nhau thì nhớ cặp dễ hơn nhớ rời.
+
+**6 · Tổng kết:**
+- Tầng 2 là tầng điều khiển máy ở xa.
+- 22 vỏ sò (SSH, có mã hóa) đứng ngay cạnh 23 vách kính (Telnet, trần).
+- 3389 là tấm gương chiếu nguyên màn hình máy kia (RDP).
+- *Úp mở bài sau:* Tầng 3 là kho của cả tòa nhà: có băng chuyền chở thùng tệp, có ổ đĩa cắm sang nhà hàng xóm, và một tủ hồ sơ khổng lồ.
+
+### Bài: Lên tầng ba: kho của cả tòa nhà `m5-bai-6`
+
+**1 · Khởi động (hook):** Trong công ty, thư mục chung ai cũng mở được nằm ở đâu? Và vì sao kho dữ liệu của một trang web lại KHÔNG bao giờ nên mở cửa ra ngoài đường?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử nhé: thư mục chia sẻ giữa các máy Windows đi qua cổng nào?
+  - **Dạng:** trắc nghiệm · **445** ✓ / 80 / 3306
+  - **Vì sao:** 445 là cổng SMB — thứ làm nên ổ đĩa mạng và thư mục chia sẻ trong công ty.
+
+**3 · Khám phá (teach):**
+- *[m5-cong-chia-se]* Tầng 3 là chỗ chứa đồ: một kho chung mà ổ đĩa nhà này cắm thẳng sang nhà kia, một băng chuyền chở nguyên thùng tệp qua lại nhưng thùng không dán kín, và một phòng xếp kín tủ hồ sơ hỏi gì cũng tra ra.
+  - **Đi xem cung điện (3 phòng):**
+    - tầng 3 phòng 1 · cổng 445 · SMB · hình `palace-shared-drive` — Phòng 445 là kho chung của tòa nhà, ổ đĩa nhà này cắm thẳng sang nhà kia.
+    - tầng 3 phòng 2 · cổng 21 · FTP · hình `palace-conveyor` — Phòng 21 có băng chuyền chở nguyên thùng tệp qua lại, thùng nào cũng không dán kín.
+    - tầng 3 phòng 3 · cổng 3306 · MySQL · hình `palace-file-cabinet` — Phòng 3306 xếp kín tủ hồ sơ, hỏi câu nào cũng có người tra ra đúng bảng.
+  - **Đào sâu hơn:** Cả ba phòng này là mục tiêu ưa thích của kẻ tấn công, vì đằng sau chúng là dữ liệu chứ không phải giao diện. Nguyên tắc chung: đừng bao giờ để 445 và 3306 nhìn thẳng ra Internet.
+
+**4 · Thử tay (practice, fading 2):**
+- **Đề:** Phòng có băng chuyền chở thùng tệp không dán kín là cổng số mấy?
+  - **Dạng:** gõ tay · **Chấp nhận:** 21
+  - **Chủ đề gợi ý (tầng 1):** cách truyền tệp đời đầu, không mã hóa
+  - **Gợi ý (tầng 2):** Nó là phòng giữa của tầng 3, và tên giao thức có chữ "File".
+  - **Lời giải (tầng 3):** Cổng 21 — FTP, kiểu truyền tệp đời đầu, dữ liệu và mật khẩu đều đi trần.
+- **Đề:** Phòng tủ hồ sơ — cơ sở dữ liệu MySQL — là cổng số mấy?
+  - **Dạng:** gõ tay · **Chấp nhận:** 3306
+  - **Chủ đề gợi ý (tầng 1):** con số của kho dữ liệu
+  - **Gợi ý (tầng 2):** Bốn chữ số, bắt đầu bằng 33.
+  - **Lời giải (tầng 3):** Cổng 3306 — MySQL.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Đi lại tầng 3 từ trí nhớ: kho chung, băng chuyền, tủ hồ sơ.
+  - **Dạng:** đi lại cung điện từ trí nhớ (3 phòng)
+    - tầng 3 phòng 1 · cổng 445 · SMB · hình `palace-shared-drive` — Phòng 445 là kho chung của tòa nhà, ổ đĩa nhà này cắm thẳng sang nhà kia.
+    - tầng 3 phòng 2 · cổng 21 · FTP · hình `palace-conveyor` — Phòng 21 có băng chuyền chở nguyên thùng tệp qua lại, thùng nào cũng không dán kín.
+    - tầng 3 phòng 3 · cổng 3306 · MySQL · hình `palace-file-cabinet` — Phòng 3306 xếp kín tủ hồ sơ, hỏi câu nào cũng có người tra ra đúng bảng.
+  - **Chủ đề gợi ý (tầng 1):** hình trong từng phòng của tầng ba
+  - **Gợi ý (tầng 2):** Một số ba chữ số, một số hai chữ số, một số bốn chữ số — mỗi phòng một dáng riêng.
+  - **Lời giải (tầng 3):** Tầng 3: kho chung là 445 (SMB), băng chuyền là 21 (FTP), tủ hồ sơ là 3306 (MySQL).
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao không nên để cổng 3306 mở thẳng ra Internet?
+  - **Nhóm ý cần chạm:** [dữ liệu, cơ sở dữ liệu, kho, hồ sơ] · [tấn công, nguy hiểm, lộ, đánh cắp, rủi ro]
+  - **Trả lời mẫu:** Vì sau cổng đó là toàn bộ dữ liệu thật chứ không phải giao diện; mở ra ngoài là mời cả thế giới thử mật khẩu vào thẳng kho hồ sơ.
+
+**6 · Tổng kết:**
+- Tầng 3 chứa đồ: 445 kho chung, 21 băng chuyền, 3306 tủ hồ sơ.
+- FTP truyền tệp nhưng không dán kín — mật khẩu đi trần như Telnet.
+- Cổng dữ liệu (445, 3306) không bao giờ nên nhìn thẳng ra Internet.
+- *Úp mở bài sau:* Tầng 4 là chỗ thư từ đi qua ban đêm, và một cái đồng hồ to mà cả tòa nhà phải chỉnh giờ theo.
+
+### Bài: Lên tầng bốn: thư từ và giờ giấc `m5-bai-7`
+
+**1 · Khởi động (hook):** Hai phòng cạnh nhau cùng lo chuyện thư đi: một phòng nhận thư từ bưu cục khác, một phòng bắt bạn xuất trình thẻ mới nhận. Vì sao phải tách làm hai?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử nhé: vì sao máy chủ nào cũng cần đồng bộ giờ với nhau?
+  - **Dạng:** trắc nghiệm · **Để nhật ký và chứng chỉ bảo mật còn khớp được với nhau** ✓ / Để màn hình hiện đúng giờ cho người dùng xem / Để tiết kiệm điện
+  - **Vì sao:** Lệch giờ vài phút là chứng chỉ báo hết hạn nhầm, nhật ký hai máy không ghép được, đăng nhập một lần cũng hỏng — nên giờ giấc là chuyện hạ tầng, không phải chuyện trang trí.
+
+**3 · Khám phá (teach):**
+- *[m5-cong-thu-tu]* Tầng 4 lo hai việc: thư từ và giờ giấc. Thùng thư bưu cục nhận thư chạy giữa các máy chủ; quầy xuất trình thẻ nhận thư do chính bạn gửi đi; và cái đồng hồ to giữ nhịp cho cả tòa nhà.
+  - **Đi xem cung điện (3 phòng):**
+    - tầng 4 phòng 1 · cổng 25 · SMTP · hình `palace-mailbox` — Phòng 25 là thùng thư bưu cục, thư chạy từ bưu cục này sang bưu cục kia suốt đêm.
+    - tầng 4 phòng 2 · cổng 587 · Mail Submission · hình `palace-id-check` — Phòng 587 bắt xuất trình thẻ nhân viên rồi mới nhận lá thư bạn muốn gửi đi.
+    - tầng 4 phòng 3 · cổng 123 · NTP · hình `palace-big-clock` — Phòng 123 chỉ có mỗi cái đồng hồ to, cả tòa nhà chỉnh giờ theo nó.
+  - **Đào sâu hơn:** Tách 25 và 587 là để chống thư rác: cổng 25 chỉ dành cho máy chủ nói chuyện với máy chủ, còn người dùng gửi thư phải qua 587 và phải đăng nhập. Nhà mạng thường chặn thẳng cổng 25 đi ra từ máy người dùng.
+
+**4 · Thử tay (practice, fading 2):**
+- **Đề:** Phòng bắt xuất trình thẻ rồi mới nhận thư bạn gửi đi là cổng số mấy?
+  - **Dạng:** gõ tay · **Chấp nhận:** 587
+  - **Chủ đề gợi ý (tầng 1):** cổng dành cho người dùng gửi thư, phải đăng nhập
+  - **Gợi ý (tầng 2):** Ba chữ số, và nó không phải 25 — 25 là cổng của máy chủ nói với máy chủ.
+  - **Lời giải (tầng 3):** Cổng 587 — nơi ứng dụng thư của bạn đăng nhập rồi mới gửi được thư đi.
+- **Đề:** Cái đồng hồ to của tòa nhà — dịch vụ đồng bộ giờ — nằm ở cổng nào?
+  - **Dạng:** gõ tay · **Chấp nhận:** 123
+  - **Chủ đề gợi ý (tầng 1):** con số dễ nhớ nhất tòa nhà
+  - **Gợi ý (tầng 2):** Đếm một, hai, ba.
+  - **Lời giải (tầng 3):** Cổng 123 — NTP, chạy trên UDP.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Đi lại tầng 4 từ trí nhớ: thùng thư, quầy xuất trình thẻ, đồng hồ lớn.
+  - **Dạng:** đi lại cung điện từ trí nhớ (3 phòng)
+    - tầng 4 phòng 1 · cổng 25 · SMTP · hình `palace-mailbox` — Phòng 25 là thùng thư bưu cục, thư chạy từ bưu cục này sang bưu cục kia suốt đêm.
+    - tầng 4 phòng 2 · cổng 587 · Mail Submission · hình `palace-id-check` — Phòng 587 bắt xuất trình thẻ nhân viên rồi mới nhận lá thư bạn muốn gửi đi.
+    - tầng 4 phòng 3 · cổng 123 · NTP · hình `palace-big-clock` — Phòng 123 chỉ có mỗi cái đồng hồ to, cả tòa nhà chỉnh giờ theo nó.
+  - **Chủ đề gợi ý (tầng 1):** hình trong từng phòng của tầng bốn
+  - **Gợi ý (tầng 2):** Hai phòng đầu cùng lo thư, phòng cuối là con số đếm 1-2-3.
+  - **Lời giải (tầng 3):** Tầng 4: thùng thư là 25 (SMTP), quầy xuất trình thẻ là 587, đồng hồ lớn là 123 (NTP).
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao thư gửi đi của người dùng phải qua cổng 587 chứ không phải 25?
+  - **Nhóm ý cần chạm:** [đăng nhập, xác thực, chứng minh, thẻ] · [thư rác, spam, giả mạo, chặn]
+  - **Trả lời mẫu:** Vì 587 bắt đăng nhập trước khi nhận thư, nhờ đó biết ai gửi; còn 25 để cho máy chủ nói với máy chủ và thường bị nhà mạng chặn để hạn chế thư rác gửi bừa.
+
+**6 · Tổng kết:**
+- Tầng 4: 25 thùng thư giữa các máy chủ, 587 quầy bắt xuất trình thẻ.
+- 123 là đồng hồ lớn — đồng bộ giờ, chạy trên UDP.
+- Lệch giờ là hỏng chứng chỉ và nhật ký, nên NTP là chuyện hạ tầng.
+- *Úp mở bài sau:* Còn một tầng nữa trên nóc: nơi giữ sổ hộ khẩu của cả tòa nhà, và nơi phát chìa khóa cho người mới đến.
+
+### Bài: Lên nóc: sổ hộ khẩu và chìa khóa nhà `m5-bai-8`
+
+**1 · Khởi động (hook):** Cắm dây mạng vào là máy có địa chỉ IP ngay, chẳng cần gõ gì. Ai đã phát địa chỉ đó cho bạn, và bằng cổng nào?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử nhé: dịch vụ tự cấp địa chỉ IP cho máy mới vào mạng dùng mấy số cổng?
+  - **Dạng:** trắc nghiệm · Một số duy nhất / **Một cặp hai số** ✓
+  - **Vì sao:** DHCP dùng cặp 67/68: một số cho bên phát địa chỉ, một số cho bên nhận — đó là lý do phòng cuối cùng của tòa nhà là một cặp phòng thông nhau.
+
+**3 · Khám phá (teach):**
+- *[m5-cong-danh-ba]* Tầng trên cùng giữ những thứ về NGƯỜI và CHỖ Ở: một cuốn sổ hộ khẩu ghi ai làm gì thuộc phòng ban nào, cùng cuốn sổ ấy nhưng cất trong két sắt, và cặp phòng chuyên phát chìa khóa nhà cho người mới đến.
+  - **Đi xem cung điện (3 phòng):**
+    - tầng 5 phòng 1 · cổng 389 · LDAP · hình `palace-registry-book` — Phòng 389 giữ sổ hộ khẩu của tòa nhà: ai làm gì, thuộc phòng ban nào.
+    - tầng 5 phòng 2 · cổng 636 · LDAPS · hình `palace-safe-book` — Phòng 636 cũng là cuốn sổ ấy, nhưng đặt trong két sắt và chỉ mở qua khe kính.
+    - tầng 5 phòng 3 · cổng 67/68 · DHCP · hình `palace-key-pair` — Phòng 67 phát chìa khóa nhà, phòng 68 nhận lại biên nhận — cặp phòng này chuyên lo cho người mới đến.
+  - **Đào sâu hơn:** LDAP là nền của Active Directory — thứ bạn sẽ gặp lại ở Phần C khi học quản trị Windows Server. Lúc đó cặp 389/636 sẽ quay lại, và bạn đã có sẵn chỗ để treo nó.
+
+**4 · Thử tay (practice, fading 2):**
+- **Đề:** Cuốn sổ hộ khẩu cất trong két sắt — LDAP có mã hóa — là cổng số mấy?
+  - **Dạng:** gõ tay · **Chấp nhận:** 636
+  - **Chủ đề gợi ý (tầng 1):** bản có khóa của cuốn sổ 389
+  - **Gợi ý (tầng 2):** Ba chữ số, và nó KHÔNG phải 389 — 389 là cuốn sổ để ngoài.
+  - **Lời giải (tầng 3):** Cổng 636 — LDAPS, tức LDAP có mã hóa.
+- **Đề:** Cặp phòng phát chìa khóa nhà cho người mới — DHCP — mang hai số nào?
+  - **Dạng:** gõ tay · **Chấp nhận:** 67 68 | 67, 68 | 67/68 | 68 67 | 67-68
+  - **Chủ đề gợi ý (tầng 1):** cặp số liền nhau ở phòng cuối cùng
+  - **Gợi ý (tầng 2):** Hai số liền nhau, đều bắt đầu bằng số 6.
+  - **Lời giải (tầng 3):** 67 và 68 — một số cho bên phát địa chỉ, một số cho bên nhận.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Đi lại tầng 5 từ trí nhớ: sổ hộ khẩu, két sắt, cặp chìa khóa.
+  - **Dạng:** đi lại cung điện từ trí nhớ (3 phòng)
+    - tầng 5 phòng 1 · cổng 389 · LDAP · hình `palace-registry-book` — Phòng 389 giữ sổ hộ khẩu của tòa nhà: ai làm gì, thuộc phòng ban nào.
+    - tầng 5 phòng 2 · cổng 636 · LDAPS · hình `palace-safe-book` — Phòng 636 cũng là cuốn sổ ấy, nhưng đặt trong két sắt và chỉ mở qua khe kính.
+    - tầng 5 phòng 3 · cổng 67/68 · DHCP · hình `palace-key-pair` — Phòng 67 phát chìa khóa nhà, phòng 68 nhận lại biên nhận — cặp phòng này chuyên lo cho người mới đến.
+  - **Chủ đề gợi ý (tầng 1):** hình trong từng phòng trên nóc tòa nhà
+  - **Gợi ý (tầng 2):** Hai cuốn sổ là cùng một thứ, chỉ khác chuyện khóa; phòng cuối mang hai số.
+  - **Lời giải (tầng 3):** Tầng 5: sổ hộ khẩu là 389 (LDAP), sổ trong két là 636 (LDAPS), cặp chìa khóa là 67/68 (DHCP).
+- **Tự giải thích:** Giải thích bằng lời của bạn: đi từ tầng 1 lên nóc, mỗi tầng lo chuyện gì?
+  - **Nhóm ý cần chạm:** [web, trang web, tên miền] · [điều khiển, từ xa, gõ lệnh] · [tệp, dữ liệu, chia sẻ, kho] · [thư, giờ, đồng bộ] · [sổ, người dùng, địa chỉ, danh bạ]
+  - **Trả lời mẫu:** Tầng 1 lo chuyện mở trang web, tầng 2 điều khiển máy ở xa, tầng 3 là kho tệp và dữ liệu, tầng 4 lo thư từ và giờ giấc, tầng 5 giữ sổ người dùng và phát địa chỉ cho máy mới.
+
+**6 · Tổng kết:**
+- Tầng 5: 389 sổ hộ khẩu, 636 sổ trong két sắt, 67/68 cặp chìa khóa.
+- DHCP là phòng duy nhất mang hai số: một bên phát, một bên nhận.
+- Cả tòa nhà giờ đã đủ 15 phòng — và bạn đi lại được từ trí nhớ.
+- *Úp mở bài sau:* Địa chỉ trong nhà bạn là địa chỉ riêng, vậy làm sao cả nhà cùng ra Internet bằng một địa chỉ công cộng? Module sau mình mở chuyện NAT và tường lửa.
+
+### Khái niệm & flashcard (11)
+
+- **TCP** `m5-tcp` — Giao thức gửi bảo đảm — đánh số, báo nhận, gửi lại gói thiếu
+  - Ẩn dụ: TCP như thư bảo đảm: bưu điện bắt ký nhận, thiếu lá nào thì gửi lại lá đó.
+  - Thẻ ôn: *TCP bảo đảm điều gì cho dữ liệu?* → Tới đủ và đúng thứ tự: mỗi gói được đánh số, bên nhận báo đã nhận, thiếu gói nào bên gửi gửi lại gói đó.
+- **Three-way handshake** `m5-bat-tay` — Bắt tay ba bước — ba gói tin mở đầu một kết nối TCP
+  - Ẩn dụ: Như gọi điện: "Alô?" — "Alô, nghe không?" — "Nghe rồi". Ba câu xong mới vào chuyện.
+  - Thẻ ôn: *Ba nhịp của bắt tay TCP theo đúng thứ tự là gì?* → SYN → SYN-ACK → ACK. Nhịp giữa mang hai vai: vừa xác nhận, vừa hỏi ngược lại để mở chiều còn lại.
+- **UDP** `m5-udp` — Giao thức gửi không bảo đảm — nhanh, không báo nhận, không gửi lại
+  - Ẩn dụ: UDP như thư thường thả vào thùng: không ai ký nhận, mất thì thôi, nhưng đi ngay.
+  - Thẻ ôn: *UDP đánh đổi thứ gì để lấy thứ gì?* → Bỏ độ tin cậy (không bắt tay, không báo nhận, không gửi lại) để lấy độ trễ thấp — hợp với gọi video, game, DNS.
+- **Well-known port** `m5-cong-noi-tieng` — Cổng nổi tiếng — dải 0-1023 đã có chủ theo quy ước toàn cầu
+  - Ẩn dụ: Như số nhà của trụ sở công: ai cũng biết trước phải tới đâu, không cần hỏi đường.
+  - Thẻ ôn: *Dải cổng nổi tiếng là dải nào, và vì sao phải cố định?* → 0-1023. Máy chủ phải ngồi đúng số quy ước để người tới biết trước phải gõ cửa nào.
+- **Ephemeral port** `m5-cong-tam-thoi` — Cổng tạm thời — số hệ điều hành cấp cho mỗi kết nối phía máy bạn
+  - Ẩn dụ: Như số thứ tự lấy ở quầy: mỗi lượt một số khác, xong việc là trả lại.
+  - Thẻ ôn: *Vì sao mở mười tab cùng một trang web mà dữ liệu không lẫn vào nhau?* → Mỗi kết nối được cấp một cổng tạm thời khác nhau ở phía máy bạn; máy chủ vẫn ở nguyên một cổng.
+- **Memory palace** `m5-cung-dien` — Cung điện ký ức — gắn mẩu kiến thức vào một chỗ trong không gian quen thuộc
+  - Ẩn dụ: Tòa nhà 5 tầng, mỗi phòng một hình kỳ quặc; nhớ lại bằng cách đi lại đúng con đường ấy.
+  - Thẻ ôn: *(khái niệm meta — noFlashcard, không vào hộp ôn)*
+- **Cổng tầng 1 — web** `m5-cong-web` — Nhóm cổng đưa bạn tới một trang web: 80, 443, 53
+  - Ẩn dụ: Tầng trệt của tòa nhà: cửa mở toang, cửa khóa vàng và quầy danh bạ.
+  - Thẻ ôn: *Ba phòng tầng 1 của cung điện là những cổng nào?* → 80 HTTP (cửa mở toang), 443 HTTPS (ổ khóa vàng), 53 DNS (quầy danh bạ).
+- **Cổng tầng 2 — điều khiển từ xa** `m5-cong-dieu-khien` — Nhóm cổng ngồi đây điều khiển máy ở chỗ khác: 22, 23, 3389
+  - Ẩn dụ: Tầng hai: vỏ sò, phòng vách kính và tấm gương chiếu màn hình máy kia.
+  - Thẻ ôn: *Ba phòng tầng 2 của cung điện là những cổng nào?* → 22 SSH (vỏ sò, có mã hóa), 23 Telnet (vách kính, gửi trần), 3389 RDP (tấm gương).
+- **Cổng tầng 3 — kho dữ liệu** `m5-cong-chia-se` — Nhóm cổng chia sẻ tệp và giữ dữ liệu: 445, 21, 3306
+  - Ẩn dụ: Tầng ba là kho: ổ đĩa chung, băng chuyền thùng tệp, tủ hồ sơ.
+  - Thẻ ôn: *Ba phòng tầng 3 của cung điện là những cổng nào?* → 445 SMB (kho chung), 21 FTP (băng chuyền), 3306 MySQL (tủ hồ sơ).
+- **Cổng tầng 4 — thư từ và giờ giấc** `m5-cong-thu-tu` — Nhóm cổng lo thư đi và đồng bộ giờ: 25, 587, 123
+  - Ẩn dụ: Tầng bốn: thùng thư bưu cục, quầy xuất trình thẻ và cái đồng hồ to.
+  - Thẻ ôn: *Ba phòng tầng 4 của cung điện là những cổng nào?* → 25 SMTP (thư giữa máy chủ), 587 gửi thư có đăng nhập, 123 NTP (đồng bộ giờ).
+- **Cổng tầng 5 — người và chỗ ở** `m5-cong-danh-ba` — Nhóm cổng giữ danh bạ người dùng và cấp địa chỉ: 389, 636, 67/68
+  - Ẩn dụ: Nóc nhà: sổ hộ khẩu, sổ trong két sắt và cặp phòng phát chìa khóa.
+  - Thẻ ôn: *Ba phòng tầng 5 của cung điện là những cổng nào?* → 389 LDAP (sổ hộ khẩu), 636 LDAPS (sổ trong két sắt), 67/68 DHCP (cặp chìa khóa).
+
+### Bài kiểm tra module (8 câu, cần ≥ 85%)
+
+- **Đề:** Thứ tự đúng của cái bắt tay ba bước là gì?
+  - **Dạng:** trắc nghiệm · **SYN → SYN-ACK → ACK** ✓ / SYN → ACK → SYN-ACK / ACK → SYN → SYN-ACK
+  - **Vì sao:** Máy bạn mở lời bằng SYN, máy chủ đáp bằng gói mang hai vai SYN-ACK, máy bạn chốt bằng ACK.
+- **Đề:** Nhịp giữa của bắt tay ba bước tên là gì?
+  - **Dạng:** gõ tay · **Chấp nhận:** syn-ack | syn ack | synack
+  - **Vì sao:** SYN-ACK là nhịp duy nhất mang hai vai: vừa xác nhận đã nghe thấy, vừa hỏi ngược lại để mở chiều còn lại.
+- **Đề:** Một cuộc gọi video nên đi bằng giao thức nào, và vì sao?
+  - **Dạng:** trắc nghiệm · **UDP — chậm một nhịp còn tệ hơn mất một khung hình** ✓ / TCP — phải bảo đảm không mất khung hình nào
+  - **Vì sao:** Với cuộc gọi, dừng lại chờ gửi lại một mẩu đã rớt còn phá trải nghiệm hơn là mất luôn mẩu đó.
+- **Đề:** Số cổng lớn nhất có thể là bao nhiêu?
+  - **Dạng:** gõ tay · **Chấp nhận:** 65535
+  - **Vì sao:** Cổng là số 16 bit nên đánh số từ 0 đến 65535.
+- **Đề:** Bạn mở ba tab cùng vào một trang web. Thứ khác nhau giữa ba kết nối là gì?
+  - **Dạng:** trắc nghiệm · **Cổng tạm thời phía máy bạn** ✓ / Cổng phía máy chủ / Địa chỉ IP của máy chủ
+  - **Vì sao:** Máy chủ vẫn ngồi nguyên một cổng; mỗi kết nối phía bạn được cấp một cổng tạm thời riêng nên dữ liệu không lẫn.
+- **Đề:** Đi lại tầng 1 và tầng 2 của tòa nhà từ trí nhớ.
+  - **Dạng:** đi lại cung điện từ trí nhớ (6 phòng)
+    - tầng 1 phòng 1 · cổng 80 · HTTP · hình `palace-door-open` — Cửa chính số 80 mở toang cả ngày, ai đi ngang cũng nhìn thấy hết bên trong.
+    - tầng 1 phòng 2 · cổng 443 · HTTPS · hình `palace-golden-lock` — Phòng 443 treo một ổ khóa vàng, thư vào đây được niêm phong trước khi ra.
+    - tầng 1 phòng 3 · cổng 53 · DNS · hình `palace-phonebook` — Quầy lễ tân phòng 53 giữ cuốn danh bạ dày, tra tên ra số nhà trong một nốt nhạc.
+    - tầng 2 phòng 1 · cổng 22 · SSH · hình `palace-seashell` — Phòng 22 bày một vỏ sò, ghé tai vào là ra lệnh được cho máy ở tận đâu.
+    - tầng 2 phòng 2 · cổng 23 · Telnet · hình `palace-glass-wall` — Phòng 23 làm y hệt phòng bên cạnh nhưng bốn vách bằng kính, ai đi ngang cũng đọc được lệnh.
+    - tầng 2 phòng 3 · cổng 3389 · RDP · hình `palace-mirror-screen` — Phòng 3389 có tấm gương lớn chiếu nguyên màn hình của một máy tính ở xa.
+  - **Vì sao:** Tầng 1: 80 HTTP, 443 HTTPS, 53 DNS. Tầng 2: 22 SSH, 23 Telnet, 3389 RDP.
+- **Đề:** Đi lại tầng 3 và tầng 4 của tòa nhà từ trí nhớ.
+  - **Dạng:** đi lại cung điện từ trí nhớ (6 phòng)
+    - tầng 3 phòng 1 · cổng 445 · SMB · hình `palace-shared-drive` — Phòng 445 là kho chung của tòa nhà, ổ đĩa nhà này cắm thẳng sang nhà kia.
+    - tầng 3 phòng 2 · cổng 21 · FTP · hình `palace-conveyor` — Phòng 21 có băng chuyền chở nguyên thùng tệp qua lại, thùng nào cũng không dán kín.
+    - tầng 3 phòng 3 · cổng 3306 · MySQL · hình `palace-file-cabinet` — Phòng 3306 xếp kín tủ hồ sơ, hỏi câu nào cũng có người tra ra đúng bảng.
+    - tầng 4 phòng 1 · cổng 25 · SMTP · hình `palace-mailbox` — Phòng 25 là thùng thư bưu cục, thư chạy từ bưu cục này sang bưu cục kia suốt đêm.
+    - tầng 4 phòng 2 · cổng 587 · Mail Submission · hình `palace-id-check` — Phòng 587 bắt xuất trình thẻ nhân viên rồi mới nhận lá thư bạn muốn gửi đi.
+    - tầng 4 phòng 3 · cổng 123 · NTP · hình `palace-big-clock` — Phòng 123 chỉ có mỗi cái đồng hồ to, cả tòa nhà chỉnh giờ theo nó.
+  - **Vì sao:** Tầng 3: 445 SMB, 21 FTP, 3306 MySQL. Tầng 4: 25 SMTP, 587 gửi thư có đăng nhập, 123 NTP.
+- **Đề:** Lên nóc: đi lại tầng 5 từ trí nhớ.
+  - **Dạng:** đi lại cung điện từ trí nhớ (3 phòng)
+    - tầng 5 phòng 1 · cổng 389 · LDAP · hình `palace-registry-book` — Phòng 389 giữ sổ hộ khẩu của tòa nhà: ai làm gì, thuộc phòng ban nào.
+    - tầng 5 phòng 2 · cổng 636 · LDAPS · hình `palace-safe-book` — Phòng 636 cũng là cuốn sổ ấy, nhưng đặt trong két sắt và chỉ mở qua khe kính.
+    - tầng 5 phòng 3 · cổng 67/68 · DHCP · hình `palace-key-pair` — Phòng 67 phát chìa khóa nhà, phòng 68 nhận lại biên nhận — cặp phòng này chuyên lo cho người mới đến.
+  - **Vì sao:** Tầng 5: 389 LDAP, 636 LDAPS, 67/68 DHCP.

@@ -159,7 +159,7 @@ phá hoại cơ chế học của app, dù code chạy đúng.
 - Layout: dưới 768px, menu 4 mục chuyển xuống THANH ĐÁY và canvas lab
   cuộn ngang trong khung riêng (giữ vùng chạm cổng ≥ 24px).
 
-### Phase 2 — hạng mục (6): cung điện ký ức Port (khối 6.1-6.2 xong)
+### Phase 2 — hạng mục (6): cung điện ký ức Port (khối 6.1-6.3 xong)
 
 - `src/engine/palace/` — cung điện ký ức THUẦN, không React: `palace.ts`
   (tòa nhà 5 tầng × 3 phòng + kiểm cấu trúc + lộ trình), `walk.ts` (đi
@@ -184,6 +184,11 @@ phá hoại cơ chế học của app, dù code chạy đúng.
   điện tồn tại và không được sửa vì nó.
 - `src/engine/ltext.ts` — `LTextSchema` dùng chung cho các schema nội
   dung; contentSchema re-export nên nơi gọi cũ không đổi.
+- Nội dung: `content/modules/module-05.json` (Phần B, 5 chặng, 8 bài,
+  cung điện 15 phòng). Ba bài đầu dạy TCP/bắt tay/UDP/luật số cổng, năm
+  bài sau mỗi bài một TẦNG: đi xem ở bước Dạy, đi lại từ trí nhớ ở bước
+  Nhớ lại. Bài thi 8 câu, ba câu cuối phủ hết 15 phòng — `content.test.ts`
+  khóa luật "không phòng nào lọt qua cổng mastery".
 
 ## Khi gặp mơ hồ
 

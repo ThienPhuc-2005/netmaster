@@ -585,6 +585,183 @@ function RoutingBridge({ title }: { title?: string }) {
   )
 }
 
+/**
+ * Bắt tay ba bước — Von Restorff (spec Module 5): nhịp GIỮA (SYN-ACK) là
+ * nhịp hay bị nhớ nhầm thứ tự nhất, nên nó được vẽ khác hẳn hai nhịp kia:
+ * màu nhấn, nét dày, mũi tên hai đầu, và có khung bao quanh. Hai nhịp
+ * còn lại cố tình để mờ — cái lạ chỉ nổi khi xung quanh nó bình thường.
+ */
+function Handshake3Way({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <rect x="14" y="30" width="40" height="70" rx="4" {...stroke} />
+        <rect x="166" y="30" width="40" height="70" rx="4" {...stroke} />
+        <text x="34" y="118" textAnchor="middle" {...monoText}>
+          máy bạn
+        </text>
+        <text x="186" y="118" textAnchor="middle" {...monoText}>
+          máy chủ
+        </text>
+        <path d="M56 44 H164" {...stroke} strokeWidth={1.5} markerEnd="url(#cv-arrow)" />
+        <text x="110" y="40" textAnchor="middle" {...monoText}>
+          SYN
+        </text>
+        <path d="M164 94 H56" {...stroke} strokeWidth={1.5} markerEnd="url(#cv-arrow)" />
+        <text x="110" y="90" textAnchor="middle" {...monoText}>
+          ACK
+        </text>
+      </g>
+      <g className="text-accent">
+        <rect x="62" y="56" width="96" height="22" rx="11" {...stroke} strokeWidth={2.5} />
+        <path d="M74 67 H146" {...stroke} strokeWidth={2.5} markerEnd="url(#cv-arrow)" markerStart="url(#cv-arrow)" />
+        <text x="110" y="52" textAnchor="middle" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          SYN-ACK
+        </text>
+      </g>
+    </Frame>
+  )
+}
+
+/** TCP: gói đánh số, gói số 2 rớt được gửi lại. */
+function TcpReliable({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        {['1', '2', '3'].map((n, i) => (
+          <g key={n} transform={`translate(${30 + i * 46} 34)`}>
+            <rect width="30" height="22" rx="3" {...stroke} strokeWidth={1.5} />
+            <text x="15" y="16" textAnchor="middle" {...monoText}>
+              {n}
+            </text>
+          </g>
+        ))}
+        <path d="M172 45 H196" {...stroke} strokeWidth={1.5} markerEnd="url(#cv-arrow)" />
+      </g>
+      <g className="text-accent">
+        <path d="M91 60 v18 h-46 v-18" {...stroke} strokeWidth={1.5} strokeDasharray="4 3" />
+        <rect x="30" y="80" width="30" height="22" rx="3" {...stroke} />
+        <text x="45" y="96" textAnchor="middle" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          2
+        </text>
+        <text x="140" y="96" textAnchor="middle" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          thiếu số 2 → gửi lại
+        </text>
+      </g>
+    </Frame>
+  )
+}
+
+/** UDP: bắn liên tục một chiều, rớt gói nào thì thôi. */
+function UdpFast({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-accent">
+        <path d="M22 40 h30 l24 -14 v50 l-24 -14 H22 z" {...stroke} />
+        <path d="M84 34 q10 12 0 24" {...stroke} strokeWidth={1.5} />
+        <path d="M94 28 q16 18 0 36" {...stroke} strokeWidth={1.5} />
+      </g>
+      <g className="text-ink-muted">
+        {[0, 1, 3].map((i) => (
+          <rect key={i} x={118 + i * 24} y="42" width="18" height="14" rx="2" {...stroke} strokeWidth={1.5} />
+        ))}
+        <rect x="166" y="82" width="18" height="14" rx="2" {...stroke} strokeWidth={1.5} strokeDasharray="3 3" />
+        <path d="M175 60 v16" {...stroke} strokeWidth={1.5} strokeDasharray="3 3" />
+        <text x="110" y="118" textAnchor="middle" {...monoText}>
+          rớt gói nào thì thôi — không ai đòi lại
+        </text>
+      </g>
+    </Frame>
+  )
+}
+
+/** Cổng nổi tiếng: dãy cửa đã có chủ trong dải 0-1023. */
+function WellKnownDoors({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <path d="M18 96 H202" {...stroke} />
+        <text x="110" y="118" textAnchor="middle" {...monoText}>
+          0 — 1023 · đã có chủ theo quy ước
+        </text>
+      </g>
+      {[
+        { x: 34, label: '80' },
+        { x: 96, label: '443' },
+        { x: 158, label: '22' },
+      ].map((d) => (
+        <g key={d.label} className="text-accent">
+          <rect x={d.x} y="34" width="32" height="62" rx="3" {...stroke} />
+          <circle cx={d.x + 25} cy="66" r="2.5" fill="currentColor" />
+          <text x={d.x + 16} y="28" textAnchor="middle" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+            {d.label}
+          </text>
+        </g>
+      ))}
+    </Frame>
+  )
+}
+
+/** Cổng tạm thời: ba tab lấy ba số khác nhau, cùng gõ một cửa 443. */
+function EphemeralTicket({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        {['51344', '51345', '51346'].map((n, i) => (
+          <g key={n} transform={`translate(14 ${24 + i * 30})`}>
+            <rect width="58" height="22" rx="3" {...stroke} strokeWidth={1.5} />
+            <text x="29" y="15" textAnchor="middle" {...monoText}>
+              {n}
+            </text>
+            <path d={`M74 11 H130`} {...stroke} strokeWidth={1.5} markerEnd="url(#cv-arrow)" />
+          </g>
+        ))}
+      </g>
+      <g className="text-accent">
+        <rect x="144" y="34" width="56" height="62" rx="4" {...stroke} />
+        <text x="172" y="70" textAnchor="middle" fontSize="12" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          443
+        </text>
+      </g>
+    </Frame>
+  )
+}
+
+/** Cung điện ký ức: tòa nhà 5 tầng × 3 phòng, lộ trình đi từ tầng trệt lên. */
+function PalaceBuilding({ title }: { title?: string }) {
+  const floors = [0, 1, 2, 3, 4]
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        {floors.map((f) =>
+          [0, 1, 2].map((p) => (
+            <rect
+              key={`${f}-${p}`}
+              x={62 + p * 34}
+              y={14 + f * 21}
+              width="30"
+              height="17"
+              rx="2"
+              {...stroke}
+              strokeWidth={1.2}
+            />
+          )),
+        )}
+        <path d="M56 14 v104 h114" {...stroke} strokeWidth={1.5} />
+      </g>
+      <g className="text-accent">
+        {/* Lộ trình: bắt đầu ở tầng trệt bên trái, đi lên nóc. */}
+        <path d="M77 110 h68 M77 89 h68 M77 68 h68 M77 47 h68 M77 26 h68" {...stroke} strokeWidth={1.5} strokeDasharray="3 4" />
+        <path d="M145 110 V26" {...stroke} strokeWidth={1.5} markerEnd="url(#cv-arrow)" strokeDasharray="3 4" />
+        <circle cx="77" cy="110" r="3.5" fill="currentColor" />
+      </g>
+      <text x="182" y="122" textAnchor="middle" {...monoText}>
+        15 phòng
+      </text>
+    </Frame>
+  )
+}
+
 /** Hình thư chung cho visualId chưa có hình riêng. */
 function GenericMail({ title }: { title?: string }) {
   return (
@@ -641,6 +818,16 @@ const REGISTRY: Record<string, VisualComponent> = {
   'vis-mien-quang-ba': BroadcastDomain,
   'vis-cau-noi-router': RoutingBridge,
   'vis-hook-dinh-tuyen': RoutingBridge,
+  // Module 5 — TCP, UDP và cung điện port
+  'vis-bat-tay-3-buoc': Handshake3Way,
+  'vis-hook-bat-tay': Handshake3Way,
+  'vis-tcp-tin-cay': TcpReliable,
+  'vis-udp-nhanh': UdpFast,
+  'vis-hook-udp': UdpFast,
+  'vis-cong-noi-tieng': WellKnownDoors,
+  'vis-hook-cong-so': WellKnownDoors,
+  'vis-cong-tam-thoi': EphemeralTicket,
+  'vis-cung-dien-toa-nha': PalaceBuilding,
 }
 
 /**

@@ -106,6 +106,40 @@ describe('bộ nội dung', () => {
     }
   })
 
+  it('module có cung điện: mọi phòng đều được dẫn đi xem ở một bài nào đó', () => {
+    // Schema đã ép "đi xem trước, hỏi sau" và "mỗi phòng dạy một lần",
+    // nhưng nó KHÔNG ép phải dạy hết. Một tòa nhà 15 phòng mà chỉ dẫn qua
+    // 12 phòng là nợ nội dung: ba phòng kia không bao giờ vào Hộp ôn tập.
+    for (const m of modules) {
+      if (m.palace === undefined) continue
+      const toured = new Set(
+        m.lessons.flatMap((l) => l.steps[2].screens.flatMap((s) => s.palaceTour ?? [])),
+      )
+      const missing = m.palace.rooms.filter((r) => !toured.has(r.id)).map((r) => r.id)
+      expect(missing, `${m.id}: phòng chưa được dẫn đi xem`).toEqual([])
+    }
+  })
+
+  it('module có cung điện: bài thi phủ HẾT các phòng (không phòng nào lọt qua cổng mastery)', () => {
+    // Cả module này sinh ra để nhớ 15 con số. Nếu bài thi chỉ hỏi vài
+    // phòng thì mastery gate (nguyên tắc 2) chỉ còn là hình thức.
+    for (const m of modules) {
+      if (m.palace === undefined) continue
+      const asked = new Set(
+        m.masteryTest.flatMap((q) => (q.kind === 'palace-walk' ? q.rooms : [])),
+      )
+      const missing = m.palace.rooms.filter((r) => !asked.has(r.id)).map((r) => r.id)
+      expect(missing, `${m.id}: phòng không bị hỏi trong bài thi module`).toEqual([])
+    }
+  })
+
+  it('Module 5: cung điện đúng 15 phòng, gồm đủ 15 port của spec', () => {
+    const m5 = moduleById('module-5')
+    expect(m5.palace, 'Module 5 phải có cung điện ký ức').toBeDefined()
+    const ports = m5.palace!.rooms.flatMap((r) => r.ports).sort((a, b) => a - b)
+    expect(ports).toEqual([21, 22, 23, 25, 53, 67, 68, 80, 123, 389, 443, 445, 587, 636, 3306, 3389])
+  })
+
   it('mastery test đủ dày để ngưỡng 85% có nghĩa (>= 7 câu mỗi module)', () => {
     for (const m of modules) {
       expect(m.masteryTest.length, `${m.id} cần >= 7 câu thi`).toBeGreaterThanOrEqual(7)

@@ -197,7 +197,7 @@ xong thì Module 5/6/7 chỉ còn là viết JSON.
 |------|----------|-----------|
 | 6.1 | Engine cung điện ký ức thuần TS (`src/engine/palace/`) | Xong |
 | 6.2 | UI hai chuyến đi + cắm vào pipeline 6 bước | Xong |
-| 6.3 | Nội dung Module 5 (TCP/UDP/Port) + 15 hình gợi nhớ | Chưa |
+| 6.3 | Nội dung Module 5 (TCP/UDP/Port) + hình khái niệm | Xong |
 | 6.4 | Nội dung Module 6 (DNS phân cấp, DHCP DORA, DoH) | Chưa |
 | 6.5 | Nội dung Module 7 (NAT/PAT, port forwarding, firewall, mạng nhà) | Chưa |
 | 6.6 | Đối chiếu DoD + kiểm browser + cập nhật tài liệu | Chưa |
@@ -261,6 +261,29 @@ xong thì Module 5/6/7 chỉ còn là viết JSON.
   duyệt thật: đi trọn tầng 1, gõ không dấu ("web thuong") vẫn được chấm
   đúng, bản đồ lật ngửa đúng nhịp, kết quả "đạt — nhớ được cả đoạn" kèm
   "nhớ được ngay 2/3 phòng"; mobile 375px không tràn ngang.
+
+**Khối 6.3 đã làm gì** (nội dung thật của Module 5):
+- `content/modules/module-05.json` — Phần B, 5 chặng, **8 bài**, 11 khái
+  niệm, cung điện 15 phòng đúng 15 port của spec. Ba bài đầu dạy TCP /
+  bắt tay 3 bước / UDP / luật của số cổng; năm bài sau mỗi bài đi một
+  TẦNG của cung điện (3 phòng), đi xem ở bước Dạy rồi đi lại từ trí nhớ
+  ngay ở bước Nhớ lại của chính bài đó.
+- **Von Restorff cho SYN-ACK** (spec đòi): trong hình bắt tay, hai nhịp
+  SYN và ACK vẽ mờ, nhịp giữa SYN-ACK vẽ khác hẳn — màu nhấn, nét dày,
+  mũi tên hai đầu, có khung bao. Cái lạ chỉ nổi khi xung quanh bình thường.
+- Câu gõ tay về SYN-ACK khai `nearMisses` cho hai câu trả lời cận-đúng
+  hay gặp nhất ("syn", "ack") — mỗi câu có lời phản hồi may đo riêng.
+- 6 hình SVG mới trong `ConceptVisual`: bắt tay 3 nhịp, TCP gửi lại gói
+  thiếu, UDP bắn một chiều, dãy cửa cổng nổi tiếng, cổng tạm thời, tòa
+  nhà cung điện.
+- `content.test.ts` thêm 3 bất biến suy từ dữ liệu (không đếm cứng):
+  mọi phòng của cung điện phải được dẫn đi xem, mọi phòng phải bị hỏi
+  trong **bài thi module** (không phòng nào lọt qua cổng mastery), và
+  cung điện Module 5 phải gồm đúng 15 port spec liệt kê.
+- 710/710 test xanh (+3), typecheck sạch, build qua. Đã đi trọn bài
+  m5-bai-4 trên trình duyệt thật: tour khóa nút đi tiếp tới khi đi hết
+  đoạn, chuyến nhớ lại chấm "Chuẩn luôn!", +30 XP, Hộp ôn tập nhận đúng
+  1 thẻ khái niệm + 3 thẻ phòng, và thẻ phòng lật ra "Cổng 53 — DNS".
 
 ## Lệnh hay dùng
 
