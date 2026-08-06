@@ -1,6 +1,6 @@
-# REVIEW NỘI DUNG — Module 1-7 (Phần A+B)
+# REVIEW NỘI DUNG — Module 1-8 (Phần A+B+C)
 
-> Sinh tự động từ `content/modules/module-01.json`, `content/modules/module-02.json`, `content/modules/module-03.json`, `content/modules/module-04.json`, `content/modules/module-05.json`, `content/modules/module-06.json`, `content/modules/module-07.json` bằng `npm run content:review`.
+> Sinh tự động từ `content/modules/module-01.json`, `content/modules/module-02.json`, `content/modules/module-03.json`, `content/modules/module-04.json`, `content/modules/module-05.json`, `content/modules/module-06.json`, `content/modules/module-07.json`, `content/modules/module-08.json` bằng `npm run content:review`.
 > Đây là bản để ĐỌC DUYỆT; muốn sửa thì sửa file JSON rồi render lại.
 
 ## Mạng là gì? — Câu chuyện bưu điện `module-1`
@@ -2123,3 +2123,302 @@ Phần B · 5 chặng · 5 bài · 6 khái niệm
 - **Đề:** Cách gỡ double NAT khi vẫn muốn dùng router thứ hai cho rộng sóng?
   - **Dạng:** trắc nghiệm · **Cho nó làm điểm phát sóng: tắt NAT và phát địa chỉ, cắm dây vào cổng LAN** ✓ / Khai port forwarding trên cả hai / Đặt hai router cùng một dải địa chỉ
   - **Vì sao:** Tắt vai làm cổng của router thứ hai thì cả nhà quay về một lớp NAT và một cuốn sổ duy nhất.
+
+## Wi-Fi và IPv6 chuyên sâu `module-8`
+
+Phần C · 5 chặng · 5 bài · 10 khái niệm
+
+**Chặng:** Sóng thay dây (m8-bai-1) → Đọc tên thế hệ (m8-bai-2) → Khóa cửa cho sóng (m8-bai-3) → Biển số đời mới (m8-bai-4) → Máy tự lo liệu (m8-bai-5)
+
+### Bài: Chọn đúng băng tần cho từng góc nhà `m8-bai-1`
+
+**1 · Khởi động (hook):** Đứng cạnh router thì mạng vùn vụt, vào phòng ngủ cách hai bức tường thì lết từng chút. Cùng một cái hộp phát ra — sao sóng lúc khỏe lúc yếu vậy?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử nhé: so với băng 5 GHz, sóng Wi-Fi 2.4 GHz thì sao?
+  - **Dạng:** trắc nghiệm · **Đi xa và xuyên tường tốt hơn, nhưng chậm hơn** ✓ / Nhanh hơn nhưng yếu hơn / Giống hệt nhau, chỉ khác tên
+  - **Vì sao:** Tần số thấp như giọng trầm: vang xa, luồn qua tường tốt, nhưng chở được ít dữ liệu hơn. Tần số cao như giọng thanh: chở nhiều mà đuối sức nhanh.
+
+**3 · Khám phá (teach):**
+- *[m8-song-wifi]* Wi-Fi là sóng radio thay cho sợi dây mạng: điểm phát Wi-Fi (thường nằm ngay trong hộp router nhà bạn — Module 7) nói chuyện với các thiết bị qua không khí. Nhưng không khí là MỘT sợi dây chung: mọi thiết bị quanh đó thay phiên nhau nói, càng đông càng phải chờ.
+  - **Đào sâu hơn:** Vì là sóng phát ra mọi hướng, Wi-Fi không dừng ở cửa nhà bạn — nó bay sang hàng xóm và ra tận vỉa hè. Hai hệ quả sẽ quay lại trong module này: ai đứng gần cũng NGHE được (nên phải khóa — bài 3), và các nhà cạnh nhau dùng chung kênh sẽ giẫm sóng nhau.
+- *[m8-bang-tan]* Wi-Fi chạy trên ba dải sóng — gọi là băng tần. 2.4 GHz như giọng trầm: vang xa, xuyên tường tốt, nhưng chậm và đông đúc nhất. 5 GHz như giọng thanh: nhanh hơn hẳn nhưng đuối khi qua tường. 6 GHz (mới nhất) còn nhanh và vắng hơn nữa — đổi lại tầm với ngắn nhất.
+  - **Đào sâu hơn:** Băng 2.4 GHz đông vì đủ thứ cùng chen vào đó: Bluetooth, lò vi sóng, chuột không dây… Router hai băng thường phát cả hai dưới một tên mạng; máy tự chọn băng — và đôi khi chọn dở, cứ bám 2.4 GHz dù đang đứng cạnh router.
+
+**4 · Thử tay (practice, fading 0):**
+- **Ví dụ giải sẵn:** Ví dụ giải sẵn: nhà hai tầng, router đặt phòng khách. (1) TV cạnh router cần xem phim nét — cho nó băng 5 GHz: nhanh, mà ngồi gần thì không sợ đuối. (2) Camera ngoài cổng cách hai bức tường — cho nó 2.4 GHz: chậm cũng được, quan trọng là sóng TỚI nơi. Quy tắc rút ra: gần ưu tiên nhanh, xa ưu tiên tới. Cầm quy tắc đó làm hai câu dưới nhé.
+- **Đề:** Camera lắp ngoài vườn, cách router hai bức tường. Cho nó vào băng tần nào?
+  - **Dạng:** trắc nghiệm · **2.4 GHz — chậm nhưng đi xa, xuyên tường tốt** ✓ / 5 GHz — nhanh nhất có thể / 6 GHz — mới nhất chắc là tốt nhất
+  - **Chủ đề gợi ý (tầng 1):** đánh đổi giữa đi xa và chạy nhanh
+  - **Gợi ý (tầng 2):** Camera cần sóng TỚI nơi trước đã — tốc độ chỉ là chuyện tính sau.
+  - **Lời giải (tầng 3):** 2.4 GHz: tần số thấp vang xa, xuyên tường tốt nhất — đúng việc cho thiết bị ở xa router.
+- **Đề:** Ngồi làm việc ngay cạnh router và cần tốc độ cao nhất — bạn ưu tiên băng có tần số thế nào? (cao hay thấp)
+  - **Dạng:** gõ tay · **Chấp nhận:** cao | tần số cao | tan so cao | 5 | 6
+  - **Chủ đề gợi ý (tầng 1):** đứng gần thì nhược điểm nào biến mất
+  - **Gợi ý (tầng 2):** Đứng gần thì nhược điểm của băng tần cao biến mất, chỉ còn lại ưu điểm.
+  - **Lời giải (tầng 3):** Tần số cao (5 hoặc 6 GHz): chở được nhiều dữ liệu; ngồi gần nên không sợ sóng đuối sức.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: băng tần nào đi xa, xuyên tường tốt nhất? (con số)
+  - **Dạng:** gõ tay · **Chấp nhận:** 2.4 | 2,4 | 2.4ghz
+  - **Chủ đề gợi ý (tầng 1):** giọng trầm hay giọng cao vang xa hơn
+  - **Gợi ý (tầng 2):** Giọng trầm vang xa — tức là băng tần THẤP nhất trong ba băng.
+  - **Lời giải (tầng 3):** 2.4 GHz — tần số thấp nhất nên đi xa, xuyên tường tốt nhất; đổi lại chậm và đông đúc nhất.
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao không có băng tần nào là "tốt nhất" cho mọi thiết bị trong nhà?
+  - **Nhóm ý cần chạm:** [xa, xuyên tường, xuyen tuong, tới nơi, toi noi, phủ sóng] · [nhanh, tốc độ, toc do, chậm, cham]
+  - **Trả lời mẫu:** Vì mỗi băng đánh đổi một kiểu: 2.4 GHz đi xa xuyên tường nhưng chậm, 5 và 6 GHz nhanh nhưng đuối khi qua tường — nên thiết bị ở xa cần 2.4, thiết bị ngồi gần cần 5 hoặc 6.
+
+**6 · Tổng kết:**
+- Wi-Fi là sóng radio thay dây; không khí là một sợi dây chung, càng đông càng chờ.
+- 2.4 GHz xa mà chậm; 5 GHz nhanh mà gần; 6 GHz nhanh nhất, vắng nhất, ngắn nhất.
+- Gần ưu tiên nhanh, xa ưu tiên tới — không băng nào tốt nhất cho mọi góc nhà.
+- *Úp mở bài sau:* Trên vỏ hộp còn một con số nữa: Wi-Fi 5, Wi-Fi 6, Wi-Fi 7. Số đó không phải băng tần — vậy nó là gì?
+
+### Bài: Đọc vanh vách tên thế hệ Wi-Fi `m8-bai-2`
+
+**1 · Khởi động (hook):** Hộp router ghi Wi-Fi 6, điện thoại mới khoe Wi-Fi 7, còn tài liệu cũ lại viết 802.11ac. Ba cách gọi rối rắm đó đang nói về cùng một chuyện gì?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử nhé: router Wi-Fi 6 gặp điện thoại Wi-Fi 7 thì hai bên nói chuyện bằng gì?
+  - **Dạng:** trắc nghiệm · **Bằng Wi-Fi 6 — bên mới tự hạ xuống nói giọng cũ** ✓ / Bằng Wi-Fi 7 — máy mới kéo router lên theo / Không kết nối được vì lệch chuẩn
+  - **Vì sao:** Các thế hệ Wi-Fi tương thích ngược: bên mới biết nói giọng cũ, nên cặp nào cũng chốt ở thế hệ THẤP hơn của hai bên.
+
+**3 · Khám phá (teach):**
+- *[m8-chuan-wifi]* Wi-Fi 4, 5, 6, 7 là các THẾ HỆ của chuẩn Wi-Fi — tên kỹ thuật lần lượt là 802.11n, ac, ax, be, nhưng người ta đánh số cho dễ nhớ. Số càng cao càng mới: nhanh hơn, chen chúc giỏi hơn. Hai thiết bị khác thế hệ vẫn nói chuyện được — chúng dùng thế hệ thấp hơn của hai bên.
+  - **Đào sâu hơn:** Cách gọi bằng số ra đời năm 2018, vì 802.11ac/ax quá khó nhớ với người mua hàng. Từ Wi-Fi 6 trở đi, con số còn được in thẳng lên logo thiết bị — liếc vỏ hộp là biết đời.
+- *[m8-wifi-6e-7]* Wi-Fi 6 nổi bật không phải vì nhanh hơn, mà vì chở ĐÔNG giỏi hơn: một lượt phát chia được cho nhiều thiết bị — như xe buýt nhiều ghế thay vì mỗi chuyến chở một khách. Wi-Fi 6E là đúng Wi-Fi 6 nhưng thêm quyền chạy trên băng 6 GHz — làn đường mới toanh còn vắng. Wi-Fi 7 mở kênh rộng gấp đôi và biết đi HAI băng cùng lúc.
+  - **Đào sâu hơn:** Đi hai băng cùng lúc (Wi-Fi 7 gọi là MLO) nghĩa là điện thoại vừa dùng 5 GHz vừa dùng 6 GHz như hai làn song song — làn này nghẽn thì dữ liệu dồn sang làn kia, độ trễ ổn định hẳn khi chơi game hay gọi video.
+
+**4 · Thử tay (practice, fading 1):**
+- **Đề:** Điểm mạnh đáng tiền nhất của Wi-Fi 6 so với Wi-Fi 5 là gì?
+  - **Dạng:** trắc nghiệm · **Chở nhiều thiết bị cùng lúc giỏi hơn hẳn — nhà càng đông thiết bị càng thấy khác** ✓ / Sóng đi xa gấp đôi / Không cần mật khẩu nữa
+  - **Chủ đề gợi ý (tầng 1):** chuyến xe buýt nhiều ghế
+  - **Gợi ý (tầng 2):** Nghĩ về chuyến xe chia được nhiều ghế cho nhiều khách trong một lượt chạy.
+  - **Lời giải (tầng 3):** Wi-Fi 6 chia một lượt phát cho nhiều thiết bị cùng lúc — nhà đông thiết bị hưởng lợi rõ nhất.
+- **Đề:** Wi-Fi 6E khác Wi-Fi 6 ở quyền chạy thêm trên băng tần nào? (con số)
+  - **Dạng:** gõ tay · **Chấp nhận:** 6 | 6ghz | băng 6 | bang 6
+  - **Chủ đề gợi ý (tầng 1):** chữ E mở thêm một làn đường
+  - **Gợi ý (tầng 2):** Chính là băng tần mới toanh, vắng nhất trong bài trước.
+  - **Lời giải (tầng 3):** Băng 6 GHz — Wi-Fi 6E = Wi-Fi 6 cộng quyền vào làn 6 GHz còn vắng.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: router Wi-Fi 6 gặp máy Wi-Fi 7 — hai bên nói chuyện bằng thế hệ nào?
+  - **Dạng:** gõ tay · **Chấp nhận:** thấp hơn | thap hon | wi-fi 6 | wifi 6 | đời thấp | doi thap | cũ hơn | cu hon
+  - **Chủ đề gợi ý (tầng 1):** bên nào phải chiều bên nào
+  - **Gợi ý (tầng 2):** Bên mới biết nói giọng cũ — cặp nào cũng chốt ở đời thấp hơn của hai bên.
+  - **Lời giải (tầng 3):** Bằng Wi-Fi 6 — thế hệ thấp hơn của hai bên; chuẩn mới luôn tương thích ngược.
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao mua router Wi-Fi 7 xịn về mà mạng nhà chưa chắc đã nhanh lên?
+  - **Nhóm ý cần chạm:** [thiết bị, thiet bi, máy cũ, may cu, hai bên, hai ben, thấp hơn, thap hon] · [nhà mạng, nha mang, đường truyền, duong truyen, gói cước, goi cuoc, internet]
+  - **Trả lời mẫu:** Vì tốc độ chốt ở thế hệ THẤP hơn của từng cặp — điện thoại cũ vẫn nói giọng cũ với router mới; và đường ra Internet còn bị chặn bởi gói cước nhà mạng, router nhanh mấy cũng không vượt được cái ống đó.
+
+**6 · Tổng kết:**
+- Wi-Fi 4/5/6/7 là thế hệ; số càng cao càng mới, và luôn tương thích ngược.
+- Wi-Fi 6 chở đông giỏi; 6E thêm làn 6 GHz; Wi-Fi 7 kênh rộng và đi hai băng cùng lúc.
+- Tốc độ thật chốt ở thế hệ thấp hơn của từng cặp thiết bị — và ở gói cước nhà mạng.
+- *Úp mở bài sau:* Sóng nhà bạn bay ra tận vỉa hè, ai đứng đó cũng "nghe" được từng gói tin. Vậy cái gì ngăn họ đọc trộm?
+
+### Bài: Khóa cửa cho sóng nhà bạn `m8-bai-3`
+
+**1 · Khởi động (hook):** Sóng Wi-Fi không dừng ở tường nhà — nó tràn ra vỉa hè. Một người ngồi ngoài đó với chiếc laptop thu được mọi gói tin đang bay trong không khí. Điều gì ngăn họ đọc trộm?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử nhé: WPA2, WPA3 trong trang cài đặt router là gì?
+  - **Dạng:** trắc nghiệm · **Chuẩn MÃ HÓA sóng Wi-Fi — khóa nội dung trước khi phát vào không khí** ✓ / Chuẩn tốc độ, giống Wi-Fi 5, Wi-Fi 6 / Tên hai băng tần
+  - **Vì sao:** WPA là bộ khóa của sóng: mọi khung tin được mã hóa bằng chìa sinh từ mật khẩu Wi-Fi — người nghe lén chỉ thu được một chuỗi loạn xạ.
+
+**3 · Khám phá (teach):**
+- *[m8-wpa2]* Vì ai đứng gần cũng thu được sóng, Wi-Fi phải mã hóa: WPA2 là bộ khóa phổ biến hơn cả — nội dung được khóa bằng chìa sinh từ mật khẩu mạng. Nhưng WPA2 có một điểm yếu đã thành kinh điển: kẻ xấu THU lại khoảnh khắc một thiết bị bắt tay vào mạng, đem tệp đó về nhà, rồi cho máy đoán mật khẩu hàng tỷ lần — không ai hay biết.
+  - **Đào sâu hơn:** Kiểu tấn công đó gọi là dò offline: mọi phép thử diễn ra trên máy của kẻ tấn công, router nhà bạn không nhận được gì nên không thể chặn hay báo động. Mật khẩu ngắn và phổ biến kiểu "12345678" rơi trong vài phút.
+- *[m8-wpa3]* WPA3 vá đúng chỗ đó bằng kiểu bắt tay mới: mỗi lần muốn thử một mật khẩu, kẻ tấn công buộc phải "gõ cửa" router MỘT lần theo thời gian thật — hết trò mang về nhà dò hàng tỷ lần. Mật khẩu yếu vẫn là mật khẩu yếu, nhưng cái giá của mỗi lần đoán đắt lên hàng triệu lần.
+  - **Đào sâu hơn:** Kiểu bắt tay mới tên là SAE. WPA3 còn kèm Enhanced Open cho mạng KHÔNG mật khẩu (quán cà phê): vẫn mã hóa riêng từng người dù chẳng cần đăng nhập. Và nhớ tòa nhà 15 phòng: trên mạng lạ, HTTPS ở phòng 443 vẫn là lớp khóa của riêng bạn — khóa của mạng và khóa của trang web là hai lớp độc lập.
+
+**4 · Thử tay (practice, fading 2):**
+- **Đề:** Điểm yếu kinh điển của WPA2 nằm ở đâu?
+  - **Dạng:** trắc nghiệm · **Thu được cú bắt tay là đem về dò mật khẩu offline, không ai hay biết** ✓ / Nó không mã hóa gì cả / Nó chỉ chạy được trên băng 2.4 GHz
+  - **Chủ đề gợi ý (tầng 1):** thứ kẻ xấu chỉ cần thu đúng một lần
+  - **Gợi ý (tầng 2):** Kẻ tấn công không đoán trên router — hắn đoán ở nhà hắn, trên thứ đã thu được.
+  - **Lời giải (tầng 3):** Thu lại cú bắt tay lúc thiết bị vào mạng rồi dò mật khẩu offline — router không hề biết nên không thể chặn.
+- **Đề:** Vào trang cài đặt router, chuẩn bảo mật mới nhất bạn nên chọn là gì?
+  - **Dạng:** gõ tay · **Chấp nhận:** wpa3 | wpa 3
+  - **Chủ đề gợi ý (tầng 1):** đời kế tiếp của WPA2
+  - **Gợi ý (tầng 2):** Tăng con số sau chữ WPA lên một.
+  - **Lời giải (tầng 3):** WPA3 — bắt tay kiểu mới chặn được kiểu dò offline; router và thiết bị đời mới đều hỗ trợ.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: trên mạng Wi-Fi mở của quán cà phê, lớp khóa nào vẫn che nội dung bạn gửi cho từng trang web? (gợi ý: phòng 443)
+  - **Dạng:** gõ tay · **Chấp nhận:** https | tls | ssl
+  - **Chủ đề gợi ý (tầng 1):** ổ khóa vàng của tòa nhà 15 phòng
+  - **Gợi ý (tầng 2):** Chính là dịch vụ ở phòng 443 trong cung điện ký ức.
+  - **Lời giải (tầng 3):** HTTPS (TLS) — mã hóa giữa máy bạn và từng trang web, độc lập với chuyện mạng Wi-Fi có khóa hay không.
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao WPA3 làm kẻ dò mật khẩu khốn khổ hơn hẳn so với WPA2?
+  - **Nhóm ý cần chạm:** [gõ cửa, go cua, hỏi router, hoi router, trực tiếp, truc tiep, từng lần, tung lan, thời gian thật, thoi gian that] · [offline, mang về, mang ve, hàng tỷ, hang ty, tỷ lần, ty lan]
+  - **Trả lời mẫu:** Với WPA2, hắn thu một cú bắt tay rồi về nhà thử hàng tỷ mật khẩu offline. Với WPA3, mỗi lần đoán buộc phải gõ cửa router một lần theo thời gian thật — vừa chậm, vừa lộ mặt, và chặn được.
+
+**6 · Tổng kết:**
+- Sóng bay ra tận vỉa hè nên nội dung phải được mã hóa — đó là việc của WPA.
+- WPA2 dính đòn dò offline: thu cú bắt tay một lần, về nhà đoán hàng tỷ lần.
+- WPA3 bắt mỗi lần đoán phải gõ cửa router — cứ chọn WPA3 khi router cho phép.
+- *Úp mở bài sau:* Xong phần sóng. Giờ tới phần địa chỉ: ngay lúc này trên máy bạn có sẵn một địa chỉ lạ bắt đầu bằng fe80 mà bạn chưa từng đặt — của ai vậy?
+
+### Bài: Đọc biển số đời mới không vấp `m8-bai-4`
+
+**1 · Khởi động (hook):** Gõ lệnh xem địa chỉ trên máy, bạn sẽ thấy một dòng bắt đầu bằng fe80:: mà bạn chưa từng đặt, và cũng chẳng ai phát cho máy cả. Nó ở đâu ra, và để làm gì?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử nhé: IPv6 cho mỗi thiết bị một địa chỉ công cộng thật. Vậy còn cần NAT như bên IPv4 không?
+  - **Dạng:** trắc nghiệm · **Không cần — NAT sinh ra vì IPv4 thiếu địa chỉ, mà IPv6 thì thừa** ✓ / Vẫn cần, vì NAT là lớp bảo mật / Cần, vì IPv6 rồi cũng sắp cạn
+  - **Vì sao:** NAT (Module 7) là giải pháp tình thế cho việc IPv4 cạn địa chỉ. IPv6 đủ địa chỉ cho mỗi hạt cát — ai cũng có biển số công cộng thật. Còn việc chặn người lạ xưa nay vẫn là của TƯỜNG LỬA; đừng nhầm hai vai.
+
+**3 · Khám phá (teach):**
+- *[m8-link-local]* Địa chỉ fe80:: là link-local: máy TỰ sinh ngay khi bật card mạng, không cần xin ai. Nó như biệt danh gọi nhau TRONG MỘT PHÒNG — chỉ có nghĩa giữa các máy chung một đường truyền, không bao giờ được đi qua router. IPv6 dùng nó cho việc nội bộ: tìm hàng xóm, nói chuyện với router.
+  - **Đào sâu hơn:** Vì luôn tồn tại kể cả khi chưa mạng nào cấp phát gì, link-local là "đường dây nóng" của IPv6: mọi trao đổi hạ tầng — nghe router rao, hỏi địa chỉ MAC của hàng xóm (vai của ARP ngày xưa) — đều chạy trên nó. Hai máy nối thẳng một sợi dây cũng nói chuyện được với nhau bằng fe80.
+- *[m8-global-unicast]* Địa chỉ công cộng của IPv6 (global unicast, thường mở đầu bằng số 2 hoặc 3) chia đôi đúng ở /64: nửa đầu là TÊN KHU PHỐ do router rao — phần dẫn đường trên Internet; nửa sau là SỐ NHÀ do chính máy chọn. Mỗi thiết bị một biển số công cộng thật — hết thời cả nhà mượn chung một số như bên NAT.
+  - **Đào sâu hơn:** Nửa sau ngày nay thường là số ngẫu nhiên và đổi định kỳ — để không ai lần theo một chiếc máy qua các mạng khác nhau bằng chính địa chỉ của nó. Còn về độ lớn: không gian /64 của MỘT khu phố đã gấp hơn 4 tỷ lần toàn bộ Internet IPv4.
+
+**4 · Thử tay (practice, fading 2):**
+- **Đề:** Địa chỉ nào sau đây là link-local IPv6 — chỉ có nghĩa trong một phòng?
+  - **Dạng:** trắc nghiệm · **fe80::1** ✓ / 192.168.1.10 / 2001:db8::5
+  - **Chủ đề gợi ý (tầng 1):** cụm mở đầu của biệt danh trong phòng
+  - **Gợi ý (tầng 2):** Biệt danh trong phòng luôn mở đầu bằng fe80.
+  - **Lời giải (tầng 3):** fe80::1 là link-local. Còn 192.168.1.10 là IPv4 riêng (Module 3), và 2001:db8::5 là IPv6 công cộng.
+- **Đề:** Đổi hệ quy chiếu: máy 192.168.1.10 (IPv4 riêng) mở một trang web. Ai phải ra tay thì gói tin của nó mới ra được Internet?
+  - **Dạng:** trắc nghiệm · **Router làm NAT — đổi địa chỉ riêng thành địa chỉ công cộng** ✓ / Không ai cả — nó tự đi thẳng như IPv6 / DNS đổi địa chỉ giúp nó
+  - **Chủ đề gợi ý (tầng 1):** chuyện Module 7 — cả nhà một số nhà
+  - **Gợi ý (tầng 2):** 192.168.x.x không bao giờ xuất hiện ngoài Internet — phải có ai đó đổi nó trước.
+  - **Lời giải (tầng 3):** Router làm NAT (Module 7). Đây chính là điểm khác cốt lõi giữa hai hệ: IPv4 riêng phải được đổi địa chỉ, IPv6 công cộng thì đi thẳng.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: địa chỉ IPv6 bắt đầu bằng fe80 là loại gì, dùng trong phạm vi nào?
+  - **Dạng:** gõ tay · **Chấp nhận:** link-local | link local | trong phòng | trong phong | nội bộ | noi bo | một đường truyền | mot duong truyen | cục bộ | cuc bo
+  - **Chủ đề gợi ý (tầng 1):** biệt danh chỉ gọi được trong phòng
+  - **Gợi ý (tầng 2):** Tên tiếng Anh ghép "link" với "local" — phạm vi là một đường truyền.
+  - **Lời giải (tầng 3):** Link-local — máy tự sinh, chỉ có nghĩa giữa các máy chung một đường truyền, không bao giờ qua router.
+- **Đề:** Vẫn từ trí nhớ, nhưng đổi sang hệ cũ: cơ chế nào cho phép cả nhà IPv4 dùng chung một địa chỉ công cộng? (viết tắt)
+  - **Dạng:** gõ tay · **Chấp nhận:** nat | pat | nat/pat
+  - **Chủ đề gợi ý (tầng 1):** cuốn sổ ở cổng WAN
+  - **Gợi ý (tầng 2):** Ba chữ cái, học ở Module 7 — chữ giữa là "address".
+  - **Lời giải (tầng 3):** NAT (kèm PAT) — đổi địa chỉ riêng thành địa chỉ chung và tra sổ khi thư về. IPv6 không cần tới nó.
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao IPv4 phải đẻ ra NAT, còn IPv6 thì không cần?
+  - **Nhóm ý cần chạm:** [thiếu, thieu, cạn, can kiet, mượn chung, muon chung, 4,3 tỷ, it dia chi] · [đủ, du dia chi, thừa, thua, công cộng thật, cong cong that, mỗi thiết bị, moi thiet bi]
+  - **Trả lời mẫu:** IPv4 chỉ có khoảng 4,3 tỷ địa chỉ nên cả nhà phải mượn chung một địa chỉ công cộng qua NAT. IPv6 nhiều địa chỉ đến mức mỗi thiết bị mang một biển số công cộng thật — không phải đổi chác gì nữa, chỉ còn cần tường lửa đứng gác.
+
+**6 · Tổng kết:**
+- fe80:: là link-local — máy tự sinh, chỉ có nghĩa trong một đường truyền.
+- Địa chỉ công cộng IPv6 chia đôi ở /64: khu phố do router rao + số nhà do máy tự chọn.
+- IPv6 không cần NAT — đủ biển số cho tất cả; việc gác cửa là của tường lửa.
+- *Úp mở bài sau:* Nửa đầu "router rao", nửa sau "máy tự chọn" — vậy chúng ghép lại thành địa chỉ hoàn chỉnh bằng cách nào mà chẳng cần cuộc hỏi cưới 4 nhịp nào? Bài sau xem máy tự lo liệu.
+
+### Bài: Xem máy tự lo liệu địa chỉ `m8-bai-5`
+
+**1 · Khởi động (hook):** Ở IPv4, máy phải qua đủ bốn nhịp hỏi cưới Discover–Offer–Request–Ack mới có địa chỉ. Máy IPv6 vừa bật lên đã tự có, chẳng xin ai. Nó lấy địa chỉ ở đâu ra?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử nhé: máy IPv6 có địa chỉ công cộng bằng cách nào?
+  - **Dạng:** trắc nghiệm · **Nghe router rao tên khu phố rồi TỰ ghép số nhà của mình vào** ✓ / Vẫn phải hỏi cưới bốn nhịp như DHCP / Người dùng phải gõ tay từng địa chỉ
+  - **Vì sao:** Cơ chế đó tên là SLAAC: router rao đều đặn "khu phố này tên …/64"; máy nghe được thì tự ghép nửa sau — có địa chỉ mà không ai phải giữ sổ.
+
+**3 · Khám phá (teach):**
+- *[m8-slaac]* SLAAC — máy tự cấu hình địa chỉ. Router rao đều đặn như loa phường: "ai ở đây thì mang tên phố 2001:db8:1:1::/64". Máy mới tới nghe được, lấy tên phố làm nửa đầu, tự chọn số nhà làm nửa sau — thế là có địa chỉ công cộng. Không nhịp hỏi, không ai giữ sổ, không ai phải gật đầu.
+  - **Đào sâu hơn:** Khác biệt với DHCP nằm ở cuốn SỔ: DHCP có máy chủ nhớ ai thuê địa chỉ nào, hạn bao lâu (Module 6) — quản được, nhưng phải nuôi người giữ sổ. SLAAC không ai ghi chép; máy chỉ hỏi vọng một câu "có ai trùng số này không?" trước khi dùng cho chắc. Mạng công ty cần sổ sách vẫn dùng DHCPv6; mạng nhà thì SLAAC là mặc định.
+- *[m8-dual-stack]* Dual-stack: một card mạng mang SONG SONG hai địa chỉ — một IPv4, một IPv6 — như chiếc xe đeo hai biển số. Với mỗi đích đến, máy chọn đường đi được: đích có IPv6 thì thường ưu tiên IPv6, chưa có thì quay về IPv4. Nhờ đó cả Internet đổi hệ TỪ TỪ suốt hai chục năm mà chưa từng phải tắt đi bật lại.
+  - **Đào sâu hơn:** "Ưu tiên nhưng không cố chấp": trình duyệt hiện đại cho hai đường chạy đua vài chục mili-giây rồi lấy đường về đích trước (kỹ thuật tên là Happy Eyeballs) — người dùng không bao giờ phải biết mình đang đi hệ nào. Chính chiếc máy bạn đang cầm gần như chắc chắn đang chạy dual-stack.
+
+**4 · Thử tay (practice, fading 2):**
+- **Đề:** Cơ chế để máy IPv6 TỰ ghép địa chỉ từ lời rao của router tên là gì?
+  - **Dạng:** gõ tay · **Chấp nhận:** slaac
+  - **Chủ đề gợi ý (tầng 1):** năm chữ cái, mở đầu bằng chữ S của "stateless"
+  - **Gợi ý (tầng 2):** Viết tắt của Stateless Address Autoconfiguration — năm chữ cái.
+  - **Lời giải (tầng 3):** SLAAC — Stateless (không ai giữ sổ) Address Autoconfiguration (máy tự cấu hình địa chỉ).
+- **Đề:** Đổi hệ: một máy IPv4 xin địa chỉ qua DHCP. Khác biệt CỐT LÕI so với SLAAC là gì?
+  - **Dạng:** trắc nghiệm · **DHCP có máy chủ giữ sổ — nhớ ai thuê địa chỉ nào, hạn bao lâu; SLAAC không ai ghi chép** ✓ / DHCP chạy nhanh hơn SLAAC / DHCP không cần router trong mạng
+  - **Chủ đề gợi ý (tầng 1):** bên nào có người giữ sổ
+  - **Gợi ý (tầng 2):** Nhớ tờ giấy thuê có thời hạn ở Module 6 — ai đang giữ tờ đó?
+  - **Lời giải (tầng 3):** DHCP là cơ chế CÓ SỔ SÁCH: máy chủ nhớ từng hợp đồng thuê. SLAAC vô sổ — máy tự ghép, mạng nhẹ việc nhưng không ai quản danh sách.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: xếp đúng thứ tự các bước một máy IPv6 vừa bật lên cho tới khi có địa chỉ công cộng.
+  - **Dạng:** xếp thứ tự (thứ tự đúng):
+    1. Bật card mạng — tự sinh địa chỉ fe80 dùng trong phòng
+    2. Nghe router rao tên khu phố /64
+    3. Tự chọn số nhà, ghép vào tên khu phố
+    4. Hỏi vọng "có ai trùng số này không?" rồi bắt đầu dùng
+  - **Chủ đề gợi ý (tầng 1):** từ trong phòng ra tới ngoài phố
+  - **Gợi ý (tầng 2):** Bắt đầu từ thứ máy TỰ có sẵn (bài trước), rồi mới tới thứ phải nghe từ router.
+  - **Lời giải (tầng 3):** fe80 trước (tự có), rồi nghe rao, ghép địa chỉ, kiểm trùng rồi dùng — không nhịp nào phải xin phép ai.
+- **Đề:** Vẫn từ trí nhớ, đổi sang hệ cũ: cơ chế cấp địa chỉ BỐN NHỊP có người giữ sổ của IPv4 tên là gì? (viết tắt)
+  - **Dạng:** gõ tay · **Chấp nhận:** dhcp | dora
+  - **Chủ đề gợi ý (tầng 1):** cuộc hỏi cưới ở Module 6
+  - **Gợi ý (tầng 2):** Bốn nhịp Discover–Offer–Request–Ack là của giao thức nào?
+  - **Lời giải (tầng 3):** DHCP — cấp phát có sổ sách qua bốn nhịp DORA; đối trọng của SLAAC bên IPv6.
+- **Tự giải thích:** Giải thích bằng lời của bạn: nhờ đâu Internet chuyển từ IPv4 sang IPv6 suốt hai chục năm mà chưa từng phải "tắt đi bật lại"?
+  - **Nhóm ý cần chạm:** [song song, hai địa chỉ, hai dia chi, cả hai, ca hai, cùng lúc, cung luc, dual] · [từ từ, tu tu, dần, dan dan, quay về, quay ve, ipv4]
+  - **Trả lời mẫu:** Nhờ dual-stack: mỗi máy mang song song cả hai địa chỉ, đích nào có IPv6 thì đi IPv6, chưa có thì quay về IPv4 — từng mạng cứ thế nâng cấp dần mà không ai bị đứt.
+
+**6 · Tổng kết:**
+- SLAAC: router rao tên khu phố, máy tự ghép số nhà — có địa chỉ mà không ai giữ sổ.
+- DHCP là đối trọng có sổ sách: máy chủ nhớ từng hợp đồng thuê (DORA, Module 6).
+- Dual-stack đeo hai biển số song song — bí quyết giúp Internet đổi hệ không sập.
+- *Úp mở bài sau:* Hết chuyện sóng và biển số. Module sau bước hẳn vào văn phòng: một máy chủ Windows cai quản mọi máy con trong công ty — và một tòa nhà ký ức bốn tầng chờ bạn leo.
+
+### Khái niệm & flashcard (10)
+
+- **Wi-Fi** `m8-song-wifi` — Sóng radio thay cho sợi dây mạng; không khí là một sợi dây chung
+  - Ẩn dụ: Cả phòng nói chuyện qua cùng một khoảng không khí — thay phiên nhau nói, càng đông càng chờ.
+  - Thẻ ôn: *Wi-Fi thay sợi dây mạng bằng gì, và cái giá phải trả là gì?* → Bằng sóng radio qua không khí — nhưng không khí là MỘT dây chung: mọi thiết bị thay phiên nhau nói, và ai đứng gần cũng thu được sóng.
+- **Băng tần** `m8-bang-tan` — Dải sóng Wi-Fi chạy trên đó: 2.4 / 5 / 6 GHz
+  - Ẩn dụ: Giọng trầm vang xa qua tường; giọng cao rõ chữ nhưng phải đứng gần.
+  - Thẻ ôn: *Ba băng tần Wi-Fi đánh đổi với nhau thế nào?* → 2.4 GHz xa, xuyên tường tốt nhưng chậm và đông; 5 GHz nhanh mà gần; 6 GHz nhanh nhất, vắng nhất, tầm ngắn nhất. Gần ưu tiên nhanh, xa ưu tiên tới.
+- **Thế hệ Wi-Fi** `m8-chuan-wifi` — Wi-Fi 4/5/6/7 — các đời của chuẩn 802.11, đánh số cho dễ nhớ
+  - Ẩn dụ: Đời xe: xe mới vẫn chạy chung đường với xe cũ, nhưng cặp nào đi chung thì theo tốc độ xe cũ.
+  - Thẻ ôn: *Hai thiết bị khác thế hệ Wi-Fi nói chuyện với nhau bằng đời nào?* → Bằng thế hệ THẤP hơn của hai bên — chuẩn mới luôn tương thích ngược (Wi-Fi 4/5/6/7 = 802.11n/ac/ax/be).
+- **Wi-Fi 6E và Wi-Fi 7** `m8-wifi-6e-7` — 6E = Wi-Fi 6 thêm băng 6 GHz; Wi-Fi 7 kênh rộng gấp đôi, đi hai băng cùng lúc
+  - Ẩn dụ: 6E là tấm vé vào làn cao tốc mới còn vắng; Wi-Fi 7 cho xe chạy hai làn một lúc.
+  - Thẻ ôn: *Wi-Fi 6E khác Wi-Fi 6 chỗ nào? Wi-Fi 7 thêm gì?* → 6E = đúng Wi-Fi 6 cộng quyền chạy băng 6 GHz còn vắng. Wi-Fi 7 mở kênh rộng gấp đôi và đi hai băng cùng lúc (MLO).
+- **WPA2** `m8-wpa2` — Chuẩn mã hóa Wi-Fi phổ biến; yếu trước kiểu dò mật khẩu offline
+  - Ẩn dụ: Khóa cửa tốt nhưng để lọt một kẽ: kẻ trộm chụp ảnh ổ khóa rồi về nhà mài chìa cả đêm.
+  - Thẻ ôn: *Điểm yếu kinh điển của WPA2 là gì?* → Kẻ xấu thu cú bắt tay lúc thiết bị vào mạng rồi dò mật khẩu OFFLINE hàng tỷ lần — router không hề biết để chặn.
+- **WPA3** `m8-wpa3` — Chuẩn mã hóa mới: mỗi lần đoán mật khẩu phải hỏi router một lần
+  - Ẩn dụ: Ổ khóa không chụp ảnh được — muốn thử chìa nào phải tra vào cửa ngay trước mặt bảo vệ.
+  - Thẻ ôn: *WPA3 chặn kiểu tấn công nào của thời WPA2, bằng cách gì?* → Chặn dò mật khẩu offline: bắt tay kiểu mới (SAE) buộc mỗi lần đoán phải hỏi router theo thời gian thật — chậm, lộ mặt, chặn được.
+- **Link-local (fe80::)** `m8-link-local` — Địa chỉ IPv6 máy tự sinh, chỉ có nghĩa trong một đường truyền
+  - Ẩn dụ: Biệt danh trong phòng: gọi nhau thoải mái, bước ra khỏi cửa là vô nghĩa.
+  - Thẻ ôn: *Địa chỉ fe80:: là gì, ai cấp cho máy?* → Link-local: máy TỰ sinh khi bật card mạng, không xin ai; chỉ dùng giữa các máy chung một đường truyền, không bao giờ qua router.
+- **Global unicast** `m8-global-unicast` — Địa chỉ IPv6 công cộng: /64 chia đôi khu phố + số nhà, không cần NAT
+  - Ẩn dụ: Biển số công cộng thật cho từng thiết bị — hết thời cả nhà mượn chung một số.
+  - Thẻ ôn: *Địa chỉ công cộng IPv6 chia đôi ở đâu, hai nửa do ai quyết?* → Ở /64: nửa đầu là tên khu phố do router rao; nửa sau là số nhà do máy tự chọn. Mỗi thiết bị một địa chỉ công cộng thật — không cần NAT, chỉ cần tường lửa.
+- **SLAAC** `m8-slaac` — Máy tự cấu hình địa chỉ IPv6 từ lời rao của router, không ai giữ sổ
+  - Ẩn dụ: Nghe loa phường đọc tên phố rồi tự sơn số nhà — chẳng phải nộp đơn cho ai.
+  - Thẻ ôn: *SLAAC khác DHCP ở điểm cốt lõi nào?* → SLAAC vô sổ: router chỉ rao prefix, máy tự ghép — không ai nhớ ai dùng gì. DHCP có máy chủ giữ sổ thuê (DORA), quản được nhưng phải nuôi người giữ sổ.
+- **Dual-stack** `m8-dual-stack` — Một card mạng mang song song cả địa chỉ IPv4 lẫn IPv6
+  - Ẩn dụ: Chiếc xe đeo hai biển số — đường mới đi biển mới, đường cũ vẫn biển cũ.
+  - Thẻ ôn: *Dual-stack là gì, và vì sao nó quan trọng với cả Internet?* → Máy mang song song cả IPv4 lẫn IPv6: đích có IPv6 thì ưu tiên, chưa có thì quay về IPv4 — nhờ đó Internet đổi hệ từ từ mà không sập.
+
+### Bài kiểm tra module (9 câu, cần ≥ 85%)
+
+- **Đề:** Camera ở góc vườn, cách router hai bức tường, nên vào băng tần nào?
+  - **Dạng:** trắc nghiệm · **2.4 GHz — tần số thấp đi xa, xuyên tường tốt** ✓ / 5 GHz — nhanh hơn là hơn / 6 GHz — mới nhất là tốt nhất
+  - **Vì sao:** Xa ưu tiên TỚI: 2.4 GHz vang xa nhất; tốc độ của 5/6 GHz vô nghĩa nếu sóng không tới nơi.
+- **Đề:** Wi-Fi 6E khác Wi-Fi 6 ở quyền chạy thêm trên băng tần nào? (con số)
+  - **Dạng:** gõ tay · **Chấp nhận:** 6 | 6ghz | băng 6 | bang 6
+  - **Vì sao:** 6E = Wi-Fi 6 cộng quyền vào băng 6 GHz — làn đường mới còn vắng.
+- **Đề:** Chuẩn bảo mật Wi-Fi mới, chặn được kiểu dò mật khẩu offline, tên là gì?
+  - **Dạng:** gõ tay · **Chấp nhận:** wpa3 | wpa 3
+  - **Vì sao:** WPA3: kiểu bắt tay mới buộc mỗi lần đoán mật khẩu phải hỏi router một lần theo thời gian thật.
+- **Đề:** Địa chỉ IPv6 bắt đầu bằng fe80 là loại địa chỉ gì?
+  - **Dạng:** gõ tay · **Chấp nhận:** link-local | link local | nội bộ | noi bo | trong phòng | trong phong | cục bộ | cuc bo
+  - **Vì sao:** Link-local — máy tự sinh, chỉ có nghĩa trong một đường truyền, không bao giờ qua router.
+- **Đề:** Máy 192.168.1.10 mở một trang web. Chuyện gì phải xảy ra với địa chỉ nguồn trước khi gói tin ra tới Internet?
+  - **Dạng:** trắc nghiệm · **Router đổi nó thành địa chỉ công cộng — NAT** ✓ / Không gì cả, nó đi thẳng / DNS đổi nó thành tên miền
+  - **Vì sao:** 192.168.x.x là địa chỉ riêng IPv4 — phải qua NAT ở router (Module 7). Nhận ra "đây là chuyện của hệ nào" chính là kỹ năng module này luyện.
+- **Đề:** Cùng cảnh đó nhưng máy dùng 2001:db8::5 (IPv6 công cộng). Địa chỉ nguồn có phải đổi không?
+  - **Dạng:** trắc nghiệm · **Không — đó đã là biển số công cộng thật, đi thẳng; tường lửa vẫn đứng gác** ✓ / Có — mọi gói tin đều phải qua NAT / Có — router đổi nó thành fe80
+  - **Vì sao:** IPv6 đủ địa chỉ cho tất cả nên không cần NAT; việc chặn người lạ là của tường lửa — đừng nhầm hai vai.
+- **Đề:** Cơ chế cấp địa chỉ qua bốn nhịp Discover–Offer–Request–Ack là của giao thức nào? (viết tắt)
+  - **Dạng:** gõ tay · **Chấp nhận:** dhcp
+  - **Vì sao:** DHCP — cơ chế cấp phát CÓ SỔ của IPv4 (Module 6); bên IPv6 khi cần sổ sách người ta dùng DHCPv6.
+- **Đề:** Cơ chế để máy IPv6 tự ghép địa chỉ từ lời rao prefix của router tên là gì?
+  - **Dạng:** gõ tay · **Chấp nhận:** slaac
+  - **Vì sao:** SLAAC — stateless: router rao tên khu phố, máy tự chọn số nhà, không ai giữ sổ.
+- **Đề:** Máy bạn đang mang đồng thời 192.168.1.10 và 2001:db8::5. Tình trạng này gọi là gì?
+  - **Dạng:** trắc nghiệm · **Dual-stack — chạy song song hai hệ, ưu tiên IPv6 khi đích có** ✓ / Double NAT — hai lớp đổi địa chỉ / Link-local — hai biệt danh trong phòng
+  - **Vì sao:** Dual-stack: hai biển số song song trên một card mạng. Double NAT (Module 7) là chuyện khác hẳn — hai lớp ĐỔI địa chỉ IPv4 lồng nhau.

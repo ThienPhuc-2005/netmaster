@@ -1,14 +1,14 @@
-# Trạng thái dự án — NetMaster (Phase 1 + 2 xong; Phase 3 đang khối 8.2)
+# Trạng thái dự án — NetMaster (Phase 1 + 2 xong; Phase 3 đang khối 8.3)
 
-Cập nhật: 2026-08-06 tối. File này chỉ để nắm nhanh tình hình khi mở lại
-dự án. Nguồn chân lý vẫn là `SPEC-APP-HOC-MANG.md`; luật làm việc ở
-`CLAUDE.md`; nội dung bài đọc duyệt ở `REVIEW-NOI-DUNG.md`.
+Cập nhật: 2026-08-06 tối (muộn). File này chỉ để nắm nhanh tình hình khi
+mở lại dự án. Nguồn chân lý vẫn là `SPEC-APP-HOC-MANG.md`; luật làm việc
+ở `CLAUDE.md`; nội dung bài đọc duyệt ở `REVIEW-NOI-DUNG.md`.
 
 ## MỞ PHIÊN MỚI THÌ ĐỌC ĐÂY TRƯỚC
 
 **Đang đứng đâu:** Phase 1 + Phase 2 xong hẳn (chi tiết bên dưới).
-Phase 3 hạng mục (8) đang dở: khối 8.1 XONG và đã push; **việc kế tiếp
-là khối 8.2 — viết nội dung Module 8** (bảng khối ở mục Phase 3 dưới).
+Phase 3 hạng mục (8) đang dở: khối 8.1 + 8.2 XONG; **việc kế tiếp là
+khối 8.3 — Module 9 ⭐ (AD DS/GPO)** (bảng khối ở mục Phase 3 dưới).
 Kế hoạch 5 khối của hạng mục (8) đã được người dùng duyệt, ba quyết định
 đã chốt — KHÔNG hỏi lại, không đảo lại.
 
@@ -27,20 +27,9 @@ Kế hoạch 5 khối của hạng mục (8) đã được người dùng duyệ
 2. **Buổi test người thật** (`KICH-BAN-TEST.md`) — cần người, không code
    được.
 
-**Khối 8.2 cần làm gì (việc kế tiếp):** viết `content/modules/module-08.json`
-— Module 8 "Wi-Fi và IPv6 chuyên sâu", Phần C đầu tiên. Spec đòi: chuẩn
-Wi-Fi 6/6E/7, băng tần, WPA2/WPA3, IPv6 addressing, SLAAC, dual-stack;
-kỹ thuật đặc thù là **interleaving mạnh** — bài tập trộn câu IPv4/IPv6
-để người học phân biệt khi nào dùng kiến thức nào (IPv4 đã học ở Module
-3). Kèm hình SVG mới trong `ConceptVisual` (nhớ chạy `/design` mục
-"Hình khái niệm" + đo `getBBox` soi chữ tràn khung). Xong thì
-`npm run content:review`, cập nhật file này, commit push. Mẫu tham khảo
-tốt nhất về giọng văn + cấu trúc: `content/modules/module-06.json` và
-`module-07.json`.
-
-**Sau 8.2:** khối 8.3 — Module 9 ⭐ (AD DS/GPO): cung điện GPO dùng
-`GPO_PALACE` trong `tests/fixtures/palaceFixture.ts` làm hình mẫu (4
-tầng × 1 phòng, keyStyle 'text', đã có test); cần vẽ 4 hình
+**Khối 8.3 cần làm gì (việc kế tiếp):** Module 9 ⭐ (AD DS/GPO): cung
+điện GPO dùng `GPO_PALACE` trong `tests/fixtures/palaceFixture.ts` làm
+hình mẫu (4 tầng × 1 phòng, keyStyle 'text', đã có test); cần vẽ 4 hình
 `gpo-house-rules`/`gpo-office-floor`/`gpo-company-flag`/`gpo-department-door`
 vào `RoomGlyph` (registry KHÔNG có hình dự phòng — thiếu là test đỏ);
 worked example fading 0→1→2 rõ nhất app; khai `vmLab` (schema + store
@@ -430,7 +419,7 @@ khai trong JSON module, tick persist, **không XP**.
 | Khối | Nội dung | Trạng thái |
 |------|----------|-----------|
 | 8.1 | Tổng quát hóa cung điện + schema/store checklist VMware | Xong |
-| 8.2 | Nội dung Module 8 (Wi-Fi, WPA, IPv6/SLAAC — interleaving IPv4↔IPv6) | Chưa |
+| 8.2 | Nội dung Module 8 (Wi-Fi, WPA, IPv6/SLAAC — interleaving IPv4↔IPv6) | Xong |
 | 8.3 | Nội dung Module 9 ⭐ (AD DS/GPO, cung điện LSDOU, fading đậm, checklist VMware) | Chưa |
 | 8.4 | Nội dung Module 10 (VPC/Zero Trust — contrast cases với on-prem) | Chưa |
 | 8.5 | DoD + kiểm browser + tài liệu | Chưa |
@@ -455,6 +444,32 @@ khai trong JSON module, tick persist, **không XP**.
 - 741/741 test xanh (+9 ròng), typecheck sạch, build qua. Kiểm browser:
   cung điện M5 sau migration chạy nguyên — nhãn "Số cổng"/"Dịch vụ" giờ
   đến từ nội dung, gõ "web thuong" vẫn được chấm đúng.
+
+**Khối 8.2 đã làm gì** (nội dung thật của Module 8 — mở Phần C):
+- `content/modules/module-08.json` — 5 chặng, 5 bài, 10 khái niệm, bài
+  thi 9 câu. Bài 1 băng tần (quy tắc "gần ưu tiên nhanh, xa ưu tiên
+  tới"), bài 2 thế hệ Wi-Fi 4→7 + 6E/MLO (ẩn dụ đời xe, tương thích
+  ngược), bài 3 WPA2/WPA3 (điểm yếu dò offline → bắt tay "gõ cửa từng
+  lần"; nối về phòng 443), bài 4 link-local fe80 + global unicast /64
+  (khu phố router rao + số nhà máy chọn; pretest gài đúng chỗ nhầm
+  "NAT = bảo mật"), bài 5 SLAAC vs DHCP-có-sổ + dual-stack.
+- **Interleaving mạnh đúng spec:** từ bài 4, bài tập và câu nhớ lại trộn
+  A-B giữa hai hệ — câu IPv6 đứng cạnh câu "đổi hệ quy chiếu" bắt dùng
+  lại NAT (M7), DORA (M6), địa chỉ riêng (M3); bài thi xen kẽ câu 4-8
+  (fe80 → NAT → no-NAT IPv6 → DHCP → SLAAC) và câu 9 phân biệt
+  dual-stack với double NAT. Kỹ năng được luyện là NHẬN RA câu này thuộc
+  hệ nào trước khi trả lời.
+- 10 hình SVG mới trong `ConceptVisual` (sóng thay dây, ba làn băng tần,
+  timeline thế hệ, làn 6 GHz vắng, khóa WPA, WPA3 gõ cửa, phòng fe80,
+  biển số /64 hai nửa, SLAAC tự ghép, hai biển dual-stack). Đo `getBBox`
+  cả 80 hình trên `/design`: 4 hình mới tràn chú thích lúc đầu — đã rút
+  gọn, giờ 80/80 nằm trong khung.
+- Module 8 KHÔNG cần lab, KHÔNG cần cung điện, KHÔNG sửa engine — chỉ
+  một file JSON + hình. Phép thử kiến trúc tiếp tục đạt.
+- 741/741 test xanh, typecheck sạch, build qua, content:review đã render
+  8 module. Kiểm browser bằng hồ sơ mới: trang Học liệt kê Module 8 đủ
+  5 chặng (khóa tuần tự), deep-link `/bai/m8-bai-1` đi được: hook → đoán
+  thử chấm + giải thích → màn dạy hiện hình mới + "Đào sâu hơn".
 
 ## Lệnh hay dùng
 

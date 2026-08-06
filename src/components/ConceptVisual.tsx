@@ -1201,6 +1201,291 @@ function DoubleNat({ title }: { title?: string }) {
   )
 }
 
+/** Wi-Fi: một điểm phát, mọi thiết bị chung một khoảng không khí. */
+function WifiWaves({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <rect x="18" y="52" width="42" height="26" rx="4" {...stroke} />
+        <path d="M28 52 v-10 M50 52 v-10" {...stroke} strokeWidth={1.5} />
+      </g>
+      <g className="text-accent">
+        <path d="M70 57 q10 8 0 16" {...stroke} strokeWidth={1.5} />
+        <path d="M80 50 q18 15 0 30" {...stroke} strokeWidth={1.5} />
+        <path d="M90 43 q26 22 0 44" {...stroke} strokeWidth={1.5} />
+      </g>
+      <g className="text-ink-muted">
+        <rect x="148" y="34" width="16" height="28" rx="3" {...stroke} strokeWidth={1.5} />
+        <rect x="172" y="72" width="34" height="20" rx="3" {...stroke} strokeWidth={1.5} />
+        <path d="M110 65 H144 M110 65 168 80" {...stroke} strokeWidth={1} strokeDasharray="3 3" />
+      </g>
+      <text x="110" y="120" textAnchor="middle" {...monoText}>
+        không khí = một dây chung
+      </text>
+    </Frame>
+  )
+}
+
+/** Ba băng tần: trầm vang xa xuyên tường, thanh chở nhiều mà gần. */
+function BandTradeoff({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <text x="14" y="36" {...monoText}>2.4</text>
+        <path d="M42 32 H198" {...stroke} strokeWidth={1.5} markerEnd="url(#cv-arrow)" />
+        <text x="14" y="64" {...monoText}>5</text>
+        <path d="M42 60 H138" {...stroke} strokeWidth={1.5} markerEnd="url(#cv-arrow)" />
+      </g>
+      <g className="text-accent">
+        <text x="14" y="92" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>6</text>
+        <path d="M42 88 H112" {...stroke} markerEnd="url(#cv-arrow)" />
+      </g>
+      <g className="text-ink-muted">
+        <path d="M152 20 V98" {...stroke} strokeWidth={1.2} strokeDasharray="5 3" />
+        <text x="160" y="104" {...monoText}>tường</text>
+      </g>
+      <text x="110" y="122" textAnchor="middle" {...monoText}>
+        thấp: xa mà chậm · cao: nhanh mà gần
+      </text>
+    </Frame>
+  )
+}
+
+/** Thế hệ Wi-Fi 4→7: số càng cao càng mới, tương thích ngược. */
+function WifiGenerations({ title }: { title?: string }) {
+  const gens = [
+    { x: 22, num: '4', sub: 'n' },
+    { x: 70, num: '5', sub: 'ac' },
+    { x: 118, num: '6', sub: 'ax' },
+    { x: 166, num: '7', sub: 'be' },
+  ]
+  return (
+    <Frame title={title}>
+      <path d="M14 92 H206" className="text-ink-muted" {...stroke} strokeWidth={1.2} markerEnd="url(#cv-arrow)" />
+      {gens.map((g, i) => (
+        <g key={g.num} className={i === 3 ? 'text-accent' : 'text-ink-muted'}>
+          <rect x={g.x} y="34" width="34" height="36" rx="4" {...stroke} strokeWidth={i === 3 ? 2 : 1.5} />
+          <text x={g.x + 17} y="52" textAnchor="middle" fontSize="12" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+            {g.num}
+          </text>
+          <text x={g.x + 17} y="64" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+            {g.sub}
+          </text>
+        </g>
+      ))}
+      <text x="110" y="118" textAnchor="middle" {...monoText}>
+        đời mới luôn nói được giọng cũ
+      </text>
+    </Frame>
+  )
+}
+
+/** Băng 6 GHz: làn cao tốc mới còn vắng bên hai làn cũ chen chúc. */
+function NewLane({ title }: { title?: string }) {
+  const cars24 = [48, 74, 100, 126, 152, 178]
+  const cars5 = [60, 116, 172]
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <rect x="14" y="18" width="192" height="24" rx="3" {...stroke} strokeWidth={1.2} />
+        {cars24.map((x) => (
+          <rect key={x} x={x} y="25" width="16" height="10" rx="2" {...stroke} strokeWidth={1.2} />
+        ))}
+        <rect x="14" y="50" width="192" height="24" rx="3" {...stroke} strokeWidth={1.2} />
+        {cars5.map((x) => (
+          <rect key={x} x={x} y="57" width="16" height="10" rx="2" {...stroke} strokeWidth={1.2} />
+        ))}
+        <text x="22" y="34" {...monoText}>2.4</text>
+        <text x="22" y="66" {...monoText}>5</text>
+      </g>
+      <g className="text-accent">
+        <rect x="14" y="82" width="192" height="24" rx="3" {...stroke} />
+        <text x="22" y="98" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>6</text>
+        <text x="124" y="98" textAnchor="middle" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          làn mới còn vắng
+        </text>
+      </g>
+      <text x="110" y="122" textAnchor="middle" {...monoText}>
+        6E = vé vào làn 6 GHz
+      </text>
+    </Frame>
+  )
+}
+
+/** WPA: sóng bay tới tai người lạ nhưng nội dung đã khóa. */
+function WpaLock({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <rect x="16" y="50" width="38" height="24" rx="4" {...stroke} />
+        <path d="M62 50 q10 12 0 24" {...stroke} strokeWidth={1.5} />
+        <path d="M74 42 q18 20 0 40" {...stroke} strokeWidth={1.5} />
+        <circle cx="184" cy="52" r="9" {...stroke} strokeWidth={1.5} />
+        <path d="M184 61 v22 M172 72 h24" {...stroke} strokeWidth={1.5} />
+        <text x="184" y="104" textAnchor="middle" {...monoText}>?</text>
+      </g>
+      <g className="text-accent">
+        <rect x="106" y="56" width="30" height="24" rx="4" {...stroke} />
+        <path d="M113 56 v-8 a9 9 0 0 1 16 0 v8" {...stroke} />
+        <circle cx="121" cy="67" r="2.5" fill="currentColor" stroke="none" />
+      </g>
+      <text x="110" y="122" textAnchor="middle" {...monoText}>
+        nghe được sóng, không đọc được thư
+      </text>
+    </Frame>
+  )
+}
+
+/** WPA3: hết dò offline — mỗi lần đoán phải gõ cửa router. */
+function Wpa3Handshake({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-warn">
+        <rect x="18" y="36" width="44" height="30" rx="3" {...stroke} strokeWidth={1.5} />
+        <path d="M22 40 58 62 M58 40 22 62" {...stroke} strokeWidth={1.5} />
+        <text x="40" y="80" textAnchor="middle" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          dò offline
+        </text>
+      </g>
+      <g className="text-accent">
+        <path d="M74 51 H142" {...stroke} markerEnd="url(#cv-arrow)" />
+        <text x="108" y="44" textAnchor="middle" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          từng lần một
+        </text>
+      </g>
+      <g className="text-ink-muted">
+        <rect x="150" y="38" width="46" height="28" rx="4" {...stroke} />
+        <path d="M160 38 v-8 M186 38 v-8" {...stroke} strokeWidth={1.5} />
+        <text x="173" y="80" textAnchor="middle" {...monoText}>router</text>
+      </g>
+      <text x="110" y="118" textAnchor="middle" {...monoText}>
+        mỗi lần đoán = một lần gõ cửa
+      </text>
+    </Frame>
+  )
+}
+
+/** Link-local fe80: biệt danh chỉ có nghĩa trong một phòng. */
+function LinkLocalRoom({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <rect x="16" y="24" width="126" height="80" rx="4" {...stroke} />
+        <rect x="30" y="42" width="26" height="18" rx="3" {...stroke} strokeWidth={1.5} />
+        <rect x="98" y="70" width="26" height="18" rx="3" {...stroke} strokeWidth={1.5} />
+        <path d="M60 54 94 74" {...stroke} strokeWidth={1} strokeDasharray="3 3" />
+      </g>
+      <g className="text-accent">
+        <text x="43" y="38" textAnchor="middle" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          fe80::a
+        </text>
+        <text x="111" y="66" textAnchor="middle" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          fe80::b
+        </text>
+      </g>
+      <g className="text-ink-muted">
+        <circle cx="180" cy="56" r="14" {...stroke} strokeWidth={1.5} />
+        <path d="M174 56 h12 M180 50 v12" {...stroke} strokeWidth={1.2} />
+        <path d="M142 56 H162" {...stroke} strokeWidth={1.2} strokeDasharray="3 3" />
+        <path d="M148 48 158 64 M158 48 148 64" {...stroke} strokeWidth={1.5} />
+      </g>
+      <text x="110" y="120" textAnchor="middle" {...monoText}>
+        chỉ có nghĩa trong một phòng
+      </text>
+    </Frame>
+  )
+}
+
+/** Global unicast chia đôi ở /64: khu phố router rao + số nhà máy chọn. */
+function Ipv6TwoHalves({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <rect x="18" y="50" width="120" height="26" rx="3" {...stroke} />
+        <text x="78" y="67" textAnchor="middle" {...monoText}>2001:db8:1:1</text>
+        <text x="78" y="36" textAnchor="middle" {...monoText}>khu phố — router rao</text>
+      </g>
+      <g className="text-accent">
+        <rect x="138" y="50" width="64" height="26" rx="3" {...stroke} />
+        <text x="170" y="67" textAnchor="middle" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          ::7a9f
+        </text>
+        <text x="170" y="94" textAnchor="middle" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          máy tự chọn
+        </text>
+      </g>
+      <g className="text-ink-muted">
+        <path d="M138 44 v38" {...stroke} strokeWidth={1.2} strokeDasharray="4 3" />
+        <text x="138" y="106" textAnchor="middle" {...monoText}>/64</text>
+      </g>
+      <text x="110" y="122" textAnchor="middle" {...monoText}>
+        mỗi thiết bị một biển số thật
+      </text>
+    </Frame>
+  )
+}
+
+/** SLAAC: router rao tên khu phố, máy tự ghép địa chỉ. */
+function SlaacAssemble({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <rect x="18" y="22" width="44" height="26" rx="4" {...stroke} />
+        <path d="M28 22 v-8 M52 22 v-8" {...stroke} strokeWidth={1.5} />
+        <path d="M66 27 q9 8 0 16" {...stroke} strokeWidth={1.2} />
+        <path d="M74 21 q12 14 0 28" {...stroke} strokeWidth={1.2} />
+      </g>
+      <text x="151" y="38" textAnchor="middle" {...monoText}>
+        rao: 2001:db8:1:1::/64
+      </text>
+      <g className="text-ink-muted">
+        <rect x="30" y="74" width="92" height="24" rx="3" {...stroke} strokeWidth={1.5} />
+        <text x="76" y="90" textAnchor="middle" {...monoText}>2001:db8:1:1</text>
+      </g>
+      <g className="text-accent">
+        <path d="M126 86 h10" {...stroke} strokeWidth={1.5} />
+        <rect x="140" y="74" width="52" height="24" rx="3" {...stroke} strokeWidth={1.5} />
+        <text x="166" y="90" textAnchor="middle" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          ::7a9f
+        </text>
+      </g>
+      <text x="110" y="120" textAnchor="middle" {...monoText}>
+        máy tự ghép — không ai giữ sổ
+      </text>
+    </Frame>
+  )
+}
+
+/** Dual-stack: một máy đeo hai biển số, hai đường ra song song. */
+function DualStackPlates({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <rect x="18" y="44" width="42" height="30" rx="4" {...stroke} />
+        <path d="M12 80 h54" {...stroke} strokeWidth={1.5} />
+      </g>
+      <g className="text-ink-muted">
+        <rect x="76" y="28" width="92" height="20" rx="3" {...stroke} strokeWidth={1.2} />
+        <text x="122" y="42" textAnchor="middle" {...monoText}>192.168.1.10</text>
+        <path d="M172 38 H198" {...stroke} strokeWidth={1.2} markerEnd="url(#cv-arrow)" />
+      </g>
+      <g className="text-accent">
+        <rect x="76" y="62" width="92" height="20" rx="3" {...stroke} strokeWidth={1.5} />
+        <text x="122" y="76" textAnchor="middle" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          2001:db8::5
+        </text>
+        <path d="M172 72 H198" {...stroke} markerEnd="url(#cv-arrow)" />
+        <text x="150" y="98" textAnchor="middle" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          ưu tiên IPv6
+        </text>
+      </g>
+      <text x="110" y="120" textAnchor="middle" {...monoText}>
+        hai biển số trên một card mạng
+      </text>
+    </Frame>
+  )
+}
+
 /** Hình thư chung cho visualId chưa có hình riêng. */
 function GenericMail({ title }: { title?: string }) {
   return (
@@ -1293,6 +1578,22 @@ const REGISTRY: Record<string, VisualComponent> = {
   'vis-hook-mang-nha': HomeNetwork,
   'vis-hai-lop-nat': DoubleNat,
   'vis-hook-double-nat': DoubleNat,
+  // Module 8 — Wi-Fi và IPv6 chuyên sâu
+  'vis-song-thay-day': WifiWaves,
+  'vis-hook-song-wifi': WifiWaves,
+  'vis-bang-tan-ba-lan': BandTradeoff,
+  'vis-the-he-wifi': WifiGenerations,
+  'vis-hook-chuan-wifi': WifiGenerations,
+  'vis-lan-6ghz': NewLane,
+  'vis-khoa-wpa2': WpaLock,
+  'vis-hook-wpa': WpaLock,
+  'vis-wpa3-cham-mat': Wpa3Handshake,
+  'vis-fe80-trong-phong': LinkLocalRoom,
+  'vis-hook-ipv6-sau': LinkLocalRoom,
+  'vis-ipv6-hai-nua': Ipv6TwoHalves,
+  'vis-slaac-tu-ghep': SlaacAssemble,
+  'vis-hook-slaac': SlaacAssemble,
+  'vis-dual-stack-hai-bien': DualStackPlates,
 }
 
 /**
