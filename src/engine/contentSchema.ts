@@ -17,6 +17,7 @@
 
 import { z } from 'zod'
 import { LabSpecSchema } from './lab/labSchema'
+import { ClinicCaseSpecSchema } from './clinic/clinicSchema'
 import { PalaceSchema } from './palace/palaceSchema'
 import { LTextSchema, type LText } from './ltext'
 
@@ -122,12 +123,48 @@ const PalaceWalkQuestionSchema = z.object({
   explain: explainField,
 })
 
+/**
+ * Ca bệnh Phòng khám (spec Module 11) — dạng câu hỏi thứ SÁU. Người học
+ * khám mạng của "bệnh nhân" qua terminal (không được nhìn sơ đồ trước),
+ * rồi trả lời HAI phần trong một lượt nộp: CHẨN ĐOÁN (chọn bệnh trong
+ * `diagnosis.choices`) và SỬA (theo `spec.fix`: sửa sơ đồ chấm bằng
+ * gradeClinicFix, hoặc chọn hành động trong `actions.choices` với ca
+ * ngoài mô hình mạng). Về hợp đồng nó VẪN LÀ MỘT CÂU HỎI — có id, có đề,
+ * chấm ra đúng/sai — nên máy trạng thái 6 bước, thang 3 tầng, XP và
+ * mastery gate dùng lại nguyên vẹn, không sửa một dòng nào.
+ *
+ * Phần kỹ thuật của ca (mạng + hồ sơ bệnh + triệu chứng + cách sửa) nằm
+ * trong `spec` (schema riêng ở engine/clinic); chuỗi hiển thị ở đây.
+ */
+const ClinicQuestionSchema = z.object({
+  kind: z.literal('clinic'),
+  id: idSchema,
+  /** Lời than của bệnh nhân — chính là "đề bài" người học nhận được. */
+  prompt: LTextSchema,
+  spec: ClinicCaseSpecSchema,
+  /** Danh sách bệnh khả dĩ để người học chọn sau khi khám. */
+  diagnosis: z.object({
+    choices: z.array(LTextSchema).min(2),
+    answerIndex: z.number().int().min(0),
+  }),
+  /** Hành động xử lý — BẮT BUỘC khi spec.fix là 'choose-action' (cross-check ép). */
+  actions: z
+    .object({
+      choices: z.array(LTextSchema).min(2),
+      answerIndex: z.number().int().min(0),
+    })
+    .optional(),
+  hintTopic: LTextSchema.optional(),
+  explain: explainField,
+})
+
 export const QuestionSchema = z.discriminatedUnion('kind', [
   TypedQuestionSchema,
   McqQuestionSchema,
   OrderQuestionSchema,
   LabQuestionSchema,
   PalaceWalkQuestionSchema,
+  ClinicQuestionSchema,
 ])
 
 // ---------------------------------------------------------------
@@ -534,6 +571,23 @@ function moduleCrossChecks(mod: ModuleBase, ctx: z.RefinementCtx): void {
     if (q.kind === 'mcq' && q.answerIndex >= q.choices.length) {
       issue([where], `Câu "${q.id}": answerIndex ${q.answerIndex} vượt quá số lựa chọn (${q.choices.length})`)
     }
+    if (q.kind === 'clinic') {
+      // Câu phòng khám chấm HAI phần — cả hai phần đều phải trỏ được vào
+      // lựa chọn có thật, và phần SỬA của dữ liệu kỹ thuật (spec.fix)
+      // phải khớp với phần SỬA của dữ liệu hiển thị (actions).
+      if (q.diagnosis.answerIndex >= q.diagnosis.choices.length) {
+        issue([where], `Câu "${q.id}": diagnosis.answerIndex ${q.diagnosis.answerIndex} vượt quá số lựa chọn (${q.diagnosis.choices.length})`)
+      }
+      if (q.spec.fix.kind === 'choose-action' && q.actions === undefined) {
+        issue([where], `Câu "${q.id}": ca chọn-hành-động phải khai "actions" — không có thì người học hết đường sửa`)
+      }
+      if (q.spec.fix.kind === 'edit-network' && q.actions !== undefined) {
+        issue([where], `Câu "${q.id}": ca sửa-sơ-đồ không dùng "actions" — hai đường sửa cùng lúc làm người học lạc`)
+      }
+      if (q.actions !== undefined && q.actions.answerIndex >= q.actions.choices.length) {
+        issue([where], `Câu "${q.id}": actions.answerIndex ${q.actions.answerIndex} vượt quá số lựa chọn (${q.actions.choices.length})`)
+      }
+    }
     if (standalone && q.explain === undefined) {
       issue(
         [where],
@@ -575,6 +629,7 @@ export type McqQuestion = Extract<Question, { kind: 'mcq' }>
 export type OrderQuestion = Extract<Question, { kind: 'order' }>
 export type LabQuestion = Extract<Question, { kind: 'lab' }>
 export type PalaceWalkQuestion = Extract<Question, { kind: 'palace-walk' }>
+export type ClinicQuestion = Extract<Question, { kind: 'clinic' }>
 export type Concept = z.infer<typeof ConceptSchema>
 export type HookStep = z.infer<typeof HookStepSchema>
 export type PretestStep = z.infer<typeof PretestStepSchema>

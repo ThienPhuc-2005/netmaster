@@ -361,6 +361,14 @@ export const CASE_GPO_CHAN: ClinicCaseSpec = {
   fix: { kind: 'choose-action' },
 }
 
+/**
+ * Bản sao sâu của một ca — cho fixture khác (moduleFixture) nhét ca vào
+ * nội dung mẫu mà không chia sẻ object graph với các test engine.
+ */
+export function cloneClinicCase(spec: ClinicCaseSpec): ClinicCaseSpec {
+  return JSON.parse(JSON.stringify(spec)) as ClinicCaseSpec
+}
+
 export const ALL_CLINIC_CASES: ClinicCaseSpec[] = [
   CASE_RUT_DAY,
   CASE_SAI_GATEWAY,

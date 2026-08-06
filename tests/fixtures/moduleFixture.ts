@@ -14,6 +14,7 @@ import type {
   TeachScreen,
 } from '../../src/engine/contentSchema'
 import { vlanRepairLab } from './labFixture'
+import { CASE_SAI_GATEWAY, cloneClinicCase } from './clinicFixture'
 import { clonePalace } from './palaceFixture'
 
 export interface MakeLessonOpts {
@@ -27,6 +28,12 @@ export interface MakeLessonOpts {
    * thái không phải sửa gì.
    */
   labPractice?: boolean
+  /**
+   * Bước Làm dùng một CA BỆNH phòng khám (spec Module 11) — cùng phép
+   * thử kiến trúc với labPractice: dạng câu hỏi thứ sáu đi trọn pipeline
+   * mà máy trạng thái không biết nó tồn tại.
+   */
+  clinicPractice?: boolean
 }
 
 // ---------------------------------------------------------------
@@ -343,6 +350,36 @@ export function makeLesson(id: string, opts: MakeLessonOpts = {}): Lesson {
         },
         solution: {
           vi: 'Kéo cổng của PC-B về VLAN 10 cho khớp PC-A. Giữ PC-C ở VLAN 20 để hai phòng ban vẫn tách nhau — gộp tất cả vào một VLAN là hỏng yêu cầu thứ hai.',
+        },
+      },
+    ]
+  }
+
+  if (opts.clinicPractice === true) {
+    practice.exercises = [
+      {
+        question: {
+          kind: 'clinic',
+          id: `${id}-prac-clinic`,
+          prompt: {
+            vi: 'Chị kế toán gọi lên phòng IT: "Máy chị sáng giờ không mở được web công ty — hôm qua vẫn bình thường mà!" Khám qua terminal rồi chữa giúp chị ấy nhé.',
+          },
+          spec: cloneClinicCase(CASE_SAI_GATEWAY),
+          diagnosis: {
+            choices: [
+              { vi: 'Dây mạng bị rút hoặc đứt' },
+              { vi: 'Gateway của máy trỏ nhầm địa chỉ' },
+              { vi: 'DNS nội bộ ngừng chạy' },
+            ],
+            answerIndex: 1,
+          },
+          hintTopic: { vi: 'cánh cửa ra khỏi dải mạng của máy' },
+        },
+        hint: {
+          vi: 'Chạy ipconfig xem gateway của máy đang trỏ về đâu, rồi ping thử chính địa chỉ đó xem có ai trả lời không.',
+        },
+        solution: {
+          vi: 'Gateway đang ghi 192.168.10.99 — một địa chỉ không ai giữ. Sửa lại thành 192.168.10.1 (cổng LAN của router) là máy ra được ngoài.',
         },
       },
     ]

@@ -4,6 +4,7 @@
 
 import type { LText, Question } from '../contentSchema'
 import { isLabSolved } from '../lab/gradeLab'
+import { isClinicFixSolved } from '../clinic/gradeClinic'
 import type { Topology } from '../lab/topology'
 import { walkOutcomesPassed, type RoomOutcome } from '../palace/walk'
 import { openAcceptsOf } from '../flow'
@@ -28,6 +29,18 @@ export type QuestionResponse =
    * gì: từng phòng đã được cung điện chấm ngay lúc đi qua.
    */
   | { kind: 'palace-walk'; outcomes: RoomOutcome[] }
+  /**
+   * `clinic` = một lượt nộp của Phòng khám, gói CẢ HAI phần: chẩn đoán
+   * (chỉ số bệnh đã chọn) và cách sửa — sơ đồ đã sửa với ca sửa-mạng,
+   * hoặc chỉ số hành động với ca ngoài mô hình. Hình dạng phần fix phải
+   * khớp `spec.fix.kind` của đề; lệch là bug tầng UI, không phải người
+   * học sai.
+   */
+  | { kind: 'clinic'; diagnosisIndex: number; fix: ClinicFixResponse }
+
+export type ClinicFixResponse =
+  | { kind: 'edit-network'; topology: Topology }
+  | { kind: 'choose-action'; actionIndex: number }
 
 /** Kind lệch nhau là bug ở tầng UI (nộp nhầm loại), không phải người học sai. */
 function kindMismatch(q: Question, r: QuestionResponse): Error {
@@ -79,5 +92,26 @@ export function gradeQuestion(q: Question, r: QuestionResponse): boolean {
       // Đạt = đi trọn đúng những phòng đề bài đòi và không phòng nào phải
       // mở đáp án. Quên một nhịp rồi tự nhớ ra vẫn tính là nhớ được.
       return walkOutcomesPassed(r.outcomes, q.rooms)
+    case 'clinic': {
+      if (q.kind !== 'clinic') throw kindMismatch(q, r)
+      // Chấm HAI phần trong một lượt (đã chốt với người dùng): chẩn đoán
+      // đúng bệnh VÀ sửa khỏi bệnh. Đúng một nửa vẫn là chưa xong — ngoài
+      // đời sửa đúng mà gọi tên bệnh sai thì lần sau vẫn mò lại từ đầu.
+      const diagnosisRight = r.diagnosisIndex === q.diagnosis.answerIndex
+      if (q.spec.fix.kind === 'edit-network') {
+        if (r.fix.kind !== 'edit-network') throw kindMismatch(q, r)
+        // Phần sửa chấm BA LỚP của phòng khám (goals + chẩn đoán tĩnh
+        // sạch + triệu chứng gốc hết) — không phải gradeLab trần.
+        return diagnosisRight && isClinicFixSolved(q.spec, r.fix.topology)
+      }
+      if (r.fix.kind !== 'choose-action') throw kindMismatch(q, r)
+      const actions = q.actions
+      if (actions === undefined) {
+        // Schema đã ép actions có mặt với ca choose-action — tới được đây
+        // là nội dung lọt lưới parse, không phải người học sai.
+        throw new Error(`gradeQuestion: câu clinic "${q.id}" thiếu actions — nội dung chưa qua parseModule`)
+      }
+      return diagnosisRight && r.fix.actionIndex === actions.answerIndex
+    }
   }
 }

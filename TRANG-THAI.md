@@ -1,6 +1,6 @@
 # Trạng thái dự án — NetMaster (Phase 1 + 2 xong; Phase 3 đang hạng mục 9)
 
-Cập nhật: 2026-08-06 khuya. File này chỉ để nắm nhanh tình hình khi
+Cập nhật: 2026-08-07. File này chỉ để nắm nhanh tình hình khi
 mở lại dự án. Nguồn chân lý vẫn là `SPEC-APP-HOC-MANG.md`; luật làm việc
 ở `CLAUDE.md`; nội dung bài đọc duyệt ở `REVIEW-NOI-DUNG.md`.
 
@@ -10,8 +10,8 @@ mở lại dự án. Nguồn chân lý vẫn là `SPEC-APP-HOC-MANG.md`; luật 
 XONG cả 5 khối (Module 8-10 + cung điện GPO + checklist VMware). App có
 đủ Module 1-10. **Hạng mục (9) — Phòng khám mạng (Module 11) — đang
 làm: kế hoạch 5 khối ĐÃ được người dùng duyệt kèm 3 quyết định (bảng
-dưới); khối 9.1 XONG, việc kế tiếp là khối 9.2 — UI terminal + cắm
-`kind: 'clinic'` vào pipeline.**
+dưới); khối 9.1 + 9.2 XONG, việc kế tiếp là khối 9.3 — nội dung
+`module-11.json` (case dễ→khó theo spec) + hình khái niệm.**
 
 **Ba quyết định hạng mục (9) đã chốt (06-08, không hỏi lại):**
 1. Kiến trúc: engine clinic BỌC lab engine (case = topology lab + "hồ
@@ -55,7 +55,7 @@ ngoài mô hình thì chọn hành động). "Gửi thử" miễn phí / "Nộp"
 | Khối | Nội dung | Trạng thái |
 |------|----------|-----------|
 | 9.1 | Engine phòng khám thuần TS (`src/engine/clinic/`) | Xong |
-| 9.2 | UI terminal + khung bệnh nhân + cắm `kind: 'clinic'` vào pipeline + /design | Chưa |
+| 9.2 | UI terminal + khung bệnh nhân + cắm `kind: 'clinic'` vào pipeline + /design | Xong |
 | 9.3 | Nội dung `module-11.json` (case dễ→khó theo spec) + hình khái niệm | Chưa |
 | 9.4 | Mở khóa tab Phòng khám (danh sách case, làm lại tự do, XP lần đầu) | Chưa |
 | 9.5 | DoD + kiểm browser + tài liệu | Chưa |
@@ -90,6 +90,43 @@ ngoài mô hình thì chọn hành động). "Gửi thử" miễn phí / "Nộp"
 - `tests/fixtures/clinicFixture.ts` — 5 ca THẬT đúng thang spec: rút
   dây, sai gateway, DNS chết, trùng IP, GPO chặn nhầm. 766/766 test
   xanh (+22), typecheck sạch, build qua.
+
+**Khối 9.2 đã làm gì** (ca bệnh thành thứ chơi được thật):
+- `kind: 'clinic'` thành nhánh thứ SÁU của `QuestionSchema`: `prompt` là
+  lời than bệnh nhân, `spec` là ca bệnh (ClinicCaseSpecSchema), phần
+  hiển thị chia hai — `diagnosis` {choices, answerIndex} và `actions`
+  (BẮT BUỘC với ca choose-action, CẤM với ca edit-network; cross-check
+  cấp module ép cả biên answerIndex). `gradeQuestion` chấm **HAI PHẦN
+  trong MỘT lượt nộp: đúng bệnh VÀ sửa khỏi** — sửa đúng mà gọi sai tên
+  bệnh vẫn chưa xong; phần sửa đi qua đủ ba lớp `gradeClinicFix`, không
+  phải gradeLab trần. `lessonMachine.ts` KHÔNG bị sửa dòng nào —
+  `clinicInPipeline.test.ts` khóa lời hứa (thang 3 tầng, cổng qua bước,
+  XP y hệt câu gõ tay).
+- `src/features/clinic/ClinicRoom.tsx` + `ClinicTerminal.tsx` — khung
+  bệnh nhân ba nhịp đúng trình tự sư phạm: (1) **khám mù** — chỉ lời
+  than + terminal 8 lệnh, không sơ đồ (ngoài đời không ai được nhìn sơ
+  đồ chuẩn của mạng đang hỏng); (2) **chốt chẩn đoán** mới mở pha sửa,
+  sau đó đổi chẩn đoán bằng chip tại chỗ, không unmount phòng lab;
+  (3) **sửa** — ca edit-network nhúng NGUYÊN NetworkLab (thêm 2 prop
+  tùy chọn: `hideDiagnosis` để máy khỏi mách bệnh, `onTopologyChange`
+  để terminal + nút "Chạy lại triệu chứng" soi sơ đồ SỐNG — ping trong
+  terminal thấy ngay mối sửa vừa làm, ARP cache cũ giữ nguyên như đời
+  thật); ca choose-action chọn hành động. Khám và chạy lại triệu chứng
+  MIỄN PHÍ, chỉ "Nộp bài" tính lượt.
+- Ranh giới chuỗi giữ nguyên nếp: output thiết bị tiếng Anh render
+  nguyên văn trong `<pre>`; microcopy tiếng Việt (help từng lệnh, lệnh
+  lạ, capture trống, nhãn hai pha, triệu chứng còn/hết) vào
+  `clinic.*` của vi.json + en.json (parity test phủ).
+- `render-content-review.mjs` tả được ca bệnh (mạng bệnh nhân, hồ sơ
+  bệnh, triệu chứng, hai phần đáp án đánh dấu ✓); `/design` thêm mục
+  Phòng khám dùng ca sai-gateway của clinicFixture đi qua
+  `QuestionSchema.parse`. `moduleFixture` thêm cờ `clinicPractice`.
+- 799/799 test xanh (+33: pipeline, UI ClinicRoom, gradeQuestion clinic,
+  cross-check schema), typecheck sạch, build qua. Kiểm browser thật trên
+  /design: khám mù bằng ipconfig/ping (lộ gateway 192.168.10.99, ping
+  unreachable), chốt chẩn đoán, sửa gateway về 192.168.10.1 trên sơ đồ,
+  ping lại trong terminal ra Reply TTL=127, "Chạy lại triệu chứng" báo
+  hết, nộp bài chấm "đạt"; mobile 375px scrollWidth = 375 không tràn.
 
 ## Đang ở đâu
 

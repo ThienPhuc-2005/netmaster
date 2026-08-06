@@ -61,6 +61,36 @@ function describeAllowance(allow) {
   return yes.length === 0 ? 'KHÔNG cho phép thao tác nào (đề bài hỏng)' : yes.join(', ')
 }
 
+// --- Diễn đạt một ca bệnh phòng khám thành chữ -----------------------
+
+/** Hồ sơ bệnh (overlay) gọn một dòng — người duyệt thấy hết manh mối được cài. */
+function describeOverlay(overlay) {
+  const parts = []
+  if (overlay.dns) {
+    const records = overlay.dns.records.map((r) => `${r.name} → ${r.ip}`).join(', ')
+    parts.push(
+      `DNS ${overlay.dns.serverIp}${overlay.dns.down ? ' (ĐANG CHẾT)' : ''} [${records || 'không bản ghi'}]`,
+    )
+  }
+  for (const b of overlay.hostBlocks ?? []) {
+    parts.push(`luật chặn ICMP ${b.direction} trên ${b.deviceId} (nguồn ${b.source}: "${b.ruleName}")`)
+  }
+  for (const [dev, gpos] of Object.entries(overlay.gpos ?? {})) {
+    parts.push(`gpresult ${dev}: ${gpos.map((g) => `${g.name}${g.blocking ? ' ⚠' : ''}`).join(', ')}`)
+  }
+  for (const [dev, rows] of Object.entries(overlay.connections ?? {})) {
+    parts.push(`netstat ${dev}: ${rows.length} dòng`)
+  }
+  return parts.length === 0 ? 'không có (bệnh nằm trọn trong sơ đồ)' : parts.join(' · ')
+}
+
+function describeSymptom(symptom, topo) {
+  const from = hostnameOf(topo, symptom.from)
+  if (symptom.kind === 'ping-fails') return `${from} ping ${symptom.target} PHẢI hỏng`
+  if (symptom.kind === 'resolve-fails') return `${from} phân giải tên "${symptom.name}" PHẢI hỏng`
+  return `${from} ping ${symptom.target} lúc được lúc không (nhiều máy giành một IP)`
+}
+
 /** Một dòng mô tả phòng cung điện cho người duyệt: chỗ, hai vế, hình, chuyện. */
 function describeRoom(room) {
   return `tầng ${room.floor} phòng ${room.position} · ${room.keys.join('/')} · ${room.name} · hình \`${room.imageId}\` — ${vi(room.story)}`
@@ -96,6 +126,28 @@ export function renderQuestion(q, indent = '', palace = null) {
   } else if (q.kind === 'palace-walk') {
     lines.push(`${indent}  - **Dạng:** đi lại cung điện từ trí nhớ (${q.rooms.length} phòng)`)
     for (const line of roomsOf(palace, q.rooms)) lines.push(`${indent}    - ${line}`)
+  } else if (q.kind === 'clinic') {
+    lines.push(`${indent}  - **Dạng:** ca bệnh phòng khám (khám qua terminal → chẩn đoán → sửa)`)
+    lines.push(`${indent}    - **Mạng bệnh nhân:** ${describeTopology(q.spec.patient.topology)}`)
+    lines.push(`${indent}    - **Ngồi ở máy:** ${hostnameOf(q.spec.patient.topology, q.spec.patient.seatId)}`)
+    lines.push(`${indent}    - **Hồ sơ bệnh:** ${describeOverlay(q.spec.patient.overlay)}`)
+    lines.push(`${indent}    - **Triệu chứng:** ${describeSymptom(q.spec.symptom, q.spec.patient.topology)}`)
+    const diag = q.diagnosis.choices.map((c, i) => (i === q.diagnosis.answerIndex ? `**${vi(c)}** ✓` : vi(c)))
+    lines.push(`${indent}    - **Chẩn đoán (chọn 1):** ${diag.join(' · ')}`)
+    if (q.spec.fix.kind === 'edit-network') {
+      lines.push(`${indent}    - **Sửa:** trực tiếp trên sơ đồ — mục tiêu:`)
+      for (const goal of q.spec.fix.goals) lines.push(`${indent}      - ${describeGoal(goal)}`)
+      if (q.spec.fix.mustClearDiagnoses) {
+        lines.push(`${indent}      - phải hết sạch: ${q.spec.fix.mustClearDiagnoses.join(', ')}`)
+      }
+      lines.push(`${indent}    - **Được phép:** ${describeAllowance(q.spec.fix.allow)}`)
+      lines.push(`${indent}    - **Lời giải mẫu:** ${describeTopology(q.spec.fix.solution)}`)
+    } else {
+      const acts = (q.actions?.choices ?? []).map((c, i) =>
+        i === q.actions.answerIndex ? `**${vi(c)}** ✓` : vi(c),
+      )
+      lines.push(`${indent}    - **Sửa:** chọn hành động — ${acts.join(' · ')}`)
+    }
   } else {
     // Kind mới mà quên bổ sung nhánh render → NỔ NGAY, không im lặng bỏ
     // qua. Bản duyệt thiếu phần đáp án còn tệ hơn không có bản duyệt:

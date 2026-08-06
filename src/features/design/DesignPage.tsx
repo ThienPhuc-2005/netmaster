@@ -13,6 +13,10 @@ import { playEarcon, type EarconKind } from '../../audio/earcons'
 import { XP_AMOUNTS } from '../../engine/xp'
 import { NetworkLab } from '../lab/NetworkLab'
 import { isLabSolved, parseLabSpec, type Topology } from '../../engine/lab'
+import { ClinicRoom } from '../clinic/ClinicRoom'
+import { QuestionSchema, type ClinicQuestion } from '../../engine/contentSchema'
+import { gradeQuestion } from '../../engine/grading/gradeQuestion'
+import { CASE_SAI_GATEWAY } from '../../../tests/fixtures/clinicFixture'
 import { PalaceTour } from '../palace/PalaceTour'
 import { PalaceWalk } from '../palace/PalaceWalk'
 import { parsePalace, walkOutcomesPassed } from '../../engine/palace'
@@ -132,6 +136,43 @@ function LabShowcase() {
   )
 }
 
+// Ca bệnh trưng bày: đúng ca "sai gateway" của thang spec Module 11, lấy
+// từ fixture engine (cùng nguồn với test) rồi bọc thành một câu hỏi
+// kind 'clinic' đi qua QuestionSchema — nó phải hợp lệ y hệt câu thật
+// (bệnh nhân ốm thật, lời giải chữa được, trạng thái đầu chưa đạt).
+const DEMO_CLINIC = QuestionSchema.parse({
+  kind: 'clinic',
+  id: 'design-clinic-1',
+  prompt: {
+    vi: 'Chị kế toán gọi lên phòng IT: "Máy chị sáng giờ không mở được web công ty — hôm qua vẫn bình thường mà!"',
+  },
+  spec: CASE_SAI_GATEWAY,
+  diagnosis: {
+    choices: [
+      { vi: 'Dây mạng bị rút hoặc đứt' },
+      { vi: 'Gateway của máy trỏ nhầm địa chỉ' },
+      { vi: 'DNS nội bộ ngừng chạy' },
+    ],
+    answerIndex: 1,
+  },
+  hintTopic: { vi: 'cánh cửa ra khỏi dải mạng của máy' },
+}) as ClinicQuestion
+
+function ClinicShowcase() {
+  const [verdict, setVerdict] = useState<'chưa nộp' | 'đạt' | 'chưa đạt'>('chưa nộp')
+  return (
+    <div className="space-y-3">
+      <p className="text-sm text-ink-muted">
+        Kết quả lần nộp gần nhất: <strong className="text-ink">{verdict}</strong>
+      </p>
+      <ClinicRoom
+        question={DEMO_CLINIC}
+        onSubmit={(resp) => setVerdict(gradeQuestion(DEMO_CLINIC, resp) ? 'đạt' : 'chưa đạt')}
+      />
+    </div>
+  )
+}
+
 /**
  * Cung điện ký ức: trưng cả hai chuyến đi cạnh nhau để duyệt bằng mắt
  * xem chuyến "đi lại từ trí nhớ" có lỡ lộ đáp án không.
@@ -244,6 +285,10 @@ export function DesignPage() {
 
       <Section title={t('lab.title')}>
         <LabShowcase />
+      </Section>
+
+      <Section title={t('clinic.title')}>
+        <ClinicShowcase />
       </Section>
 
       <Section title={DEMO_PALACE.title.vi}>

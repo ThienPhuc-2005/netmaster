@@ -14,7 +14,7 @@
 // đổi gì về mạng, và undo nên dành cho những thao tác người học sợ làm
 // hỏng. Xóa thiết bị vẫn giữ lại vị trí cũ, nên undo trả nó về đúng chỗ.
 
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { AlertCircle } from 'lucide-react'
 import { Button } from '../../components/Button'
 import { useT } from '../../i18n'
@@ -117,9 +117,19 @@ export interface NetworkLabProps {
    * chấm và đếm lượt sai; phòng lab chỉ trao lại sơ đồ hiện tại.
    */
   onSubmit?: (topology: Topology) => void
+  /**
+   * Ẩn danh sách "Chỗ đáng nhìn lại". Phòng khám (Module 11) dùng cờ này:
+   * ở đó việc TÌM RA bệnh là của người học — máy nói hộ là lộ đề.
+   */
+  hideDiagnosis?: boolean
+  /**
+   * Báo sơ đồ hiện tại mỗi khi nó đổi — cho tầng gọi muốn soi sơ đồ sống
+   * (phòng khám chạy terminal/triệu chứng trên đúng sơ đồ đang sửa).
+   */
+  onTopologyChange?: (topology: Topology) => void
 }
 
-export function NetworkLab({ spec, onSubmit }: NetworkLabProps) {
+export function NetworkLab({ spec, onSubmit, hideDiagnosis, onTopologyChange }: NetworkLabProps) {
   const t = useT()
   const [session, setSession] = useState(() => startLab(spec.initial, spec.allow))
   const [layout, setLayout] = useState<Record<string, Point>>(() => autoLayout(spec.initial.devices))
@@ -132,6 +142,10 @@ export function NetworkLab({ spec, onSubmit }: NetworkLabProps) {
   const topology = session.present
   const vlanChoices = useMemo(() => vlanChoicesOf(spec), [spec])
   const evaluation = useMemo(() => gradeLab(spec, topology), [spec, topology])
+
+  useEffect(() => {
+    onTopologyChange?.(topology)
+  }, [topology, onTopologyChange])
 
   const hops = useMemo(() => flattenHops(run), [run])
   const flight = usePacketFlight(hops.length, (index) => {
@@ -311,7 +325,7 @@ export function NetworkLab({ spec, onSubmit }: NetworkLabProps) {
         <HopLog topology={topology} result={run} visibleCount={flight.visibleHops} />
       </div>
 
-      <DiagnosisList codes={evaluation.diagnosis} />
+      {hideDiagnosis !== true && <DiagnosisList codes={evaluation.diagnosis} />}
 
       {onSubmit !== undefined && (
         <div className="flex flex-wrap items-center gap-3 rounded-md border border-edge bg-panel px-4 py-3">

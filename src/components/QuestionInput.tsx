@@ -10,6 +10,7 @@ import type { QuestionResponse } from '../engine/grading/gradeQuestion'
 import { useT } from '../i18n'
 import { Button } from './Button'
 import { NetworkLab } from '../features/lab/NetworkLab'
+import { ClinicRoom } from '../features/clinic/ClinicRoom'
 import { PalaceWalk } from '../features/palace/PalaceWalk'
 import { findPalaceRoom } from '../content'
 
@@ -144,6 +145,17 @@ export function QuestionInput({ question, onSubmit, disabled }: QuestionInputPro
       )
     case 'palace-walk':
       return <PalaceWalkInput question={question} onSubmit={onSubmit} disabled={disabled} />
+    case 'clinic':
+      // Phòng khám tự lo pha khám (terminal miễn phí) và pha sửa; chỉ khi
+      // người học bấm "Nộp bài" nó mới trao câu trả lời hai phần lên đây
+      // thành một lượt như mọi dạng câu hỏi khác.
+      return (
+        <ClinicRoom
+          key={question.id}
+          question={question}
+          onSubmit={disabled === true ? undefined : onSubmit}
+        />
+      )
   }
 }
 

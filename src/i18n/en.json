@@ -312,7 +312,35 @@
   "clinic": {
     "title": "Clinic",
     "lockedTitle": "The clinic isn't open yet",
-    "lockedBody": "Behind this door are real \"patients\": unplugged cables, a silent DNS, a gateway with the wrong address… You'll play the diagnostician — but the foundation modules come first. Keep learning; the clinic opens itself when you're ready."
+    "lockedBody": "Behind this door are real \"patients\": unplugged cables, a silent DNS, a gateway with the wrong address… You'll play the diagnostician — but the foundation modules come first. Keep learning; the clinic opens itself when you're ready.",
+    "seatLine": "You're sitting at the patient's machine {host}. No diagram yet — every clue comes from the terminal below, just like a real on-call shift.",
+    "terminalAria": "Terminal of machine {host}",
+    "terminalInputAria": "Command input",
+    "terminalIntro": "Type commands to examine the patient — start with help if you're unsure. Examining is always free.",
+    "terminalPlaceholder": "Type a command… (help lists them all)",
+    "terminalRun": "Run",
+    "termHelpTitle": "Commands available on this machine:",
+    "termUnknown": "This machine has no \"{cmd}\" command — type help to see the list.",
+    "termCaptureEmpty": "No packets captured yet — run ping or tracert first, then capture will have a story to tell.",
+    "cmd": {
+      "ipconfig": "show this machine's IP address, subnet mask, gateway and DNS",
+      "ping": "send probe packets to an address or name — ping <target>",
+      "tracert": "show the router-by-router path to a target — tracert <target>",
+      "nslookup": "ask DNS what address a name points to — nslookup <name>",
+      "netstat": "list the network connections open on this machine",
+      "arp": "show the MAC address table this machine has learned",
+      "capture": "show the packet capture of the latest ping/tracert (a tiny Wireshark)",
+      "gpresult": "list the Group Policy Objects applied to this machine"
+    },
+    "diagnosisTitle": "Your diagnosis",
+    "diagnosisHint": "Examine through the terminal first — name the illness, then you get to fix it.",
+    "diagnosisLock": "Lock diagnosis, start fixing",
+    "diagnosisChosen": "Chosen diagnosis (click to change)",
+    "fixIntroEdit": "Your turn now: here is the patient's diagram — fix it directly.",
+    "fixIntroAction": "This illness can't be fixed from where you sit — pick the best course of action.",
+    "symptomRecheck": "Re-run the symptom",
+    "symptomStillSick": "The patient still shows the original symptom — not cured yet.",
+    "symptomCleared": "The original symptom is gone — submit when you're confident."
   },
   "profile": {
     "title": "Profile",

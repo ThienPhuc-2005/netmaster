@@ -496,3 +496,53 @@ describe('validateModules', () => {
     expect(() => validateModules([a, b])).not.toThrow()
   })
 })
+
+// ---------------------------------------------------------------
+// Câu hỏi phòng khám (kind 'clinic') — hai phần phải khớp nhau
+// ---------------------------------------------------------------
+
+describe('câu clinic — cross-check hai phần chẩn đoán/sửa', () => {
+  /** Module hợp lệ với ca bệnh sửa-sơ-đồ ở bước Làm của bài 2. */
+  function moduleWithClinic(): any {
+    const base = makeValidModule()
+    base.lessons = base.lessons.map((lesson) =>
+      lesson.id === 'bai-2' ? makeLesson('bai-2', { fadingLevel: 1, conceptIds: ['port'], clinicPractice: true }) : lesson,
+    )
+    return base
+  }
+  const clinicQuestionOf = (mod: any) => mod.lessons[1].steps[3].exercises[0].question
+
+  it('module mang ca bệnh hợp lệ thì parse thành công', () => {
+    expect(ModuleSchema.safeParse(moduleWithClinic()).success).toBe(true)
+  })
+
+  it('diagnosis.answerIndex vượt số lựa chọn thì fail', () => {
+    const mod = moduleWithClinic()
+    const q = clinicQuestionOf(mod)
+    q.diagnosis.answerIndex = q.diagnosis.choices.length
+    expect(issueText(expectFail(mod))).toMatch(/diagnosis\.answerIndex/)
+  })
+
+  it('ca sửa-sơ-đồ mà khai thêm actions thì fail — hai đường sửa cùng lúc', () => {
+    const mod = moduleWithClinic()
+    clinicQuestionOf(mod).actions = {
+      choices: [{ vi: 'Làm gì đó' }, { vi: 'Làm gì khác' }],
+      answerIndex: 0,
+    }
+    expect(issueText(expectFail(mod))).toMatch(/không dùng "actions"/)
+  })
+
+  it('ca chọn-hành-động mà thiếu actions thì fail — người học hết đường sửa', () => {
+    const mod = moduleWithClinic()
+    clinicQuestionOf(mod).spec.fix = { kind: 'choose-action' }
+    expect(issueText(expectFail(mod))).toMatch(/phải khai "actions"/)
+  })
+
+  it('actions.answerIndex vượt số lựa chọn thì fail', () => {
+    const mod = moduleWithClinic()
+    const q = clinicQuestionOf(mod)
+    q.spec.fix = { kind: 'choose-action' }
+    q.actions = { choices: [{ vi: 'A' }, { vi: 'B' }], answerIndex: 2 }
+    expect(issueText(expectFail(mod))).toMatch(/actions\.answerIndex/)
+  })
+})

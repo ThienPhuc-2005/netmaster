@@ -8,6 +8,7 @@ import {
   teamsNetwork,
   vlanRepairLab,
 } from '../../../tests/fixtures/labFixture'
+import { CASE_GPO_CHAN, CASE_SAI_GATEWAY } from '../../../tests/fixtures/clinicFixture'
 
 // Câu hỏi mẫu tối thiểu, đúng kiểu suy ra từ contentSchema
 const typedQ: Question = {
@@ -150,5 +151,83 @@ describe('câu lab — chấm bằng cách CHẠY sơ đồ người học lắp
 
   it('câu lab không có khái niệm cận-đúng', () => {
     expect(findNearMiss(labQ, { kind: 'lab', topology: teamsNetwork() })).toBeNull()
+  })
+})
+
+describe('câu clinic — chấm HAI PHẦN: chẩn đoán VÀ sửa', () => {
+  const editQ: Question = {
+    kind: 'clinic',
+    id: 'q-clinic-edit',
+    prompt: { vi: 'Máy kế toán không ra được web công ty.' },
+    spec: CASE_SAI_GATEWAY,
+    diagnosis: {
+      choices: [{ vi: 'Đứt dây' }, { vi: 'Sai gateway' }, { vi: 'DNS chết' }],
+      answerIndex: 1,
+    },
+  }
+  const cured = CASE_SAI_GATEWAY.fix.kind === 'edit-network' ? CASE_SAI_GATEWAY.fix.solution : null!
+  const sick = CASE_SAI_GATEWAY.patient.topology
+
+  const actionQ: Question = {
+    kind: 'clinic',
+    id: 'q-clinic-action',
+    prompt: { vi: 'Web vẫn mở được mà ping đâu cũng chết ngay tại máy.' },
+    spec: CASE_GPO_CHAN,
+    diagnosis: {
+      choices: [{ vi: 'Mạng đứt' }, { vi: 'GPO chặn ICMP chiều đi' }],
+      answerIndex: 1,
+    },
+    actions: {
+      choices: [
+        { vi: 'Báo quản trị miền sửa GPO đang chặn ICMP' },
+        { vi: 'Đổi địa chỉ IP của máy' },
+      ],
+      answerIndex: 0,
+    },
+  }
+
+  it('ca sửa-sơ-đồ: đúng bệnh + sơ đồ đã chữa → đúng', () => {
+    expect(
+      gradeQuestion(editQ, { kind: 'clinic', diagnosisIndex: 1, fix: { kind: 'edit-network', topology: cured } }),
+    ).toBe(true)
+  })
+
+  it('đúng bệnh mà chưa chữa, hoặc chữa rồi mà gọi sai bệnh → đều sai', () => {
+    expect(
+      gradeQuestion(editQ, { kind: 'clinic', diagnosisIndex: 1, fix: { kind: 'edit-network', topology: sick } }),
+    ).toBe(false)
+    expect(
+      gradeQuestion(editQ, { kind: 'clinic', diagnosisIndex: 0, fix: { kind: 'edit-network', topology: cured } }),
+    ).toBe(false)
+  })
+
+  it('ca chọn-hành-động: đúng bệnh + đúng hành động → đúng; lệch một vế → sai', () => {
+    expect(
+      gradeQuestion(actionQ, { kind: 'clinic', diagnosisIndex: 1, fix: { kind: 'choose-action', actionIndex: 0 } }),
+    ).toBe(true)
+    expect(
+      gradeQuestion(actionQ, { kind: 'clinic', diagnosisIndex: 1, fix: { kind: 'choose-action', actionIndex: 1 } }),
+    ).toBe(false)
+    expect(
+      gradeQuestion(actionQ, { kind: 'clinic', diagnosisIndex: 0, fix: { kind: 'choose-action', actionIndex: 0 } }),
+    ).toBe(false)
+  })
+
+  it('hình dạng phần fix lệch với đề là lỗi lập trình ở tầng UI', () => {
+    expect(() =>
+      gradeQuestion(editQ, { kind: 'clinic', diagnosisIndex: 1, fix: { kind: 'choose-action', actionIndex: 0 } }),
+    ).toThrowError(/lỗi lập trình ở tầng UI/)
+    expect(() =>
+      gradeQuestion(actionQ, { kind: 'clinic', diagnosisIndex: 1, fix: { kind: 'edit-network', topology: sick } }),
+    ).toThrowError(/lỗi lập trình ở tầng UI/)
+    expect(() => gradeQuestion(typedQ, { kind: 'clinic', diagnosisIndex: 0, fix: { kind: 'choose-action', actionIndex: 0 } })).toThrowError(
+      /lỗi lập trình ở tầng UI/,
+    )
+  })
+
+  it('câu clinic không có khái niệm cận-đúng', () => {
+    expect(
+      findNearMiss(editQ, { kind: 'clinic', diagnosisIndex: 1, fix: { kind: 'edit-network', topology: sick } }),
+    ).toBeNull()
   })
 })

@@ -87,7 +87,7 @@ phá hoại cơ chế học của app, dù code chạy đúng.
 - `npm run test:watch` — test ở chế độ watch
 - `npm run typecheck` — kiểm tra kiểu TypeScript (`tsc --noEmit`)
 
-## Cấu trúc hiện tại (Phase 1 + 2 XONG; Phase 3 xong hạng mục (8), kế tiếp là (9) Phòng khám)
+## Cấu trúc hiện tại (Phase 1 + 2 XONG; Phase 3: hạng mục (8) xong, hạng mục (9) Phòng khám đang làm — khối 9.1 + 9.2 xong)
 
 - `src/engine/` — pedagogy engine thuần TS: SM-2, hàng đợi ôn tập,
   mastery gate, máy trạng thái bài học 6 bước, XP/streak, bộ chấm,
@@ -254,6 +254,42 @@ phá hoại cơ chế học của app, dù code chạy đúng.
 - Kịch bản test người thật Phần C: `KICH-BAN-TEST.md` mục 9 (đo
   interleaving 4 tình huống, điền lại tòa GPO trên giấy, hỏi 3 cặp
   contrast).
+
+### Phase 3 — hạng mục (9): Phòng khám mạng (đang làm — 9.1 + 9.2 xong)
+
+- `src/engine/clinic/` (khối 9.1) — engine thuần TS: `patient.ts` (ca =
+  topology lab NGUYÊN + overlay "hồ sơ bệnh" + seatId), `terminal.ts`
+  (8 lệnh, output SUY TỪ MÔ PHỎNG, tiếng Anh nghề tất định; help/unknown
+  trả rỗng cho UI), `gradeClinic.ts` (checkSymptom 3 kiểu; gradeClinicFix
+  chấm BA LỚP: goals + mustClearDiagnoses sạch + triệu chứng hết),
+  `clinicSchema.ts` (bệnh nhân phải ốm thật, lời giải chữa được ca của
+  chính nó, trạng thái đầu chưa đạt sẵn).
+- `kind: 'clinic'` là nhánh thứ SÁU của `QuestionSchema` (khối 9.2):
+  `prompt` là lời than bệnh nhân, `spec` là ca bệnh, `diagnosis`
+  {choices, answerIndex}; `actions` BẮT BUỘC khi fix 'choose-action' và
+  CẤM khi 'edit-network' (cross-check cấp module ép). **Chấm HAI PHẦN
+  trong MỘT lượt nộp: đúng bệnh VÀ sửa khỏi — đúng một nửa vẫn là chưa
+  xong.** `lessonMachine.ts` không biết phòng khám tồn tại và không được
+  sửa vì nó (clinicInPipeline.test khóa).
+- `src/features/clinic/` — `ClinicRoom` (khung bệnh nhân) +
+  `ClinicTerminal`. **Luật của phòng khám, không được phá:**
+  - **Khám mù trước:** pha khám chỉ có lời than + terminal, KHÔNG sơ đồ
+    (lộ sơ đồ sớm thì ca "rút dây" giải bằng mắt). Chốt chẩn đoán mới mở
+    pha sửa; sau đó đổi chẩn đoán bằng chip tại chỗ, KHÔNG unmount phòng
+    lab — unmount là mất sơ đồ đang sửa dở.
+  - Pha sửa edit-network dùng NGUYÊN `NetworkLab` với `hideDiagnosis`
+    (máy nói tên bệnh hộ là lộ đề) + `onTopologyChange`: terminal và nút
+    "Chạy lại triệu chứng" soi sơ đồ SỐNG — ping trong terminal thấy
+    ngay mối sửa vừa làm; ARP cache cũ giữ nguyên như đời thật.
+  - Gõ lệnh và "Chạy lại triệu chứng" MIỄN PHÍ; chỉ "Nộp bài" tính một
+    lượt trong thang 3 tầng (một lượt = trọn gói hai phần).
+  - Ranh giới chuỗi: `lines` của terminal là output thiết bị tiếng Anh,
+    render nguyên văn trong `<pre>`; microcopy tiếng Việt (help, lệnh
+    lạ, capture trống, nhãn hai pha) ở i18n `clinic.*`.
+- `/design` có mục Phòng khám (ca sai-gateway từ clinicFixture, đi qua
+  `QuestionSchema.parse` nên hợp lệ y hệt câu thật);
+  `render-content-review.mjs` tả được ca bệnh (mạng, hồ sơ bệnh, triệu
+  chứng, hai phần đáp án có đánh dấu ✓).
 
 ## Khi gặp mơ hồ
 

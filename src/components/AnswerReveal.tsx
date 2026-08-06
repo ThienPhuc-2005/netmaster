@@ -27,6 +27,14 @@ export function canonicalAnswer(q: Question): string | null {
     case 'lab':
     case 'palace-walk':
       return null
+    case 'clinic': {
+      // Sơ đồ đã sửa không rút gọn thành chữ được (như lab), nhưng TÊN
+      // BỆNH thì có — và đó chính là thứ đáng đọc lại. Ca chọn-hành-động
+      // nêu luôn hành động đúng.
+      const diagnosis = q.diagnosis.choices[q.diagnosis.answerIndex]?.vi ?? ''
+      const action = q.actions?.choices[q.actions.answerIndex]?.vi
+      return action === undefined ? diagnosis : `${diagnosis} → ${action}`
+    }
   }
 }
 
@@ -45,6 +53,16 @@ export function formatResponse(q: Question, r: QuestionResponse): string | null 
     case 'palace-walk':
       // Chuyến đi đã tự kể lại kết quả từng phòng trên bản đồ tòa nhà.
       return null
+    case 'clinic': {
+      if (q.kind !== 'clinic') return ''
+      const diagnosis = q.diagnosis.choices[r.diagnosisIndex]?.vi ?? ''
+      if (r.fix.kind === 'choose-action') {
+        const action = q.actions?.choices[r.fix.actionIndex]?.vi
+        return action === undefined ? diagnosis : `${diagnosis} → ${action}`
+      }
+      // Sơ đồ đã sửa xem lại ngay trong phòng khám, không phải ở đây.
+      return diagnosis
+    }
   }
 }
 

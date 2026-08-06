@@ -312,7 +312,35 @@
   "clinic": {
     "title": "Phòng khám",
     "lockedTitle": "Phòng khám chưa mở cửa",
-    "lockedBody": "Sau cánh cửa này là những \"bệnh nhân\" thật: dây mạng bị rút, DNS im bặt, gateway ghi nhầm địa chỉ… Bạn sẽ vào vai người chẩn đoán — nhưng phải học xong các module nền tảng trước đã. Cứ học tiếp, phòng khám sẽ tự mở khi bạn sẵn sàng."
+    "lockedBody": "Sau cánh cửa này là những \"bệnh nhân\" thật: dây mạng bị rút, DNS im bặt, gateway ghi nhầm địa chỉ… Bạn sẽ vào vai người chẩn đoán — nhưng phải học xong các module nền tảng trước đã. Cứ học tiếp, phòng khám sẽ tự mở khi bạn sẵn sàng.",
+    "seatLine": "Bạn đang ngồi ở máy {host} của bệnh nhân. Chưa được nhìn sơ đồ — mọi manh mối lấy từ terminal bên dưới, như một buổi đi trực thật.",
+    "terminalAria": "Terminal của máy {host}",
+    "terminalInputAria": "Ô gõ lệnh",
+    "terminalIntro": "Gõ lệnh để khám bệnh — bắt đầu bằng help nếu chưa biết gõ gì. Khám bao nhiêu lần cũng miễn phí.",
+    "terminalPlaceholder": "Gõ lệnh… (help để xem danh sách)",
+    "terminalRun": "Chạy",
+    "termHelpTitle": "Các lệnh dùng được ở máy này:",
+    "termUnknown": "Máy này không có lệnh \"{cmd}\" — gõ help xem danh sách lệnh nhé.",
+    "termCaptureEmpty": "Chưa bắt được gói nào — chạy ping hoặc tracert trước, rồi capture sẽ có chuyện để kể.",
+    "cmd": {
+      "ipconfig": "xem địa chỉ IP, subnet mask, gateway và DNS của máy này",
+      "ping": "gửi gói thăm dò tới một địa chỉ hoặc tên miền — ping <đích>",
+      "tracert": "xem đường đi qua từng router tới đích — tracert <đích>",
+      "nslookup": "hỏi DNS xem một tên miền trỏ về địa chỉ nào — nslookup <tên>",
+      "netstat": "liệt kê các kết nối mạng đang mở trên máy",
+      "arp": "xem bảng địa chỉ MAC mà máy đã học được",
+      "capture": "xem bảng bắt gói của lượt ping/tracert gần nhất (Wireshark thu nhỏ)",
+      "gpresult": "liệt kê các chính sách (GPO) đang áp lên máy này"
+    },
+    "diagnosisTitle": "Chẩn đoán của bạn",
+    "diagnosisHint": "Khám qua terminal trước đã — chốt được bệnh rồi mới vào sửa.",
+    "diagnosisLock": "Chốt chẩn đoán, vào sửa",
+    "diagnosisChosen": "Chẩn đoán đã chọn (bấm để đổi)",
+    "fixIntroEdit": "Giờ tới tay bạn: sơ đồ của bệnh nhân đây, sửa trực tiếp trên đó.",
+    "fixIntroAction": "Bệnh này không sửa được từ chỗ bạn ngồi — chọn cách xử lý đúng nhất.",
+    "symptomRecheck": "Chạy lại triệu chứng",
+    "symptomStillSick": "Bệnh nhân vẫn còn đúng triệu chứng cũ — chưa khỏi.",
+    "symptomCleared": "Triệu chứng ban đầu đã hết — chắc tay rồi thì nộp thôi."
   },
   "profile": {
     "title": "Hồ sơ",
