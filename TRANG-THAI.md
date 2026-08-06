@@ -199,7 +199,7 @@ xong thì Module 5/6/7 chỉ còn là viết JSON.
 | 6.2 | UI hai chuyến đi + cắm vào pipeline 6 bước | Xong |
 | 6.3 | Nội dung Module 5 (TCP/UDP/Port) + hình khái niệm | Xong |
 | 6.4 | Nội dung Module 6 (DNS phân cấp, DHCP DORA, DoH) | Xong |
-| 6.5 | Nội dung Module 7 (NAT/PAT, port forwarding, firewall, mạng nhà) | Chưa |
+| 6.5 | Nội dung Module 7 (NAT/PAT, port forwarding, firewall, mạng nhà) | Xong |
 | 6.6 | Đối chiếu DoD + kiểm browser + cập nhật tài liệu | Chưa |
 
 **Khối 6.1 đã làm gì** (headless — app người dùng không đổi một pixel):
@@ -306,6 +306,25 @@ xong thì Module 5/6/7 chỉ còn là viết JSON.
   Phase 1: nhãn "C · 8-12" của bản đồ khóa học bị cắt đuôi) — đã sửa cả.
 - 710/710 test xanh, typecheck sạch, build qua. Đã soi cả 54 hình trên
   trình duyệt thật, đo bằng `getBBox` để chắc không còn chữ nào tràn.
+
+**Khối 6.5 đã làm gì** (nội dung thật của Module 7 — hết Phần B):
+- `content/modules/module-07.json` — 5 chặng, 5 bài, 6 khái niệm. NAT/PAT
+  (ẩn dụ chung cư của Module 1 quay lại: cả nhà một số nhà, phân biệt
+  bằng số căn hộ), port forwarding, tường lửa stateful, kiến trúc mạng
+  nhà, và double NAT khi cắm thêm router thứ hai.
+- **Bài lab "vẽ lại sơ đồ mạng nhà BẠN"** như spec đòi (học gắn đời
+  thật): người học nối máy tính + điện thoại qua switch lên router nhà
+  rồi đặt địa chỉ cho chúng; phần router ra modem đã đấu sẵn y như đời
+  thật. Chấm bằng hành vi: cả hai thiết bị phải ping được máy chủ ngoài
+  Internet, đi qua HAI router bằng tuyến mặc định.
+- Nội dung nối chéo về các module trước: port forwarding nhắc lại phòng
+  3389/445 của cung điện Module 5; bài mạng nhà dạy cách nghi đúng chặng
+  khi mất mạng (nền cho Phòng khám ở Phase 3).
+- 6 hình SVG mới. Đã đo lại toàn bộ 65 hình bằng `getBBox` trên
+  `/design`: không hình nào còn chữ tràn khung.
+- 710/710 test xanh, typecheck sạch, build qua. Đã GIẢI TRỌN bài lab
+  trên trình duyệt thật bằng đường bấm chọn (nối 3 dây, đặt 2 địa chỉ) —
+  hai mục tiêu chuyển "xong", nộp bài ra "Chuẩn luôn!".
 
 ## Lệnh hay dùng
 

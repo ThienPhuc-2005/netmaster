@@ -1012,6 +1012,195 @@ function LeaseRenew({ title }: { title?: string }) {
   )
 }
 
+/** NAT: cả chung cư một số nhà — ẩn dụ Module 1 quay lại. */
+function NatApartment({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <rect x="20" y="22" width="82" height="86" rx="4" {...stroke} />
+        {[0, 1, 2].map((r) =>
+          [0, 1].map((c) => (
+            <rect key={`${r}-${c}`} x={32 + c * 30} y={34 + r * 24} width="22" height="16" rx="2" {...stroke} strokeWidth={1.2} />
+          )),
+        )}
+        <text x="61" y="122" textAnchor="middle" {...monoText}>
+          192.168.1.x
+        </text>
+      </g>
+      <g className="text-accent">
+        <path d="M104 65 H140" {...stroke} strokeWidth={2} markerEnd="url(#cv-arrow)" />
+        <rect x="144" y="50" width="64" height="30" rx="4" {...stroke} />
+        <text x="176" y="69" textAnchor="middle" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          203.0.113.7
+        </text>
+        <text x="176" y="40" textAnchor="middle" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          số nhà chung
+        </text>
+      </g>
+    </Frame>
+  )
+}
+
+/** PAT: cuốn sổ ghép cặp cổng riêng ↔ cổng chung. */
+function NatTable({ title }: { title?: string }) {
+  const rows = [
+    { inside: '1.10:51344', outside: ':40001' },
+    { inside: '1.11:60122', outside: ':40002' },
+  ]
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <rect x="16" y="24" width="188" height="76" rx="4" {...stroke} />
+        <path d="M16 46 H204 M110 24 V100" {...stroke} strokeWidth={1.2} />
+        <text x="63" y="40" textAnchor="middle" {...monoText}>
+          trong nhà
+        </text>
+        <text x="157" y="40" textAnchor="middle" {...monoText}>
+          ra ngoài
+        </text>
+      </g>
+      <g className="text-accent">
+        {rows.map((r, i) => (
+          <g key={r.inside}>
+            <text x="63" y={64 + i * 20} textAnchor="middle" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+              {r.inside}
+            </text>
+            <text x="157" y={64 + i * 20} textAnchor="middle" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+              {r.outside}
+            </text>
+          </g>
+        ))}
+      </g>
+      <text x="110" y="116" textAnchor="middle" {...monoText}>
+        thư về tra sổ này
+      </text>
+    </Frame>
+  )
+}
+
+/** Port forwarding: một cửa khai sẵn dẫn thẳng vào một máy. */
+function PortForward({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <path d="M18 66 H62" {...stroke} strokeWidth={1.5} markerEnd="url(#cv-arrow)" />
+        <text x="40" y="52" textAnchor="middle" {...monoText}>
+          từ ngoài
+        </text>
+        <rect x="66" y="34" width="46" height="62" rx="4" {...stroke} />
+        <text x="89" y="112" textAnchor="middle" {...monoText}>
+          router
+        </text>
+      </g>
+      <g className="text-accent">
+        <rect x="78" y="56" width="22" height="24" rx="2" {...stroke} strokeWidth={2} />
+        <text x="89" y="28" textAnchor="middle" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          cổng 8080
+        </text>
+        <path d="M114 66 H150" {...stroke} strokeWidth={2} markerEnd="url(#cv-arrow)" />
+        <rect x="152" y="50" width="50" height="32" rx="4" {...stroke} />
+        <text x="177" y="70" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          .1.50:80
+        </text>
+      </g>
+    </Frame>
+  )
+}
+
+/** Tường lửa stateful: bảng nhớ ai vừa gọi ra. */
+function StatefulGuard({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <rect x="96" y="16" width="28" height="98" rx="3" {...stroke} />
+        <path d="M28 44 H92" {...stroke} strokeWidth={1.5} markerEnd="url(#cv-arrow)" />
+        <text x="58" y="36" textAnchor="middle" {...monoText}>
+          gọi ra
+        </text>
+      </g>
+      <g className="text-accent">
+        <path d="M192 62 H128" {...stroke} strokeWidth={2} markerEnd="url(#cv-arrow)" />
+        <text x="162" y="54" textAnchor="middle" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          thư về: qua
+        </text>
+        <rect x="16" y="76" width="72" height="26" rx="3" {...stroke} strokeWidth={1.5} />
+        <text x="52" y="93" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          bảng đang mở
+        </text>
+      </g>
+      <g className="text-warn">
+        <path d="M192 94 H136" {...stroke} strokeWidth={1.5} strokeDasharray="4 3" />
+        <path d="M130 88 l-8 12 M122 88 l8 12" {...stroke} strokeWidth={1.5} />
+        <text x="170" y="112" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          người lạ: chặn
+        </text>
+      </g>
+    </Frame>
+  )
+}
+
+/** Sơ đồ mạng nhà: nhà mạng → modem → router → switch/Wi-Fi → thiết bị. */
+function HomeNetwork({ title }: { title?: string }) {
+  const boxes = [
+    { x: 14, label: 'modem' },
+    { x: 76, label: 'router' },
+    { x: 138, label: 'switch' },
+  ]
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <text x="110" y="20" textAnchor="middle" {...monoText}>
+          nhà mạng → nhà bạn
+        </text>
+        {boxes.map((b, i) => (
+          <g key={b.label}>
+            <rect x={b.x} y="38" width="52" height="28" rx="4" {...stroke} strokeWidth={i === 1 ? 2 : 1.2} className={i === 1 ? 'text-accent' : undefined} />
+            <text x={b.x + 26} y="56" textAnchor="middle" {...monoText}>
+              {b.label}
+            </text>
+          </g>
+        ))}
+        <path d="M66 52 H74 M128 52 H136" {...stroke} strokeWidth={1.5} />
+        <path d="M164 68 v14 H120 M164 68 v14 H208" {...stroke} strokeWidth={1.2} />
+        <rect x="104" y="84" width="32" height="20" rx="3" {...stroke} strokeWidth={1.2} />
+        <rect x="192" y="84" width="24" height="20" rx="3" {...stroke} strokeWidth={1.2} />
+        <text x="110" y="122" textAnchor="middle" {...monoText}>
+          NAT + tường lửa ở router
+        </text>
+      </g>
+    </Frame>
+  )
+}
+
+/** Double NAT: hai lớp cổng lồng nhau, hai cuốn sổ. */
+function DoubleNat({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <rect x="14" y="26" width="192" height="72" rx="5" {...stroke} strokeWidth={1.2} />
+        <text x="44" y="20" textAnchor="middle" {...monoText}>
+          hộp nhà mạng
+        </text>
+      </g>
+      <g className="text-warn">
+        <rect x="60" y="42" width="140" height="42" rx="5" {...stroke} strokeWidth={1.5} />
+        <text x="130" y="36" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          router thứ hai
+        </text>
+      </g>
+      <g className="text-accent">
+        <rect x="150" y="52" width="40" height="22" rx="3" {...stroke} strokeWidth={1.5} />
+        <text x="170" y="67" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          máy bạn
+        </text>
+      </g>
+      <text x="110" y="118" textAnchor="middle" {...monoText}>
+        hai lớp cổng, hai cuốn sổ
+      </text>
+    </Frame>
+  )
+}
+
 /** Hình thư chung cho visualId chưa có hình riêng. */
 function GenericMail({ title }: { title?: string }) {
   return (
@@ -1092,6 +1281,18 @@ const REGISTRY: Record<string, VisualComponent> = {
   'vis-dhcp-thue-nha': DhcpLease,
   'vis-gia-han-thue': LeaseRenew,
   'vis-hook-lease': LeaseRenew,
+  // Module 7 — NAT, tường lửa và mạng nhà
+  'vis-nat-chung-cu': NatApartment,
+  'vis-hook-nat': NatApartment,
+  'vis-pat-bang-so': NatTable,
+  'vis-mo-cua-vao-nha': PortForward,
+  'vis-hook-port-forwarding': PortForward,
+  'vis-gac-cua-nho-mat': StatefulGuard,
+  'vis-hook-firewall': StatefulGuard,
+  'vis-so-do-mang-nha': HomeNetwork,
+  'vis-hook-mang-nha': HomeNetwork,
+  'vis-hai-lop-nat': DoubleNat,
+  'vis-hook-double-nat': DoubleNat,
 }
 
 /**

@@ -1,0 +1,892 @@
+{
+  "id": "module-7",
+  "order": 7,
+  "part": "B",
+  "title": { "vi": "NAT, Firewall và mạng nhà bạn" },
+  "stages": [
+    { "id": "m7-chang-1", "title": { "vi": "Một số nhà cho cả chung cư" }, "lessonIds": ["m7-bai-1"] },
+    { "id": "m7-chang-2", "title": { "vi": "Mở một cánh cửa vào nhà" }, "lessonIds": ["m7-bai-2"] },
+    { "id": "m7-chang-3", "title": { "vi": "Người gác cửa nhớ mặt" }, "lessonIds": ["m7-bai-3"] },
+    { "id": "m7-chang-4", "title": { "vi": "Sơ đồ nhà bạn" }, "lessonIds": ["m7-bai-4"] },
+    { "id": "m7-chang-5", "title": { "vi": "Khi nhà có hai lớp cổng" }, "lessonIds": ["m7-bai-5"] }
+  ],
+
+  "lessons": [
+    {
+      "id": "m7-bai-1",
+      "missionTitle": { "vi": "Tìm ra cả nhà đang dùng chung một địa chỉ" },
+      "steps": [
+        {
+          "type": "hook",
+          "question": { "vi": "Nhà bạn có chục thiết bị, mỗi cái một địa chỉ riêng. Vậy mà tra \"địa chỉ IP của tôi\" trên máy tính và trên điện thoại lại ra CÙNG một con số. Con số đó của ai?" },
+          "visualId": "vis-hook-nat"
+        },
+        {
+          "type": "pretest",
+          "questions": [
+            {
+              "kind": "mcq",
+              "id": "m7-b1-pre-1",
+              "prompt": { "vi": "Đoán thử nhé: địa chỉ công cộng mà cả nhà bạn dùng chung là địa chỉ của thiết bị nào?" },
+              "choices": [
+                { "vi": "Của máy tính đang mở" },
+                { "vi": "Của router nhà bạn, ở phía quay ra Internet" },
+                { "vi": "Của nhà cung cấp dịch vụ, không thuộc nhà bạn" }
+              ],
+              "answerIndex": 1,
+              "explain": { "vi": "Địa chỉ công cộng nằm ở cổng WAN của router — cái chân quay ra ngoài. Mọi thiết bị trong nhà mượn chung con số đó khi ra Internet." }
+            }
+          ],
+          "encouragement": { "vi": "Cứ nhớ lại chung cư ở Module 1 — cả tòa chung một số nhà, khác nhau ở số căn hộ." }
+        },
+        {
+          "type": "teach",
+          "screens": [
+            {
+              "conceptId": "m7-nat",
+              "visualId": "vis-nat-chung-cu",
+              "body": { "vi": "Ẩn dụ chung cư quay lại: mạng nhà bạn là một tòa nhà, mỗi thiết bị là một căn hộ mang địa chỉ riêng (192.168.x.x). Cả tòa chỉ có MỘT số nhà nhìn từ ngoài đường — địa chỉ công cộng ở cổng WAN của router. NAT là việc router đổi địa chỉ riêng thành số nhà chung khi gói tin đi ra." },
+              "deepDive": { "vi": "Địa chỉ riêng do đó không cần duy nhất trên thế giới: nhà bạn và nhà hàng xóm cùng dùng 192.168.1.10 chẳng sao cả, vì hai con số ấy không bao giờ xuất hiện ngoài Internet." }
+            },
+            {
+              "conceptId": "m7-pat",
+              "visualId": "vis-pat-bang-so",
+              "body": { "vi": "Nhưng thư trả về thì giao cho ai? Router giữ một CUỐN SỔ: mỗi lượt đi ra, nó ghi \"căn hộ 192.168.1.10 cổng 51344 ↔ số nhà chung cổng 40001\". Thư về mang cổng 40001 thì tra sổ là biết đưa lên căn hộ nào. Dùng số cổng để phân biệt như vậy gọi là PAT." },
+              "deepDive": { "vi": "Vì bảng này chỉ có dòng khi có người TRONG nhà mở lời trước, nên mặc định người ngoài không tự gõ cửa vào được — router không biết đưa cho ai. Đó là lý do mạng nhà tự nhiên đã kín một nửa, dù bạn chưa cài tường lửa nào." }
+            }
+          ]
+        },
+        {
+          "type": "practice",
+          "fadingLevel": 0,
+          "workedExample": { "vi": "Ví dụ giải sẵn: máy tính 192.168.1.10 mở một trang web. (1) Gói đi ra mang địa chỉ nguồn 192.168.1.10 cổng 51344. (2) Router đổi nguồn thành 203.0.113.7 cổng 40001 và ghi cặp đó vào sổ. (3) Máy chủ trả lời về 203.0.113.7 cổng 40001. (4) Router tra sổ, đổi ngược lại và đưa gói lên đúng máy tính. Đọc kỹ bước 2 rồi thử tự gọi tên cuốn sổ ấy nhé." },
+          "exercises": [
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m7-b1-pra-1",
+                "prompt": { "vi": "Việc router đổi địa chỉ riêng thành địa chỉ công cộng khi gói tin đi ra gọi là gì? (viết tắt được)" },
+                "accept": ["nat", "network address translation"],
+                "hintTopic": { "vi": "chuyện xảy ra với địa chỉ nguồn khi gói rời khỏi nhà" },
+                "nearMisses": [
+                  {
+                    "accept": ["pat", "port address translation"],
+                    "feedback": { "vi": "PAT là phần dùng SỐ CỔNG để phân biệt từng máy trong nhà — nó là cách làm NAT khi cả nhà chung một địa chỉ. Câu này hỏi tên chung của việc đổi địa chỉ." }
+                  }
+                ]
+              },
+              "hint": { "vi": "Ba chữ cái, chữ giữa là \"address\"." },
+              "solution": { "vi": "NAT — Network Address Translation, việc đổi địa chỉ riêng thành địa chỉ công cộng ở cổng WAN." }
+            },
+            {
+              "question": {
+                "kind": "mcq",
+                "id": "m7-b1-pra-2",
+                "prompt": { "vi": "Nhờ đâu router biết thư trả về thuộc máy nào trong nhà?" },
+                "choices": [
+                  { "vi": "Tra cuốn sổ ghi cặp địa chỉ và SỐ CỔNG lúc gói đi ra" },
+                  { "vi": "Hỏi lại tất cả các máy trong nhà" },
+                  { "vi": "Dựa vào địa chỉ MAC ghi trong gói tin" }
+                ],
+                "answerIndex": 0,
+                "hintTopic": { "vi": "thứ router ghi lại lúc gói đi ra" }
+              },
+              "hint": { "vi": "Đúng thứ đã giúp phân biệt các ứng dụng ở Module 5 — con số căn hộ." },
+              "solution": { "vi": "Tra bảng NAT/PAT: mỗi dòng ghi cặp \"địa chỉ riêng + cổng riêng ↔ địa chỉ chung + cổng chung\"." }
+            }
+          ]
+        },
+        {
+          "type": "retrieval",
+          "questions": [
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m7-b1-ret-1",
+                "prompt": { "vi": "Không nhìn lại bài: cách NAT dùng SỐ CỔNG để cả nhà chung một địa chỉ công cộng gọi là gì? (viết tắt được)" },
+                "accept": ["pat", "port address translation"],
+                "hintTopic": { "vi": "chữ đầu là tên con số phân biệt các căn hộ" }
+              },
+              "hint": { "vi": "Giống NAT nhưng chữ đầu đổi thành chữ đầu của \"port\"." },
+              "solution": { "vi": "PAT — Port Address Translation, phân biệt từng máy trong nhà bằng số cổng trên cùng một địa chỉ chung." }
+            }
+          ],
+          "selfExplain": {
+            "prompt": { "vi": "Giải thích bằng lời của bạn: vì sao nhà bạn và nhà hàng xóm cùng dùng địa chỉ 192.168.1.10 mà không đụng nhau?" },
+            "keywords": [
+              ["riêng", "nội bộ", "trong nhà", "private"],
+              ["không ra ngoài", "đổi", "nat", "không xuất hiện", "thay bằng"]
+            ],
+            "exampleAnswer": { "vi": "Vì đó là địa chỉ riêng, chỉ có nghĩa trong phạm vi từng nhà; ra tới Internet thì router đã đổi nó thành địa chỉ công cộng của nhà mình rồi, nên hai con số giống nhau không bao giờ gặp nhau ngoài đường." }
+          }
+        },
+        {
+          "type": "summary",
+          "bullets": [
+            { "vi": "Cả nhà là một chung cư: nhiều địa chỉ riêng, một số nhà chung ra ngoài." },
+            { "vi": "NAT đổi địa chỉ riêng thành địa chỉ công cộng ở cổng WAN của router." },
+            { "vi": "PAT dùng số cổng để biết thư về thuộc máy nào — router tra sổ." }
+          ],
+          "nextTeaser": { "vi": "Sổ chỉ có dòng khi người trong nhà mở lời trước. Vậy muốn ai đó ngoài đường chủ động gõ cửa vào một máy trong nhà thì làm sao?" }
+        }
+      ]
+    },
+
+    {
+      "id": "m7-bai-2",
+      "missionTitle": { "vi": "Chừa sẵn một lối vào cho người ngoài" },
+      "steps": [
+        {
+          "type": "hook",
+          "question": { "vi": "Bạn muốn xem camera nhà mình từ chỗ làm. Nhưng router không biết gói tin lạ từ ngoài đường thuộc về máy nào trong nhà — vậy phải dặn nó trước bằng cách gì?" },
+          "visualId": "vis-hook-port-forwarding"
+        },
+        {
+          "type": "pretest",
+          "questions": [
+            {
+              "kind": "mcq",
+              "id": "m7-b2-pre-1",
+              "prompt": { "vi": "Đoán thử nhé: muốn truy cập được một máy trong nhà từ Internet, bạn phải khai gì trên router?" },
+              "choices": [
+                { "vi": "Một dòng dặn trước: cổng nào từ ngoài thì đưa vào máy nào, cổng nào" },
+                { "vi": "Đổi địa chỉ máy đó thành địa chỉ công cộng" },
+                { "vi": "Tắt NAT đi" }
+              ],
+              "answerIndex": 0,
+              "explain": { "vi": "Đó là port forwarding: bạn ghi sẵn một dòng trong sổ của router, để gói tin lạ tới cổng đã khai được đưa thẳng vào đúng máy trong nhà." }
+            }
+          ],
+          "encouragement": { "vi": "Nghĩ như dặn bảo vệ chung cư: \"ai tới hỏi phòng 402 thì cứ dẫn lên\"." }
+        },
+        {
+          "type": "teach",
+          "screens": [
+            {
+              "conceptId": "m7-port-forwarding",
+              "visualId": "vis-mo-cua-vao-nha",
+              "body": { "vi": "Port forwarding là một dòng bạn ghi TRƯỚC vào sổ của router: \"ai gõ vào cổng 8080 của số nhà chung thì dẫn tới máy 192.168.1.50 cổng 80\". Từ đó người ngoài gõ đúng cổng ấy là vào được đúng máy ấy — dù trong nhà chưa ai mở lời." },
+              "deepDive": { "vi": "Mỗi dòng như vậy là một cánh cửa mở thường trực ra Internet, và cả thế giới đều dò được. Nhớ lại tòa nhà 15 phòng: mở 3389 hay 445 ra ngoài là mời cả hành tinh thử mật khẩu vào màn hình và ổ đĩa nhà bạn." }
+            }
+          ]
+        },
+        {
+          "type": "practice",
+          "fadingLevel": 1,
+          "exercises": [
+            {
+              "question": {
+                "kind": "mcq",
+                "id": "m7-b2-pra-1",
+                "prompt": { "vi": "Cổng nào sau đây TUYỆT ĐỐI không nên mở thẳng ra Internet bằng port forwarding?" },
+                "choices": [
+                  { "vi": "3389 — màn hình máy tính từ xa" },
+                  { "vi": "443 — trang web có khóa" },
+                  { "vi": "123 — đồng bộ giờ" }
+                ],
+                "answerIndex": 0,
+                "hintTopic": { "vi": "phòng có tấm gương chiếu nguyên màn hình" }
+              },
+              "hint": { "vi": "Nghĩ xem cổng nào cho người ngoài ngồi thẳng vào máy bạn nếu đoán trúng mật khẩu." },
+              "solution": { "vi": "3389 (RDP): mở ra Internet là mời cả thế giới thử mật khẩu để vào thẳng màn hình máy bạn." }
+            },
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m7-b2-pra-2",
+                "prompt": { "vi": "Dòng khai sẵn trên router để người ngoài vào được một máy trong nhà gọi là gì? (tiếng Anh cũng được)" },
+                "accept": ["port forwarding", "chuyển tiếp cổng", "chuyen tiep cong", "forward cổng", "mở cổng"],
+                "hintTopic": { "vi": "việc router làm với gói tin tới đúng cổng đã khai" }
+              },
+              "hint": { "vi": "Hai từ: một từ là \"cổng\", từ kia nghĩa là chuyển tiếp." },
+              "solution": { "vi": "Port forwarding — chuyển tiếp cổng: khai trước cổng nào từ ngoài thì đưa vào máy nào trong nhà." }
+            }
+          ]
+        },
+        {
+          "type": "retrieval",
+          "questions": [
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m7-b2-ret-1",
+                "prompt": { "vi": "Không nhìn lại bài: vì sao bình thường người ngoài KHÔNG tự vào được máy trong nhà bạn? (một câu ngắn)" },
+                "accept": [
+                  "router không biết đưa cho ai",
+                  "khong biet dua cho ai",
+                  "không có trong bảng nat",
+                  "khong co trong bang nat",
+                  "chưa ai trong nhà mở lời",
+                  "chua ai trong nha mo loi"
+                ],
+                "hintTopic": { "vi": "cuốn sổ chỉ có dòng khi nào" }
+              },
+              "hint": { "vi": "Sổ NAT chỉ ghi dòng khi có người trong nhà mở lời trước." },
+              "solution": { "vi": "Vì bảng NAT chưa có dòng nào cho gói tin đó — router không biết đưa lên căn hộ nào nên bỏ luôn." }
+            }
+          ],
+          "selfExplain": {
+            "prompt": { "vi": "Giải thích bằng lời của bạn: port forwarding tiện ở chỗ nào và nguy ở chỗ nào?" },
+            "keywords": [
+              ["từ xa", "từ ngoài", "truy cập", "vào được"],
+              ["cả thế giới", "ai cũng", "dò", "tấn công", "rủi ro", "mật khẩu"]
+            ],
+            "exampleAnswer": { "vi": "Tiện vì từ ngoài vào thẳng được máy trong nhà, không cần ai ở nhà mở lời trước. Nguy vì cánh cửa đó mở thường trực với cả Internet, ai cũng dò được và cứ thế thử mật khẩu." }
+          }
+        },
+        {
+          "type": "summary",
+          "bullets": [
+            { "vi": "Bình thường người ngoài không vào được vì bảng NAT chưa có dòng nào cho họ." },
+            { "vi": "Port forwarding là dòng khai trước: cổng ngoài nào dẫn vào máy nào, cổng nào." },
+            { "vi": "Mỗi dòng là một cửa mở thường trực — đừng bao giờ mở 3389 hay 445." }
+          ],
+          "nextTeaser": { "vi": "Nhưng vì sao thư trả lời của một trang web thì router cho vào, còn gói tin lạ y hệt lại bị chặn? Người gác cửa nhớ mặt bằng cách nào?" }
+        }
+      ]
+    },
+
+    {
+      "id": "m7-bai-3",
+      "missionTitle": { "vi": "Xem người gác cửa lật sổ" },
+      "steps": [
+        {
+          "type": "hook",
+          "question": { "vi": "Một gói tin từ Internet gõ cửa nhà bạn. Router cho vào nếu đó là thư trả lời, chặn nếu là người lạ tự tới — mà hai gói tin nhìn gần như y hệt nhau. Nó phân biệt kiểu gì?" },
+          "visualId": "vis-hook-firewall"
+        },
+        {
+          "type": "pretest",
+          "questions": [
+            {
+              "kind": "mcq",
+              "id": "m7-b3-pre-1",
+              "prompt": { "vi": "Đoán thử nhé: tường lửa \"có nhớ trạng thái\" khác tường lửa thường ở chỗ nào?" },
+              "choices": [
+                { "vi": "Nó nhớ những kết nối do người trong nhà mở ra, và chỉ cho thư trả lời của đúng những kết nối đó vào" },
+                { "vi": "Nó chạy nhanh hơn" },
+                { "vi": "Nó chặn được virus trong tệp tải về" }
+              ],
+              "answerIndex": 0,
+              "explain": { "vi": "Stateful nghĩa là có nhớ: mỗi kết nối đi ra được ghi vào bảng, và chỉ gói tin khớp một dòng trong bảng ấy mới được đi vào." }
+            }
+          ],
+          "encouragement": { "vi": "Từ \"stateful\" nghe khô, nhưng nó chỉ có nghĩa đúng một chữ: NHỚ." }
+        },
+        {
+          "type": "teach",
+          "screens": [
+            {
+              "conceptId": "m7-firewall-stateful",
+              "visualId": "vis-gac-cua-nho-mat",
+              "body": { "vi": "Tường lửa có nhớ trạng thái giữ một bảng các cuộc trò chuyện đang mở: ai trong nhà vừa gọi ra đâu, bằng cổng nào. Gói tin từ ngoài vào chỉ được qua nếu khớp một dòng trong bảng — tức là đúng câu trả lời của một cuộc gọi có thật. Người lạ tự tới, không có dòng nào, thì mời về." },
+              "deepDive": { "vi": "Mỗi dòng còn có hạn: cuộc trò chuyện im lặng quá lâu thì bị xóa khỏi bảng để lấy chỗ. Đó là lý do vài ứng dụng phải gửi gói \"giữ nhịp\" đều đặn, nếu không kết nối tự đứt sau vài phút không nói gì." }
+            }
+          ]
+        },
+        {
+          "type": "practice",
+          "fadingLevel": 2,
+          "exercises": [
+            {
+              "question": {
+                "kind": "mcq",
+                "id": "m7-b3-pra-1",
+                "prompt": { "vi": "Máy bạn mở một trang web. Gói tin trả về từ máy chủ đó được vào nhà vì sao?" },
+                "choices": [
+                  { "vi": "Vì nó khớp một dòng trong bảng kết nối đang mở của tường lửa" },
+                  { "vi": "Vì máy chủ web là địa chỉ tin cậy" },
+                  { "vi": "Vì cổng 443 luôn được mở sẵn" }
+                ],
+                "answerIndex": 0,
+                "hintTopic": { "vi": "thứ được ghi vào bảng lúc bạn mở lời" }
+              },
+              "hint": { "vi": "Tường lửa không quen ai cả — nó chỉ nhớ những cuộc gọi vừa đi ra." },
+              "solution": { "vi": "Vì lúc bạn mở lời, tường lửa đã ghi cuộc trò chuyện đó vào bảng; gói trả về khớp đúng dòng ấy nên được qua." }
+            },
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m7-b3-pra-2",
+                "prompt": { "vi": "Tường lửa có nhớ các kết nối đang mở được gọi bằng tính từ tiếng Anh nào?" },
+                "accept": ["stateful"],
+                "hintTopic": { "vi": "tính từ nghĩa là \"có nhớ trạng thái\"" }
+              },
+              "hint": { "vi": "Ghép từ \"state\" (trạng thái) với đuôi \"-ful\"." },
+              "solution": { "vi": "Stateful — tường lửa có nhớ trạng thái của từng kết nối." }
+            }
+          ]
+        },
+        {
+          "type": "retrieval",
+          "questions": [
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m7-b3-ret-1",
+                "prompt": { "vi": "Không nhìn lại bài: tường lửa stateful cho một gói tin từ ngoài đi vào khi nào?" },
+                "accept": [
+                  "khi khớp một kết nối đang mở",
+                  "khop mot ket noi dang mo",
+                  "khi nó là thư trả lời",
+                  "khi no la thu tra loi",
+                  "khi có trong bảng kết nối",
+                  "khi co trong bang ket noi"
+                ],
+                "hintTopic": { "vi": "điều kiện duy nhất để được qua cửa" }
+              },
+              "hint": { "vi": "Nó phải là câu trả lời cho một cuộc gọi mà người trong nhà đã mở." },
+              "solution": { "vi": "Khi gói tin khớp một dòng trong bảng kết nối đang mở — tức là thư trả lời của một cuộc trò chuyện do bên trong khởi xướng." }
+            }
+          ],
+          "selfExplain": {
+            "prompt": { "vi": "Giải thích bằng lời của bạn: vì sao chỉ riêng NAT đã che được phần nào cho mạng nhà, nhưng vẫn cần thêm tường lửa?" },
+            "keywords": [
+              ["bảng", "sổ", "dòng", "không biết đưa cho ai"],
+              ["luật", "chặn", "lọc", "kiểm soát", "chủ động"]
+            ],
+            "exampleAnswer": { "vi": "NAT che được vì gói lạ không có dòng nào trong bảng nên router không biết đưa cho ai; nhưng đó chỉ là tác dụng phụ. Tường lửa mới là thứ chặn có luật rõ ràng: cho ai đi ra, cho gì đi vào, và ghi lại được." }
+          }
+        },
+        {
+          "type": "summary",
+          "bullets": [
+            { "vi": "Stateful nghĩa là có nhớ: bảng ghi mọi kết nối đang mở." },
+            { "vi": "Gói từ ngoài chỉ qua được nếu khớp một dòng trong bảng ấy." },
+            { "vi": "Dòng có hạn — im lặng lâu là bị xóa, nên mới có gói giữ nhịp." }
+          ],
+          "nextTeaser": { "vi": "Ba bài vừa rồi nói về cái router nhà bạn. Bài sau bạn sẽ tự lắp lại sơ đồ mạng nhà mình và cho nó chạy thật." }
+        }
+      ]
+    },
+
+    {
+      "id": "m7-bai-4",
+      "missionTitle": { "vi": "Lắp lại mạng nhà bạn trên bàn" },
+      "steps": [
+        {
+          "type": "hook",
+          "question": { "vi": "Trong nhà bạn có một cái hộp nhấp nháy đèn. Nó là modem, là router, hay là cả hai? Và cái dây từ ngoài đường cắm vào chân nào của nó?" },
+          "visualId": "vis-hook-mang-nha"
+        },
+        {
+          "type": "pretest",
+          "questions": [
+            {
+              "kind": "mcq",
+              "id": "m7-b4-pre-1",
+              "prompt": { "vi": "Đoán thử nhé: modem và router khác nhau ở chỗ nào?" },
+              "choices": [
+                { "vi": "Modem nối nhà bạn với nhà mạng; router chia đường cho các thiết bị trong nhà" },
+                { "vi": "Modem phát Wi-Fi, router thì không" },
+                { "vi": "Hai từ chỉ cùng một thứ" }
+              ],
+              "answerIndex": 0,
+              "explain": { "vi": "Modem là cái chân bước ra đường của nhà bạn; router là người chia đường bên trong. Hộp nhà mạng cho mượn thường gộp cả hai (và cả điểm phát Wi-Fi) vào một vỏ." }
+            }
+          ],
+          "encouragement": { "vi": "Hầu hết mọi người gọi tất cả là \"cục wifi\" — bài này tách ba vai đó ra." }
+        },
+        {
+          "type": "teach",
+          "screens": [
+            {
+              "conceptId": "m7-mang-nha",
+              "visualId": "vis-so-do-mang-nha",
+              "body": { "vi": "Mạng nhà xếp thành một hàng: đường của nhà mạng → MODEM (bước ra đường) → ROUTER (chia đường, làm NAT, giữ tường lửa) → SWITCH và ĐIỂM PHÁT WI-FI (nối các thiết bị). Cái hộp nhà mạng cho mượn thường gộp cả ba vai vào một vỏ, nên nhìn thì thấy một hộp mà thật ra là ba việc." },
+              "deepDive": { "vi": "Biết tách ba vai là biết chỗ chẩn đoán: đèn modem tắt là chuyện của nhà mạng; máy có địa chỉ 192.168 mà không ra được Internet là chuyện của router; máy này thấy máy kia nhưng cả hai không ra ngoài thì switch vẫn ổn, lỗi nằm phía trên." }
+            }
+          ]
+        },
+        {
+          "type": "practice",
+          "fadingLevel": 2,
+          "exercises": [
+            {
+              "question": {
+                "kind": "lab",
+                "id": "m7-b4-pra-lab",
+                "prompt": { "vi": "Lắp lại mạng nhà bạn: nối máy tính và điện thoại qua switch vào router nhà, rồi đặt địa chỉ cho hai thiết bị đó sao cho cả hai ra được máy chủ ngoài Internet. Phần từ router ra nhà mạng đã đấu sẵn, y như đời thật." },
+                "spec": {
+                  "initial": {
+                    "devices": [
+                      {
+                        "kind": "pc",
+                        "id": "m7-may-tinh",
+                        "hostname": "Máy tính",
+                        "port": { "id": "eth0", "mac": "AA:BB:CC:70:00:01" },
+                        "ipConfig": null,
+                        "gateway": null
+                      },
+                      {
+                        "kind": "pc",
+                        "id": "m7-dien-thoai",
+                        "hostname": "Điện thoại",
+                        "port": { "id": "wlan0", "mac": "AA:BB:CC:70:00:02" },
+                        "ipConfig": null,
+                        "gateway": null
+                      },
+                      {
+                        "kind": "switch",
+                        "id": "m7-switch-nha",
+                        "hostname": "Switch trong nhà",
+                        "ports": [
+                          { "id": "p1", "vlan": 1 },
+                          { "id": "p2", "vlan": 1 },
+                          { "id": "p3", "vlan": 1 },
+                          { "id": "p4", "vlan": 1 }
+                        ]
+                      },
+                      {
+                        "kind": "router",
+                        "id": "m7-router-nha",
+                        "hostname": "Router nhà",
+                        "ports": [
+                          { "id": "lan", "mac": "AA:BB:CC:70:01:01", "ipConfig": { "ip": "192.168.1.1", "prefix": 24 } },
+                          { "id": "wan", "mac": "AA:BB:CC:70:01:02", "ipConfig": { "ip": "203.0.113.2", "prefix": 30 } }
+                        ],
+                        "staticRoutes": [{ "destination": "0.0.0.0", "prefix": 0, "nextHop": "203.0.113.1" }]
+                      },
+                      {
+                        "kind": "router",
+                        "id": "m7-modem",
+                        "hostname": "Modem nhà mạng",
+                        "ports": [
+                          { "id": "g0", "mac": "AA:BB:CC:70:02:01", "ipConfig": { "ip": "203.0.113.1", "prefix": 30 } },
+                          { "id": "g1", "mac": "AA:BB:CC:70:02:02", "ipConfig": { "ip": "198.51.100.1", "prefix": 24 } }
+                        ],
+                        "staticRoutes": [{ "destination": "192.168.1.0", "prefix": 24, "nextHop": "203.0.113.2" }]
+                      },
+                      {
+                        "kind": "pc",
+                        "id": "m7-may-chu",
+                        "hostname": "Máy chủ trên Internet",
+                        "port": { "id": "eth0", "mac": "AA:BB:CC:70:00:09" },
+                        "ipConfig": { "ip": "198.51.100.10", "prefix": 24 },
+                        "gateway": "198.51.100.1"
+                      }
+                    ],
+                    "links": [
+                      {
+                        "id": "m7-w-wan",
+                        "a": { "deviceId": "m7-router-nha", "portId": "wan" },
+                        "b": { "deviceId": "m7-modem", "portId": "g0" }
+                      },
+                      {
+                        "id": "m7-w-net",
+                        "a": { "deviceId": "m7-modem", "portId": "g1" },
+                        "b": { "deviceId": "m7-may-chu", "portId": "eth0" }
+                      }
+                    ]
+                  },
+                  "goals": [
+                    { "kind": "ping", "from": "m7-may-tinh", "to": "m7-may-chu", "expect": "reach" },
+                    { "kind": "ping", "from": "m7-dien-thoai", "to": "m7-may-chu", "expect": "reach" }
+                  ],
+                  "allow": {
+                    "addDevices": [],
+                    "removeDevices": false,
+                    "addLinks": true,
+                    "removeLinks": true,
+                    "setVlan": false,
+                    "setIp": true,
+                    "setRoutes": false,
+                    "maxDevices": 8
+                  },
+                  "solution": {
+                    "devices": [
+                      {
+                        "kind": "pc",
+                        "id": "m7-may-tinh",
+                        "hostname": "Máy tính",
+                        "port": { "id": "eth0", "mac": "AA:BB:CC:70:00:01" },
+                        "ipConfig": { "ip": "192.168.1.10", "prefix": 24 },
+                        "gateway": "192.168.1.1"
+                      },
+                      {
+                        "kind": "pc",
+                        "id": "m7-dien-thoai",
+                        "hostname": "Điện thoại",
+                        "port": { "id": "wlan0", "mac": "AA:BB:CC:70:00:02" },
+                        "ipConfig": { "ip": "192.168.1.11", "prefix": 24 },
+                        "gateway": "192.168.1.1"
+                      },
+                      {
+                        "kind": "switch",
+                        "id": "m7-switch-nha",
+                        "hostname": "Switch trong nhà",
+                        "ports": [
+                          { "id": "p1", "vlan": 1 },
+                          { "id": "p2", "vlan": 1 },
+                          { "id": "p3", "vlan": 1 },
+                          { "id": "p4", "vlan": 1 }
+                        ]
+                      },
+                      {
+                        "kind": "router",
+                        "id": "m7-router-nha",
+                        "hostname": "Router nhà",
+                        "ports": [
+                          { "id": "lan", "mac": "AA:BB:CC:70:01:01", "ipConfig": { "ip": "192.168.1.1", "prefix": 24 } },
+                          { "id": "wan", "mac": "AA:BB:CC:70:01:02", "ipConfig": { "ip": "203.0.113.2", "prefix": 30 } }
+                        ],
+                        "staticRoutes": [{ "destination": "0.0.0.0", "prefix": 0, "nextHop": "203.0.113.1" }]
+                      },
+                      {
+                        "kind": "router",
+                        "id": "m7-modem",
+                        "hostname": "Modem nhà mạng",
+                        "ports": [
+                          { "id": "g0", "mac": "AA:BB:CC:70:02:01", "ipConfig": { "ip": "203.0.113.1", "prefix": 30 } },
+                          { "id": "g1", "mac": "AA:BB:CC:70:02:02", "ipConfig": { "ip": "198.51.100.1", "prefix": 24 } }
+                        ],
+                        "staticRoutes": [{ "destination": "192.168.1.0", "prefix": 24, "nextHop": "203.0.113.2" }]
+                      },
+                      {
+                        "kind": "pc",
+                        "id": "m7-may-chu",
+                        "hostname": "Máy chủ trên Internet",
+                        "port": { "id": "eth0", "mac": "AA:BB:CC:70:00:09" },
+                        "ipConfig": { "ip": "198.51.100.10", "prefix": 24 },
+                        "gateway": "198.51.100.1"
+                      }
+                    ],
+                    "links": [
+                      {
+                        "id": "m7-w-wan",
+                        "a": { "deviceId": "m7-router-nha", "portId": "wan" },
+                        "b": { "deviceId": "m7-modem", "portId": "g0" }
+                      },
+                      {
+                        "id": "m7-w-net",
+                        "a": { "deviceId": "m7-modem", "portId": "g1" },
+                        "b": { "deviceId": "m7-may-chu", "portId": "eth0" }
+                      },
+                      {
+                        "id": "m7-w-pc",
+                        "a": { "deviceId": "m7-may-tinh", "portId": "eth0" },
+                        "b": { "deviceId": "m7-switch-nha", "portId": "p1" }
+                      },
+                      {
+                        "id": "m7-w-phone",
+                        "a": { "deviceId": "m7-dien-thoai", "portId": "wlan0" },
+                        "b": { "deviceId": "m7-switch-nha", "portId": "p2" }
+                      },
+                      {
+                        "id": "m7-w-lan",
+                        "a": { "deviceId": "m7-switch-nha", "portId": "p3" },
+                        "b": { "deviceId": "m7-router-nha", "portId": "lan" }
+                      }
+                    ]
+                  }
+                },
+                "hintTopic": { "vi": "thứ mỗi thiết bị cần để biết đường ra khỏi nhà" }
+              },
+              "hint": { "vi": "Nối máy tính và điện thoại vào switch, switch nối lên cổng LAN của router nhà. Rồi mỗi thiết bị cần một địa chỉ cùng dải 192.168.1.x và gateway trỏ về 192.168.1.1." },
+              "solution": { "vi": "Máy tính 192.168.1.10/24 và điện thoại 192.168.1.11/24, cả hai đặt gateway 192.168.1.1; dây đi từ hai thiết bị vào switch, rồi từ switch lên cổng LAN của router nhà. Phần WAN ra modem đã đấu sẵn." }
+            }
+          ]
+        },
+        {
+          "type": "retrieval",
+          "questions": [
+            {
+              "question": {
+                "kind": "order",
+                "id": "m7-b4-ret-1",
+                "prompt": { "vi": "Không nhìn lại sơ đồ: xếp các chặng của mạng nhà theo thứ tự từ ngoài đường vào tới máy bạn." },
+                "items": [
+                  { "vi": "Đường của nhà mạng" },
+                  { "vi": "Modem — chân bước ra đường của nhà bạn" },
+                  { "vi": "Router — chia đường, làm NAT, giữ tường lửa" },
+                  { "vi": "Switch và điểm phát Wi-Fi" },
+                  { "vi": "Máy tính, điện thoại và các thiết bị khác" }
+                ],
+                "hintTopic": { "vi": "ba vai thường gộp trong một cái hộp" }
+              },
+              "hint": { "vi": "Đi từ ngoài vào: ai chạm đường trước, ai chia đường, ai nối thiết bị." },
+              "solution": { "vi": "Đường nhà mạng → modem → router → switch/Wi-Fi → thiết bị." }
+            }
+          ],
+          "selfExplain": {
+            "prompt": { "vi": "Giải thích bằng lời của bạn: nếu máy bạn có địa chỉ 192.168.1.x mà vẫn không vào được Internet, bạn nghi chặng nào trước?" },
+            "keywords": [
+              ["router", "gateway", "cửa ra", "chặng trên"],
+              ["trong nhà", "nội bộ", "vẫn thấy", "lan"]
+            ],
+            "exampleAnswer": { "vi": "Có địa chỉ 192.168.1.x nghĩa là phần trong nhà (switch và router phát địa chỉ) vẫn chạy, nên mình nghi chặng phía trên: đường ra của router, hoặc modem và đường nhà mạng." }
+          }
+        },
+        {
+          "type": "summary",
+          "bullets": [
+            { "vi": "Mạng nhà là một hàng: nhà mạng → modem → router → switch/Wi-Fi → thiết bị." },
+            { "vi": "Một cái hộp nhà mạng cho mượn thường gộp cả ba vai vào một vỏ." },
+            { "vi": "Tách được ba vai là biết nghi đúng chặng khi mất mạng." }
+          ],
+          "nextTeaser": { "vi": "Nếu bạn cắm thêm một router thứ hai cho rộng sóng thì sao? Có nhà tự nhiên sinh ra hai lớp cổng — và nhiều thứ bắt đầu trục trặc." }
+        }
+      ]
+    },
+
+    {
+      "id": "m7-bai-5",
+      "missionTitle": { "vi": "Gỡ cái nhà có hai lớp cổng" },
+      "steps": [
+        {
+          "type": "hook",
+          "question": { "vi": "Bạn mua thêm một router cho sóng khỏe, cắm vào hộp nhà mạng. Wi-Fi mạnh hẳn, nhưng camera xem từ xa thì chết, gọi video hay giật. Chuyện gì vừa xảy ra?" },
+          "visualId": "vis-hook-double-nat"
+        },
+        {
+          "type": "pretest",
+          "questions": [
+            {
+              "kind": "mcq",
+              "id": "m7-b5-pre-1",
+              "prompt": { "vi": "Đoán thử nhé: cắm router thứ hai vào sau hộp nhà mạng thì mạng nhà có mấy lớp NAT?" },
+              "choices": [{ "vi": "Một" }, { "vi": "Hai" }],
+              "answerIndex": 1,
+              "explain": { "vi": "Hộp nhà mạng đã làm NAT một lần, router mới làm thêm một lần nữa — nhà bạn thành hai lớp cổng lồng nhau." }
+            }
+          ],
+          "encouragement": { "vi": "Đây là ca thật rất hay gặp, và cũng là lý do người ta hay khuyên \"để router thứ hai ở chế độ phát sóng thôi\"." }
+        },
+        {
+          "type": "teach",
+          "screens": [
+            {
+              "conceptId": "m7-double-nat",
+              "visualId": "vis-hai-lop-nat",
+              "body": { "vi": "Hai lớp NAT nghĩa là gói tin bị đổi địa chỉ hai lần, và có HAI cuốn sổ ở hai chỗ khác nhau. Port forwarding khai ở router trong thì hộp ngoài không biết, khai ở hộp ngoài thì nó chỉ dẫn tới router trong chứ không tới máy bạn — cửa mở nửa vời nên camera không xem được từ xa." },
+              "deepDive": { "vi": "Cách gỡ gọn nhất thường là để router thứ hai làm ĐIỂM PHÁT SÓNG: tắt phần phát địa chỉ và NAT của nó, cắm dây vào cổng LAN thay vì cổng WAN. Khi ấy cả nhà lại chỉ còn một lớp cổng, một cuốn sổ, một chỗ để khai." }
+            }
+          ]
+        },
+        {
+          "type": "practice",
+          "fadingLevel": 2,
+          "exercises": [
+            {
+              "question": {
+                "kind": "mcq",
+                "id": "m7-b5-pra-1",
+                "prompt": { "vi": "Cách gỡ hai lớp NAT gọn nhất khi bạn muốn dùng router thứ hai cho rộng sóng?" },
+                "choices": [
+                  { "vi": "Để router thứ hai làm điểm phát sóng: tắt NAT và phát địa chỉ, cắm dây vào cổng LAN" },
+                  { "vi": "Khai port forwarding trên cả hai thiết bị" },
+                  { "vi": "Đặt cùng một dải địa chỉ cho cả hai router" }
+                ],
+                "answerIndex": 0,
+                "hintTopic": { "vi": "làm sao để chỉ còn một cuốn sổ" }
+              },
+              "hint": { "vi": "Nếu nhà chỉ nên có một lớp cổng, thì thiết bị thứ hai không được làm cổng nữa." },
+              "solution": { "vi": "Cho router thứ hai làm điểm phát sóng: tắt NAT và phát địa chỉ, cắm dây vào cổng LAN — cả nhà quay về một lớp NAT, một cuốn sổ." }
+            },
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m7-b5-pra-2",
+                "prompt": { "vi": "Tình trạng gói tin bị đổi địa chỉ hai lần bởi hai router lồng nhau gọi là gì? (tiếng Anh cũng được)" },
+                "accept": ["double nat", "nat kép", "nat kep", "hai lớp nat", "hai lop nat"],
+                "hintTopic": { "vi": "hai lớp cổng lồng nhau" }
+              },
+              "hint": { "vi": "Ghép chữ \"hai lần\" với tên của việc đổi địa chỉ." },
+              "solution": { "vi": "Double NAT (NAT kép) — hai lớp đổi địa chỉ, hai cuốn sổ ở hai chỗ." }
+            }
+          ]
+        },
+        {
+          "type": "retrieval",
+          "questions": [
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m7-b5-ret-1",
+                "prompt": { "vi": "Không nhìn lại bài: vì sao port forwarding hay hỏng khi nhà có hai lớp NAT?" },
+                "accept": [
+                  "vì có hai cuốn sổ",
+                  "vi co hai cuon so",
+                  "hai bảng nat",
+                  "hai bang nat",
+                  "khai một chỗ chưa đủ",
+                  "khai mot cho chua du"
+                ],
+                "hintTopic": { "vi": "khai ở đâu thì thiết bị kia có biết không" }
+              },
+              "hint": { "vi": "Mỗi lớp giữ một cuốn sổ riêng, mà bạn chỉ khai ở một cuốn." },
+              "solution": { "vi": "Vì có hai cuốn sổ ở hai thiết bị: khai một chỗ thì chỗ kia không biết, nên cánh cửa chỉ mở được nửa đường." }
+            }
+          ],
+          "selfExplain": {
+            "prompt": { "vi": "Giải thích bằng lời của bạn: vì sao thêm một router lại làm hỏng những thứ đang chạy tốt?" },
+            "keywords": [
+              ["hai lần", "hai lớp", "lồng nhau", "thêm một lớp"],
+              ["sổ", "bảng", "không biết", "chỉ tới router", "nửa đường"]
+            ],
+            "exampleAnswer": { "vi": "Vì gói tin bị đổi địa chỉ thêm một lần nữa và sinh ra cuốn sổ thứ hai; những thứ cần người ngoài chủ động gõ cửa như camera hay gọi video thì khai một cuốn sổ là chưa đủ, gói tin dừng lại giữa hai lớp." }
+          }
+        },
+        {
+          "type": "summary",
+          "bullets": [
+            { "vi": "Cắm router thứ hai vào cổng WAN là sinh ra hai lớp NAT, hai cuốn sổ." },
+            { "vi": "Port forwarding khai một chỗ thì cửa chỉ mở được nửa đường." },
+            { "vi": "Gỡ bằng cách cho router thứ hai làm điểm phát sóng, cắm vào cổng LAN." }
+          ],
+          "nextTeaser": { "vi": "Hết Phần B. Phần sau là chuyện đi làm: Wi-Fi chuyên sâu, máy chủ Windows, và một phòng khám mạng nơi bạn vào vai người chẩn đoán." }
+        }
+      ]
+    }
+  ],
+
+  "concepts": [
+    {
+      "id": "m7-nat",
+      "term": "NAT",
+      "glossVi": "Đổi địa chỉ riêng trong nhà thành địa chỉ công cộng khi ra Internet",
+      "metaphor": { "vi": "Cả chung cư một số nhà: thư ra ngoài đều ghi số nhà chung, không ghi số căn hộ." },
+      "iconId": "icon-nat",
+      "flashcard": {
+        "front": { "vi": "NAT làm gì với gói tin đi ra Internet?" },
+        "back": { "vi": "Đổi địa chỉ nguồn từ địa chỉ riêng (192.168.x.x) thành địa chỉ công cộng ở cổng WAN của router." }
+      }
+    },
+    {
+      "id": "m7-pat",
+      "term": "PAT",
+      "glossVi": "Dùng số cổng để nhiều máy chung một địa chỉ công cộng",
+      "metaphor": { "vi": "Cuốn sổ của bảo vệ: thư về mang số nào thì dẫn lên đúng căn hộ đó." },
+      "iconId": "icon-pat",
+      "flashcard": {
+        "front": { "vi": "Nhờ đâu router biết thư trả về thuộc máy nào trong nhà?" },
+        "back": { "vi": "Nhờ bảng NAT/PAT: mỗi dòng ghi \"địa chỉ riêng + cổng riêng ↔ địa chỉ chung + cổng chung\" lúc gói đi ra." }
+      }
+    },
+    {
+      "id": "m7-port-forwarding",
+      "term": "Port forwarding",
+      "glossVi": "Khai trước một lối vào: cổng ngoài nào dẫn tới máy nào trong nhà",
+      "metaphor": { "vi": "Dặn bảo vệ: ai tới hỏi phòng 402 thì cứ dẫn lên." },
+      "iconId": "icon-port-forwarding",
+      "flashcard": {
+        "front": { "vi": "Port forwarding dùng khi nào, và nguy ở chỗ nào?" },
+        "back": { "vi": "Khi cần người ngoài chủ động vào một máy trong nhà. Nguy vì đó là cửa mở thường trực ra Internet — không bao giờ mở 3389 hay 445." }
+      }
+    },
+    {
+      "id": "m7-firewall-stateful",
+      "term": "Stateful firewall",
+      "glossVi": "Tường lửa có nhớ các kết nối đang mở",
+      "metaphor": { "vi": "Người gác cửa nhớ mặt: chỉ cho vào những ai là câu trả lời của một cuộc gọi từ trong nhà." },
+      "iconId": "icon-firewall",
+      "flashcard": {
+        "front": { "vi": "Tường lửa stateful cho gói tin từ ngoài vào khi nào?" },
+        "back": { "vi": "Khi gói khớp một dòng trong bảng kết nối đang mở — tức là thư trả lời của cuộc trò chuyện do bên trong khởi xướng." }
+      }
+    },
+    {
+      "id": "m7-mang-nha",
+      "term": "Kiến trúc mạng nhà",
+      "glossVi": "Nhà mạng → modem → router → switch/Wi-Fi → thiết bị",
+      "metaphor": { "vi": "Một hàng người chuyền tay: người chạm đường, người chia đường, người phát tới từng phòng." },
+      "iconId": "icon-mang-nha",
+      "flashcard": {
+        "front": { "vi": "Mạng nhà đi qua những chặng nào, từ ngoài đường vào tới máy bạn?" },
+        "back": { "vi": "Đường nhà mạng → modem → router (NAT + tường lửa) → switch và điểm phát Wi-Fi → thiết bị. Một hộp nhà mạng thường gộp cả ba vai." }
+      }
+    },
+    {
+      "id": "m7-double-nat",
+      "term": "Double NAT",
+      "glossVi": "Hai lớp đổi địa chỉ do hai router lồng nhau",
+      "metaphor": { "vi": "Nhà có hai lớp cổng, mỗi lớp một cuốn sổ — khai một cuốn thì khách vẫn kẹt ở giữa." },
+      "iconId": "icon-double-nat",
+      "flashcard": {
+        "front": { "vi": "Vì sao double NAT làm hỏng port forwarding, và gỡ thế nào?" },
+        "back": { "vi": "Vì có hai bảng NAT ở hai thiết bị, khai một chỗ là chưa đủ. Gỡ bằng cách cho router thứ hai làm điểm phát sóng: tắt NAT, cắm vào cổng LAN." }
+      }
+    }
+  ],
+
+  "masteryTest": [
+    {
+      "kind": "typed",
+      "id": "m7-mt-1",
+      "prompt": { "vi": "Việc router đổi địa chỉ riêng thành địa chỉ công cộng khi gói tin ra Internet gọi là gì? (viết tắt được)" },
+      "accept": ["nat", "network address translation"],
+      "explain": { "vi": "NAT — đổi địa chỉ nguồn ở cổng WAN, nhờ đó cả nhà dùng chung một địa chỉ công cộng." }
+    },
+    {
+      "kind": "mcq",
+      "id": "m7-mt-2",
+      "prompt": { "vi": "Nhờ đâu router biết gói tin trả về thuộc máy nào trong nhà?" },
+      "choices": [
+        { "vi": "Tra bảng NAT/PAT ghi cặp địa chỉ và số cổng lúc gói đi ra" },
+        { "vi": "Dựa vào địa chỉ MAC của máy nhận" },
+        { "vi": "Hỏi lại tất cả thiết bị trong nhà" }
+      ],
+      "answerIndex": 0,
+      "explain": { "vi": "Mỗi lượt đi ra sinh một dòng trong bảng; thư về khớp dòng nào thì đưa lên máy đó." }
+    },
+    {
+      "kind": "mcq",
+      "id": "m7-mt-3",
+      "prompt": { "vi": "Cổng nào tuyệt đối không nên mở ra Internet bằng port forwarding?" },
+      "choices": [{ "vi": "3389" }, { "vi": "443" }, { "vi": "123" }],
+      "answerIndex": 0,
+      "explain": { "vi": "3389 là RDP — mở ra là mời cả thế giới thử mật khẩu để ngồi thẳng vào màn hình máy bạn." }
+    },
+    {
+      "kind": "typed",
+      "id": "m7-mt-4",
+      "prompt": { "vi": "Tường lửa có nhớ các kết nối đang mở được gọi bằng tính từ tiếng Anh nào?" },
+      "accept": ["stateful"],
+      "explain": { "vi": "Stateful — nó giữ bảng các cuộc trò chuyện đang mở và chỉ cho thư trả lời của đúng những cuộc đó đi vào." }
+    },
+    {
+      "kind": "order",
+      "id": "m7-mt-5",
+      "prompt": { "vi": "Xếp các chặng của mạng nhà từ ngoài đường vào tới máy bạn." },
+      "items": [
+        { "vi": "Đường của nhà mạng" },
+        { "vi": "Modem" },
+        { "vi": "Router" },
+        { "vi": "Switch và điểm phát Wi-Fi" },
+        { "vi": "Máy tính, điện thoại" }
+      ],
+      "explain": { "vi": "Modem chạm đường, router chia đường và làm NAT, switch/Wi-Fi nối tới từng thiết bị." }
+    },
+    {
+      "kind": "mcq",
+      "id": "m7-mt-6",
+      "prompt": { "vi": "Máy bạn có địa chỉ 192.168.1.20 nhưng không vào được Internet. Nghi chặng nào trước?" },
+      "choices": [
+        { "vi": "Chặng phía trên: đường ra của router, modem hoặc nhà mạng" },
+        { "vi": "Switch trong nhà" },
+        { "vi": "Card mạng của máy" }
+      ],
+      "answerIndex": 0,
+      "explain": { "vi": "Có được địa chỉ 192.168.x.x nghĩa là phần trong nhà vẫn chạy; vấn đề nằm ở chặng ra ngoài." }
+    },
+    {
+      "kind": "typed",
+      "id": "m7-mt-7",
+      "prompt": { "vi": "Cắm router thứ hai vào cổng WAN của hộp nhà mạng sinh ra tình trạng gì? (tiếng Anh cũng được)" },
+      "accept": ["double nat", "nat kép", "nat kep", "hai lớp nat", "hai lop nat"],
+      "explain": { "vi": "Double NAT: hai lớp đổi địa chỉ, hai cuốn sổ — port forwarding khai một chỗ là chưa đủ." }
+    },
+    {
+      "kind": "mcq",
+      "id": "m7-mt-8",
+      "prompt": { "vi": "Cách gỡ double NAT khi vẫn muốn dùng router thứ hai cho rộng sóng?" },
+      "choices": [
+        { "vi": "Cho nó làm điểm phát sóng: tắt NAT và phát địa chỉ, cắm dây vào cổng LAN" },
+        { "vi": "Khai port forwarding trên cả hai" },
+        { "vi": "Đặt hai router cùng một dải địa chỉ" }
+      ],
+      "answerIndex": 0,
+      "explain": { "vi": "Tắt vai làm cổng của router thứ hai thì cả nhà quay về một lớp NAT và một cuốn sổ duy nhất." }
+    }
+  ]
+}

@@ -1,6 +1,6 @@
-# REVIEW NỘI DUNG — Module 1-6 (Phần A+B)
+# REVIEW NỘI DUNG — Module 1-7 (Phần A+B)
 
-> Sinh tự động từ `content/modules/module-01.json`, `content/modules/module-02.json`, `content/modules/module-03.json`, `content/modules/module-04.json`, `content/modules/module-05.json`, `content/modules/module-06.json` bằng `npm run content:review`.
+> Sinh tự động từ `content/modules/module-01.json`, `content/modules/module-02.json`, `content/modules/module-03.json`, `content/modules/module-04.json`, `content/modules/module-05.json`, `content/modules/module-06.json`, `content/modules/module-07.json` bằng `npm run content:review`.
 > Đây là bản để ĐỌC DUYỆT; muốn sửa thì sửa file JSON rồi render lại.
 
 ## Mạng là gì? — Câu chuyện bưu điện `module-1`
@@ -1850,3 +1850,276 @@ Phần B · 5 chặng · 5 bài · 8 khái niệm
 - **Đề:** Máy bạn bắt đầu xin gia hạn địa chỉ khi đã dùng hết bao nhiêu phần thời hạn thuê?
   - **Dạng:** gõ tay · **Chấp nhận:** một nửa | mot nua | nửa | nua | 50% | 1/2
   - **Vì sao:** Một nửa — xin sớm thì hỏng một lần vẫn còn nửa hạn sau để thử lại, không mất địa chỉ giữa chừng.
+
+## NAT, Firewall và mạng nhà bạn `module-7`
+
+Phần B · 5 chặng · 5 bài · 6 khái niệm
+
+**Chặng:** Một số nhà cho cả chung cư (m7-bai-1) → Mở một cánh cửa vào nhà (m7-bai-2) → Người gác cửa nhớ mặt (m7-bai-3) → Sơ đồ nhà bạn (m7-bai-4) → Khi nhà có hai lớp cổng (m7-bai-5)
+
+### Bài: Tìm ra cả nhà đang dùng chung một địa chỉ `m7-bai-1`
+
+**1 · Khởi động (hook):** Nhà bạn có chục thiết bị, mỗi cái một địa chỉ riêng. Vậy mà tra "địa chỉ IP của tôi" trên máy tính và trên điện thoại lại ra CÙNG một con số. Con số đó của ai?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử nhé: địa chỉ công cộng mà cả nhà bạn dùng chung là địa chỉ của thiết bị nào?
+  - **Dạng:** trắc nghiệm · Của máy tính đang mở / **Của router nhà bạn, ở phía quay ra Internet** ✓ / Của nhà cung cấp dịch vụ, không thuộc nhà bạn
+  - **Vì sao:** Địa chỉ công cộng nằm ở cổng WAN của router — cái chân quay ra ngoài. Mọi thiết bị trong nhà mượn chung con số đó khi ra Internet.
+
+**3 · Khám phá (teach):**
+- *[m7-nat]* Ẩn dụ chung cư quay lại: mạng nhà bạn là một tòa nhà, mỗi thiết bị là một căn hộ mang địa chỉ riêng (192.168.x.x). Cả tòa chỉ có MỘT số nhà nhìn từ ngoài đường — địa chỉ công cộng ở cổng WAN của router. NAT là việc router đổi địa chỉ riêng thành số nhà chung khi gói tin đi ra.
+  - **Đào sâu hơn:** Địa chỉ riêng do đó không cần duy nhất trên thế giới: nhà bạn và nhà hàng xóm cùng dùng 192.168.1.10 chẳng sao cả, vì hai con số ấy không bao giờ xuất hiện ngoài Internet.
+- *[m7-pat]* Nhưng thư trả về thì giao cho ai? Router giữ một CUỐN SỔ: mỗi lượt đi ra, nó ghi "căn hộ 192.168.1.10 cổng 51344 ↔ số nhà chung cổng 40001". Thư về mang cổng 40001 thì tra sổ là biết đưa lên căn hộ nào. Dùng số cổng để phân biệt như vậy gọi là PAT.
+  - **Đào sâu hơn:** Vì bảng này chỉ có dòng khi có người TRONG nhà mở lời trước, nên mặc định người ngoài không tự gõ cửa vào được — router không biết đưa cho ai. Đó là lý do mạng nhà tự nhiên đã kín một nửa, dù bạn chưa cài tường lửa nào.
+
+**4 · Thử tay (practice, fading 0):**
+- **Ví dụ giải sẵn:** Ví dụ giải sẵn: máy tính 192.168.1.10 mở một trang web. (1) Gói đi ra mang địa chỉ nguồn 192.168.1.10 cổng 51344. (2) Router đổi nguồn thành 203.0.113.7 cổng 40001 và ghi cặp đó vào sổ. (3) Máy chủ trả lời về 203.0.113.7 cổng 40001. (4) Router tra sổ, đổi ngược lại và đưa gói lên đúng máy tính. Đọc kỹ bước 2 rồi thử tự gọi tên cuốn sổ ấy nhé.
+- **Đề:** Việc router đổi địa chỉ riêng thành địa chỉ công cộng khi gói tin đi ra gọi là gì? (viết tắt được)
+  - **Dạng:** gõ tay · **Chấp nhận:** nat | network address translation
+  - **Chủ đề gợi ý (tầng 1):** chuyện xảy ra với địa chỉ nguồn khi gói rời khỏi nhà
+  - **Gợi ý (tầng 2):** Ba chữ cái, chữ giữa là "address".
+  - **Lời giải (tầng 3):** NAT — Network Address Translation, việc đổi địa chỉ riêng thành địa chỉ công cộng ở cổng WAN.
+- **Đề:** Nhờ đâu router biết thư trả về thuộc máy nào trong nhà?
+  - **Dạng:** trắc nghiệm · **Tra cuốn sổ ghi cặp địa chỉ và SỐ CỔNG lúc gói đi ra** ✓ / Hỏi lại tất cả các máy trong nhà / Dựa vào địa chỉ MAC ghi trong gói tin
+  - **Chủ đề gợi ý (tầng 1):** thứ router ghi lại lúc gói đi ra
+  - **Gợi ý (tầng 2):** Đúng thứ đã giúp phân biệt các ứng dụng ở Module 5 — con số căn hộ.
+  - **Lời giải (tầng 3):** Tra bảng NAT/PAT: mỗi dòng ghi cặp "địa chỉ riêng + cổng riêng ↔ địa chỉ chung + cổng chung".
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: cách NAT dùng SỐ CỔNG để cả nhà chung một địa chỉ công cộng gọi là gì? (viết tắt được)
+  - **Dạng:** gõ tay · **Chấp nhận:** pat | port address translation
+  - **Chủ đề gợi ý (tầng 1):** chữ đầu là tên con số phân biệt các căn hộ
+  - **Gợi ý (tầng 2):** Giống NAT nhưng chữ đầu đổi thành chữ đầu của "port".
+  - **Lời giải (tầng 3):** PAT — Port Address Translation, phân biệt từng máy trong nhà bằng số cổng trên cùng một địa chỉ chung.
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao nhà bạn và nhà hàng xóm cùng dùng địa chỉ 192.168.1.10 mà không đụng nhau?
+  - **Nhóm ý cần chạm:** [riêng, nội bộ, trong nhà, private] · [không ra ngoài, đổi, nat, không xuất hiện, thay bằng]
+  - **Trả lời mẫu:** Vì đó là địa chỉ riêng, chỉ có nghĩa trong phạm vi từng nhà; ra tới Internet thì router đã đổi nó thành địa chỉ công cộng của nhà mình rồi, nên hai con số giống nhau không bao giờ gặp nhau ngoài đường.
+
+**6 · Tổng kết:**
+- Cả nhà là một chung cư: nhiều địa chỉ riêng, một số nhà chung ra ngoài.
+- NAT đổi địa chỉ riêng thành địa chỉ công cộng ở cổng WAN của router.
+- PAT dùng số cổng để biết thư về thuộc máy nào — router tra sổ.
+- *Úp mở bài sau:* Sổ chỉ có dòng khi người trong nhà mở lời trước. Vậy muốn ai đó ngoài đường chủ động gõ cửa vào một máy trong nhà thì làm sao?
+
+### Bài: Chừa sẵn một lối vào cho người ngoài `m7-bai-2`
+
+**1 · Khởi động (hook):** Bạn muốn xem camera nhà mình từ chỗ làm. Nhưng router không biết gói tin lạ từ ngoài đường thuộc về máy nào trong nhà — vậy phải dặn nó trước bằng cách gì?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử nhé: muốn truy cập được một máy trong nhà từ Internet, bạn phải khai gì trên router?
+  - **Dạng:** trắc nghiệm · **Một dòng dặn trước: cổng nào từ ngoài thì đưa vào máy nào, cổng nào** ✓ / Đổi địa chỉ máy đó thành địa chỉ công cộng / Tắt NAT đi
+  - **Vì sao:** Đó là port forwarding: bạn ghi sẵn một dòng trong sổ của router, để gói tin lạ tới cổng đã khai được đưa thẳng vào đúng máy trong nhà.
+
+**3 · Khám phá (teach):**
+- *[m7-port-forwarding]* Port forwarding là một dòng bạn ghi TRƯỚC vào sổ của router: "ai gõ vào cổng 8080 của số nhà chung thì dẫn tới máy 192.168.1.50 cổng 80". Từ đó người ngoài gõ đúng cổng ấy là vào được đúng máy ấy — dù trong nhà chưa ai mở lời.
+  - **Đào sâu hơn:** Mỗi dòng như vậy là một cánh cửa mở thường trực ra Internet, và cả thế giới đều dò được. Nhớ lại tòa nhà 15 phòng: mở 3389 hay 445 ra ngoài là mời cả hành tinh thử mật khẩu vào màn hình và ổ đĩa nhà bạn.
+
+**4 · Thử tay (practice, fading 1):**
+- **Đề:** Cổng nào sau đây TUYỆT ĐỐI không nên mở thẳng ra Internet bằng port forwarding?
+  - **Dạng:** trắc nghiệm · **3389 — màn hình máy tính từ xa** ✓ / 443 — trang web có khóa / 123 — đồng bộ giờ
+  - **Chủ đề gợi ý (tầng 1):** phòng có tấm gương chiếu nguyên màn hình
+  - **Gợi ý (tầng 2):** Nghĩ xem cổng nào cho người ngoài ngồi thẳng vào máy bạn nếu đoán trúng mật khẩu.
+  - **Lời giải (tầng 3):** 3389 (RDP): mở ra Internet là mời cả thế giới thử mật khẩu để vào thẳng màn hình máy bạn.
+- **Đề:** Dòng khai sẵn trên router để người ngoài vào được một máy trong nhà gọi là gì? (tiếng Anh cũng được)
+  - **Dạng:** gõ tay · **Chấp nhận:** port forwarding | chuyển tiếp cổng | chuyen tiep cong | forward cổng | mở cổng
+  - **Chủ đề gợi ý (tầng 1):** việc router làm với gói tin tới đúng cổng đã khai
+  - **Gợi ý (tầng 2):** Hai từ: một từ là "cổng", từ kia nghĩa là chuyển tiếp.
+  - **Lời giải (tầng 3):** Port forwarding — chuyển tiếp cổng: khai trước cổng nào từ ngoài thì đưa vào máy nào trong nhà.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: vì sao bình thường người ngoài KHÔNG tự vào được máy trong nhà bạn? (một câu ngắn)
+  - **Dạng:** gõ tay · **Chấp nhận:** router không biết đưa cho ai | khong biet dua cho ai | không có trong bảng nat | khong co trong bang nat | chưa ai trong nhà mở lời | chua ai trong nha mo loi
+  - **Chủ đề gợi ý (tầng 1):** cuốn sổ chỉ có dòng khi nào
+  - **Gợi ý (tầng 2):** Sổ NAT chỉ ghi dòng khi có người trong nhà mở lời trước.
+  - **Lời giải (tầng 3):** Vì bảng NAT chưa có dòng nào cho gói tin đó — router không biết đưa lên căn hộ nào nên bỏ luôn.
+- **Tự giải thích:** Giải thích bằng lời của bạn: port forwarding tiện ở chỗ nào và nguy ở chỗ nào?
+  - **Nhóm ý cần chạm:** [từ xa, từ ngoài, truy cập, vào được] · [cả thế giới, ai cũng, dò, tấn công, rủi ro, mật khẩu]
+  - **Trả lời mẫu:** Tiện vì từ ngoài vào thẳng được máy trong nhà, không cần ai ở nhà mở lời trước. Nguy vì cánh cửa đó mở thường trực với cả Internet, ai cũng dò được và cứ thế thử mật khẩu.
+
+**6 · Tổng kết:**
+- Bình thường người ngoài không vào được vì bảng NAT chưa có dòng nào cho họ.
+- Port forwarding là dòng khai trước: cổng ngoài nào dẫn vào máy nào, cổng nào.
+- Mỗi dòng là một cửa mở thường trực — đừng bao giờ mở 3389 hay 445.
+- *Úp mở bài sau:* Nhưng vì sao thư trả lời của một trang web thì router cho vào, còn gói tin lạ y hệt lại bị chặn? Người gác cửa nhớ mặt bằng cách nào?
+
+### Bài: Xem người gác cửa lật sổ `m7-bai-3`
+
+**1 · Khởi động (hook):** Một gói tin từ Internet gõ cửa nhà bạn. Router cho vào nếu đó là thư trả lời, chặn nếu là người lạ tự tới — mà hai gói tin nhìn gần như y hệt nhau. Nó phân biệt kiểu gì?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử nhé: tường lửa "có nhớ trạng thái" khác tường lửa thường ở chỗ nào?
+  - **Dạng:** trắc nghiệm · **Nó nhớ những kết nối do người trong nhà mở ra, và chỉ cho thư trả lời của đúng những kết nối đó vào** ✓ / Nó chạy nhanh hơn / Nó chặn được virus trong tệp tải về
+  - **Vì sao:** Stateful nghĩa là có nhớ: mỗi kết nối đi ra được ghi vào bảng, và chỉ gói tin khớp một dòng trong bảng ấy mới được đi vào.
+
+**3 · Khám phá (teach):**
+- *[m7-firewall-stateful]* Tường lửa có nhớ trạng thái giữ một bảng các cuộc trò chuyện đang mở: ai trong nhà vừa gọi ra đâu, bằng cổng nào. Gói tin từ ngoài vào chỉ được qua nếu khớp một dòng trong bảng — tức là đúng câu trả lời của một cuộc gọi có thật. Người lạ tự tới, không có dòng nào, thì mời về.
+  - **Đào sâu hơn:** Mỗi dòng còn có hạn: cuộc trò chuyện im lặng quá lâu thì bị xóa khỏi bảng để lấy chỗ. Đó là lý do vài ứng dụng phải gửi gói "giữ nhịp" đều đặn, nếu không kết nối tự đứt sau vài phút không nói gì.
+
+**4 · Thử tay (practice, fading 2):**
+- **Đề:** Máy bạn mở một trang web. Gói tin trả về từ máy chủ đó được vào nhà vì sao?
+  - **Dạng:** trắc nghiệm · **Vì nó khớp một dòng trong bảng kết nối đang mở của tường lửa** ✓ / Vì máy chủ web là địa chỉ tin cậy / Vì cổng 443 luôn được mở sẵn
+  - **Chủ đề gợi ý (tầng 1):** thứ được ghi vào bảng lúc bạn mở lời
+  - **Gợi ý (tầng 2):** Tường lửa không quen ai cả — nó chỉ nhớ những cuộc gọi vừa đi ra.
+  - **Lời giải (tầng 3):** Vì lúc bạn mở lời, tường lửa đã ghi cuộc trò chuyện đó vào bảng; gói trả về khớp đúng dòng ấy nên được qua.
+- **Đề:** Tường lửa có nhớ các kết nối đang mở được gọi bằng tính từ tiếng Anh nào?
+  - **Dạng:** gõ tay · **Chấp nhận:** stateful
+  - **Chủ đề gợi ý (tầng 1):** tính từ nghĩa là "có nhớ trạng thái"
+  - **Gợi ý (tầng 2):** Ghép từ "state" (trạng thái) với đuôi "-ful".
+  - **Lời giải (tầng 3):** Stateful — tường lửa có nhớ trạng thái của từng kết nối.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: tường lửa stateful cho một gói tin từ ngoài đi vào khi nào?
+  - **Dạng:** gõ tay · **Chấp nhận:** khi khớp một kết nối đang mở | khop mot ket noi dang mo | khi nó là thư trả lời | khi no la thu tra loi | khi có trong bảng kết nối | khi co trong bang ket noi
+  - **Chủ đề gợi ý (tầng 1):** điều kiện duy nhất để được qua cửa
+  - **Gợi ý (tầng 2):** Nó phải là câu trả lời cho một cuộc gọi mà người trong nhà đã mở.
+  - **Lời giải (tầng 3):** Khi gói tin khớp một dòng trong bảng kết nối đang mở — tức là thư trả lời của một cuộc trò chuyện do bên trong khởi xướng.
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao chỉ riêng NAT đã che được phần nào cho mạng nhà, nhưng vẫn cần thêm tường lửa?
+  - **Nhóm ý cần chạm:** [bảng, sổ, dòng, không biết đưa cho ai] · [luật, chặn, lọc, kiểm soát, chủ động]
+  - **Trả lời mẫu:** NAT che được vì gói lạ không có dòng nào trong bảng nên router không biết đưa cho ai; nhưng đó chỉ là tác dụng phụ. Tường lửa mới là thứ chặn có luật rõ ràng: cho ai đi ra, cho gì đi vào, và ghi lại được.
+
+**6 · Tổng kết:**
+- Stateful nghĩa là có nhớ: bảng ghi mọi kết nối đang mở.
+- Gói từ ngoài chỉ qua được nếu khớp một dòng trong bảng ấy.
+- Dòng có hạn — im lặng lâu là bị xóa, nên mới có gói giữ nhịp.
+- *Úp mở bài sau:* Ba bài vừa rồi nói về cái router nhà bạn. Bài sau bạn sẽ tự lắp lại sơ đồ mạng nhà mình và cho nó chạy thật.
+
+### Bài: Lắp lại mạng nhà bạn trên bàn `m7-bai-4`
+
+**1 · Khởi động (hook):** Trong nhà bạn có một cái hộp nhấp nháy đèn. Nó là modem, là router, hay là cả hai? Và cái dây từ ngoài đường cắm vào chân nào của nó?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử nhé: modem và router khác nhau ở chỗ nào?
+  - **Dạng:** trắc nghiệm · **Modem nối nhà bạn với nhà mạng; router chia đường cho các thiết bị trong nhà** ✓ / Modem phát Wi-Fi, router thì không / Hai từ chỉ cùng một thứ
+  - **Vì sao:** Modem là cái chân bước ra đường của nhà bạn; router là người chia đường bên trong. Hộp nhà mạng cho mượn thường gộp cả hai (và cả điểm phát Wi-Fi) vào một vỏ.
+
+**3 · Khám phá (teach):**
+- *[m7-mang-nha]* Mạng nhà xếp thành một hàng: đường của nhà mạng → MODEM (bước ra đường) → ROUTER (chia đường, làm NAT, giữ tường lửa) → SWITCH và ĐIỂM PHÁT WI-FI (nối các thiết bị). Cái hộp nhà mạng cho mượn thường gộp cả ba vai vào một vỏ, nên nhìn thì thấy một hộp mà thật ra là ba việc.
+  - **Đào sâu hơn:** Biết tách ba vai là biết chỗ chẩn đoán: đèn modem tắt là chuyện của nhà mạng; máy có địa chỉ 192.168 mà không ra được Internet là chuyện của router; máy này thấy máy kia nhưng cả hai không ra ngoài thì switch vẫn ổn, lỗi nằm phía trên.
+
+**4 · Thử tay (practice, fading 2):**
+- **Đề:** Lắp lại mạng nhà bạn: nối máy tính và điện thoại qua switch vào router nhà, rồi đặt địa chỉ cho hai thiết bị đó sao cho cả hai ra được máy chủ ngoài Internet. Phần từ router ra nhà mạng đã đấu sẵn, y như đời thật.
+  - **Dạng:** phòng lab (lắp/sửa sơ đồ mạng)
+    - **Sơ đồ đề bài:** Máy tính [chưa đặt IP] · Điện thoại [chưa đặt IP] · Switch trong nhà [p1:VLAN 1, p2:VLAN 1, p3:VLAN 1, p4:VLAN 1] · Router nhà [lan:192.168.1.1/24, wan:203.0.113.2/30] · Modem nhà mạng [g0:203.0.113.1/30, g1:198.51.100.1/24] · Máy chủ trên Internet [198.51.100.10/24, gw 198.51.100.1] — dây: Router nhà·wan — Modem nhà mạng·g0 | Modem nhà mạng·g1 — Máy chủ trên Internet·eth0
+    - **Mục tiêu:**
+      - m7-may-tinh PHẢI gọi được m7-may-chu
+      - m7-dien-thoai PHẢI gọi được m7-may-chu
+    - **Được phép:** cắm dây, gỡ dây, đặt địa chỉ
+    - **Lời giải mẫu:** Máy tính [192.168.1.10/24, gw 192.168.1.1] · Điện thoại [192.168.1.11/24, gw 192.168.1.1] · Switch trong nhà [p1:VLAN 1, p2:VLAN 1, p3:VLAN 1, p4:VLAN 1] · Router nhà [lan:192.168.1.1/24, wan:203.0.113.2/30] · Modem nhà mạng [g0:203.0.113.1/30, g1:198.51.100.1/24] · Máy chủ trên Internet [198.51.100.10/24, gw 198.51.100.1] — dây: Router nhà·wan — Modem nhà mạng·g0 | Modem nhà mạng·g1 — Máy chủ trên Internet·eth0 | Máy tính·eth0 — Switch trong nhà·p1 | Điện thoại·wlan0 — Switch trong nhà·p2 | Switch trong nhà·p3 — Router nhà·lan
+  - **Chủ đề gợi ý (tầng 1):** thứ mỗi thiết bị cần để biết đường ra khỏi nhà
+  - **Gợi ý (tầng 2):** Nối máy tính và điện thoại vào switch, switch nối lên cổng LAN của router nhà. Rồi mỗi thiết bị cần một địa chỉ cùng dải 192.168.1.x và gateway trỏ về 192.168.1.1.
+  - **Lời giải (tầng 3):** Máy tính 192.168.1.10/24 và điện thoại 192.168.1.11/24, cả hai đặt gateway 192.168.1.1; dây đi từ hai thiết bị vào switch, rồi từ switch lên cổng LAN của router nhà. Phần WAN ra modem đã đấu sẵn.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại sơ đồ: xếp các chặng của mạng nhà theo thứ tự từ ngoài đường vào tới máy bạn.
+  - **Dạng:** xếp thứ tự (thứ tự đúng):
+    1. Đường của nhà mạng
+    2. Modem — chân bước ra đường của nhà bạn
+    3. Router — chia đường, làm NAT, giữ tường lửa
+    4. Switch và điểm phát Wi-Fi
+    5. Máy tính, điện thoại và các thiết bị khác
+  - **Chủ đề gợi ý (tầng 1):** ba vai thường gộp trong một cái hộp
+  - **Gợi ý (tầng 2):** Đi từ ngoài vào: ai chạm đường trước, ai chia đường, ai nối thiết bị.
+  - **Lời giải (tầng 3):** Đường nhà mạng → modem → router → switch/Wi-Fi → thiết bị.
+- **Tự giải thích:** Giải thích bằng lời của bạn: nếu máy bạn có địa chỉ 192.168.1.x mà vẫn không vào được Internet, bạn nghi chặng nào trước?
+  - **Nhóm ý cần chạm:** [router, gateway, cửa ra, chặng trên] · [trong nhà, nội bộ, vẫn thấy, lan]
+  - **Trả lời mẫu:** Có địa chỉ 192.168.1.x nghĩa là phần trong nhà (switch và router phát địa chỉ) vẫn chạy, nên mình nghi chặng phía trên: đường ra của router, hoặc modem và đường nhà mạng.
+
+**6 · Tổng kết:**
+- Mạng nhà là một hàng: nhà mạng → modem → router → switch/Wi-Fi → thiết bị.
+- Một cái hộp nhà mạng cho mượn thường gộp cả ba vai vào một vỏ.
+- Tách được ba vai là biết nghi đúng chặng khi mất mạng.
+- *Úp mở bài sau:* Nếu bạn cắm thêm một router thứ hai cho rộng sóng thì sao? Có nhà tự nhiên sinh ra hai lớp cổng — và nhiều thứ bắt đầu trục trặc.
+
+### Bài: Gỡ cái nhà có hai lớp cổng `m7-bai-5`
+
+**1 · Khởi động (hook):** Bạn mua thêm một router cho sóng khỏe, cắm vào hộp nhà mạng. Wi-Fi mạnh hẳn, nhưng camera xem từ xa thì chết, gọi video hay giật. Chuyện gì vừa xảy ra?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử nhé: cắm router thứ hai vào sau hộp nhà mạng thì mạng nhà có mấy lớp NAT?
+  - **Dạng:** trắc nghiệm · Một / **Hai** ✓
+  - **Vì sao:** Hộp nhà mạng đã làm NAT một lần, router mới làm thêm một lần nữa — nhà bạn thành hai lớp cổng lồng nhau.
+
+**3 · Khám phá (teach):**
+- *[m7-double-nat]* Hai lớp NAT nghĩa là gói tin bị đổi địa chỉ hai lần, và có HAI cuốn sổ ở hai chỗ khác nhau. Port forwarding khai ở router trong thì hộp ngoài không biết, khai ở hộp ngoài thì nó chỉ dẫn tới router trong chứ không tới máy bạn — cửa mở nửa vời nên camera không xem được từ xa.
+  - **Đào sâu hơn:** Cách gỡ gọn nhất thường là để router thứ hai làm ĐIỂM PHÁT SÓNG: tắt phần phát địa chỉ và NAT của nó, cắm dây vào cổng LAN thay vì cổng WAN. Khi ấy cả nhà lại chỉ còn một lớp cổng, một cuốn sổ, một chỗ để khai.
+
+**4 · Thử tay (practice, fading 2):**
+- **Đề:** Cách gỡ hai lớp NAT gọn nhất khi bạn muốn dùng router thứ hai cho rộng sóng?
+  - **Dạng:** trắc nghiệm · **Để router thứ hai làm điểm phát sóng: tắt NAT và phát địa chỉ, cắm dây vào cổng LAN** ✓ / Khai port forwarding trên cả hai thiết bị / Đặt cùng một dải địa chỉ cho cả hai router
+  - **Chủ đề gợi ý (tầng 1):** làm sao để chỉ còn một cuốn sổ
+  - **Gợi ý (tầng 2):** Nếu nhà chỉ nên có một lớp cổng, thì thiết bị thứ hai không được làm cổng nữa.
+  - **Lời giải (tầng 3):** Cho router thứ hai làm điểm phát sóng: tắt NAT và phát địa chỉ, cắm dây vào cổng LAN — cả nhà quay về một lớp NAT, một cuốn sổ.
+- **Đề:** Tình trạng gói tin bị đổi địa chỉ hai lần bởi hai router lồng nhau gọi là gì? (tiếng Anh cũng được)
+  - **Dạng:** gõ tay · **Chấp nhận:** double nat | nat kép | nat kep | hai lớp nat | hai lop nat
+  - **Chủ đề gợi ý (tầng 1):** hai lớp cổng lồng nhau
+  - **Gợi ý (tầng 2):** Ghép chữ "hai lần" với tên của việc đổi địa chỉ.
+  - **Lời giải (tầng 3):** Double NAT (NAT kép) — hai lớp đổi địa chỉ, hai cuốn sổ ở hai chỗ.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: vì sao port forwarding hay hỏng khi nhà có hai lớp NAT?
+  - **Dạng:** gõ tay · **Chấp nhận:** vì có hai cuốn sổ | vi co hai cuon so | hai bảng nat | hai bang nat | khai một chỗ chưa đủ | khai mot cho chua du
+  - **Chủ đề gợi ý (tầng 1):** khai ở đâu thì thiết bị kia có biết không
+  - **Gợi ý (tầng 2):** Mỗi lớp giữ một cuốn sổ riêng, mà bạn chỉ khai ở một cuốn.
+  - **Lời giải (tầng 3):** Vì có hai cuốn sổ ở hai thiết bị: khai một chỗ thì chỗ kia không biết, nên cánh cửa chỉ mở được nửa đường.
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao thêm một router lại làm hỏng những thứ đang chạy tốt?
+  - **Nhóm ý cần chạm:** [hai lần, hai lớp, lồng nhau, thêm một lớp] · [sổ, bảng, không biết, chỉ tới router, nửa đường]
+  - **Trả lời mẫu:** Vì gói tin bị đổi địa chỉ thêm một lần nữa và sinh ra cuốn sổ thứ hai; những thứ cần người ngoài chủ động gõ cửa như camera hay gọi video thì khai một cuốn sổ là chưa đủ, gói tin dừng lại giữa hai lớp.
+
+**6 · Tổng kết:**
+- Cắm router thứ hai vào cổng WAN là sinh ra hai lớp NAT, hai cuốn sổ.
+- Port forwarding khai một chỗ thì cửa chỉ mở được nửa đường.
+- Gỡ bằng cách cho router thứ hai làm điểm phát sóng, cắm vào cổng LAN.
+- *Úp mở bài sau:* Hết Phần B. Phần sau là chuyện đi làm: Wi-Fi chuyên sâu, máy chủ Windows, và một phòng khám mạng nơi bạn vào vai người chẩn đoán.
+
+### Khái niệm & flashcard (6)
+
+- **NAT** `m7-nat` — Đổi địa chỉ riêng trong nhà thành địa chỉ công cộng khi ra Internet
+  - Ẩn dụ: Cả chung cư một số nhà: thư ra ngoài đều ghi số nhà chung, không ghi số căn hộ.
+  - Thẻ ôn: *NAT làm gì với gói tin đi ra Internet?* → Đổi địa chỉ nguồn từ địa chỉ riêng (192.168.x.x) thành địa chỉ công cộng ở cổng WAN của router.
+- **PAT** `m7-pat` — Dùng số cổng để nhiều máy chung một địa chỉ công cộng
+  - Ẩn dụ: Cuốn sổ của bảo vệ: thư về mang số nào thì dẫn lên đúng căn hộ đó.
+  - Thẻ ôn: *Nhờ đâu router biết thư trả về thuộc máy nào trong nhà?* → Nhờ bảng NAT/PAT: mỗi dòng ghi "địa chỉ riêng + cổng riêng ↔ địa chỉ chung + cổng chung" lúc gói đi ra.
+- **Port forwarding** `m7-port-forwarding` — Khai trước một lối vào: cổng ngoài nào dẫn tới máy nào trong nhà
+  - Ẩn dụ: Dặn bảo vệ: ai tới hỏi phòng 402 thì cứ dẫn lên.
+  - Thẻ ôn: *Port forwarding dùng khi nào, và nguy ở chỗ nào?* → Khi cần người ngoài chủ động vào một máy trong nhà. Nguy vì đó là cửa mở thường trực ra Internet — không bao giờ mở 3389 hay 445.
+- **Stateful firewall** `m7-firewall-stateful` — Tường lửa có nhớ các kết nối đang mở
+  - Ẩn dụ: Người gác cửa nhớ mặt: chỉ cho vào những ai là câu trả lời của một cuộc gọi từ trong nhà.
+  - Thẻ ôn: *Tường lửa stateful cho gói tin từ ngoài vào khi nào?* → Khi gói khớp một dòng trong bảng kết nối đang mở — tức là thư trả lời của cuộc trò chuyện do bên trong khởi xướng.
+- **Kiến trúc mạng nhà** `m7-mang-nha` — Nhà mạng → modem → router → switch/Wi-Fi → thiết bị
+  - Ẩn dụ: Một hàng người chuyền tay: người chạm đường, người chia đường, người phát tới từng phòng.
+  - Thẻ ôn: *Mạng nhà đi qua những chặng nào, từ ngoài đường vào tới máy bạn?* → Đường nhà mạng → modem → router (NAT + tường lửa) → switch và điểm phát Wi-Fi → thiết bị. Một hộp nhà mạng thường gộp cả ba vai.
+- **Double NAT** `m7-double-nat` — Hai lớp đổi địa chỉ do hai router lồng nhau
+  - Ẩn dụ: Nhà có hai lớp cổng, mỗi lớp một cuốn sổ — khai một cuốn thì khách vẫn kẹt ở giữa.
+  - Thẻ ôn: *Vì sao double NAT làm hỏng port forwarding, và gỡ thế nào?* → Vì có hai bảng NAT ở hai thiết bị, khai một chỗ là chưa đủ. Gỡ bằng cách cho router thứ hai làm điểm phát sóng: tắt NAT, cắm vào cổng LAN.
+
+### Bài kiểm tra module (8 câu, cần ≥ 85%)
+
+- **Đề:** Việc router đổi địa chỉ riêng thành địa chỉ công cộng khi gói tin ra Internet gọi là gì? (viết tắt được)
+  - **Dạng:** gõ tay · **Chấp nhận:** nat | network address translation
+  - **Vì sao:** NAT — đổi địa chỉ nguồn ở cổng WAN, nhờ đó cả nhà dùng chung một địa chỉ công cộng.
+- **Đề:** Nhờ đâu router biết gói tin trả về thuộc máy nào trong nhà?
+  - **Dạng:** trắc nghiệm · **Tra bảng NAT/PAT ghi cặp địa chỉ và số cổng lúc gói đi ra** ✓ / Dựa vào địa chỉ MAC của máy nhận / Hỏi lại tất cả thiết bị trong nhà
+  - **Vì sao:** Mỗi lượt đi ra sinh một dòng trong bảng; thư về khớp dòng nào thì đưa lên máy đó.
+- **Đề:** Cổng nào tuyệt đối không nên mở ra Internet bằng port forwarding?
+  - **Dạng:** trắc nghiệm · **3389** ✓ / 443 / 123
+  - **Vì sao:** 3389 là RDP — mở ra là mời cả thế giới thử mật khẩu để ngồi thẳng vào màn hình máy bạn.
+- **Đề:** Tường lửa có nhớ các kết nối đang mở được gọi bằng tính từ tiếng Anh nào?
+  - **Dạng:** gõ tay · **Chấp nhận:** stateful
+  - **Vì sao:** Stateful — nó giữ bảng các cuộc trò chuyện đang mở và chỉ cho thư trả lời của đúng những cuộc đó đi vào.
+- **Đề:** Xếp các chặng của mạng nhà từ ngoài đường vào tới máy bạn.
+  - **Dạng:** xếp thứ tự (thứ tự đúng):
+    1. Đường của nhà mạng
+    2. Modem
+    3. Router
+    4. Switch và điểm phát Wi-Fi
+    5. Máy tính, điện thoại
+  - **Vì sao:** Modem chạm đường, router chia đường và làm NAT, switch/Wi-Fi nối tới từng thiết bị.
+- **Đề:** Máy bạn có địa chỉ 192.168.1.20 nhưng không vào được Internet. Nghi chặng nào trước?
+  - **Dạng:** trắc nghiệm · **Chặng phía trên: đường ra của router, modem hoặc nhà mạng** ✓ / Switch trong nhà / Card mạng của máy
+  - **Vì sao:** Có được địa chỉ 192.168.x.x nghĩa là phần trong nhà vẫn chạy; vấn đề nằm ở chặng ra ngoài.
+- **Đề:** Cắm router thứ hai vào cổng WAN của hộp nhà mạng sinh ra tình trạng gì? (tiếng Anh cũng được)
+  - **Dạng:** gõ tay · **Chấp nhận:** double nat | nat kép | nat kep | hai lớp nat | hai lop nat
+  - **Vì sao:** Double NAT: hai lớp đổi địa chỉ, hai cuốn sổ — port forwarding khai một chỗ là chưa đủ.
+- **Đề:** Cách gỡ double NAT khi vẫn muốn dùng router thứ hai cho rộng sóng?
+  - **Dạng:** trắc nghiệm · **Cho nó làm điểm phát sóng: tắt NAT và phát địa chỉ, cắm dây vào cổng LAN** ✓ / Khai port forwarding trên cả hai / Đặt hai router cùng một dải địa chỉ
+  - **Vì sao:** Tắt vai làm cổng của router thứ hai thì cả nhà quay về một lớp NAT và một cuốn sổ duy nhất.
