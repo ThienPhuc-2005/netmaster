@@ -14,8 +14,8 @@
 // giao diện — nên nó nằm ở engine.
 
 import { feedbackTier, type FeedbackTier } from '../lessonMachine'
-import { typedAnswerMatches } from '../grading/normalize'
-import { roomById, serviceAnswers, tourRoute, type Palace, type PalaceRoom } from './palace'
+import { lenientEquals, normalizeAnswer, typedAnswerMatches } from '../grading/normalize'
+import { nameAnswers, roomById, tourRoute, type Palace, type PalaceRoom } from './palace'
 
 // ---------------------------------------------------------------
 // Đoạn đường của một chuyến đi
@@ -89,16 +89,16 @@ export function seeNextRoom(rt: TourRuntime, palace: Palace): TourRuntime {
 // Chuyến 2 — đi lại từ trí nhớ (retrieval)
 // ---------------------------------------------------------------
 
-/** Câu trả lời tại một phòng: cổng mấy, dịch vụ gì. */
+/** Câu trả lời tại một phòng: vế chính (keys) và vế phụ (name). */
 export interface RoomAnswer {
-  ports: number[]
-  service: string
+  keys: string[]
+  name: string
 }
 
 export interface RoomGrade {
-  portsCorrect: boolean
-  serviceCorrect: boolean
-  /** Đúng = nhớ được CẢ số cổng lẫn dịch vụ. */
+  keysCorrect: boolean
+  nameCorrect: boolean
+  /** Đúng = nhớ được CẢ hai vế. */
   correct: boolean
 }
 
@@ -149,15 +149,20 @@ export function walkTier(rt: WalkRuntime): FeedbackTier {
  * ("số cổng đúng rồi, còn tên dịch vụ thì chưa") thay vì phủ nhận cả câu
  * trả lời — quy tắc microcopy spec 4.4.
  *
- * Cổng chấm theo TẬP HỢP: phòng DHCP mang cặp 67/68, người học gõ thứ tự
- * nào cũng được, nhưng thiếu một số là chưa nhớ đủ.
+ * Vế chính chấm theo TẬP HỢP: phòng DHCP mang cặp 67/68, người học gõ
+ * thứ tự nào cũng được, nhưng thiếu một phần tử là chưa nhớ đủ. So khớp
+ * từng phần tử bằng lenientEquals — key chữ ("Domain") nhân nhượng dấu
+ * y như câu gõ tay.
  */
 export function gradeRoomAnswer(room: PalaceRoom, answer: RoomAnswer): RoomGrade {
-  const expected = new Set(room.ports)
-  const given = new Set(answer.ports)
-  const portsCorrect = expected.size === given.size && [...expected].every((p) => given.has(p))
-  const serviceCorrect = typedAnswerMatches(answer.service, serviceAnswers(room))
-  return { portsCorrect, serviceCorrect, correct: portsCorrect && serviceCorrect }
+  const expected = room.keys.map(normalizeAnswer)
+  const given = answer.keys.map(normalizeAnswer)
+  const keysCorrect =
+    expected.length === given.length &&
+    expected.every((k) => given.some((g) => lenientEquals(g, k))) &&
+    given.every((g) => expected.some((k) => lenientEquals(g, k)))
+  const nameCorrect = typedAnswerMatches(answer.name, nameAnswers(room))
+  return { keysCorrect, nameCorrect, correct: keysCorrect && nameCorrect }
 }
 
 /**

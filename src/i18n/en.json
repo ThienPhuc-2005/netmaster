@@ -292,31 +292,20 @@
     "floorShort": "Floor {floor}",
     "roomOf": "Room {index}/{total}",
     "location": "Floor {floor}, room {position}",
-    "transport": {
-      "tcp": "Runs over TCP",
-      "udp": "Runs over UDP",
-      "both": "Runs over both TCP and UDP"
-    },
     "tourNext": "Next room",
     "tourDone": "That's the last one",
     "tourCompleted": "You've walked this stretch — in a moment we'll walk it again from memory.",
     "cueAria": "The memory image of this room",
     "walkPrompt": "You're standing at this door. What's inside?",
-    "portsLabel": "Port number",
-    "portsPlaceholder": "e.g. 443",
-    "serviceLabel": "Service",
-    "servicePlaceholder": "e.g. HTTPS",
     "walkCheck": "Answer",
     "walkDone": "Walk finished!",
     "walkScore": "You recalled {recalled}/{total} rooms straight away.",
-    "topicPorts": "the number on the door",
-    "topicService": "what people do in that room",
     "topicBoth": "the image you saw inside",
-    "solutionLine": "This room is port {ports} — {service}.",
+    "solutionLine": "This room is {keys} — {name}.",
     "missingRooms": "Couldn't load the building for this walk.",
     "tourGate": "Walk this stretch to the end and we'll move on — in a moment you'll walk it again from memory.",
     "cardFrontHint": "What's in this room?",
-    "cardBack": "Port {ports} — {service}"
+    "cardBack": "{keys} — {name}"
   },
   "clinic": {
     "title": "Clinic",

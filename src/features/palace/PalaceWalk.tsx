@@ -27,7 +27,7 @@ import { FeedbackBanner, type FeedbackState } from '../../components/FeedbackBan
 import { useT } from '../../i18n'
 import { PalaceMap } from './PalaceMap'
 import { RoomGlyph } from './RoomGlyph'
-import { parsePorts } from './parsePorts'
+import { parseKeys } from './parsePorts'
 
 export interface PalaceWalkProps {
   palace: Palace
@@ -40,8 +40,8 @@ export interface PalaceWalkProps {
 export function PalaceWalk({ palace, roomIds, onComplete }: PalaceWalkProps) {
   const t = useT()
   const [walk, setWalk] = useState(() => startWalk(palace, roomIds))
-  const [portText, setPortText] = useState('')
-  const [serviceText, setServiceText] = useState('')
+  const [keyText, setKeyText] = useState('')
+  const [nameText, setNameText] = useState('')
   const [feedback, setFeedback] = useState<FeedbackState | null>(null)
 
   const room = currentWalkRoom(walk, palace)
@@ -51,25 +51,25 @@ export function PalaceWalk({ palace, roomIds, onComplete }: PalaceWalkProps) {
   const submit = (e: FormEvent) => {
     e.preventDefault()
     if (room === null) return
-    const ports = parsePorts(portText)
-    if (ports.length === 0 || serviceText.trim() === '') return
+    const keys = parseKeys(keyText, palace.keyStyle)
+    if (keys.length === 0 || nameText.trim() === '') return
 
-    const step = submitRoomAnswer(walk, palace, { ports, service: serviceText })
+    const step = submitRoomAnswer(walk, palace, { keys, name: nameText })
     setWalk(step.runtime)
 
     if (step.advanced) {
       setFeedback({ kind: 'correct' })
-      setPortText('')
-      setServiceText('')
+      setKeyText('')
+      setNameText('')
       if (step.runtime.completed) onComplete?.(step.runtime.outcomes)
       return
     }
 
     // Tầng 1 nói đúng vế đang hụt — người học biết mình quên NỬA nào.
-    const topic = step.grade.portsCorrect
-      ? t('palace.topicService')
-      : step.grade.serviceCorrect
-        ? t('palace.topicPorts')
+    const topic = step.grade.keysCorrect
+      ? (palace.nameHint?.vi ?? palace.nameLabel.vi)
+      : step.grade.nameCorrect
+        ? (palace.keyHint?.vi ?? palace.keyLabel.vi)
         : t('palace.topicBoth')
     setFeedback({
       kind: 'incorrect',
@@ -78,7 +78,7 @@ export function PalaceWalk({ palace, roomIds, onComplete }: PalaceWalkProps) {
       hint: step.tier >= 2 ? room.story.vi : undefined,
       solution:
         step.tier >= 3
-          ? t('palace.solutionLine', { ports: room.ports.join(', '), service: room.service })
+          ? t('palace.solutionLine', { keys: room.keys.join(', '), name: room.name })
           : undefined,
     })
   }
@@ -103,29 +103,29 @@ export function PalaceWalk({ palace, roomIds, onComplete }: PalaceWalkProps) {
 
             <div className="grid gap-2 sm:grid-cols-2">
               <label className="flex flex-col gap-1 text-xs text-ink-muted">
-                {t('palace.portsLabel')}
+                {palace.keyLabel.vi}
                 <input
-                  value={portText}
-                  onChange={(e) => setPortText(e.target.value)}
-                  inputMode="numeric"
+                  value={keyText}
+                  onChange={(e) => setKeyText(e.target.value)}
+                  inputMode={palace.keyStyle === 'number' ? 'numeric' : 'text'}
                   autoFocus
-                  placeholder={t('palace.portsPlaceholder')}
+                  placeholder={palace.keyPlaceholder?.vi ?? ''}
                   className="rounded-md border border-edge bg-panel px-3 py-2 font-mono text-sm text-ink placeholder:text-ink-muted"
                 />
               </label>
               <label className="flex flex-col gap-1 text-xs text-ink-muted">
-                {t('palace.serviceLabel')}
+                {palace.nameLabel.vi}
                 <input
-                  value={serviceText}
-                  onChange={(e) => setServiceText(e.target.value)}
-                  placeholder={t('palace.servicePlaceholder')}
+                  value={nameText}
+                  onChange={(e) => setNameText(e.target.value)}
+                  placeholder={palace.namePlaceholder?.vi ?? ''}
                   className="rounded-md border border-edge bg-panel px-3 py-2 text-sm text-ink placeholder:text-ink-muted"
                 />
               </label>
             </div>
 
             <div>
-              <Button type="submit" disabled={parsePorts(portText).length === 0 || serviceText.trim() === ''}>
+              <Button type="submit" disabled={parseKeys(keyText, palace.keyStyle).length === 0 || nameText.trim() === ''}>
                 <CornerDownLeft size={15} aria-hidden />
                 {t('palace.walkCheck')}
               </Button>

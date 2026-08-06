@@ -51,14 +51,14 @@ export function PalaceTour({ palace, roomIds, onComplete }: PalaceTourProps) {
 
         <div className="flex items-start gap-4">
           <div className="h-24 w-24 shrink-0 rounded-md border border-edge bg-bg p-1">
-            <RoomGlyph imageId={room.imageId} label={room.service} />
+            <RoomGlyph imageId={room.imageId} label={room.name} />
           </div>
           <div className="flex flex-col gap-1">
-            <p className="font-mono text-2xl font-semibold text-ink">{room.ports.join(' / ')}</p>
-            <p className="text-sm font-semibold text-ink">{room.service}</p>
-            <p className="text-xs uppercase tracking-wide text-ink-muted">
-              {t(`palace.transport.${room.transport}`)}
-            </p>
+            <p className="font-mono text-2xl font-semibold text-ink">{room.keys.join(' / ')}</p>
+            <p className="text-sm font-semibold text-ink">{room.name}</p>
+            {room.note !== undefined && (
+              <p className="text-xs uppercase tracking-wide text-ink-muted">{room.note.vi}</p>
+            )}
           </div>
         </div>
 

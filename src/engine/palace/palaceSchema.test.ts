@@ -26,8 +26,8 @@ describe('chặn lỗi cấu trúc tòa nhà', () => {
 
   it('trùng số cổng giữa hai phòng', () => {
     const p = clonePalace()
-    p.rooms[1]!.ports = [80]
-    expect(() => parsePalace(p)).toThrow(/duplicate-port/)
+    p.rooms[1]!.keys = ['80']
+    expect(() => parsePalace(p)).toThrow(/duplicate-key/)
   })
 })
 
@@ -35,20 +35,20 @@ describe('chặn lỗi làm hỏng chính phương pháp', () => {
   it('câu chuyện không nhắc số cổng — hình ảnh không móc vào con số', () => {
     const p = clonePalace()
     p.rooms[1]!.story = { vi: 'Phòng này treo một ổ khóa vàng rất đẹp và sáng bóng.' }
-    expect(() => parsePalace(p)).toThrow(/không nhắc số cổng 443/)
+    expect(() => parsePalace(p)).toThrow(/không nhắc key "443"/)
   })
 
   it('phòng hai cổng phải nhắc CẢ HAI số', () => {
     const p = clonePalace()
     const dhcp = p.rooms.find((r) => r.id === 'r-dhcp')!
     dhcp.story = { vi: 'Phòng 67 phát chìa khóa cho người mới đến nhận nhà.' }
-    expect(() => parsePalace(p)).toThrow(/không nhắc số cổng 68/)
+    expect(() => parsePalace(p)).toThrow(/không nhắc key "68"/)
   })
 
   it('bản dịch tiếng Anh cũng phải giữ con số', () => {
     const p = clonePalace()
     p.rooms[1]!.story = { vi: p.rooms[1]!.story.vi, en: 'The room with a golden lock.' }
-    expect(() => parsePalace(p)).toThrow(/không nhắc số cổng 443/)
+    expect(() => parsePalace(p)).toThrow(/không nhắc key "443"/)
   })
 
   it('câu chuyện quá ngắn — đó là nhãn dán, không phải hình ảnh', () => {
@@ -67,13 +67,13 @@ describe('chặn lỗi làm hỏng chính phương pháp', () => {
     const p = clonePalace()
     // "SMTP Submission" chứa nguyên cụm "SMTP" nên bộ chấm sẽ tính đúng
     // cho cả phòng 25 — đây chính là ca thật đã gặp lúc soạn tòa nhà.
-    p.rooms.find((r) => r.id === 'r-submission')!.service = 'SMTP Submission'
+    p.rooms.find((r) => r.id === 'r-submission')!.name = 'SMTP Submission'
     expect(() => parsePalace(p)).toThrow(/nhập nhằng/)
   })
 
   it('cách gọi khác cũng bị soi, không chỉ tên chuẩn', () => {
     const p = clonePalace()
-    p.rooms.find((r) => r.id === 'r-ldaps')!.serviceAliases = ['LDAP']
+    p.rooms.find((r) => r.id === 'r-ldaps')!.nameAliases = ['LDAP']
     expect(() => parsePalace(p)).toThrow(/nhập nhằng/)
   })
 })

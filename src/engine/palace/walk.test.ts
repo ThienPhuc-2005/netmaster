@@ -1,5 +1,8 @@
 import { describe, expect, it } from 'vitest'
-import { ROOM_COUNT, roomById, tourRoute } from './palace'
+import { roomById, roomCountOf, tourRoute } from './palace'
+import { GPO_PALACE, PORT_PALACE, clonePalace, correctAnswer } from '../../../tests/fixtures/palaceFixture'
+
+const ROOM_COUNT = roomCountOf(PORT_PALACE)
 import {
   currentTourRoom,
   currentWalkRoom,
@@ -14,8 +17,6 @@ import {
   walkTier,
   type WalkRuntime,
 } from './walk'
-import { PORT_PALACE, clonePalace, correctAnswer } from '../../../tests/fixtures/palaceFixture'
-
 const ROUTE = tourRoute(PORT_PALACE)
 
 /** Đi trọn chuyến, trả lời đúng hết — dùng làm nền cho nhiều ca kiểm. */
@@ -61,37 +62,37 @@ describe('chấm một phòng', () => {
   const dhcp = roomById(PORT_PALACE, 'r-dhcp')!
 
   it('nhớ đủ cổng và dịch vụ mới là đúng', () => {
-    expect(gradeRoomAnswer(https, { ports: [443], service: 'HTTPS' })).toEqual({
-      portsCorrect: true,
-      serviceCorrect: true,
+    expect(gradeRoomAnswer(https, { keys: ['443'], name: 'HTTPS' })).toEqual({
+      keysCorrect: true,
+      nameCorrect: true,
       correct: true,
     })
   })
 
   it('tách riêng hai vế để lời phản hồi nói đúng chỗ hổng', () => {
-    expect(gradeRoomAnswer(https, { ports: [443], service: 'HTTP' })).toEqual({
-      portsCorrect: true,
-      serviceCorrect: false,
+    expect(gradeRoomAnswer(https, { keys: ['443'], name: 'HTTP' })).toEqual({
+      keysCorrect: true,
+      nameCorrect: false,
       correct: false,
     })
-    expect(gradeRoomAnswer(https, { ports: [80], service: 'HTTPS' })).toEqual({
-      portsCorrect: false,
-      serviceCorrect: true,
+    expect(gradeRoomAnswer(https, { keys: ['80'], name: 'HTTPS' })).toEqual({
+      keysCorrect: false,
+      nameCorrect: true,
       correct: false,
     })
   })
 
   it('cách gọi khác được chấp nhận, gõ không dấu cũng vậy', () => {
-    expect(gradeRoomAnswer(https, { ports: [443], service: 'web bao mat' }).correct).toBe(true)
+    expect(gradeRoomAnswer(https, { keys: ['443'], name: 'web bao mat' }).correct).toBe(true)
   })
 
   it('phòng hai cổng: thứ tự nào cũng được, nhưng thiếu một số là chưa đủ', () => {
-    expect(gradeRoomAnswer(dhcp, { ports: [68, 67], service: 'DHCP' }).portsCorrect).toBe(true)
-    expect(gradeRoomAnswer(dhcp, { ports: [67], service: 'DHCP' }).portsCorrect).toBe(false)
+    expect(gradeRoomAnswer(dhcp, { keys: ['68', '67'], name: 'DHCP' }).keysCorrect).toBe(true)
+    expect(gradeRoomAnswer(dhcp, { keys: ['67'], name: 'DHCP' }).keysCorrect).toBe(false)
   })
 
   it('gõ thừa cổng cũng là chưa đúng', () => {
-    expect(gradeRoomAnswer(https, { ports: [443, 80], service: 'HTTPS' }).portsCorrect).toBe(false)
+    expect(gradeRoomAnswer(https, { keys: ['443', '80'], name: 'HTTPS' }).keysCorrect).toBe(false)
   })
 })
 
@@ -105,7 +106,7 @@ describe('chuyến 2 — đi lại từ trí nhớ (retrieval)', () => {
 
   it('sai thì đứng nguyên phòng cũ — không có đường đi tiếp bằng cách bỏ qua', () => {
     const rt = startWalk(PORT_PALACE)
-    const next = submitRoomAnswer(rt, PORT_PALACE, { ports: [1], service: 'sai bét' })
+    const next = submitRoomAnswer(rt, PORT_PALACE, { keys: ['1'], name: 'sai bét' })
     expect(next.advanced).toBe(false)
     expect(currentWalkRoom(next.runtime, PORT_PALACE)?.id).toBe(ROUTE[0]!.id)
   })
@@ -113,7 +114,7 @@ describe('chuyến 2 — đi lại từ trí nhớ (retrieval)', () => {
   it('thang 3 tầng chạy y như bài tập trong bài học', () => {
     let rt = startWalk(PORT_PALACE)
     expect(walkTier(rt)).toBe(0)
-    const wrong = { ports: [1], service: 'sai' }
+    const wrong = { keys: ['1'], name: 'sai' }
     const tiers = [1, 2, 3, 3].map(() => {
       const step = submitRoomAnswer(rt, PORT_PALACE, wrong)
       rt = step.runtime
@@ -124,7 +125,7 @@ describe('chuyến 2 — đi lại từ trí nhớ (retrieval)', () => {
 
   it('xem lời giải rồi vẫn phải TỰ gõ lại mới được đi tiếp', () => {
     let rt = startWalk(PORT_PALACE)
-    for (let i = 0; i < 3; i += 1) rt = submitRoomAnswer(rt, PORT_PALACE, { ports: [1], service: 'sai' }).runtime
+    for (let i = 0; i < 3; i += 1) rt = submitRoomAnswer(rt, PORT_PALACE, { keys: ['1'], name: 'sai' }).runtime
     expect(currentWalkRoom(rt, PORT_PALACE)?.id).toBe(ROUTE[0]!.id)
     const done = submitRoomAnswer(rt, PORT_PALACE, correctAnswer(ROUTE[0]!))
     expect(done.advanced).toBe(true)
@@ -148,7 +149,7 @@ describe('đo kết quả chuyến đi', () => {
   it('chỉ phòng nhớ được NGAY LẦN ĐẦU mới tính là nhớ', () => {
     let rt = startWalk(PORT_PALACE)
     // Phòng 1: sai một lần rồi mới đúng. Phòng 2: đúng ngay.
-    rt = submitRoomAnswer(rt, PORT_PALACE, { ports: [1], service: 'sai' }).runtime
+    rt = submitRoomAnswer(rt, PORT_PALACE, { keys: ['1'], name: 'sai' }).runtime
     rt = submitRoomAnswer(rt, PORT_PALACE, correctAnswer(ROUTE[0]!)).runtime
     rt = submitRoomAnswer(rt, PORT_PALACE, correctAnswer(ROUTE[1]!)).runtime
     expect(roomsRecalledFirstTry(rt)).toEqual([ROUTE[1]!.id])
@@ -180,7 +181,7 @@ describe('đạt hay chưa khi nộp làm một câu hỏi', () => {
   it('quên một nhịp rồi tự nhớ ra vẫn đạt — đó vẫn là nhớ lại thành công', () => {
     const floor1 = ROUTE.slice(0, 3)
     let rt = startWalk(PORT_PALACE, floor1.map((r) => r.id))
-    rt = submitRoomAnswer(rt, PORT_PALACE, { ports: [1], service: 'sai' }).runtime
+    rt = submitRoomAnswer(rt, PORT_PALACE, { keys: ['1'], name: 'sai' }).runtime
     for (const room of floor1) rt = submitRoomAnswer(rt, PORT_PALACE, correctAnswer(room)).runtime
     expect(walkPassed(rt)).toBe(true)
   })
@@ -188,7 +189,7 @@ describe('đạt hay chưa khi nộp làm một câu hỏi', () => {
   it('đã phải mở đáp án ở một phòng thì lượt này chưa đạt', () => {
     const floor1 = ROUTE.slice(0, 3)
     let rt = startWalk(PORT_PALACE, floor1.map((r) => r.id))
-    for (let i = 0; i < 3; i += 1) rt = submitRoomAnswer(rt, PORT_PALACE, { ports: [1], service: 'sai' }).runtime
+    for (let i = 0; i < 3; i += 1) rt = submitRoomAnswer(rt, PORT_PALACE, { keys: ['1'], name: 'sai' }).runtime
     for (const room of floor1) rt = submitRoomAnswer(rt, PORT_PALACE, correctAnswer(room)).runtime
     expect(rt.completed).toBe(true)
     expect(walkPassed(rt)).toBe(false)
@@ -221,5 +222,24 @@ describe('đi một đoạn của tòa nhà', () => {
     expect(() => startWalk(PORT_PALACE, ['khong-co-phong-nay'])).toThrow(/không thuộc cung điện/)
     expect(() => startWalk(PORT_PALACE, [])).toThrow(/ít nhất một phòng/)
     expect(() => startWalk(PORT_PALACE, ['r-http', 'r-http'])).toThrow(/trùng/)
+  })
+})
+
+describe('tòa CHỮ (GPO 4×1) — cùng engine, key là từ', () => {
+  const local = roomById(GPO_PALACE, 'r-local')!
+
+  it('key chữ nhân nhượng hoa thường, vế phụ nhận cách gọi khác', () => {
+    expect(gradeRoomAnswer(local, { keys: ['local'], name: 'chính máy đó' }).correct).toBe(true)
+    expect(gradeRoomAnswer(local, { keys: ['Local'], name: 'may cuc bo' }).correct).toBe(true)
+    expect(gradeRoomAnswer(local, { keys: ['Site'], name: 'chính máy đó' }).keysCorrect).toBe(false)
+  })
+
+  it('đi trọn 4 tầng LSDOU từ trí nhớ', () => {
+    let rt = startWalk(GPO_PALACE)
+    for (const room of tourRoute(GPO_PALACE)) {
+      rt = submitRoomAnswer(rt, GPO_PALACE, correctAnswer(room)).runtime
+    }
+    expect(rt.completed).toBe(true)
+    expect(walkScore(rt)).toEqual({ recalled: 4, visited: 4, total: 4, pct: 100 })
   })
 })

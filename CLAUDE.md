@@ -167,9 +167,14 @@ phá hoại cơ chế học của app, dù code chạy đúng.
   15 thẻ SM-2), `palaceSchema.ts` (zod + chốt chặn nội dung).
 - `src/features/palace/` — `PalaceTour`, `PalaceWalk`, `PalaceMap`,
   `RoomGlyph` (registry 15 hình, KHÔNG có hình dự phòng), `parsePorts`.
+- **Cung điện đã TỔNG QUÁT HÓA (khối 8.1):** kích thước và ruột phòng
+  khai theo từng tòa — `floors`/`roomsPerFloor`, hai vế `keys`/`name`,
+  `keyStyle: 'number' | 'text'`, nhãn/gợi ý hai ô nhập là nội dung
+  (`keyLabel`/`nameLabel`/`keyHint`/`nameHint`). Luật port 1..65535 là
+  refinement của schema khi keyStyle 'number', KHÔNG nằm trong engine.
 - **Luật của cung điện, không được phá:**
-  - Tòa nhà và lộ trình CỐ ĐỊNH — 15 phòng kín lưới, luôn đi tầng trệt
-    lên nóc, trái sang phải (bản thân thứ tự là một phần của cái được nhớ).
+  - Tòa nhà và lộ trình CỐ ĐỊNH — lưới kín, luôn đi tầng trệt lên nóc,
+    trái sang phải (bản thân thứ tự là một phần của cái được nhớ).
   - Đi xem KHÔNG cộng điểm; chỉ chuyến đi lại từ trí nhớ mới là retrieval
     (nguyên tắc 5). Lúc đi lại, gợi ý là CHỖ + HÌNH; câu chuyện là tầng 2,
     con số là tầng 3. Lộ số ra sớm là biến retrieval thành chép lại.
@@ -220,6 +225,15 @@ phá hoại cơ chế học của app, dù code chạy đúng.
 - Store: `answerTotal` + `supportShownAtTotal` + `markSupportShown()`.
   UI: `FoundationReview` chặn cửa trong LessonPlayer; ExerciseRunner đổi
   dạng câu theo `flowMode` — đổi CÁCH RENDER, không đổi dữ liệu bài.
+
+### Phase 3 — hạng mục (8): Module 8-10 (đang làm, khối 8.1 xong)
+
+- Ba quyết định đã chốt: cung điện tổng quát hóa (phương án A); tòa GPO
+  **4 tầng × 1 phòng** (LSDOU mỗi tầng một bậc); checklist lab VMware
+  khai `vmLab` trong JSON module, store track `vmLabDone`, **không XP**
+  (việc thật ngoài app không kiểm chứng được — nguyên tắc 5).
+- `GPO_PALACE` trong palaceFixture là hình mẫu tòa chữ; nội dung thật
+  vào module-09.json ở khối 8.3.
 
 ## Khi gặp mơ hồ
 

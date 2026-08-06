@@ -40,7 +40,7 @@ function cardFace(cardId: string, t: TFunc): CardFace | null {
     return {
       label: t('palace.location', { floor: String(room.floor), position: String(room.position) }),
       front: t('palace.cardFrontHint'),
-      back: t('palace.cardBack', { ports: room.ports.join(', '), service: room.service }),
+      back: t('palace.cardBack', { keys: room.keys.join(', '), name: room.name }),
       imageId: room.imageId,
     }
   }

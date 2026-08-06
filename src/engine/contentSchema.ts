@@ -295,6 +295,18 @@ const ModuleBaseSchema = z.object({
    * những đoạn khác nhau của nó.
    */
   palace: PalaceSchema.optional(),
+  /**
+   * Checklist dựng lab VMware thật song song (spec Module 9: "app track
+   * tiến độ lab"). App chỉ THEO DÕI — việc thật xảy ra ngoài app, không
+   * kiểm chứng được, nên tick xong KHÔNG cộng XP (nguyên tắc 5).
+   */
+  vmLab: z
+    .object({
+      title: LTextSchema,
+      intro: LTextSchema.optional(),
+      steps: z.array(z.object({ id: idSchema, text: LTextSchema })).min(3),
+    })
+    .optional(),
 })
 
 // ---------------------------------------------------------------
@@ -463,6 +475,7 @@ function moduleCrossChecks(mod: ModuleBase, ctx: z.RefinementCtx): void {
   dupCheck(mod.concepts.map((c) => c.id), 'concepts')
   dupCheck(mod.stages.map((s) => s.id), 'stages')
   dupCheck(collectQuestions(mod).map((x) => x.q.id), 'questions')
+  if (mod.vmLab !== undefined) dupCheck(mod.vmLab.steps.map((s) => s.id), 'vmLab.steps')
 
   // Chặng ↔ bài học: mỗi bài thuộc đúng 1 chặng, không tham chiếu mồ côi
   const lessonIds = new Set(mod.lessons.map((l) => l.id))
@@ -621,6 +634,7 @@ export function validateModules(modules: readonly Module[]): void {
   // tra ngược phòng theo id để dựng mặt thẻ.
   const palaceIds = new Map<string, string>()
   const roomIds = new Map<string, string>()
+  const vmStepIds = new Map<string, string>()
   for (const mod of modules) {
     if (moduleIds.has(mod.id)) problems.push(`Trùng module id "${mod.id}"`)
     moduleIds.add(mod.id)
@@ -634,6 +648,8 @@ export function validateModules(modules: readonly Module[]): void {
       claim(palaceIds, mod.palace.id, mod.id, 'Cung điện')
       for (const room of mod.palace.rooms) claim(roomIds, room.id, mod.id, 'Phòng cung điện')
     }
+    // Bước checklist VMware duy nhất toàn cục: store lưu tick theo stepId.
+    for (const step of mod.vmLab?.steps ?? []) claim(vmStepIds, step.id, mod.id, 'Bước lab VMware')
   }
   if (problems.length > 0) {
     throw new Error(`Nội dung liên-module không hợp lệ:\n${problems.map((p) => `- ${p}`).join('\n')}`)

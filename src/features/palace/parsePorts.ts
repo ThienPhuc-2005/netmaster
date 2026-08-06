@@ -27,3 +27,14 @@ export function parsePorts(raw: string): number[] {
 export function formatPorts(ports: readonly number[]): string {
   return ports.join(', ')
 }
+
+/**
+ * Đọc vế chính theo kiểu của tòa nhà: tòa SỐ tách các cụm chữ số ("67 và
+ * 68" → "67", "68"); tòa CHỮ nhận cả ô nhập làm MỘT key ("domain") — chữ
+ * thì không tách được bằng máy mà không đoán mò.
+ */
+export function parseKeys(raw: string, style: 'number' | 'text'): string[] {
+  if (style === 'number') return parsePorts(raw).map(String)
+  const trimmed = raw.trim()
+  return trimmed === '' ? [] : [trimmed]
+}

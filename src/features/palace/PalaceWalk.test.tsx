@@ -24,8 +24,8 @@ const answerButton = () => screen.getByRole('button', { name: 'Trả lời' })
 /** Trả lời phòng đang đứng bằng đúng nội dung của nó. */
 function answerRoom(roomId: string) {
   const room = roomById(PORT_PALACE, roomId)!
-  fireEvent.change(portsBox(), { target: { value: room.ports.join(', ') } })
-  fireEvent.change(serviceBox(), { target: { value: room.service } })
+  fireEvent.change(portsBox(), { target: { value: room.keys.join(', ') } })
+  fireEvent.change(serviceBox(), { target: { value: room.name } })
   fireEvent.click(answerButton())
 }
 
@@ -81,7 +81,7 @@ describe('đi lại từ trí nhớ: gợi ý là chỗ và hình, không phải
     answerWrong()
     answerWrong()
     answerWrong()
-    expect(screen.getByText(/Phòng này là cổng 80 — HTTP/)).toBeDefined()
+    expect(screen.getByText(/Phòng này là 80 — HTTP/)).toBeDefined()
     // Vẫn đứng nguyên phòng 1.
     expect(screen.getByText(new RegExp('Phòng 1/3'))).toBeDefined()
     answerRoom('r-http')

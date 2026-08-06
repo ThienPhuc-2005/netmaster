@@ -83,6 +83,11 @@ export interface ProgressState {
   answerTotal: number
   /** Giá trị answerTotal tại lần chèn phiên củng cố gần nhất. */
   supportShownAtTotal: number | null
+  /**
+   * stepId -> ngày tick của checklist lab VMware (spec Module 9). Chỉ
+   * theo dõi, KHÔNG XP: việc thật xảy ra ngoài app, không kiểm chứng được.
+   */
+  vmLabDone: Record<string, ISODate>
   drillHistory: DrillResult[]
   /** Ngày gần nhất hoàn thành phiên ôn — chốt luật "mở app là ôn trước". */
   lastReviewDate: ISODate | null
@@ -116,6 +121,9 @@ export interface ProgressState {
    * 2.3) — mở lại đường vào bài mới và khởi động thời gian nguội.
    */
   markSupportShown: () => void
+
+  /** Tick/bỏ tick một bước của checklist lab VMware. */
+  toggleVmLabStep: (stepId: string) => void
 
   /**
    * Ghi nhận một lượt thi mastery test. Trả kèm newlyPassed để UI biết
@@ -169,6 +177,7 @@ export const useProgress = create<ProgressState>()(
         answerHistory: [],
         answerTotal: 0,
         supportShownAtTotal: null,
+        vmLabDone: {},
         drillHistory: [],
         lastReviewDate: null,
         onboardingDone: false,
@@ -329,6 +338,14 @@ export const useProgress = create<ProgressState>()(
         // ngoài lịch mà ghi vào SM-2 sẽ phá interval, còn cộng XP thì
         // thành đường farm bằng cách cố tình sai cho tụt điểm.
         markSupportShown: () => set((s) => ({ supportShownAtTotal: s.answerTotal })),
+
+        toggleVmLabStep: (stepId) =>
+          set((s) => {
+            const next = { ...s.vmLabDone }
+            if (next[stepId] !== undefined) delete next[stepId]
+            else next[stepId] = todayIso()
+            return { vmLabDone: next }
+          }),
 
         recordMasteryAttempt: (module, results) => {
           // Chốt chặn cuối của nguyên tắc 2: không tồn tại lượt thi hợp lệ

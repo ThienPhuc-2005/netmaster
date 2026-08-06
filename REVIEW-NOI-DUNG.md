@@ -1096,21 +1096,21 @@ Phần B · 5 chặng · 8 bài · 11 khái niệm
 
 ### Cung điện ký ức: Tòa nhà 15 phòng `m5-cung-dien-port` (15 phòng)
 
-- `m5-r-http` — tầng 1 phòng 1 · cổng 80 · HTTP · hình `palace-door-open` — Cửa chính số 80 mở toang cả ngày, ai đi ngang cũng nhìn thấy hết bên trong.
-- `m5-r-https` — tầng 1 phòng 2 · cổng 443 · HTTPS · hình `palace-golden-lock` — Phòng 443 treo một ổ khóa vàng, thư vào đây được niêm phong trước khi ra.
-- `m5-r-dns` — tầng 1 phòng 3 · cổng 53 · DNS · hình `palace-phonebook` — Quầy lễ tân phòng 53 giữ cuốn danh bạ dày, tra tên ra số nhà trong một nốt nhạc.
-- `m5-r-ssh` — tầng 2 phòng 1 · cổng 22 · SSH · hình `palace-seashell` — Phòng 22 bày một vỏ sò, ghé tai vào là ra lệnh được cho máy ở tận đâu.
-- `m5-r-telnet` — tầng 2 phòng 2 · cổng 23 · Telnet · hình `palace-glass-wall` — Phòng 23 làm y hệt phòng bên cạnh nhưng bốn vách bằng kính, ai đi ngang cũng đọc được lệnh.
-- `m5-r-rdp` — tầng 2 phòng 3 · cổng 3389 · RDP · hình `palace-mirror-screen` — Phòng 3389 có tấm gương lớn chiếu nguyên màn hình của một máy tính ở xa.
-- `m5-r-smb` — tầng 3 phòng 1 · cổng 445 · SMB · hình `palace-shared-drive` — Phòng 445 là kho chung của tòa nhà, ổ đĩa nhà này cắm thẳng sang nhà kia.
-- `m5-r-ftp` — tầng 3 phòng 2 · cổng 21 · FTP · hình `palace-conveyor` — Phòng 21 có băng chuyền chở nguyên thùng tệp qua lại, thùng nào cũng không dán kín.
-- `m5-r-mysql` — tầng 3 phòng 3 · cổng 3306 · MySQL · hình `palace-file-cabinet` — Phòng 3306 xếp kín tủ hồ sơ, hỏi câu nào cũng có người tra ra đúng bảng.
-- `m5-r-smtp` — tầng 4 phòng 1 · cổng 25 · SMTP · hình `palace-mailbox` — Phòng 25 là thùng thư bưu cục, thư chạy từ bưu cục này sang bưu cục kia suốt đêm.
-- `m5-r-submission` — tầng 4 phòng 2 · cổng 587 · Mail Submission · hình `palace-id-check` — Phòng 587 bắt xuất trình thẻ nhân viên rồi mới nhận lá thư bạn muốn gửi đi.
-- `m5-r-ntp` — tầng 4 phòng 3 · cổng 123 · NTP · hình `palace-big-clock` — Phòng 123 chỉ có mỗi cái đồng hồ to, cả tòa nhà chỉnh giờ theo nó.
-- `m5-r-ldap` — tầng 5 phòng 1 · cổng 389 · LDAP · hình `palace-registry-book` — Phòng 389 giữ sổ hộ khẩu của tòa nhà: ai làm gì, thuộc phòng ban nào.
-- `m5-r-ldaps` — tầng 5 phòng 2 · cổng 636 · LDAPS · hình `palace-safe-book` — Phòng 636 cũng là cuốn sổ ấy, nhưng đặt trong két sắt và chỉ mở qua khe kính.
-- `m5-r-dhcp` — tầng 5 phòng 3 · cổng 67/68 · DHCP · hình `palace-key-pair` — Phòng 67 phát chìa khóa nhà, phòng 68 nhận lại biên nhận — cặp phòng này chuyên lo cho người mới đến.
+- `m5-r-http` — tầng 1 phòng 1 · 80 · HTTP · hình `palace-door-open` — Cửa chính số 80 mở toang cả ngày, ai đi ngang cũng nhìn thấy hết bên trong.
+- `m5-r-https` — tầng 1 phòng 2 · 443 · HTTPS · hình `palace-golden-lock` — Phòng 443 treo một ổ khóa vàng, thư vào đây được niêm phong trước khi ra.
+- `m5-r-dns` — tầng 1 phòng 3 · 53 · DNS · hình `palace-phonebook` — Quầy lễ tân phòng 53 giữ cuốn danh bạ dày, tra tên ra số nhà trong một nốt nhạc.
+- `m5-r-ssh` — tầng 2 phòng 1 · 22 · SSH · hình `palace-seashell` — Phòng 22 bày một vỏ sò, ghé tai vào là ra lệnh được cho máy ở tận đâu.
+- `m5-r-telnet` — tầng 2 phòng 2 · 23 · Telnet · hình `palace-glass-wall` — Phòng 23 làm y hệt phòng bên cạnh nhưng bốn vách bằng kính, ai đi ngang cũng đọc được lệnh.
+- `m5-r-rdp` — tầng 2 phòng 3 · 3389 · RDP · hình `palace-mirror-screen` — Phòng 3389 có tấm gương lớn chiếu nguyên màn hình của một máy tính ở xa.
+- `m5-r-smb` — tầng 3 phòng 1 · 445 · SMB · hình `palace-shared-drive` — Phòng 445 là kho chung của tòa nhà, ổ đĩa nhà này cắm thẳng sang nhà kia.
+- `m5-r-ftp` — tầng 3 phòng 2 · 21 · FTP · hình `palace-conveyor` — Phòng 21 có băng chuyền chở nguyên thùng tệp qua lại, thùng nào cũng không dán kín.
+- `m5-r-mysql` — tầng 3 phòng 3 · 3306 · MySQL · hình `palace-file-cabinet` — Phòng 3306 xếp kín tủ hồ sơ, hỏi câu nào cũng có người tra ra đúng bảng.
+- `m5-r-smtp` — tầng 4 phòng 1 · 25 · SMTP · hình `palace-mailbox` — Phòng 25 là thùng thư bưu cục, thư chạy từ bưu cục này sang bưu cục kia suốt đêm.
+- `m5-r-submission` — tầng 4 phòng 2 · 587 · Mail Submission · hình `palace-id-check` — Phòng 587 bắt xuất trình thẻ nhân viên rồi mới nhận lá thư bạn muốn gửi đi.
+- `m5-r-ntp` — tầng 4 phòng 3 · 123 · NTP · hình `palace-big-clock` — Phòng 123 chỉ có mỗi cái đồng hồ to, cả tòa nhà chỉnh giờ theo nó.
+- `m5-r-ldap` — tầng 5 phòng 1 · 389 · LDAP · hình `palace-registry-book` — Phòng 389 giữ sổ hộ khẩu của tòa nhà: ai làm gì, thuộc phòng ban nào.
+- `m5-r-ldaps` — tầng 5 phòng 2 · 636 · LDAPS · hình `palace-safe-book` — Phòng 636 cũng là cuốn sổ ấy, nhưng đặt trong két sắt và chỉ mở qua khe kính.
+- `m5-r-dhcp` — tầng 5 phòng 3 · 67/68 · DHCP · hình `palace-key-pair` — Phòng 67 phát chìa khóa nhà, phòng 68 nhận lại biên nhận — cặp phòng này chuyên lo cho người mới đến.
 
 ### Bài: Bắt tay ba nhịp trước khi nói chuyện `m5-bai-1`
 
@@ -1257,9 +1257,9 @@ Phần B · 5 chặng · 8 bài · 11 khái niệm
   - **Đào sâu hơn:** Hình càng lạ càng dễ nhớ — não bỏ qua cái quen thuộc và ghim lại cái bất thường. Đó cũng là lý do các hình trong tòa nhà này hơi vô lý một chút: ổ khóa vàng, vỏ sò, tấm gương chiếu màn hình máy khác.
 - *[m5-cong-web]* Tầng 1 là ba cánh cửa bạn dùng mỗi ngày mà không để ý: một cửa mở toang (web thường), một cửa khóa vàng (web bảo mật), một quầy danh bạ (tra tên ra địa chỉ). Đi qua từng phòng một nhé — đừng vội.
   - **Đi xem cung điện (3 phòng):**
-    - tầng 1 phòng 1 · cổng 80 · HTTP · hình `palace-door-open` — Cửa chính số 80 mở toang cả ngày, ai đi ngang cũng nhìn thấy hết bên trong.
-    - tầng 1 phòng 2 · cổng 443 · HTTPS · hình `palace-golden-lock` — Phòng 443 treo một ổ khóa vàng, thư vào đây được niêm phong trước khi ra.
-    - tầng 1 phòng 3 · cổng 53 · DNS · hình `palace-phonebook` — Quầy lễ tân phòng 53 giữ cuốn danh bạ dày, tra tên ra số nhà trong một nốt nhạc.
+    - tầng 1 phòng 1 · 80 · HTTP · hình `palace-door-open` — Cửa chính số 80 mở toang cả ngày, ai đi ngang cũng nhìn thấy hết bên trong.
+    - tầng 1 phòng 2 · 443 · HTTPS · hình `palace-golden-lock` — Phòng 443 treo một ổ khóa vàng, thư vào đây được niêm phong trước khi ra.
+    - tầng 1 phòng 3 · 53 · DNS · hình `palace-phonebook` — Quầy lễ tân phòng 53 giữ cuốn danh bạ dày, tra tên ra số nhà trong một nốt nhạc.
 
 **4 · Thử tay (practice, fading 1):**
 - **Đề:** Ba phòng tầng 1 phục vụ chung một việc gì?
@@ -1276,9 +1276,9 @@ Phần B · 5 chặng · 8 bài · 11 khái niệm
 **5 · Nhớ lại (retrieval):**
 - **Đề:** Đóng sách lại và đi lại tầng 1 từ trí nhớ: đứng trước mỗi cửa, nói xem trong phòng có số mấy và ai ở đó.
   - **Dạng:** đi lại cung điện từ trí nhớ (3 phòng)
-    - tầng 1 phòng 1 · cổng 80 · HTTP · hình `palace-door-open` — Cửa chính số 80 mở toang cả ngày, ai đi ngang cũng nhìn thấy hết bên trong.
-    - tầng 1 phòng 2 · cổng 443 · HTTPS · hình `palace-golden-lock` — Phòng 443 treo một ổ khóa vàng, thư vào đây được niêm phong trước khi ra.
-    - tầng 1 phòng 3 · cổng 53 · DNS · hình `palace-phonebook` — Quầy lễ tân phòng 53 giữ cuốn danh bạ dày, tra tên ra số nhà trong một nốt nhạc.
+    - tầng 1 phòng 1 · 80 · HTTP · hình `palace-door-open` — Cửa chính số 80 mở toang cả ngày, ai đi ngang cũng nhìn thấy hết bên trong.
+    - tầng 1 phòng 2 · 443 · HTTPS · hình `palace-golden-lock` — Phòng 443 treo một ổ khóa vàng, thư vào đây được niêm phong trước khi ra.
+    - tầng 1 phòng 3 · 53 · DNS · hình `palace-phonebook` — Quầy lễ tân phòng 53 giữ cuốn danh bạ dày, tra tên ra số nhà trong một nốt nhạc.
   - **Chủ đề gợi ý (tầng 1):** hình bạn vừa thấy trong phòng
   - **Gợi ý (tầng 2):** Nhớ hình trước, con số bám theo hình — cửa mở toang, ổ khóa vàng, cuốn danh bạ.
   - **Lời giải (tầng 3):** Tầng 1: cửa mở toang là 80 (HTTP), ổ khóa vàng là 443 (HTTPS), quầy danh bạ là 53 (DNS).
@@ -1304,9 +1304,9 @@ Phần B · 5 chặng · 8 bài · 11 khái niệm
 **3 · Khám phá (teach):**
 - *[m5-cong-dieu-khien]* Tầng 2 dành cho việc ngồi đây mà điều khiển máy ở chỗ khác: một phòng có vỏ sò (gõ lệnh an toàn), một phòng vách kính ngay bên cạnh (cũng gõ lệnh, nhưng ai cũng đọc được), và một phòng có gương lớn chiếu nguyên màn hình máy kia.
   - **Đi xem cung điện (3 phòng):**
-    - tầng 2 phòng 1 · cổng 22 · SSH · hình `palace-seashell` — Phòng 22 bày một vỏ sò, ghé tai vào là ra lệnh được cho máy ở tận đâu.
-    - tầng 2 phòng 2 · cổng 23 · Telnet · hình `palace-glass-wall` — Phòng 23 làm y hệt phòng bên cạnh nhưng bốn vách bằng kính, ai đi ngang cũng đọc được lệnh.
-    - tầng 2 phòng 3 · cổng 3389 · RDP · hình `palace-mirror-screen` — Phòng 3389 có tấm gương lớn chiếu nguyên màn hình của một máy tính ở xa.
+    - tầng 2 phòng 1 · 22 · SSH · hình `palace-seashell` — Phòng 22 bày một vỏ sò, ghé tai vào là ra lệnh được cho máy ở tận đâu.
+    - tầng 2 phòng 2 · 23 · Telnet · hình `palace-glass-wall` — Phòng 23 làm y hệt phòng bên cạnh nhưng bốn vách bằng kính, ai đi ngang cũng đọc được lệnh.
+    - tầng 2 phòng 3 · 3389 · RDP · hình `palace-mirror-screen` — Phòng 3389 có tấm gương lớn chiếu nguyên màn hình của một máy tính ở xa.
   - **Đào sâu hơn:** Telnet ra đời khi mạng còn là chuyện của vài trường đại học tin nhau. Ngày nay nó chỉ còn dùng để thử xem một cổng có mở không, chứ không ai đăng nhập bằng nó nữa.
 
 **4 · Thử tay (practice, fading 1):**
@@ -1324,9 +1324,9 @@ Phần B · 5 chặng · 8 bài · 11 khái niệm
 **5 · Nhớ lại (retrieval):**
 - **Đề:** Đi lại tầng 2 từ trí nhớ: vỏ sò, vách kính, tấm gương — mỗi phòng là cổng nào?
   - **Dạng:** đi lại cung điện từ trí nhớ (3 phòng)
-    - tầng 2 phòng 1 · cổng 22 · SSH · hình `palace-seashell` — Phòng 22 bày một vỏ sò, ghé tai vào là ra lệnh được cho máy ở tận đâu.
-    - tầng 2 phòng 2 · cổng 23 · Telnet · hình `palace-glass-wall` — Phòng 23 làm y hệt phòng bên cạnh nhưng bốn vách bằng kính, ai đi ngang cũng đọc được lệnh.
-    - tầng 2 phòng 3 · cổng 3389 · RDP · hình `palace-mirror-screen` — Phòng 3389 có tấm gương lớn chiếu nguyên màn hình của một máy tính ở xa.
+    - tầng 2 phòng 1 · 22 · SSH · hình `palace-seashell` — Phòng 22 bày một vỏ sò, ghé tai vào là ra lệnh được cho máy ở tận đâu.
+    - tầng 2 phòng 2 · 23 · Telnet · hình `palace-glass-wall` — Phòng 23 làm y hệt phòng bên cạnh nhưng bốn vách bằng kính, ai đi ngang cũng đọc được lệnh.
+    - tầng 2 phòng 3 · 3389 · RDP · hình `palace-mirror-screen` — Phòng 3389 có tấm gương lớn chiếu nguyên màn hình của một máy tính ở xa.
   - **Chủ đề gợi ý (tầng 1):** hình trong từng phòng của tầng hai
   - **Gợi ý (tầng 2):** Hai phòng đầu là hai số liền nhau — chúng làm cùng một việc mà.
   - **Lời giải (tầng 3):** Tầng 2: vỏ sò là 22 (SSH), vách kính là 23 (Telnet), tấm gương là 3389 (RDP).
@@ -1352,9 +1352,9 @@ Phần B · 5 chặng · 8 bài · 11 khái niệm
 **3 · Khám phá (teach):**
 - *[m5-cong-chia-se]* Tầng 3 là chỗ chứa đồ: một kho chung mà ổ đĩa nhà này cắm thẳng sang nhà kia, một băng chuyền chở nguyên thùng tệp qua lại nhưng thùng không dán kín, và một phòng xếp kín tủ hồ sơ hỏi gì cũng tra ra.
   - **Đi xem cung điện (3 phòng):**
-    - tầng 3 phòng 1 · cổng 445 · SMB · hình `palace-shared-drive` — Phòng 445 là kho chung của tòa nhà, ổ đĩa nhà này cắm thẳng sang nhà kia.
-    - tầng 3 phòng 2 · cổng 21 · FTP · hình `palace-conveyor` — Phòng 21 có băng chuyền chở nguyên thùng tệp qua lại, thùng nào cũng không dán kín.
-    - tầng 3 phòng 3 · cổng 3306 · MySQL · hình `palace-file-cabinet` — Phòng 3306 xếp kín tủ hồ sơ, hỏi câu nào cũng có người tra ra đúng bảng.
+    - tầng 3 phòng 1 · 445 · SMB · hình `palace-shared-drive` — Phòng 445 là kho chung của tòa nhà, ổ đĩa nhà này cắm thẳng sang nhà kia.
+    - tầng 3 phòng 2 · 21 · FTP · hình `palace-conveyor` — Phòng 21 có băng chuyền chở nguyên thùng tệp qua lại, thùng nào cũng không dán kín.
+    - tầng 3 phòng 3 · 3306 · MySQL · hình `palace-file-cabinet` — Phòng 3306 xếp kín tủ hồ sơ, hỏi câu nào cũng có người tra ra đúng bảng.
   - **Đào sâu hơn:** Cả ba phòng này là mục tiêu ưa thích của kẻ tấn công, vì đằng sau chúng là dữ liệu chứ không phải giao diện. Nguyên tắc chung: đừng bao giờ để 445 và 3306 nhìn thẳng ra Internet.
 
 **4 · Thử tay (practice, fading 2):**
@@ -1372,9 +1372,9 @@ Phần B · 5 chặng · 8 bài · 11 khái niệm
 **5 · Nhớ lại (retrieval):**
 - **Đề:** Đi lại tầng 3 từ trí nhớ: kho chung, băng chuyền, tủ hồ sơ.
   - **Dạng:** đi lại cung điện từ trí nhớ (3 phòng)
-    - tầng 3 phòng 1 · cổng 445 · SMB · hình `palace-shared-drive` — Phòng 445 là kho chung của tòa nhà, ổ đĩa nhà này cắm thẳng sang nhà kia.
-    - tầng 3 phòng 2 · cổng 21 · FTP · hình `palace-conveyor` — Phòng 21 có băng chuyền chở nguyên thùng tệp qua lại, thùng nào cũng không dán kín.
-    - tầng 3 phòng 3 · cổng 3306 · MySQL · hình `palace-file-cabinet` — Phòng 3306 xếp kín tủ hồ sơ, hỏi câu nào cũng có người tra ra đúng bảng.
+    - tầng 3 phòng 1 · 445 · SMB · hình `palace-shared-drive` — Phòng 445 là kho chung của tòa nhà, ổ đĩa nhà này cắm thẳng sang nhà kia.
+    - tầng 3 phòng 2 · 21 · FTP · hình `palace-conveyor` — Phòng 21 có băng chuyền chở nguyên thùng tệp qua lại, thùng nào cũng không dán kín.
+    - tầng 3 phòng 3 · 3306 · MySQL · hình `palace-file-cabinet` — Phòng 3306 xếp kín tủ hồ sơ, hỏi câu nào cũng có người tra ra đúng bảng.
   - **Chủ đề gợi ý (tầng 1):** hình trong từng phòng của tầng ba
   - **Gợi ý (tầng 2):** Một số ba chữ số, một số hai chữ số, một số bốn chữ số — mỗi phòng một dáng riêng.
   - **Lời giải (tầng 3):** Tầng 3: kho chung là 445 (SMB), băng chuyền là 21 (FTP), tủ hồ sơ là 3306 (MySQL).
@@ -1400,9 +1400,9 @@ Phần B · 5 chặng · 8 bài · 11 khái niệm
 **3 · Khám phá (teach):**
 - *[m5-cong-thu-tu]* Tầng 4 lo hai việc: thư từ và giờ giấc. Thùng thư bưu cục nhận thư chạy giữa các máy chủ; quầy xuất trình thẻ nhận thư do chính bạn gửi đi; và cái đồng hồ to giữ nhịp cho cả tòa nhà.
   - **Đi xem cung điện (3 phòng):**
-    - tầng 4 phòng 1 · cổng 25 · SMTP · hình `palace-mailbox` — Phòng 25 là thùng thư bưu cục, thư chạy từ bưu cục này sang bưu cục kia suốt đêm.
-    - tầng 4 phòng 2 · cổng 587 · Mail Submission · hình `palace-id-check` — Phòng 587 bắt xuất trình thẻ nhân viên rồi mới nhận lá thư bạn muốn gửi đi.
-    - tầng 4 phòng 3 · cổng 123 · NTP · hình `palace-big-clock` — Phòng 123 chỉ có mỗi cái đồng hồ to, cả tòa nhà chỉnh giờ theo nó.
+    - tầng 4 phòng 1 · 25 · SMTP · hình `palace-mailbox` — Phòng 25 là thùng thư bưu cục, thư chạy từ bưu cục này sang bưu cục kia suốt đêm.
+    - tầng 4 phòng 2 · 587 · Mail Submission · hình `palace-id-check` — Phòng 587 bắt xuất trình thẻ nhân viên rồi mới nhận lá thư bạn muốn gửi đi.
+    - tầng 4 phòng 3 · 123 · NTP · hình `palace-big-clock` — Phòng 123 chỉ có mỗi cái đồng hồ to, cả tòa nhà chỉnh giờ theo nó.
   - **Đào sâu hơn:** Tách 25 và 587 là để chống thư rác: cổng 25 chỉ dành cho máy chủ nói chuyện với máy chủ, còn người dùng gửi thư phải qua 587 và phải đăng nhập. Nhà mạng thường chặn thẳng cổng 25 đi ra từ máy người dùng.
 
 **4 · Thử tay (practice, fading 2):**
@@ -1420,9 +1420,9 @@ Phần B · 5 chặng · 8 bài · 11 khái niệm
 **5 · Nhớ lại (retrieval):**
 - **Đề:** Đi lại tầng 4 từ trí nhớ: thùng thư, quầy xuất trình thẻ, đồng hồ lớn.
   - **Dạng:** đi lại cung điện từ trí nhớ (3 phòng)
-    - tầng 4 phòng 1 · cổng 25 · SMTP · hình `palace-mailbox` — Phòng 25 là thùng thư bưu cục, thư chạy từ bưu cục này sang bưu cục kia suốt đêm.
-    - tầng 4 phòng 2 · cổng 587 · Mail Submission · hình `palace-id-check` — Phòng 587 bắt xuất trình thẻ nhân viên rồi mới nhận lá thư bạn muốn gửi đi.
-    - tầng 4 phòng 3 · cổng 123 · NTP · hình `palace-big-clock` — Phòng 123 chỉ có mỗi cái đồng hồ to, cả tòa nhà chỉnh giờ theo nó.
+    - tầng 4 phòng 1 · 25 · SMTP · hình `palace-mailbox` — Phòng 25 là thùng thư bưu cục, thư chạy từ bưu cục này sang bưu cục kia suốt đêm.
+    - tầng 4 phòng 2 · 587 · Mail Submission · hình `palace-id-check` — Phòng 587 bắt xuất trình thẻ nhân viên rồi mới nhận lá thư bạn muốn gửi đi.
+    - tầng 4 phòng 3 · 123 · NTP · hình `palace-big-clock` — Phòng 123 chỉ có mỗi cái đồng hồ to, cả tòa nhà chỉnh giờ theo nó.
   - **Chủ đề gợi ý (tầng 1):** hình trong từng phòng của tầng bốn
   - **Gợi ý (tầng 2):** Hai phòng đầu cùng lo thư, phòng cuối là con số đếm 1-2-3.
   - **Lời giải (tầng 3):** Tầng 4: thùng thư là 25 (SMTP), quầy xuất trình thẻ là 587, đồng hồ lớn là 123 (NTP).
@@ -1448,9 +1448,9 @@ Phần B · 5 chặng · 8 bài · 11 khái niệm
 **3 · Khám phá (teach):**
 - *[m5-cong-danh-ba]* Tầng trên cùng giữ những thứ về NGƯỜI và CHỖ Ở: một cuốn sổ hộ khẩu ghi ai làm gì thuộc phòng ban nào, cùng cuốn sổ ấy nhưng cất trong két sắt, và cặp phòng chuyên phát chìa khóa nhà cho người mới đến.
   - **Đi xem cung điện (3 phòng):**
-    - tầng 5 phòng 1 · cổng 389 · LDAP · hình `palace-registry-book` — Phòng 389 giữ sổ hộ khẩu của tòa nhà: ai làm gì, thuộc phòng ban nào.
-    - tầng 5 phòng 2 · cổng 636 · LDAPS · hình `palace-safe-book` — Phòng 636 cũng là cuốn sổ ấy, nhưng đặt trong két sắt và chỉ mở qua khe kính.
-    - tầng 5 phòng 3 · cổng 67/68 · DHCP · hình `palace-key-pair` — Phòng 67 phát chìa khóa nhà, phòng 68 nhận lại biên nhận — cặp phòng này chuyên lo cho người mới đến.
+    - tầng 5 phòng 1 · 389 · LDAP · hình `palace-registry-book` — Phòng 389 giữ sổ hộ khẩu của tòa nhà: ai làm gì, thuộc phòng ban nào.
+    - tầng 5 phòng 2 · 636 · LDAPS · hình `palace-safe-book` — Phòng 636 cũng là cuốn sổ ấy, nhưng đặt trong két sắt và chỉ mở qua khe kính.
+    - tầng 5 phòng 3 · 67/68 · DHCP · hình `palace-key-pair` — Phòng 67 phát chìa khóa nhà, phòng 68 nhận lại biên nhận — cặp phòng này chuyên lo cho người mới đến.
   - **Đào sâu hơn:** LDAP là nền của Active Directory — thứ bạn sẽ gặp lại ở Phần C khi học quản trị Windows Server. Lúc đó cặp 389/636 sẽ quay lại, và bạn đã có sẵn chỗ để treo nó.
 
 **4 · Thử tay (practice, fading 2):**
@@ -1468,9 +1468,9 @@ Phần B · 5 chặng · 8 bài · 11 khái niệm
 **5 · Nhớ lại (retrieval):**
 - **Đề:** Đi lại tầng 5 từ trí nhớ: sổ hộ khẩu, két sắt, cặp chìa khóa.
   - **Dạng:** đi lại cung điện từ trí nhớ (3 phòng)
-    - tầng 5 phòng 1 · cổng 389 · LDAP · hình `palace-registry-book` — Phòng 389 giữ sổ hộ khẩu của tòa nhà: ai làm gì, thuộc phòng ban nào.
-    - tầng 5 phòng 2 · cổng 636 · LDAPS · hình `palace-safe-book` — Phòng 636 cũng là cuốn sổ ấy, nhưng đặt trong két sắt và chỉ mở qua khe kính.
-    - tầng 5 phòng 3 · cổng 67/68 · DHCP · hình `palace-key-pair` — Phòng 67 phát chìa khóa nhà, phòng 68 nhận lại biên nhận — cặp phòng này chuyên lo cho người mới đến.
+    - tầng 5 phòng 1 · 389 · LDAP · hình `palace-registry-book` — Phòng 389 giữ sổ hộ khẩu của tòa nhà: ai làm gì, thuộc phòng ban nào.
+    - tầng 5 phòng 2 · 636 · LDAPS · hình `palace-safe-book` — Phòng 636 cũng là cuốn sổ ấy, nhưng đặt trong két sắt và chỉ mở qua khe kính.
+    - tầng 5 phòng 3 · 67/68 · DHCP · hình `palace-key-pair` — Phòng 67 phát chìa khóa nhà, phòng 68 nhận lại biên nhận — cặp phòng này chuyên lo cho người mới đến.
   - **Chủ đề gợi ý (tầng 1):** hình trong từng phòng trên nóc tòa nhà
   - **Gợi ý (tầng 2):** Hai cuốn sổ là cùng một thứ, chỉ khác chuyện khóa; phòng cuối mang hai số.
   - **Lời giải (tầng 3):** Tầng 5: sổ hộ khẩu là 389 (LDAP), sổ trong két là 636 (LDAPS), cặp chìa khóa là 67/68 (DHCP).
@@ -1539,27 +1539,27 @@ Phần B · 5 chặng · 8 bài · 11 khái niệm
   - **Vì sao:** Máy chủ vẫn ngồi nguyên một cổng; mỗi kết nối phía bạn được cấp một cổng tạm thời riêng nên dữ liệu không lẫn.
 - **Đề:** Đi lại tầng 1 và tầng 2 của tòa nhà từ trí nhớ.
   - **Dạng:** đi lại cung điện từ trí nhớ (6 phòng)
-    - tầng 1 phòng 1 · cổng 80 · HTTP · hình `palace-door-open` — Cửa chính số 80 mở toang cả ngày, ai đi ngang cũng nhìn thấy hết bên trong.
-    - tầng 1 phòng 2 · cổng 443 · HTTPS · hình `palace-golden-lock` — Phòng 443 treo một ổ khóa vàng, thư vào đây được niêm phong trước khi ra.
-    - tầng 1 phòng 3 · cổng 53 · DNS · hình `palace-phonebook` — Quầy lễ tân phòng 53 giữ cuốn danh bạ dày, tra tên ra số nhà trong một nốt nhạc.
-    - tầng 2 phòng 1 · cổng 22 · SSH · hình `palace-seashell` — Phòng 22 bày một vỏ sò, ghé tai vào là ra lệnh được cho máy ở tận đâu.
-    - tầng 2 phòng 2 · cổng 23 · Telnet · hình `palace-glass-wall` — Phòng 23 làm y hệt phòng bên cạnh nhưng bốn vách bằng kính, ai đi ngang cũng đọc được lệnh.
-    - tầng 2 phòng 3 · cổng 3389 · RDP · hình `palace-mirror-screen` — Phòng 3389 có tấm gương lớn chiếu nguyên màn hình của một máy tính ở xa.
+    - tầng 1 phòng 1 · 80 · HTTP · hình `palace-door-open` — Cửa chính số 80 mở toang cả ngày, ai đi ngang cũng nhìn thấy hết bên trong.
+    - tầng 1 phòng 2 · 443 · HTTPS · hình `palace-golden-lock` — Phòng 443 treo một ổ khóa vàng, thư vào đây được niêm phong trước khi ra.
+    - tầng 1 phòng 3 · 53 · DNS · hình `palace-phonebook` — Quầy lễ tân phòng 53 giữ cuốn danh bạ dày, tra tên ra số nhà trong một nốt nhạc.
+    - tầng 2 phòng 1 · 22 · SSH · hình `palace-seashell` — Phòng 22 bày một vỏ sò, ghé tai vào là ra lệnh được cho máy ở tận đâu.
+    - tầng 2 phòng 2 · 23 · Telnet · hình `palace-glass-wall` — Phòng 23 làm y hệt phòng bên cạnh nhưng bốn vách bằng kính, ai đi ngang cũng đọc được lệnh.
+    - tầng 2 phòng 3 · 3389 · RDP · hình `palace-mirror-screen` — Phòng 3389 có tấm gương lớn chiếu nguyên màn hình của một máy tính ở xa.
   - **Vì sao:** Tầng 1: 80 HTTP, 443 HTTPS, 53 DNS. Tầng 2: 22 SSH, 23 Telnet, 3389 RDP.
 - **Đề:** Đi lại tầng 3 và tầng 4 của tòa nhà từ trí nhớ.
   - **Dạng:** đi lại cung điện từ trí nhớ (6 phòng)
-    - tầng 3 phòng 1 · cổng 445 · SMB · hình `palace-shared-drive` — Phòng 445 là kho chung của tòa nhà, ổ đĩa nhà này cắm thẳng sang nhà kia.
-    - tầng 3 phòng 2 · cổng 21 · FTP · hình `palace-conveyor` — Phòng 21 có băng chuyền chở nguyên thùng tệp qua lại, thùng nào cũng không dán kín.
-    - tầng 3 phòng 3 · cổng 3306 · MySQL · hình `palace-file-cabinet` — Phòng 3306 xếp kín tủ hồ sơ, hỏi câu nào cũng có người tra ra đúng bảng.
-    - tầng 4 phòng 1 · cổng 25 · SMTP · hình `palace-mailbox` — Phòng 25 là thùng thư bưu cục, thư chạy từ bưu cục này sang bưu cục kia suốt đêm.
-    - tầng 4 phòng 2 · cổng 587 · Mail Submission · hình `palace-id-check` — Phòng 587 bắt xuất trình thẻ nhân viên rồi mới nhận lá thư bạn muốn gửi đi.
-    - tầng 4 phòng 3 · cổng 123 · NTP · hình `palace-big-clock` — Phòng 123 chỉ có mỗi cái đồng hồ to, cả tòa nhà chỉnh giờ theo nó.
+    - tầng 3 phòng 1 · 445 · SMB · hình `palace-shared-drive` — Phòng 445 là kho chung của tòa nhà, ổ đĩa nhà này cắm thẳng sang nhà kia.
+    - tầng 3 phòng 2 · 21 · FTP · hình `palace-conveyor` — Phòng 21 có băng chuyền chở nguyên thùng tệp qua lại, thùng nào cũng không dán kín.
+    - tầng 3 phòng 3 · 3306 · MySQL · hình `palace-file-cabinet` — Phòng 3306 xếp kín tủ hồ sơ, hỏi câu nào cũng có người tra ra đúng bảng.
+    - tầng 4 phòng 1 · 25 · SMTP · hình `palace-mailbox` — Phòng 25 là thùng thư bưu cục, thư chạy từ bưu cục này sang bưu cục kia suốt đêm.
+    - tầng 4 phòng 2 · 587 · Mail Submission · hình `palace-id-check` — Phòng 587 bắt xuất trình thẻ nhân viên rồi mới nhận lá thư bạn muốn gửi đi.
+    - tầng 4 phòng 3 · 123 · NTP · hình `palace-big-clock` — Phòng 123 chỉ có mỗi cái đồng hồ to, cả tòa nhà chỉnh giờ theo nó.
   - **Vì sao:** Tầng 3: 445 SMB, 21 FTP, 3306 MySQL. Tầng 4: 25 SMTP, 587 gửi thư có đăng nhập, 123 NTP.
 - **Đề:** Lên nóc: đi lại tầng 5 từ trí nhớ.
   - **Dạng:** đi lại cung điện từ trí nhớ (3 phòng)
-    - tầng 5 phòng 1 · cổng 389 · LDAP · hình `palace-registry-book` — Phòng 389 giữ sổ hộ khẩu của tòa nhà: ai làm gì, thuộc phòng ban nào.
-    - tầng 5 phòng 2 · cổng 636 · LDAPS · hình `palace-safe-book` — Phòng 636 cũng là cuốn sổ ấy, nhưng đặt trong két sắt và chỉ mở qua khe kính.
-    - tầng 5 phòng 3 · cổng 67/68 · DHCP · hình `palace-key-pair` — Phòng 67 phát chìa khóa nhà, phòng 68 nhận lại biên nhận — cặp phòng này chuyên lo cho người mới đến.
+    - tầng 5 phòng 1 · 389 · LDAP · hình `palace-registry-book` — Phòng 389 giữ sổ hộ khẩu của tòa nhà: ai làm gì, thuộc phòng ban nào.
+    - tầng 5 phòng 2 · 636 · LDAPS · hình `palace-safe-book` — Phòng 636 cũng là cuốn sổ ấy, nhưng đặt trong két sắt và chỉ mở qua khe kính.
+    - tầng 5 phòng 3 · 67/68 · DHCP · hình `palace-key-pair` — Phòng 67 phát chìa khóa nhà, phòng 68 nhận lại biên nhận — cặp phòng này chuyên lo cho người mới đến.
   - **Vì sao:** Tầng 5: 389 LDAP, 636 LDAPS, 67/68 DHCP.
 
 ## DNS và DHCP — Hỏi đường và thuê nhà `module-6`

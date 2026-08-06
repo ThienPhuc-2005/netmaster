@@ -7,7 +7,7 @@
 // Phòng ngoài đoạn đường của chuyến này vẫn được vẽ (tòa nhà không đổi
 // hình theo bài học), nhưng mờ đi để không tranh chỗ với việc đang làm.
 
-import { FLOORS, ROOMS_PER_FLOOR, roomAt, type Palace } from '../../engine/palace'
+import { roomAt, type Palace } from '../../engine/palace'
 import { useT } from '../../i18n'
 
 export interface PalaceMapProps {
@@ -24,7 +24,7 @@ export function PalaceMap({ palace, currentRoomId = null, routeIds, revealedRoom
   const t = useT()
   const inRoute = routeIds === undefined ? null : new Set(routeIds)
   const revealed = new Set(revealedRoomIds)
-  const floors = Array.from({ length: FLOORS }, (_, i) => FLOORS - i)
+  const floors = Array.from({ length: palace.floors }, (_, i) => palace.floors - i)
 
   return (
     <div className="rounded-md border border-edge bg-panel p-3" aria-label={t('palace.mapAria')} role="group">
@@ -34,8 +34,13 @@ export function PalaceMap({ palace, currentRoomId = null, routeIds, revealedRoom
             <span className="w-14 shrink-0 text-right text-[11px] uppercase tracking-wide text-ink-muted">
               {t('palace.floorShort', { floor: String(floor) })}
             </span>
-            <div className="grid flex-1 grid-cols-3 gap-1.5">
-              {Array.from({ length: ROOMS_PER_FLOOR }, (_, i) => i + 1).map((position) => {
+            {/* Số cột theo tòa nhà — style inline vì Tailwind không sinh
+                class động từ dữ liệu lúc chạy. */}
+            <div
+              className="grid flex-1 gap-1.5"
+              style={{ gridTemplateColumns: `repeat(${palace.roomsPerFloor}, minmax(0, 1fr))` }}
+            >
+              {Array.from({ length: palace.roomsPerFloor }, (_, i) => i + 1).map((position) => {
                 const room = roomAt(palace, floor, position)
                 const id = room?.id ?? ''
                 const active = id !== '' && id === currentRoomId
@@ -58,7 +63,7 @@ export function PalaceMap({ palace, currentRoomId = null, routeIds, revealedRoom
                             : 'border-edge/40 text-ink-muted/40',
                     ].join(' ')}
                   >
-                    {room === null ? '' : shown ? room.ports.join('/') : included ? '?' : '·'}
+                    {room === null ? '' : shown ? room.keys.join('/') : included ? '?' : '·'}
                   </div>
                 )
               })}

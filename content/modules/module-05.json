@@ -2,195 +2,384 @@
   "id": "module-5",
   "order": 5,
   "part": "B",
-  "title": { "vi": "TCP, UDP và Port — Cửa nào của ngôi nhà" },
+  "title": {
+    "vi": "TCP, UDP và Port — Cửa nào của ngôi nhà"
+  },
   "stages": [
-    { "id": "m5-chang-1", "title": { "vi": "Bắt tay rồi mới nói" }, "lessonIds": ["m5-bai-1"] },
-    { "id": "m5-chang-2", "title": { "vi": "Nhanh hay chắc" }, "lessonIds": ["m5-bai-2"] },
-    { "id": "m5-chang-3", "title": { "vi": "Số nhà của dịch vụ" }, "lessonIds": ["m5-bai-3"] },
-    { "id": "m5-chang-4", "title": { "vi": "Đi tour tòa nhà" }, "lessonIds": ["m5-bai-4", "m5-bai-5", "m5-bai-6"] },
-    { "id": "m5-chang-5", "title": { "vi": "Lên nóc tòa nhà" }, "lessonIds": ["m5-bai-7", "m5-bai-8"] }
+    {
+      "id": "m5-chang-1",
+      "title": {
+        "vi": "Bắt tay rồi mới nói"
+      },
+      "lessonIds": [
+        "m5-bai-1"
+      ]
+    },
+    {
+      "id": "m5-chang-2",
+      "title": {
+        "vi": "Nhanh hay chắc"
+      },
+      "lessonIds": [
+        "m5-bai-2"
+      ]
+    },
+    {
+      "id": "m5-chang-3",
+      "title": {
+        "vi": "Số nhà của dịch vụ"
+      },
+      "lessonIds": [
+        "m5-bai-3"
+      ]
+    },
+    {
+      "id": "m5-chang-4",
+      "title": {
+        "vi": "Đi tour tòa nhà"
+      },
+      "lessonIds": [
+        "m5-bai-4",
+        "m5-bai-5",
+        "m5-bai-6"
+      ]
+    },
+    {
+      "id": "m5-chang-5",
+      "title": {
+        "vi": "Lên nóc tòa nhà"
+      },
+      "lessonIds": [
+        "m5-bai-7",
+        "m5-bai-8"
+      ]
+    }
   ],
-
   "palace": {
     "id": "m5-cung-dien-port",
-    "title": { "vi": "Tòa nhà 15 phòng" },
+    "title": {
+      "vi": "Tòa nhà 15 phòng"
+    },
+    "floors": 5,
+    "roomsPerFloor": 3,
+    "keyStyle": "number",
+    "keyLabel": {
+      "vi": "Số cổng"
+    },
+    "nameLabel": {
+      "vi": "Dịch vụ"
+    },
+    "keyPlaceholder": {
+      "vi": "ví dụ 443"
+    },
+    "namePlaceholder": {
+      "vi": "ví dụ HTTPS"
+    },
+    "keyHint": {
+      "vi": "con số ghi trên cửa"
+    },
+    "nameHint": {
+      "vi": "việc người ta làm trong phòng"
+    },
     "rooms": [
       {
         "id": "m5-r-http",
         "floor": 1,
         "position": 1,
-        "ports": [80],
-        "transport": "tcp",
-        "service": "HTTP",
-        "serviceAliases": ["web thường"],
+        "keys": [
+          "80"
+        ],
+        "name": "HTTP",
+        "nameAliases": [
+          "web thường"
+        ],
         "imageId": "palace-door-open",
-        "story": { "vi": "Cửa chính số 80 mở toang cả ngày, ai đi ngang cũng nhìn thấy hết bên trong." }
+        "story": {
+          "vi": "Cửa chính số 80 mở toang cả ngày, ai đi ngang cũng nhìn thấy hết bên trong."
+        },
+        "note": {
+          "vi": "Chạy trên TCP"
+        }
       },
       {
         "id": "m5-r-https",
         "floor": 1,
         "position": 2,
-        "ports": [443],
-        "transport": "tcp",
-        "service": "HTTPS",
-        "serviceAliases": ["web bảo mật"],
+        "keys": [
+          "443"
+        ],
+        "name": "HTTPS",
+        "nameAliases": [
+          "web bảo mật"
+        ],
         "imageId": "palace-golden-lock",
-        "story": { "vi": "Phòng 443 treo một ổ khóa vàng, thư vào đây được niêm phong trước khi ra." }
+        "story": {
+          "vi": "Phòng 443 treo một ổ khóa vàng, thư vào đây được niêm phong trước khi ra."
+        },
+        "note": {
+          "vi": "Chạy trên TCP"
+        }
       },
       {
         "id": "m5-r-dns",
         "floor": 1,
         "position": 3,
-        "ports": [53],
-        "transport": "udp",
-        "service": "DNS",
-        "serviceAliases": ["phân giải tên miền"],
+        "keys": [
+          "53"
+        ],
+        "name": "DNS",
+        "nameAliases": [
+          "phân giải tên miền"
+        ],
         "imageId": "palace-phonebook",
-        "story": { "vi": "Quầy lễ tân phòng 53 giữ cuốn danh bạ dày, tra tên ra số nhà trong một nốt nhạc." }
+        "story": {
+          "vi": "Quầy lễ tân phòng 53 giữ cuốn danh bạ dày, tra tên ra số nhà trong một nốt nhạc."
+        },
+        "note": {
+          "vi": "Chạy trên UDP"
+        }
       },
       {
         "id": "m5-r-ssh",
         "floor": 2,
         "position": 1,
-        "ports": [22],
-        "transport": "tcp",
-        "service": "SSH",
-        "serviceAliases": ["secure shell"],
+        "keys": [
+          "22"
+        ],
+        "name": "SSH",
+        "nameAliases": [
+          "secure shell"
+        ],
         "imageId": "palace-seashell",
-        "story": { "vi": "Phòng 22 bày một vỏ sò, ghé tai vào là ra lệnh được cho máy ở tận đâu." }
+        "story": {
+          "vi": "Phòng 22 bày một vỏ sò, ghé tai vào là ra lệnh được cho máy ở tận đâu."
+        },
+        "note": {
+          "vi": "Chạy trên TCP"
+        }
       },
       {
         "id": "m5-r-telnet",
         "floor": 2,
         "position": 2,
-        "ports": [23],
-        "transport": "tcp",
-        "service": "Telnet",
-        "serviceAliases": [],
+        "keys": [
+          "23"
+        ],
+        "name": "Telnet",
+        "nameAliases": [],
         "imageId": "palace-glass-wall",
-        "story": { "vi": "Phòng 23 làm y hệt phòng bên cạnh nhưng bốn vách bằng kính, ai đi ngang cũng đọc được lệnh." }
+        "story": {
+          "vi": "Phòng 23 làm y hệt phòng bên cạnh nhưng bốn vách bằng kính, ai đi ngang cũng đọc được lệnh."
+        },
+        "note": {
+          "vi": "Chạy trên TCP"
+        }
       },
       {
         "id": "m5-r-rdp",
         "floor": 2,
         "position": 3,
-        "ports": [3389],
-        "transport": "tcp",
-        "service": "RDP",
-        "serviceAliases": ["remote desktop"],
+        "keys": [
+          "3389"
+        ],
+        "name": "RDP",
+        "nameAliases": [
+          "remote desktop"
+        ],
         "imageId": "palace-mirror-screen",
-        "story": { "vi": "Phòng 3389 có tấm gương lớn chiếu nguyên màn hình của một máy tính ở xa." }
+        "story": {
+          "vi": "Phòng 3389 có tấm gương lớn chiếu nguyên màn hình của một máy tính ở xa."
+        },
+        "note": {
+          "vi": "Chạy trên TCP"
+        }
       },
       {
         "id": "m5-r-smb",
         "floor": 3,
         "position": 1,
-        "ports": [445],
-        "transport": "tcp",
-        "service": "SMB",
-        "serviceAliases": ["chia sẻ thư mục windows"],
+        "keys": [
+          "445"
+        ],
+        "name": "SMB",
+        "nameAliases": [
+          "chia sẻ thư mục windows"
+        ],
         "imageId": "palace-shared-drive",
-        "story": { "vi": "Phòng 445 là kho chung của tòa nhà, ổ đĩa nhà này cắm thẳng sang nhà kia." }
+        "story": {
+          "vi": "Phòng 445 là kho chung của tòa nhà, ổ đĩa nhà này cắm thẳng sang nhà kia."
+        },
+        "note": {
+          "vi": "Chạy trên TCP"
+        }
       },
       {
         "id": "m5-r-ftp",
         "floor": 3,
         "position": 2,
-        "ports": [21],
-        "transport": "tcp",
-        "service": "FTP",
-        "serviceAliases": ["truyền tệp"],
+        "keys": [
+          "21"
+        ],
+        "name": "FTP",
+        "nameAliases": [
+          "truyền tệp"
+        ],
         "imageId": "palace-conveyor",
-        "story": { "vi": "Phòng 21 có băng chuyền chở nguyên thùng tệp qua lại, thùng nào cũng không dán kín." }
+        "story": {
+          "vi": "Phòng 21 có băng chuyền chở nguyên thùng tệp qua lại, thùng nào cũng không dán kín."
+        },
+        "note": {
+          "vi": "Chạy trên TCP"
+        }
       },
       {
         "id": "m5-r-mysql",
         "floor": 3,
         "position": 3,
-        "ports": [3306],
-        "transport": "tcp",
-        "service": "MySQL",
-        "serviceAliases": ["cơ sở dữ liệu"],
+        "keys": [
+          "3306"
+        ],
+        "name": "MySQL",
+        "nameAliases": [
+          "cơ sở dữ liệu"
+        ],
         "imageId": "palace-file-cabinet",
-        "story": { "vi": "Phòng 3306 xếp kín tủ hồ sơ, hỏi câu nào cũng có người tra ra đúng bảng." }
+        "story": {
+          "vi": "Phòng 3306 xếp kín tủ hồ sơ, hỏi câu nào cũng có người tra ra đúng bảng."
+        },
+        "note": {
+          "vi": "Chạy trên TCP"
+        }
       },
       {
         "id": "m5-r-smtp",
         "floor": 4,
         "position": 1,
-        "ports": [25],
-        "transport": "tcp",
-        "service": "SMTP",
-        "serviceAliases": ["chuyển thư giữa các máy chủ"],
+        "keys": [
+          "25"
+        ],
+        "name": "SMTP",
+        "nameAliases": [
+          "chuyển thư giữa các máy chủ"
+        ],
         "imageId": "palace-mailbox",
-        "story": { "vi": "Phòng 25 là thùng thư bưu cục, thư chạy từ bưu cục này sang bưu cục kia suốt đêm." }
+        "story": {
+          "vi": "Phòng 25 là thùng thư bưu cục, thư chạy từ bưu cục này sang bưu cục kia suốt đêm."
+        },
+        "note": {
+          "vi": "Chạy trên TCP"
+        }
       },
       {
         "id": "m5-r-submission",
         "floor": 4,
         "position": 2,
-        "ports": [587],
-        "transport": "tcp",
-        "service": "Mail Submission",
-        "serviceAliases": ["gửi thư có đăng nhập"],
+        "keys": [
+          "587"
+        ],
+        "name": "Mail Submission",
+        "nameAliases": [
+          "gửi thư có đăng nhập"
+        ],
         "imageId": "palace-id-check",
-        "story": { "vi": "Phòng 587 bắt xuất trình thẻ nhân viên rồi mới nhận lá thư bạn muốn gửi đi." }
+        "story": {
+          "vi": "Phòng 587 bắt xuất trình thẻ nhân viên rồi mới nhận lá thư bạn muốn gửi đi."
+        },
+        "note": {
+          "vi": "Chạy trên TCP"
+        }
       },
       {
         "id": "m5-r-ntp",
         "floor": 4,
         "position": 3,
-        "ports": [123],
-        "transport": "udp",
-        "service": "NTP",
-        "serviceAliases": ["đồng bộ giờ"],
+        "keys": [
+          "123"
+        ],
+        "name": "NTP",
+        "nameAliases": [
+          "đồng bộ giờ"
+        ],
         "imageId": "palace-big-clock",
-        "story": { "vi": "Phòng 123 chỉ có mỗi cái đồng hồ to, cả tòa nhà chỉnh giờ theo nó." }
+        "story": {
+          "vi": "Phòng 123 chỉ có mỗi cái đồng hồ to, cả tòa nhà chỉnh giờ theo nó."
+        },
+        "note": {
+          "vi": "Chạy trên UDP"
+        }
       },
       {
         "id": "m5-r-ldap",
         "floor": 5,
         "position": 1,
-        "ports": [389],
-        "transport": "tcp",
-        "service": "LDAP",
-        "serviceAliases": ["tra cứu người dùng"],
+        "keys": [
+          "389"
+        ],
+        "name": "LDAP",
+        "nameAliases": [
+          "tra cứu người dùng"
+        ],
         "imageId": "palace-registry-book",
-        "story": { "vi": "Phòng 389 giữ sổ hộ khẩu của tòa nhà: ai làm gì, thuộc phòng ban nào." }
+        "story": {
+          "vi": "Phòng 389 giữ sổ hộ khẩu của tòa nhà: ai làm gì, thuộc phòng ban nào."
+        },
+        "note": {
+          "vi": "Chạy trên TCP"
+        }
       },
       {
         "id": "m5-r-ldaps",
         "floor": 5,
         "position": 2,
-        "ports": [636],
-        "transport": "tcp",
-        "service": "LDAPS",
-        "serviceAliases": ["sổ hộ khẩu có mã hóa"],
+        "keys": [
+          "636"
+        ],
+        "name": "LDAPS",
+        "nameAliases": [
+          "sổ hộ khẩu có mã hóa"
+        ],
         "imageId": "palace-safe-book",
-        "story": { "vi": "Phòng 636 cũng là cuốn sổ ấy, nhưng đặt trong két sắt và chỉ mở qua khe kính." }
+        "story": {
+          "vi": "Phòng 636 cũng là cuốn sổ ấy, nhưng đặt trong két sắt và chỉ mở qua khe kính."
+        },
+        "note": {
+          "vi": "Chạy trên TCP"
+        }
       },
       {
         "id": "m5-r-dhcp",
         "floor": 5,
         "position": 3,
-        "ports": [67, 68],
-        "transport": "udp",
-        "service": "DHCP",
-        "serviceAliases": ["cấp địa chỉ tự động"],
+        "keys": [
+          "67",
+          "68"
+        ],
+        "name": "DHCP",
+        "nameAliases": [
+          "cấp địa chỉ tự động"
+        ],
         "imageId": "palace-key-pair",
-        "story": { "vi": "Phòng 67 phát chìa khóa nhà, phòng 68 nhận lại biên nhận — cặp phòng này chuyên lo cho người mới đến." }
+        "story": {
+          "vi": "Phòng 67 phát chìa khóa nhà, phòng 68 nhận lại biên nhận — cặp phòng này chuyên lo cho người mới đến."
+        },
+        "note": {
+          "vi": "Chạy trên UDP"
+        }
       }
     ]
   },
-
   "lessons": [
     {
       "id": "m5-bai-1",
-      "missionTitle": { "vi": "Bắt tay ba nhịp trước khi nói chuyện" },
+      "missionTitle": {
+        "vi": "Bắt tay ba nhịp trước khi nói chuyện"
+      },
       "steps": [
         {
           "type": "hook",
-          "question": { "vi": "Trước khi bạn kịp thấy chữ đầu tiên của một trang web, máy bạn và máy chủ đã trao đổi xong ba gói tin ngắn. Ba gói đó nói gì với nhau, và vì sao thiếu một gói là cả cuộc trò chuyện không bắt đầu được?" },
+          "question": {
+            "vi": "Trước khi bạn kịp thấy chữ đầu tiên của một trang web, máy bạn và máy chủ đã trao đổi xong ba gói tin ngắn. Ba gói đó nói gì với nhau, và vì sao thiếu một gói là cả cuộc trò chuyện không bắt đầu được?"
+          },
           "visualId": "vis-hook-bat-tay"
         },
         {
@@ -199,17 +388,29 @@
             {
               "kind": "mcq",
               "id": "m5-b1-pre-1",
-              "prompt": { "vi": "Đoán thử nhé: trước khi gửi dữ liệu thật, TCP làm gì đầu tiên?" },
+              "prompt": {
+                "vi": "Đoán thử nhé: trước khi gửi dữ liệu thật, TCP làm gì đầu tiên?"
+              },
               "choices": [
-                { "vi": "Gửi luôn dữ liệu, hỏng đâu sửa đó" },
-                { "vi": "Trao đổi vài gói tin ngắn để hai bên xác nhận đã sẵn sàng" },
-                { "vi": "Hỏi router xem đường có thông không" }
+                {
+                  "vi": "Gửi luôn dữ liệu, hỏng đâu sửa đó"
+                },
+                {
+                  "vi": "Trao đổi vài gói tin ngắn để hai bên xác nhận đã sẵn sàng"
+                },
+                {
+                  "vi": "Hỏi router xem đường có thông không"
+                }
               ],
               "answerIndex": 1,
-              "explain": { "vi": "TCP mở đầu bằng ba gói tin ngắn — cái bắt tay — để hai bên xác nhận nghe được nhau trước khi tốn công gửi dữ liệu thật." }
+              "explain": {
+                "vi": "TCP mở đầu bằng ba gói tin ngắn — cái bắt tay — để hai bên xác nhận nghe được nhau trước khi tốn công gửi dữ liệu thật."
+              }
             }
           ],
-          "encouragement": { "vi": "Đoán chưa trúng cũng chẳng sao — não bạn vừa được mồi sẵn một chỗ trống, lát nữa đáp án rơi vào là dính luôn." }
+          "encouragement": {
+            "vi": "Đoán chưa trúng cũng chẳng sao — não bạn vừa được mồi sẵn một chỗ trống, lát nữa đáp án rơi vào là dính luôn."
+          }
         },
         {
           "type": "teach",
@@ -217,42 +418,72 @@
             {
               "conceptId": "m5-tcp",
               "visualId": "vis-tcp-tin-cay",
-              "body": { "vi": "TCP là kiểu gửi thư BẢO ĐẢM: mỗi gói tin được đánh số, bên nhận phải báo đã nhận, thiếu gói nào bên gửi gửi lại đúng gói đó. Chậm hơn một nhịp, nhưng dữ liệu tới nơi đủ và đúng thứ tự." },
-              "deepDive": { "vi": "Bên nhận báo bằng gói ACK kèm số thứ tự nó đang chờ. Bên gửi không đợi từng gói một mà gửi trước cả một cụm rồi mới chờ báo — cụm đó gọi là cửa sổ, và nó co giãn theo tình trạng đường truyền." }
+              "body": {
+                "vi": "TCP là kiểu gửi thư BẢO ĐẢM: mỗi gói tin được đánh số, bên nhận phải báo đã nhận, thiếu gói nào bên gửi gửi lại đúng gói đó. Chậm hơn một nhịp, nhưng dữ liệu tới nơi đủ và đúng thứ tự."
+              },
+              "deepDive": {
+                "vi": "Bên nhận báo bằng gói ACK kèm số thứ tự nó đang chờ. Bên gửi không đợi từng gói một mà gửi trước cả một cụm rồi mới chờ báo — cụm đó gọi là cửa sổ, và nó co giãn theo tình trạng đường truyền."
+              }
             },
             {
               "conceptId": "m5-bat-tay",
               "visualId": "vis-bat-tay-3-buoc",
-              "body": { "vi": "Cái bắt tay có ba nhịp: máy bạn gửi SYN (\"tôi muốn nói chuyện\"), máy chủ đáp SYN-ACK, rồi máy bạn gửi ACK. Nhịp giữa là nhịp DUY NHẤT mang hai vai một lúc — vừa trả lời câu hỏi của bạn, vừa hỏi ngược lại — nên nó cũng là nhịp hay bị nhớ nhầm thứ tự nhất." },
-              "deepDive": { "vi": "Vì sao cần đủ ba nhịp: sau nhịp hai thì mới chỉ MÁY BẠN biết chắc cả hai chiều đều thông. Nhịp ba là để máy chủ cũng biết điều đó. Thiếu nó, máy chủ phải giữ nửa kết nối chờ vô thời hạn — đúng chỗ mà kiểu tấn công SYN flood nhắm vào." }
+              "body": {
+                "vi": "Cái bắt tay có ba nhịp: máy bạn gửi SYN (\"tôi muốn nói chuyện\"), máy chủ đáp SYN-ACK, rồi máy bạn gửi ACK. Nhịp giữa là nhịp DUY NHẤT mang hai vai một lúc — vừa trả lời câu hỏi của bạn, vừa hỏi ngược lại — nên nó cũng là nhịp hay bị nhớ nhầm thứ tự nhất."
+              },
+              "deepDive": {
+                "vi": "Vì sao cần đủ ba nhịp: sau nhịp hai thì mới chỉ MÁY BẠN biết chắc cả hai chiều đều thông. Nhịp ba là để máy chủ cũng biết điều đó. Thiếu nó, máy chủ phải giữ nửa kết nối chờ vô thời hạn — đúng chỗ mà kiểu tấn công SYN flood nhắm vào."
+              }
             }
           ]
         },
         {
           "type": "practice",
           "fadingLevel": 0,
-          "workedExample": { "vi": "Ví dụ giải sẵn: bạn mở một trang web. Máy bạn gửi SYN → máy chủ đáp SYN-ACK → máy bạn gửi ACK. Xong ba nhịp, kết nối mới mở và trình duyệt mới bắt đầu tải trang. Đọc lại một lượt rồi tự gọi tên nhịp giữa xem nhé." },
+          "workedExample": {
+            "vi": "Ví dụ giải sẵn: bạn mở một trang web. Máy bạn gửi SYN → máy chủ đáp SYN-ACK → máy bạn gửi ACK. Xong ba nhịp, kết nối mới mở và trình duyệt mới bắt đầu tải trang. Đọc lại một lượt rồi tự gọi tên nhịp giữa xem nhé."
+          },
           "exercises": [
             {
               "question": {
                 "kind": "typed",
                 "id": "m5-b1-pra-1",
-                "prompt": { "vi": "Nhịp giữa của cái bắt tay ba bước tên là gì?" },
-                "accept": ["syn-ack", "syn ack", "synack"],
-                "hintTopic": { "vi": "nhịp vừa trả lời vừa hỏi ngược lại" },
+                "prompt": {
+                  "vi": "Nhịp giữa của cái bắt tay ba bước tên là gì?"
+                },
+                "accept": [
+                  "syn-ack",
+                  "syn ack",
+                  "synack"
+                ],
+                "hintTopic": {
+                  "vi": "nhịp vừa trả lời vừa hỏi ngược lại"
+                },
                 "nearMisses": [
                   {
-                    "accept": ["syn"],
-                    "feedback": { "vi": "SYN là nhịp ĐẦU, do máy bạn gửi đi. Nhịp giữa là câu đáp của máy chủ — nó gộp hai việc vào một gói." }
+                    "accept": [
+                      "syn"
+                    ],
+                    "feedback": {
+                      "vi": "SYN là nhịp ĐẦU, do máy bạn gửi đi. Nhịp giữa là câu đáp của máy chủ — nó gộp hai việc vào một gói."
+                    }
                   },
                   {
-                    "accept": ["ack"],
-                    "feedback": { "vi": "ACK là nhịp CUỐI. Nhịp giữa dài hơn một chút vì nó mang cả hai vai cùng lúc." }
+                    "accept": [
+                      "ack"
+                    ],
+                    "feedback": {
+                      "vi": "ACK là nhịp CUỐI. Nhịp giữa dài hơn một chút vì nó mang cả hai vai cùng lúc."
+                    }
                   }
                 ]
               },
-              "hint": { "vi": "Nó là một gói duy nhất nhưng ghép tên của hai gói kia lại." },
-              "solution": { "vi": "Đó là SYN-ACK: máy chủ vừa xác nhận đã nghe thấy bạn (ACK), vừa hỏi ngược lại để mở chiều còn lại (SYN)." }
+              "hint": {
+                "vi": "Nó là một gói duy nhất nhưng ghép tên của hai gói kia lại."
+              },
+              "solution": {
+                "vi": "Đó là SYN-ACK: máy chủ vừa xác nhận đã nghe thấy bạn (ACK), vừa hỏi ngược lại để mở chiều còn lại (SYN)."
+              }
             }
           ]
         },
@@ -263,57 +494,106 @@
               "question": {
                 "kind": "order",
                 "id": "m5-b1-ret-1",
-                "prompt": { "vi": "Không nhìn lại bài: xếp ba nhịp của cái bắt tay theo đúng thứ tự." },
+                "prompt": {
+                  "vi": "Không nhìn lại bài: xếp ba nhịp của cái bắt tay theo đúng thứ tự."
+                },
                 "items": [
-                  { "vi": "Máy bạn gửi SYN — \"tôi muốn mở kết nối\"" },
-                  { "vi": "Máy chủ đáp SYN-ACK — \"nghe rồi, và tôi cũng muốn mở chiều ngược lại\"" },
-                  { "vi": "Máy bạn gửi ACK — \"rõ, bắt đầu thôi\"" }
+                  {
+                    "vi": "Máy bạn gửi SYN — \"tôi muốn mở kết nối\""
+                  },
+                  {
+                    "vi": "Máy chủ đáp SYN-ACK — \"nghe rồi, và tôi cũng muốn mở chiều ngược lại\""
+                  },
+                  {
+                    "vi": "Máy bạn gửi ACK — \"rõ, bắt đầu thôi\""
+                  }
                 ],
-                "hintTopic": { "vi": "ai là người mở lời trước" }
+                "hintTopic": {
+                  "vi": "ai là người mở lời trước"
+                }
               },
-              "hint": { "vi": "Người gõ địa chỉ trang web là người mở lời — và cũng là người chốt câu cuối." },
-              "solution": { "vi": "SYN → SYN-ACK → ACK. Máy bạn mở lời, máy chủ đáp bằng gói mang hai vai, máy bạn chốt lại." }
+              "hint": {
+                "vi": "Người gõ địa chỉ trang web là người mở lời — và cũng là người chốt câu cuối."
+              },
+              "solution": {
+                "vi": "SYN → SYN-ACK → ACK. Máy bạn mở lời, máy chủ đáp bằng gói mang hai vai, máy bạn chốt lại."
+              }
             },
             {
               "question": {
                 "kind": "typed",
                 "id": "m5-b1-ret-2",
-                "prompt": { "vi": "Giao thức gửi kiểu \"thư bảo đảm\" — đánh số từng gói, thiếu là đòi gửi lại — tên là gì?" },
-                "accept": ["tcp"],
-                "hintTopic": { "vi": "giao thức lo chuyện đủ và đúng thứ tự" }
+                "prompt": {
+                  "vi": "Giao thức gửi kiểu \"thư bảo đảm\" — đánh số từng gói, thiếu là đòi gửi lại — tên là gì?"
+                },
+                "accept": [
+                  "tcp"
+                ],
+                "hintTopic": {
+                  "vi": "giao thức lo chuyện đủ và đúng thứ tự"
+                }
               },
-              "hint": { "vi": "Ba chữ cái, và nó chính là chữ đầu trong cụm \"TCP/IP\" bạn hay thấy." },
-              "solution": { "vi": "Đó là TCP — nó lo cho dữ liệu tới đủ và đúng thứ tự, còn IP lo chuyện tìm đường." }
+              "hint": {
+                "vi": "Ba chữ cái, và nó chính là chữ đầu trong cụm \"TCP/IP\" bạn hay thấy."
+              },
+              "solution": {
+                "vi": "Đó là TCP — nó lo cho dữ liệu tới đủ và đúng thứ tự, còn IP lo chuyện tìm đường."
+              }
             }
           ],
           "selfExplain": {
-            "prompt": { "vi": "Giải thích bằng lời của bạn: vì sao phải bắt tay ba nhịp thay vì gửi luôn dữ liệu?" },
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: vì sao phải bắt tay ba nhịp thay vì gửi luôn dữ liệu?"
+            },
             "keywords": [
-              ["sẵn sàng", "xác nhận", "đồng ý", "chắc chắn"],
-              ["hai chiều", "cả hai bên", "hai bên", "ngược lại"]
+              [
+                "sẵn sàng",
+                "xác nhận",
+                "đồng ý",
+                "chắc chắn"
+              ],
+              [
+                "hai chiều",
+                "cả hai bên",
+                "hai bên",
+                "ngược lại"
+              ]
             ],
-            "exampleAnswer": { "vi": "Ba nhịp để cả hai bên cùng biết chắc đường đi VÀ đường về đều thông, rồi mới tốn công gửi dữ liệu thật; gửi bừa mà bên kia chưa sẵn sàng thì mất công gửi lại từ đầu." }
+            "exampleAnswer": {
+              "vi": "Ba nhịp để cả hai bên cùng biết chắc đường đi VÀ đường về đều thông, rồi mới tốn công gửi dữ liệu thật; gửi bừa mà bên kia chưa sẵn sàng thì mất công gửi lại từ đầu."
+            }
           }
         },
         {
           "type": "summary",
           "bullets": [
-            { "vi": "TCP là thư bảo đảm: đánh số, báo nhận, thiếu thì gửi lại." },
-            { "vi": "Kết nối mở bằng ba nhịp SYN → SYN-ACK → ACK." },
-            { "vi": "Nhịp giữa SYN-ACK mang hai vai — đó là nhịp hay bị nhớ nhầm." }
+            {
+              "vi": "TCP là thư bảo đảm: đánh số, báo nhận, thiếu thì gửi lại."
+            },
+            {
+              "vi": "Kết nối mở bằng ba nhịp SYN → SYN-ACK → ACK."
+            },
+            {
+              "vi": "Nhịp giữa SYN-ACK mang hai vai — đó là nhịp hay bị nhớ nhầm."
+            }
           ],
-          "nextTeaser": { "vi": "Nhưng xem bóng đá trực tuyến mà cứ dừng lại đòi gửi lại từng khung hình thì còn gì là trận đấu? Bài sau mình gặp kẻ chịu mất để đổi lấy nhanh." }
+          "nextTeaser": {
+            "vi": "Nhưng xem bóng đá trực tuyến mà cứ dừng lại đòi gửi lại từng khung hình thì còn gì là trận đấu? Bài sau mình gặp kẻ chịu mất để đổi lấy nhanh."
+          }
         }
       ]
     },
-
     {
       "id": "m5-bai-2",
-      "missionTitle": { "vi": "Chọn giữa nhanh và chắc" },
+      "missionTitle": {
+        "vi": "Chọn giữa nhanh và chắc"
+      },
       "steps": [
         {
           "type": "hook",
-          "question": { "vi": "Khi bạn gọi video, một mẩu tiếng bị rớt thì thà mất luôn còn hơn dừng cả cuộc gọi để chờ gửi lại. Vậy có giao thức nào cố tình KHÔNG bảo đảm không?" },
+          "question": {
+            "vi": "Khi bạn gọi video, một mẩu tiếng bị rớt thì thà mất luôn còn hơn dừng cả cuộc gọi để chờ gửi lại. Vậy có giao thức nào cố tình KHÔNG bảo đảm không?"
+          },
           "visualId": "vis-hook-udp"
         },
         {
@@ -322,13 +602,26 @@
             {
               "kind": "mcq",
               "id": "m5-b2-pre-1",
-              "prompt": { "vi": "Đoán thử nhé: gọi video và chơi game trực tuyến thường dùng giao thức nào?" },
-              "choices": [{ "vi": "TCP" }, { "vi": "UDP" }],
+              "prompt": {
+                "vi": "Đoán thử nhé: gọi video và chơi game trực tuyến thường dùng giao thức nào?"
+              },
+              "choices": [
+                {
+                  "vi": "TCP"
+                },
+                {
+                  "vi": "UDP"
+                }
+              ],
               "answerIndex": 1,
-              "explain": { "vi": "UDP: gói nào rớt thì thôi, không dừng lại đòi gửi lại — đổi một chút chất lượng lấy độ trễ thấp." }
+              "explain": {
+                "vi": "UDP: gói nào rớt thì thôi, không dừng lại đòi gửi lại — đổi một chút chất lượng lấy độ trễ thấp."
+              }
             }
           ],
-          "encouragement": { "vi": "Đoán sai ở đây là chuyện thường — hai giao thức này trông giống nhau tới lúc bạn hỏi \"nếu mất một gói thì sao\"." }
+          "encouragement": {
+            "vi": "Đoán sai ở đây là chuyện thường — hai giao thức này trông giống nhau tới lúc bạn hỏi \"nếu mất một gói thì sao\"."
+          }
         },
         {
           "type": "teach",
@@ -336,8 +629,12 @@
             {
               "conceptId": "m5-udp",
               "visualId": "vis-udp-nhanh",
-              "body": { "vi": "UDP là gửi thư THƯỜNG: không bắt tay, không đánh số, không đòi lại. Gói tới được thì tới, rớt thì thôi. Đổi lại, nó không có nhịp chờ nào — thứ mà cuộc gọi và trận game cần hơn là sự hoàn hảo." },
-              "deepDive": { "vi": "DNS cũng chọn UDP: một câu hỏi, một câu trả lời, gọn trong một gói. Bắt tay ba nhịp chỉ để hỏi một câu ngắn thì phần thủ tục còn dài hơn phần nội dung — mất công hơn là hỏi lại khi lỡ rớt." }
+              "body": {
+                "vi": "UDP là gửi thư THƯỜNG: không bắt tay, không đánh số, không đòi lại. Gói tới được thì tới, rớt thì thôi. Đổi lại, nó không có nhịp chờ nào — thứ mà cuộc gọi và trận game cần hơn là sự hoàn hảo."
+              },
+              "deepDive": {
+                "vi": "DNS cũng chọn UDP: một câu hỏi, một câu trả lời, gọn trong một gói. Bắt tay ba nhịp chỉ để hỏi một câu ngắn thì phần thủ tục còn dài hơn phần nội dung — mất công hơn là hỏi lại khi lỡ rớt."
+              }
             }
           ]
         },
@@ -349,27 +646,49 @@
               "question": {
                 "kind": "typed",
                 "id": "m5-b2-pra-1",
-                "prompt": { "vi": "Giao thức chấp nhận mất gói để đổi lấy độ trễ thấp tên là gì?" },
-                "accept": ["udp"],
-                "hintTopic": { "vi": "kiểu gửi không đòi báo nhận" }
+                "prompt": {
+                  "vi": "Giao thức chấp nhận mất gói để đổi lấy độ trễ thấp tên là gì?"
+                },
+                "accept": [
+                  "udp"
+                ],
+                "hintTopic": {
+                  "vi": "kiểu gửi không đòi báo nhận"
+                }
               },
-              "hint": { "vi": "Ba chữ cái, và nó là kẻ đối lập của TCP trong chuyện bảo đảm." },
-              "solution": { "vi": "Đó là UDP — gửi xong là xong, không chờ báo nhận, không gửi lại." }
+              "hint": {
+                "vi": "Ba chữ cái, và nó là kẻ đối lập của TCP trong chuyện bảo đảm."
+              },
+              "solution": {
+                "vi": "Đó là UDP — gửi xong là xong, không chờ báo nhận, không gửi lại."
+              }
             },
             {
               "question": {
                 "kind": "mcq",
                 "id": "m5-b2-pra-2",
-                "prompt": { "vi": "Tải một tệp cài đặt 2GB thì nên đi bằng giao thức nào?" },
+                "prompt": {
+                  "vi": "Tải một tệp cài đặt 2GB thì nên đi bằng giao thức nào?"
+                },
                 "choices": [
-                  { "vi": "TCP — thiếu một mẩu là tệp hỏng, phải bảo đảm" },
-                  { "vi": "UDP — cho nhanh" }
+                  {
+                    "vi": "TCP — thiếu một mẩu là tệp hỏng, phải bảo đảm"
+                  },
+                  {
+                    "vi": "UDP — cho nhanh"
+                  }
                 ],
                 "answerIndex": 0,
-                "hintTopic": { "vi": "hậu quả khi mất một mẩu dữ liệu" }
+                "hintTopic": {
+                  "vi": "hậu quả khi mất một mẩu dữ liệu"
+                }
               },
-              "hint": { "vi": "Thử hỏi: mất một khung hình trong cuộc gọi thì sao, mất một mẩu trong tệp cài đặt thì sao?" },
-              "solution": { "vi": "TCP. Với tệp, thiếu một mẩu là hỏng cả tệp — nên phải chọn kiểu bảo đảm dù chậm hơn." }
+              "hint": {
+                "vi": "Thử hỏi: mất một khung hình trong cuộc gọi thì sao, mất một mẩu trong tệp cài đặt thì sao?"
+              },
+              "solution": {
+                "vi": "TCP. Với tệp, thiếu một mẩu là hỏng cả tệp — nên phải chọn kiểu bảo đảm dù chậm hơn."
+              }
             }
           ]
         },
@@ -380,42 +699,78 @@
               "question": {
                 "kind": "typed",
                 "id": "m5-b2-ret-1",
-                "prompt": { "vi": "Không nhìn lại bài: giao thức nào KHÔNG bắt tay, không đánh số, không gửi lại gói rớt?" },
-                "accept": ["udp"],
-                "hintTopic": { "vi": "kiểu gửi thư thường" }
+                "prompt": {
+                  "vi": "Không nhìn lại bài: giao thức nào KHÔNG bắt tay, không đánh số, không gửi lại gói rớt?"
+                },
+                "accept": [
+                  "udp"
+                ],
+                "hintTopic": {
+                  "vi": "kiểu gửi thư thường"
+                }
               },
-              "hint": { "vi": "Nó là lựa chọn của cuộc gọi video và trận game." },
-              "solution": { "vi": "UDP — bỏ hết thủ tục để không có nhịp chờ nào." }
+              "hint": {
+                "vi": "Nó là lựa chọn của cuộc gọi video và trận game."
+              },
+              "solution": {
+                "vi": "UDP — bỏ hết thủ tục để không có nhịp chờ nào."
+              }
             }
           ],
           "selfExplain": {
-            "prompt": { "vi": "Giải thích bằng lời của bạn: khi nào nên chọn TCP, khi nào nên chọn UDP?" },
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: khi nào nên chọn TCP, khi nào nên chọn UDP?"
+            },
             "keywords": [
-              ["đủ", "chính xác", "bảo đảm", "không mất", "gửi lại"],
-              ["nhanh", "độ trễ", "thời gian thực", "trực tiếp"]
+              [
+                "đủ",
+                "chính xác",
+                "bảo đảm",
+                "không mất",
+                "gửi lại"
+              ],
+              [
+                "nhanh",
+                "độ trễ",
+                "thời gian thực",
+                "trực tiếp"
+              ]
             ],
-            "exampleAnswer": { "vi": "Việc nào mà thiếu một mẩu là hỏng cả — tải tệp, mở trang web, gửi thư — thì chọn TCP vì nó gửi lại phần thiếu. Việc nào mà chậm một nhịp còn tệ hơn mất một mẩu — gọi video, chơi game, hỏi DNS — thì chọn UDP." }
+            "exampleAnswer": {
+              "vi": "Việc nào mà thiếu một mẩu là hỏng cả — tải tệp, mở trang web, gửi thư — thì chọn TCP vì nó gửi lại phần thiếu. Việc nào mà chậm một nhịp còn tệ hơn mất một mẩu — gọi video, chơi game, hỏi DNS — thì chọn UDP."
+            }
           }
         },
         {
           "type": "summary",
           "bullets": [
-            { "vi": "UDP bỏ hết thủ tục: không bắt tay, không báo nhận, không gửi lại." },
-            { "vi": "Mất gói với UDP là chuyện bình thường, đổi lại là không có nhịp chờ." },
-            { "vi": "Chọn theo hậu quả: thiếu một mẩu là hỏng thì TCP, chậm một nhịp là hỏng thì UDP." }
+            {
+              "vi": "UDP bỏ hết thủ tục: không bắt tay, không báo nhận, không gửi lại."
+            },
+            {
+              "vi": "Mất gói với UDP là chuyện bình thường, đổi lại là không có nhịp chờ."
+            },
+            {
+              "vi": "Chọn theo hậu quả: thiếu một mẩu là hỏng thì TCP, chậm một nhịp là hỏng thì UDP."
+            }
           ],
-          "nextTeaser": { "vi": "Cả hai đều phải ghi một con số lên phong bì để biết giao cho ứng dụng nào. Con số đó có luật chơi riêng — bài sau mình mở ra xem." }
+          "nextTeaser": {
+            "vi": "Cả hai đều phải ghi một con số lên phong bì để biết giao cho ứng dụng nào. Con số đó có luật chơi riêng — bài sau mình mở ra xem."
+          }
         }
       ]
     },
-
     {
       "id": "m5-bai-3",
-      "missionTitle": { "vi": "Đọc luật của những con số cổng" },
+      "missionTitle": {
+        "vi": "Đọc luật của những con số cổng"
+      },
       "steps": [
         {
           "type": "hook",
-          "question": { "vi": "Máy chủ web luôn ngồi ở cổng 443 không bao giờ đổi, còn máy bạn thì mỗi lần mở một trang lại dùng một số cổng khác. Vì sao một bên cố định, một bên đổi liên tục?" },
+          "question": {
+            "vi": "Máy chủ web luôn ngồi ở cổng 443 không bao giờ đổi, còn máy bạn thì mỗi lần mở một trang lại dùng một số cổng khác. Vì sao một bên cố định, một bên đổi liên tục?"
+          },
           "visualId": "vis-hook-cong-so"
         },
         {
@@ -424,13 +779,29 @@
             {
               "kind": "mcq",
               "id": "m5-b3-pre-1",
-              "prompt": { "vi": "Đoán thử nhé: số cổng nằm trong khoảng nào?" },
-              "choices": [{ "vi": "0 đến 255" }, { "vi": "0 đến 65535" }, { "vi": "0 đến vô hạn" }],
+              "prompt": {
+                "vi": "Đoán thử nhé: số cổng nằm trong khoảng nào?"
+              },
+              "choices": [
+                {
+                  "vi": "0 đến 255"
+                },
+                {
+                  "vi": "0 đến 65535"
+                },
+                {
+                  "vi": "0 đến vô hạn"
+                }
+              ],
               "answerIndex": 1,
-              "explain": { "vi": "Cổng là số 16 bit nên chạy từ 0 đến 65535 — đúng bằng số căn hộ tối đa của \"chung cư\" một địa chỉ IP." }
+              "explain": {
+                "vi": "Cổng là số 16 bit nên chạy từ 0 đến 65535 — đúng bằng số căn hộ tối đa của \"chung cư\" một địa chỉ IP."
+              }
             }
           ],
-          "encouragement": { "vi": "Con số này không suy ra được, chỉ nhớ thôi — nên đoán trật cũng là bình thường." }
+          "encouragement": {
+            "vi": "Con số này không suy ra được, chỉ nhớ thôi — nên đoán trật cũng là bình thường."
+          }
         },
         {
           "type": "teach",
@@ -438,14 +809,22 @@
             {
               "conceptId": "m5-cong-noi-tieng",
               "visualId": "vis-cong-noi-tieng",
-              "body": { "vi": "Dải 0-1023 là những cổng NỔI TIẾNG: mỗi số được cả thế giới quy ước dành cho một dịch vụ. Máy chủ phải ngồi đúng số đó, vì người tới gõ cửa cần biết trước phải gõ ở đâu — không ai đi hỏi từng nhà xem web nằm ở cửa số mấy." },
-              "deepDive": { "vi": "Trên Linux và các hệ họ Unix, chỉ tài khoản quản trị mới mở được cổng dưới 1024. Đó là lớp bảo vệ cũ nhưng vẫn còn: một chương trình bất kỳ không tự nhận mình là máy chủ web của cả máy được." }
+              "body": {
+                "vi": "Dải 0-1023 là những cổng NỔI TIẾNG: mỗi số được cả thế giới quy ước dành cho một dịch vụ. Máy chủ phải ngồi đúng số đó, vì người tới gõ cửa cần biết trước phải gõ ở đâu — không ai đi hỏi từng nhà xem web nằm ở cửa số mấy."
+              },
+              "deepDive": {
+                "vi": "Trên Linux và các hệ họ Unix, chỉ tài khoản quản trị mới mở được cổng dưới 1024. Đó là lớp bảo vệ cũ nhưng vẫn còn: một chương trình bất kỳ không tự nhận mình là máy chủ web của cả máy được."
+              }
             },
             {
               "conceptId": "m5-cong-tam-thoi",
               "visualId": "vis-cong-tam-thoi",
-              "body": { "vi": "Phía bạn thì ngược lại: mỗi lần mở một kết nối, hệ điều hành cấp cho nó một cổng TẠM THỜI lấy từ dải số lớn. Nhờ vậy mở mười tab cùng lúc vẫn không lẫn — mười cổng khác nhau, mười cuộc trò chuyện riêng." },
-              "deepDive": { "vi": "Một kết nối được nhận diện bằng bốn thứ: IP nguồn, cổng nguồn, IP đích, cổng đích. Chỉ cần một trong bốn khác đi là một cuộc trò chuyện khác — đó là lý do một máy chủ ở cổng 443 phục vụ được hàng nghìn người cùng lúc." }
+              "body": {
+                "vi": "Phía bạn thì ngược lại: mỗi lần mở một kết nối, hệ điều hành cấp cho nó một cổng TẠM THỜI lấy từ dải số lớn. Nhờ vậy mở mười tab cùng lúc vẫn không lẫn — mười cổng khác nhau, mười cuộc trò chuyện riêng."
+              },
+              "deepDive": {
+                "vi": "Một kết nối được nhận diện bằng bốn thứ: IP nguồn, cổng nguồn, IP đích, cổng đích. Chỉ cần một trong bốn khác đi là một cuộc trò chuyện khác — đó là lý do một máy chủ ở cổng 443 phục vụ được hàng nghìn người cùng lúc."
+              }
             }
           ]
         },
@@ -457,28 +836,57 @@
               "question": {
                 "kind": "typed",
                 "id": "m5-b3-pra-1",
-                "prompt": { "vi": "Dải cổng 0-1023 được gọi là dải cổng gì? (nói bằng tiếng Việt cũng được)" },
-                "accept": ["nổi tiếng", "noi tieng", "well-known", "well known", "cổng nổi tiếng", "cong noi tieng"],
-                "hintTopic": { "vi": "vì sao máy chủ phải ngồi đúng số quy ước" }
+                "prompt": {
+                  "vi": "Dải cổng 0-1023 được gọi là dải cổng gì? (nói bằng tiếng Việt cũng được)"
+                },
+                "accept": [
+                  "nổi tiếng",
+                  "noi tieng",
+                  "well-known",
+                  "well known",
+                  "cổng nổi tiếng",
+                  "cong noi tieng"
+                ],
+                "hintTopic": {
+                  "vi": "vì sao máy chủ phải ngồi đúng số quy ước"
+                }
               },
-              "hint": { "vi": "Cả thế giới đã quy ước sẵn nên ai cũng biết — bởi vậy mới gọi tên như thế." },
-              "solution": { "vi": "Đó là dải cổng nổi tiếng (well-known): mỗi số đã có chủ theo quy ước chung, ví dụ 443 của HTTPS." }
+              "hint": {
+                "vi": "Cả thế giới đã quy ước sẵn nên ai cũng biết — bởi vậy mới gọi tên như thế."
+              },
+              "solution": {
+                "vi": "Đó là dải cổng nổi tiếng (well-known): mỗi số đã có chủ theo quy ước chung, ví dụ 443 của HTTPS."
+              }
             },
             {
               "question": {
                 "kind": "mcq",
                 "id": "m5-b3-pra-2",
-                "prompt": { "vi": "Bạn mở ba tab cùng vào một trang web. Ba kết nối đó khác nhau ở chỗ nào?" },
+                "prompt": {
+                  "vi": "Bạn mở ba tab cùng vào một trang web. Ba kết nối đó khác nhau ở chỗ nào?"
+                },
                 "choices": [
-                  { "vi": "Khác cổng TẠM THỜI phía máy bạn" },
-                  { "vi": "Khác cổng phía máy chủ" },
-                  { "vi": "Khác địa chỉ IP của máy bạn" }
+                  {
+                    "vi": "Khác cổng TẠM THỜI phía máy bạn"
+                  },
+                  {
+                    "vi": "Khác cổng phía máy chủ"
+                  },
+                  {
+                    "vi": "Khác địa chỉ IP của máy bạn"
+                  }
                 ],
                 "answerIndex": 0,
-                "hintTopic": { "vi": "bên nào là bên đổi số mỗi lần mở kết nối" }
+                "hintTopic": {
+                  "vi": "bên nào là bên đổi số mỗi lần mở kết nối"
+                }
               },
-              "hint": { "vi": "Máy chủ vẫn ngồi nguyên ở 443 — vậy thứ phải khác nhau nằm ở đầu bên kia." },
-              "solution": { "vi": "Ba tab dùng ba cổng tạm thời khác nhau ở phía máy bạn; máy chủ vẫn ở nguyên cổng 443." }
+              "hint": {
+                "vi": "Máy chủ vẫn ngồi nguyên ở 443 — vậy thứ phải khác nhau nằm ở đầu bên kia."
+              },
+              "solution": {
+                "vi": "Ba tab dùng ba cổng tạm thời khác nhau ở phía máy bạn; máy chủ vẫn ở nguyên cổng 443."
+              }
             }
           ]
         },
@@ -489,42 +897,77 @@
               "question": {
                 "kind": "typed",
                 "id": "m5-b3-ret-1",
-                "prompt": { "vi": "Không nhìn lại bài: số cổng lớn nhất có thể là bao nhiêu?" },
-                "accept": ["65535"],
-                "hintTopic": { "vi": "sức chứa của một con số 16 bit" }
+                "prompt": {
+                  "vi": "Không nhìn lại bài: số cổng lớn nhất có thể là bao nhiêu?"
+                },
+                "accept": [
+                  "65535"
+                ],
+                "hintTopic": {
+                  "vi": "sức chứa của một con số 16 bit"
+                }
               },
-              "hint": { "vi": "Đếm từ 0, và tổng cộng có 65536 chỗ." },
-              "solution": { "vi": "65535 — cổng là số 16 bit nên đánh số từ 0 đến 65535." }
+              "hint": {
+                "vi": "Đếm từ 0, và tổng cộng có 65536 chỗ."
+              },
+              "solution": {
+                "vi": "65535 — cổng là số 16 bit nên đánh số từ 0 đến 65535."
+              }
             }
           ],
           "selfExplain": {
-            "prompt": { "vi": "Giải thích bằng lời của bạn: vì sao máy chủ phải ngồi cổng cố định còn máy bạn thì không?" },
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: vì sao máy chủ phải ngồi cổng cố định còn máy bạn thì không?"
+            },
             "keywords": [
-              ["biết trước", "quy ước", "cố định", "tìm được"],
-              ["nhiều kết nối", "nhiều tab", "phân biệt", "không lẫn"]
+              [
+                "biết trước",
+                "quy ước",
+                "cố định",
+                "tìm được"
+              ],
+              [
+                "nhiều kết nối",
+                "nhiều tab",
+                "phân biệt",
+                "không lẫn"
+              ]
             ],
-            "exampleAnswer": { "vi": "Máy chủ ngồi cố định để ai cũng biết trước phải gõ cửa số mấy; máy bạn mỗi kết nối lấy một cổng tạm thời khác nhau để mở nhiều tab cùng lúc mà dữ liệu không lẫn vào nhau." }
+            "exampleAnswer": {
+              "vi": "Máy chủ ngồi cố định để ai cũng biết trước phải gõ cửa số mấy; máy bạn mỗi kết nối lấy một cổng tạm thời khác nhau để mở nhiều tab cùng lúc mà dữ liệu không lẫn vào nhau."
+            }
           }
         },
         {
           "type": "summary",
           "bullets": [
-            { "vi": "Cổng là số từ 0 đến 65535 — chung cư một địa chỉ IP có ngần ấy căn." },
-            { "vi": "Dải 0-1023 là cổng nổi tiếng: đã có chủ theo quy ước toàn cầu." },
-            { "vi": "Phía bạn dùng cổng tạm thời, mỗi kết nối một số, nên nhiều tab không lẫn nhau." }
+            {
+              "vi": "Cổng là số từ 0 đến 65535 — chung cư một địa chỉ IP có ngần ấy căn."
+            },
+            {
+              "vi": "Dải 0-1023 là cổng nổi tiếng: đã có chủ theo quy ước toàn cầu."
+            },
+            {
+              "vi": "Phía bạn dùng cổng tạm thời, mỗi kết nối một số, nên nhiều tab không lẫn nhau."
+            }
           ],
-          "nextTeaser": { "vi": "Còn 15 con số nổi tiếng nhất thì học kiểu gì cho vào đầu? Bài sau mình bước vào một tòa nhà." }
+          "nextTeaser": {
+            "vi": "Còn 15 con số nổi tiếng nhất thì học kiểu gì cho vào đầu? Bài sau mình bước vào một tòa nhà."
+          }
         }
       ]
     },
-
     {
       "id": "m5-bai-4",
-      "missionTitle": { "vi": "Bước vào tòa nhà mười lăm phòng" },
+      "missionTitle": {
+        "vi": "Bước vào tòa nhà mười lăm phòng"
+      },
       "steps": [
         {
           "type": "hook",
-          "question": { "vi": "15 con số rời rạc, không suy ra được từ nguyên lý nào. Học thuộc lòng thì mai quên — vậy người ta nhớ hàng trăm thứ vụn vặt bằng cách gì?" },
+          "question": {
+            "vi": "15 con số rời rạc, không suy ra được từ nguyên lý nào. Học thuộc lòng thì mai quên — vậy người ta nhớ hàng trăm thứ vụn vặt bằng cách gì?"
+          },
           "visualId": "vis-cung-dien-toa-nha"
         },
         {
@@ -533,17 +976,29 @@
             {
               "kind": "mcq",
               "id": "m5-b4-pre-1",
-              "prompt": { "vi": "Đoán thử nhé: cách nào giúp nhớ một danh sách dài rời rạc lâu nhất?" },
+              "prompt": {
+                "vi": "Đoán thử nhé: cách nào giúp nhớ một danh sách dài rời rạc lâu nhất?"
+              },
               "choices": [
-                { "vi": "Đọc đi đọc lại danh sách cho tới khi thuộc" },
-                { "vi": "Gắn mỗi mẩu vào một CHỖ trong một không gian quen thuộc rồi đi lại con đường đó" },
-                { "vi": "Chép lại danh sách ra giấy vài lần" }
+                {
+                  "vi": "Đọc đi đọc lại danh sách cho tới khi thuộc"
+                },
+                {
+                  "vi": "Gắn mỗi mẩu vào một CHỖ trong một không gian quen thuộc rồi đi lại con đường đó"
+                },
+                {
+                  "vi": "Chép lại danh sách ra giấy vài lần"
+                }
               ],
               "answerIndex": 1,
-              "explain": { "vi": "Trí nhớ không gian khỏe hơn trí nhớ danh sách rất nhiều: gắn mẩu kiến thức vào một chỗ cụ thể rồi đi lại con đường ấy là kỹ thuật cung điện ký ức, dùng cả nghìn năm nay." }
+              "explain": {
+                "vi": "Trí nhớ không gian khỏe hơn trí nhớ danh sách rất nhiều: gắn mẩu kiến thức vào một chỗ cụ thể rồi đi lại con đường ấy là kỹ thuật cung điện ký ức, dùng cả nghìn năm nay."
+              }
             }
           ],
-          "encouragement": { "vi": "Hai cách kia không sai, chỉ là mau quên hơn — và bài này sẽ cho bạn thấy khác biệt ngay trong mười phút." }
+          "encouragement": {
+            "vi": "Hai cách kia không sai, chỉ là mau quên hơn — và bài này sẽ cho bạn thấy khác biệt ngay trong mười phút."
+          }
         },
         {
           "type": "teach",
@@ -551,14 +1006,24 @@
             {
               "conceptId": "m5-cung-dien",
               "visualId": "vis-cung-dien-toa-nha",
-              "body": { "vi": "Mình sẽ dựng một tòa nhà 5 tầng, mỗi tầng 3 phòng — đúng 15 phòng cho 15 cổng. Mỗi phòng có một hình ảnh kỳ quặc gắn với con số của nó. Luật chơi: lúc nào cũng đi cùng một đường, từ tầng trệt lên nóc, trái sang phải. Chính THỨ TỰ đó là sợi dây móc trí nhớ." },
-              "deepDive": { "vi": "Hình càng lạ càng dễ nhớ — não bỏ qua cái quen thuộc và ghim lại cái bất thường. Đó cũng là lý do các hình trong tòa nhà này hơi vô lý một chút: ổ khóa vàng, vỏ sò, tấm gương chiếu màn hình máy khác." }
+              "body": {
+                "vi": "Mình sẽ dựng một tòa nhà 5 tầng, mỗi tầng 3 phòng — đúng 15 phòng cho 15 cổng. Mỗi phòng có một hình ảnh kỳ quặc gắn với con số của nó. Luật chơi: lúc nào cũng đi cùng một đường, từ tầng trệt lên nóc, trái sang phải. Chính THỨ TỰ đó là sợi dây móc trí nhớ."
+              },
+              "deepDive": {
+                "vi": "Hình càng lạ càng dễ nhớ — não bỏ qua cái quen thuộc và ghim lại cái bất thường. Đó cũng là lý do các hình trong tòa nhà này hơi vô lý một chút: ổ khóa vàng, vỏ sò, tấm gương chiếu màn hình máy khác."
+              }
             },
             {
               "conceptId": "m5-cong-web",
               "visualId": "vis-cung-dien-toa-nha",
-              "body": { "vi": "Tầng 1 là ba cánh cửa bạn dùng mỗi ngày mà không để ý: một cửa mở toang (web thường), một cửa khóa vàng (web bảo mật), một quầy danh bạ (tra tên ra địa chỉ). Đi qua từng phòng một nhé — đừng vội." },
-              "palaceTour": ["m5-r-http", "m5-r-https", "m5-r-dns"]
+              "body": {
+                "vi": "Tầng 1 là ba cánh cửa bạn dùng mỗi ngày mà không để ý: một cửa mở toang (web thường), một cửa khóa vàng (web bảo mật), một quầy danh bạ (tra tên ra địa chỉ). Đi qua từng phòng một nhé — đừng vội."
+              },
+              "palaceTour": [
+                "m5-r-http",
+                "m5-r-https",
+                "m5-r-dns"
+              ]
             }
           ]
         },
@@ -570,28 +1035,52 @@
               "question": {
                 "kind": "mcq",
                 "id": "m5-b4-pra-1",
-                "prompt": { "vi": "Ba phòng tầng 1 phục vụ chung một việc gì?" },
+                "prompt": {
+                  "vi": "Ba phòng tầng 1 phục vụ chung một việc gì?"
+                },
                 "choices": [
-                  { "vi": "Đưa bạn tới một trang web: tra tên miền rồi mở trang" },
-                  { "vi": "Điều khiển máy tính ở xa" },
-                  { "vi": "Chia sẻ tệp trong mạng nội bộ" }
+                  {
+                    "vi": "Đưa bạn tới một trang web: tra tên miền rồi mở trang"
+                  },
+                  {
+                    "vi": "Điều khiển máy tính ở xa"
+                  },
+                  {
+                    "vi": "Chia sẻ tệp trong mạng nội bộ"
+                  }
                 ],
                 "answerIndex": 0,
-                "hintTopic": { "vi": "việc bạn làm mỗi lần gõ một địa chỉ web" }
+                "hintTopic": {
+                  "vi": "việc bạn làm mỗi lần gõ một địa chỉ web"
+                }
               },
-              "hint": { "vi": "Nghĩ lại Module 2: gõ google.com xong thì việc đầu tiên là hỏi ai?" },
-              "solution": { "vi": "Cả ba lo chuyện mở một trang web: 53 tra tên ra địa chỉ, rồi 80 hoặc 443 tải trang về." }
+              "hint": {
+                "vi": "Nghĩ lại Module 2: gõ google.com xong thì việc đầu tiên là hỏi ai?"
+              },
+              "solution": {
+                "vi": "Cả ba lo chuyện mở một trang web: 53 tra tên ra địa chỉ, rồi 80 hoặc 443 tải trang về."
+              }
             },
             {
               "question": {
                 "kind": "typed",
                 "id": "m5-b4-pra-2",
-                "prompt": { "vi": "Phòng có ổ khóa vàng là cổng số mấy?" },
-                "accept": ["443"],
-                "hintTopic": { "vi": "cửa nào được niêm phong trước khi thư đi ra" }
+                "prompt": {
+                  "vi": "Phòng có ổ khóa vàng là cổng số mấy?"
+                },
+                "accept": [
+                  "443"
+                ],
+                "hintTopic": {
+                  "vi": "cửa nào được niêm phong trước khi thư đi ra"
+                }
               },
-              "hint": { "vi": "Nó là cửa thứ hai của tầng 1, và là cửa mà trình duyệt hiện hình ổ khóa nhỏ trên thanh địa chỉ." },
-              "solution": { "vi": "Cổng 443 — HTTPS, phiên bản có khóa của web." }
+              "hint": {
+                "vi": "Nó là cửa thứ hai của tầng 1, và là cửa mà trình duyệt hiện hình ổ khóa nhỏ trên thanh địa chỉ."
+              },
+              "solution": {
+                "vi": "Cổng 443 — HTTPS, phiên bản có khóa của web."
+              }
             }
           ]
         },
@@ -602,42 +1091,80 @@
               "question": {
                 "kind": "palace-walk",
                 "id": "m5-b4-ret-1",
-                "prompt": { "vi": "Đóng sách lại và đi lại tầng 1 từ trí nhớ: đứng trước mỗi cửa, nói xem trong phòng có số mấy và ai ở đó." },
-                "rooms": ["m5-r-http", "m5-r-https", "m5-r-dns"],
-                "hintTopic": { "vi": "hình bạn vừa thấy trong phòng" }
+                "prompt": {
+                  "vi": "Đóng sách lại và đi lại tầng 1 từ trí nhớ: đứng trước mỗi cửa, nói xem trong phòng có số mấy và ai ở đó."
+                },
+                "rooms": [
+                  "m5-r-http",
+                  "m5-r-https",
+                  "m5-r-dns"
+                ],
+                "hintTopic": {
+                  "vi": "hình bạn vừa thấy trong phòng"
+                }
               },
-              "hint": { "vi": "Nhớ hình trước, con số bám theo hình — cửa mở toang, ổ khóa vàng, cuốn danh bạ." },
-              "solution": { "vi": "Tầng 1: cửa mở toang là 80 (HTTP), ổ khóa vàng là 443 (HTTPS), quầy danh bạ là 53 (DNS)." }
+              "hint": {
+                "vi": "Nhớ hình trước, con số bám theo hình — cửa mở toang, ổ khóa vàng, cuốn danh bạ."
+              },
+              "solution": {
+                "vi": "Tầng 1: cửa mở toang là 80 (HTTP), ổ khóa vàng là 443 (HTTPS), quầy danh bạ là 53 (DNS)."
+              }
             }
           ],
           "selfExplain": {
-            "prompt": { "vi": "Giải thích bằng lời của bạn: vì sao gắn con số vào một hình ảnh trong một căn phòng lại dễ nhớ hơn học thuộc danh sách?" },
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: vì sao gắn con số vào một hình ảnh trong một căn phòng lại dễ nhớ hơn học thuộc danh sách?"
+            },
             "keywords": [
-              ["hình ảnh", "hình", "hình dung", "tưởng tượng"],
-              ["chỗ", "vị trí", "căn phòng", "không gian", "đường đi"]
+              [
+                "hình ảnh",
+                "hình",
+                "hình dung",
+                "tưởng tượng"
+              ],
+              [
+                "chỗ",
+                "vị trí",
+                "căn phòng",
+                "không gian",
+                "đường đi"
+              ]
             ],
-            "exampleAnswer": { "vi": "Vì trí nhớ về nơi chốn và hình ảnh khỏe hơn trí nhớ về những con số trơ trọi: mình nhớ được cái ổ khóa vàng ở phòng thứ hai tầng một, rồi con số 443 tự bám theo hình ấy." }
+            "exampleAnswer": {
+              "vi": "Vì trí nhớ về nơi chốn và hình ảnh khỏe hơn trí nhớ về những con số trơ trọi: mình nhớ được cái ổ khóa vàng ở phòng thứ hai tầng một, rồi con số 443 tự bám theo hình ấy."
+            }
           }
         },
         {
           "type": "summary",
           "bullets": [
-            { "vi": "Tòa nhà có 5 tầng, mỗi tầng 3 phòng, và luôn đi cùng một đường." },
-            { "vi": "Tầng 1 lo chuyện web: 80 cửa mở toang, 443 ổ khóa vàng, 53 quầy danh bạ." },
-            { "vi": "Nhớ hình trước, con số bám theo hình — đừng cố nhớ số trần trụi." }
+            {
+              "vi": "Tòa nhà có 5 tầng, mỗi tầng 3 phòng, và luôn đi cùng một đường."
+            },
+            {
+              "vi": "Tầng 1 lo chuyện web: 80 cửa mở toang, 443 ổ khóa vàng, 53 quầy danh bạ."
+            },
+            {
+              "vi": "Nhớ hình trước, con số bám theo hình — đừng cố nhớ số trần trụi."
+            }
           ],
-          "nextTeaser": { "vi": "Lên tầng 2, có một phòng bốn vách bằng kính mà ai đi ngang cũng đọc được mọi thứ bên trong. Bạn sẽ không muốn dùng phòng đó đâu." }
+          "nextTeaser": {
+            "vi": "Lên tầng 2, có một phòng bốn vách bằng kính mà ai đi ngang cũng đọc được mọi thứ bên trong. Bạn sẽ không muốn dùng phòng đó đâu."
+          }
         }
       ]
     },
-
     {
       "id": "m5-bai-5",
-      "missionTitle": { "vi": "Lên tầng hai: điều khiển máy ở xa" },
+      "missionTitle": {
+        "vi": "Lên tầng hai: điều khiển máy ở xa"
+      },
       "steps": [
         {
           "type": "hook",
-          "question": { "vi": "Hai căn phòng cạnh nhau làm đúng một việc: gõ lệnh cho máy ở xa. Một phòng kín, một phòng bốn vách kính. Vì sao phòng kính vẫn còn tồn tại?" },
+          "question": {
+            "vi": "Hai căn phòng cạnh nhau làm đúng một việc: gõ lệnh cho máy ở xa. Một phòng kín, một phòng bốn vách kính. Vì sao phòng kính vẫn còn tồn tại?"
+          },
           "visualId": "vis-cung-dien-toa-nha"
         },
         {
@@ -646,17 +1173,29 @@
             {
               "kind": "mcq",
               "id": "m5-b5-pre-1",
-              "prompt": { "vi": "Đoán thử nhé: SSH và Telnet khác nhau chủ yếu ở chỗ nào?" },
+              "prompt": {
+                "vi": "Đoán thử nhé: SSH và Telnet khác nhau chủ yếu ở chỗ nào?"
+              },
               "choices": [
-                { "vi": "SSH mã hóa đường truyền, Telnet gửi trần" },
-                { "vi": "SSH nhanh hơn Telnet" },
-                { "vi": "Telnet dùng cho Windows, SSH cho Linux" }
+                {
+                  "vi": "SSH mã hóa đường truyền, Telnet gửi trần"
+                },
+                {
+                  "vi": "SSH nhanh hơn Telnet"
+                },
+                {
+                  "vi": "Telnet dùng cho Windows, SSH cho Linux"
+                }
               ],
               "answerIndex": 0,
-              "explain": { "vi": "Cùng một việc — gõ lệnh từ xa — nhưng Telnet gửi cả mật khẩu dưới dạng chữ thường, ai bắt được gói tin là đọc được hết." }
+              "explain": {
+                "vi": "Cùng một việc — gõ lệnh từ xa — nhưng Telnet gửi cả mật khẩu dưới dạng chữ thường, ai bắt được gói tin là đọc được hết."
+              }
             }
           ],
-          "encouragement": { "vi": "Đây là cặp hay bị lẫn nhất trong cả tòa nhà, nên đoán trật lúc này lại hóa hay." }
+          "encouragement": {
+            "vi": "Đây là cặp hay bị lẫn nhất trong cả tòa nhà, nên đoán trật lúc này lại hóa hay."
+          }
         },
         {
           "type": "teach",
@@ -664,9 +1203,17 @@
             {
               "conceptId": "m5-cong-dieu-khien",
               "visualId": "vis-cung-dien-toa-nha",
-              "body": { "vi": "Tầng 2 dành cho việc ngồi đây mà điều khiển máy ở chỗ khác: một phòng có vỏ sò (gõ lệnh an toàn), một phòng vách kính ngay bên cạnh (cũng gõ lệnh, nhưng ai cũng đọc được), và một phòng có gương lớn chiếu nguyên màn hình máy kia." },
-              "palaceTour": ["m5-r-ssh", "m5-r-telnet", "m5-r-rdp"],
-              "deepDive": { "vi": "Telnet ra đời khi mạng còn là chuyện của vài trường đại học tin nhau. Ngày nay nó chỉ còn dùng để thử xem một cổng có mở không, chứ không ai đăng nhập bằng nó nữa." }
+              "body": {
+                "vi": "Tầng 2 dành cho việc ngồi đây mà điều khiển máy ở chỗ khác: một phòng có vỏ sò (gõ lệnh an toàn), một phòng vách kính ngay bên cạnh (cũng gõ lệnh, nhưng ai cũng đọc được), và một phòng có gương lớn chiếu nguyên màn hình máy kia."
+              },
+              "palaceTour": [
+                "m5-r-ssh",
+                "m5-r-telnet",
+                "m5-r-rdp"
+              ],
+              "deepDive": {
+                "vi": "Telnet ra đời khi mạng còn là chuyện của vài trường đại học tin nhau. Ngày nay nó chỉ còn dùng để thử xem một cổng có mở không, chứ không ai đăng nhập bằng nó nữa."
+              }
             }
           ]
         },
@@ -678,28 +1225,52 @@
               "question": {
                 "kind": "typed",
                 "id": "m5-b5-pra-1",
-                "prompt": { "vi": "Phòng có vỏ sò — gõ lệnh từ xa an toàn — là cổng số mấy?" },
-                "accept": ["22"],
-                "hintTopic": { "vi": "cửa đầu tiên của tầng hai" }
+                "prompt": {
+                  "vi": "Phòng có vỏ sò — gõ lệnh từ xa an toàn — là cổng số mấy?"
+                },
+                "accept": [
+                  "22"
+                ],
+                "hintTopic": {
+                  "vi": "cửa đầu tiên của tầng hai"
+                }
               },
-              "hint": { "vi": "Vỏ sò trong tiếng Anh là shell, và tên giao thức cũng có chữ đó." },
-              "solution": { "vi": "Cổng 22 — SSH (secure shell)." }
+              "hint": {
+                "vi": "Vỏ sò trong tiếng Anh là shell, và tên giao thức cũng có chữ đó."
+              },
+              "solution": {
+                "vi": "Cổng 22 — SSH (secure shell)."
+              }
             },
             {
               "question": {
                 "kind": "mcq",
                 "id": "m5-b5-pra-2",
-                "prompt": { "vi": "Phòng vách kính (Telnet, cổng 23) nguy hiểm ở chỗ nào?" },
+                "prompt": {
+                  "vi": "Phòng vách kính (Telnet, cổng 23) nguy hiểm ở chỗ nào?"
+                },
                 "choices": [
-                  { "vi": "Mật khẩu đi qua mạng dưới dạng chữ thường, ai bắt được gói tin là đọc được" },
-                  { "vi": "Nó làm máy chủ chạy chậm đi" },
-                  { "vi": "Nó chỉ chạy được trên mạng nội bộ" }
+                  {
+                    "vi": "Mật khẩu đi qua mạng dưới dạng chữ thường, ai bắt được gói tin là đọc được"
+                  },
+                  {
+                    "vi": "Nó làm máy chủ chạy chậm đi"
+                  },
+                  {
+                    "vi": "Nó chỉ chạy được trên mạng nội bộ"
+                  }
                 ],
                 "answerIndex": 0,
-                "hintTopic": { "vi": "ý nghĩa của bốn vách kính trong hình" }
+                "hintTopic": {
+                  "vi": "ý nghĩa của bốn vách kính trong hình"
+                }
               },
-              "hint": { "vi": "Vách kính nghĩa là người đi ngang nhìn thấy hết những gì bạn gõ." },
-              "solution": { "vi": "Telnet không mã hóa gì cả: tên đăng nhập và mật khẩu đi trần trên đường truyền." }
+              "hint": {
+                "vi": "Vách kính nghĩa là người đi ngang nhìn thấy hết những gì bạn gõ."
+              },
+              "solution": {
+                "vi": "Telnet không mã hóa gì cả: tên đăng nhập và mật khẩu đi trần trên đường truyền."
+              }
             }
           ]
         },
@@ -710,42 +1281,80 @@
               "question": {
                 "kind": "palace-walk",
                 "id": "m5-b5-ret-1",
-                "prompt": { "vi": "Đi lại tầng 2 từ trí nhớ: vỏ sò, vách kính, tấm gương — mỗi phòng là cổng nào?" },
-                "rooms": ["m5-r-ssh", "m5-r-telnet", "m5-r-rdp"],
-                "hintTopic": { "vi": "hình trong từng phòng của tầng hai" }
+                "prompt": {
+                  "vi": "Đi lại tầng 2 từ trí nhớ: vỏ sò, vách kính, tấm gương — mỗi phòng là cổng nào?"
+                },
+                "rooms": [
+                  "m5-r-ssh",
+                  "m5-r-telnet",
+                  "m5-r-rdp"
+                ],
+                "hintTopic": {
+                  "vi": "hình trong từng phòng của tầng hai"
+                }
               },
-              "hint": { "vi": "Hai phòng đầu là hai số liền nhau — chúng làm cùng một việc mà." },
-              "solution": { "vi": "Tầng 2: vỏ sò là 22 (SSH), vách kính là 23 (Telnet), tấm gương là 3389 (RDP)." }
+              "hint": {
+                "vi": "Hai phòng đầu là hai số liền nhau — chúng làm cùng một việc mà."
+              },
+              "solution": {
+                "vi": "Tầng 2: vỏ sò là 22 (SSH), vách kính là 23 (Telnet), tấm gương là 3389 (RDP)."
+              }
             }
           ],
           "selfExplain": {
-            "prompt": { "vi": "Giải thích bằng lời của bạn: vì sao 22 và 23 lại là hai số liền nhau trong tòa nhà này?" },
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: vì sao 22 và 23 lại là hai số liền nhau trong tòa nhà này?"
+            },
             "keywords": [
-              ["cùng việc", "giống nhau", "cùng một việc", "gõ lệnh", "điều khiển"],
-              ["mã hóa", "an toàn", "trần", "bảo mật"]
+              [
+                "cùng việc",
+                "giống nhau",
+                "cùng một việc",
+                "gõ lệnh",
+                "điều khiển"
+              ],
+              [
+                "mã hóa",
+                "an toàn",
+                "trần",
+                "bảo mật"
+              ]
             ],
-            "exampleAnswer": { "vi": "Vì hai phòng làm đúng một việc là gõ lệnh cho máy ở xa, chỉ khác nhau ở chỗ một bên mã hóa còn một bên gửi trần — nên đặt cạnh nhau thì nhớ cặp dễ hơn nhớ rời." }
+            "exampleAnswer": {
+              "vi": "Vì hai phòng làm đúng một việc là gõ lệnh cho máy ở xa, chỉ khác nhau ở chỗ một bên mã hóa còn một bên gửi trần — nên đặt cạnh nhau thì nhớ cặp dễ hơn nhớ rời."
+            }
           }
         },
         {
           "type": "summary",
           "bullets": [
-            { "vi": "Tầng 2 là tầng điều khiển máy ở xa." },
-            { "vi": "22 vỏ sò (SSH, có mã hóa) đứng ngay cạnh 23 vách kính (Telnet, trần)." },
-            { "vi": "3389 là tấm gương chiếu nguyên màn hình máy kia (RDP)." }
+            {
+              "vi": "Tầng 2 là tầng điều khiển máy ở xa."
+            },
+            {
+              "vi": "22 vỏ sò (SSH, có mã hóa) đứng ngay cạnh 23 vách kính (Telnet, trần)."
+            },
+            {
+              "vi": "3389 là tấm gương chiếu nguyên màn hình máy kia (RDP)."
+            }
           ],
-          "nextTeaser": { "vi": "Tầng 3 là kho của cả tòa nhà: có băng chuyền chở thùng tệp, có ổ đĩa cắm sang nhà hàng xóm, và một tủ hồ sơ khổng lồ." }
+          "nextTeaser": {
+            "vi": "Tầng 3 là kho của cả tòa nhà: có băng chuyền chở thùng tệp, có ổ đĩa cắm sang nhà hàng xóm, và một tủ hồ sơ khổng lồ."
+          }
         }
       ]
     },
-
     {
       "id": "m5-bai-6",
-      "missionTitle": { "vi": "Lên tầng ba: kho của cả tòa nhà" },
+      "missionTitle": {
+        "vi": "Lên tầng ba: kho của cả tòa nhà"
+      },
       "steps": [
         {
           "type": "hook",
-          "question": { "vi": "Trong công ty, thư mục chung ai cũng mở được nằm ở đâu? Và vì sao kho dữ liệu của một trang web lại KHÔNG bao giờ nên mở cửa ra ngoài đường?" },
+          "question": {
+            "vi": "Trong công ty, thư mục chung ai cũng mở được nằm ở đâu? Và vì sao kho dữ liệu của một trang web lại KHÔNG bao giờ nên mở cửa ra ngoài đường?"
+          },
           "visualId": "vis-cung-dien-toa-nha"
         },
         {
@@ -754,13 +1363,29 @@
             {
               "kind": "mcq",
               "id": "m5-b6-pre-1",
-              "prompt": { "vi": "Đoán thử nhé: thư mục chia sẻ giữa các máy Windows đi qua cổng nào?" },
-              "choices": [{ "vi": "445" }, { "vi": "80" }, { "vi": "3306" }],
+              "prompt": {
+                "vi": "Đoán thử nhé: thư mục chia sẻ giữa các máy Windows đi qua cổng nào?"
+              },
+              "choices": [
+                {
+                  "vi": "445"
+                },
+                {
+                  "vi": "80"
+                },
+                {
+                  "vi": "3306"
+                }
+              ],
               "answerIndex": 0,
-              "explain": { "vi": "445 là cổng SMB — thứ làm nên ổ đĩa mạng và thư mục chia sẻ trong công ty." }
+              "explain": {
+                "vi": "445 là cổng SMB — thứ làm nên ổ đĩa mạng và thư mục chia sẻ trong công ty."
+              }
             }
           ],
-          "encouragement": { "vi": "Ba số này nhìn rời rạc, nhưng lát nữa cả ba sẽ nằm gọn trong một tầng dễ hình dung." }
+          "encouragement": {
+            "vi": "Ba số này nhìn rời rạc, nhưng lát nữa cả ba sẽ nằm gọn trong một tầng dễ hình dung."
+          }
         },
         {
           "type": "teach",
@@ -768,9 +1393,17 @@
             {
               "conceptId": "m5-cong-chia-se",
               "visualId": "vis-cung-dien-toa-nha",
-              "body": { "vi": "Tầng 3 là chỗ chứa đồ: một kho chung mà ổ đĩa nhà này cắm thẳng sang nhà kia, một băng chuyền chở nguyên thùng tệp qua lại nhưng thùng không dán kín, và một phòng xếp kín tủ hồ sơ hỏi gì cũng tra ra." },
-              "palaceTour": ["m5-r-smb", "m5-r-ftp", "m5-r-mysql"],
-              "deepDive": { "vi": "Cả ba phòng này là mục tiêu ưa thích của kẻ tấn công, vì đằng sau chúng là dữ liệu chứ không phải giao diện. Nguyên tắc chung: đừng bao giờ để 445 và 3306 nhìn thẳng ra Internet." }
+              "body": {
+                "vi": "Tầng 3 là chỗ chứa đồ: một kho chung mà ổ đĩa nhà này cắm thẳng sang nhà kia, một băng chuyền chở nguyên thùng tệp qua lại nhưng thùng không dán kín, và một phòng xếp kín tủ hồ sơ hỏi gì cũng tra ra."
+              },
+              "palaceTour": [
+                "m5-r-smb",
+                "m5-r-ftp",
+                "m5-r-mysql"
+              ],
+              "deepDive": {
+                "vi": "Cả ba phòng này là mục tiêu ưa thích của kẻ tấn công, vì đằng sau chúng là dữ liệu chứ không phải giao diện. Nguyên tắc chung: đừng bao giờ để 445 và 3306 nhìn thẳng ra Internet."
+              }
             }
           ]
         },
@@ -782,23 +1415,43 @@
               "question": {
                 "kind": "typed",
                 "id": "m5-b6-pra-1",
-                "prompt": { "vi": "Phòng có băng chuyền chở thùng tệp không dán kín là cổng số mấy?" },
-                "accept": ["21"],
-                "hintTopic": { "vi": "cách truyền tệp đời đầu, không mã hóa" }
+                "prompt": {
+                  "vi": "Phòng có băng chuyền chở thùng tệp không dán kín là cổng số mấy?"
+                },
+                "accept": [
+                  "21"
+                ],
+                "hintTopic": {
+                  "vi": "cách truyền tệp đời đầu, không mã hóa"
+                }
               },
-              "hint": { "vi": "Nó là phòng giữa của tầng 3, và tên giao thức có chữ \"File\"." },
-              "solution": { "vi": "Cổng 21 — FTP, kiểu truyền tệp đời đầu, dữ liệu và mật khẩu đều đi trần." }
+              "hint": {
+                "vi": "Nó là phòng giữa của tầng 3, và tên giao thức có chữ \"File\"."
+              },
+              "solution": {
+                "vi": "Cổng 21 — FTP, kiểu truyền tệp đời đầu, dữ liệu và mật khẩu đều đi trần."
+              }
             },
             {
               "question": {
                 "kind": "typed",
                 "id": "m5-b6-pra-2",
-                "prompt": { "vi": "Phòng tủ hồ sơ — cơ sở dữ liệu MySQL — là cổng số mấy?" },
-                "accept": ["3306"],
-                "hintTopic": { "vi": "con số của kho dữ liệu" }
+                "prompt": {
+                  "vi": "Phòng tủ hồ sơ — cơ sở dữ liệu MySQL — là cổng số mấy?"
+                },
+                "accept": [
+                  "3306"
+                ],
+                "hintTopic": {
+                  "vi": "con số của kho dữ liệu"
+                }
               },
-              "hint": { "vi": "Bốn chữ số, bắt đầu bằng 33." },
-              "solution": { "vi": "Cổng 3306 — MySQL." }
+              "hint": {
+                "vi": "Bốn chữ số, bắt đầu bằng 33."
+              },
+              "solution": {
+                "vi": "Cổng 3306 — MySQL."
+              }
             }
           ]
         },
@@ -809,42 +1462,80 @@
               "question": {
                 "kind": "palace-walk",
                 "id": "m5-b6-ret-1",
-                "prompt": { "vi": "Đi lại tầng 3 từ trí nhớ: kho chung, băng chuyền, tủ hồ sơ." },
-                "rooms": ["m5-r-smb", "m5-r-ftp", "m5-r-mysql"],
-                "hintTopic": { "vi": "hình trong từng phòng của tầng ba" }
+                "prompt": {
+                  "vi": "Đi lại tầng 3 từ trí nhớ: kho chung, băng chuyền, tủ hồ sơ."
+                },
+                "rooms": [
+                  "m5-r-smb",
+                  "m5-r-ftp",
+                  "m5-r-mysql"
+                ],
+                "hintTopic": {
+                  "vi": "hình trong từng phòng của tầng ba"
+                }
               },
-              "hint": { "vi": "Một số ba chữ số, một số hai chữ số, một số bốn chữ số — mỗi phòng một dáng riêng." },
-              "solution": { "vi": "Tầng 3: kho chung là 445 (SMB), băng chuyền là 21 (FTP), tủ hồ sơ là 3306 (MySQL)." }
+              "hint": {
+                "vi": "Một số ba chữ số, một số hai chữ số, một số bốn chữ số — mỗi phòng một dáng riêng."
+              },
+              "solution": {
+                "vi": "Tầng 3: kho chung là 445 (SMB), băng chuyền là 21 (FTP), tủ hồ sơ là 3306 (MySQL)."
+              }
             }
           ],
           "selfExplain": {
-            "prompt": { "vi": "Giải thích bằng lời của bạn: vì sao không nên để cổng 3306 mở thẳng ra Internet?" },
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: vì sao không nên để cổng 3306 mở thẳng ra Internet?"
+            },
             "keywords": [
-              ["dữ liệu", "cơ sở dữ liệu", "kho", "hồ sơ"],
-              ["tấn công", "nguy hiểm", "lộ", "đánh cắp", "rủi ro"]
+              [
+                "dữ liệu",
+                "cơ sở dữ liệu",
+                "kho",
+                "hồ sơ"
+              ],
+              [
+                "tấn công",
+                "nguy hiểm",
+                "lộ",
+                "đánh cắp",
+                "rủi ro"
+              ]
             ],
-            "exampleAnswer": { "vi": "Vì sau cổng đó là toàn bộ dữ liệu thật chứ không phải giao diện; mở ra ngoài là mời cả thế giới thử mật khẩu vào thẳng kho hồ sơ." }
+            "exampleAnswer": {
+              "vi": "Vì sau cổng đó là toàn bộ dữ liệu thật chứ không phải giao diện; mở ra ngoài là mời cả thế giới thử mật khẩu vào thẳng kho hồ sơ."
+            }
           }
         },
         {
           "type": "summary",
           "bullets": [
-            { "vi": "Tầng 3 chứa đồ: 445 kho chung, 21 băng chuyền, 3306 tủ hồ sơ." },
-            { "vi": "FTP truyền tệp nhưng không dán kín — mật khẩu đi trần như Telnet." },
-            { "vi": "Cổng dữ liệu (445, 3306) không bao giờ nên nhìn thẳng ra Internet." }
+            {
+              "vi": "Tầng 3 chứa đồ: 445 kho chung, 21 băng chuyền, 3306 tủ hồ sơ."
+            },
+            {
+              "vi": "FTP truyền tệp nhưng không dán kín — mật khẩu đi trần như Telnet."
+            },
+            {
+              "vi": "Cổng dữ liệu (445, 3306) không bao giờ nên nhìn thẳng ra Internet."
+            }
           ],
-          "nextTeaser": { "vi": "Tầng 4 là chỗ thư từ đi qua ban đêm, và một cái đồng hồ to mà cả tòa nhà phải chỉnh giờ theo." }
+          "nextTeaser": {
+            "vi": "Tầng 4 là chỗ thư từ đi qua ban đêm, và một cái đồng hồ to mà cả tòa nhà phải chỉnh giờ theo."
+          }
         }
       ]
     },
-
     {
       "id": "m5-bai-7",
-      "missionTitle": { "vi": "Lên tầng bốn: thư từ và giờ giấc" },
+      "missionTitle": {
+        "vi": "Lên tầng bốn: thư từ và giờ giấc"
+      },
       "steps": [
         {
           "type": "hook",
-          "question": { "vi": "Hai phòng cạnh nhau cùng lo chuyện thư đi: một phòng nhận thư từ bưu cục khác, một phòng bắt bạn xuất trình thẻ mới nhận. Vì sao phải tách làm hai?" },
+          "question": {
+            "vi": "Hai phòng cạnh nhau cùng lo chuyện thư đi: một phòng nhận thư từ bưu cục khác, một phòng bắt bạn xuất trình thẻ mới nhận. Vì sao phải tách làm hai?"
+          },
           "visualId": "vis-cung-dien-toa-nha"
         },
         {
@@ -853,17 +1544,29 @@
             {
               "kind": "mcq",
               "id": "m5-b7-pre-1",
-              "prompt": { "vi": "Đoán thử nhé: vì sao máy chủ nào cũng cần đồng bộ giờ với nhau?" },
+              "prompt": {
+                "vi": "Đoán thử nhé: vì sao máy chủ nào cũng cần đồng bộ giờ với nhau?"
+              },
               "choices": [
-                { "vi": "Để nhật ký và chứng chỉ bảo mật còn khớp được với nhau" },
-                { "vi": "Để màn hình hiện đúng giờ cho người dùng xem" },
-                { "vi": "Để tiết kiệm điện" }
+                {
+                  "vi": "Để nhật ký và chứng chỉ bảo mật còn khớp được với nhau"
+                },
+                {
+                  "vi": "Để màn hình hiện đúng giờ cho người dùng xem"
+                },
+                {
+                  "vi": "Để tiết kiệm điện"
+                }
               ],
               "answerIndex": 0,
-              "explain": { "vi": "Lệch giờ vài phút là chứng chỉ báo hết hạn nhầm, nhật ký hai máy không ghép được, đăng nhập một lần cũng hỏng — nên giờ giấc là chuyện hạ tầng, không phải chuyện trang trí." }
+              "explain": {
+                "vi": "Lệch giờ vài phút là chứng chỉ báo hết hạn nhầm, nhật ký hai máy không ghép được, đăng nhập một lần cũng hỏng — nên giờ giấc là chuyện hạ tầng, không phải chuyện trang trí."
+              }
             }
           ],
-          "encouragement": { "vi": "Câu này ít người đoán trúng vòng đầu — cứ đọc tiếp là rõ ngay." }
+          "encouragement": {
+            "vi": "Câu này ít người đoán trúng vòng đầu — cứ đọc tiếp là rõ ngay."
+          }
         },
         {
           "type": "teach",
@@ -871,9 +1574,17 @@
             {
               "conceptId": "m5-cong-thu-tu",
               "visualId": "vis-cung-dien-toa-nha",
-              "body": { "vi": "Tầng 4 lo hai việc: thư từ và giờ giấc. Thùng thư bưu cục nhận thư chạy giữa các máy chủ; quầy xuất trình thẻ nhận thư do chính bạn gửi đi; và cái đồng hồ to giữ nhịp cho cả tòa nhà." },
-              "palaceTour": ["m5-r-smtp", "m5-r-submission", "m5-r-ntp"],
-              "deepDive": { "vi": "Tách 25 và 587 là để chống thư rác: cổng 25 chỉ dành cho máy chủ nói chuyện với máy chủ, còn người dùng gửi thư phải qua 587 và phải đăng nhập. Nhà mạng thường chặn thẳng cổng 25 đi ra từ máy người dùng." }
+              "body": {
+                "vi": "Tầng 4 lo hai việc: thư từ và giờ giấc. Thùng thư bưu cục nhận thư chạy giữa các máy chủ; quầy xuất trình thẻ nhận thư do chính bạn gửi đi; và cái đồng hồ to giữ nhịp cho cả tòa nhà."
+              },
+              "palaceTour": [
+                "m5-r-smtp",
+                "m5-r-submission",
+                "m5-r-ntp"
+              ],
+              "deepDive": {
+                "vi": "Tách 25 và 587 là để chống thư rác: cổng 25 chỉ dành cho máy chủ nói chuyện với máy chủ, còn người dùng gửi thư phải qua 587 và phải đăng nhập. Nhà mạng thường chặn thẳng cổng 25 đi ra từ máy người dùng."
+              }
             }
           ]
         },
@@ -885,23 +1596,43 @@
               "question": {
                 "kind": "typed",
                 "id": "m5-b7-pra-1",
-                "prompt": { "vi": "Phòng bắt xuất trình thẻ rồi mới nhận thư bạn gửi đi là cổng số mấy?" },
-                "accept": ["587"],
-                "hintTopic": { "vi": "cổng dành cho người dùng gửi thư, phải đăng nhập" }
+                "prompt": {
+                  "vi": "Phòng bắt xuất trình thẻ rồi mới nhận thư bạn gửi đi là cổng số mấy?"
+                },
+                "accept": [
+                  "587"
+                ],
+                "hintTopic": {
+                  "vi": "cổng dành cho người dùng gửi thư, phải đăng nhập"
+                }
               },
-              "hint": { "vi": "Ba chữ số, và nó không phải 25 — 25 là cổng của máy chủ nói với máy chủ." },
-              "solution": { "vi": "Cổng 587 — nơi ứng dụng thư của bạn đăng nhập rồi mới gửi được thư đi." }
+              "hint": {
+                "vi": "Ba chữ số, và nó không phải 25 — 25 là cổng của máy chủ nói với máy chủ."
+              },
+              "solution": {
+                "vi": "Cổng 587 — nơi ứng dụng thư của bạn đăng nhập rồi mới gửi được thư đi."
+              }
             },
             {
               "question": {
                 "kind": "typed",
                 "id": "m5-b7-pra-2",
-                "prompt": { "vi": "Cái đồng hồ to của tòa nhà — dịch vụ đồng bộ giờ — nằm ở cổng nào?" },
-                "accept": ["123"],
-                "hintTopic": { "vi": "con số dễ nhớ nhất tòa nhà" }
+                "prompt": {
+                  "vi": "Cái đồng hồ to của tòa nhà — dịch vụ đồng bộ giờ — nằm ở cổng nào?"
+                },
+                "accept": [
+                  "123"
+                ],
+                "hintTopic": {
+                  "vi": "con số dễ nhớ nhất tòa nhà"
+                }
               },
-              "hint": { "vi": "Đếm một, hai, ba." },
-              "solution": { "vi": "Cổng 123 — NTP, chạy trên UDP." }
+              "hint": {
+                "vi": "Đếm một, hai, ba."
+              },
+              "solution": {
+                "vi": "Cổng 123 — NTP, chạy trên UDP."
+              }
             }
           ]
         },
@@ -912,42 +1643,79 @@
               "question": {
                 "kind": "palace-walk",
                 "id": "m5-b7-ret-1",
-                "prompt": { "vi": "Đi lại tầng 4 từ trí nhớ: thùng thư, quầy xuất trình thẻ, đồng hồ lớn." },
-                "rooms": ["m5-r-smtp", "m5-r-submission", "m5-r-ntp"],
-                "hintTopic": { "vi": "hình trong từng phòng của tầng bốn" }
+                "prompt": {
+                  "vi": "Đi lại tầng 4 từ trí nhớ: thùng thư, quầy xuất trình thẻ, đồng hồ lớn."
+                },
+                "rooms": [
+                  "m5-r-smtp",
+                  "m5-r-submission",
+                  "m5-r-ntp"
+                ],
+                "hintTopic": {
+                  "vi": "hình trong từng phòng của tầng bốn"
+                }
               },
-              "hint": { "vi": "Hai phòng đầu cùng lo thư, phòng cuối là con số đếm 1-2-3." },
-              "solution": { "vi": "Tầng 4: thùng thư là 25 (SMTP), quầy xuất trình thẻ là 587, đồng hồ lớn là 123 (NTP)." }
+              "hint": {
+                "vi": "Hai phòng đầu cùng lo thư, phòng cuối là con số đếm 1-2-3."
+              },
+              "solution": {
+                "vi": "Tầng 4: thùng thư là 25 (SMTP), quầy xuất trình thẻ là 587, đồng hồ lớn là 123 (NTP)."
+              }
             }
           ],
           "selfExplain": {
-            "prompt": { "vi": "Giải thích bằng lời của bạn: vì sao thư gửi đi của người dùng phải qua cổng 587 chứ không phải 25?" },
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: vì sao thư gửi đi của người dùng phải qua cổng 587 chứ không phải 25?"
+            },
             "keywords": [
-              ["đăng nhập", "xác thực", "chứng minh", "thẻ"],
-              ["thư rác", "spam", "giả mạo", "chặn"]
+              [
+                "đăng nhập",
+                "xác thực",
+                "chứng minh",
+                "thẻ"
+              ],
+              [
+                "thư rác",
+                "spam",
+                "giả mạo",
+                "chặn"
+              ]
             ],
-            "exampleAnswer": { "vi": "Vì 587 bắt đăng nhập trước khi nhận thư, nhờ đó biết ai gửi; còn 25 để cho máy chủ nói với máy chủ và thường bị nhà mạng chặn để hạn chế thư rác gửi bừa." }
+            "exampleAnswer": {
+              "vi": "Vì 587 bắt đăng nhập trước khi nhận thư, nhờ đó biết ai gửi; còn 25 để cho máy chủ nói với máy chủ và thường bị nhà mạng chặn để hạn chế thư rác gửi bừa."
+            }
           }
         },
         {
           "type": "summary",
           "bullets": [
-            { "vi": "Tầng 4: 25 thùng thư giữa các máy chủ, 587 quầy bắt xuất trình thẻ." },
-            { "vi": "123 là đồng hồ lớn — đồng bộ giờ, chạy trên UDP." },
-            { "vi": "Lệch giờ là hỏng chứng chỉ và nhật ký, nên NTP là chuyện hạ tầng." }
+            {
+              "vi": "Tầng 4: 25 thùng thư giữa các máy chủ, 587 quầy bắt xuất trình thẻ."
+            },
+            {
+              "vi": "123 là đồng hồ lớn — đồng bộ giờ, chạy trên UDP."
+            },
+            {
+              "vi": "Lệch giờ là hỏng chứng chỉ và nhật ký, nên NTP là chuyện hạ tầng."
+            }
           ],
-          "nextTeaser": { "vi": "Còn một tầng nữa trên nóc: nơi giữ sổ hộ khẩu của cả tòa nhà, và nơi phát chìa khóa cho người mới đến." }
+          "nextTeaser": {
+            "vi": "Còn một tầng nữa trên nóc: nơi giữ sổ hộ khẩu của cả tòa nhà, và nơi phát chìa khóa cho người mới đến."
+          }
         }
       ]
     },
-
     {
       "id": "m5-bai-8",
-      "missionTitle": { "vi": "Lên nóc: sổ hộ khẩu và chìa khóa nhà" },
+      "missionTitle": {
+        "vi": "Lên nóc: sổ hộ khẩu và chìa khóa nhà"
+      },
       "steps": [
         {
           "type": "hook",
-          "question": { "vi": "Cắm dây mạng vào là máy có địa chỉ IP ngay, chẳng cần gõ gì. Ai đã phát địa chỉ đó cho bạn, và bằng cổng nào?" },
+          "question": {
+            "vi": "Cắm dây mạng vào là máy có địa chỉ IP ngay, chẳng cần gõ gì. Ai đã phát địa chỉ đó cho bạn, và bằng cổng nào?"
+          },
           "visualId": "vis-cung-dien-toa-nha"
         },
         {
@@ -956,13 +1724,26 @@
             {
               "kind": "mcq",
               "id": "m5-b8-pre-1",
-              "prompt": { "vi": "Đoán thử nhé: dịch vụ tự cấp địa chỉ IP cho máy mới vào mạng dùng mấy số cổng?" },
-              "choices": [{ "vi": "Một số duy nhất" }, { "vi": "Một cặp hai số" }],
+              "prompt": {
+                "vi": "Đoán thử nhé: dịch vụ tự cấp địa chỉ IP cho máy mới vào mạng dùng mấy số cổng?"
+              },
+              "choices": [
+                {
+                  "vi": "Một số duy nhất"
+                },
+                {
+                  "vi": "Một cặp hai số"
+                }
+              ],
               "answerIndex": 1,
-              "explain": { "vi": "DHCP dùng cặp 67/68: một số cho bên phát địa chỉ, một số cho bên nhận — đó là lý do phòng cuối cùng của tòa nhà là một cặp phòng thông nhau." }
+              "explain": {
+                "vi": "DHCP dùng cặp 67/68: một số cho bên phát địa chỉ, một số cho bên nhận — đó là lý do phòng cuối cùng của tòa nhà là một cặp phòng thông nhau."
+              }
             }
           ],
-          "encouragement": { "vi": "Đây là phòng duy nhất trong tòa nhà mang hai số, nên đoán trật cũng dễ hiểu." }
+          "encouragement": {
+            "vi": "Đây là phòng duy nhất trong tòa nhà mang hai số, nên đoán trật cũng dễ hiểu."
+          }
         },
         {
           "type": "teach",
@@ -970,9 +1751,17 @@
             {
               "conceptId": "m5-cong-danh-ba",
               "visualId": "vis-cung-dien-toa-nha",
-              "body": { "vi": "Tầng trên cùng giữ những thứ về NGƯỜI và CHỖ Ở: một cuốn sổ hộ khẩu ghi ai làm gì thuộc phòng ban nào, cùng cuốn sổ ấy nhưng cất trong két sắt, và cặp phòng chuyên phát chìa khóa nhà cho người mới đến." },
-              "palaceTour": ["m5-r-ldap", "m5-r-ldaps", "m5-r-dhcp"],
-              "deepDive": { "vi": "LDAP là nền của Active Directory — thứ bạn sẽ gặp lại ở Phần C khi học quản trị Windows Server. Lúc đó cặp 389/636 sẽ quay lại, và bạn đã có sẵn chỗ để treo nó." }
+              "body": {
+                "vi": "Tầng trên cùng giữ những thứ về NGƯỜI và CHỖ Ở: một cuốn sổ hộ khẩu ghi ai làm gì thuộc phòng ban nào, cùng cuốn sổ ấy nhưng cất trong két sắt, và cặp phòng chuyên phát chìa khóa nhà cho người mới đến."
+              },
+              "palaceTour": [
+                "m5-r-ldap",
+                "m5-r-ldaps",
+                "m5-r-dhcp"
+              ],
+              "deepDive": {
+                "vi": "LDAP là nền của Active Directory — thứ bạn sẽ gặp lại ở Phần C khi học quản trị Windows Server. Lúc đó cặp 389/636 sẽ quay lại, và bạn đã có sẵn chỗ để treo nó."
+              }
             }
           ]
         },
@@ -984,23 +1773,47 @@
               "question": {
                 "kind": "typed",
                 "id": "m5-b8-pra-1",
-                "prompt": { "vi": "Cuốn sổ hộ khẩu cất trong két sắt — LDAP có mã hóa — là cổng số mấy?" },
-                "accept": ["636"],
-                "hintTopic": { "vi": "bản có khóa của cuốn sổ 389" }
+                "prompt": {
+                  "vi": "Cuốn sổ hộ khẩu cất trong két sắt — LDAP có mã hóa — là cổng số mấy?"
+                },
+                "accept": [
+                  "636"
+                ],
+                "hintTopic": {
+                  "vi": "bản có khóa của cuốn sổ 389"
+                }
               },
-              "hint": { "vi": "Ba chữ số, và nó KHÔNG phải 389 — 389 là cuốn sổ để ngoài." },
-              "solution": { "vi": "Cổng 636 — LDAPS, tức LDAP có mã hóa." }
+              "hint": {
+                "vi": "Ba chữ số, và nó KHÔNG phải 389 — 389 là cuốn sổ để ngoài."
+              },
+              "solution": {
+                "vi": "Cổng 636 — LDAPS, tức LDAP có mã hóa."
+              }
             },
             {
               "question": {
                 "kind": "typed",
                 "id": "m5-b8-pra-2",
-                "prompt": { "vi": "Cặp phòng phát chìa khóa nhà cho người mới — DHCP — mang hai số nào?" },
-                "accept": ["67 68", "67, 68", "67/68", "68 67", "67-68"],
-                "hintTopic": { "vi": "cặp số liền nhau ở phòng cuối cùng" }
+                "prompt": {
+                  "vi": "Cặp phòng phát chìa khóa nhà cho người mới — DHCP — mang hai số nào?"
+                },
+                "accept": [
+                  "67 68",
+                  "67, 68",
+                  "67/68",
+                  "68 67",
+                  "67-68"
+                ],
+                "hintTopic": {
+                  "vi": "cặp số liền nhau ở phòng cuối cùng"
+                }
               },
-              "hint": { "vi": "Hai số liền nhau, đều bắt đầu bằng số 6." },
-              "solution": { "vi": "67 và 68 — một số cho bên phát địa chỉ, một số cho bên nhận." }
+              "hint": {
+                "vi": "Hai số liền nhau, đều bắt đầu bằng số 6."
+              },
+              "solution": {
+                "vi": "67 và 68 — một số cho bên phát địa chỉ, một số cho bên nhận."
+              }
             }
           ]
         },
@@ -1011,100 +1824,177 @@
               "question": {
                 "kind": "palace-walk",
                 "id": "m5-b8-ret-1",
-                "prompt": { "vi": "Đi lại tầng 5 từ trí nhớ: sổ hộ khẩu, két sắt, cặp chìa khóa." },
-                "rooms": ["m5-r-ldap", "m5-r-ldaps", "m5-r-dhcp"],
-                "hintTopic": { "vi": "hình trong từng phòng trên nóc tòa nhà" }
+                "prompt": {
+                  "vi": "Đi lại tầng 5 từ trí nhớ: sổ hộ khẩu, két sắt, cặp chìa khóa."
+                },
+                "rooms": [
+                  "m5-r-ldap",
+                  "m5-r-ldaps",
+                  "m5-r-dhcp"
+                ],
+                "hintTopic": {
+                  "vi": "hình trong từng phòng trên nóc tòa nhà"
+                }
               },
-              "hint": { "vi": "Hai cuốn sổ là cùng một thứ, chỉ khác chuyện khóa; phòng cuối mang hai số." },
-              "solution": { "vi": "Tầng 5: sổ hộ khẩu là 389 (LDAP), sổ trong két là 636 (LDAPS), cặp chìa khóa là 67/68 (DHCP)." }
+              "hint": {
+                "vi": "Hai cuốn sổ là cùng một thứ, chỉ khác chuyện khóa; phòng cuối mang hai số."
+              },
+              "solution": {
+                "vi": "Tầng 5: sổ hộ khẩu là 389 (LDAP), sổ trong két là 636 (LDAPS), cặp chìa khóa là 67/68 (DHCP)."
+              }
             }
           ],
           "selfExplain": {
-            "prompt": { "vi": "Giải thích bằng lời của bạn: đi từ tầng 1 lên nóc, mỗi tầng lo chuyện gì?" },
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: đi từ tầng 1 lên nóc, mỗi tầng lo chuyện gì?"
+            },
             "keywords": [
-              ["web", "trang web", "tên miền"],
-              ["điều khiển", "từ xa", "gõ lệnh"],
-              ["tệp", "dữ liệu", "chia sẻ", "kho"],
-              ["thư", "giờ", "đồng bộ"],
-              ["sổ", "người dùng", "địa chỉ", "danh bạ"]
+              [
+                "web",
+                "trang web",
+                "tên miền"
+              ],
+              [
+                "điều khiển",
+                "từ xa",
+                "gõ lệnh"
+              ],
+              [
+                "tệp",
+                "dữ liệu",
+                "chia sẻ",
+                "kho"
+              ],
+              [
+                "thư",
+                "giờ",
+                "đồng bộ"
+              ],
+              [
+                "sổ",
+                "người dùng",
+                "địa chỉ",
+                "danh bạ"
+              ]
             ],
-            "exampleAnswer": { "vi": "Tầng 1 lo chuyện mở trang web, tầng 2 điều khiển máy ở xa, tầng 3 là kho tệp và dữ liệu, tầng 4 lo thư từ và giờ giấc, tầng 5 giữ sổ người dùng và phát địa chỉ cho máy mới." }
+            "exampleAnswer": {
+              "vi": "Tầng 1 lo chuyện mở trang web, tầng 2 điều khiển máy ở xa, tầng 3 là kho tệp và dữ liệu, tầng 4 lo thư từ và giờ giấc, tầng 5 giữ sổ người dùng và phát địa chỉ cho máy mới."
+            }
           }
         },
         {
           "type": "summary",
           "bullets": [
-            { "vi": "Tầng 5: 389 sổ hộ khẩu, 636 sổ trong két sắt, 67/68 cặp chìa khóa." },
-            { "vi": "DHCP là phòng duy nhất mang hai số: một bên phát, một bên nhận." },
-            { "vi": "Cả tòa nhà giờ đã đủ 15 phòng — và bạn đi lại được từ trí nhớ." }
+            {
+              "vi": "Tầng 5: 389 sổ hộ khẩu, 636 sổ trong két sắt, 67/68 cặp chìa khóa."
+            },
+            {
+              "vi": "DHCP là phòng duy nhất mang hai số: một bên phát, một bên nhận."
+            },
+            {
+              "vi": "Cả tòa nhà giờ đã đủ 15 phòng — và bạn đi lại được từ trí nhớ."
+            }
           ],
-          "nextTeaser": { "vi": "Địa chỉ trong nhà bạn là địa chỉ riêng, vậy làm sao cả nhà cùng ra Internet bằng một địa chỉ công cộng? Module sau mình mở chuyện NAT và tường lửa." }
+          "nextTeaser": {
+            "vi": "Địa chỉ trong nhà bạn là địa chỉ riêng, vậy làm sao cả nhà cùng ra Internet bằng một địa chỉ công cộng? Module sau mình mở chuyện NAT và tường lửa."
+          }
         }
       ]
     }
   ],
-
   "concepts": [
     {
       "id": "m5-tcp",
       "term": "TCP",
       "glossVi": "Giao thức gửi bảo đảm — đánh số, báo nhận, gửi lại gói thiếu",
-      "metaphor": { "vi": "TCP như thư bảo đảm: bưu điện bắt ký nhận, thiếu lá nào thì gửi lại lá đó." },
+      "metaphor": {
+        "vi": "TCP như thư bảo đảm: bưu điện bắt ký nhận, thiếu lá nào thì gửi lại lá đó."
+      },
       "iconId": "icon-tcp",
       "flashcard": {
-        "front": { "vi": "TCP bảo đảm điều gì cho dữ liệu?" },
-        "back": { "vi": "Tới đủ và đúng thứ tự: mỗi gói được đánh số, bên nhận báo đã nhận, thiếu gói nào bên gửi gửi lại gói đó." }
+        "front": {
+          "vi": "TCP bảo đảm điều gì cho dữ liệu?"
+        },
+        "back": {
+          "vi": "Tới đủ và đúng thứ tự: mỗi gói được đánh số, bên nhận báo đã nhận, thiếu gói nào bên gửi gửi lại gói đó."
+        }
       }
     },
     {
       "id": "m5-bat-tay",
       "term": "Three-way handshake",
       "glossVi": "Bắt tay ba bước — ba gói tin mở đầu một kết nối TCP",
-      "metaphor": { "vi": "Như gọi điện: \"Alô?\" — \"Alô, nghe không?\" — \"Nghe rồi\". Ba câu xong mới vào chuyện." },
+      "metaphor": {
+        "vi": "Như gọi điện: \"Alô?\" — \"Alô, nghe không?\" — \"Nghe rồi\". Ba câu xong mới vào chuyện."
+      },
       "iconId": "icon-bat-tay",
       "flashcard": {
-        "front": { "vi": "Ba nhịp của bắt tay TCP theo đúng thứ tự là gì?" },
-        "back": { "vi": "SYN → SYN-ACK → ACK. Nhịp giữa mang hai vai: vừa xác nhận, vừa hỏi ngược lại để mở chiều còn lại." }
+        "front": {
+          "vi": "Ba nhịp của bắt tay TCP theo đúng thứ tự là gì?"
+        },
+        "back": {
+          "vi": "SYN → SYN-ACK → ACK. Nhịp giữa mang hai vai: vừa xác nhận, vừa hỏi ngược lại để mở chiều còn lại."
+        }
       }
     },
     {
       "id": "m5-udp",
       "term": "UDP",
       "glossVi": "Giao thức gửi không bảo đảm — nhanh, không báo nhận, không gửi lại",
-      "metaphor": { "vi": "UDP như thư thường thả vào thùng: không ai ký nhận, mất thì thôi, nhưng đi ngay." },
+      "metaphor": {
+        "vi": "UDP như thư thường thả vào thùng: không ai ký nhận, mất thì thôi, nhưng đi ngay."
+      },
       "iconId": "icon-udp",
       "flashcard": {
-        "front": { "vi": "UDP đánh đổi thứ gì để lấy thứ gì?" },
-        "back": { "vi": "Bỏ độ tin cậy (không bắt tay, không báo nhận, không gửi lại) để lấy độ trễ thấp — hợp với gọi video, game, DNS." }
+        "front": {
+          "vi": "UDP đánh đổi thứ gì để lấy thứ gì?"
+        },
+        "back": {
+          "vi": "Bỏ độ tin cậy (không bắt tay, không báo nhận, không gửi lại) để lấy độ trễ thấp — hợp với gọi video, game, DNS."
+        }
       }
     },
     {
       "id": "m5-cong-noi-tieng",
       "term": "Well-known port",
       "glossVi": "Cổng nổi tiếng — dải 0-1023 đã có chủ theo quy ước toàn cầu",
-      "metaphor": { "vi": "Như số nhà của trụ sở công: ai cũng biết trước phải tới đâu, không cần hỏi đường." },
+      "metaphor": {
+        "vi": "Như số nhà của trụ sở công: ai cũng biết trước phải tới đâu, không cần hỏi đường."
+      },
       "iconId": "icon-cong-noi-tieng",
       "flashcard": {
-        "front": { "vi": "Dải cổng nổi tiếng là dải nào, và vì sao phải cố định?" },
-        "back": { "vi": "0-1023. Máy chủ phải ngồi đúng số quy ước để người tới biết trước phải gõ cửa nào." }
+        "front": {
+          "vi": "Dải cổng nổi tiếng là dải nào, và vì sao phải cố định?"
+        },
+        "back": {
+          "vi": "0-1023. Máy chủ phải ngồi đúng số quy ước để người tới biết trước phải gõ cửa nào."
+        }
       }
     },
     {
       "id": "m5-cong-tam-thoi",
       "term": "Ephemeral port",
       "glossVi": "Cổng tạm thời — số hệ điều hành cấp cho mỗi kết nối phía máy bạn",
-      "metaphor": { "vi": "Như số thứ tự lấy ở quầy: mỗi lượt một số khác, xong việc là trả lại." },
+      "metaphor": {
+        "vi": "Như số thứ tự lấy ở quầy: mỗi lượt một số khác, xong việc là trả lại."
+      },
       "iconId": "icon-cong-tam-thoi",
       "flashcard": {
-        "front": { "vi": "Vì sao mở mười tab cùng một trang web mà dữ liệu không lẫn vào nhau?" },
-        "back": { "vi": "Mỗi kết nối được cấp một cổng tạm thời khác nhau ở phía máy bạn; máy chủ vẫn ở nguyên một cổng." }
+        "front": {
+          "vi": "Vì sao mở mười tab cùng một trang web mà dữ liệu không lẫn vào nhau?"
+        },
+        "back": {
+          "vi": "Mỗi kết nối được cấp một cổng tạm thời khác nhau ở phía máy bạn; máy chủ vẫn ở nguyên một cổng."
+        }
       }
     },
     {
       "id": "m5-cung-dien",
       "term": "Memory palace",
       "glossVi": "Cung điện ký ức — gắn mẩu kiến thức vào một chỗ trong không gian quen thuộc",
-      "metaphor": { "vi": "Tòa nhà 5 tầng, mỗi phòng một hình kỳ quặc; nhớ lại bằng cách đi lại đúng con đường ấy." },
+      "metaphor": {
+        "vi": "Tòa nhà 5 tầng, mỗi phòng một hình kỳ quặc; nhớ lại bằng cách đi lại đúng con đường ấy."
+      },
       "iconId": "icon-cung-dien",
       "noFlashcard": true
     },
@@ -1112,129 +2002,230 @@
       "id": "m5-cong-web",
       "term": "Cổng tầng 1 — web",
       "glossVi": "Nhóm cổng đưa bạn tới một trang web: 80, 443, 53",
-      "metaphor": { "vi": "Tầng trệt của tòa nhà: cửa mở toang, cửa khóa vàng và quầy danh bạ." },
+      "metaphor": {
+        "vi": "Tầng trệt của tòa nhà: cửa mở toang, cửa khóa vàng và quầy danh bạ."
+      },
       "iconId": "icon-tang-1",
       "flashcard": {
-        "front": { "vi": "Ba phòng tầng 1 của cung điện là những cổng nào?" },
-        "back": { "vi": "80 HTTP (cửa mở toang), 443 HTTPS (ổ khóa vàng), 53 DNS (quầy danh bạ)." }
+        "front": {
+          "vi": "Ba phòng tầng 1 của cung điện là những cổng nào?"
+        },
+        "back": {
+          "vi": "80 HTTP (cửa mở toang), 443 HTTPS (ổ khóa vàng), 53 DNS (quầy danh bạ)."
+        }
       }
     },
     {
       "id": "m5-cong-dieu-khien",
       "term": "Cổng tầng 2 — điều khiển từ xa",
       "glossVi": "Nhóm cổng ngồi đây điều khiển máy ở chỗ khác: 22, 23, 3389",
-      "metaphor": { "vi": "Tầng hai: vỏ sò, phòng vách kính và tấm gương chiếu màn hình máy kia." },
+      "metaphor": {
+        "vi": "Tầng hai: vỏ sò, phòng vách kính và tấm gương chiếu màn hình máy kia."
+      },
       "iconId": "icon-tang-2",
       "flashcard": {
-        "front": { "vi": "Ba phòng tầng 2 của cung điện là những cổng nào?" },
-        "back": { "vi": "22 SSH (vỏ sò, có mã hóa), 23 Telnet (vách kính, gửi trần), 3389 RDP (tấm gương)." }
+        "front": {
+          "vi": "Ba phòng tầng 2 của cung điện là những cổng nào?"
+        },
+        "back": {
+          "vi": "22 SSH (vỏ sò, có mã hóa), 23 Telnet (vách kính, gửi trần), 3389 RDP (tấm gương)."
+        }
       }
     },
     {
       "id": "m5-cong-chia-se",
       "term": "Cổng tầng 3 — kho dữ liệu",
       "glossVi": "Nhóm cổng chia sẻ tệp và giữ dữ liệu: 445, 21, 3306",
-      "metaphor": { "vi": "Tầng ba là kho: ổ đĩa chung, băng chuyền thùng tệp, tủ hồ sơ." },
+      "metaphor": {
+        "vi": "Tầng ba là kho: ổ đĩa chung, băng chuyền thùng tệp, tủ hồ sơ."
+      },
       "iconId": "icon-tang-3",
       "flashcard": {
-        "front": { "vi": "Ba phòng tầng 3 của cung điện là những cổng nào?" },
-        "back": { "vi": "445 SMB (kho chung), 21 FTP (băng chuyền), 3306 MySQL (tủ hồ sơ)." }
+        "front": {
+          "vi": "Ba phòng tầng 3 của cung điện là những cổng nào?"
+        },
+        "back": {
+          "vi": "445 SMB (kho chung), 21 FTP (băng chuyền), 3306 MySQL (tủ hồ sơ)."
+        }
       }
     },
     {
       "id": "m5-cong-thu-tu",
       "term": "Cổng tầng 4 — thư từ và giờ giấc",
       "glossVi": "Nhóm cổng lo thư đi và đồng bộ giờ: 25, 587, 123",
-      "metaphor": { "vi": "Tầng bốn: thùng thư bưu cục, quầy xuất trình thẻ và cái đồng hồ to." },
+      "metaphor": {
+        "vi": "Tầng bốn: thùng thư bưu cục, quầy xuất trình thẻ và cái đồng hồ to."
+      },
       "iconId": "icon-tang-4",
       "flashcard": {
-        "front": { "vi": "Ba phòng tầng 4 của cung điện là những cổng nào?" },
-        "back": { "vi": "25 SMTP (thư giữa máy chủ), 587 gửi thư có đăng nhập, 123 NTP (đồng bộ giờ)." }
+        "front": {
+          "vi": "Ba phòng tầng 4 của cung điện là những cổng nào?"
+        },
+        "back": {
+          "vi": "25 SMTP (thư giữa máy chủ), 587 gửi thư có đăng nhập, 123 NTP (đồng bộ giờ)."
+        }
       }
     },
     {
       "id": "m5-cong-danh-ba",
       "term": "Cổng tầng 5 — người và chỗ ở",
       "glossVi": "Nhóm cổng giữ danh bạ người dùng và cấp địa chỉ: 389, 636, 67/68",
-      "metaphor": { "vi": "Nóc nhà: sổ hộ khẩu, sổ trong két sắt và cặp phòng phát chìa khóa." },
+      "metaphor": {
+        "vi": "Nóc nhà: sổ hộ khẩu, sổ trong két sắt và cặp phòng phát chìa khóa."
+      },
       "iconId": "icon-tang-5",
       "flashcard": {
-        "front": { "vi": "Ba phòng tầng 5 của cung điện là những cổng nào?" },
-        "back": { "vi": "389 LDAP (sổ hộ khẩu), 636 LDAPS (sổ trong két sắt), 67/68 DHCP (cặp chìa khóa)." }
+        "front": {
+          "vi": "Ba phòng tầng 5 của cung điện là những cổng nào?"
+        },
+        "back": {
+          "vi": "389 LDAP (sổ hộ khẩu), 636 LDAPS (sổ trong két sắt), 67/68 DHCP (cặp chìa khóa)."
+        }
       }
     }
   ],
-
   "masteryTest": [
     {
       "kind": "mcq",
       "id": "m5-mt-1",
-      "prompt": { "vi": "Thứ tự đúng của cái bắt tay ba bước là gì?" },
+      "prompt": {
+        "vi": "Thứ tự đúng của cái bắt tay ba bước là gì?"
+      },
       "choices": [
-        { "vi": "SYN → SYN-ACK → ACK" },
-        { "vi": "SYN → ACK → SYN-ACK" },
-        { "vi": "ACK → SYN → SYN-ACK" }
+        {
+          "vi": "SYN → SYN-ACK → ACK"
+        },
+        {
+          "vi": "SYN → ACK → SYN-ACK"
+        },
+        {
+          "vi": "ACK → SYN → SYN-ACK"
+        }
       ],
       "answerIndex": 0,
-      "explain": { "vi": "Máy bạn mở lời bằng SYN, máy chủ đáp bằng gói mang hai vai SYN-ACK, máy bạn chốt bằng ACK." }
+      "explain": {
+        "vi": "Máy bạn mở lời bằng SYN, máy chủ đáp bằng gói mang hai vai SYN-ACK, máy bạn chốt bằng ACK."
+      }
     },
     {
       "kind": "typed",
       "id": "m5-mt-2",
-      "prompt": { "vi": "Nhịp giữa của bắt tay ba bước tên là gì?" },
-      "accept": ["syn-ack", "syn ack", "synack"],
-      "explain": { "vi": "SYN-ACK là nhịp duy nhất mang hai vai: vừa xác nhận đã nghe thấy, vừa hỏi ngược lại để mở chiều còn lại." }
+      "prompt": {
+        "vi": "Nhịp giữa của bắt tay ba bước tên là gì?"
+      },
+      "accept": [
+        "syn-ack",
+        "syn ack",
+        "synack"
+      ],
+      "explain": {
+        "vi": "SYN-ACK là nhịp duy nhất mang hai vai: vừa xác nhận đã nghe thấy, vừa hỏi ngược lại để mở chiều còn lại."
+      }
     },
     {
       "kind": "mcq",
       "id": "m5-mt-3",
-      "prompt": { "vi": "Một cuộc gọi video nên đi bằng giao thức nào, và vì sao?" },
+      "prompt": {
+        "vi": "Một cuộc gọi video nên đi bằng giao thức nào, và vì sao?"
+      },
       "choices": [
-        { "vi": "UDP — chậm một nhịp còn tệ hơn mất một khung hình" },
-        { "vi": "TCP — phải bảo đảm không mất khung hình nào" }
+        {
+          "vi": "UDP — chậm một nhịp còn tệ hơn mất một khung hình"
+        },
+        {
+          "vi": "TCP — phải bảo đảm không mất khung hình nào"
+        }
       ],
       "answerIndex": 0,
-      "explain": { "vi": "Với cuộc gọi, dừng lại chờ gửi lại một mẩu đã rớt còn phá trải nghiệm hơn là mất luôn mẩu đó." }
+      "explain": {
+        "vi": "Với cuộc gọi, dừng lại chờ gửi lại một mẩu đã rớt còn phá trải nghiệm hơn là mất luôn mẩu đó."
+      }
     },
     {
       "kind": "typed",
       "id": "m5-mt-4",
-      "prompt": { "vi": "Số cổng lớn nhất có thể là bao nhiêu?" },
-      "accept": ["65535"],
-      "explain": { "vi": "Cổng là số 16 bit nên đánh số từ 0 đến 65535." }
+      "prompt": {
+        "vi": "Số cổng lớn nhất có thể là bao nhiêu?"
+      },
+      "accept": [
+        "65535"
+      ],
+      "explain": {
+        "vi": "Cổng là số 16 bit nên đánh số từ 0 đến 65535."
+      }
     },
     {
       "kind": "mcq",
       "id": "m5-mt-5",
-      "prompt": { "vi": "Bạn mở ba tab cùng vào một trang web. Thứ khác nhau giữa ba kết nối là gì?" },
+      "prompt": {
+        "vi": "Bạn mở ba tab cùng vào một trang web. Thứ khác nhau giữa ba kết nối là gì?"
+      },
       "choices": [
-        { "vi": "Cổng tạm thời phía máy bạn" },
-        { "vi": "Cổng phía máy chủ" },
-        { "vi": "Địa chỉ IP của máy chủ" }
+        {
+          "vi": "Cổng tạm thời phía máy bạn"
+        },
+        {
+          "vi": "Cổng phía máy chủ"
+        },
+        {
+          "vi": "Địa chỉ IP của máy chủ"
+        }
       ],
       "answerIndex": 0,
-      "explain": { "vi": "Máy chủ vẫn ngồi nguyên một cổng; mỗi kết nối phía bạn được cấp một cổng tạm thời riêng nên dữ liệu không lẫn." }
+      "explain": {
+        "vi": "Máy chủ vẫn ngồi nguyên một cổng; mỗi kết nối phía bạn được cấp một cổng tạm thời riêng nên dữ liệu không lẫn."
+      }
     },
     {
       "kind": "palace-walk",
       "id": "m5-mt-6",
-      "prompt": { "vi": "Đi lại tầng 1 và tầng 2 của tòa nhà từ trí nhớ." },
-      "rooms": ["m5-r-http", "m5-r-https", "m5-r-dns", "m5-r-ssh", "m5-r-telnet", "m5-r-rdp"],
-      "explain": { "vi": "Tầng 1: 80 HTTP, 443 HTTPS, 53 DNS. Tầng 2: 22 SSH, 23 Telnet, 3389 RDP." }
+      "prompt": {
+        "vi": "Đi lại tầng 1 và tầng 2 của tòa nhà từ trí nhớ."
+      },
+      "rooms": [
+        "m5-r-http",
+        "m5-r-https",
+        "m5-r-dns",
+        "m5-r-ssh",
+        "m5-r-telnet",
+        "m5-r-rdp"
+      ],
+      "explain": {
+        "vi": "Tầng 1: 80 HTTP, 443 HTTPS, 53 DNS. Tầng 2: 22 SSH, 23 Telnet, 3389 RDP."
+      }
     },
     {
       "kind": "palace-walk",
       "id": "m5-mt-7",
-      "prompt": { "vi": "Đi lại tầng 3 và tầng 4 của tòa nhà từ trí nhớ." },
-      "rooms": ["m5-r-smb", "m5-r-ftp", "m5-r-mysql", "m5-r-smtp", "m5-r-submission", "m5-r-ntp"],
-      "explain": { "vi": "Tầng 3: 445 SMB, 21 FTP, 3306 MySQL. Tầng 4: 25 SMTP, 587 gửi thư có đăng nhập, 123 NTP." }
+      "prompt": {
+        "vi": "Đi lại tầng 3 và tầng 4 của tòa nhà từ trí nhớ."
+      },
+      "rooms": [
+        "m5-r-smb",
+        "m5-r-ftp",
+        "m5-r-mysql",
+        "m5-r-smtp",
+        "m5-r-submission",
+        "m5-r-ntp"
+      ],
+      "explain": {
+        "vi": "Tầng 3: 445 SMB, 21 FTP, 3306 MySQL. Tầng 4: 25 SMTP, 587 gửi thư có đăng nhập, 123 NTP."
+      }
     },
     {
       "kind": "palace-walk",
       "id": "m5-mt-8",
-      "prompt": { "vi": "Lên nóc: đi lại tầng 5 từ trí nhớ." },
-      "rooms": ["m5-r-ldap", "m5-r-ldaps", "m5-r-dhcp"],
-      "explain": { "vi": "Tầng 5: 389 LDAP, 636 LDAPS, 67/68 DHCP." }
+      "prompt": {
+        "vi": "Lên nóc: đi lại tầng 5 từ trí nhớ."
+      },
+      "rooms": [
+        "m5-r-ldap",
+        "m5-r-ldaps",
+        "m5-r-dhcp"
+      ],
+      "explain": {
+        "vi": "Tầng 5: 389 LDAP, 636 LDAPS, 67/68 DHCP."
+      }
     }
   ]
 }

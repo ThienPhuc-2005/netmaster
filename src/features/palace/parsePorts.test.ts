@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { formatPorts, parsePorts } from './parsePorts'
+import { formatPorts, parseKeys, parsePorts } from './parsePorts'
 import { PORT_PALACE } from '../../../tests/fixtures/palaceFixture'
 import { hasRoomGlyph, roomGlyphIds } from './RoomGlyph'
 
@@ -47,5 +47,19 @@ describe('hình gợi nhớ: mỗi phòng một hình, không phòng nào thiế
   it('registry không chứa hình thừa — hình nào cũng thuộc về một phòng', () => {
     const used = new Set(PORT_PALACE.rooms.map((r) => r.imageId))
     expect(roomGlyphIds().filter((id) => !used.has(id))).toEqual([])
+  })
+})
+
+describe('parseKeys — đọc vế chính theo kiểu tòa nhà', () => {
+  it('tòa số: tách các cụm chữ số thành từng key', () => {
+    expect(parseKeys('67 và 68', 'number')).toEqual(['67', '68'])
+    expect(parseKeys('cổng 443', 'number')).toEqual(['443'])
+    expect(parseKeys('không nhớ', 'number')).toEqual([])
+  })
+
+  it('tòa chữ: cả ô nhập là MỘT key, chỉ cắt khoảng trắng thừa', () => {
+    expect(parseKeys('  Domain ', 'text')).toEqual(['Domain'])
+    expect(parseKeys('organizational unit', 'text')).toEqual(['organizational unit'])
+    expect(parseKeys('   ', 'text')).toEqual([])
   })
 })

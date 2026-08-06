@@ -1,36 +1,34 @@
 import { describe, expect, it } from 'vitest'
 import {
-  FLOORS,
-  ROOMS_PER_FLOOR,
-  ROOM_COUNT,
   roomAt,
   roomById,
-  roomByPort,
+  roomByKey,
+  roomCountOf,
   routeIndexOf,
-  serviceAnswers,
+  nameAnswers,
   tourRoute,
   validatePalace,
   type PalaceProblemCode,
 } from './palace'
-import { PORT_PALACE, clonePalace } from '../../../tests/fixtures/palaceFixture'
+import { GPO_PALACE, PORT_PALACE, clonePalace } from '../../../tests/fixtures/palaceFixture'
 
 const codes = (palace = clonePalace()): PalaceProblemCode[] => validatePalace(palace).map((p) => p.code)
 
-describe('tòa nhà hợp lệ', () => {
-  it('cung điện 15 phòng của Module 5 không có lỗi cấu trúc', () => {
+describe('tòa nhà hợp lệ — kích thước khai theo từng tòa', () => {
+  it('cung điện 15 phòng của Module 5 (5×3) không có lỗi cấu trúc', () => {
+    expect(roomCountOf(PORT_PALACE)).toBe(15)
     expect(validatePalace(PORT_PALACE)).toEqual([])
   })
 
-  it('tòa nhà đúng bằng 5 tầng × 3 phòng', () => {
-    expect(ROOM_COUNT).toBe(FLOORS * ROOMS_PER_FLOOR)
-    expect(ROOM_COUNT).toBe(15)
+  it('tòa GPO 4 tầng × 1 phòng (Module 9) cũng hợp lệ với CÙNG engine', () => {
+    expect(roomCountOf(GPO_PALACE)).toBe(4)
+    expect(validatePalace(GPO_PALACE)).toEqual([])
   })
 })
 
 describe('lộ trình tour cố định', () => {
   it('đi từ tầng trệt lên nóc, mỗi tầng trái sang phải', () => {
-    const route = tourRoute(PORT_PALACE)
-    const slots = route.map((r) => `${r.floor}-${r.position}`)
+    const slots = tourRoute(PORT_PALACE).map((r) => `${r.floor}-${r.position}`)
     expect(slots).toEqual([
       '1-1', '1-2', '1-3',
       '2-1', '2-2', '2-3',
@@ -38,6 +36,10 @@ describe('lộ trình tour cố định', () => {
       '4-1', '4-2', '4-3',
       '5-1', '5-2', '5-3',
     ])
+  })
+
+  it('tòa 4×1: lộ trình chính là chuỗi LSDOU từ trệt lên', () => {
+    expect(tourRoute(GPO_PALACE).map((r) => r.keys[0])).toEqual(['Local', 'Site', 'Domain', 'OU'])
   })
 
   it('thứ tự phòng trong dữ liệu KHÔNG đổi được đường đi của người học', () => {
@@ -48,37 +50,42 @@ describe('lộ trình tour cố định', () => {
 
   it('routeIndexOf trả đúng chỗ đứng trong lộ trình', () => {
     expect(routeIndexOf(PORT_PALACE, 'r-http')).toBe(0)
-    expect(routeIndexOf(PORT_PALACE, 'r-dhcp')).toBe(ROOM_COUNT - 1)
+    expect(routeIndexOf(PORT_PALACE, 'r-dhcp')).toBe(14)
     expect(routeIndexOf(PORT_PALACE, 'khong-co-phong-nay')).toBe(-1)
   })
 })
 
 describe('tra cứu', () => {
-  it('theo id, theo ô lưới, theo số cổng', () => {
-    expect(roomById(PORT_PALACE, 'r-https')?.ports).toEqual([443])
-    expect(roomAt(PORT_PALACE, 2, 1)?.service).toBe('SSH')
-    expect(roomByPort(PORT_PALACE, 3389)?.id).toBe('r-rdp')
+  it('theo id, theo ô lưới, theo key', () => {
+    expect(roomById(PORT_PALACE, 'r-https')?.keys).toEqual(['443'])
+    expect(roomAt(PORT_PALACE, 2, 1)?.name).toBe('SSH')
+    expect(roomByKey(PORT_PALACE, '3389')?.id).toBe('r-rdp')
   })
 
-  it('phòng DHCP tra được bằng cả hai số cổng của nó', () => {
-    expect(roomByPort(PORT_PALACE, 67)?.id).toBe('r-dhcp')
-    expect(roomByPort(PORT_PALACE, 68)?.id).toBe('r-dhcp')
+  it('key chữ tra được nhân nhượng hoa thường ("local" tìm ra tầng Local)', () => {
+    expect(roomByKey(GPO_PALACE, 'local')?.id).toBe('r-local')
+    expect(roomByKey(GPO_PALACE, 'OU')?.id).toBe('r-ou')
+  })
+
+  it('phòng DHCP tra được bằng cả hai key của nó', () => {
+    expect(roomByKey(PORT_PALACE, '67')?.id).toBe('r-dhcp')
+    expect(roomByKey(PORT_PALACE, '68')?.id).toBe('r-dhcp')
   })
 
   it('không có thì trả null, không ném lỗi', () => {
     expect(roomById(PORT_PALACE, 'khong-co')).toBeNull()
     expect(roomAt(PORT_PALACE, 9, 9)).toBeNull()
-    expect(roomByPort(PORT_PALACE, 9999)).toBeNull()
+    expect(roomByKey(PORT_PALACE, '9999')).toBeNull()
   })
 
-  it('serviceAnswers gộp tên chuẩn và mọi cách gọi khác', () => {
+  it('nameAnswers gộp tên chuẩn và mọi cách gọi khác', () => {
     const rdp = roomById(PORT_PALACE, 'r-rdp')!
-    expect(serviceAnswers(rdp)).toEqual(['RDP', 'remote desktop'])
+    expect(nameAnswers(rdp)).toEqual(['RDP', 'remote desktop'])
   })
 })
 
 describe('kiểm cấu trúc bắt lỗi soạn bài', () => {
-  it('thiếu phòng', () => {
+  it('thiếu phòng so với kích thước đã khai', () => {
     const p = clonePalace()
     p.rooms.pop()
     expect(codes(p)).toContain('room-count')
@@ -99,10 +106,14 @@ describe('kiểm cấu trúc bắt lỗi soạn bài', () => {
     expect(codes(p)).toContain('duplicate-room-id')
   })
 
-  it('một số cổng nằm ở hai phòng', () => {
+  it('một key nằm ở hai phòng — kể cả khác hoa thường', () => {
     const p = clonePalace()
-    p.rooms[1]!.ports = [80]
-    expect(codes(p)).toContain('duplicate-port')
+    p.rooms[1]!.keys = ['80']
+    expect(codes(p)).toContain('duplicate-key')
+
+    const g = clonePalace(GPO_PALACE)
+    g.rooms[1]!.keys = ['local']
+    expect(codes(g)).toContain('duplicate-key')
   })
 
   it('hai phòng dùng chung một hình gợi nhớ', () => {
@@ -111,28 +122,32 @@ describe('kiểm cấu trúc bắt lỗi soạn bài', () => {
     expect(codes(p)).toContain('duplicate-image')
   })
 
-  it('hai phòng cùng tên dịch vụ', () => {
+  it('hai phòng cùng tên vế phụ', () => {
     const p = clonePalace()
-    p.rooms[1]!.service = p.rooms[0]!.service
-    expect(codes(p)).toContain('duplicate-service')
+    p.rooms[1]!.name = p.rooms[0]!.name
+    expect(codes(p)).toContain('duplicate-name')
   })
 
-  it('tầng hoặc vị trí ngoài tòa nhà', () => {
+  it('tầng hoặc vị trí vượt kích thước TÒA NÀY (4×1 chặt hơn 5×3)', () => {
     const p = clonePalace()
-    p.rooms[0]!.floor = FLOORS + 1
+    p.rooms[0]!.floor = 6
     p.rooms[1]!.position = 0
     const found = codes(p)
     expect(found).toContain('floor-out-of-range')
     expect(found).toContain('position-out-of-range')
+
+    const g = clonePalace(GPO_PALACE)
+    g.rooms[0]!.position = 2 // hợp lệ với tòa 5×3, nhưng tòa này mỗi tầng 1 phòng
+    expect(codes(g)).toContain('position-out-of-range')
   })
 
-  it('số cổng vô lý hoặc phòng không có cổng nào', () => {
+  it('phòng không có key nào, hoặc key rỗng sau chuẩn hóa', () => {
     const p = clonePalace()
-    p.rooms[0]!.ports = [70000]
-    p.rooms[1]!.ports = []
+    p.rooms[0]!.keys = []
+    p.rooms[1]!.keys = ['   ']
     const found = codes(p)
-    expect(found).toContain('port-out-of-range')
-    expect(found).toContain('no-ports')
+    expect(found).toContain('no-keys')
+    expect(found).toContain('empty-key')
   })
 
   it('trả HẾT lỗi một lượt chứ không dừng ở lỗi đầu tiên', () => {

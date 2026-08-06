@@ -61,9 +61,9 @@ function describeAllowance(allow) {
   return yes.length === 0 ? 'KHÔNG cho phép thao tác nào (đề bài hỏng)' : yes.join(', ')
 }
 
-/** Một dòng mô tả phòng cung điện cho người duyệt: chỗ, cổng, hình, chuyện. */
+/** Một dòng mô tả phòng cung điện cho người duyệt: chỗ, hai vế, hình, chuyện. */
 function describeRoom(room) {
-  return `tầng ${room.floor} phòng ${room.position} · cổng ${room.ports.join('/')} · ${room.service} · hình \`${room.imageId}\` — ${vi(room.story)}`
+  return `tầng ${room.floor} phòng ${room.position} · ${room.keys.join('/')} · ${room.name} · hình \`${room.imageId}\` — ${vi(room.story)}`
 }
 
 function roomsOf(palace, roomIds) {

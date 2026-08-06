@@ -136,7 +136,7 @@ describe('bộ nội dung', () => {
   it('Module 5: cung điện đúng 15 phòng, gồm đủ 15 port của spec', () => {
     const m5 = moduleById('module-5')
     expect(m5.palace, 'Module 5 phải có cung điện ký ức').toBeDefined()
-    const ports = m5.palace!.rooms.flatMap((r) => r.ports).sort((a, b) => a - b)
+    const ports = m5.palace!.rooms.flatMap((r) => r.keys.map(Number)).sort((a, b) => a - b)
     expect(ports).toEqual([21, 22, 23, 25, 53, 67, 68, 80, 123, 389, 443, 445, 587, 636, 3306, 3389])
   })
 

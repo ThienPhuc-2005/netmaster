@@ -134,3 +134,49 @@ describe('kiểm chéo giữa các module', () => {
     expect(() => validateModules([a, b])).toThrow(/Phòng cung điện/)
   })
 })
+
+describe('checklist lab VMware (spec Module 9)', () => {
+  it('module khai vmLab hợp lệ thì parse được', () => {
+    const mod = makeValidModule()
+    mod.vmLab = {
+      title: { vi: 'Dựng lab AD tại nhà' },
+      steps: [
+        { id: 'vm-1', text: { vi: 'Cài VMware Workstation Player' } },
+        { id: 'vm-2', text: { vi: 'Tạo máy ảo Windows Server' } },
+        { id: 'vm-3', text: { vi: 'Cài vai trò AD DS' } },
+      ],
+    }
+    expect(parseModule(mod).vmLab?.steps).toHaveLength(3)
+  })
+
+  it('trùng id bước trong một module bị chặn', () => {
+    const mod = makeValidModule()
+    mod.vmLab = {
+      title: { vi: 'Lab' },
+      steps: [
+        { id: 'vm-1', text: { vi: 'Bước một dài đủ' } },
+        { id: 'vm-1', text: { vi: 'Bước hai dài đủ' } },
+        { id: 'vm-3', text: { vi: 'Bước ba dài đủ' } },
+      ],
+    }
+    expect(() => parseModule(mod)).toThrow(/vmLab/)
+  })
+
+  it('id bước phải duy nhất giữa các module (store lưu tick theo stepId)', () => {
+    const withLab = (id: string, order: number) => {
+      const m = makeValidModule()
+      m.id = id
+      m.order = order
+      m.vmLab = {
+        title: { vi: 'Lab' },
+        steps: [
+          { id: 'vm-a', text: { vi: 'Bước một dài đủ' } },
+          { id: 'vm-b', text: { vi: 'Bước hai dài đủ' } },
+          { id: 'vm-c', text: { vi: 'Bước ba dài đủ' } },
+        ],
+      }
+      return parseModule(m)
+    }
+    expect(() => validateModules([withLab('module-1', 1), withLab('module-2', 2)])).toThrow(/Bước lab VMware/)
+  })
+})

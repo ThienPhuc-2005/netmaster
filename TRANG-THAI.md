@@ -374,8 +374,43 @@ retrieval.
   vào bài, mốc nguội ghi, XP = 0; thắng 100% → câu trắc nghiệm "CNAME"
   hiện thành ô gõ tay kèm lời nhắn, gõ "cname" được chấm "Chuẩn luôn!".
 
-Kiểm tra hiện tại: **732/732 test xanh**, typecheck sạch, build qua,
-app live có đủ Module 1-7. **Phase 2 XONG cả 3 hạng mục (5)(6)(7).**
+Kiểm tra khi khép Phase 2: **732/732 test xanh**, typecheck sạch, build
+qua, app live có đủ Module 1-7. **Phase 2 XONG cả 3 hạng mục (5)(6)(7).**
+
+## Phase 3 — hạng mục (8): Module 8-10 + cung điện GPO + checklist VMware
+
+Kế hoạch 5 khối đã duyệt. Ba quyết định đã chốt: **tổng quát hóa cung
+điện** (phương án A); tòa GPO **4 tầng × 1 phòng**; checklist VMware
+khai trong JSON module, tick persist, **không XP**.
+
+| Khối | Nội dung | Trạng thái |
+|------|----------|-----------|
+| 8.1 | Tổng quát hóa cung điện + schema/store checklist VMware | Xong |
+| 8.2 | Nội dung Module 8 (Wi-Fi, WPA, IPv6/SLAAC — interleaving IPv4↔IPv6) | Chưa |
+| 8.3 | Nội dung Module 9 ⭐ (AD DS/GPO, cung điện LSDOU, fading đậm, checklist VMware) | Chưa |
+| 8.4 | Nội dung Module 10 (VPC/Zero Trust — contrast cases với on-prem) | Chưa |
+| 8.5 | DoD + kiểm browser + tài liệu | Chưa |
+
+**Khối 8.1 đã làm gì** (M5 không đổi hành vi — test cũ xanh nguyên):
+- Cung điện hết đóng đinh vào Port: kích thước (`floors`/`roomsPerFloor`)
+  và ruột phòng khai THEO TỪNG TÒA. Ruột phòng thành hai vế trung tính
+  **`keys`** (vế chính: "443" / "Domain") + **`name`** (vế phụ: "HTTPS" /
+  "chính máy đó"); nhãn, placeholder và gợi ý tầng-1 của hai ô nhập là
+  NỘI DUNG do tòa nhà khai (`keyLabel`/`nameLabel`/`keyHint`/`nameHint`),
+  không phải chuỗi i18n. `keyStyle: 'number' | 'text'` quyết định cách UI
+  đọc câu trả lời (tách cụm chữ số vs cả ô là một key).
+- Luật port-riêng (1..65535) rời khỏi engine, thành refinement của schema
+  khi `keyStyle: 'number'` — engine giữ phần bất biến của PHƯƠNG PHÁP,
+  schema giữ phần chuyên ngành của từng tòa.
+- `module-05.json` đổi tên trường theo hình dạng mới (nội dung không đổi
+  một chữ); `GPO_PALACE` 4×1 vào fixture làm ca kiểm "cung điện chữ" —
+  cùng engine đi trọn chuyến Local → Site → Domain → OU.
+- Checklist VMware: `vmLab {title, intro?, steps[]}` trong ModuleSchema
+  (id bước duy nhất toàn cục — validateModules ép), store thêm
+  `vmLabDone` + `toggleVmLabStep` (không XP). UI hiển thị sang khối 8.3.
+- 741/741 test xanh (+9 ròng), typecheck sạch, build qua. Kiểm browser:
+  cung điện M5 sau migration chạy nguyên — nhãn "Số cổng"/"Dịch vụ" giờ
+  đến từ nội dung, gõ "web thuong" vẫn được chấm đúng.
 
 ## Lệnh hay dùng
 

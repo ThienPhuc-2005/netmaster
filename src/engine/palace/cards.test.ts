@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { ROOM_COUNT, tourRoute } from './palace'
+import { roomCountOf, tourRoute } from './palace'
 import {
   PALACE_CARD_PREFIX,
   isPalaceCardId,
@@ -11,6 +11,8 @@ import {
 import { buildReviewSession, dueCards } from '../reviewQueue'
 import { reviewCard } from '../sm2'
 import { PORT_PALACE } from '../../../tests/fixtures/palaceFixture'
+
+const ROOM_COUNT = roomCountOf(PORT_PALACE)
 
 const TODAY = '2026-08-06'
 
@@ -25,7 +27,7 @@ describe('khóa thẻ cung điện', () => {
   it('lấy ngược ra được phòng', () => {
     expect(roomIdFromCardId(palaceCardId('r-dns'))).toBe('r-dns')
     expect(roomIdFromCardId('m1-goi-tin')).toBeNull()
-    expect(roomForCard(PORT_PALACE, palaceCardId('r-dns'))?.ports).toEqual([53])
+    expect(roomForCard(PORT_PALACE, palaceCardId('r-dns'))?.keys).toEqual(['53'])
     expect(roomForCard(PORT_PALACE, 'm1-goi-tin')).toBeNull()
   })
 })
