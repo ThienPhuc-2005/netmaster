@@ -87,7 +87,7 @@ phá hoại cơ chế học của app, dù code chạy đúng.
 - `npm run test:watch` — test ở chế độ watch
 - `npm run typecheck` — kiểm tra kiểu TypeScript (`tsc --noEmit`)
 
-## Cấu trúc hiện tại (Phase 1 + 2 XONG; Phase 3: hạng mục (8) + (9) xong — còn (10) Module 12 + PowerShell)
+## Cấu trúc hiện tại (Phase 1 + 2 XONG; Phase 3: (8) + (9) xong, (10) Module 12 + PowerShell đang làm — khối 10.1 xong)
 
 - `src/engine/` — pedagogy engine thuần TS: SM-2, hàng đợi ôn tập,
   mastery gate, máy trạng thái bài học 6 bước, XP/streak, bộ chấm,
@@ -307,6 +307,26 @@ phá hoại cơ chế học của app, dù code chạy đúng.
 - Kịch bản test người thật Module 11: `KICH-BAN-TEST.md` mục 10 (đo kỹ
   năng chẩn đoán bằng 2 ca chưa gặp; hai cặp lời-từ-chối; chỉ đúng
   module gốc của bệnh).
+
+### Phase 3 — hạng mục (10): Module 12 + terminal PowerShell ảo (đang làm — 10.1 xong)
+
+- Ba quyết định đã chốt: **phạm vi PS đóng băng** ở 8 cmdlet (Get-Help,
+  Get-NetIPAddress, Test-NetConnection, Get-ADUser, New-ADUser,
+  Import-Csv, Get-Content, Select-String) + pipeline MỘT tầng, KHÔNG
+  scriptblock/biến/vòng lặp; **"hàng loạt" = một dòng
+  `Import-Csv | New-ADUser` chạy thật**, script đa dòng chỉ đọc-hiểu;
+  **chấm theo hiệu ứng + dấu vết hành động**, không so chuỗi lệnh.
+- `src/engine/ps/` (khối 10.1) — thuần TS: `world.ts` (máy + đích mạng
+  + AD nhỏ + file; `PsFlags` ghi dấu vết hành động), `interpret.ts`
+  (tokenizer + 8 cmdlet, output tiếng Anh nghề tất định; New-ADUser IM
+  LẶNG như thật; Get-Help trần/lệnh lạ trả rỗng lines cho UI),
+  `gradePs.ts` (4 goal: ad-user, ad-user-count, tested-connection,
+  found-line), `psSchema.ts` (thế giới sạch, lời giải chạy sạch + đạt
+  trọn goals, đề chưa đạt sẵn). Select-String khớp CHUỖI CON không
+  regex — đơn giản hóa cố ý ghi ở đầu world.ts.
+- **Luật không được phá:** chấm hiệu ứng nghĩa là gõ tay từng user thay
+  vì pipeline vẫn được công nhận (có test khóa); quá một dấu ống là
+  lỗi có chủ đích, đừng "tiện tay" mở rộng ngữ pháp.
 
 ## Khi gặp mơ hồ
 

@@ -6,12 +6,55 @@ mở lại dự án. Nguồn chân lý vẫn là `SPEC-APP-HOC-MANG.md`; luật 
 
 ## MỞ PHIÊN MỚI THÌ ĐỌC ĐÂY TRƯỚC
 
-**Đang đứng đâu:** Phase 1 + Phase 2 xong hẳn; Phase 3 hạng mục (8)
-XONG và **hạng mục (9) — Phòng khám mạng (Module 11) — XONG cả 5 khối**.
-App có đủ Module 1-11 + tab Phòng khám mở theo mastery gate. Việc kế
-tiếp của Phase 3 là **hạng mục (10) — Module 12 + terminal PowerShell
-ảo** (hạng mục cuối của spec): việc lớn, cần trình kế hoạch chia khối
-và xin duyệt trước khi code.
+**Đang đứng đâu:** Phase 1 + Phase 2 xong hẳn; Phase 3 hạng mục (8) và
+(9) XONG. App có đủ Module 1-11 + tab Phòng khám. **Hạng mục (10) —
+Module 12 + terminal PowerShell ảo (hạng mục CUỐI của spec) — đang làm:
+kế hoạch 4 khối ĐÃ duyệt kèm 3 quyết định (bảng dưới); khối 10.1 XONG,
+kế tiếp là 10.2 — UI PsTerminal + `kind: 'ps'` vào pipeline.**
+
+**Ba quyết định hạng mục (10) đã chốt (07-08, không hỏi lại):**
+1. Phạm vi PowerShell ĐÓNG BĂNG: 8 cmdlet (Get-Help, Get-NetIPAddress,
+   Test-NetConnection, Get-ADUser, New-ADUser, Import-Csv, Get-Content,
+   Select-String) + pipeline MỘT tầng. KHÔNG scriptblock/biến/vòng lặp;
+   lọc bằng tham số đơn giản (-Identity, -Filter *, -SearchBase).
+2. "Tạo user hàng loạt" = MỘT dòng pipeline `Import-Csv | New-ADUser`
+   chạy thật (đúng thần PowerShell); script đa dòng chỉ ở màn dạy dạng
+   đọc-hiểu + điền-chỗ-trống, không thực thi.
+3. Chấm theo HIỆU ỨNG + OUTPUT (như gradeLab/gradeClinic): goals nhìn
+   thế giới (user mọc đúng OU) và dấu vết hành động (đã kiểm kết nối,
+   đã lôi dòng log) — không so chuỗi lệnh.
+
+| Khối | Nội dung | Trạng thái |
+|------|----------|-----------|
+| 10.1 | Engine `src/engine/ps/` (world + interpreter + gradePs + schema) | Xong |
+| 10.2 | UI PsTerminal + `kind: 'ps'` vào pipeline 6 bước + /design | Chưa |
+| 10.3 | Nội dung `module-12.json` + hình khái niệm | Chưa |
+| 10.4 | DoD + kiểm browser + tài liệu (khép hạng mục 10 và Phase 3) | Chưa |
+
+**Khối 10.1 đã làm gì** (headless — app chưa đổi một pixel):
+- `src/engine/ps/world.ts` — thế giới giả 4 mảnh: máy đang ngồi (card
+  mạng cho Get-NetIPAddress), đích mạng (pingable + cổng mở cho
+  Test-NetConnection, có tên phân giải được), miền AD nhỏ (OU + user),
+  file phẳng (CSV nhân sự + log). `validatePsWorld` tách lỗi CẤU TRÚC
+  (trùng sam, OU ma) — cùng nếp lab/clinic. `PsFlags` ghi DẤU VẾT hành
+  động (đã kiểm kết nối, đã lôi dòng log) — nguyên liệu chấm cho việc
+  không đổi thế giới.
+- `src/engine/ps/interpret.ts` — thông dịch 8 cmdlet + pipeline một
+  tầng, tokenizer nháy kép/đơn, hoa thường tùy ý; output tiếng Anh nghề
+  tất định (PingSucceeded/TcpTestSucceeded, DistinguishedName, lỗi
+  "already exists"/"Cannot find path"); New-ADUser IM LẶNG như thật —
+  muốn thấy phải Get-ADUser lại (thêm một nhịp retrieval); Get-Help
+  trần + lệnh lạ trả outcome rỗng lines cho UI kể lời Việt (nếp của
+  terminal Phòng khám); quá một dấu ống là lỗi có chủ đích.
+- `gradePs.ts` — 4 loại goal: ad-user, ad-user-count (hàng loạt),
+  tested-connection (phải THÀNH CÔNG đúng cổng), found-line. Đã khóa
+  bằng test: gõ tay từng user thay vì pipeline VẪN được công nhận
+  (chấm hiệu ứng, IKEA effect).
+- `psSchema.ts` — chốt chặn nội dung: thế giới sạch, lời giải chạy
+  sạch từng dòng VÀ đạt trọn goals, đề chưa đạt sẵn.
+- `tests/fixtures/psFixture.ts` — 4 đề thật đúng 4 mảng spec: kiểm cổng
+  443, tạo một user, tạo hàng loạt từ CSV, đọc log tìm ERROR.
+  835/835 test xanh (+25), typecheck sạch, build qua.
 
 **Ba quyết định hạng mục (9) đã chốt (06-08, không hỏi lại):**
 1. Kiến trúc: engine clinic BỌC lab engine (case = topology lab + "hồ
