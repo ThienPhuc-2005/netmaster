@@ -84,6 +84,33 @@ function describeOverlay(overlay) {
   return parts.length === 0 ? 'không có (bệnh nằm trọn trong sơ đồ)' : parts.join(' · ')
 }
 
+// --- Diễn đạt một bài terminal PowerShell thành chữ ------------------
+
+function describePsWorld(world) {
+  const parts = [`máy ${world.hostname} [${world.interfaces.map((i) => `${i.ip}/${i.prefix}`).join(', ')}]`]
+  if (world.targets.length > 0) {
+    parts.push(
+      `đích: ${world.targets
+        .map((t) => `${t.name ? `${t.name}=` : ''}${t.ip}${t.pingable ? '' : ' (im lặng)'}${t.openPorts.length ? ` cổng ${t.openPorts.join('/')}` : ''}`)
+        .join(' · ')}`,
+    )
+  }
+  if (world.ad) {
+    parts.push(`AD ${world.ad.domain}: OU [${world.ad.ous.join(', ')}], ${world.ad.users.length} user sẵn có`)
+  }
+  const files = Object.keys(world.files)
+  if (files.length > 0) parts.push(`file: ${files.join(', ')}`)
+  return parts.join(' — ')
+}
+
+function describePsGoal(goal) {
+  if (goal.kind === 'ad-user') return `user "${goal.sam}" phải tồn tại${goal.ou ? ` trong OU ${goal.ou}` : ''}`
+  if (goal.kind === 'ad-user-count') return `OU ${goal.ou} phải có ít nhất ${goal.atLeast} user`
+  if (goal.kind === 'tested-connection')
+    return `phải kiểm tra ${goal.port ? `cổng ${goal.port} của ` : 'ping tới '}${goal.ip} thành công`
+  return `phải lôi ra được dòng chứa "${goal.mustContain}"`
+}
+
 function describeSymptom(symptom, topo) {
   const from = hostnameOf(topo, symptom.from)
   if (symptom.kind === 'ping-fails') return `${from} ping ${symptom.target} PHẢI hỏng`
@@ -148,6 +175,12 @@ export function renderQuestion(q, indent = '', palace = null) {
       )
       lines.push(`${indent}    - **Sửa:** chọn hành động — ${acts.join(' · ')}`)
     }
+  } else if (q.kind === 'ps') {
+    lines.push(`${indent}  - **Dạng:** terminal PowerShell (gõ lệnh đạt mục tiêu)`)
+    lines.push(`${indent}    - **Thế giới:** ${describePsWorld(q.spec.world)}`)
+    lines.push(`${indent}    - **Mục tiêu:**`)
+    for (const goal of q.spec.goals) lines.push(`${indent}      - ${describePsGoal(goal)}`)
+    lines.push(`${indent}    - **Lệnh mẫu:** ${q.spec.solution.map((s) => `\`${s}\``).join(' rồi ')}`)
   } else {
     // Kind mới mà quên bổ sung nhánh render → NỔ NGAY, không im lặng bỏ
     // qua. Bản duyệt thiếu phần đáp án còn tệ hơn không có bản duyệt:

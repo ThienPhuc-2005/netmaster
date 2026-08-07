@@ -350,6 +350,35 @@
     "firstSolveXp": "+{xp} XP — this case is now in your casebook.",
     "resolveNoXp": "You've already cured this one — no XP this time, but the practice counts."
   },
+  "ps": {
+    "terminalTitle": "PowerShell — {host}",
+    "terminalAria": "PowerShell terminal of machine {host}",
+    "terminalInputAria": "PowerShell command input",
+    "terminalIntro": "Type commands to work the task — Get-Help lists the toolbox if you forget. Trying is always free.",
+    "terminalPlaceholder": "Type a PowerShell command… (Get-Help lists them)",
+    "terminalRun": "Run",
+    "termHelpTitle": "Cmdlets available on this machine:",
+    "termUnknown": "This machine has no \"{cmd}\" cmdlet — type Get-Help to see the list.",
+    "cmd": {
+      "Get-NetIPAddress": "show the IP addresses of this machine's network cards",
+      "Test-NetConnection": "test ping or a TCP port to a target — Test-NetConnection <target> [-Port <n>]",
+      "Get-ADUser": "look up domain users — -Identity <sam> or -Filter * [-SearchBase <DN>]",
+      "New-ADUser": "create a new user — -Name, -SamAccountName, -Path; or accept bulk rows from the pipe",
+      "Import-Csv": "read a CSV file into records — pipeable",
+      "Get-Content": "read a file line by line",
+      "Select-String": "filter lines containing a phrase — Select-String <phrase> [<file>]"
+    },
+    "termCreatedSilent": "(the command finished silently, just like real PowerShell — created {count} user(s); run Get-ADUser to see for yourself)",
+    "goalsTitle": "Task goals",
+    "goalAdUser": "Create a user with SamAccountName \"{sam}\"",
+    "goalAdUserOu": "Create user \"{sam}\" in the {ou} OU",
+    "goalAdUserCount": "The {ou} OU must have at least {atLeast} users",
+    "goalTestPing": "Successfully ping-tested {ip}",
+    "goalTestPort": "Successfully tested port {port} on {ip}",
+    "goalFoundLine": "Pulled out a log line containing \"{text}\"",
+    "reset": "Start over",
+    "freeNote": "Typing and starting over are free — only \"Submit\" counts as an attempt."
+  },
   "profile": {
     "title": "Profile",
     "streak": "Day streak",

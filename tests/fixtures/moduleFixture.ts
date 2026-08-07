@@ -15,6 +15,7 @@ import type {
 } from '../../src/engine/contentSchema'
 import { vlanRepairLab } from './labFixture'
 import { CASE_SAI_GATEWAY, cloneClinicCase } from './clinicFixture'
+import { specTaoMotUser } from './psFixture'
 import { clonePalace } from './palaceFixture'
 
 export interface MakeLessonOpts {
@@ -34,6 +35,11 @@ export interface MakeLessonOpts {
    * mà máy trạng thái không biết nó tồn tại.
    */
   clinicPractice?: boolean
+  /**
+   * Bước Làm dùng một BÀI TERMINAL POWERSHELL (spec Module 12) — dạng
+   * câu hỏi thứ bảy, cùng phép thử kiến trúc.
+   */
+  psPractice?: boolean
 }
 
 // ---------------------------------------------------------------
@@ -380,6 +386,28 @@ export function makeLesson(id: string, opts: MakeLessonOpts = {}): Lesson {
         },
         solution: {
           vi: 'Gateway đang ghi 192.168.10.99 — một địa chỉ không ai giữ. Sửa lại thành 192.168.10.1 (cổng LAN của router) là máy ra được ngoài.',
+        },
+      },
+    ]
+  }
+
+  if (opts.psPractice === true) {
+    practice.exercises = [
+      {
+        question: {
+          kind: 'ps',
+          id: `${id}-prac-ps`,
+          prompt: {
+            vi: 'Kế toán có người mới: chị Lê Thị Mai. Tạo tài khoản cho chị ấy vào đúng OU KeToan bằng terminal PowerShell.',
+          },
+          spec: specTaoMotUser(),
+          hintTopic: { vi: 'cmdlet tạo user mới trong miền' },
+        },
+        hint: {
+          vi: 'Cú pháp khuyết: New-ADUser -Name "…" -SamAccountName … -Path "OU=…,DC=noibo,DC=vn". Điền nốt ba chỗ trống.',
+        },
+        solution: {
+          vi: 'New-ADUser -Name "Le Thi Mai" -SamAccountName ltmai -Path "OU=KeToan,DC=noibo,DC=vn" — rồi Get-ADUser -Identity ltmai để tự kiểm chứng.',
         },
       },
     ]

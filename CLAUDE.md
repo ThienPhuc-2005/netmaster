@@ -87,7 +87,7 @@ phá hoại cơ chế học của app, dù code chạy đúng.
 - `npm run test:watch` — test ở chế độ watch
 - `npm run typecheck` — kiểm tra kiểu TypeScript (`tsc --noEmit`)
 
-## Cấu trúc hiện tại (Phase 1 + 2 XONG; Phase 3: (8) + (9) xong, (10) Module 12 + PowerShell đang làm — khối 10.1 xong)
+## Cấu trúc hiện tại (Phase 1 + 2 XONG; Phase 3: (8) + (9) xong, (10) Module 12 + PowerShell đang làm — khối 10.1 + 10.2 xong)
 
 - `src/engine/` — pedagogy engine thuần TS: SM-2, hàng đợi ôn tập,
   mastery gate, máy trạng thái bài học 6 bước, XP/streak, bộ chấm,
@@ -308,7 +308,7 @@ phá hoại cơ chế học của app, dù code chạy đúng.
   năng chẩn đoán bằng 2 ca chưa gặp; hai cặp lời-từ-chối; chỉ đúng
   module gốc của bệnh).
 
-### Phase 3 — hạng mục (10): Module 12 + terminal PowerShell ảo (đang làm — 10.1 xong)
+### Phase 3 — hạng mục (10): Module 12 + terminal PowerShell ảo (đang làm — 10.1 + 10.2 xong)
 
 - Ba quyết định đã chốt: **phạm vi PS đóng băng** ở 8 cmdlet (Get-Help,
   Get-NetIPAddress, Test-NetConnection, Get-ADUser, New-ADUser,
@@ -327,6 +327,16 @@ phá hoại cơ chế học của app, dù code chạy đúng.
 - **Luật không được phá:** chấm hiệu ứng nghĩa là gõ tay từng user thay
   vì pipeline vẫn được công nhận (có test khóa); quá một dấu ống là
   lỗi có chủ đích, đừng "tiện tay" mở rộng ngữ pháp.
+- `kind: 'ps'` là nhánh thứ BẢY của `QuestionSchema` (khối 10.2):
+  response là `{kind:'ps', state}` — TRẠNG THÁI PHIÊN, chấm bằng
+  `isPsSolved`. `lessonMachine.ts` không biết terminal tồn tại
+  (psInPipeline.test khóa — lần thứ tư của bất biến này).
+  `src/features/ps/PsConsole.tsx`: bảng mục tiêu CHẤM SỐNG theo từng
+  lệnh; "Làm lại từ đầu" thay cho undo (PS thật không có undo); gõ
+  miễn phí, chỉ "Nộp bài" tính lượt; output máy tiếng Anh nguyên văn
+  trong `<pre>` (lỗi tô hổ phách), microcopy vi ở i18n `ps.*`.
+  Gợi ý mờ dần = thang 3 tầng sẵn có: hintTopic → cú pháp khuyết
+  (hint) → lệnh mẫu (solution/canonicalAnswer).
 
 ## Khi gặp mơ hồ
 

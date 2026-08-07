@@ -9,8 +9,8 @@ mở lại dự án. Nguồn chân lý vẫn là `SPEC-APP-HOC-MANG.md`; luật 
 **Đang đứng đâu:** Phase 1 + Phase 2 xong hẳn; Phase 3 hạng mục (8) và
 (9) XONG. App có đủ Module 1-11 + tab Phòng khám. **Hạng mục (10) —
 Module 12 + terminal PowerShell ảo (hạng mục CUỐI của spec) — đang làm:
-kế hoạch 4 khối ĐÃ duyệt kèm 3 quyết định (bảng dưới); khối 10.1 XONG,
-kế tiếp là 10.2 — UI PsTerminal + `kind: 'ps'` vào pipeline.**
+kế hoạch 4 khối ĐÃ duyệt kèm 3 quyết định (bảng dưới); khối 10.1 + 10.2
+XONG, kế tiếp là 10.3 — nội dung `module-12.json` + hình khái niệm.**
 
 **Ba quyết định hạng mục (10) đã chốt (07-08, không hỏi lại):**
 1. Phạm vi PowerShell ĐÓNG BĂNG: 8 cmdlet (Get-Help, Get-NetIPAddress,
@@ -27,7 +27,7 @@ kế tiếp là 10.2 — UI PsTerminal + `kind: 'ps'` vào pipeline.**
 | Khối | Nội dung | Trạng thái |
 |------|----------|-----------|
 | 10.1 | Engine `src/engine/ps/` (world + interpreter + gradePs + schema) | Xong |
-| 10.2 | UI PsTerminal + `kind: 'ps'` vào pipeline 6 bước + /design | Chưa |
+| 10.2 | UI PsConsole + `kind: 'ps'` vào pipeline 6 bước + /design | Xong |
 | 10.3 | Nội dung `module-12.json` + hình khái niệm | Chưa |
 | 10.4 | DoD + kiểm browser + tài liệu (khép hạng mục 10 và Phase 3) | Chưa |
 
@@ -55,6 +55,30 @@ kế tiếp là 10.2 — UI PsTerminal + `kind: 'ps'` vào pipeline.**
 - `tests/fixtures/psFixture.ts` — 4 đề thật đúng 4 mảng spec: kiểm cổng
   443, tạo một user, tạo hàng loạt từ CSV, đọc log tìm ERROR.
   835/835 test xanh (+25), typecheck sạch, build qua.
+
+**Khối 10.2 đã làm gì** (bài terminal thành thứ chơi được thật):
+- `kind: 'ps'` thành nhánh thứ BẢY của `QuestionSchema`; `QuestionResponse`
+  thêm `{kind:'ps', state}` — nộp TRẠNG THÁI PHIÊN (thế giới đã biến đổi
+  + dấu vết hành động), `gradeQuestion` ủy quyền `isPsSolved`.
+  `lessonMachine.ts` vẫn KHÔNG sửa dòng nào — `psInPipeline.test.ts`
+  khóa (thang 3 tầng, cổng qua bước, XP y hệt câu gõ tay; lần khóa thứ
+  TƯ của bất biến này: lab → palace → clinic → ps).
+- `src/features/ps/PsConsole.tsx` — bàn PowerShell: bảng MỤC TIÊU CHẤM
+  SỐNG theo từng lệnh (thấy ngay lệnh vừa gõ đẩy bài tới đâu), terminal
+  `PS C:\>` với output máy tiếng Anh nguyên văn (lỗi tô hổ phách),
+  Get-Help trần + cmdlet lạ nói tiếng Việt (i18n `ps.*` vi+en), nút
+  "Làm lại từ đầu" (PS không có undo — trả nguyên thế giới), "Nộp bài"
+  mới tính lượt. New-ADUser im lặng như thật → UI nói nhỏ một dòng
+  chrome và xúi đi `Get-ADUser` kiểm chứng (thêm một nhịp retrieval).
+- `canonicalAnswer` của câu ps = lệnh mẫu (tầng cuối của thang mờ dần);
+  `render-content-review.mjs` tả được đề ps (thế giới, mục tiêu, lệnh
+  mẫu); `/design` thêm mục Terminal PowerShell dùng đề "hàng loạt" của
+  fixture qua `QuestionSchema.parse`; `moduleFixture` thêm `psPractice`.
+- 851/851 test xanh (+16: pipeline, UI PsConsole, gradeQuestion ps),
+  typecheck sạch, build qua. Kiểm browser thật trên /design: Import-Csv
+  in bảng 3 người, pipeline `| New-ADUser` chạy im lặng kèm lời nhắc
+  kiểm chứng, HAI mục tiêu lật ✓ sống trước khi nộp, nộp ra "đạt";
+  mobile 375px scrollWidth = 375 không tràn.
 
 **Ba quyết định hạng mục (9) đã chốt (06-08, không hỏi lại):**
 1. Kiến trúc: engine clinic BỌC lab engine (case = topology lab + "hồ

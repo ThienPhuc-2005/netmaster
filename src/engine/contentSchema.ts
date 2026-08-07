@@ -18,6 +18,7 @@
 import { z } from 'zod'
 import { LabSpecSchema } from './lab/labSchema'
 import { ClinicCaseSpecSchema } from './clinic/clinicSchema'
+import { PsSpecSchema } from './ps/psSchema'
 import { PalaceSchema } from './palace/palaceSchema'
 import { LTextSchema, type LText } from './ltext'
 
@@ -158,6 +159,24 @@ const ClinicQuestionSchema = z.object({
   explain: explainField,
 })
 
+/**
+ * Bài terminal PowerShell (spec Module 12) — dạng câu hỏi thứ BẢY.
+ * Người học GÕ LỆNH THẬT vào terminal ảo để đạt mục tiêu (generation
+ * effect tối đa); chấm theo hiệu ứng + dấu vết hành động qua gradePs,
+ * không so chuỗi lệnh. Gợi ý mờ dần map vào thang 3 tầng sẵn có:
+ * tầng 1 hintTopic → tầng 2 cú pháp khuyết (hint của Exercise) →
+ * tầng 3 lệnh đầy đủ. Về hợp đồng nó VẪN LÀ MỘT CÂU HỎI — máy trạng
+ * thái 6 bước, XP và mastery gate dùng lại nguyên vẹn.
+ */
+const PsQuestionSchema = z.object({
+  kind: z.literal('ps'),
+  id: idSchema,
+  prompt: LTextSchema,
+  spec: PsSpecSchema,
+  hintTopic: LTextSchema.optional(),
+  explain: explainField,
+})
+
 export const QuestionSchema = z.discriminatedUnion('kind', [
   TypedQuestionSchema,
   McqQuestionSchema,
@@ -165,6 +184,7 @@ export const QuestionSchema = z.discriminatedUnion('kind', [
   LabQuestionSchema,
   PalaceWalkQuestionSchema,
   ClinicQuestionSchema,
+  PsQuestionSchema,
 ])
 
 // ---------------------------------------------------------------
@@ -630,6 +650,7 @@ export type OrderQuestion = Extract<Question, { kind: 'order' }>
 export type LabQuestion = Extract<Question, { kind: 'lab' }>
 export type PalaceWalkQuestion = Extract<Question, { kind: 'palace-walk' }>
 export type ClinicQuestion = Extract<Question, { kind: 'clinic' }>
+export type PsQuestion = Extract<Question, { kind: 'ps' }>
 export type Concept = z.infer<typeof ConceptSchema>
 export type HookStep = z.infer<typeof HookStepSchema>
 export type PretestStep = z.infer<typeof PretestStepSchema>

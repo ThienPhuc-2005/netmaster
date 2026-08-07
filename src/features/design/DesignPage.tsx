@@ -14,9 +14,11 @@ import { XP_AMOUNTS } from '../../engine/xp'
 import { NetworkLab } from '../lab/NetworkLab'
 import { isLabSolved, parseLabSpec, type Topology } from '../../engine/lab'
 import { ClinicRoom } from '../clinic/ClinicRoom'
-import { QuestionSchema, type ClinicQuestion } from '../../engine/contentSchema'
+import { PsConsole } from '../ps/PsConsole'
+import { QuestionSchema, type ClinicQuestion, type PsQuestion } from '../../engine/contentSchema'
 import { gradeQuestion } from '../../engine/grading/gradeQuestion'
 import { CASE_SAI_GATEWAY } from '../../../tests/fixtures/clinicFixture'
+import { specTaoHangLoat } from '../../../tests/fixtures/psFixture'
 import { PalaceTour } from '../palace/PalaceTour'
 import { PalaceWalk } from '../palace/PalaceWalk'
 import { parsePalace, walkOutcomesPassed } from '../../engine/palace'
@@ -173,6 +175,35 @@ function ClinicShowcase() {
   )
 }
 
+// Bài terminal PowerShell trưng bày: đúng bài "hàng loạt" của spec
+// Module 12, lấy từ fixture engine rồi bọc thành câu hỏi kind 'ps' đi
+// qua QuestionSchema — hợp lệ y hệt câu thật (lời giải chạy được, đề
+// chưa đạt sẵn).
+const DEMO_PS = QuestionSchema.parse({
+  kind: 'ps',
+  id: 'design-ps-1',
+  prompt: {
+    vi: 'Phòng nhân sự vừa gửi file nhan-vien-moi.csv — ba người mới vào làm hôm nay. Tạo tài khoản cho CẢ danh sách bằng một dòng lệnh, rồi tự kiểm chứng bằng Get-ADUser.',
+  },
+  spec: specTaoHangLoat(),
+  hintTopic: { vi: 'bơm các bản ghi CSV vào ống' },
+}) as PsQuestion
+
+function PsShowcase() {
+  const [verdict, setVerdict] = useState<'chưa nộp' | 'đạt' | 'chưa đạt'>('chưa nộp')
+  return (
+    <div className="space-y-3">
+      <p className="text-sm text-ink-muted">
+        Kết quả lần nộp gần nhất: <strong className="text-ink">{verdict}</strong>
+      </p>
+      <PsConsole
+        question={DEMO_PS}
+        onSubmit={(resp) => setVerdict(gradeQuestion(DEMO_PS, resp) ? 'đạt' : 'chưa đạt')}
+      />
+    </div>
+  )
+}
+
 /**
  * Cung điện ký ức: trưng cả hai chuyến đi cạnh nhau để duyệt bằng mắt
  * xem chuyến "đi lại từ trí nhớ" có lỡ lộ đáp án không.
@@ -289,6 +320,10 @@ export function DesignPage() {
 
       <Section title={t('clinic.title')}>
         <ClinicShowcase />
+      </Section>
+
+      <Section title="Terminal PowerShell">
+        <PsShowcase />
       </Section>
 
       <Section title={DEMO_PALACE.title.vi}>

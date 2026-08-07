@@ -11,6 +11,7 @@ import { useT } from '../i18n'
 import { Button } from './Button'
 import { NetworkLab } from '../features/lab/NetworkLab'
 import { ClinicRoom } from '../features/clinic/ClinicRoom'
+import { PsConsole } from '../features/ps/PsConsole'
 import { PalaceWalk } from '../features/palace/PalaceWalk'
 import { findPalaceRoom } from '../content'
 
@@ -151,6 +152,16 @@ export function QuestionInput({ question, onSubmit, disabled }: QuestionInputPro
       // thành một lượt như mọi dạng câu hỏi khác.
       return (
         <ClinicRoom
+          key={question.id}
+          question={question}
+          onSubmit={disabled === true ? undefined : onSubmit}
+        />
+      )
+    case 'ps':
+      // Terminal PowerShell tự lo phần gõ thử (miễn phí, có bảng mục tiêu
+      // sống); chỉ "Nộp bài" mới trao trạng thái phiên lên thành một lượt.
+      return (
+        <PsConsole
           key={question.id}
           question={question}
           onSubmit={disabled === true ? undefined : onSubmit}

@@ -35,6 +35,11 @@ export function canonicalAnswer(q: Question): string | null {
       const action = q.actions?.choices[q.actions.answerIndex]?.vi
       return action === undefined ? diagnosis : `${diagnosis} → ${action}`
     }
+    case 'ps':
+      // Lệnh mẫu chính là "đáp án chuẩn" của bài terminal — tầng cuối
+      // của thang gợi ý mờ dần. Mọi cách viết khác đạt mục tiêu vẫn được
+      // chấm đúng; đây chỉ là bản tham chiếu để đọc lại.
+      return q.spec.solution.join('  ·  ')
   }
 }
 
@@ -63,6 +68,9 @@ export function formatResponse(q: Question, r: QuestionResponse): string | null 
       // Sơ đồ đã sửa xem lại ngay trong phòng khám, không phải ở đây.
       return diagnosis
     }
+    case 'ps':
+      // Cả phiên gõ lệnh xem lại ngay trên terminal, không phải ở đây.
+      return null
   }
 }
 

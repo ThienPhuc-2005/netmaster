@@ -9,6 +9,8 @@ import {
   vlanRepairLab,
 } from '../../../tests/fixtures/labFixture'
 import { CASE_GPO_CHAN, CASE_SAI_GATEWAY } from '../../../tests/fixtures/clinicFixture'
+import { specDocLog } from '../../../tests/fixtures/psFixture'
+import { initialPsState, runPsScript } from '../ps'
 
 // Câu hỏi mẫu tối thiểu, đúng kiểu suy ra từ contentSchema
 const typedQ: Question = {
@@ -229,5 +231,32 @@ describe('câu clinic — chấm HAI PHẦN: chẩn đoán VÀ sửa', () => {
     expect(
       findNearMiss(editQ, { kind: 'clinic', diagnosisIndex: 1, fix: { kind: 'edit-network', topology: sick } }),
     ).toBeNull()
+  })
+})
+
+describe('câu ps — chấm bằng hiệu ứng của phiên terminal', () => {
+  const psQ: Question = {
+    kind: 'ps',
+    id: 'q-ps',
+    prompt: { vi: 'Tìm dòng lỗi trong log của router.' },
+    spec: specDocLog(),
+  }
+
+  it('phiên đã đạt mục tiêu → đúng; phiên chưa gõ gì → sai', () => {
+    const solved = runPsScript(psQ.kind === 'ps' ? psQ.spec.world : null!, ['Get-Content router.log | Select-String ERROR']).state
+    expect(gradeQuestion(psQ, { kind: 'ps', state: solved })).toBe(true)
+    expect(gradeQuestion(psQ, { kind: 'ps', state: initialPsState(specDocLog().world) })).toBe(false)
+  })
+
+  it('cách viết khác đạt cùng mục tiêu vẫn đúng (không so chuỗi lệnh)', () => {
+    const direct = runPsScript(specDocLog().world, ['Select-String "link down" router.log']).state
+    expect(gradeQuestion(psQ, { kind: 'ps', state: direct })).toBe(true)
+  })
+
+  it('nộp nhầm loại là lỗi lập trình ở tầng UI', () => {
+    expect(() => gradeQuestion(psQ, { kind: 'typed', text: 'x' })).toThrowError(/lỗi lập trình ở tầng UI/)
+    expect(() =>
+      gradeQuestion(typedQ, { kind: 'ps', state: initialPsState(specDocLog().world) }),
+    ).toThrowError(/lỗi lập trình ở tầng UI/)
   })
 })

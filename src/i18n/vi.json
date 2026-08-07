@@ -350,6 +350,35 @@
     "firstSolveXp": "+{xp} XP — ca này đã vào bệnh án của bạn.",
     "resolveNoXp": "Ca này bạn chữa khỏi rồi — lần này không cộng XP, nhưng tay nghề thì có."
   },
+  "ps": {
+    "terminalTitle": "PowerShell — {host}",
+    "terminalAria": "Terminal PowerShell của máy {host}",
+    "terminalInputAria": "Ô gõ lệnh PowerShell",
+    "terminalIntro": "Gõ lệnh để làm bài — Get-Help liệt kê đồ nghề nếu chưa nhớ. Gõ thử bao nhiêu lần cũng miễn phí.",
+    "terminalPlaceholder": "Gõ lệnh PowerShell… (Get-Help để xem danh sách)",
+    "terminalRun": "Chạy",
+    "termHelpTitle": "Cmdlet dùng được trên máy này:",
+    "termUnknown": "Máy này không có cmdlet \"{cmd}\" — gõ Get-Help xem danh sách nhé.",
+    "cmd": {
+      "Get-NetIPAddress": "xem địa chỉ IP của các card mạng trên máy",
+      "Test-NetConnection": "kiểm tra ping hoặc một cổng TCP tới đích — Test-NetConnection <đích> [-Port <n>]",
+      "Get-ADUser": "tra cứu user trong miền — -Identity <sam> hoặc -Filter * [-SearchBase <DN>]",
+      "New-ADUser": "tạo user mới — -Name, -SamAccountName, -Path; hoặc nhận hàng loạt từ ống",
+      "Import-Csv": "đọc file CSV thành các bản ghi — bơm được vào ống",
+      "Get-Content": "đọc nội dung một file theo từng dòng",
+      "Select-String": "lọc các dòng chứa một cụm chữ — Select-String <cụm> [<file>]"
+    },
+    "termCreatedSilent": "(lệnh chạy xong, không in gì như PowerShell thật — tạo {count} user; muốn thấy tận mắt thì Get-ADUser lại)",
+    "goalsTitle": "Mục tiêu của bài",
+    "goalAdUser": "Tạo được user có SamAccountName \"{sam}\"",
+    "goalAdUserOu": "Tạo được user \"{sam}\" nằm đúng OU {ou}",
+    "goalAdUserCount": "OU {ou} phải có ít nhất {atLeast} user",
+    "goalTestPing": "Đã kiểm tra ping tới {ip} thành công",
+    "goalTestPort": "Đã kiểm tra cổng {port} của {ip} thành công",
+    "goalFoundLine": "Đã lôi ra được dòng log chứa \"{text}\"",
+    "reset": "Làm lại từ đầu",
+    "freeNote": "Gõ lệnh và làm lại đều miễn phí — chỉ \"Nộp bài\" mới tính lượt."
+  },
   "profile": {
     "title": "Hồ sơ",
     "streak": "Chuỗi ngày học",

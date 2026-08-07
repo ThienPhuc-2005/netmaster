@@ -5,6 +5,8 @@
 import type { LText, Question } from '../contentSchema'
 import { isLabSolved } from '../lab/gradeLab'
 import { isClinicFixSolved } from '../clinic/gradeClinic'
+import { isPsSolved } from '../ps/gradePs'
+import type { PsRunState } from '../ps/world'
 import type { Topology } from '../lab/topology'
 import { walkOutcomesPassed, type RoomOutcome } from '../palace/walk'
 import { openAcceptsOf } from '../flow'
@@ -37,6 +39,12 @@ export type QuestionResponse =
    * học sai.
    */
   | { kind: 'clinic'; diagnosisIndex: number; fix: ClinicFixResponse }
+  /**
+   * `ps` = trạng thái phiên terminal PowerShell lúc nộp (thế giới đã bị
+   * lệnh của người học biến đổi + dấu vết hành động). Chấm bằng cách
+   * hỏi "mục tiêu đạt chưa" — không so chuỗi lệnh.
+   */
+  | { kind: 'ps'; state: PsRunState }
 
 export type ClinicFixResponse =
   | { kind: 'edit-network'; topology: Topology }
@@ -113,5 +121,10 @@ export function gradeQuestion(q: Question, r: QuestionResponse): boolean {
       }
       return diagnosisRight && r.fix.actionIndex === actions.answerIndex
     }
+    case 'ps':
+      if (q.kind !== 'ps') throw kindMismatch(q, r)
+      // Chấm HIỆU ỨNG + DẤU VẾT: mọi chuỗi lệnh hợp lệ đạt mục tiêu đều
+      // được công nhận (IKEA effect — cùng triết lý lab/clinic).
+      return isPsSolved(q.spec, r.state)
   }
 }
