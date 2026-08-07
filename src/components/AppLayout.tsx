@@ -1,6 +1,7 @@
 // Khung app: sidebar trái kiểu "phòng điều hành" + vùng nội dung.
 // Menu đúng 4 mục (Hick's law, spec 4.5): Học | Ôn tập | Phòng khám | Hồ sơ.
-// Phòng khám hiện nhưng gắn khóa (Phase 3) — bấm vào thấy màn úp mở.
+// Phòng khám gắn khóa tới khi module chứa ca bệnh mở theo mastery gate
+// (Phase 3 hạng mục 9 — quyết định đã chốt: mở khi Module 11 mở).
 
 import { useEffect } from 'react'
 import { NavLink, Outlet } from 'react-router'
@@ -19,12 +20,14 @@ import {
 import { siFacebook, siTelegram } from 'simple-icons'
 import { useT } from '../i18n'
 import { useSettings, applyTheme } from '../store/settings'
+import { useProgress } from '../store/progress'
+import { clinicTabUnlocked } from '../features/clinic/clinicCases'
 
 const NAV = [
-  { to: '/', key: 'nav.learn', icon: BookOpen, end: true, locked: false },
-  { to: '/on-tap', key: 'nav.review', icon: Layers, end: false, locked: false },
-  { to: '/phong-kham', key: 'nav.clinic', icon: Stethoscope, end: false, locked: true },
-  { to: '/ho-so', key: 'nav.profile', icon: User, end: false, locked: false },
+  { to: '/', key: 'nav.learn', icon: BookOpen, end: true, clinicGate: false },
+  { to: '/on-tap', key: 'nav.review', icon: Layers, end: false, clinicGate: false },
+  { to: '/phong-kham', key: 'nav.clinic', icon: Stethoscope, end: false, clinicGate: true },
+  { to: '/ho-so', key: 'nav.profile', icon: User, end: false, clinicGate: false },
 ] as const
 
 function BrandIcon({ path, title, href }: { path: string; title: string; href: string }) {
@@ -48,6 +51,8 @@ export function AppLayout() {
   const theme = useSettings((s) => s.theme)
   const soundOn = useSettings((s) => s.soundOn)
   const { toggleTheme, toggleSound, toggleLang } = useSettings.getState()
+  const passedModules = useProgress((s) => s.passedModules)
+  const clinicOpen = clinicTabUnlocked(passedModules)
 
   useEffect(() => applyTheme(theme), [theme])
 
@@ -92,7 +97,7 @@ export function AppLayout() {
         </div>
 
         <nav className="flex flex-row md:flex-1 md:flex-col md:gap-1 md:p-3">
-          {NAV.map(({ to, key, icon: Icon, end, locked }) => (
+          {NAV.map(({ to, key, icon: Icon, end, clinicGate }) => (
             <NavLink
               key={to}
               to={to}
@@ -108,7 +113,9 @@ export function AppLayout() {
             >
               <Icon size={17} aria-hidden />
               <span className="md:flex-1">{t(key)}</span>
-              {locked && <Lock size={13} aria-label={t('nav.clinicLocked')} className="text-ink-muted" />}
+              {clinicGate && !clinicOpen && (
+                <Lock size={13} aria-label={t('nav.clinicLocked')} className="text-ink-muted" />
+              )}
             </NavLink>
           ))}
         </nav>

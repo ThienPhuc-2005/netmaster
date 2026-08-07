@@ -8,10 +8,15 @@ describe('xpFor', () => {
     expect(xpFor('practice')).toBe(10)
     expect(xpFor('reviewCardCorrect')).toBe(2)
     expect(xpFor('drillProblemCorrect')).toBe(3)
+    expect(xpFor('clinicCaseSolved')).toBe(10)
   })
 
-  it('chỉ tồn tại đúng 4 nguồn XP — không có đường cộng XP cho việc đọc/xem (nguyên tắc 5)', () => {
+  it('chỉ tồn tại đúng 5 nguồn XP — không có đường cộng XP cho việc đọc/xem (nguyên tắc 5)', () => {
+    // Cả 5 nguồn đều là retrieval hoặc lab: bước Nhớ lại, bước Làm, thẻ
+    // ôn đúng, bài drill đúng, và CHỮA KHỎI một ca phòng khám (lab).
+    // Đọc/xem/hook/pretest/summary vẫn không có mặt.
     expect(Object.keys(XP_AMOUNTS).sort()).toEqual([
+      'clinicCaseSolved',
       'drillProblemCorrect',
       'practice',
       'retrieval',

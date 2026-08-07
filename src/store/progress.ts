@@ -17,7 +17,7 @@
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
 import type { AnswerRecord, DrillResult, ISODate, ReviewCard, StreakState } from '../engine/types'
-import { palaceRoomsInLesson, type Lesson, type Module } from '../engine/contentSchema'
+import { palaceRoomsInLesson, type ClinicQuestion, type Lesson, type Module } from '../engine/contentSchema'
 import { palaceCardId } from '../engine/palace'
 import { isoFromDate } from '../engine/dates'
 import {
@@ -88,6 +88,12 @@ export interface ProgressState {
    * theo dõi, KHÔNG XP: việc thật xảy ra ngoài app, không kiểm chứng được.
    */
   vmLabDone: Record<string, ISODate>
+  /**
+   * caseQuestionId -> ngày CHỮA KHỎI lần đầu ở tab Phòng khám (Phase 3
+   * hạng mục 9 — phòng luyện song song). Chỉ lần đầu mỗi ca mới cộng
+   * XP/streak; làm lại tự do không cộng (nguyên tắc 5, chặn farm).
+   */
+  clinicSolved: Record<string, ISODate>
   drillHistory: DrillResult[]
   /** Ngày gần nhất hoàn thành phiên ôn — chốt luật "mở app là ôn trước". */
   lastReviewDate: ISODate | null
@@ -124,6 +130,16 @@ export interface ProgressState {
 
   /** Tick/bỏ tick một bước của checklist lab VMware. */
   toggleVmLabStep: (stepId: string) => void
+
+  /**
+   * Nộp một lượt cho ca bệnh ở TAB PHÒNG KHÁM (không phải trong bài
+   * học). Chấm y hệt mọi câu hỏi; XP + streak chỉ ở lần chữa khỏi ĐẦU
+   * TIÊN của mỗi ca — làm lại tự do là để luyện tay, không phải để farm.
+   */
+  submitClinicCase: (
+    question: ClinicQuestion,
+    response: QuestionResponse,
+  ) => { correct: boolean; firstSolve: boolean }
 
   /**
    * Ghi nhận một lượt thi mastery test. Trả kèm newlyPassed để UI biết
@@ -178,6 +194,7 @@ export const useProgress = create<ProgressState>()(
         answerTotal: 0,
         supportShownAtTotal: null,
         vmLabDone: {},
+        clinicSolved: {},
         drillHistory: [],
         lastReviewDate: null,
         onboardingDone: false,
@@ -338,6 +355,25 @@ export const useProgress = create<ProgressState>()(
         // ngoài lịch mà ghi vào SM-2 sẽ phá interval, còn cộng XP thì
         // thành đường farm bằng cách cố tình sai cho tụt điểm.
         markSupportShown: () => set((s) => ({ supportShownAtTotal: s.answerTotal })),
+
+        submitClinicCase: (question, response) => {
+          const correct = gradeQuestion(question, response)
+          // Mỗi lượt nộp là một lần retrieval thật — vào cửa sổ 10 câu của
+          // flow engine như mọi nguồn khác (spec 2.3: "trộn mọi nguồn").
+          recordAnswer(correct)
+          const firstSolve = correct && get().clinicSolved[question.id] === undefined
+          if (firstSolve) {
+            set((s) => ({
+              clinicSolved: { ...s.clinicSolved, [question.id]: todayIso() },
+              // Chỉ xpTotal, KHÔNG moduleXp: thanh tiến độ module đo phần
+              // bài học (practice + retrieval); XP phòng khám là dòng chảy
+              // luyện tập hằng ngày như thẻ ôn/drill.
+              xpTotal: s.xpTotal + xpFor('clinicCaseSolved'),
+            }))
+            touchStreak('clinicCaseSolved')
+          }
+          return { correct, firstSolve }
+        },
 
         toggleVmLabStep: (stepId) =>
           set((s) => {

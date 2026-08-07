@@ -340,7 +340,15 @@
     "fixIntroAction": "Bệnh này không sửa được từ chỗ bạn ngồi — chọn cách xử lý đúng nhất.",
     "symptomRecheck": "Chạy lại triệu chứng",
     "symptomStillSick": "Bệnh nhân vẫn còn đúng triệu chứng cũ — chưa khỏi.",
-    "symptomCleared": "Triệu chứng ban đầu đã hết — chắc tay rồi thì nộp thôi."
+    "symptomCleared": "Triệu chứng ban đầu đã hết — chắc tay rồi thì nộp thôi.",
+    "listIntro": "Các bệnh nhân bạn từng gặp trong Module 11 đều nằm viện ở đây — khám lại bao nhiêu lần cũng được, thang gợi ý 3 tầng vẫn nguyên.",
+    "listProgress": "Đã chữa khỏi {solved}/{total} ca",
+    "listXpNote": "XP chỉ cộng lần chữa khỏi đầu tiên của mỗi ca",
+    "caseLabel": "Ca {index}",
+    "caseSolvedBadge": "Đã chữa khỏi",
+    "backToList": "Về danh sách ca",
+    "firstSolveXp": "+{xp} XP — ca này đã vào bệnh án của bạn.",
+    "resolveNoXp": "Ca này bạn chữa khỏi rồi — lần này không cộng XP, nhưng tay nghề thì có."
   },
   "profile": {
     "title": "Hồ sơ",

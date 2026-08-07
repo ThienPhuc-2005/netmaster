@@ -7,13 +7,14 @@ import type { Module } from './contentSchema'
  * từ retrieval và lab. Đọc/xem/hook/pretest/summary KHÔNG có mặt trong
  * union — không tồn tại đường cộng XP cho việc đọc, ngay ở tầng kiểu.
  */
-export type XpSource = 'retrieval' | 'practice' | 'reviewCardCorrect' | 'drillProblemCorrect'
+export type XpSource = 'retrieval' | 'practice' | 'reviewCardCorrect' | 'drillProblemCorrect' | 'clinicCaseSolved'
 
 export const XP_AMOUNTS: Record<XpSource, number> = {
   retrieval: 20,          // hoàn thành bước Retrieval của một bài
   practice: 10,           // hoàn thành bước Làm (lab tương tác)
   reviewCardCorrect: 2,   // mỗi thẻ trả lời đúng trong phiên ôn (cũng là retrieval)
   drillProblemCorrect: 3, // mỗi bài đúng trong drill subnetting (lab)
+  clinicCaseSolved: 10,   // chữa khỏi một ca ở tab Phòng khám — CHỈ lần đầu mỗi ca (lab)
 }
 
 export function xpFor(source: XpSource): number {

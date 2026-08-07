@@ -10,8 +10,8 @@ mở lại dự án. Nguồn chân lý vẫn là `SPEC-APP-HOC-MANG.md`; luật 
 XONG cả 5 khối (Module 8-10 + cung điện GPO + checklist VMware). App có
 đủ Module 1-10. **Hạng mục (9) — Phòng khám mạng (Module 11) — đang
 làm: kế hoạch 5 khối ĐÃ được người dùng duyệt kèm 3 quyết định (bảng
-dưới); khối 9.1 + 9.2 + 9.3 XONG, việc kế tiếp là khối 9.4 — mở khóa
-tab Phòng khám (danh sách case, làm lại tự do, XP lần đầu).**
+dưới); khối 9.1 → 9.4 XONG, việc kế tiếp là khối 9.5 — DoD + kiểm
+browser + tài liệu (khép hạng mục 9).**
 
 **Ba quyết định hạng mục (9) đã chốt (06-08, không hỏi lại):**
 1. Kiến trúc: engine clinic BỌC lab engine (case = topology lab + "hồ
@@ -57,7 +57,7 @@ ngoài mô hình thì chọn hành động). "Gửi thử" miễn phí / "Nộp"
 | 9.1 | Engine phòng khám thuần TS (`src/engine/clinic/`) | Xong |
 | 9.2 | UI terminal + khung bệnh nhân + cắm `kind: 'clinic'` vào pipeline + /design | Xong |
 | 9.3 | Nội dung `module-11.json` (case dễ→khó theo spec) + hình khái niệm | Xong |
-| 9.4 | Mở khóa tab Phòng khám (danh sách case, làm lại tự do, XP lần đầu) | Chưa |
+| 9.4 | Mở khóa tab Phòng khám (danh sách case, làm lại tự do, XP lần đầu) | Xong |
 | 9.5 | DoD + kiểm browser + tài liệu | Chưa |
 
 **Khối 9.1 đã làm gì** (headless — app chưa đổi một pixel):
@@ -158,6 +158,32 @@ ngoài mô hình thì chọn hành động). "Gửi thử" miễn phí / "Nộp"
   dây bằng đường bấm chọn, ping lại Reply, "Chạy lại triệu chứng" báo
   hết, nộp → "Bạn đoán đúng luôn!" + explain; qua bước Dạy hiện 2 màn
   hình mới đúng nội dung.
+
+**Khối 9.4 đã làm gì** (tab Phòng khám thành phòng luyện thật):
+- `src/features/clinic/clinicCases.ts` — danh mục ca SUY TỪ DỮ LIỆU:
+  quét mọi module, gom ca clinic ở Đoán thử/Thử tay/Nhớ lại kèm chất
+  liệu 3 tầng (hint của Exercise; explain làm tầng-3 cho ca Đoán thử).
+  **Ca của bài thi mastery CỐ Ý không đem ra** — đề thi luyện tự do
+  trước được thì thang 85% mất giá trị (test khóa). `clinicTabUnlocked`
+  đọc mastery gate: module chứa ca mở thì tab mở (đúng quyết định đã
+  chốt: đậu Module 10 → Phòng khám mở).
+- `ClinicPage` hai trạng thái: khóa giữ màn úp mở cũ; mở thì danh sách
+  9 ca nhóm theo bài (thang dễ→khó), mỗi ca một màn làm lại tự do dùng
+  NGUYÊN ClinicRoom + thang phản hồi 3 tầng như trong bài học.
+  `AppLayout` bỏ khóa nav ĐỘNG theo cùng một cổng.
+- XP: nguồn thứ 5 `clinicCaseSolved` (10 XP) vào XpSource — vẫn là
+  lab/retrieval, hàng rào nguyên tắc 5 giữ nguyên (test gác cập nhật
+  từ "đúng 4" thành "đúng 5 nguồn"). Store thêm `clinicSolved` map +
+  `submitClinicCase`: mỗi lượt nộp ghi answerHistory (nguyên liệu flow
+  engine); XP + streak CHỈ lần chữa khỏi đầu của mỗi ca; chỉ xpTotal,
+  KHÔNG moduleXp (thanh tiến độ module đo phần bài học).
+- 810/810 test xanh (+8: danh mục ca, cổng mastery, trọn luồng ca
+  chọn-hành-động, XP một lần, thang 3 tầng, huy hiệu). Kiểm browser:
+  hồ sơ chưa đậu → tab khóa + ổ khóa nav; giả lập đậu M1-10 → 9 ca
+  hiện đủ, làm trọn ca DNS (nslookup timeout → chẩn đoán → hành động →
+  nộp) ra "Chuẩn luôn!" +10 XP, streak 1; nộp lại không cộng thêm và
+  nói rõ lý do; về danh sách thấy "Đã chữa khỏi 1/9 ca"; mobile 375px
+  không tràn.
 
 ## Đang ở đâu
 

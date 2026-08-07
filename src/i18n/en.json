@@ -340,7 +340,15 @@
     "fixIntroAction": "This illness can't be fixed from where you sit — pick the best course of action.",
     "symptomRecheck": "Re-run the symptom",
     "symptomStillSick": "The patient still shows the original symptom — not cured yet.",
-    "symptomCleared": "The original symptom is gone — submit when you're confident."
+    "symptomCleared": "The original symptom is gone — submit when you're confident.",
+    "listIntro": "Every patient you met in Module 11 stays admitted here — re-examine them as often as you like, with the same 3-tier hint ladder.",
+    "listProgress": "Cured {solved}/{total} cases",
+    "listXpNote": "XP is awarded only for the first cure of each case",
+    "caseLabel": "Case {index}",
+    "caseSolvedBadge": "Cured",
+    "backToList": "Back to case list",
+    "firstSolveXp": "+{xp} XP — this case is now in your casebook.",
+    "resolveNoXp": "You've already cured this one — no XP this time, but the practice counts."
   },
   "profile": {
     "title": "Profile",
