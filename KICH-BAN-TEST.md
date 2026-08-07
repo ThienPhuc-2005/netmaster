@@ -355,7 +355,60 @@ Buổi B: ôn thẻ nhớ …/…
   KẾT LUẬN: ĐẬU / ĐẬU CÓ GHI CHÚ / RỚT (module: …)
 ```
 
-## 10. Sau buổi test
+## 10. Buổi bổ sung — Module 11 (Phòng khám mạng)
+
+Đo kỹ năng CHẨN ĐOÁN — mục tiêu của cả module: không phải nhớ đáp án
+từng ca, mà cầm terminal lên là biết bắt đầu từ đâu. Người tham gia đã
+học xong Module 1-10 (hoặc dùng hồ sơ mồi sẵn của điều phối viên).
+
+**Buổi duy nhất (~60-75 phút):**
+
+1. Học trọn Module 11 (5 bài). Điểm quan sát trong lúc học:
+   - Ở ca mở màn mỗi bài (bước Đoán thử): người tham gia CÓ GÕ LỆNH
+     trước khi chọn chẩn đoán không, hay chọn bừa? (Chọn bừa không phải
+     lỗi — nhưng ghi lại: productive failure phải gây "vật lộn dễ chịu",
+     không phải cáu bực. Nếu cáu, ghi nguyên văn câu than.)
+   - Có bấm "Chạy lại triệu chứng" trước khi Nộp không?
+2. Nghỉ 5 phút, rồi vào tab Phòng khám và đo bằng HAI CA người đó
+   chưa chữa khỏi (điều phối viên chọn từ danh sách, ưu tiên một ca
+   sửa-sơ-đồ + một ca chọn-hành-động). Luật: điều phối viên chỉ ngồi
+   nhìn, không nhắc lệnh.
+
+**Ba bài đo (tiêu chí đậu):**
+
+- **Quy trình khám:** với mỗi ca đo, người tham gia phải THAO TÁC theo
+  trình tự có chủ đích (nói to càng tốt): xem giấy tờ máy trước
+  (ipconfig) hoặc bắt mạch (ping) trước khi kết luận — không đoán chay.
+  Đậu khi cả 2/2 ca đều có ít nhất một lệnh khám TRƯỚC khi chốt chẩn
+  đoán, và chẩn đoán đúng ở lượt nộp thứ nhất hoặc thứ hai.
+- **Đọc đúng lời từ chối:** hỏi miệng 2 cặp phân biệt: (a) "General
+  failure" khác gì "Destination host unreachable"? (b) nslookup
+  "request timed out" khác gì "Non-existent domain"? Đậu khi trả lời
+  đúng ý ≥ 1.5/2 cặp (nói được phía nào của đường truyền / dịch vụ
+  sống hay chết).
+- **Tổng ôn trá hình:** trong ca sửa-sơ-đồ đã đo, hỏi "bệnh này dùng
+  kiến thức của module nào hồi trước?" — đậu khi chỉ đúng module (VLAN
+  → M4, gateway → M3/M4, DNS → M6, GPO → M9…).
+
+Kết luận: ĐẬU khi đạt cả ba; 2/3 là ĐẬU CÓ GHI CHÚ; dưới nữa mở lại
+nội dung bài tương ứng (bài nào dạy manh mối bị bỏ lỡ), không đổ cho
+người học.
+
+### Mẫu ghi chép bổ sung
+
+```
+Buổi M11: bắt đầu …h — kết thúc …h
+  Ca Đoán thử: gõ lệnh trước khi đoán ở …/5 bài; câu than (nếu có): …
+  "Chạy lại triệu chứng" trước khi nộp: có/không
+  Đo 2 ca chưa gặp: ca 1 (loại …): lệnh đầu tiên …, chẩn đoán đúng lượt …
+                    ca 2 (loại …): lệnh đầu tiên …, chẩn đoán đúng lượt …
+  Cặp phân biệt (a): đúng/sai — (b): đúng/sai
+  Chỉ đúng module gốc của bệnh: có/không
+  Thi M11 …% (lần 1)
+  KẾT LUẬN: ĐẬU / ĐẬU CÓ GHI CHÚ / RỚT (bài cần mở lại: …)
+```
+
+## 11. Sau buổi test
 
 - Mỗi mục RỚT hoặc ghi chú hiểu sai → mở issue nội dung: ghi rõ khái
   niệm hiểu sai, bài nào dạy nó, và câu người tham gia đã nói.

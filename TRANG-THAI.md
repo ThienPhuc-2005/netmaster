@@ -1,4 +1,4 @@
-# Trạng thái dự án — NetMaster (Phase 1 + 2 xong; Phase 3 đang hạng mục 9)
+# Trạng thái dự án — NetMaster (Phase 1 + 2 xong; Phase 3: hạng mục 8 + 9 xong)
 
 Cập nhật: 2026-08-07. File này chỉ để nắm nhanh tình hình khi
 mở lại dự án. Nguồn chân lý vẫn là `SPEC-APP-HOC-MANG.md`; luật làm việc
@@ -7,11 +7,11 @@ mở lại dự án. Nguồn chân lý vẫn là `SPEC-APP-HOC-MANG.md`; luật 
 ## MỞ PHIÊN MỚI THÌ ĐỌC ĐÂY TRƯỚC
 
 **Đang đứng đâu:** Phase 1 + Phase 2 xong hẳn; Phase 3 hạng mục (8)
-XONG cả 5 khối (Module 8-10 + cung điện GPO + checklist VMware). App có
-đủ Module 1-10. **Hạng mục (9) — Phòng khám mạng (Module 11) — đang
-làm: kế hoạch 5 khối ĐÃ được người dùng duyệt kèm 3 quyết định (bảng
-dưới); khối 9.1 → 9.4 XONG, việc kế tiếp là khối 9.5 — DoD + kiểm
-browser + tài liệu (khép hạng mục 9).**
+XONG và **hạng mục (9) — Phòng khám mạng (Module 11) — XONG cả 5 khối**.
+App có đủ Module 1-11 + tab Phòng khám mở theo mastery gate. Việc kế
+tiếp của Phase 3 là **hạng mục (10) — Module 12 + terminal PowerShell
+ảo** (hạng mục cuối của spec): việc lớn, cần trình kế hoạch chia khối
+và xin duyệt trước khi code.
 
 **Ba quyết định hạng mục (9) đã chốt (06-08, không hỏi lại):**
 1. Kiến trúc: engine clinic BỌC lab engine (case = topology lab + "hồ
@@ -58,7 +58,7 @@ ngoài mô hình thì chọn hành động). "Gửi thử" miễn phí / "Nộp"
 | 9.2 | UI terminal + khung bệnh nhân + cắm `kind: 'clinic'` vào pipeline + /design | Xong |
 | 9.3 | Nội dung `module-11.json` (case dễ→khó theo spec) + hình khái niệm | Xong |
 | 9.4 | Mở khóa tab Phòng khám (danh sách case, làm lại tự do, XP lần đầu) | Xong |
-| 9.5 | DoD + kiểm browser + tài liệu | Chưa |
+| 9.5 | DoD + kiểm browser + tài liệu | Xong |
 
 **Khối 9.1 đã làm gì** (headless — app chưa đổi một pixel):
 - `src/engine/clinic/patient.ts` — ca bệnh = `topology` (dùng NGUYÊN mô
@@ -184,6 +184,29 @@ ngoài mô hình thì chọn hành động). "Gửi thử" miễn phí / "Nộp"
   nộp) ra "Chuẩn luôn!" +10 XP, streak 1; nộp lại không cộng thêm và
   nói rõ lý do; về danh sách thấy "Đã chữa khỏi 1/9 ca"; mobile 375px
   không tràn.
+
+**Khối 9.5 đã làm gì** (khép hạng mục 9):
+- **Kiểm end-to-end đường chưa từng thử: thi mastery Module 11 với 2 ca
+  bệnh trên browser thật.** 6 câu thường + ca VLAN (khám mù bằng ping
+  ra unreachable → chẩn đoán đúng bệnh → sửa VLAN p2 về 10 bằng đường
+  bấm chọn → cặp mục tiêu "phải thông + phải chặn" cùng xanh → nộp) +
+  ca DNS chọn-hành-động — **Đạt 100%**, masteryScores ghi 100, module-11
+  vào passedModules, answerHistory nhận đủ 8 câu + 2 lượt ca. Theme
+  sáng render sạch ở tab Phòng khám; mobile đã kiểm ở 9.2/9.4.
+- `KICH-BAN-TEST.md` thêm **mục 10 — buổi test người thật Module 11**
+  (mục "Sau buổi test" dời thành 11): đo KỸ NĂNG chẩn đoán bằng 2 ca
+  chưa gặp trong tab Phòng khám — tiêu chí đậu là có lệnh khám TRƯỚC
+  khi chốt bệnh, đọc đúng 2 cặp lời-từ-chối (General failure vs
+  unreachable; timeout vs Non-existent domain), và chỉ đúng module gốc
+  của bệnh (đo "tổng ôn trá hình").
+- Đối chiếu DoD (spec mục 6) cho hạng mục 9: đủ 6 bước (tuple ép, parse
+  xanh), flashcard tự sinh (6 concept M11 đều có thẻ), một màn một khái
+  niệm (schema ép) — ĐẠT; test người thật là việc treo cần người (kịch
+  bản đã soạn). Các tiêu chí riêng của spec Module 11: terminal ảo ✓,
+  100% productive failure ✓ (test khóa), thang case dễ→khó ✓, tổng ôn
+  trá hình ✓ (ca VLAN/M4, gpresult/M9, TTL/M4 trong bài thi).
+- Hạng mục (9) XONG cả 5 khối. Phase 3 còn đúng hạng mục (10): Module
+  12 + terminal PowerShell ảo — cần kế hoạch chia khối và duyệt trước.
 
 ## Đang ở đâu
 

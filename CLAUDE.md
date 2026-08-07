@@ -87,7 +87,7 @@ phá hoại cơ chế học của app, dù code chạy đúng.
 - `npm run test:watch` — test ở chế độ watch
 - `npm run typecheck` — kiểm tra kiểu TypeScript (`tsc --noEmit`)
 
-## Cấu trúc hiện tại (Phase 1 + 2 XONG; Phase 3: hạng mục (8) xong, hạng mục (9) Phòng khám đang làm — khối 9.1 → 9.4 xong)
+## Cấu trúc hiện tại (Phase 1 + 2 XONG; Phase 3: hạng mục (8) + (9) xong — còn (10) Module 12 + PowerShell)
 
 - `src/engine/` — pedagogy engine thuần TS: SM-2, hàng đợi ôn tập,
   mastery gate, máy trạng thái bài học 6 bước, XP/streak, bộ chấm,
@@ -255,7 +255,7 @@ phá hoại cơ chế học của app, dù code chạy đúng.
   interleaving 4 tình huống, điền lại tòa GPO trên giấy, hỏi 3 cặp
   contrast).
 
-### Phase 3 — hạng mục (9): Phòng khám mạng (đang làm — 9.1 → 9.4 xong)
+### Phase 3 — hạng mục (9): Phòng khám mạng (XONG cả 5 khối)
 
 - `src/engine/clinic/` (khối 9.1) — engine thuần TS: `patient.ts` (ca =
   topology lab NGUYÊN + overlay "hồ sơ bệnh" + seatId), `terminal.ts`
@@ -304,6 +304,9 @@ phá hoại cơ chế học của app, dù code chạy đúng.
   cùng cổng. XP nguồn thứ 5 `clinicCaseSolved` (10): CHỈ lần chữa khỏi
   đầu mỗi ca, chỉ vào xpTotal (KHÔNG moduleXp), mỗi lượt nộp vẫn ghi
   answerHistory. Làm lại tự do, thang 3 tầng giữ nguyên trong tab.
+- Kịch bản test người thật Module 11: `KICH-BAN-TEST.md` mục 10 (đo kỹ
+  năng chẩn đoán bằng 2 ca chưa gặp; hai cặp lời-từ-chối; chỉ đúng
+  module gốc của bệnh).
 
 ## Khi gặp mơ hồ
 
