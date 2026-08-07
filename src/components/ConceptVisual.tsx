@@ -1952,6 +1952,176 @@ function EntraHaiSo({ title }: { title?: string }) {
   )
 }
 
+// --- Module 11 — Phòng khám mạng (troubleshooting) --------------------
+
+/** Khám theo tầng (bottom-up): cầu thang 4 bậc, đi từ dây cắm lên dịch vụ. */
+function KhamTheoTang({ title }: { title?: string }) {
+  const steps = [
+    { x: 30, y: 96, label: 'dây' },
+    { x: 72, y: 78, label: 'IP' },
+    { x: 114, y: 60, label: 'đường đi' },
+    { x: 156, y: 42, label: 'dịch vụ' },
+  ]
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        {steps.map((s) => (
+          <path key={s.x} d={`M${s.x} ${s.y + 14} h38 v-14 h-38 z`} {...stroke} strokeWidth={1.5} />
+        ))}
+      </g>
+      {steps.map((s) => (
+        <text key={s.x} x={s.x + 19} y={s.y + 10} textAnchor="middle" {...monoText}>
+          {s.label}
+        </text>
+      ))}
+      <g className="text-accent">
+        <path d="M36 118 C80 112 140 84 172 36" {...stroke} strokeWidth={1.5} markerEnd="url(#cv-arrow)" />
+      </g>
+      <text x="110" y="126" textAnchor="middle" {...monoText}>
+        khám từ bậc thấp nhất lên
+      </text>
+    </Frame>
+  )
+}
+
+/** ipconfig + ping: tờ giấy tùy thân của máy, rồi bắt mạch đường truyền. */
+function IpconfigPing({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <rect x="22" y="26" width="72" height="66" rx="3" {...stroke} strokeWidth={1.5} />
+        <path d="M30 40 h44 M30 54 h56 M30 68 h50" {...stroke} strokeWidth={1.2} />
+      </g>
+      <text x="58" y="106" textAnchor="middle" {...monoText}>ipconfig</text>
+      <g className="text-ink-muted">
+        <rect x="120" y="40" width="24" height="18" rx="2" {...stroke} strokeWidth={1.5} />
+        <rect x="176" y="40" width="24" height="18" rx="2" {...stroke} strokeWidth={1.5} />
+      </g>
+      <g className="text-accent">
+        <path d="M148 44 h24" {...stroke} strokeWidth={1.5} markerEnd="url(#cv-arrow)" />
+        <path d="M172 54 h-24" {...stroke} strokeWidth={1.5} markerEnd="url(#cv-arrow)" />
+      </g>
+      <text x="160" y="76" textAnchor="middle" {...monoText}>ping — ai trả lời?</text>
+      <text x="160" y="106" textAnchor="middle" {...monoText}>bắt mạch</text>
+    </Frame>
+  )
+}
+
+/** tracert: gọi tên từng trạm trên đường — trạm im lặng là chỗ nghẽn. */
+function TracertChang({ title }: { title?: string }) {
+  const stops = [36, 88, 140, 192]
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <path d="M36 58 H186" {...stroke} strokeWidth={1.2} />
+        {stops.map((x, i) => (
+          <circle key={x} cx={x} cy="58" r={i === 0 || i === stops.length - 1 ? 8 : 10} {...stroke} strokeWidth={1.5} />
+        ))}
+      </g>
+      <g className="text-accent">
+        <text x="88" y="36" textAnchor="middle" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          1 · &lt;1ms
+        </text>
+      </g>
+      <g className="text-warn">
+        <text x="140" y="36" textAnchor="middle" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          2 · * * *
+        </text>
+      </g>
+      <text x="110" y="96" textAnchor="middle" {...monoText}>
+        nghẽn nằm sau trạm cuối còn đáp
+      </text>
+    </Frame>
+  )
+}
+
+/** Tách tên khỏi số: ping IP sống mà ping tên chết → bệnh nằm ở cuốn danh bạ. */
+function TachTenSo({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <text x="58" y="34" textAnchor="middle" {...monoText}>ping 192.168.20.80</text>
+        <text x="58" y="50" textAnchor="middle" fontSize="10" fill="var(--ok)" style={{ fontFamily: 'var(--font-mono)' }}>
+          Reply ✓
+        </text>
+        <text x="58" y="76" textAnchor="middle" {...monoText}>ping web.noibo.vn</text>
+        <text x="58" y="92" textAnchor="middle" fontSize="10" fill="var(--warn)" style={{ fontFamily: 'var(--font-mono)' }}>
+          không thấy tên
+        </text>
+      </g>
+      <g className="text-accent">
+        <path d="M104 62 h34" {...stroke} strokeWidth={1.5} markerEnd="url(#cv-arrow)" />
+        <rect x="146" y="38" width="52" height="48" rx="3" {...stroke} />
+        <path d="M156 50 h32 M156 60 h32 M156 70 h22" {...stroke} strokeWidth={1.2} />
+      </g>
+      <text x="172" y="102" textAnchor="middle" {...monoText}>bệnh ở danh bạ</text>
+      <text x="110" y="122" textAnchor="middle" {...monoText}>
+        số sống + tên chết = bệnh ở DNS
+      </text>
+    </Frame>
+  )
+}
+
+/** Trùng IP: hai máy giành một biển số — bảng ARP đổi chủ giữa hai lượt ping. */
+function ArpDoiChu({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <rect x="26" y="30" width="26" height="20" rx="2" {...stroke} strokeWidth={1.5} />
+        <rect x="26" y="72" width="26" height="20" rx="2" {...stroke} strokeWidth={1.5} />
+        <path d="M52 40 84 56 M52 82 84 66" {...stroke} strokeWidth={1.2} />
+      </g>
+      <g className="text-warn">
+        <rect x="66" y="50" width="56" height="20" rx="3" {...stroke} strokeWidth={1.5} />
+        <text x="94" y="64" textAnchor="middle" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          .20.21
+        </text>
+      </g>
+      <g className="text-accent">
+        <text x="166" y="40" textAnchor="middle" {...monoText}>arp -a</text>
+        <text x="166" y="58" textAnchor="middle" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          lượt 1: …:20
+        </text>
+        <text x="166" y="74" textAnchor="middle" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          lượt 2: …:21
+        </text>
+      </g>
+      <text x="110" y="114" textAnchor="middle" {...monoText}>
+        cùng IP, MAC đổi — hai chủ một nhà
+      </text>
+    </Frame>
+  )
+}
+
+/** Manh mối tại chỗ: mạng phía sau vẫn sống, gói bị chặn ngay tại cửa máy. */
+function ManhMoiTaiCho({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <rect x="26" y="46" width="34" height="26" rx="2" {...stroke} strokeWidth={1.5} />
+        <path d="M96 59 H140" {...stroke} strokeWidth={1.2} />
+        <rect x="140" y="46" width="34" height="26" rx="2" {...stroke} strokeWidth={1.5} />
+        <text x="157" y="88" textAnchor="middle" {...monoText}>mạng vẫn sống</text>
+      </g>
+      <g className="text-warn">
+        <path d="M78 42 v10 c0 10 -6 16 -6 16 s-6 -6 -6 -16 v-10 l6 -4 z" {...stroke} strokeWidth={1.5} />
+        <path d="M66 74 78 42" {...stroke} strokeWidth={0} />
+        <text x="72" y="32" textAnchor="middle" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          luật chặn tại máy
+        </text>
+      </g>
+      <g className="text-accent">
+        <text x="110" y="108" textAnchor="middle" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          gpresult · netstat · capture
+        </text>
+      </g>
+      <text x="110" y="124" textAnchor="middle" {...monoText}>
+        ping chết, web chạy — soi tại máy
+      </text>
+    </Frame>
+  )
+}
+
 /** Hình thư chung cho visualId chưa có hình riêng. */
 function GenericMail({ title }: { title?: string }) {
   return (
@@ -2088,6 +2258,18 @@ const REGISTRY: Record<string, VisualComponent> = {
   'vis-zero-trust-moi-cua': ZeroTrustMoiCua,
   'vis-entra-hai-so': EntraHaiSo,
   'vis-hook-entra': EntraHaiSo,
+  // Module 11 — phòng khám mạng
+  'vis-kham-theo-tang': KhamTheoTang,
+  'vis-hook-ca-truc': KhamTheoTang,
+  'vis-ipconfig-ping': IpconfigPing,
+  'vis-tracert-chang': TracertChang,
+  'vis-hook-tracert': TracertChang,
+  'vis-tach-ten-so': TachTenSo,
+  'vis-hook-ten-so': TachTenSo,
+  'vis-arp-doi-chu': ArpDoiChu,
+  'vis-hook-doi-chu': ArpDoiChu,
+  'vis-manh-moi-tai-cho': ManhMoiTaiCho,
+  'vis-hook-manh-moi': ManhMoiTaiCho,
 }
 
 /**

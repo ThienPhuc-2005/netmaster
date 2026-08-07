@@ -177,6 +177,70 @@ describe('bộ nội dung', () => {
     expect(fadingOfLessonTeaching('m9-gpresult').fadingLevel, 'bài cuối phải tự làm từ yêu cầu suông').toBe(2)
   })
 
+  it('Module 11: 100% productive failure — MỌI bài mở màn bằng một ca bệnh ở bước Đoán thử', () => {
+    // Spec Module 11: "KHÔNG có phần lý thuyết trước". Cách giữ điều đó
+    // trong tuple 6 bước là chiêu của Module 4: bệnh nhân ĐẦU TIÊN của
+    // mỗi bài nằm ở bước 2 (Đoán thử) — người học chạm tay vào ca hỏng
+    // trước khi đọc bất kỳ màn dạy nào. Ai dời ca xuống sau bước Dạy là
+    // test này đỏ.
+    const m11 = moduleById('module-11')
+    for (const lesson of m11.lessons) {
+      const hasClinicPretest = lesson.steps[1].questions.some((q) => q.kind === 'clinic')
+      expect(hasClinicPretest, `${lesson.id}: bước Đoán thử phải có một ca bệnh`).toBe(true)
+    }
+  })
+
+  it('Module 11: phủ đủ thang bệnh dễ → khó của spec', () => {
+    // Spec liệt kê đích danh: rút dây → sai gateway → DNS chết → trùng
+    // IP → GPO chặn nhầm. Mỗi bệnh phải có ít nhất một ca thật trong
+    // module — thiếu bệnh nào là cắt xén thang độ khó spec đã chốt.
+    const m11 = moduleById('module-11')
+    const specs = [
+      ...m11.lessons.flatMap((l) => [
+        ...l.steps[1].questions,
+        ...l.steps[3].exercises.map((e) => e.question),
+        ...l.steps[4].questions.map((e) => e.question),
+      ]),
+      ...m11.masteryTest,
+    ].flatMap((q) => (q.kind === 'clinic' ? [q.spec] : []))
+    expect(specs.length).toBeGreaterThanOrEqual(8)
+
+    // Rút dây: có ca chữa bằng cắm dây.
+    expect(specs.some((s) => s.fix.kind === 'edit-network' && s.fix.allow.addLinks)).toBe(true)
+    // DNS chết: có ca overlay khai dịch vụ DNS ngừng chạy.
+    expect(specs.some((s) => s.patient.overlay.dns?.down === true)).toBe(true)
+    // Trùng IP: có ca hai thiết bị cùng giữ một địa chỉ ở trạng thái đầu.
+    const hasDuplicateIp = specs.some((s) => {
+      const ips = s.patient.topology.devices.flatMap((d) =>
+        d.kind === 'pc' ? (d.ipConfig ? [d.ipConfig.ip] : []) : [],
+      )
+      return new Set(ips).size < ips.length
+    })
+    expect(hasDuplicateIp).toBe(true)
+    // GPO chặn nhầm: có ca luật chặn nguồn gpo; và có cả ca tường lửa
+    // (biến thể inbound) để dạy cặp chiều đi/chiều vào.
+    const blocks = specs.flatMap((s) => s.patient.overlay.hostBlocks ?? [])
+    expect(blocks.some((b) => b.source === 'gpo')).toBe(true)
+    expect(blocks.some((b) => b.source === 'firewall')).toBe(true)
+    // Cả hai kiểu sửa đều phải xuất hiện: sửa sơ đồ và chọn hành động.
+    expect(specs.some((s) => s.fix.kind === 'edit-network')).toBe(true)
+    expect(specs.some((s) => s.fix.kind === 'choose-action')).toBe(true)
+  })
+
+  it('bài thi Module 11 trộn kiến thức module trước và kết bằng ca bệnh (tổng ôn trá hình)', () => {
+    // Spec: "case trộn kiến thức mọi module trước — đây chính là bài
+    // tổng ôn trá hình". Chốt kiểm hai điểm đo được: bài thi kết bằng
+    // ca clinic, và trong các ca thi có ca sửa VLAN (kiến thức Module 4
+    // xuất hiện lại trong khung phòng khám).
+    const m11 = moduleById('module-11')
+    expect(m11.masteryTest.at(-1)?.kind, 'câu chốt bài thi phải là một ca bệnh').toBe('clinic')
+    const examSpecs = m11.masteryTest.flatMap((q) => (q.kind === 'clinic' ? [q.spec] : []))
+    expect(
+      examSpecs.some((s) => s.fix.kind === 'edit-network' && s.fix.allow.setVlan),
+      'bài thi cần một ca sửa VLAN — kiến thức Module 4 quay lại trong vai bệnh',
+    ).toBe(true)
+  })
+
   it('mastery test đủ dày để ngưỡng 85% có nghĩa (>= 7 câu mỗi module)', () => {
     for (const m of modules) {
       expect(m.masteryTest.length, `${m.id} cần >= 7 câu thi`).toBeGreaterThanOrEqual(7)

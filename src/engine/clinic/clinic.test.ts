@@ -100,8 +100,11 @@ describe('terminal — ipconfig và nslookup', () => {
 describe('terminal — ping suy từ mô phỏng', () => {
   it('ca rút dây: ping báo transmit failed (máy không có dây)', () => {
     const { last } = type(CASE_RUT_DAY, 'ping 192.168.10.20')
-    expect(last.outcome).toMatchObject({ kind: 'ping', replied: false })
-    // src-no-link: gói không rời nổi máy — không có reply nào.
+    expect(last.outcome).toMatchObject({ kind: 'ping', replied: false, failure: 'src-no-link' })
+    // src-no-link: gói không rời nổi MÁY MÌNH → General failure tại chỗ —
+    // khác hẳn "Destination host unreachable" khi dây MÁY ĐÍCH rơi (ARP
+    // không ai đáp). Phân biệt hai ca đó là bài học của Module 11 bài 1.
+    expect(last.lines.join('\n')).toContain('General failure')
     expect(last.lines.join('\n')).toContain('Lost = 4')
   })
 

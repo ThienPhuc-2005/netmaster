@@ -351,7 +351,11 @@ function cmdPing(patient: ClinicPatient, state: TerminalState, target: string): 
 
   const failure = sim.result.failure
   const body =
-    failure === 'src-no-ip' || failure === 'no-gateway' || failure === 'gateway-off-subnet'
+    // 'src-no-link' đứng chung nhóm General failure: dây CỦA MÌNH rơi thì
+    // gói không rời nổi máy — Windows thật báo transmit failed ngay, khác
+    // hẳn "Destination host unreachable" khi dây MÁY ĐÍCH rơi (ARP không
+    // ai đáp). Phân biệt được hai ca đó chính là bài học của phòng khám.
+    failure === 'src-no-ip' || failure === 'src-no-link' || failure === 'no-gateway' || failure === 'gateway-off-subnet'
       ? ['PING: transmit failed. General failure.']
       : failure === 'arp-unresolved'
         ? pingBodyLines('unreachable-local', { ip })

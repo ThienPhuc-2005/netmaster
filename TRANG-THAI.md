@@ -10,8 +10,8 @@ mở lại dự án. Nguồn chân lý vẫn là `SPEC-APP-HOC-MANG.md`; luật 
 XONG cả 5 khối (Module 8-10 + cung điện GPO + checklist VMware). App có
 đủ Module 1-10. **Hạng mục (9) — Phòng khám mạng (Module 11) — đang
 làm: kế hoạch 5 khối ĐÃ được người dùng duyệt kèm 3 quyết định (bảng
-dưới); khối 9.1 + 9.2 XONG, việc kế tiếp là khối 9.3 — nội dung
-`module-11.json` (case dễ→khó theo spec) + hình khái niệm.**
+dưới); khối 9.1 + 9.2 + 9.3 XONG, việc kế tiếp là khối 9.4 — mở khóa
+tab Phòng khám (danh sách case, làm lại tự do, XP lần đầu).**
 
 **Ba quyết định hạng mục (9) đã chốt (06-08, không hỏi lại):**
 1. Kiến trúc: engine clinic BỌC lab engine (case = topology lab + "hồ
@@ -56,7 +56,7 @@ ngoài mô hình thì chọn hành động). "Gửi thử" miễn phí / "Nộp"
 |------|----------|-----------|
 | 9.1 | Engine phòng khám thuần TS (`src/engine/clinic/`) | Xong |
 | 9.2 | UI terminal + khung bệnh nhân + cắm `kind: 'clinic'` vào pipeline + /design | Xong |
-| 9.3 | Nội dung `module-11.json` (case dễ→khó theo spec) + hình khái niệm | Chưa |
+| 9.3 | Nội dung `module-11.json` (case dễ→khó theo spec) + hình khái niệm | Xong |
 | 9.4 | Mở khóa tab Phòng khám (danh sách case, làm lại tự do, XP lần đầu) | Chưa |
 | 9.5 | DoD + kiểm browser + tài liệu | Chưa |
 
@@ -127,6 +127,37 @@ ngoài mô hình thì chọn hành động). "Gửi thử" miễn phí / "Nộp"
   unreachable), chốt chẩn đoán, sửa gateway về 192.168.10.1 trên sơ đồ,
   ping lại trong terminal ra Reply TTL=127, "Chạy lại triệu chứng" báo
   hết, nộp bài chấm "đạt"; mobile 375px scrollWidth = 375 không tràn.
+
+**Khối 9.3 đã làm gì** (nội dung thật của Module 11 — bài tổng ôn trá hình):
+- `content/modules/module-11.json` — 5 chặng × 1 bài, 6 khái niệm
+  (phương pháp + đồ nghề: khám theo tầng, ipconfig/ping, tracert,
+  nslookup, arp, gpresult/netstat), **11 ca bệnh** đúng thang dễ→khó
+  của spec: rút dây (2 biến thể: dây MÌNH — General failure vs dây
+  ĐÍCH — unreachable), sai/thiếu gateway, DNS chết vs THIẾU BẢN GHI
+  (đọc kỹ timeout ≠ Non-existent domain), trùng IP (mustClearDiagnoses
+  chặn sửa giả), GPO chặn outbound + tường lửa chặn inbound (cặp chiều
+  đi/vào). **100% productive failure đúng chữ spec:** bệnh nhân đầu của
+  MỖI bài nằm ở bước Đoán thử — content.test khóa luật này.
+- Bài thi 8 câu **kết bằng 2 ca bệnh** — interleaving thật: ca sửa VLAN
+  (kiến thức Module 4 quay lại trong vai bệnh, có goal "phải chặn" giữ
+  bức tường phòng ban) và ca DNS chết chốt sổ; câu TTL=126 → 2 router
+  (M4), câu gpresult (M9). content.test khóa: phủ đủ thang bệnh spec,
+  cả hai kiểu sửa, bài thi kết bằng clinic + có ca setVlan.
+- **Vá terminal cho đúng đời thật:** `src-no-link` (dây máy mình rơi)
+  giờ báo "PING: transmit failed. General failure." như Windows thật —
+  trước đây ra timeout thì không thể phân biệt "dây mình" với "dây
+  đích" qua terminal, tức bài 1 không có manh mối để dạy. Đây là sửa
+  fidelity output của khối 9.1, có test khóa.
+- 6 hình ConceptVisual mới (+5 alias hook): thang 4 bậc bottom-up, giấy
+  tờ + bắt mạch, tracert từng trạm, tách tên/số, ARP đổi chủ, khiên
+  chặn tại máy. Đo getBBox trên /design: 5 hình tràn chú thích lúc đầu
+  → rút gọn, giờ 0 tràn.
+- 802/802 test xanh (+3), typecheck sạch, build qua, content:review
+  render 11 module. Kiểm browser thật: đi bài m11-bai-1 — ca rút dây ở
+  Đoán thử: ping ra General failure trong terminal, chốt chẩn đoán, nối
+  dây bằng đường bấm chọn, ping lại Reply, "Chạy lại triệu chứng" báo
+  hết, nộp → "Bạn đoán đúng luôn!" + explain; qua bước Dạy hiện 2 màn
+  hình mới đúng nội dung.
 
 ## Đang ở đâu
 

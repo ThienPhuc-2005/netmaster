@@ -1,6 +1,6 @@
-# REVIEW NỘI DUNG — Module 1-10 (Phần A+B+C)
+# REVIEW NỘI DUNG — Module 1-11 (Phần A+B+C)
 
-> Sinh tự động từ `content/modules/module-01.json`, `content/modules/module-02.json`, `content/modules/module-03.json`, `content/modules/module-04.json`, `content/modules/module-05.json`, `content/modules/module-06.json`, `content/modules/module-07.json`, `content/modules/module-08.json`, `content/modules/module-09.json`, `content/modules/module-10.json` bằng `npm run content:review`.
+> Sinh tự động từ `content/modules/module-01.json`, `content/modules/module-02.json`, `content/modules/module-03.json`, `content/modules/module-04.json`, `content/modules/module-05.json`, `content/modules/module-06.json`, `content/modules/module-07.json`, `content/modules/module-08.json`, `content/modules/module-09.json`, `content/modules/module-10.json`, `content/modules/module-11.json` bằng `npm run content:review`.
 > Đây là bản để ĐỌC DUYỆT; muốn sửa thì sửa file JSON rồi render lại.
 
 ## Mạng là gì? — Câu chuyện bưu điện `module-1`
@@ -3023,3 +3023,364 @@ Phần C · 5 chặng · 5 bài · 8 khái niệm
 - **Đề:** Entra ID hybrid nghĩa là gì?
   - **Dạng:** trắc nghiệm · **Đồng bộ sổ AD DS trong nhà với sổ Entra ID trên mây — một danh tính dùng cả hai thế giới** ✓ / Thay Domain Controller bằng router / Một loại VPN của Microsoft
   - **Vì sao:** Tài khoản tạo trong AD (đúng kỹ năng Module 9) tự chảy lên Entra ID — người dùng một mật khẩu, quản trị một chỗ tạo và thu hồi.
+
+## Phòng khám mạng — chẩn đoán sự cố `module-11`
+
+Phần C · 5 chặng · 5 bài · 6 khái niệm
+
+**Chặng:** Ca trực đầu tiên (m11-bai-1) → Lần theo đường đi (m11-bai-2) → Tên và số (m11-bai-3) → Bệnh chập chờn (m11-bai-4) → Manh mối tại chỗ (m11-bai-5)
+
+### Bài: Nhận ca trực: máy không in được `m11-bai-1`
+
+**1 · Khởi động (hook):** Điện thoại phòng IT reo: "Máy chị tự nhiên không in được nữa!". Trên tay bạn chỉ có một cửa sổ terminal, không được nhìn sơ đồ mạng. Bắt đầu từ đâu để không phải đoán mò?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Bệnh nhân đầu tiên của bạn đây: chị kế toán tầng 2 than không in được sang MAY-IN-TANG-2 (192.168.20.21). Chưa ai dạy bạn phương pháp nào cả — cứ gõ lệnh mà khám, sai không mất gì. Đoán bệnh rồi thử chữa xem.
+  - **Dạng:** ca bệnh phòng khám (khám qua terminal → chẩn đoán → sửa)
+    - **Mạng bệnh nhân:** MAY-KE-TOAN [192.168.20.10/24] · MAY-IN-TANG-2 [192.168.20.21/24] · SW-TANG-2 [p1:VLAN 1, p2:VLAN 1] — dây: MAY-IN-TANG-2·eth0 — SW-TANG-2·p2
+    - **Ngồi ở máy:** MAY-KE-TOAN
+    - **Hồ sơ bệnh:** không có (bệnh nằm trọn trong sơ đồ)
+    - **Triệu chứng:** MAY-KE-TOAN ping 192.168.20.21 PHẢI hỏng
+    - **Chẩn đoán (chọn 1):** **Dây mạng của chính máy bạn đang ngồi bị tuột** ✓ · Máy in đặt sai địa chỉ IP · DNS nội bộ ngừng chạy
+    - **Sửa:** trực tiếp trên sơ đồ — mục tiêu:
+      - c1a-ke-toan PHẢI gọi được c1a-may-in
+    - **Được phép:** cắm dây
+    - **Lời giải mẫu:** MAY-KE-TOAN [192.168.20.10/24] · MAY-IN-TANG-2 [192.168.20.21/24] · SW-TANG-2 [p1:VLAN 1, p2:VLAN 1] — dây: MAY-IN-TANG-2·eth0 — SW-TANG-2·p2 | MAY-KE-TOAN·eth0 — SW-TANG-2·p1
+  - **Chủ đề gợi ý (tầng 1):** gói tin có rời nổi máy bạn không
+  - **Vì sao:** Ping đi đâu cũng ra "PING: transmit failed. General failure." — gói không rời nổi máy, nghĩa là bệnh nằm ngay tầng thấp nhất: sợi dây của chính máy mình. Cắm lại dây vào switch là mạch chạy. Đây chính là lý do buổi khám nào cũng bắt đầu từ dây cắm.
+
+**3 · Khám phá (teach):**
+- *[m11-kham-theo-tang]* Người sửa mạng lành nghề không đoán — họ khám theo tầng, từ THẤP lên CAO: dây cắm → địa chỉ IP → đường đi → dịch vụ. Như bác sĩ bắt mạch trước khi hỏi chuyện ăn uống: tầng dưới mà hỏng thì mọi tầng trên hỏng theo, nên phải loại trừ từ nền móng lên.
+  - **Đào sâu hơn:** Phương pháp này gọi là bottom-up troubleshooting, bám theo đúng các tầng bạn đã học từ Module 1: tầng vật lý (dây, Module 4), tầng địa chỉ (IP/gateway, Module 3), tầng định tuyến (router, Module 4), rồi mới tới dịch vụ (DNS/web, Module 6). Phần lớn sự cố văn phòng nằm ở hai tầng thấp nhất — vì thế khám từ dưới lên thường ra bệnh rất nhanh.
+- *[m11-ipconfig-ping]* Hai món đồ nghề đầu tiên: ipconfig đọc "giấy tờ tùy thân" của máy (IP, subnet mask, gateway, DNS), còn ping là cái ống nghe — gửi gói thăm dò rồi nghe ngóng. Ba câu trả lời của ping kể ba câu chuyện khác nhau: Reply là mạch sống; "General failure" là gói KHÔNG RỜI NỔI máy mình; "Destination host unreachable" là gói rời được máy nhưng gọi không ai đáp.
+  - **Đào sâu hơn:** Dòng Reply còn tặng kèm một manh mối: TTL. Máy Windows xuất phát ở TTL 128, qua mỗi router bị trừ 1 (bạn đã gặp ở Module 4). Thấy TTL=126 tức là gói đã đi qua 2 router — chưa cần tracert cũng ước được quãng đường.
+
+**4 · Thử tay (practice, fading 0):**
+- **Ví dụ giải sẵn:** Ca mẫu, khám đúng bài bản: chị kế toán than "không vào được máy in". Bước 1 — ipconfig: máy có IP 192.168.20.10/24, hợp lệ, không nghi gì. Bước 2 — ping 192.168.20.21: cả bốn gói đều "General failure" — gói không rời nổi máy, vậy không cần nghi máy in hay DNS gì hết, bệnh ở ngay tầng dây của máy mình. Bước 3 — nhìn xuống gầm bàn: dây mạng tuột thật. Cắm lại, ping ra Reply. Chốt bệnh án: đứt kết nối vật lý tại máy trạm.
+- **Đề:** Ca tiếp theo cùng phòng: vẫn máy chị kế toán, lần này in được rồi nhưng không chấm công được vào MAY-CHAM-CONG (192.168.20.30). Khám theo đúng trình tự vừa học nhé.
+  - **Dạng:** ca bệnh phòng khám (khám qua terminal → chẩn đoán → sửa)
+    - **Mạng bệnh nhân:** MAY-KE-TOAN [192.168.20.10/24] · MAY-IN-TANG-2 [192.168.20.21/24] · MAY-CHAM-CONG [192.168.20.30/24] · SW-TANG-2 [p1:VLAN 1, p2:VLAN 1, p3:VLAN 1] — dây: MAY-KE-TOAN·eth0 — SW-TANG-2·p1 | MAY-IN-TANG-2·eth0 — SW-TANG-2·p2
+    - **Ngồi ở máy:** MAY-KE-TOAN
+    - **Hồ sơ bệnh:** không có (bệnh nằm trọn trong sơ đồ)
+    - **Triệu chứng:** MAY-KE-TOAN ping 192.168.20.30 PHẢI hỏng
+    - **Chẩn đoán (chọn 1):** **Dây của MAY-CHAM-CONG bị tuột** ✓ · Dây của chính máy bạn bị tuột · Máy bạn thiếu gateway
+    - **Sửa:** trực tiếp trên sơ đồ — mục tiêu:
+      - c1b-ke-toan PHẢI gọi được c1b-cham-cong
+    - **Được phép:** cắm dây
+    - **Lời giải mẫu:** MAY-KE-TOAN [192.168.20.10/24] · MAY-IN-TANG-2 [192.168.20.21/24] · MAY-CHAM-CONG [192.168.20.30/24] · SW-TANG-2 [p1:VLAN 1, p2:VLAN 1, p3:VLAN 1] — dây: MAY-KE-TOAN·eth0 — SW-TANG-2·p1 | MAY-IN-TANG-2·eth0 — SW-TANG-2·p2 | MAY-CHAM-CONG·eth0 — SW-TANG-2·p3
+  - **Chủ đề gợi ý (tầng 1):** phía nào không trả lời tiếng gọi
+  - **Gợi ý (tầng 2):** Ping máy in vẫn Reply — mạng phía bạn đang sống, loại ngay ca "dây mình tuột". Ping máy chấm công thì "Destination host unreachable": gói rời được máy, chỉ là lời gọi "ai giữ 192.168.20.30?" không ai đáp. Ai đang không nghe được lời gọi đó?
+  - **Lời giải (tầng 3):** Bệnh nằm ở phía máy đích: MAY-CHAM-CONG bị tuột dây nên không nghe được tiếng gọi ARP. Trong pha sửa, nối cổng eth0 của nó vào cổng trống p3 của switch — ping lại là có Reply. So với ca trước: General failure là dây MÌNH, còn unreachable với mạng-mình-vẫn-sống là dây ĐÍCH.
+- **Đề:** Bạn ping một máy cùng phòng và nhận "Destination host unreachable" trong khi ping các máy khác vẫn Reply. Bệnh khả năng cao nằm ở phía nào — máy mình hay máy đích?
+  - **Dạng:** gõ tay · **Chấp nhận:** máy đích | phía đích | phía máy đích | ben máy đích | đích
+  - **Chủ đề gợi ý (tầng 1):** gói có rời được máy bạn không
+  - **Gợi ý (tầng 2):** Các máy khác vẫn Reply nghĩa là dây và cấu hình phía bạn đều ổn. Vậy tiếng gọi "ai giữ địa chỉ này?" chết ở đâu?
+  - **Lời giải (tầng 3):** Ở phía máy đích: mạng của bạn sống (ping máy khác vẫn Reply), nhưng máy đích không đáp lời gọi ARP — thường là nó tuột dây, tắt nguồn, hoặc tự chặn.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: khám theo tầng (bottom-up) luôn bắt đầu từ tầng nào?
+  - **Dạng:** gõ tay · **Chấp nhận:** dây | dây cắm | tầng vật lý | vật lý | tầng thấp nhất
+  - **Chủ đề gợi ý (tầng 1):** tầng thấp nhất của mạng
+  - **Gợi ý (tầng 2):** Là thứ hữu hình nhất, nằm dưới cùng — hỏng nó thì mọi tầng trên hỏng theo.
+  - **Lời giải (tầng 3):** Bắt đầu từ tầng vật lý — sợi dây. Tầng dưới hỏng kéo mọi tầng trên hỏng theo, nên loại trừ từ nền móng lên là nhanh nhất.
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao nên khám từ tầng thấp lên thay vì đoán ngay "chắc do DNS" hay "chắc do web"?
+  - **Nhóm ý cần chạm:** [tầng thấp, dây, vật lý, nền] · [loại trừ, khoanh vùng, thu hẹp, chắc chắn]
+  - **Trả lời mẫu:** Vì tầng dưới hỏng thì mọi tầng trên hỏng theo — đoán ngay tầng cao là có thể sửa nhầm chỗ không bệnh. Khám từ dây lên giúp loại trừ từng tầng một cách chắc chắn, khoanh vùng bệnh ngày càng hẹp thay vì đoán mò.
+
+**6 · Tổng kết:**
+- Khám theo tầng từ thấp lên: dây → IP → đường đi → dịch vụ.
+- ipconfig đọc giấy tờ của máy; ping bắt mạch đường truyền.
+- General failure = bệnh tại máy mình; unreachable khi mạng mình sống = bệnh phía đích.
+- *Úp mở bài sau:* Ca sau lạ hơn: trong nhà gọi nhau ngon lành, nhưng cứ bước ra khỏi cửa là lạc. Cánh cửa nào của mạng đang hỏng?
+
+### Bài: Trong nhà gọi được, ra ngoài thì không `m11-bai-2`
+
+**1 · Khởi động (hook):** Chị kế toán in được, chấm công được — nhưng không mở nổi web công ty nằm ngoài Internet. Trong nhà nói chuyện rôm rả mà ra khỏi cửa là lạc đường: bệnh này nằm ở đâu?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Bệnh nhân than: "máy chị vào máy in bình thường mà web công ty (203.0.113.1) thì chịu". Khám bằng đồ nghề bài trước xem — để ý kỹ tờ ipconfig, rồi thử ping từng chặng một.
+  - **Dạng:** ca bệnh phòng khám (khám qua terminal → chẩn đoán → sửa)
+    - **Mạng bệnh nhân:** MAY-KE-TOAN [192.168.20.10/24, gw 192.168.20.99] · SW-TANG-2 [p1:VLAN 1, p2:VLAN 1] · RT-VAN-PHONG [lan:192.168.20.1/24, wan:203.0.113.2/30] · WEB-CONG-TY [203.0.113.1/30, gw 203.0.113.2] — dây: MAY-KE-TOAN·eth0 — SW-TANG-2·p1 | SW-TANG-2·p2 — RT-VAN-PHONG·lan | RT-VAN-PHONG·wan — WEB-CONG-TY·eth0
+    - **Ngồi ở máy:** MAY-KE-TOAN
+    - **Hồ sơ bệnh:** không có (bệnh nằm trọn trong sơ đồ)
+    - **Triệu chứng:** MAY-KE-TOAN ping 203.0.113.1 PHẢI hỏng
+    - **Chẩn đoán (chọn 1):** **Gateway của máy trỏ về một địa chỉ không ai giữ** ✓ · Dây mạng của máy bị tuột · Máy chủ web bên ngoài đã sập
+    - **Sửa:** trực tiếp trên sơ đồ — mục tiêu:
+      - c2a-ke-toan PHẢI gọi được c2a-web
+    - **Được phép:** đặt địa chỉ
+    - **Lời giải mẫu:** MAY-KE-TOAN [192.168.20.10/24, gw 192.168.20.1] · SW-TANG-2 [p1:VLAN 1, p2:VLAN 1] · RT-VAN-PHONG [lan:192.168.20.1/24, wan:203.0.113.2/30] · WEB-CONG-TY [203.0.113.1/30, gw 203.0.113.2] — dây: MAY-KE-TOAN·eth0 — SW-TANG-2·p1 | SW-TANG-2·p2 — RT-VAN-PHONG·lan | RT-VAN-PHONG·wan — WEB-CONG-TY·eth0
+  - **Chủ đề gợi ý (tầng 1):** cánh cửa ra khỏi dải mạng của máy
+  - **Vì sao:** ipconfig lộ manh mối: Default Gateway ghi 192.168.20.99. Ping thử chính 192.168.20.99 — "Destination host unreachable": không ai giữ địa chỉ đó cả! Cửa ra được trỏ về một cánh cửa ma, nên mọi chuyến đi ra ngoài dải đều chết từ bước đầu, còn trong dải thì vẫn chạy vì không cần qua gateway. Sửa gateway về 192.168.20.1 (cổng LAN của router) là thông.
+
+**3 · Khám phá (teach):**
+- *[m11-tracert]* Khi bệnh kiểu "trong được, ngoài không", nghi phạm số một là cánh cửa ra: gateway. Lệnh tracert gọi tên từng trạm trên đường đi — trạm nào còn trả lời tức là đường tới đó còn sống; trạm nào im lặng (* * *) thì chỗ nghẽn nằm ngay sau trạm cuối cùng còn lên tiếng. Bệnh chết từ chặng 1 nghĩa là gói còn chưa qua nổi gateway của chính mình.
+  - **Đào sâu hơn:** Vì sao "trong dải vẫn chạy"? Nhớ Module 3: đích cùng dải thì máy gọi thẳng nhau bằng ARP, không cần gateway. Chỉ khi đích NGOÀI dải, máy mới đưa gói cho gateway — nên gateway sai/thiếu chỉ giết những chuyến đi xa. Cặp triệu chứng "trong sống, ngoài chết" gần như chỉ tay vào đúng một trường cấu hình.
+
+**4 · Thử tay (practice, fading 1):**
+- **Đề:** Máy anh bảo vệ mới lắp: trong mạng chạy tốt, ra web công ty (203.0.113.1) thì "General failure" ngay lập tức. Điền nốt chỗ trống của quy trình: ipconfig xem giấy tờ → phát hiện thiếu gì → sửa.
+  - **Dạng:** ca bệnh phòng khám (khám qua terminal → chẩn đoán → sửa)
+    - **Mạng bệnh nhân:** MAY-BAO-VE [192.168.20.15/24] · SW-TANG-2 [p1:VLAN 1, p2:VLAN 1] · RT-VAN-PHONG [lan:192.168.20.1/24, wan:203.0.113.2/30] · WEB-CONG-TY [203.0.113.1/30, gw 203.0.113.2] — dây: MAY-BAO-VE·eth0 — SW-TANG-2·p1 | SW-TANG-2·p2 — RT-VAN-PHONG·lan | RT-VAN-PHONG·wan — WEB-CONG-TY·eth0
+    - **Ngồi ở máy:** MAY-BAO-VE
+    - **Hồ sơ bệnh:** không có (bệnh nằm trọn trong sơ đồ)
+    - **Triệu chứng:** MAY-BAO-VE ping 203.0.113.1 PHẢI hỏng
+    - **Chẩn đoán (chọn 1):** **Máy chưa được khai gateway — không có cửa ra** ✓ · Router văn phòng bị treo · Dây từ switch lên router bị đứt
+    - **Sửa:** trực tiếp trên sơ đồ — mục tiêu:
+      - c2b-bao-ve PHẢI gọi được c2b-web
+      - phải hết sạch: missing-gateway
+    - **Được phép:** đặt địa chỉ
+    - **Lời giải mẫu:** MAY-BAO-VE [192.168.20.15/24, gw 192.168.20.1] · SW-TANG-2 [p1:VLAN 1, p2:VLAN 1] · RT-VAN-PHONG [lan:192.168.20.1/24, wan:203.0.113.2/30] · WEB-CONG-TY [203.0.113.1/30, gw 203.0.113.2] — dây: MAY-BAO-VE·eth0 — SW-TANG-2·p1 | SW-TANG-2·p2 — RT-VAN-PHONG·lan | RT-VAN-PHONG·wan — WEB-CONG-TY·eth0
+  - **Chủ đề gợi ý (tầng 1):** ô Default Gateway trên tờ ipconfig
+  - **Gợi ý (tầng 2):** ipconfig đi: ô Default Gateway trống trơn. Không có cửa ra thì gói ngoài dải chết ngay tại máy — đúng chữ "General failure" tức thì. Còn router có treo không? Ping 192.168.20.1 thử là biết.
+  - **Lời giải (tầng 3):** Máy thiếu gateway. Ping 192.168.20.1 vẫn Reply nghĩa là router sống và đường trong nhà thông — chỉ cần điền gateway 192.168.20.1 cho MAY-BAO-VE là chuyến đi xa có người dẫn đường.
+- **Đề:** Tracert tới một máy ngoài Internet in được chặng 1 là 192.168.20.1 (<1ms) rồi từ chặng 2 toàn * * *. Đường đứt ở khoảng nào?
+  - **Dạng:** gõ tay · **Chấp nhận:** sau gateway | sau router | sau chặng 1 | ngoài router | từ router ra ngoài | sau 192.168.20.1
+  - **Chủ đề gợi ý (tầng 1):** trạm cuối cùng còn lên tiếng
+  - **Gợi ý (tầng 2):** Trạm 192.168.20.1 (gateway) còn trả lời — đường tới đó sống. Chỗ nghẽn nằm ngay sau trạm cuối cùng còn lên tiếng.
+  - **Lời giải (tầng 3):** Đứt ở đoạn SAU gateway: từ máy tới router văn phòng còn sống (chặng 1 trả lời), nhưng từ router ra ngoài thì im lặng — nghi đường lên nhà mạng hoặc chặng kế tiếp.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: ping máy CÙNG dải thì sống, ping mọi thứ NGOÀI dải đều chết. Trường cấu hình nào của máy đáng nghi nhất?
+  - **Dạng:** gõ tay · **Chấp nhận:** gateway | default gateway | cổng mặc định | cửa ra
+  - **Chủ đề gợi ý (tầng 1):** thứ chỉ dùng khi đi ra khỏi dải
+  - **Gợi ý (tầng 2):** Trong dải thì máy gọi thẳng nhau, không cần nó. Chỉ chuyến đi xa mới phải qua nó.
+  - **Lời giải (tầng 3):** Gateway. Trong dải máy gọi thẳng nhau bằng ARP nên gateway sai/thiếu không lộ; ra ngoài dải mọi gói phải qua gateway — nó hỏng là mọi chuyến đi xa chết.
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao gateway sai mà ping máy cùng phòng vẫn chạy bình thường?
+  - **Nhóm ý cần chạm:** [cùng dải, trong dải, gọi thẳng, trực tiếp, arp] · [ngoài dải, qua gateway, cửa ra, đi xa]
+  - **Trả lời mẫu:** Vì đích cùng dải thì máy hỏi thẳng nhau bằng ARP rồi gửi trực tiếp, không đụng tới gateway. Gateway chỉ được dùng khi đích nằm ngoài dải — nên gateway sai chỉ giết các chuyến đi xa, còn trong phòng vẫn nói chuyện bình thường.
+
+**6 · Tổng kết:**
+- "Trong sống, ngoài chết" — nghi phạm số một là gateway.
+- tracert gọi tên từng trạm: chỗ nghẽn nằm ngay sau trạm cuối còn lên tiếng.
+- Ping thẳng địa chỉ gateway để kiểm tra cánh cửa có thật và còn sống.
+- *Úp mở bài sau:* Ca sau còn lạ nữa: máy chủ sống nhăn răng, ping số thì Reply — mà gõ tên miền thì chịu chết. Ai mới là kẻ ốm?
+
+### Bài: Máy chủ sống mà tên miền chết `m11-bai-3`
+
+**1 · Khởi động (hook):** Ping 192.168.20.80 — Reply ngon lành. Gõ web.noibo.vn — trình duyệt quay mòng mòng rồi bó tay. Máy chủ rõ ràng đang sống, vậy đứa nào ốm?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Cả phòng kế toán nhao nhao: "web nội bộ sập rồi!". Bạn ngồi vào máy chị kế toán. Đừng vội tin lời than — thử tách bạch xem: bằng SỐ thì sao, bằng TÊN thì sao, và đứa trung gian nào đứng giữa hai thứ đó.
+  - **Dạng:** ca bệnh phòng khám (khám qua terminal → chẩn đoán → sửa)
+    - **Mạng bệnh nhân:** MAY-KE-TOAN [192.168.20.10/24] · DNS-NOI-BO [192.168.20.53/24] · WEB-NOI-BO [192.168.20.80/24] · SW-TANG-2 [p1:VLAN 1, p2:VLAN 1, p3:VLAN 1] — dây: MAY-KE-TOAN·eth0 — SW-TANG-2·p1 | DNS-NOI-BO·eth0 — SW-TANG-2·p2 | WEB-NOI-BO·eth0 — SW-TANG-2·p3
+    - **Ngồi ở máy:** MAY-KE-TOAN
+    - **Hồ sơ bệnh:** DNS 192.168.20.53 (ĐANG CHẾT) [web.noibo.vn → 192.168.20.80]
+    - **Triệu chứng:** MAY-KE-TOAN phân giải tên "web.noibo.vn" PHẢI hỏng
+    - **Chẩn đoán (chọn 1):** **Dịch vụ DNS nội bộ đang ngừng chạy** ✓ · Máy chủ web đã tắt · Dây mạng máy bạn bị tuột
+    - **Sửa:** chọn hành động — **Khởi động lại dịch vụ DNS trên máy DNS-NOI-BO** ✓ · Cắm lại dây mạng cho máy bạn · Đổi địa chỉ IP của máy chủ web
+  - **Chủ đề gợi ý (tầng 1):** đứa trung gian giữa tên và số
+  - **Vì sao:** Ping 192.168.20.80 Reply — web sống. Ping cả 192.168.20.53 cũng Reply — MÁY DNS sống. Nhưng nslookup web.noibo.vn thì "DNS request timed out": máy sống mà DỊCH VỤ trên nó đã chết. Web không sập, dây không tuột — cuốn danh bạ ngừng trả lời nên cả phòng tưởng web chết. Việc đúng là khởi động lại dịch vụ DNS.
+
+**3 · Khám phá (teach):**
+- *[m11-tach-ten-so]* Phép thử tách đôi: ping bằng SỐ trước, rồi ping bằng TÊN. Số sống mà tên chết — bệnh không nằm ở đích, nó nằm ở cuốn danh bạ DNS (Module 6) đứng giữa hai thứ đó. Lệnh nslookup hỏi thẳng danh bạ; và hãy đọc kỹ lời từ chối: "request timed out" là dịch vụ không trả lời, còn "Non-existent domain" là dịch vụ SỐNG nhưng không có bản ghi cho tên đó — hai bệnh khác nhau, hai cách chữa khác nhau.
+  - **Đào sâu hơn:** Vì sao "máy sống, dịch vụ chết" lại xảy ra được? Ping đi bằng ICMP, do hệ điều hành trả lời; còn DNS là một chương trình lắng nghe trên cổng 53 (bạn đã ghé phòng 53 của cung điện Module 5). Máy bật mà chương trình tắt thì ping vẫn Reply, còn nslookup thì timeout. Đó là lý do người trực phải khám tới TẦNG DỊCH VỤ chứ không dừng ở "máy còn sống".
+
+**4 · Thử tay (practice, fading 1):**
+- **Đề:** Sáng nay công ty vừa lắp máy chấm công mới, và có người kêu: "gõ chamcong.noibo.vn không được, chắc DNS lại chết rồi!". Khoan tin — làm lại phép thử của bài, và đọc KỸ lời từ chối của nslookup trước khi kết luận.
+  - **Dạng:** ca bệnh phòng khám (khám qua terminal → chẩn đoán → sửa)
+    - **Mạng bệnh nhân:** MAY-KE-TOAN [192.168.20.10/24] · DNS-NOI-BO [192.168.20.53/24] · MAY-CHAM-CONG [192.168.20.30/24] · SW-TANG-2 [p1:VLAN 1, p2:VLAN 1, p3:VLAN 1] — dây: MAY-KE-TOAN·eth0 — SW-TANG-2·p1 | DNS-NOI-BO·eth0 — SW-TANG-2·p2 | MAY-CHAM-CONG·eth0 — SW-TANG-2·p3
+    - **Ngồi ở máy:** MAY-KE-TOAN
+    - **Hồ sơ bệnh:** DNS 192.168.20.53 [web.noibo.vn → 192.168.20.80]
+    - **Triệu chứng:** MAY-KE-TOAN phân giải tên "chamcong.noibo.vn" PHẢI hỏng
+    - **Chẩn đoán (chọn 1):** **DNS sống nhưng chưa có bản ghi cho tên mới** ✓ · Dịch vụ DNS đã chết hẳn · Máy chấm công chưa cắm mạng
+    - **Sửa:** chọn hành động — **Thêm bản ghi chamcong.noibo.vn → 192.168.20.30 trên DNS server** ✓ · Khởi động lại dịch vụ DNS · Đổi gateway của máy bạn
+  - **Chủ đề gợi ý (tầng 1):** khác nhau giữa timeout và Non-existent domain
+  - **Gợi ý (tầng 2):** nslookup chamcong.noibo.vn trả "Non-existent domain" — tức danh bạ CÓ trả lời, chỉ là không tìm thấy tên. Thử nslookup web.noibo.vn: vẫn ra số ngon lành. Vậy dịch vụ chết hay thiếu trang?
+  - **Lời giải (tầng 3):** DNS đang sống khỏe (tên cũ vẫn tra được, lời từ chối là "Non-existent domain" chứ không phải timeout) — chỉ là máy chấm công MỚI chưa được ghi vào danh bạ. Việc đúng: thêm bản ghi chamcong.noibo.vn → 192.168.20.30. Khởi động lại DNS là chữa nhầm bệnh.
+- **Đề:** nslookup một tên trả về "Non-existent domain". Đó là dấu hiệu dịch vụ DNS đã chết, hay DNS sống nhưng thiếu bản ghi?
+  - **Dạng:** gõ tay · **Chấp nhận:** thiếu bản ghi | chưa có bản ghi | không có bản ghi | sống nhưng thiếu bản ghi
+  - **Chủ đề gợi ý (tầng 1):** ai là người đang từ chối bạn
+  - **Gợi ý (tầng 2):** Muốn nói "không có tên này" thì phải CÓ AI ĐÓ đang trả lời đã. Dịch vụ chết thì chỉ có im lặng — timeout.
+  - **Lời giải (tầng 3):** DNS sống nhưng thiếu bản ghi: "Non-existent domain" là một CÂU TRẢ LỜI — dịch vụ phải sống mới nói được câu đó. Dịch vụ chết cho ra "request timed out" — im lặng hoàn toàn.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: lệnh nào hỏi thẳng danh bạ DNS xem một tên trỏ về số nào?
+  - **Dạng:** gõ tay · **Chấp nhận:** nslookup
+  - **Chủ đề gợi ý (tầng 1):** đồ nghề chuyên hỏi danh bạ
+  - **Gợi ý (tầng 2):** ns là name server — lệnh này "tra cứu" trên đó.
+  - **Lời giải (tầng 3):** nslookup — hỏi thẳng DNS server, bỏ qua trình duyệt, để cô lập xem cuốn danh bạ có vấn đề không.
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao phải ping bằng SỐ trước khi kết luận "web sập" hay "DNS hỏng"?
+  - **Nhóm ý cần chạm:** [tách, cô lập, khoanh, phân biệt, loại trừ] · [dns, danh bạ, tên]
+  - **Trả lời mẫu:** Vì "gõ tên không vào được" gộp hai nghi phạm làm một: đích chết, hoặc danh bạ hỏng. Ping bằng số bỏ DNS ra khỏi cuộc chơi — số sống mà tên chết thì bệnh chắc chắn nằm ở khâu phân giải tên, không phải ở đích. Tách được hai nghi phạm là đã khoanh vùng xong một nửa ca bệnh.
+
+**6 · Tổng kết:**
+- Tách tên khỏi số: ping số trước — số sống + tên chết = bệnh ở DNS.
+- "Máy còn ping được" chưa chắc "dịch vụ còn sống" — khám tới tầng dịch vụ.
+- Timeout là dịch vụ im lặng; "Non-existent domain" là dịch vụ sống nhưng thiếu bản ghi.
+- *Úp mở bài sau:* Ca sau thuộc loại khó chịu nhất phòng khám: bệnh CHẬP CHỜN — lúc in được lúc không, chẳng theo quy luật nào. May là có một lệnh bắt được nó tại trận.
+
+### Bài: Hai kẻ giành một số nhà `m11-bai-4`
+
+**1 · Khởi động (hook):** "Máy in lúc được lúc không, sáng in ầm ầm, chiều lại đơ!" — bệnh chập chờn không tái hiện được theo ý mình là ác mộng của người trực. Nhưng có một cuốn sổ trên chính máy bạn ghi lại thủ phạm.
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Phòng kế toán vừa nhận thêm một máy in mới. Từ hôm đó, in sang máy in cũ (192.168.20.21) lúc được lúc mất. Mẹo cho người trực: bệnh chập chờn thì đừng thử MỘT lần rồi kết luận — làm đi làm lại và so hai lần với nhau.
+  - **Dạng:** ca bệnh phòng khám (khám qua terminal → chẩn đoán → sửa)
+    - **Mạng bệnh nhân:** MAY-KE-TOAN [192.168.20.10/24] · MAY-IN-KE-TOAN [192.168.20.21/24] · MAY-IN-MOI [192.168.20.21/24] · SW-TANG-2 [p1:VLAN 1, p2:VLAN 1, p3:VLAN 1] — dây: MAY-KE-TOAN·eth0 — SW-TANG-2·p1 | MAY-IN-KE-TOAN·eth0 — SW-TANG-2·p2 | MAY-IN-MOI·eth0 — SW-TANG-2·p3
+    - **Ngồi ở máy:** MAY-KE-TOAN
+    - **Hồ sơ bệnh:** không có (bệnh nằm trọn trong sơ đồ)
+    - **Triệu chứng:** MAY-KE-TOAN ping 192.168.20.21 lúc được lúc không (nhiều máy giành một IP)
+    - **Chẩn đoán (chọn 1):** **Hai thiết bị đang giành nhau một địa chỉ IP** ✓ · Dây máy in cũ bị lỏng · DNS trả sai địa chỉ
+    - **Sửa:** trực tiếp trên sơ đồ — mục tiêu:
+      - c4a-ke-toan PHẢI gọi được c4a-may-in-cu
+      - phải hết sạch: duplicate-ip
+    - **Được phép:** đặt địa chỉ
+    - **Lời giải mẫu:** MAY-KE-TOAN [192.168.20.10/24] · MAY-IN-KE-TOAN [192.168.20.21/24] · MAY-IN-MOI [192.168.20.22/24] · SW-TANG-2 [p1:VLAN 1, p2:VLAN 1, p3:VLAN 1] — dây: MAY-KE-TOAN·eth0 — SW-TANG-2·p1 | MAY-IN-KE-TOAN·eth0 — SW-TANG-2·p2 | MAY-IN-MOI·eth0 — SW-TANG-2·p3
+  - **Chủ đề gợi ý (tầng 1):** cuốn sổ MAC mà máy bạn tự ghi
+  - **Vì sao:** Ping 192.168.20.21 hai lượt rồi mở arp -a mà xem: lượt đầu địa chỉ đó gắn MAC …:20, lượt sau đã thành …:21 — MỘT số nhà, HAI chủ thay nhau trả lời. Máy in mới bị đặt trùng IP với máy in cũ, ai đáp ARP sau cùng thì "giành" được gói tin, nên dịch vụ chập chờn theo vận may. Sửa: cấp cho máy in mới một địa chỉ khác (ví dụ .22).
+
+**3 · Khám phá (teach):**
+- *[m11-arp-doi-chu]* Nhớ Module 4: MAC là số khung đóng chết vào máy, IP là biển số tháo lắp được. Lệnh arp -a mở cuốn sổ "biển số ↔ số khung" mà máy bạn tự ghi qua mỗi lần hỏi ARP. Bệnh trùng IP hiện nguyên hình ở đó: ping cùng một IP hai lượt mà MAC trong sổ ĐỔI — tức là hai cái máy khác nhau đang thay phiên trả lời cùng một biển số. Đó là bằng chứng thép, không cần đoán.
+  - **Đào sâu hơn:** Vì sao lúc được lúc mất? Khi hai máy cùng giữ một IP, cả hai đều đáp lời gọi ARP — ai đáp SAU CÙNG thì đè câu trả lời của kẻ trước trong cache của máy hỏi. Gói tin vì thế lúc chảy về máy này, lúc về máy kia, tùy vận may từng đợt ARP. Ngoài đời bạn còn thấy Windows kêu "IP address conflict" — chính là nó tự soi thấy chuyện này.
+
+**4 · Thử tay (practice, fading 2):**
+- **Đề:** Bạn ping cùng một địa chỉ hai lượt. arp -a lượt đầu ghi MAC đuôi :20, lượt sau thành đuôi :21. Tên bệnh là gì?
+  - **Dạng:** gõ tay · **Chấp nhận:** trùng ip | trùng địa chỉ ip | duplicate ip | ip conflict | xung đột ip
+  - **Chủ đề gợi ý (tầng 1):** một biển số, mấy chủ xe
+  - **Gợi ý (tầng 2):** MAC là số khung — mỗi máy một số, không đổi được. Cùng một IP mà số khung đổi qua đổi lại nghĩa là mấy máy đang giữ IP đó?
+  - **Lời giải (tầng 3):** Trùng IP (IP conflict): hai máy cùng giữ một địa chỉ, thay phiên trả lời ARP nên MAC trong sổ đổi qua đổi lại. Một biển số mà hai số khung là bằng chứng không cãi được.
+- **Đề:** Vì sao trùng IP làm dịch vụ LÚC ĐƯỢC LÚC MẤT thay vì chết hẳn?
+  - **Dạng:** trắc nghiệm · **Ai trả lời ARP sau cùng sẽ giành được IP — gói lúc chảy về máy này, lúc về máy kia** ✓ / Switch tự động chặn cả hai máy khi thấy trùng / Gói tin bị chia đôi cho cả hai máy nên mất một nửa
+  - **Chủ đề gợi ý (tầng 1):** ai là người trả lời câu hỏi ARP
+  - **Gợi ý (tầng 2):** Cả hai máy đều nghe thấy câu hỏi "ai giữ IP này?" — và cả hai đều trả lời. Cache của máy hỏi giữ câu trả lời của ai?
+  - **Lời giải (tầng 3):** Cả hai máy đều đáp ARP; câu trả lời đến SAU đè câu trả lời trước trong cache. Gói tin vì thế lúc về máy này lúc về máy kia — dịch vụ chập chờn theo từng đợt ARP, chứ không chết hẳn.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: lệnh nào mở cuốn sổ "IP ↔ MAC" mà máy bạn tự ghi, để bắt tại trận bệnh trùng IP?
+  - **Dạng:** gõ tay · **Chấp nhận:** arp | arp -a
+  - **Chủ đề gợi ý (tầng 1):** cuốn sổ ghi từ những lần hỏi "ai giữ địa chỉ này"
+  - **Gợi ý (tầng 2):** Chính là giao thức "gọi giữa sân" của Module 4 — lệnh cùng tên.
+  - **Lời giải (tầng 3):** arp -a — xem ARP cache. Ping hai lượt rồi so MAC của cùng một IP giữa hai lần xem: MAC đổi là trùng IP.
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao MAC trong arp -a đổi qua đổi lại lại là bằng chứng của bệnh trùng IP?
+  - **Nhóm ý cần chạm:** [mac, số khung, không đổi] · [hai máy, giành, thay phiên, trùng]
+  - **Trả lời mẫu:** MAC gắn chết vào từng máy, không đổi được — nên một IP tử tế chỉ được phép đi kèm một MAC. Thấy cùng một IP mà MAC đổi qua đổi lại nghĩa là hai máy khác nhau đang thay phiên trả lời cho địa chỉ đó, tức hai máy đang giành nhau cùng một IP.
+
+**6 · Tổng kết:**
+- Bệnh chập chờn: đừng thử một lần — làm đi làm lại rồi so hai lần với nhau.
+- arp -a là cuốn sổ IP ↔ MAC; cùng IP mà MAC đổi = hai máy giành một địa chỉ.
+- Chữa trùng IP: cấp cho một trong hai máy địa chỉ khác còn trống.
+- *Úp mở bài sau:* Ca chót là ca hắc búa nhất khoa: mạng sống nhăn răng, web chạy ầm ầm — mà ping thì chết ngay trên máy. Nghe vô lý? Chờ xem thủ phạm là ai.
+
+### Bài: Bệnh nằm ngay trên máy `m11-bai-5`
+
+**1 · Khởi động (hook):** Web mở được, chat chạy, file server vào ngon — nhưng gõ ping là "General failure" ngay tại chỗ. Mạng sống mà ping chết: nghe vô lý, cho tới khi bạn nhớ ra gói tin phải XIN PHÉP rời máy trước đã.
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Anh trưởng phòng kế toán (máy vào miền công ty) than: "web nội bộ chị vẫn xem được, mà ping kiểm tra thì toàn lỗi — máy anh hỏng mạng à?". Khám đi: lần này đủ đồ nghề rồi đấy, kể cả mấy lệnh dành riêng cho máy trong miền (Module 9).
+  - **Dạng:** ca bệnh phòng khám (khám qua terminal → chẩn đoán → sửa)
+    - **Mạng bệnh nhân:** MAY-TRUONG-PHONG [192.168.20.11/24] · WEB-NOI-BO [192.168.20.80/24] · SW-TANG-2 [p1:VLAN 1, p2:VLAN 1] — dây: MAY-TRUONG-PHONG·eth0 — SW-TANG-2·p1 | WEB-NOI-BO·eth0 — SW-TANG-2·p2
+    - **Ngồi ở máy:** MAY-TRUONG-PHONG
+    - **Hồ sơ bệnh:** luật chặn ICMP outbound trên c5a-truong-phong (nguồn gpo: "GPO-Chan-ICMP-Ra") · gpresult c5a-truong-phong: HinhNen-CongTy, GPO-Chan-ICMP-Ra ⚠, CamUSB-KeToan · netstat c5a-truong-phong: 2 dòng
+    - **Triệu chứng:** MAY-TRUONG-PHONG ping 192.168.20.80 PHẢI hỏng
+    - **Chẩn đoán (chọn 1):** **Một chính sách (GPO) trên máy đang chặn ping chiều đi** ✓ · Mạng tới máy chủ web bị đứt · Máy đang trùng địa chỉ IP với máy khác
+    - **Sửa:** chọn hành động — **Báo quản trị miền sửa GPO đang chặn ICMP chiều đi** ✓ · Thay dây mạng cho máy · Khởi động lại máy chủ web
+  - **Chủ đề gợi ý (tầng 1):** luật đang áp lên chính máy đó
+  - **Vì sao:** netstat cho thấy máy đang có kết nối ESTABLISHED tới 192.168.20.80:443 — tức đường mạng tới đúng máy chủ đó ĐANG SỐNG. Ping lại "General failure" ngay tại chỗ, capture trống trơn: gói ICMP không được phép rời máy. Mạng không đứt, không trùng IP — có luật chặn ngay trên máy. gpresult lôi thủ phạm ra ánh sáng: GPO-Chan-ICMP-Ra. Máy vào miền thì luật đến từ miền — việc đúng là báo quản trị miền sửa GPO đó.
+
+**3 · Khám phá (teach):**
+- *[m11-manh-moi-tai-cho]* Khi "mạng sống mà ping chết", đừng đổ tội cho dây hay switch — soi ngay trên máy. Ba ngọn đèn: netstat liệt kê các kết nối đang mở (có ESTABLISHED tới đích tức đường tới đó còn sống); capture xem gói ICMP có thật sự rời máy không (trống trơn = bị giữ lại từ trong nhà); gpresult (máy vào miền, Module 9) kê các chính sách đang áp — luật chặn ICMP nếu có sẽ nằm ngay trong danh sách đó.
+  - **Đào sâu hơn:** Ping dùng giao thức ICMP — một loại gói RIÊNG, khác với TCP mà web (443) hay file (445) đang dùng. Tường lửa và GPO chặn được TỪNG LOẠI gói theo TỪNG CHIỀU: chặn ICMP chiều đi thì ping chết mà web vẫn chạy; chặn ICMP chiều vào trên máy đích thì máy đích "câm" với ping nhưng dịch vụ thật vẫn phục vụ. Vì thế "ping chết" không bao giờ đủ để kết luận "mạng chết" — nó chỉ nói ICMP đang không qua được.
+
+**4 · Thử tay (practice, fading 2):**
+- **Đề:** Ca ngược chiều: từ máy bạn ping MAY-CHU-FILE (192.168.20.40) toàn "Request timed out", nhưng ổ mạng chia sẻ từ đúng máy chủ đó vẫn mở phà phà. Máy bạn KHÔNG vào miền, không có GPO nào cả. Tự khám từ đầu tới cuối rồi chọn cách xử lý.
+  - **Dạng:** ca bệnh phòng khám (khám qua terminal → chẩn đoán → sửa)
+    - **Mạng bệnh nhân:** MAY-KE-TOAN [192.168.20.10/24] · MAY-CHU-FILE [192.168.20.40/24] · SW-TANG-2 [p1:VLAN 1, p2:VLAN 1] — dây: MAY-KE-TOAN·eth0 — SW-TANG-2·p1 | MAY-CHU-FILE·eth0 — SW-TANG-2·p2
+    - **Ngồi ở máy:** MAY-KE-TOAN
+    - **Hồ sơ bệnh:** luật chặn ICMP inbound trên c5b-file (nguồn firewall: "Chan-ICMP-Vao") · netstat c5b-ke-toan: 1 dòng
+    - **Triệu chứng:** MAY-KE-TOAN ping 192.168.20.40 PHẢI hỏng
+    - **Chẩn đoán (chọn 1):** **Tường lửa trên máy chủ file đang nuốt gói ping chiều vào** ✓ · Dây của máy chủ file bị tuột · Máy bạn sai gateway
+    - **Sửa:** chọn hành động — **Mở luật cho ICMP chiều vào trong tường lửa của MAY-CHU-FILE** ✓ · Cắm lại dây mạng cho MAY-CHU-FILE · Đặt lại gateway cho máy bạn
+  - **Chủ đề gợi ý (tầng 1):** gói ping có RỜI được máy bạn không, và có VỀ được không
+  - **Gợi ý (tầng 2):** Lần này ping ra "Request timed out" chứ không phải General failure — gói RỜI được máy bạn. netstat thấy ESTABLISHED tới :445 của chính máy chủ đó — đường mạng sống. Chạy capture xem: echo-request bay TỚI nơi mà không có echo-reply bay về. Ai đang nuốt gói ở cửa NHÀ NÓ?
+  - **Lời giải (tầng 3):** Đường mạng thông (dịch vụ file :445 vẫn ESTABLISHED, capture thấy echo-request tới đích), nhưng máy chủ file lặng thinh với ICMP — tường lửa của chính nó chặn chiều VÀO. So với ca trước: chặn outbound chết từ General failure ngay tại máy mình; chặn inbound thì gói đi được mà không có hồi âm. Việc đúng: mở luật ICMP inbound trên MAY-CHU-FILE.
+- **Đề:** netstat thấy kết nối ESTABLISHED tới máy chủ, nhưng ping chính máy chủ đó lại thất bại. Đường mạng giữa hai máy còn sống hay đã đứt?
+  - **Dạng:** gõ tay · **Chấp nhận:** còn sống | vẫn sống | sống | còn thông | vẫn thông
+  - **Chủ đề gợi ý (tầng 1):** ESTABLISHED nghĩa là gì
+  - **Gợi ý (tầng 2):** Một kết nối TCP muốn ở trạng thái ESTABLISHED thì hai máy phải đang bắt tay nói chuyện được với nhau — qua đúng con đường đó.
+  - **Lời giải (tầng 3):** Còn sống: ESTABLISHED nghĩa là TCP đang nói chuyện thành công qua chính con đường ấy. Ping chết chỉ chứng tỏ ICMP bị chặn ở đâu đó — không đủ để kết luận mạng đứt.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: trên máy đã vào miền, lệnh nào liệt kê các chính sách (GPO) đang áp — nơi tìm luật chặn nhầm?
+  - **Dạng:** gõ tay · **Chấp nhận:** gpresult | gpresult /r
+  - **Chủ đề gợi ý (tầng 1):** lệnh quen từ Module 9
+  - **Gợi ý (tầng 2):** Chính là lệnh bạn dùng ở bài kế thừa GPO — "kết quả group policy".
+  - **Lời giải (tầng 3):** gpresult — kê mọi GPO đang áp lên máy. Máy vào miền mà tự dưng đổi tính, soi danh sách này trước khi đổ tội cho phần cứng.
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao "ping chết" chưa đủ để kết luận "mạng chết"?
+  - **Nhóm ý cần chạm:** [icmp, loại gói, riêng, một loại] · [chặn, luật, tường lửa, gpo]
+  - **Trả lời mẫu:** Ping dùng ICMP — chỉ là MỘT loại gói. Tường lửa hay GPO chặn được riêng ICMP theo từng chiều trong khi TCP của web, file vẫn chạy bình thường. Nên ping chết chỉ nói "ICMP không qua được"; muốn kết luận mạng chết phải soi thêm netstat, capture, gpresult xem gói bị nuốt ở đâu.
+
+**6 · Tổng kết:**
+- Mạng sống mà ping chết: soi luật ngay trên máy — gpresult, netstat, capture.
+- Chặn ICMP chiều đi = General failure tại chỗ; chặn chiều vào = timeout mà dịch vụ vẫn chạy.
+- Ping chỉ đo ICMP — nó chết không có nghĩa cả mạng chết.
+- *Úp mở bài sau:* Hết khoa khám lẻ — bài thi tổng của phòng khám sẽ trộn đủ mọi loại bệnh bạn từng gặp, không báo trước ca nào. Đúng như một buổi trực thật.
+
+### Khái niệm & flashcard (6)
+
+- **Bottom-up troubleshooting** `m11-kham-theo-tang` — Khám theo tầng — lần từ dây cắm lên tới dịch vụ
+  - Ẩn dụ: Như bác sĩ bắt mạch trước khi hỏi chuyện ăn ngủ: tầng dưới hỏng thì mọi tầng trên hỏng theo, nên khám từ nền móng lên là loại trừ nhanh nhất.
+  - Thẻ ôn: *Khám theo tầng (bottom-up) là khám theo thứ tự nào?* → Từ thấp lên cao: dây cắm → địa chỉ IP → đường đi (gateway/router) → dịch vụ (DNS, web). Tầng dưới hỏng kéo mọi tầng trên hỏng theo.
+- **ipconfig & ping** `m11-ipconfig-ping` — Cặp đồ nghề đầu tay: đọc giấy tờ của máy và bắt mạch đường truyền
+  - Ẩn dụ: ipconfig là xem giấy tờ tùy thân; ping là cái ống nghe — ba kiểu đáp (Reply, General failure, unreachable) là ba nhịp mạch khác nhau.
+  - Thẻ ôn: *Ping ra "General failure" khác gì "Destination host unreachable"?* → General failure: gói không rời nổi MÁY MÌNH (dây mình tuột, thiếu gateway, bị chặn outbound). Unreachable: gói rời được máy nhưng lời gọi ARP không ai đáp — bệnh phía trước, thường ở máy đích.
+- **tracert** `m11-tracert` — Gọi tên từng trạm trên đường đi để tìm chỗ nghẽn
+  - Ẩn dụ: Như gọi điện lần lượt cho từng trạm giao hàng: trạm nào còn bắt máy thì hàng đã qua đó — chỗ mất hàng nằm ngay sau trạm cuối còn bắt máy.
+  - Thẻ ôn: *Đọc kết quả tracert thế nào để tìm chỗ nghẽn?* → Trạm còn trả lời = đường tới đó còn sống. Chỗ nghẽn nằm ngay sau trạm cuối cùng còn lên tiếng; * * * từ chặng 1 nghĩa là chưa qua nổi gateway của chính mình.
+- **nslookup** `m11-tach-ten-so` — Tách tên khỏi số để khoanh bệnh về DNS
+  - Ẩn dụ: Gọi bằng số điện thoại thì được, gọi qua danh bạ thì lạc — người ốm là cuốn danh bạ, không phải người nghe máy.
+  - Thẻ ôn: *nslookup trả "request timed out" khác gì "Non-existent domain"?* → Timeout: dịch vụ DNS im lặng — nghi nó chết. Non-existent domain: DNS SỐNG và trả lời hẳn hoi, chỉ là không có bản ghi cho tên đó — chữa bằng cách thêm bản ghi, không phải khởi động lại.
+- **arp -a** `m11-arp-doi-chu` — Cuốn sổ IP ↔ MAC làm chứng cho bệnh trùng IP
+  - Ẩn dụ: MAC là số khung, IP là biển số. Một biển số mà sổ ghi hai số khung thay phiên nhau — hai xe đang giành một tấm biển.
+  - Thẻ ôn: *Bắt bệnh trùng IP bằng arp -a như thế nào?* → Ping cùng một IP vài lượt rồi so arp -a giữa các lần: cùng IP mà MAC đổi nghĩa là hai máy thay phiên trả lời ARP — hai máy đang giữ chung một địa chỉ.
+- **gpresult & netstat** `m11-manh-moi-tai-cho` — Soi manh mối ngay trên máy khi mạng sống mà ping chết
+  - Ẩn dụ: Cửa nhà bị dán bùa thì trách gì đường sá: netstat xem các cuộc nói chuyện đang mở, capture xem gói có rời nhà, gpresult đọc các lá bùa đang dán.
+  - Thẻ ôn: *"Mạng sống mà ping chết" — soi ba thứ gì ngay trên máy?* → netstat (còn kết nối ESTABLISHED = đường sống), capture (gói ICMP có rời máy/có hồi âm không), gpresult (máy vào miền — luật GPO nào đang chặn). Ping chỉ đo ICMP, nó chết không có nghĩa mạng chết.
+
+### Bài kiểm tra module (8 câu, cần ≥ 85%)
+
+- **Đề:** Lệnh nào cho xem địa chỉ IP, subnet mask và gateway của máy đang ngồi?
+  - **Dạng:** gõ tay · **Chấp nhận:** ipconfig
+  - **Chủ đề gợi ý (tầng 1):** tờ giấy tùy thân của máy
+  - **Vì sao:** ipconfig — bước mở đầu của mọi buổi khám: đọc giấy tờ của máy trước khi thăm dò ra ngoài.
+- **Đề:** Khám theo tầng (bottom-up) đi theo thứ tự nào?
+  - **Dạng:** trắc nghiệm · Dịch vụ → đường đi → IP → dây / **Dây → IP → đường đi → dịch vụ** ✓ / IP → dây → dịch vụ → đường đi
+  - **Vì sao:** Từ thấp lên cao: dây cắm → địa chỉ IP → đường đi → dịch vụ. Tầng dưới hỏng thì mọi tầng trên hỏng theo, nên loại trừ từ nền móng lên.
+- **Đề:** Ping bằng địa chỉ IP thì Reply, ping bằng tên miền thì "could not find host". Bệnh nằm ở hệ thống nào?
+  - **Dạng:** gõ tay · **Chấp nhận:** dns | danh bạ | phân giải tên
+  - **Chủ đề gợi ý (tầng 1):** đứa trung gian giữa tên và số
+  - **Vì sao:** Số sống mà tên chết — đích không ốm, kẻ ốm là DNS (khâu phân giải tên). Đây chính là phép thử tách-tên-khỏi-số.
+- **Đề:** Ping ra "Reply from … TTL=126" trên máy Windows (xuất phát TTL 128). Gói đã đi qua mấy router?
+  - **Dạng:** gõ tay · **Chấp nhận:** 2 | hai | 2 router | hai router
+  - **Chủ đề gợi ý (tầng 1):** mỗi router trừ TTL đi một
+  - **Vì sao:** 128 − 126 = 2: mỗi router trên đường trừ TTL đi 1 (kiến thức định tuyến Module 4). Đọc TTL là ước được quãng đường mà chưa cần tracert.
+- **Đề:** arp -a sau hai lượt ping cùng một IP cho hai MAC khác nhau. Kết luận nào đúng?
+  - **Dạng:** trắc nghiệm · **Hai thiết bị đang giành nhau một địa chỉ IP** ✓ / Switch bị hỏng bảng MAC / DNS trả sai bản ghi
+  - **Vì sao:** MAC gắn chết vào máy — cùng một IP mà MAC đổi nghĩa là hai máy thay phiên trả lời ARP: bệnh trùng IP, bắt tại trận bằng chính cuốn sổ arp.
+- **Đề:** Máy vào miền tự dưng ping chết ngay tại chỗ dù web vẫn chạy. Lệnh nào lôi danh sách chính sách đang áp lên máy ra ánh sáng?
+  - **Dạng:** gõ tay · **Chấp nhận:** gpresult | gpresult /r
+  - **Chủ đề gợi ý (tầng 1):** lệnh soi GPO từ Module 9
+  - **Vì sao:** gpresult — kê mọi GPO đang áp (Module 9). Máy vào miền thì luật đến từ miền; luật chặn ICMP nếu có sẽ nằm ngay trong danh sách đó.
+- **Đề:** Ca thi thứ nhất: sau buổi dọn tủ rack cuối tuần, KE-TOAN-A không gọi được KE-TOAN-B (192.168.30.20) nữa dù hai máy cùng dải. Máy KY-THUAT thì theo quy định vốn phải tách riêng khỏi kế toán. Khám, gọi tên bệnh, và sửa cho đúng — đừng phá luôn bức tường ngăn với kỹ thuật.
+  - **Dạng:** ca bệnh phòng khám (khám qua terminal → chẩn đoán → sửa)
+    - **Mạng bệnh nhân:** KE-TOAN-A [192.168.30.10/24] · KE-TOAN-B [192.168.30.20/24] · KY-THUAT [192.168.30.30/24] · SW-TANG-3 [p1:VLAN 10, p2:VLAN 20, p3:VLAN 20] — dây: KE-TOAN-A·eth0 — SW-TANG-3·p1 | KE-TOAN-B·eth0 — SW-TANG-3·p2 | KY-THUAT·eth0 — SW-TANG-3·p3
+    - **Ngồi ở máy:** KE-TOAN-A
+    - **Hồ sơ bệnh:** không có (bệnh nằm trọn trong sơ đồ)
+    - **Triệu chứng:** KE-TOAN-A ping 192.168.30.20 PHẢI hỏng
+    - **Chẩn đoán (chọn 1):** **Hai máy kế toán bị chia vào hai VLAN khác nhau** ✓ · Hai máy đang trùng địa chỉ IP · Máy KE-TOAN-A thiếu gateway
+    - **Sửa:** trực tiếp trên sơ đồ — mục tiêu:
+      - mt7-kt-a PHẢI gọi được mt7-kt-b
+      - mt7-kt-a phải KHÔNG gọi được mt7-ky-thuat
+      - phải hết sạch: same-subnet-different-vlan
+    - **Được phép:** đổi VLAN
+    - **Lời giải mẫu:** KE-TOAN-A [192.168.30.10/24] · KE-TOAN-B [192.168.30.20/24] · KY-THUAT [192.168.30.30/24] · SW-TANG-3 [p1:VLAN 10, p2:VLAN 10, p3:VLAN 20] — dây: KE-TOAN-A·eth0 — SW-TANG-3·p1 | KE-TOAN-B·eth0 — SW-TANG-3·p2 | KY-THUAT·eth0 — SW-TANG-3·p3
+  - **Chủ đề gợi ý (tầng 1):** bức tường vô hình trong switch (Module 4)
+  - **Vì sao:** Cùng dải mà "Destination host unreachable" — lời gọi ARP không vượt qua được bức tường VLAN (Module 4): buổi dọn tủ rack đã cắm KE-TOAN-B vào cổng thuộc VLAN 20. Kéo cổng đó về VLAN 10 cho khớp KE-TOAN-A; giữ nguyên KY-THUAT ở VLAN 20 — gộp tất cả vào một VLAN thì thông chỗ này nhưng phá bức tường mà quy định công ty yêu cầu.
+- **Đề:** Ca thi cuối: cả công ty kêu "portal nội bộ sập". Bạn ngồi vào một máy bất kỳ. Khám cho ra kẻ ốm thật sự — rồi chọn đúng một việc để làm.
+  - **Dạng:** ca bệnh phòng khám (khám qua terminal → chẩn đoán → sửa)
+    - **Mạng bệnh nhân:** MAY-NHAN-VIEN [192.168.20.12/24] · DNS-NOI-BO [192.168.20.53/24] · PORTAL-NOI-BO [192.168.20.90/24] · SW-TANG-2 [p1:VLAN 1, p2:VLAN 1, p3:VLAN 1] — dây: MAY-NHAN-VIEN·eth0 — SW-TANG-2·p1 | DNS-NOI-BO·eth0 — SW-TANG-2·p2 | PORTAL-NOI-BO·eth0 — SW-TANG-2·p3
+    - **Ngồi ở máy:** MAY-NHAN-VIEN
+    - **Hồ sơ bệnh:** DNS 192.168.20.53 (ĐANG CHẾT) [portal.noibo.vn → 192.168.20.90]
+    - **Triệu chứng:** MAY-NHAN-VIEN phân giải tên "portal.noibo.vn" PHẢI hỏng
+    - **Chẩn đoán (chọn 1):** **Dịch vụ DNS nội bộ ngừng chạy — portal vẫn sống** ✓ · Máy chủ portal đã sập · Switch tầng 2 mất điện
+    - **Sửa:** chọn hành động — **Khởi động lại dịch vụ DNS trên DNS-NOI-BO** ✓ · Khởi động lại máy chủ portal · Thay switch tầng 2
+  - **Chủ đề gợi ý (tầng 1):** số thì sao, tên thì sao
+  - **Vì sao:** Ping 192.168.20.90 vẫn Reply — portal sống, switch càng không mất điện. nslookup portal.noibo.vn timeout — cuốn danh bạ mới là kẻ ốm: cả công ty gõ TÊN nên cả công ty tưởng portal sập. Khởi động lại dịch vụ DNS là đúng bệnh; khởi động lại portal là chữa nhầm người đang khỏe.
