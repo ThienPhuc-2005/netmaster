@@ -64,7 +64,7 @@
     "roomsPerFloor": 3,
     "keyStyle": "number",
     "keyLabel": {
-      "vi": "Số cổng"
+      "vi": "Số port"
     },
     "nameLabel": {
       "vi": "Dịch vụ"
@@ -226,7 +226,7 @@
         ],
         "imageId": "palace-conveyor",
         "story": {
-          "vi": "Phòng 21 có băng chuyền chở nguyên thùng tệp qua lại, thùng nào cũng không dán kín."
+          "vi": "Phòng 21 là quầy RA LỆNH của khu kho: người ta đứng đó hô \"lấy thùng này\", còn băng chuyền chở thùng thì chạy ở cửa bên. Không thùng nào dán kín."
         },
         "note": {
           "vi": "Chạy trên TCP"
@@ -763,13 +763,13 @@
     {
       "id": "m5-bai-3",
       "missionTitle": {
-        "vi": "Đọc luật của những con số cổng"
+        "vi": "Đọc luật của những con số port"
       },
       "steps": [
         {
           "type": "hook",
           "question": {
-            "vi": "Máy chủ web luôn ngồi ở cổng 443 không bao giờ đổi, còn máy bạn thì mỗi lần mở một trang lại dùng một số cổng khác. Vì sao một bên cố định, một bên đổi liên tục?"
+            "vi": "Máy chủ web luôn ngồi ở port 443 không bao giờ đổi, còn máy bạn thì mỗi lần mở một trang lại dùng một số port khác. Vì sao một bên cố định, một bên đổi liên tục?"
           },
           "visualId": "vis-hook-cong-so"
         },
@@ -780,7 +780,7 @@
               "kind": "mcq",
               "id": "m5-b3-pre-1",
               "prompt": {
-                "vi": "Đoán thử nhé: số cổng nằm trong khoảng nào?"
+                "vi": "Đoán thử nhé: số port nằm trong khoảng nào?"
               },
               "choices": [
                 {
@@ -795,7 +795,7 @@
               ],
               "answerIndex": 1,
               "explain": {
-                "vi": "Cổng là số 16 bit nên chạy từ 0 đến 65535 — đúng bằng số căn hộ tối đa của \"chung cư\" một địa chỉ IP."
+                "vi": "Port là số 16 bit nên chạy từ 0 đến 65535 — đúng bằng số căn hộ tối đa của \"chung cư\" một địa chỉ IP."
               }
             }
           ],
@@ -810,20 +810,20 @@
               "conceptId": "m5-cong-noi-tieng",
               "visualId": "vis-cong-noi-tieng",
               "body": {
-                "vi": "Dải 0-1023 là những cổng NỔI TIẾNG: mỗi số được cả thế giới quy ước dành cho một dịch vụ. Máy chủ phải ngồi đúng số đó, vì người tới gõ cửa cần biết trước phải gõ ở đâu — không ai đi hỏi từng nhà xem web nằm ở cửa số mấy."
+                "vi": "Dải 0-1023 là những port NỔI TIẾNG: mỗi số được cả thế giới quy ước dành cho một dịch vụ. Máy chủ phải ngồi đúng số đó, vì người tới gõ cửa cần biết trước phải gõ ở đâu — không ai đi hỏi từng nhà xem web nằm ở cửa số mấy."
               },
               "deepDive": {
-                "vi": "Trên Linux và các hệ họ Unix, chỉ tài khoản quản trị mới mở được cổng dưới 1024. Đó là lớp bảo vệ cũ nhưng vẫn còn: một chương trình bất kỳ không tự nhận mình là máy chủ web của cả máy được."
+                "vi": "Trên Linux và các hệ họ Unix, chỉ tài khoản quản trị mới mở được port dưới 1024. Đó là lớp bảo vệ cũ nhưng vẫn còn: một chương trình bất kỳ không tự nhận mình là máy chủ web của cả máy được."
               }
             },
             {
               "conceptId": "m5-cong-tam-thoi",
               "visualId": "vis-cong-tam-thoi",
               "body": {
-                "vi": "Phía bạn thì ngược lại: mỗi lần mở một kết nối, hệ điều hành cấp cho nó một cổng TẠM THỜI lấy từ dải số lớn. Nhờ vậy mở mười tab cùng lúc vẫn không lẫn — mười cổng khác nhau, mười cuộc trò chuyện riêng."
+                "vi": "Phía bạn thì ngược lại: mỗi lần mở một kết nối, hệ điều hành cấp cho nó một port TẠM THỜI lấy từ dải số lớn. Nhờ vậy mở mười tab cùng lúc vẫn không lẫn — mười port khác nhau, mười cuộc trò chuyện riêng."
               },
               "deepDive": {
-                "vi": "Một kết nối được nhận diện bằng bốn thứ: IP nguồn, cổng nguồn, IP đích, cổng đích. Chỉ cần một trong bốn khác đi là một cuộc trò chuyện khác — đó là lý do một máy chủ ở cổng 443 phục vụ được hàng nghìn người cùng lúc."
+                "vi": "Một kết nối được nhận diện bằng bốn thứ: IP nguồn, port nguồn, IP đích, port đích. Chỉ cần một trong bốn khác đi là một cuộc trò chuyện khác — đó là lý do một máy chủ ở port 443 phục vụ được hàng nghìn người cùng lúc."
               }
             }
           ]
@@ -837,7 +837,7 @@
                 "kind": "typed",
                 "id": "m5-b3-pra-1",
                 "prompt": {
-                  "vi": "Dải cổng 0-1023 được gọi là dải cổng gì? (nói bằng tiếng Việt cũng được)"
+                  "vi": "Dải port 0-1023 được gọi là dải port gì? (nói bằng tiếng Việt cũng được)"
                 },
                 "accept": [
                   "nổi tiếng",
@@ -845,7 +845,8 @@
                   "well-known",
                   "well known",
                   "cổng nổi tiếng",
-                  "cong noi tieng"
+                  "cong noi tieng",
+                  "port nổi tiếng"
                 ],
                 "hintTopic": {
                   "vi": "vì sao máy chủ phải ngồi đúng số quy ước"
@@ -855,7 +856,7 @@
                 "vi": "Cả thế giới đã quy ước sẵn nên ai cũng biết — bởi vậy mới gọi tên như thế."
               },
               "solution": {
-                "vi": "Đó là dải cổng nổi tiếng (well-known): mỗi số đã có chủ theo quy ước chung, ví dụ 443 của HTTPS."
+                "vi": "Đó là dải port nổi tiếng (well-known): mỗi số đã có chủ theo quy ước chung, ví dụ 443 của HTTPS."
               }
             },
             {
@@ -867,10 +868,10 @@
                 },
                 "choices": [
                   {
-                    "vi": "Khác cổng TẠM THỜI phía máy bạn"
+                    "vi": "Khác port TẠM THỜI phía máy bạn"
                   },
                   {
-                    "vi": "Khác cổng phía máy chủ"
+                    "vi": "Khác port phía máy chủ"
                   },
                   {
                     "vi": "Khác địa chỉ IP của máy bạn"
@@ -885,7 +886,7 @@
                 "vi": "Máy chủ vẫn ngồi nguyên ở 443 — vậy thứ phải khác nhau nằm ở đầu bên kia."
               },
               "solution": {
-                "vi": "Ba tab dùng ba cổng tạm thời khác nhau ở phía máy bạn; máy chủ vẫn ở nguyên cổng 443."
+                "vi": "Ba tab dùng ba port tạm thời khác nhau ở phía máy bạn; máy chủ vẫn ở nguyên port 443."
               }
             }
           ]
@@ -898,10 +899,13 @@
                 "kind": "typed",
                 "id": "m5-b3-ret-1",
                 "prompt": {
-                  "vi": "Không nhìn lại bài: số cổng lớn nhất có thể là bao nhiêu?"
+                  "vi": "Không nhìn lại bài: số port lớn nhất có thể là bao nhiêu?"
                 },
                 "accept": [
-                  "65535"
+                  "65535",
+                  "65,535",
+                  "65.535",
+                  "65 535"
                 ],
                 "hintTopic": {
                   "vi": "sức chứa của một con số 16 bit"
@@ -911,13 +915,13 @@
                 "vi": "Đếm từ 0, và tổng cộng có 65536 chỗ."
               },
               "solution": {
-                "vi": "65535 — cổng là số 16 bit nên đánh số từ 0 đến 65535."
+                "vi": "65535 — port là số 16 bit nên đánh số từ 0 đến 65535."
               }
             }
           ],
           "selfExplain": {
             "prompt": {
-              "vi": "Giải thích bằng lời của bạn: vì sao máy chủ phải ngồi cổng cố định còn máy bạn thì không?"
+              "vi": "Giải thích bằng lời của bạn: vì sao máy chủ phải ngồi port cố định còn máy bạn thì không?"
             },
             "keywords": [
               [
@@ -934,7 +938,7 @@
               ]
             ],
             "exampleAnswer": {
-              "vi": "Máy chủ ngồi cố định để ai cũng biết trước phải gõ cửa số mấy; máy bạn mỗi kết nối lấy một cổng tạm thời khác nhau để mở nhiều tab cùng lúc mà dữ liệu không lẫn vào nhau."
+              "vi": "Máy chủ ngồi cố định để ai cũng biết trước phải gõ cửa số mấy; máy bạn mỗi kết nối lấy một port tạm thời khác nhau để mở nhiều tab cùng lúc mà dữ liệu không lẫn vào nhau."
             }
           }
         },
@@ -942,13 +946,13 @@
           "type": "summary",
           "bullets": [
             {
-              "vi": "Cổng là số từ 0 đến 65535 — chung cư một địa chỉ IP có ngần ấy căn."
+              "vi": "Port là số từ 0 đến 65535 — chung cư một địa chỉ IP có ngần ấy căn."
             },
             {
-              "vi": "Dải 0-1023 là cổng nổi tiếng: đã có chủ theo quy ước toàn cầu."
+              "vi": "Dải 0-1023 là port nổi tiếng: đã có chủ theo quy ước toàn cầu."
             },
             {
-              "vi": "Phía bạn dùng cổng tạm thời, mỗi kết nối một số, nên nhiều tab không lẫn nhau."
+              "vi": "Phía bạn dùng port tạm thời, mỗi kết nối một số, nên nhiều tab không lẫn nhau."
             }
           ],
           "nextTeaser": {
@@ -1007,7 +1011,7 @@
               "conceptId": "m5-cung-dien",
               "visualId": "vis-cung-dien-toa-nha",
               "body": {
-                "vi": "Mình sẽ dựng một tòa nhà 5 tầng, mỗi tầng 3 phòng — đúng 15 phòng cho 15 cổng. Mỗi phòng có một hình ảnh kỳ quặc gắn với con số của nó. Luật chơi: lúc nào cũng đi cùng một đường, từ tầng trệt lên nóc, trái sang phải. Chính THỨ TỰ đó là sợi dây móc trí nhớ."
+                "vi": "Mình sẽ dựng một tòa nhà 5 tầng, mỗi tầng 3 phòng — đúng 15 phòng cho 15 port. Mỗi phòng có một hình ảnh kỳ quặc gắn với con số của nó. Luật chơi: lúc nào cũng đi cùng một đường, từ tầng trệt lên nóc, trái sang phải. Chính THỨ TỰ đó là sợi dây móc trí nhớ."
               },
               "deepDive": {
                 "vi": "Hình càng lạ càng dễ nhớ — não bỏ qua cái quen thuộc và ghim lại cái bất thường. Đó cũng là lý do các hình trong tòa nhà này hơi vô lý một chút: ổ khóa vàng, vỏ sò, tấm gương chiếu màn hình máy khác."
@@ -1066,7 +1070,7 @@
                 "kind": "typed",
                 "id": "m5-b4-pra-2",
                 "prompt": {
-                  "vi": "Phòng có ổ khóa vàng là cổng số mấy?"
+                  "vi": "Phòng có ổ khóa vàng là port số mấy?"
                 },
                 "accept": [
                   "443"
@@ -1079,7 +1083,7 @@
                 "vi": "Nó là cửa thứ hai của tầng 1, và là cửa mà trình duyệt hiện hình ổ khóa nhỏ trên thanh địa chỉ."
               },
               "solution": {
-                "vi": "Cổng 443 — HTTPS, phiên bản có khóa của web."
+                "vi": "Port 443 — HTTPS, phiên bản có khóa của web."
               }
             }
           ]
@@ -1212,7 +1216,7 @@
                 "m5-r-rdp"
               ],
               "deepDive": {
-                "vi": "Telnet ra đời khi mạng còn là chuyện của vài trường đại học tin nhau. Ngày nay nó chỉ còn dùng để thử xem một cổng có mở không, chứ không ai đăng nhập bằng nó nữa."
+                "vi": "Telnet ra đời khi mạng còn là chuyện của vài trường đại học tin nhau. Ngày nay nó chỉ còn dùng để thử xem một port có mở không, chứ không ai đăng nhập bằng nó nữa."
               }
             }
           ]
@@ -1226,7 +1230,7 @@
                 "kind": "typed",
                 "id": "m5-b5-pra-1",
                 "prompt": {
-                  "vi": "Phòng có vỏ sò — gõ lệnh từ xa an toàn — là cổng số mấy?"
+                  "vi": "Phòng có vỏ sò — gõ lệnh từ xa an toàn — là port số mấy?"
                 },
                 "accept": [
                   "22"
@@ -1239,7 +1243,7 @@
                 "vi": "Vỏ sò trong tiếng Anh là shell, và tên giao thức cũng có chữ đó."
               },
               "solution": {
-                "vi": "Cổng 22 — SSH (secure shell)."
+                "vi": "Port 22 — SSH (secure shell)."
               }
             },
             {
@@ -1247,7 +1251,7 @@
                 "kind": "mcq",
                 "id": "m5-b5-pra-2",
                 "prompt": {
-                  "vi": "Phòng vách kính (Telnet, cổng 23) nguy hiểm ở chỗ nào?"
+                  "vi": "Phòng vách kính (Telnet, port 23) nguy hiểm ở chỗ nào?"
                 },
                 "choices": [
                   {
@@ -1282,7 +1286,7 @@
                 "kind": "palace-walk",
                 "id": "m5-b5-ret-1",
                 "prompt": {
-                  "vi": "Đi lại tầng 2 từ trí nhớ: vỏ sò, vách kính, tấm gương — mỗi phòng là cổng nào?"
+                  "vi": "Đi lại tầng 2 từ trí nhớ: vỏ sò, vách kính, tấm gương — mỗi phòng là port nào?"
                 },
                 "rooms": [
                   "m5-r-ssh",
@@ -1364,7 +1368,7 @@
               "kind": "mcq",
               "id": "m5-b6-pre-1",
               "prompt": {
-                "vi": "Đoán thử nhé: thư mục chia sẻ giữa các máy Windows đi qua cổng nào?"
+                "vi": "Đoán thử nhé: thư mục chia sẻ giữa các máy Windows đi qua port nào?"
               },
               "choices": [
                 {
@@ -1379,7 +1383,7 @@
               ],
               "answerIndex": 0,
               "explain": {
-                "vi": "445 là cổng SMB — thứ làm nên ổ đĩa mạng và thư mục chia sẻ trong công ty."
+                "vi": "445 là port SMB — thứ làm nên ổ đĩa mạng và thư mục chia sẻ trong công ty."
               }
             }
           ],
@@ -1402,7 +1406,7 @@
                 "m5-r-mysql"
               ],
               "deepDive": {
-                "vi": "Cả ba phòng này là mục tiêu ưa thích của kẻ tấn công, vì đằng sau chúng là dữ liệu chứ không phải giao diện. Nguyên tắc chung: đừng bao giờ để 445 và 3306 nhìn thẳng ra Internet."
+                "vi": "Cả ba phòng này là mục tiêu ưa thích của kẻ tấn công, vì đằng sau chúng là dữ liệu chứ không phải giao diện. Nguyên tắc chung: đừng bao giờ để 445 và 3306 nhìn thẳng ra Internet. Một chi tiết đáng nhớ về phòng 21: cửa ấy chỉ là chỗ RA LỆNH — \"gửi tệp này\", \"liệt kê thư mục kia\" — còn thùng tệp thật lại đi qua một cửa khác mở riêng cho từng lượt. Chính chỗ tách đôi đó làm FTP hay vỡ khi có tường lửa đứng giữa: tường lửa thấy cửa lệnh thì cho qua, còn cửa chở hàng mở sau lưng nó thì không (bạn sẽ gặp lại chuyện này ở Module 7)."
               }
             }
           ]
@@ -1416,7 +1420,7 @@
                 "kind": "typed",
                 "id": "m5-b6-pra-1",
                 "prompt": {
-                  "vi": "Phòng có băng chuyền chở thùng tệp không dán kín là cổng số mấy?"
+                  "vi": "Phòng có băng chuyền chở thùng tệp không dán kín là port số mấy?"
                 },
                 "accept": [
                   "21"
@@ -1429,7 +1433,7 @@
                 "vi": "Nó là phòng giữa của tầng 3, và tên giao thức có chữ \"File\"."
               },
               "solution": {
-                "vi": "Cổng 21 — FTP, kiểu truyền tệp đời đầu, dữ liệu và mật khẩu đều đi trần."
+                "vi": "Port 21 — FTP, kiểu truyền tệp đời đầu, dữ liệu và mật khẩu đều đi trần."
               }
             },
             {
@@ -1437,7 +1441,7 @@
                 "kind": "typed",
                 "id": "m5-b6-pra-2",
                 "prompt": {
-                  "vi": "Phòng tủ hồ sơ — cơ sở dữ liệu MySQL — là cổng số mấy?"
+                  "vi": "Phòng tủ hồ sơ — cơ sở dữ liệu MySQL — là port số mấy?"
                 },
                 "accept": [
                   "3306"
@@ -1450,7 +1454,7 @@
                 "vi": "Bốn chữ số, bắt đầu bằng 33."
               },
               "solution": {
-                "vi": "Cổng 3306 — MySQL."
+                "vi": "Port 3306 — MySQL."
               }
             }
           ]
@@ -1484,7 +1488,7 @@
           ],
           "selfExplain": {
             "prompt": {
-              "vi": "Giải thích bằng lời của bạn: vì sao không nên để cổng 3306 mở thẳng ra Internet?"
+              "vi": "Giải thích bằng lời của bạn: vì sao không nên để port 3306 mở thẳng ra Internet?"
             },
             "keywords": [
               [
@@ -1502,7 +1506,7 @@
               ]
             ],
             "exampleAnswer": {
-              "vi": "Vì sau cổng đó là toàn bộ dữ liệu thật chứ không phải giao diện; mở ra ngoài là mời cả thế giới thử mật khẩu vào thẳng kho hồ sơ."
+              "vi": "Vì sau port đó là toàn bộ dữ liệu thật chứ không phải giao diện; mở ra ngoài là mời cả thế giới thử mật khẩu vào thẳng kho hồ sơ."
             }
           }
         },
@@ -1516,7 +1520,7 @@
               "vi": "FTP truyền tệp nhưng không dán kín — mật khẩu đi trần như Telnet."
             },
             {
-              "vi": "Cổng dữ liệu (445, 3306) không bao giờ nên nhìn thẳng ra Internet."
+              "vi": "Port dữ liệu (445, 3306) không bao giờ nên nhìn thẳng ra Internet."
             }
           ],
           "nextTeaser": {
@@ -1583,7 +1587,7 @@
                 "m5-r-ntp"
               ],
               "deepDive": {
-                "vi": "Tách 25 và 587 là để chống thư rác: cổng 25 chỉ dành cho máy chủ nói chuyện với máy chủ, còn người dùng gửi thư phải qua 587 và phải đăng nhập. Nhà mạng thường chặn thẳng cổng 25 đi ra từ máy người dùng."
+                "vi": "Tách 25 và 587 là để chống thư rác: port 25 chỉ dành cho máy chủ nói chuyện với máy chủ, còn người dùng gửi thư phải qua 587 và phải đăng nhập. Nhà mạng thường chặn thẳng port 25 đi ra từ máy người dùng."
               }
             }
           ]
@@ -1597,20 +1601,20 @@
                 "kind": "typed",
                 "id": "m5-b7-pra-1",
                 "prompt": {
-                  "vi": "Phòng bắt xuất trình thẻ rồi mới nhận thư bạn gửi đi là cổng số mấy?"
+                  "vi": "Phòng bắt xuất trình thẻ rồi mới nhận thư bạn gửi đi là port số mấy?"
                 },
                 "accept": [
                   "587"
                 ],
                 "hintTopic": {
-                  "vi": "cổng dành cho người dùng gửi thư, phải đăng nhập"
+                  "vi": "port dành cho người dùng gửi thư, phải đăng nhập"
                 }
               },
               "hint": {
-                "vi": "Ba chữ số, và nó không phải 25 — 25 là cổng của máy chủ nói với máy chủ."
+                "vi": "Ba chữ số, và nó không phải 25 — 25 là port của máy chủ nói với máy chủ."
               },
               "solution": {
-                "vi": "Cổng 587 — nơi ứng dụng thư của bạn đăng nhập rồi mới gửi được thư đi."
+                "vi": "Port 587 — nơi ứng dụng thư của bạn đăng nhập rồi mới gửi được thư đi."
               }
             },
             {
@@ -1618,7 +1622,7 @@
                 "kind": "typed",
                 "id": "m5-b7-pra-2",
                 "prompt": {
-                  "vi": "Cái đồng hồ to của tòa nhà — dịch vụ đồng bộ giờ — nằm ở cổng nào?"
+                  "vi": "Cái đồng hồ to của tòa nhà — dịch vụ đồng bộ giờ — nằm ở port nào?"
                 },
                 "accept": [
                   "123"
@@ -1631,7 +1635,7 @@
                 "vi": "Đếm một, hai, ba."
               },
               "solution": {
-                "vi": "Cổng 123 — NTP, chạy trên UDP."
+                "vi": "Port 123 — NTP, chạy trên UDP."
               }
             }
           ]
@@ -1665,7 +1669,7 @@
           ],
           "selfExplain": {
             "prompt": {
-              "vi": "Giải thích bằng lời của bạn: vì sao thư gửi đi của người dùng phải qua cổng 587 chứ không phải 25?"
+              "vi": "Giải thích bằng lời của bạn: vì sao thư gửi đi của người dùng phải qua port 587 chứ không phải 25?"
             },
             "keywords": [
               [
@@ -1714,7 +1718,7 @@
         {
           "type": "hook",
           "question": {
-            "vi": "Cắm dây mạng vào là máy có địa chỉ IP ngay, chẳng cần gõ gì. Ai đã phát địa chỉ đó cho bạn, và bằng cổng nào?"
+            "vi": "Cắm dây mạng vào là máy có địa chỉ IP ngay, chẳng cần gõ gì. Ai đã phát địa chỉ đó cho bạn, và bằng port nào?"
           },
           "visualId": "vis-cung-dien-toa-nha"
         },
@@ -1725,7 +1729,7 @@
               "kind": "mcq",
               "id": "m5-b8-pre-1",
               "prompt": {
-                "vi": "Đoán thử nhé: dịch vụ tự cấp địa chỉ IP cho máy mới vào mạng dùng mấy số cổng?"
+                "vi": "Đoán thử nhé: dịch vụ tự cấp địa chỉ IP cho máy mới vào mạng dùng mấy số port?"
               },
               "choices": [
                 {
@@ -1774,7 +1778,7 @@
                 "kind": "typed",
                 "id": "m5-b8-pra-1",
                 "prompt": {
-                  "vi": "Cuốn sổ hộ khẩu cất trong két sắt — LDAP có mã hóa — là cổng số mấy?"
+                  "vi": "Cuốn sổ hộ khẩu cất trong két sắt — LDAP có mã hóa — là port số mấy?"
                 },
                 "accept": [
                   "636"
@@ -1787,7 +1791,7 @@
                 "vi": "Ba chữ số, và nó KHÔNG phải 389 — 389 là cuốn sổ để ngoài."
               },
               "solution": {
-                "vi": "Cổng 636 — LDAPS, tức LDAP có mã hóa."
+                "vi": "Port 636 — LDAPS, tức LDAP có mã hóa."
               }
             },
             {
@@ -1957,14 +1961,14 @@
     {
       "id": "m5-cong-noi-tieng",
       "term": "Well-known port",
-      "glossVi": "Cổng nổi tiếng — dải 0-1023 đã có chủ theo quy ước toàn cầu",
+      "glossVi": "Port nổi tiếng — dải 0-1023 đã có chủ theo quy ước toàn cầu",
       "metaphor": {
         "vi": "Như số nhà của trụ sở công: ai cũng biết trước phải tới đâu, không cần hỏi đường."
       },
       "iconId": "icon-cong-noi-tieng",
       "flashcard": {
         "front": {
-          "vi": "Dải cổng nổi tiếng là dải nào, và vì sao phải cố định?"
+          "vi": "Dải port nổi tiếng là dải nào, và vì sao phải cố định?"
         },
         "back": {
           "vi": "0-1023. Máy chủ phải ngồi đúng số quy ước để người tới biết trước phải gõ cửa nào."
@@ -1974,7 +1978,7 @@
     {
       "id": "m5-cong-tam-thoi",
       "term": "Ephemeral port",
-      "glossVi": "Cổng tạm thời — số hệ điều hành cấp cho mỗi kết nối phía máy bạn",
+      "glossVi": "Port tạm thời — số hệ điều hành cấp cho mỗi kết nối phía máy bạn",
       "metaphor": {
         "vi": "Như số thứ tự lấy ở quầy: mỗi lượt một số khác, xong việc là trả lại."
       },
@@ -1984,7 +1988,7 @@
           "vi": "Vì sao mở mười tab cùng một trang web mà dữ liệu không lẫn vào nhau?"
         },
         "back": {
-          "vi": "Mỗi kết nối được cấp một cổng tạm thời khác nhau ở phía máy bạn; máy chủ vẫn ở nguyên một cổng."
+          "vi": "Mỗi kết nối được cấp một port tạm thời khác nhau ở phía máy bạn; máy chủ vẫn ở nguyên một port."
         }
       }
     },
@@ -2000,15 +2004,15 @@
     },
     {
       "id": "m5-cong-web",
-      "term": "Cổng tầng 1 — web",
-      "glossVi": "Nhóm cổng đưa bạn tới một trang web: 80, 443, 53",
+      "term": "Port tầng 1 — web",
+      "glossVi": "Nhóm port đưa bạn tới một trang web: 80, 443, 53",
       "metaphor": {
         "vi": "Tầng trệt của tòa nhà: cửa mở toang, cửa khóa vàng và quầy danh bạ."
       },
       "iconId": "icon-tang-1",
       "flashcard": {
         "front": {
-          "vi": "Ba phòng tầng 1 của cung điện là những cổng nào?"
+          "vi": "Ba phòng tầng 1 của cung điện là những port nào?"
         },
         "back": {
           "vi": "80 HTTP (cửa mở toang), 443 HTTPS (ổ khóa vàng), 53 DNS (quầy danh bạ)."
@@ -2017,15 +2021,15 @@
     },
     {
       "id": "m5-cong-dieu-khien",
-      "term": "Cổng tầng 2 — điều khiển từ xa",
-      "glossVi": "Nhóm cổng ngồi đây điều khiển máy ở chỗ khác: 22, 23, 3389",
+      "term": "Port tầng 2 — điều khiển từ xa",
+      "glossVi": "Nhóm port ngồi đây điều khiển máy ở chỗ khác: 22, 23, 3389",
       "metaphor": {
         "vi": "Tầng hai: vỏ sò, phòng vách kính và tấm gương chiếu màn hình máy kia."
       },
       "iconId": "icon-tang-2",
       "flashcard": {
         "front": {
-          "vi": "Ba phòng tầng 2 của cung điện là những cổng nào?"
+          "vi": "Ba phòng tầng 2 của cung điện là những port nào?"
         },
         "back": {
           "vi": "22 SSH (vỏ sò, có mã hóa), 23 Telnet (vách kính, gửi trần), 3389 RDP (tấm gương)."
@@ -2034,15 +2038,15 @@
     },
     {
       "id": "m5-cong-chia-se",
-      "term": "Cổng tầng 3 — kho dữ liệu",
-      "glossVi": "Nhóm cổng chia sẻ tệp và giữ dữ liệu: 445, 21, 3306",
+      "term": "Port tầng 3 — kho dữ liệu",
+      "glossVi": "Nhóm port chia sẻ tệp và giữ dữ liệu: 445, 21, 3306",
       "metaphor": {
         "vi": "Tầng ba là kho: ổ đĩa chung, băng chuyền thùng tệp, tủ hồ sơ."
       },
       "iconId": "icon-tang-3",
       "flashcard": {
         "front": {
-          "vi": "Ba phòng tầng 3 của cung điện là những cổng nào?"
+          "vi": "Ba phòng tầng 3 của cung điện là những port nào?"
         },
         "back": {
           "vi": "445 SMB (kho chung), 21 FTP (băng chuyền), 3306 MySQL (tủ hồ sơ)."
@@ -2051,15 +2055,15 @@
     },
     {
       "id": "m5-cong-thu-tu",
-      "term": "Cổng tầng 4 — thư từ và giờ giấc",
-      "glossVi": "Nhóm cổng lo thư đi và đồng bộ giờ: 25, 587, 123",
+      "term": "Port tầng 4 — thư từ và giờ giấc",
+      "glossVi": "Nhóm port lo thư đi và đồng bộ giờ: 25, 587, 123",
       "metaphor": {
         "vi": "Tầng bốn: thùng thư bưu cục, quầy xuất trình thẻ và cái đồng hồ to."
       },
       "iconId": "icon-tang-4",
       "flashcard": {
         "front": {
-          "vi": "Ba phòng tầng 4 của cung điện là những cổng nào?"
+          "vi": "Ba phòng tầng 4 của cung điện là những port nào?"
         },
         "back": {
           "vi": "25 SMTP (thư giữa máy chủ), 587 gửi thư có đăng nhập, 123 NTP (đồng bộ giờ)."
@@ -2068,15 +2072,15 @@
     },
     {
       "id": "m5-cong-danh-ba",
-      "term": "Cổng tầng 5 — người và chỗ ở",
-      "glossVi": "Nhóm cổng giữ danh bạ người dùng và cấp địa chỉ: 389, 636, 67/68",
+      "term": "Port tầng 5 — người và chỗ ở",
+      "glossVi": "Nhóm port giữ danh bạ người dùng và cấp địa chỉ: 389, 636, 67/68",
       "metaphor": {
         "vi": "Nóc nhà: sổ hộ khẩu, sổ trong két sắt và cặp phòng phát chìa khóa."
       },
       "iconId": "icon-tang-5",
       "flashcard": {
         "front": {
-          "vi": "Ba phòng tầng 5 của cung điện là những cổng nào?"
+          "vi": "Ba phòng tầng 5 của cung điện là những port nào?"
         },
         "back": {
           "vi": "389 LDAP (sổ hộ khẩu), 636 LDAPS (sổ trong két sắt), 67/68 DHCP (cặp chìa khóa)."
@@ -2130,7 +2134,7 @@
       },
       "choices": [
         {
-          "vi": "UDP — chậm một nhịp còn tệ hơn mất một khung hình"
+          "vi": "UDP — chậm một nhịp tệ hơn mất một khung hình"
         },
         {
           "vi": "TCP — phải bảo đảm không mất khung hình nào"
@@ -2145,13 +2149,16 @@
       "kind": "typed",
       "id": "m5-mt-4",
       "prompt": {
-        "vi": "Số cổng lớn nhất có thể là bao nhiêu?"
+        "vi": "Số port lớn nhất có thể là bao nhiêu?"
       },
       "accept": [
-        "65535"
+        "65535",
+        "65,535",
+        "65.535",
+        "65 535"
       ],
       "explain": {
-        "vi": "Cổng là số 16 bit nên đánh số từ 0 đến 65535."
+        "vi": "Port là số 16 bit nên đánh số từ 0 đến 65535."
       }
     },
     {
@@ -2162,18 +2169,107 @@
       },
       "choices": [
         {
-          "vi": "Cổng tạm thời phía máy bạn"
+          "vi": "Port tạm thời phía máy bạn"
         },
         {
-          "vi": "Cổng phía máy chủ"
+          "vi": "Port phía máy chủ của trang web"
         },
         {
-          "vi": "Địa chỉ IP của máy chủ"
+          "vi": "Địa chỉ IP của máy chủ trang web"
         }
       ],
       "answerIndex": 0,
       "explain": {
-        "vi": "Máy chủ vẫn ngồi nguyên một cổng; mỗi kết nối phía bạn được cấp một cổng tạm thời riêng nên dữ liệu không lẫn."
+        "vi": "Máy chủ vẫn ngồi nguyên một port; mỗi kết nối phía bạn được cấp một port tạm thời riêng nên dữ liệu không lẫn."
+      }
+    },
+    {
+      "kind": "mcq",
+      "id": "m5-mt-9",
+      "prompt": {
+        "vi": "TCP làm việc gì mà UDP không làm?"
+      },
+      "choices": [
+        {
+          "vi": "Đánh số gói, chờ báo nhận và gửi lại gói thiếu"
+        },
+        {
+          "vi": "Mã hóa nội dung gói tin trước khi đẩy ra đường truyền"
+        },
+        {
+          "vi": "Chọn đường đi ngắn nhất qua các router trên Internet"
+        }
+      ],
+      "answerIndex": 0,
+      "hintTopic": {
+        "vi": "TCP bảo đảm bằng cách nào"
+      },
+      "explain": {
+        "vi": "TCP lo phần tin cậy: đánh số, báo nhận, gửi lại gói thiếu. Mã hóa là việc của HTTPS, chọn đường là việc của router — ba việc khác nhau, đừng dồn hết cho TCP."
+      }
+    },
+    {
+      "kind": "typed",
+      "id": "m5-mt-10",
+      "prompt": {
+        "vi": "Dải port đã có chủ theo quy ước toàn cầu chạy từ 0 tới số nào?"
+      },
+      "accept": [
+        "1023",
+        "1.023",
+        "1,023"
+      ],
+      "hintTopic": {
+        "vi": "biên trên của dải port nổi tiếng"
+      },
+      "explain": {
+        "vi": "0 tới 1023 là dải well-known: 80 của web, 443 của web mã hóa, 22 của SSH. Trên máy chủ, mở một port trong dải này còn cần quyền quản trị."
+      }
+    },
+    {
+      "kind": "mcq",
+      "id": "m5-mt-11",
+      "prompt": {
+        "vi": "Một câu tra tên miền đi tới port 53 thường chọn UDP thay vì TCP. Vì sao?"
+      },
+      "choices": [
+        {
+          "vi": "Vì câu hỏi và câu trả lời đều ngắn, hỏi lại còn nhanh hơn bắt tay"
+        },
+        {
+          "vi": "Vì UDP tự mã hóa sẵn nội dung nên câu tra tên miền của bạn được giấu kín"
+        },
+        {
+          "vi": "Vì TCP không dùng được cho những port nằm trong dải nổi tiếng"
+        }
+      ],
+      "answerIndex": 0,
+      "hintTopic": {
+        "vi": "khi nào chọn UDP thay TCP"
+      },
+      "explain": {
+        "vi": "Một câu hỏi tên miền gọn trong một gói. Bắt tay ba bước cho đúng một gói là quá tốn — mất thì hỏi lại còn rẻ hơn. Đó là chỗ UDP thắng."
+      }
+    },
+    {
+      "kind": "typed",
+      "id": "m5-mt-12",
+      "prompt": {
+        "vi": "Máy bạn mở một kết nối tới web. Số port mà hệ điều hành cấp cho kết nối đó ở PHÍA MÁY BẠN thuộc loại nào?"
+      },
+      "accept": [
+        "port tạm thời",
+        "port tam thoi",
+        "ephemeral",
+        "ephemeral port",
+        "cổng tạm thời",
+        "tạm thời"
+      ],
+      "hintTopic": {
+        "vi": "port phía máy bạn trong mỗi kết nối"
+      },
+      "explain": {
+        "vi": "Phía server là port cố định (80, 443), phía bạn là port tạm thời — hệ điều hành bốc ra một số cho mỗi kết nối rồi thu lại khi đóng."
       }
     },
     {

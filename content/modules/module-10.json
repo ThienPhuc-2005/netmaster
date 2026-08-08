@@ -703,9 +703,9 @@
       "id": "m10-mt-2",
       "prompt": { "vi": "VPC tương ứng với cặp khái niệm on-prem nào bạn đã học?" },
       "choices": [
-        { "vi": "VLAN + dải subnet riêng — vùng cô lập có dải địa chỉ riêng" },
-        { "vi": "Bảng MAC + ARP" },
-        { "vi": "DHCP + DNS" }
+        { "vi": "VLAN + subnet riêng — vùng cô lập có dải riêng" },
+        { "vi": "Bảng MAC + ARP — cách switch nhớ máy nào ở cổng nào" },
+        { "vi": "DHCP + DNS — cấp địa chỉ và phân giải tên trong mạng" }
       ],
       "answerIndex": 0,
       "explain": { "vi": "Cùng một ý tưởng cô lập vùng mạng — VPC chỉ đổi cách dựng ranh giới từ dây và switch sang khai báo." }
@@ -715,9 +715,9 @@
       "id": "m10-mt-3",
       "prompt": { "vi": "Security group khác tường lửa nhà (Module 7) ở điểm nào?" },
       "choices": [
-        { "vi": "Bám sát từng máy ảo và mặc định chặn hết chiều vào, thay vì đứng một cổng vành đai" },
-        { "vi": "Không có khả năng nhớ kết nối" },
-        { "vi": "Chỉ hoạt động với IPv6" }
+        { "vi": "Bám sát từng máy ảo, mặc định chặn hết chiều vào" },
+        { "vi": "Không nhớ được kết nối, phải khai luật cả hai chiều" },
+        { "vi": "Chỉ lọc được theo địa chỉ IP, không theo port" }
       ],
       "answerIndex": 0,
       "explain": { "vi": "Cùng là stateful, nhưng chỗ đứng khác hẳn: mỗi máy một bộ luật riêng — hai máy chung VPC vẫn phải qua luật của nhau." }
@@ -741,9 +741,9 @@
       "id": "m10-mt-6",
       "prompt": { "vi": "Điểm chết của mô hình vành đai (lâu đài–hào nước) là gì?" },
       "choices": [
-        { "vi": "Kiểm một lần ở cổng, bên trong tin nhau — lọt một lần là di chuyển ngang tự do" },
-        { "vi": "Tường lửa vành đai quá đắt" },
-        { "vi": "Không chạy được với IPv4" }
+        { "vi": "Kiểm một lần ở cổng, lọt vào là đi ngang tự do" },
+        { "vi": "Tường lửa vành đai không lọc được lưu lượng mã hóa" },
+        { "vi": "Chỉ áp dụng được cho mạng dùng IPv4 đời cũ" }
       ],
       "answerIndex": 0,
       "explain": { "vi": "Chữ \"trong\" chính là điểm chết: một email lừa hay một mật khẩu lộ biến kẻ tấn công thành \"người nhà\"." }
@@ -760,12 +760,64 @@
       "id": "m10-mt-8",
       "prompt": { "vi": "Entra ID hybrid nghĩa là gì?" },
       "choices": [
-        { "vi": "Đồng bộ sổ AD DS trong nhà với sổ Entra ID trên mây — một danh tính dùng cả hai thế giới" },
-        { "vi": "Thay Domain Controller bằng router" },
-        { "vi": "Một loại VPN của Microsoft" }
+        { "vi": "Đồng bộ sổ AD DS trong nhà với sổ Entra ID trên mây" },
+        { "vi": "Thay Domain Controller trong nhà bằng máy chủ trên mây" },
+        { "vi": "Một loại VPN nối văn phòng với đám mây Microsoft" }
       ],
       "answerIndex": 0,
       "explain": { "vi": "Tài khoản tạo trong AD (đúng kỹ năng Module 9) tự chảy lên Entra ID — người dùng một mật khẩu, quản trị một chỗ tạo và thu hồi." }
+    },
+    {
+      "kind": "mcq",
+      "id": "m10-mt-9",
+      "prompt": { "vi": "Trong cloud, việc tương ứng với \"mua thêm switch cắm vào tủ rack\" là gì?" },
+      "choices": [
+        { "vi": "Khai thêm một mạng con trong VPC bằng vài dòng cấu hình" },
+        { "vi": "Gọi điện cho nhà cung cấp để họ lắp thêm thiết bị thật cho bạn" },
+        { "vi": "Thuê thêm một máy ảo rồi cài phần mềm switch lên máy đó" }
+      ],
+      "answerIndex": 0,
+      "hintTopic": { "vi": "thiết bị trong cloud thành dòng khai báo" },
+      "explain": { "vi": "Trong cloud, thiết bị thành cấu hình: mạng con, tường lửa, tuyến đường đều là dòng khai báo. Khái niệm thì không đổi — vẫn là mạng con, vẫn là tường lửa." }
+    },
+    {
+      "kind": "mcq",
+      "id": "m10-mt-10",
+      "prompt": { "vi": "Bạn dựng máy ảo mới trong VPC rồi cài web server, nhưng từ Internet không ai vào được. Nghi ngờ đầu tiên?" },
+      "choices": [
+        { "vi": "Security group vẫn chặn chiều vào — chưa mở port cho ai" },
+        { "vi": "Máy ảo chưa được cấp địa chỉ IP nội bộ trong mạng con đó" },
+        { "vi": "VPC chưa bật chế độ cho phép chạy web server ở bên trong" }
+      ],
+      "answerIndex": 0,
+      "hintTopic": { "vi": "mặc định của security group" },
+      "explain": { "vi": "Security group mặc định chặn hết chiều vào — đúng nếp Zero Trust: không mở sẵn thứ gì. Đây là ca thường gặp nhất của người mới dựng máy ảo." }
+    },
+    {
+      "kind": "mcq",
+      "id": "m10-mt-11",
+      "prompt": { "vi": "Chi nhánh 30 người cần dùng ứng dụng nội bộ chạy trong VPC, không muốn ai phải bật phần mềm gì. Chọn cách nào?" },
+      "choices": [
+        { "vi": "VPN site-to-site nối trọn mạng chi nhánh với VPC" },
+        { "vi": "Client VPN, cài lên từng máy trong ba mươi máy đó" },
+        { "vi": "Mở port ứng dụng ra Internet rồi đặt mật khẩu thật dài" }
+      ],
+      "answerIndex": 0,
+      "hintTopic": { "vi": "hai kiểu VPN dùng vào việc gì" },
+      "explain": { "vi": "Nối trọn hai mạng thì đường hầm dựng một lần ở hai đầu, người dùng không biết nó tồn tại. Client VPN là đường cho từng người đi lẻ." }
+    },
+    {
+      "kind": "mcq",
+      "id": "m10-mt-12",
+      "prompt": { "vi": "Nhân viên đã đăng nhập tài khoản công ty và đang ngồi trong văn phòng. Theo Zero Trust, họ mở được kho dữ liệu kế toán chưa?" },
+      "choices": [
+        { "vi": "Chưa — mỗi lần truy cập vẫn phải xác minh danh tính và quyền" },
+        { "vi": "Rồi — ngồi trong mạng nội bộ nghĩa là đã qua vòng kiểm tra rồi" },
+        { "vi": "Rồi — miễn là máy của họ đã gia nhập miền của công ty" }
+      ],
+      "answerIndex": 0,
+      "hintTopic": { "vi": "Zero Trust xác minh từng lượt truy cập" },
+      "explain": { "vi": "Vị trí không còn là bằng chứng. Zero Trust hỏi lại ở mỗi lượt truy cập: ai, máy nào, quyền gì — ngồi trong văn phòng cũng không được miễn." }
     }
   ]
 }

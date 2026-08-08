@@ -310,7 +310,7 @@
                 "kind": "typed",
                 "id": "m11-b1-prac-1",
                 "prompt": { "vi": "Bạn ping một máy cùng phòng và nhận \"Destination host unreachable\" trong khi ping các máy khác vẫn Reply. Bệnh khả năng cao nằm ở phía nào — máy mình hay máy đích?" },
-                "accept": ["máy đích", "phía đích", "phía máy đích", "ben máy đích", "đích"],
+                "accept": ["máy đích", "phía đích", "phía máy đích", "ben may dich", "đích"],
                 "hintTopic": { "vi": "gói có rời được máy bạn không" }
               },
               "hint": { "vi": "Các máy khác vẫn Reply nghĩa là dây và cấu hình phía bạn đều ổn. Vậy tiếng gọi \"ai giữ địa chỉ này?\" chết ở đâu?" },
@@ -845,7 +845,7 @@
               "conceptId": "m11-tach-ten-so",
               "visualId": "vis-tach-ten-so",
               "body": { "vi": "Phép thử tách đôi: ping bằng SỐ trước, rồi ping bằng TÊN. Số sống mà tên chết — bệnh không nằm ở đích, nó nằm ở cuốn danh bạ DNS (Module 6) đứng giữa hai thứ đó. Lệnh nslookup hỏi thẳng danh bạ; và hãy đọc kỹ lời từ chối: \"request timed out\" là dịch vụ không trả lời, còn \"Non-existent domain\" là dịch vụ SỐNG nhưng không có bản ghi cho tên đó — hai bệnh khác nhau, hai cách chữa khác nhau." },
-              "deepDive": { "vi": "Vì sao \"máy sống, dịch vụ chết\" lại xảy ra được? Ping đi bằng ICMP, do hệ điều hành trả lời; còn DNS là một chương trình lắng nghe trên cổng 53 (bạn đã ghé phòng 53 của cung điện Module 5). Máy bật mà chương trình tắt thì ping vẫn Reply, còn nslookup thì timeout. Đó là lý do người trực phải khám tới TẦNG DỊCH VỤ chứ không dừng ở \"máy còn sống\"." }
+              "deepDive": { "vi": "Vì sao \"máy sống, dịch vụ chết\" lại xảy ra được? Ping đi bằng ICMP, do hệ điều hành trả lời; còn DNS là một chương trình lắng nghe trên port 53 (bạn đã ghé phòng 53 của cung điện Module 5). Máy bật mà chương trình tắt thì ping vẫn Reply, còn nslookup thì timeout. Đó là lý do người trực phải khám tới TẦNG DỊCH VỤ chứ không dừng ở \"máy còn sống\"." }
             }
           ]
         },
@@ -1609,8 +1609,8 @@
       "prompt": { "vi": "arp -a sau hai lượt ping cùng một IP cho hai MAC khác nhau. Kết luận nào đúng?" },
       "choices": [
         { "vi": "Hai thiết bị đang giành nhau một địa chỉ IP" },
-        { "vi": "Switch bị hỏng bảng MAC" },
-        { "vi": "DNS trả sai bản ghi" }
+        { "vi": "Switch ghi sai bảng MAC nên trả về lung tung" },
+        { "vi": "DNS đang trả về sai bản ghi cho tên máy đó" }
       ],
       "answerIndex": 0,
       "explain": { "vi": "MAC gắn chết vào máy — cùng một IP mà MAC đổi nghĩa là hai máy thay phiên trả lời ARP: bệnh trùng IP, bắt tại trận bằng chính cuốn sổ arp." }
@@ -1622,6 +1622,53 @@
       "accept": ["gpresult", "gpresult /r"],
       "hintTopic": { "vi": "lệnh soi GPO từ Module 9" },
       "explain": { "vi": "gpresult — kê mọi GPO đang áp (Module 9). Máy vào miền thì luật đến từ miền; luật chặn ICMP nếu có sẽ nằm ngay trong danh sách đó." }
+    },
+    {
+      "kind": "mcq",
+      "id": "m11-mt-9",
+      "prompt": { "vi": "Ping ra \"PING: transmit failed. General failure.\" khác gì với \"Destination host unreachable\"?" },
+      "choices": [
+        { "vi": "Câu đầu là hỏng ngay tại máy mình; câu sau là đi được nhưng không tới đích" },
+        { "vi": "Câu đầu là máy đích đã tắt hẳn; câu sau là tên miền không phân giải ra được số" },
+        { "vi": "Hai câu như nhau, Windows in ngẫu nhiên một trong hai khi ping hỏng" }
+      ],
+      "answerIndex": 0,
+      "hintTopic": { "vi": "hai lời từ chối của ping khác nhau ở chỗ nào" },
+      "explain": { "vi": "General failure: card hoặc dây của CHÍNH máy mình có vấn đề, gói chưa rời khỏi máy. Destination host unreachable: gói đi được nhưng đường tới đích đứt. Đọc đúng hai câu này là khoanh xong nửa ca bệnh." }
+    },
+    {
+      "kind": "typed",
+      "id": "m11-mt-10",
+      "prompt": { "vi": "Trang web mở rất chậm và bạn muốn biết gói tin nghẽn ở trạm nào trên đường đi. Lệnh nào gọi tên từng trạm?" },
+      "accept": ["tracert", "tracert -d", "traceroute"],
+      "hintTopic": { "vi": "lệnh gọi tên từng trạm trên đường đi" },
+      "explain": { "vi": "tracert kê từng trạm kèm thời gian. Trạm nào bắt đầu chậm hẳn hoặc dừng hẳn là chỗ đáng nghi — nó khoanh vùng giúp bạn chứ không sửa hộ bạn." }
+    },
+    {
+      "kind": "mcq",
+      "id": "m11-mt-11",
+      "prompt": { "vi": "nslookup trả \"Request timed out\" khác gì với \"Non-existent domain\"?" },
+      "choices": [
+        { "vi": "Timeout: máy chủ DNS không trả lời. Non-existent: DNS trả lời rằng tên đó không có" },
+        { "vi": "Timeout: tên miền bị viết sai chính tả. Non-existent: máy chủ DNS đang quá tải nặng" },
+        { "vi": "Hai câu cùng nghĩa là DNS hỏng, chỉ khác ở phiên bản Windows in câu nào" }
+      ],
+      "answerIndex": 0,
+      "hintTopic": { "vi": "hai lời của nslookup: im lặng và trả lời không có" },
+      "explain": { "vi": "Timeout là DNS không nói gì — nghi máy chủ DNS chết. Non-existent là DNS nói rõ \"không có tên này\" — nghi thiếu bản ghi. Cùng vùng bệnh, hai cách chữa khác nhau." }
+    },
+    {
+      "kind": "mcq",
+      "id": "m11-mt-12",
+      "prompt": { "vi": "Ping tới máy khác thì chết, nhưng netstat trên chính máy đó vẫn kê ra các kết nối ESTABLISHED. Đọc thế nào?" },
+      "choices": [
+        { "vi": "Mạng vẫn thông; ICMP đang bị chặn tại chỗ bởi tường lửa hoặc GPO" },
+        { "vi": "Card mạng đã hỏng hẳn; các kết nối kia chỉ là dấu vết cũ chưa được dọn" },
+        { "vi": "Máy đã rơi khỏi miền nên chỉ còn giữ được kết nối ra ngoài Internet" }
+      ],
+      "answerIndex": 0,
+      "hintTopic": { "vi": "netstat khi ping chết mà mạng vẫn sống" },
+      "explain": { "vi": "ESTABLISHED nghĩa là dữ liệu vẫn đi về được. Chỉ mỗi ping chết thì thủ phạm là luật chặn ICMP ngay trên máy — đúng cái bẫy \"mạng sống mà ping chết\"." }
     },
     {
       "kind": "clinic",

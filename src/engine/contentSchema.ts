@@ -340,8 +340,11 @@ const ModuleBaseSchema = z.object({
   lessons: z.array(LessonSchema).min(1),
   concepts: z.array(ConceptSchema).min(1),
   /**
-   * Bài kiểm tra module — mastery gate ≥ 85% (nguyên tắc 2). Tối thiểu
-   * 5 câu để ngưỡng 85% có ý nghĩa thống kê tối thiểu.
+   * POOL câu hỏi của bài kiểm tra module — mastery gate ≥ 85% (nguyên
+   * tắc 2). Một lượt thi KHÔNG hỏi trọn pool: `drawMasteryTest` rút ra
+   * một đề con cỡ cố định (engine/masteryPool), nên thi lại là đề khác.
+   * Min 5 chỉ là sàn kỹ thuật cho fixture; nội dung thật phải >= 12 câu
+   * — luật đó ép ở content.test.ts vì nó là quy ước nội dung.
    */
   masteryTest: z.array(QuestionSchema).min(5),
   /** Module 3 bật chế độ drill subnetting hằng ngày. */
@@ -590,6 +593,19 @@ function moduleCrossChecks(mod: ModuleBase, ctx: z.RefinementCtx): void {
   for (const { q, where, standalone } of collectQuestions(mod)) {
     if (q.kind === 'mcq' && q.answerIndex >= q.choices.length) {
       issue([where], `Câu "${q.id}": answerIndex ${q.answerIndex} vượt quá số lựa chọn (${q.choices.length})`)
+    }
+    if (q.kind === 'typed' && q.nearMisses !== undefined) {
+      // Near-miss trùng đáp án đúng không bao giờ bắn (gradeQuestion chấm
+      // accept chính trước) — lỗi nội dung tự ẩn mình, đúng loại cross-check
+      // sinh ra để bắt. So bản normalize thô (lowercase + trim) là đủ.
+      const main = new Set(q.accept.map((a) => a.trim().toLowerCase()))
+      for (const nm of q.nearMisses) {
+        for (const a of nm.accept) {
+          if (main.has(a.trim().toLowerCase())) {
+            issue([where], `Câu "${q.id}": near-miss "${a}" trùng đáp án đúng — sẽ không bao giờ bắn`)
+          }
+        }
+      }
     }
     if (q.kind === 'clinic') {
       // Câu phòng khám chấm HAI phần — cả hai phần đều phải trỏ được vào

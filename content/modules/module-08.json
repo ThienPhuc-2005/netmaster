@@ -731,8 +731,8 @@
       "prompt": { "vi": "Camera ở góc vườn, cách router hai bức tường, nên vào băng tần nào?" },
       "choices": [
         { "vi": "2.4 GHz — tần số thấp đi xa, xuyên tường tốt" },
-        { "vi": "5 GHz — nhanh hơn là hơn" },
-        { "vi": "6 GHz — mới nhất là tốt nhất" }
+        { "vi": "5 GHz — băng tần nhanh hơn thì đi xa hơn" },
+        { "vi": "6 GHz — thế hệ mới nên xuyên tường tốt hơn" }
       ],
       "answerIndex": 0,
       "explain": { "vi": "Xa ưu tiên TỚI: 2.4 GHz vang xa nhất; tốc độ của 5/6 GHz vô nghĩa nếu sóng không tới nơi." }
@@ -755,7 +755,7 @@
       "kind": "typed",
       "id": "m8-mt-4",
       "prompt": { "vi": "Địa chỉ IPv6 bắt đầu bằng fe80 là loại địa chỉ gì?" },
-      "accept": ["link-local", "link local", "nội bộ", "noi bo", "trong phòng", "trong phong", "cục bộ", "cuc bo"],
+      "accept": ["link-local", "link local", "linklocal", "nội bộ", "noi bo", "trong phòng", "trong phong", "cục bộ", "cuc bo"],
       "explain": { "vi": "Link-local — máy tự sinh, chỉ có nghĩa trong một đường truyền, không bao giờ qua router." }
     },
     {
@@ -764,8 +764,8 @@
       "prompt": { "vi": "Máy 192.168.1.10 mở một trang web. Chuyện gì phải xảy ra với địa chỉ nguồn trước khi gói tin ra tới Internet?" },
       "choices": [
         { "vi": "Router đổi nó thành địa chỉ công cộng — NAT" },
-        { "vi": "Không gì cả, nó đi thẳng" },
-        { "vi": "DNS đổi nó thành tên miền" }
+        { "vi": "Không đổi gì cả — địa chỉ riêng vẫn đi thẳng ra ngoài" },
+        { "vi": "DNS đổi địa chỉ riêng đó thành một tên miền" }
       ],
       "answerIndex": 0,
       "explain": { "vi": "192.168.x.x là địa chỉ riêng IPv4 — phải qua NAT ở router (Module 7). Nhận ra \"đây là chuyện của hệ nào\" chính là kỹ năng module này luyện." }
@@ -775,9 +775,9 @@
       "id": "m8-mt-6",
       "prompt": { "vi": "Cùng cảnh đó nhưng máy dùng 2001:db8::5 (IPv6 công cộng). Địa chỉ nguồn có phải đổi không?" },
       "choices": [
-        { "vi": "Không — đó đã là biển số công cộng thật, đi thẳng; tường lửa vẫn đứng gác" },
-        { "vi": "Có — mọi gói tin đều phải qua NAT" },
-        { "vi": "Có — router đổi nó thành fe80" }
+        { "vi": "Không — đó đã là biển số công cộng thật, đi thẳng" },
+        { "vi": "Có — gói tin nào ra Internet cũng phải qua NAT" },
+        { "vi": "Có — router đổi nó thành địa chỉ fe80 của mình" }
       ],
       "answerIndex": 0,
       "explain": { "vi": "IPv6 đủ địa chỉ cho tất cả nên không cần NAT; việc chặn người lạ là của tường lửa — đừng nhầm hai vai." }
@@ -801,12 +801,51 @@
       "id": "m8-mt-9",
       "prompt": { "vi": "Máy bạn đang mang đồng thời 192.168.1.10 và 2001:db8::5. Tình trạng này gọi là gì?" },
       "choices": [
-        { "vi": "Dual-stack — chạy song song hai hệ, ưu tiên IPv6 khi đích có" },
-        { "vi": "Double NAT — hai lớp đổi địa chỉ" },
-        { "vi": "Link-local — hai biệt danh trong phòng" }
+        { "vi": "Dual-stack — chạy song song hai hệ địa chỉ" },
+        { "vi": "Double NAT — hai lớp đổi địa chỉ chồng lên nhau" },
+        { "vi": "Link-local — hai biệt danh chỉ dùng trong phòng" }
       ],
       "answerIndex": 0,
       "explain": { "vi": "Dual-stack: hai biển số song song trên một card mạng. Double NAT (Module 7) là chuyện khác hẳn — hai lớp ĐỔI địa chỉ IPv4 lồng nhau." }
+    },
+    {
+      "kind": "mcq",
+      "id": "m8-mt-10",
+      "prompt": { "vi": "Ba máy cùng nối Wi-Fi vào một router. Vì sao tốc độ của mỗi máy tụt xuống khi cả ba cùng tải file?" },
+      "choices": [
+        { "vi": "Vì không khí là một sợi dây chung, mỗi lúc chỉ một máy được nói" },
+        { "vi": "Vì router chia đôi băng tần 5 GHz thành ba kênh nhỏ cho ba máy" },
+        { "vi": "Vì mỗi máy phải chờ hai máy kia mã hóa xong gói tin của chúng" }
+      ],
+      "answerIndex": 0,
+      "hintTopic": { "vi": "không khí là sợi dây dùng chung" },
+      "explain": { "vi": "Wi-Fi là một cuộc họp: ai muốn nói phải chờ tới lượt. Dây mạng thì mỗi máy một sợi riêng nên không phải xếp hàng như vậy." }
+    },
+    {
+      "kind": "mcq",
+      "id": "m8-mt-11",
+      "prompt": { "vi": "Vì sao mật khẩu Wi-Fi ngắn nguy hiểm hơn hẳn khi mạng còn chạy WPA2?" },
+      "choices": [
+        { "vi": "Vì kẻ tấn công bắt được gói bắt tay rồi mang về dò offline hàng triệu lần" },
+        { "vi": "Vì WPA2 gửi thẳng mật khẩu ra ngoài không khí trong mỗi lần máy kết nối lại" },
+        { "vi": "Vì WPA2 chỉ cho phép mật khẩu tối đa tám ký tự nên dò một lúc là trúng" }
+      ],
+      "answerIndex": 0,
+      "hintTopic": { "vi": "vì sao WPA2 sợ mật khẩu ngắn" },
+      "explain": { "vi": "WPA2 để kẻ tấn công mang gói bắt tay về nhà dò thoải mái. WPA3 bắt mỗi lần đoán phải hỏi router một lần — dò hàng triệu lần thành bất khả thi." }
+    },
+    {
+      "kind": "mcq",
+      "id": "m8-mt-12",
+      "prompt": { "vi": "Một mạng IPv6 công cộng thường được cấp nguyên một khối /64. Điều đó nói lên gì?" },
+      "choices": [
+        { "vi": "Mỗi mạng con có sẵn số nhà thoải mái nên không cần NAT" },
+        { "vi": "Mạng đó chỉ được phép có tối đa 64 máy nối vào cùng lúc" },
+        { "vi": "Địa chỉ của mọi máy trong mạng đó dài đúng 64 bit" }
+      ],
+      "answerIndex": 0,
+      "hintTopic": { "vi": "64 bit đầu là khu phố, 64 bit sau là số nhà" },
+      "explain": { "vi": "/64 chia đôi địa chỉ: nửa đầu là khu phố nhà mạng cấp, nửa sau là số nhà của từng máy. Số nhà nhiều tới mức không ai phải dùng NAT để tiết kiệm." }
     }
   ]
 }

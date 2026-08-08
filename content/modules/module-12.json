@@ -1,0 +1,1845 @@
+{
+  "id": "module-12",
+  "order": 12,
+  "part": "C",
+  "title": {
+    "vi": "Tự động hóa — PowerShell cho người quản trị mạng"
+  },
+  "stages": [
+    {
+      "id": "m12-chang-1",
+      "title": {
+        "vi": "Ra lệnh cho máy"
+      },
+      "lessonIds": [
+        "m12-bai-1"
+      ]
+    },
+    {
+      "id": "m12-chang-2",
+      "title": {
+        "vi": "Tham số và sổ tay"
+      },
+      "lessonIds": [
+        "m12-bai-2"
+      ]
+    },
+    {
+      "id": "m12-chang-3",
+      "title": {
+        "vi": "Hỏi sổ hộ khẩu của miền"
+      },
+      "lessonIds": [
+        "m12-bai-3"
+      ]
+    },
+    {
+      "id": "m12-chang-4",
+      "title": {
+        "vi": "Một lệnh cho cả danh sách"
+      },
+      "lessonIds": [
+        "m12-bai-4"
+      ]
+    },
+    {
+      "id": "m12-chang-5",
+      "title": {
+        "vi": "Lôi manh mối ra khỏi log"
+      },
+      "lessonIds": [
+        "m12-bai-5"
+      ]
+    }
+  ],
+  "lessons": [
+    {
+      "id": "m12-bai-1",
+      "missionTitle": {
+        "vi": "Nói chuyện với máy bằng động từ và danh từ"
+      },
+      "steps": [
+        {
+          "type": "hook",
+          "question": {
+            "vi": "Sếp nhắn: \"Kiểm tra giúp xem máy chủ file còn mở port chia sẻ không\". Bạn có thể bấm chuột mò mẫm mười phút — hoặc gõ một dòng và có câu trả lời sau một giây. Một dòng đó trông như thế nào?"
+          },
+          "visualId": "vis-hook-cmdlet"
+        },
+        {
+          "type": "pretest",
+          "questions": [
+            {
+              "kind": "ps",
+              "id": "m12-b1-pre-ps",
+              "prompt": {
+                "vi": "Chưa ai dạy bạn cú pháp nào cả — cứ mở terminal mà mò. Việc cần làm: xác nhận máy chủ file 192.168.20.40 còn mở port 445 (port chia sẻ thư mục của Windows). Gõ sai thoải mái, máy này là máy giả, không hỏng được gì đâu."
+              },
+              "spec": {
+                "world": {
+                  "hostname": "MAY-QUAN-TRI",
+                  "interfaces": [
+                    {
+                      "alias": "Ethernet0",
+                      "ip": "192.168.20.5",
+                      "prefix": 24
+                    }
+                  ],
+                  "targets": [
+                    {
+                      "ip": "192.168.20.40",
+                      "name": "file.noibo.vn",
+                      "pingable": true,
+                      "openPorts": [
+                        445
+                      ]
+                    },
+                    {
+                      "ip": "192.168.20.80",
+                      "name": "web.noibo.vn",
+                      "pingable": true,
+                      "openPorts": [
+                        80,
+                        443
+                      ]
+                    },
+                    {
+                      "ip": "192.168.20.99",
+                      "pingable": false,
+                      "openPorts": []
+                    }
+                  ],
+                  "ad": null,
+                  "files": {}
+                },
+                "goals": [
+                  {
+                    "kind": "tested-connection",
+                    "ip": "192.168.20.40",
+                    "port": 445
+                  }
+                ],
+                "solution": [
+                  "Test-NetConnection 192.168.20.40 -Port 445"
+                ]
+              },
+              "hintTopic": {
+                "vi": "tên lệnh trong PowerShell luôn ghép hai mảnh"
+              },
+              "explain": {
+                "vi": "Lệnh cần tìm là Test-NetConnection 192.168.20.40 -Port 445. Đọc tên lệnh là đoán ra việc: Test (kiểm tra) — Net (mạng) — Connection (kết nối). Dòng TcpTestSucceeded : True chính là câu trả lời cho sếp. Mò mẫm nãy giờ không phí: bộ não vừa tự dựng sẵn chỗ để cất quy tắc đặt tên mà bài này sắp dạy."
+              }
+            }
+          ],
+          "encouragement": {
+            "vi": "Gõ trật vài lần là chuyện bình thường — cả nghề này ai cũng bắt đầu bằng việc gõ trật. Điều bạn vừa tự nhận ra (tên lệnh không phải học thuộc mà đoán được) chính là thứ bài học này sắp làm rõ."
+          }
+        },
+        {
+          "type": "teach",
+          "screens": [
+            {
+              "conceptId": "m12-cmdlet",
+              "visualId": "vis-cmdlet-dong-tu-danh-tu",
+              "body": {
+                "vi": "Mọi lệnh PowerShell đều tên theo một khuôn: Động từ - Danh từ. Get-NetIPAddress = lấy - địa chỉ IP. New-ADUser = tạo mới - người dùng AD. Test-NetConnection = kiểm tra - kết nối mạng. Nhờ khuôn này bạn không phải học thuộc từng lệnh: biết mình muốn LÀM GÌ với CÁI GÌ là đoán được tên."
+              },
+              "deepDive": {
+                "vi": "Danh sách động từ được Microsoft chuẩn hóa hẳn: Get (lấy về), Set (đặt lại), New (tạo mới), Remove (xóa), Test (kiểm tra), Import/Export (nạp vào/xuất ra), Start/Stop. Đây là lý do PowerShell học một lần dùng được khắp nơi — quản Exchange, quản Azure, quản máy in đều cùng bộ động từ ấy, chỉ đổi danh từ phía sau."
+              }
+            },
+            {
+              "conceptId": "m12-cmdlet-mang",
+              "visualId": "vis-cmdlet-mang",
+              "body": {
+                "vi": "Hai lệnh mạng đầu tay. Get-NetIPAddress là ipconfig biết nói: in ra IPAddress, InterfaceAlias, PrefixLength thành từng dòng gọn. Test-NetConnection là ping và telnet gộp làm một: gõ trần thì nó ping (PingSucceeded), thêm -Port thì nó gõ đúng cánh cửa đó xem có ai mở (TcpTestSucceeded)."
+              },
+              "deepDive": {
+                "vi": "Khác biệt này quan trọng lúc chẩn đoán: PingSucceeded True mà TcpTestSucceeded False nghĩa là máy đích SỐNG nhưng dịch vụ ở port đó không chạy (hoặc bị tường lửa chặn riêng port ấy) — đúng cặp phân biệt bạn đã dùng ở Phòng khám, giờ đo được bằng một dòng lệnh thay vì suy đoán."
+              }
+            }
+          ]
+        },
+        {
+          "type": "practice",
+          "fadingLevel": 0,
+          "workedExample": {
+            "vi": "Việc cần làm: xem web nội bộ web.noibo.vn còn phục vụ HTTPS không. Bước 1 — dịch yêu cầu sang động từ-danh từ: mình muốn KIỂM TRA một KẾT NỐI MẠNG, vậy lệnh là Test-NetConnection. Bước 2 — đích đến viết ngay sau tên lệnh, không cần tên tham số: Test-NetConnection web.noibo.vn. Bước 3 — HTTPS là port 443, mà muốn gõ đúng cánh cửa thì phải nói rõ cửa nào, nên thêm -Port 443. Dòng hoàn chỉnh: Test-NetConnection web.noibo.vn -Port 443. Bước 4 — đọc kết quả: TcpTestSucceeded : True là xong việc; nếu ra False thì máy có thể vẫn sống, chỉ dịch vụ ở port đó là không."
+          },
+          "exercises": [
+            {
+              "question": {
+                "kind": "ps",
+                "id": "m12-b1-prac-ps",
+                "prompt": {
+                  "vi": "Tới lượt bạn: xác nhận web nội bộ 192.168.20.80 còn mở port 443. Gõ bao nhiêu lần cũng được, chỉ khi bấm \"Nộp bài\" mới tính một lượt."
+                },
+                "spec": {
+                  "world": {
+                    "hostname": "MAY-QUAN-TRI",
+                    "interfaces": [
+                      {
+                        "alias": "Ethernet0",
+                        "ip": "192.168.20.5",
+                        "prefix": 24
+                      }
+                    ],
+                    "targets": [
+                      {
+                        "ip": "192.168.20.40",
+                        "name": "file.noibo.vn",
+                        "pingable": true,
+                        "openPorts": [
+                          445
+                        ]
+                      },
+                      {
+                        "ip": "192.168.20.80",
+                        "name": "web.noibo.vn",
+                        "pingable": true,
+                        "openPorts": [
+                          80,
+                          443
+                        ]
+                      },
+                      {
+                        "ip": "192.168.20.99",
+                        "pingable": false,
+                        "openPorts": []
+                      }
+                    ],
+                    "ad": null,
+                    "files": {}
+                  },
+                  "goals": [
+                    {
+                      "kind": "tested-connection",
+                      "ip": "192.168.20.80",
+                      "port": 443
+                    }
+                  ],
+                  "solution": [
+                    "Test-NetConnection web.noibo.vn -Port 443"
+                  ]
+                },
+                "hintTopic": {
+                  "vi": "port phải nói rõ, không thì lệnh chỉ ping"
+                }
+              },
+              "hint": {
+                "vi": "Khuôn của dòng lệnh là: Test-NetConnection <đích> -Port <số port>. Đích viết bằng IP hay bằng tên đều được — máy tự phân giải. Thiếu -Port thì lệnh chỉ ping, và ping thành công không chứng minh được port 443 đang mở."
+              },
+              "solution": {
+                "vi": "Test-NetConnection 192.168.20.80 -Port 443 (hoặc thay IP bằng web.noibo.vn). Nhìn dòng TcpTestSucceeded : True là chốt được: port 443 đang mở."
+              }
+            },
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m12-b1-prac-1",
+                "prompt": {
+                  "vi": "Tên của mọi lệnh PowerShell đều ghép từ hai mảnh theo một khuôn. Khuôn đó là gì?"
+                },
+                "accept": [
+                  "động từ - danh từ",
+                  "động từ danh từ",
+                  "dong tu - danh tu",
+                  "dong tu danh tu",
+                  "verb-noun",
+                  "verb noun"
+                ],
+                "hintTopic": {
+                  "vi": "làm GÌ với CÁI GÌ"
+                }
+              },
+              "hint": {
+                "vi": "Nhìn lại ba cái tên: Get-NetIPAddress, New-ADUser, Test-NetConnection. Mảnh đứng trước nói hành động, mảnh đứng sau nói đối tượng."
+              },
+              "solution": {
+                "vi": "Động từ - Danh từ (verb-noun): Get-NetIPAddress là lấy-địa chỉ IP, New-ADUser là tạo mới-người dùng AD. Biết muốn làm gì với cái gì là đoán được tên lệnh."
+              }
+            }
+          ]
+        },
+        {
+          "type": "retrieval",
+          "questions": [
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m12-b1-ret-1",
+                "prompt": {
+                  "vi": "Không nhìn lại bài: lệnh nào vừa ping được vừa gõ thử được một port TCP cụ thể trên máy khác?"
+                },
+                "accept": [
+                  "Test-NetConnection",
+                  "test netconnection",
+                  "test-netconnection"
+                ],
+                "hintTopic": {
+                  "vi": "động từ \"kiểm tra\" ghép với danh từ \"kết nối mạng\""
+                }
+              },
+              "hint": {
+                "vi": "Ghép theo khuôn: động từ nghĩa là \"kiểm tra\", danh từ là \"kết nối mạng\" viết liền không dấu cách."
+              },
+              "solution": {
+                "vi": "Test-NetConnection. Gõ trần thì nó ping (PingSucceeded); thêm -Port <số> thì nó gõ đúng cánh cửa đó và trả TcpTestSucceeded."
+              }
+            }
+          ],
+          "selfExplain": {
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: vì sao Test-NetConnection -Port nói được nhiều hơn một lệnh ping thường?"
+            },
+            "keywords": [
+              [
+                "cổng",
+                "port",
+                "dịch vụ"
+              ],
+              [
+                "ping",
+                "icmp",
+                "máy sống",
+                "máy đích"
+              ]
+            ],
+            "exampleAnswer": {
+              "vi": "Ping chỉ cho biết máy đích còn sống và đường đi tới đó còn thông. Test-NetConnection kèm -Port đi thêm một bước: nó gõ đúng cánh cửa của dịch vụ. Nhờ vậy phân biệt được hai ca rất khác nhau — máy chết hẳn, và máy vẫn sống nhưng dịch vụ ở port đó không chạy hoặc bị chặn."
+            }
+          }
+        },
+        {
+          "type": "summary",
+          "bullets": [
+            {
+              "vi": "Tên lệnh PowerShell luôn theo khuôn Động từ - Danh từ, nên đoán được chứ không cần học thuộc."
+            },
+            {
+              "vi": "Get-NetIPAddress là ipconfig biết nói; Test-NetConnection là ping và telnet gộp một."
+            },
+            {
+              "vi": "Thêm -Port mới chứng minh được dịch vụ ở port đó đang mở; ping suông thì không."
+            }
+          ],
+          "nextTeaser": {
+            "vi": "Nhưng làm sao biết một lệnh nhận những tham số nào? Bài sau: cách bắt chính PowerShell tự khai ra cú pháp của nó."
+          }
+        }
+      ]
+    },
+    {
+      "id": "m12-bai-2",
+      "missionTitle": {
+        "vi": "Bắt máy tự khai cú pháp"
+      },
+      "steps": [
+        {
+          "type": "hook",
+          "question": {
+            "vi": "Trên đời có hàng nghìn cmdlet, không ai nhớ nổi tham số của từng cái. Vậy mà dân quản trị vẫn gõ đúng ngay từ lần đầu với một lệnh chưa từng dùng. Họ tra ở đâu — Google, hay ngay trong terminal?"
+          },
+          "visualId": "vis-hook-get-help"
+        },
+        {
+          "type": "pretest",
+          "questions": [
+            {
+              "kind": "mcq",
+              "id": "m12-b2-pre-1",
+              "prompt": {
+                "vi": "Bạn muốn kiểm tra port 1433 của máy chủ SQL. Cách viết nào đúng khuôn tham số của PowerShell?"
+              },
+              "choices": [
+                {
+                  "vi": "Test-NetConnection sql.noibo.vn -Port 1433"
+                },
+                {
+                  "vi": "Test-NetConnection sql.noibo.vn:1433"
+                },
+                {
+                  "vi": "Test-NetConnection --port=1433 sql.noibo.vn"
+                }
+              ],
+              "answerIndex": 0,
+              "hintTopic": {
+                "vi": "PowerShell gọi tên tham số bằng một dấu gạch"
+              },
+              "explain": {
+                "vi": "PowerShell dùng MỘT dấu gạch nối rồi tới tên tham số, rồi khoảng trắng, rồi giá trị: -Port 1433. Kiểu host:port là thói quen từ trình duyệt, còn --port= là thói quen từ Linux — cả hai đều không phải khuôn của PowerShell."
+              }
+            }
+          ],
+          "encouragement": {
+            "vi": "Nhầm lẫn giữa ba kiểu viết là chuyện rất hay gặp, nhất là khi bạn đã quen dòng lệnh Linux. Ghi nhớ một dấu gạch là đủ để đi tiếp."
+          }
+        },
+        {
+          "type": "teach",
+          "screens": [
+            {
+              "conceptId": "m12-tham-so",
+              "visualId": "vis-tham-so-nhan",
+              "body": {
+                "vi": "Tham số là những cái nhãn dán vào giá trị: -Port 443, -Name \"Le Thi Mai\", -SamAccountName ltmai. Một dấu gạch, tên tham số, khoảng trắng, giá trị. Giá trị nào có dấu cách thì bọc trong nháy kép — không bọc thì máy tưởng đó là hai giá trị rời."
+              },
+              "deepDive": {
+                "vi": "Vài tham số quan trọng nhất được phép giấu nhãn đi, gọi là tham số vị trí: Test-NetConnection web.noibo.vn chính là -ComputerName web.noibo.vn viết tắt. Người mới nên viết đủ nhãn cho rõ, người quen tay thì bỏ bớt cái đầu tiên. Nhưng từ cái thứ hai trở đi thì phải có nhãn, vì máy không đoán được bạn đang nói tới thứ gì."
+              }
+            },
+            {
+              "conceptId": "m12-get-help",
+              "visualId": "vis-get-help-so-tay",
+              "body": {
+                "vi": "Get-Help là cuốn sổ tay nằm sẵn trong máy. Gõ Get-Help Test-NetConnection là nó in ra khối SYNTAX — đúng những tham số lệnh đó nhận, cái nào bắt buộc, cái nào tùy chọn. Dấu ngoặc vuông nghĩa là có cũng được không có cũng được."
+              },
+              "deepDive": {
+                "vi": "Đọc được khối SYNTAX là kỹ năng tự học quan trọng nhất của cả module này: [-ComputerName] <String> nghĩa là tham số bắt buộc nhưng cái NHÃN thì tùy (viết trần cũng hiểu); còn [-Port <Int32>] cả cụm nằm trong ngoặc nghĩa là muốn bỏ hẳn cũng được. Nắm quy ước ngoặc này thì cmdlet lạ nào bạn cũng tự tra được, không phụ thuộc vào việc có ai dạy hay không."
+              }
+            }
+          ]
+        },
+        {
+          "type": "practice",
+          "fadingLevel": 1,
+          "exercises": [
+            {
+              "question": {
+                "kind": "ps",
+                "id": "m12-b2-prac-ps",
+                "prompt": {
+                  "vi": "Máy chủ SQL của công ty là sql.noibo.vn, phục vụ ở port 1433. Xác nhận port đó đang mở. Chưa chắc cú pháp thì cứ hỏi sổ tay ngay trong terminal trước khi gõ lệnh chính."
+                },
+                "spec": {
+                  "world": {
+                    "hostname": "MAY-QUAN-TRI",
+                    "interfaces": [
+                      {
+                        "alias": "Ethernet0",
+                        "ip": "192.168.20.5",
+                        "prefix": 24
+                      }
+                    ],
+                    "targets": [
+                      {
+                        "ip": "192.168.20.60",
+                        "name": "sql.noibo.vn",
+                        "pingable": true,
+                        "openPorts": [
+                          1433
+                        ]
+                      },
+                      {
+                        "ip": "192.168.20.80",
+                        "name": "web.noibo.vn",
+                        "pingable": true,
+                        "openPorts": [
+                          80,
+                          443
+                        ]
+                      },
+                      {
+                        "ip": "192.168.20.99",
+                        "pingable": false,
+                        "openPorts": []
+                      }
+                    ],
+                    "ad": null,
+                    "files": {}
+                  },
+                  "goals": [
+                    {
+                      "kind": "tested-connection",
+                      "ip": "192.168.20.60",
+                      "port": 1433
+                    }
+                  ],
+                  "solution": [
+                    "Get-Help Test-NetConnection",
+                    "Test-NetConnection sql.noibo.vn -Port 1433"
+                  ]
+                },
+                "hintTopic": {
+                  "vi": "sổ tay nằm ngay trong terminal"
+                }
+              },
+              "hint": {
+                "vi": "Hai nhịp: Get-Help Test-NetConnection để đọc khối SYNTAX, rồi gõ lệnh chính theo đúng khuôn <đích> -Port <số>. Gõ tên máy thay IP vẫn chạy — máy tự phân giải như DNS ngoài đời."
+              },
+              "solution": {
+                "vi": "Test-NetConnection sql.noibo.vn -Port 1433. Nhìn TcpTestSucceeded : True là xong. Muốn tra trước thì Get-Help Test-NetConnection — khối SYNTAX cho thấy -Port là tham số tùy chọn kiểu Int32."
+              }
+            },
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m12-b2-prac-1",
+                "prompt": {
+                  "vi": "Bạn gặp một lệnh lạ tên New-ADUser và không biết nó nhận tham số gì. Gõ dòng nào để chính máy khai ra cú pháp?"
+                },
+                "accept": [
+                  "Get-Help New-ADUser",
+                  "get-help new-aduser",
+                  "help New-ADUser",
+                  "help new-aduser"
+                ],
+                "hintTopic": {
+                  "vi": "lấy - trợ giúp"
+                }
+              },
+              "hint": {
+                "vi": "Vẫn là khuôn động từ-danh từ: động từ \"lấy\", danh từ \"trợ giúp\". Rồi viết tên lệnh cần tra ngay phía sau."
+              },
+              "solution": {
+                "vi": "Get-Help New-ADUser. Khối SYNTAX in ra sẽ cho thấy -Name và -SamAccountName là bắt buộc, còn -Path và -Enabled nằm trong ngoặc vuông nên tùy chọn."
+              }
+            }
+          ]
+        },
+        {
+          "type": "retrieval",
+          "questions": [
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m12-b2-ret-1",
+                "prompt": {
+                  "vi": "Không nhìn lại bài: trong khối SYNTAX, cụm nằm trong ngoặc vuông như [-Port <Int32>] mang ý nghĩa gì?"
+                },
+                "accept": [
+                  "tùy chọn",
+                  "tuy chon",
+                  "không bắt buộc",
+                  "khong bat buoc",
+                  "có thể bỏ",
+                  "co the bo"
+                ],
+                "hintTopic": {
+                  "vi": "có cũng được, không có cũng được"
+                }
+              },
+              "hint": {
+                "vi": "Ngoặc vuông trong mọi tài liệu dòng lệnh đều mang cùng một nghĩa: phần này không nhất thiết phải viết."
+              },
+              "solution": {
+                "vi": "Là tham số tùy chọn — bỏ đi lệnh vẫn chạy. Còn [-ComputerName] <String> chỉ có mỗi cái nhãn nằm trong ngoặc: giá trị thì bắt buộc, chỉ cái nhãn là được phép bỏ."
+              }
+            }
+          ],
+          "selfExplain": {
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: vì sao biết dùng Get-Help lại đáng giá hơn việc học thuộc tham số của từng lệnh?"
+            },
+            "keywords": [
+              [
+                "học thuộc",
+                "nhớ hết",
+                "thuộc lòng",
+                "hàng nghìn"
+              ],
+              [
+                "tự tra",
+                "tra cứu",
+                "sổ tay",
+                "syntax",
+                "cú pháp"
+              ]
+            ],
+            "exampleAnswer": {
+              "vi": "Vì có hàng nghìn cmdlet, học thuộc tham số của từng cái là chuyện bất khả thi. Get-Help biến việc đó thành kỹ năng tra cứu: gặp lệnh lạ nào cũng tự đọc được khối SYNTAX ngay trong terminal, biết cái nào bắt buộc cái nào tùy chọn, không cần mạng và không phụ thuộc vào việc có ai dạy mình hay không."
+            }
+          }
+        },
+        {
+          "type": "summary",
+          "bullets": [
+            {
+              "vi": "Tham số viết theo khuôn một dấu gạch: -Port 443; giá trị có dấu cách thì bọc nháy kép."
+            },
+            {
+              "vi": "Get-Help <tên lệnh> in ra khối SYNTAX ngay trong terminal, không cần mạng."
+            },
+            {
+              "vi": "Ngoặc vuông = tùy chọn; ngoặc chỉ ôm cái nhãn = giá trị bắt buộc, nhãn thì được bỏ."
+            }
+          ],
+          "nextTeaser": {
+            "vi": "Giờ bạn gõ được lệnh mạng. Nhưng công việc thật của quản trị viên phần lớn nằm ở chỗ khác: cuốn sổ hộ khẩu của miền — nơi cất tên từng nhân viên."
+          }
+        }
+      ]
+    },
+    {
+      "id": "m12-bai-3",
+      "missionTitle": {
+        "vi": "Hỏi và ghi vào sổ hộ khẩu của miền"
+      },
+      "steps": [
+        {
+          "type": "hook",
+          "question": {
+            "vi": "Phòng nhân sự gửi xuống: \"Tuần này có một bạn mới vào phòng Kế toán\". Mở giao diện đồ họa bấm qua bảy cửa sổ cũng xong. Nhưng nếu tuần sau là ba mươi bạn thì sao?"
+          },
+          "visualId": "vis-hook-ad-ps"
+        },
+        {
+          "type": "pretest",
+          "questions": [
+            {
+              "kind": "typed",
+              "id": "m12-b3-pre-1",
+              "prompt": {
+                "vi": "Đoán thử: theo khuôn động từ-danh từ đã học, lệnh tra cứu một người dùng trong Active Directory sẽ tên là gì?"
+              },
+              "accept": [
+                "Get-ADUser",
+                "get aduser",
+                "get-aduser",
+                "get ad user"
+              ],
+              "hintTopic": {
+                "vi": "lấy - người dùng AD"
+              },
+              "explain": {
+                "vi": "Get-ADUser — đúng khuôn: động từ Get (lấy về), danh từ ADUser (người dùng Active Directory). Đoán được tên lệnh mà chưa từng học chính là phần thưởng của quy tắc đặt tên ở bài 1."
+              }
+            }
+          ],
+          "encouragement": {
+            "vi": "Đoán chưa trúng cũng không sao — điều đáng giá là bạn vừa thử suy ra tên lệnh từ quy tắc thay vì chờ được dạy. Đó đúng là cách dân quản trị làm việc hằng ngày."
+          }
+        },
+        {
+          "type": "teach",
+          "screens": [
+            {
+              "conceptId": "m12-ad-doc",
+              "visualId": "vis-hoi-so-ad",
+              "body": {
+                "vi": "Get-ADUser đọc cuốn sổ hộ khẩu của miền. Hỏi đúng một người thì -Identity <sam>. Hỏi cả danh sách thì -Filter *, nghĩa là \"lấy tất\". Muốn thu hẹp về một ngăn kéo OU thì thêm -SearchBase \"OU=KeToan,DC=noibo,DC=vn\" — chỉ đếm người trong đúng ngăn ấy."
+              },
+              "deepDive": {
+                "vi": "Kết quả in ra bốn dòng đáng đọc: Name (tên hiển thị), SamAccountName (tên đăng nhập), DistinguishedName (chỗ đứng trong cây thư mục) và Enabled. DistinguishedName chính là cái bạn đã học ở Module 9 dưới dạng cây OU — giờ nó hiện ra thành một dòng chữ đọc từ trong ra ngoài: CN=người, OU=ngăn kéo, DC=từng mảnh tên miền."
+              }
+            },
+            {
+              "conceptId": "m12-tao-user",
+              "visualId": "vis-tao-user-dn",
+              "body": {
+                "vi": "New-ADUser ghi thêm một dòng vào sổ. Ba mảnh cần khai: -Name \"Le Thi Mai\" (tên hiển thị, có dấu cách nên phải bọc nháy), -SamAccountName ltmai (tên đăng nhập), và -Path \"OU=KeToan,DC=noibo,DC=vn\" (đặt vào ngăn kéo nào). Thiếu -Path thì máy không biết cất người mới vào đâu."
+              },
+              "deepDive": {
+                "vi": "Chạy xong New-ADUser, terminal im re — không một dòng thông báo. Đó là nếp của PowerShell chứ không phải lỗi: lệnh chạy trót lọt thì không nói gì, có chuyện mới lên tiếng. Muốn tận mắt xác nhận thì hỏi lại bằng Get-ADUser -Identity ltmai. Thói quen tự kiểm chứng này đáng giữ suốt nghề — nhất là khi lệnh vừa chạy tác động lên ba mươi người. Và khi kiểm chứng, để ý dòng Enabled: tài khoản tạo mà không kèm mật khẩu thì sinh ra ở trạng thái False — AD cố tình khóa lại để không có cái cửa nào mở toang mà chưa ai đặt khóa. Muốn bật thì đặt mật khẩu rồi bật riêng."
+              }
+            }
+          ]
+        },
+        {
+          "type": "practice",
+          "fadingLevel": 1,
+          "exercises": [
+            {
+              "question": {
+                "kind": "ps",
+                "id": "m12-b3-prac-ps",
+                "prompt": {
+                  "vi": "Nhân sự báo: chị Le Thi Mai vào phòng Kế toán, tên đăng nhập ltmai. Ghi chị ấy vào miền noibo.vn cho đúng ngăn kéo. Xong nhớ tự kiểm chứng — lệnh tạo sẽ không nói gì với bạn đâu."
+                },
+                "spec": {
+                  "world": {
+                    "hostname": "MAY-QUAN-TRI",
+                    "interfaces": [
+                      {
+                        "alias": "Ethernet0",
+                        "ip": "192.168.20.5",
+                        "prefix": 24
+                      }
+                    ],
+                    "targets": [
+                      {
+                        "ip": "192.168.20.10",
+                        "name": "dc01.noibo.vn",
+                        "pingable": true,
+                        "openPorts": [
+                          389,
+                          445
+                        ]
+                      }
+                    ],
+                    "ad": {
+                      "domain": "noibo.vn",
+                      "ous": [
+                        "KeToan",
+                        "NhanSu",
+                        "KyThuat"
+                      ],
+                      "users": [
+                        {
+                          "name": "Nguyen Van An",
+                          "sam": "nvan",
+                          "ou": "KeToan",
+                          "enabled": true
+                        },
+                        {
+                          "name": "Tran Thi Binh",
+                          "sam": "ttbinh",
+                          "ou": "NhanSu",
+                          "enabled": true
+                        }
+                      ]
+                    },
+                    "files": {}
+                  },
+                  "goals": [
+                    {
+                      "kind": "ad-user",
+                      "sam": "ltmai",
+                      "ou": "KeToan"
+                    }
+                  ],
+                  "solution": [
+                    "New-ADUser -Name \"Le Thi Mai\" -SamAccountName ltmai -Path \"OU=KeToan,DC=noibo,DC=vn\"",
+                    "Get-ADUser -Identity ltmai"
+                  ]
+                },
+                "hintTopic": {
+                  "vi": "ba mảnh: tên hiển thị, tên đăng nhập, ngăn kéo"
+                }
+              },
+              "hint": {
+                "vi": "Khuôn đầy đủ: New-ADUser -Name \"<tên có dấu cách>\" -SamAccountName <tên đăng nhập> -Path \"OU=<ngăn kéo>,DC=noibo,DC=vn\". Tên miền noibo.vn tách thành hai mảnh DC=noibo và DC=vn."
+              },
+              "solution": {
+                "vi": "New-ADUser -Name \"Le Thi Mai\" -SamAccountName ltmai -Path \"OU=KeToan,DC=noibo,DC=vn\". Terminal im lặng là dấu hiệu tốt; gõ thêm Get-ADUser -Identity ltmai sẽ thấy dòng DistinguishedName ghi rõ chị Mai đang nằm trong ngăn KeToan."
+              }
+            },
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m12-b3-prac-1",
+                "prompt": {
+                  "vi": "Trong miền noibo.vn, đường dẫn thư mục (DistinguishedName) của ngăn kéo KyThuat viết đầy đủ ra sao?"
+                },
+                "accept": [
+                  "OU=KyThuat,DC=noibo,DC=vn",
+                  "ou=kythuat,dc=noibo,dc=vn"
+                ],
+                "hintTopic": {
+                  "vi": "tên miền tách thành từng mảnh DC="
+                },
+                "nearMisses": [
+                  {
+                    "accept": [
+                      "OU=KyThuat,DC=noibo.vn",
+                      "ou=kythuat,dc=noibo.vn"
+                    ],
+                    "feedback": {
+                      "vi": "Gần đúng rồi — chỉ còn phần tên miền. Mỗi dấu chấm trong noibo.vn tách ra thành một mảnh DC= riêng, nên phải là DC=noibo,DC=vn."
+                    }
+                  }
+                ]
+              },
+              "hint": {
+                "vi": "Đọc từ trong ra ngoài: ngăn kéo trước, rồi tới từng mảnh của tên miền. Dấu chấm trong tên miền chính là chỗ tách mảnh."
+              },
+              "solution": {
+                "vi": "OU=KyThuat,DC=noibo,DC=vn. Ngăn kéo đứng trước, rồi mỗi mảnh của tên miền thành một DC= — noibo.vn có một dấu chấm nên tách thành hai mảnh."
+              }
+            }
+          ]
+        },
+        {
+          "type": "retrieval",
+          "questions": [
+            {
+              "question": {
+                "kind": "ps",
+                "id": "m12-b3-ret-ps",
+                "prompt": {
+                  "vi": "Đóng hết ghi chép lại nhé. Anh Hoang Van Minh vừa nhận việc ở phòng Kỹ thuật, tên đăng nhập hvminh. Ghi anh ấy vào miền từ trí nhớ của bạn."
+                },
+                "spec": {
+                  "world": {
+                    "hostname": "MAY-QUAN-TRI",
+                    "interfaces": [
+                      {
+                        "alias": "Ethernet0",
+                        "ip": "192.168.20.5",
+                        "prefix": 24
+                      }
+                    ],
+                    "targets": [
+                      {
+                        "ip": "192.168.20.10",
+                        "name": "dc01.noibo.vn",
+                        "pingable": true,
+                        "openPorts": [
+                          389,
+                          445
+                        ]
+                      }
+                    ],
+                    "ad": {
+                      "domain": "noibo.vn",
+                      "ous": [
+                        "KeToan",
+                        "NhanSu",
+                        "KyThuat"
+                      ],
+                      "users": [
+                        {
+                          "name": "Nguyen Van An",
+                          "sam": "nvan",
+                          "ou": "KeToan",
+                          "enabled": true
+                        },
+                        {
+                          "name": "Le Thi Mai",
+                          "sam": "ltmai",
+                          "ou": "KeToan",
+                          "enabled": true
+                        }
+                      ]
+                    },
+                    "files": {}
+                  },
+                  "goals": [
+                    {
+                      "kind": "ad-user",
+                      "sam": "hvminh",
+                      "ou": "KyThuat"
+                    }
+                  ],
+                  "solution": [
+                    "New-ADUser -Name \"Hoang Van Minh\" -SamAccountName hvminh -Path \"OU=KyThuat,DC=noibo,DC=vn\""
+                  ]
+                },
+                "hintTopic": {
+                  "vi": "ngăn kéo lần này là KyThuat"
+                }
+              },
+              "hint": {
+                "vi": "Vẫn ba mảnh như lúc nãy, chỉ đổi ngăn kéo trong -Path sang KyThuat. Tên có dấu cách nhớ bọc nháy kép."
+              },
+              "solution": {
+                "vi": "New-ADUser -Name \"Hoang Van Minh\" -SamAccountName hvminh -Path \"OU=KyThuat,DC=noibo,DC=vn\"."
+              }
+            }
+          ],
+          "selfExplain": {
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: vì sao New-ADUser chạy xong lại không in ra thông báo nào, và bạn nên làm gì sau đó?"
+            },
+            "keywords": [
+              [
+                "im lặng",
+                "không in",
+                "khong in",
+                "không báo",
+                "khong bao",
+                "không nói",
+                "khong noi"
+              ],
+              [
+                "Get-ADUser",
+                "kiểm chứng",
+                "kiem chung",
+                "kiểm tra lại",
+                "kiem tra lai",
+                "xác nhận",
+                "xac nhan"
+              ]
+            ],
+            "exampleAnswer": {
+              "vi": "Vì nếp của PowerShell là lệnh chạy trót lọt thì không nói gì, có chuyện mới lên tiếng — im lặng chính là tin tốt. Nhưng im lặng cũng có nghĩa mình chưa tận mắt thấy kết quả, nên việc nên làm ngay sau đó là hỏi lại bằng Get-ADUser -Identity <tên đăng nhập> để xác nhận người mới đã nằm đúng ngăn kéo."
+            }
+          }
+        },
+        {
+          "type": "summary",
+          "bullets": [
+            {
+              "vi": "Get-ADUser đọc sổ: -Identity hỏi một người, -Filter * lấy tất, -SearchBase thu hẹp về một OU."
+            },
+            {
+              "vi": "New-ADUser cần ba mảnh: -Name, -SamAccountName và -Path trỏ tới ngăn kéo OU."
+            },
+            {
+              "vi": "Lệnh chạy xong im lặng là bình thường — tự kiểm chứng lại bằng Get-ADUser."
+            }
+          ],
+          "nextTeaser": {
+            "vi": "Một người thì một dòng lệnh. Ba mươi người thì vẫn một dòng — nhờ một ký tự duy nhất mà bài sau sẽ chỉ cho bạn."
+          }
+        }
+      ]
+    },
+    {
+      "id": "m12-bai-4",
+      "missionTitle": {
+        "vi": "Một dòng lệnh cho cả danh sách"
+      },
+      "steps": [
+        {
+          "type": "hook",
+          "question": {
+            "vi": "Nhân sự gửi một file CSV có ba mươi bạn thực tập, tất cả cần tài khoản trong sáng mai. Gõ tay ba mươi lệnh mất một tiếng và chắc chắn sẽ trượt phím vài lần. Có cách nào bơm thẳng cả file vào lệnh tạo không?"
+          },
+          "visualId": "vis-hook-pipeline"
+        },
+        {
+          "type": "pretest",
+          "questions": [
+            {
+              "kind": "mcq",
+              "id": "m12-b4-pre-1",
+              "prompt": {
+                "vi": "Trong PowerShell, ký tự nào nối kết quả của lệnh trước làm đầu vào cho lệnh sau?"
+              },
+              "choices": [
+                {
+                  "vi": "Dấu ống |"
+                },
+                {
+                  "vi": "Dấu lớn hơn >"
+                },
+                {
+                  "vi": "Dấu và &"
+                }
+              ],
+              "answerIndex": 0,
+              "hintTopic": {
+                "vi": "hình dáng của một đường ống dẫn"
+              },
+              "explain": {
+                "vi": "Dấu ống | — hình dáng của nó chính là ẩn dụ: một đường ống dẫn đồ từ lệnh này sang lệnh kia. Dấu > là ghi ra file, còn & là chạy lệnh, cả hai đều không nối hai lệnh với nhau theo kiểu này."
+              }
+            }
+          ],
+          "encouragement": {
+            "vi": "Ba ký tự này rất dễ lẫn vì ngôn ngữ nào cũng dùng chúng theo một nghĩa khác nhau. Nhớ hình dáng đường ống là bạn không lẫn nữa."
+          }
+        },
+        {
+          "type": "teach",
+          "screens": [
+            {
+              "conceptId": "m12-pipeline",
+              "visualId": "vis-dau-ong",
+              "body": {
+                "vi": "Dấu ống | nối hai lệnh thành một dây chuyền: thứ lệnh trái nhả ra chảy thẳng sang lệnh phải. Import-Csv nhan-vien-moi.csv đọc file thành từng bản ghi; nối tiếp | New-ADUser là mỗi bản ghi thành một tài khoản. Một dòng, ba mươi người, không trượt phím lần nào."
+              },
+              "deepDive": {
+                "vi": "Điều làm dấu ống của PowerShell khác hẳn dòng lệnh Linux: thứ chảy trong ống không phải chữ mà là BẢN GHI có cột tên hẳn hoi. Nhờ vậy New-ADUser tự nhặt được cột Name, cột SamAccountName, cột Path trong file CSV mà bạn không phải cắt chuỗi lấy từng mảnh. Đổi lại, tên cột trong file phải khớp với thứ lệnh bên phải cần — sai tên cột là dây chuyền đứng ngay.\n\nĐọc thêm một đoạn script thật (chỉ đọc hiểu, terminal trong bài chưa chạy được nhiều dòng):\n\n    $ds = Import-Csv nhan-vien-moi.csv\n    foreach ($n in $ds) {\n      New-ADUser -Name $n.Name -SamAccountName $n.SamAccountName -Path $n.Path\n    }\n\nĐoạn này làm đúng việc mà một dòng pipeline đã làm — dài hơn nhưng cho bạn chỗ chen thêm kiểm tra ở giữa. Dân quản trị hay bắt đầu bằng một dòng, tới khi cần cẩn thận hơn mới mở nó ra thành vòng lặp như trên."
+              }
+            }
+          ]
+        },
+        {
+          "type": "practice",
+          "fadingLevel": 2,
+          "exercises": [
+            {
+              "question": {
+                "kind": "ps",
+                "id": "m12-b4-prac-ps",
+                "prompt": {
+                  "vi": "File nhan-vien-moi.csv nằm sẵn trên máy, gồm bốn bạn mới của phòng Nhân sự. Tạo tài khoản cho cả bốn bằng MỘT dòng lệnh. Xem trước nội dung file rồi hãy bơm vào ống — nhìn dữ liệu trước khi tác động lên nó là thói quen đáng có."
+                },
+                "spec": {
+                  "world": {
+                    "hostname": "MAY-QUAN-TRI",
+                    "interfaces": [
+                      {
+                        "alias": "Ethernet0",
+                        "ip": "192.168.20.5",
+                        "prefix": 24
+                      }
+                    ],
+                    "targets": [
+                      {
+                        "ip": "192.168.20.10",
+                        "name": "dc01.noibo.vn",
+                        "pingable": true,
+                        "openPorts": [
+                          389,
+                          445
+                        ]
+                      }
+                    ],
+                    "ad": {
+                      "domain": "noibo.vn",
+                      "ous": [
+                        "KeToan",
+                        "NhanSu"
+                      ],
+                      "users": [
+                        {
+                          "name": "Tran Thi Binh",
+                          "sam": "ttbinh",
+                          "ou": "NhanSu",
+                          "enabled": true
+                        },
+                        {
+                          "name": "Nguyen Van An",
+                          "sam": "nvan",
+                          "ou": "KeToan",
+                          "enabled": true
+                        }
+                      ]
+                    },
+                    "files": {
+                      "nhan-vien-moi.csv": [
+                        "Name,SamAccountName,Path",
+                        "Le Van Cuong,lvcuong,\"OU=NhanSu,DC=noibo,DC=vn\"",
+                        "Pham Thi Dung,ptdung,\"OU=NhanSu,DC=noibo,DC=vn\"",
+                        "Hoang Van Em,hvem,\"OU=NhanSu,DC=noibo,DC=vn\"",
+                        "Vo Thi Giang,vtgiang,\"OU=NhanSu,DC=noibo,DC=vn\""
+                      ]
+                    }
+                  },
+                  "goals": [
+                    {
+                      "kind": "ad-user-count",
+                      "ou": "NhanSu",
+                      "atLeast": 5
+                    },
+                    {
+                      "kind": "ad-user",
+                      "sam": "lvcuong",
+                      "ou": "NhanSu"
+                    }
+                  ],
+                  "solution": [
+                    "Import-Csv nhan-vien-moi.csv",
+                    "Import-Csv nhan-vien-moi.csv | New-ADUser",
+                    "Get-ADUser -Filter * -SearchBase \"OU=NhanSu,DC=noibo,DC=vn\""
+                  ]
+                },
+                "hintTopic": {
+                  "vi": "nối hai lệnh bằng một đường ống"
+                }
+              },
+              "hint": {
+                "vi": "Gõ Import-Csv nhan-vien-moi.csv trước để soi bảng dữ liệu. Thấy ba cột Name, SamAccountName, Path đúng thứ New-ADUser cần rồi thì nối hai lệnh lại: <lệnh đọc file> | New-ADUser."
+              },
+              "solution": {
+                "vi": "Import-Csv nhan-vien-moi.csv | New-ADUser. Terminal im lặng như mọi lần tạo user; muốn tận mắt thấy bốn bạn mới thì Get-ADUser -Filter * -SearchBase \"OU=NhanSu,DC=noibo,DC=vn\". Gõ tay bốn lệnh New-ADUser riêng lẻ cũng được công nhận — bài này chấm theo kết quả trong sổ, không chấm theo cách bạn viết."
+              }
+            }
+          ]
+        },
+        {
+          "type": "retrieval",
+          "questions": [
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m12-b4-ret-1",
+                "prompt": {
+                  "vi": "Không nhìn lại bài: thứ chảy trong đường ống của PowerShell là chữ thuần hay là bản ghi có cột tên?"
+                },
+                "accept": [
+                  "bản ghi",
+                  "ban ghi",
+                  "bản ghi có cột",
+                  "ban ghi co cot",
+                  "đối tượng",
+                  "doi tuong",
+                  "object"
+                ],
+                "hintTopic": {
+                  "vi": "vì sao New-ADUser tự nhặt được cột SamAccountName"
+                }
+              },
+              "hint": {
+                "vi": "Nghĩ xem vì sao lệnh bên phải tự biết cột nào là tên đăng nhập mà bạn không phải cắt chuỗi."
+              },
+              "solution": {
+                "vi": "Là bản ghi có cột tên hẳn hoi (đối tượng), không phải chữ thuần. Nhờ vậy New-ADUser tự nhặt đúng cột Name, SamAccountName, Path — đổi lại tên cột trong file phải khớp thứ lệnh bên phải cần."
+              }
+            }
+          ],
+          "selfExplain": {
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: vì sao một dòng pipeline lại an toàn hơn việc ngồi gõ tay ba mươi lệnh giống nhau?"
+            },
+            "keywords": [
+              [
+                "gõ nhầm",
+                "go nham",
+                "trượt phím",
+                "truot phim",
+                "sai sót",
+                "sai sot",
+                "nhầm lẫn",
+                "nham lan"
+              ],
+              [
+                "một dòng",
+                "mot dong",
+                "đồng nhất",
+                "dong nhat",
+                "lặp lại",
+                "lap lai",
+                "giống nhau",
+                "giong nhau",
+                "nhanh"
+              ]
+            ],
+            "exampleAnswer": {
+              "vi": "Vì gõ tay ba mươi lần là ba mươi cơ hội trượt phím, và một tài khoản sai ngăn kéo có thể kéo theo sai quyền. Một dòng pipeline chỉ có một chỗ để sai: chính dòng đó. Soi dữ liệu bằng Import-Csv trước rồi mới nối ống, thì mọi bản ghi được xử lý y hệt nhau, nhanh hơn và dễ kiểm lại hơn."
+            }
+          }
+        },
+        {
+          "type": "summary",
+          "bullets": [
+            {
+              "vi": "Dấu ống | đưa thứ lệnh trái nhả ra chảy thẳng sang lệnh phải."
+            },
+            {
+              "vi": "Import-Csv <file> | New-ADUser tạo cả danh sách bằng đúng một dòng."
+            },
+            {
+              "vi": "Trong ống chảy bản ghi có cột tên, nên tên cột phải khớp thứ lệnh bên phải cần."
+            }
+          ],
+          "nextTeaser": {
+            "vi": "Bài cuối: khi sự cố đã xảy ra rồi, làm sao lôi đúng ba dòng đáng đọc ra khỏi một file log dài mười nghìn dòng?"
+          }
+        }
+      ]
+    },
+    {
+      "id": "m12-bai-5",
+      "missionTitle": {
+        "vi": "Lôi đúng dòng ra khỏi đống log"
+      },
+      "steps": [
+        {
+          "type": "hook",
+          "question": {
+            "vi": "Router rớt mạng lúc chín giờ sáng. File log của nó có mười nghìn dòng, trong đó chỉ ba dòng nói đúng chuyện. Cuộn chuột tìm bằng mắt mất nửa buổi — hay là bảo máy tự lọc?"
+          },
+          "visualId": "vis-hook-doc-log"
+        },
+        {
+          "type": "pretest",
+          "questions": [
+            {
+              "kind": "typed",
+              "id": "m12-b5-pre-1",
+              "prompt": {
+                "vi": "Đoán theo khuôn động từ-danh từ: lệnh đọc toàn bộ nội dung một file ra màn hình sẽ tên là gì?"
+              },
+              "accept": [
+                "Get-Content",
+                "get content",
+                "get-content"
+              ],
+              "hintTopic": {
+                "vi": "lấy - nội dung"
+              },
+              "explain": {
+                "vi": "Get-Content — động từ Get (lấy về), danh từ Content (nội dung). Đây là lệnh mở đầu của mọi việc đọc log; muốn lọc thì nối tiếp thêm một lệnh nữa vào sau dấu ống."
+              }
+            }
+          ],
+          "encouragement": {
+            "vi": "Đoán tên lệnh từ quy tắc là kỹ năng chính của cả module này, và bạn đang dùng nó đúng chỗ. Trúng hay chưa trúng đều đáng."
+          }
+        },
+        {
+          "type": "teach",
+          "screens": [
+            {
+              "conceptId": "m12-doc-log",
+              "visualId": "vis-loc-dong-log",
+              "body": {
+                "vi": "Đọc log là một dây chuyền hai nhịp: Get-Content router.log đổ cả file ra, | Select-String ERROR giữ lại đúng những dòng có chứa chữ ấy. Kết quả in ra kèm số thứ tự dòng, nên bạn biết chuyện xảy ra ở đoạn nào của file mà lần tiếp."
+              },
+              "deepDive": {
+                "vi": "Select-String cũng dùng riêng được nếu chỉ đường tới file: Select-String ERROR -Path router.log. Trong bài này nó khớp chuỗi con và không phân biệt hoa thường, nên gõ error hay ERROR đều ra. PowerShell thật còn nhận cả biểu thức chính quy — nhưng đó là chuyện của sau này; ở đây quen nếp \"đọc rồi lọc\" trước đã.\n\nMẹo nghề: lọc lấy dòng ERROR ra rồi, đừng dừng ở đó. Nhìn số thứ tự dòng, quay lại đọc vài dòng ngay TRƯỚC nó — nguyên nhân thường nằm ở đấy, còn dòng ERROR chỉ là hậu quả cuối cùng."
+              }
+            }
+          ]
+        },
+        {
+          "type": "practice",
+          "fadingLevel": 2,
+          "exercises": [
+            {
+              "question": {
+                "kind": "ps",
+                "id": "m12-b5-prac-ps",
+                "prompt": {
+                  "vi": "File router.log nằm sẵn trên máy. Lôi ra dòng ghi nhận sự cố lúc chín giờ sáng — cụ thể là dòng nói về một port bị mất tín hiệu."
+                },
+                "spec": {
+                  "world": {
+                    "hostname": "MAY-QUAN-TRI",
+                    "interfaces": [
+                      {
+                        "alias": "Ethernet0",
+                        "ip": "192.168.20.5",
+                        "prefix": 24
+                      }
+                    ],
+                    "targets": [
+                      {
+                        "ip": "192.168.20.1",
+                        "name": "router.noibo.vn",
+                        "pingable": true,
+                        "openPorts": [
+                          443
+                        ]
+                      }
+                    ],
+                    "ad": null,
+                    "files": {
+                      "router.log": [
+                        "2026-08-07 08:01:12 INFO  interface Ethernet0 up",
+                        "2026-08-07 08:14:55 INFO  dhcp lease renewed for 192.168.20.10",
+                        "2026-08-07 08:47:03 INFO  ntp sync ok",
+                        "2026-08-07 09:02:31 ERROR link down on port 3",
+                        "2026-08-07 09:02:40 INFO  spanning-tree reconverged",
+                        "2026-08-07 09:31:18 INFO  dhcp lease renewed for 192.168.20.22"
+                      ]
+                    }
+                  },
+                  "goals": [
+                    {
+                      "kind": "found-line",
+                      "mustContain": "link down"
+                    }
+                  ],
+                  "solution": [
+                    "Get-Content router.log | Select-String ERROR"
+                  ]
+                },
+                "hintTopic": {
+                  "vi": "đọc cả file rồi lọc bằng một từ khóa"
+                }
+              },
+              "hint": {
+                "vi": "Hai nhịp nối bằng dấu ống: Get-Content router.log để đổ file ra, rồi | Select-String <từ khóa>. Dòng sự cố trong log này được đánh dấu bằng chữ ERROR."
+              },
+              "solution": {
+                "vi": "Get-Content router.log | Select-String ERROR — lôi ra dòng 09:02:31 ERROR link down on port 3. Cũng có thể gõ thẳng Select-String \"link down\" -Path router.log nếu bạn đã biết chính xác cụm cần tìm."
+              }
+            }
+          ]
+        },
+        {
+          "type": "retrieval",
+          "questions": [
+            {
+              "question": {
+                "kind": "ps",
+                "id": "m12-b5-ret-ps",
+                "prompt": {
+                  "vi": "Đóng ghi chép lại. Người dùng than tối qua không quay VPN vào được. File vpn.log có sẵn trên máy — tự lôi dòng nói về việc xác thực hỏng ra, không nhìn lại bài."
+                },
+                "spec": {
+                  "world": {
+                    "hostname": "MAY-QUAN-TRI",
+                    "interfaces": [
+                      {
+                        "alias": "Ethernet0",
+                        "ip": "192.168.20.5",
+                        "prefix": 24
+                      }
+                    ],
+                    "targets": [
+                      {
+                        "ip": "192.168.20.1",
+                        "name": "router.noibo.vn",
+                        "pingable": true,
+                        "openPorts": [
+                          443
+                        ]
+                      }
+                    ],
+                    "ad": null,
+                    "files": {
+                      "vpn.log": [
+                        "2026-08-06 21:10:02 INFO  tunnel request from 113.161.44.8",
+                        "2026-08-06 21:10:03 INFO  ike phase 1 ok",
+                        "2026-08-06 21:10:05 ERROR authentication failed for user ttbinh",
+                        "2026-08-06 21:12:44 INFO  tunnel closed"
+                      ]
+                    }
+                  },
+                  "goals": [
+                    {
+                      "kind": "found-line",
+                      "mustContain": "authentication failed"
+                    }
+                  ],
+                  "solution": [
+                    "Get-Content vpn.log | Select-String ERROR"
+                  ]
+                },
+                "hintTopic": {
+                  "vi": "vẫn là dây chuyền đọc rồi lọc"
+                }
+              },
+              "hint": {
+                "vi": "Cùng một khuôn của bài vừa rồi, chỉ đổi tên file thành vpn.log. Từ khóa lọc có thể là ERROR, hoặc chính cụm failed."
+              },
+              "solution": {
+                "vi": "Get-Content vpn.log | Select-String ERROR — ra dòng 21:10:05 ERROR authentication failed for user ttbinh. Vậy tunnel dựng được tới bước IKE, hỏng ở khâu xác thực người dùng: đi tra tài khoản ttbinh chứ không phải tra đường mạng."
+              }
+            }
+          ],
+          "selfExplain": {
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: vì sao lọc được dòng ERROR rồi vẫn nên đọc mấy dòng ngay trước nó?"
+            },
+            "keywords": [
+              [
+                "nguyên nhân",
+                "nguyen nhan",
+                "gốc",
+                "goc",
+                "trước đó",
+                "truoc do"
+              ],
+              [
+                "hậu quả",
+                "hau qua",
+                "kết quả",
+                "ket qua",
+                "cuối cùng",
+                "cuoi cung",
+                "triệu chứng",
+                "trieu chung"
+              ]
+            ],
+            "exampleAnswer": {
+              "vi": "Vì dòng ERROR thường chỉ là hậu quả cuối cùng, còn nguyên nhân đã xảy ra vài dòng trước đó và có khi chỉ được ghi ở mức INFO. Đọc ngược lên vài dòng mới thấy được chuỗi sự việc dẫn tới lỗi, nhờ đó chữa đúng gốc thay vì chữa cái triệu chứng cuối cùng."
+            }
+          }
+        },
+        {
+          "type": "summary",
+          "bullets": [
+            {
+              "vi": "Get-Content <file> đổ cả file ra; nối | Select-String <từ khóa> để giữ đúng dòng cần."
+            },
+            {
+              "vi": "Kết quả kèm số thứ tự dòng — lần ngược lên vài dòng thường thấy nguyên nhân."
+            },
+            {
+              "vi": "Select-String dùng riêng cũng được nếu chỉ đường bằng -Path."
+            }
+          ],
+          "nextTeaser": {
+            "vi": "Bạn vừa đóng lại chặng cuối của cả khóa học. Bài kiểm tra module này cũng là lần cuối bạn ngồi trước terminal ảo — sau đó là mạng thật."
+          }
+        }
+      ]
+    }
+  ],
+  "concepts": [
+    {
+      "id": "m12-cmdlet",
+      "term": "Cmdlet",
+      "glossVi": "Lệnh PowerShell, tên luôn theo khuôn Động từ - Danh từ",
+      "metaphor": {
+        "vi": "Như gọi món trong quán: nói động từ (lấy, tạo, kiểm tra) rồi nói danh từ (địa chỉ IP, người dùng, kết nối) — không cần thuộc thực đơn cũng gọi được."
+      },
+      "iconId": "icon-m12-cmdlet",
+      "flashcard": {
+        "front": {
+          "vi": "Tên cmdlet PowerShell theo khuôn nào? Cho hai ví dụ."
+        },
+        "back": {
+          "vi": "Động từ - Danh từ (verb-noun): Get-NetIPAddress (lấy - địa chỉ IP), New-ADUser (tạo mới - người dùng AD). Bộ động từ chuẩn hóa: Get, Set, New, Remove, Test, Import, Export."
+        }
+      }
+    },
+    {
+      "id": "m12-cmdlet-mang",
+      "term": "Get-NetIPAddress & Test-NetConnection",
+      "glossVi": "Hai cmdlet mạng đầu tay: đọc cấu hình máy mình và thăm dò máy khác",
+      "metaphor": {
+        "vi": "Get-NetIPAddress là tờ giấy tùy thân của máy; Test-NetConnection là vừa gọi cửa vừa thử đúng một cánh cửa xem có ai mở."
+      },
+      "iconId": "icon-m12-cmdlet-mang",
+      "flashcard": {
+        "front": {
+          "vi": "Test-NetConnection gõ trần khác gì khi thêm -Port?"
+        },
+        "back": {
+          "vi": "Gõ trần thì nó ping và trả PingSucceeded (máy đích còn sống không). Thêm -Port <số> thì nó gõ đúng port đó và trả TcpTestSucceeded (dịch vụ ở port ấy có mở không). Ping True mà TcpTest False = máy sống, dịch vụ chết hoặc bị chặn."
+        }
+      }
+    },
+    {
+      "id": "m12-tham-so",
+      "term": "Parameter",
+      "glossVi": "Tham số — cái nhãn dán vào giá trị, viết sau một dấu gạch",
+      "metaphor": {
+        "vi": "Như ghi tên lên từng hộp đồ trước khi đưa: -Port 443, -Name \"Le Thi Mai\". Máy không phải đoán hộp nào đựng gì."
+      },
+      "iconId": "icon-m12-tham-so",
+      "flashcard": {
+        "front": {
+          "vi": "Viết tham số trong PowerShell theo khuôn nào, và khi nào phải bọc nháy kép?"
+        },
+        "back": {
+          "vi": "Một dấu gạch, tên tham số, khoảng trắng, giá trị: -Port 443. Giá trị có dấu cách thì bọc nháy kép: -Name \"Le Thi Mai\". Tham số đầu tiên thường được phép bỏ nhãn (tham số vị trí)."
+        }
+      }
+    },
+    {
+      "id": "m12-get-help",
+      "term": "Get-Help",
+      "glossVi": "Sổ tay cú pháp nằm sẵn trong máy, không cần mạng",
+      "metaphor": {
+        "vi": "Như cuốn hướng dẫn kẹp sẵn trong hộp đồ nghề: gặp lệnh lạ thì mở ra đọc khối SYNTAX, không phải chạy đi hỏi ai."
+      },
+      "iconId": "icon-m12-get-help",
+      "flashcard": {
+        "front": {
+          "vi": "Trong khối SYNTAX, [-Port <Int32>] và [-ComputerName] <String> khác nhau chỗ nào?"
+        },
+        "back": {
+          "vi": "[-Port <Int32>]: cả cụm trong ngoặc nên tham số này tùy chọn, bỏ hẳn cũng được. [-ComputerName] <String>: chỉ cái NHÃN nằm trong ngoặc — giá trị bắt buộc phải có, chỉ được phép bỏ nhãn (viết trần)."
+        }
+      }
+    },
+    {
+      "id": "m12-ad-doc",
+      "term": "Get-ADUser",
+      "glossVi": "Đọc sổ hộ khẩu của miền: một người, cả danh sách, hoặc một ngăn kéo",
+      "metaphor": {
+        "vi": "Hỏi thủ thư: hỏi đích danh một người thì -Identity, mượn cả kệ thì -Filter *, giới hạn trong một ngăn thì -SearchBase."
+      },
+      "iconId": "icon-m12-ad-doc",
+      "flashcard": {
+        "front": {
+          "vi": "Ba cách hỏi của Get-ADUser và tác dụng từng cách?"
+        },
+        "back": {
+          "vi": "-Identity <sam>: đúng một người. -Filter *: lấy tất cả user trong miền. -SearchBase \"OU=...,DC=...\": thu hẹp về đúng một ngăn kéo OU. Kết quả in ra Name, SamAccountName, DistinguishedName, Enabled."
+        }
+      }
+    },
+    {
+      "id": "m12-tao-user",
+      "term": "New-ADUser",
+      "glossVi": "Ghi thêm một người vào sổ, phải nói rõ cất vào ngăn kéo nào",
+      "metaphor": {
+        "vi": "Điền phiếu nhập hộ khẩu: họ tên, tên đăng nhập, và số nhà — thiếu số nhà thì thư ký không biết xếp phiếu vào ngăn nào."
+      },
+      "iconId": "icon-m12-tao-user",
+      "flashcard": {
+        "front": {
+          "vi": "New-ADUser cần những mảnh nào, và vì sao chạy xong không thấy thông báo?"
+        },
+        "back": {
+          "vi": "-Name (tên hiển thị, có dấu cách thì bọc nháy), -SamAccountName (tên đăng nhập), -Path \"OU=<ngăn>,DC=<miền>,DC=<đuôi>\". Im lặng là nếp PowerShell: chạy trót lọt thì không nói gì. Tự kiểm chứng bằng Get-ADUser -Identity <sam> — và nhìn dòng Enabled: chưa có mật khẩu thì tài khoản mới sinh ra đang bị khóa (False)."
+        }
+      }
+    },
+    {
+      "id": "m12-pipeline",
+      "term": "Pipeline",
+      "glossVi": "Dấu ống | nối lệnh trước làm đầu vào cho lệnh sau",
+      "metaphor": {
+        "vi": "Một đường ống dẫn: đầu này đổ danh sách vào, đầu kia tài khoản mọc ra — không phải bê từng thùng một."
+      },
+      "iconId": "icon-m12-pipeline",
+      "flashcard": {
+        "front": {
+          "vi": "Import-Csv nhan-vien-moi.csv | New-ADUser làm gì, và thứ chảy trong ống là gì?"
+        },
+        "back": {
+          "vi": "Đọc file CSV thành từng bản ghi rồi tạo một tài khoản cho mỗi bản ghi — cả danh sách trong một dòng. Trong ống chảy BẢN GHI có cột tên (không phải chữ thuần), nên tên cột phải khớp thứ lệnh bên phải cần: Name, SamAccountName, và Path chứa đường dẫn OU đầy đủ (bọc nháy kép vì trong DN có dấu phẩy)."
+        }
+      }
+    },
+    {
+      "id": "m12-doc-log",
+      "term": "Get-Content & Select-String",
+      "glossVi": "Dây chuyền đọc log: đổ cả file ra rồi giữ lại đúng dòng cần",
+      "metaphor": {
+        "vi": "Đổ cả rổ ra bàn rồi lấy nam châm hút đúng mấy cái đinh — nhanh hơn ngồi bới từng nắm."
+      },
+      "iconId": "icon-m12-doc-log",
+      "flashcard": {
+        "front": {
+          "vi": "Lọc dòng ERROR trong file router.log bằng dòng lệnh nào?"
+        },
+        "back": {
+          "vi": "Get-Content router.log | Select-String ERROR. Kết quả kèm số thứ tự dòng — đọc ngược lên vài dòng trước đó thường thấy nguyên nhân, vì dòng ERROR chỉ là hậu quả cuối cùng."
+        }
+      }
+    }
+  ],
+  "masteryTest": [
+    {
+      "kind": "typed",
+      "id": "m12-mt-1",
+      "prompt": {
+        "vi": "Tên mọi cmdlet PowerShell đều ghép theo khuôn hai mảnh nào?"
+      },
+      "accept": [
+        "động từ - danh từ",
+        "động từ danh từ",
+        "dong tu - danh tu",
+        "dong tu danh tu",
+        "verb-noun",
+        "verb noun",
+        "động từ và danh từ",
+        "dong tu va danh tu"
+      ],
+      "hintTopic": {
+        "vi": "làm GÌ với CÁI GÌ"
+      },
+      "explain": {
+        "vi": "Động từ - Danh từ. Nhờ khuôn này bạn đoán được tên lệnh chưa từng gặp: muốn lấy nội dung file thì Get-Content, muốn tạo user thì New-ADUser."
+      }
+    },
+    {
+      "kind": "mcq",
+      "id": "m12-mt-2",
+      "prompt": {
+        "vi": "Test-NetConnection tới một máy chủ trả về PingSucceeded : True nhưng TcpTestSucceeded : False. Kết luận đúng nhất là gì?"
+      },
+      "choices": [
+        {
+          "vi": "Máy đích vẫn sống, dịch vụ ở port đó không chạy hoặc bị chặn"
+        },
+        {
+          "vi": "Máy đích đã tắt hẳn nên không trả lời gì cả"
+        },
+        {
+          "vi": "Máy của bạn chưa có địa chỉ IP hợp lệ nên không đi ra được"
+        }
+      ],
+      "answerIndex": 0,
+      "hintTopic": {
+        "vi": "hai dòng kết quả đo hai thứ khác nhau"
+      },
+      "explain": {
+        "vi": "PingSucceeded True chứng minh máy đích còn sống và đường đi còn thông. TcpTestSucceeded False nói riêng về cánh cửa đó: dịch vụ không chạy, hoặc tường lửa chặn đúng port ấy. Máy tắt hẳn thì ping đã False rồi."
+      }
+    },
+    {
+      "kind": "typed",
+      "id": "m12-mt-3",
+      "prompt": {
+        "vi": "Bạn gặp cmdlet lạ và cần biết nó nhận tham số nào. Gõ dòng nào ngay trong terminal để máy tự khai cú pháp?"
+      },
+      "accept": [
+        "Get-Help",
+        "get help",
+        "get-help",
+        "gethelp"
+      ],
+      "hintTopic": {
+        "vi": "lấy - trợ giúp"
+      },
+      "explain": {
+        "vi": "Get-Help <tên lệnh>. Khối SYNTAX in ra cho biết tham số nào bắt buộc, tham số nào nằm trong ngoặc vuông (tùy chọn) — đọc được nó là tự học được mọi cmdlet."
+      }
+    },
+    {
+      "kind": "typed",
+      "id": "m12-mt-4",
+      "prompt": {
+        "vi": "Muốn liệt kê mọi user nằm trong OU tên NhanSu của miền noibo.vn, bạn thêm tham số nào vào Get-ADUser -Filter * để thu hẹp phạm vi?"
+      },
+      "accept": [
+        "-SearchBase",
+        "SearchBase",
+        "-searchbase",
+        "searchbase",
+        "search base"
+      ],
+      "hintTopic": {
+        "vi": "chỉ cho lệnh biết bắt đầu tìm từ ngăn kéo nào"
+      },
+      "explain": {
+        "vi": "-SearchBase \"OU=NhanSu,DC=noibo,DC=vn\". Không có nó thì -Filter * quét cả miền; có nó thì chỉ đếm người trong đúng ngăn kéo đó."
+      }
+    },
+    {
+      "kind": "mcq",
+      "id": "m12-mt-5",
+      "prompt": {
+        "vi": "Bạn chạy New-ADUser và terminal không in ra một chữ nào. Điều này nghĩa là gì?"
+      },
+      "choices": [
+        {
+          "vi": "Bình thường — chạy trót lọt thì PowerShell im lặng"
+        },
+        {
+          "vi": "Lệnh hỏng giữa chừng nên chưa kịp in gì ra màn hình"
+        },
+        {
+          "vi": "Tài khoản đã được tạo nhưng đang chờ phê duyệt"
+        }
+      ],
+      "answerIndex": 0,
+      "hintTopic": {
+        "vi": "nếp của PowerShell khi mọi việc êm xuôi"
+      },
+      "explain": {
+        "vi": "Im lặng là tin tốt: PowerShell chỉ lên tiếng khi có chuyện. Nhưng vì mắt chưa thấy gì, thói quen nghề là hỏi lại ngay bằng Get-ADUser -Identity <tên đăng nhập> — nhất là khi lệnh vừa tác động lên cả danh sách."
+      }
+    },
+    {
+      "kind": "typed",
+      "id": "m12-mt-6",
+      "prompt": {
+        "vi": "Ký tự nào nối kết quả của lệnh trước làm đầu vào cho lệnh sau?"
+      },
+      "accept": [
+        "|",
+        "dấu |",
+        "dau |",
+        "dấu ống",
+        "dau ong",
+        "ống",
+        "ong",
+        "dấu gạch đứng",
+        "dau gach dung",
+        "pipeline",
+        "pipe"
+      ],
+      "hintTopic": {
+        "vi": "hình dáng một đường ống dẫn"
+      },
+      "explain": {
+        "vi": "Dấu ống |. Trong PowerShell thứ chảy qua nó là bản ghi có cột tên, nên lệnh bên phải tự nhặt đúng cột mình cần."
+      }
+    },
+    {
+      "kind": "typed",
+      "id": "m12-mt-7",
+      "prompt": {
+        "vi": "Cmdlet nào đọc ra địa chỉ IP đang đặt trên các card mạng của chính máy bạn?"
+      },
+      "accept": [
+        "get-netipaddress",
+        "getnetipaddress",
+        "get netipaddress",
+        "get-netipaddress -addressfamily ipv4"
+      ],
+      "hintTopic": {
+        "vi": "cmdlet đọc giấy tờ mạng của máy mình"
+      },
+      "explain": {
+        "vi": "Get-NetIPAddress — vai trò như ipconfig ở Module 11, nhưng trả về bản ghi có cột nên lọc được và nối tiếp được bằng dấu ống."
+      }
+    },
+    {
+      "kind": "mcq",
+      "id": "m12-mt-8",
+      "prompt": {
+        "vi": "Trong dòng Get-ADUser -Filter * -SearchBase \"OU=NhanSu,DC=noibo,DC=vn\", hai chữ mở đầu bằng dấu gạch là gì?"
+      },
+      "choices": [
+        {
+          "vi": "Tham số — cái nhãn nói giá trị đứng sau nó mang nghĩa gì"
+        },
+        {
+          "vi": "Tên hai cmdlet phụ chạy kèm cmdlet chính ở đầu dòng"
+        },
+        {
+          "vi": "Chú thích dành cho người đọc, PowerShell bỏ qua chúng khi chạy"
+        }
+      ],
+      "answerIndex": 0,
+      "hintTopic": {
+        "vi": "chữ đứng sau dấu gạch trong một dòng lệnh"
+      },
+      "explain": {
+        "vi": "Tham số là nhãn dán vào giá trị: -Filter nói \"lọc theo cái này\", -SearchBase nói \"tìm trong ngăn kéo này\". Nhờ có nhãn nên thứ tự viết không quan trọng."
+      }
+    },
+    {
+      "kind": "typed",
+      "id": "m12-mt-9",
+      "prompt": {
+        "vi": "Bạn đổ cả file log ra bằng Get-Content rồi muốn giữ lại đúng những dòng chứa chữ ERROR. Nối tiếp bằng cmdlet nào?"
+      },
+      "accept": [
+        "select-string",
+        "selectstring",
+        "select string"
+      ],
+      "hintTopic": {
+        "vi": "cmdlet giữ lại dòng khớp chữ cần tìm"
+      },
+      "explain": {
+        "vi": "Get-Content đổ cả file ra, Select-String giữ lại dòng khớp. Một lệnh lấy, một lệnh lọc, nối nhau bằng dấu ống — đó là dây chuyền đọc log."
+      }
+    },
+    {
+      "kind": "mcq",
+      "id": "m12-mt-10",
+      "prompt": {
+        "vi": "Vì sao nối thẳng Import-Csv vào New-ADUser bằng dấu ống là chạy được?"
+      },
+      "choices": [
+        {
+          "vi": "Vì tên cột trong CSV khớp tên tham số mà New-ADUser nhận"
+        },
+        {
+          "vi": "Vì New-ADUser tự đọc file CSV nếu thấy dấu ống đứng trước nó"
+        },
+        {
+          "vi": "Vì PowerShell tự đoán thứ tự cột theo đúng thứ tự tham số"
+        }
+      ],
+      "answerIndex": 0,
+      "hintTopic": {
+        "vi": "pipeline khớp cột CSV với tham số"
+      },
+      "explain": {
+        "vi": "Pipeline nối theo TÊN: mỗi dòng CSV thành một bản ghi, cột Name rơi vào -Name, cột Path rơi vào -Path. Đặt sai tên cột là dây chuyền đứt ngay."
+      }
+    },
+    {
+      "kind": "ps",
+      "id": "m12-mt-ps-1",
+      "prompt": {
+        "vi": "Việc thật: file thuc-tap-sinh.csv có ba bạn thực tập cần tài khoản trong OU KyThuat. Tạo đủ cả ba."
+      },
+      "spec": {
+        "world": {
+          "hostname": "MAY-QUAN-TRI",
+          "interfaces": [
+            {
+              "alias": "Ethernet0",
+              "ip": "192.168.20.5",
+              "prefix": 24
+            }
+          ],
+          "targets": [
+            {
+              "ip": "192.168.20.10",
+              "name": "dc01.noibo.vn",
+              "pingable": true,
+              "openPorts": [
+                389,
+                445
+              ]
+            }
+          ],
+          "ad": {
+            "domain": "noibo.vn",
+            "ous": [
+              "KeToan",
+              "NhanSu",
+              "KyThuat"
+            ],
+            "users": [
+              {
+                "name": "Nguyen Van An",
+                "sam": "nvan",
+                "ou": "KeToan",
+                "enabled": true
+              },
+              {
+                "name": "Tran Thi Binh",
+                "sam": "ttbinh",
+                "ou": "NhanSu",
+                "enabled": true
+              }
+            ]
+          },
+          "files": {
+            "thuc-tap-sinh.csv": [
+              "Name,SamAccountName,Path",
+              "Dang Van Hai,dvhai,\"OU=KyThuat,DC=noibo,DC=vn\"",
+              "Bui Thi Lan,btlan,\"OU=KyThuat,DC=noibo,DC=vn\"",
+              "Do Van Nam,dvnam,\"OU=KyThuat,DC=noibo,DC=vn\""
+            ]
+          }
+        },
+        "goals": [
+          {
+            "kind": "ad-user-count",
+            "ou": "KyThuat",
+            "atLeast": 3
+          },
+          {
+            "kind": "ad-user",
+            "sam": "btlan",
+            "ou": "KyThuat"
+          }
+        ],
+        "solution": [
+          "Import-Csv thuc-tap-sinh.csv | New-ADUser"
+        ]
+      },
+      "hintTopic": {
+        "vi": "cả danh sách đi qua một đường ống"
+      },
+      "explain": {
+        "vi": "Import-Csv thuc-tap-sinh.csv | New-ADUser — file có sẵn ba cột Name, SamAccountName, Path đúng thứ lệnh bên phải cần, nên cả ba tài khoản mọc ra trong một dòng. Gõ tay ba lệnh New-ADUser riêng cũng được công nhận: bài chấm theo kết quả trong sổ, không chấm cách viết."
+      }
+    },
+    {
+      "kind": "ps",
+      "id": "m12-mt-ps-2",
+      "prompt": {
+        "vi": "Câu cuối của cả khóa học. Máy trong phòng họp sáng nay không xin được địa chỉ IP. File dhcp.log nằm trên máy bạn — lôi ra dòng nói đúng nguyên nhân."
+      },
+      "spec": {
+        "world": {
+          "hostname": "MAY-QUAN-TRI",
+          "interfaces": [
+            {
+              "alias": "Ethernet0",
+              "ip": "192.168.20.5",
+              "prefix": 24
+            }
+          ],
+          "targets": [
+            {
+              "ip": "192.168.20.1",
+              "name": "router.noibo.vn",
+              "pingable": true,
+              "openPorts": [
+                443
+              ]
+            }
+          ],
+          "ad": null,
+          "files": {
+            "dhcp.log": [
+              "2026-08-07 09:58:11 INFO  discover from aa:bb:cc:11:22:33",
+              "2026-08-07 09:58:11 INFO  offer 192.168.20.199",
+              "2026-08-07 10:15:02 ERROR dhcp pool exhausted on scope 192.168.20.0",
+              "2026-08-07 10:15:40 INFO  discover from aa:bb:cc:44:55:66"
+            ]
+          }
+        },
+        "goals": [
+          {
+            "kind": "found-line",
+            "mustContain": "pool exhausted"
+          }
+        ],
+        "solution": [
+          "Get-Content dhcp.log | Select-String ERROR"
+        ]
+      },
+      "hintTopic": {
+        "vi": "đọc cả file rồi lọc lấy dòng đáng đọc"
+      },
+      "explain": {
+        "vi": "Get-Content dhcp.log | Select-String ERROR lôi ra dòng dhcp pool exhausted on scope 192.168.20.0 — dải địa chỉ cho thuê đã hết sạch, nên máy mới xin không còn gì để cấp. Đây là bệnh của Module 6 quay lại, lần này bạn bắt được nó bằng một dòng lệnh."
+      }
+    }
+  ]
+}

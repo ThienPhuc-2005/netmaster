@@ -7,6 +7,8 @@
 // "có thêm module". Chỉ nội dung SAI mới được làm đỏ.
 
 import { describe, expect, it } from 'vitest'
+import { typedAnswerMatches } from '../engine/grading/normalize'
+import { MASTERY_DRAW_COUNT, isAnchorQuestion } from '../engine/masteryPool'
 import { findConcept, findLesson, loadModules } from './index'
 
 const modules = loadModules() // parse + validateModules ném lỗi nếu hỏng
@@ -241,9 +243,190 @@ describe('bộ nội dung', () => {
     ).toBe(true)
   })
 
-  it('mastery test đủ dày để ngưỡng 85% có nghĩa (>= 7 câu mỗi module)', () => {
+  it('Module 12: generation effect tối đa — MỌI bài đều bắt gõ lệnh vào terminal ảo', () => {
+    // Spec Module 12: "mọi bài đều là gõ lệnh vào terminal ảo". Một bài
+    // chỉ toàn trắc nghiệm và gõ chữ là bài NÓI VỀ PowerShell chứ không
+    // phải bài DÙNG PowerShell — đúng cái bẫy spec dựng test này để chặn.
+    const m12 = moduleById('module-12')
+    for (const lesson of m12.lessons) {
+      const hasPs = [
+        ...lesson.steps[1].questions,
+        ...lesson.steps[3].exercises.map((e) => e.question),
+        ...lesson.steps[4].questions.map((e) => e.question),
+      ].some((q) => q.kind === 'ps')
+      expect(hasPs, `${lesson.id}: không có câu terminal nào`).toBe(true)
+    }
+  })
+
+  it('Module 12: phủ đủ 4 mảng nội dung spec (cmdlet mạng, AD, hàng loạt, đọc log)', () => {
+    // Spec liệt kê đích danh: "cmdlet mạng (Test-NetConnection,
+    // Get-NetIPAddress), script tạo user AD hàng loạt, đọc log". Mỗi mảng
+    // phải có bài THẬT chấm được, không chỉ được nhắc tới trong màn dạy.
+    const m12 = moduleById('module-12')
+    const specs = [
+      ...m12.lessons.flatMap((l) => [
+        ...l.steps[1].questions,
+        ...l.steps[3].exercises.map((e) => e.question),
+        ...l.steps[4].questions.map((e) => e.question),
+      ]),
+      ...m12.masteryTest,
+    ].flatMap((q) => (q.kind === 'ps' ? [q.spec] : []))
+    expect(specs.length).toBeGreaterThanOrEqual(6)
+
+    const goalKinds = new Set(specs.flatMap((s) => s.goals.map((g) => g.kind)))
+    for (const kind of ['tested-connection', 'ad-user', 'ad-user-count', 'found-line'] as const) {
+      expect(goalKinds.has(kind), `thiếu bài thuộc mảng "${kind}"`).toBe(true)
+    }
+
+    // "Hàng loạt" đã chốt là MỘT dòng pipeline chạy thật, không phải
+    // script đa dòng: lời giải tham chiếu của bài đếm-user phải là một
+    // dòng duy nhất có dấu ống.
+    const batch = specs.filter((s) => s.goals.some((g) => g.kind === 'ad-user-count'))
+    expect(batch.length).toBeGreaterThan(0)
+    expect(
+      batch.some((s) => s.solution.some((line) => line.includes('|'))),
+      'bài hàng loạt phải giải được bằng một dòng pipeline',
+    ).toBe(true)
+  })
+
+  it('Module 12: gợi ý mờ dần — fadingLevel không lùi dọc module và kết ở mức 2', () => {
+    // Spec Module 12: "có gợi ý mờ dần (fading)". Ở cấp module, fading
+    // đo được bằng chuỗi fadingLevel dọc các bài: chỉ được giữ nguyên
+    // hoặc tăng, và bài cuối phải để người học tự làm hẳn.
+    const m12 = moduleById('module-12')
+    const byId = new Map(m12.lessons.map((l) => [l.id, l]))
+    const levels = m12.stages
+      .flatMap((s) => s.lessonIds)
+      .map((id) => byId.get(id)!.steps[3].fadingLevel)
+    expect(levels[0], 'bài đầu phải có ví dụ giải sẵn').toBe(0)
+    expect(levels.at(-1), 'bài cuối phải tự làm hẳn').toBe(2)
+    for (const [i, level] of levels.entries()) {
+      if (i === 0) continue
+      expect(level, `bài thứ ${i + 1} lùi về mức dễ hơn bài trước`).toBeGreaterThanOrEqual(levels[i - 1]!)
+    }
+  })
+
+  it('bài thi Module 12 kết bằng một câu terminal PowerShell', () => {
+    // Module cuối của cả khóa: câu chốt phải là việc làm thật trên
+    // terminal, không phải câu hỏi về PowerShell.
+    const m12 = moduleById('module-12')
+    expect(m12.masteryTest.at(-1)?.kind).toBe('ps')
+  })
+
+  it('mastery test là POOL đủ rộng: mỗi module >= 12 câu để rút ra đề 8 câu', () => {
+    // Đề cố định thì lượt thi lại chỉ còn đo TRÍ NHỚ VỀ ĐỀ. Pool rộng
+    // hơn cỡ đề mới có chỗ mà rút khác đi giữa hai lượt (ghế Đo lường).
+    // Số dư càng nhỏ thì hai đề liên tiếp càng giống nhau — 12 rút 8 cho
+    // 495 tổ hợp, đủ để không lượt nào lặp lại lượt trước.
+    const POOL_MIN = 12
     for (const m of modules) {
-      expect(m.masteryTest.length, `${m.id} cần >= 7 câu thi`).toBeGreaterThanOrEqual(7)
+      expect(m.masteryTest.length, `${m.id}: pool cần >= ${POOL_MIN} câu`).toBeGreaterThanOrEqual(POOL_MIN)
+      expect(m.masteryTest.length, `${m.id}: pool phải rộng hơn cỡ đề`).toBeGreaterThan(MASTERY_DRAW_COUNT)
+    }
+  })
+
+  it('câu TRỤ không được nhiều hơn cỡ đề (rút xong vẫn còn chỗ cho câu thường)', () => {
+    // Lab/cung điện/ca bệnh/terminal luôn vào đề. Khai quá tay thì đề
+    // phình to hơn 8 câu và ngưỡng 85% không còn so sánh được giữa các
+    // module — nên chặn ngay ở tầng dữ liệu.
+    for (const m of modules) {
+      const anchors = m.masteryTest.filter(isAnchorQuestion)
+      expect(
+        anchors.length,
+        `${m.id}: ${anchors.length} câu trụ, vượt cỡ đề ${MASTERY_DRAW_COUNT}`,
+      ).toBeLessThanOrEqual(MASTERY_DRAW_COUNT)
+      // Và phải chừa chỗ cho ít nhất vài câu thường, nếu không mọi lượt
+      // thi của module đó gần như giống hệt nhau.
+      expect(anchors.length, `${m.id}: câu trụ chiếm gần trọn đề`).toBeLessThanOrEqual(MASTERY_DRAW_COUNT - 4)
+    }
+  })
+
+  it('bài thi mastery: đáp án MCQ không lộ mình bằng ĐỘ DÀI', () => {
+    // Cue độ-dài là chị em với cue vị-trí (đã vá bằng xáo lựa chọn lúc
+    // render): người không thuộc bài vẫn ăn điểm bằng cách bấm lựa chọn
+    // dài nhất, vì người soạn hay viết đáp án đủ ý còn distractor cụt lủn.
+    // Đề đo sai thì ngưỡng 85% mất nghĩa (nguyên tắc 2).
+    //
+    // Hai hàng rào, cùng suy từ dữ liệu:
+    //   (a) từng câu — đáp án không được cao hơn distractor dài nhất quá
+    //       10%, cũng không được ngắn hơn 30% (cue ngược cũng là cue);
+    //       trừ câu mà cả ba lựa chọn chênh nhau <= 8 ký tự (mắt không
+    //       phân biệt được thì không thành cue).
+    //   (b) toàn bộ đề — tỉ lệ câu có đáp án dài nhất phải quanh mức
+    //       ngẫu nhiên, không được vượt 45%.
+    const GRACE_CHARS = 8
+    let strictLongest = 0
+    let mcqCount = 0
+
+    for (const m of modules) {
+      for (const q of m.masteryTest) {
+        if (q.kind !== 'mcq') continue
+        mcqCount++
+        const lens = q.choices.map((c) => c.vi.length)
+        const answerLen = lens[q.answerIndex]!
+        const distractors = lens.filter((_, i) => i !== q.answerIndex)
+        const maxD = Math.max(...distractors)
+        const spread = Math.max(...lens) - Math.min(...lens)
+
+        if (lens.filter((l) => l === answerLen).length === 1 && answerLen === Math.max(...lens)) {
+          strictLongest++
+        }
+        if (spread <= GRACE_CHARS) continue
+
+        expect(answerLen, `${m.id}/${q.id}: đáp án dài vượt distractor (${lens.join('/')})`).toBeLessThanOrEqual(
+          Math.round(maxD * 1.1),
+        )
+        expect(answerLen, `${m.id}/${q.id}: đáp án ngắn bất thường (${lens.join('/')})`).toBeGreaterThanOrEqual(
+          Math.round(maxD * 0.7),
+        )
+      }
+    }
+
+    expect(mcqCount, 'phải có câu MCQ để đo').toBeGreaterThan(0)
+    expect(
+      strictLongest / mcqCount,
+      `${strictLongest}/${mcqCount} câu có đáp án là lựa chọn dài nhất — chiến thuật "bấm câu dài" đang ăn điểm`,
+    ).toBeLessThanOrEqual(0.45)
+  })
+
+  it('accept gõ tay nhận đủ các cách viết mà người thật hay gõ', () => {
+    // Người học biết đáp án nhưng gõ theo thói quen khác người soạn thì
+    // vẫn là NHỚ ĐƯỢC — chấm sai chỗ này là đo sai, không phải đo chặt.
+    // Mỗi dòng dưới đây là một cách gõ đã từng trượt oan (bộ chấm tách
+    // token nên "65,535" thành hai số, "dấu |" mất hẳn ký hiệu).
+    const CASES: ReadonlyArray<readonly [string, string]> = [
+      ['m3-mt-9', '::'],
+      ['m3-mt-9', 'dấu ::'],
+      ['m3-mt-9', 'hai dấu hai chấm'],
+      ['m5-mt-4', '65535'],
+      ['m5-mt-4', '65,535'],
+      ['m5-mt-4', '65.535'],
+      ['m12-mt-6', '|'],
+      ['m12-mt-6', 'dấu |'],
+      ['m12-mt-6', 'dấu gạch đứng'],
+      ['m12-mt-6', 'dấu ống'],
+      ['m12-mt-3', 'Get-Help'],
+      ['m12-mt-3', 'get help'],
+      ['m12-mt-3', 'gethelp'],
+      ['m12-mt-4', '-SearchBase'],
+      ['m12-mt-4', 'search base'],
+      ['m12-mt-1', 'động từ - danh từ'],
+      ['m12-mt-1', 'động từ và danh từ'],
+      ['m8-mt-4', 'linklocal'],
+      ['m7-mt-7', 'doublenat'],
+    ]
+
+    const acceptById = new Map<string, readonly string[]>()
+    for (const m of modules) {
+      for (const q of m.masteryTest) {
+        if (q.kind === 'typed') acceptById.set(q.id, q.accept)
+      }
+    }
+
+    for (const [id, typed] of CASES) {
+      const accept = acceptById.get(id)
+      expect(accept, `không còn câu gõ tay "${id}" trong bài thi`).toBeDefined()
+      expect(typedAnswerMatches(typed, accept!), `${id}: gõ "${typed}" bị chấm sai`).toBe(true)
     }
   })
 

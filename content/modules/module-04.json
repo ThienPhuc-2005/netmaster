@@ -1064,8 +1064,8 @@
       },
       "choices": [
         { "vi": "Hai cổng đang ở hai VLAN khác nhau" },
-        { "vi": "Switch bị hỏng" },
-        { "vi": "Địa chỉ IP đặt sai dải" }
+        { "vi": "Switch hỏng nên không chuyển được khung" },
+        { "vi": "Hai máy chưa cùng một workgroup Windows" }
       ],
       "answerIndex": 0,
       "explain": {
@@ -1093,6 +1093,56 @@
       "answerIndex": 2,
       "explain": {
         "vi": "Cặp địa chỉ IP giữ nguyên suốt chuyến vì đó là địa chỉ đầu–cuối. Hai địa chỉ MAC thì đổi mới ở từng chặng trao tay."
+      }
+    },
+    {
+      "kind": "mcq",
+      "id": "m4-mt-9",
+      "prompt": { "vi": "Một switch không chia VLAN, 20 máy cắm chung. Một máy phát tiếng gọi ARP hỏi cả phòng. Ai nghe thấy tiếng gọi đó?" },
+      "choices": [
+        { "vi": "Cả 19 máy còn lại — chúng nằm chung một miền quảng bá" },
+        { "vi": "Chỉ máy có địa chỉ IP được hỏi, switch biết đường gửi riêng cho nó" },
+        { "vi": "Không máy nào, vì switch chặn mọi tiếng gọi chung cho đỡ nghẽn đường" }
+      ],
+      "answerIndex": 0,
+      "hintTopic": { "vi": "miền quảng bá — tiếng gọi chung lan tới đâu" },
+      "explain": {
+        "vi": "Tiếng gọi chung lan tới đâu, miền quảng bá rộng tới đó. Switch chưa biết ai giữ địa chỉ IP ấy nên phải hỏi cả phòng — chia VLAN chính là dựng tường cho tiếng gọi khỏi lan sang xóm khác."
+      }
+    },
+    {
+      "kind": "typed",
+      "id": "m4-mt-10",
+      "prompt": { "vi": "Hai máy cắm chung một switch nhưng bạn muốn chúng không nhìn thấy nhau, mà không mua thêm thiết bị. Bạn chia switch bằng thứ gì?" },
+      "accept": ["vlan", "virtual lan", "mạng lan ảo", "mang lan ao"],
+      "hintTopic": { "vi": "cách chia một switch thành nhiều mạng" },
+      "explain": {
+        "vi": "VLAN chia một switch vật lý thành nhiều mạng tách biệt: hai cổng khác VLAN thì như cắm vào hai switch khác nhau, dù chung một cái hộp."
+      }
+    },
+    {
+      "kind": "mcq",
+      "id": "m4-mt-11",
+      "prompt": { "vi": "Bảng MAC của switch và bảng ARP của máy tính khác nhau ở chỗ nào?" },
+      "choices": [
+        { "vi": "Bảng MAC ghi máy nào ở cổng nào; bảng ARP ghi IP nào ứng với MAC nào" },
+        { "vi": "Bảng MAC ghi IP nào ứng với MAC nào; bảng ARP ghi máy nào ở cổng nào" },
+        { "vi": "Hai bảng ghi cùng một thứ, chỉ khác chỗ cất là switch hay máy tính" }
+      ],
+      "answerIndex": 0,
+      "hintTopic": { "vi": "hai cuốn sổ: bảng MAC và bảng ARP" },
+      "explain": {
+        "vi": "Hai cuốn sổ khác nhau: switch nhớ CỔNG của từng địa chỉ MAC, còn máy tính nhớ địa chỉ MAC ứng với từng địa chỉ IP nó vừa hỏi bằng ARP."
+      }
+    },
+    {
+      "kind": "typed",
+      "id": "m4-mt-12",
+      "prompt": { "vi": "Router nhận gói tin gửi tới một mạng nó không nối trực tiếp. Nó tra cuốn sổ nào để biết đẩy gói đi đâu?" },
+      "accept": ["bảng định tuyến", "bang dinh tuyen", "routing table", "bảng route"],
+      "hintTopic": { "vi": "cuốn sổ đường đi của router" },
+      "explain": {
+        "vi": "Router tra bảng định tuyến: mỗi dòng nói \"muốn tới mạng này thì giao cho ai\". Không dòng nào khớp thì gói bị bỏ — đúng cái lỗi thiếu tuyến bạn gặp trong phòng lab."
       }
     },
     {

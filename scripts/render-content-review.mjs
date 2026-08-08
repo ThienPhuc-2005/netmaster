@@ -286,7 +286,10 @@ function renderModule(mod) {
   }
   out.push('')
 
-  out.push(`### Bài kiểm tra module (${mod.masteryTest.length} câu, cần ≥ 85%)`)
+  // Pool: mỗi lượt thi rút ra 8 câu (câu lab/cung điện/ca bệnh/terminal
+  // luôn có mặt). Bản duyệt in TRỌN pool — người đọc phải thấy hết những
+  // câu có thể rơi vào đề.
+  out.push(`### Bài kiểm tra module (pool ${mod.masteryTest.length} câu, mỗi lượt rút 8, cần ≥ 85%)`)
   out.push('')
   for (const q of mod.masteryTest) out.push(...renderQuestion(q, '', palace))
   out.push('')

@@ -27,7 +27,7 @@
             {
               "kind": "mcq",
               "id": "m2-b1-pre-1",
-              "prompt": { "vi": "Đoán thử nhé: máy bạn tìm đến server của Google nhờ..." },
+              "prompt": { "vi": "Đoán thử nhé: máy bạn tìm đến server của Google nhờ…" },
               "choices": [
                 { "vi": "Cái tên google.com — máy đọc tên y như người đọc" },
                 { "vi": "Một dãy số địa chỉ IP — cái tên phải được đổi thành số trước đã" },
@@ -431,7 +431,7 @@
               "conceptId": "ban-do-lo-trinh",
               "visualId": "vis-ban-do-khoa-hoc",
               "body": {
-                "vi": "Dừng một nhịp nhìn lại: bạn vừa thấy TOÀN CẢNH — cả thành phố Internet từ trên cao. Đó chính là vai trò của Module 2 trong khóa học. 10 module còn lại là những chuyến zoom vào từng quận: quận địa chỉ (Module 3), quận thiết bị trong làng (Module 4), quận luật gửi thư TCP và số căn hộ port (Module 5), thâm cung của cuốn danh bạ DNS (Module 6)... Từ giờ, học tới đâu bạn cũng biết mình đang đứng ở góc nào trên tấm bản đồ này."
+                "vi": "Dừng một nhịp nhìn lại: bạn vừa thấy TOÀN CẢNH — cả thành phố Internet từ trên cao. Đó chính là vai trò của Module 2 trong khóa học. 10 module còn lại là những chuyến zoom vào từng quận: quận địa chỉ (Module 3), quận thiết bị trong làng (Module 4), quận luật gửi thư TCP và số căn hộ port (Module 5), thâm cung của cuốn danh bạ DNS (Module 6)… Từ giờ, học tới đâu bạn cũng biết mình đang đứng ở góc nào trên tấm bản đồ này."
               },
               "deepDive": {
                 "vi": "Phần B của khóa (Module 4-7) đi sâu vào hạ tầng: switch, TCP/UDP, DNS, NAT. Phần C (Module 8-12) là chuyện đi làm: Wi-Fi, Windows Server, cloud, phòng khám mạng và tự động hóa. Tất cả đều là những chỗ bạn VỪA đi ngang qua trong hành trình hôm nay."
@@ -598,9 +598,9 @@
       "id": "m2-mt-2",
       "prompt": { "vi": "Bạn mang laptop sang nhà một người bạn — mạng Wi-Fi lạ hoắc, lần đầu kết nối. Gõ google.com, laptop vẫn tìm đúng server Google. Nhờ đâu?" },
       "choices": [
-        { "vi": "Laptop đã lưu sẵn đường đi từ hồi còn ở nhà bạn" },
-        { "vi": "Ở mạng nào thì máy cũng hỏi DNS được — danh bạ vẫn trả về địa chỉ IP của Google" },
-        { "vi": "Router nhà người bạn đã lưu sẵn cả trang Google" }
+        { "vi": "Laptop nhớ sẵn đường đi từ hồi ở nhà nên cứ thế đi lại" },
+        { "vi": "Mạng nào cũng hỏi DNS được, danh bạ vẫn trả đúng IP của Google" },
+        { "vi": "Router nhà bạn ấy giữ sẵn bản sao trang Google cho khách" }
       ],
       "answerIndex": 1,
       "explain": { "vi": "Cuốn danh bạ DNS phục vụ mọi mạng: dù bạn ngồi ở đâu, đưa cái tên google.com là nhận về địa chỉ IP của server Google. Đường đi thì mỗi lần mỗi khác — các router tự lo — nhưng bước tra danh bạ luôn hoạt động." }
@@ -610,9 +610,9 @@
       "id": "m2-mt-3",
       "prompt": { "vi": "Bạn chuyển file từ laptop sang máy tính để bàn — cả hai cùng mạng nhà. Gói tin có phải đi qua default gateway không?" },
       "choices": [
-        { "vi": "Có — mọi gói tin trong nhà đều phải trình diện gateway trước" },
-        { "vi": "Không — gateway chỉ gác lối RA Internet; hai máy cùng làng nói chuyện thẳng với nhau" },
-        { "vi": "Có — nhưng chỉ khi Internet đang hoạt động" }
+        { "vi": "Có — mọi gói tin trong nhà phải trình diện gateway rồi mới đi tiếp" },
+        { "vi": "Không — gateway chỉ gác lối RA Internet, cùng làng thì nói thẳng" },
+        { "vi": "Có — vì gateway giữ danh sách mọi máy trong nhà để chỉ đường" }
       ],
       "answerIndex": 1,
       "explain": { "vi": "Gateway là cổng làng — chỉ gác những chuyến RA thế giới. Hai máy cùng mạng nhà trao đổi thẳng trong \"làng\", không cần qua cổng; rút dây Internet thì chúng vẫn gửi file cho nhau bình thường." }
@@ -622,8 +622,8 @@
       "id": "m2-mt-4",
       "prompt": { "vi": "Trong mạng nhà bạn, thiết bị nào đang đóng vai default gateway?" },
       "choices": [
-        { "vi": "Chiếc điện thoại đang kết nối Wi-Fi" },
-        { "vi": "Server của trang web bạn hay mở" },
+        { "vi": "Máy chủ DNS mà nhà mạng cấp cho bạn" },
+        { "vi": "Chiếc switch nối các máy trong nhà lại" },
         { "vi": "Chiếc router (cục phát Wi-Fi) nhà bạn" }
       ],
       "answerIndex": 2,
@@ -664,12 +664,54 @@
       "id": "m2-mt-8",
       "prompt": { "vi": "Bạn mở một trang báo đầy ảnh, nặng 2MB — gấp nghìn lần câu yêu cầu bạn gửi đi. Server có được gửi cả trang về trong MỘT gói tin cho nhanh không?" },
       "choices": [
-        { "vi": "Được — chiều về do server toàn quyền quyết định" },
-        { "vi": "Không — response nặng mấy cũng phải chia thành nhiều gói tin và qua các router như lượt đi" },
-        { "vi": "Được — miễn là mạng nhà bạn đủ nhanh để hứng" }
+        { "vi": "Được — chiều về do server quyết, khỏe thì gửi cả trang một lần" },
+        { "vi": "Không — nặng mấy cũng chia thành nhiều gói, qua router như lượt đi" },
+        { "vi": "Được — miễn là đường mạng nhà bạn đủ nhanh để hứng trọn" }
       ],
       "answerIndex": 1,
       "explain": { "vi": "Luật chia gói áp dụng cho cả hai chiều, nặng nhẹ gì cũng vậy: server đóng trang báo vào nhiều gói tin, các router chuyền tay từng gói, máy bạn nhận đủ rồi ráp lại thành trang hoàn chỉnh." }
+    },
+    {
+      "kind": "mcq",
+      "id": "m2-mt-9",
+      "prompt": { "vi": "Gõ đúng tên miền thì trình duyệt báo không tìm thấy trang, nhưng gõ thẳng địa chỉ IP của trang đó lại vào được. Khâu nào đang hỏng?" },
+      "choices": [
+        { "vi": "Khâu tra danh bạ DNS — tên không đổi ra được địa chỉ IP" },
+        { "vi": "Khâu đường truyền tới server — gói tin không rời được mạng nhà bạn" },
+        { "vi": "Khâu server của trang web — máy chủ đã tắt nên không ai trả lời" }
+      ],
+      "answerIndex": 0,
+      "hintTopic": { "vi": "DNS đổi tên miền sang địa chỉ IP" },
+      "explain": { "vi": "Vào được bằng địa chỉ IP nghĩa là đường đi và server đều lành, chỉ khâu đổi TÊN sang SỐ hỏng — đó đúng là việc của DNS." }
+    },
+    {
+      "kind": "typed",
+      "id": "m2-mt-10",
+      "prompt": { "vi": "Máy bạn muốn gửi gói tin tới một địa chỉ IP nằm ngoài mạng nhà. Nó phải giao gói cho thiết bị nào trước tiên?" },
+      "accept": ["default gateway", "gateway", "cổng mặc định", "router", "router nhà"],
+      "hintTopic": { "vi": "lối ra duy nhất khỏi mạng nhà" },
+      "explain": { "vi": "Ra khỏi làng thì phải qua cổng làng: mọi gói tin đi tới mạng khác đều được giao cho default gateway — chính là chiếc router nhà bạn." }
+    },
+    {
+      "kind": "mcq",
+      "id": "m2-mt-11",
+      "prompt": { "vi": "Máy bạn tắt lúc nửa đêm, còn server tòa báo thì không bao giờ tắt. Vì sao server phải luôn bật?" },
+      "choices": [
+        { "vi": "Vì yêu cầu có thể tới bất cứ lúc nào, không ai hẹn giờ trước với server" },
+        { "vi": "Vì server phải liên tục đẩy trang web đi cho tất cả mọi người dù không ai hỏi tới" },
+        { "vi": "Vì server sẽ mất hết dữ liệu đã lưu nếu bị tắt điện quá vài phút" }
+      ],
+      "answerIndex": 0,
+      "hintTopic": { "vi": "server đứng chờ yêu cầu" },
+      "explain": { "vi": "Server là quán mở cửa suốt ngày đêm: nó không biết trước ai sẽ tới lúc nào nên phải chờ sẵn. Máy cá nhân chỉ bật khi bạn cần dùng." }
+    },
+    {
+      "kind": "typed",
+      "id": "m2-mt-12",
+      "prompt": { "vi": "Mỗi lượt mở web là một cặp thư. Lá thư máy bạn gửi đi để đòi trang — vế đầu của cặp ấy — gọi là gì?" },
+      "accept": ["request", "yêu cầu", "http request", "lá thư yêu cầu"],
+      "hintTopic": { "vi": "vế thư đi của cặp request / response" },
+      "explain": { "vi": "Request là thư đi, response là thư trả lời. Một trang web thường là nhiều cặp: chữ một cặp, mỗi tấm ảnh lại một cặp riêng." }
     }
   ]
 }

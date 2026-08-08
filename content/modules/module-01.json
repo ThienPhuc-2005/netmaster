@@ -28,7 +28,7 @@
             {
               "kind": "mcq",
               "id": "m1-b1-pre-1",
-              "prompt": { "vi": "Đoán thử nhé: khi tấm ảnh đi qua mạng, nó sẽ..." },
+              "prompt": { "vi": "Đoán thử nhé: khi tấm ảnh đi qua mạng, nó sẽ…" },
               "choices": [
                 { "vi": "Đi nguyên tấm tới máy Mai" },
                 { "vi": "Bị chia thành nhiều gói nhỏ rồi ráp lại ở máy Mai" }
@@ -89,7 +89,7 @@
                 "answerIndex": 1,
                 "hintTopic": { "vi": "lợi ích của việc chia nhỏ" }
               },
-              "hint": { "vi": "Nhớ lại lý do người ta chịu khó chia nhỏ: mất một phong bì thì chỉ mất... bao nhiêu?" },
+              "hint": { "vi": "Nhớ lại lý do người ta chịu khó chia nhỏ: mất một phong bì thì chỉ mất… bao nhiêu?" },
               "solution": {
                 "vi": "Chỉ cần gửi lại đúng gói thất lạc — đây chính là lý do lớn nhất để chia nhỏ: hỏng đâu vá đó, không làm lại từ đầu."
               }
@@ -150,7 +150,7 @@
             {
               "kind": "mcq",
               "id": "m1-b2-pre-1",
-              "prompt": { "vi": "Đoán thử nhé: mỗi máy trên mạng được nhận ra nhờ..." },
+              "prompt": { "vi": "Đoán thử nhé: mỗi máy trên mạng được nhận ra nhờ…" },
               "choices": [
                 { "vi": "Tên chủ nhân đặt cho máy" },
                 { "vi": "Một dãy số định danh gọi là địa chỉ IP" },
@@ -241,7 +241,7 @@
         {
           "type": "hook",
           "question": {
-            "vi": "Máy Mai vừa mở trình duyệt, vừa nghe nhạc, vừa chat — cùng MỘT địa chỉ IP. Tấm ảnh của bạn đến nơi... sao nó không giao nhầm vào ứng dụng nghe nhạc?"
+            "vi": "Máy Mai vừa mở trình duyệt, vừa nghe nhạc, vừa chat — cùng MỘT địa chỉ IP. Tấm ảnh của bạn đến nơi… sao nó không giao nhầm vào ứng dụng nghe nhạc?"
           },
           "visualId": "vis-so-can-ho"
         },
@@ -251,7 +251,7 @@
             {
               "kind": "mcq",
               "id": "m1-b3-pre-1",
-              "prompt": { "vi": "Đoán thử nhé: hai ứng dụng chạy trên cùng một máy được phân biệt nhờ..." },
+              "prompt": { "vi": "Đoán thử nhé: hai ứng dụng chạy trên cùng một máy được phân biệt nhờ…" },
               "choices": [
                 { "vi": "Địa chỉ IP khác nhau" },
                 { "vi": "Số port khác nhau" }
@@ -351,7 +351,7 @@
             {
               "kind": "mcq",
               "id": "m1-b4-pre-1",
-              "prompt": { "vi": "Đoán thử nhé: thiết bị chuyển gói tin từ mạng này sang mạng khác là..." },
+              "prompt": { "vi": "Đoán thử nhé: thiết bị chuyển gói tin từ mạng này sang mạng khác là…" },
               "choices": [
                 { "vi": "Màn hình" },
                 { "vi": "Router" },
@@ -470,7 +470,7 @@
             {
               "kind": "mcq",
               "id": "m1-b5-pre-1",
-              "prompt": { "vi": "Đoán thử nhé: bộ quy tắc chung để hai máy hiểu được nhau gọi là..." },
+              "prompt": { "vi": "Đoán thử nhé: bộ quy tắc chung để hai máy hiểu được nhau gọi là…" },
               "choices": [
                 { "vi": "Mật khẩu" },
                 { "vi": "Giao thức" },
@@ -525,7 +525,7 @@
               "question": {
                 "kind": "typed",
                 "id": "m1-b5-ret-1",
-                "prompt": { "vi": "Không nhìn lại bài: HTTP, TCP, IP được gọi chung là các..." },
+                "prompt": { "vi": "Không nhìn lại bài: HTTP, TCP, IP được gọi chung là các…" },
                 "accept": ["giao thức", "protocol"]
               },
               "hint": { "vi": "Là \"luật chơi chung\" giữa các máy." },
@@ -571,7 +571,7 @@
             {
               "kind": "mcq",
               "id": "m1-b6-pre-1",
-              "prompt": { "vi": "Đoán thử nhé: việc ĐẦU TIÊN máy bạn làm khi bấm \"Gửi\" tấm ảnh là..." },
+              "prompt": { "vi": "Đoán thử nhé: việc ĐẦU TIÊN máy bạn làm khi bấm \"Gửi\" tấm ảnh là…" },
               "choices": [
                 { "vi": "Chia tấm ảnh thành các gói tin và ghi địa chỉ" },
                 { "vi": "Gửi nguyên tấm ảnh cho router" },
@@ -788,12 +788,72 @@
       "id": "m1-mt-7",
       "prompt": { "vi": "Một gói tin bị thất lạc giữa đường. Nhờ đâu máy gửi KHÔNG phải gửi lại toàn bộ dữ liệu?" },
       "choices": [
-        { "vi": "Vì dữ liệu đã được chia thành nhiều gói — chỉ cần gửi lại gói mất" },
-        { "vi": "Vì router giữ một bản sao của mọi thứ" },
-        { "vi": "Vì máy nhận tự đoán được phần thiếu" }
+        { "vi": "Vì dữ liệu đi thành nhiều gói, chỉ cần gửi lại gói bị mất" },
+        { "vi": "Vì router dọc đường giữ bản sao, mất thì nó gửi lại giúp" },
+        { "vi": "Vì máy nhận đoán được phần thiếu từ các gói đã tới" }
       ],
       "answerIndex": 0,
       "explain": { "vi": "Chia nhỏ là để hỏng đâu vá đó: mất gói nào gửi lại đúng gói ấy, các gói còn lại không phải đi lần hai." }
+    },
+    {
+      "kind": "mcq",
+      "id": "m1-mt-8",
+      "prompt": { "vi": "Mạng nhà bạn có laptop, điện thoại và máy in cùng nối một router. Hai trong ba máy đó có được mang cùng một địa chỉ IP không?" },
+      "choices": [
+        { "vi": "Không được — trong cùng một mạng, mỗi máy phải giữ một địa chỉ IP riêng" },
+        { "vi": "Được — trùng địa chỉ IP vẫn ổn vì mỗi máy còn có tên riêng để phân biệt" },
+        { "vi": "Được — hai máy chỉ va nhau khi cùng mở một ứng dụng vào đúng một lúc" }
+      ],
+      "answerIndex": 0,
+      "hintTopic": { "vi": "địa chỉ IP phải là duy nhất trong một mạng" },
+      "explain": { "vi": "Địa chỉ IP là địa chỉ nhà: hai nhà ghi trùng địa chỉ thì thư không biết giao vào đâu. Trùng IP là mạng của cả hai máy cùng chập chờn." }
+    },
+    {
+      "kind": "typed",
+      "id": "m1-mt-9",
+      "prompt": { "vi": "Theo ẩn dụ bưu điện của khóa học, địa chỉ IP là địa chỉ tòa nhà. Vậy con số đóng vai SỐ CĂN HỘ — chỉ đúng ứng dụng nhận dữ liệu — gọi là gì?" },
+      "accept": ["port", "cổng", "số port", "số cổng", "port number"],
+      "hintTopic": { "vi": "con số phân biệt các ứng dụng trên cùng một máy" },
+      "explain": { "vi": "IP đưa gói tin tới đúng tòa nhà, port gõ đúng cửa căn hộ. Thiếu port thì gói tin tới được máy nhưng không biết trao cho ứng dụng nào." }
+    },
+    {
+      "kind": "mcq",
+      "id": "m1-mt-10",
+      "prompt": { "vi": "Máy bạn ở Hà Nội gửi ảnh cho máy Mai ở Cần Thơ. Vì sao máy bạn không cần biết trước cả con đường tới máy Mai?" },
+      "choices": [
+        { "vi": "Vì mỗi router chỉ cần biết chặng kế tiếp rồi chuyền tay nhau tới đích" },
+        { "vi": "Vì máy bạn đã tải sẵn bản đồ đường đi của toàn bộ Internet khi khởi động" },
+        { "vi": "Vì gói tin tự dò từng sợi cáp một cho tới khi gặp đúng máy của Mai" }
+      ],
+      "answerIndex": 0,
+      "hintTopic": { "vi": "router chỉ quyết định chặng kế tiếp" },
+      "explain": { "vi": "Không ai giữ bản đồ cả Internet. Mỗi router chỉ trả lời một câu: gói này nên đi tiếp qua cửa nào. Nhiều câu trả lời đúng nối lại thành một hành trình." }
+    },
+    {
+      "kind": "mcq",
+      "id": "m1-mt-11",
+      "prompt": { "vi": "Trình duyệt của bạn do một công ty viết, server web do công ty khác viết, vậy mà chúng nói chuyện trơn tru. Nhờ đâu?" },
+      "choices": [
+        { "vi": "Nhờ hai bên cùng tuân theo HTTP — bộ quy tắc chung đã thỏa thuận trước" },
+        { "vi": "Nhờ hai bên dò cách nói của nhau trong vài giây đầu của mỗi lần kết nối" },
+        { "vi": "Nhờ router dọc đường dịch qua lại giữa hai cách nói khác nhau" }
+      ],
+      "answerIndex": 0,
+      "hintTopic": { "vi": "giao thức — bộ quy tắc chung" },
+      "explain": { "vi": "Giao thức là luật thống nhất từ trước: cùng khuôn thư, cùng thứ tự lượt nói. Hai bên không cần quen nhau, chỉ cần cùng theo một luật." }
+    },
+    {
+      "kind": "mcq",
+      "id": "m1-mt-12",
+      "prompt": { "vi": "Các gói tin của một tấm ảnh đến máy nhận không đúng thứ tự đã gửi. Nhờ đâu máy nhận vẫn ráp lại được đúng tấm ảnh?" },
+      "choices": [
+        { "vi": "Nhờ số thứ tự ghi sẵn trong mỗi gói tin, máy nhận xếp lại theo số" },
+        { "vi": "Nhờ đường truyền luôn giữ nguyên thứ tự gói tin từ lúc gửi tới lúc nhận" },
+        { "vi": "Nhờ router cuối cùng xếp lại thứ tự giúp rồi mới giao cho máy nhận" }
+      ],
+      "answerIndex": 0,
+      "hintTopic": { "vi": "số thứ tự trong mỗi gói tin" },
+      "explain": { "vi": "Mỗi gói mang số thứ tự của mình. Mạng không hứa giao đúng thứ tự — chính con số đó cho phép máy nhận xếp lại và biết gói nào chưa tới." }
     }
   ]
 }

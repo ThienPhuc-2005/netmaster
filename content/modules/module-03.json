@@ -30,7 +30,7 @@
             {
               "kind": "mcq",
               "id": "m3-b1-pre-1",
-              "prompt": { "vi": "Đoán thử nhé: mang laptop từ nhà ra quán cà phê, MAC address của máy sẽ..." },
+              "prompt": { "vi": "Đoán thử nhé: mang laptop từ nhà ra quán cà phê, MAC address của máy sẽ…" },
               "choices": [
                 { "vi": "Đổi theo mạng mới của quán" },
                 { "vi": "Giữ nguyên như lúc ở nhà" }
@@ -151,7 +151,7 @@
             {
               "kind": "mcq",
               "id": "m3-b2-pre-1",
-              "prompt": { "vi": "Đoán thử nhé: con số lớn nhất mà một \"ô\" của địa chỉ IPv4 có thể chứa là..." },
+              "prompt": { "vi": "Đoán thử nhé: con số lớn nhất mà một \"ô\" của địa chỉ IPv4 có thể chứa là…" },
               "choices": [
                 { "vi": "100" },
                 { "vi": "255" },
@@ -268,7 +268,7 @@
             {
               "kind": "mcq",
               "id": "m3-b3-pre-1",
-              "prompt": { "vi": "Đoán thử nhé: hai nhà cùng dùng 192.168.1.5 mà không sao, vì..." },
+              "prompt": { "vi": "Đoán thử nhé: hai nhà cùng dùng 192.168.1.5 mà không sao, vì…" },
               "choices": [
                 { "vi": "Nhà cung cấp mạng chia ca cho hai nhà dùng lệch giờ nhau" },
                 { "vi": "Đó là địa chỉ private — chỉ có nghĩa trong nội bộ từng nhà" },
@@ -529,7 +529,7 @@
                 "vi": "Magic number (quy tắc nhẩm chia subnet) chỉ có MỘT phép trừ: lấy 256 trừ đi octet \"đáng chú ý\" của mask — octet khác 0 và khác 255. Với /26: mask là 255.255.255.192 → magic number = 256 − 192 = 64. Các khu phố nhảy theo bước 64: mốc .0, .64, .128, .192. Muốn tìm network address (địa chỉ mạng — \"tên khu phố\") của một IP: chọn mốc gần nhất KHÔNG vượt quá nó. Ví dụ 192.168.1.130/26: mốc 128 ≤ 130 < 192 → khu phố là 192.168.1.128."
               },
               "deepDive": {
-                "vi": "Vì sao mẹo này đúng? Vì octet 192 của mask là 11000000: 2 bit đầu thuộc phần khu phố, 6 bit còn lại cho số nhà → mỗi khu có 2^6 = 64 địa chỉ. Phép 256 − 192 chỉ là đường tắt luôn ra đúng con số đó. Mẹo này chạy với mọi prefix: /25 → 256−128 = 128 (mốc .0, .128); /27 → 256−224 = 32 (mốc .0, .32, .64...); /30 → 256−252 = 4. Càng luyện càng nhanh — nên app có hẳn một drill mỗi ngày cho bạn."
+                "vi": "Vì sao mẹo này đúng? Vì octet 192 của mask là 11000000: 2 bit đầu thuộc phần khu phố, 6 bit còn lại cho số nhà → mỗi khu có 2^6 = 64 địa chỉ. Phép 256 − 192 chỉ là đường tắt luôn ra đúng con số đó. Mẹo này chạy với mọi prefix: /25 → 256−128 = 128 (mốc .0, .128); /27 → 256−224 = 32 (mốc .0, .32, .64…); /30 → 256−252 = 4. Càng luyện càng nhanh — nên app có hẳn một drill mỗi ngày cho bạn."
               }
             }
           ]
@@ -548,7 +548,7 @@
               },
               "hint": { "vi": "Magic number = 256 − octet đáng chú ý của mask. Tự liệt kê các mốc rồi so với 75." },
               "solution": {
-                "vi": "192.168.1.64. Nhẩm: /26 → mask ...192 → 256 − 192 = 64 → các mốc 0, 64, 128, 192. Mốc gần nhất không vượt quá 75 là 64 → network address là 192.168.1.64."
+                "vi": "192.168.1.64. Nhẩm: /26 → mask …192 → 256 − 192 = 64 → các mốc 0, 64, 128, 192. Mốc gần nhất không vượt quá 75 là 64 → network address là 192.168.1.64."
               }
             },
             {
@@ -561,7 +561,7 @@
               },
               "hint": { "vi": "Magic number = 256 − octet đáng chú ý của mask 255.255.255.224. Tự liệt kê các mốc rồi so với 77." },
               "solution": {
-                "vi": "10.0.5.64. Nhẩm: /27 → mask ...224 → 256 − 224 = 32 → các mốc 0, 32, 64, 96. Mốc gần nhất không vượt quá 77 là 64 → network address là 10.0.5.64."
+                "vi": "10.0.5.64. Nhẩm: /27 → mask …224 → 256 − 224 = 32 → các mốc 0, 32, 64, 96. Mốc gần nhất không vượt quá 77 là 64 → network address là 10.0.5.64."
               }
             }
           ]
@@ -587,7 +587,7 @@
               ["không vượt quá", "gần nhất", "mốc mạng"]
             ],
             "exampleAnswer": {
-              "vi": "Mình đổi prefix ra mask, lấy 256 trừ octet đáng chú ý của mask để được magic number — đó là bước nhảy giữa các khu phố. Liệt kê các mốc theo bước nhảy đó (0, 64, 128...), rồi chọn mốc gần nhất không vượt quá octet của IP — mốc đó chính là network address."
+              "vi": "Mình đổi prefix ra mask, lấy 256 trừ octet đáng chú ý của mask để được magic number — đó là bước nhảy giữa các khu phố. Liệt kê các mốc theo bước nhảy đó (0, 64, 128…), rồi chọn mốc gần nhất không vượt quá octet của IP — mốc đó chính là network address."
             }
           }
         },
@@ -595,10 +595,10 @@
           "type": "summary",
           "bullets": [
             { "vi": "Magic number = 256 − octet đáng chú ý của mask (vd /26 → 256 − 192 = 64)." },
-            { "vi": "Các mốc mạng nhảy theo bước magic number: .0, .64, .128, .192..." },
+            { "vi": "Các mốc mạng nhảy theo bước magic number: .0, .64, .128, .192…" },
             { "vi": "Network address = mốc gần nhất không vượt quá IP đang xét." }
           ],
-          "nextTeaser": { "vi": "Mẹo đã nắm — giờ chỉ thiếu tốc độ. Drill \"Luyện chia subnet\" trong tab Học sinh đề mới mỗi ngày kèm đồng hồ đếm: ghé luyện mỗi ngày để tay nhẩm nhanh dần lên. Còn bài cuối module: chuyện IPv4... sắp hết sạch địa chỉ." }
+          "nextTeaser": { "vi": "Mẹo đã nắm — giờ chỉ thiếu tốc độ. Drill \"Luyện chia subnet\" trong tab Học sinh đề mới mỗi ngày kèm đồng hồ đếm: ghé luyện mỗi ngày để tay nhẩm nhanh dần lên. Còn bài cuối module: chuyện IPv4… sắp hết sạch địa chỉ." }
         }
       ]
     },
@@ -857,8 +857,8 @@
       "id": "m3-mt-7",
       "prompt": { "vi": "Điều nào sau đây đúng về IPv6?" },
       "choices": [
-        { "vi": "Dài 128 bit, viết hex 8 nhóm, rút gọn nhóm 0 liên tiếp bằng \"::\"" },
-        { "vi": "Dài 64 bit, viết thập phân ngăn bằng dấu chấm" },
+        { "vi": "Dài 128 bit, viết hex 8 nhóm, rút gọn chuỗi 0 bằng ::" },
+        { "vi": "Dài 64 bit, viết thập phân ngăn bằng dấu chấm như IPv4" },
         { "vi": "Là IPv4 nối thêm một octet thứ năm cho đỡ cạn số" }
       ],
       "answerIndex": 0,
@@ -880,8 +880,37 @@
       "kind": "typed",
       "id": "m3-mt-9",
       "prompt": { "vi": "Ký hiệu rút gọn một chuỗi nhóm 0 liên tiếp trong địa chỉ IPv6 là gì?" },
-      "accept": ["::"],
+      "accept": ["::", "dấu ::", "dau ::", "hai dấu hai chấm", "hai dau hai cham"],
       "explain": { "vi": "Ký hiệu \"::\" thay cho chuỗi nhóm 0 liên tiếp — và chỉ được dùng đúng MỘT lần trong một địa chỉ, vì có hai chỗ \"::\" thì máy không biết mỗi chỗ giấu bao nhiêu nhóm 0." }
+    },
+    {
+      "kind": "typed",
+      "id": "m3-mt-10",
+      "prompt": { "vi": "Tìm network address của 10.0.5.77/28. (trả lời dạng x.x.x.x)" },
+      "accept": ["10.0.5.64"],
+      "hintTopic": { "vi": "magic number của /28" },
+      "explain": { "vi": "/28 là mask 255.255.255.240, magic number = 256 − 240 = 16. Các mốc mạng: .64 rồi .80 — số 77 nằm trong khối mở đầu ở .64, nên network address là 10.0.5.64." }
+    },
+    {
+      "kind": "mcq",
+      "id": "m3-mt-11",
+      "prompt": { "vi": "Hàng triệu mạng gia đình ở Việt Nam cùng dùng dải 192.168.1.x mà không loạn địa chỉ. Vì sao?" },
+      "choices": [
+        { "vi": "Vì địa chỉ private chỉ có giá trị trong nội bộ, không ra tới Internet" },
+        { "vi": "Vì nhà mạng đã chia sẵn cho mỗi nhà một dải 192.168 riêng, không nhà nào trùng nhà nào" },
+        { "vi": "Vì các router tự thỏa thuận với nhau để không nhà nào lấy trùng dải" }
+      ],
+      "answerIndex": 0,
+      "hintTopic": { "vi": "vì sao địa chỉ private dùng lại được" },
+      "explain": { "vi": "Địa chỉ private là số phòng trong tòa nhà: tòa nào cũng có phòng 101 mà không loạn, vì thư từ bên ngoài chỉ ghi tới địa chỉ tòa nhà — tức IP public." }
+    },
+    {
+      "kind": "typed",
+      "id": "m3-mt-12",
+      "prompt": { "vi": "Subnet mask 255.255.255.192 ghi gọn theo CIDR là gì? (trả lời dạng /n)" },
+      "accept": ["/26", "26"],
+      "hintTopic": { "vi": "CIDR đếm số bit thuộc phần mạng" },
+      "explain": { "vi": "255.255.255.192 có 26 bit đầu là 1 (8 + 8 + 8 + 2), nên viết gọn là /26 — cũng chính là mask có magic number 64." }
     }
   ]
 }

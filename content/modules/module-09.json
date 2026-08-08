@@ -769,9 +769,9 @@
       "id": "m9-mt-1",
       "prompt": { "vi": "Máy \"gia nhập miền\" nghĩa là gì?" },
       "choices": [
-        { "vi": "Chịu bộ luật chung của miền và xác thực đăng nhập qua DC" },
-        { "vi": "Cài bản Windows mới nhất" },
-        { "vi": "Nối vào cùng switch với máy chủ" }
+        { "vi": "Chịu luật chung của miền, đăng nhập xác thực qua DC" },
+        { "vi": "Máy được đặt vào cùng một workgroup với các máy khác" },
+        { "vi": "Máy được nối vào cùng switch với máy chủ công ty" }
       ],
       "answerIndex": 0,
       "explain": { "vi": "Gia nhập miền là ký giao kèo vào làng: luật chung từ máy chủ, tài khoản là của làng, DC gác cổng đăng nhập." }
@@ -789,8 +789,8 @@
       "prompt": { "vi": "GROUP và OU khác nhau thế nào?" },
       "choices": [
         { "vi": "Group để cấp quyền; OU để xếp chỗ và treo GPO" },
-        { "vi": "Là một thứ với hai tên gọi" },
-        { "vi": "OU để cấp quyền; group để treo GPO" }
+        { "vi": "Là một thứ với hai tên gọi khác nhau" },
+        { "vi": "OU để cấp quyền, còn group để xếp chỗ và treo GPO" }
       ],
       "answerIndex": 0,
       "explain": { "vi": "Group = thẻ câu lạc bộ (quyền); OU = ngăn kéo hồ sơ (xếp chỗ, treo luật). Một người nằm một OU, thuộc nhiều group." }
@@ -808,8 +808,8 @@
       "prompt": { "vi": "GPO Domain nói A, GPO treo ở OU nói B, không ai gắn Enforced. Máy trong OU theo luật nào?" },
       "choices": [
         { "vi": "B — OU áp sau nên đè lên luật Domain" },
-        { "vi": "A — miền to hơn thì thắng" },
-        { "vi": "Cả hai luật cùng áp một lúc" }
+        { "vi": "A — miền to hơn nên luật miền thắng" },
+        { "vi": "Cả hai luật cùng áp một lúc, không ai đè ai" }
       ],
       "answerIndex": 0,
       "explain": { "vi": "Bậc áp sau thắng: OU là tiếng nói cuối trong LSDOU nên luật B đè luật A — trừ khi A được gắn Enforced." }
@@ -819,9 +819,9 @@
       "id": "m9-mt-6",
       "prompt": { "vi": "GPO miền gắn Enforced gặp OU bật Block Inheritance — kết quả?" },
       "choices": [
-        { "vi": "Enforced xuyên qua tấm chắn — luật miền vẫn áp và thắng xung đột" },
-        { "vi": "Block Inheritance chặn được tất cả" },
-        { "vi": "Máy client báo lỗi cấu hình" }
+        { "vi": "Enforced xuyên qua tấm chắn — luật miền vẫn thắng" },
+        { "vi": "Block Inheritance chặn được tất cả, kể cả Enforced" },
+        { "vi": "Máy client báo lỗi cấu hình và bỏ qua cả hai" }
       ],
       "answerIndex": 0,
       "explain": { "vi": "Enforced là mũi khoan xuyên mái che: vượt Block Inheritance và đè cả luật OU — dùng cho thứ không được có ngoại lệ." }
@@ -839,6 +839,40 @@
       "prompt": { "vi": "Lệnh nào kê ra các GPO đang áp lên máy và người đang đăng nhập?" },
       "accept": ["gpresult", "gpresult /r", "gpresult/r"],
       "explain": { "vi": "gpresult /r — bảng kê GPO đang áp và GPO bị gạt kèm lý do; công cụ chẩn đoán số một khi luật không ăn." }
+    },
+    {
+      "kind": "mcq",
+      "id": "m9-mt-10",
+      "prompt": { "vi": "Mười người mới vào phòng kế toán, cần đúng bộ quyền như người cũ. Cách làm gọn nhất là gì?" },
+      "choices": [
+        { "vi": "Thêm cả mười vào group của phòng kế toán, quyền cấp cho group" },
+        { "vi": "Cấp quyền bằng tay cho từng người theo đúng danh sách quyền của người cũ" },
+        { "vi": "Tạo cho mỗi người một OU riêng rồi treo quyền lên từng OU đó" }
+      ],
+      "answerIndex": 0,
+      "hintTopic": { "vi": "group để cấp quyền, OU để xếp chỗ" },
+      "explain": { "vi": "Group là để cấp quyền một lần cho nhiều người: vào group là có quyền, rời group là mất quyền. OU là ngăn kéo xếp chỗ và treo GPO — hai việc khác nhau." }
+    },
+    {
+      "kind": "typed",
+      "id": "m9-mt-11",
+      "prompt": { "vi": "Bạn muốn một luật chỉ áp cho riêng phòng kế toán, không đụng phòng khác. Bạn treo GPO lên đâu?" },
+      "accept": ["ou", "ou phòng kế toán", "ou kế toán", "organizational unit", "ou cua phong ke toan"],
+      "hintTopic": { "vi": "chỗ treo GPO cho một phòng ban" },
+      "explain": { "vi": "GPO treo được ở Site, Domain và OU. Muốn luật chỉ dính đúng một phòng ban thì treo lên OU của phòng đó — đó chính là lý do OU tồn tại." }
+    },
+    {
+      "kind": "mcq",
+      "id": "m9-mt-12",
+      "prompt": { "vi": "Người dùng kêu luật mới không có hiệu lực trên máy họ. Việc đầu tiên bạn làm là gì?" },
+      "choices": [
+        { "vi": "Chạy gpresult trên máy đó xem GPO nào đang thật sự dính" },
+        { "vi": "Xóa GPO cũ đi rồi tạo lại từ đầu cho chắc chắn sạch sẽ" },
+        { "vi": "Khởi động lại Domain Controller để nó phát luật xuống lại" }
+      ],
+      "answerIndex": 0,
+      "hintTopic": { "vi": "lệnh kê luật đang dính máy" },
+      "explain": { "vi": "Đọc trước, sửa sau: gpresult kê ra GPO đang áp và GPO bị gạt kèm lý do. Chưa biết luật nào thắng mà đã đi sửa là mò kim đáy bể." }
     },
     {
       "kind": "palace-walk",
