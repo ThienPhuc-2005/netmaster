@@ -14,7 +14,7 @@
 // đổi gì về mạng, và undo nên dành cho những thao tác người học sợ làm
 // hỏng. Xóa thiết bị vẫn giữ lại vị trí cũ, nên undo trả nó về đúng chỗ.
 
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { AlertCircle } from 'lucide-react'
 import { Button } from '../../components/Button'
 import { useT } from '../../i18n'
@@ -29,6 +29,7 @@ import {
   portIdsOf,
   redoLab,
   resetLab,
+  restoreLab,
   samePort,
   simulatePing,
   startLab,
@@ -110,8 +111,24 @@ function newDeviceOf(kind: Device['kind'], index: number): Device {
   }
 }
 
+/** Ảnh chụp mặt bàn để mở lại bài đang lắp dở (persist bài dở — #20). */
+export interface LabDraftSnapshot {
+  topology: Topology
+  layout: Record<string, Point>
+}
+
 export interface NetworkLabProps {
   spec: LabSpec
+  /**
+   * Bài lắp dở của lần trước — có thì mở thẳng vào sơ đồ đó thay vì đề
+   * bài. `spec.initial` vẫn là chỗ "Làm lại từ đầu" quay về.
+   */
+  initialDraft?: LabDraftSnapshot | null
+  /**
+   * Mặt bàn vừa đổi — tầng gọi tự quyết lưu vào đâu. Chỉ bắn khi người
+   * học ĐÃ làm gì đó: mở bài ra xem rồi đi chỗ khác không tạo bài dở.
+   */
+  onDraftChange?: (draft: LabDraftSnapshot) => void
   /**
    * Nộp bài. Có truyền thì hiện nút "Nộp bài" — tầng gọi tự quyết việc
    * chấm và đếm lượt sai; phòng lab chỉ trao lại sơ đồ hiện tại.
@@ -129,10 +146,23 @@ export interface NetworkLabProps {
   onTopologyChange?: (topology: Topology) => void
 }
 
-export function NetworkLab({ spec, onSubmit, hideDiagnosis, onTopologyChange }: NetworkLabProps) {
+export function NetworkLab({
+  spec,
+  onSubmit,
+  hideDiagnosis,
+  onTopologyChange,
+  initialDraft,
+  onDraftChange,
+}: NetworkLabProps) {
   const t = useT()
-  const [session, setSession] = useState(() => startLab(spec.initial, spec.allow))
-  const [layout, setLayout] = useState<Record<string, Point>>(() => autoLayout(spec.initial.devices))
+  const [session, setSession] = useState(() =>
+    initialDraft == null
+      ? startLab(spec.initial, spec.allow)
+      : restoreLab(spec.initial, spec.allow, initialDraft.topology),
+  )
+  const [layout, setLayout] = useState<Record<string, Point>>(
+    () => initialDraft?.layout ?? autoLayout(spec.initial.devices),
+  )
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [armedPort, setArmedPort] = useState<PortRef | null>(null)
   const [refusal, setRefusal] = useState<LabRejection | null>(null)
@@ -146,6 +176,24 @@ export function NetworkLab({ spec, onSubmit, hideDiagnosis, onTopologyChange }: 
   useEffect(() => {
     onTopologyChange?.(topology)
   }, [topology, onTopologyChange])
+
+  // Lưu bài dở: bỏ qua lượt render ĐẦU (chưa có gì để lưu), sau đó mỗi
+  // lần sơ đồ hoặc chỗ đứng thiết bị đổi là ghi lại một ảnh chụp.
+  //
+  // Hàm callback đi qua REF chứ không nằm trong deps: nơi gọi thường
+  // truyền một hàm mũi tên mới mỗi lần render, mà lưu bài dở lại làm
+  // store đổi → render lại → hàm mới → lưu tiếp… tức là một vòng lặp vô
+  // tận. Deps chỉ gồm thứ thật sự là NỘI DUNG của ảnh chụp.
+  const draftSaved = useRef(false)
+  const draftCallback = useRef(onDraftChange)
+  draftCallback.current = onDraftChange
+  useEffect(() => {
+    if (!draftSaved.current) {
+      draftSaved.current = true
+      return
+    }
+    draftCallback.current?.({ topology, layout })
+  }, [topology, layout])
 
   const hops = useMemo(() => flattenHops(run), [run])
   const flight = usePacketFlight(hops.length, (index) => {

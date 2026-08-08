@@ -245,19 +245,43 @@ function cmdIpconfig(patient: ClinicPatient, state: TerminalState): CommandResul
   }
 }
 
-/** Dòng kết quả cho một lượt ping — lặp 4 lần như đời thật. */
-function pingBodyLines(kind: 'reply' | 'timeout' | 'unreachable-local' | 'unreachable-via', ctx: { ip: Ipv4; ttl?: number; via?: Ipv4 }): string[] {
+/**
+ * Dòng kết quả cho một lượt ping — lặp 4 lần như đời thật.
+ *
+ * Câu "Destination host unreachable" LUÔN có người ký tên phía trước:
+ * Windows in `Reply from <ai đó>:` vì đó là một gói ICMP error do một
+ * máy thật gửi về — máy MÌNH khi ARP không ai đáp, hoặc ROUTER khi nó
+ * không có đường đi tiếp. Biết ai ký tên là biết bệnh nằm ở đâu, nên
+ * bỏ mất tiền tố là bỏ mất manh mối lớn nhất của câu lệnh này.
+ */
+function pingBodyLines(
+  kind: 'reply' | 'timeout' | 'unreachable-local' | 'unreachable-via',
+  ctx: { ip: Ipv4; ttl?: number; via?: Ipv4; from?: Ipv4 | null },
+): string[] {
   const one =
     kind === 'reply'
       ? `Reply from ${ctx.ip}: bytes=32 time<1ms TTL=${ctx.ttl ?? 128}`
       : kind === 'timeout'
         ? 'Request timed out.'
         : kind === 'unreachable-local'
-          ? 'Destination host unreachable.'
+          ? // Máy mình tự trả lời: nó biết đích thuộc mạng của mình mà gọi
+            // mãi không ai thưa (ARP im). Hiếm khi không có IP tới được
+            // nhánh này, nhưng nếu vậy thì in trần như Windows cũ.
+            ctx.from == null
+            ? 'Destination host unreachable.'
+            : `Reply from ${ctx.from}: Destination host unreachable.`
           : `Reply from ${ctx.via}: Destination host unreachable.`
   return [one, one, one, one]
 }
 
+/**
+ * Thống kê cuối lượt ping.
+ *
+ * GOTCHA CỐ Ý GIỮ: gói ICMP "unreachable" VẪN LÀ một gói nhận được, nên
+ * Windows đếm Received = 4, Lost = 0 (0% loss) trong khi mạng rõ ràng
+ * không thông. Người đọc lướt thấy "0% loss" là kết luận nhầm "mạng ổn"
+ * — bẫy này có thật ngoài đời, và phòng khám phải giữ nguyên nó.
+ */
 function pingStats(received: number): string[] {
   const lost = 4 - received
   return ['', `    Packets: Sent = 4, Received = ${received}, Lost = ${lost} (${lost * 25}% loss)`]
@@ -350,21 +374,25 @@ function cmdPing(patient: ClinicPatient, state: TerminalState, target: string): 
   }
 
   const failure = sim.result.failure
-  const body =
-    // 'src-no-link' đứng chung nhóm General failure: dây CỦA MÌNH rơi thì
-    // gói không rời nổi máy — Windows thật báo transmit failed ngay, khác
-    // hẳn "Destination host unreachable" khi dây MÁY ĐÍCH rơi (ARP không
-    // ai đáp). Phân biệt được hai ca đó chính là bài học của phòng khám.
+  // 'src-no-link' đứng chung nhóm General failure: dây CỦA MÌNH rơi thì
+  // gói không rời nổi máy — Windows thật báo transmit failed ngay, khác
+  // hẳn "Destination host unreachable" khi dây MÁY ĐÍCH rơi (ARP không
+  // ai đáp). Phân biệt được hai ca đó chính là bài học của phòng khám.
+  const transmitFailed =
     failure === 'src-no-ip' || failure === 'src-no-link' || failure === 'no-gateway' || failure === 'gateway-off-subnet'
-      ? ['PING: transmit failed. General failure.']
-      : failure === 'arp-unresolved'
-        ? pingBodyLines('unreachable-local', { ip })
-        : failure === 'no-route' && seatGateway(patient) !== null
-          ? pingBodyLines('unreachable-via', { ip, via: seatGateway(patient)! })
-          : pingBodyLines('timeout', { ip })
+  const unreachableVia = failure === 'no-route' && seatGateway(patient) !== null
+  const unreachable = failure === 'arp-unresolved' || unreachableVia
+  const body = transmitFailed
+    ? ['PING: transmit failed. General failure.']
+    : failure === 'arp-unresolved'
+      ? pingBodyLines('unreachable-local', { ip, from: seatIp(patient) })
+      : unreachableVia
+        ? pingBodyLines('unreachable-via', { ip, via: seatGateway(patient)! })
+        : pingBodyLines('timeout', { ip })
   return {
     outcome: { kind: 'ping', target, resolvedIp: ip, resolveFailure, replied: false, failure, blockedBy: null, conflictOwners: sim.conflictOwners },
-    lines: [header, ...body, ...pingStats(0)],
+    // Lời từ chối unreachable là gói NHẬN ĐƯỢC — xem chú thích pingStats.
+    lines: [header, ...body, ...pingStats(unreachable ? 4 : 0)],
     state: stateAfter,
   }
 }

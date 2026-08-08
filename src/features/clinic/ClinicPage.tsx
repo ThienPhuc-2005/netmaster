@@ -10,12 +10,13 @@
 // Ca của bài thi mastery cố ý không có mặt (xem clinicCases.ts).
 
 import { useState } from 'react'
+import { lt, maybeLt } from '../../engine/ltext'
 import { ChevronLeft, CircleCheck, Stethoscope } from 'lucide-react'
 import { useT } from '../../i18n'
 import { useProgress } from '../../store/progress'
 import { playEarcon } from '../../audio/earcons'
 import { EmptyState } from '../../components/EmptyState'
-import { FeedbackBanner, type FeedbackState } from '../../components/FeedbackBanner'
+import { FeedbackBanner, FeedbackRegion, type FeedbackState } from '../../components/FeedbackBanner'
 import { XP_AMOUNTS } from '../../engine/xp'
 import { ClinicRoom } from './ClinicRoom'
 import { clinicCaseEntries, clinicTabUnlocked, type ClinicCaseEntry } from './clinicCases'
@@ -46,7 +47,7 @@ function CaseView({ entry, onBack }: { entry: ClinicCaseEntry; onBack: () => voi
     setFeedback({
       kind: 'incorrect',
       tier,
-      topic: entry.question.hintTopic?.vi,
+      topic: maybeLt(entry.question.hintTopic),
       hint: entry.hint,
       solution: entry.solution,
     })
@@ -58,11 +59,11 @@ function CaseView({ entry, onBack }: { entry: ClinicCaseEntry; onBack: () => voi
         <ChevronLeft size={14} aria-hidden />
         {t('clinic.backToList')}
       </button>
-      <p className="font-medium text-ink">{entry.question.prompt.vi}</p>
+      <p className="font-medium text-ink">{lt(entry.question.prompt)}</p>
       <ClinicRoom key={entry.question.id} question={entry.question} onSubmit={handleSubmit} />
+      <FeedbackRegion state={feedback} />
       {feedback !== null && (
         <div className="flex flex-col gap-2">
-          <FeedbackBanner state={feedback} />
           {feedback.kind === 'correct' && (
             <p className="text-sm text-ink-muted">
               {firstSolve
@@ -126,7 +127,7 @@ export function ClinicPage() {
       {[...byLesson.entries()].map(([lessonId, list]) => (
         <section key={lessonId} className="flex flex-col gap-2">
           <h2 className="text-sm font-semibold uppercase tracking-wide text-ink-muted">
-            {list[0]!.lesson.missionTitle.vi}
+            {lt(list[0]!.lesson.missionTitle)}
           </h2>
           <div className="flex flex-col gap-2">
             {list.map((entry) => {
@@ -141,7 +142,7 @@ export function ClinicPage() {
                   <span className="mt-0.5 shrink-0 font-mono text-xs font-bold text-accent">
                     {t('clinic.caseLabel', { index: caseNo })}
                   </span>
-                  <span className="flex-1 text-ink-muted">{excerpt(entry.question.prompt.vi)}</span>
+                  <span className="flex-1 text-ink-muted">{excerpt(lt(entry.question.prompt))}</span>
                   {solved && (
                     <span className="flex shrink-0 items-center gap-1 text-xs font-medium text-ok">
                       <CircleCheck size={14} aria-hidden />

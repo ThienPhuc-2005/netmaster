@@ -62,7 +62,7 @@ const SYNTAX: Record<string, string[]> = {
   ],
   'new-aduser': [
     'New-ADUser [-Name] <String> -SamAccountName <String> [-Path <String>] [-Enabled <Boolean>]',
-    '<rows> | New-ADUser        (columns: Name, SamAccountName, OU)',
+    '<rows> | New-ADUser        (columns: Name, SamAccountName, Path)',
   ],
   'import-csv': ['Import-Csv [-Path] <String>'],
   'get-content': ['Get-Content [-Path] <String>'],
@@ -275,14 +275,21 @@ function createUser(world: PsWorld, name: string, sam: string, ou: string, enabl
 
 function runNewAdUser(state: PsRunState, stage: ParsedStage, piped: PsValue[] | null): StageOutput {
   let world = state.world
-  const enabled = (stage.named['enabled'] ?? '$true').toLowerCase() !== '$false'
+  // Mặc định TẮT — đúng như AD thật: New-ADUser không kèm mật khẩu thì
+  // tài khoản sinh ra ở trạng thái Disabled (hội đồng 07-08, ghế kỹ
+  // thuật). Đây là một bài học bảo mật miễn phí: người học tạo user
+  // xong, Get-ADUser thấy "Enabled : False" và hiểu vì sao phải bật tay.
+  const enabled = (stage.named['enabled'] ?? '$false').toLowerCase() === '$true'
   const pathOu = stage.named['path'] !== undefined ? ouFromDn(stage.named['path']) : null
   if (stage.named['path'] !== undefined && pathOu === null) {
     err(`New-ADUser : Directory object not found: '${stage.named['path']}'.`)
   }
 
   // Nhánh pipeline: mỗi bản ghi CSV thành một user — "hàng loạt" đúng
-  // thần PowerShell nằm ở đây.
+  // thần PowerShell nằm ở đây. Cột bind là 'Path' chứa DN đầy đủ, ĐÚNG
+  // như -Path bind ByPropertyName ngoài đời (hội đồng 2026-08-07, đã
+  // duyệt): quy ước cột 'OU' tự chế trước đây chạy trong app nhưng đem
+  // ra AD thật là user rơi vào CN=Users im lặng — dạy một thói quen sai.
   if (piped !== null) {
     let created = 0
     for (const value of piped) {
@@ -290,10 +297,11 @@ function runNewAdUser(state: PsRunState, stage: ParsedStage, piped: PsValue[] | 
       const row = value as Record<string, string>
       const name = row['Name']
       const sam = row['SamAccountName']
-      const ou = pathOu ?? row['OU']
+      const rowPath = row['Path']
       if (name === undefined || name === '') err(`New-ADUser : Property 'Name' cannot be found on the input object.`)
       if (sam === undefined || sam === '') err(`New-ADUser : Property 'SamAccountName' cannot be found on the input object.`)
-      if (ou === undefined || ou === null || ou === '') err(`New-ADUser : Property 'OU' cannot be found on the input object (or pass -Path).`)
+      const ou = pathOu ?? (rowPath !== undefined && rowPath !== '' ? ouFromDn(rowPath) : null)
+      if (ou === null) err(`New-ADUser : Property 'Path' cannot be found on the input object (expected a DN like "OU=KeToan,DC=noibo,DC=vn", or pass -Path).`)
       world = createUser(world, name!, sam!, ou!, enabled)
       created++
     }
@@ -322,9 +330,31 @@ function runImportCsv(state: PsRunState, stage: ParsedStage): StageOutput {
   if (path === undefined || path === '') err('Import-Csv : Missing an argument for parameter -Path.')
   const raw = readFileLines(state.world, path!, 'Import-Csv')
   if (raw.length < 2) err(`Import-Csv : The file '${path}' has no data rows.`)
-  const headers = raw[0]!.split(',').map((h) => h.trim())
+  // Tách ô TÔN TRỌNG nháy kép như CSV thật: cột Path chứa DN có dấu phẩy
+  // ("OU=KeToan,DC=noibo,DC=vn") bắt buộc bọc nháy — split(',') trần sẽ
+  // băm nát DN. Đây cũng chính là bài học đời thật về CSV cho AD.
+  const splitCsvLine = (line: string): string[] => {
+    const cells: string[] = []
+    let current = ''
+    let inQuote = false
+    for (const ch of line) {
+      if (ch === '"') {
+        inQuote = !inQuote
+        continue
+      }
+      if (ch === ',' && !inQuote) {
+        cells.push(current.trim())
+        current = ''
+        continue
+      }
+      current += ch
+    }
+    cells.push(current.trim())
+    return cells
+  }
+  const headers = splitCsvLine(raw[0]!)
   const rows: Record<string, string>[] = raw.slice(1).map((line) => {
-    const cells = line.split(',').map((c) => c.trim())
+    const cells = splitCsvLine(line)
     return Object.fromEntries(headers.map((h, i) => [h, cells[i] ?? '']))
   })
   // Hiển thị dạng bảng gọn để người học soi dữ liệu trước khi bơm vào ống.

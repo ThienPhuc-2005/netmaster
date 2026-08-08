@@ -280,3 +280,69 @@ describe('quyền thao tác của đề bài được TÔN TRỌNG ở giao di�
     expect(screen.queryByRole('button', { name: /Bỏ thiết bị này/ })).toBeNull()
   })
 })
+
+describe('bài dở: rời đi giữa chừng rồi quay lại (hội đồng #20)', () => {
+  // Một bài lab lắp dở là mười lăm phút thật. Bản cũ mất sạch khi rời
+  // trang — đó là kiểu mất mát khiến người ta bỏ hẳn bài, không phải
+  // chỉ bực mình.
+  it('mỗi lần sơ đồ đổi là bắn ra một ảnh chụp để tầng trên lưu', () => {
+    const onDraftChange = vi.fn()
+    render(<NetworkLab spec={vlanRepairLab()} onDraftChange={onDraftChange} />)
+    // Chỉ MỞ bài ra xem thì chưa có gì để lưu.
+    expect(onDraftChange).not.toHaveBeenCalled()
+
+    setVlan('p2', 10)
+    expect(onDraftChange).toHaveBeenCalled()
+    const snapshot = onDraftChange.mock.calls.at(-1)![0] as { topology: Topology }
+    const sw = snapshot.topology.devices.find((d) => d.id === 'sw-1')
+    expect(sw?.kind === 'switch' && sw.ports.find((p) => p.id === 'p2')?.vlan).toBe(10)
+  })
+
+  it('mở lại bằng ảnh chụp: vào thẳng sơ đồ đang lắp dở, không phải đề bài', () => {
+    // Lắp dở ở lần ngồi trước…
+    const onDraftChange = vi.fn()
+    const first = render(<NetworkLab spec={vlanRepairLab()} onDraftChange={onDraftChange} />)
+    setVlan('p2', 10)
+    const draft = onDraftChange.mock.calls.at(-1)![0] as never
+    first.unmount()
+
+    // …lần ngồi sau mở ra là thấy đúng chỗ mình bỏ dở (mục tiêu đã xanh).
+    render(<NetworkLab spec={vlanRepairLab()} initialDraft={draft} />)
+    expect(unfinished()).toHaveLength(0)
+  })
+
+  it('"Làm lại từ đầu" vẫn quay về ĐỀ BÀI, không quay về bài dở', () => {
+    // restoreLab giữ `initial` là đề bài — nếu lấy bài dở làm mốc thì
+    // người học mất luôn đường thoát về vạch xuất phát.
+    const onDraftChange = vi.fn()
+    const first = render(<NetworkLab spec={vlanRepairLab()} onDraftChange={onDraftChange} />)
+    setVlan('p2', 10)
+    const draft = onDraftChange.mock.calls.at(-1)![0] as never
+    first.unmount()
+
+    render(<NetworkLab spec={vlanRepairLab()} initialDraft={draft} />)
+    fireEvent.click(screen.getByRole('button', { name: /Về sơ đồ ban đầu/ }))
+    expect(unfinished()).toHaveLength(1)
+  })
+})
+
+describe('bàn phím dời được thiết bị (hội đồng, ghế a11y)', () => {
+  // Sắp xếp mặt bàn từng là thao tác DUY NHẤT chỉ có đường kéo-thả —
+  // tức người dùng bàn phím không gỡ được sơ đồ rối. Giờ mũi tên đi
+  // đúng một ô lưới, cùng snapToGrid với chuột.
+  it('mũi tên dời thiết bị một ô lưới, dây vẽ lại theo', () => {
+    render(<NetworkLab spec={vlanRepairLab()} />)
+    const device = deviceButton('PC-A (kế toán)')
+    const before = device.style.left
+    fireEvent.keyDown(device, { key: 'ArrowRight' })
+    expect(deviceButton('PC-A (kế toán)').style.left).not.toBe(before)
+  })
+
+  it('phím không phải mũi tên thì không đụng gì tới bố cục', () => {
+    render(<NetworkLab spec={vlanRepairLab()} />)
+    const device = deviceButton('PC-A (kế toán)')
+    const before = device.style.left
+    fireEvent.keyDown(device, { key: 'a' })
+    expect(deviceButton('PC-A (kế toán)').style.left).toBe(before)
+  })
+})

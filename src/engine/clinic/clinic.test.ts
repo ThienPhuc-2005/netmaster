@@ -108,6 +108,24 @@ describe('terminal — ping suy từ mô phỏng', () => {
     expect(last.lines.join('\n')).toContain('Lost = 4')
   })
 
+  it('lời từ chối unreachable có người KÝ TÊN, và đếm 0% loss như Windows thật', () => {
+    // Hai chuyện gộp trong một ca (ghế kỹ thuật mạng, hội đồng 07-08):
+    //   1. "Destination host unreachable" là gói ICMP do MỘT MÁY gửi về,
+    //      nên Windows in "Reply from <ai>:" phía trước. Ai ký tên chính
+    //      là manh mối: máy mình (ARP im) hay router (không có đường).
+    //   2. Gói đó VẪN được đếm là nhận được → "0% loss" trong khi mạng
+    //      không thông. Bẫy đọc lướt này có thật, phải giữ nguyên.
+    // Ca sai gateway: máy gọi mãi cái gateway ma mà không ai thưa (ARP im)
+    // → chính MÁY MÌNH sinh ra lời từ chối, nên nó ký tên bằng IP của mình.
+    const seat = CASE_SAI_GATEWAY.patient.topology.devices.find((d) => d.id === CASE_SAI_GATEWAY.patient.seatId)
+    const from = seat?.kind === 'pc' ? seat.ipConfig?.ip : undefined
+    const { last } = type(CASE_SAI_GATEWAY, 'ping 203.0.113.1')
+    expect(last.outcome).toMatchObject({ kind: 'ping', replied: false, failure: 'arp-unresolved' })
+    const out = last.lines.join(' ')
+    expect(out).toContain(`Reply from ${from}: Destination host unreachable.`)
+    expect(out).toContain('Received = 4, Lost = 0 (0% loss)')
+  })
+
   it('ca sai gateway: ping ra ngoài chết, triệu chứng đúng như lời than', () => {
     const { last } = type(CASE_SAI_GATEWAY, 'ping 203.0.113.1')
     expect(last.outcome).toMatchObject({ kind: 'ping', replied: false })

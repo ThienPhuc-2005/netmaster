@@ -17,6 +17,7 @@
 // việc chấm và đếm lượt thuộc tầng gọi, y hệt NetworkLab/PalaceWalk.
 
 import { useCallback, useMemo, useState } from 'react'
+import { lt, maybeLt } from '../../engine/ltext'
 import { HeartPulse, Stethoscope } from 'lucide-react'
 import { useT } from '../../i18n'
 import { Button } from '../../components/Button'
@@ -56,7 +57,7 @@ function ChoiceButton({
           : 'border-edge bg-panel text-ink hover:border-accent hover:bg-panel-hover'
       }`}
     >
-      {text.vi}
+      {lt(text)}
     </button>
   )
 }
@@ -168,7 +169,7 @@ export function ClinicRoom({ question, onSubmit }: ClinicRoomProps) {
                     : 'border-edge text-ink-muted hover:border-accent hover:text-ink'
                 }`}
               >
-                {choice.vi}
+                {lt(choice)}
               </button>
             ))}
           </div>

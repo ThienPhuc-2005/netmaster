@@ -110,6 +110,24 @@ export function startLab(initial: Topology, allow: LabAllowance): LabSession {
   }
 }
 
+/**
+ * Mở lại một phiên từ SƠ ĐỒ ĐANG LẮP DỞ (persist bài dở — hội đồng #20).
+ *
+ * `initial` vẫn là đề bài, nên "Làm lại từ đầu" quay về đúng chỗ cũ.
+ * Lịch sử undo CỐ Ý không khôi phục: nó là dấu chân của buổi ngồi trước,
+ * không phải thành quả — người học quay lại thấy đúng cái mạng mình đã
+ * lắp, và undo bắt đầu đếm lại từ đây.
+ */
+export function restoreLab(initial: Topology, allow: LabAllowance, present: Topology): LabSession {
+  return {
+    allow,
+    initial: cloneTopology(initial),
+    past: [],
+    present: cloneTopology(present),
+    future: [],
+  }
+}
+
 // ---------------------------------------------------------------
 // Kiểm tra trước khi áp dụng
 // ---------------------------------------------------------------

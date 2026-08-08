@@ -9,8 +9,8 @@
 // bàn phím, trình đọc màn hình và test đều dùng được đúng một đường mã
 // với chuột — thay vì phải dựng ba hệ thống song song.
 
-import { useRef, type PointerEvent as ReactPointerEvent } from 'react'
-import { motion } from 'motion/react'
+import { useRef, type KeyboardEvent as ReactKeyboardEvent, type PointerEvent as ReactPointerEvent } from 'react'
+import { m } from 'motion/react'
 import { PacketShape } from '../../components/PacketShape'
 import { DeviceGlyph } from '../../components/DeviceGlyph'
 import { useT } from '../../i18n'
@@ -19,6 +19,7 @@ import {
   DESIGN_W,
   DEVICE_H,
   DEVICE_W,
+  GRID,
   pointerToModel,
   portPoint,
   snapToGrid,
@@ -153,6 +154,25 @@ function DeviceNode({
     grab.current = null
   }
 
+  // Dời thiết bị bằng BÀN PHÍM — trước đây sắp xếp mặt bàn là thao tác
+  // DUY NHẤT chỉ có đường kéo-thả, tức là người dùng bàn phím và trình
+  // đọc màn hình không sắp lại được sơ đồ rối (hội đồng 07-08, ghế a11y).
+  // Mỗi lần nhấn đi đúng MỘT ô lưới, cùng hàm snapToGrid với chuột, nên
+  // hai đường vào cho ra cùng một tọa độ hợp lệ.
+  const onKeyDown = (event: ReactKeyboardEvent<HTMLButtonElement>) => {
+    const step: Record<string, Point> = {
+      ArrowLeft: { x: -GRID, y: 0 },
+      ArrowRight: { x: GRID, y: 0 },
+      ArrowUp: { x: 0, y: -GRID },
+      ArrowDown: { x: 0, y: GRID },
+    }
+    const delta = step[event.key]
+    if (delta === undefined) return
+    // Chặn cuộn trang: mũi tên lúc này thuộc về mặt bàn.
+    event.preventDefault()
+    onDragTo(snapToGrid({ x: pos.x + delta.x, y: pos.y + delta.y }))
+  }
+
   return (
     <button
       type="button"
@@ -163,6 +183,7 @@ function DeviceNode({
       onPointerMove={onPointerMove}
       onPointerUp={endDrag}
       onPointerCancel={endDrag}
+      onKeyDown={onKeyDown}
       style={{
         left: percentX(pos.x),
         top: percentY(pos.y),
@@ -306,7 +327,7 @@ export function LabCanvas({
       >
         {railD !== '' && <path ref={railRef} d={railD} fill="none" stroke="none" />}
         {phase.kind === 'flying' && frames !== null && (
-          <motion.g
+          <m.g
             key={`hop-${phase.hop}`}
             initial={{ x: frames.xs[0], y: frames.ys[0] }}
             animate={{ x: frames.xs, y: frames.ys }}
@@ -315,7 +336,7 @@ export function LabCanvas({
             onAnimationComplete={onHopComplete}
           >
             <PacketShape />
-          </motion.g>
+          </m.g>
         )}
         </svg>
       </div>

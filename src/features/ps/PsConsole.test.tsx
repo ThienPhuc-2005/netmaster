@@ -87,3 +87,39 @@ describe('terminal PowerShell', () => {
     expect(screen.queryByRole('button', { name: 'Nộp bài' })).toBeNull()
   })
 })
+
+describe('bài dở: rời terminal giữa chừng rồi quay lại (hội đồng #20)', () => {
+  it('mỗi lệnh chạy xong bắn ra ảnh chụp gồm CẢ thế giới lẫn nhật ký', () => {
+    // Thiếu nhật ký thì người học quay lại không đọc được mình đã thử
+    // gì — mất phần lớn công sức dù thế giới còn nguyên.
+    const onDraftChange = vi.fn()
+    render(<PsConsole question={PS_Q} onDraftChange={onDraftChange} />)
+    expect(onDraftChange).not.toHaveBeenCalled()
+
+    typeCommand('Get-NetIPAddress')
+    const draft = onDraftChange.mock.calls.at(-1)![0] as { entries: { input: string }[] }
+    expect(draft.entries.map((e) => e.input)).toEqual(['Get-NetIPAddress'])
+  })
+
+  it('mở lại bằng ảnh chụp: thế giới đã đổi và nhật ký lệnh còn nguyên', () => {
+    const onDraftChange = vi.fn()
+    const first = render(<PsConsole question={PS_Q} onSubmit={() => {}} onDraftChange={onDraftChange} />)
+    typeCommand('New-ADUser -Name "Le Thi Mai" -SamAccountName ltmai -Path "OU=KeToan,DC=noibo,DC=vn"')
+    const draft = onDraftChange.mock.calls.at(-1)![0] as never
+    first.unmount()
+
+    render(<PsConsole question={PS_Q} onSubmit={() => {}} initialDraft={draft} />)
+    // Mục tiêu vẫn xong (thế giới giữ được user vừa tạo)...
+    expect(screen.getByText(/\(xong\)/)).toBeTruthy()
+    // ...và dòng lệnh cũ vẫn nằm trong nhật ký để đọc lại.
+    expect(screen.getByText(/New-ADUser -Name "Le Thi Mai"/)).toBeTruthy()
+  })
+
+  it('"Làm lại từ đầu" BỎ luôn bài dở, không lưu một thế giới trắng', () => {
+    const onDraftChange = vi.fn()
+    render(<PsConsole question={PS_Q} onDraftChange={onDraftChange} />)
+    typeCommand('Get-NetIPAddress')
+    fireEvent.click(screen.getByRole('button', { name: 'Làm lại từ đầu' }))
+    expect(onDraftChange.mock.calls.at(-1)![0]).toBeNull()
+  })
+})

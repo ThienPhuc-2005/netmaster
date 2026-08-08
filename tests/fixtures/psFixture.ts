@@ -24,11 +24,15 @@ export const WORLD_VAN_PHONG: PsWorld = {
     ],
   },
   files: {
+    // Cột Path chứa DN đầy đủ, bọc nháy kép vì DN có dấu phẩy — ĐÚNG như
+    // CSV cho New-ADUser ngoài đời (quy ước cột OU tự chế đã bỏ, hội đồng
+    // 2026-08-07: -Path bind ByPropertyName, cột OU thật ra bị lờ đi và
+    // user rơi vào CN=Users im lặng).
     'nhan-vien-moi.csv': [
-      'Name,SamAccountName,OU',
-      'Le Van Cuong,lvcuong,NhanSu',
-      'Pham Thi Dung,ptdung,NhanSu',
-      'Hoang Van Em,hvem,NhanSu',
+      'Name,SamAccountName,Path',
+      'Le Van Cuong,lvcuong,"OU=NhanSu,DC=noibo,DC=vn"',
+      'Pham Thi Dung,ptdung,"OU=NhanSu,DC=noibo,DC=vn"',
+      'Hoang Van Em,hvem,"OU=NhanSu,DC=noibo,DC=vn"',
     ],
     'router.log': [
       '2026-08-07 08:01:12 INFO  interface Ethernet0 up',

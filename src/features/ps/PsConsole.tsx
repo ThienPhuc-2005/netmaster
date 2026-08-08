@@ -14,7 +14,7 @@
 // Không có undo: PowerShell thật cũng không có. Nút "Làm lại từ đầu"
 // trả nguyên thế giới ban đầu — an toàn để thử nghiệm.
 
-import { useEffect, useMemo, useRef, useState, type FormEvent } from 'react'
+import { useEffect, useMemo, useRef, useState, type FormEvent, type KeyboardEvent as ReactKeyboardEvent } from 'react'
 import { RotateCcw, SquareChevronRight } from 'lucide-react'
 import { useT } from '../../i18n'
 import { Button } from '../../components/Button'
@@ -26,16 +26,13 @@ import {
   initialPsState,
   runPsLine,
   type PsGoal,
-  type PsOutcome,
   type PsRunState,
 } from '../../engine/ps'
+import type { PsTranscriptEntry } from '../../store/progress'
 
-interface TermEntry {
-  id: number
-  input: string
-  lines: string[]
-  outcome: PsOutcome
-}
+// Kiểu của một dòng nhật ký khai ở store (persist bài dở — #20): nhật ký
+// phải lưu lại được thì mới dựng lại nguyên phiên terminal.
+type TermEntry = PsTranscriptEntry
 
 const PROMPT = 'PS C:\\>'
 
@@ -89,6 +86,12 @@ function EntryBody({ entry }: { entry: TermEntry }) {
   )
 }
 
+/** Ảnh chụp phiên terminal để mở lại bài đang gõ dở (#20). */
+export interface PsDraftSnapshot {
+  state: PsRunState
+  entries: PsTranscriptEntry[]
+}
+
 export interface PsConsoleProps {
   question: PsQuestion
   /**
@@ -96,17 +99,49 @@ export interface PsConsoleProps {
    * đó). Không truyền thì ở chế độ xem, không có nút nộp.
    */
   onSubmit?: (response: QuestionResponse) => void
+  /**
+   * Phiên gõ dở của lần trước — có thì mở lại nguyên thế giới đã biến
+   * đổi VÀ nguyên nhật ký lệnh. Thiếu nhật ký thì người học không đọc
+   * lại được mình đã thử gì, tức là đã mất phần lớn công sức.
+   */
+  initialDraft?: PsDraftSnapshot | null
+  /**
+   * Phiên vừa đổi (chạy thêm một lệnh), hoặc `null` khi người học bấm
+   * "Làm lại từ đầu" — lúc đó bài dở phải biến mất, không phải lưu một
+   * thế giới trắng.
+   */
+  onDraftChange?: (draft: PsDraftSnapshot | null) => void
 }
 
-export function PsConsole({ question, onSubmit }: PsConsoleProps) {
+export function PsConsole({ question, onSubmit, initialDraft, onDraftChange }: PsConsoleProps) {
   const t = useT()
   const spec = question.spec
-  const [state, setState] = useState<PsRunState>(() => initialPsState(spec.world))
-  const [entries, setEntries] = useState<TermEntry[]>([])
+  const [state, setState] = useState<PsRunState>(() => initialDraft?.state ?? initialPsState(spec.world))
+  const [entries, setEntries] = useState<TermEntry[]>(() => initialDraft?.entries ?? [])
   const [input, setInput] = useState('')
+  // Lịch sử lệnh (mũi tên ↑/↓) — PowerShell thật có, app tự hào mô phỏng
+  // "như thật" thì không được thiếu: bài pipeline dài, sai một ký tự mà
+  // phải gõ lại từ đầu là ma sát lặp nhiều nhất của Module 12 (hội đồng).
+  const [histCursor, setHistCursor] = useState<number | null>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
 
   const evaluation = useMemo(() => gradePs(spec, state), [spec, state])
+
+  // Bảng mục tiêu "chấm sống" là điểm bán hàng của terminal — nhưng ○→✓
+  // đổi trong im lặng với screen reader. Live region sr-only THƯỜNG TRỰC
+  // (mount sẵn, chỉ đổi ruột) announce từng mục tiêu vừa đạt.
+  const [goalAnnounce, setGoalAnnounce] = useState('')
+  const prevMet = useRef<boolean[] | null>(null)
+  useEffect(() => {
+    const met = evaluation.goals.map((g) => g.met)
+    if (prevMet.current !== null) {
+      const fresh = evaluation.goals.filter(({ met: m }, i) => m && prevMet.current![i] === false)
+      if (fresh.length > 0) {
+        setGoalAnnounce(fresh.map(({ goal }) => `${goalText(goal, t)} — ${t('lab.goalMet')}`).join('. '))
+      }
+    }
+    prevMet.current = met
+  }, [evaluation, t])
 
   useEffect(() => {
     const el = scrollRef.current
@@ -118,19 +153,50 @@ export function PsConsole({ question, onSubmit }: PsConsoleProps) {
     const line = input.trim()
     if (line === '') return
     const result = runPsLine(state, line)
+    const nextEntries = [...entries, { id: entries.length, input: line, lines: result.lines, outcome: result.outcome }]
     setState(result.state)
-    setEntries((old) => [...old, { id: old.length, input: line, lines: result.lines, outcome: result.outcome }])
+    setEntries(nextEntries)
     setInput('')
+    setHistCursor(null)
+    onDraftChange?.({ state: result.state, entries: nextEntries })
   }
 
   const reset = () => {
     setState(initialPsState(spec.world))
     setEntries([])
     setInput('')
+    setHistCursor(null)
+    // "Làm lại từ đầu" là ý muốn rõ ràng: bỏ luôn bài dở đã lưu.
+    onDraftChange?.(null)
+  }
+
+  const onHistoryKey = (e: ReactKeyboardEvent<HTMLInputElement>) => {
+    if (e.key !== 'ArrowUp' && e.key !== 'ArrowDown') return
+    const history = entries.map((en) => en.input)
+    if (history.length === 0) return
+    e.preventDefault()
+    if (e.key === 'ArrowUp') {
+      const next = histCursor === null ? history.length - 1 : Math.max(0, histCursor - 1)
+      setHistCursor(next)
+      setInput(history[next]!)
+    } else {
+      if (histCursor === null) return
+      const next = histCursor + 1
+      if (next >= history.length) {
+        setHistCursor(null)
+        setInput('')
+      } else {
+        setHistCursor(next)
+        setInput(history[next]!)
+      }
+    }
   }
 
   return (
     <div className="space-y-4">
+      <span className="sr-only" role="status">
+        {goalAnnounce}
+      </span>
       <div className="rounded-md border border-edge bg-panel p-4">
         <h3 className="mb-2 text-sm font-semibold text-ink">{t('ps.goalsTitle')}</h3>
         <ul className="flex flex-col gap-1.5">
@@ -177,7 +243,11 @@ export function PsConsole({ question, onSubmit }: PsConsoleProps) {
           </span>
           <input
             value={input}
-            onChange={(e) => setInput(e.target.value)}
+            onChange={(e) => {
+              setInput(e.target.value)
+              setHistCursor(null)
+            }}
+            onKeyDown={onHistoryKey}
             placeholder={t('ps.terminalPlaceholder')}
             aria-label={t('ps.terminalInputAria')}
             autoComplete="off"

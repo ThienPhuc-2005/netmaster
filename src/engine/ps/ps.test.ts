@@ -100,6 +100,24 @@ describe('AD: tra cứu và tạo user', () => {
     expect(dup.lines.join('\n')).toContain('already exists')
   })
 
+  it('tài khoản mới sinh ra ĐANG KHÓA — trừ khi khai -Enabled $true', () => {
+    // AD thật: New-ADUser không kèm mật khẩu thì account tạo ra bị
+    // Disabled. Mô phỏng cho "Enabled: True" là dạy một thói quen sai ở
+    // đúng chỗ nguy hiểm nhất — quản trị viên mới tưởng tạo xong là dùng
+    // được ngay (hội đồng 07-08, ghế kỹ thuật mạng).
+    const created = lastOf(
+      'New-ADUser -Name "Le Thi Mai" -SamAccountName ltmai -Path "OU=KeToan,DC=noibo,DC=vn"',
+      'Get-ADUser -Identity ltmai',
+    )
+    expect(created.lines.join('\n')).toContain('Enabled           : False')
+
+    const forced = lastOf(
+      'New-ADUser -Name "Le Thi Mai" -SamAccountName ltmai -Path "OU=KeToan,DC=noibo,DC=vn" -Enabled $true',
+      'Get-ADUser -Identity ltmai',
+    )
+    expect(forced.lines.join('\n')).toContain('Enabled           : True')
+  })
+
   it('OU ma trong -Path bị từ chối', () => {
     const bad = lastOf('New-ADUser -Name X -SamAccountName xxx -Path "OU=PhongMa,DC=noibo,DC=vn"')
     expect(bad.outcome.kind).toBe('error')
