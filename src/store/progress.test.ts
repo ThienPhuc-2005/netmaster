@@ -7,7 +7,7 @@ import { makeValidModule } from '../../tests/fixtures/moduleFixture'
 import { parseModule, type Module, type Lesson } from '../engine/contentSchema'
 import { createCard } from '../engine/sm2'
 import { addDays } from '../engine/dates'
-import { newLessonGate, shouldReviewFirst, todayIso, useProgress } from './progress'
+import { canChallengeModule, newLessonGate, shouldReviewFirst, todayIso, useProgress } from './progress'
 
 // localStorage in-memory do tests/setup.ts cấp trước khi store được import.
 
@@ -173,14 +173,14 @@ describe('bài thi mastery (nguyên tắc 2)', () => {
 
   it('đạt >= 85% → ghi điểm, mở module, newlyPassed đúng một lần', () => {
     const s = () => useProgress.getState()
-    const first = s().recordMasteryAttempt(MODULE, pass)
+    const first = s().recordMasteryAttempt(MODULE, pass, [MODULE.id])
     expect(first.passed).toBe(true)
     expect(first.newlyPassed).toBe(true)
     expect(s().passedModules).toEqual(['module-1'])
     expect(s().masteryScores['module-1']).toBeCloseTo((6 / 7) * 100, 5)
 
     // Thi lại điểm thấp: best giữ nguyên, không "passed lần đầu" lần hai
-    const again = s().recordMasteryAttempt(MODULE, fail)
+    const again = s().recordMasteryAttempt(MODULE, fail, [MODULE.id])
     expect(again.passed).toBe(false)
     expect(again.newlyPassed).toBe(false)
     expect(s().passedModules).toEqual(['module-1'])
@@ -189,7 +189,7 @@ describe('bài thi mastery (nguyên tắc 2)', () => {
 
   it('rớt < 85% → không mở module, điểm vẫn được ghi', () => {
     const s = () => useProgress.getState()
-    const r = s().recordMasteryAttempt(MODULE, fail)
+    const r = s().recordMasteryAttempt(MODULE, fail, [MODULE.id])
     expect(r.passed).toBe(false)
     expect(s().passedModules).toEqual([])
     expect(s().masteryScores['module-1']).toBeCloseTo((3 / 7) * 100, 5)
@@ -197,7 +197,7 @@ describe('bài thi mastery (nguyên tắc 2)', () => {
 
   it('KHÔNG cộng XP/streak từ bài thi (chặn farm bằng thi lại)', () => {
     const s = () => useProgress.getState()
-    s().recordMasteryAttempt(MODULE, pass)
+    s().recordMasteryAttempt(MODULE, pass, [MODULE.id])
     expect(s().xpTotal).toBe(0)
     expect(s().streak.current).toBe(0)
     // nhưng câu trả lời vẫn vào lịch sử 10 câu (dữ liệu flow Phase 2)
@@ -206,7 +206,115 @@ describe('bài thi mastery (nguyên tắc 2)', () => {
 
   it('module khóa/không tồn tại → ném lỗi (không có đường vượt gate)', () => {
     const ghost = { ...MODULE, id: 'module-ma' }
-    expect(() => useProgress.getState().recordMasteryAttempt(ghost, pass)).toThrow(/locked or unknown/)
+    expect(() => useProgress.getState().recordMasteryAttempt(ghost, pass, [MODULE.id])).toThrow(/locked or unknown/)
+  })
+})
+
+describe('thi vượt (học vượt — nguyên tắc 2 vẫn nguyên)', () => {
+  const pass = [true, true, true, true, true, true, false] // 6/7 ≈ 85.7%
+  const fail = [true, true, true, false, false, false, false] // 3/7
+
+  it('đậu → mở module VÀ sinh đủ thẻ ôn cho mọi khái niệm, hạn ngày mai', () => {
+    // Vượt xong mà không có thẻ nào thì cả mảng kiến thức đó không bao
+    // giờ được nhắc lại — thủng cơ chế ôn của app (spec 2.2).
+    const s = () => useProgress.getState()
+    const r = s().recordChallengeAttempt(MODULE, pass, [MODULE.id])
+    expect(r.passed).toBe(true)
+    expect(r.newlyPassed).toBe(true)
+    expect(s().passedModules).toEqual(['module-1'])
+
+    const wanted = MODULE.concepts.filter((c) => c.noFlashcard !== true).map((c) => c.id)
+    expect(r.cardsCreated).toBeGreaterThanOrEqual(wanted.length)
+    const cardIds = new Set(s().reviewCards.map((c) => c.conceptId))
+    for (const id of wanted) expect(cardIds.has(id), `thiếu thẻ khái niệm "${id}"`).toBe(true)
+    const tomorrow = addDays(todayIso(), 1)
+    for (const card of s().reviewCards) expect(card.dueDate).toBe(tomorrow)
+  })
+
+  it('KHÔNG cộng XP/streak — thi vượt vẫn là cổng, không phải phần thưởng', () => {
+    const s = () => useProgress.getState()
+    s().recordChallengeAttempt(MODULE, pass, [MODULE.id])
+    expect(s().xpTotal).toBe(0)
+    expect(s().streak.current).toBe(0)
+    expect(s().answerHistory).toHaveLength(7)
+  })
+
+  it('rớt → không mở module, KHÔNG sinh thẻ, có ghi lại ngày vượt', () => {
+    const s = () => useProgress.getState()
+    const r = s().recordChallengeAttempt(MODULE, fail, [MODULE.id])
+    expect(r.passed).toBe(false)
+    expect(s().passedModules).toEqual([])
+    expect(s().reviewCards).toEqual([])
+    expect(s().challengeUsed['module-1']).toBe(todayIso())
+  })
+
+  it('vượt hụt rồi vượt LẠI được ngay — cửa vượt không bị tiêu mất', () => {
+    // Chủ dự án chốt 08-08 (lượt sau): mọi chủ đề lớn phải LUÔN có cửa
+    // vượt, mà cửa dùng một lần rồi mất thì bằng không có. Cổng 85% giữ
+    // giá bằng ba lớp khác: xáo thứ tự câu, xáo lựa chọn MCQ, màn rớt
+    // không in đáp án.
+    const s = () => useProgress.getState()
+    s().recordChallengeAttempt(MODULE, fail, [MODULE.id])
+    const r = s().recordChallengeAttempt(MODULE, pass, [MODULE.id])
+    expect(r.newlyPassed).toBe(true)
+    expect(s().passedModules).toEqual(['module-1'])
+    // Đậu ở lượt thứ hai vẫn phải sinh đủ thẻ ôn như lượt đầu.
+    expect(s().reviewCards.length).toBeGreaterThan(0)
+  })
+
+  it('module ĐANG KHÓA vẫn vượt được (đường dành cho người học sẵn ở nơi khác)', () => {
+    // Chủ dự án chốt 08-08: nút vượt có ở MỌI module, kể cả module khóa —
+    // ai đã học ba module đầu ở chỗ khác thì vào thẳng module thứ tư.
+    const s = () => useProgress.getState()
+    const later = { ...MODULE, id: 'module-4' }
+    const order = [MODULE.id, 'module-2', 'module-3', 'module-4']
+    const r = s().recordChallengeAttempt(later, pass, order)
+    expect(r.newlyPassed).toBe(true)
+    expect(s().passedModules).toEqual(['module-4'])
+  })
+
+  it('module không tồn tại trong lộ trình → vẫn ném lỗi', () => {
+    const ghost = { ...MODULE, id: 'module-ma' }
+    expect(() => useProgress.getState().recordChallengeAttempt(ghost, pass, [MODULE.id])).toThrow(/locked or unknown/)
+  })
+
+  it('rớt vượt rồi học tử tế vẫn thi mastery lại được, không giới hạn', () => {
+    // Lượt vượt tiêu hết KHÔNG được phép khóa luôn đường thi bình thường.
+    const s = () => useProgress.getState()
+    s().recordChallengeAttempt(MODULE, fail, [MODULE.id])
+    const r = s().recordMasteryAttempt(MODULE, pass, [MODULE.id])
+    expect(r.newlyPassed).toBe(true)
+    expect(s().passedModules).toEqual(['module-1'])
+  })
+})
+
+describe('canChallengeModule — lời mời thi vượt chỉ hiện khi còn nghĩa', () => {
+  const ids = MODULE.lessons.map((l) => l.id)
+  const base = { lessonIds: ids, completedLessons: {}, moduleId: MODULE.id }
+
+  it('module đang mở, chưa học hết bài → mời', () => {
+    expect(canChallengeModule({ ...base, status: 'open' })).toBe(true)
+  })
+
+  it('module đang KHÓA cũng mời (nút vượt có ở mọi module)', () => {
+    expect(canChallengeModule({ ...base, status: 'locked' })).toBe(true)
+  })
+
+  it('module đã đậu hoặc không tồn tại → không mời', () => {
+    expect(canChallengeModule({ ...base, status: 'passed' })).toBe(false)
+    expect(canChallengeModule({ ...base, status: undefined })).toBe(false)
+  })
+
+  it('đã học hết bài → không mời (đường thi thường đã mở, khỏi cửa riêng)', () => {
+    const completedLessons = Object.fromEntries(ids.map((id) => [id, todayIso()]))
+    expect(canChallengeModule({ ...base, completedLessons, status: 'open' })).toBe(false)
+  })
+
+  it('đã vượt hụt một lần vẫn mời tiếp — cửa vượt không tiêu mất', () => {
+    // Lời mời chỉ suy từ trạng thái module + bài đã học; sổ challengeUsed
+    // không còn là điều kiện, nên chủ đề lớn nào chưa đậu cũng luôn có cửa.
+    expect(canChallengeModule({ ...base, status: 'open' })).toBe(true)
+    expect(canChallengeModule({ ...base, status: 'locked' })).toBe(true)
   })
 })
 

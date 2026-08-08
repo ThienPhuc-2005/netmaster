@@ -1,11 +1,54 @@
 // Tab Hồ sơ — đọc từ store tiến độ thật (persist localStorage).
-// Huy hiệu là nội dung của khối sau; hiện tại nói rõ huy hiệu đầu tiên
-// đến từ đâu (empty state có hướng dẫn — spec 4.5).
+// Huy hiệu CHƯA TỒN TẠI nên copy không được hứa mốc cụ thể (lời hứa
+// không trả được là violated expectancy — hội đồng, ghế tâm lý); khi
+// nào xây hệ huy hiệu thật thì trình kế hoạch theo spec 2.4 trước.
 
-import { Flame, Zap, Award, Snowflake, Layers, BookOpenCheck } from 'lucide-react'
+import { useRef } from 'react'
+import { Flame, Zap, Award, Snowflake, Layers, BookOpenCheck, Download, Upload } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { useT } from '../../i18n'
 import { useProgress } from '../../store/progress'
+import { Button } from '../../components/Button'
+
+/**
+ * Cửa thoát hiểm cho dữ liệu (hội đồng 2026-08-07, ghế dữ liệu): toàn bộ
+ * tiến độ nằm trong localStorage của MỘT profile trình duyệt — một lần
+ * "Clear browsing data" theo thói quen là mất hàng chục giờ học. Xuất =
+ * tải file JSON chứa đúng 3 key persist; nhập = validate tối thiểu rồi
+ * ghi đè + reload. Không đổi data model, không network — vẫn Phase 1
+ * localStorage đúng spec.
+ */
+const BACKUP_KEYS = ['netmaster-progress', 'netmaster-settings', 'lang'] as const
+
+function exportBackup(): void {
+  const data: Record<string, string | null> = {}
+  for (const key of BACKUP_KEYS) data[key] = localStorage.getItem(key)
+  const blob = new Blob(
+    [JSON.stringify({ app: 'netmaster', exportedAt: new Date().toISOString(), data }, null, 2)],
+    { type: 'application/json' },
+  )
+  const a = document.createElement('a')
+  a.href = URL.createObjectURL(blob)
+  a.download = `netmaster-tien-do-${new Date().toISOString().slice(0, 10)}.json`
+  a.click()
+  URL.revokeObjectURL(a.href)
+}
+
+async function importBackup(file: File, confirmText: string, badText: string): Promise<void> {
+  const parsed: unknown = JSON.parse(await file.text())
+  const backup = parsed as { app?: string; data?: Record<string, string | null> }
+  const progressRaw = backup.data?.['netmaster-progress']
+  // Validate tối thiểu: đúng file của app và key quý nhất parse ra state.
+  if (backup.app !== 'netmaster' || typeof progressRaw !== 'string') throw new Error(badText)
+  const progress = JSON.parse(progressRaw) as { state?: unknown; version?: unknown }
+  if (typeof progress.state !== 'object' || typeof progress.version !== 'number') throw new Error(badText)
+  if (!window.confirm(confirmText)) return
+  for (const key of BACKUP_KEYS) {
+    const value = backup.data?.[key]
+    if (typeof value === 'string') localStorage.setItem(key, value)
+  }
+  window.location.reload()
+}
 
 function StatCard({
   icon: Icon,
@@ -38,6 +81,14 @@ export function ProfilePage() {
   const xpTotal = useProgress((s) => s.xpTotal)
   const reviewCards = useProgress((s) => s.reviewCards)
   const completedLessons = useProgress((s) => s.completedLessons)
+  const fileRef = useRef<HTMLInputElement>(null)
+
+  const onImportFile = (file: File | undefined) => {
+    if (file === undefined) return
+    void importBackup(file, t('profile.backupImportConfirm'), t('profile.backupImportBad')).catch(() => {
+      window.alert(t('profile.backupImportBad'))
+    })
+  }
 
   return (
     <>
@@ -50,6 +101,32 @@ export function ProfilePage() {
         <StatCard icon={Layers} label={t('profile.cardsTotal')} value={reviewCards.length} />
       </div>
       <p className="mt-4 text-xs text-ink-muted">{t('profile.freezeNote')}</p>
+
+      <div className="mt-6 flex flex-col gap-3 rounded-md border border-edge bg-panel px-5 py-4">
+        <h2 className="text-sm font-semibold text-ink">{t('profile.backupTitle')}</h2>
+        <p className="text-xs leading-relaxed text-ink-muted">{t('profile.backupBody')}</p>
+        <div className="flex flex-wrap gap-2">
+          <Button onClick={exportBackup}>
+            <Download size={15} aria-hidden />
+            {t('profile.backupExport')}
+          </Button>
+          <Button variant="ghost" onClick={() => fileRef.current?.click()}>
+            <Upload size={15} aria-hidden />
+            {t('profile.backupImport')}
+          </Button>
+          <input
+            ref={fileRef}
+            type="file"
+            accept="application/json"
+            className="hidden"
+            aria-label={t('profile.backupImport')}
+            onChange={(e) => {
+              onImportFile(e.target.files?.[0])
+              e.target.value = ''
+            }}
+          />
+        </div>
+      </div>
       <div className="mt-6 flex items-start gap-3 rounded-md border border-edge bg-panel px-5 py-4 text-sm text-ink-muted">
         <Award size={18} aria-hidden className="mt-0.5 shrink-0" />
         <p>{t('profile.emptyBadges')}</p>

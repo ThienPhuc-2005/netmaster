@@ -1,0 +1,66 @@
+{
+  "state": {
+    "reviewCards": [
+      {
+        "conceptId": "goi-tin",
+        "moduleId": "module-1",
+        "intervalIndex": 2,
+        "dueDate": "2026-08-01",
+        "lapses": 1,
+        "createdOn": "2026-07-20",
+        "lastReviewedOn": "2026-07-25"
+      },
+      {
+        "conceptId": "palace:port-80",
+        "moduleId": "module-5",
+        "intervalIndex": 0,
+        "dueDate": "2026-08-02",
+        "lapses": 0,
+        "createdOn": "2026-08-01",
+        "lastReviewedOn": null
+      }
+    ],
+    "lessonRuntimes": {
+      "m1-bai-2": {
+        "lessonId": "m1-bai-2",
+        "stepIndex": 2,
+        "teachScreenIndex": 1,
+        "pretestAnswers": { "m1-b2-pre-1": false },
+        "exercises": {
+          "m1-b2-prac-1": { "failCount": 0, "solved": false, "usedSolution": false },
+          "m1-b2-ret-1": { "failCount": 0, "solved": false, "usedSolution": false }
+        },
+        "selfExplain": { "attempts": 0, "passed": false, "done": false },
+        "completed": false
+      }
+    },
+    "lessonAnswers": {
+      "m1-bai-1": { "m1-b1-ret-1": { "kind": "typed", "text": "router" } }
+    },
+    "completedLessons": { "m1-bai-1": "2026-07-20" },
+    "moduleXp": { "module-1": 30 },
+    "passedModules": [],
+    "masteryScores": { "module-1": 71.4 },
+    "xpTotal": 32,
+    "streak": {
+      "current": 3,
+      "lastActiveDate": "2026-08-01",
+      "freezesLeft": 1,
+      "freezeMonth": "2026-08"
+    },
+    "answerHistory": [
+      { "correct": true, "at": 1753900000000 },
+      { "correct": false, "at": 1753900100000 }
+    ],
+    "answerTotal": 42,
+    "supportShownAtTotal": null,
+    "vmLabDone": { "vm-b1": "2026-07-30" },
+    "clinicSolved": { "m11-b1-pre-ca": "2026-08-01" },
+    "drillHistory": [
+      { "date": "2026-08-01", "total": 10, "correct": 8, "avgSeconds": 21.5 }
+    ],
+    "lastReviewDate": "2026-08-01",
+    "onboardingDone": true
+  },
+  "version": 1
+}

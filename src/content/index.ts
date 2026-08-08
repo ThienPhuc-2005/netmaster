@@ -14,14 +14,27 @@ const RAW_MODULES = import.meta.glob('../../content/modules/*.json', {
 
 let cache: Module[] | null = null
 
-/** Toàn bộ module theo thứ tự học (parse 1 lần, validate chéo liên-module). */
+/**
+ * Toàn bộ module theo thứ tự học.
+ *
+ * DEV/TEST: parse zod + validate chéo đầy đủ — lỗi nội dung chết tại đây.
+ * PROD: tin bản đã qua cổng chất lượng (content.test.ts chạy đúng schema
+ * này trên đúng dữ liệu này trước khi build) và bỏ bước validate — người
+ * dùng cuối không phải trả hàng trăm ms CPU trên main thread cho việc
+ * kiểm tra dành cho dev (hội đồng, ghế hiệu năng). Đổi nội dung mà không
+ * chạy test trước khi build là tự chịu — quy trình dự án luôn đòi test.
+ */
 export function loadModules(): Module[] {
   if (cache === null) {
-    const modules = Object.values(RAW_MODULES)
-      .map(parseModule)
-      .sort((a, b) => a.order - b.order)
-    validateModules(modules)
-    cache = modules
+    if (import.meta.env.PROD) {
+      cache = (Object.values(RAW_MODULES) as Module[]).slice().sort((a, b) => a.order - b.order)
+    } else {
+      const modules = Object.values(RAW_MODULES)
+        .map(parseModule)
+        .sort((a, b) => a.order - b.order)
+      validateModules(modules)
+      cache = modules
+    }
   }
   return cache
 }

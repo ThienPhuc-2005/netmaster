@@ -16,7 +16,7 @@
 
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
-import type { AnswerRecord, DrillResult, ISODate, ReviewCard, StreakState } from '../engine/types'
+import type { AnswerRecord, DrillResult, ISODate, ModuleStatus, ReviewCard, StreakState } from '../engine/types'
 import { palaceRoomsInLesson, type ClinicQuestion, type Lesson, type Module } from '../engine/contentSchema'
 import { palaceCardId } from '../engine/palace'
 import { isoFromDate } from '../engine/dates'
@@ -35,10 +35,11 @@ import {
   type LessonRuntime,
 } from '../engine/lessonMachine'
 import { findNearMiss, gradeQuestion, type QuestionResponse } from '../engine/grading/gradeQuestion'
+import type { Topology } from '../engine/lab'
+import type { PsOutcome, PsRunState } from '../engine/ps'
 import { matchKeywords, type KeywordMatchResult } from '../engine/grading/keywordMatch'
 import { createCard, reviewCard } from '../engine/sm2'
 import { computeModuleStatuses, evaluateModuleTest, type ModuleTestEvaluation } from '../engine/masteryGate'
-import { loadModules } from '../content'
 import { canStartNewLesson, dueCards, overdueCount } from '../engine/reviewQueue'
 import { initialStreak, recordQualifyingActivity } from '../engine/streak'
 import { pushAnswer } from '../engine/answerHistory'
@@ -52,6 +53,52 @@ export function todayIso(): ISODate {
 
 /** Khóa lưu bài tự giải thích trong lessonAnswers (không trùng question id nào). */
 export const SELF_EXPLAIN_ANSWER_KEY = '@self-explain'
+
+/** Trần lịch sử drill — đủ cho mọi thống kê ProfilePage đang hiển thị. */
+export const DRILL_HISTORY_CAP = 100
+
+/**
+ * Trần số bài dở giữ lại. Mỗi bài dở là một ảnh chụp sơ đồ mạng hoặc một
+ * phiên terminal — nhẹ, nhưng không có trần thì nó là trường DUY NHẤT
+ * phình vô hạn theo số bài đã mở (bất đối xứng với answerHistory/drill).
+ * Vượt trần thì bỏ bài dở CŨ NHẤT: người học quay lại bài bỏ dở 12 lượt
+ * trước là chuyện gần như không xảy ra.
+ */
+export const PRACTICE_DRAFT_CAP = 12
+
+/** Một dòng trong nhật ký terminal PowerShell (UI dựng lại y nguyên). */
+export interface PsTranscriptEntry {
+  id: number
+  input: string
+  lines: string[]
+  outcome: PsOutcome
+}
+
+/**
+ * BÀI DỞ của hai bề mặt thực hành nặng (hội đồng 07-08, ghế UX #20).
+ *
+ * Vì sao phải lưu: một bài lab lắp 8 thiết bị hoặc một phiên terminal 15
+ * lệnh là mười lăm phút thật. Bấm nhầm nút Back, hết pin, đóng nhầm cửa
+ * sổ — bản cũ mất sạch và người học phải làm lại từ đầu; đó là kiểu mất
+ * mát khiến người ta bỏ hẳn bài chứ không chỉ bực mình.
+ *
+ * Lưu CÁI GÌ: đúng phần công sức — sơ đồ đang lắp (kèm chỗ đứng của
+ * thiết bị trên mặt bàn) và thế giới + nhật ký của phiên terminal.
+ * KHÔNG lưu lịch sử undo: nó là dấu chân của một buổi ngồi, không phải
+ * thành quả, và giữ nó thì mỗi bài dở nặng gấp mấy chục lần.
+ *
+ * KHÔNG lưu bài dở của BÀI THI (ModuleTestPage không truyền draftKey):
+ * rời bài thi giữa chừng là mất lượt thi, nạp lại một sơ đồ đã lắp dở
+ * của đề thi là mở đường mang bài về nhà làm dần.
+ */
+export type PracticeDraft =
+  | { kind: 'lab'; topology: Topology; layout: Record<string, { x: number; y: number }>; savedAt: ISODate }
+  | { kind: 'ps'; state: PsRunState; entries: PsTranscriptEntry[]; savedAt: ISODate }
+
+/** Khóa bài dở — một câu hỏi trong một bài học là một mặt bàn riêng. */
+export function practiceDraftKey(lessonId: string, questionId: string): string {
+  return `${lessonId}::${questionId}`
+}
 
 export interface ProgressState {
   reviewCards: ReviewCard[]
@@ -71,6 +118,14 @@ export interface ProgressState {
   passedModules: string[]
   /** moduleId -> điểm % cao nhất từng đạt ở bài thi module. */
   masteryScores: Record<string, number>
+  /**
+   * moduleId -> ngày thi vượt GẦN NHẤT (học vượt, 08-08). Chỉ là NHẬT
+   * KÝ, không phải then cài cửa: giới hạn "đúng một lượt" đã bỏ (chủ dự
+   * án chốt 08-08) — mọi chủ đề lớn phải luôn có cửa vượt. Cổng 85% giữ
+   * giá bằng ba lớp khác: mỗi lượt RÚT đề mới từ pool, xáo lựa chọn MCQ,
+   * và màn rớt không in đáp án.
+   */
+  challengeUsed: Record<string, ISODate>
   xpTotal: number
   streak: StreakState
   answerHistory: AnswerRecord[]
@@ -94,9 +149,22 @@ export interface ProgressState {
    * XP/streak; làm lại tự do không cộng (nguyên tắc 5, chặn farm).
    */
   clinicSolved: Record<string, ISODate>
+  /**
+   * khóa bài dở -> mặt bàn thực hành đang làm giữa chừng (xem
+   * `PracticeDraft`). Thứ tự chèn của các khóa CHÍNH LÀ thứ tự cũ→mới
+   * dùng để dọn khi vượt trần.
+   */
+  practiceDrafts: Record<string, PracticeDraft>
   drillHistory: DrillResult[]
   /** Ngày gần nhất hoàn thành phiên ôn — chốt luật "mở app là ôn trước". */
   lastReviewDate: ISODate | null
+  /**
+   * Chuyện streak CHƯA KỂ cho người học (hội đồng 2026-08-07, ghế tâm
+   * lý): engine trả freezesUsed/reset để UI kể tử tế nhưng bản cũ vứt
+   * đi — đóng băng tiêu trong im lặng, reset 30→1 câm lặng. Giờ sự kiện
+   * gần nhất đợi ở đây tới khi UI kể xong và gọi dismissStreakEvent.
+   */
+  streakEvent: { kind: 'freeze-used'; used: number; left: number } | { kind: 'reset'; lostStreak: number } | null
   /**
    * Đã qua onboarding (bắn gói tin đầu tiên — spec 4.5: aha moment trong
    * 60 giây đầu, TRƯỚC mọi màn giới thiệu). false → app chỉ hiện onboarding.
@@ -122,6 +190,9 @@ export interface ProgressState {
 
   completeOnboarding: () => void
 
+  /** UI đã kể xong chuyện streak (banner đóng) — xóa sự kiện chờ. */
+  dismissStreakEvent: () => void
+
   /**
    * Ghi nhận người học vừa đi qua phiên củng cố nền (flow engine, spec
    * 2.3) — mở lại đường vào bài mới và khởi động thời gian nguội.
@@ -130,6 +201,16 @@ export interface ProgressState {
 
   /** Tick/bỏ tick một bước của checklist lab VMware. */
   toggleVmLabStep: (stepId: string) => void
+
+  /**
+   * Ghi ảnh chụp bài đang làm dở (phòng lab / terminal PS). Gọi mỗi khi
+   * mặt bàn đổi — KHÔNG XP, không đụng lịch SM-2, không ghi answerHistory:
+   * đây là chuyện lưu công sức, không phải một lượt trả lời.
+   */
+  savePracticeDraft: (key: string, draft: PracticeDraft) => void
+
+  /** Bỏ bài dở — người học đã nộp đúng, hoặc tự bấm làm lại từ đầu. */
+  clearPracticeDraft: (key: string) => void
 
   /**
    * Nộp một lượt cho ca bệnh ở TAB PHÒNG KHÁM (không phải trong bài
@@ -144,11 +225,40 @@ export interface ProgressState {
   /**
    * Ghi nhận một lượt thi mastery test. Trả kèm newlyPassed để UI biết
    * lúc nào đáng nổi fanfare "mở module mới".
+   *
+   * `orderedModuleIds` do CALLER cấp (như mọi action khác nhận
+   * Module/Lesson làm tham số) — store không tự với sang tầng content:
+   * tầng đó xây trên import.meta.glob của Vite, kéo nó vào đây là lời
+   * hứa "chuyển backend chỉ thay tầng persist" thủng một lỗ.
    */
   recordMasteryAttempt: (
     module: Module,
     results: boolean[],
+    orderedModuleIds: readonly string[],
   ) => ModuleTestEvaluation & { newlyPassed: boolean }
+
+  /**
+   * Ghi nhận lượt THI VƯỢT — người học đã biết sẵn phần này ở nơi khác
+   * và muốn chứng minh thay vì ngồi học lại.
+   *
+   * Đây KHÔNG phải nút skip (nguyên tắc 2 vẫn nguyên): cùng đề thi ấy,
+   * cùng ngưỡng 85% ấy, cùng chuỗi mở khóa ấy — chỉ bỏ điều kiện "phải
+   * học hết bài trong module trước đã". Vượt được đúng module ĐANG MỞ,
+   * đậu thì module sau mở ra rồi mới vượt tiếp được: không có đường
+   * nhảy cóc giữa chuỗi.
+   *
+   * Ba khác biệt so với thi mastery thường:
+   * - tiêu lượt thi vượt duy nhất của module NGAY khi nộp (đậu/rớt như nhau);
+   * - đậu thì sinh đủ thẻ SM-2 cho mọi khái niệm + phòng cung điện của
+   *   module, hạn ngày mai — biết hôm nay không có nghĩa là nhớ sau ba
+   *   tuần, không sinh thẻ là vượt xong thủng luôn cơ chế ôn;
+   * - vẫn KHÔNG XP/streak, y hệt thi mastery (nguyên tắc 5).
+   */
+  recordChallengeAttempt: (
+    module: Module,
+    results: boolean[],
+    orderedModuleIds: readonly string[],
+  ) => ModuleTestEvaluation & { newlyPassed: boolean; cardsCreated: number }
 }
 
 /** Streak chỉ được chạm tới từ các nhánh hoàn-thành-retrieval/lab dưới đây. */
@@ -158,7 +268,19 @@ export const useProgress = create<ProgressState>()(
   persist(
     (set, get) => {
       const touchStreak = (source: QualifyingSource) =>
-        set((s) => ({ streak: recordQualifyingActivity(s.streak, todayIso(), source).state }))
+        set((s) => {
+          // Nhận TRỌN kết quả từ engine — hai cờ freezesUsed/reset chính
+          // là "lời kể" engine đã soạn sẵn, vứt chúng đi là đóng băng tiêu
+          // trong im lặng (lỗi hội đồng bắt được, không tái phạm).
+          const outcome = recordQualifyingActivity(s.streak, todayIso(), source)
+          const streakEvent =
+            outcome.freezesUsed > 0
+              ? ({ kind: 'freeze-used', used: outcome.freezesUsed, left: outcome.state.freezesLeft } as const)
+              : outcome.reset
+                ? ({ kind: 'reset', lostStreak: s.streak.current } as const)
+                : s.streakEvent
+          return { streak: outcome.state, streakEvent }
+        })
 
       const recordAnswer = (correct: boolean) =>
         set((s) => ({
@@ -188,6 +310,7 @@ export const useProgress = create<ProgressState>()(
         moduleXp: {},
         passedModules: [],
         masteryScores: {},
+        challengeUsed: {},
         xpTotal: 0,
         streak: initialStreak(todayIso()),
         answerHistory: [],
@@ -195,15 +318,35 @@ export const useProgress = create<ProgressState>()(
         supportShownAtTotal: null,
         vmLabDone: {},
         clinicSolved: {},
+        practiceDrafts: {},
         drillHistory: [],
         lastReviewDate: null,
+        streakEvent: null,
         onboardingDone: false,
 
         beginLesson: (lesson) => {
           const existing = get().lessonRuntimes[lesson.id]
           // Học tiếp bài dở; bài đã completed thì học lại bằng runtime mới
           // (đọc lại thoải mái — nhưng XP không cộng lần hai, xem advanceLesson).
-          if (existing && !existing.completed) return existing
+          //
+          // LƯỚI ĐỠ nội-dung-đã-đổi (hội đồng 2026-08-07): runtime persist
+          // trỏ vào câu hỏi theo id — bản cập nhật nội dung đổi/thêm id là
+          // runtime cũ hoặc CRASH giữa click handler (id lạ) hoặc KẸT bài
+          // vĩnh viễn (canAdvance thiếu entry). So tập khóa + số màn dạy:
+          // lệch thì coi như học lại bài từ đầu — mất tiến độ MỘT bài dở
+          // là cái giá chấp nhận được, kẹt trắng màn thì không.
+          if (existing && !existing.completed) {
+            const wantedIds = [
+              ...lesson.steps[3].exercises.map((e) => e.question.id),
+              ...lesson.steps[4].questions.map((e) => e.question.id),
+            ]
+            const haveIds = Object.keys(existing.exercises)
+            const sameShape =
+              wantedIds.length === haveIds.length &&
+              wantedIds.every((id) => id in existing.exercises) &&
+              existing.teachScreenIndex < lesson.steps[2].screens.length
+            if (sameShape) return existing
+          }
           const runtime = startLesson(lesson)
           set((s) => ({
             lessonRuntimes: { ...s.lessonRuntimes, [lesson.id]: runtime },
@@ -340,7 +483,10 @@ export const useProgress = create<ProgressState>()(
         recordDrillSession: (outcomes, xpEligibleCount) => {
           const result = sessionStats(outcomes, todayIso())
           set((s) => ({
-            drillHistory: [...s.drillHistory, result],
+            // Trần 100 phiên gần nhất — trường DUY NHẤT từng phình vô hạn
+            // (answerHistory đã có trần từ đầu): người luyện mỗi ngày một
+            // năm là ~365 record serialize nguyên cục mỗi lần persist.
+            drillHistory: [...s.drillHistory, result].slice(-DRILL_HISTORY_CAP),
             xpTotal: s.xpTotal + xpFor('drillProblemCorrect') * xpEligibleCount,
           }))
           for (const o of outcomes) recordAnswer(o.correct)
@@ -350,6 +496,8 @@ export const useProgress = create<ProgressState>()(
         // Onboarding là trải nghiệm, không phải bài học: KHÔNG cộng XP,
         // KHÔNG chạm streak (nguyên tắc 5 — xem animation không phải retrieval).
         completeOnboarding: () => set({ onboardingDone: true }),
+
+        dismissStreakEvent: () => set({ streakEvent: null }),
 
         // Phiên củng cố cũng không cộng XP, không đụng lịch SM-2: ôn sớm
         // ngoài lịch mà ghi vào SM-2 sẽ phá interval, còn cộng XP thì
@@ -383,11 +531,31 @@ export const useProgress = create<ProgressState>()(
             return { vmLabDone: next }
           }),
 
-        recordMasteryAttempt: (module, results) => {
+        savePracticeDraft: (key, draft) =>
+          set((s) => {
+            // Ghi đè bài dở cũ của CHÍNH câu đó thì giữ nguyên chỗ đứng
+            // trong hàng (không tự đẩy mình thành mới nhất) — dọn theo
+            // thứ tự bài được MỞ, đơn giản và đoán được.
+            const next: Record<string, PracticeDraft> = { ...s.practiceDrafts, [key]: draft }
+            const keys = Object.keys(next)
+            for (const old of keys.slice(0, Math.max(0, keys.length - PRACTICE_DRAFT_CAP))) {
+              delete next[old]
+            }
+            return { practiceDrafts: next }
+          }),
+
+        clearPracticeDraft: (key) =>
+          set((s) => {
+            if (s.practiceDrafts[key] === undefined) return {}
+            const next = { ...s.practiceDrafts }
+            delete next[key]
+            return { practiceDrafts: next }
+          }),
+
+        recordMasteryAttempt: (module, results, orderedModuleIds) => {
           // Chốt chặn cuối của nguyên tắc 2: không tồn tại lượt thi hợp lệ
           // cho module đang khóa (đồng bộ với applyTestResult của engine).
-          const ids = loadModules().map((m) => m.id)
-          const statuses = computeModuleStatuses(ids, new Set(get().passedModules))
+          const statuses = computeModuleStatuses([...orderedModuleIds], new Set(get().passedModules))
           const status = statuses[module.id]
           if (status === undefined || status === 'locked') {
             throw new Error(`recordMasteryAttempt: module "${module.id}" is locked or unknown`)
@@ -407,15 +575,97 @@ export const useProgress = create<ProgressState>()(
           // nguồn thưởng — chặn luôn đường farm bằng cách thi lại nhiều lần.
           return { ...evaluation, newlyPassed }
         },
+
+        recordChallengeAttempt: (module, results, orderedModuleIds) => {
+          // Module ĐANG KHÓA vẫn thi vượt được (chủ dự án chốt 08-08):
+          // đây chính là đường dành cho người đã học mấy module đầu ở nơi
+          // khác. Vẫn phải là module CÓ THẬT trong lộ trình.
+          if (!orderedModuleIds.includes(module.id)) {
+            throw new Error(`recordChallengeAttempt: module "${module.id}" is locked or unknown`)
+          }
+
+          const today = todayIso()
+          const evaluation = evaluateModuleTest(results)
+          for (const r of results) recordAnswer(r)
+          const newlyPassed = evaluation.passed && !get().passedModules.includes(module.id)
+
+          let cardsCreated = 0
+          set((s) => {
+            // Sổ vượt giờ chỉ GHI LẠI lần vượt gần nhất — nó không còn
+            // khóa cửa nữa (vượt lại bao nhiêu lần cũng được).
+            const challengeUsed = { ...s.challengeUsed, [module.id]: today }
+            const base = {
+              challengeUsed,
+              masteryScores: {
+                ...s.masteryScores,
+                [module.id]: Math.max(s.masteryScores[module.id] ?? 0, evaluation.pct),
+              },
+              passedModules: newlyPassed ? [...s.passedModules, module.id] : s.passedModules,
+            }
+            if (!newlyPassed) return base
+
+            // Vượt xong vẫn phải ÔN: mọi khái niệm của module (trừ khái
+            // niệm meta khai noFlashcard) và mọi phòng cung điện được dạy
+            // trong module đều vào Hộp ôn tập, hạn ngày mai — đúng lịch
+            // của người học bình thường vừa xong bài (spec 2.2).
+            const existing = new Set(s.reviewCards.map((c) => c.conceptId))
+            const fresh = module.concepts
+              .filter((c) => c.noFlashcard !== true && !existing.has(c.id))
+              .map((c) => createCard(c.id, module.id, today))
+            const roomIds = new Set(module.lessons.flatMap((l) => palaceRoomsInLesson(l).map(palaceCardId)))
+            const freshRooms = [...roomIds]
+              .filter((cardId) => !existing.has(cardId))
+              .map((cardId) => createCard(cardId, module.id, today))
+            cardsCreated = fresh.length + freshRooms.length
+            return { ...base, reviewCards: [...s.reviewCards, ...fresh, ...freshRooms] }
+          })
+
+          // KHÔNG XP, KHÔNG streak — y hệt thi mastery thường (nguyên tắc 5).
+          return { ...evaluation, newlyPassed, cardsCreated }
+        },
       }
     },
     {
       name: 'netmaster-progress',
-      version: 1,
+      version: 3,
       // Mặc định của zustand trỏ window.localStorage — không tồn tại trong
       // node/test. Trỏ thẳng global localStorage: browser dùng bản thật,
       // test dùng stub in-memory từ tests/setup.ts.
       storage: createJSONStorage(() => localStorage),
+      /**
+       * CỬA MIGRATE — toàn bộ công sức người học (XP, streak, thẻ SM-2,
+       * module đã đậu) nằm sau cánh cửa này. Zustand persist khi version
+       * lưu ≠ version code mà KHÔNG có migrate sẽ VỨT TRẮNG state cũ —
+       * với app học tập, mất lịch SM-2 là mất chính sản phẩm.
+       *
+       * Luật từ nay (hội đồng 2026-08-07, hai ghế độc lập cùng chỉ):
+       * mọi thay đổi SHAPE của state persist BẮT BUỘC (1) bump version,
+       * (2) thêm một case migrate từ version cũ, (3) cập nhật fixture
+       * tests/fixtures/progressV1.json nếu shape v1 vẫn phải đọc được.
+       * Test rehydrate ở progress.migrate.test.ts là chuông báo: đổi
+       * shape mà quên cửa này là test đỏ.
+       */
+      migrate: (persisted, version) => {
+        // Biến đổi DẦN v(n) → v(n+1) → … → mới nhất: mỗi bậc một câu lệnh,
+        // không nhánh nào nhảy cóc. Thêm version mới thì nối thêm một bậc
+        // ở cuối chuỗi này.
+        let state = persisted as ProgressState
+        // v1 → v2 (học vượt, 08-08): thêm sổ lượt thi vượt. Người học cũ
+        // chưa dùng lượt nào nên sổ rỗng.
+        if (version <= 1) {
+          state = { ...state, challengeUsed: {} }
+        }
+        // v2 → v3 (persist bài dở lab/PS, 08-08): thêm ngăn bài dở, rỗng —
+        // người học cũ không có bài dở nào để phục hồi, và đó là trạng
+        // thái đúng chứ không phải mất mát.
+        if (version <= 2) {
+          state = { ...state, practiceDrafts: {} }
+        }
+        if (version <= 3) return state
+        // Version lạ (mới hơn code — người dùng lùi bản app): giữ nguyên
+        // và để shallow-merge với default đỡ phần thiếu, còn hơn vứt trắng.
+        return persisted as ProgressState
+      },
     },
   ),
 )
@@ -439,4 +689,34 @@ export function shouldReviewFirst(
 /** Chặn học mới khi nợ > 30 thẻ quá hạn (spec 2.2) — kèm số nợ để UI nói tử tế. */
 export function newLessonGate(cards: ReviewCard[], today: ISODate): { allowed: boolean; overdue: number } {
   return { allowed: canStartNewLesson(cards, today), overdue: overdueCount(cards, today) }
+}
+
+/**
+ * Module này có mời thi vượt được không (học vượt, 08-08).
+ *
+ * Mời ở MỌI module chưa đậu, kể cả module đang KHÓA (chủ dự án chốt
+ * 08-08): người đã học mấy module đầu ở nơi khác cần vào thẳng module
+ * mình đang cần, không phải vượt lần lượt từng cái một.
+ *
+ * Cửa vượt KHÔNG còn giới hạn một lượt (chủ dự án chốt 08-08, lượt sau):
+ * mỗi chủ đề lớn luôn có cửa vượt, rớt rồi vẫn vượt lại được. Ba lớp
+ * chống-học-thuộc-đề vẫn nguyên nên con số 85% không mất giá: thứ tự câu
+ * xáo mỗi lượt, lựa chọn MCQ xáo mỗi lần render, và màn RỚT không in
+ * đáp án (chỉ ý cần ôn).
+ *
+ * Hai điều kiện, thiếu một là không:
+ * - module CHƯA đậu (đậu rồi thì không còn gì để vượt);
+ * - CHƯA học hết bài trong module — học hết rồi thì đường thi mastery
+ *   thường đã nằm ngay trên card, cửa riêng chỉ là nút thứ hai cùng đích;
+ * và module phải có ít nhất một bài.
+ */
+export function canChallengeModule(args: {
+  status: ModuleStatus | undefined
+  lessonIds: readonly string[]
+  completedLessons: Record<string, ISODate>
+  moduleId: string
+}): boolean {
+  if (args.status === undefined || args.status === 'passed') return false
+  if (args.lessonIds.length === 0) return false
+  return !args.lessonIds.every((id) => args.completedLessons[id] !== undefined)
 }
