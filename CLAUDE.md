@@ -2,6 +2,21 @@
 
 File này được đọc ở MỌI phiên làm việc. Tuân thủ tuyệt đối.
 
+## Thứ bậc quyền lực (chốt 2026-08-08)
+
+**Lệnh trực tiếp của chủ dự án trong phiên chat mạnh hơn mọi luật trong
+file này, kể cả mục "Luật chống hạ cấp" và mọi chỗ ghi "phải hỏi trước".**
+Chủ dự án ra lệnh thì LÀM, không trình phương án, không xin duyệt, không
+tranh luận. Nêu quan ngại nhiều nhất MỘT LẦN và chỉ khi thật sự cần —
+chủ dự án nhắc lại là chấm dứt, làm ngay.
+
+Hai thứ vẫn giữ vì chúng là BÁO CÁO SỰ THẬT, không phải cãi:
+- Test đỏ / build hỏng / làm chưa xong thì nói thẳng, không báo "xong".
+- Mục "Sai lệch so với spec" cuối lượt — để chủ dự án biết mình vừa
+  nhận cái gì, không phải để phản đối.
+
+Các luật dưới đây là mặc định khi chủ dự án KHÔNG nói gì khác.
+
 ## Nguồn chân lý
 
 `SPEC-APP-HOC-MANG.md` là đặc tả duy nhất của dự án. Mọi quyết định về
@@ -87,7 +102,7 @@ phá hoại cơ chế học của app, dù code chạy đúng.
 - `npm run test:watch` — test ở chế độ watch
 - `npm run typecheck` — kiểm tra kiểu TypeScript (`tsc --noEmit`)
 
-## Cấu trúc hiện tại (Phase 1 + 2 XONG; Phase 3: (8) + (9) xong, (10) Module 12 + PowerShell đang làm — khối 10.1 + 10.2 xong)
+## Cấu trúc hiện tại (Phase 1 + 2 + 3 XONG — hết phạm vi spec; chỉ còn treo các buổi test người thật)
 
 - `src/engine/` — pedagogy engine thuần TS: SM-2, hàng đợi ôn tập,
   mastery gate, máy trạng thái bài học 6 bước, XP/streak, bộ chấm,
@@ -308,7 +323,7 @@ phá hoại cơ chế học của app, dù code chạy đúng.
   năng chẩn đoán bằng 2 ca chưa gặp; hai cặp lời-từ-chối; chỉ đúng
   module gốc của bệnh).
 
-### Phase 3 — hạng mục (10): Module 12 + terminal PowerShell ảo (đang làm — 10.1 + 10.2 xong)
+### Phase 3 — hạng mục (10): Module 12 + terminal PowerShell ảo (XONG cả 4 khối — hạng mục CUỐI của spec)
 
 - Ba quyết định đã chốt: **phạm vi PS đóng băng** ở 8 cmdlet (Get-Help,
   Get-NetIPAddress, Test-NetConnection, Get-ADUser, New-ADUser,
@@ -337,6 +352,139 @@ phá hoại cơ chế học của app, dù code chạy đúng.
   trong `<pre>` (lỗi tô hổ phách), microcopy vi ở i18n `ps.*`.
   Gợi ý mờ dần = thang 3 tầng sẵn có: hintTopic → cú pháp khuyết
   (hint) → lệnh mẫu (solution/canonicalAnswer).
+- Nội dung: `content/modules/module-12.json` (khối 10.3) — 5 bài, 8 khái
+  niệm, 10 đề terminal theo đúng 4 mảng spec (cmdlet mạng → tra/ghi sổ AD
+  → hàng loạt một dòng pipeline → đọc log). **MỌI bài phải có ít nhất một
+  câu ps** (generation effect tối đa) và **fadingLevel dọc module chỉ được
+  giữ hoặc tăng, bài cuối mức 2** — content.test khóa cả hai. Bài 1 mở
+  màn bằng câu ps ở bước Đoán thử; bài thi kết bằng hai câu ps.
+- **Luật rút ra, không được phá:** app KHÔNG render markdown — viết dấu
+  backtick trong JSON là hiện ký tự thật lên màn hình (lỗi đã vá ở M12;
+  M1-M11 không dùng backtick nào). Ô "Đào sâu hơn" của LessonPlayer dùng
+  `whitespace-pre-wrap` để đoạn script đọc-hiểu nhiều dòng của M12 giữ
+  được hình dạng; muốn xuống dòng trong nội dung thì chỉ chỗ này làm được.
+- Khối 10.4: màn thi mastery phải nói đúng sự thật về cái chờ phía sau —
+  module CUỐI không có "module sau" để mở, nên `ModuleTestPage` suy
+  `isFinalModule` từ `loadModules().at(-1)` và đổi sang bộ chuỗi
+  `test.*Final`. `ModuleTestPage.test.tsx` khóa: thêm module mới thì
+  "module cuối" tự dời theo, không phải sửa test.
+
+### Sau hội đồng đánh giá (07-08) — các bất biến MỚI, không được phá
+
+- **Màn rớt bài thi mastery KHÔNG in đáp án** (chỉ ý cần ôn — hintTopic);
+  đáp án đầy đủ chỉ hiện khi ĐẬU. Câu + lựa chọn MCQ xáo mỗi lượt.
+  `ModuleTestPage.test.tsx` có test "màn rớt không rò đáp án".
+- **Phiên ôn có relearning:** thẻ quên requeue cuối phiên tới khi tự nhớ
+  được; CHỈ lượt chấm đầu ghi SM-2 + XP (`ReviewPage.test.tsx` khóa).
+- **Persist có cửa migrate:** đổi shape state là PHẢI bump version + case
+  migrate + cập nhật fixture `tests/fixtures/progressV1.json`
+  (`progress.migrate.test.ts` là chuông báo). Migrate viết thành CHUỖI
+  BẬC `v(n) → v(n+1)` (hiện ở v3) — thêm version mới là nối thêm một bậc
+  ở cuối, không nhánh nào nhảy cóc.
+- **Bài dở lab/PS được lưu, nhưng CHỈ trong bài học** (08-08): store có
+  ngăn `practiceDrafts` khóa `lessonId::questionId`; `LessonPlayer`
+  truyền `draftKey`, **`ModuleTestPage` cố ý KHÔNG truyền** — nạp lại sơ
+  đồ lắp dở của đề thi là mở đường mang bài thi về nhà làm dần
+  (`QuestionInput.draft.test.tsx` gác). Lab không lưu lịch sử undo và
+  `restoreLab` vẫn giữ `initial` là đề bài (nút "Về sơ đồ ban đầu" không
+  được bẻ); PS lưu cả nhật ký lệnh, "Làm lại từ đầu" xóa bài dở. Lưu bài
+  dở KHÔNG cộng XP/streak/answerHistory (nguyên tắc 5).
+- **UI đọc LText qua `lt()/maybeLt()`** (engine/ltext) — cấm viết `.vi`
+  mới trong component; phản hồi chấm bài render trong `FeedbackRegion`
+  (live region thường trực), không mount banner kèm nội dung.
+- **Thuật ngữ:** "port" cho TCP/UDP port; "cổng" chỉ dành cho cổng vật
+  lý switch/router và ẩn dụ (lớp cổng NAT). Accept-list nhận cả hai.
+  "subnet mask" giữ nguyên tiếng Anh (không trôi thành "mặt nạ"); dấu ba
+  chấm dùng "…" trong văn xuôi, chỉ giữ "..." trong ký hiệu người học có
+  thể chép lại (địa chỉ IPv6 rút gọn, mẫu lệnh PowerShell).
+- **Nhãn trong hình SVG là VI-only, đã tuyên bố** (08-08): hình đi kèm
+  NỘI DUNG bài học, mà nội dung Phase 1 chỉ có tiếng Việt. Khi nào nội
+  dung có bản EN thật thì nhãn đi qua LText (không phải i18n — i18n dành
+  cho chuỗi khung app). `/design` cũng là ngoại lệ hardcode VI có khai.
+- **`<html lang>` phải theo nút VI/EN** (`applyLang` cạnh `applyTheme`);
+  chuỗi EN có số viết dạng TRUNG TÍNH SỐ (không "1 cards"), và test
+  parity khóa bộ `{placeholder}` của từng key phải khớp giữa hai bản.
+- **Fidelity terminal không được "làm tròn cho đẹp"**: `New-ADUser` không
+  kèm mật khẩu sinh tài khoản **Disabled**; ping unreachable in
+  "Reply from &lt;ai ký tên&gt;:" và đếm **Received=4, Lost=0** — bẫy
+  "0% loss mà vẫn không thông" là bài học, không phải lỗi.
+- **PS pipeline hàng loạt bind cột `Path` chứa DN đầy đủ** (bọc nháy kép
+  vì DN có dấu phẩy — Import-Csv của engine đọc được nháy kép); quy ước
+  cột OU tự chế đã bỏ vì ngoài đời nó rơi user vào CN=Users im lặng.
+- **Motion:** app bọc `LazyMotion strict` — dùng `m.*`, không `motion.*`;
+  reduced-motion do `MotionConfig` + token `--dur` lo, animation CSS mới
+  phải buộc thời lượng vào `--dur`.
+- **Không import tĩnh NetworkLab/ClinicRoom/PsConsole vào đường nóng** —
+  chúng lazy trong QuestionInput; route ngoài Learn/Review/Lesson lazy
+  trong main.tsx.
+- **Đề thi mastery không được lộ đáp án bằng ĐỘ DÀI** (08-08): distractor
+  phải viết đủ ý như đáp án. `content.test.ts` khóa hai hàng rào — từng
+  câu đáp án ≤ 1.1× distractor dài nhất (miễn trừ khi cả ba lựa chọn
+  chênh ≤ 8 ký tự), toàn bộ đề ≤ 45% câu có đáp án dài nhất. Distractor
+  phải là lỗi hiểu nhầm THẬT, cấm distractor "đùa" kiểu loại được bằng
+  cách đọc lướt.
+- **`masteryTest` là POOL, không phải ĐỀ** (08-08): mỗi module >= 12 câu,
+  mỗi lượt thi rút 8 bằng `drawMasteryTest` (`src/engine/masteryPool.ts`)
+  rồi xáo thứ tự. Ba thứ không được phá: (a) **cỡ đề cố định 8** —
+  `MASTERY_DRAW_COUNT` đổi là đổi luôn nghĩa của ngưỡng 85% (7/8 đậu);
+  (b) **câu TRỤ luôn vào đề** — lab/palace-walk/clinic/ps là kỹ năng của
+  module, rút trượt là có lượt thi không đo tới nó (M5 còn cần cả ba câu
+  cung điện mới phủ đủ 15 phòng); (c) **thi lại phải RÚT ĐỀ MỚI**, không
+  dùng lại đề vừa rớt. Thêm module mới thì viết đủ 12 câu — `content.test`
+  làm đỏ nếu thiếu.
+- **Accept gõ tay phải phủ cách gõ của người thật**: bộ chấm tách token
+  nên ký hiệu biến mất ("dấu |" → chỉ còn "dau", "65,535" → hai số).
+  Đáp án là KÝ HIỆU thì accept phải có cả biến thể đọc thành chữ và
+  biến thể có dấu phân cách. `content.test.ts` chạy 19 cách gõ thật qua
+  chính `typedAnswerMatches`.
+
+### Học vượt — "thi vượt" (08-08, ngoài spec, người dùng đã duyệt)
+
+Spec nguyên tắc 2 cấm **nút skip**, không cấm con đường đi tới chứng
+minh. Thi vượt giữ NGUYÊN cổng: cùng đề mastery, cùng ngưỡng 85%, cùng
+chuỗi mở khóa — chỉ bỏ điều kiện "phải học hết bài trong module trước".
+
+- **Không được đụng `masteryGate.ts`** vì việc này. Thi vượt không chạm
+  chuỗi mở khóa một dòng nào; nó đi CẠNH chuỗi đó.
+- **Nút vượt có ở MỌI module, kể cả module đang KHÓA** (chủ dự án ra
+  lệnh 08-08, thay luật cũ "chỉ vượt module đang mở"): người đã học mấy
+  module đầu ở nơi khác vào thẳng module mình cần. Đường thi THƯỜNG của
+  module khóa vẫn khóa như cũ — cửa vượt là đường duy nhất.
+- **Đậu vượt module N chỉ đánh dấu ĐÚNG module N** (không tự đánh dấu
+  đậu các module trước — không bịa điểm mastery cho thứ chưa đo).
+  `computeModuleStatuses` vì thế có thể để M2/M3 ở trạng thái khóa
+  trong khi M4 đã đậu; đó là đúng dữ liệu, và nút vượt trên từng module
+  chính là đường vào của chúng.
+- **KHÔNG giới hạn số lượt** (chủ dự án ra lệnh 08-08 lượt sau, thay
+  luật cũ "đúng một lượt, tiêu ngay khi nộp"): mọi chủ đề lớn chưa đậu
+  đều LUÔN có cửa vượt, rớt rồi vượt lại được ngay tại màn kết quả —
+  cửa dùng một lần rồi mất thì bằng không có cửa. Cổng 85% giữ giá
+  bằng ba lớp khác đã có: xáo thứ tự câu mỗi lượt, xáo lựa chọn MCQ mỗi
+  lần render, và màn RỚT không in đáp án (chỉ ý cần ôn). Sổ
+  `challengeUsed` giữ lại nhưng chỉ còn là NHẬT KÝ ngày vượt gần nhất,
+  không phải then cài cửa — không được dùng nó để chặn lại.
+  Làm xong #6 (pool 12-16 câu rút 8) thì lớp chống-nhớ-đề còn dày hơn.
+- **Đậu vượt PHẢI sinh đủ thẻ SM-2** cho mọi khái niệm (trừ
+  `noFlashcard`) + mọi phòng cung điện của module, hạn ngày mai. Không
+  sinh thẻ là vượt xong thủng luôn cơ chế ôn của cả mảng kiến thức đó.
+- **Vẫn KHÔNG XP/streak** — thi là cổng, không phải phần thưởng
+  (nguyên tắc 5), y hệt thi mastery thường.
+- Rớt vượt KHÔNG được khóa đường thi mastery thường; màn rớt có nút thi
+  lại và nút đó GIỮ NGUYÊN chế độ vượt (`challenge: phase.challenge`) —
+  nhảy sang đường mastery thường là ghi điểm cho module chưa học bài
+  nào. Luật không-rò-đáp-án ở màn rớt giữ nguyên.
+- Cờ `?vuot=1` chỉ SỐNG khi còn nghĩa (chưa học hết bài trong module —
+  học hết rồi thì đường thi thường đã nằm ngay trên card). Trong `ModuleTestPage`
+  cờ đi THEO LƯỢT THI (`phase.challenge`), không suy lại từ store —
+  màn kết quả phải giữ giọng thi vượt tới lúc người học rời trang.
+- **Chuỗi vượt: nút "Vượt tiếp <module sau>" ở màn ĐẬU** (chỉ khi module
+  sau cũng đủ điều kiện vượt) — bỏ quãng đi bộ về trang Học.
+- **Cái vẫn KHÔNG làm: mở trắng các module bị nhảy qua.** Đậu bài M4
+  không đánh dấu M1-M3 là đã đạt. Ai nhảy tới M4 thì M1-M3 vẫn ở đó
+  chưa đậu, muốn tính là xong thì vượt/học từng cái. Lý do: đánh dấu
+  đậu cho thứ chưa đo một câu nào là bịa số, và các module đó cũng
+  không sinh thẻ ôn — môn mạng xếp chồng, người học sẽ kẹt ở lab M7 /
+  ca bệnh M11 vì thiếu kiến thức M4 chưa từng chạm.
 
 ## Khi gặp mơ hồ
 

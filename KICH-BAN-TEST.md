@@ -178,8 +178,11 @@ người học có tự tìm ra bệnh của một mạng hỏng không.
      đạt, họ có tự nhận ra mình vừa phá yêu cầu thứ hai không?
    - Họ dùng "Gửi thử" mấy lần trước khi bấm "Nộp bài"? Có hiểu rằng gửi
      thử không tính điểm không?
-4. Học nốt bài 5 rồi thi Module 4. Câu cuối bài thi là một lab.
+4. Học nốt bài 5 rồi thi Module 4. Đề rút 8 câu từ pool 12 và luôn có
+   một câu lab (câu lab là "câu trụ", lượt thi nào cũng phải làm).
    - Ghi điểm lần 1 và số lần thi lại.
+   - **Nếu họ thi lại:** hỏi xem đề lần hai có giống lần đầu không. Đề
+     phải khác — đó là lý do pool tồn tại.
 
 ### Tiêu chí đậu của buổi này
 
@@ -408,7 +411,71 @@ Buổi M11: bắt đầu …h — kết thúc …h
   KẾT LUẬN: ĐẬU / ĐẬU CÓ GHI CHÚ / RỚT (bài cần mở lại: …)
 ```
 
-## 11. Sau buổi test
+## 11. Buổi bổ sung — Module 12 (PowerShell)
+
+Đo GENERATION EFFECT — mục tiêu của cả module: không phải nhận ra lệnh
+đúng khi nhìn thấy nó, mà tự gõ ra được lệnh trên một terminal trống.
+Đây cũng là module cuối của khóa, nên buổi này khép luôn Phần C. Người
+tham gia đã học xong Module 1-11 (hoặc dùng hồ sơ mồi sẵn).
+
+**Buổi duy nhất (~60-75 phút):**
+
+1. Học trọn Module 12 (5 bài). Điểm quan sát trong lúc học:
+   - Bài 1 mở màn bằng terminal trống ở bước Đoán thử: người tham gia
+     có GÕ THỬ gì không, hay ngồi im chờ "Nộp bài"? (Ngồi im không phải
+     lỗi — nhưng ghi lại: nếu người học không dám gõ, chỗ hỏng nằm ở lời
+     mời của đề, không ở người học.)
+   - Có ai tự gõ `Get-Help` mà không được nhắc không? Ghi lại ở bài nào.
+   - Sau khi `New-ADUser` chạy im lặng: người tham gia có tự gõ
+     `Get-ADUser` để kiểm chứng không, hay tin luôn là xong?
+2. Nghỉ 5 phút. Đóng app lại, mở một tab terminal của bài đã học (điều
+   phối viên chọn bài 3 và bài 5) và đo bằng ba việc dưới đây. Luật:
+   điều phối viên chỉ ngồi nhìn, KHÔNG nhắc cú pháp, KHÔNG cho mở lại
+   bài. Người tham gia được phép dùng `Get-Help` — đó chính là thứ đang
+   đo, không phải gian lận.
+
+**Ba bài đo (tiêu chí đậu):**
+
+- **Tự gõ được lệnh từ đầu:** hai việc, không xem lại bài — (a) kiểm tra
+  một cổng cụ thể của một máy chủ có mở không; (b) tạo một user vào đúng
+  một OU được chỉ định. Đậu khi cả 2/2 việc đạt mục tiêu trong vòng 2
+  lượt nộp, và KHÔNG mở tới tầng lời giải.
+- **Tự tra cứu thay vì hỏi:** giữa lúc làm, hỏi chen một tham số người
+  tham gia chắc chắn chưa thuộc (ví dụ: "tạo user nhưng để tài khoản ở
+  trạng thái khóa thì thêm gì?"). Đậu khi phản xạ đầu tiên là gõ
+  `Get-Help New-ADUser` và đọc khối SYNTAX — không đậu nếu quay sang hỏi
+  điều phối viên hoặc mở Google.
+- **Thấy được đường ống:** đưa một file CSV 4 dòng, yêu cầu tạo tài khoản
+  cho cả bốn. Chấp nhận mọi cách làm (gõ tay từng lệnh vẫn được app công
+  nhận). Sau khi xong, hỏi miệng: "nếu file có 300 dòng thì bạn làm thế
+  nào?" — đậu khi nói được là vẫn MỘT dòng, nối `Import-Csv` với
+  `New-ADUser` bằng dấu ống; đậu có ghi chú nếu phải gợi ý một lần.
+
+Kết luận: ĐẬU khi đạt cả ba; 2/3 là ĐẬU CÓ GHI CHÚ; dưới nữa mở lại
+bài tương ứng (bài 2 dạy Get-Help, bài 4 dạy dấu ống), không đổ cho
+người học.
+
+**Câu hỏi khép khóa** (không tính điểm, chỉ ghi nguyên văn): "Học xong
+cả 12 module, việc nào ở chỗ làm bạn nghĩ mình tự xử lý được ngay bây
+giờ?" — câu trả lời này đáng giá hơn mọi con số ở trên.
+
+### Mẫu ghi chép bổ sung
+
+```
+Buổi M12: bắt đầu …h — kết thúc …h
+  Bài 1 (terminal trống): có gõ thử trước khi nộp: có/không
+  Tự gõ Get-Help không cần nhắc: có/không (bài số …)
+  Tự Get-ADUser kiểm chứng sau New-ADUser: có/không
+  Việc (a) kiểm cổng: đạt ở lượt …, có mở lời giải: có/không
+  Việc (b) tạo user vào OU: đạt ở lượt …, có mở lời giải: có/không
+  Tra cứu khi bí: Get-Help / hỏi người / Google
+  Câu "300 dòng thì sao": trả lời …
+  Thi M12 …% (lần 1)
+  Câu khép khóa (nguyên văn): …
+  KẾT LUẬN: ĐẬU / ĐẬU CÓ GHI CHÚ / RỚT (bài cần mở lại: …)
+```
+
+## 12. Sau buổi test
 
 - Mỗi mục RỚT hoặc ghi chú hiểu sai → mở issue nội dung: ghi rõ khái
   niệm hiểu sai, bài nào dạy nó, và câu người tham gia đã nói.

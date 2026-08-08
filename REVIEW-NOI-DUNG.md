@@ -1,6 +1,6 @@
-# REVIEW NỘI DUNG — Module 1-11 (Phần A+B+C)
+# REVIEW NỘI DUNG — Module 1-12 (Phần A+B+C)
 
-> Sinh tự động từ `content/modules/module-01.json`, `content/modules/module-02.json`, `content/modules/module-03.json`, `content/modules/module-04.json`, `content/modules/module-05.json`, `content/modules/module-06.json`, `content/modules/module-07.json`, `content/modules/module-08.json`, `content/modules/module-09.json`, `content/modules/module-10.json`, `content/modules/module-11.json` bằng `npm run content:review`.
+> Sinh tự động từ `content/modules/module-01.json`, `content/modules/module-02.json`, `content/modules/module-03.json`, `content/modules/module-04.json`, `content/modules/module-05.json`, `content/modules/module-06.json`, `content/modules/module-07.json`, `content/modules/module-08.json`, `content/modules/module-09.json`, `content/modules/module-10.json`, `content/modules/module-11.json`, `content/modules/module-12.json` bằng `npm run content:review`.
 > Đây là bản để ĐỌC DUYỆT; muốn sửa thì sửa file JSON rồi render lại.
 
 ## Mạng là gì? — Câu chuyện bưu điện `module-1`
@@ -14,7 +14,7 @@ Phần A · 5 chặng · 6 bài · 6 khái niệm
 **1 · Khởi động (hook):** Bạn gửi cho Mai — cô bạn ở thành phố khác — một tấm ảnh sinh nhật. Tấm ảnh không hề đi "nguyên tấm": nó bị xé nhỏ ra rồi ráp lại ở máy Mai. Vì sao phải phiền phức vậy?
 
 **2 · Đoán thử (pretest):**
-- **Đề:** Đoán thử nhé: khi tấm ảnh đi qua mạng, nó sẽ...
+- **Đề:** Đoán thử nhé: khi tấm ảnh đi qua mạng, nó sẽ…
   - **Dạng:** trắc nghiệm · Đi nguyên tấm tới máy Mai / **Bị chia thành nhiều gói nhỏ rồi ráp lại ở máy Mai** ✓
   - **Vì sao:** Tấm ảnh được cắt thành nhiều gói tin, mỗi gói tự mang địa chỉ để đi, rồi được ráp lại ở máy nhận — bài này sẽ cho bạn thấy vì sao làm vậy lại khôn ngoan.
 
@@ -32,7 +32,7 @@ Phần A · 5 chặng · 6 bài · 6 khái niệm
 - **Đề:** Một gói tin trên đường đi bị thất lạc. Máy gửi phải làm gì?
   - **Dạng:** trắc nghiệm · Gửi lại toàn bộ tấm ảnh từ đầu / **Chỉ gửi lại đúng gói bị thất lạc** ✓ / Bỏ cuộc, báo lỗi cho người dùng
   - **Chủ đề gợi ý (tầng 1):** lợi ích của việc chia nhỏ
-  - **Gợi ý (tầng 2):** Nhớ lại lý do người ta chịu khó chia nhỏ: mất một phong bì thì chỉ mất... bao nhiêu?
+  - **Gợi ý (tầng 2):** Nhớ lại lý do người ta chịu khó chia nhỏ: mất một phong bì thì chỉ mất… bao nhiêu?
   - **Lời giải (tầng 3):** Chỉ cần gửi lại đúng gói thất lạc — đây chính là lý do lớn nhất để chia nhỏ: hỏng đâu vá đó, không làm lại từ đầu.
 
 **5 · Nhớ lại (retrieval):**
@@ -55,7 +55,7 @@ Phần A · 5 chặng · 6 bài · 6 khái niệm
 **1 · Khởi động (hook):** Trên Internet có hàng tỷ chiếc máy. Phong bì của bạn rời khỏi nhà và tìm đến ĐÚNG máy của Mai — không nhầm sang máy hàng xóm. Nhờ dòng chữ nào ngoài phong bì?
 
 **2 · Đoán thử (pretest):**
-- **Đề:** Đoán thử nhé: mỗi máy trên mạng được nhận ra nhờ...
+- **Đề:** Đoán thử nhé: mỗi máy trên mạng được nhận ra nhờ…
   - **Dạng:** trắc nghiệm · Tên chủ nhân đặt cho máy / **Một dãy số định danh gọi là địa chỉ IP** ✓ / Màu vỏ máy
   - **Vì sao:** Mỗi máy mang một địa chỉ IP — dãy số định danh như địa chỉ nhà, để gói tin biết giao đến đâu giữa hàng tỷ máy.
 
@@ -87,10 +87,10 @@ Phần A · 5 chặng · 6 bài · 6 khái niệm
 
 ### Bài: Gõ đúng cửa căn hộ `m1-bai-3`
 
-**1 · Khởi động (hook):** Máy Mai vừa mở trình duyệt, vừa nghe nhạc, vừa chat — cùng MỘT địa chỉ IP. Tấm ảnh của bạn đến nơi... sao nó không giao nhầm vào ứng dụng nghe nhạc?
+**1 · Khởi động (hook):** Máy Mai vừa mở trình duyệt, vừa nghe nhạc, vừa chat — cùng MỘT địa chỉ IP. Tấm ảnh của bạn đến nơi… sao nó không giao nhầm vào ứng dụng nghe nhạc?
 
 **2 · Đoán thử (pretest):**
-- **Đề:** Đoán thử nhé: hai ứng dụng chạy trên cùng một máy được phân biệt nhờ...
+- **Đề:** Đoán thử nhé: hai ứng dụng chạy trên cùng một máy được phân biệt nhờ…
   - **Dạng:** trắc nghiệm · Địa chỉ IP khác nhau / **Số port khác nhau** ✓
   - **Vì sao:** Cả máy chỉ có một địa chỉ IP, nhưng mỗi ứng dụng lắng nghe trên một số port riêng — nhờ đó dữ liệu không giao nhầm cửa.
 
@@ -125,7 +125,7 @@ Phần A · 5 chặng · 6 bài · 6 khái niệm
 **1 · Khởi động (hook):** Gói tin từ nhà bạn tới máy Mai ở thành phố khác đi qua cả chục "trạm" trung gian — ai đứng ở mỗi trạm quyết định rẽ trái hay rẽ phải?
 
 **2 · Đoán thử (pretest):**
-- **Đề:** Đoán thử nhé: thiết bị chuyển gói tin từ mạng này sang mạng khác là...
+- **Đề:** Đoán thử nhé: thiết bị chuyển gói tin từ mạng này sang mạng khác là…
   - **Dạng:** trắc nghiệm · Màn hình / **Router** ✓ / Bàn phím
   - **Vì sao:** Router là thiết bị đứng giữa các mạng: đọc địa chỉ đích của gói tin rồi quyết định chặng kế tiếp — như bưu tá đọc phong bì.
 
@@ -165,7 +165,7 @@ Phần A · 5 chặng · 6 bài · 6 khái niệm
 **1 · Khởi động (hook):** Bạn biết địa chỉ Mai, bưu tá giao thư chuẩn từng nhà — nhưng thư viết bằng thứ tiếng Mai không đọc nổi thì vẫn vô dụng. Máy tính tránh chuyện này thế nào?
 
 **2 · Đoán thử (pretest):**
-- **Đề:** Đoán thử nhé: bộ quy tắc chung để hai máy hiểu được nhau gọi là...
+- **Đề:** Đoán thử nhé: bộ quy tắc chung để hai máy hiểu được nhau gọi là…
   - **Dạng:** trắc nghiệm · Mật khẩu / **Giao thức** ✓ / Địa chỉ IP
   - **Vì sao:** Bộ quy tắc chung đó gọi là giao thức — thư tới đúng địa chỉ nhưng sai quy ước thì bên nhận vẫn không đọc nổi.
 
@@ -181,7 +181,7 @@ Phần A · 5 chặng · 6 bài · 6 khái niệm
   - **Lời giải (tầng 3):** Đó là giao thức (protocol): tập quy tắc thống nhất về cách đóng gói, gửi và diễn giải dữ liệu.
 
 **5 · Nhớ lại (retrieval):**
-- **Đề:** Không nhìn lại bài: HTTP, TCP, IP được gọi chung là các...
+- **Đề:** Không nhìn lại bài: HTTP, TCP, IP được gọi chung là các…
   - **Dạng:** gõ tay · **Chấp nhận:** giao thức | protocol
   - **Gợi ý (tầng 2):** Là "luật chơi chung" giữa các máy.
   - **Lời giải (tầng 3):** Chúng là các giao thức — mỗi giao thức phụ trách một việc trên đường đi của dữ liệu.
@@ -200,7 +200,7 @@ Phần A · 5 chặng · 6 bài · 6 khái niệm
 **1 · Khởi động (hook):** Đã đến lúc gửi thật tấm ảnh sinh nhật. Nhắm mắt hình dung thử: từ cú bấm "Gửi" của bạn đến tiếng "ting" trên máy Mai, chuyện gì xảy ra theo thứ tự nào?
 
 **2 · Đoán thử (pretest):**
-- **Đề:** Đoán thử nhé: việc ĐẦU TIÊN máy bạn làm khi bấm "Gửi" tấm ảnh là...
+- **Đề:** Đoán thử nhé: việc ĐẦU TIÊN máy bạn làm khi bấm "Gửi" tấm ảnh là…
   - **Dạng:** trắc nghiệm · **Chia tấm ảnh thành các gói tin và ghi địa chỉ** ✓ / Gửi nguyên tấm ảnh cho router / Gửi nguyên tấm ảnh không chia, vì ảnh nhỏ thì khỏi cần đóng gói
   - **Vì sao:** Bước đầu tiên luôn là đóng gói: chia dữ liệu thành các gói tin, mỗi gói ghi địa chỉ IP máy nhận — có phong bì đúng địa chỉ rồi mới nói đến chuyện lên đường.
 
@@ -255,7 +255,7 @@ Phần A · 5 chặng · 6 bài · 6 khái niệm
   - Ẩn dụ: Một lần gửi thư trọn vẹn: đóng phong bì, ghi địa chỉ, bưu tá chuyền tay, người nhận mở đúng căn hộ.
   - Thẻ ôn: *Kể ngắn gọn hành trình một tin nhắn từ máy A đến máy B?* → Chia thành gói tin ghi địa chỉ IP → các router chuyền tay nhau → máy nhận ráp lại, port đưa vào đúng ứng dụng.
 
-### Bài kiểm tra module (7 câu, cần ≥ 85%)
+### Bài kiểm tra module (pool 12 câu, mỗi lượt rút 8, cần ≥ 85%)
 
 - **Đề:** Bạn vào Wi-Fi quán cà phê. Quán cấp cho máy bạn một dãy số định danh để dữ liệu tìm về đúng máy giữa hàng chục khách — dãy số đó gọi là gì?
   - **Dạng:** gõ tay · **Chấp nhận:** địa chỉ ip | ip | ip address | ipv4 | địa chỉ ipv4
@@ -280,8 +280,28 @@ Phần A · 5 chặng · 6 bài · 6 khái niệm
   - **Dạng:** gõ tay · **Chấp nhận:** giao thức | protocol
   - **Vì sao:** Giao thức là luật chơi chung: cùng quy ước đóng gói và diễn giải thì hai máy mới đọc hiểu dữ liệu của nhau.
 - **Đề:** Một gói tin bị thất lạc giữa đường. Nhờ đâu máy gửi KHÔNG phải gửi lại toàn bộ dữ liệu?
-  - **Dạng:** trắc nghiệm · **Vì dữ liệu đã được chia thành nhiều gói — chỉ cần gửi lại gói mất** ✓ / Vì router giữ một bản sao của mọi thứ / Vì máy nhận tự đoán được phần thiếu
+  - **Dạng:** trắc nghiệm · **Vì dữ liệu đi thành nhiều gói, chỉ cần gửi lại gói bị mất** ✓ / Vì router dọc đường giữ bản sao, mất thì nó gửi lại giúp / Vì máy nhận đoán được phần thiếu từ các gói đã tới
   - **Vì sao:** Chia nhỏ là để hỏng đâu vá đó: mất gói nào gửi lại đúng gói ấy, các gói còn lại không phải đi lần hai.
+- **Đề:** Mạng nhà bạn có laptop, điện thoại và máy in cùng nối một router. Hai trong ba máy đó có được mang cùng một địa chỉ IP không?
+  - **Dạng:** trắc nghiệm · **Không được — trong cùng một mạng, mỗi máy phải giữ một địa chỉ IP riêng** ✓ / Được — trùng địa chỉ IP vẫn ổn vì mỗi máy còn có tên riêng để phân biệt / Được — hai máy chỉ va nhau khi cùng mở một ứng dụng vào đúng một lúc
+  - **Chủ đề gợi ý (tầng 1):** địa chỉ IP phải là duy nhất trong một mạng
+  - **Vì sao:** Địa chỉ IP là địa chỉ nhà: hai nhà ghi trùng địa chỉ thì thư không biết giao vào đâu. Trùng IP là mạng của cả hai máy cùng chập chờn.
+- **Đề:** Theo ẩn dụ bưu điện của khóa học, địa chỉ IP là địa chỉ tòa nhà. Vậy con số đóng vai SỐ CĂN HỘ — chỉ đúng ứng dụng nhận dữ liệu — gọi là gì?
+  - **Dạng:** gõ tay · **Chấp nhận:** port | cổng | số port | số cổng | port number
+  - **Chủ đề gợi ý (tầng 1):** con số phân biệt các ứng dụng trên cùng một máy
+  - **Vì sao:** IP đưa gói tin tới đúng tòa nhà, port gõ đúng cửa căn hộ. Thiếu port thì gói tin tới được máy nhưng không biết trao cho ứng dụng nào.
+- **Đề:** Máy bạn ở Hà Nội gửi ảnh cho máy Mai ở Cần Thơ. Vì sao máy bạn không cần biết trước cả con đường tới máy Mai?
+  - **Dạng:** trắc nghiệm · **Vì mỗi router chỉ cần biết chặng kế tiếp rồi chuyền tay nhau tới đích** ✓ / Vì máy bạn đã tải sẵn bản đồ đường đi của toàn bộ Internet khi khởi động / Vì gói tin tự dò từng sợi cáp một cho tới khi gặp đúng máy của Mai
+  - **Chủ đề gợi ý (tầng 1):** router chỉ quyết định chặng kế tiếp
+  - **Vì sao:** Không ai giữ bản đồ cả Internet. Mỗi router chỉ trả lời một câu: gói này nên đi tiếp qua cửa nào. Nhiều câu trả lời đúng nối lại thành một hành trình.
+- **Đề:** Trình duyệt của bạn do một công ty viết, server web do công ty khác viết, vậy mà chúng nói chuyện trơn tru. Nhờ đâu?
+  - **Dạng:** trắc nghiệm · **Nhờ hai bên cùng tuân theo HTTP — bộ quy tắc chung đã thỏa thuận trước** ✓ / Nhờ hai bên dò cách nói của nhau trong vài giây đầu của mỗi lần kết nối / Nhờ router dọc đường dịch qua lại giữa hai cách nói khác nhau
+  - **Chủ đề gợi ý (tầng 1):** giao thức — bộ quy tắc chung
+  - **Vì sao:** Giao thức là luật thống nhất từ trước: cùng khuôn thư, cùng thứ tự lượt nói. Hai bên không cần quen nhau, chỉ cần cùng theo một luật.
+- **Đề:** Các gói tin của một tấm ảnh đến máy nhận không đúng thứ tự đã gửi. Nhờ đâu máy nhận vẫn ráp lại được đúng tấm ảnh?
+  - **Dạng:** trắc nghiệm · **Nhờ số thứ tự ghi sẵn trong mỗi gói tin, máy nhận xếp lại theo số** ✓ / Nhờ đường truyền luôn giữ nguyên thứ tự gói tin từ lúc gửi tới lúc nhận / Nhờ router cuối cùng xếp lại thứ tự giúp rồi mới giao cho máy nhận
+  - **Chủ đề gợi ý (tầng 1):** số thứ tự trong mỗi gói tin
+  - **Vì sao:** Mỗi gói mang số thứ tự của mình. Mạng không hứa giao đúng thứ tự — chính con số đó cho phép máy nhận xếp lại và biết gói nào chưa tới.
 
 ## Đường đi của gói tin — Gõ google.com, chuyện gì xảy ra? `module-2`
 
@@ -294,7 +314,7 @@ Phần A · 4 chặng · 4 bài · 5 khái niệm
 **1 · Khởi động (hook):** Bạn gõ google.com và bấm Enter. Nhưng google.com không phải là một địa chỉ — nó chỉ là cái TÊN, như "quán phở chú Ba" chứ không phải số nhà. Vậy máy bạn gọi cho ai để xin "số nhà" thật của Google trước khi lên đường?
 
 **2 · Đoán thử (pretest):**
-- **Đề:** Đoán thử nhé: máy bạn tìm đến server của Google nhờ...
+- **Đề:** Đoán thử nhé: máy bạn tìm đến server của Google nhờ…
   - **Dạng:** trắc nghiệm · Cái tên google.com — máy đọc tên y như người đọc / **Một dãy số địa chỉ IP — cái tên phải được đổi thành số trước đã** ✓ / Không cần gì cả — bấm Enter là trình duyệt tự biết đường
   - **Vì sao:** Máy tính chỉ hiểu địa chỉ IP dạng số. google.com là tên đặt cho người dễ nhớ — trước khi đi, máy bạn phải "tra danh bạ" để đổi tên đó thành dãy số thật.
 
@@ -422,7 +442,7 @@ Phần A · 4 chặng · 4 bài · 5 khái niệm
 **3 · Khám phá (teach):**
 - *[request-response]* Mọi lượt mở trang web là một CẶP thư: request — lá thư yêu cầu máy bạn gửi đi, và response — lá thư trả lời server gửi ngược về, chở theo trang web. Chuyến về đi đúng luật cũ: trang web bị chia thành gói tin, các router chuyền tay từng chặng, về tới máy bạn thì được ráp lại — và màn hình sáng lên.
   - **Đào sâu hơn:** Cặp request/response này là nhịp thở của giao thức HTTP. Một trang web thật ra cần hàng chục cặp thư như vậy — chữ, ảnh, video đều là những response riêng. Module 5 mình sẽ xem TCP giữ trật tự cho cả dòng thư này kiểu gì.
-- *[ban-do-lo-trinh]* Dừng một nhịp nhìn lại: bạn vừa thấy TOÀN CẢNH — cả thành phố Internet từ trên cao. Đó chính là vai trò của Module 2 trong khóa học. 10 module còn lại là những chuyến zoom vào từng quận: quận địa chỉ (Module 3), quận thiết bị trong làng (Module 4), quận luật gửi thư TCP và số căn hộ port (Module 5), thâm cung của cuốn danh bạ DNS (Module 6)... Từ giờ, học tới đâu bạn cũng biết mình đang đứng ở góc nào trên tấm bản đồ này.
+- *[ban-do-lo-trinh]* Dừng một nhịp nhìn lại: bạn vừa thấy TOÀN CẢNH — cả thành phố Internet từ trên cao. Đó chính là vai trò của Module 2 trong khóa học. 10 module còn lại là những chuyến zoom vào từng quận: quận địa chỉ (Module 3), quận thiết bị trong làng (Module 4), quận luật gửi thư TCP và số căn hộ port (Module 5), thâm cung của cuốn danh bạ DNS (Module 6)… Từ giờ, học tới đâu bạn cũng biết mình đang đứng ở góc nào trên tấm bản đồ này.
   - **Đào sâu hơn:** Phần B của khóa (Module 4-7) đi sâu vào hạ tầng: switch, TCP/UDP, DNS, NAT. Phần C (Module 8-12) là chuyện đi làm: Wi-Fi, Windows Server, cloud, phòng khám mạng và tự động hóa. Tất cả đều là những chỗ bạn VỪA đi ngang qua trong hành trình hôm nay.
 
 **4 · Thử tay (practice, fading 2):**
@@ -479,19 +499,19 @@ Phần A · 4 chặng · 4 bài · 5 khái niệm
   - Ẩn dụ: Module 2 là tấm bản đồ toàn thành phố; các module sau là những chuyến zoom vào từng quận.
   - Thẻ ôn: *(khái niệm meta — noFlashcard, không vào hộp ôn)*
 
-### Bài kiểm tra module (8 câu, cần ≥ 85%)
+### Bài kiểm tra module (pool 12 câu, mỗi lượt rút 8, cần ≥ 85%)
 
 - **Đề:** Hệ thống "danh bạ của Internet" — đưa tên miền, nhận về địa chỉ IP — gọi là gì?
   - **Dạng:** gõ tay · **Chấp nhận:** dns | domain name system
   - **Vì sao:** DNS đổi cái tên cho người (google.com) thành địa chỉ IP cho máy — như tổng đài 1080 tra hộ số điện thoại từ một cái tên.
 - **Đề:** Bạn mang laptop sang nhà một người bạn — mạng Wi-Fi lạ hoắc, lần đầu kết nối. Gõ google.com, laptop vẫn tìm đúng server Google. Nhờ đâu?
-  - **Dạng:** trắc nghiệm · Laptop đã lưu sẵn đường đi từ hồi còn ở nhà bạn / **Ở mạng nào thì máy cũng hỏi DNS được — danh bạ vẫn trả về địa chỉ IP của Google** ✓ / Router nhà người bạn đã lưu sẵn cả trang Google
+  - **Dạng:** trắc nghiệm · Laptop nhớ sẵn đường đi từ hồi ở nhà nên cứ thế đi lại / **Mạng nào cũng hỏi DNS được, danh bạ vẫn trả đúng IP của Google** ✓ / Router nhà bạn ấy giữ sẵn bản sao trang Google cho khách
   - **Vì sao:** Cuốn danh bạ DNS phục vụ mọi mạng: dù bạn ngồi ở đâu, đưa cái tên google.com là nhận về địa chỉ IP của server Google. Đường đi thì mỗi lần mỗi khác — các router tự lo — nhưng bước tra danh bạ luôn hoạt động.
 - **Đề:** Bạn chuyển file từ laptop sang máy tính để bàn — cả hai cùng mạng nhà. Gói tin có phải đi qua default gateway không?
-  - **Dạng:** trắc nghiệm · Có — mọi gói tin trong nhà đều phải trình diện gateway trước / **Không — gateway chỉ gác lối RA Internet; hai máy cùng làng nói chuyện thẳng với nhau** ✓ / Có — nhưng chỉ khi Internet đang hoạt động
+  - **Dạng:** trắc nghiệm · Có — mọi gói tin trong nhà phải trình diện gateway rồi mới đi tiếp / **Không — gateway chỉ gác lối RA Internet, cùng làng thì nói thẳng** ✓ / Có — vì gateway giữ danh sách mọi máy trong nhà để chỉ đường
   - **Vì sao:** Gateway là cổng làng — chỉ gác những chuyến RA thế giới. Hai máy cùng mạng nhà trao đổi thẳng trong "làng", không cần qua cổng; rút dây Internet thì chúng vẫn gửi file cho nhau bình thường.
 - **Đề:** Trong mạng nhà bạn, thiết bị nào đang đóng vai default gateway?
-  - **Dạng:** trắc nghiệm · Chiếc điện thoại đang kết nối Wi-Fi / Server của trang web bạn hay mở / **Chiếc router (cục phát Wi-Fi) nhà bạn** ✓
+  - **Dạng:** trắc nghiệm · Máy chủ DNS mà nhà mạng cấp cho bạn / Chiếc switch nối các máy trong nhà lại / **Chiếc router (cục phát Wi-Fi) nhà bạn** ✓
   - **Vì sao:** Router nhà bạn đứng ngay ranh giới: một chân trong mạng nhà, một chân nối ra Internet — nên nó chính là cánh cổng mặc định.
 - **Đề:** Loại máy luôn bật, chuyên đứng chờ yêu cầu và phục vụ hàng triệu người cùng lúc gọi là gì?
   - **Dạng:** gõ tay · **Chấp nhận:** server | máy chủ
@@ -511,8 +531,24 @@ Phần A · 4 chặng · 4 bài · 5 khái niệm
   - **Dạng:** gõ tay · **Chấp nhận:** response | phản hồi | hồi đáp
   - **Vì sao:** Response (phản hồi) — nửa sau của cặp thư: request mang câu hỏi đi, response chở trang web quay về.
 - **Đề:** Bạn mở một trang báo đầy ảnh, nặng 2MB — gấp nghìn lần câu yêu cầu bạn gửi đi. Server có được gửi cả trang về trong MỘT gói tin cho nhanh không?
-  - **Dạng:** trắc nghiệm · Được — chiều về do server toàn quyền quyết định / **Không — response nặng mấy cũng phải chia thành nhiều gói tin và qua các router như lượt đi** ✓ / Được — miễn là mạng nhà bạn đủ nhanh để hứng
+  - **Dạng:** trắc nghiệm · Được — chiều về do server quyết, khỏe thì gửi cả trang một lần / **Không — nặng mấy cũng chia thành nhiều gói, qua router như lượt đi** ✓ / Được — miễn là đường mạng nhà bạn đủ nhanh để hứng trọn
   - **Vì sao:** Luật chia gói áp dụng cho cả hai chiều, nặng nhẹ gì cũng vậy: server đóng trang báo vào nhiều gói tin, các router chuyền tay từng gói, máy bạn nhận đủ rồi ráp lại thành trang hoàn chỉnh.
+- **Đề:** Gõ đúng tên miền thì trình duyệt báo không tìm thấy trang, nhưng gõ thẳng địa chỉ IP của trang đó lại vào được. Khâu nào đang hỏng?
+  - **Dạng:** trắc nghiệm · **Khâu tra danh bạ DNS — tên không đổi ra được địa chỉ IP** ✓ / Khâu đường truyền tới server — gói tin không rời được mạng nhà bạn / Khâu server của trang web — máy chủ đã tắt nên không ai trả lời
+  - **Chủ đề gợi ý (tầng 1):** DNS đổi tên miền sang địa chỉ IP
+  - **Vì sao:** Vào được bằng địa chỉ IP nghĩa là đường đi và server đều lành, chỉ khâu đổi TÊN sang SỐ hỏng — đó đúng là việc của DNS.
+- **Đề:** Máy bạn muốn gửi gói tin tới một địa chỉ IP nằm ngoài mạng nhà. Nó phải giao gói cho thiết bị nào trước tiên?
+  - **Dạng:** gõ tay · **Chấp nhận:** default gateway | gateway | cổng mặc định | router | router nhà
+  - **Chủ đề gợi ý (tầng 1):** lối ra duy nhất khỏi mạng nhà
+  - **Vì sao:** Ra khỏi làng thì phải qua cổng làng: mọi gói tin đi tới mạng khác đều được giao cho default gateway — chính là chiếc router nhà bạn.
+- **Đề:** Máy bạn tắt lúc nửa đêm, còn server tòa báo thì không bao giờ tắt. Vì sao server phải luôn bật?
+  - **Dạng:** trắc nghiệm · **Vì yêu cầu có thể tới bất cứ lúc nào, không ai hẹn giờ trước với server** ✓ / Vì server phải liên tục đẩy trang web đi cho tất cả mọi người dù không ai hỏi tới / Vì server sẽ mất hết dữ liệu đã lưu nếu bị tắt điện quá vài phút
+  - **Chủ đề gợi ý (tầng 1):** server đứng chờ yêu cầu
+  - **Vì sao:** Server là quán mở cửa suốt ngày đêm: nó không biết trước ai sẽ tới lúc nào nên phải chờ sẵn. Máy cá nhân chỉ bật khi bạn cần dùng.
+- **Đề:** Mỗi lượt mở web là một cặp thư. Lá thư máy bạn gửi đi để đòi trang — vế đầu của cặp ấy — gọi là gì?
+  - **Dạng:** gõ tay · **Chấp nhận:** request | yêu cầu | http request | lá thư yêu cầu
+  - **Chủ đề gợi ý (tầng 1):** vế thư đi của cặp request / response
+  - **Vì sao:** Request là thư đi, response là thư trả lời. Một trang web thường là nhiều cặp: chữ một cặp, mỗi tấm ảnh lại một cặp riêng.
 
 ## Địa chỉ — MAC, IP và Subnetting `module-3`
 
@@ -525,7 +561,7 @@ Phần A · 6 chặng · 6 bài · 7 khái niệm · drill: subnet
 **1 · Khởi động (hook):** Sáng nay bạn dùng laptop ở nhà, chiều mang ra quán cà phê. Trên máy có HAI dãy số định danh: một dãy lặng lẽ đổi theo nơi bạn ngồi, một dãy không hề nhúc nhích từ ngày máy xuất xưởng. Hai dãy số đó là gì?
 
 **2 · Đoán thử (pretest):**
-- **Đề:** Đoán thử nhé: mang laptop từ nhà ra quán cà phê, MAC address của máy sẽ...
+- **Đề:** Đoán thử nhé: mang laptop từ nhà ra quán cà phê, MAC address của máy sẽ…
   - **Dạng:** trắc nghiệm · Đổi theo mạng mới của quán / **Giữ nguyên như lúc ở nhà** ✓
   - **Vì sao:** MAC address được gắn vào card mạng từ nhà máy — như số khung xe, đổi chỗ ngồi không làm nó đổi. Thứ đổi theo mạng là địa chỉ IP.
 
@@ -566,7 +602,7 @@ Phần A · 6 chặng · 6 bài · 7 khái niệm · drill: subnet
 **1 · Khởi động (hook):** 192.168.1.10 — vì sao địa chỉ IP luôn là BỐN cụm số ngăn bằng dấu chấm? Và vì sao bạn không bao giờ thấy cụm nào vượt quá 255?
 
 **2 · Đoán thử (pretest):**
-- **Đề:** Đoán thử nhé: con số lớn nhất mà một "ô" của địa chỉ IPv4 có thể chứa là...
+- **Đề:** Đoán thử nhé: con số lớn nhất mà một "ô" của địa chỉ IPv4 có thể chứa là…
   - **Dạng:** trắc nghiệm · 100 / **255** ✓ / 999
   - **Vì sao:** Mỗi ô (octet) là 8 bit — đúng 256 giá trị, từ 0 đến 255. Vì thế 192.168.300.1 không bao giờ là địa chỉ hợp lệ.
 
@@ -606,7 +642,7 @@ Phần A · 6 chặng · 6 bài · 7 khái niệm · drill: subnet
 **1 · Khởi động (hook):** Mở cài đặt Wi-Fi, máy bạn là 192.168.1.5. Sang nhà hàng xóm mở thử — máy họ CŨNG là 192.168.1.5. Hai máy trùng địa chỉ mà cả hai nhà vẫn lướt web ngon lành. Sao Internet không loạn?
 
 **2 · Đoán thử (pretest):**
-- **Đề:** Đoán thử nhé: hai nhà cùng dùng 192.168.1.5 mà không sao, vì...
+- **Đề:** Đoán thử nhé: hai nhà cùng dùng 192.168.1.5 mà không sao, vì…
   - **Dạng:** trắc nghiệm · Nhà cung cấp mạng chia ca cho hai nhà dùng lệch giờ nhau / **Đó là địa chỉ private — chỉ có nghĩa trong nội bộ từng nhà** ✓ / Internet tự động đổi địa chỉ một trong hai nhà
   - **Vì sao:** 192.168.1.5 là địa chỉ private: nó chỉ có nghĩa bên trong từng mạng nhà, không bao giờ xuất hiện ngoài Internet — nên triệu nhà dùng lại cùng lúc vẫn không đụng nhau.
 
@@ -694,19 +730,19 @@ Phần A · 6 chặng · 6 bài · 7 khái niệm · drill: subnet
 
 **3 · Khám phá (teach):**
 - *[magic-number]* Magic number (quy tắc nhẩm chia subnet) chỉ có MỘT phép trừ: lấy 256 trừ đi octet "đáng chú ý" của mask — octet khác 0 và khác 255. Với /26: mask là 255.255.255.192 → magic number = 256 − 192 = 64. Các khu phố nhảy theo bước 64: mốc .0, .64, .128, .192. Muốn tìm network address (địa chỉ mạng — "tên khu phố") của một IP: chọn mốc gần nhất KHÔNG vượt quá nó. Ví dụ 192.168.1.130/26: mốc 128 ≤ 130 < 192 → khu phố là 192.168.1.128.
-  - **Đào sâu hơn:** Vì sao mẹo này đúng? Vì octet 192 của mask là 11000000: 2 bit đầu thuộc phần khu phố, 6 bit còn lại cho số nhà → mỗi khu có 2^6 = 64 địa chỉ. Phép 256 − 192 chỉ là đường tắt luôn ra đúng con số đó. Mẹo này chạy với mọi prefix: /25 → 256−128 = 128 (mốc .0, .128); /27 → 256−224 = 32 (mốc .0, .32, .64...); /30 → 256−252 = 4. Càng luyện càng nhanh — nên app có hẳn một drill mỗi ngày cho bạn.
+  - **Đào sâu hơn:** Vì sao mẹo này đúng? Vì octet 192 của mask là 11000000: 2 bit đầu thuộc phần khu phố, 6 bit còn lại cho số nhà → mỗi khu có 2^6 = 64 địa chỉ. Phép 256 − 192 chỉ là đường tắt luôn ra đúng con số đó. Mẹo này chạy với mọi prefix: /25 → 256−128 = 128 (mốc .0, .128); /27 → 256−224 = 32 (mốc .0, .32, .64…); /30 → 256−252 = 4. Càng luyện càng nhanh — nên app có hẳn một drill mỗi ngày cho bạn.
 
 **4 · Thử tay (practice, fading 2):**
 - **Đề:** Tìm network address của 192.168.1.75/26. (trả lời dạng x.x.x.x)
   - **Dạng:** gõ tay · **Chấp nhận:** 192.168.1.64
   - **Chủ đề gợi ý (tầng 1):** mốc gần nhất không vượt quá octet cuối
   - **Gợi ý (tầng 2):** Magic number = 256 − octet đáng chú ý của mask. Tự liệt kê các mốc rồi so với 75.
-  - **Lời giải (tầng 3):** 192.168.1.64. Nhẩm: /26 → mask ...192 → 256 − 192 = 64 → các mốc 0, 64, 128, 192. Mốc gần nhất không vượt quá 75 là 64 → network address là 192.168.1.64.
+  - **Lời giải (tầng 3):** 192.168.1.64. Nhẩm: /26 → mask …192 → 256 − 192 = 64 → các mốc 0, 64, 128, 192. Mốc gần nhất không vượt quá 75 là 64 → network address là 192.168.1.64.
 - **Đề:** Tìm network address của 10.0.5.77/27. (trả lời dạng x.x.x.x)
   - **Dạng:** gõ tay · **Chấp nhận:** 10.0.5.64
   - **Chủ đề gợi ý (tầng 1):** magic number của mask 255.255.255.224
   - **Gợi ý (tầng 2):** Magic number = 256 − octet đáng chú ý của mask 255.255.255.224. Tự liệt kê các mốc rồi so với 77.
-  - **Lời giải (tầng 3):** 10.0.5.64. Nhẩm: /27 → mask ...224 → 256 − 224 = 32 → các mốc 0, 32, 64, 96. Mốc gần nhất không vượt quá 77 là 64 → network address là 10.0.5.64.
+  - **Lời giải (tầng 3):** 10.0.5.64. Nhẩm: /27 → mask …224 → 256 − 224 = 32 → các mốc 0, 32, 64, 96. Mốc gần nhất không vượt quá 77 là 64 → network address là 10.0.5.64.
 
 **5 · Nhớ lại (retrieval):**
 - **Đề:** Không nhìn lại bài: tìm network address của 172.16.9.100/26. (trả lời dạng x.x.x.x)
@@ -715,13 +751,13 @@ Phần A · 6 chặng · 6 bài · 7 khái niệm · drill: subnet
   - **Lời giải (tầng 3):** 172.16.9.64. /26 → 256 − 192 = 64 → mốc 0, 64, 128, 192; mốc gần nhất không vượt quá 100 là 64.
 - **Tự giải thích:** Giải thích bằng lời của bạn: cách tìm network address của một IP bằng magic number, từng bước một.
   - **Nhóm ý cần chạm:** [bước nhảy, 256 trừ] · [không vượt quá, gần nhất, mốc mạng]
-  - **Trả lời mẫu:** Mình đổi prefix ra mask, lấy 256 trừ octet đáng chú ý của mask để được magic number — đó là bước nhảy giữa các khu phố. Liệt kê các mốc theo bước nhảy đó (0, 64, 128...), rồi chọn mốc gần nhất không vượt quá octet của IP — mốc đó chính là network address.
+  - **Trả lời mẫu:** Mình đổi prefix ra mask, lấy 256 trừ octet đáng chú ý của mask để được magic number — đó là bước nhảy giữa các khu phố. Liệt kê các mốc theo bước nhảy đó (0, 64, 128…), rồi chọn mốc gần nhất không vượt quá octet của IP — mốc đó chính là network address.
 
 **6 · Tổng kết:**
 - Magic number = 256 − octet đáng chú ý của mask (vd /26 → 256 − 192 = 64).
-- Các mốc mạng nhảy theo bước magic number: .0, .64, .128, .192...
+- Các mốc mạng nhảy theo bước magic number: .0, .64, .128, .192…
 - Network address = mốc gần nhất không vượt quá IP đang xét.
-- *Úp mở bài sau:* Mẹo đã nắm — giờ chỉ thiếu tốc độ. Drill "Luyện chia subnet" trong tab Học sinh đề mới mỗi ngày kèm đồng hồ đếm: ghé luyện mỗi ngày để tay nhẩm nhanh dần lên. Còn bài cuối module: chuyện IPv4... sắp hết sạch địa chỉ.
+- *Úp mở bài sau:* Mẹo đã nắm — giờ chỉ thiếu tốc độ. Drill "Luyện chia subnet" trong tab Học sinh đề mới mỗi ngày kèm đồng hồ đếm: ghé luyện mỗi ngày để tay nhẩm nhanh dần lên. Còn bài cuối module: chuyện IPv4… sắp hết sạch địa chỉ.
 
 ### Bài: Đọc biển số của tương lai `m3-bai-6`
 
@@ -787,7 +823,7 @@ Phần A · 6 chặng · 6 bài · 7 khái niệm · drill: subnet
   - Ẩn dụ: Tấm biển số dài đến mức mỗi hạt cát trên Trái Đất cũng có phần — không bao giờ lo cạn kho số.
   - Thẻ ôn: *IPv6 dài bao nhiêu bit và viết thế nào?* → 128 bit; viết hex thành 8 nhóm ngăn bằng ":"; chuỗi nhóm 0 liên tiếp rút gọn bằng "::" đúng một lần — ví dụ 2001:db8::1.
 
-### Bài kiểm tra module (9 câu, cần ≥ 85%)
+### Bài kiểm tra module (pool 12 câu, mỗi lượt rút 8, cần ≥ 85%)
 
 - **Đề:** Bạn mang laptop từ nhà đến quán cà phê. Điều gì xảy ra với hai địa chỉ của máy?
   - **Dạng:** trắc nghiệm · MAC đổi theo mạng mới, IP giữ nguyên / **IP đổi theo mạng mới, MAC giữ nguyên** ✓ / Cả hai cùng đổi theo mạng mới
@@ -808,7 +844,7 @@ Phần A · 6 chặng · 6 bài · 7 khái niệm · drill: subnet
   - **Dạng:** gõ tay · **Chấp nhận:** 172.16.4.128
   - **Vì sao:** /25 → mask 255.255.255.128 → magic number = 256 − 128 = 128 → mốc .0 và .128. Mốc gần nhất không vượt quá 201 là 128 → network address là 172.16.4.128.
 - **Đề:** Điều nào sau đây đúng về IPv6?
-  - **Dạng:** trắc nghiệm · **Dài 128 bit, viết hex 8 nhóm, rút gọn nhóm 0 liên tiếp bằng "::"** ✓ / Dài 64 bit, viết thập phân ngăn bằng dấu chấm / Là IPv4 nối thêm một octet thứ năm cho đỡ cạn số
+  - **Dạng:** trắc nghiệm · **Dài 128 bit, viết hex 8 nhóm, rút gọn chuỗi 0 bằng ::** ✓ / Dài 64 bit, viết thập phân ngăn bằng dấu chấm như IPv4 / Là IPv4 nối thêm một octet thứ năm cho đỡ cạn số
   - **Vì sao:** IPv6 dài 128 bit, viết hex thành 8 nhóm ngăn bằng ":", và chuỗi nhóm 0 liên tiếp được rút gọn bằng "::" đúng một lần — một hệ địa chỉ mới hẳn, không phải IPv4 "nối dài".
 - **Đề:** Sắp xếp các bước tìm network address của 192.168.1.130/26 bằng magic number theo đúng thứ tự.
   - **Dạng:** xếp thứ tự (thứ tự đúng):
@@ -818,8 +854,20 @@ Phần A · 6 chặng · 6 bài · 7 khái niệm · drill: subnet
     4. Chọn mốc gần nhất không vượt quá 130 → network address là 192.168.1.128
   - **Vì sao:** Quy trình nhẩm: prefix → mask → magic number (256 trừ octet đáng chú ý) → liệt kê mốc → chọn mốc gần nhất không vượt quá IP.
 - **Đề:** Ký hiệu rút gọn một chuỗi nhóm 0 liên tiếp trong địa chỉ IPv6 là gì?
-  - **Dạng:** gõ tay · **Chấp nhận:** ::
+  - **Dạng:** gõ tay · **Chấp nhận:** :: | dấu :: | dau :: | hai dấu hai chấm | hai dau hai cham
   - **Vì sao:** Ký hiệu "::" thay cho chuỗi nhóm 0 liên tiếp — và chỉ được dùng đúng MỘT lần trong một địa chỉ, vì có hai chỗ "::" thì máy không biết mỗi chỗ giấu bao nhiêu nhóm 0.
+- **Đề:** Tìm network address của 10.0.5.77/28. (trả lời dạng x.x.x.x)
+  - **Dạng:** gõ tay · **Chấp nhận:** 10.0.5.64
+  - **Chủ đề gợi ý (tầng 1):** magic number của /28
+  - **Vì sao:** /28 là mask 255.255.255.240, magic number = 256 − 240 = 16. Các mốc mạng: .64 rồi .80 — số 77 nằm trong khối mở đầu ở .64, nên network address là 10.0.5.64.
+- **Đề:** Hàng triệu mạng gia đình ở Việt Nam cùng dùng dải 192.168.1.x mà không loạn địa chỉ. Vì sao?
+  - **Dạng:** trắc nghiệm · **Vì địa chỉ private chỉ có giá trị trong nội bộ, không ra tới Internet** ✓ / Vì nhà mạng đã chia sẵn cho mỗi nhà một dải 192.168 riêng, không nhà nào trùng nhà nào / Vì các router tự thỏa thuận với nhau để không nhà nào lấy trùng dải
+  - **Chủ đề gợi ý (tầng 1):** vì sao địa chỉ private dùng lại được
+  - **Vì sao:** Địa chỉ private là số phòng trong tòa nhà: tòa nào cũng có phòng 101 mà không loạn, vì thư từ bên ngoài chỉ ghi tới địa chỉ tòa nhà — tức IP public.
+- **Đề:** Subnet mask 255.255.255.192 ghi gọn theo CIDR là gì? (trả lời dạng /n)
+  - **Dạng:** gõ tay · **Chấp nhận:** /26 | 26
+  - **Chủ đề gợi ý (tầng 1):** CIDR đếm số bit thuộc phần mạng
+  - **Vì sao:** 255.255.255.192 có 26 bit đầu là 1 (8 + 8 + 8 + 2), nên viết gọn là /26 — cũng chính là mask có magic number 64.
 
 ## Switch, Router, VLAN — Thiết bị trong làng `module-4`
 
@@ -1055,7 +1103,7 @@ Phần B · 5 chặng · 5 bài · 6 khái niệm
   - Ẩn dụ: Như cây cầu giữa hai bờ: mỗi chân cầu đặt ở một bờ, và người gác cầu quyết định cho đi hướng nào.
   - Thẻ ôn: *Khi gói tin đi qua router, địa chỉ nào đổi và địa chỉ nào giữ nguyên?* → MAC đổi ở từng chặng (nó chỉ dùng để trao tay giữa hai thiết bị cạnh nhau), còn IP nguồn và đích giữ nguyên suốt chuyến.
 
-### Bài kiểm tra module (8 câu, cần ≥ 85%)
+### Bài kiểm tra module (pool 12 câu, mỗi lượt rút 8, cần ≥ 85%)
 
 - **Đề:** Văn phòng mới có 12 máy cần nói chuyện với nhau. Cách nối tiết kiệm dây nhất là gì?
   - **Dạng:** trắc nghiệm · Nối thẳng từng cặp máy với nhau / **Mỗi máy một sợi cắm vào switch** ✓ / Nối vòng tròn, máy này sang máy kia
@@ -1070,7 +1118,7 @@ Phần B · 5 chặng · 5 bài · 6 khái niệm
   - **Dạng:** gõ tay · **Chấp nhận:** arp
   - **Vì sao:** ARP — nó hỏi to cả mạng 'ai đang giữ địa chỉ IP này?' và đúng máy đó trả lời kèm MAC của mình.
 - **Đề:** Hai máy cắm chung một switch, địa chỉ đều thuộc dải 192.168.1.x, dây cắm tốt. Chúng vẫn không ping được nhau. Nghi ngờ đầu tiên nên là gì?
-  - **Dạng:** trắc nghiệm · **Hai cổng đang ở hai VLAN khác nhau** ✓ / Switch bị hỏng / Địa chỉ IP đặt sai dải
+  - **Dạng:** trắc nghiệm · **Hai cổng đang ở hai VLAN khác nhau** ✓ / Switch hỏng nên không chuyển được khung / Hai máy chưa cùng một workgroup Windows
   - **Vì sao:** VLAN khác nhau là nghi ngờ số một: mọi thứ nhìn đều đúng, nhưng switch coi hai số VLAN là hai mạng riêng nên tiếng gọi ARP không qua được.
 - **Đề:** Thiết bị nối hai mạng khác dải địa chỉ và chuyển gói giữa chúng tên là gì?
   - **Dạng:** gõ tay · **Chấp nhận:** router | bộ định tuyến
@@ -1078,6 +1126,22 @@ Phần B · 5 chặng · 5 bài · 6 khái niệm
 - **Đề:** Gói tin đi từ máy A qua hai router rồi tới máy B. Trên đường đi, thứ gì KHÔNG đổi?
   - **Dạng:** trắc nghiệm · Địa chỉ MAC nguồn / Địa chỉ MAC đích / **Địa chỉ IP nguồn và đích** ✓
   - **Vì sao:** Cặp địa chỉ IP giữ nguyên suốt chuyến vì đó là địa chỉ đầu–cuối. Hai địa chỉ MAC thì đổi mới ở từng chặng trao tay.
+- **Đề:** Một switch không chia VLAN, 20 máy cắm chung. Một máy phát tiếng gọi ARP hỏi cả phòng. Ai nghe thấy tiếng gọi đó?
+  - **Dạng:** trắc nghiệm · **Cả 19 máy còn lại — chúng nằm chung một miền quảng bá** ✓ / Chỉ máy có địa chỉ IP được hỏi, switch biết đường gửi riêng cho nó / Không máy nào, vì switch chặn mọi tiếng gọi chung cho đỡ nghẽn đường
+  - **Chủ đề gợi ý (tầng 1):** miền quảng bá — tiếng gọi chung lan tới đâu
+  - **Vì sao:** Tiếng gọi chung lan tới đâu, miền quảng bá rộng tới đó. Switch chưa biết ai giữ địa chỉ IP ấy nên phải hỏi cả phòng — chia VLAN chính là dựng tường cho tiếng gọi khỏi lan sang xóm khác.
+- **Đề:** Hai máy cắm chung một switch nhưng bạn muốn chúng không nhìn thấy nhau, mà không mua thêm thiết bị. Bạn chia switch bằng thứ gì?
+  - **Dạng:** gõ tay · **Chấp nhận:** vlan | virtual lan | mạng lan ảo | mang lan ao
+  - **Chủ đề gợi ý (tầng 1):** cách chia một switch thành nhiều mạng
+  - **Vì sao:** VLAN chia một switch vật lý thành nhiều mạng tách biệt: hai cổng khác VLAN thì như cắm vào hai switch khác nhau, dù chung một cái hộp.
+- **Đề:** Bảng MAC của switch và bảng ARP của máy tính khác nhau ở chỗ nào?
+  - **Dạng:** trắc nghiệm · **Bảng MAC ghi máy nào ở cổng nào; bảng ARP ghi IP nào ứng với MAC nào** ✓ / Bảng MAC ghi IP nào ứng với MAC nào; bảng ARP ghi máy nào ở cổng nào / Hai bảng ghi cùng một thứ, chỉ khác chỗ cất là switch hay máy tính
+  - **Chủ đề gợi ý (tầng 1):** hai cuốn sổ: bảng MAC và bảng ARP
+  - **Vì sao:** Hai cuốn sổ khác nhau: switch nhớ CỔNG của từng địa chỉ MAC, còn máy tính nhớ địa chỉ MAC ứng với từng địa chỉ IP nó vừa hỏi bằng ARP.
+- **Đề:** Router nhận gói tin gửi tới một mạng nó không nối trực tiếp. Nó tra cuốn sổ nào để biết đẩy gói đi đâu?
+  - **Dạng:** gõ tay · **Chấp nhận:** bảng định tuyến | bang dinh tuyen | routing table | bảng route
+  - **Chủ đề gợi ý (tầng 1):** cuốn sổ đường đi của router
+  - **Vì sao:** Router tra bảng định tuyến: mỗi dòng nói "muốn tới mạng này thì giao cho ai". Không dòng nào khớp thì gói bị bỏ — đúng cái lỗi thiếu tuyến bạn gặp trong phòng lab.
 - **Đề:** Câu cuối là một ca thật: cả ba máy đang chung một VLAN nên máy khách (Máy K) nhìn thấy luôn hai máy nội bộ. Hãy tách Máy K ra, nhưng giữ hai máy nội bộ vẫn nói chuyện được với nhau.
   - **Dạng:** phòng lab (lắp/sửa sơ đồ mạng)
     - **Sơ đồ đề bài:** Máy nội bộ A [192.168.5.10/24] · Máy nội bộ B [192.168.5.20/24] · Máy khách K [192.168.5.30/24] · Switch-1 [p1:VLAN 10, p2:VLAN 10, p3:VLAN 10] — dây: Máy nội bộ A·eth0 — Switch-1·p1 | Máy nội bộ B·eth0 — Switch-1·p2 | Máy khách K·eth0 — Switch-1·p3
@@ -1103,7 +1167,7 @@ Phần B · 5 chặng · 8 bài · 11 khái niệm
 - `m5-r-telnet` — tầng 2 phòng 2 · 23 · Telnet · hình `palace-glass-wall` — Phòng 23 làm y hệt phòng bên cạnh nhưng bốn vách bằng kính, ai đi ngang cũng đọc được lệnh.
 - `m5-r-rdp` — tầng 2 phòng 3 · 3389 · RDP · hình `palace-mirror-screen` — Phòng 3389 có tấm gương lớn chiếu nguyên màn hình của một máy tính ở xa.
 - `m5-r-smb` — tầng 3 phòng 1 · 445 · SMB · hình `palace-shared-drive` — Phòng 445 là kho chung của tòa nhà, ổ đĩa nhà này cắm thẳng sang nhà kia.
-- `m5-r-ftp` — tầng 3 phòng 2 · 21 · FTP · hình `palace-conveyor` — Phòng 21 có băng chuyền chở nguyên thùng tệp qua lại, thùng nào cũng không dán kín.
+- `m5-r-ftp` — tầng 3 phòng 2 · 21 · FTP · hình `palace-conveyor` — Phòng 21 là quầy RA LỆNH của khu kho: người ta đứng đó hô "lấy thùng này", còn băng chuyền chở thùng thì chạy ở cửa bên. Không thùng nào dán kín.
 - `m5-r-mysql` — tầng 3 phòng 3 · 3306 · MySQL · hình `palace-file-cabinet` — Phòng 3306 xếp kín tủ hồ sơ, hỏi câu nào cũng có người tra ra đúng bảng.
 - `m5-r-smtp` — tầng 4 phòng 1 · 25 · SMTP · hình `palace-mailbox` — Phòng 25 là thùng thư bưu cục, thư chạy từ bưu cục này sang bưu cục kia suốt đêm.
 - `m5-r-submission` — tầng 4 phòng 2 · 587 · Mail Submission · hình `palace-id-check` — Phòng 587 bắt xuất trình thẻ nhân viên rồi mới nhận lá thư bạn muốn gửi đi.
@@ -1200,47 +1264,47 @@ Phần B · 5 chặng · 8 bài · 11 khái niệm
 - Chọn theo hậu quả: thiếu một mẩu là hỏng thì TCP, chậm một nhịp là hỏng thì UDP.
 - *Úp mở bài sau:* Cả hai đều phải ghi một con số lên phong bì để biết giao cho ứng dụng nào. Con số đó có luật chơi riêng — bài sau mình mở ra xem.
 
-### Bài: Đọc luật của những con số cổng `m5-bai-3`
+### Bài: Đọc luật của những con số port `m5-bai-3`
 
-**1 · Khởi động (hook):** Máy chủ web luôn ngồi ở cổng 443 không bao giờ đổi, còn máy bạn thì mỗi lần mở một trang lại dùng một số cổng khác. Vì sao một bên cố định, một bên đổi liên tục?
+**1 · Khởi động (hook):** Máy chủ web luôn ngồi ở port 443 không bao giờ đổi, còn máy bạn thì mỗi lần mở một trang lại dùng một số port khác. Vì sao một bên cố định, một bên đổi liên tục?
 
 **2 · Đoán thử (pretest):**
-- **Đề:** Đoán thử nhé: số cổng nằm trong khoảng nào?
+- **Đề:** Đoán thử nhé: số port nằm trong khoảng nào?
   - **Dạng:** trắc nghiệm · 0 đến 255 / **0 đến 65535** ✓ / 0 đến vô hạn
-  - **Vì sao:** Cổng là số 16 bit nên chạy từ 0 đến 65535 — đúng bằng số căn hộ tối đa của "chung cư" một địa chỉ IP.
+  - **Vì sao:** Port là số 16 bit nên chạy từ 0 đến 65535 — đúng bằng số căn hộ tối đa của "chung cư" một địa chỉ IP.
 
 **3 · Khám phá (teach):**
-- *[m5-cong-noi-tieng]* Dải 0-1023 là những cổng NỔI TIẾNG: mỗi số được cả thế giới quy ước dành cho một dịch vụ. Máy chủ phải ngồi đúng số đó, vì người tới gõ cửa cần biết trước phải gõ ở đâu — không ai đi hỏi từng nhà xem web nằm ở cửa số mấy.
-  - **Đào sâu hơn:** Trên Linux và các hệ họ Unix, chỉ tài khoản quản trị mới mở được cổng dưới 1024. Đó là lớp bảo vệ cũ nhưng vẫn còn: một chương trình bất kỳ không tự nhận mình là máy chủ web của cả máy được.
-- *[m5-cong-tam-thoi]* Phía bạn thì ngược lại: mỗi lần mở một kết nối, hệ điều hành cấp cho nó một cổng TẠM THỜI lấy từ dải số lớn. Nhờ vậy mở mười tab cùng lúc vẫn không lẫn — mười cổng khác nhau, mười cuộc trò chuyện riêng.
-  - **Đào sâu hơn:** Một kết nối được nhận diện bằng bốn thứ: IP nguồn, cổng nguồn, IP đích, cổng đích. Chỉ cần một trong bốn khác đi là một cuộc trò chuyện khác — đó là lý do một máy chủ ở cổng 443 phục vụ được hàng nghìn người cùng lúc.
+- *[m5-cong-noi-tieng]* Dải 0-1023 là những port NỔI TIẾNG: mỗi số được cả thế giới quy ước dành cho một dịch vụ. Máy chủ phải ngồi đúng số đó, vì người tới gõ cửa cần biết trước phải gõ ở đâu — không ai đi hỏi từng nhà xem web nằm ở cửa số mấy.
+  - **Đào sâu hơn:** Trên Linux và các hệ họ Unix, chỉ tài khoản quản trị mới mở được port dưới 1024. Đó là lớp bảo vệ cũ nhưng vẫn còn: một chương trình bất kỳ không tự nhận mình là máy chủ web của cả máy được.
+- *[m5-cong-tam-thoi]* Phía bạn thì ngược lại: mỗi lần mở một kết nối, hệ điều hành cấp cho nó một port TẠM THỜI lấy từ dải số lớn. Nhờ vậy mở mười tab cùng lúc vẫn không lẫn — mười port khác nhau, mười cuộc trò chuyện riêng.
+  - **Đào sâu hơn:** Một kết nối được nhận diện bằng bốn thứ: IP nguồn, port nguồn, IP đích, port đích. Chỉ cần một trong bốn khác đi là một cuộc trò chuyện khác — đó là lý do một máy chủ ở port 443 phục vụ được hàng nghìn người cùng lúc.
 
 **4 · Thử tay (practice, fading 1):**
-- **Đề:** Dải cổng 0-1023 được gọi là dải cổng gì? (nói bằng tiếng Việt cũng được)
-  - **Dạng:** gõ tay · **Chấp nhận:** nổi tiếng | noi tieng | well-known | well known | cổng nổi tiếng | cong noi tieng
+- **Đề:** Dải port 0-1023 được gọi là dải port gì? (nói bằng tiếng Việt cũng được)
+  - **Dạng:** gõ tay · **Chấp nhận:** nổi tiếng | noi tieng | well-known | well known | cổng nổi tiếng | cong noi tieng | port nổi tiếng
   - **Chủ đề gợi ý (tầng 1):** vì sao máy chủ phải ngồi đúng số quy ước
   - **Gợi ý (tầng 2):** Cả thế giới đã quy ước sẵn nên ai cũng biết — bởi vậy mới gọi tên như thế.
-  - **Lời giải (tầng 3):** Đó là dải cổng nổi tiếng (well-known): mỗi số đã có chủ theo quy ước chung, ví dụ 443 của HTTPS.
+  - **Lời giải (tầng 3):** Đó là dải port nổi tiếng (well-known): mỗi số đã có chủ theo quy ước chung, ví dụ 443 của HTTPS.
 - **Đề:** Bạn mở ba tab cùng vào một trang web. Ba kết nối đó khác nhau ở chỗ nào?
-  - **Dạng:** trắc nghiệm · **Khác cổng TẠM THỜI phía máy bạn** ✓ / Khác cổng phía máy chủ / Khác địa chỉ IP của máy bạn
+  - **Dạng:** trắc nghiệm · **Khác port TẠM THỜI phía máy bạn** ✓ / Khác port phía máy chủ / Khác địa chỉ IP của máy bạn
   - **Chủ đề gợi ý (tầng 1):** bên nào là bên đổi số mỗi lần mở kết nối
   - **Gợi ý (tầng 2):** Máy chủ vẫn ngồi nguyên ở 443 — vậy thứ phải khác nhau nằm ở đầu bên kia.
-  - **Lời giải (tầng 3):** Ba tab dùng ba cổng tạm thời khác nhau ở phía máy bạn; máy chủ vẫn ở nguyên cổng 443.
+  - **Lời giải (tầng 3):** Ba tab dùng ba port tạm thời khác nhau ở phía máy bạn; máy chủ vẫn ở nguyên port 443.
 
 **5 · Nhớ lại (retrieval):**
-- **Đề:** Không nhìn lại bài: số cổng lớn nhất có thể là bao nhiêu?
-  - **Dạng:** gõ tay · **Chấp nhận:** 65535
+- **Đề:** Không nhìn lại bài: số port lớn nhất có thể là bao nhiêu?
+  - **Dạng:** gõ tay · **Chấp nhận:** 65535 | 65,535 | 65.535 | 65 535
   - **Chủ đề gợi ý (tầng 1):** sức chứa của một con số 16 bit
   - **Gợi ý (tầng 2):** Đếm từ 0, và tổng cộng có 65536 chỗ.
-  - **Lời giải (tầng 3):** 65535 — cổng là số 16 bit nên đánh số từ 0 đến 65535.
-- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao máy chủ phải ngồi cổng cố định còn máy bạn thì không?
+  - **Lời giải (tầng 3):** 65535 — port là số 16 bit nên đánh số từ 0 đến 65535.
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao máy chủ phải ngồi port cố định còn máy bạn thì không?
   - **Nhóm ý cần chạm:** [biết trước, quy ước, cố định, tìm được] · [nhiều kết nối, nhiều tab, phân biệt, không lẫn]
-  - **Trả lời mẫu:** Máy chủ ngồi cố định để ai cũng biết trước phải gõ cửa số mấy; máy bạn mỗi kết nối lấy một cổng tạm thời khác nhau để mở nhiều tab cùng lúc mà dữ liệu không lẫn vào nhau.
+  - **Trả lời mẫu:** Máy chủ ngồi cố định để ai cũng biết trước phải gõ cửa số mấy; máy bạn mỗi kết nối lấy một port tạm thời khác nhau để mở nhiều tab cùng lúc mà dữ liệu không lẫn vào nhau.
 
 **6 · Tổng kết:**
-- Cổng là số từ 0 đến 65535 — chung cư một địa chỉ IP có ngần ấy căn.
-- Dải 0-1023 là cổng nổi tiếng: đã có chủ theo quy ước toàn cầu.
-- Phía bạn dùng cổng tạm thời, mỗi kết nối một số, nên nhiều tab không lẫn nhau.
+- Port là số từ 0 đến 65535 — chung cư một địa chỉ IP có ngần ấy căn.
+- Dải 0-1023 là port nổi tiếng: đã có chủ theo quy ước toàn cầu.
+- Phía bạn dùng port tạm thời, mỗi kết nối một số, nên nhiều tab không lẫn nhau.
 - *Úp mở bài sau:* Còn 15 con số nổi tiếng nhất thì học kiểu gì cho vào đầu? Bài sau mình bước vào một tòa nhà.
 
 ### Bài: Bước vào tòa nhà mười lăm phòng `m5-bai-4`
@@ -1253,7 +1317,7 @@ Phần B · 5 chặng · 8 bài · 11 khái niệm
   - **Vì sao:** Trí nhớ không gian khỏe hơn trí nhớ danh sách rất nhiều: gắn mẩu kiến thức vào một chỗ cụ thể rồi đi lại con đường ấy là kỹ thuật cung điện ký ức, dùng cả nghìn năm nay.
 
 **3 · Khám phá (teach):**
-- *[m5-cung-dien]* Mình sẽ dựng một tòa nhà 5 tầng, mỗi tầng 3 phòng — đúng 15 phòng cho 15 cổng. Mỗi phòng có một hình ảnh kỳ quặc gắn với con số của nó. Luật chơi: lúc nào cũng đi cùng một đường, từ tầng trệt lên nóc, trái sang phải. Chính THỨ TỰ đó là sợi dây móc trí nhớ.
+- *[m5-cung-dien]* Mình sẽ dựng một tòa nhà 5 tầng, mỗi tầng 3 phòng — đúng 15 phòng cho 15 port. Mỗi phòng có một hình ảnh kỳ quặc gắn với con số của nó. Luật chơi: lúc nào cũng đi cùng một đường, từ tầng trệt lên nóc, trái sang phải. Chính THỨ TỰ đó là sợi dây móc trí nhớ.
   - **Đào sâu hơn:** Hình càng lạ càng dễ nhớ — não bỏ qua cái quen thuộc và ghim lại cái bất thường. Đó cũng là lý do các hình trong tòa nhà này hơi vô lý một chút: ổ khóa vàng, vỏ sò, tấm gương chiếu màn hình máy khác.
 - *[m5-cong-web]* Tầng 1 là ba cánh cửa bạn dùng mỗi ngày mà không để ý: một cửa mở toang (web thường), một cửa khóa vàng (web bảo mật), một quầy danh bạ (tra tên ra địa chỉ). Đi qua từng phòng một nhé — đừng vội.
   - **Đi xem cung điện (3 phòng):**
@@ -1267,11 +1331,11 @@ Phần B · 5 chặng · 8 bài · 11 khái niệm
   - **Chủ đề gợi ý (tầng 1):** việc bạn làm mỗi lần gõ một địa chỉ web
   - **Gợi ý (tầng 2):** Nghĩ lại Module 2: gõ google.com xong thì việc đầu tiên là hỏi ai?
   - **Lời giải (tầng 3):** Cả ba lo chuyện mở một trang web: 53 tra tên ra địa chỉ, rồi 80 hoặc 443 tải trang về.
-- **Đề:** Phòng có ổ khóa vàng là cổng số mấy?
+- **Đề:** Phòng có ổ khóa vàng là port số mấy?
   - **Dạng:** gõ tay · **Chấp nhận:** 443
   - **Chủ đề gợi ý (tầng 1):** cửa nào được niêm phong trước khi thư đi ra
   - **Gợi ý (tầng 2):** Nó là cửa thứ hai của tầng 1, và là cửa mà trình duyệt hiện hình ổ khóa nhỏ trên thanh địa chỉ.
-  - **Lời giải (tầng 3):** Cổng 443 — HTTPS, phiên bản có khóa của web.
+  - **Lời giải (tầng 3):** Port 443 — HTTPS, phiên bản có khóa của web.
 
 **5 · Nhớ lại (retrieval):**
 - **Đề:** Đóng sách lại và đi lại tầng 1 từ trí nhớ: đứng trước mỗi cửa, nói xem trong phòng có số mấy và ai ở đó.
@@ -1307,22 +1371,22 @@ Phần B · 5 chặng · 8 bài · 11 khái niệm
     - tầng 2 phòng 1 · 22 · SSH · hình `palace-seashell` — Phòng 22 bày một vỏ sò, ghé tai vào là ra lệnh được cho máy ở tận đâu.
     - tầng 2 phòng 2 · 23 · Telnet · hình `palace-glass-wall` — Phòng 23 làm y hệt phòng bên cạnh nhưng bốn vách bằng kính, ai đi ngang cũng đọc được lệnh.
     - tầng 2 phòng 3 · 3389 · RDP · hình `palace-mirror-screen` — Phòng 3389 có tấm gương lớn chiếu nguyên màn hình của một máy tính ở xa.
-  - **Đào sâu hơn:** Telnet ra đời khi mạng còn là chuyện của vài trường đại học tin nhau. Ngày nay nó chỉ còn dùng để thử xem một cổng có mở không, chứ không ai đăng nhập bằng nó nữa.
+  - **Đào sâu hơn:** Telnet ra đời khi mạng còn là chuyện của vài trường đại học tin nhau. Ngày nay nó chỉ còn dùng để thử xem một port có mở không, chứ không ai đăng nhập bằng nó nữa.
 
 **4 · Thử tay (practice, fading 1):**
-- **Đề:** Phòng có vỏ sò — gõ lệnh từ xa an toàn — là cổng số mấy?
+- **Đề:** Phòng có vỏ sò — gõ lệnh từ xa an toàn — là port số mấy?
   - **Dạng:** gõ tay · **Chấp nhận:** 22
   - **Chủ đề gợi ý (tầng 1):** cửa đầu tiên của tầng hai
   - **Gợi ý (tầng 2):** Vỏ sò trong tiếng Anh là shell, và tên giao thức cũng có chữ đó.
-  - **Lời giải (tầng 3):** Cổng 22 — SSH (secure shell).
-- **Đề:** Phòng vách kính (Telnet, cổng 23) nguy hiểm ở chỗ nào?
+  - **Lời giải (tầng 3):** Port 22 — SSH (secure shell).
+- **Đề:** Phòng vách kính (Telnet, port 23) nguy hiểm ở chỗ nào?
   - **Dạng:** trắc nghiệm · **Mật khẩu đi qua mạng dưới dạng chữ thường, ai bắt được gói tin là đọc được** ✓ / Nó làm máy chủ chạy chậm đi / Nó chỉ chạy được trên mạng nội bộ
   - **Chủ đề gợi ý (tầng 1):** ý nghĩa của bốn vách kính trong hình
   - **Gợi ý (tầng 2):** Vách kính nghĩa là người đi ngang nhìn thấy hết những gì bạn gõ.
   - **Lời giải (tầng 3):** Telnet không mã hóa gì cả: tên đăng nhập và mật khẩu đi trần trên đường truyền.
 
 **5 · Nhớ lại (retrieval):**
-- **Đề:** Đi lại tầng 2 từ trí nhớ: vỏ sò, vách kính, tấm gương — mỗi phòng là cổng nào?
+- **Đề:** Đi lại tầng 2 từ trí nhớ: vỏ sò, vách kính, tấm gương — mỗi phòng là port nào?
   - **Dạng:** đi lại cung điện từ trí nhớ (3 phòng)
     - tầng 2 phòng 1 · 22 · SSH · hình `palace-seashell` — Phòng 22 bày một vỏ sò, ghé tai vào là ra lệnh được cho máy ở tận đâu.
     - tầng 2 phòng 2 · 23 · Telnet · hình `palace-glass-wall` — Phòng 23 làm y hệt phòng bên cạnh nhưng bốn vách bằng kính, ai đi ngang cũng đọc được lệnh.
@@ -1345,47 +1409,47 @@ Phần B · 5 chặng · 8 bài · 11 khái niệm
 **1 · Khởi động (hook):** Trong công ty, thư mục chung ai cũng mở được nằm ở đâu? Và vì sao kho dữ liệu của một trang web lại KHÔNG bao giờ nên mở cửa ra ngoài đường?
 
 **2 · Đoán thử (pretest):**
-- **Đề:** Đoán thử nhé: thư mục chia sẻ giữa các máy Windows đi qua cổng nào?
+- **Đề:** Đoán thử nhé: thư mục chia sẻ giữa các máy Windows đi qua port nào?
   - **Dạng:** trắc nghiệm · **445** ✓ / 80 / 3306
-  - **Vì sao:** 445 là cổng SMB — thứ làm nên ổ đĩa mạng và thư mục chia sẻ trong công ty.
+  - **Vì sao:** 445 là port SMB — thứ làm nên ổ đĩa mạng và thư mục chia sẻ trong công ty.
 
 **3 · Khám phá (teach):**
 - *[m5-cong-chia-se]* Tầng 3 là chỗ chứa đồ: một kho chung mà ổ đĩa nhà này cắm thẳng sang nhà kia, một băng chuyền chở nguyên thùng tệp qua lại nhưng thùng không dán kín, và một phòng xếp kín tủ hồ sơ hỏi gì cũng tra ra.
   - **Đi xem cung điện (3 phòng):**
     - tầng 3 phòng 1 · 445 · SMB · hình `palace-shared-drive` — Phòng 445 là kho chung của tòa nhà, ổ đĩa nhà này cắm thẳng sang nhà kia.
-    - tầng 3 phòng 2 · 21 · FTP · hình `palace-conveyor` — Phòng 21 có băng chuyền chở nguyên thùng tệp qua lại, thùng nào cũng không dán kín.
+    - tầng 3 phòng 2 · 21 · FTP · hình `palace-conveyor` — Phòng 21 là quầy RA LỆNH của khu kho: người ta đứng đó hô "lấy thùng này", còn băng chuyền chở thùng thì chạy ở cửa bên. Không thùng nào dán kín.
     - tầng 3 phòng 3 · 3306 · MySQL · hình `palace-file-cabinet` — Phòng 3306 xếp kín tủ hồ sơ, hỏi câu nào cũng có người tra ra đúng bảng.
-  - **Đào sâu hơn:** Cả ba phòng này là mục tiêu ưa thích của kẻ tấn công, vì đằng sau chúng là dữ liệu chứ không phải giao diện. Nguyên tắc chung: đừng bao giờ để 445 và 3306 nhìn thẳng ra Internet.
+  - **Đào sâu hơn:** Cả ba phòng này là mục tiêu ưa thích của kẻ tấn công, vì đằng sau chúng là dữ liệu chứ không phải giao diện. Nguyên tắc chung: đừng bao giờ để 445 và 3306 nhìn thẳng ra Internet. Một chi tiết đáng nhớ về phòng 21: cửa ấy chỉ là chỗ RA LỆNH — "gửi tệp này", "liệt kê thư mục kia" — còn thùng tệp thật lại đi qua một cửa khác mở riêng cho từng lượt. Chính chỗ tách đôi đó làm FTP hay vỡ khi có tường lửa đứng giữa: tường lửa thấy cửa lệnh thì cho qua, còn cửa chở hàng mở sau lưng nó thì không (bạn sẽ gặp lại chuyện này ở Module 7).
 
 **4 · Thử tay (practice, fading 2):**
-- **Đề:** Phòng có băng chuyền chở thùng tệp không dán kín là cổng số mấy?
+- **Đề:** Phòng có băng chuyền chở thùng tệp không dán kín là port số mấy?
   - **Dạng:** gõ tay · **Chấp nhận:** 21
   - **Chủ đề gợi ý (tầng 1):** cách truyền tệp đời đầu, không mã hóa
   - **Gợi ý (tầng 2):** Nó là phòng giữa của tầng 3, và tên giao thức có chữ "File".
-  - **Lời giải (tầng 3):** Cổng 21 — FTP, kiểu truyền tệp đời đầu, dữ liệu và mật khẩu đều đi trần.
-- **Đề:** Phòng tủ hồ sơ — cơ sở dữ liệu MySQL — là cổng số mấy?
+  - **Lời giải (tầng 3):** Port 21 — FTP, kiểu truyền tệp đời đầu, dữ liệu và mật khẩu đều đi trần.
+- **Đề:** Phòng tủ hồ sơ — cơ sở dữ liệu MySQL — là port số mấy?
   - **Dạng:** gõ tay · **Chấp nhận:** 3306
   - **Chủ đề gợi ý (tầng 1):** con số của kho dữ liệu
   - **Gợi ý (tầng 2):** Bốn chữ số, bắt đầu bằng 33.
-  - **Lời giải (tầng 3):** Cổng 3306 — MySQL.
+  - **Lời giải (tầng 3):** Port 3306 — MySQL.
 
 **5 · Nhớ lại (retrieval):**
 - **Đề:** Đi lại tầng 3 từ trí nhớ: kho chung, băng chuyền, tủ hồ sơ.
   - **Dạng:** đi lại cung điện từ trí nhớ (3 phòng)
     - tầng 3 phòng 1 · 445 · SMB · hình `palace-shared-drive` — Phòng 445 là kho chung của tòa nhà, ổ đĩa nhà này cắm thẳng sang nhà kia.
-    - tầng 3 phòng 2 · 21 · FTP · hình `palace-conveyor` — Phòng 21 có băng chuyền chở nguyên thùng tệp qua lại, thùng nào cũng không dán kín.
+    - tầng 3 phòng 2 · 21 · FTP · hình `palace-conveyor` — Phòng 21 là quầy RA LỆNH của khu kho: người ta đứng đó hô "lấy thùng này", còn băng chuyền chở thùng thì chạy ở cửa bên. Không thùng nào dán kín.
     - tầng 3 phòng 3 · 3306 · MySQL · hình `palace-file-cabinet` — Phòng 3306 xếp kín tủ hồ sơ, hỏi câu nào cũng có người tra ra đúng bảng.
   - **Chủ đề gợi ý (tầng 1):** hình trong từng phòng của tầng ba
   - **Gợi ý (tầng 2):** Một số ba chữ số, một số hai chữ số, một số bốn chữ số — mỗi phòng một dáng riêng.
   - **Lời giải (tầng 3):** Tầng 3: kho chung là 445 (SMB), băng chuyền là 21 (FTP), tủ hồ sơ là 3306 (MySQL).
-- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao không nên để cổng 3306 mở thẳng ra Internet?
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao không nên để port 3306 mở thẳng ra Internet?
   - **Nhóm ý cần chạm:** [dữ liệu, cơ sở dữ liệu, kho, hồ sơ] · [tấn công, nguy hiểm, lộ, đánh cắp, rủi ro]
-  - **Trả lời mẫu:** Vì sau cổng đó là toàn bộ dữ liệu thật chứ không phải giao diện; mở ra ngoài là mời cả thế giới thử mật khẩu vào thẳng kho hồ sơ.
+  - **Trả lời mẫu:** Vì sau port đó là toàn bộ dữ liệu thật chứ không phải giao diện; mở ra ngoài là mời cả thế giới thử mật khẩu vào thẳng kho hồ sơ.
 
 **6 · Tổng kết:**
 - Tầng 3 chứa đồ: 445 kho chung, 21 băng chuyền, 3306 tủ hồ sơ.
 - FTP truyền tệp nhưng không dán kín — mật khẩu đi trần như Telnet.
-- Cổng dữ liệu (445, 3306) không bao giờ nên nhìn thẳng ra Internet.
+- Port dữ liệu (445, 3306) không bao giờ nên nhìn thẳng ra Internet.
 - *Úp mở bài sau:* Tầng 4 là chỗ thư từ đi qua ban đêm, và một cái đồng hồ to mà cả tòa nhà phải chỉnh giờ theo.
 
 ### Bài: Lên tầng bốn: thư từ và giờ giấc `m5-bai-7`
@@ -1403,19 +1467,19 @@ Phần B · 5 chặng · 8 bài · 11 khái niệm
     - tầng 4 phòng 1 · 25 · SMTP · hình `palace-mailbox` — Phòng 25 là thùng thư bưu cục, thư chạy từ bưu cục này sang bưu cục kia suốt đêm.
     - tầng 4 phòng 2 · 587 · Mail Submission · hình `palace-id-check` — Phòng 587 bắt xuất trình thẻ nhân viên rồi mới nhận lá thư bạn muốn gửi đi.
     - tầng 4 phòng 3 · 123 · NTP · hình `palace-big-clock` — Phòng 123 chỉ có mỗi cái đồng hồ to, cả tòa nhà chỉnh giờ theo nó.
-  - **Đào sâu hơn:** Tách 25 và 587 là để chống thư rác: cổng 25 chỉ dành cho máy chủ nói chuyện với máy chủ, còn người dùng gửi thư phải qua 587 và phải đăng nhập. Nhà mạng thường chặn thẳng cổng 25 đi ra từ máy người dùng.
+  - **Đào sâu hơn:** Tách 25 và 587 là để chống thư rác: port 25 chỉ dành cho máy chủ nói chuyện với máy chủ, còn người dùng gửi thư phải qua 587 và phải đăng nhập. Nhà mạng thường chặn thẳng port 25 đi ra từ máy người dùng.
 
 **4 · Thử tay (practice, fading 2):**
-- **Đề:** Phòng bắt xuất trình thẻ rồi mới nhận thư bạn gửi đi là cổng số mấy?
+- **Đề:** Phòng bắt xuất trình thẻ rồi mới nhận thư bạn gửi đi là port số mấy?
   - **Dạng:** gõ tay · **Chấp nhận:** 587
-  - **Chủ đề gợi ý (tầng 1):** cổng dành cho người dùng gửi thư, phải đăng nhập
-  - **Gợi ý (tầng 2):** Ba chữ số, và nó không phải 25 — 25 là cổng của máy chủ nói với máy chủ.
-  - **Lời giải (tầng 3):** Cổng 587 — nơi ứng dụng thư của bạn đăng nhập rồi mới gửi được thư đi.
-- **Đề:** Cái đồng hồ to của tòa nhà — dịch vụ đồng bộ giờ — nằm ở cổng nào?
+  - **Chủ đề gợi ý (tầng 1):** port dành cho người dùng gửi thư, phải đăng nhập
+  - **Gợi ý (tầng 2):** Ba chữ số, và nó không phải 25 — 25 là port của máy chủ nói với máy chủ.
+  - **Lời giải (tầng 3):** Port 587 — nơi ứng dụng thư của bạn đăng nhập rồi mới gửi được thư đi.
+- **Đề:** Cái đồng hồ to của tòa nhà — dịch vụ đồng bộ giờ — nằm ở port nào?
   - **Dạng:** gõ tay · **Chấp nhận:** 123
   - **Chủ đề gợi ý (tầng 1):** con số dễ nhớ nhất tòa nhà
   - **Gợi ý (tầng 2):** Đếm một, hai, ba.
-  - **Lời giải (tầng 3):** Cổng 123 — NTP, chạy trên UDP.
+  - **Lời giải (tầng 3):** Port 123 — NTP, chạy trên UDP.
 
 **5 · Nhớ lại (retrieval):**
 - **Đề:** Đi lại tầng 4 từ trí nhớ: thùng thư, quầy xuất trình thẻ, đồng hồ lớn.
@@ -1426,7 +1490,7 @@ Phần B · 5 chặng · 8 bài · 11 khái niệm
   - **Chủ đề gợi ý (tầng 1):** hình trong từng phòng của tầng bốn
   - **Gợi ý (tầng 2):** Hai phòng đầu cùng lo thư, phòng cuối là con số đếm 1-2-3.
   - **Lời giải (tầng 3):** Tầng 4: thùng thư là 25 (SMTP), quầy xuất trình thẻ là 587, đồng hồ lớn là 123 (NTP).
-- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao thư gửi đi của người dùng phải qua cổng 587 chứ không phải 25?
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao thư gửi đi của người dùng phải qua port 587 chứ không phải 25?
   - **Nhóm ý cần chạm:** [đăng nhập, xác thực, chứng minh, thẻ] · [thư rác, spam, giả mạo, chặn]
   - **Trả lời mẫu:** Vì 587 bắt đăng nhập trước khi nhận thư, nhờ đó biết ai gửi; còn 25 để cho máy chủ nói với máy chủ và thường bị nhà mạng chặn để hạn chế thư rác gửi bừa.
 
@@ -1438,10 +1502,10 @@ Phần B · 5 chặng · 8 bài · 11 khái niệm
 
 ### Bài: Lên nóc: sổ hộ khẩu và chìa khóa nhà `m5-bai-8`
 
-**1 · Khởi động (hook):** Cắm dây mạng vào là máy có địa chỉ IP ngay, chẳng cần gõ gì. Ai đã phát địa chỉ đó cho bạn, và bằng cổng nào?
+**1 · Khởi động (hook):** Cắm dây mạng vào là máy có địa chỉ IP ngay, chẳng cần gõ gì. Ai đã phát địa chỉ đó cho bạn, và bằng port nào?
 
 **2 · Đoán thử (pretest):**
-- **Đề:** Đoán thử nhé: dịch vụ tự cấp địa chỉ IP cho máy mới vào mạng dùng mấy số cổng?
+- **Đề:** Đoán thử nhé: dịch vụ tự cấp địa chỉ IP cho máy mới vào mạng dùng mấy số port?
   - **Dạng:** trắc nghiệm · Một số duy nhất / **Một cặp hai số** ✓
   - **Vì sao:** DHCP dùng cặp 67/68: một số cho bên phát địa chỉ, một số cho bên nhận — đó là lý do phòng cuối cùng của tòa nhà là một cặp phòng thông nhau.
 
@@ -1454,11 +1518,11 @@ Phần B · 5 chặng · 8 bài · 11 khái niệm
   - **Đào sâu hơn:** LDAP là nền của Active Directory — thứ bạn sẽ gặp lại ở Phần C khi học quản trị Windows Server. Lúc đó cặp 389/636 sẽ quay lại, và bạn đã có sẵn chỗ để treo nó.
 
 **4 · Thử tay (practice, fading 2):**
-- **Đề:** Cuốn sổ hộ khẩu cất trong két sắt — LDAP có mã hóa — là cổng số mấy?
+- **Đề:** Cuốn sổ hộ khẩu cất trong két sắt — LDAP có mã hóa — là port số mấy?
   - **Dạng:** gõ tay · **Chấp nhận:** 636
   - **Chủ đề gợi ý (tầng 1):** bản có khóa của cuốn sổ 389
   - **Gợi ý (tầng 2):** Ba chữ số, và nó KHÔNG phải 389 — 389 là cuốn sổ để ngoài.
-  - **Lời giải (tầng 3):** Cổng 636 — LDAPS, tức LDAP có mã hóa.
+  - **Lời giải (tầng 3):** Port 636 — LDAPS, tức LDAP có mã hóa.
 - **Đề:** Cặp phòng phát chìa khóa nhà cho người mới — DHCP — mang hai số nào?
   - **Dạng:** gõ tay · **Chấp nhận:** 67 68 | 67, 68 | 67/68 | 68 67 | 67-68
   - **Chủ đề gợi ý (tầng 1):** cặp số liền nhau ở phòng cuối cùng
@@ -1495,32 +1559,32 @@ Phần B · 5 chặng · 8 bài · 11 khái niệm
 - **UDP** `m5-udp` — Giao thức gửi không bảo đảm — nhanh, không báo nhận, không gửi lại
   - Ẩn dụ: UDP như thư thường thả vào thùng: không ai ký nhận, mất thì thôi, nhưng đi ngay.
   - Thẻ ôn: *UDP đánh đổi thứ gì để lấy thứ gì?* → Bỏ độ tin cậy (không bắt tay, không báo nhận, không gửi lại) để lấy độ trễ thấp — hợp với gọi video, game, DNS.
-- **Well-known port** `m5-cong-noi-tieng` — Cổng nổi tiếng — dải 0-1023 đã có chủ theo quy ước toàn cầu
+- **Well-known port** `m5-cong-noi-tieng` — Port nổi tiếng — dải 0-1023 đã có chủ theo quy ước toàn cầu
   - Ẩn dụ: Như số nhà của trụ sở công: ai cũng biết trước phải tới đâu, không cần hỏi đường.
-  - Thẻ ôn: *Dải cổng nổi tiếng là dải nào, và vì sao phải cố định?* → 0-1023. Máy chủ phải ngồi đúng số quy ước để người tới biết trước phải gõ cửa nào.
-- **Ephemeral port** `m5-cong-tam-thoi` — Cổng tạm thời — số hệ điều hành cấp cho mỗi kết nối phía máy bạn
+  - Thẻ ôn: *Dải port nổi tiếng là dải nào, và vì sao phải cố định?* → 0-1023. Máy chủ phải ngồi đúng số quy ước để người tới biết trước phải gõ cửa nào.
+- **Ephemeral port** `m5-cong-tam-thoi` — Port tạm thời — số hệ điều hành cấp cho mỗi kết nối phía máy bạn
   - Ẩn dụ: Như số thứ tự lấy ở quầy: mỗi lượt một số khác, xong việc là trả lại.
-  - Thẻ ôn: *Vì sao mở mười tab cùng một trang web mà dữ liệu không lẫn vào nhau?* → Mỗi kết nối được cấp một cổng tạm thời khác nhau ở phía máy bạn; máy chủ vẫn ở nguyên một cổng.
+  - Thẻ ôn: *Vì sao mở mười tab cùng một trang web mà dữ liệu không lẫn vào nhau?* → Mỗi kết nối được cấp một port tạm thời khác nhau ở phía máy bạn; máy chủ vẫn ở nguyên một port.
 - **Memory palace** `m5-cung-dien` — Cung điện ký ức — gắn mẩu kiến thức vào một chỗ trong không gian quen thuộc
   - Ẩn dụ: Tòa nhà 5 tầng, mỗi phòng một hình kỳ quặc; nhớ lại bằng cách đi lại đúng con đường ấy.
   - Thẻ ôn: *(khái niệm meta — noFlashcard, không vào hộp ôn)*
-- **Cổng tầng 1 — web** `m5-cong-web` — Nhóm cổng đưa bạn tới một trang web: 80, 443, 53
+- **Port tầng 1 — web** `m5-cong-web` — Nhóm port đưa bạn tới một trang web: 80, 443, 53
   - Ẩn dụ: Tầng trệt của tòa nhà: cửa mở toang, cửa khóa vàng và quầy danh bạ.
-  - Thẻ ôn: *Ba phòng tầng 1 của cung điện là những cổng nào?* → 80 HTTP (cửa mở toang), 443 HTTPS (ổ khóa vàng), 53 DNS (quầy danh bạ).
-- **Cổng tầng 2 — điều khiển từ xa** `m5-cong-dieu-khien` — Nhóm cổng ngồi đây điều khiển máy ở chỗ khác: 22, 23, 3389
+  - Thẻ ôn: *Ba phòng tầng 1 của cung điện là những port nào?* → 80 HTTP (cửa mở toang), 443 HTTPS (ổ khóa vàng), 53 DNS (quầy danh bạ).
+- **Port tầng 2 — điều khiển từ xa** `m5-cong-dieu-khien` — Nhóm port ngồi đây điều khiển máy ở chỗ khác: 22, 23, 3389
   - Ẩn dụ: Tầng hai: vỏ sò, phòng vách kính và tấm gương chiếu màn hình máy kia.
-  - Thẻ ôn: *Ba phòng tầng 2 của cung điện là những cổng nào?* → 22 SSH (vỏ sò, có mã hóa), 23 Telnet (vách kính, gửi trần), 3389 RDP (tấm gương).
-- **Cổng tầng 3 — kho dữ liệu** `m5-cong-chia-se` — Nhóm cổng chia sẻ tệp và giữ dữ liệu: 445, 21, 3306
+  - Thẻ ôn: *Ba phòng tầng 2 của cung điện là những port nào?* → 22 SSH (vỏ sò, có mã hóa), 23 Telnet (vách kính, gửi trần), 3389 RDP (tấm gương).
+- **Port tầng 3 — kho dữ liệu** `m5-cong-chia-se` — Nhóm port chia sẻ tệp và giữ dữ liệu: 445, 21, 3306
   - Ẩn dụ: Tầng ba là kho: ổ đĩa chung, băng chuyền thùng tệp, tủ hồ sơ.
-  - Thẻ ôn: *Ba phòng tầng 3 của cung điện là những cổng nào?* → 445 SMB (kho chung), 21 FTP (băng chuyền), 3306 MySQL (tủ hồ sơ).
-- **Cổng tầng 4 — thư từ và giờ giấc** `m5-cong-thu-tu` — Nhóm cổng lo thư đi và đồng bộ giờ: 25, 587, 123
+  - Thẻ ôn: *Ba phòng tầng 3 của cung điện là những port nào?* → 445 SMB (kho chung), 21 FTP (băng chuyền), 3306 MySQL (tủ hồ sơ).
+- **Port tầng 4 — thư từ và giờ giấc** `m5-cong-thu-tu` — Nhóm port lo thư đi và đồng bộ giờ: 25, 587, 123
   - Ẩn dụ: Tầng bốn: thùng thư bưu cục, quầy xuất trình thẻ và cái đồng hồ to.
-  - Thẻ ôn: *Ba phòng tầng 4 của cung điện là những cổng nào?* → 25 SMTP (thư giữa máy chủ), 587 gửi thư có đăng nhập, 123 NTP (đồng bộ giờ).
-- **Cổng tầng 5 — người và chỗ ở** `m5-cong-danh-ba` — Nhóm cổng giữ danh bạ người dùng và cấp địa chỉ: 389, 636, 67/68
+  - Thẻ ôn: *Ba phòng tầng 4 của cung điện là những port nào?* → 25 SMTP (thư giữa máy chủ), 587 gửi thư có đăng nhập, 123 NTP (đồng bộ giờ).
+- **Port tầng 5 — người và chỗ ở** `m5-cong-danh-ba` — Nhóm port giữ danh bạ người dùng và cấp địa chỉ: 389, 636, 67/68
   - Ẩn dụ: Nóc nhà: sổ hộ khẩu, sổ trong két sắt và cặp phòng phát chìa khóa.
-  - Thẻ ôn: *Ba phòng tầng 5 của cung điện là những cổng nào?* → 389 LDAP (sổ hộ khẩu), 636 LDAPS (sổ trong két sắt), 67/68 DHCP (cặp chìa khóa).
+  - Thẻ ôn: *Ba phòng tầng 5 của cung điện là những port nào?* → 389 LDAP (sổ hộ khẩu), 636 LDAPS (sổ trong két sắt), 67/68 DHCP (cặp chìa khóa).
 
-### Bài kiểm tra module (8 câu, cần ≥ 85%)
+### Bài kiểm tra module (pool 12 câu, mỗi lượt rút 8, cần ≥ 85%)
 
 - **Đề:** Thứ tự đúng của cái bắt tay ba bước là gì?
   - **Dạng:** trắc nghiệm · **SYN → SYN-ACK → ACK** ✓ / SYN → ACK → SYN-ACK / ACK → SYN → SYN-ACK
@@ -1529,14 +1593,30 @@ Phần B · 5 chặng · 8 bài · 11 khái niệm
   - **Dạng:** gõ tay · **Chấp nhận:** syn-ack | syn ack | synack
   - **Vì sao:** SYN-ACK là nhịp duy nhất mang hai vai: vừa xác nhận đã nghe thấy, vừa hỏi ngược lại để mở chiều còn lại.
 - **Đề:** Một cuộc gọi video nên đi bằng giao thức nào, và vì sao?
-  - **Dạng:** trắc nghiệm · **UDP — chậm một nhịp còn tệ hơn mất một khung hình** ✓ / TCP — phải bảo đảm không mất khung hình nào
+  - **Dạng:** trắc nghiệm · **UDP — chậm một nhịp tệ hơn mất một khung hình** ✓ / TCP — phải bảo đảm không mất khung hình nào
   - **Vì sao:** Với cuộc gọi, dừng lại chờ gửi lại một mẩu đã rớt còn phá trải nghiệm hơn là mất luôn mẩu đó.
-- **Đề:** Số cổng lớn nhất có thể là bao nhiêu?
-  - **Dạng:** gõ tay · **Chấp nhận:** 65535
-  - **Vì sao:** Cổng là số 16 bit nên đánh số từ 0 đến 65535.
+- **Đề:** Số port lớn nhất có thể là bao nhiêu?
+  - **Dạng:** gõ tay · **Chấp nhận:** 65535 | 65,535 | 65.535 | 65 535
+  - **Vì sao:** Port là số 16 bit nên đánh số từ 0 đến 65535.
 - **Đề:** Bạn mở ba tab cùng vào một trang web. Thứ khác nhau giữa ba kết nối là gì?
-  - **Dạng:** trắc nghiệm · **Cổng tạm thời phía máy bạn** ✓ / Cổng phía máy chủ / Địa chỉ IP của máy chủ
-  - **Vì sao:** Máy chủ vẫn ngồi nguyên một cổng; mỗi kết nối phía bạn được cấp một cổng tạm thời riêng nên dữ liệu không lẫn.
+  - **Dạng:** trắc nghiệm · **Port tạm thời phía máy bạn** ✓ / Port phía máy chủ của trang web / Địa chỉ IP của máy chủ trang web
+  - **Vì sao:** Máy chủ vẫn ngồi nguyên một port; mỗi kết nối phía bạn được cấp một port tạm thời riêng nên dữ liệu không lẫn.
+- **Đề:** TCP làm việc gì mà UDP không làm?
+  - **Dạng:** trắc nghiệm · **Đánh số gói, chờ báo nhận và gửi lại gói thiếu** ✓ / Mã hóa nội dung gói tin trước khi đẩy ra đường truyền / Chọn đường đi ngắn nhất qua các router trên Internet
+  - **Chủ đề gợi ý (tầng 1):** TCP bảo đảm bằng cách nào
+  - **Vì sao:** TCP lo phần tin cậy: đánh số, báo nhận, gửi lại gói thiếu. Mã hóa là việc của HTTPS, chọn đường là việc của router — ba việc khác nhau, đừng dồn hết cho TCP.
+- **Đề:** Dải port đã có chủ theo quy ước toàn cầu chạy từ 0 tới số nào?
+  - **Dạng:** gõ tay · **Chấp nhận:** 1023 | 1.023 | 1,023
+  - **Chủ đề gợi ý (tầng 1):** biên trên của dải port nổi tiếng
+  - **Vì sao:** 0 tới 1023 là dải well-known: 80 của web, 443 của web mã hóa, 22 của SSH. Trên máy chủ, mở một port trong dải này còn cần quyền quản trị.
+- **Đề:** Một câu tra tên miền đi tới port 53 thường chọn UDP thay vì TCP. Vì sao?
+  - **Dạng:** trắc nghiệm · **Vì câu hỏi và câu trả lời đều ngắn, hỏi lại còn nhanh hơn bắt tay** ✓ / Vì UDP tự mã hóa sẵn nội dung nên câu tra tên miền của bạn được giấu kín / Vì TCP không dùng được cho những port nằm trong dải nổi tiếng
+  - **Chủ đề gợi ý (tầng 1):** khi nào chọn UDP thay TCP
+  - **Vì sao:** Một câu hỏi tên miền gọn trong một gói. Bắt tay ba bước cho đúng một gói là quá tốn — mất thì hỏi lại còn rẻ hơn. Đó là chỗ UDP thắng.
+- **Đề:** Máy bạn mở một kết nối tới web. Số port mà hệ điều hành cấp cho kết nối đó ở PHÍA MÁY BẠN thuộc loại nào?
+  - **Dạng:** gõ tay · **Chấp nhận:** port tạm thời | port tam thoi | ephemeral | ephemeral port | cổng tạm thời | tạm thời
+  - **Chủ đề gợi ý (tầng 1):** port phía máy bạn trong mỗi kết nối
+  - **Vì sao:** Phía server là port cố định (80, 443), phía bạn là port tạm thời — hệ điều hành bốc ra một số cho mỗi kết nối rồi thu lại khi đóng.
 - **Đề:** Đi lại tầng 1 và tầng 2 của tòa nhà từ trí nhớ.
   - **Dạng:** đi lại cung điện từ trí nhớ (6 phòng)
     - tầng 1 phòng 1 · 80 · HTTP · hình `palace-door-open` — Cửa chính số 80 mở toang cả ngày, ai đi ngang cũng nhìn thấy hết bên trong.
@@ -1549,7 +1629,7 @@ Phần B · 5 chặng · 8 bài · 11 khái niệm
 - **Đề:** Đi lại tầng 3 và tầng 4 của tòa nhà từ trí nhớ.
   - **Dạng:** đi lại cung điện từ trí nhớ (6 phòng)
     - tầng 3 phòng 1 · 445 · SMB · hình `palace-shared-drive` — Phòng 445 là kho chung của tòa nhà, ổ đĩa nhà này cắm thẳng sang nhà kia.
-    - tầng 3 phòng 2 · 21 · FTP · hình `palace-conveyor` — Phòng 21 có băng chuyền chở nguyên thùng tệp qua lại, thùng nào cũng không dán kín.
+    - tầng 3 phòng 2 · 21 · FTP · hình `palace-conveyor` — Phòng 21 là quầy RA LỆNH của khu kho: người ta đứng đó hô "lấy thùng này", còn băng chuyền chở thùng thì chạy ở cửa bên. Không thùng nào dán kín.
     - tầng 3 phòng 3 · 3306 · MySQL · hình `palace-file-cabinet` — Phòng 3306 xếp kín tủ hồ sơ, hỏi câu nào cũng có người tra ra đúng bảng.
     - tầng 4 phòng 1 · 25 · SMTP · hình `palace-mailbox` — Phòng 25 là thùng thư bưu cục, thư chạy từ bưu cục này sang bưu cục kia suốt đêm.
     - tầng 4 phòng 2 · 587 · Mail Submission · hình `palace-id-check` — Phòng 587 bắt xuất trình thẻ nhân viên rồi mới nhận lá thư bạn muốn gửi đi.
@@ -1665,39 +1745,39 @@ Phần B · 5 chặng · 5 bài · 8 khái niệm
 **1 · Khởi động (hook):** Trang web bạn vào đã khóa bằng HTTPS, không ai đọc được nội dung. Nhưng câu hỏi "trang đó ở đâu" mà máy bạn gửi đi trước đó thì sao?
 
 **2 · Đoán thử (pretest):**
-- **Đề:** Đoán thử nhé: câu hỏi DNS thường (cổng 53) đi trên đường dưới dạng nào?
+- **Đề:** Đoán thử nhé: câu hỏi DNS thường (port 53) đi trên đường dưới dạng nào?
   - **Dạng:** trắc nghiệm · **Chữ trần — ai chặn được gói tin là đọc được tên miền bạn hỏi** ✓ / Đã mã hóa sẵn từ đầu
   - **Vì sao:** DNS ra đời khi chưa ai nghĩ tới chuyện rình mò: câu hỏi đi trần, nên nhà mạng hay bất kỳ ai ngồi giữa đều đọc được bạn đang tra tên miền nào.
 
 **3 · Khám phá (teach):**
-- *[m6-doh]* DNS over HTTPS đóng câu hỏi DNS vào một phong bì HTTPS rồi gửi qua cổng 443 — đúng cái phòng ổ khóa vàng ở tầng 1 tòa nhà bạn vừa học. Người ngồi giữa chỉ thấy bạn đang nói chuyện với một máy chủ nào đó, không đọc được bạn hỏi tên miền gì.
+- *[m6-doh]* DNS over HTTPS đóng câu hỏi DNS vào một phong bì HTTPS rồi gửi qua port 443 — đúng cái phòng ổ khóa vàng ở tầng 1 tòa nhà bạn vừa học. Người ngồi giữa chỉ thấy bạn đang nói chuyện với một máy chủ nào đó, không đọc được bạn hỏi tên miền gì.
   - **Đào sâu hơn:** Đổi lại, toàn bộ câu hỏi của bạn dồn về một nhà cung cấp DoH — riêng tư với nhà mạng, nhưng lộ hết với chỗ đó. Và vì lẫn vào lưu lượng 443 nên quản trị mạng công ty cũng khó lọc tên miền độc hại hơn: mỗi lựa chọn đều có cái giá của nó.
 
 **4 · Thử tay (practice, fading 1):**
-- **Đề:** DNS over HTTPS gửi câu hỏi qua cổng số mấy?
+- **Đề:** DNS over HTTPS gửi câu hỏi qua port số mấy?
   - **Dạng:** gõ tay · **Chấp nhận:** 443
   - **Chủ đề gợi ý (tầng 1):** phòng ổ khóa vàng ở tầng 1 tòa nhà
-  - **Gợi ý (tầng 2):** Cùng cổng với mọi trang web có khóa — đó chính là mẹo để nó lẫn vào đám đông.
-  - **Lời giải (tầng 3):** Cổng 443 — câu hỏi DNS được bọc trong HTTPS nên trông không khác gì một lượt truy cập web.
+  - **Gợi ý (tầng 2):** Cùng port với mọi trang web có khóa — đó chính là mẹo để nó lẫn vào đám đông.
+  - **Lời giải (tầng 3):** Port 443 — câu hỏi DNS được bọc trong HTTPS nên trông không khác gì một lượt truy cập web.
 - **Đề:** Cái giá phải trả khi bật DNS over HTTPS là gì?
   - **Dạng:** trắc nghiệm · **Toàn bộ câu hỏi dồn về một nhà cung cấp, và mạng công ty khó lọc tên miền độc hại hơn** ✓ / Tốc độ mạng giảm một nửa / Không vào được trang web dùng HTTP
   - **Chủ đề gợi ý (tầng 1):** riêng tư với ai, và lộ với ai
   - **Gợi ý (tầng 2):** Giấu được với người ngồi giữa, nhưng người nhận câu hỏi thì thấy hết.
-  - **Lời giải (tầng 3):** Riêng tư với nhà mạng nhưng dồn hết vào một nhà cung cấp DoH; và vì lẫn vào cổng 443 nên bộ lọc của mạng công ty khó làm việc hơn.
+  - **Lời giải (tầng 3):** Riêng tư với nhà mạng nhưng dồn hết vào một nhà cung cấp DoH; và vì lẫn vào port 443 nên bộ lọc của mạng công ty khó làm việc hơn.
 
 **5 · Nhớ lại (retrieval):**
 - **Đề:** Không nhìn lại bài: kỹ thuật bọc câu hỏi DNS vào phong bì HTTPS tên là gì? (viết tắt cũng được)
   - **Dạng:** gõ tay · **Chấp nhận:** doh | dns over https
   - **Chủ đề gợi ý (tầng 1):** tên ghép của hai thứ bạn vừa học
   - **Gợi ý (tầng 2):** Ghép tên giao thức tra tên miền với tên giao thức web có khóa.
-  - **Lời giải (tầng 3):** DNS over HTTPS (DoH) — câu hỏi DNS đi trong HTTPS qua cổng 443.
+  - **Lời giải (tầng 3):** DNS over HTTPS (DoH) — câu hỏi DNS đi trong HTTPS qua port 443.
 - **Tự giải thích:** Giải thích bằng lời của bạn: HTTPS đã mã hóa nội dung rồi, vậy vì sao vẫn cần mã hóa cả câu hỏi DNS?
   - **Nhóm ý cần chạm:** [trước, trước khi, đi trước, bước đầu] · [tên miền, trang nào, biết bạn vào, lộ, theo dõi]
   - **Trả lời mẫu:** Vì câu hỏi DNS xảy ra TRƯỚC khi kết nối HTTPS được dựng lên; nó đi trần nên người ngồi giữa vẫn biết bạn vào trang nào, dù không đọc được bạn xem gì trong đó.
 
 **6 · Tổng kết:**
 - Câu hỏi DNS thường đi trần — ai ngồi giữa cũng đọc được tên miền bạn hỏi.
-- DoH bọc câu hỏi đó trong HTTPS và gửi qua cổng 443.
+- DoH bọc câu hỏi đó trong HTTPS và gửi qua port 443.
 - Đổi lại: riêng tư với nhà mạng, nhưng dồn hết vào một nhà cung cấp.
 - *Úp mở bài sau:* Xong chuyện hỏi đường. Còn cái địa chỉ IP của chính máy bạn — ai phát cho bạn, và vì sao phải qua tới bốn nhịp mới xong?
 
@@ -1712,9 +1792,9 @@ Phần B · 5 chặng · 5 bài · 8 khái niệm
 
 **3 · Khám phá (teach):**
 - *[m6-dhcp]* DHCP là dịch vụ phát địa chỉ cho máy mới vào mạng. Địa chỉ ấy không phải của bạn mà là THUÊ: có thời hạn, hết hạn thì phải xin gia hạn, không dùng nữa thì trả về cho người sau.
-  - **Đào sâu hơn:** Ngoài địa chỉ IP, gói cấp phát còn kèm mặt nạ mạng, địa chỉ gateway và địa chỉ máy chủ DNS — nên chỉ một lần hỏi là máy bạn có đủ mọi thứ cần để ra Internet.
+  - **Đào sâu hơn:** Ngoài địa chỉ IP, gói cấp phát còn kèm subnet mask, địa chỉ gateway và địa chỉ máy chủ DNS — nên chỉ một lần hỏi là máy bạn có đủ mọi thứ cần để ra Internet.
 - *[m6-dora]* Bốn nhịp DORA đọc như một chuyện hỏi cưới: chàng trai đứng giữa sân hỏi to "có nhà nào gả không?" (Discover) — các nhà có con gái đánh tiếng "nhà tôi có" (Offer) — chàng chọn MỘT nhà và nói to tên nhà đó cho cả làng nghe (Request) — nhà ấy gật đầu, thế là xong (Ack).
-  - **Đào sâu hơn:** Vì sao Request phải nói TO cho cả làng nghe chứ không thì thầm riêng: những nhà kia đang giữ chỗ chờ bạn, nghe thấy bạn chọn người khác thì mới rút lời và trả địa chỉ về kho. Không có nhịp này, mạng có hai máy chủ DHCP sẽ dần cạn địa chỉ vì ai cũng giữ chỗ cho những người đã đi lấy chồng nơi khác.
+  - **Đào sâu hơn:** Vì sao Request phải nói TO cho cả làng nghe chứ không thì thầm riêng: những nhà kia đang giữ chỗ chờ bạn, nghe thấy bạn chọn người khác thì mới rút lời và trả địa chỉ về kho. Không có nhịp này, mạng có hai máy chủ DHCP sẽ dần cạn địa chỉ vì ai cũng giữ chỗ cho những chàng đã nhận lời một nhà khác.
 
 **4 · Thử tay (practice, fading 1):**
 - **Đề:** Xếp bốn nhịp DORA theo đúng thứ tự.
@@ -1743,7 +1823,7 @@ Phần B · 5 chặng · 5 bài · 8 khái niệm
   - **Trả lời mẫu:** Vì có thể nhiều máy chủ cùng đánh tiếng, mỗi nơi đang giữ sẵn một địa chỉ cho bạn. Request nói to tên nơi bạn chọn để những nơi kia biết mà rút lời và trả địa chỉ về kho — nếu không, kho địa chỉ sẽ cạn dần vì bị giữ chỗ vô ích.
 
 **6 · Tổng kết:**
-- DHCP cho THUÊ địa chỉ, kèm mặt nạ, gateway và máy chủ DNS.
+- DHCP cho THUÊ địa chỉ, kèm subnet mask, gateway và máy chủ DNS.
 - Bốn nhịp DORA: Discover → Offer → Request → Ack.
 - Request nói to để những máy chủ không được chọn rút lời và trả địa chỉ về kho.
 - *Úp mở bài sau:* Đã là thuê thì có hạn. Hết hạn mà bạn vẫn đang dùng máy thì chuyện gì xảy ra? Bài cuối module mình xem tờ giấy thuê.
@@ -1803,10 +1883,10 @@ Phần B · 5 chặng · 5 bài · 8 khái niệm
 - **CNAME / MX record** `m6-ban-ghi-cname-mx` — Bản ghi biệt danh (CNAME) và bản ghi máy chủ thư (MX)
   - Ẩn dụ: CNAME là "tên này thật ra là tên kia"; MX là "thư của nhà này đưa cho bác kia giữ".
   - Thẻ ôn: *CNAME và MX dùng để làm gì?* → CNAME khai biệt danh trỏ về một tên khác; MX chỉ ra máy chủ nhận thư cho tên miền đó.
-- **DNS over HTTPS** `m6-doh` — Bọc câu hỏi DNS trong HTTPS và gửi qua cổng 443
+- **DNS over HTTPS** `m6-doh` — Bọc câu hỏi DNS trong HTTPS và gửi qua port 443
   - Ẩn dụ: Thay vì hỏi to giữa đường, bạn viết câu hỏi vào phong bì niêm phong rồi mới gửi đi.
-  - Thẻ ôn: *DNS over HTTPS giải quyết chuyện gì, và đánh đổi cái gì?* → Giấu tên miền bạn hỏi khỏi người ngồi giữa (đi qua cổng 443). Đổi lại, câu hỏi dồn hết về một nhà cung cấp và bộ lọc của mạng công ty khó làm việc hơn.
-- **DHCP** `m6-dhcp` — Dịch vụ cho thuê địa chỉ IP cùng mặt nạ, gateway và máy chủ DNS
+  - Thẻ ôn: *DNS over HTTPS giải quyết chuyện gì, và đánh đổi cái gì?* → Giấu tên miền bạn hỏi khỏi người ngồi giữa (đi qua port 443). Đổi lại, câu hỏi dồn hết về một nhà cung cấp và bộ lọc của mạng công ty khó làm việc hơn.
+- **DHCP** `m6-dhcp` — Dịch vụ cho thuê địa chỉ IP cùng subnet mask, gateway và máy chủ DNS
   - Ẩn dụ: Như thuê nhà: có giấy, có thời hạn, hết hạn thì gia hạn hoặc trả lại chìa khóa.
   - Thẻ ôn: *Ngoài địa chỉ IP, DHCP còn cấp cho máy bạn những gì?* → Mặt nạ mạng, địa chỉ gateway và địa chỉ máy chủ DNS — đủ để ra Internet chỉ sau một lần hỏi.
 - **DORA** `m6-dora` — Bốn nhịp cấp phát địa chỉ: Discover, Offer, Request, Ack
@@ -1816,7 +1896,7 @@ Phần B · 5 chặng · 5 bài · 8 khái niệm
   - Ẩn dụ: Tờ giấy thuê có ngày hết hạn; đi được nửa hạn là đã đi xin gia hạn cho chắc.
   - Thẻ ôn: *Khi nào máy bạn xin gia hạn địa chỉ, và bằng mấy nhịp?* → Khi dùng hết một nửa thời hạn, bằng hai nhịp Request + Ack gửi thẳng cho máy chủ đã cấp.
 
-### Bài kiểm tra module (8 câu, cần ≥ 85%)
+### Bài kiểm tra module (pool 12 câu, mỗi lượt rút 8, cần ≥ 85%)
 
 - **Đề:** Xếp lại vòng đi hỏi của một câu tra tên miền theo đúng thứ tự.
   - **Dạng:** xếp thứ tự (thứ tự đúng):
@@ -1834,9 +1914,9 @@ Phần B · 5 chặng · 5 bài · 8 khái niệm
 - **Đề:** Bản ghi trỏ tên miền tới một địa chỉ IPv6 tên là gì?
   - **Dạng:** gõ tay · **Chấp nhận:** aaaa | quad a
   - **Vì sao:** AAAA — bản anh em của A, dành cho địa chỉ IPv6 dài gấp bốn lần.
-- **Đề:** DNS over HTTPS gửi câu hỏi qua cổng nào, và giấu được điều gì?
-  - **Dạng:** trắc nghiệm · **Cổng 443 — giấu tên miền bạn hỏi khỏi người ngồi giữa** ✓ / Cổng 53 — giấu nội dung trang web / Cổng 80 — giấu địa chỉ IP của bạn
-  - **Vì sao:** Câu hỏi DNS được bọc trong HTTPS qua cổng 443 nên trông như một lượt truy cập web bình thường.
+- **Đề:** DNS over HTTPS gửi câu hỏi qua port nào, và giấu được điều gì?
+  - **Dạng:** trắc nghiệm · **Port 443 — giấu tên miền bạn hỏi khỏi người ngồi giữa** ✓ / Port 53 — giấu nội dung trang web khỏi nhà mạng / Port 80 — giấu địa chỉ IP của bạn khỏi mọi trang web
+  - **Vì sao:** Câu hỏi DNS được bọc trong HTTPS qua port 443 nên trông như một lượt truy cập web bình thường.
 - **Đề:** Xếp bốn nhịp DHCP theo đúng thứ tự.
   - **Dạng:** xếp thứ tự (thứ tự đúng):
     1. Discover
@@ -1845,11 +1925,27 @@ Phần B · 5 chặng · 5 bài · 8 khái niệm
     4. Ack
   - **Vì sao:** DORA: hỏi to giữa sân — nhà có thì đánh tiếng — chốt một nhà trước cả làng — nhà ấy gật đầu.
 - **Đề:** Vì sao nhịp Request của DHCP phải gửi dạng quảng bá cho cả mạng nghe?
-  - **Dạng:** trắc nghiệm · **Để những máy chủ không được chọn rút lời và trả địa chỉ đang giữ chỗ về kho** ✓ / Để router ghi lại địa chỉ mới của bạn / Vì máy bạn vẫn chưa biết địa chỉ của máy chủ DHCP
+  - **Dạng:** trắc nghiệm · **Để máy chủ không được chọn rút lời, trả địa chỉ về kho** ✓ / Để router trong nhà ghi lại địa chỉ mới của máy bạn / Vì máy bạn vẫn chưa biết địa chỉ của máy chủ DHCP nào
   - **Vì sao:** Nhiều máy chủ có thể cùng đánh tiếng và mỗi nơi giữ sẵn một địa chỉ; Request nói to để những nơi không được chọn giải phóng chỗ đã giữ.
 - **Đề:** Máy bạn bắt đầu xin gia hạn địa chỉ khi đã dùng hết bao nhiêu phần thời hạn thuê?
   - **Dạng:** gõ tay · **Chấp nhận:** một nửa | mot nua | nửa | nua | 50% | 1/2
   - **Vì sao:** Một nửa — xin sớm thì hỏng một lần vẫn còn nửa hạn sau để thử lại, không mất địa chỉ giữa chừng.
+- **Đề:** Bản ghi đặt một tên miền làm biệt danh trỏ về tên miền khác gọi là bản ghi gì?
+  - **Dạng:** gõ tay · **Chấp nhận:** cname | bản ghi cname | ban ghi cname | biệt danh
+  - **Chủ đề gợi ý (tầng 1):** bản ghi biệt danh
+  - **Vì sao:** CNAME là biệt danh: www.congty.com trỏ về congty.com. Đổi địa chỉ IP thì chỉ sửa một chỗ, mọi biệt danh tự đi theo.
+- **Đề:** Ngoài địa chỉ IP, máy chủ DHCP còn giao cho máy bạn những gì?
+  - **Dạng:** trắc nghiệm · **Subnet mask, default gateway và địa chỉ máy chủ DNS** ✓ / Tên miền của trang chủ và bộ nhớ đệm DNS đã tra sẵn / Địa chỉ MAC mới và danh sách port máy được phép mở
+  - **Chủ đề gợi ý (tầng 1):** gói thuê của DHCP gồm những gì
+  - **Vì sao:** Thuê nhà là thuê trọn gói: địa chỉ, subnet mask, cổng ra và chỗ hỏi đường. Thiếu gateway thì máy có địa chỉ mà vẫn không ra được Internet.
+- **Đề:** Máy bạn hỏi một tên miền. Ai là bên ĐI HỎI hộ qua từng tầng rồi mang câu trả lời về?
+  - **Dạng:** trắc nghiệm · **Máy chủ phân giải, thường là của nhà mạng** ✓ / Máy chủ gốc, vì nó đứng trên cùng và biết mọi tên miền / Máy chủ có thẩm quyền của tên miền bạn vừa gõ
+  - **Chủ đề gợi ý (tầng 1):** bên đi hỏi hộ máy bạn
+  - **Vì sao:** Resolver là người chạy việc: hỏi gốc, hỏi TLD, hỏi máy chủ có thẩm quyền, rồi mang đúng MỘT câu trả lời về cho máy bạn. Máy chủ gốc không giữ câu trả lời của mọi tên miền.
+- **Đề:** Laptop ngủ qua đêm, sáng mở lên thì thời hạn thuê địa chỉ đã hết. Chuyện gì xảy ra?
+  - **Dạng:** trắc nghiệm · **Máy phải xin lại từ đầu bằng Discover trước khi dùng mạng** ✓ / Máy giữ nguyên địa chỉ cũ vĩnh viễn vì nó đã từng được cấp / Máy tự đặt cho mình một địa chỉ bất kỳ trong dải mạng nhà
+  - **Chủ đề gợi ý (tầng 1):** hết hạn thuê thì máy làm gì
+  - **Vì sao:** Hết hạn thuê là hết quyền ở: máy chạy lại DORA từ nhịp Discover. Còn hạn thì nó chỉ cần xin gia hạn ở nửa chặng đường.
 
 ## NAT, Firewall và mạng nhà bạn `module-7`
 
@@ -1869,11 +1965,11 @@ Phần B · 5 chặng · 5 bài · 6 khái niệm
 **3 · Khám phá (teach):**
 - *[m7-nat]* Ẩn dụ chung cư quay lại: mạng nhà bạn là một tòa nhà, mỗi thiết bị là một căn hộ mang địa chỉ riêng (192.168.x.x). Cả tòa chỉ có MỘT số nhà nhìn từ ngoài đường — địa chỉ công cộng ở cổng WAN của router. NAT là việc router đổi địa chỉ riêng thành số nhà chung khi gói tin đi ra.
   - **Đào sâu hơn:** Địa chỉ riêng do đó không cần duy nhất trên thế giới: nhà bạn và nhà hàng xóm cùng dùng 192.168.1.10 chẳng sao cả, vì hai con số ấy không bao giờ xuất hiện ngoài Internet.
-- *[m7-pat]* Nhưng thư trả về thì giao cho ai? Router giữ một CUỐN SỔ: mỗi lượt đi ra, nó ghi "căn hộ 192.168.1.10 cổng 51344 ↔ số nhà chung cổng 40001". Thư về mang cổng 40001 thì tra sổ là biết đưa lên căn hộ nào. Dùng số cổng để phân biệt như vậy gọi là PAT.
+- *[m7-pat]* Nhưng thư trả về thì giao cho ai? Router giữ một CUỐN SỔ: mỗi lượt đi ra, nó ghi "căn hộ 192.168.1.10 port 51344 ↔ số nhà chung port 40001". Thư về mang port 40001 thì tra sổ là biết đưa lên căn hộ nào. Dùng số port để phân biệt như vậy gọi là PAT.
   - **Đào sâu hơn:** Vì bảng này chỉ có dòng khi có người TRONG nhà mở lời trước, nên mặc định người ngoài không tự gõ cửa vào được — router không biết đưa cho ai. Đó là lý do mạng nhà tự nhiên đã kín một nửa, dù bạn chưa cài tường lửa nào.
 
 **4 · Thử tay (practice, fading 0):**
-- **Ví dụ giải sẵn:** Máy tính 192.168.1.10 mở một trang web. (1) Gói đi ra mang địa chỉ nguồn 192.168.1.10 cổng 51344. (2) Router đổi nguồn thành 203.0.113.7 cổng 40001 và ghi cặp đó vào sổ. (3) Máy chủ trả lời về 203.0.113.7 cổng 40001. (4) Router tra sổ, đổi ngược lại và đưa gói lên đúng máy tính. Đọc kỹ bước 2 rồi thử tự gọi tên cuốn sổ ấy nhé.
+- **Ví dụ giải sẵn:** Máy tính 192.168.1.10 mở một trang web. (1) Gói đi ra mang địa chỉ nguồn 192.168.1.10 port 51344. (2) Router đổi nguồn thành 203.0.113.7 port 40001 và ghi cặp đó vào sổ. (3) Máy chủ trả lời về 203.0.113.7 port 40001. (4) Router tra sổ, đổi ngược lại và đưa gói lên đúng máy tính. Đọc kỹ bước 2 rồi thử tự gọi tên cuốn sổ ấy nhé.
 - **Đề:** Việc router đổi địa chỉ riêng thành địa chỉ công cộng khi gói tin đi ra gọi là gì? (viết tắt được)
   - **Dạng:** gõ tay · **Chấp nhận:** nat | network address translation
   - **Chủ đề gợi ý (tầng 1):** chuyện xảy ra với địa chỉ nguồn khi gói rời khỏi nhà
@@ -1883,14 +1979,14 @@ Phần B · 5 chặng · 5 bài · 6 khái niệm
   - **Dạng:** trắc nghiệm · **Tra cuốn sổ ghi cặp địa chỉ và SỐ CỔNG lúc gói đi ra** ✓ / Hỏi lại tất cả các máy trong nhà / Dựa vào địa chỉ MAC ghi trong gói tin
   - **Chủ đề gợi ý (tầng 1):** thứ router ghi lại lúc gói đi ra
   - **Gợi ý (tầng 2):** Đúng thứ đã giúp phân biệt các ứng dụng ở Module 5 — con số căn hộ.
-  - **Lời giải (tầng 3):** Tra bảng NAT/PAT: mỗi dòng ghi cặp "địa chỉ riêng + cổng riêng ↔ địa chỉ chung + cổng chung".
+  - **Lời giải (tầng 3):** Tra bảng NAT/PAT: mỗi dòng ghi cặp "địa chỉ riêng + port riêng ↔ địa chỉ chung + port chung".
 
 **5 · Nhớ lại (retrieval):**
 - **Đề:** Không nhìn lại bài: cách NAT dùng SỐ CỔNG để cả nhà chung một địa chỉ công cộng gọi là gì? (viết tắt được)
   - **Dạng:** gõ tay · **Chấp nhận:** pat | port address translation
   - **Chủ đề gợi ý (tầng 1):** chữ đầu là tên con số phân biệt các căn hộ
   - **Gợi ý (tầng 2):** Giống NAT nhưng chữ đầu đổi thành chữ đầu của "port".
-  - **Lời giải (tầng 3):** PAT — Port Address Translation, phân biệt từng máy trong nhà bằng số cổng trên cùng một địa chỉ chung.
+  - **Lời giải (tầng 3):** PAT — Port Address Translation, phân biệt từng máy trong nhà bằng số port trên cùng một địa chỉ chung.
 - **Tự giải thích:** Giải thích bằng lời của bạn: vì sao nhà bạn và nhà hàng xóm cùng dùng địa chỉ 192.168.1.10 mà không đụng nhau?
   - **Nhóm ý cần chạm:** [riêng, nội bộ, trong nhà, private] · [không ra ngoài, đổi, nat, không xuất hiện, thay bằng]
   - **Trả lời mẫu:** Vì đó là địa chỉ riêng, chỉ có nghĩa trong phạm vi từng nhà; ra tới Internet thì router đã đổi nó thành địa chỉ công cộng của nhà mình rồi, nên hai con số giống nhau không bao giờ gặp nhau ngoài đường.
@@ -1898,7 +1994,7 @@ Phần B · 5 chặng · 5 bài · 6 khái niệm
 **6 · Tổng kết:**
 - Cả nhà là một chung cư: nhiều địa chỉ riêng, một số nhà chung ra ngoài.
 - NAT đổi địa chỉ riêng thành địa chỉ công cộng ở cổng WAN của router.
-- PAT dùng số cổng để biết thư về thuộc máy nào — router tra sổ.
+- PAT dùng số port để biết thư về thuộc máy nào — router tra sổ.
 - *Úp mở bài sau:* Sổ chỉ có dòng khi người trong nhà mở lời trước. Vậy muốn ai đó ngoài đường chủ động gõ cửa vào một máy trong nhà thì làm sao?
 
 ### Bài: Chừa sẵn một lối vào cho người ngoài `m7-bai-2`
@@ -1907,24 +2003,24 @@ Phần B · 5 chặng · 5 bài · 6 khái niệm
 
 **2 · Đoán thử (pretest):**
 - **Đề:** Đoán thử nhé: muốn truy cập được một máy trong nhà từ Internet, bạn phải khai gì trên router?
-  - **Dạng:** trắc nghiệm · **Một dòng dặn trước: cổng nào từ ngoài thì đưa vào máy nào, cổng nào** ✓ / Đổi địa chỉ máy đó thành địa chỉ công cộng / Tắt NAT đi
-  - **Vì sao:** Đó là port forwarding: bạn ghi sẵn một dòng trong sổ của router, để gói tin lạ tới cổng đã khai được đưa thẳng vào đúng máy trong nhà.
+  - **Dạng:** trắc nghiệm · **Một dòng dặn trước: port nào từ ngoài thì đưa vào máy nào, port nào** ✓ / Đổi địa chỉ máy đó thành địa chỉ công cộng / Tắt NAT đi
+  - **Vì sao:** Đó là port forwarding: bạn ghi sẵn một dòng trong sổ của router, để gói tin lạ tới port đã khai được đưa thẳng vào đúng máy trong nhà.
 
 **3 · Khám phá (teach):**
-- *[m7-port-forwarding]* Port forwarding là một dòng bạn ghi TRƯỚC vào sổ của router: "ai gõ vào cổng 8080 của số nhà chung thì dẫn tới máy 192.168.1.50 cổng 80". Từ đó người ngoài gõ đúng cổng ấy là vào được đúng máy ấy — dù trong nhà chưa ai mở lời.
+- *[m7-port-forwarding]* Port forwarding là một dòng bạn ghi TRƯỚC vào sổ của router: "ai gõ vào port 8080 của số nhà chung thì dẫn tới máy 192.168.1.50 port 80". Từ đó người ngoài gõ đúng port ấy là vào được đúng máy ấy — dù trong nhà chưa ai mở lời.
   - **Đào sâu hơn:** Mỗi dòng như vậy là một cánh cửa mở thường trực ra Internet, và cả thế giới đều dò được. Nhớ lại tòa nhà 15 phòng: mở 3389 hay 445 ra ngoài là mời cả hành tinh thử mật khẩu vào màn hình và ổ đĩa nhà bạn.
 
 **4 · Thử tay (practice, fading 1):**
-- **Đề:** Cổng nào sau đây TUYỆT ĐỐI không nên mở thẳng ra Internet bằng port forwarding?
+- **Đề:** Port nào sau đây TUYỆT ĐỐI không nên mở thẳng ra Internet bằng port forwarding?
   - **Dạng:** trắc nghiệm · **3389 — màn hình máy tính từ xa** ✓ / 443 — trang web có khóa / 123 — đồng bộ giờ
   - **Chủ đề gợi ý (tầng 1):** phòng có tấm gương chiếu nguyên màn hình
-  - **Gợi ý (tầng 2):** Nghĩ xem cổng nào cho người ngoài ngồi thẳng vào máy bạn nếu đoán trúng mật khẩu.
+  - **Gợi ý (tầng 2):** Nghĩ xem port nào cho người ngoài ngồi thẳng vào máy bạn nếu đoán trúng mật khẩu.
   - **Lời giải (tầng 3):** 3389 (RDP): mở ra Internet là mời cả thế giới thử mật khẩu để vào thẳng màn hình máy bạn.
 - **Đề:** Dòng khai sẵn trên router để người ngoài vào được một máy trong nhà gọi là gì? (tiếng Anh cũng được)
-  - **Dạng:** gõ tay · **Chấp nhận:** port forwarding | chuyển tiếp cổng | chuyen tiep cong | forward cổng | mở cổng
-  - **Chủ đề gợi ý (tầng 1):** việc router làm với gói tin tới đúng cổng đã khai
-  - **Gợi ý (tầng 2):** Hai từ: một từ là "cổng", từ kia nghĩa là chuyển tiếp.
-  - **Lời giải (tầng 3):** Port forwarding — chuyển tiếp cổng: khai trước cổng nào từ ngoài thì đưa vào máy nào trong nhà.
+  - **Dạng:** gõ tay · **Chấp nhận:** port forwarding | chuyển tiếp cổng | chuyen tiep cong | forward cổng | mở cổng | chuyển tiếp port | forward port | mở port
+  - **Chủ đề gợi ý (tầng 1):** việc router làm với gói tin tới đúng port đã khai
+  - **Gợi ý (tầng 2):** Hai từ: một từ là "port", từ kia nghĩa là chuyển tiếp.
+  - **Lời giải (tầng 3):** Port forwarding — chuyển tiếp port: khai trước port nào từ ngoài thì đưa vào máy nào trong nhà.
 
 **5 · Nhớ lại (retrieval):**
 - **Đề:** Không nhìn lại bài: vì sao bình thường người ngoài KHÔNG tự vào được máy trong nhà bạn? (một câu ngắn)
@@ -1938,7 +2034,7 @@ Phần B · 5 chặng · 5 bài · 6 khái niệm
 
 **6 · Tổng kết:**
 - Bình thường người ngoài không vào được vì bảng NAT chưa có dòng nào cho họ.
-- Port forwarding là dòng khai trước: cổng ngoài nào dẫn vào máy nào, cổng nào.
+- Port forwarding là dòng khai trước: port ngoài nào dẫn vào máy nào, port nào.
 - Mỗi dòng là một cửa mở thường trực — đừng bao giờ mở 3389 hay 445.
 - *Úp mở bài sau:* Nhưng vì sao thư trả lời của một trang web thì router cho vào, còn gói tin lạ y hệt lại bị chặn? Người gác cửa nhớ mặt bằng cách nào?
 
@@ -1952,12 +2048,12 @@ Phần B · 5 chặng · 5 bài · 6 khái niệm
   - **Vì sao:** Stateful nghĩa là có nhớ: mỗi kết nối đi ra được ghi vào bảng, và chỉ gói tin khớp một dòng trong bảng ấy mới được đi vào.
 
 **3 · Khám phá (teach):**
-- *[m7-firewall-stateful]* Tường lửa có nhớ trạng thái giữ một bảng các cuộc trò chuyện đang mở: ai trong nhà vừa gọi ra đâu, bằng cổng nào. Gói tin từ ngoài vào chỉ được qua nếu khớp một dòng trong bảng — tức là đúng câu trả lời của một cuộc gọi có thật. Người lạ tự tới, không có dòng nào, thì mời về.
+- *[m7-firewall-stateful]* Tường lửa có nhớ trạng thái giữ một bảng các cuộc trò chuyện đang mở: ai trong nhà vừa gọi ra đâu, bằng port nào. Gói tin từ ngoài vào chỉ được qua nếu khớp một dòng trong bảng — tức là đúng câu trả lời của một cuộc gọi có thật. Người lạ tự tới, không có dòng nào, thì mời về.
   - **Đào sâu hơn:** Mỗi dòng còn có hạn: cuộc trò chuyện im lặng quá lâu thì bị xóa khỏi bảng để lấy chỗ. Đó là lý do vài ứng dụng phải gửi gói "giữ nhịp" đều đặn, nếu không kết nối tự đứt sau vài phút không nói gì.
 
 **4 · Thử tay (practice, fading 2):**
 - **Đề:** Máy bạn mở một trang web. Gói tin trả về từ máy chủ đó được vào nhà vì sao?
-  - **Dạng:** trắc nghiệm · **Vì nó khớp một dòng trong bảng kết nối đang mở của tường lửa** ✓ / Vì máy chủ web là địa chỉ tin cậy / Vì cổng 443 luôn được mở sẵn
+  - **Dạng:** trắc nghiệm · **Vì nó khớp một dòng trong bảng kết nối đang mở của tường lửa** ✓ / Vì máy chủ web là địa chỉ tin cậy / Vì port 443 luôn được mở sẵn
   - **Chủ đề gợi ý (tầng 1):** thứ được ghi vào bảng lúc bạn mở lời
   - **Gợi ý (tầng 2):** Tường lửa không quen ai cả — nó chỉ nhớ những cuộc gọi vừa đi ra.
   - **Lời giải (tầng 3):** Vì lúc bạn mở lời, tường lửa đã ghi cuộc trò chuyện đó vào bảng; gói trả về khớp đúng dòng ấy nên được qua.
@@ -1997,7 +2093,7 @@ Phần B · 5 chặng · 5 bài · 6 khái niệm
   - **Đào sâu hơn:** Biết tách ba vai là biết chỗ chẩn đoán: đèn modem tắt là chuyện của nhà mạng; máy có địa chỉ 192.168 mà không ra được Internet là chuyện của router; máy này thấy máy kia nhưng cả hai không ra ngoài thì switch vẫn ổn, lỗi nằm phía trên.
 
 **4 · Thử tay (practice, fading 2):**
-- **Đề:** Lắp lại mạng nhà bạn: nối máy tính và điện thoại qua switch vào router nhà, rồi đặt địa chỉ cho hai thiết bị đó sao cho cả hai ra được máy chủ ngoài Internet. Phần từ router ra nhà mạng đã đấu sẵn, y như đời thật.
+- **Đề:** Lắp lại mạng nhà bạn: nối máy tính và điện thoại qua switch vào router nhà, rồi đặt địa chỉ cho hai thiết bị đó sao cho cả hai ra được máy chủ ngoài Internet. Phần từ router ra nhà mạng đã đấu sẵn, y như đời thật. Một điều cần biết trước khi đọc nhật ký chặng: phòng lab này KHÔNG mô phỏng NAT, nên bạn sẽ thấy địa chỉ riêng 192.168.1.x đi thẳng tới máy chủ ngoài. Ngoài đời router đã đổi nó thành địa chỉ công cộng ở ngay chặng ra — đúng như bài NAT đầu module.
   - **Dạng:** phòng lab (lắp/sửa sơ đồ mạng)
     - **Sơ đồ đề bài:** Máy tính [chưa đặt IP] · Điện thoại [chưa đặt IP] · Switch trong nhà [p1:VLAN 1, p2:VLAN 1, p3:VLAN 1, p4:VLAN 1] · Router nhà [lan:192.168.1.1/24, wan:203.0.113.2/30] · Modem nhà mạng [g0:203.0.113.1/30, g1:198.51.100.1/24] · Máy chủ trên Internet [198.51.100.10/24, gw 198.51.100.1] — dây: Router nhà·wan — Modem nhà mạng·g0 | Modem nhà mạng·g1 — Máy chủ trên Internet·eth0
     - **Mục tiêu:**
@@ -2007,7 +2103,7 @@ Phần B · 5 chặng · 5 bài · 6 khái niệm
     - **Lời giải mẫu:** Máy tính [192.168.1.10/24, gw 192.168.1.1] · Điện thoại [192.168.1.11/24, gw 192.168.1.1] · Switch trong nhà [p1:VLAN 1, p2:VLAN 1, p3:VLAN 1, p4:VLAN 1] · Router nhà [lan:192.168.1.1/24, wan:203.0.113.2/30] · Modem nhà mạng [g0:203.0.113.1/30, g1:198.51.100.1/24] · Máy chủ trên Internet [198.51.100.10/24, gw 198.51.100.1] — dây: Router nhà·wan — Modem nhà mạng·g0 | Modem nhà mạng·g1 — Máy chủ trên Internet·eth0 | Máy tính·eth0 — Switch trong nhà·p1 | Điện thoại·wlan0 — Switch trong nhà·p2 | Switch trong nhà·p3 — Router nhà·lan
   - **Chủ đề gợi ý (tầng 1):** thứ mỗi thiết bị cần để biết đường ra khỏi nhà
   - **Gợi ý (tầng 2):** Nối máy tính và điện thoại vào switch, switch nối lên cổng LAN của router nhà. Rồi mỗi thiết bị cần một địa chỉ cùng dải 192.168.1.x và gateway trỏ về 192.168.1.1.
-  - **Lời giải (tầng 3):** Máy tính 192.168.1.10/24 và điện thoại 192.168.1.11/24, cả hai đặt gateway 192.168.1.1; dây đi từ hai thiết bị vào switch, rồi từ switch lên cổng LAN của router nhà. Phần WAN ra modem đã đấu sẵn.
+  - **Lời giải (tầng 3):** Máy tính 192.168.1.10/24 và điện thoại 192.168.1.11/24, cả hai đặt gateway 192.168.1.1; dây đi từ hai thiết bị vào switch, rồi từ switch lên cổng LAN của router nhà. Phần WAN ra modem đã đấu sẵn. Nhật ký chặng giữ nguyên địa chỉ riêng suốt đường đi vì phòng lab không mô phỏng NAT — cái bạn đang luyện ở đây là đường DÂY và địa chỉ, còn lớp đổi địa chỉ thì bài 1 của module đã lo.
 
 **5 · Nhớ lại (retrieval):**
 - **Đề:** Không nhìn lại sơ đồ: xếp các chặng của mạng nhà theo thứ tự từ ngoài đường vào tới máy bạn.
@@ -2076,10 +2172,10 @@ Phần B · 5 chặng · 5 bài · 6 khái niệm
 - **NAT** `m7-nat` — Đổi địa chỉ riêng trong nhà thành địa chỉ công cộng khi ra Internet
   - Ẩn dụ: Cả chung cư một số nhà: thư ra ngoài đều ghi số nhà chung, không ghi số căn hộ.
   - Thẻ ôn: *NAT làm gì với gói tin đi ra Internet?* → Đổi địa chỉ nguồn từ địa chỉ riêng (192.168.x.x) thành địa chỉ công cộng ở cổng WAN của router.
-- **PAT** `m7-pat` — Dùng số cổng để nhiều máy chung một địa chỉ công cộng
+- **PAT** `m7-pat` — Dùng số port để nhiều máy chung một địa chỉ công cộng
   - Ẩn dụ: Cuốn sổ của bảo vệ: thư về mang số nào thì dẫn lên đúng căn hộ đó.
-  - Thẻ ôn: *Nhờ đâu router biết thư trả về thuộc máy nào trong nhà?* → Nhờ bảng NAT/PAT: mỗi dòng ghi "địa chỉ riêng + cổng riêng ↔ địa chỉ chung + cổng chung" lúc gói đi ra.
-- **Port forwarding** `m7-port-forwarding` — Khai trước một lối vào: cổng ngoài nào dẫn tới máy nào trong nhà
+  - Thẻ ôn: *Nhờ đâu router biết thư trả về thuộc máy nào trong nhà?* → Nhờ bảng NAT/PAT: mỗi dòng ghi "địa chỉ riêng + port riêng ↔ địa chỉ chung + port chung" lúc gói đi ra.
+- **Port forwarding** `m7-port-forwarding` — Khai trước một lối vào: port ngoài nào dẫn tới máy nào trong nhà
   - Ẩn dụ: Dặn bảo vệ: ai tới hỏi phòng 402 thì cứ dẫn lên.
   - Thẻ ôn: *Port forwarding dùng khi nào, và nguy ở chỗ nào?* → Khi cần người ngoài chủ động vào một máy trong nhà. Nguy vì đó là cửa mở thường trực ra Internet — không bao giờ mở 3389 hay 445.
 - **Stateful firewall** `m7-firewall-stateful` — Tường lửa có nhớ các kết nối đang mở
@@ -2092,15 +2188,15 @@ Phần B · 5 chặng · 5 bài · 6 khái niệm
   - Ẩn dụ: Nhà có hai lớp cổng, mỗi lớp một cuốn sổ — khai một cuốn thì khách vẫn kẹt ở giữa.
   - Thẻ ôn: *Vì sao double NAT làm hỏng port forwarding, và gỡ thế nào?* → Vì có hai bảng NAT ở hai thiết bị, khai một chỗ là chưa đủ. Gỡ bằng cách cho router thứ hai làm điểm phát sóng: tắt NAT, cắm vào cổng LAN.
 
-### Bài kiểm tra module (8 câu, cần ≥ 85%)
+### Bài kiểm tra module (pool 12 câu, mỗi lượt rút 8, cần ≥ 85%)
 
 - **Đề:** Việc router đổi địa chỉ riêng thành địa chỉ công cộng khi gói tin ra Internet gọi là gì? (viết tắt được)
   - **Dạng:** gõ tay · **Chấp nhận:** nat | network address translation
   - **Vì sao:** NAT — đổi địa chỉ nguồn ở cổng WAN, nhờ đó cả nhà dùng chung một địa chỉ công cộng.
 - **Đề:** Nhờ đâu router biết gói tin trả về thuộc máy nào trong nhà?
-  - **Dạng:** trắc nghiệm · **Tra bảng NAT/PAT ghi cặp địa chỉ và số cổng lúc gói đi ra** ✓ / Dựa vào địa chỉ MAC của máy nhận / Hỏi lại tất cả thiết bị trong nhà
+  - **Dạng:** trắc nghiệm · **Tra bảng NAT/PAT ghi cặp địa chỉ và port lúc gói đi ra** ✓ / Dựa vào địa chỉ MAC của máy nhận ghi trong gói tin / Phát hỏi lại tất cả thiết bị trong nhà xem của ai
   - **Vì sao:** Mỗi lượt đi ra sinh một dòng trong bảng; thư về khớp dòng nào thì đưa lên máy đó.
-- **Đề:** Cổng nào tuyệt đối không nên mở ra Internet bằng port forwarding?
+- **Đề:** Port nào tuyệt đối không nên mở ra Internet bằng port forwarding?
   - **Dạng:** trắc nghiệm · **3389** ✓ / 443 / 123
   - **Vì sao:** 3389 là RDP — mở ra là mời cả thế giới thử mật khẩu để ngồi thẳng vào màn hình máy bạn.
 - **Đề:** Tường lửa có nhớ các kết nối đang mở được gọi bằng tính từ tiếng Anh nào?
@@ -2115,14 +2211,30 @@ Phần B · 5 chặng · 5 bài · 6 khái niệm
     5. Máy tính, điện thoại
   - **Vì sao:** Modem chạm đường, router chia đường và làm NAT, switch/Wi-Fi nối tới từng thiết bị.
 - **Đề:** Máy bạn có địa chỉ 192.168.1.20 nhưng không vào được Internet. Nghi chặng nào trước?
-  - **Dạng:** trắc nghiệm · **Chặng phía trên: đường ra của router, modem hoặc nhà mạng** ✓ / Switch trong nhà / Card mạng của máy
+  - **Dạng:** trắc nghiệm · **Chặng phía trên: đường ra của router hoặc nhà mạng** ✓ / Chiếc switch nối các máy trong nhà, ngay dưới router / Card mạng của chính chiếc máy bạn đang ngồi dùng
   - **Vì sao:** Có được địa chỉ 192.168.x.x nghĩa là phần trong nhà vẫn chạy; vấn đề nằm ở chặng ra ngoài.
 - **Đề:** Cắm router thứ hai vào cổng WAN của hộp nhà mạng sinh ra tình trạng gì? (tiếng Anh cũng được)
-  - **Dạng:** gõ tay · **Chấp nhận:** double nat | nat kép | nat kep | hai lớp nat | hai lop nat
+  - **Dạng:** gõ tay · **Chấp nhận:** double nat | doublenat | nat kép | nat kep | hai lớp nat | hai lop nat
   - **Vì sao:** Double NAT: hai lớp đổi địa chỉ, hai cuốn sổ — port forwarding khai một chỗ là chưa đủ.
 - **Đề:** Cách gỡ double NAT khi vẫn muốn dùng router thứ hai cho rộng sóng?
-  - **Dạng:** trắc nghiệm · **Cho nó làm điểm phát sóng: tắt NAT và phát địa chỉ, cắm dây vào cổng LAN** ✓ / Khai port forwarding trên cả hai / Đặt hai router cùng một dải địa chỉ
+  - **Dạng:** trắc nghiệm · **Tắt NAT và DHCP trên nó, cắm dây vào cổng LAN** ✓ / Khai port forwarding trên cả hai router cho khớp nhau / Đặt hai router về cùng một dải địa chỉ cho đồng bộ
   - **Vì sao:** Tắt vai làm cổng của router thứ hai thì cả nhà quay về một lớp NAT và một cuốn sổ duy nhất.
+- **Đề:** Ba máy trong nhà cùng mở một trang web qua đúng một địa chỉ công cộng. Router phân biệt ba luồng bằng gì?
+  - **Dạng:** trắc nghiệm · **Bằng số port nguồn khác nhau nó gán cho từng luồng** ✓ / Bằng địa chỉ MAC của từng máy ghi kèm trong gói tin / Bằng thứ tự thời gian: máy nào hỏi trước thì nhận trước
+  - **Chủ đề gợi ý (tầng 1):** nhiều máy chung một địa chỉ công cộng nhờ gì
+  - **Vì sao:** PAT là NAT cộng thêm số port: một địa chỉ công cộng, mỗi luồng một số port riêng — như một tòa nhà chung địa chỉ mà mỗi phòng một số.
+- **Đề:** Tường lửa nhà bạn chặn mọi kết nối từ ngoài vào. Vậy vì sao trang web vẫn trả dữ liệu về được cho máy bạn?
+  - **Dạng:** trắc nghiệm · **Vì tường lửa nhớ kết nối do máy bạn mở ra và cho lượt về đi qua** ✓ / Vì tường lửa chỉ chặn được kết nối tới, còn dữ liệu trả về thì không xét / Vì port 443 luôn được mở sẵn cả hai chiều trên mọi tường lửa nhà
+  - **Chủ đề gợi ý (tầng 1):** tường lửa nhớ các kết nối đang mở
+  - **Vì sao:** Stateful nghĩa là có trí nhớ: tường lửa ghi lại kết nối do trong nhà mở ra, gói về khớp kết nối đó thì được vào; gói lạ tự dưng gõ cửa thì không.
+- **Đề:** Bạn dựng một máy chủ trong nhà và muốn người ngoài vào được. Trên router phải khai trước lối vào bằng việc gì?
+  - **Dạng:** gõ tay · **Chấp nhận:** port forwarding | chuyển tiếp port | chuyen tiep port | mở port | mo port
+  - **Chủ đề gợi ý (tầng 1):** khai trước một lối vào từ ngoài
+  - **Vì sao:** Port forwarding khai sẵn: gói tới port ngoài này thì giao cho máy nào trong nhà. Không khai thì NAT chặn như mọi khách không hẹn trước.
+- **Đề:** Nhà bạn đã có NAT rồi thì còn cần tường lửa nữa không?
+  - **Dạng:** trắc nghiệm · **Có — NAT giấu địa chỉ chứ không lọc nội dung hay chặn máy trong nhà đi ra** ✓ / Không — NAT đã chặn sạch mọi thứ đi từ ngoài vào nên mạng trong nhà bạn kín rồi / Không — tường lửa chỉ cần cho công ty, mạng nhà không có gì đáng để mất
+  - **Chủ đề gợi ý (tầng 1):** NAT khác tường lửa ở chỗ nào
+  - **Vì sao:** NAT là bức tường tình cờ: nó giấu máy trong nhà nhưng không xem nội dung và không chặn máy trong nhà tự mở kết nối ra ngoài. Hai việc khác nhau.
 
 ## Wi-Fi và IPv6 chuyên sâu `module-8`
 
@@ -2393,10 +2505,10 @@ Phần C · 5 chặng · 5 bài · 10 khái niệm
   - Ẩn dụ: Chiếc xe đeo hai biển số — đường mới đi biển mới, đường cũ vẫn biển cũ.
   - Thẻ ôn: *Dual-stack là gì, và vì sao nó quan trọng với cả Internet?* → Máy mang song song cả IPv4 lẫn IPv6: đích có IPv6 thì ưu tiên, chưa có thì quay về IPv4 — nhờ đó Internet đổi hệ từ từ mà không sập.
 
-### Bài kiểm tra module (9 câu, cần ≥ 85%)
+### Bài kiểm tra module (pool 12 câu, mỗi lượt rút 8, cần ≥ 85%)
 
 - **Đề:** Camera ở góc vườn, cách router hai bức tường, nên vào băng tần nào?
-  - **Dạng:** trắc nghiệm · **2.4 GHz — tần số thấp đi xa, xuyên tường tốt** ✓ / 5 GHz — nhanh hơn là hơn / 6 GHz — mới nhất là tốt nhất
+  - **Dạng:** trắc nghiệm · **2.4 GHz — tần số thấp đi xa, xuyên tường tốt** ✓ / 5 GHz — băng tần nhanh hơn thì đi xa hơn / 6 GHz — thế hệ mới nên xuyên tường tốt hơn
   - **Vì sao:** Xa ưu tiên TỚI: 2.4 GHz vang xa nhất; tốc độ của 5/6 GHz vô nghĩa nếu sóng không tới nơi.
 - **Đề:** Wi-Fi 6E khác Wi-Fi 6 ở quyền chạy thêm trên băng tần nào? (con số)
   - **Dạng:** gõ tay · **Chấp nhận:** 6 | 6ghz | băng 6 | bang 6
@@ -2405,13 +2517,13 @@ Phần C · 5 chặng · 5 bài · 10 khái niệm
   - **Dạng:** gõ tay · **Chấp nhận:** wpa3 | wpa 3
   - **Vì sao:** WPA3: kiểu bắt tay mới buộc mỗi lần đoán mật khẩu phải hỏi router một lần theo thời gian thật.
 - **Đề:** Địa chỉ IPv6 bắt đầu bằng fe80 là loại địa chỉ gì?
-  - **Dạng:** gõ tay · **Chấp nhận:** link-local | link local | nội bộ | noi bo | trong phòng | trong phong | cục bộ | cuc bo
+  - **Dạng:** gõ tay · **Chấp nhận:** link-local | link local | linklocal | nội bộ | noi bo | trong phòng | trong phong | cục bộ | cuc bo
   - **Vì sao:** Link-local — máy tự sinh, chỉ có nghĩa trong một đường truyền, không bao giờ qua router.
 - **Đề:** Máy 192.168.1.10 mở một trang web. Chuyện gì phải xảy ra với địa chỉ nguồn trước khi gói tin ra tới Internet?
-  - **Dạng:** trắc nghiệm · **Router đổi nó thành địa chỉ công cộng — NAT** ✓ / Không gì cả, nó đi thẳng / DNS đổi nó thành tên miền
+  - **Dạng:** trắc nghiệm · **Router đổi nó thành địa chỉ công cộng — NAT** ✓ / Không đổi gì cả — địa chỉ riêng vẫn đi thẳng ra ngoài / DNS đổi địa chỉ riêng đó thành một tên miền
   - **Vì sao:** 192.168.x.x là địa chỉ riêng IPv4 — phải qua NAT ở router (Module 7). Nhận ra "đây là chuyện của hệ nào" chính là kỹ năng module này luyện.
 - **Đề:** Cùng cảnh đó nhưng máy dùng 2001:db8::5 (IPv6 công cộng). Địa chỉ nguồn có phải đổi không?
-  - **Dạng:** trắc nghiệm · **Không — đó đã là biển số công cộng thật, đi thẳng; tường lửa vẫn đứng gác** ✓ / Có — mọi gói tin đều phải qua NAT / Có — router đổi nó thành fe80
+  - **Dạng:** trắc nghiệm · **Không — đó đã là biển số công cộng thật, đi thẳng** ✓ / Có — gói tin nào ra Internet cũng phải qua NAT / Có — router đổi nó thành địa chỉ fe80 của mình
   - **Vì sao:** IPv6 đủ địa chỉ cho tất cả nên không cần NAT; việc chặn người lạ là của tường lửa — đừng nhầm hai vai.
 - **Đề:** Cơ chế cấp địa chỉ qua bốn nhịp Discover–Offer–Request–Ack là của giao thức nào? (viết tắt)
   - **Dạng:** gõ tay · **Chấp nhận:** dhcp
@@ -2420,8 +2532,20 @@ Phần C · 5 chặng · 5 bài · 10 khái niệm
   - **Dạng:** gõ tay · **Chấp nhận:** slaac
   - **Vì sao:** SLAAC — stateless: router rao tên khu phố, máy tự chọn số nhà, không ai giữ sổ.
 - **Đề:** Máy bạn đang mang đồng thời 192.168.1.10 và 2001:db8::5. Tình trạng này gọi là gì?
-  - **Dạng:** trắc nghiệm · **Dual-stack — chạy song song hai hệ, ưu tiên IPv6 khi đích có** ✓ / Double NAT — hai lớp đổi địa chỉ / Link-local — hai biệt danh trong phòng
+  - **Dạng:** trắc nghiệm · **Dual-stack — chạy song song hai hệ địa chỉ** ✓ / Double NAT — hai lớp đổi địa chỉ chồng lên nhau / Link-local — hai biệt danh chỉ dùng trong phòng
   - **Vì sao:** Dual-stack: hai biển số song song trên một card mạng. Double NAT (Module 7) là chuyện khác hẳn — hai lớp ĐỔI địa chỉ IPv4 lồng nhau.
+- **Đề:** Ba máy cùng nối Wi-Fi vào một router. Vì sao tốc độ của mỗi máy tụt xuống khi cả ba cùng tải file?
+  - **Dạng:** trắc nghiệm · **Vì không khí là một sợi dây chung, mỗi lúc chỉ một máy được nói** ✓ / Vì router chia đôi băng tần 5 GHz thành ba kênh nhỏ cho ba máy / Vì mỗi máy phải chờ hai máy kia mã hóa xong gói tin của chúng
+  - **Chủ đề gợi ý (tầng 1):** không khí là sợi dây dùng chung
+  - **Vì sao:** Wi-Fi là một cuộc họp: ai muốn nói phải chờ tới lượt. Dây mạng thì mỗi máy một sợi riêng nên không phải xếp hàng như vậy.
+- **Đề:** Vì sao mật khẩu Wi-Fi ngắn nguy hiểm hơn hẳn khi mạng còn chạy WPA2?
+  - **Dạng:** trắc nghiệm · **Vì kẻ tấn công bắt được gói bắt tay rồi mang về dò offline hàng triệu lần** ✓ / Vì WPA2 gửi thẳng mật khẩu ra ngoài không khí trong mỗi lần máy kết nối lại / Vì WPA2 chỉ cho phép mật khẩu tối đa tám ký tự nên dò một lúc là trúng
+  - **Chủ đề gợi ý (tầng 1):** vì sao WPA2 sợ mật khẩu ngắn
+  - **Vì sao:** WPA2 để kẻ tấn công mang gói bắt tay về nhà dò thoải mái. WPA3 bắt mỗi lần đoán phải hỏi router một lần — dò hàng triệu lần thành bất khả thi.
+- **Đề:** Một mạng IPv6 công cộng thường được cấp nguyên một khối /64. Điều đó nói lên gì?
+  - **Dạng:** trắc nghiệm · **Mỗi mạng con có sẵn số nhà thoải mái nên không cần NAT** ✓ / Mạng đó chỉ được phép có tối đa 64 máy nối vào cùng lúc / Địa chỉ của mọi máy trong mạng đó dài đúng 64 bit
+  - **Chủ đề gợi ý (tầng 1):** 64 bit đầu là khu phố, 64 bit sau là số nhà
+  - **Vì sao:** /64 chia đôi địa chỉ: nửa đầu là khu phố nhà mạng cấp, nửa sau là số nhà của từng máy. Số nhà nhiều tới mức không ai phải dùng NAT để tiết kiệm.
 
 ## Windows Server — AD DS và GPO `module-9`
 
@@ -2708,25 +2832,25 @@ Song song với module này, hãy dựng một miền thật trên máy bạn �
   - Ẩn dụ: Một câu giục "áp luôn đi", một tấm bảng kê "đang theo những luật nào".
   - Thẻ ôn: *Luật không ăn xuống client — hai lệnh nào cứu bạn, mỗi lệnh làm gì?* → gpupdate /force: áp toàn bộ luật ngay, không chờ chu kỳ. gpresult /r: kê GPO đang áp và GPO bị gạt kèm lý do — lần theo bảng, không đoán.
 
-### Bài kiểm tra module (9 câu, cần ≥ 85%)
+### Bài kiểm tra module (pool 12 câu, mỗi lượt rút 8, cần ≥ 85%)
 
 - **Đề:** Máy "gia nhập miền" nghĩa là gì?
-  - **Dạng:** trắc nghiệm · **Chịu bộ luật chung của miền và xác thực đăng nhập qua DC** ✓ / Cài bản Windows mới nhất / Nối vào cùng switch với máy chủ
+  - **Dạng:** trắc nghiệm · **Chịu luật chung của miền, đăng nhập xác thực qua DC** ✓ / Máy được đặt vào cùng một workgroup với các máy khác / Máy được nối vào cùng switch với máy chủ công ty
   - **Vì sao:** Gia nhập miền là ký giao kèo vào làng: luật chung từ máy chủ, tài khoản là của làng, DC gác cổng đăng nhập.
 - **Đề:** Máy chủ giữ sổ cái của miền và xác thực mọi lượt đăng nhập gọi là gì? (viết tắt được)
   - **Dạng:** gõ tay · **Chấp nhận:** domain controller | dc
   - **Vì sao:** Domain Controller — giữ sổ cái AD (tra qua LDAP 389) và gác cổng mọi lượt đăng nhập.
 - **Đề:** GROUP và OU khác nhau thế nào?
-  - **Dạng:** trắc nghiệm · **Group để cấp quyền; OU để xếp chỗ và treo GPO** ✓ / Là một thứ với hai tên gọi / OU để cấp quyền; group để treo GPO
+  - **Dạng:** trắc nghiệm · **Group để cấp quyền; OU để xếp chỗ và treo GPO** ✓ / Là một thứ với hai tên gọi khác nhau / OU để cấp quyền, còn group để xếp chỗ và treo GPO
   - **Vì sao:** Group = thẻ câu lạc bộ (quyền); OU = ngăn kéo hồ sơ (xếp chỗ, treo luật). Một người nằm một OU, thuộc nhiều group.
 - **Đề:** Điền tầng còn thiếu vào thứ tự áp GPO: Local → ___ → Domain → OU.
   - **Dạng:** gõ tay · **Chấp nhận:** site
   - **Vì sao:** LSDOU: Local → Site → Domain → OU — Site là bậc "cả văn phòng một chỗ", đứng ngay trên tầng trệt.
 - **Đề:** GPO Domain nói A, GPO treo ở OU nói B, không ai gắn Enforced. Máy trong OU theo luật nào?
-  - **Dạng:** trắc nghiệm · **B — OU áp sau nên đè lên luật Domain** ✓ / A — miền to hơn thì thắng / Cả hai luật cùng áp một lúc
+  - **Dạng:** trắc nghiệm · **B — OU áp sau nên đè lên luật Domain** ✓ / A — miền to hơn nên luật miền thắng / Cả hai luật cùng áp một lúc, không ai đè ai
   - **Vì sao:** Bậc áp sau thắng: OU là tiếng nói cuối trong LSDOU nên luật B đè luật A — trừ khi A được gắn Enforced.
 - **Đề:** GPO miền gắn Enforced gặp OU bật Block Inheritance — kết quả?
-  - **Dạng:** trắc nghiệm · **Enforced xuyên qua tấm chắn — luật miền vẫn áp và thắng xung đột** ✓ / Block Inheritance chặn được tất cả / Máy client báo lỗi cấu hình
+  - **Dạng:** trắc nghiệm · **Enforced xuyên qua tấm chắn — luật miền vẫn thắng** ✓ / Block Inheritance chặn được tất cả, kể cả Enforced / Máy client báo lỗi cấu hình và bỏ qua cả hai
   - **Vì sao:** Enforced là mũi khoan xuyên mái che: vượt Block Inheritance và đè cả luật OU — dùng cho thứ không được có ngoại lệ.
 - **Đề:** Lệnh nào bắt máy áp luật mới ngay lập tức, không chờ chu kỳ làm mới?
   - **Dạng:** gõ tay · **Chấp nhận:** gpupdate | gpupdate /force | gpupdate/force
@@ -2734,6 +2858,18 @@ Song song với module này, hãy dựng một miền thật trên máy bạn �
 - **Đề:** Lệnh nào kê ra các GPO đang áp lên máy và người đang đăng nhập?
   - **Dạng:** gõ tay · **Chấp nhận:** gpresult | gpresult /r | gpresult/r
   - **Vì sao:** gpresult /r — bảng kê GPO đang áp và GPO bị gạt kèm lý do; công cụ chẩn đoán số một khi luật không ăn.
+- **Đề:** Mười người mới vào phòng kế toán, cần đúng bộ quyền như người cũ. Cách làm gọn nhất là gì?
+  - **Dạng:** trắc nghiệm · **Thêm cả mười vào group của phòng kế toán, quyền cấp cho group** ✓ / Cấp quyền bằng tay cho từng người theo đúng danh sách quyền của người cũ / Tạo cho mỗi người một OU riêng rồi treo quyền lên từng OU đó
+  - **Chủ đề gợi ý (tầng 1):** group để cấp quyền, OU để xếp chỗ
+  - **Vì sao:** Group là để cấp quyền một lần cho nhiều người: vào group là có quyền, rời group là mất quyền. OU là ngăn kéo xếp chỗ và treo GPO — hai việc khác nhau.
+- **Đề:** Bạn muốn một luật chỉ áp cho riêng phòng kế toán, không đụng phòng khác. Bạn treo GPO lên đâu?
+  - **Dạng:** gõ tay · **Chấp nhận:** ou | ou phòng kế toán | ou kế toán | organizational unit | ou cua phong ke toan
+  - **Chủ đề gợi ý (tầng 1):** chỗ treo GPO cho một phòng ban
+  - **Vì sao:** GPO treo được ở Site, Domain và OU. Muốn luật chỉ dính đúng một phòng ban thì treo lên OU của phòng đó — đó chính là lý do OU tồn tại.
+- **Đề:** Người dùng kêu luật mới không có hiệu lực trên máy họ. Việc đầu tiên bạn làm là gì?
+  - **Dạng:** trắc nghiệm · **Chạy gpresult trên máy đó xem GPO nào đang thật sự dính** ✓ / Xóa GPO cũ đi rồi tạo lại từ đầu cho chắc chắn sạch sẽ / Khởi động lại Domain Controller để nó phát luật xuống lại
+  - **Chủ đề gợi ý (tầng 1):** lệnh kê luật đang dính máy
+  - **Vì sao:** Đọc trước, sửa sau: gpresult kê ra GPO đang áp và GPO bị gạt kèm lý do. Chưa biết luật nào thắng mà đã đi sửa là mò kim đáy bể.
 - **Đề:** Leo lại tòa nhà bốn tầng từ trí nhớ: mỗi tầng là bậc GPO nào, và luật của nó áp cho ai?
   - **Dạng:** đi lại cung điện từ trí nhớ (4 phòng)
     - tầng 1 phòng 1 · Local · chính máy đó · hình `gpo-house-rules` — Tầng trệt Local: tấm bảng nội quy dán ngay cửa nhà — luật của riêng máy đó, chưa ai ngoài nhìn thấy.
@@ -2997,16 +3133,16 @@ Phần C · 5 chặng · 5 bài · 8 khái niệm
   - Ẩn dụ: Sổ cái của trưởng làng có bản sao trên mây, hai sổ tự chép cho nhau từng dòng.
   - Thẻ ôn: *Entra ID hybrid là gì, giải quyết chuyện gì?* → Cầu đồng bộ giữa AD DS (sổ trong nhà) và Entra ID (sổ trên mây): tài khoản tạo một nơi dùng cả hai thế giới, thu hồi một thao tác khóa được cả hai.
 
-### Bài kiểm tra module (8 câu, cần ≥ 85%)
+### Bài kiểm tra module (pool 12 câu, mỗi lượt rút 8, cần ≥ 85%)
 
 - **Đề:** Vùng mạng riêng bạn kẻ ra trong data center của nhà cung cấp gọi là gì? (viết tắt được)
   - **Dạng:** gõ tay · **Chấp nhận:** vpc | vnet | virtual private cloud
   - **Vì sao:** VPC (Azure: VNet) — phiên bản khai báo của VLAN + dải subnet riêng; chia subnet bằng đúng CIDR của Module 3.
 - **Đề:** VPC tương ứng với cặp khái niệm on-prem nào bạn đã học?
-  - **Dạng:** trắc nghiệm · **VLAN + dải subnet riêng — vùng cô lập có dải địa chỉ riêng** ✓ / Bảng MAC + ARP / DHCP + DNS
+  - **Dạng:** trắc nghiệm · **VLAN + subnet riêng — vùng cô lập có dải riêng** ✓ / Bảng MAC + ARP — cách switch nhớ máy nào ở cổng nào / DHCP + DNS — cấp địa chỉ và phân giải tên trong mạng
   - **Vì sao:** Cùng một ý tưởng cô lập vùng mạng — VPC chỉ đổi cách dựng ranh giới từ dây và switch sang khai báo.
 - **Đề:** Security group khác tường lửa nhà (Module 7) ở điểm nào?
-  - **Dạng:** trắc nghiệm · **Bám sát từng máy ảo và mặc định chặn hết chiều vào, thay vì đứng một cổng vành đai** ✓ / Không có khả năng nhớ kết nối / Chỉ hoạt động với IPv6
+  - **Dạng:** trắc nghiệm · **Bám sát từng máy ảo, mặc định chặn hết chiều vào** ✓ / Không nhớ được kết nối, phải khai luật cả hai chiều / Chỉ lọc được theo địa chỉ IP, không theo port
   - **Vì sao:** Cùng là stateful, nhưng chỗ đứng khác hẳn: mỗi máy một bộ luật riêng — hai máy chung VPC vẫn phải qua luật của nhau.
 - **Đề:** Nối trọn hai mạng (văn phòng ↔ VPC) qua Internet, người dùng không phải cài gì — kiểu VPN nào?
   - **Dạng:** gõ tay · **Chấp nhận:** site-to-site | site to site | s2s
@@ -3015,14 +3151,30 @@ Phần C · 5 chặng · 5 bài · 8 khái niệm
   - **Dạng:** gõ tay · **Chấp nhận:** client | client vpn | vpn client
   - **Vì sao:** Client VPN — nối MỘT người vào mạng: cài phần mềm, bật khi cần, lớp mã hóa riêng bất chấp Wi-Fi quán.
 - **Đề:** Điểm chết của mô hình vành đai (lâu đài–hào nước) là gì?
-  - **Dạng:** trắc nghiệm · **Kiểm một lần ở cổng, bên trong tin nhau — lọt một lần là di chuyển ngang tự do** ✓ / Tường lửa vành đai quá đắt / Không chạy được với IPv4
+  - **Dạng:** trắc nghiệm · **Kiểm một lần ở cổng, lọt vào là đi ngang tự do** ✓ / Tường lửa vành đai không lọc được lưu lượng mã hóa / Chỉ áp dụng được cho mạng dùng IPv4 đời cũ
   - **Vì sao:** Chữ "trong" chính là điểm chết: một email lừa hay một mật khẩu lộ biến kẻ tấn công thành "người nhà".
 - **Đề:** Trong Zero Trust, biên giới mới của mạng là gì?
   - **Dạng:** gõ tay · **Chấp nhận:** danh tính | danh tinh | identity
   - **Vì sao:** Danh tính — mọi quyết định cho/chặn dựa trên bạn là ai và máy có sạch không, thay vì bạn đứng trong hay ngoài tường lửa.
 - **Đề:** Entra ID hybrid nghĩa là gì?
-  - **Dạng:** trắc nghiệm · **Đồng bộ sổ AD DS trong nhà với sổ Entra ID trên mây — một danh tính dùng cả hai thế giới** ✓ / Thay Domain Controller bằng router / Một loại VPN của Microsoft
+  - **Dạng:** trắc nghiệm · **Đồng bộ sổ AD DS trong nhà với sổ Entra ID trên mây** ✓ / Thay Domain Controller trong nhà bằng máy chủ trên mây / Một loại VPN nối văn phòng với đám mây Microsoft
   - **Vì sao:** Tài khoản tạo trong AD (đúng kỹ năng Module 9) tự chảy lên Entra ID — người dùng một mật khẩu, quản trị một chỗ tạo và thu hồi.
+- **Đề:** Trong cloud, việc tương ứng với "mua thêm switch cắm vào tủ rack" là gì?
+  - **Dạng:** trắc nghiệm · **Khai thêm một mạng con trong VPC bằng vài dòng cấu hình** ✓ / Gọi điện cho nhà cung cấp để họ lắp thêm thiết bị thật cho bạn / Thuê thêm một máy ảo rồi cài phần mềm switch lên máy đó
+  - **Chủ đề gợi ý (tầng 1):** thiết bị trong cloud thành dòng khai báo
+  - **Vì sao:** Trong cloud, thiết bị thành cấu hình: mạng con, tường lửa, tuyến đường đều là dòng khai báo. Khái niệm thì không đổi — vẫn là mạng con, vẫn là tường lửa.
+- **Đề:** Bạn dựng máy ảo mới trong VPC rồi cài web server, nhưng từ Internet không ai vào được. Nghi ngờ đầu tiên?
+  - **Dạng:** trắc nghiệm · **Security group vẫn chặn chiều vào — chưa mở port cho ai** ✓ / Máy ảo chưa được cấp địa chỉ IP nội bộ trong mạng con đó / VPC chưa bật chế độ cho phép chạy web server ở bên trong
+  - **Chủ đề gợi ý (tầng 1):** mặc định của security group
+  - **Vì sao:** Security group mặc định chặn hết chiều vào — đúng nếp Zero Trust: không mở sẵn thứ gì. Đây là ca thường gặp nhất của người mới dựng máy ảo.
+- **Đề:** Chi nhánh 30 người cần dùng ứng dụng nội bộ chạy trong VPC, không muốn ai phải bật phần mềm gì. Chọn cách nào?
+  - **Dạng:** trắc nghiệm · **VPN site-to-site nối trọn mạng chi nhánh với VPC** ✓ / Client VPN, cài lên từng máy trong ba mươi máy đó / Mở port ứng dụng ra Internet rồi đặt mật khẩu thật dài
+  - **Chủ đề gợi ý (tầng 1):** hai kiểu VPN dùng vào việc gì
+  - **Vì sao:** Nối trọn hai mạng thì đường hầm dựng một lần ở hai đầu, người dùng không biết nó tồn tại. Client VPN là đường cho từng người đi lẻ.
+- **Đề:** Nhân viên đã đăng nhập tài khoản công ty và đang ngồi trong văn phòng. Theo Zero Trust, họ mở được kho dữ liệu kế toán chưa?
+  - **Dạng:** trắc nghiệm · **Chưa — mỗi lần truy cập vẫn phải xác minh danh tính và quyền** ✓ / Rồi — ngồi trong mạng nội bộ nghĩa là đã qua vòng kiểm tra rồi / Rồi — miễn là máy của họ đã gia nhập miền của công ty
+  - **Chủ đề gợi ý (tầng 1):** Zero Trust xác minh từng lượt truy cập
+  - **Vì sao:** Vị trí không còn là bằng chứng. Zero Trust hỏi lại ở mỗi lượt truy cập: ai, máy nào, quyền gì — ngồi trong văn phòng cũng không được miễn.
 
 ## Phòng khám mạng — chẩn đoán sự cố `module-11`
 
@@ -3072,7 +3224,7 @@ Phần C · 5 chặng · 5 bài · 6 khái niệm
   - **Gợi ý (tầng 2):** Ping máy in vẫn Reply — mạng phía bạn đang sống, loại ngay ca "dây mình tuột". Ping máy chấm công thì "Destination host unreachable": gói rời được máy, chỉ là lời gọi "ai giữ 192.168.20.30?" không ai đáp. Ai đang không nghe được lời gọi đó?
   - **Lời giải (tầng 3):** Bệnh nằm ở phía máy đích: MAY-CHAM-CONG bị tuột dây nên không nghe được tiếng gọi ARP. Trong pha sửa, nối cổng eth0 của nó vào cổng trống p3 của switch — ping lại là có Reply. So với ca trước: General failure là dây MÌNH, còn unreachable với mạng-mình-vẫn-sống là dây ĐÍCH.
 - **Đề:** Bạn ping một máy cùng phòng và nhận "Destination host unreachable" trong khi ping các máy khác vẫn Reply. Bệnh khả năng cao nằm ở phía nào — máy mình hay máy đích?
-  - **Dạng:** gõ tay · **Chấp nhận:** máy đích | phía đích | phía máy đích | ben máy đích | đích
+  - **Dạng:** gõ tay · **Chấp nhận:** máy đích | phía đích | phía máy đích | ben may dich | đích
   - **Chủ đề gợi ý (tầng 1):** gói có rời được máy bạn không
   - **Gợi ý (tầng 2):** Các máy khác vẫn Reply nghĩa là dây và cấu hình phía bạn đều ổn. Vậy tiếng gọi "ai giữ địa chỉ này?" chết ở đâu?
   - **Lời giải (tầng 3):** Ở phía máy đích: mạng của bạn sống (ping máy khác vẫn Reply), nhưng máy đích không đáp lời gọi ARP — thường là nó tuột dây, tắt nguồn, hoặc tự chặn.
@@ -3172,7 +3324,7 @@ Phần C · 5 chặng · 5 bài · 6 khái niệm
 
 **3 · Khám phá (teach):**
 - *[m11-tach-ten-so]* Phép thử tách đôi: ping bằng SỐ trước, rồi ping bằng TÊN. Số sống mà tên chết — bệnh không nằm ở đích, nó nằm ở cuốn danh bạ DNS (Module 6) đứng giữa hai thứ đó. Lệnh nslookup hỏi thẳng danh bạ; và hãy đọc kỹ lời từ chối: "request timed out" là dịch vụ không trả lời, còn "Non-existent domain" là dịch vụ SỐNG nhưng không có bản ghi cho tên đó — hai bệnh khác nhau, hai cách chữa khác nhau.
-  - **Đào sâu hơn:** Vì sao "máy sống, dịch vụ chết" lại xảy ra được? Ping đi bằng ICMP, do hệ điều hành trả lời; còn DNS là một chương trình lắng nghe trên cổng 53 (bạn đã ghé phòng 53 của cung điện Module 5). Máy bật mà chương trình tắt thì ping vẫn Reply, còn nslookup thì timeout. Đó là lý do người trực phải khám tới TẦNG DỊCH VỤ chứ không dừng ở "máy còn sống".
+  - **Đào sâu hơn:** Vì sao "máy sống, dịch vụ chết" lại xảy ra được? Ping đi bằng ICMP, do hệ điều hành trả lời; còn DNS là một chương trình lắng nghe trên port 53 (bạn đã ghé phòng 53 của cung điện Module 5). Máy bật mà chương trình tắt thì ping vẫn Reply, còn nslookup thì timeout. Đó là lý do người trực phải khám tới TẦNG DỊCH VỤ chứ không dừng ở "máy còn sống".
 
 **4 · Thử tay (practice, fading 1):**
 - **Đề:** Sáng nay công ty vừa lắp máy chấm công mới, và có người kêu: "gõ chamcong.noibo.vn không được, chắc DNS lại chết rồi!". Khoan tin — làm lại phép thử của bài, và đọc KỸ lời từ chối của nslookup trước khi kết luận.
@@ -3335,7 +3487,7 @@ Phần C · 5 chặng · 5 bài · 6 khái niệm
   - Ẩn dụ: Cửa nhà bị dán bùa thì trách gì đường sá: netstat xem các cuộc nói chuyện đang mở, capture xem gói có rời nhà, gpresult đọc các lá bùa đang dán.
   - Thẻ ôn: *"Mạng sống mà ping chết" — soi ba thứ gì ngay trên máy?* → netstat (còn kết nối ESTABLISHED = đường sống), capture (gói ICMP có rời máy/có hồi âm không), gpresult (máy vào miền — luật GPO nào đang chặn). Ping chỉ đo ICMP, nó chết không có nghĩa mạng chết.
 
-### Bài kiểm tra module (8 câu, cần ≥ 85%)
+### Bài kiểm tra module (pool 12 câu, mỗi lượt rút 8, cần ≥ 85%)
 
 - **Đề:** Lệnh nào cho xem địa chỉ IP, subnet mask và gateway của máy đang ngồi?
   - **Dạng:** gõ tay · **Chấp nhận:** ipconfig
@@ -3353,12 +3505,28 @@ Phần C · 5 chặng · 5 bài · 6 khái niệm
   - **Chủ đề gợi ý (tầng 1):** mỗi router trừ TTL đi một
   - **Vì sao:** 128 − 126 = 2: mỗi router trên đường trừ TTL đi 1 (kiến thức định tuyến Module 4). Đọc TTL là ước được quãng đường mà chưa cần tracert.
 - **Đề:** arp -a sau hai lượt ping cùng một IP cho hai MAC khác nhau. Kết luận nào đúng?
-  - **Dạng:** trắc nghiệm · **Hai thiết bị đang giành nhau một địa chỉ IP** ✓ / Switch bị hỏng bảng MAC / DNS trả sai bản ghi
+  - **Dạng:** trắc nghiệm · **Hai thiết bị đang giành nhau một địa chỉ IP** ✓ / Switch ghi sai bảng MAC nên trả về lung tung / DNS đang trả về sai bản ghi cho tên máy đó
   - **Vì sao:** MAC gắn chết vào máy — cùng một IP mà MAC đổi nghĩa là hai máy thay phiên trả lời ARP: bệnh trùng IP, bắt tại trận bằng chính cuốn sổ arp.
 - **Đề:** Máy vào miền tự dưng ping chết ngay tại chỗ dù web vẫn chạy. Lệnh nào lôi danh sách chính sách đang áp lên máy ra ánh sáng?
   - **Dạng:** gõ tay · **Chấp nhận:** gpresult | gpresult /r
   - **Chủ đề gợi ý (tầng 1):** lệnh soi GPO từ Module 9
   - **Vì sao:** gpresult — kê mọi GPO đang áp (Module 9). Máy vào miền thì luật đến từ miền; luật chặn ICMP nếu có sẽ nằm ngay trong danh sách đó.
+- **Đề:** Ping ra "PING: transmit failed. General failure." khác gì với "Destination host unreachable"?
+  - **Dạng:** trắc nghiệm · **Câu đầu là hỏng ngay tại máy mình; câu sau là đi được nhưng không tới đích** ✓ / Câu đầu là máy đích đã tắt hẳn; câu sau là tên miền không phân giải ra được số / Hai câu như nhau, Windows in ngẫu nhiên một trong hai khi ping hỏng
+  - **Chủ đề gợi ý (tầng 1):** hai lời từ chối của ping khác nhau ở chỗ nào
+  - **Vì sao:** General failure: card hoặc dây của CHÍNH máy mình có vấn đề, gói chưa rời khỏi máy. Destination host unreachable: gói đi được nhưng đường tới đích đứt. Đọc đúng hai câu này là khoanh xong nửa ca bệnh.
+- **Đề:** Trang web mở rất chậm và bạn muốn biết gói tin nghẽn ở trạm nào trên đường đi. Lệnh nào gọi tên từng trạm?
+  - **Dạng:** gõ tay · **Chấp nhận:** tracert | tracert -d | traceroute
+  - **Chủ đề gợi ý (tầng 1):** lệnh gọi tên từng trạm trên đường đi
+  - **Vì sao:** tracert kê từng trạm kèm thời gian. Trạm nào bắt đầu chậm hẳn hoặc dừng hẳn là chỗ đáng nghi — nó khoanh vùng giúp bạn chứ không sửa hộ bạn.
+- **Đề:** nslookup trả "Request timed out" khác gì với "Non-existent domain"?
+  - **Dạng:** trắc nghiệm · **Timeout: máy chủ DNS không trả lời. Non-existent: DNS trả lời rằng tên đó không có** ✓ / Timeout: tên miền bị viết sai chính tả. Non-existent: máy chủ DNS đang quá tải nặng / Hai câu cùng nghĩa là DNS hỏng, chỉ khác ở phiên bản Windows in câu nào
+  - **Chủ đề gợi ý (tầng 1):** hai lời của nslookup: im lặng và trả lời không có
+  - **Vì sao:** Timeout là DNS không nói gì — nghi máy chủ DNS chết. Non-existent là DNS nói rõ "không có tên này" — nghi thiếu bản ghi. Cùng vùng bệnh, hai cách chữa khác nhau.
+- **Đề:** Ping tới máy khác thì chết, nhưng netstat trên chính máy đó vẫn kê ra các kết nối ESTABLISHED. Đọc thế nào?
+  - **Dạng:** trắc nghiệm · **Mạng vẫn thông; ICMP đang bị chặn tại chỗ bởi tường lửa hoặc GPO** ✓ / Card mạng đã hỏng hẳn; các kết nối kia chỉ là dấu vết cũ chưa được dọn / Máy đã rơi khỏi miền nên chỉ còn giữ được kết nối ra ngoài Internet
+  - **Chủ đề gợi ý (tầng 1):** netstat khi ping chết mà mạng vẫn sống
+  - **Vì sao:** ESTABLISHED nghĩa là dữ liệu vẫn đi về được. Chỉ mỗi ping chết thì thủ phạm là luật chặn ICMP ngay trên máy — đúng cái bẫy "mạng sống mà ping chết".
 - **Đề:** Ca thi thứ nhất: sau buổi dọn tủ rack cuối tuần, KE-TOAN-A không gọi được KE-TOAN-B (192.168.30.20) nữa dù hai máy cùng dải. Máy KY-THUAT thì theo quy định vốn phải tách riêng khỏi kế toán. Khám, gọi tên bệnh, và sửa cho đúng — đừng phá luôn bức tường ngăn với kỹ thuật.
   - **Dạng:** ca bệnh phòng khám (khám qua terminal → chẩn đoán → sửa)
     - **Mạng bệnh nhân:** KE-TOAN-A [192.168.30.10/24] · KE-TOAN-B [192.168.30.20/24] · KY-THUAT [192.168.30.30/24] · SW-TANG-3 [p1:VLAN 10, p2:VLAN 20, p3:VLAN 20] — dây: KE-TOAN-A·eth0 — SW-TANG-3·p1 | KE-TOAN-B·eth0 — SW-TANG-3·p2 | KY-THUAT·eth0 — SW-TANG-3·p3
@@ -3384,3 +3552,347 @@ Phần C · 5 chặng · 5 bài · 6 khái niệm
     - **Sửa:** chọn hành động — **Khởi động lại dịch vụ DNS trên DNS-NOI-BO** ✓ · Khởi động lại máy chủ portal · Thay switch tầng 2
   - **Chủ đề gợi ý (tầng 1):** số thì sao, tên thì sao
   - **Vì sao:** Ping 192.168.20.90 vẫn Reply — portal sống, switch càng không mất điện. nslookup portal.noibo.vn timeout — cuốn danh bạ mới là kẻ ốm: cả công ty gõ TÊN nên cả công ty tưởng portal sập. Khởi động lại dịch vụ DNS là đúng bệnh; khởi động lại portal là chữa nhầm người đang khỏe.
+
+## Tự động hóa — PowerShell cho người quản trị mạng `module-12`
+
+Phần C · 5 chặng · 5 bài · 8 khái niệm
+
+**Chặng:** Ra lệnh cho máy (m12-bai-1) → Tham số và sổ tay (m12-bai-2) → Hỏi sổ hộ khẩu của miền (m12-bai-3) → Một lệnh cho cả danh sách (m12-bai-4) → Lôi manh mối ra khỏi log (m12-bai-5)
+
+### Bài: Nói chuyện với máy bằng động từ và danh từ `m12-bai-1`
+
+**1 · Khởi động (hook):** Sếp nhắn: "Kiểm tra giúp xem máy chủ file còn mở port chia sẻ không". Bạn có thể bấm chuột mò mẫm mười phút — hoặc gõ một dòng và có câu trả lời sau một giây. Một dòng đó trông như thế nào?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Chưa ai dạy bạn cú pháp nào cả — cứ mở terminal mà mò. Việc cần làm: xác nhận máy chủ file 192.168.20.40 còn mở port 445 (port chia sẻ thư mục của Windows). Gõ sai thoải mái, máy này là máy giả, không hỏng được gì đâu.
+  - **Dạng:** terminal PowerShell (gõ lệnh đạt mục tiêu)
+    - **Thế giới:** máy MAY-QUAN-TRI [192.168.20.5/24] — đích: file.noibo.vn=192.168.20.40 cổng 445 · web.noibo.vn=192.168.20.80 cổng 80/443 · 192.168.20.99 (im lặng)
+    - **Mục tiêu:**
+      - phải kiểm tra cổng 445 của 192.168.20.40 thành công
+    - **Lệnh mẫu:** `Test-NetConnection 192.168.20.40 -Port 445`
+  - **Chủ đề gợi ý (tầng 1):** tên lệnh trong PowerShell luôn ghép hai mảnh
+  - **Vì sao:** Lệnh cần tìm là Test-NetConnection 192.168.20.40 -Port 445. Đọc tên lệnh là đoán ra việc: Test (kiểm tra) — Net (mạng) — Connection (kết nối). Dòng TcpTestSucceeded : True chính là câu trả lời cho sếp. Mò mẫm nãy giờ không phí: bộ não vừa tự dựng sẵn chỗ để cất quy tắc đặt tên mà bài này sắp dạy.
+
+**3 · Khám phá (teach):**
+- *[m12-cmdlet]* Mọi lệnh PowerShell đều tên theo một khuôn: Động từ - Danh từ. Get-NetIPAddress = lấy - địa chỉ IP. New-ADUser = tạo mới - người dùng AD. Test-NetConnection = kiểm tra - kết nối mạng. Nhờ khuôn này bạn không phải học thuộc từng lệnh: biết mình muốn LÀM GÌ với CÁI GÌ là đoán được tên.
+  - **Đào sâu hơn:** Danh sách động từ được Microsoft chuẩn hóa hẳn: Get (lấy về), Set (đặt lại), New (tạo mới), Remove (xóa), Test (kiểm tra), Import/Export (nạp vào/xuất ra), Start/Stop. Đây là lý do PowerShell học một lần dùng được khắp nơi — quản Exchange, quản Azure, quản máy in đều cùng bộ động từ ấy, chỉ đổi danh từ phía sau.
+- *[m12-cmdlet-mang]* Hai lệnh mạng đầu tay. Get-NetIPAddress là ipconfig biết nói: in ra IPAddress, InterfaceAlias, PrefixLength thành từng dòng gọn. Test-NetConnection là ping và telnet gộp làm một: gõ trần thì nó ping (PingSucceeded), thêm -Port thì nó gõ đúng cánh cửa đó xem có ai mở (TcpTestSucceeded).
+  - **Đào sâu hơn:** Khác biệt này quan trọng lúc chẩn đoán: PingSucceeded True mà TcpTestSucceeded False nghĩa là máy đích SỐNG nhưng dịch vụ ở port đó không chạy (hoặc bị tường lửa chặn riêng port ấy) — đúng cặp phân biệt bạn đã dùng ở Phòng khám, giờ đo được bằng một dòng lệnh thay vì suy đoán.
+
+**4 · Thử tay (practice, fading 0):**
+- **Ví dụ giải sẵn:** Việc cần làm: xem web nội bộ web.noibo.vn còn phục vụ HTTPS không. Bước 1 — dịch yêu cầu sang động từ-danh từ: mình muốn KIỂM TRA một KẾT NỐI MẠNG, vậy lệnh là Test-NetConnection. Bước 2 — đích đến viết ngay sau tên lệnh, không cần tên tham số: Test-NetConnection web.noibo.vn. Bước 3 — HTTPS là port 443, mà muốn gõ đúng cánh cửa thì phải nói rõ cửa nào, nên thêm -Port 443. Dòng hoàn chỉnh: Test-NetConnection web.noibo.vn -Port 443. Bước 4 — đọc kết quả: TcpTestSucceeded : True là xong việc; nếu ra False thì máy có thể vẫn sống, chỉ dịch vụ ở port đó là không.
+- **Đề:** Tới lượt bạn: xác nhận web nội bộ 192.168.20.80 còn mở port 443. Gõ bao nhiêu lần cũng được, chỉ khi bấm "Nộp bài" mới tính một lượt.
+  - **Dạng:** terminal PowerShell (gõ lệnh đạt mục tiêu)
+    - **Thế giới:** máy MAY-QUAN-TRI [192.168.20.5/24] — đích: file.noibo.vn=192.168.20.40 cổng 445 · web.noibo.vn=192.168.20.80 cổng 80/443 · 192.168.20.99 (im lặng)
+    - **Mục tiêu:**
+      - phải kiểm tra cổng 443 của 192.168.20.80 thành công
+    - **Lệnh mẫu:** `Test-NetConnection web.noibo.vn -Port 443`
+  - **Chủ đề gợi ý (tầng 1):** port phải nói rõ, không thì lệnh chỉ ping
+  - **Gợi ý (tầng 2):** Khuôn của dòng lệnh là: Test-NetConnection <đích> -Port <số port>. Đích viết bằng IP hay bằng tên đều được — máy tự phân giải. Thiếu -Port thì lệnh chỉ ping, và ping thành công không chứng minh được port 443 đang mở.
+  - **Lời giải (tầng 3):** Test-NetConnection 192.168.20.80 -Port 443 (hoặc thay IP bằng web.noibo.vn). Nhìn dòng TcpTestSucceeded : True là chốt được: port 443 đang mở.
+- **Đề:** Tên của mọi lệnh PowerShell đều ghép từ hai mảnh theo một khuôn. Khuôn đó là gì?
+  - **Dạng:** gõ tay · **Chấp nhận:** động từ - danh từ | động từ danh từ | dong tu - danh tu | dong tu danh tu | verb-noun | verb noun
+  - **Chủ đề gợi ý (tầng 1):** làm GÌ với CÁI GÌ
+  - **Gợi ý (tầng 2):** Nhìn lại ba cái tên: Get-NetIPAddress, New-ADUser, Test-NetConnection. Mảnh đứng trước nói hành động, mảnh đứng sau nói đối tượng.
+  - **Lời giải (tầng 3):** Động từ - Danh từ (verb-noun): Get-NetIPAddress là lấy-địa chỉ IP, New-ADUser là tạo mới-người dùng AD. Biết muốn làm gì với cái gì là đoán được tên lệnh.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: lệnh nào vừa ping được vừa gõ thử được một port TCP cụ thể trên máy khác?
+  - **Dạng:** gõ tay · **Chấp nhận:** Test-NetConnection | test netconnection | test-netconnection
+  - **Chủ đề gợi ý (tầng 1):** động từ "kiểm tra" ghép với danh từ "kết nối mạng"
+  - **Gợi ý (tầng 2):** Ghép theo khuôn: động từ nghĩa là "kiểm tra", danh từ là "kết nối mạng" viết liền không dấu cách.
+  - **Lời giải (tầng 3):** Test-NetConnection. Gõ trần thì nó ping (PingSucceeded); thêm -Port <số> thì nó gõ đúng cánh cửa đó và trả TcpTestSucceeded.
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao Test-NetConnection -Port nói được nhiều hơn một lệnh ping thường?
+  - **Nhóm ý cần chạm:** [cổng, port, dịch vụ] · [ping, icmp, máy sống, máy đích]
+  - **Trả lời mẫu:** Ping chỉ cho biết máy đích còn sống và đường đi tới đó còn thông. Test-NetConnection kèm -Port đi thêm một bước: nó gõ đúng cánh cửa của dịch vụ. Nhờ vậy phân biệt được hai ca rất khác nhau — máy chết hẳn, và máy vẫn sống nhưng dịch vụ ở port đó không chạy hoặc bị chặn.
+
+**6 · Tổng kết:**
+- Tên lệnh PowerShell luôn theo khuôn Động từ - Danh từ, nên đoán được chứ không cần học thuộc.
+- Get-NetIPAddress là ipconfig biết nói; Test-NetConnection là ping và telnet gộp một.
+- Thêm -Port mới chứng minh được dịch vụ ở port đó đang mở; ping suông thì không.
+- *Úp mở bài sau:* Nhưng làm sao biết một lệnh nhận những tham số nào? Bài sau: cách bắt chính PowerShell tự khai ra cú pháp của nó.
+
+### Bài: Bắt máy tự khai cú pháp `m12-bai-2`
+
+**1 · Khởi động (hook):** Trên đời có hàng nghìn cmdlet, không ai nhớ nổi tham số của từng cái. Vậy mà dân quản trị vẫn gõ đúng ngay từ lần đầu với một lệnh chưa từng dùng. Họ tra ở đâu — Google, hay ngay trong terminal?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Bạn muốn kiểm tra port 1433 của máy chủ SQL. Cách viết nào đúng khuôn tham số của PowerShell?
+  - **Dạng:** trắc nghiệm · **Test-NetConnection sql.noibo.vn -Port 1433** ✓ / Test-NetConnection sql.noibo.vn:1433 / Test-NetConnection --port=1433 sql.noibo.vn
+  - **Chủ đề gợi ý (tầng 1):** PowerShell gọi tên tham số bằng một dấu gạch
+  - **Vì sao:** PowerShell dùng MỘT dấu gạch nối rồi tới tên tham số, rồi khoảng trắng, rồi giá trị: -Port 1433. Kiểu host:port là thói quen từ trình duyệt, còn --port= là thói quen từ Linux — cả hai đều không phải khuôn của PowerShell.
+
+**3 · Khám phá (teach):**
+- *[m12-tham-so]* Tham số là những cái nhãn dán vào giá trị: -Port 443, -Name "Le Thi Mai", -SamAccountName ltmai. Một dấu gạch, tên tham số, khoảng trắng, giá trị. Giá trị nào có dấu cách thì bọc trong nháy kép — không bọc thì máy tưởng đó là hai giá trị rời.
+  - **Đào sâu hơn:** Vài tham số quan trọng nhất được phép giấu nhãn đi, gọi là tham số vị trí: Test-NetConnection web.noibo.vn chính là -ComputerName web.noibo.vn viết tắt. Người mới nên viết đủ nhãn cho rõ, người quen tay thì bỏ bớt cái đầu tiên. Nhưng từ cái thứ hai trở đi thì phải có nhãn, vì máy không đoán được bạn đang nói tới thứ gì.
+- *[m12-get-help]* Get-Help là cuốn sổ tay nằm sẵn trong máy. Gõ Get-Help Test-NetConnection là nó in ra khối SYNTAX — đúng những tham số lệnh đó nhận, cái nào bắt buộc, cái nào tùy chọn. Dấu ngoặc vuông nghĩa là có cũng được không có cũng được.
+  - **Đào sâu hơn:** Đọc được khối SYNTAX là kỹ năng tự học quan trọng nhất của cả module này: [-ComputerName] <String> nghĩa là tham số bắt buộc nhưng cái NHÃN thì tùy (viết trần cũng hiểu); còn [-Port <Int32>] cả cụm nằm trong ngoặc nghĩa là muốn bỏ hẳn cũng được. Nắm quy ước ngoặc này thì cmdlet lạ nào bạn cũng tự tra được, không phụ thuộc vào việc có ai dạy hay không.
+
+**4 · Thử tay (practice, fading 1):**
+- **Đề:** Máy chủ SQL của công ty là sql.noibo.vn, phục vụ ở port 1433. Xác nhận port đó đang mở. Chưa chắc cú pháp thì cứ hỏi sổ tay ngay trong terminal trước khi gõ lệnh chính.
+  - **Dạng:** terminal PowerShell (gõ lệnh đạt mục tiêu)
+    - **Thế giới:** máy MAY-QUAN-TRI [192.168.20.5/24] — đích: sql.noibo.vn=192.168.20.60 cổng 1433 · web.noibo.vn=192.168.20.80 cổng 80/443 · 192.168.20.99 (im lặng)
+    - **Mục tiêu:**
+      - phải kiểm tra cổng 1433 của 192.168.20.60 thành công
+    - **Lệnh mẫu:** `Get-Help Test-NetConnection` rồi `Test-NetConnection sql.noibo.vn -Port 1433`
+  - **Chủ đề gợi ý (tầng 1):** sổ tay nằm ngay trong terminal
+  - **Gợi ý (tầng 2):** Hai nhịp: Get-Help Test-NetConnection để đọc khối SYNTAX, rồi gõ lệnh chính theo đúng khuôn <đích> -Port <số>. Gõ tên máy thay IP vẫn chạy — máy tự phân giải như DNS ngoài đời.
+  - **Lời giải (tầng 3):** Test-NetConnection sql.noibo.vn -Port 1433. Nhìn TcpTestSucceeded : True là xong. Muốn tra trước thì Get-Help Test-NetConnection — khối SYNTAX cho thấy -Port là tham số tùy chọn kiểu Int32.
+- **Đề:** Bạn gặp một lệnh lạ tên New-ADUser và không biết nó nhận tham số gì. Gõ dòng nào để chính máy khai ra cú pháp?
+  - **Dạng:** gõ tay · **Chấp nhận:** Get-Help New-ADUser | get-help new-aduser | help New-ADUser | help new-aduser
+  - **Chủ đề gợi ý (tầng 1):** lấy - trợ giúp
+  - **Gợi ý (tầng 2):** Vẫn là khuôn động từ-danh từ: động từ "lấy", danh từ "trợ giúp". Rồi viết tên lệnh cần tra ngay phía sau.
+  - **Lời giải (tầng 3):** Get-Help New-ADUser. Khối SYNTAX in ra sẽ cho thấy -Name và -SamAccountName là bắt buộc, còn -Path và -Enabled nằm trong ngoặc vuông nên tùy chọn.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: trong khối SYNTAX, cụm nằm trong ngoặc vuông như [-Port <Int32>] mang ý nghĩa gì?
+  - **Dạng:** gõ tay · **Chấp nhận:** tùy chọn | tuy chon | không bắt buộc | khong bat buoc | có thể bỏ | co the bo
+  - **Chủ đề gợi ý (tầng 1):** có cũng được, không có cũng được
+  - **Gợi ý (tầng 2):** Ngoặc vuông trong mọi tài liệu dòng lệnh đều mang cùng một nghĩa: phần này không nhất thiết phải viết.
+  - **Lời giải (tầng 3):** Là tham số tùy chọn — bỏ đi lệnh vẫn chạy. Còn [-ComputerName] <String> chỉ có mỗi cái nhãn nằm trong ngoặc: giá trị thì bắt buộc, chỉ cái nhãn là được phép bỏ.
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao biết dùng Get-Help lại đáng giá hơn việc học thuộc tham số của từng lệnh?
+  - **Nhóm ý cần chạm:** [học thuộc, nhớ hết, thuộc lòng, hàng nghìn] · [tự tra, tra cứu, sổ tay, syntax, cú pháp]
+  - **Trả lời mẫu:** Vì có hàng nghìn cmdlet, học thuộc tham số của từng cái là chuyện bất khả thi. Get-Help biến việc đó thành kỹ năng tra cứu: gặp lệnh lạ nào cũng tự đọc được khối SYNTAX ngay trong terminal, biết cái nào bắt buộc cái nào tùy chọn, không cần mạng và không phụ thuộc vào việc có ai dạy mình hay không.
+
+**6 · Tổng kết:**
+- Tham số viết theo khuôn một dấu gạch: -Port 443; giá trị có dấu cách thì bọc nháy kép.
+- Get-Help <tên lệnh> in ra khối SYNTAX ngay trong terminal, không cần mạng.
+- Ngoặc vuông = tùy chọn; ngoặc chỉ ôm cái nhãn = giá trị bắt buộc, nhãn thì được bỏ.
+- *Úp mở bài sau:* Giờ bạn gõ được lệnh mạng. Nhưng công việc thật của quản trị viên phần lớn nằm ở chỗ khác: cuốn sổ hộ khẩu của miền — nơi cất tên từng nhân viên.
+
+### Bài: Hỏi và ghi vào sổ hộ khẩu của miền `m12-bai-3`
+
+**1 · Khởi động (hook):** Phòng nhân sự gửi xuống: "Tuần này có một bạn mới vào phòng Kế toán". Mở giao diện đồ họa bấm qua bảy cửa sổ cũng xong. Nhưng nếu tuần sau là ba mươi bạn thì sao?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử: theo khuôn động từ-danh từ đã học, lệnh tra cứu một người dùng trong Active Directory sẽ tên là gì?
+  - **Dạng:** gõ tay · **Chấp nhận:** Get-ADUser | get aduser | get-aduser | get ad user
+  - **Chủ đề gợi ý (tầng 1):** lấy - người dùng AD
+  - **Vì sao:** Get-ADUser — đúng khuôn: động từ Get (lấy về), danh từ ADUser (người dùng Active Directory). Đoán được tên lệnh mà chưa từng học chính là phần thưởng của quy tắc đặt tên ở bài 1.
+
+**3 · Khám phá (teach):**
+- *[m12-ad-doc]* Get-ADUser đọc cuốn sổ hộ khẩu của miền. Hỏi đúng một người thì -Identity <sam>. Hỏi cả danh sách thì -Filter *, nghĩa là "lấy tất". Muốn thu hẹp về một ngăn kéo OU thì thêm -SearchBase "OU=KeToan,DC=noibo,DC=vn" — chỉ đếm người trong đúng ngăn ấy.
+  - **Đào sâu hơn:** Kết quả in ra bốn dòng đáng đọc: Name (tên hiển thị), SamAccountName (tên đăng nhập), DistinguishedName (chỗ đứng trong cây thư mục) và Enabled. DistinguishedName chính là cái bạn đã học ở Module 9 dưới dạng cây OU — giờ nó hiện ra thành một dòng chữ đọc từ trong ra ngoài: CN=người, OU=ngăn kéo, DC=từng mảnh tên miền.
+- *[m12-tao-user]* New-ADUser ghi thêm một dòng vào sổ. Ba mảnh cần khai: -Name "Le Thi Mai" (tên hiển thị, có dấu cách nên phải bọc nháy), -SamAccountName ltmai (tên đăng nhập), và -Path "OU=KeToan,DC=noibo,DC=vn" (đặt vào ngăn kéo nào). Thiếu -Path thì máy không biết cất người mới vào đâu.
+  - **Đào sâu hơn:** Chạy xong New-ADUser, terminal im re — không một dòng thông báo. Đó là nếp của PowerShell chứ không phải lỗi: lệnh chạy trót lọt thì không nói gì, có chuyện mới lên tiếng. Muốn tận mắt xác nhận thì hỏi lại bằng Get-ADUser -Identity ltmai. Thói quen tự kiểm chứng này đáng giữ suốt nghề — nhất là khi lệnh vừa chạy tác động lên ba mươi người. Và khi kiểm chứng, để ý dòng Enabled: tài khoản tạo mà không kèm mật khẩu thì sinh ra ở trạng thái False — AD cố tình khóa lại để không có cái cửa nào mở toang mà chưa ai đặt khóa. Muốn bật thì đặt mật khẩu rồi bật riêng.
+
+**4 · Thử tay (practice, fading 1):**
+- **Đề:** Nhân sự báo: chị Le Thi Mai vào phòng Kế toán, tên đăng nhập ltmai. Ghi chị ấy vào miền noibo.vn cho đúng ngăn kéo. Xong nhớ tự kiểm chứng — lệnh tạo sẽ không nói gì với bạn đâu.
+  - **Dạng:** terminal PowerShell (gõ lệnh đạt mục tiêu)
+    - **Thế giới:** máy MAY-QUAN-TRI [192.168.20.5/24] — đích: dc01.noibo.vn=192.168.20.10 cổng 389/445 — AD noibo.vn: OU [KeToan, NhanSu, KyThuat], 2 user sẵn có
+    - **Mục tiêu:**
+      - user "ltmai" phải tồn tại trong OU KeToan
+    - **Lệnh mẫu:** `New-ADUser -Name "Le Thi Mai" -SamAccountName ltmai -Path "OU=KeToan,DC=noibo,DC=vn"` rồi `Get-ADUser -Identity ltmai`
+  - **Chủ đề gợi ý (tầng 1):** ba mảnh: tên hiển thị, tên đăng nhập, ngăn kéo
+  - **Gợi ý (tầng 2):** Khuôn đầy đủ: New-ADUser -Name "<tên có dấu cách>" -SamAccountName <tên đăng nhập> -Path "OU=<ngăn kéo>,DC=noibo,DC=vn". Tên miền noibo.vn tách thành hai mảnh DC=noibo và DC=vn.
+  - **Lời giải (tầng 3):** New-ADUser -Name "Le Thi Mai" -SamAccountName ltmai -Path "OU=KeToan,DC=noibo,DC=vn". Terminal im lặng là dấu hiệu tốt; gõ thêm Get-ADUser -Identity ltmai sẽ thấy dòng DistinguishedName ghi rõ chị Mai đang nằm trong ngăn KeToan.
+- **Đề:** Trong miền noibo.vn, đường dẫn thư mục (DistinguishedName) của ngăn kéo KyThuat viết đầy đủ ra sao?
+  - **Dạng:** gõ tay · **Chấp nhận:** OU=KyThuat,DC=noibo,DC=vn | ou=kythuat,dc=noibo,dc=vn
+  - **Chủ đề gợi ý (tầng 1):** tên miền tách thành từng mảnh DC=
+  - **Gợi ý (tầng 2):** Đọc từ trong ra ngoài: ngăn kéo trước, rồi tới từng mảnh của tên miền. Dấu chấm trong tên miền chính là chỗ tách mảnh.
+  - **Lời giải (tầng 3):** OU=KyThuat,DC=noibo,DC=vn. Ngăn kéo đứng trước, rồi mỗi mảnh của tên miền thành một DC= — noibo.vn có một dấu chấm nên tách thành hai mảnh.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Đóng hết ghi chép lại nhé. Anh Hoang Van Minh vừa nhận việc ở phòng Kỹ thuật, tên đăng nhập hvminh. Ghi anh ấy vào miền từ trí nhớ của bạn.
+  - **Dạng:** terminal PowerShell (gõ lệnh đạt mục tiêu)
+    - **Thế giới:** máy MAY-QUAN-TRI [192.168.20.5/24] — đích: dc01.noibo.vn=192.168.20.10 cổng 389/445 — AD noibo.vn: OU [KeToan, NhanSu, KyThuat], 2 user sẵn có
+    - **Mục tiêu:**
+      - user "hvminh" phải tồn tại trong OU KyThuat
+    - **Lệnh mẫu:** `New-ADUser -Name "Hoang Van Minh" -SamAccountName hvminh -Path "OU=KyThuat,DC=noibo,DC=vn"`
+  - **Chủ đề gợi ý (tầng 1):** ngăn kéo lần này là KyThuat
+  - **Gợi ý (tầng 2):** Vẫn ba mảnh như lúc nãy, chỉ đổi ngăn kéo trong -Path sang KyThuat. Tên có dấu cách nhớ bọc nháy kép.
+  - **Lời giải (tầng 3):** New-ADUser -Name "Hoang Van Minh" -SamAccountName hvminh -Path "OU=KyThuat,DC=noibo,DC=vn".
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao New-ADUser chạy xong lại không in ra thông báo nào, và bạn nên làm gì sau đó?
+  - **Nhóm ý cần chạm:** [im lặng, không in, khong in, không báo, khong bao, không nói, khong noi] · [Get-ADUser, kiểm chứng, kiem chung, kiểm tra lại, kiem tra lai, xác nhận, xac nhan]
+  - **Trả lời mẫu:** Vì nếp của PowerShell là lệnh chạy trót lọt thì không nói gì, có chuyện mới lên tiếng — im lặng chính là tin tốt. Nhưng im lặng cũng có nghĩa mình chưa tận mắt thấy kết quả, nên việc nên làm ngay sau đó là hỏi lại bằng Get-ADUser -Identity <tên đăng nhập> để xác nhận người mới đã nằm đúng ngăn kéo.
+
+**6 · Tổng kết:**
+- Get-ADUser đọc sổ: -Identity hỏi một người, -Filter * lấy tất, -SearchBase thu hẹp về một OU.
+- New-ADUser cần ba mảnh: -Name, -SamAccountName và -Path trỏ tới ngăn kéo OU.
+- Lệnh chạy xong im lặng là bình thường — tự kiểm chứng lại bằng Get-ADUser.
+- *Úp mở bài sau:* Một người thì một dòng lệnh. Ba mươi người thì vẫn một dòng — nhờ một ký tự duy nhất mà bài sau sẽ chỉ cho bạn.
+
+### Bài: Một dòng lệnh cho cả danh sách `m12-bai-4`
+
+**1 · Khởi động (hook):** Nhân sự gửi một file CSV có ba mươi bạn thực tập, tất cả cần tài khoản trong sáng mai. Gõ tay ba mươi lệnh mất một tiếng và chắc chắn sẽ trượt phím vài lần. Có cách nào bơm thẳng cả file vào lệnh tạo không?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Trong PowerShell, ký tự nào nối kết quả của lệnh trước làm đầu vào cho lệnh sau?
+  - **Dạng:** trắc nghiệm · **Dấu ống |** ✓ / Dấu lớn hơn > / Dấu và &
+  - **Chủ đề gợi ý (tầng 1):** hình dáng của một đường ống dẫn
+  - **Vì sao:** Dấu ống | — hình dáng của nó chính là ẩn dụ: một đường ống dẫn đồ từ lệnh này sang lệnh kia. Dấu > là ghi ra file, còn & là chạy lệnh, cả hai đều không nối hai lệnh với nhau theo kiểu này.
+
+**3 · Khám phá (teach):**
+- *[m12-pipeline]* Dấu ống | nối hai lệnh thành một dây chuyền: thứ lệnh trái nhả ra chảy thẳng sang lệnh phải. Import-Csv nhan-vien-moi.csv đọc file thành từng bản ghi; nối tiếp | New-ADUser là mỗi bản ghi thành một tài khoản. Một dòng, ba mươi người, không trượt phím lần nào.
+  - **Đào sâu hơn:** Điều làm dấu ống của PowerShell khác hẳn dòng lệnh Linux: thứ chảy trong ống không phải chữ mà là BẢN GHI có cột tên hẳn hoi. Nhờ vậy New-ADUser tự nhặt được cột Name, cột SamAccountName, cột Path trong file CSV mà bạn không phải cắt chuỗi lấy từng mảnh. Đổi lại, tên cột trong file phải khớp với thứ lệnh bên phải cần — sai tên cột là dây chuyền đứng ngay.
+
+Đọc thêm một đoạn script thật (chỉ đọc hiểu, terminal trong bài chưa chạy được nhiều dòng):
+
+    $ds = Import-Csv nhan-vien-moi.csv
+    foreach ($n in $ds) {
+      New-ADUser -Name $n.Name -SamAccountName $n.SamAccountName -Path $n.Path
+    }
+
+Đoạn này làm đúng việc mà một dòng pipeline đã làm — dài hơn nhưng cho bạn chỗ chen thêm kiểm tra ở giữa. Dân quản trị hay bắt đầu bằng một dòng, tới khi cần cẩn thận hơn mới mở nó ra thành vòng lặp như trên.
+
+**4 · Thử tay (practice, fading 2):**
+- **Đề:** File nhan-vien-moi.csv nằm sẵn trên máy, gồm bốn bạn mới của phòng Nhân sự. Tạo tài khoản cho cả bốn bằng MỘT dòng lệnh. Xem trước nội dung file rồi hãy bơm vào ống — nhìn dữ liệu trước khi tác động lên nó là thói quen đáng có.
+  - **Dạng:** terminal PowerShell (gõ lệnh đạt mục tiêu)
+    - **Thế giới:** máy MAY-QUAN-TRI [192.168.20.5/24] — đích: dc01.noibo.vn=192.168.20.10 cổng 389/445 — AD noibo.vn: OU [KeToan, NhanSu], 2 user sẵn có — file: nhan-vien-moi.csv
+    - **Mục tiêu:**
+      - OU NhanSu phải có ít nhất 5 user
+      - user "lvcuong" phải tồn tại trong OU NhanSu
+    - **Lệnh mẫu:** `Import-Csv nhan-vien-moi.csv` rồi `Import-Csv nhan-vien-moi.csv | New-ADUser` rồi `Get-ADUser -Filter * -SearchBase "OU=NhanSu,DC=noibo,DC=vn"`
+  - **Chủ đề gợi ý (tầng 1):** nối hai lệnh bằng một đường ống
+  - **Gợi ý (tầng 2):** Gõ Import-Csv nhan-vien-moi.csv trước để soi bảng dữ liệu. Thấy ba cột Name, SamAccountName, Path đúng thứ New-ADUser cần rồi thì nối hai lệnh lại: <lệnh đọc file> | New-ADUser.
+  - **Lời giải (tầng 3):** Import-Csv nhan-vien-moi.csv | New-ADUser. Terminal im lặng như mọi lần tạo user; muốn tận mắt thấy bốn bạn mới thì Get-ADUser -Filter * -SearchBase "OU=NhanSu,DC=noibo,DC=vn". Gõ tay bốn lệnh New-ADUser riêng lẻ cũng được công nhận — bài này chấm theo kết quả trong sổ, không chấm theo cách bạn viết.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: thứ chảy trong đường ống của PowerShell là chữ thuần hay là bản ghi có cột tên?
+  - **Dạng:** gõ tay · **Chấp nhận:** bản ghi | ban ghi | bản ghi có cột | ban ghi co cot | đối tượng | doi tuong | object
+  - **Chủ đề gợi ý (tầng 1):** vì sao New-ADUser tự nhặt được cột SamAccountName
+  - **Gợi ý (tầng 2):** Nghĩ xem vì sao lệnh bên phải tự biết cột nào là tên đăng nhập mà bạn không phải cắt chuỗi.
+  - **Lời giải (tầng 3):** Là bản ghi có cột tên hẳn hoi (đối tượng), không phải chữ thuần. Nhờ vậy New-ADUser tự nhặt đúng cột Name, SamAccountName, Path — đổi lại tên cột trong file phải khớp thứ lệnh bên phải cần.
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao một dòng pipeline lại an toàn hơn việc ngồi gõ tay ba mươi lệnh giống nhau?
+  - **Nhóm ý cần chạm:** [gõ nhầm, go nham, trượt phím, truot phim, sai sót, sai sot, nhầm lẫn, nham lan] · [một dòng, mot dong, đồng nhất, dong nhat, lặp lại, lap lai, giống nhau, giong nhau, nhanh]
+  - **Trả lời mẫu:** Vì gõ tay ba mươi lần là ba mươi cơ hội trượt phím, và một tài khoản sai ngăn kéo có thể kéo theo sai quyền. Một dòng pipeline chỉ có một chỗ để sai: chính dòng đó. Soi dữ liệu bằng Import-Csv trước rồi mới nối ống, thì mọi bản ghi được xử lý y hệt nhau, nhanh hơn và dễ kiểm lại hơn.
+
+**6 · Tổng kết:**
+- Dấu ống | đưa thứ lệnh trái nhả ra chảy thẳng sang lệnh phải.
+- Import-Csv <file> | New-ADUser tạo cả danh sách bằng đúng một dòng.
+- Trong ống chảy bản ghi có cột tên, nên tên cột phải khớp thứ lệnh bên phải cần.
+- *Úp mở bài sau:* Bài cuối: khi sự cố đã xảy ra rồi, làm sao lôi đúng ba dòng đáng đọc ra khỏi một file log dài mười nghìn dòng?
+
+### Bài: Lôi đúng dòng ra khỏi đống log `m12-bai-5`
+
+**1 · Khởi động (hook):** Router rớt mạng lúc chín giờ sáng. File log của nó có mười nghìn dòng, trong đó chỉ ba dòng nói đúng chuyện. Cuộn chuột tìm bằng mắt mất nửa buổi — hay là bảo máy tự lọc?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán theo khuôn động từ-danh từ: lệnh đọc toàn bộ nội dung một file ra màn hình sẽ tên là gì?
+  - **Dạng:** gõ tay · **Chấp nhận:** Get-Content | get content | get-content
+  - **Chủ đề gợi ý (tầng 1):** lấy - nội dung
+  - **Vì sao:** Get-Content — động từ Get (lấy về), danh từ Content (nội dung). Đây là lệnh mở đầu của mọi việc đọc log; muốn lọc thì nối tiếp thêm một lệnh nữa vào sau dấu ống.
+
+**3 · Khám phá (teach):**
+- *[m12-doc-log]* Đọc log là một dây chuyền hai nhịp: Get-Content router.log đổ cả file ra, | Select-String ERROR giữ lại đúng những dòng có chứa chữ ấy. Kết quả in ra kèm số thứ tự dòng, nên bạn biết chuyện xảy ra ở đoạn nào của file mà lần tiếp.
+  - **Đào sâu hơn:** Select-String cũng dùng riêng được nếu chỉ đường tới file: Select-String ERROR -Path router.log. Trong bài này nó khớp chuỗi con và không phân biệt hoa thường, nên gõ error hay ERROR đều ra. PowerShell thật còn nhận cả biểu thức chính quy — nhưng đó là chuyện của sau này; ở đây quen nếp "đọc rồi lọc" trước đã.
+
+Mẹo nghề: lọc lấy dòng ERROR ra rồi, đừng dừng ở đó. Nhìn số thứ tự dòng, quay lại đọc vài dòng ngay TRƯỚC nó — nguyên nhân thường nằm ở đấy, còn dòng ERROR chỉ là hậu quả cuối cùng.
+
+**4 · Thử tay (practice, fading 2):**
+- **Đề:** File router.log nằm sẵn trên máy. Lôi ra dòng ghi nhận sự cố lúc chín giờ sáng — cụ thể là dòng nói về một port bị mất tín hiệu.
+  - **Dạng:** terminal PowerShell (gõ lệnh đạt mục tiêu)
+    - **Thế giới:** máy MAY-QUAN-TRI [192.168.20.5/24] — đích: router.noibo.vn=192.168.20.1 cổng 443 — file: router.log
+    - **Mục tiêu:**
+      - phải lôi ra được dòng chứa "link down"
+    - **Lệnh mẫu:** `Get-Content router.log | Select-String ERROR`
+  - **Chủ đề gợi ý (tầng 1):** đọc cả file rồi lọc bằng một từ khóa
+  - **Gợi ý (tầng 2):** Hai nhịp nối bằng dấu ống: Get-Content router.log để đổ file ra, rồi | Select-String <từ khóa>. Dòng sự cố trong log này được đánh dấu bằng chữ ERROR.
+  - **Lời giải (tầng 3):** Get-Content router.log | Select-String ERROR — lôi ra dòng 09:02:31 ERROR link down on port 3. Cũng có thể gõ thẳng Select-String "link down" -Path router.log nếu bạn đã biết chính xác cụm cần tìm.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Đóng ghi chép lại. Người dùng than tối qua không quay VPN vào được. File vpn.log có sẵn trên máy — tự lôi dòng nói về việc xác thực hỏng ra, không nhìn lại bài.
+  - **Dạng:** terminal PowerShell (gõ lệnh đạt mục tiêu)
+    - **Thế giới:** máy MAY-QUAN-TRI [192.168.20.5/24] — đích: router.noibo.vn=192.168.20.1 cổng 443 — file: vpn.log
+    - **Mục tiêu:**
+      - phải lôi ra được dòng chứa "authentication failed"
+    - **Lệnh mẫu:** `Get-Content vpn.log | Select-String ERROR`
+  - **Chủ đề gợi ý (tầng 1):** vẫn là dây chuyền đọc rồi lọc
+  - **Gợi ý (tầng 2):** Cùng một khuôn của bài vừa rồi, chỉ đổi tên file thành vpn.log. Từ khóa lọc có thể là ERROR, hoặc chính cụm failed.
+  - **Lời giải (tầng 3):** Get-Content vpn.log | Select-String ERROR — ra dòng 21:10:05 ERROR authentication failed for user ttbinh. Vậy tunnel dựng được tới bước IKE, hỏng ở khâu xác thực người dùng: đi tra tài khoản ttbinh chứ không phải tra đường mạng.
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao lọc được dòng ERROR rồi vẫn nên đọc mấy dòng ngay trước nó?
+  - **Nhóm ý cần chạm:** [nguyên nhân, nguyen nhan, gốc, goc, trước đó, truoc do] · [hậu quả, hau qua, kết quả, ket qua, cuối cùng, cuoi cung, triệu chứng, trieu chung]
+  - **Trả lời mẫu:** Vì dòng ERROR thường chỉ là hậu quả cuối cùng, còn nguyên nhân đã xảy ra vài dòng trước đó và có khi chỉ được ghi ở mức INFO. Đọc ngược lên vài dòng mới thấy được chuỗi sự việc dẫn tới lỗi, nhờ đó chữa đúng gốc thay vì chữa cái triệu chứng cuối cùng.
+
+**6 · Tổng kết:**
+- Get-Content <file> đổ cả file ra; nối | Select-String <từ khóa> để giữ đúng dòng cần.
+- Kết quả kèm số thứ tự dòng — lần ngược lên vài dòng thường thấy nguyên nhân.
+- Select-String dùng riêng cũng được nếu chỉ đường bằng -Path.
+- *Úp mở bài sau:* Bạn vừa đóng lại chặng cuối của cả khóa học. Bài kiểm tra module này cũng là lần cuối bạn ngồi trước terminal ảo — sau đó là mạng thật.
+
+### Khái niệm & flashcard (8)
+
+- **Cmdlet** `m12-cmdlet` — Lệnh PowerShell, tên luôn theo khuôn Động từ - Danh từ
+  - Ẩn dụ: Như gọi món trong quán: nói động từ (lấy, tạo, kiểm tra) rồi nói danh từ (địa chỉ IP, người dùng, kết nối) — không cần thuộc thực đơn cũng gọi được.
+  - Thẻ ôn: *Tên cmdlet PowerShell theo khuôn nào? Cho hai ví dụ.* → Động từ - Danh từ (verb-noun): Get-NetIPAddress (lấy - địa chỉ IP), New-ADUser (tạo mới - người dùng AD). Bộ động từ chuẩn hóa: Get, Set, New, Remove, Test, Import, Export.
+- **Get-NetIPAddress & Test-NetConnection** `m12-cmdlet-mang` — Hai cmdlet mạng đầu tay: đọc cấu hình máy mình và thăm dò máy khác
+  - Ẩn dụ: Get-NetIPAddress là tờ giấy tùy thân của máy; Test-NetConnection là vừa gọi cửa vừa thử đúng một cánh cửa xem có ai mở.
+  - Thẻ ôn: *Test-NetConnection gõ trần khác gì khi thêm -Port?* → Gõ trần thì nó ping và trả PingSucceeded (máy đích còn sống không). Thêm -Port <số> thì nó gõ đúng port đó và trả TcpTestSucceeded (dịch vụ ở port ấy có mở không). Ping True mà TcpTest False = máy sống, dịch vụ chết hoặc bị chặn.
+- **Parameter** `m12-tham-so` — Tham số — cái nhãn dán vào giá trị, viết sau một dấu gạch
+  - Ẩn dụ: Như ghi tên lên từng hộp đồ trước khi đưa: -Port 443, -Name "Le Thi Mai". Máy không phải đoán hộp nào đựng gì.
+  - Thẻ ôn: *Viết tham số trong PowerShell theo khuôn nào, và khi nào phải bọc nháy kép?* → Một dấu gạch, tên tham số, khoảng trắng, giá trị: -Port 443. Giá trị có dấu cách thì bọc nháy kép: -Name "Le Thi Mai". Tham số đầu tiên thường được phép bỏ nhãn (tham số vị trí).
+- **Get-Help** `m12-get-help` — Sổ tay cú pháp nằm sẵn trong máy, không cần mạng
+  - Ẩn dụ: Như cuốn hướng dẫn kẹp sẵn trong hộp đồ nghề: gặp lệnh lạ thì mở ra đọc khối SYNTAX, không phải chạy đi hỏi ai.
+  - Thẻ ôn: *Trong khối SYNTAX, [-Port <Int32>] và [-ComputerName] <String> khác nhau chỗ nào?* → [-Port <Int32>]: cả cụm trong ngoặc nên tham số này tùy chọn, bỏ hẳn cũng được. [-ComputerName] <String>: chỉ cái NHÃN nằm trong ngoặc — giá trị bắt buộc phải có, chỉ được phép bỏ nhãn (viết trần).
+- **Get-ADUser** `m12-ad-doc` — Đọc sổ hộ khẩu của miền: một người, cả danh sách, hoặc một ngăn kéo
+  - Ẩn dụ: Hỏi thủ thư: hỏi đích danh một người thì -Identity, mượn cả kệ thì -Filter *, giới hạn trong một ngăn thì -SearchBase.
+  - Thẻ ôn: *Ba cách hỏi của Get-ADUser và tác dụng từng cách?* → -Identity <sam>: đúng một người. -Filter *: lấy tất cả user trong miền. -SearchBase "OU=...,DC=...": thu hẹp về đúng một ngăn kéo OU. Kết quả in ra Name, SamAccountName, DistinguishedName, Enabled.
+- **New-ADUser** `m12-tao-user` — Ghi thêm một người vào sổ, phải nói rõ cất vào ngăn kéo nào
+  - Ẩn dụ: Điền phiếu nhập hộ khẩu: họ tên, tên đăng nhập, và số nhà — thiếu số nhà thì thư ký không biết xếp phiếu vào ngăn nào.
+  - Thẻ ôn: *New-ADUser cần những mảnh nào, và vì sao chạy xong không thấy thông báo?* → -Name (tên hiển thị, có dấu cách thì bọc nháy), -SamAccountName (tên đăng nhập), -Path "OU=<ngăn>,DC=<miền>,DC=<đuôi>". Im lặng là nếp PowerShell: chạy trót lọt thì không nói gì. Tự kiểm chứng bằng Get-ADUser -Identity <sam> — và nhìn dòng Enabled: chưa có mật khẩu thì tài khoản mới sinh ra đang bị khóa (False).
+- **Pipeline** `m12-pipeline` — Dấu ống | nối lệnh trước làm đầu vào cho lệnh sau
+  - Ẩn dụ: Một đường ống dẫn: đầu này đổ danh sách vào, đầu kia tài khoản mọc ra — không phải bê từng thùng một.
+  - Thẻ ôn: *Import-Csv nhan-vien-moi.csv | New-ADUser làm gì, và thứ chảy trong ống là gì?* → Đọc file CSV thành từng bản ghi rồi tạo một tài khoản cho mỗi bản ghi — cả danh sách trong một dòng. Trong ống chảy BẢN GHI có cột tên (không phải chữ thuần), nên tên cột phải khớp thứ lệnh bên phải cần: Name, SamAccountName, và Path chứa đường dẫn OU đầy đủ (bọc nháy kép vì trong DN có dấu phẩy).
+- **Get-Content & Select-String** `m12-doc-log` — Dây chuyền đọc log: đổ cả file ra rồi giữ lại đúng dòng cần
+  - Ẩn dụ: Đổ cả rổ ra bàn rồi lấy nam châm hút đúng mấy cái đinh — nhanh hơn ngồi bới từng nắm.
+  - Thẻ ôn: *Lọc dòng ERROR trong file router.log bằng dòng lệnh nào?* → Get-Content router.log | Select-String ERROR. Kết quả kèm số thứ tự dòng — đọc ngược lên vài dòng trước đó thường thấy nguyên nhân, vì dòng ERROR chỉ là hậu quả cuối cùng.
+
+### Bài kiểm tra module (pool 12 câu, mỗi lượt rút 8, cần ≥ 85%)
+
+- **Đề:** Tên mọi cmdlet PowerShell đều ghép theo khuôn hai mảnh nào?
+  - **Dạng:** gõ tay · **Chấp nhận:** động từ - danh từ | động từ danh từ | dong tu - danh tu | dong tu danh tu | verb-noun | verb noun | động từ và danh từ | dong tu va danh tu
+  - **Chủ đề gợi ý (tầng 1):** làm GÌ với CÁI GÌ
+  - **Vì sao:** Động từ - Danh từ. Nhờ khuôn này bạn đoán được tên lệnh chưa từng gặp: muốn lấy nội dung file thì Get-Content, muốn tạo user thì New-ADUser.
+- **Đề:** Test-NetConnection tới một máy chủ trả về PingSucceeded : True nhưng TcpTestSucceeded : False. Kết luận đúng nhất là gì?
+  - **Dạng:** trắc nghiệm · **Máy đích vẫn sống, dịch vụ ở port đó không chạy hoặc bị chặn** ✓ / Máy đích đã tắt hẳn nên không trả lời gì cả / Máy của bạn chưa có địa chỉ IP hợp lệ nên không đi ra được
+  - **Chủ đề gợi ý (tầng 1):** hai dòng kết quả đo hai thứ khác nhau
+  - **Vì sao:** PingSucceeded True chứng minh máy đích còn sống và đường đi còn thông. TcpTestSucceeded False nói riêng về cánh cửa đó: dịch vụ không chạy, hoặc tường lửa chặn đúng port ấy. Máy tắt hẳn thì ping đã False rồi.
+- **Đề:** Bạn gặp cmdlet lạ và cần biết nó nhận tham số nào. Gõ dòng nào ngay trong terminal để máy tự khai cú pháp?
+  - **Dạng:** gõ tay · **Chấp nhận:** Get-Help | get help | get-help | gethelp
+  - **Chủ đề gợi ý (tầng 1):** lấy - trợ giúp
+  - **Vì sao:** Get-Help <tên lệnh>. Khối SYNTAX in ra cho biết tham số nào bắt buộc, tham số nào nằm trong ngoặc vuông (tùy chọn) — đọc được nó là tự học được mọi cmdlet.
+- **Đề:** Muốn liệt kê mọi user nằm trong OU tên NhanSu của miền noibo.vn, bạn thêm tham số nào vào Get-ADUser -Filter * để thu hẹp phạm vi?
+  - **Dạng:** gõ tay · **Chấp nhận:** -SearchBase | SearchBase | -searchbase | searchbase | search base
+  - **Chủ đề gợi ý (tầng 1):** chỉ cho lệnh biết bắt đầu tìm từ ngăn kéo nào
+  - **Vì sao:** -SearchBase "OU=NhanSu,DC=noibo,DC=vn". Không có nó thì -Filter * quét cả miền; có nó thì chỉ đếm người trong đúng ngăn kéo đó.
+- **Đề:** Bạn chạy New-ADUser và terminal không in ra một chữ nào. Điều này nghĩa là gì?
+  - **Dạng:** trắc nghiệm · **Bình thường — chạy trót lọt thì PowerShell im lặng** ✓ / Lệnh hỏng giữa chừng nên chưa kịp in gì ra màn hình / Tài khoản đã được tạo nhưng đang chờ phê duyệt
+  - **Chủ đề gợi ý (tầng 1):** nếp của PowerShell khi mọi việc êm xuôi
+  - **Vì sao:** Im lặng là tin tốt: PowerShell chỉ lên tiếng khi có chuyện. Nhưng vì mắt chưa thấy gì, thói quen nghề là hỏi lại ngay bằng Get-ADUser -Identity <tên đăng nhập> — nhất là khi lệnh vừa tác động lên cả danh sách.
+- **Đề:** Ký tự nào nối kết quả của lệnh trước làm đầu vào cho lệnh sau?
+  - **Dạng:** gõ tay · **Chấp nhận:** | | dấu | | dau | | dấu ống | dau ong | ống | ong | dấu gạch đứng | dau gach dung | pipeline | pipe
+  - **Chủ đề gợi ý (tầng 1):** hình dáng một đường ống dẫn
+  - **Vì sao:** Dấu ống |. Trong PowerShell thứ chảy qua nó là bản ghi có cột tên, nên lệnh bên phải tự nhặt đúng cột mình cần.
+- **Đề:** Cmdlet nào đọc ra địa chỉ IP đang đặt trên các card mạng của chính máy bạn?
+  - **Dạng:** gõ tay · **Chấp nhận:** get-netipaddress | getnetipaddress | get netipaddress | get-netipaddress -addressfamily ipv4
+  - **Chủ đề gợi ý (tầng 1):** cmdlet đọc giấy tờ mạng của máy mình
+  - **Vì sao:** Get-NetIPAddress — vai trò như ipconfig ở Module 11, nhưng trả về bản ghi có cột nên lọc được và nối tiếp được bằng dấu ống.
+- **Đề:** Trong dòng Get-ADUser -Filter * -SearchBase "OU=NhanSu,DC=noibo,DC=vn", hai chữ mở đầu bằng dấu gạch là gì?
+  - **Dạng:** trắc nghiệm · **Tham số — cái nhãn nói giá trị đứng sau nó mang nghĩa gì** ✓ / Tên hai cmdlet phụ chạy kèm cmdlet chính ở đầu dòng / Chú thích dành cho người đọc, PowerShell bỏ qua chúng khi chạy
+  - **Chủ đề gợi ý (tầng 1):** chữ đứng sau dấu gạch trong một dòng lệnh
+  - **Vì sao:** Tham số là nhãn dán vào giá trị: -Filter nói "lọc theo cái này", -SearchBase nói "tìm trong ngăn kéo này". Nhờ có nhãn nên thứ tự viết không quan trọng.
+- **Đề:** Bạn đổ cả file log ra bằng Get-Content rồi muốn giữ lại đúng những dòng chứa chữ ERROR. Nối tiếp bằng cmdlet nào?
+  - **Dạng:** gõ tay · **Chấp nhận:** select-string | selectstring | select string
+  - **Chủ đề gợi ý (tầng 1):** cmdlet giữ lại dòng khớp chữ cần tìm
+  - **Vì sao:** Get-Content đổ cả file ra, Select-String giữ lại dòng khớp. Một lệnh lấy, một lệnh lọc, nối nhau bằng dấu ống — đó là dây chuyền đọc log.
+- **Đề:** Vì sao nối thẳng Import-Csv vào New-ADUser bằng dấu ống là chạy được?
+  - **Dạng:** trắc nghiệm · **Vì tên cột trong CSV khớp tên tham số mà New-ADUser nhận** ✓ / Vì New-ADUser tự đọc file CSV nếu thấy dấu ống đứng trước nó / Vì PowerShell tự đoán thứ tự cột theo đúng thứ tự tham số
+  - **Chủ đề gợi ý (tầng 1):** pipeline khớp cột CSV với tham số
+  - **Vì sao:** Pipeline nối theo TÊN: mỗi dòng CSV thành một bản ghi, cột Name rơi vào -Name, cột Path rơi vào -Path. Đặt sai tên cột là dây chuyền đứt ngay.
+- **Đề:** Việc thật: file thuc-tap-sinh.csv có ba bạn thực tập cần tài khoản trong OU KyThuat. Tạo đủ cả ba.
+  - **Dạng:** terminal PowerShell (gõ lệnh đạt mục tiêu)
+    - **Thế giới:** máy MAY-QUAN-TRI [192.168.20.5/24] — đích: dc01.noibo.vn=192.168.20.10 cổng 389/445 — AD noibo.vn: OU [KeToan, NhanSu, KyThuat], 2 user sẵn có — file: thuc-tap-sinh.csv
+    - **Mục tiêu:**
+      - OU KyThuat phải có ít nhất 3 user
+      - user "btlan" phải tồn tại trong OU KyThuat
+    - **Lệnh mẫu:** `Import-Csv thuc-tap-sinh.csv | New-ADUser`
+  - **Chủ đề gợi ý (tầng 1):** cả danh sách đi qua một đường ống
+  - **Vì sao:** Import-Csv thuc-tap-sinh.csv | New-ADUser — file có sẵn ba cột Name, SamAccountName, Path đúng thứ lệnh bên phải cần, nên cả ba tài khoản mọc ra trong một dòng. Gõ tay ba lệnh New-ADUser riêng cũng được công nhận: bài chấm theo kết quả trong sổ, không chấm cách viết.
+- **Đề:** Câu cuối của cả khóa học. Máy trong phòng họp sáng nay không xin được địa chỉ IP. File dhcp.log nằm trên máy bạn — lôi ra dòng nói đúng nguyên nhân.
+  - **Dạng:** terminal PowerShell (gõ lệnh đạt mục tiêu)
+    - **Thế giới:** máy MAY-QUAN-TRI [192.168.20.5/24] — đích: router.noibo.vn=192.168.20.1 cổng 443 — file: dhcp.log
+    - **Mục tiêu:**
+      - phải lôi ra được dòng chứa "pool exhausted"
+    - **Lệnh mẫu:** `Get-Content dhcp.log | Select-String ERROR`
+  - **Chủ đề gợi ý (tầng 1):** đọc cả file rồi lọc lấy dòng đáng đọc
+  - **Vì sao:** Get-Content dhcp.log | Select-String ERROR lôi ra dòng dhcp pool exhausted on scope 192.168.20.0 — dải địa chỉ cho thuê đã hết sạch, nên máy mới xin không còn gì để cấp. Đây là bệnh của Module 6 quay lại, lần này bạn bắt được nó bằng một dòng lệnh.

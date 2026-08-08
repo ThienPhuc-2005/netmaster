@@ -1,4 +1,4 @@
-# Trạng thái dự án — NetMaster (Phase 1 + 2 xong; Phase 3: hạng mục 8 + 9 xong)
+# Trạng thái dự án — NetMaster (Phase 1 + 2 + 3 XONG — hết phạm vi spec)
 
 Cập nhật: 2026-08-07. File này chỉ để nắm nhanh tình hình khi
 mở lại dự án. Nguồn chân lý vẫn là `SPEC-APP-HOC-MANG.md`; luật làm việc
@@ -6,11 +6,256 @@ mở lại dự án. Nguồn chân lý vẫn là `SPEC-APP-HOC-MANG.md`; luật 
 
 ## MỞ PHIÊN MỚI THÌ ĐỌC ĐÂY TRƯỚC
 
-**Đang đứng đâu:** Phase 1 + Phase 2 xong hẳn; Phase 3 hạng mục (8) và
-(9) XONG. App có đủ Module 1-11 + tab Phòng khám. **Hạng mục (10) —
-Module 12 + terminal PowerShell ảo (hạng mục CUỐI của spec) — đang làm:
-kế hoạch 4 khối ĐÃ duyệt kèm 3 quyết định (bảng dưới); khối 10.1 + 10.2
-XONG, kế tiếp là 10.3 — nội dung `module-12.json` + hình khái niệm.**
+**Đang đứng đâu:** **CẢ BA PHASE ĐÃ XONG — hết phạm vi spec.** Phase 3
+hạng mục (8), (9), (10) đều khép; hạng mục (10) là hạng mục cuối cùng
+của spec mục 6. App có đủ **12 module** + tab Phòng khám + tab Ôn tập +
+drill subnetting.
+
+**Sau khi hết phạm vi spec, dự án đã qua BA việc lớn ngoài spec (07-08
+và 08-08):**
+
+1. **Hội đồng đánh giá 14 ghế** (`DANH-GIA-HOI-DONG.md`) — 14 agent chấm
+   độc lập + 12 phản biện chéo, điểm trung bình 7.6/10, 1 phát hiện P0
+   (hình bắt tay TCP vẽ ngược chiều ACK) + 28 mục P1.
+2. **Lượt sửa lớn theo biên bản** — 25/28 mục P0/P1 đã đóng, 876/876
+   test xanh. Bốn quyết định người dùng đã duyệt trước khi code: (a) vá
+   cổng mastery CẢ BA LỚP: xáo lựa chọn MCQ khi render + xáo thứ tự câu
+   mỗi lượt thi + màn rớt CHỈ hiện ý cần ôn (đáp án đầy đủ chỉ khi đậu —
+   có test khóa "màn rớt không rò đáp án"); (b) phiên ôn thêm RELEARNING:
+   thẻ quên quay lại cuối phiên tới khi tự nhớ được, chỉ lượt chấm đầu
+   ghi SM-2/XP (ReviewPage.test.tsx khóa); (c) PS bài hàng loạt đổi quy
+   ước cột OU tự chế → cột **Path chứa DN chuẩn thật** (Import-Csv biết
+   đọc nháy kép như CSV thật); (d) chốt thuật ngữ **"port"** cho TCP/UDP
+   (quét M5-M12, "cổng" chỉ còn là cổng vật lý/ẩn dụ; accept-list giữ cả
+   hai cách gõ).
+   Kèm theo: migrate + fixture v1 + test rehydrate; xuất/nhập backup ở
+   Hồ sơ; chặn 2 cửa sổ (BroadcastChannel); lưới đỡ runtime-lệch-content
+   + AppErrorBoundary (--danger có consumer đầu tiên); kể chuyện streak
+   freeze/reset (streakEvent + banner); animation ăn mừng màn Kết (CSS
+   theo --dur, reduced-motion tự tắt); dòng giải-thích-ngày-2 + nút "Ôn
+   phiên tiếp" ở ReviewPage; sửa copy huy hiệu hứa suông; sửa mô tả arp;
+   hình DnsResolver/nắp gói tin/nhãn DORA/trục WellKnownDoors;
+   bỏ opacity-60 card khóa; --part-accent sống (StageMap + chip bước,
+   thêm 8 cặp tokens.test); FeedbackRegion live-region thường trực;
+   history ↑/↓ terminal PS; lazy-route (Design/Drill/Clinic/Profile/
+   ModuleTest) + lazy 3 bề mặt thực hành nặng trong QuestionInput (mở
+   app không còn tải chunk phòng khám 537KB); PROD bỏ zod validate;
+   clean-dist trước build; helper `lt()/maybeLt()` thay toàn bộ `.vi`
+   trong UI (12 file — đường bật EN nội dung sau này).
+
+**Việc kế tiếp đọc ở `KE-HOACH-TANG-DIEM.md`** — bảng điểm ước lượng
+sau lượt sửa (7.6 → ~8.4) + lộ trình 4 đợt tăng điểm theo thứ tự đáng
+làm. Còn treo như cũ: **các buổi test người thật**
+(`KICH-BAN-TEST.md`) — cần người, không code được.
+
+3. **Đợt "đề thi đáng tin" — nửa đầu (#5) XONG (08-08).** Rà trọn 38
+   câu MCQ của 12 bài thi mastery, chỉ sửa JSON nội dung:
+   - **Cue độ-dài đã tắt:** tỉ lệ "đáp án là lựa chọn dài nhất"
+     **35/38 → 13/38** (34% — đúng mức ngẫu nhiên của đề 3 lựa chọn).
+     Cách làm: distractor cụt lủn được viết dài ra thành lỗi hiểu nhầm
+     đầy đủ, đáp án bị cắt phần diễn giải thừa (phần đó vốn đã nằm
+     trong `explain`). Không câu nào còn đáp án vượt distractor dài
+     nhất quá 10%.
+   - **Distractor "đùa" viết lại thành lỗi hiểu nhầm THẬT:** "Cài bản
+     Windows mới nhất" → "Máy được đặt vào cùng một workgroup với các
+     máy khác" (nhầm workgroup với miền); "5 GHz — nhanh hơn là hơn" →
+     "băng tần nhanh hơn thì đi xa hơn"; "Chỉ hoạt động với IPv6" →
+     "Chỉ lọc được theo địa chỉ IP, không theo port"; "Tường lửa vành
+     đai quá đắt" → "không lọc được lưu lượng mã hóa"; "Block
+     Inheritance chặn được tất cả" → "…kể cả Enforced".
+   - **Accept gõ tay vá 4 ca trượt oan** (bộ chấm tách token nên ký
+     hiệu biến mất): `dấu |`, `65,535`/`65.535`, `gethelp`,
+     `search base`, cộng `dấu ::`, `linklocal`, `doublenat`. Vá cả
+     hai câu 65535 (bài học M5 + đề thi M5).
+   - **Hai test mới khóa cả hai luật** trong `content.test.ts`: một đo
+     cue độ-dài (từng câu ≤ 1.1× distractor dài nhất, toàn đề ≤ 45% câu
+     có đáp án dài nhất), một chạy 19 cách gõ thật qua chính
+     `typedAnswerMatches`. 878/878 test xanh, typecheck sạch, build qua,
+     `content:review` render lại 12 module.
+   - **Nửa sau (#6 — pool rút 8) đã làm 08-08, xem mục 5 bên dưới.**
+
+4. **HỌC VƯỢT — "thi vượt" (08-08, việc NGOÀI spec, người dùng đặt
+   hàng và đã duyệt 3 quyết định).** Nhu cầu thật: có vài module người
+   dùng đã học ở nơi khác rồi.
+   - **Va chạm đã nói thẳng trước khi code:** spec nguyên tắc 2 ghi
+     "không có nút skip". Cách đọc đã chốt: spec cấm QUA module mà
+     không chứng minh, không cấm con đường tới chỗ chứng minh. Nên thi
+     vượt = **cùng đề mastery, cùng ngưỡng 85%, cùng chuỗi mở khóa**,
+     chỉ bỏ điều kiện "phải học hết bài trong module trước đã".
+   - **`masteryGate.ts` KHÔNG bị sửa một dòng nào** — module sắp vượt
+     vốn đã `open`, nên việc này không chạm chuỗi mở khóa. Vượt đúng
+     mắt xích đang mở; đậu thì module sau mở rồi mới vượt tiếp được.
+   - Ba quyết định người dùng đã chốt: (a) thi vượt TỪNG module (không
+     làm bài xếp lớp đầu khóa); (b) đậu là **sinh đủ thẻ SM-2** cho mọi
+     khái niệm + phòng cung điện của module, hạn ngày mai; (c) **đúng
+     một lượt** mỗi module, rớt thì học bình thường — vì đề còn cố
+     định, nới luật này phải chờ làm xong #6.
+   - Store: `challengeUsed` + `recordChallengeAttempt` (tiêu lượt ngay
+     khi nộp, KHÔNG XP/streak) + selector thuần `canChallengeModule`;
+     **persist bump v1 → v2 kèm case migrate + test** (đúng luật cửa
+     migrate). UI: một dòng mời chữ nhỏ dưới danh sách bài ở trang Học
+     (không tô accent — lối chính vẫn là học), `?vuot=1` trên
+     `ModuleTestPage` với bộ chuỗi `test.challenge*` (vi+en).
+   - **Chuỗi vượt:** nút **"Vượt tiếp \<module sau\>"** ngay trên màn
+     đậu — bỏ quãng đi bộ về trang Học.
+   - **Nút vượt ở MỌI module, kể cả module đang KHÓA (chủ dự án ra lệnh
+     08-08 — thay luật cũ "chỉ vượt module đang mở").** Cảnh thật: đã
+     học M1-M3 ở nơi khác, muốn vào thẳng Module 4. `canChallengeModule`
+     giờ chỉ loại module ĐÃ ĐẬU; `recordChallengeAttempt` bỏ chốt chặn
+     'locked' (chỉ còn chặn module không có trong lộ trình);
+     `ModuleTestPage` cho cửa vượt đi qua màn "Module chưa mở". Đường
+     thi THƯỜNG của module khóa vẫn khóa như cũ.
+   - **Vẫn KHÔNG mở trắng các module bị nhảy qua:** đậu M4 chỉ đánh dấu
+     M4. M1-M3 vẫn chưa đậu, muốn tính là xong thì vượt/học từng cái —
+     không bịa điểm mastery cho thứ chưa đo một câu nào.
+   - **BỎ giới hạn một lượt (chủ dự án ra lệnh 08-08, lượt sau — thay
+     quyết định (c) ở trên).** Yêu cầu: MỌI chủ đề lớn phải luôn có nút
+     học vượt; cửa dùng một lần rồi mất thì bằng không có cửa.
+     `canChallengeModule` bỏ điều kiện `challengeUsed`; store bỏ chốt
+     ném lỗi "đã dùng lượt"; `?vuot=1` không còn chết sau lần nộp đầu;
+     màn RỚT lượt vượt giờ có nút "Thi lại ngay" **giữ nguyên chế độ
+     vượt**. Sổ `challengeUsed` giữ lại làm nhật ký (persist vẫn v2,
+     không phải migrate). Cổng 85% vẫn giữ giá nhờ ba lớp có sẵn: xáo
+     thứ tự câu, xáo lựa chọn MCQ, màn rớt không in đáp án.
+   - **Chỗ đứng của nút: NGAY CẠNH tên chủ đề lớn** (chủ dự án ra lệnh
+     sửa lần hai — "nhìn không nổi bật"). Bản trước để một dòng chữ xám
+     dưới đáy card, phải cuộn qua 5-8 hàng bài mới thấy → với người mới
+     coi như không có. Giờ mỗi card có chip **"Học vượt"** viền accent +
+     chữ accent ở góc phải tiêu đề (mobile 375px xuống dòng riêng), hover
+     mới tô đặc; dòng mời chữ đầy đủ giữ nguyên ở cuối card để nói nó là
+     gì. Ô accent ĐẶC vẫn dành riêng cho "Bắt đầu" của bài — lối chính
+     vẫn là học. Chuỗi mới: `learn.challengeShort` (vi+en).
+   - 901/901 test xanh (+23), typecheck sạch, build qua. Kiểm browser
+     thật: đi trọn lượt vượt Module 1 đạt 100% → module-1 vào
+     passedModules, **6 thẻ ôn sinh đủ hạn 2026-08-08, xpTotal 0,
+     streak 0, completedLessons vẫn rỗng**; bấm "Vượt tiếp" nhảy đúng
+     `/kiem-tra/module-2?vuot=1` với màn intro mới tinh; lời mời thi
+     vượt tự dời sang Module 2 và biến mất khỏi Module 1; mobile 375px
+     không tràn.
+
+5. **Đợt "đề thi đáng tin" — nửa sau (#6) XONG (08-08).** Bài thi mastery
+   không còn là ĐỀ CỐ ĐỊNH: `masteryTest` trong JSON giờ là **POOL 12 câu**
+   của module, mỗi lượt thi **rút ra 8 câu** rồi xáo thứ tự.
+   - Vì sao: đề cố định thì từ lượt thi lại thứ hai, 85% chỉ còn đo TRÍ
+     NHỚ VỀ ĐỀ — người học vừa đọc ý cần ôn xong, gặp lại đúng 8 câu ấy.
+     Xáo câu + xáo lựa chọn (đã có) không đổi được TẬP câu được hỏi.
+   - `src/engine/masteryPool.ts` — thuần TS, rng bơm từ ngoài:
+     `drawMasteryTest` (rút + xáo), `masteryDrawCount`, `isAnchorQuestion`.
+     `MASTERY_DRAW_COUNT = 8` **cố định** để 7/8 đậu / 6/8 rớt giữ nguyên
+     nghĩa của ngưỡng 85% giữa mọi module và mọi lượt (chuẩn hóa n).
+   - **Câu TRỤ luôn có mặt trong mọi lượt**: lab (M4), palace-walk
+     (M5/M9), clinic (M11), ps (M12). Rút trượt chúng là có ngày cổng
+     mastery không đo tới kỹ năng chính của module; riêng M5 ba câu cung
+     điện hợp lại mới phủ đủ 15 phòng. Chỗ còn lại mới bốc ngẫu nhiên.
+   - **46 câu mới** (mỗi module lên đúng 12): bám concept của chính module,
+     không lặp câu cũ, distractor là lỗi hiểu nhầm thật, đều có `hintTopic`
+     nên màn RỚT trỏ được ý cần ôn thay vì câu chung chung. Nhân tiện tỉ lệ
+     "đáp án là lựa chọn dài nhất" xuống **14/69 (20%)**.
+   - Test khóa: `masteryPool.test.ts` (đúng 8 câu, không trùng, hai lượt ra
+     hai đề, pool nhỏ hơn cỡ đề thì hỏi trọn, **mọi lượt đều chứa đủ câu
+     trụ và phủ đủ phòng cung điện**) + `content.test.ts` (pool >= 12; câu
+     trụ không được chiếm gần trọn đề). 908/908 test xanh, typecheck sạch,
+     build qua, `content:review` render lại 12 module.
+   - Kiểm browser thật: đi trọn lượt vượt Module 1 — màn intro nói "8 câu",
+     đề đi từ Câu 1/8 tới 8/8 và có 3 trong số câu mới, đạt 100% →
+     passedModules có module-1, **6 thẻ ôn hạn 2026-08-09, xpTotal 0,
+     streak 0**, answerHistory ghi đúng 8 lượt; vào bài thi Module 2 hai
+     lần liên tiếp ra hai đề khác nhau ngay từ câu đầu.
+
+6. **Persist BÀI DỞ của phòng lab và terminal PS (#20) XONG (08-08)** —
+   mục P1 CUỐI CÙNG của biên bản hội đồng, giờ biên bản sạch P0/P1.
+   - Cảnh thật: lắp 8 thiết bị hoặc gõ 15 lệnh là mười lăm phút. Bấm
+     nhầm Back, hết pin, đóng nhầm cửa sổ — bản cũ mất sạch. Đã chọn
+     **persist thật**, không phải hộp xác nhận (hộp xác nhận chỉ đổi
+     "mất trắng không báo" thành "mất trắng có báo").
+   - Store: ngăn `practiceDrafts` khóa `lessonId::questionId`
+     (`practiceDraftKey`), trần 12 bài dở (dọn cái cũ nhất),
+     `savePracticeDraft` / `clearPracticeDraft`. **Persist v2 → v3 kèm
+     case migrate + test** — migrate giờ là CHUỖI BẬC v(n)→v(n+1), thêm
+     version mới chỉ việc nối thêm một bậc.
+   - Lab: `restoreLab` (engine) mở lại từ sơ đồ dở nhưng vẫn giữ
+     `initial` là đề bài, nên "Về sơ đồ ban đầu" không bị bẻ. **KHÔNG
+     lưu lịch sử undo** — dấu chân của buổi ngồi, không phải thành quả.
+     PS: lưu thế giới + NHẬT KÝ lệnh (thiếu nhật ký là mất phần lớn
+     công sức); "Làm lại từ đầu" xóa luôn bài dở.
+   - **Ranh giới quan trọng nhất: bài học lưu, BÀI THI KHÔNG.**
+     `draftKey` chỉ được truyền từ `LessonPlayer`; `ModuleTestPage` cố ý
+     không truyền — nạp lại sơ đồ lắp dở của đề thi là mở đường mang bài
+     về nhà làm dần. `QuestionInput.draft.test.tsx` đứng gác chỗ đó.
+   - Bài dở tự xóa khi câu đã xong (Đoán thử trả lời xong / bài tập giải
+     đúng). Lưu bài dở KHÔNG cộng XP, không chạm streak, không ghi
+     answerHistory (nguyên tắc 5 — có test khóa).
+   - 925/925 test xanh (+17), typecheck sạch, build qua. Kiểm browser
+     thật: sửa VLAN ở lab Đoán thử của `m4-bai-4` → F5 → vào lại đúng
+     sơ đồ đã sửa, mục tiêu "(xong)"; nộp bài xong ngăn bài dở rỗng.
+     Terminal M12: chạy `Get-NetIPAddress` → F5 → nhật ký và output còn
+     nguyên; bấm "Làm lại từ đầu" → bài dở biến mất.
+
+7. **Lượt dọn P2 (đợt ba) XONG (08-08)** — sáu nhóm nhỏ, sáu ghế cùng
+   nhích. Sau lượt này biên bản hội đồng sạch P0/P1 và gần hết P2.
+   - **Ngôn ngữ:** "subnet mask" thống nhất ở M6 (4 chỗ đang trôi thành
+     "mặt nạ"); ẩn dụ DORA hết lệch giới; `...` → `…` ở M1-3 — **giữ
+     ASCII trong ký hiệu IPv6 và mẫu lệnh PowerShell** vì người học có
+     thể chép lại; accept "ben máy đích" viết lại thành biến thể không
+     dấu cho đúng hàng.
+   - **Kỹ thuật mạng:** `New-ADUser` mặc định **Enabled=False** như AD
+     thật (tài khoản chưa có mật khẩu thì bị khóa) — engine đổi, có test
+     khóa, deepDive + flashcard M12 giải thích; đề lab "mạng nhà" khai rõ
+     phòng lab KHÔNG mô phỏng NAT (nhật ký chặng giữ IP riêng là cố ý);
+     ping unreachable giờ có **prefix "Reply from &lt;ai ký tên&gt;:"** và
+     đếm **Received=4, Lost=0 (0% loss)** như Windows thật — **bẫy "0%
+     loss mà vẫn không thông" được giữ nguyên có chủ đích**, có test;
+     phòng 21 kể lại thành quầy RA LỆNH, deepDive nói vì sao FTP vỡ khi
+     có tường lửa (nối sang Module 7).
+   - **Hình khái niệm:** `context-stroke` khai một chỗ ở `Frame` nên đầu
+     mũi tên ăn màu của chính nét gọi nó (130 hình hưởng); glyph 587 vẽ
+     lại thành THẺ TRÊN MẶT QUẦY (hết na ná sổ hộ khẩu 389 — luật "mỗi
+     phòng một bóng dáng"); ổ khóa 443 render `var(--warn)` đúng chữ spec
+     "ổ khóa VÀNG"; PalaceMap nền sáng /40 → /60.
+   - **i18n:** `applyLang` cạnh `applyTheme` — bấm VI/EN là `<html lang>`
+     đổi theo (WCAG 3.1.1); 4 chuỗi EN đếm được viết lại trung tính số
+     ("1 cables connected" hết vỡ); test parity mới so bộ `{placeholder}`
+     của từng key. **QUYẾT: nhãn SVG là VI-only, tuyên bố bằng comment**
+     — hình đi kèm NỘI DUNG, mà nội dung Phase 1 chỉ có tiếng Việt; dịch
+     nhãn là được cái hình nói tiếng Anh cạnh đoạn bài tiếng Việt.
+     DesignPage cũng có một dòng tuyên bố ngoại lệ hardcode VI.
+   - **A11y:** mũi tên dời thiết bị trên canvas lab đúng một ô lưới,
+     dùng chung `snapToGrid` với chuột — sắp xếp mặt bàn hết là thao tác
+     duy nhất chỉ có đường kéo-thả.
+   - **Kiến trúc:** `AppGate`/`LearnIndexGate` tách khỏi `main.tsx` sang
+     `src/app/gates.tsx` để test với tới được; `gates.test.tsx` chạy dưới
+     StrictMode, 6 test phủ: onboarding đứng trước mọi thứ, luật ôn-trước,
+     và cờ chống kẹt vòng "ôn xong bấm Học lại bị đá về Ôn tập".
+   - 936/936 test xanh (+11), typecheck sạch, build qua. Kiểm browser
+     thật: `<html lang>` lật vi↔en theo nút; marker `context-stroke` có
+     mặt ở cả 130 hình; ổ khóa 443 đo được rgb(251,191,36) = --warn;
+     PalaceMap nền sáng đo lại contrast **1.82 → 2.53**.
+
+8. **Đợt bốn — phần LÀM ĐƯỢC NGAY đã xong (08-08); phần còn lại đang
+   chờ chủ dự án quyết một câu hỏi kiến trúc.**
+   - **Preload 2 font thân bài** (`vite.config.ts`, plugin
+     `netmaster-preload-critical-fonts`): chữ tiếng Việt cần cả subset
+     `latin` (ký tự) lẫn `vietnamese` (dấu) ở cân 400 mới đọc được một
+     câu, nên preload đúng hai file đó. Tên file có hash nên phải sinh
+     lúc build; **không tìm thấy file khớp là build CHẾT** — preload lặng
+     lẽ biến mất là kiểu tối ưu "còn trên giấy". Có `crossorigin` để
+     trình duyệt khỏi tải hai lần.
+   - **Đo thật trên bản build** (`npm run preview`, cấu hình
+     `netmaster-preview` trong `.claude/launch.json`): lần mở app đầu
+     tải **483 KB / 18 request** — JS 340 KB (giải nén 1.2 MB), font
+     123 KB, CSS 20 KB. Ước ở 3G thật (~50 KB/s): ~10 giây; slow-4G
+     (~190 KB/s): ~2,5 giây.
+   - **Preload có tác dụng đo được:** hai font thân bài bắt đầu tải ở
+     **68 ms** (initiator `link`) thay vì 236-271 ms như các font còn lại
+     (initiator `css`, phải chờ CSS về và parse xong mới lộ ra).
+   - **Hai việc hiệu năng lớn còn lại DỪNG Ở KẾ HOẠCH** vì cùng vướng
+     một câu hỏi: *có cho `loadModules()` thành async không?*
+     (a) nội dung 12 module = **124 KB gz** tải ngay cả với người đang
+     ở onboarding; (b) **zod nằm trong bundle đầu (~40 KB gz)** dù PROD
+     không parse gì — vì mọi nơi import `contentSchema` để lấy type/hàm
+     thuần, kéo theo cả file có schema. Cả hai chỉ gỡ được bằng một
+     seam async, mà đó là việc L đụng ~10 nơi gọi + store + test →
+     đúng luật CLAUDE.md: trình kế hoạch, chờ duyệt.
 
 **Ba quyết định hạng mục (10) đã chốt (07-08, không hỏi lại):**
 1. Phạm vi PowerShell ĐÓNG BĂNG: 8 cmdlet (Get-Help, Get-NetIPAddress,
@@ -28,8 +273,8 @@ XONG, kế tiếp là 10.3 — nội dung `module-12.json` + hình khái niệm.
 |------|----------|-----------|
 | 10.1 | Engine `src/engine/ps/` (world + interpreter + gradePs + schema) | Xong |
 | 10.2 | UI PsConsole + `kind: 'ps'` vào pipeline 6 bước + /design | Xong |
-| 10.3 | Nội dung `module-12.json` + hình khái niệm | Chưa |
-| 10.4 | DoD + kiểm browser + tài liệu (khép hạng mục 10 và Phase 3) | Chưa |
+| 10.3 | Nội dung `module-12.json` + hình khái niệm | Xong |
+| 10.4 | DoD + kiểm browser + tài liệu (khép hạng mục 10 và Phase 3) | Xong |
 
 **Khối 10.1 đã làm gì** (headless — app chưa đổi một pixel):
 - `src/engine/ps/world.ts` — thế giới giả 4 mảnh: máy đang ngồi (card
@@ -80,6 +325,72 @@ XONG, kế tiếp là 10.3 — nội dung `module-12.json` + hình khái niệm.
   kiểm chứng, HAI mục tiêu lật ✓ sống trước khi nộp, nộp ra "đạt";
   mobile 375px scrollWidth = 375 không tràn.
 
+**Khối 10.3 đã làm gì** (Module 12 thành module thật, chơi được):
+- `content/modules/module-12.json` — 5 bài, 8 khái niệm, 10 đề terminal.
+  Chuỗi bài bám đúng 4 mảng spec liệt kê: cmdlet mạng (bài 1-2) → tra và
+  ghi sổ AD (bài 3) → tạo hàng loạt bằng một dòng pipeline (bài 4) → đọc
+  log (bài 5). **Generation effect tối đa**: MỌI bài đều có ít nhất một
+  câu gõ lệnh vào terminal ảo (content.test khóa); bài 3 và bài 5 đặt
+  luôn câu ps ở bước Nhớ lại — gõ lại lệnh từ trí nhớ, không nhìn bài.
+- **Gợi ý mờ dần đo được ở hai tầng**: trong một câu là thang 3 tầng sẵn
+  có (hintTopic → cú pháp khuyết → lệnh mẫu), dọc module là chuỗi
+  fadingLevel 0 → 1 → 1 → 2 → 2 (content.test khóa: không được lùi, bài
+  cuối phải mức 2).
+- Bài 1 mở màn bằng câu ps ở bước **Đoán thử** — người học mò terminal
+  trước khi biết quy tắc Động từ-Danh từ (cùng chiêu productive failure
+  của M4/M11). Bài thi 8 câu, **kết bằng hai câu ps** (tạo hàng loạt +
+  đọc log DHCP hết dải cho thuê — bệnh của Module 6 quay lại).
+- 8 hình khái niệm mới trong `ConceptVisual` (+5 alias hook):
+  CmdletVerbNoun, NetCmdlets, NamedParams, HelpManual, AdDirectoryQuery,
+  NewUserDn, PipelineFlow, LogFilter. Đã soi bằng `getBBox` trên browser
+  thật: không hình nào tràn khỏi viewBox 220×130.
+- **Hai lỗi nội dung tự bắt được khi kiểm browser** (ghi lại để không
+  tái phạm): (1) app KHÔNG render markdown — dấu backtick trong JSON
+  hiện thành ký tự thật, đã bỏ sạch 108 dấu; nội dung M1-M11 vốn không
+  dùng backtick nào. (2) đoạn script đọc-hiểu nhiều dòng ở deepDive bài
+  4 bị ép thành một dòng — đã thêm `whitespace-pre-wrap` cho ô deepDive
+  của LessonPlayer (M1-M11 không có chuỗi nào chứa xuống dòng hay hai
+  khoảng trắng liền, đã quét kiểm, nên cách hiển thị của chúng không đổi).
+- 855/855 test xanh (+4 test nội dung M12), typecheck sạch, build qua.
+  Kiểm browser thật: bài 1 pretest gõ `Test-NetConnection ... -Port 445`
+  ra TcpTestSucceeded True, mục tiêu lật ✓ sống, nộp ra "đoán đúng luôn";
+  bài 4 `Import-Csv nhan-vien-moi.csv | New-ADUser` tạo 4 user, cả hai
+  mục tiêu ✓, terminal im lặng kèm lời xúi Get-ADUser kiểm chứng.
+
+**Khối 10.4 đã làm gì** (khép hạng mục 10 + khép Phase 3):
+- **Đối chiếu Definition of Done (spec mục 6) trên browser thật**, đi
+  trọn bài `m12-bai-1` từ Khởi động tới Tổng kết:
+  - *Mọi bài đi đủ 6 bước*: ĐẠT — thanh chặng chạy đủ 6 mục, bước Nhớ
+    lại đóng hết nội dung phía trên, bước Kết ra 3 gạch + hé lộ bài sau
+    + 30 XP.
+  - *Flashcard tự sinh, ôn đúng lịch SM-2*: ĐẠT — học xong bài 1 sinh
+    đúng 2 thẻ (`m12-cmdlet`, `m12-cmdlet-mang`, hạn 2026-08-08), đúng
+    hai khái niệm bài đó dạy, không dư không thiếu.
+  - *Không màn hình nào quá 1 khái niệm mới*: ĐẠT — bước Dạy đánh số
+    "Màn 1/2", "Màn 2/2"; schema đã ép sẵn ở tầng dữ liệu.
+  - *Test người thật*: TREO (cần người) — kịch bản đã soạn xong.
+- **Thang 3 tầng trên câu terminal**: kiểm tay từng tầng — nộp lần 1 ra
+  lời tầng 1 lấy từ hintTopic, lần 2 ra `hint` (cú pháp khuyết), lần 3
+  ra `solution` (lệnh mẫu) kèm câu "tự gõ lại đáp án nhé". Không đâu
+  hiện chữ "SAI" trần trụi (nguyên tắc 4 + spec 4.4).
+- **Đi trọn bài thi Module 12** (8 câu, có 2 câu ps): đạt 100%, câu ps
+  trong đề thi chấm sống y như trong bài học.
+- **LỖI THẬT BẮT ĐƯỢC Ở BƯỚC NÀY:** đậu module CUỐI mà app vẫn báo
+  *"module tiếp theo đã mở!"* — hứa một module không tồn tại, đúng vào
+  khoảnh khắc peak-end của cả khóa. Đã vá: `ModuleTestPage` suy
+  `isFinalModule` TỪ DỮ LIỆU (`loadModules().at(-1)`), ba chuỗi đổi theo
+  (`test.introFinal`, `test.passTitleFinal`, `test.failBodyFinal`, đủ
+  vi+en). Khóa bằng `ModuleTestPage.test.tsx` — thêm module mới thì
+  "module cuối" tự dời, không phải sửa test.
+- **Mobile 375px**: document không cuộn ngang (scrollWidth = 375); output
+  terminal cuộn ngang TRONG khung `<pre>` của chính nó (clientWidth 318 /
+  scrollWidth 439) — đúng luật layout của dự án.
+- `KICH-BAN-TEST.md` **mục 11** — buổi test người thật Module 12: đo
+  generation effect bằng ba bài (tự gõ lệnh từ terminal trống, phản xạ
+  `Get-Help` thay vì hỏi người, "300 dòng thì làm sao"), kèm câu khép
+  khóa hỏi người học tự xử lý được việc gì ở chỗ làm.
+- 857/857 test xanh (+2), typecheck sạch, build qua.
+
 **Ba quyết định hạng mục (9) đã chốt (06-08, không hỏi lại):**
 1. Kiến trúc: engine clinic BỌC lab engine (case = topology lab + "hồ
    sơ bệnh" overlay) — KHÔNG mở phạm vi mô phỏng lab đã đóng băng.
@@ -90,7 +401,7 @@ XONG, kế tiếp là 10.3 — nội dung `module-12.json` + hình khái niệm.
 
 **Việc treo (cần người, không code được):** các buổi test người thật
 theo `KICH-BAN-TEST.md` (mục 1-6 Phase 1; mục 7 M4; mục 8 M5; mục 9
-Phần C mới thêm).
+Phần C; mục 10 M11; mục 11 M12 — mục 12 là hướng dẫn xử lý sau buổi).
 
 **Luật deploy (người dùng đã dặn 06-08):** KHÔNG ngồi canh deploy. Push
 xong là làm việc tiếp; GitHub trục trặc thì lần push sau tự kéo mọi thứ
