@@ -1,9 +1,17 @@
 // Bản đồ chặng của một module — goal gradient (spec 2.4): 4-6 chặng nhỏ
 // NHÌN THẤY ĐƯỢC để đích lúc nào cũng ở ngay trước mặt. Chặng xong tô
 // đầy màu nhấn, chặng đang học có vòng sáng, chặng chưa mở khóa mờ.
+//
+// Tông-theo-Phần (spec 4.1, hồi sinh sau phán quyết "chết lâm sàng" của
+// hội đồng): các chi tiết ĐANG HỌC ăn var(--part-accent) do tổ tiên
+// [data-part] cấp (tokens.css), fallback --accent khi đứng ngoài module.
+// Chấm "đã xong" giữ accent + accent-contrast — cặp đó đã được test đo,
+// không đánh cược chữ trắng lên màu Phần chưa đo.
 
 import { Check, Lock } from 'lucide-react'
 import { useT } from '../i18n'
+
+const PART_ACCENT = 'var(--part-accent, var(--accent))'
 
 export type StageState = 'done' | 'active' | 'locked'
 
@@ -23,8 +31,11 @@ function StageDot({ state }: { state: StageState }) {
   }
   if (state === 'active') {
     return (
-      <span className="flex size-8 items-center justify-center rounded-full border-2 border-accent bg-panel">
-        <span className="size-2.5 rounded-full bg-accent" />
+      <span
+        className="flex size-8 items-center justify-center rounded-full border-2 bg-panel"
+        style={{ borderColor: PART_ACCENT }}
+      >
+        <span className="size-2.5 rounded-full" style={{ background: PART_ACCENT }} />
       </span>
     )
   }

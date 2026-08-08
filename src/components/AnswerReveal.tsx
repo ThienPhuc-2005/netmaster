@@ -4,6 +4,7 @@
 // Toàn bộ CHỈ-ĐỌC: chấm điểm đã khóa trong runtime/kết quả thi.
 
 import type { Question } from '../engine/contentSchema'
+import { lt, maybeLt } from '../engine/ltext'
 import type { QuestionResponse } from '../engine/grading/gradeQuestion'
 import { useT } from '../i18n'
 
@@ -21,9 +22,9 @@ export function canonicalAnswer(q: Question): string | null {
     case 'typed':
       return q.accept[0] ?? ''
     case 'mcq':
-      return q.choices[q.answerIndex]?.vi ?? ''
+      return maybeLt(q.choices[q.answerIndex]) ?? ''
     case 'order':
-      return q.items.map((it) => it.vi).join(' → ')
+      return q.items.map((it) => lt(it)).join(' → ')
     case 'lab':
     case 'palace-walk':
       return null
@@ -31,8 +32,8 @@ export function canonicalAnswer(q: Question): string | null {
       // Sơ đồ đã sửa không rút gọn thành chữ được (như lab), nhưng TÊN
       // BỆNH thì có — và đó chính là thứ đáng đọc lại. Ca chọn-hành-động
       // nêu luôn hành động đúng.
-      const diagnosis = q.diagnosis.choices[q.diagnosis.answerIndex]?.vi ?? ''
-      const action = q.actions?.choices[q.actions.answerIndex]?.vi
+      const diagnosis = maybeLt(q.diagnosis.choices[q.diagnosis.answerIndex]) ?? ''
+      const action = maybeLt(q.actions?.choices[q.actions.answerIndex])
       return action === undefined ? diagnosis : `${diagnosis} → ${action}`
     }
     case 'ps':
@@ -49,9 +50,9 @@ export function formatResponse(q: Question, r: QuestionResponse): string | null 
     case 'typed':
       return r.text
     case 'mcq':
-      return q.kind === 'mcq' ? (q.choices[r.choiceIndex]?.vi ?? '') : ''
+      return q.kind === 'mcq' ? (maybeLt(q.choices[r.choiceIndex]) ?? '') : ''
     case 'order':
-      return q.kind === 'order' ? r.order.map((i) => q.items[i]?.vi ?? '').join(' → ') : ''
+      return q.kind === 'order' ? r.order.map((i) => maybeLt(q.items[i]) ?? '').join(' → ') : ''
     case 'lab':
       // Sơ đồ người học lắp được xem lại ngay trên phòng lab, không phải ở đây.
       return null
@@ -60,9 +61,9 @@ export function formatResponse(q: Question, r: QuestionResponse): string | null 
       return null
     case 'clinic': {
       if (q.kind !== 'clinic') return ''
-      const diagnosis = q.diagnosis.choices[r.diagnosisIndex]?.vi ?? ''
+      const diagnosis = maybeLt(q.diagnosis.choices[r.diagnosisIndex]) ?? ''
       if (r.fix.kind === 'choose-action') {
-        const action = q.actions?.choices[r.fix.actionIndex]?.vi
+        const action = maybeLt(q.actions?.choices[r.fix.actionIndex])
         return action === undefined ? diagnosis : `${diagnosis} → ${action}`
       }
       // Sơ đồ đã sửa xem lại ngay trong phòng khám, không phải ở đây.

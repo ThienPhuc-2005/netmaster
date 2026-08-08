@@ -3,9 +3,17 @@
 // nội dung → hình SVG vẽ tay theo hệ ẩn dụ bưu điện; visualId chưa có
 // hình riêng dùng hình thư chung để bài vẫn dạy được, và Khối 5 bổ sung
 // dần hình cho nội dung mới.
+//
+// NHÃN TRONG HÌNH LÀ TIẾNG VIỆT, CỐ Ý (chốt 08-08 sau câu hỏi của hội
+// đồng, ghế i18n). Hình đi kèm NỘI DUNG bài học, mà nội dung Phase 1
+// chỉ có tiếng Việt — dịch nhãn SVG sang EN sẽ cho ra một cái hình nói
+// tiếng Anh cạnh một đoạn bài nói tiếng Việt, tệ hơn hẳn hiện trạng.
+// Chỉ khi nào nội dung bài học có bản EN thật thì mới bàn tiếp: lúc đó
+// nhãn đi qua LText như mọi chuỗi nội dung khác, KHÔNG qua i18n (i18n
+// dành cho chuỗi khung app). Khung app xung quanh hình vẫn song ngữ.
 
 import type { ReactNode } from 'react'
-import { motion } from 'motion/react'
+import { m } from 'motion/react'
 import { loadModules } from '../content'
 
 function Frame({ children, title }: { children: ReactNode; title?: string }) {
@@ -20,8 +28,14 @@ function Frame({ children, title }: { children: ReactNode; title?: string }) {
           Trước đây nó chỉ nằm trong một hình, và hình nào vẽ mũi tên mà
           quên khai lại thì nét đó cụt đầu — lỗi im lặng, chỉ nhìn mới thấy. */}
       <defs>
+        {/* `context-stroke` = ăn màu của CHÍNH nét gọi mũi tên, không phải
+            màu chữ của cả khung. Trước đây mọi đầu mũi tên đều xám như
+            nhau, kể cả trên nét đã tô accent để chỉ "đường đang giảng" —
+            tức là màu nói một đằng, đầu mũi tên nói một nẻo (hội đồng
+            07-08, ghế hình khái niệm). Trình duyệt cũ không hiểu từ khóa
+            này thì rơi về currentColor, đúng hành vi cũ. */}
         <marker id="cv-arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-          <path d="M0 0 6 3 0 6" fill="none" stroke="currentColor" strokeWidth="1.5" />
+          <path d="M0 0 6 3 0 6" fill="none" stroke="context-stroke" strokeWidth="1.5" />
         </marker>
       </defs>
       {children}
@@ -154,7 +168,7 @@ type JourneyLeg = 'dns' | 'gateway' | 'routers' | 've-dich' | 'tong-quan'
 
 function MiniPacket({ x, y }: { x: number; y: number }) {
   return (
-    <motion.g
+    <m.g
       initial={{ x: x - 16, y, opacity: 0 }}
       animate={{ x, y, opacity: 1 }}
       transition={{ duration: 0.24, ease: 'easeOut' }}
@@ -162,7 +176,7 @@ function MiniPacket({ x, y }: { x: number; y: number }) {
     >
       <rect x="-8" y="-6" width="16" height="12" rx="2" fill="var(--panel)" stroke="currentColor" strokeWidth="1.8" />
       <path d="M-8 -3.5 0 3 8 -3.5" fill="none" stroke="currentColor" strokeWidth="1.3" />
-    </motion.g>
+    </m.g>
   )
 }
 
@@ -613,14 +627,20 @@ function Handshake3Way({ title }: { title?: string }) {
         <text x="110" y="34" textAnchor="middle" {...monoText}>
           SYN
         </text>
-        <path d="M164 94 H56" {...stroke} strokeWidth={1.5} markerEnd="url(#cv-arrow)" />
+        {/* ACK do MÁY BẠN gửi (bước 3) — mũi tên phải chạy trái → phải.
+            Từng vẽ ngược chiều (M164 H56): hình dạy "máy chủ gửi ACK",
+            sai TCP thật — lỗi P0 hội đồng bắt được, không tái phạm. */}
+        <path d="M56 94 H164" {...stroke} strokeWidth={1.5} markerEnd="url(#cv-arrow)" />
         <text x="110" y="90" textAnchor="middle" {...monoText}>
           ACK
         </text>
       </g>
       <g className="text-accent">
         <rect x="62" y="56" width="96" height="22" rx="11" {...stroke} strokeWidth={2.5} />
-        <path d="M74 67 H146" {...stroke} strokeWidth={2.5} markerEnd="url(#cv-arrow)" markerStart="url(#cv-arrow)" />
+        {/* SYN-ACK do máy chủ gửi VỀ — một đầu mũi tên, trỏ về máy bạn.
+            Von Restorff vẫn nguyên ở khung bao + nét dày, không cần mũi
+            tên hai đầu (hai đầu là mất luôn thông tin chiều đi). */}
+        <path d="M146 67 H74" {...stroke} strokeWidth={2.5} markerEnd="url(#cv-arrow)" />
         <text x="110" y="52" textAnchor="middle" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
           SYN-ACK
         </text>
@@ -633,11 +653,15 @@ function Handshake3Way({ title }: { title?: string }) {
 function TcpReliable({ title }: { title?: string }) {
   return (
     <Frame title={title}>
+      {/* Gói tin GIỮ nắp phong bì ở mọi module (spec 4.2: "gói tin luôn
+          cùng một hình dạng") — hộp trơn làm mất dấu hiệu nhận diện đúng
+          chỗ người học cần thấy "vẫn là gói tin đó, chỉ khác cách gửi". */}
       <g className="text-ink-muted">
         {['1', '2', '3'].map((n, i) => (
           <g key={n} transform={`translate(${30 + i * 46} 34)`}>
             <rect width="30" height="22" rx="3" {...stroke} strokeWidth={1.5} />
-            <text x="15" y="16" textAnchor="middle" {...monoText}>
+            <path d="M0 4 15 14 30 4" {...stroke} strokeWidth={1} />
+            <text x="15" y="18" textAnchor="middle" {...monoText}>
               {n}
             </text>
           </g>
@@ -647,7 +671,8 @@ function TcpReliable({ title }: { title?: string }) {
       <g className="text-accent">
         <path d="M91 60 v18 h-46 v-18" {...stroke} strokeWidth={1.5} strokeDasharray="4 3" />
         <rect x="30" y="80" width="30" height="22" rx="3" {...stroke} />
-        <text x="45" y="96" textAnchor="middle" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+        <path d="M30 84 45 94 60 84" {...stroke} strokeWidth={1} />
+        <text x="45" y="98" textAnchor="middle" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
           2
         </text>
         <text x="140" y="96" textAnchor="middle" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
@@ -668,10 +693,17 @@ function UdpFast({ title }: { title?: string }) {
         <path d="M94 28 q16 18 0 36" {...stroke} strokeWidth={1.5} />
       </g>
       <g className="text-ink-muted">
+        {/* Nắp phong bì trên từng gói — cùng lý do TcpReliable ở trên. */}
         {[0, 1, 3].map((i) => (
-          <rect key={i} x={118 + i * 24} y="42" width="18" height="14" rx="2" {...stroke} strokeWidth={1.5} />
+          <g key={i} transform={`translate(${118 + i * 24} 42)`}>
+            <rect width="18" height="14" rx="2" {...stroke} strokeWidth={1.5} />
+            <path d="M0 3 9 9 18 3" {...stroke} strokeWidth={1} />
+          </g>
         ))}
-        <rect x="166" y="82" width="18" height="14" rx="2" {...stroke} strokeWidth={1.5} strokeDasharray="3 3" />
+        <g transform="translate(166 82)">
+          <rect width="18" height="14" rx="2" {...stroke} strokeWidth={1.5} strokeDasharray="3 3" />
+          <path d="M0 3 9 9 18 3" {...stroke} strokeWidth={1} strokeDasharray="3 3" />
+        </g>
         <path d="M175 60 v16" {...stroke} strokeWidth={1.5} strokeDasharray="3 3" />
         <text x="110" y="118" textAnchor="middle" {...monoText}>
           rớt gói nào thì thôi
@@ -691,10 +723,13 @@ function WellKnownDoors({ title }: { title?: string }) {
           0 — 1023 · đã có chủ theo quy ước
         </text>
       </g>
+      {/* Cửa xếp THEO THỨ TỰ SỐ trên trục (22 < 80 < 443) — trục ghi
+          "0 — 1023" là tín hiệu trục số, cửa đặt lộn xộn là dạy một bố
+          cục không gian sai cho đúng module lấy trí nhớ vị trí làm vũ khí. */}
       {[
-        { x: 34, label: '80' },
-        { x: 96, label: '443' },
-        { x: 158, label: '22' },
+        { x: 34, label: '22' },
+        { x: 96, label: '80' },
+        { x: 158, label: '443' },
       ].map((d) => (
         <g key={d.label} className="text-accent">
           <rect x={d.x} y="34" width="32" height="62" rx="3" {...stroke} />
@@ -784,9 +819,15 @@ function DnsResolver({ title }: { title?: string }) {
         </text>
         <path d="M56 67 H84" {...stroke} strokeWidth={1.5} markerEnd="url(#cv-arrow)" />
       </g>
+      {/* Resolver KHÔNG mượn glyph router (vòng tròn + chữ thập) — hai
+          khái niệm khác hẳn, chung hình là gieo "resolver là một loại
+          router" vào trí nhớ ảnh (spec 4.2). Móc riêng: quầy người-hỏi-hộ
+          cầm cuốn danh bạ — cùng motif phonebook của phòng 53 cung điện. */}
       <g className="text-accent">
-        <circle cx="106" cy="67" r="20" {...stroke} />
-        <path d="M99 67 h14 M106 60 v14" {...stroke} strokeWidth={1.5} />
+        <circle cx="100" cy="53" r="7" {...stroke} strokeWidth={1.5} />
+        <path d="M89 82 c0 -10 22 -10 22 0" {...stroke} strokeWidth={1.5} />
+        <rect x="108" y="62" width="18" height="22" rx="2" {...stroke} strokeWidth={1.5} />
+        <path d="M117 62 v22 M111 68 h4 M111 74 h4 M120 68 h3 M120 74 h3" {...stroke} strokeWidth={1} />
         <text x="106" y="104" textAnchor="middle" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
           resolver
         </text>
@@ -937,6 +978,14 @@ function DoraFourBeats({ title }: { title?: string }) {
       <g className="text-ink-muted">
         <rect x="10" y="18" width="34" height="94" rx="3" {...stroke} strokeWidth={1.2} />
         <rect x="176" y="18" width="34" height="94" rx="3" {...stroke} strokeWidth={1.2} />
+        {/* Nhãn hai đầu — Handshake3Way cùng bố cục đã có, đây cũng phải
+            có: không bắt người học đoán bên nào là DHCP server. */}
+        <text x="27" y="126" textAnchor="middle" {...monoText}>
+          máy bạn
+        </text>
+        <text x="193" y="126" textAnchor="middle" {...monoText}>
+          DHCP
+        </text>
       </g>
       {beats.map((b) => {
         const accent = b.label === 'Request'
@@ -2122,6 +2171,227 @@ function ManhMoiTaiCho({ title }: { title?: string }) {
   )
 }
 
+// --- Module 12 — PowerShell cho người quản trị mạng -------------------
+
+/** Tên cmdlet = hai mảnh ghép: động từ dán vào danh từ. */
+function CmdletVerbNoun({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-accent">
+        <rect x="24" y="36" width="60" height="30" rx="4" {...stroke} strokeWidth={1.5} />
+        <text x="54" y="56" textAnchor="middle" fontSize="12" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          Get
+        </text>
+      </g>
+      <g className="text-ink-muted">
+        <path d="M88 51 h12" {...stroke} strokeWidth={1.5} />
+        <rect x="104" y="36" width="92" height="30" rx="4" {...stroke} strokeWidth={1.5} />
+        <text x="150" y="56" textAnchor="middle" fontSize="12" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          NetIPAddress
+        </text>
+      </g>
+      <text x="54" y="84" textAnchor="middle" {...monoText}>động từ</text>
+      <text x="150" y="84" textAnchor="middle" {...monoText}>danh từ</text>
+      <text x="110" y="112" textAnchor="middle" {...monoText}>
+        đoán được tên lệnh
+      </text>
+    </Frame>
+  )
+}
+
+/** Hai cmdlet mạng: một làn hỏi máy còn sống, một làn gõ đúng cánh cửa. */
+function NetCmdlets({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <rect x="18" y="34" width="30" height="56" rx="3" {...stroke} strokeWidth={1.5} />
+        <rect x="172" y="34" width="30" height="56" rx="3" {...stroke} strokeWidth={1.5} />
+        <path d="M180 48 h14 M180 58 h14" {...stroke} strokeWidth={1.2} />
+      </g>
+      <g className="text-ink-muted">
+        <path d="M52 52 H168" {...stroke} strokeWidth={1.2} markerEnd="url(#cv-arrow)" />
+      </g>
+      <text x="110" y="46" textAnchor="middle" {...monoText}>ping</text>
+      <g className="text-accent">
+        <path d="M52 78 H168" {...stroke} strokeWidth={1.5} markerEnd="url(#cv-arrow)" />
+        <text x="110" y="72" textAnchor="middle" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          -Port 443
+        </text>
+      </g>
+      <text x="110" y="112" textAnchor="middle" {...monoText}>
+        máy sống? · cửa mở?
+      </text>
+    </Frame>
+  )
+}
+
+/** Tham số = cái nhãn dán vào giá trị. */
+function NamedParams({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-accent">
+        <path d="M34 40 H92 L104 56 92 72 H34 Z" {...stroke} strokeWidth={1.5} />
+        <text x="63" y="60" textAnchor="middle" fontSize="11" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          -Port
+        </text>
+      </g>
+      <g className="text-ink-muted">
+        <rect x="120" y="40" width="60" height="32" rx="4" {...stroke} strokeWidth={1.5} />
+        <text x="150" y="61" textAnchor="middle" fontSize="12" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          443
+        </text>
+      </g>
+      <text x="110" y="94" textAnchor="middle" {...monoText}>nhãn + giá trị</text>
+      <text x="110" y="114" textAnchor="middle" {...monoText}>
+        có dấu cách thì bọc nháy
+      </text>
+    </Frame>
+  )
+}
+
+/** Get-Help: cuốn sổ tay mở sẵn ở trang SYNTAX. */
+function HelpManual({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <path d="M14 30 H92 V96 H14 Z" {...stroke} strokeWidth={1.5} />
+        <path d="M22 44 h58 M22 58 h58 M22 72 h44" {...stroke} strokeWidth={1.2} />
+        <path d="M92 30 H206 V96 H92" {...stroke} strokeWidth={1.5} />
+        <path d="M92 26 v74" {...stroke} strokeWidth={1.5} />
+      </g>
+      <g className="text-accent">
+        <text x="100" y="48" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          SYNTAX
+        </text>
+      </g>
+      <text x="100" y="66" {...monoText}>[-Port &lt;Int32&gt;]</text>
+      <text x="100" y="84" {...monoText}>[ ] = tùy chọn</text>
+      <text x="110" y="116" textAnchor="middle" {...monoText}>
+        sổ tay nằm trong máy
+      </text>
+    </Frame>
+  )
+}
+
+/** Get-ADUser: soi vào đúng một ngăn kéo của tủ hồ sơ. */
+function AdDirectoryQuery({ title }: { title?: string }) {
+  // Ngăn giữa vẽ riêng ở lớp nhấn — để nó ngoài danh sách này, nếu không
+  // tay nắm màu mờ sẽ gạch ngang chữ OU=KeToan.
+  const drawers = [30, 82]
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <rect x="46" y="24" width="104" height="82" rx="4" {...stroke} strokeWidth={1.5} />
+        {drawers.map((y) => (
+          <g key={y}>
+            <rect x="54" y={y} width="88" height="20" rx="2" {...stroke} strokeWidth={1.2} />
+            <path d={`M90 ${y + 10} h16`} {...stroke} strokeWidth={1.2} />
+          </g>
+        ))}
+      </g>
+      <g className="text-accent">
+        <rect x="54" y="56" width="88" height="20" rx="2" {...stroke} strokeWidth={1.5} />
+        <text x="98" y="70" textAnchor="middle" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          OU=KeToan
+        </text>
+        <circle cx="172" cy="58" r="11" {...stroke} strokeWidth={1.5} />
+        <path d="M180 66 188 76" {...stroke} strokeWidth={1.5} />
+      </g>
+      <text x="110" y="122" textAnchor="middle" {...monoText}>
+        -Identity · -Filter * · -SearchBase
+      </text>
+    </Frame>
+  )
+}
+
+/** New-ADUser: một phiếu người mới được xếp vào đúng ngăn kéo. */
+function NewUserDn({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <rect x="20" y="34" width="56" height="46" rx="4" {...stroke} strokeWidth={1.5} />
+        <circle cx="38" cy="50" r="7" {...stroke} strokeWidth={1.2} />
+        <path d="M28 70 c0 -8 20 -8 20 0" {...stroke} strokeWidth={1.2} />
+        <path d="M56 60 h14" {...stroke} strokeWidth={1.2} />
+      </g>
+      <g className="text-accent">
+        <path d="M82 57 h22" {...stroke} strokeWidth={1.5} markerEnd="url(#cv-arrow)" />
+        <rect x="110" y="34" width="94" height="46" rx="4" {...stroke} strokeWidth={1.5} />
+        <text x="157" y="54" textAnchor="middle" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          OU=KeToan
+        </text>
+        <text x="157" y="70" textAnchor="middle" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          DC=noibo,DC=vn
+        </text>
+      </g>
+      <text x="110" y="104" textAnchor="middle" {...monoText}>
+        -Name -SamAccountName -Path
+      </text>
+      <text x="110" y="120" textAnchor="middle" {...monoText}>
+        thiếu -Path thì không biết cất đâu
+      </text>
+    </Frame>
+  )
+}
+
+/** Dấu ống: danh sách đổ vào một đầu, tài khoản mọc ra đầu kia. */
+function PipelineFlow({ title }: { title?: string }) {
+  const rows = [34, 50, 66]
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        {rows.map((y) => (
+          <rect key={y} x="18" y={y} width="50" height="12" rx="2" {...stroke} strokeWidth={1.2} />
+        ))}
+        <text x="43" y="94" textAnchor="middle" {...monoText}>CSV</text>
+      </g>
+      <g className="text-accent">
+        <path d="M74 40 H146 M74 72 H146" {...stroke} strokeWidth={1.5} />
+        <path d="M84 56 h52" {...stroke} strokeWidth={1.5} markerEnd="url(#cv-arrow)" />
+        <text x="110" y="30" textAnchor="middle" fontSize="12" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          |
+        </text>
+      </g>
+      <g className="text-ink-muted">
+        {[42, 60, 78].map((y) => (
+          <g key={y}>
+            <circle cx="164" cy={y} r="5" {...stroke} strokeWidth={1.2} />
+            <path d={`M172 ${y} h22`} {...stroke} strokeWidth={1.2} />
+          </g>
+        ))}
+        <text x="176" y="94" textAnchor="middle" {...monoText}>user</text>
+      </g>
+      <text x="110" y="118" textAnchor="middle" {...monoText}>
+        một dòng, cả danh sách
+      </text>
+    </Frame>
+  )
+}
+
+/** Get-Content | Select-String: đổ cả file qua phễu, giữ đúng dòng cần. */
+function LogFilter({ title }: { title?: string }) {
+  const lines = [30, 42, 54, 66, 78, 90]
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        {lines.map((y) => (
+          <path key={y} d={`M20 ${y} h64`} {...stroke} strokeWidth={1.2} />
+        ))}
+      </g>
+      <g className="text-accent">
+        <path d="M96 30 H160 L134 62 V88 L122 94 V62 Z" {...stroke} strokeWidth={1.5} />
+        <text x="128" y="48" textAnchor="middle" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          ERROR
+        </text>
+        <path d="M164 68 h34" {...stroke} strokeWidth={1.5} markerEnd="url(#cv-arrow)" />
+      </g>
+      <text x="110" y="118" textAnchor="middle" {...monoText}>
+        đọc cả file rồi lọc lấy một dòng
+      </text>
+    </Frame>
+  )
+}
+
 /** Hình thư chung cho visualId chưa có hình riêng. */
 function GenericMail({ title }: { title?: string }) {
   return (
@@ -2270,6 +2540,20 @@ const REGISTRY: Record<string, VisualComponent> = {
   'vis-hook-doi-chu': ArpDoiChu,
   'vis-manh-moi-tai-cho': ManhMoiTaiCho,
   'vis-hook-manh-moi': ManhMoiTaiCho,
+  // Module 12 — PowerShell cho người quản trị mạng
+  'vis-cmdlet-dong-tu-danh-tu': CmdletVerbNoun,
+  'vis-hook-cmdlet': CmdletVerbNoun,
+  'vis-cmdlet-mang': NetCmdlets,
+  'vis-tham-so-nhan': NamedParams,
+  'vis-get-help-so-tay': HelpManual,
+  'vis-hook-get-help': HelpManual,
+  'vis-hoi-so-ad': AdDirectoryQuery,
+  'vis-hook-ad-ps': AdDirectoryQuery,
+  'vis-tao-user-dn': NewUserDn,
+  'vis-dau-ong': PipelineFlow,
+  'vis-hook-pipeline': PipelineFlow,
+  'vis-loc-dong-log': LogFilter,
+  'vis-hook-doc-log': LogFilter,
 }
 
 /**

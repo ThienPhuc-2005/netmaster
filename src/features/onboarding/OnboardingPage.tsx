@@ -13,7 +13,7 @@
 // Không XP, không streak — xem animation không phải retrieval (nguyên tắc 5).
 
 import { useEffect, useRef, useState } from 'react'
-import { motion, useReducedMotion } from 'motion/react'
+import { m, useReducedMotion } from 'motion/react'
 import { Languages, Send } from 'lucide-react'
 import { useT } from '../../i18n'
 import { useSettings } from '../../store/settings'
@@ -115,7 +115,7 @@ export function OnboardingPage() {
         <Machine x={B.x} y={B.y} label={t('onboarding.nodeB')} />
 
         {/* Router — sáng lên khi gói tin ghé qua (signaling, spec 4.2) */}
-        <motion.g
+        <m.g
           animate={{ scale: phase === 'atRouter' ? [1, 1.22, 1] : 1 }}
           transition={{ duration: 0.3, ease: 'easeOut' }}
           style={{ transformBox: 'fill-box', transformOrigin: 'center' }}
@@ -143,11 +143,11 @@ export function OnboardingPage() {
           >
             {t('onboarding.router')}
           </text>
-        </motion.g>
+        </m.g>
 
         {packetVisible &&
           ((phase === 'hop1' || phase === 'hop2') && frames !== null ? (
-            <motion.g
+            <m.g
               key={phase}
               initial={{ x: frames.xs[0], y: frames.ys[0] }}
               animate={{ x: frames.xs, y: frames.ys }}
@@ -163,7 +163,7 @@ export function OnboardingPage() {
               }}
             >
               <PacketShape />
-            </motion.g>
+            </m.g>
           ) : packetStatic !== null ? (
             <g transform={`translate(${packetStatic.x} ${packetStatic.y})`}>
               <PacketShape />

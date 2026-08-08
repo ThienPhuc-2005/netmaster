@@ -58,6 +58,12 @@ const PAIRS: [fg: string, bg: string][] = [
   ['ink', 'panel-hover'],
   ['ink-muted', 'surface'],
   ['ink-muted', 'panel'],
+  // panel-hover là nền THẬT của nav active (AppLayout) và các card-link —
+  // hội đồng chỉ ra chúng render thật mà chưa được đo: ai đổi --panel-hover
+  // có thể làm mù nav mà test vẫn xanh.
+  ['ink-muted', 'panel-hover'],
+  ['accent', 'panel-hover'],
+  ['warn', 'panel-hover'],
   ['accent', 'surface'],
   ['accent', 'panel'],
   ['accent-contrast', 'accent'],
@@ -66,9 +72,15 @@ const PAIRS: [fg: string, bg: string][] = [
   ['warn', 'surface'],
   ['warn', 'panel'],
   ['danger', 'surface'],
+  // danger giờ có consumer thật (AppErrorBoundary render chữ danger trên panel).
+  ['danger', 'panel'],
+  // part-a/b/c dùng làm màu chữ/viền của tông-theo-Phần trên cả hai nền.
   ['part-a', 'surface'],
   ['part-b', 'surface'],
   ['part-c', 'surface'],
+  ['part-a', 'panel'],
+  ['part-b', 'panel'],
+  ['part-c', 'panel'],
 ]
 
 describe.each([

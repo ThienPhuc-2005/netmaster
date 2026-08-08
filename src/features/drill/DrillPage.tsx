@@ -18,7 +18,7 @@ import { todayIso, useProgress } from '../../store/progress'
 import { useT } from '../../i18n'
 import { playEarcon } from '../../audio/earcons'
 import { Button } from '../../components/Button'
-import { FeedbackBanner, type FeedbackState } from '../../components/FeedbackBanner'
+import { FeedbackRegion, type FeedbackState } from '../../components/FeedbackBanner'
 import { ProgressChart } from './ProgressChart'
 
 // ---------------------------------------------------------------
@@ -265,7 +265,7 @@ export function DrillPage() {
           </Button>
         </form>
 
-        {feedback !== null && <FeedbackBanner state={feedback} />}
+        <FeedbackRegion state={feedback} />
         {tier >= 2 && (
           <div className="rounded-md border border-edge bg-panel px-4 py-3">
             <SolutionRows rows={solutionRows(problem, t, tier >= 3)} />

@@ -1,6 +1,7 @@
-import { StrictMode, useEffect, useState } from 'react'
+import { StrictMode, Suspense, lazy } from 'react'
 import { createRoot } from 'react-dom/client'
-import { createBrowserRouter, Navigate, RouterProvider } from 'react-router'
+import { createBrowserRouter, RouterProvider } from 'react-router'
+import { LazyMotion, MotionConfig, domAnimation } from 'motion/react'
 
 // Font tự host — không CDN: Be Vietnam Pro (thiết kế cho tiếng Việt)
 // cho UI, JetBrains Mono cho IP/port/số liệu kỹ thuật.
@@ -11,68 +12,32 @@ import '@fontsource/jetbrains-mono/400.css'
 import '@fontsource/jetbrains-mono/700.css'
 import './styles/app.css'
 
-import { AppLayout } from './components/AppLayout'
-import { OnboardingPage } from './features/onboarding/OnboardingPage'
-import { LearnPage } from './features/learn/LearnPage'
+import { AppErrorBoundary } from './components/AppErrorBoundary'
+import { SingleWindowGuard } from './components/SingleWindowGuard'
+import { useSettings } from './store/settings'
 import { LessonPlayer } from './features/learn/LessonPlayer'
-import { ModuleTestPage } from './features/learn/ModuleTestPage'
 import { ReviewPage } from './features/review/ReviewPage'
-import { DrillPage } from './features/drill/DrillPage'
-import { ClinicPage } from './features/clinic/ClinicPage'
-import { ProfilePage } from './features/profile/ProfilePage'
-import { DesignPage } from './features/design/DesignPage'
-import { shouldReviewFirst, todayIso, useProgress } from './store/progress'
+// Hai cánh cổng điều hướng ở file riêng để test jsdom với tới được —
+// file entry này có createRoot nên import vào test là chạy cả app.
+import { AppGate, LearnIndexGate } from './app/gates'
 
-// Luật "mỗi ngày mở app, việc ĐẦU TIÊN là ôn thẻ đến hạn" (spec 2.2):
-// lần điều hướng ĐẦU của phiên app, còn thẻ đến hạn và hôm nay chưa ôn
-// → đưa thẳng vào Ôn tập. Sau đó người học tự do đi lại (việc học BÀI
-// MỚI vẫn bị chặn riêng bởi luật nợ > 30 thẻ).
-//
-// Quyết định đặt trong EFFECT, không phải trong render: (1) chờ được
-// zustand persist rehydrate xong mới đọc hộp ôn; (2) render không được
-// mutate cờ module — StrictMode render đôi sẽ nuốt mất <Navigate> nếu
-// lần render đầu đã bật cờ.
-let openedIntoReview = false
+// Route NGOÀI đường nóng tách chunk riêng (hội đồng, ghế hiệu năng: một
+// bundle 1.27MB zero code-split là chỗ máy yếu mạng chậm đau đầu tiên).
+// Đường nóng giữ eager: onboarding → LearnPage/ReviewPage → LessonPlayer
+// (gate ôn-trước đưa người học vào đúng các trang này ở mọi phiên).
+const ModuleTestPage = lazy(() =>
+  import('./features/learn/ModuleTestPage').then((mod) => ({ default: mod.ModuleTestPage })),
+)
+const DrillPage = lazy(() => import('./features/drill/DrillPage').then((mod) => ({ default: mod.DrillPage })))
+const ClinicPage = lazy(() => import('./features/clinic/ClinicPage').then((mod) => ({ default: mod.ClinicPage })))
+const ProfilePage = lazy(() =>
+  import('./features/profile/ProfilePage').then((mod) => ({ default: mod.ProfilePage })),
+)
+const DesignPage = lazy(() => import('./features/design/DesignPage').then((mod) => ({ default: mod.DesignPage })))
 
-function LearnIndexGate() {
-  const [decision, setDecision] = useState<'pending' | 'review' | 'learn'>(
-    openedIntoReview ? 'learn' : 'pending',
-  )
-
-  useEffect(() => {
-    if (decision !== 'pending') return
-    const decide = () => {
-      openedIntoReview = true
-      const { reviewCards, lastReviewDate } = useProgress.getState()
-      setDecision(shouldReviewFirst(reviewCards, lastReviewDate, todayIso()) ? 'review' : 'learn')
-    }
-    if (useProgress.persist.hasHydrated()) {
-      decide()
-      return
-    }
-    return useProgress.persist.onFinishHydration(decide)
-  }, [decision])
-
-  if (decision === 'pending') return null
-  if (decision === 'review') return <Navigate to="/on-tap" replace />
-  return <LearnPage />
-}
-
-// Cổng vào app: người dùng MỚI thấy onboarding (bắn gói tin) trước mọi
-// thứ — kể cả sidebar, kể cả luật "ôn trước" (spec 4.5: aha moment đứng
-// trước mọi màn giới thiệu). Chờ zustand rehydrate rồi mới quyết định
-// để không nháy onboarding với người dùng cũ.
-function AppGate() {
-  const [hydrated, setHydrated] = useState(useProgress.persist.hasHydrated())
-  useEffect(() => {
-    if (hydrated) return
-    return useProgress.persist.onFinishHydration(() => setHydrated(true))
-  }, [hydrated])
-  const onboardingDone = useProgress((s) => s.onboardingDone)
-
-  if (!hydrated) return null
-  if (!onboardingDone) return <OnboardingPage />
-  return <AppLayout />
+/** Fallback null: chunk route nhỏ, nháy spinner còn ồn hơn là đợi ~100ms. */
+function lazyRoute(element: React.ReactNode) {
+  return <Suspense fallback={null}>{element}</Suspense>
 }
 
 const router = createBrowserRouter(
@@ -83,12 +48,12 @@ const router = createBrowserRouter(
       children: [
         { index: true, element: <LearnIndexGate /> },
         { path: 'bai/:lessonId', element: <LessonPlayer /> },
-        { path: 'kiem-tra/:moduleId', element: <ModuleTestPage /> },
+        { path: 'kiem-tra/:moduleId', element: lazyRoute(<ModuleTestPage />) },
         { path: 'on-tap', element: <ReviewPage /> },
-        { path: 'luyen-subnet', element: <DrillPage /> },
-        { path: 'phong-kham', element: <ClinicPage /> },
-        { path: 'ho-so', element: <ProfilePage /> },
-        { path: 'design', element: <DesignPage /> },
+        { path: 'luyen-subnet', element: lazyRoute(<DrillPage />) },
+        { path: 'phong-kham', element: lazyRoute(<ClinicPage />) },
+        { path: 'ho-so', element: lazyRoute(<ProfilePage />) },
+        { path: 'design', element: lazyRoute(<DesignPage />) },
       ],
     },
   ],
@@ -104,9 +69,32 @@ interface RootHost {
   __netmasterRoot?: ReturnType<typeof createRoot>
 }
 const host = globalThis as RootHost
+// Vỏ gốc: lưới đỡ lỗi (không còn màn trắng khi engine throw) + chặn hai
+// cửa sổ ghi đè nhau. Boundary cần lang mà class component không hook
+// được — bọc qua một function component nhỏ.
+function Root() {
+  const lang = useSettings((s) => s.lang)
+  return (
+    <AppErrorBoundary lang={lang}>
+      <SingleWindowGuard>
+        {/* LazyMotion strict: chỉ ship phần domAnimation của thư viện
+            motion (mọi chỗ đã đổi motion.* → m.*). MotionConfig
+            reducedMotion="user": TẤT CẢ animation của motion tôn trọng
+            prefers-reduced-motion mặc định — khỏi nhớ useReducedMotion
+            từng chỗ (lỗ MiniPacket hội đồng bắt được tự lành). */}
+        <LazyMotion features={domAnimation} strict>
+          <MotionConfig reducedMotion="user">
+            <RouterProvider router={router} />
+          </MotionConfig>
+        </LazyMotion>
+      </SingleWindowGuard>
+    </AppErrorBoundary>
+  )
+}
+
 host.__netmasterRoot ??= createRoot(document.getElementById('root')!)
 host.__netmasterRoot.render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <Root />
   </StrictMode>,
 )

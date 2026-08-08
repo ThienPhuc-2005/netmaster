@@ -29,15 +29,25 @@ export type FeedbackState =
       nearMiss?: string
     }
 
+/**
+ * Vùng live THƯỜNG TRỰC cho phản hồi chấm bài. Live region chỉ được
+ * screen reader announce đáng tin khi phần tử ĐÃ TỒN TẠI trước rồi nội
+ * dung mới đổi — mount cả khối role="status" kèm sẵn nội dung (kiểu
+ * `{feedback && <FeedbackBanner/>}` cũ) thường bị NVDA/VoiceOver nuốt
+ * (hội đồng 2026-08-07, ghế a11y). Dùng vùng này ở chỗ phản hồi xuất
+ * hiện SAU tương tác; banner tĩnh (trưng bày, xem lại) dùng thẳng
+ * FeedbackBanner không role.
+ */
+export function FeedbackRegion({ state }: { state: FeedbackState | null }) {
+  return <div role="status">{state !== null && <FeedbackBanner state={state} />}</div>
+}
+
 export function FeedbackBanner({ state }: { state: FeedbackState }) {
   const t = useT()
 
   if (state.kind === 'correct') {
     return (
-      <div
-        role="status"
-        className="flex items-center gap-3 rounded-md border border-ok/40 bg-panel px-4 py-3 text-sm text-ok"
-      >
+      <div className="flex items-center gap-3 rounded-md border border-ok/40 bg-panel px-4 py-3 text-sm text-ok">
         <CheckCircle2 size={18} aria-hidden />
         <span className="font-semibold">{t('feedback.correct')}</span>
       </div>
@@ -51,10 +61,7 @@ export function FeedbackBanner({ state }: { state: FeedbackState }) {
       : t('feedback.tier1Generic'))
 
   return (
-    <div
-      role="status"
-      className="flex flex-col gap-2 rounded-md border border-warn/40 bg-panel px-4 py-3 text-sm text-ink"
-    >
+    <div className="flex flex-col gap-2 rounded-md border border-warn/40 bg-panel px-4 py-3 text-sm text-ink">
       <div className="flex items-center gap-3 text-warn">
         <HelpCircle size={18} aria-hidden />
         <span className="font-semibold">{tier1Text}</span>

@@ -13,6 +13,7 @@
 // định nghĩa của làm xong.
 
 import { useState, type FormEvent } from 'react'
+import { lt, maybeLt } from '../../engine/ltext'
 import { CornerDownLeft } from 'lucide-react'
 import {
   currentWalkRoom,
@@ -23,7 +24,7 @@ import {
   type RoomOutcome,
 } from '../../engine/palace'
 import { Button } from '../../components/Button'
-import { FeedbackBanner, type FeedbackState } from '../../components/FeedbackBanner'
+import { FeedbackRegion, type FeedbackState } from '../../components/FeedbackBanner'
 import { useT } from '../../i18n'
 import { PalaceMap } from './PalaceMap'
 import { RoomGlyph } from './RoomGlyph'
@@ -67,15 +68,15 @@ export function PalaceWalk({ palace, roomIds, onComplete }: PalaceWalkProps) {
 
     // Tầng 1 nói đúng vế đang hụt — người học biết mình quên NỬA nào.
     const topic = step.grade.keysCorrect
-      ? (palace.nameHint?.vi ?? palace.nameLabel.vi)
+      ? (maybeLt(palace.nameHint) ?? lt(palace.nameLabel))
       : step.grade.nameCorrect
-        ? (palace.keyHint?.vi ?? palace.keyLabel.vi)
+        ? (maybeLt(palace.keyHint) ?? lt(palace.keyLabel))
         : t('palace.topicBoth')
     setFeedback({
       kind: 'incorrect',
       tier: step.tier === 0 ? 1 : step.tier,
       topic,
-      hint: step.tier >= 2 ? room.story.vi : undefined,
+      hint: step.tier >= 2 ? lt(room.story) : undefined,
       solution:
         step.tier >= 3
           ? t('palace.solutionLine', { keys: room.keys.join(', '), name: room.name })
@@ -103,22 +104,22 @@ export function PalaceWalk({ palace, roomIds, onComplete }: PalaceWalkProps) {
 
             <div className="grid gap-2 sm:grid-cols-2">
               <label className="flex flex-col gap-1 text-xs text-ink-muted">
-                {palace.keyLabel.vi}
+                {lt(palace.keyLabel)}
                 <input
                   value={keyText}
                   onChange={(e) => setKeyText(e.target.value)}
                   inputMode={palace.keyStyle === 'number' ? 'numeric' : 'text'}
                   autoFocus
-                  placeholder={palace.keyPlaceholder?.vi ?? ''}
+                  placeholder={maybeLt(palace.keyPlaceholder) ?? ''}
                   className="rounded-md border border-edge bg-panel px-3 py-2 font-mono text-sm text-ink placeholder:text-ink-muted"
                 />
               </label>
               <label className="flex flex-col gap-1 text-xs text-ink-muted">
-                {palace.nameLabel.vi}
+                {lt(palace.nameLabel)}
                 <input
                   value={nameText}
                   onChange={(e) => setNameText(e.target.value)}
-                  placeholder={palace.namePlaceholder?.vi ?? ''}
+                  placeholder={maybeLt(palace.namePlaceholder) ?? ''}
                   className="rounded-md border border-edge bg-panel px-3 py-2 text-sm text-ink placeholder:text-ink-muted"
                 />
               </label>
@@ -143,7 +144,7 @@ export function PalaceWalk({ palace, roomIds, onComplete }: PalaceWalkProps) {
           </div>
         )}
 
-        {feedback !== null && room !== null && <FeedbackBanner state={feedback} />}
+        <FeedbackRegion state={room !== null ? feedback : null} />
       </div>
 
       <PalaceMap palace={palace} currentRoomId={room?.id ?? null} routeIds={walk.route} revealedRoomIds={answered} />

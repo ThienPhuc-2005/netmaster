@@ -7,20 +7,21 @@
 // bước Dạy đi từng màn khái niệm một.
 
 import { useEffect, useRef, useState } from 'react'
+import { lt, maybeLt } from '../../engine/ltext'
 import { Link, useNavigate, useParams } from 'react-router'
 import { ArrowRight, BookOpenCheck, ChevronLeft, Sparkles } from 'lucide-react'
 import { findLesson, lessonsInOrder } from '../../content'
 import { canAdvance, currentStepType, type LessonRuntime } from '../../engine/lessonMachine'
 import { XP_AMOUNTS } from '../../engine/xp'
 import type { Exercise, Lesson, Module } from '../../engine/contentSchema'
-import { SELF_EXPLAIN_ANSWER_KEY, newLessonGate, todayIso, useProgress } from '../../store/progress'
+import { SELF_EXPLAIN_ANSWER_KEY, newLessonGate, practiceDraftKey, todayIso, useProgress } from '../../store/progress'
 import { AnswerReveal } from '../../components/AnswerReveal'
 import { useT } from '../../i18n'
 import { playEarcon } from '../../audio/earcons'
 import { Button } from '../../components/Button'
 import { ConceptVisual } from '../../components/ConceptVisual'
 import { EmptyState } from '../../components/EmptyState'
-import { FeedbackBanner, type FeedbackState } from '../../components/FeedbackBanner'
+import { FeedbackBanner, FeedbackRegion, type FeedbackState } from '../../components/FeedbackBanner'
 import { QuestionInput } from '../../components/QuestionInput'
 import { PalaceTour } from '../palace/PalaceTour'
 import { canDeriveOpen, deriveOpenQuestion, flowMode, needsSupport } from '../../engine/flow'
@@ -44,16 +45,25 @@ function StepIndicator({ stepIndex }: { stepIndex: number }) {
   return (
     <ol className="flex flex-wrap items-center gap-1.5" aria-label={t(STEP_LABEL_KEYS[stepIndex] ?? 'lesson.stepHook')}>
       {STEP_LABEL_KEYS.map((key, i) => (
+        // Chip ĐANG Ở ăn tông của Phần (spec 4.1 — cảm giác tiến trình):
+        // viền + chữ var(--part-accent) trên surface — cặp part-x/surface
+        // đã nằm trong tokens.test. Nền đặc màu Phần thì KHÔNG: chữ
+        // accent-contrast trên màu Phần là cặp chưa đo.
         <li
           key={key}
           aria-current={i === stepIndex ? 'step' : undefined}
-          className={`rounded-full px-2.5 py-0.5 text-[11px] font-medium ${
+          className={`rounded-full px-2.5 py-0.5 text-[11px] ${
             i < stepIndex
-              ? 'bg-panel-hover text-ink-muted'
+              ? 'bg-panel-hover font-medium text-ink-muted'
               : i === stepIndex
-                ? 'bg-accent text-accent-contrast'
-                : 'border border-edge text-ink-muted'
+                ? 'border-2 font-bold'
+                : 'border border-edge font-medium text-ink-muted'
           }`}
+          style={
+            i === stepIndex
+              ? { borderColor: 'var(--part-accent, var(--accent))', color: 'var(--part-accent, var(--accent))' }
+              : undefined
+          }
         >
           {t(key)}
         </li>
@@ -94,7 +104,7 @@ function HookView({ module, lesson, runtime }: StepProps) {
           <ConceptVisual visualId={hook.visualId} />
         </div>
       )}
-      <p className="max-w-md text-lg font-semibold leading-relaxed text-ink">{hook.question.vi}</p>
+      <p className="max-w-md text-lg font-semibold leading-relaxed text-ink">{lt(hook.question)}</p>
       <ContinueButton module={module} lesson={lesson} runtime={runtime} label={t('lesson.begin')} />
     </div>
   )
@@ -107,6 +117,7 @@ function HookView({ module, lesson, runtime }: StepProps) {
 function PretestView({ module, lesson, runtime }: StepProps) {
   const t = useT()
   const answerPretestQ = useProgress((s) => s.answerPretestQ)
+  const clearDraft = useProgress((s) => s.clearPracticeDraft)
   const answers = useProgress((s) => s.lessonAnswers[lesson.id])
   const pretest = lesson.steps[1]
 
@@ -118,15 +129,24 @@ function PretestView({ module, lesson, runtime }: StepProps) {
         const guessedRight = runtime.pretestAnswers[q.id] === true
         return (
           <div key={q.id} className="flex flex-col gap-3">
-            <p className="font-medium text-ink">{q.prompt.vi}</p>
+            <p className="font-medium text-ink">{lt(q.prompt)}</p>
             {!answered ? (
-              <QuestionInput question={q} onSubmit={(resp) => answerPretestQ(lesson, q.id, resp)} />
+              <QuestionInput
+                question={q}
+                draftKey={practiceDraftKey(lesson.id, q.id)}
+                onSubmit={(resp) => {
+                  answerPretestQ(lesson, q.id, resp)
+                  // Đoán thử chỉ có MỘT lượt — trả lời xong là bài dở hết
+                  // việc, không giữ lại chiếm chỗ.
+                  clearDraft(practiceDraftKey(lesson.id, q.id))
+                }}
+              />
             ) : (
               <div role="status" className="flex flex-col gap-2">
                 <p className={`text-sm font-semibold ${guessedRight ? 'text-ok' : 'text-ink-muted'}`}>
-                  {guessedRight ? t('lesson.pretestRight') : pretest.encouragement.vi}
+                  {guessedRight ? t('lesson.pretestRight') : lt(pretest.encouragement)}
                 </p>
-                <AnswerReveal question={q} response={answers?.[q.id]} explanation={q.explain?.vi} />
+                <AnswerReveal question={q} response={answers?.[q.id]} explanation={maybeLt(q.explain)} />
               </div>
             )}
           </div>
@@ -211,7 +231,7 @@ function TeachView({ module, lesson, runtime }: StepProps) {
           <span className="ml-2 font-sans font-normal text-ink-muted">{concept.glossVi}</span>
         </p>
       )}
-      <p className="leading-relaxed text-ink">{screen.body.vi}</p>
+      <p className="leading-relaxed text-ink">{lt(screen.body)}</p>
 
       {screen.deepDive !== undefined && (
         <div>
@@ -221,9 +241,13 @@ function TeachView({ module, lesson, runtime }: StepProps) {
           >
             {deepDiveOpen ? t('lesson.deepDiveHide') : t('lesson.deepDive')}
           </button>
+          {/* pre-wrap: phần "đào sâu" của Module 12 có đoạn script đọc-hiểu
+              nhiều dòng, mất xuống dòng là mất luôn hình dạng của script.
+              Nội dung Module 1-11 không chứa ký tự xuống dòng nào nên cách
+              hiển thị của chúng không đổi. */}
           {deepDiveOpen && (
-            <p className="mt-2 rounded-md border border-edge bg-panel px-4 py-3 text-sm leading-relaxed text-ink-muted">
-              {screen.deepDive.vi}
+            <p className="mt-2 whitespace-pre-wrap rounded-md border border-edge bg-panel px-4 py-3 text-sm leading-relaxed text-ink-muted">
+              {lt(screen.deepDive)}
             </p>
           )}
         </div>
@@ -276,10 +300,10 @@ function SolvedReview({
       {solved.map((e) => (
         <details key={e.question.id} className="rounded-md border border-edge bg-panel">
           <summary className="cursor-pointer px-4 py-2.5 text-sm font-medium text-ink">
-            {e.question.prompt.vi}
+            {lt(e.question.prompt)}
           </summary>
           <div className="px-4 pb-3">
-            <AnswerReveal question={e.question} response={answers?.[e.question.id]} explanation={e.solution.vi} />
+            <AnswerReveal question={e.question} response={answers?.[e.question.id]} explanation={lt(e.solution)} />
           </div>
         </details>
       ))}
@@ -295,6 +319,7 @@ function ExerciseRunner({
 }: StepProps & { exercises: Exercise[]; doneContent: React.ReactNode }) {
   const t = useT()
   const submitAnswer = useProgress((s) => s.submitExerciseAnswer)
+  const clearDraft = useProgress((s) => s.clearPracticeDraft)
   const answers = useProgress((s) => s.lessonAnswers[lesson.id])
   // Chế độ flow đọc sống theo cửa sổ 10 câu — mỗi câu trả lời có thể đổi
   // chế độ cho câu kế tiếp, đúng chữ "theo dõi" của spec.
@@ -316,7 +341,7 @@ function ExerciseRunner({
         <AnswerReveal
           question={revealingEx.question}
           response={answers?.[revealingEx.question.id]}
-          explanation={revealingEx.solution.vi}
+          explanation={lt(revealingEx.solution)}
         />
         <div>
           <Button onClick={() => setRevealing(null)}>
@@ -340,6 +365,9 @@ function ExerciseRunner({
         playEarcon('correct')
         setFeedback(null)
         setRevealing(current.question.id)
+        // Xong câu này rồi thì bài dở không còn là bài dở — bỏ ảnh chụp
+        // để ngăn bài dở không giữ những thứ đã làm xong.
+        clearDraft(practiceDraftKey(lesson.id, current.question.id))
       } else {
         playEarcon('incorrect')
         setFeedback({
@@ -347,9 +375,9 @@ function ExerciseRunner({
           state: {
             kind: 'incorrect',
             tier: tier === 0 ? 1 : tier,
-            topic: current.question.hintTopic?.vi,
-            hint: current.hint.vi,
-            solution: current.solution.vi,
+            topic: maybeLt(current.question.hintTopic),
+            hint: lt(current.hint),
+            solution: lt(current.solution),
             nearMiss: nearMiss ?? undefined,
           },
         })
@@ -357,10 +385,14 @@ function ExerciseRunner({
     }
     main = (
       <div className="flex flex-col gap-4" key={current.question.id}>
-        <p className="font-medium text-ink">{current.question.prompt.vi}</p>
+        <p className="font-medium text-ink">{lt(current.question.prompt)}</p>
         {asOpen && <p className="text-xs text-ink-muted">{t('flow.harderNote')}</p>}
-        <QuestionInput question={shownQuestion} onSubmit={handleSubmit} />
-        {feedback !== null && feedback.questionId === current.question.id && <FeedbackBanner state={feedback.state} />}
+        <QuestionInput
+          question={shownQuestion}
+          draftKey={practiceDraftKey(lesson.id, current.question.id)}
+          onSubmit={handleSubmit}
+        />
+        <FeedbackRegion state={feedback !== null && feedback.questionId === current.question.id ? feedback.state : null} />
       </div>
     )
   } else {
@@ -390,7 +422,7 @@ function PracticeView({ module, lesson, runtime }: StepProps) {
           <BookOpenCheck size={17} aria-hidden className="mt-0.5 shrink-0 text-accent" />
           <p>
             <span className="font-semibold text-accent">{t('lesson.workedExampleLabel')}: </span>
-            {practice.workedExample.vi}
+            {lt(practice.workedExample)}
           </p>
         </div>
       )}
@@ -438,7 +470,7 @@ function RetrievalView({ module, lesson, runtime }: StepProps) {
   // se.passed của engine — kết quả chấm keyword, không phải state UI.
   const selfExplainBlock = (
     <div className="flex flex-col gap-3">
-      <p className="font-medium text-ink">{retrieval.selfExplain.prompt.vi}</p>
+      <p className="font-medium text-ink">{lt(retrieval.selfExplain.prompt)}</p>
 
       {!se.done ? (
         <>
@@ -465,7 +497,7 @@ function RetrievalView({ module, lesson, runtime }: StepProps) {
             <div className="flex flex-col gap-3 rounded-md border border-edge bg-panel px-4 py-3 text-sm">
               <p>
                 <span className="font-semibold text-accent">{t('lesson.selfExplainExampleLabel')}: </span>
-                {retrieval.selfExplain.exampleAnswer.vi}
+                {lt(retrieval.selfExplain.exampleAnswer)}
               </p>
               <div>
                 <Button variant="ghost" onClick={() => confirmSelfExplain(lesson)}>
@@ -495,7 +527,7 @@ function RetrievalView({ module, lesson, runtime }: StepProps) {
                 {ownExplainText}
               </p>
             )}
-            <p className="leading-relaxed text-ink">{retrieval.selfExplain.exampleAnswer.vi}</p>
+            <p className="leading-relaxed text-ink">{lt(retrieval.selfExplain.exampleAnswer)}</p>
           </div>
           <ContinueButton module={module} lesson={lesson} runtime={runtime} />
         </>
@@ -548,28 +580,37 @@ function SummaryView({ module, lesson, runtime }: StepProps) {
     void navigate('/')
   }
 
+  // Ăn mừng THỊ GIÁC (spec 2.1 bước 6 đòi "animation ăn mừng ngắn" —
+  // sai lệch chưa khai mà hội đồng bắt được): trước đây kênh duy nhất là
+  // earcon tắt được — người tắt âm/khiếm thính nhận peak-end phẳng lì.
+  // Animation thuần CSS (app.css), thời lượng buộc vào --dur nên
+  // prefers-reduced-motion tự tắt trọn bộ.
   return (
     <div className="flex flex-col gap-6 py-4">
       <div className="flex items-center gap-3 text-accent">
-        <Sparkles size={22} aria-hidden />
+        <Sparkles size={22} aria-hidden className={firstTime ? 'celebrate-pop' : undefined} />
         <h2 className="text-lg font-bold text-ink">{t('lesson.summaryTitle')}</h2>
         {firstTime && (
-          <span className="font-mono text-sm font-bold text-ok">
+          <span className="celebrate-pop font-mono text-sm font-bold text-ok" style={{ animationDelay: 'calc(var(--dur) * 1.5)' }}>
             {t('lesson.xpGained', { xp: XP_AMOUNTS.practice + XP_AMOUNTS.retrieval })}
           </span>
         )}
       </div>
       <ul className="flex flex-col gap-3">
         {summary.bullets.map((b, i) => (
-          <li key={i} className="flex items-start gap-3 rounded-md border border-edge bg-panel px-4 py-3 text-sm text-ink">
+          <li
+            key={i}
+            className={`flex items-start gap-3 rounded-md border border-edge bg-panel px-4 py-3 text-sm text-ink ${firstTime ? 'celebrate-rise' : ''}`}
+            style={firstTime ? { animationDelay: `calc(var(--dur) * ${2 + i * 1.5})` } : undefined}
+          >
             <span className="mt-0.5 font-mono text-xs font-bold text-accent">{i + 1}</span>
-            {b.vi}
+            {lt(b)}
           </li>
         ))}
       </ul>
       <div className="rounded-md border border-accent/30 bg-panel px-4 py-3 text-sm">
         <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-accent">{t('lesson.summaryNextLabel')}</p>
-        <p className="text-ink-muted">{summary.nextTeaser.vi}</p>
+        <p className="text-ink-muted">{lt(summary.nextTeaser)}</p>
       </div>
       <div>
         <Button onClick={finish}>{t('lesson.finishLesson')}</Button>
@@ -677,13 +718,15 @@ export function LessonPlayer() {
   const StepView = STEP_VIEWS[stepType]
 
   return (
-    <div className="flex flex-col gap-6">
+    // data-part cấp --part-accent cho cả cây (tokens.css) — chip bước và
+    // mọi chi tiết tông-theo-Phần bên trong tự ăn màu Phần đang học.
+    <div data-part={ref.module.part} className="flex flex-col gap-6">
       <div className="flex flex-col gap-3">
         <Link to="/" className="flex items-center gap-1 text-xs font-medium text-ink-muted hover:text-ink">
           <ChevronLeft size={14} aria-hidden />
           {t('lesson.backToLearn')}
         </Link>
-        <h1 className="text-xl font-bold text-ink">{ref.lesson.missionTitle.vi}</h1>
+        <h1 className="text-xl font-bold text-ink">{lt(ref.lesson.missionTitle)}</h1>
         <StepIndicator stepIndex={runtime.stepIndex} />
       </div>
       <StepView module={ref.module} lesson={ref.lesson} runtime={runtime} />

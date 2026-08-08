@@ -1,7 +1,10 @@
 {
   "app": {
     "name": "NetMaster",
-    "tagline": "Computer networking from zero"
+    "tagline": "Computer networking from zero",
+    "otherWindowTitle": "The app is open in another window",
+    "otherWindowBody": "Two windows writing progress would overwrite each other — so only one window learns at a time. Close the other one, or take over here.",
+    "useThisWindow": "Use this window"
   },
   "nav": {
     "learn": "Learn",
@@ -9,6 +12,11 @@
     "clinic": "Clinic",
     "profile": "Profile",
     "clinicLocked": "Clinic not open yet"
+  },
+  "error": {
+    "title": "Something went wrong",
+    "body": "Your progress is safe on this device. Reloading usually fixes it; if it keeps happening, screenshot this and send it to the app author.",
+    "reload": "Reload"
   },
   "settings": {
     "themeToDark": "Switch to dark theme",
@@ -45,32 +53,51 @@
     "lessonReplay": "Revisit",
     "lessonLocked": "Finish the previous lesson to unlock this one",
     "overdueBlockTitle": "Your review box needs you first",
-    "overdueBlockBody": "You have {count} overdue cards — clear some of the backlog before starting new lessons. Well-timed review is what makes it stick.",
+    "overdueBlockBody": "Overdue backlog: {count}. Clear some of it before starting new lessons — well-timed review is what makes it stick.",
     "goReview": "Go to review",
     "drillCardTitle": "Subnetting drill",
     "drillCardBody": "10 problems a day, against the clock — get fast with the magic number.",
     "drillCardAction": "Practice now",
     "takeTest": "Module test",
+    "challenge": "I already know this — test out of it",
+    "challengeShort": "Test out",
     "retakeTest": "Retake test",
     "passedScore": "Passed · {pct}%",
     "vmLabProgress": "{done}/{total} steps",
-    "vmLabNoXp": "Real-world work outside the app — it can't be verified, so no XP."
+    "vmLabNoXp": "Real-world work outside the app — it can't be verified, so no XP.",
+    "streakFrozen": "You skipped a stretch — {used} freeze(s) kept your streak alive ({left} left this month).",
+    "streakReset": "Your streak restarts today — those {lost} earlier days are still {lost} days you learned; nobody takes that away.",
+    "streakDismiss": "Dismiss streak notice"
   },
   "test": {
     "title": "Module test",
     "intro": "{count} questions, {threshold}% needed to unlock the next module. No hints mid-test — this is where the knowledge stands on its own. Missing is fine: retake as many times as you like.",
     "start": "Start",
     "questionOf": "Question {current}/{total}",
+    "introFinal": "{count} questions, {threshold}% needed to close out the whole course. No hints mid-test — this is where the knowledge stands on its own. Missing is fine: retake as many times as you like.",
     "passTitle": "{pct}% — the next module is unlocked!",
+    "passTitleFinal": "{pct}% — you just finished the final module of the course!",
     "passTitleAgain": "{pct}% — still as solid as before.",
     "failTitle": "{pct}% — so close.",
     "failBody": "You need {threshold}% to unlock the next module. Read through the ideas below, then retake — retakes are for learning, not punishment.",
+    "failBodyFinal": "You need {threshold}% to close out the course. Read through the ideas below, then retake — retakes are for learning, not punishment.",
     "reviewTitle": "Ideas to review",
+    "reviewHint": "Review: {topic}. Revisit the lesson that teaches it, then retake — full answers appear once you pass.",
+    "reviewHintGeneric": "Revisit the lesson that teaches this, then retake — full answers appear once you pass.",
     "retake": "Retake now",
     "notReadyTitle": "Not test time yet",
     "notReadyBody": "Finish the lessons in this module first — the test draws on exactly that material.",
     "lockedTitle": "Module locked",
-    "bestScore": "Best score: {pct}%"
+    "bestScore": "Best score: {pct}%",
+    "challengeTitle": "Test out of this module",
+    "challengeIntro": "The same {count} questions as the end-of-module test, {threshold}% needed. Pass and this module counts as done and the next one opens — no sitting through material you already know.",
+    "challengeOneShot": "Not passing costs you nothing: you can test out again straight away, or study it normally and take the end-of-module test like everyone else.",
+    "challengeStart": "Start the test",
+    "challengeNext": "Test out of {module} too",
+    "challengePass": "{pct}% — you tested out, and the next module is unlocked!",
+    "challengePassFinal": "{pct}% — you tested out of the final module, and that closes the whole course!",
+    "challengePassCards": "This module's concepts just went into your review box, due tomorrow. Knowing it today is no promise you will recall it in three weeks — a few minutes of review a day is what keeps it.",
+    "challengeFailBody": "Short of {threshold}%. You can test out again right away, though a couple of lessons from this module first would make it surer."
   },
   "lesson": {
     "stepHook": "Warm-up",
@@ -123,7 +150,11 @@
     "selfGradeHint": "Grade yourself honestly — cards you miss come back sooner to help you.",
     "doneTitle": "Today's review is done!",
     "doneBody": "You remembered {correct}/{total} cards. Missed cards return tomorrow.",
-    "goLearn": "Go learn something new"
+    "goLearn": "Go learn something new",
+    "whyHere": "Cards due right now: {count}. Your brain is right on schedule to forget, so let's review first.",
+    "relearnTag": "relearning",
+    "moreDue": "Still due today: {count}.",
+    "nextSession": "Next session"
   },
   "drill": {
     "title": "Subnetting drill",
@@ -192,7 +223,7 @@
     "canvasEmpty": "The bench is empty — add a device to begin.",
     "deviceAria": "{name}, {kind}, {wires}",
     "wiresNone": "no cables yet",
-    "wiresCount": "{count} cables connected",
+    "wiresCount": "cables connected: {count}",
     "deviceRemove": "Remove this device",
     "panelTitle": "Configuration",
     "panelPick": "Pick a device on the diagram to see and edit its settings.",
@@ -328,7 +359,7 @@
       "tracert": "show the router-by-router path to a target — tracert <target>",
       "nslookup": "ask DNS what address a name points to — nslookup <name>",
       "netstat": "list the network connections open on this machine",
-      "arp": "show the MAC address table this machine has learned",
+      "arp": "show the IP-to-MAC table (ARP cache) this machine has resolved",
       "capture": "show the packet capture of the latest ping/tracert (a tiny Wireshark)",
       "gpresult": "list the Group Policy Objects applied to this machine"
     },
@@ -385,11 +416,17 @@
     "streakUnit": "days",
     "xp": "Total XP",
     "badges": "Badges",
-    "emptyBadges": "Your first badge is waiting: complete your first recall round.",
+    "emptyBadges": "Badges are coming in a later version — your XP, streak and every case you cure are all being recorded.",
     "freezes": "Freezes left",
     "freezeNote": "Missing a day won't break your streak — you get 2 automatic \"freezes\" each month.",
     "cardsTotal": "Cards in your review box",
-    "lessonsDone": "Lessons completed"
+    "lessonsDone": "Lessons completed",
+    "backupTitle": "Back up your progress",
+    "backupBody": "Progress lives in this device's browser — clearing browsing data or switching machines loses it. Export a file now and then; import it on a new machine to pick up where you left off.",
+    "backupExport": "Export to file",
+    "backupImport": "Import from file",
+    "backupImportConfirm": "Importing will REPLACE all progress on this device with the file's progress. Continue?",
+    "backupImportBad": "That file is not a valid NetMaster backup — double-check you picked the right one."
   },
   "design": {
     "title": "Design system",

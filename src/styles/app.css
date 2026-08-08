@@ -40,3 +40,39 @@ body {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
+
+/* Ăn mừng màn Kết (spec 2.1 bước 6 — "animation ăn mừng ngắn").
+ * Thời lượng buộc vào --dur: prefers-reduced-motion đặt --dur = 0ms
+ * (tokens.css) → toàn bộ chuỗi ăn mừng tự tắt, phần tử hiện tĩnh.
+ * Kênh thị giác này tồn tại ĐỘC LẬP với earcon — người tắt âm hoặc
+ * khiếm thính vẫn nhận được đỉnh cảm xúc peak-end. */
+@keyframes celebrate-pop {
+  0% {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.15);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+@keyframes celebrate-rise {
+  from {
+    transform: translateY(8px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+.celebrate-pop {
+  animation: celebrate-pop calc(var(--dur) * 3) ease-out both;
+}
+.celebrate-rise {
+  animation: celebrate-rise calc(var(--dur) * 2.5) ease-out both;
+}

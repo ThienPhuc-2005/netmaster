@@ -15,6 +15,7 @@
 // gian nguội — không ai bị nhốt trong vòng ôn vô hạn.
 
 import { useEffect, useMemo, useState } from 'react'
+import { lt } from '../../engine/ltext'
 import { ArrowRight, Eye, Sprout } from 'lucide-react'
 import type { Lesson, Module } from '../../engine/contentSchema'
 import { foundationConceptIds } from '../../engine/flow'
@@ -81,9 +82,9 @@ export function FoundationReview({ module, lesson }: { module: Module; lesson: L
 
       <div className="flex min-h-44 flex-col justify-center gap-4 rounded-md border border-edge bg-panel px-6 py-8 text-center">
         <p className="font-mono text-xs font-semibold uppercase tracking-wide text-accent">{card.term}</p>
-        <p className="text-base font-medium leading-relaxed text-ink">{flashcard.front.vi}</p>
+        <p className="text-base font-medium leading-relaxed text-ink">{lt(flashcard.front)}</p>
         {revealed && (
-          <p className="border-t border-edge pt-4 text-sm leading-relaxed text-ink-muted">{flashcard.back.vi}</p>
+          <p className="border-t border-edge pt-4 text-sm leading-relaxed text-ink-muted">{lt(flashcard.back)}</p>
         )}
       </div>
 

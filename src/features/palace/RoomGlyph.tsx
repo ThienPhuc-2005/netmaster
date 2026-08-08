@@ -19,9 +19,20 @@ const stroke = {
   strokeLinecap: 'round',
 } as const
 
-function Glyph({ children, label }: { children: ReactNode; label: string }) {
+/**
+ * `tone` cho phòng nào mà MÀU chính là một phần của móc nhớ. Spec Module
+ * 5 gọi phòng 443 là "ổ khóa VÀNG" — vẽ nó cùng màu accent như mọi phòng
+ * khác là bỏ mất một nửa cái móc (hội đồng 07-08). Chỉ dùng token đã qua
+ * test contrast, không bịa màu mới.
+ */
+function Glyph({ children, label, tone }: { children: ReactNode; label: string; tone?: 'warn' }) {
   return (
-    <svg viewBox="0 0 96 96" role="img" aria-label={label} className="h-full w-full text-accent">
+    <svg
+      viewBox="0 0 96 96"
+      role="img"
+      aria-label={label}
+      className={`h-full w-full ${tone === 'warn' ? 'text-warn' : 'text-accent'}`}
+    >
       {children}
     </svg>
   )
@@ -39,9 +50,9 @@ const REGISTRY: Record<string, GlyphFn> = {
       <path d="M14 78 h68" {...stroke} />
     </Glyph>
   ),
-  // Ổ khóa vàng — HTTPS 443.
+  // Ổ khóa VÀNG — HTTPS 443 (màu là một phần của móc nhớ, xem `tone`).
   'palace-golden-lock': (label) => (
-    <Glyph label={label}>
+    <Glyph label={label} tone="warn">
       <rect x="26" y="44" width="44" height="34" rx="5" {...stroke} />
       <path d="M36 44 V33 a12 12 0 0 1 24 0 v11" {...stroke} />
       <circle cx="48" cy="58" r="4" {...stroke} />
@@ -118,14 +129,19 @@ const REGISTRY: Record<string, GlyphFn> = {
       <path d="M30 58 h20" {...stroke} strokeWidth={1.5} />
     </Glyph>
   ),
-  // Quầy xuất trình thẻ — Mail Submission 587.
+  // QUẦY xuất trình thẻ — Mail Submission 587.
+  //
+  // Bóng dáng phải khác hẳn cuốn sổ hộ khẩu của 389: bản cũ vẽ khung
+  // chân dung + hai dòng chữ nên hai phòng na ná nhau, phạm đúng luật
+  // đầu file này. Giờ nó là một TẤM THẺ đặt trên MẶT QUẦY có chân —
+  // liếc một cái là ra cái quầy, không lẫn với quyển sổ đứng.
   'palace-id-check': (label) => (
     <Glyph label={label}>
-      <rect x="20" y="30" width="56" height="38" rx="4" {...stroke} />
-      <circle cx="38" cy="46" r="7" {...stroke} />
-      <path d="M28 60 a10 10 0 0 1 20 0" {...stroke} strokeWidth={1.5} />
-      <path d="M56 42 h14 M56 52 h14" {...stroke} strokeWidth={1.5} />
-      <path d="M40 68 v8" {...stroke} strokeWidth={1.5} />
+      <path d="M12 68 h72" {...stroke} strokeWidth={3} />
+      <path d="M20 68 v14 M76 68 v14" {...stroke} strokeWidth={1.5} />
+      <rect x="26" y="34" width="44" height="28" rx="3" {...stroke} />
+      <circle cx="38" cy="46" r="5" {...stroke} strokeWidth={1.5} />
+      <path d="M52 42 h12 M52 50 h12" {...stroke} strokeWidth={1.5} />
     </Glyph>
   ),
   // Đồng hồ lớn của tòa nhà — NTP 123.

@@ -2,8 +2,15 @@
 // hiệu và component bằng mắt/tai ở cả hai theme (vào thẳng /design,
 // không nằm trong menu 4 tab). Dữ liệu minh họa mô phỏng nội dung bài
 // học nên để tiếng Việt như nội dung thật.
+//
+// NGOẠI LỆ i18n ĐƯỢC TUYÊN BỐ (08-08): trang này hardcode tiếng Việt và
+// KHÔNG đi qua t(). Lý do: nó không phải màn hình của người học mà là
+// bàn làm việc của người dựng app; dịch nó sang EN là thêm ~80 key vào
+// hai dictionary để phục vụ đúng một người. Luật "cấm hardcode text
+// trong component" vẫn nguyên giá trị cho mọi màn hình khác.
 
 import { useState } from 'react'
+import { lt } from '../../engine/ltext'
 import { useT } from '../../i18n'
 import { Button } from '../../components/Button'
 import { FeedbackBanner } from '../../components/FeedbackBanner'
@@ -326,7 +333,7 @@ export function DesignPage() {
         <PsShowcase />
       </Section>
 
-      <Section title={DEMO_PALACE.title.vi}>
+      <Section title={lt(DEMO_PALACE.title)}>
         <PalaceShowcase />
       </Section>
 

@@ -2,14 +2,23 @@
 // trộn xen kẽ module (buildReviewSession đã lo), tự chấm "nhớ/chưa nhớ".
 // Danh sách thẻ của phiên chốt MỘT LẦN lúc vào trang — trả lời từng thẻ
 // không làm phiên xáo lại giữa chừng.
+//
+// RELEARNING (hội đồng 2026-08-07, đã duyệt): thẻ trả lời "chưa nhớ"
+// quay lại CUỐI phiên cho tới khi người học tự nhớ được một lần — cố nhớ
+// thất bại rồi đọc đáp án thụ động là restudy, chưa phải retrieval; lần
+// nhớ lại THÀNH CÔNG sau feedback mới là lúc củng cố xảy ra (thiết kế
+// relearning của mọi SRS nghiêm túc). Chỉ lượt chấm ĐẦU của thẻ ghi vào
+// SM-2 và XP — lượt học lại là chuyện nội bộ của phiên, không đụng lịch
+// (luật reset 1 ngày của spec giữ nguyên), không cộng gì.
 
 import { useMemo, useState } from 'react'
+import { lt } from '../../engine/ltext'
 import { Link } from 'react-router'
-import { Eye, Layers, ThumbsDown, ThumbsUp } from 'lucide-react'
-import { buildReviewSession } from '../../engine/reviewQueue'
+import { Eye, Layers, RotateCcw, ThumbsDown, ThumbsUp } from 'lucide-react'
+import { buildReviewSession, dueCards } from '../../engine/reviewQueue'
 import { roomIdFromCardId } from '../../engine/palace'
 import { findConcept, findPalaceRoom } from '../../content'
-import { todayIso, useProgress } from '../../store/progress'
+import { shouldReviewFirst, todayIso, useProgress } from '../../store/progress'
 import { useT, type TFunc } from '../../i18n'
 import { RoomGlyph } from '../palace/RoomGlyph'
 import { playEarcon } from '../../audio/earcons'
@@ -50,14 +59,15 @@ function cardFace(cardId: string, t: TFunc): CardFace | null {
   if (ref === null || ref.concept.flashcard === undefined) return null
   return {
     label: ref.concept.term,
-    front: ref.concept.flashcard.front.vi,
-    back: ref.concept.flashcard.back.vi,
+    front: lt(ref.concept.flashcard.front),
+    back: lt(ref.concept.flashcard.back),
   }
 }
 
 export function ReviewPage() {
   const t = useT()
   const allCards = useProgress((s) => s.reviewCards)
+  const lastReviewDate = useProgress((s) => s.lastReviewDate)
   const gradeReviewCard = useProgress((s) => s.gradeReviewCard)
   const completeReviewSession = useProgress((s) => s.completeReviewSession)
 
@@ -67,12 +77,30 @@ export function ReviewPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   )
+  // Hàng đợi CỦA PHIÊN: bắt đầu bằng danh sách chốt, thẻ "chưa nhớ" được
+  // nối thêm vào cuối (relearning). Chỉ thẻ chưa có trong firstGraded mới
+  // được ghi vào store — các vòng học lại là chuyện nội bộ.
+  const [queue, setQueue] = useState<string[]>(sessionConceptIds)
+  const [firstGraded, setFirstGraded] = useState<ReadonlySet<string>>(new Set())
   const [index, setIndex] = useState(0)
   const [revealed, setRevealed] = useState(false)
   const [correctCount, setCorrectCount] = useState(0)
   const [finished, setFinished] = useState(false)
 
-  const heading = <h1 className="mb-6 text-xl font-bold">{t('review.title')}</h1>
+  // Người bị luật "mở app là ôn trước" đưa thẳng vào đây cần một lời
+  // giải thích TẠI CHỖ — banner vì-sao nằm ở trang Học là nơi họ không
+  // được đưa tới (hội đồng, ghế onboarding).
+  const teleported = shouldReviewFirst(allCards, lastReviewDate, todayIso())
+  const heading = (
+    <div className="mb-6 flex flex-col gap-1">
+      <h1 className="text-xl font-bold">{t('review.title')}</h1>
+      {teleported && !finished && sessionConceptIds.length > 0 && (
+        <p className="text-sm text-ink-muted">
+          {t('review.whyHere', { count: dueCards(allCards, todayIso()).length })}
+        </p>
+      )}
+    </div>
+  )
 
   if (allCards.length === 0) {
     return (
@@ -99,6 +127,9 @@ export function ReviewPage() {
   }
 
   if (finished) {
+    // Hết phiên nhưng CÒN thẻ đến hạn (phiên cắt trần 15) — không làm ngõ
+    // cụt đẩy người học đi vòng Học↔Ôn tập: mời ôn phiên tiếp ngay tại chỗ.
+    const stillDue = buildReviewSession(allCards, todayIso()).map((c) => c.conceptId)
     return (
       <>
         {heading}
@@ -107,26 +138,53 @@ export function ReviewPage() {
           <p className="text-sm text-ink-muted">
             {t('review.doneBody', { correct: correctCount, total: sessionConceptIds.length })}
           </p>
-          <Link to="/" className="text-sm font-semibold text-accent hover:underline">
-            {t('review.goLearn')}
-          </Link>
+          {stillDue.length > 0 ? (
+            <>
+              <p className="text-sm text-ink-muted">{t('review.moreDue', { count: stillDue.length })}</p>
+              <Button
+                onClick={() => {
+                  setQueue(stillDue)
+                  setFirstGraded(new Set())
+                  setIndex(0)
+                  setCorrectCount(0)
+                  setRevealed(false)
+                  setFinished(false)
+                }}
+              >
+                <RotateCcw size={15} aria-hidden />
+                {t('review.nextSession')}
+              </Button>
+            </>
+          ) : (
+            <Link to="/" className="text-sm font-semibold text-accent hover:underline">
+              {t('review.goLearn')}
+            </Link>
+          )}
         </div>
       </>
     )
   }
 
-  const cardId = sessionConceptIds[index]
+  const cardId = queue[index]
   const face = cardId === undefined ? null : cardFace(cardId, t)
   // Thẻ mồ côi (nội dung đổi sau khi người học đã có thẻ) — bỏ qua thay
   // vì dựng nửa vời một mặt thẻ trống.
   if (cardId === undefined || face === null) return null
+  const isRelearn = firstGraded.has(cardId)
 
   const grade = (remembered: boolean) => {
-    gradeReviewCard(cardId, remembered)
+    // Chỉ lượt chấm ĐẦU ghi SM-2 + XP; vòng học lại không đụng store.
+    if (!isRelearn) {
+      gradeReviewCard(cardId, remembered)
+      setFirstGraded((s) => new Set(s).add(cardId))
+      if (remembered) setCorrectCount((n) => n + 1)
+    }
     playEarcon(remembered ? 'correct' : 'incorrect')
-    if (remembered) setCorrectCount((n) => n + 1)
+    // Chưa nhớ (lần đầu hay lần học lại) → thẻ nối vào cuối hàng đợi.
+    const nextQueue = remembered ? queue : [...queue, cardId]
+    if (!remembered) setQueue(nextQueue)
     setRevealed(false)
-    if (index + 1 >= sessionConceptIds.length) {
+    if (index + 1 >= nextQueue.length) {
       completeReviewSession()
       playEarcon('lessonComplete')
       setFinished(true)
@@ -140,7 +198,8 @@ export function ReviewPage() {
       {heading}
       <div className="mx-auto flex max-w-lg flex-col gap-4">
         <p className="text-xs font-medium text-ink-muted">
-          {t('review.cardOf', { current: index + 1, total: sessionConceptIds.length })}
+          {t('review.cardOf', { current: index + 1, total: queue.length })}
+          {isRelearn && <span className="ml-2 font-semibold text-accent">{t('review.relearnTag')}</span>}
         </p>
 
         <div className="flex min-h-44 flex-col items-center justify-center gap-4 rounded-md border border-edge bg-panel px-6 py-8 text-center">

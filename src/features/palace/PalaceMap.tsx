@@ -60,7 +60,12 @@ export function PalaceMap({ palace, currentRoomId = null, routeIds, revealedRoom
                           ? 'border-edge bg-panel-hover text-ink'
                           : included
                             ? 'border-edge text-ink-muted'
-                            : 'border-edge/40 text-ink-muted/40',
+                            : // Phòng NGOÀI đoạn đường đang đi vẫn phải đọc
+                              // được: ở nền sáng, mờ 40% rơi xuống 1.82:1 —
+                              // dưới cả mức "chữ trang trí" (hội đồng 07-08,
+                              // ghế màu sắc). 60% giữ được cảm giác lùi lại
+                              // mà chữ "·" vẫn nhìn ra.
+                              'border-edge/60 text-ink-muted/60',
                     ].join(' ')}
                   >
                     {room === null ? '' : shown ? room.keys.join('/') : included ? '?' : '·'}

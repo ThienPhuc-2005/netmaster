@@ -1,7 +1,10 @@
 {
   "app": {
     "name": "NetMaster",
-    "tagline": "Học mạng máy tính từ số 0"
+    "tagline": "Học mạng máy tính từ số 0",
+    "otherWindowTitle": "App đang mở ở cửa sổ khác",
+    "otherWindowBody": "Hai cửa sổ cùng ghi tiến độ sẽ ghi đè lẫn nhau — nên mỗi lúc chỉ một cửa sổ được học. Đóng cửa sổ kia, hoặc bấm nút dưới để học ở đây.",
+    "useThisWindow": "Dùng cửa sổ này"
   },
   "nav": {
     "learn": "Học",
@@ -9,6 +12,11 @@
     "clinic": "Phòng khám",
     "profile": "Hồ sơ",
     "clinicLocked": "Phòng khám chưa mở"
+  },
+  "error": {
+    "title": "App gặp lỗi ngoài dự kiến",
+    "body": "Tiến độ học của bạn vẫn an toàn trong máy. Tải lại trang là thường xong; nếu lỗi lặp lại, chụp màn hình này gửi cho người làm app nhé.",
+    "reload": "Tải lại trang"
   },
   "settings": {
     "themeToDark": "Chuyển nền tối",
@@ -51,26 +59,45 @@
     "drillCardBody": "10 bài mỗi ngày, có bấm giờ — nhẩm nhanh bằng magic number.",
     "drillCardAction": "Vào luyện",
     "takeTest": "Thi cuối module",
+    "challenge": "Mình biết phần này rồi — thi vượt luôn",
+    "challengeShort": "Học vượt",
     "retakeTest": "Thi lại",
     "passedScore": "Đã đạt · {pct}%",
     "vmLabProgress": "{done}/{total} bước",
-    "vmLabNoXp": "Việc thật ngoài app — không kiểm chứng được nên không tính XP."
+    "vmLabNoXp": "Việc thật ngoài app — không kiểm chứng được nên không tính XP.",
+    "streakFrozen": "Bạn lỡ mất một quãng — mình đã dùng {used} lượt đóng băng giữ chuỗi giúp bạn (tháng này còn {left} lượt).",
+    "streakReset": "Chuỗi bắt đầu lại từ hôm nay — {lost} ngày trước đó vẫn là {lost} ngày bạn đã học, không ai lấy đi được.",
+    "streakDismiss": "Đóng thông báo chuỗi ngày học"
   },
   "test": {
     "title": "Bài kiểm tra module",
     "intro": "{count} câu, cần đạt {threshold}% để mở module sau. Không có gợi ý giữa chừng — đây là lúc kiến thức tự đứng trên chân nó. Sai cũng không sao: thi lại bao nhiêu lần cũng được.",
     "start": "Bắt đầu",
     "questionOf": "Câu {current}/{total}",
+    "introFinal": "{count} câu, cần đạt {threshold}% để khép lại cả khóa học. Không có gợi ý giữa chừng — đây là lúc kiến thức tự đứng trên chân nó. Sai cũng không sao: thi lại bao nhiêu lần cũng được.",
     "passTitle": "Đạt {pct}% — module tiếp theo đã mở!",
+    "passTitleFinal": "Đạt {pct}% — bạn vừa học xong module cuối cùng của cả khóa!",
     "passTitleAgain": "Đạt {pct}% — vẫn chắc tay như lần trước.",
     "failTitle": "Được {pct}% — gần lắm rồi.",
     "failBody": "Cần {threshold}% để mở module sau. Đọc lại những ý dưới đây rồi thi lại nhé — thi lại là để ôn, không phải để bị phạt.",
+    "failBodyFinal": "Cần {threshold}% để khép lại cả khóa. Đọc lại những ý dưới đây rồi thi lại nhé — thi lại là để ôn, không phải để bị phạt.",
     "reviewTitle": "Những ý cần ôn lại",
+    "reviewHint": "Ôn lại về: {topic}. Mở lại bài dạy phần này rồi thi tiếp nhé — đáp án đầy đủ sẽ hiện khi bạn đậu.",
+    "reviewHintGeneric": "Mở lại bài dạy phần này rồi thi tiếp nhé — đáp án đầy đủ sẽ hiện khi bạn đậu.",
     "retake": "Thi lại ngay",
     "notReadyTitle": "Chưa tới giờ thi",
     "notReadyBody": "Học xong các bài trong module rồi mình thi nhé — bài thi lấy chất liệu từ chính các bài đó.",
     "lockedTitle": "Module chưa mở",
-    "bestScore": "Điểm cao nhất: {pct}%"
+    "bestScore": "Điểm cao nhất: {pct}%",
+    "challengeTitle": "Thi vượt module",
+    "challengeIntro": "{count} câu y hệt bài thi cuối module, cần đạt {threshold}%. Đạt thì module này tính là xong và module sau mở ra luôn — bạn khỏi phải ngồi học lại thứ mình đã biết.",
+    "challengeOneShot": "Chưa đạt cũng không mất gì: thi vượt lại được ngay, hoặc học bình thường rồi thi cuối module như mọi người.",
+    "challengeStart": "Vào thi luôn",
+    "challengeNext": "Vượt tiếp: {module}",
+    "challengePass": "Đạt {pct}% — vượt module này rồi, module tiếp theo đã mở!",
+    "challengePassFinal": "Đạt {pct}% — bạn vượt luôn module cuối, cả khóa khép lại ở đây!",
+    "challengePassCards": "Các khái niệm của module vừa vào Hộp ôn tập, hạn ngày mai. Biết hôm nay chưa chắc nhớ sau ba tuần — vài phút ôn mỗi ngày là để giữ lấy chỗ đó.",
+    "challengeFailBody": "Chưa tới {threshold}%. Thi vượt lại luôn cũng được, mà học vài bài trong module rồi quay lại thì chắc tay hơn."
   },
   "lesson": {
     "stepHook": "Khởi động",
@@ -123,7 +150,11 @@
     "selfGradeHint": "Tự đánh giá thật lòng nhé — thẻ \"chưa nhớ\" sẽ quay lại sớm hơn để giúp bạn.",
     "doneTitle": "Xong phiên ôn hôm nay!",
     "doneBody": "Bạn nhớ {correct}/{total} thẻ. Thẻ chưa nhớ sẽ quay lại vào ngày mai.",
-    "goLearn": "Sang học bài mới"
+    "goLearn": "Sang học bài mới",
+    "whyHere": "Bạn có {count} thẻ đến hạn — não sắp quên đúng lịch rồi, ôn xong mình học tiếp nhé.",
+    "relearnTag": "thẻ học lại",
+    "moreDue": "Còn {count} thẻ nữa đang đến hạn hôm nay.",
+    "nextSession": "Ôn phiên tiếp"
   },
   "drill": {
     "title": "Luyện chia subnet",
@@ -328,7 +359,7 @@
       "tracert": "xem đường đi qua từng router tới đích — tracert <đích>",
       "nslookup": "hỏi DNS xem một tên miền trỏ về địa chỉ nào — nslookup <tên>",
       "netstat": "liệt kê các kết nối mạng đang mở trên máy",
-      "arp": "xem bảng địa chỉ MAC mà máy đã học được",
+      "arp": "xem bảng IP → MAC (ARP cache) máy đã hỏi được — khác bảng MAC của switch",
       "capture": "xem bảng bắt gói của lượt ping/tracert gần nhất (Wireshark thu nhỏ)",
       "gpresult": "liệt kê các chính sách (GPO) đang áp lên máy này"
     },
@@ -361,7 +392,7 @@
     "termUnknown": "Máy này không có cmdlet \"{cmd}\" — gõ Get-Help xem danh sách nhé.",
     "cmd": {
       "Get-NetIPAddress": "xem địa chỉ IP của các card mạng trên máy",
-      "Test-NetConnection": "kiểm tra ping hoặc một cổng TCP tới đích — Test-NetConnection <đích> [-Port <n>]",
+      "Test-NetConnection": "kiểm tra ping hoặc một port TCP tới đích — Test-NetConnection <đích> [-Port <n>]",
       "Get-ADUser": "tra cứu user trong miền — -Identity <sam> hoặc -Filter * [-SearchBase <DN>]",
       "New-ADUser": "tạo user mới — -Name, -SamAccountName, -Path; hoặc nhận hàng loạt từ ống",
       "Import-Csv": "đọc file CSV thành các bản ghi — bơm được vào ống",
@@ -374,7 +405,7 @@
     "goalAdUserOu": "Tạo được user \"{sam}\" nằm đúng OU {ou}",
     "goalAdUserCount": "OU {ou} phải có ít nhất {atLeast} user",
     "goalTestPing": "Đã kiểm tra ping tới {ip} thành công",
-    "goalTestPort": "Đã kiểm tra cổng {port} của {ip} thành công",
+    "goalTestPort": "Đã kiểm tra port {port} của {ip} thành công",
     "goalFoundLine": "Đã lôi ra được dòng log chứa \"{text}\"",
     "reset": "Làm lại từ đầu",
     "freeNote": "Gõ lệnh và làm lại đều miễn phí — chỉ \"Nộp bài\" mới tính lượt."
@@ -385,11 +416,17 @@
     "streakUnit": "ngày",
     "xp": "Tổng XP",
     "badges": "Huy hiệu",
-    "emptyBadges": "Huy hiệu đầu tiên đang chờ: hoàn thành phần Nhớ lại đầu tiên của bạn.",
+    "emptyBadges": "Huy hiệu sẽ có ở bản sau — XP, chuỗi ngày và mọi ca bạn chữa khỏi vẫn đang được ghi đủ.",
     "freezes": "Đóng băng còn lại",
     "freezeNote": "Lỡ một ngày cũng không mất chuỗi — mỗi tháng bạn có 2 lượt \"đóng băng\" tự động.",
     "cardsTotal": "Thẻ trong hộp ôn",
-    "lessonsDone": "Bài đã hoàn thành"
+    "lessonsDone": "Bài đã hoàn thành",
+    "backupTitle": "Sao lưu tiến độ",
+    "backupBody": "Tiến độ nằm trong trình duyệt của máy này — xóa dữ liệu duyệt web hoặc đổi máy là mất. Thỉnh thoảng xuất một bản ra file để cất; sang máy mới thì nhập lại là tiếp tục học.",
+    "backupExport": "Xuất ra file",
+    "backupImport": "Nhập từ file",
+    "backupImportConfirm": "Nhập file này sẽ THAY TOÀN BỘ tiến độ đang có trên máy bằng tiến độ trong file. Tiếp tục chứ?",
+    "backupImportBad": "File này không phải bản sao lưu NetMaster hợp lệ — kiểm tra lại xem có chọn nhầm file không nhé."
   },
   "design": {
     "title": "Design system",

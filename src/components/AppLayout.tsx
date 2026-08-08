@@ -19,7 +19,7 @@ import {
 } from 'lucide-react'
 import { siFacebook, siTelegram } from 'simple-icons'
 import { useT } from '../i18n'
-import { useSettings, applyTheme } from '../store/settings'
+import { useSettings, applyLang, applyTheme } from '../store/settings'
 import { useProgress } from '../store/progress'
 import { clinicTabUnlocked } from '../features/clinic/clinicCases'
 
@@ -37,7 +37,7 @@ function BrandIcon({ path, title, href }: { path: string; title: string; href: s
       target="_blank"
       rel="noreferrer"
       aria-label={title}
-      className="text-ink-muted transition-colors duration-(--dur) hover:text-ink"
+      className="rounded-md p-2 text-ink-muted transition-colors duration-(--dur) hover:bg-panel-hover hover:text-ink"
     >
       <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden>
         <path d={path} />
@@ -54,28 +54,33 @@ export function AppLayout() {
   const passedModules = useProgress((s) => s.passedModules)
   const clinicOpen = clinicTabUnlocked(passedModules)
 
+  const lang = useSettings((s) => s.lang)
+
   useEffect(() => applyTheme(theme), [theme])
+  // <html lang> phải đi theo nút VI/EN, nếu không trình đọc màn hình đọc
+  // giao diện EN bằng giọng Việt (WCAG 3.1.1).
+  useEffect(() => applyLang(lang), [lang])
 
   const toggles = (
     <>
       <button
         onClick={toggleTheme}
         aria-label={theme === 'dark' ? t('settings.themeToLight') : t('settings.themeToDark')}
-        className="text-ink-muted transition-colors duration-(--dur) hover:text-ink"
+        className="rounded-md p-2 text-ink-muted transition-colors duration-(--dur) hover:bg-panel-hover hover:text-ink"
       >
         {theme === 'dark' ? <Sun size={16} aria-hidden /> : <Moon size={16} aria-hidden />}
       </button>
       <button
         onClick={toggleSound}
         aria-label={soundOn ? t('settings.soundOn') : t('settings.soundOff')}
-        className="text-ink-muted transition-colors duration-(--dur) hover:text-ink"
+        className="rounded-md p-2 text-ink-muted transition-colors duration-(--dur) hover:bg-panel-hover hover:text-ink"
       >
         {soundOn ? <Volume2 size={16} aria-hidden /> : <VolumeX size={16} aria-hidden />}
       </button>
       <button
         onClick={toggleLang}
         aria-label={t('settings.langSwitch')}
-        className="flex items-center gap-1 text-ink-muted transition-colors duration-(--dur) hover:text-ink"
+        className="flex items-center gap-1 rounded-md p-2 text-ink-muted transition-colors duration-(--dur) hover:bg-panel-hover hover:text-ink"
       >
         <Languages size={16} aria-hidden />
         <span className="font-mono text-[11px] font-semibold">{t('settings.langBadge')}</span>

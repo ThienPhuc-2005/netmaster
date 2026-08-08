@@ -27,6 +27,19 @@ describe('vi.json / en.json — cùng cấu trúc key (quy tắc i18n chung)', (
       }
     }
   })
+
+  it('hai bản dùng ĐÚNG CÙNG bộ {placeholder} ở từng key', () => {
+    // Rơi mất một {count} lúc dịch là lỗi câm: chuỗi vẫn hiện, chỉ thiếu
+    // con số — người đọc bản EN thấy "Cards due right now:" cụt lủn mà
+    // không ai biết. Dịch thừa placeholder còn tệ hơn: chữ "{count}" hiện
+    // nguyên xi lên màn hình (hội đồng 07-08, ghế i18n).
+    const params = (s: string) => [...s.matchAll(/\{(\w+)\}/g)].map((m) => m[1]!).sort()
+    for (const path of keyPaths(viDict)) {
+      expect(params(translate('en', path)), `key "${path}": bộ placeholder lệch giữa vi và en`).toEqual(
+        params(translate('vi', path)),
+      )
+    }
+  })
 })
 
 // Parity vi ↔ en không bắt được key dùng trong CODE mà thiếu ở CẢ HAI

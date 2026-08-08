@@ -13,3 +13,20 @@ export const LTextSchema = z.object({
 })
 
 export type LText = z.infer<typeof LTextSchema>
+
+/**
+ * Đường đọc DUY NHẤT của LText phía UI (hội đồng 2026-08-07, ghế i18n):
+ * trước đây 40+ chỗ đóng đinh `.vi` rải trên 10 file — mỗi feature mới
+ * lại nhân thêm call site, chi phí bật EN nội dung tăng dần theo thời
+ * gian. Giờ mọi chỗ render đi qua đây: `en` chưa có thì rơi về `vi`
+ * (hành vi hôm nay không đổi một pixel), ngày bật EN nội dung chỉ còn là
+ * việc của tầng data. Thuần — dùng được cả trong engine lẫn UI.
+ */
+export function lt(text: LText, lang: 'vi' | 'en' = 'vi'): string {
+  return lang === 'en' ? (text.en ?? text.vi) : text.vi
+}
+
+/** Như `lt` nhưng nhận LText tùy chọn — cho các trường optional (hintTopic, explain...). */
+export function maybeLt(text: LText | undefined, lang: 'vi' | 'en' = 'vi'): string | undefined {
+  return text === undefined ? undefined : lt(text, lang)
+}

@@ -7,6 +7,7 @@
 // đang ở đâu trong tòa nhà.
 
 import { useState } from 'react'
+import { lt } from '../../engine/ltext'
 import { ArrowRight } from 'lucide-react'
 import { currentTourRoom, seeNextRoom, startTour, type Palace } from '../../engine/palace'
 import { Button } from '../../components/Button'
@@ -57,12 +58,12 @@ export function PalaceTour({ palace, roomIds, onComplete }: PalaceTourProps) {
             <p className="font-mono text-2xl font-semibold text-ink">{room.keys.join(' / ')}</p>
             <p className="text-sm font-semibold text-ink">{room.name}</p>
             {room.note !== undefined && (
-              <p className="text-xs uppercase tracking-wide text-ink-muted">{room.note.vi}</p>
+              <p className="text-xs uppercase tracking-wide text-ink-muted">{lt(room.note)}</p>
             )}
           </div>
         </div>
 
-        <p className="text-sm leading-relaxed text-ink">{room.story.vi}</p>
+        <p className="text-sm leading-relaxed text-ink">{lt(room.story)}</p>
 
         <div className="flex items-center gap-3">
           <Button onClick={goNext}>

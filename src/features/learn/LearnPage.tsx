@@ -3,18 +3,50 @@
 // computeModuleStatuses — module sau khóa tới khi module trước đạt >= 85%.
 
 import { Link } from 'react-router'
-import { BookOpen, Check, GraduationCap, Lock, Play, RotateCcw, Server, Timer } from 'lucide-react'
+import { lt } from '../../engine/ltext'
+import { BookOpen, Check, FastForward, GraduationCap, Lock, Play, RotateCcw, Server, Snowflake, Sunrise, Timer, X } from 'lucide-react'
 import { loadModules, lessonsInOrder } from '../../content'
 import { computeModuleStatuses } from '../../engine/masteryGate'
 import { moduleXpTotal } from '../../engine/xp'
 import type { Lesson, Module } from '../../engine/contentSchema'
-import { newLessonGate, shouldReviewFirst, todayIso, useProgress } from '../../store/progress'
+import { canChallengeModule, newLessonGate, shouldReviewFirst, todayIso, useProgress } from '../../store/progress'
 import { useT } from '../../i18n'
 import { EmptyState } from '../../components/EmptyState'
 import { ProgressBar } from '../../components/ProgressBar'
 import { StageMap, type StageItem } from '../../components/StageMap'
 
 type LessonState = 'done' | 'active' | 'locked'
+
+/**
+ * Kể chuyện streak (hội đồng 2026-08-07, ghế tâm lý): engine đã soạn sẵn
+ * lời kể (freezesUsed/reset) mà bản cũ vứt đi — người học không bao giờ
+ * biết mình vừa được cứu chuỗi, và reset 30→1 diễn ra câm lặng. Banner
+ * này kể một lần rồi tắt (dismiss); reset kể KHÔNG đổ lỗi (spec 4.4).
+ */
+function StreakStoryBanner() {
+  const t = useT()
+  const event = useProgress((s) => s.streakEvent)
+  const dismiss = useProgress((s) => s.dismissStreakEvent)
+  if (event === null) return null
+  const Icon = event.kind === 'freeze-used' ? Snowflake : Sunrise
+  return (
+    <div className="mb-6 flex items-start gap-3 rounded-md border border-edge bg-panel px-4 py-3 text-sm" role="status">
+      <Icon size={17} aria-hidden className="mt-0.5 shrink-0 text-accent" />
+      <p className="flex-1 text-ink">
+        {event.kind === 'freeze-used'
+          ? t('learn.streakFrozen', { used: event.used, left: event.left })
+          : t('learn.streakReset', { lost: event.lostStreak })}
+      </p>
+      <button
+        onClick={dismiss}
+        aria-label={t('learn.streakDismiss')}
+        className="shrink-0 rounded-md p-1 text-ink-muted hover:bg-panel-hover hover:text-ink"
+      >
+        <X size={15} aria-hidden />
+      </button>
+    </div>
+  )
+}
 
 function LessonRow({
   module,
@@ -42,7 +74,7 @@ function LessonRow({
         <Lock size={14} aria-hidden className="shrink-0 text-ink-muted" />
       )}
       <span className={`flex-1 text-sm font-medium ${state === 'locked' ? 'text-ink-muted' : 'text-ink'}`}>
-        {lesson.missionTitle.vi}
+        {lt(lesson.missionTitle)}
       </span>
 
       {state === 'done' && (
@@ -64,7 +96,14 @@ function LessonRow({
       {state === 'locked' && (
         <span className="max-w-[40%] shrink-0 text-right text-xs text-ink-muted">{t('learn.lessonLocked')}</span>
       )}
-      {state === 'active' && !startable && <span className="text-xs text-warn">{t('learn.goReview')} ↓</span>}
+      {/* Link thẳng tới trang ôn — bản cũ vẽ mũi tên "↓" trong khi banner
+          ôn tập nằm phía TRÊN danh sách: chỉ đường sai đúng lúc người
+          dùng đang bối rối vì bị chặn (hội đồng, ghế onboarding). */}
+      {state === 'active' && !startable && (
+        <Link to="/on-tap" className="text-xs font-medium text-warn underline-offset-2 hover:underline">
+          {t('learn.goReview')}
+        </Link>
+      )}
     </li>
   )
 }
@@ -84,12 +123,12 @@ function VmLabChecklist({ vmLab }: { vmLab: NonNullable<Module['vmLab']> }) {
     <section className="rounded-md border border-edge bg-panel-hover p-4">
       <div className="flex items-center gap-3">
         <Server size={17} aria-hidden className="shrink-0 text-accent" />
-        <h3 className="flex-1 text-sm font-semibold text-ink">{vmLab.title.vi}</h3>
+        <h3 className="flex-1 text-sm font-semibold text-ink">{lt(vmLab.title)}</h3>
         <span className="text-xs font-medium text-ink-muted">
           {t('learn.vmLabProgress', { done: doneCount, total: vmLab.steps.length })}
         </span>
       </div>
-      {vmLab.intro !== undefined && <p className="mt-2 text-xs leading-relaxed text-ink-muted">{vmLab.intro.vi}</p>}
+      {vmLab.intro !== undefined && <p className="mt-2 text-xs leading-relaxed text-ink-muted">{lt(vmLab.intro)}</p>}
       <ul className="mt-3 flex flex-col gap-2">
         {vmLab.steps.map((step) => {
           const checked = vmLabDone[step.id] !== undefined
@@ -103,7 +142,7 @@ function VmLabChecklist({ vmLab }: { vmLab: NonNullable<Module['vmLab']> }) {
                   className="mt-1 shrink-0"
                   style={{ accentColor: 'var(--accent)' }}
                 />
-                <span className={checked ? 'text-ink-muted line-through' : 'text-ink'}>{step.text.vi}</span>
+                <span className={checked ? 'text-ink-muted line-through' : 'text-ink'}>{lt(step.text)}</span>
               </label>
             </li>
           )
@@ -125,6 +164,12 @@ function ModuleCard({ module, status }: { module: Module; status: 'locked' | 'op
   const ordered = lessonsInOrder(module)
   const firstUncompleted = ordered.find((l) => completedLessons[l.id] === undefined)
   const gate = newLessonGate(reviewCards, todayIso())
+  const canChallenge = canChallengeModule({
+    status,
+    lessonIds: ordered.map((l) => l.id),
+    completedLessons,
+    moduleId: module.id,
+  })
 
   const lessonState = (l: Lesson): LessonState => {
     if (completedLessons[l.id] !== undefined) return 'done'
@@ -137,24 +182,45 @@ function ModuleCard({ module, status }: { module: Module; status: 'locked' | 'op
     const hasActive = st.lessonIds.some((id) => id === firstUncompleted?.id)
     return {
       id: st.id,
-      title: st.title.vi,
+      title: lt(st.title),
       state: done ? 'done' : hasActive && status !== 'locked' ? 'active' : 'locked',
     }
   })
 
   return (
+    // Trạng thái khóa KHÔNG dùng opacity phủ card: chữ mờ 60% rớt AA thật
+    // (ink-muted@60% = 2.6:1 light) và lớp composite lọt ngoài lưới đo của
+    // tokens.test — thể hiện khóa bằng icon Lock + border nhạt + nhãn là đủ.
     <section
       data-part={module.part}
-      className={`flex flex-col gap-5 rounded-md border border-edge bg-panel p-5 ${status === 'locked' ? 'opacity-60' : ''}`}
+      className={`flex flex-col gap-5 rounded-md border bg-panel p-5 ${status === 'locked' ? 'border-edge/60' : 'border-edge'}`}
     >
-      <div className="flex items-center gap-3">
-        <h2 className="flex-1 text-base font-bold text-ink">{module.title.vi}</h2>
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+        <h2 className="min-w-[12rem] flex-1 text-base font-bold text-ink">{lt(module.title)}</h2>
         {status === 'locked' && <Lock size={15} aria-hidden className="text-ink-muted" />}
         {status === 'passed' && (
           <span className="flex items-center gap-1.5 text-xs font-semibold text-ok">
             <Check size={15} aria-hidden />
             {t('learn.passedScore', { pct: Math.round(masteryScores[module.id] ?? 0) })}
           </span>
+        )}
+        {/* Cửa HỌC VƯỢT đứng NGAY CẠNH tên chủ đề (08-08, chủ dự án ra
+            lệnh sửa): bản trước nằm dưới đáy card, chữ xám — phải cuộn
+            qua 5-8 hàng bài mới thấy, tức là với người mới nó không tồn
+            tại. Viền accent + chữ accent để nhìn là thấy, nhưng KHÔNG tô
+            đặc accent — ô đặc để dành cho "Bắt đầu" của bài, lối chính
+            vẫn là học. Tên đầy đủ đi theo aria-label/title cho người
+            dùng trình đọc màn hình và người rê chuột. */}
+        {canChallenge && (
+          <Link
+            to={`/kiem-tra/${module.id}?vuot=1`}
+            aria-label={t('learn.challenge')}
+            title={t('learn.challenge')}
+            className="flex shrink-0 items-center gap-1.5 rounded-md border border-accent bg-panel-hover px-3 py-1.5 text-xs font-semibold text-accent transition-colors duration-(--dur) hover:bg-accent hover:text-accent-contrast"
+          >
+            <FastForward size={14} aria-hidden />
+            {t('learn.challengeShort')}
+          </Link>
         )}
       </div>
 
@@ -184,6 +250,23 @@ function ModuleCard({ module, status }: { module: Module; status: 'locked' | 'op
             {status === 'passed' ? t('learn.retakeTest') : t('learn.takeTest')}
           </span>
           <span className="text-xs font-semibold text-accent">→</span>
+        </Link>
+      )}
+
+      {/* Lời mời thứ hai, đặt ở CUỐI card — cùng đích với chip trên đầu
+          nhưng nói trọn câu ("Mình biết phần này rồi…"): chip ngắn lo
+          phần nhìn-là-thấy, hàng này lo phần hiểu-nó-là-gì, và nó rơi
+          đúng chỗ người vừa đọc hết danh sách bài mới quyết định. Không
+          phải nút skip: bấm vào là đi thi thật, đề y hệt, ngưỡng 85%
+          y hệt. */}
+      {canChallenge && (
+        <Link
+          to={`/kiem-tra/${module.id}?vuot=1`}
+          className="flex items-center gap-3 rounded-md border border-edge px-4 py-3 text-ink-muted transition-colors duration-(--dur) hover:border-accent hover:text-ink"
+        >
+          <FastForward size={16} aria-hidden />
+          <span className="flex-1 text-sm font-medium">{t('learn.challenge')}</span>
+          <span className="text-xs font-semibold">→</span>
         </Link>
       )}
 
@@ -233,6 +316,8 @@ export function LearnPage() {
   return (
     <>
       <h1 className="mb-6 text-xl font-bold">{t('learn.title')}</h1>
+
+      <StreakStoryBanner />
 
       {(reviewPending || !gate.allowed) && (
         <div className="mb-6 flex items-start gap-3 rounded-md border border-warn/40 bg-panel px-4 py-3 text-sm">

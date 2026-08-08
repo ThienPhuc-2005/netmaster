@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { afterEach, describe, expect, it } from 'vitest'
 import { cleanup, render } from '@testing-library/react'
-import { FeedbackBanner, type FeedbackState } from './FeedbackBanner'
+import { FeedbackBanner, FeedbackRegion, type FeedbackState } from './FeedbackBanner'
 
 afterEach(cleanup)
 
@@ -66,8 +66,13 @@ describe('FeedbackBanner', () => {
     expect(container.textContent).not.toContain('Gần rồi — nghĩ lại')
   })
 
-  it('có role="status" để screen reader đọc phản hồi', () => {
-    const { getByRole } = renderState({ kind: 'incorrect', tier: 1 })
-    expect(getByRole('status')).toBeTruthy()
+  it('FeedbackRegion: vùng role="status" TỒN TẠI TRƯỚC khi có phản hồi (live region đáng tin)', () => {
+    // Live region mount kèm sẵn nội dung thường bị screen reader nuốt —
+    // hợp đồng mới: vùng trống có mặt từ đầu, phản hồi swap vào trong.
+    const { getByRole, rerender } = render(<FeedbackRegion state={null} />)
+    const region = getByRole('status')
+    expect(region.textContent).toBe('')
+    rerender(<FeedbackRegion state={{ kind: 'incorrect', tier: 1 }} />)
+    expect(getByRole('status').textContent).toContain('Gần rồi')
   })
 })

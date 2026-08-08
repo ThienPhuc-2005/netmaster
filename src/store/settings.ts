@@ -61,3 +61,15 @@ export function applyTheme(theme: Theme): void {
   if (theme === 'light') document.documentElement.dataset['theme'] = 'light'
   else delete document.documentElement.dataset['theme']
 }
+
+/**
+ * Đồng bộ ngôn ngữ lên <html lang> — cặp song sinh của applyTheme.
+ *
+ * index.html khai cứng lang="vi". Bật EN mà thẻ vẫn "vi" thì trình đọc
+ * màn hình phát âm toàn bộ giao diện tiếng Anh bằng giọng Việt — nghe
+ * như tiếng lạ, và đó là lỗi WCAG 3.1.1 chứ không phải chuyện thẩm mỹ.
+ */
+export function applyLang(lang: Lang): void {
+  if (typeof document === 'undefined') return
+  document.documentElement.lang = lang
+}
