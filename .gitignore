@@ -1,5 +1,6 @@
 node_modules/
 dist/
+scripts/launch.log
 *.local
 Thumbs.db
 .DS_Store

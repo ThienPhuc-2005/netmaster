@@ -5,8 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "node scripts/clean-dist.mjs && vite build",
     "preview": "vite preview",
+    "app": "node scripts/launch-app.mjs",
+    "app:shortcut": "node scripts/create-shortcut.mjs",
     "content:review": "node scripts/render-content-review.mjs",
     "test": "vitest run",
     "test:watch": "vitest",
