@@ -21,7 +21,8 @@ import { ClinicCaseSpecSchema } from './clinic/clinicSchema'
 import { PsSpecSchema } from './ps/psSchema'
 import { CliSpecSchema } from './cli/cliSchema'
 import { PalaceSchema } from './palace/palaceSchema'
-import { LTextSchema, type LText } from './ltext'
+import { LTextSchema } from './ltextSchema'
+import type { LText } from './ltext'
 
 /** Chuỗi hiển thị cho người học — định nghĩa ở `./ltext` (dùng chung với
  *  các schema nội dung khác); re-export để nơi gọi cũ không phải sửa. */
@@ -43,11 +44,20 @@ const idSchema = z.string().min(1)
  */
 const explainField = LTextSchema.optional()
 
+/**
+ * Cờ CÂU TRỤ theo từng câu: một câu typed/mcq/order vẫn có thể LÀ kỹ năng
+ * chính của module (M13: bài cắt VLSM liên hoàn là câu tính-tay, không có
+ * kind trụ nào chở được nó). `isAnchorQuestion` đọc cờ này TRƯỚC rồi mới
+ * xét kind — biên bản hội đồng trung cấp, ghế Đo lường.
+ */
+const anchorField = z.literal(true).optional()
+
 /** Câu gõ tay — dạng CHÍNH (generation effect; spec 2.1 bước 4:
  *  "Người dùng phải GÕ đáp án, hạn chế trắc nghiệm"). */
 const TypedQuestionSchema = z.object({
   kind: z.literal('typed'),
   id: idSchema,
+  anchor: anchorField,
   prompt: LTextSchema,
   /** Các đáp án chấp nhận; so khớp sau khi normalize (grading/). */
   accept: z.array(z.string().min(1)).min(1),
@@ -74,6 +84,7 @@ const TypedQuestionSchema = z.object({
 const McqQuestionSchema = z.object({
   kind: z.literal('mcq'),
   id: idSchema,
+  anchor: anchorField,
   prompt: LTextSchema,
   choices: z.array(LTextSchema).min(2),
   answerIndex: z.number().int().min(0),
@@ -86,6 +97,7 @@ const McqQuestionSchema = z.object({
 const OrderQuestionSchema = z.object({
   kind: z.literal('order'),
   id: idSchema,
+  anchor: anchorField,
   prompt: LTextSchema,
   items: z.array(LTextSchema).min(2),
   hintTopic: LTextSchema.optional(),
@@ -399,22 +411,10 @@ type ModuleBase = z.infer<typeof ModuleBaseSchema>
 type QuestionT = z.infer<typeof QuestionSchema>
 type LessonT = z.infer<typeof LessonSchema>
 
-/** Các phòng cung điện được ĐI XEM trong một bài (từ bước Dạy). */
-export function palaceRoomsInLesson(lesson: LessonT): string[] {
-  const teach = lesson.steps[2]
-  return [...new Set(teach.screens.flatMap((s) => s.palaceTour ?? []))]
-}
-
-/** Các conceptId được dạy trong một bài (từ các màn hình bước Dạy). */
-export function conceptIdsInLesson(lesson: LessonT): string[] {
-  const teach = lesson.steps[2]
-  return [...new Set(teach.screens.map((s) => s.conceptId))]
-}
-
-/** Thứ tự bài học chuẩn của module = duyệt các chặng theo thứ tự. */
-export function orderedLessonIds(mod: ModuleBase): string[] {
-  return mod.stages.flatMap((st) => st.lessonIds)
-}
+// Ba hàm thuần dời sang contentPure.ts (đường nóng PROD không được kéo
+// tháp zod này) — re-export để chỗ đã sẵn cần zod import đâu cũng được.
+export { conceptIdsInLesson, orderedLessonIds, palaceRoomsInLesson } from './contentPure'
+import { orderedLessonIds } from './contentPure'
 
 /**
  * Gom mọi câu hỏi trong module (pretest, practice, retrieval, mastery

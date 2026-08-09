@@ -482,7 +482,7 @@
                 "vi": "Wildcard mask là mặt nạ lộn ngược của subnet mask: bit 0 nghĩa là ô này phải khớp đúng, bit 1 nghĩa là ô này mặc kệ. Cách tính nhanh: lấy 255 trừ đi từng ô. Mask 255.255.255.192 thành wildcard 0.0.0.63; mask 255.255.255.0 thành 0.0.0.255; mask 255.255.0.0 thành 0.0.255.255. Router dùng dạng này ở hai chỗ bạn sẽ gặp ngay ở các module sau: khai mạng cho định tuyến động, và viết luật lọc gói tin."
               },
               "deepDive": {
-                "vi": "Vì sao lại có hai kiểu ngược nhau? Vì subnet mask trả lời câu hỏi của một máy — phần nào của địa chỉ là mạng của tôi; còn wildcard trả lời câu hỏi của một bộ lọc — những bit nào tôi được phép bỏ qua khi đối chiếu. Wildcard vì thế linh hoạt hơn mask: nó cho phép những mẫu mà mask không viết nổi, ví dụ 0.0.0.1 để chỉ riêng các địa chỉ lẻ. Trong phạm vi khóa này bạn chỉ cần dạng lộn ngược đơn giản, nhưng biết lý do thì không bao giờ gõ nhầm hai chỗ cho nhau."
+                "vi": "Vì sao lại có hai kiểu ngược nhau? Vì subnet mask trả lời câu hỏi của một máy — phần nào của địa chỉ là mạng của tôi; còn wildcard trả lời câu hỏi của một bộ lọc — những bit nào tôi được phép bỏ qua khi đối chiếu. Wildcard vì thế linh hoạt hơn mask: nó cho phép những mẫu mà mask không viết nổi — ví dụ nền 10.0.0.1 với wildcard 0.0.0.254 nghĩa là GIỮ bit cuối bằng 1 còn các bit giữa mặc kệ, tức tóm riêng mọi địa chỉ LẺ trong dải /24; không subnet mask nào tả nổi một nhóm như vậy vì mask bắt buộc phần khớp phải nằm liền bên trái. Trong phạm vi khóa này bạn chỉ cần dạng lộn ngược đơn giản, nhưng biết lý do thì không bao giờ gõ nhầm hai chỗ cho nhau."
               }
             }
           ]
@@ -869,6 +869,7 @@
     {
       "kind": "typed",
       "id": "m13-mt-7",
+      "anchor": true,
       "prompt": {
         "vi": "Gộp bốn mạng 192.168.4.0/24, 192.168.5.0/24, 192.168.6.0/24 và 192.168.7.0/24 thành một dòng tuyến. Viết dạng đầy đủ."
       },
@@ -919,6 +920,7 @@
     {
       "kind": "typed",
       "id": "m13-mt-11",
+      "anchor": true,
       "prompt": {
         "vi": "Dải 10.20.30.0/24 chia cho ba phòng 100 / 30 / 12 máy, cắt đúng thứ tự. Phòng 30 máy nhận địa chỉ mạng nào? Điền dạng đầy đủ."
       },

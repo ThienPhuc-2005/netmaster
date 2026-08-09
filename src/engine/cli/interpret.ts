@@ -182,7 +182,12 @@ function parseAclAddress(words: string[], at: number): { address: AclAddress; ne
  */
 function parseAclRule(words: string[]): { number: number; rule: Omit<AclRule, 'seq'> } | null {
   const number = Number(words[1])
-  if (!Number.isInteger(number) || number < 1 || number > 199) return null
+  // CHỈ dải extended 100-199: mô hình này chỉ có MỘT cú pháp (protocol +
+  // nguồn + đích). ACL chuẩn 1-99 trên IOS thật mang cú pháp khác hẳn
+  // (chỉ nguồn) — nhận số 1-99 với cú pháp extended là dạy một cấu hình
+  // không tồn tại trên thiết bị thật, và show sẽ in một khuôn "Standard"
+  // kèm luật extended không máy nào in (biên bản hội đồng trung cấp).
+  if (!Number.isInteger(number) || number < 100 || number > 199) return null
 
   const action = words[2]?.toLowerCase()
   if (action !== 'permit' && action !== 'deny') return null

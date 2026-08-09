@@ -236,7 +236,9 @@ export function ModuleTestPage() {
           <p className="font-medium text-ink" key={question.id}>
             {lt(question.prompt)}
           </p>
-          <QuestionInput question={question} onSubmit={submit} />
+          {/* examMode: bài thi không chấm sống, không gọi tên bệnh — giữ đúng lời
+    hứa "không có gợi ý giữa chừng" của màn intro (cổng mastery 85%). */}
+<QuestionInput question={question} onSubmit={submit} examMode />
         </div>
       </>
     )

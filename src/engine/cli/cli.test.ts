@@ -142,6 +142,20 @@ describe('show — đọc thẳng từ sơ đồ phòng lab', () => {
     expect(rootView.text).toContain('This bridge is the root')
   })
 
+  it('switch không phải root có đúng MỘT cổng vai Root FWD — bảng nói cùng chuyện với bài 15', () => {
+    // P0 biên bản hội đồng trung cấp: bản cũ dán 'Desg' cho chính root
+    // port, ngược câu "mỗi switch không phải root có đúng một root port".
+    const topo = ringOfSwitches(true)
+    for (const id of ['sw-1', 'sw-3']) {
+      const { text } = type(initialCliState(topo, id), 'show spanning-tree')
+      const rootRoles = text.match(/^\S+\s+Root\s+FWD/gm) ?? []
+      expect(rootRoles, `${id}: phải có đúng một cổng vai Root`).toHaveLength(1)
+    }
+    // Root thì không có root port — mọi cổng là Desg.
+    const rootView = type(initialCliState(topo, 'sw-2'), 'show spanning-tree')
+    expect(rootView.text).not.toMatch(/^\S+\s+Root\s+FWD/m)
+  })
+
   it('cổng bị chặn hiện Sts BLK — đúng chỗ người học đi tìm', () => {
     const topo = ringOfSwitches(true)
     for (const id of ['sw-1', 'sw-2', 'sw-3']) {

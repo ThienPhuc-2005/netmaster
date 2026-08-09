@@ -291,7 +291,7 @@ function pathVisits(result: PingResult): Set<DeviceId> {
 export function runLabGoals(
   learner: Topology,
   goals: readonly LabGoal[],
-): { outcomes: GoalOutcome[]; runs: PingResult[] } {
+): { outcomes: GoalOutcome[]; runs: PingResult[]; net: NetState } {
   const structural = validateTopology(learner)
   if (structural.length > 0) {
     // Sơ đồ không thể tồn tại trong đời thật → lỗi của trình soạn thảo,
@@ -306,9 +306,11 @@ export function runLabGoals(
   for (const goal of goals) {
     if (goal.kind === 'ping' || goal.kind === 'pathThrough') {
       const result = simulatePing(learner, { from: goal.from, to: goal.to }, state)
-      // Tích lũy những gì mạng vừa học được cho các goal sau.
+      // Tích lũy những gì mạng vừa học được cho các goal sau — kể cả số
+      // đếm ACL: cột match của `show access-lists` đọc từ đây.
       state.macTables = result.state.macTables
       state.arpCaches = result.state.arpCaches
+      state.aclHits = result.state.aclHits
       runs.push(result)
 
       if (goal.kind === 'ping') {
@@ -335,7 +337,11 @@ export function runLabGoals(
     outcomes.push({ goal, met, failure: null })
   }
 
-  return { outcomes, runs }
+  // Trả cả NetState: console CLI nối nó vào phiên để `show mac
+  // address-table` / cột đếm của `show access-lists` có dữ liệu thật từ
+  // các gói mà bộ chấm hành vi vừa gửi (biên bản trung cấp, ghế kiến trúc:
+  // hai bảng này từng vĩnh viễn trống ở mọi bề mặt thật).
+  return { outcomes, runs, net: state }
 }
 
 /** Chấm bài lab. Mọi goal phải đạt (AND) thì bài mới xong. */

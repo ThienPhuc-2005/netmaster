@@ -40,10 +40,16 @@ export interface StpState {
   rootId: DeviceId | null
   /** Cổng đang bị chặn — khung không đi ra cũng không đi vào. */
   blocked: PortRef[]
+  /**
+   * Root port của từng switch không phải root — cổng hướng về gốc cây.
+   * `show spanning-tree` cần vai này: IOS thật in "Root FWD" cho nó,
+   * dán "Desg" là dạy sai vai cổng (P0 biên bản hội đồng trung cấp).
+   */
+  rootPorts: PortRef[]
 }
 
 export function emptyStpState(): StpState {
-  return { rootId: null, blocked: [] }
+  return { rootId: null, blocked: [], rootPorts: [] }
 }
 
 /** STP có đang bật trên sơ đồ này không (mặc định TẮT — giữ nguyên Module 4). */
@@ -170,11 +176,15 @@ export function computeStp(topo: Topology): StpState {
     blocked.push(closerToRoot(link.a.deviceId, link.b.deviceId) <= 0 ? link.b : link.a)
   }
 
-  return { rootId: root.id, blocked }
+  return { rootId: root.id, blocked, rootPorts: [...rootPorts.values()] }
 }
 
 export function isPortBlocked(state: StpState, ref: PortRef): boolean {
   return state.blocked.some((b) => samePort(b, ref))
+}
+
+export function isRootPort(state: StpState, ref: PortRef): boolean {
+  return state.rootPorts.some((r) => samePort(r, ref))
 }
 
 /**

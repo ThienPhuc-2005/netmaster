@@ -227,7 +227,7 @@
               "conceptId": "m19-replication",
               "visualId": "vis-replication-hai-so",
               "body": {
-                "vi": "Mỗi Domain Controller giữ một bản đầy đủ của cuốn sổ miền, và mọi thay đổi — thêm user, đổi nhóm, sửa mật khẩu — ghi vào một DC rồi được CHÉP dần sang các DC khác. Đó là replication. Nhịp chép ăn theo site của bài trước: TRONG một site, dây nhanh nên thay đổi lan gần như tức thì; GIỮA hai site, đường vừa chậm vừa đắt nên thay đổi được gom lại, nén nhỏ và gửi THEO LỊCH — mặc định mười lăm phút một chuyến, có nơi đặt thưa hơn nữa để tiết kiệm đường truyền."
+                "vi": "Mỗi Domain Controller giữ một bản đầy đủ của cuốn sổ miền, và mọi thay đổi — thêm user, đổi nhóm, sửa mật khẩu — ghi vào một DC rồi được CHÉP dần sang các DC khác. Đó là replication. Nhịp chép ăn theo site của bài trước: TRONG một site, dây nhanh nên thay đổi lan gần như tức thì; GIỮA hai site, đường vừa chậm vừa đắt nên thay đổi được gom lại, nén nhỏ và gửi THEO LỊCH — thường được đặt cỡ mười lăm phút một chuyến (mặc định của AD là 180 phút — nơi nào cần tươi hơn thì rút xuống), có nơi đặt thưa hơn nữa để tiết kiệm đường truyền."
               },
               "deepDive": {
                 "vi": "Vì sao không chép tức thì cho khỏe? Vì đường WAN giữa hai thành phố là tài nguyên đắt: hàng nghìn thay đổi lặt vặt mỗi giờ mà chuyến nào cũng chạy tức thì thì đường truyền nghẹt vì việc sổ sách. Gom lại theo chuyến là cái giá hợp lý — miễn là người vận hành BIẾT mình đã chọn cái giá đó, thay vì ngơ ngác như người trực ở phần mở đầu."
@@ -929,7 +929,7 @@
       "flashcard": {
         "front": { "vi": "Replication trong site và giữa site khác nhau thế nào, và vì sao?" },
         "back": {
-          "vi": "Trong site: dây nhanh, thay đổi lan gần như tức thì. Giữa site: đường WAN chậm và đắt nên thay đổi được gom, nén, gửi theo lịch (mặc định cỡ 15 phút một chuyến). Ngoại lệ đáng nhớ: đổi mật khẩu có đường ưu tiên riêng, không đợi lịch."
+          "vi": "Trong site: dây nhanh, thay đổi lan gần như tức thì. Giữa site: đường WAN chậm và đắt nên thay đổi được gom, nén, gửi theo lịch (thường đặt cỡ 15 phút một chuyến; mặc định gốc của AD là 180 phút). Ngoại lệ đáng nhớ: đổi mật khẩu có đường ưu tiên riêng, không đợi lịch."
         }
       }
     },

@@ -54,7 +54,12 @@ export interface CliState {
   ospfProcessId: number | null
   /** Sơ đồ SỐNG — lệnh cấu hình sửa thẳng vào đây. */
   topology: Topology
-  /** Bảng MAC/ARP học được từ các lượt "Gửi thử" của phòng lab. */
+  /**
+   * Bảng MAC/ARP/số đếm ACL của phiên. Console nạp vào đây NetState mà bộ
+   * chấm hành vi (gradeCli → runLabGoals) trả ra sau các gói thăm dò —
+   * nên `show mac address-table` và cột match của `show access-lists` có
+   * dữ liệu thật ngay trong bài CLI, không cần nút "Gửi thử".
+   */
   net: NetState
   flags: CliFlags
 }

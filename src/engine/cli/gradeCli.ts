@@ -32,6 +32,7 @@ import {
   type VlanId,
 } from '../lab/topology'
 import { runLabGoals, type LabGoal } from '../lab/gradeLab'
+import type { NetState } from '../lab/simulate'
 import { runCliScript } from './interpret'
 import { initialCliState, moveCliConsole, type CliState } from './state'
 
@@ -52,6 +53,17 @@ export type CliGoal =
   | { kind: 'trunk-blocks'; deviceId: DeviceId; portId: PortId; vlans: VlanId[] }
   /** Hai đầu trunk phải khai đúng native VLAN này. */
   | { kind: 'native-vlan'; deviceId: DeviceId; portId: PortId; vlan: VlanId }
+  /**
+   * Hai đầu MỘT sợi trunk phải khai CÙNG native VLAN — không đóng đinh
+   * con số. Đề "chữa native lệch" mà dùng goal một-phía là chấm rớt cách
+   * sửa hợp lệ ở đầu bên kia, trái triết lý chấm-theo-hiệu-ứng (biên bản
+   * hội đồng trung cấp, ghế Đo lường).
+   */
+  | {
+      kind: 'native-match'
+      a: { deviceId: DeviceId; portId: PortId }
+      b: { deviceId: DeviceId; portId: PortId }
+    }
   /** Cổng phải đang BẬT (đã `no shutdown`). */
   | { kind: 'port-up'; deviceId: DeviceId; portId: PortId }
   /** Cổng router phải mang đúng địa chỉ này. */
@@ -95,6 +107,13 @@ export interface CliGoalOutcome {
 export interface CliEvaluation {
   goals: CliGoalOutcome[]
   passed: boolean
+  /**
+   * NetState sau khi bộ chấm hành vi gửi các gói thăm dò — console nối nó
+   * vào phiên để `show mac address-table` và cột đếm `show access-lists`
+   * kể được chuyện các gói vừa đi. `null` khi đề không có goal hành vi
+   * (không có gói nào được gửi thì bảng trống là sự thật).
+   */
+  net: NetState | null
 }
 
 function switchPort(topo: Topology, deviceId: DeviceId, portId: PortId) {
@@ -130,6 +149,13 @@ function staticGoalMet(goal: Exclude<CliGoal, { kind: 'behavior' }>, state: CliS
       if (port === null || portModeOf(port) !== 'trunk') return false
       return (port.nativeVlan ?? 1) === goal.vlan
     }
+    case 'native-match': {
+      const a = switchPort(topo, goal.a.deviceId, goal.a.portId)
+      const b = switchPort(topo, goal.b.deviceId, goal.b.portId)
+      if (a === null || b === null) return false
+      if (portModeOf(a) !== 'trunk' || portModeOf(b) !== 'trunk') return false
+      return (a.nativeVlan ?? 1) === (b.nativeVlan ?? 1)
+    }
     case 'port-up':
       return (
         findDevice(topo, goal.deviceId) !== null && !isPortShutdown(topo, { deviceId: goal.deviceId, portId: goal.portId })
@@ -163,7 +189,8 @@ export function gradeCli(spec: CliSpec, state: CliState): CliEvaluation {
   // Các mục tiêu hành vi chạy CHUNG một lượt, theo đúng thứ tự khai báo:
   // mạng tích lũy bảng MAC và ARP giữa các lượt ping, y như phòng lab.
   const behaviorGoals = spec.goals.flatMap((g) => (g.kind === 'behavior' ? [g.goal] : []))
-  const behaviorOutcomes = behaviorGoals.length === 0 ? [] : runLabGoals(state.topology, behaviorGoals).outcomes
+  const behaviorRun = behaviorGoals.length === 0 ? null : runLabGoals(state.topology, behaviorGoals)
+  const behaviorOutcomes = behaviorRun?.outcomes ?? []
   let behaviorIndex = 0
 
   const goals = spec.goals.map((goal) => {
@@ -175,7 +202,7 @@ export function gradeCli(spec: CliSpec, state: CliState): CliEvaluation {
     return { goal, met: staticGoalMet(goal, state) }
   })
 
-  return { goals, passed: goals.every((g) => g.met) }
+  return { goals, passed: goals.every((g) => g.met), net: behaviorRun?.net ?? null }
 }
 
 /**
@@ -211,6 +238,11 @@ export function devicesReferencedByCli(goals: readonly CliGoal[]): DeviceId[] {
     if (goal.kind === 'behavior') {
       ids.add(goal.goal.kind === 'macLearned' ? goal.goal.switchId : goal.goal.kind === 'arpResolved' ? goal.goal.deviceId : goal.goal.from)
       if (goal.goal.kind === 'ping' || goal.goal.kind === 'pathThrough') ids.add(goal.goal.to)
+      continue
+    }
+    if (goal.kind === 'native-match') {
+      ids.add(goal.a.deviceId)
+      ids.add(goal.b.deviceId)
       continue
     }
     ids.add(goal.deviceId)

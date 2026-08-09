@@ -35,6 +35,13 @@ interface QuestionInputProps {
    * thi là mở đường mang bài về nhà làm dần.
    */
   draftKey?: string
+  /**
+   * Bài THI: các bề mặt thực hành (lab/CLI/PS) hiện mục tiêu làm ĐỀ BÀI
+   * nhưng không chấm sống ✓/○ và không gọi tên bệnh — màn intro bài thi
+   * hứa "không có gợi ý giữa chừng" (biên bản hội đồng trung cấp). Gửi
+   * thử / lệnh show vẫn miễn phí: tự kiểm chứng là kỹ năng được đo.
+   */
+  examMode?: boolean
 }
 
 function TypedInput({ question, onSubmit, disabled }: QuestionInputProps & { question: Extract<Question, { kind: 'typed' }> }) {
@@ -168,7 +175,7 @@ function OrderInput({ question, onSubmit, disabled }: QuestionInputProps & { que
   )
 }
 
-export function QuestionInput({ question, onSubmit, disabled, draftKey }: QuestionInputProps) {
+export function QuestionInput({ question, onSubmit, disabled, draftKey, examMode }: QuestionInputProps) {
   // Bài dở đọc/ghi ở đúng MỘT chỗ này — hai bề mặt nặng vẫn là component
   // thuần (nhận ảnh chụp qua prop), nên test và trang /design không phải
   // kéo theo store.
@@ -214,6 +221,7 @@ export function QuestionInput({ question, onSubmit, disabled, draftKey }: Questi
                 : (draft) => saveDraft(draftKey, { kind: 'lab', ...draft, savedAt: todayIso() })
             }
             onSubmit={disabled === true ? undefined : (topology) => onSubmit({ kind: 'lab', topology })}
+            examMode={examMode}
           />
         </Suspense>
       )
@@ -250,6 +258,7 @@ export function QuestionInput({ question, onSubmit, disabled, draftKey }: Questi
                       : saveDraft(draftKey, { kind: 'ps', ...draft, savedAt: todayIso() })
             }
             onSubmit={disabled === true ? undefined : onSubmit}
+            examMode={examMode}
           />
         </Suspense>
       )
@@ -271,6 +280,7 @@ export function QuestionInput({ question, onSubmit, disabled, draftKey }: Questi
                       : saveDraft(draftKey, { kind: 'cli', ...draft, savedAt: todayIso() })
             }
             onSubmit={disabled === true ? undefined : onSubmit}
+            examMode={examMode}
           />
         </Suspense>
       )

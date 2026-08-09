@@ -74,6 +74,13 @@ export function cliGoalText(t: TFunc, topo: Topology, goal: CliGoal): string {
       })
     case 'native-vlan':
       return t('cli.goalNativeVlan', { device: device(goal.deviceId), port: goal.portId, vlan: goal.vlan })
+    case 'native-match':
+      return t('cli.goalNativeMatch', {
+        deviceA: device(goal.a.deviceId),
+        portA: goal.a.portId,
+        deviceB: device(goal.b.deviceId),
+        portB: goal.b.portId,
+      })
     case 'port-up':
       return t('cli.goalPortUp', { device: device(goal.deviceId), port: goal.portId })
     case 'port-ip':
@@ -143,9 +150,15 @@ export interface CliConsoleProps {
   initialDraft?: CliDraftSnapshot | null
   /** Phiên vừa đổi, hoặc `null` khi bấm "Làm lại từ đầu" (bài dở phải biến mất). */
   onDraftChange?: (draft: CliDraftSnapshot | null) => void
+  /**
+   * Bài THI: bảng mục tiêu là đề bài tĩnh, KHÔNG lật ✓/○ theo từng lệnh —
+   * màn intro hứa "không có gợi ý giữa chừng" thì console phải giữ lời
+   * (biên bản hội đồng trung cấp). Tự kiểm bằng lệnh show là kỹ năng đo.
+   */
+  examMode?: boolean
 }
 
-export function CliConsole({ question, onSubmit, initialDraft, onDraftChange }: CliConsoleProps) {
+export function CliConsole({ question, onSubmit, initialDraft, onDraftChange, examMode }: CliConsoleProps) {
   const t = useT()
   const spec = question.spec
   const [state, setState] = useState<CliState>(() => initialDraft?.state ?? initialCliState(spec.initial, spec.deviceId))
@@ -167,6 +180,7 @@ export function CliConsole({ question, onSubmit, initialDraft, onDraftChange }: 
   const [goalAnnounce, setGoalAnnounce] = useState('')
   const prevMet = useRef<boolean[] | null>(null)
   useEffect(() => {
+    if (examMode === true) return // bài thi không chấm sống thì cũng không announce
     const met = evaluation.goals.map((g) => g.met)
     if (prevMet.current !== null) {
       const fresh = evaluation.goals.filter(({ met: m }, i) => m && prevMet.current![i] === false)
@@ -177,7 +191,7 @@ export function CliConsole({ question, onSubmit, initialDraft, onDraftChange }: 
       }
     }
     prevMet.current = met
-  }, [evaluation, state.topology, t])
+  }, [evaluation, state.topology, t, examMode])
 
   useEffect(() => {
     const el = scrollRef.current
@@ -195,7 +209,12 @@ export function CliConsole({ question, onSubmit, initialDraft, onDraftChange }: 
     e.preventDefault()
     const line = input.trim()
     if (line === '') return
-    const result = runCliLine(state, line)
+    // Nối NetState của bộ chấm hành vi vào phiên: `show mac address-table`
+    // và cột đếm `show access-lists` kể chuyện các gói thăm dò vừa đi —
+    // trước đây hai bảng này vĩnh viễn trống ở mọi bề mặt thật (biên bản
+    // trung cấp). Đề không có goal hành vi thì bảng trống là sự thật.
+    const seeing = evaluation.net === null ? state : { ...state, net: evaluation.net }
+    const result = runCliLine(seeing, line)
     setInput('')
     setHistCursor(null)
     pushEntry(result.state, { input: line, lines: result.lines, outcome: result.outcome, prompt: cliPrompt(state) })
@@ -258,16 +277,26 @@ export function CliConsole({ question, onSubmit, initialDraft, onDraftChange }: 
         <ul className="flex flex-col gap-1.5">
           {evaluation.goals.map(({ goal, met }, i) => (
             <li key={i} className="flex items-start gap-2 text-sm">
-              <span className={met ? 'text-ok' : 'text-ink-muted'}>{met ? '✓' : '○'}</span>
-              <span className="text-ink">
-                {cliGoalText(t, state.topology, goal)}{' '}
-                <span className={met ? 'text-ok' : 'text-ink-muted'}>
-                  ({met ? t('lab.goalMet') : t('lab.goalUnmet')})
-                </span>
-              </span>
+              {examMode === true ? (
+                <>
+                  <span className="text-ink-muted">○</span>
+                  <span className="text-ink">{cliGoalText(t, state.topology, goal)}</span>
+                </>
+              ) : (
+                <>
+                  <span className={met ? 'text-ok' : 'text-ink-muted'}>{met ? '✓' : '○'}</span>
+                  <span className="text-ink">
+                    {cliGoalText(t, state.topology, goal)}{' '}
+                    <span className={met ? 'text-ok' : 'text-ink-muted'}>
+                      ({met ? t('lab.goalMet') : t('lab.goalUnmet')})
+                    </span>
+                  </span>
+                </>
+              )}
             </li>
           ))}
         </ul>
+        {examMode === true && <p className="mt-2 text-xs text-ink-muted">{t('cli.examGoalsNote')}</p>}
       </section>
 
       {consoles.length > 1 && (

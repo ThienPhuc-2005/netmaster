@@ -373,7 +373,8 @@
     "stpNoBlocked": "No port has to stay down.",
     "stpPriorityTitle": "Priority of {name}",
     "hopTagged": "VLAN {vlan}, tagged",
-    "hopUntagged": "VLAN {vlan}, untagged"
+    "hopUntagged": "VLAN {vlan}, untagged",
+    "examGoalsNote": "Exams do not grade live: this list is the ASSIGNMENT. To see whether the network works, press Try send — it is free."
   },
   "flow": {
     "harderNote": "You're on a roll — try typing the answer for this one instead of picking.",
@@ -442,7 +443,14 @@
     "caseSolvedBadge": "Cured",
     "backToList": "Back to case list",
     "firstSolveXp": "+{xp} XP — this case is now in your casebook.",
-    "resolveNoXp": "You've already cured this one — no XP this time, but the practice counts."
+    "resolveNoXp": "You've already cured this one — no XP this time, but the practice counts.",
+    "deviceConsoleTitle": "Device console (read-only)",
+    "deviceConsolePick": "Plug the console into a device",
+    "deviceConsoleAria": "Device console log",
+    "deviceConsoleIntro": "The exam seat can inspect device configs: enable, then run show commands (type ? to see the toolkit). Fixing the network belongs to the repair phase.",
+    "deviceConsolePlaceholder": "type a show command…",
+    "deviceConsoleInputAria": "Device console input",
+    "deviceReadOnly": "This console is for READING during the exam: only enable/exit/end and show commands run here. To change the network, lock in a diagnosis and use the repair phase."
   },
   "ps": {
     "terminalTitle": "PowerShell — {host}",
@@ -476,7 +484,8 @@
     "goalTestPort": "Successfully tested port {port} on {ip}",
     "goalFoundLine": "Pulled out a log line containing \"{text}\"",
     "reset": "Start over",
-    "freeNote": "Typing and starting over are free — only \"Submit\" counts as an attempt."
+    "freeNote": "Typing and starting over are free — only \"Submit\" counts as an attempt.",
+    "examGoalsNote": "Exams do not grade live: this list is the ASSIGNMENT. To see whether a command worked, verify with Get-* — it is free."
   },
   "cli": {
     "goalsTitle": "Goals for this task",
@@ -532,7 +541,9 @@
       "ip access-group": "apply a filter list to the port — ip access-group <n> in|out",
       "shutdown": "shut the port down by command",
       "no shutdown": "bring a shut port back up"
-    }
+    },
+    "examGoalsNote": "Exams do not grade live: this list is the ASSIGNMENT. To see whether the config took, verify with show commands — they are free.",
+    "goalNativeMatch": "Both trunk ends ({portA} on {deviceA} and {portB} on {deviceB}) must declare the SAME native VLAN"
   },
   "grad": {
     "titleNhapMon": "Foundations graduation",

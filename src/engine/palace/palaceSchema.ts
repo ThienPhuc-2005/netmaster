@@ -18,7 +18,7 @@
 // cho người học.
 
 import { z } from 'zod'
-import { LTextSchema } from '../ltext'
+import { LTextSchema } from '../ltextSchema'
 import { normalizeAnswer, typedAnswerMatches } from '../grading/normalize'
 import { nameAnswers, roomCountOf, validatePalace, type Palace } from './palace'
 

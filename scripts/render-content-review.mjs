@@ -126,6 +126,8 @@ function describeCliGoal(goal, topo) {
       return `trunk ở ${where()} phải CHẶN VLAN ${goal.vlans.join(', ')}`
     case 'native-vlan':
       return `trunk ở ${where()} phải khai native VLAN ${goal.vlan}`
+    case 'native-match':
+      return `hai đầu trunk ${goal.a.portId} của ${hostnameOf(topo, goal.a.deviceId)} và ${goal.b.portId} của ${hostnameOf(topo, goal.b.deviceId)} phải khai CÙNG native VLAN`
     case 'port-up':
       return `${where()} phải đang bật (đã no shutdown)`
     case 'port-ip':

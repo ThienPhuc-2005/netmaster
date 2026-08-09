@@ -4,4 +4,7 @@
 export * from './world'
 export * from './interpret'
 export * from './gradePs'
-export * from './psSchema'
+// KHÔNG re-export psSchema — schema là đồ nghề của cổng nội dung (DEV/TEST)
+// và trang /design; re-export ở đây là kéo tháp zod vào đường nóng PROD
+// (biên bản hội đồng trung cấp, ghế Hiệu năng). Cần schema thì import
+// thẳng file schema.

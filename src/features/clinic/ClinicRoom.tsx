@@ -27,6 +27,7 @@ import { checkSymptom, type ClinicPatient } from '../../engine/clinic'
 import { findDevice, type LabSpec, type Topology } from '../../engine/lab'
 import { NetworkLab } from '../lab/NetworkLab'
 import { ClinicTerminal } from './ClinicTerminal'
+import { ClinicDeviceConsole } from './ClinicDeviceConsole'
 
 export interface ClinicRoomProps {
   question: ClinicQuestion
@@ -127,6 +128,10 @@ export function ClinicRoom({ question, onSubmit }: ClinicRoomProps) {
       </p>
 
       <ClinicTerminal patient={patient} />
+
+      {/* Ca trung cấp khai deviceConsole: khám bằng CẢ hai terminal trên
+          cùng sơ đồ sống (spec v2 mục 4.2) — console phía thiết bị chỉ-đọc. */}
+      {spec.deviceConsole === true && <ClinicDeviceConsole topology={topology} />}
 
       {!fixOpened ? (
         <div className="flex flex-col gap-3 rounded-md border border-edge bg-panel p-4">

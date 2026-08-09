@@ -373,7 +373,8 @@
     "stpNoBlocked": "Không cổng nào phải nằm im.",
     "stpPriorityTitle": "Priority của {name}",
     "hopTagged": "VLAN {vlan}, mang nhãn",
-    "hopUntagged": "VLAN {vlan}, đi trần"
+    "hopUntagged": "VLAN {vlan}, đi trần",
+    "examGoalsNote": "Bài thi không chấm sống: bảng này là ĐỀ BÀI. Muốn biết mạng đã thông chưa, bấm Gửi thử — miễn phí."
   },
   "flow": {
     "harderNote": "Bạn đang thắng thế — câu này thử tự gõ đáp án thay vì chọn nhé.",
@@ -442,7 +443,14 @@
     "caseSolvedBadge": "Đã chữa khỏi",
     "backToList": "Về danh sách ca",
     "firstSolveXp": "+{xp} XP — ca này đã vào bệnh án của bạn.",
-    "resolveNoXp": "Ca này bạn chữa khỏi rồi — lần này không cộng XP, nhưng tay nghề thì có."
+    "resolveNoXp": "Ca này bạn chữa khỏi rồi — lần này không cộng XP, nhưng tay nghề thì có.",
+    "deviceConsoleTitle": "Console thiết bị (chỉ đọc)",
+    "deviceConsolePick": "Cắm console vào thiết bị",
+    "deviceConsoleAria": "Nhật ký console thiết bị",
+    "deviceConsoleIntro": "Ghế khám được soi cấu hình thiết bị: enable rồi gõ các lệnh show (gõ ? để xem đồ nghề). Sửa mạng là việc của pha sửa.",
+    "deviceConsolePlaceholder": "gõ lệnh show…",
+    "deviceConsoleInputAria": "Ô gõ lệnh console thiết bị",
+    "deviceReadOnly": "Console ở ghế khám là chỗ ĐỌC: chỉ enable/exit/end và các lệnh show chạy được. Muốn sửa mạng, hãy chốt chẩn đoán và làm ở pha sửa."
   },
   "ps": {
     "terminalTitle": "PowerShell — {host}",
@@ -476,7 +484,8 @@
     "goalTestPort": "Đã kiểm tra port {port} của {ip} thành công",
     "goalFoundLine": "Đã lôi ra được dòng log chứa \"{text}\"",
     "reset": "Làm lại từ đầu",
-    "freeNote": "Gõ lệnh và làm lại đều miễn phí — chỉ \"Nộp bài\" mới tính lượt."
+    "freeNote": "Gõ lệnh và làm lại đều miễn phí — chỉ \"Nộp bài\" mới tính lượt.",
+    "examGoalsNote": "Bài thi không chấm sống: bảng này là ĐỀ BÀI. Muốn biết lệnh đã ăn chưa, tự kiểm bằng Get-* — miễn phí."
   },
   "cli": {
     "goalsTitle": "Mục tiêu của bài",
@@ -532,7 +541,9 @@
       "ip access-group": "áp một danh sách lọc lên cổng — ip access-group <số> in|out",
       "shutdown": "tắt cổng bằng lệnh",
       "no shutdown": "bật lại cổng đã tắt"
-    }
+    },
+    "examGoalsNote": "Bài thi không chấm sống: bảng này là ĐỀ BÀI. Muốn biết cấu hình đã vào chưa, tự kiểm bằng lệnh show — miễn phí.",
+    "goalNativeMatch": "Hai đầu trunk ({portA} của {deviceA} và {portB} của {deviceB}) phải khai CÙNG một native VLAN"
   },
   "grad": {
     "titleNhapMon": "Tốt nghiệp nhập môn",

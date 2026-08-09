@@ -2,22 +2,68 @@
   "id": "module-11",
   "order": 11,
   "part": "C",
-  "title": { "vi": "Phòng khám mạng — chẩn đoán sự cố" },
+  "title": {
+    "vi": "Phòng khám mạng — chẩn đoán sự cố"
+  },
   "stages": [
-    { "id": "m11-chang-1", "title": { "vi": "Ca trực đầu tiên" }, "lessonIds": ["m11-bai-1"] },
-    { "id": "m11-chang-2", "title": { "vi": "Lần theo đường đi" }, "lessonIds": ["m11-bai-2"] },
-    { "id": "m11-chang-3", "title": { "vi": "Tên và số" }, "lessonIds": ["m11-bai-3"] },
-    { "id": "m11-chang-4", "title": { "vi": "Bệnh chập chờn" }, "lessonIds": ["m11-bai-4"] },
-    { "id": "m11-chang-5", "title": { "vi": "Manh mối tại chỗ" }, "lessonIds": ["m11-bai-5"] }
+    {
+      "id": "m11-chang-1",
+      "title": {
+        "vi": "Ca trực đầu tiên"
+      },
+      "lessonIds": [
+        "m11-bai-1"
+      ]
+    },
+    {
+      "id": "m11-chang-2",
+      "title": {
+        "vi": "Lần theo đường đi"
+      },
+      "lessonIds": [
+        "m11-bai-2"
+      ]
+    },
+    {
+      "id": "m11-chang-3",
+      "title": {
+        "vi": "Tên và số"
+      },
+      "lessonIds": [
+        "m11-bai-3"
+      ]
+    },
+    {
+      "id": "m11-chang-4",
+      "title": {
+        "vi": "Bệnh chập chờn"
+      },
+      "lessonIds": [
+        "m11-bai-4"
+      ]
+    },
+    {
+      "id": "m11-chang-5",
+      "title": {
+        "vi": "Manh mối tại chỗ"
+      },
+      "lessonIds": [
+        "m11-bai-5"
+      ]
+    }
   ],
   "lessons": [
     {
       "id": "m11-bai-1",
-      "missionTitle": { "vi": "Nhận ca trực: máy không in được" },
+      "missionTitle": {
+        "vi": "Nhận ca trực: máy không in được"
+      },
       "steps": [
         {
           "type": "hook",
-          "question": { "vi": "Điện thoại phòng IT reo: \"Máy chị tự nhiên không in được nữa!\". Trên tay bạn chỉ có một cửa sổ terminal, không được nhìn sơ đồ mạng. Bắt đầu từ đâu để không phải đoán mò?" },
+          "question": {
+            "vi": "Điện thoại phòng IT reo: \"Máy chị tự nhiên không in được nữa!\". Trên tay bạn chỉ có một cửa sổ terminal, không được nhìn sơ đồ mạng. Bắt đầu từ đâu để không phải đoán mò?"
+          },
           "visualId": "vis-hook-ca-truc"
         },
         {
@@ -26,7 +72,9 @@
             {
               "kind": "clinic",
               "id": "m11-b1-pre-ca",
-              "prompt": { "vi": "Bệnh nhân đầu tiên của bạn đây: chị kế toán tầng 2 than không in được sang MAY-IN-TANG-2 (192.168.20.21). Chưa ai dạy bạn phương pháp nào cả — cứ gõ lệnh mà khám, sai không mất gì. Đoán bệnh rồi thử chữa xem." },
+              "prompt": {
+                "vi": "Bệnh nhân đầu tiên của bạn đây: chị kế toán tầng 2 than không in được sang MAY-IN-TANG-2 (192.168.20.21). Chưa ai dạy bạn phương pháp nào cả — cứ gõ lệnh mà khám, sai không mất gì. Đoán bệnh rồi thử chữa xem."
+              },
               "spec": {
                 "patient": {
                   "topology": {
@@ -35,16 +83,28 @@
                         "kind": "pc",
                         "id": "c1a-ke-toan",
                         "hostname": "MAY-KE-TOAN",
-                        "port": { "id": "eth0", "mac": "AA:BB:CC:B1:0A:01" },
-                        "ipConfig": { "ip": "192.168.20.10", "prefix": 24 },
+                        "port": {
+                          "id": "eth0",
+                          "mac": "AA:BB:CC:B1:0A:01"
+                        },
+                        "ipConfig": {
+                          "ip": "192.168.20.10",
+                          "prefix": 24
+                        },
                         "gateway": null
                       },
                       {
                         "kind": "pc",
                         "id": "c1a-may-in",
                         "hostname": "MAY-IN-TANG-2",
-                        "port": { "id": "eth0", "mac": "AA:BB:CC:B1:0A:02" },
-                        "ipConfig": { "ip": "192.168.20.21", "prefix": 24 },
+                        "port": {
+                          "id": "eth0",
+                          "mac": "AA:BB:CC:B1:0A:02"
+                        },
+                        "ipConfig": {
+                          "ip": "192.168.20.21",
+                          "prefix": 24
+                        },
                         "gateway": null
                       },
                       {
@@ -52,23 +112,39 @@
                         "id": "c1a-sw",
                         "hostname": "SW-TANG-2",
                         "ports": [
-                          { "id": "p1", "vlan": 1 },
-                          { "id": "p2", "vlan": 1 }
+                          {
+                            "id": "p1",
+                            "vlan": 1
+                          },
+                          {
+                            "id": "p2",
+                            "vlan": 1
+                          }
                         ]
                       }
                     ],
                     "links": [
                       {
                         "id": "c1a-w-in",
-                        "a": { "deviceId": "c1a-may-in", "portId": "eth0" },
-                        "b": { "deviceId": "c1a-sw", "portId": "p2" }
+                        "a": {
+                          "deviceId": "c1a-may-in",
+                          "portId": "eth0"
+                        },
+                        "b": {
+                          "deviceId": "c1a-sw",
+                          "portId": "p2"
+                        }
                       }
                     ]
                   },
                   "overlay": {},
                   "seatId": "c1a-ke-toan"
                 },
-                "symptom": { "kind": "ping-fails", "from": "c1a-ke-toan", "target": "192.168.20.21" },
+                "symptom": {
+                  "kind": "ping-fails",
+                  "from": "c1a-ke-toan",
+                  "target": "192.168.20.21"
+                },
                 "fix": {
                   "kind": "edit-network",
                   "allow": {
@@ -81,23 +157,42 @@
                     "setRoutes": false,
                     "maxDevices": 3
                   },
-                  "goals": [{ "kind": "ping", "from": "c1a-ke-toan", "to": "c1a-may-in", "expect": "reach" }],
+                  "goals": [
+                    {
+                      "kind": "ping",
+                      "from": "c1a-ke-toan",
+                      "to": "c1a-may-in",
+                      "expect": "reach"
+                    }
+                  ],
                   "solution": {
                     "devices": [
                       {
                         "kind": "pc",
                         "id": "c1a-ke-toan",
                         "hostname": "MAY-KE-TOAN",
-                        "port": { "id": "eth0", "mac": "AA:BB:CC:B1:0A:01" },
-                        "ipConfig": { "ip": "192.168.20.10", "prefix": 24 },
+                        "port": {
+                          "id": "eth0",
+                          "mac": "AA:BB:CC:B1:0A:01"
+                        },
+                        "ipConfig": {
+                          "ip": "192.168.20.10",
+                          "prefix": 24
+                        },
                         "gateway": null
                       },
                       {
                         "kind": "pc",
                         "id": "c1a-may-in",
                         "hostname": "MAY-IN-TANG-2",
-                        "port": { "id": "eth0", "mac": "AA:BB:CC:B1:0A:02" },
-                        "ipConfig": { "ip": "192.168.20.21", "prefix": 24 },
+                        "port": {
+                          "id": "eth0",
+                          "mac": "AA:BB:CC:B1:0A:02"
+                        },
+                        "ipConfig": {
+                          "ip": "192.168.20.21",
+                          "prefix": 24
+                        },
                         "gateway": null
                       },
                       {
@@ -105,21 +200,39 @@
                         "id": "c1a-sw",
                         "hostname": "SW-TANG-2",
                         "ports": [
-                          { "id": "p1", "vlan": 1 },
-                          { "id": "p2", "vlan": 1 }
+                          {
+                            "id": "p1",
+                            "vlan": 1
+                          },
+                          {
+                            "id": "p2",
+                            "vlan": 1
+                          }
                         ]
                       }
                     ],
                     "links": [
                       {
                         "id": "c1a-w-in",
-                        "a": { "deviceId": "c1a-may-in", "portId": "eth0" },
-                        "b": { "deviceId": "c1a-sw", "portId": "p2" }
+                        "a": {
+                          "deviceId": "c1a-may-in",
+                          "portId": "eth0"
+                        },
+                        "b": {
+                          "deviceId": "c1a-sw",
+                          "portId": "p2"
+                        }
                       },
                       {
                         "id": "c1a-w-seat",
-                        "a": { "deviceId": "c1a-ke-toan", "portId": "eth0" },
-                        "b": { "deviceId": "c1a-sw", "portId": "p1" }
+                        "a": {
+                          "deviceId": "c1a-ke-toan",
+                          "portId": "eth0"
+                        },
+                        "b": {
+                          "deviceId": "c1a-sw",
+                          "portId": "p1"
+                        }
                       }
                     ]
                   }
@@ -127,17 +240,29 @@
               },
               "diagnosis": {
                 "choices": [
-                  { "vi": "Dây mạng của chính máy bạn đang ngồi bị tuột" },
-                  { "vi": "Máy in đặt sai địa chỉ IP" },
-                  { "vi": "DNS nội bộ ngừng chạy" }
+                  {
+                    "vi": "Dây mạng của chính máy bạn đang ngồi bị tuột"
+                  },
+                  {
+                    "vi": "Máy in đặt sai địa chỉ IP"
+                  },
+                  {
+                    "vi": "DNS nội bộ ngừng chạy"
+                  }
                 ],
                 "answerIndex": 0
               },
-              "hintTopic": { "vi": "gói tin có rời nổi máy bạn không" },
-              "explain": { "vi": "Ping đi đâu cũng ra \"PING: transmit failed. General failure.\" — gói không rời nổi máy, nghĩa là bệnh nằm ngay tầng thấp nhất: sợi dây của chính máy mình. Cắm lại dây vào switch là mạch chạy. Đây chính là lý do buổi khám nào cũng bắt đầu từ dây cắm." }
+              "hintTopic": {
+                "vi": "gói tin có rời nổi máy bạn không"
+              },
+              "explain": {
+                "vi": "Ping đi đâu cũng ra \"PING: transmit failed. General failure.\" — gói không rời nổi máy, nghĩa là bệnh nằm ngay tầng thấp nhất: sợi dây của chính máy mình. Cắm lại dây vào switch là mạch chạy. Đây chính là lý do buổi khám nào cũng bắt đầu từ dây cắm."
+              }
             }
           ],
-          "encouragement": { "vi": "Đoán sai hay mò mẫm lung tung đều tốt cả — bạn vừa tự chạm vào đúng cái khó mà bài này sinh ra để giải quyết. Giờ mình học phương pháp khám bài bản nhé." }
+          "encouragement": {
+            "vi": "Đoán sai hay mò mẫm lung tung đều tốt cả — bạn vừa tự chạm vào đúng cái khó mà bài này sinh ra để giải quyết. Giờ mình học phương pháp khám bài bản nhé."
+          }
         },
         {
           "type": "teach",
@@ -145,27 +270,39 @@
             {
               "conceptId": "m11-kham-theo-tang",
               "visualId": "vis-kham-theo-tang",
-              "body": { "vi": "Người sửa mạng lành nghề không đoán — họ khám theo tầng, từ THẤP lên CAO: dây cắm → địa chỉ IP → đường đi → dịch vụ. Như bác sĩ bắt mạch trước khi hỏi chuyện ăn uống: tầng dưới mà hỏng thì mọi tầng trên hỏng theo, nên phải loại trừ từ nền móng lên." },
-              "deepDive": { "vi": "Phương pháp này gọi là bottom-up troubleshooting, bám theo đúng các tầng bạn đã học từ Module 1: tầng vật lý (dây, Module 4), tầng địa chỉ (IP/gateway, Module 3), tầng định tuyến (router, Module 4), rồi mới tới dịch vụ (DNS/web, Module 6). Phần lớn sự cố văn phòng nằm ở hai tầng thấp nhất — vì thế khám từ dưới lên thường ra bệnh rất nhanh." }
+              "body": {
+                "vi": "Người sửa mạng lành nghề không đoán — họ khám theo tầng, từ THẤP lên CAO: dây cắm → địa chỉ IP → đường đi → dịch vụ. Như bác sĩ bắt mạch trước khi hỏi chuyện ăn uống: tầng dưới mà hỏng thì mọi tầng trên hỏng theo, nên phải loại trừ từ nền móng lên."
+              },
+              "deepDive": {
+                "vi": "Phương pháp này gọi là bottom-up troubleshooting, bám theo đúng các tầng bạn đã học từ Module 1: tầng vật lý (dây, Module 4), tầng địa chỉ (IP/gateway, Module 3), tầng định tuyến (router, Module 4), rồi mới tới dịch vụ (DNS/web, Module 6). Phần lớn sự cố văn phòng nằm ở hai tầng thấp nhất — vì thế khám từ dưới lên thường ra bệnh rất nhanh."
+              }
             },
             {
               "conceptId": "m11-ipconfig-ping",
               "visualId": "vis-ipconfig-ping",
-              "body": { "vi": "Hai món đồ nghề đầu tiên: ipconfig đọc \"giấy tờ tùy thân\" của máy (IP, subnet mask, gateway, DNS), còn ping là cái ống nghe — gửi gói thăm dò rồi nghe ngóng. Ba câu trả lời của ping kể ba câu chuyện khác nhau: Reply là mạch sống; \"General failure\" là gói KHÔNG RỜI NỔI máy mình; \"Destination host unreachable\" là gói rời được máy nhưng gọi không ai đáp." },
-              "deepDive": { "vi": "Dòng Reply còn tặng kèm một manh mối: TTL. Máy Windows xuất phát ở TTL 128, qua mỗi router bị trừ 1 (bạn đã gặp ở Module 4). Thấy TTL=126 tức là gói đã đi qua 2 router — chưa cần tracert cũng ước được quãng đường." }
+              "body": {
+                "vi": "Hai món đồ nghề đầu tiên: ipconfig đọc \"giấy tờ tùy thân\" của máy (IP, subnet mask, gateway, DNS), còn ping là cái ống nghe — gửi gói thăm dò rồi nghe ngóng. Ba câu trả lời của ping kể ba câu chuyện khác nhau: Reply là mạch sống; \"General failure\" là gói KHÔNG RỜI NỔI máy mình; \"Destination host unreachable\" là gói rời được máy nhưng gọi không ai đáp."
+              },
+              "deepDive": {
+                "vi": "Dòng Reply còn tặng kèm một manh mối: TTL. Máy Windows xuất phát ở TTL 128, qua mỗi router bị trừ 1 (bạn đã gặp ở Module 4). Thấy TTL=126 tức là gói đã đi qua 2 router — chưa cần tracert cũng ước được quãng đường."
+              }
             }
           ]
         },
         {
           "type": "practice",
           "fadingLevel": 0,
-          "workedExample": { "vi": "Ca mẫu, khám đúng bài bản: chị kế toán than \"không vào được máy in\". Bước 1 — ipconfig: máy có IP 192.168.20.10/24, hợp lệ, không nghi gì. Bước 2 — ping 192.168.20.21: cả bốn gói đều \"General failure\" — gói không rời nổi máy, vậy không cần nghi máy in hay DNS gì hết, bệnh ở ngay tầng dây của máy mình. Bước 3 — nhìn xuống gầm bàn: dây mạng tuột thật. Cắm lại, ping ra Reply. Chốt bệnh án: đứt kết nối vật lý tại máy trạm." },
+          "workedExample": {
+            "vi": "Ca mẫu, khám đúng bài bản: chị kế toán than \"không vào được máy in\". Bước 1 — ipconfig: máy có IP 192.168.20.10/24, hợp lệ, không nghi gì. Bước 2 — ping 192.168.20.21: cả bốn gói đều \"General failure\" — gói không rời nổi máy, vậy không cần nghi máy in hay DNS gì hết, bệnh ở ngay tầng dây của máy mình. Bước 3 — nhìn xuống gầm bàn: dây mạng tuột thật. Cắm lại, ping ra Reply. Chốt bệnh án: đứt kết nối vật lý tại máy trạm."
+          },
           "exercises": [
             {
               "question": {
                 "kind": "clinic",
                 "id": "m11-b1-prac-ca",
-                "prompt": { "vi": "Ca tiếp theo cùng phòng: vẫn máy chị kế toán, lần này in được rồi nhưng không chấm công được vào MAY-CHAM-CONG (192.168.20.30). Khám theo đúng trình tự vừa học nhé." },
+                "prompt": {
+                  "vi": "Ca tiếp theo cùng phòng: vẫn máy chị kế toán, lần này in được rồi nhưng không chấm công được vào MAY-CHAM-CONG (192.168.20.30). Khám theo đúng trình tự vừa học nhé."
+                },
                 "spec": {
                   "patient": {
                     "topology": {
@@ -174,24 +311,42 @@
                           "kind": "pc",
                           "id": "c1b-ke-toan",
                           "hostname": "MAY-KE-TOAN",
-                          "port": { "id": "eth0", "mac": "AA:BB:CC:B1:0B:01" },
-                          "ipConfig": { "ip": "192.168.20.10", "prefix": 24 },
+                          "port": {
+                            "id": "eth0",
+                            "mac": "AA:BB:CC:B1:0B:01"
+                          },
+                          "ipConfig": {
+                            "ip": "192.168.20.10",
+                            "prefix": 24
+                          },
                           "gateway": null
                         },
                         {
                           "kind": "pc",
                           "id": "c1b-may-in",
                           "hostname": "MAY-IN-TANG-2",
-                          "port": { "id": "eth0", "mac": "AA:BB:CC:B1:0B:02" },
-                          "ipConfig": { "ip": "192.168.20.21", "prefix": 24 },
+                          "port": {
+                            "id": "eth0",
+                            "mac": "AA:BB:CC:B1:0B:02"
+                          },
+                          "ipConfig": {
+                            "ip": "192.168.20.21",
+                            "prefix": 24
+                          },
                           "gateway": null
                         },
                         {
                           "kind": "pc",
                           "id": "c1b-cham-cong",
                           "hostname": "MAY-CHAM-CONG",
-                          "port": { "id": "eth0", "mac": "AA:BB:CC:B1:0B:03" },
-                          "ipConfig": { "ip": "192.168.20.30", "prefix": 24 },
+                          "port": {
+                            "id": "eth0",
+                            "mac": "AA:BB:CC:B1:0B:03"
+                          },
+                          "ipConfig": {
+                            "ip": "192.168.20.30",
+                            "prefix": 24
+                          },
                           "gateway": null
                         },
                         {
@@ -199,29 +354,54 @@
                           "id": "c1b-sw",
                           "hostname": "SW-TANG-2",
                           "ports": [
-                            { "id": "p1", "vlan": 1 },
-                            { "id": "p2", "vlan": 1 },
-                            { "id": "p3", "vlan": 1 }
+                            {
+                              "id": "p1",
+                              "vlan": 1
+                            },
+                            {
+                              "id": "p2",
+                              "vlan": 1
+                            },
+                            {
+                              "id": "p3",
+                              "vlan": 1
+                            }
                           ]
                         }
                       ],
                       "links": [
                         {
                           "id": "c1b-w-seat",
-                          "a": { "deviceId": "c1b-ke-toan", "portId": "eth0" },
-                          "b": { "deviceId": "c1b-sw", "portId": "p1" }
+                          "a": {
+                            "deviceId": "c1b-ke-toan",
+                            "portId": "eth0"
+                          },
+                          "b": {
+                            "deviceId": "c1b-sw",
+                            "portId": "p1"
+                          }
                         },
                         {
                           "id": "c1b-w-in",
-                          "a": { "deviceId": "c1b-may-in", "portId": "eth0" },
-                          "b": { "deviceId": "c1b-sw", "portId": "p2" }
+                          "a": {
+                            "deviceId": "c1b-may-in",
+                            "portId": "eth0"
+                          },
+                          "b": {
+                            "deviceId": "c1b-sw",
+                            "portId": "p2"
+                          }
                         }
                       ]
                     },
                     "overlay": {},
                     "seatId": "c1b-ke-toan"
                   },
-                  "symptom": { "kind": "ping-fails", "from": "c1b-ke-toan", "target": "192.168.20.30" },
+                  "symptom": {
+                    "kind": "ping-fails",
+                    "from": "c1b-ke-toan",
+                    "target": "192.168.20.30"
+                  },
                   "fix": {
                     "kind": "edit-network",
                     "allow": {
@@ -234,31 +414,56 @@
                       "setRoutes": false,
                       "maxDevices": 4
                     },
-                    "goals": [{ "kind": "ping", "from": "c1b-ke-toan", "to": "c1b-cham-cong", "expect": "reach" }],
+                    "goals": [
+                      {
+                        "kind": "ping",
+                        "from": "c1b-ke-toan",
+                        "to": "c1b-cham-cong",
+                        "expect": "reach"
+                      }
+                    ],
                     "solution": {
                       "devices": [
                         {
                           "kind": "pc",
                           "id": "c1b-ke-toan",
                           "hostname": "MAY-KE-TOAN",
-                          "port": { "id": "eth0", "mac": "AA:BB:CC:B1:0B:01" },
-                          "ipConfig": { "ip": "192.168.20.10", "prefix": 24 },
+                          "port": {
+                            "id": "eth0",
+                            "mac": "AA:BB:CC:B1:0B:01"
+                          },
+                          "ipConfig": {
+                            "ip": "192.168.20.10",
+                            "prefix": 24
+                          },
                           "gateway": null
                         },
                         {
                           "kind": "pc",
                           "id": "c1b-may-in",
                           "hostname": "MAY-IN-TANG-2",
-                          "port": { "id": "eth0", "mac": "AA:BB:CC:B1:0B:02" },
-                          "ipConfig": { "ip": "192.168.20.21", "prefix": 24 },
+                          "port": {
+                            "id": "eth0",
+                            "mac": "AA:BB:CC:B1:0B:02"
+                          },
+                          "ipConfig": {
+                            "ip": "192.168.20.21",
+                            "prefix": 24
+                          },
                           "gateway": null
                         },
                         {
                           "kind": "pc",
                           "id": "c1b-cham-cong",
                           "hostname": "MAY-CHAM-CONG",
-                          "port": { "id": "eth0", "mac": "AA:BB:CC:B1:0B:03" },
-                          "ipConfig": { "ip": "192.168.20.30", "prefix": 24 },
+                          "port": {
+                            "id": "eth0",
+                            "mac": "AA:BB:CC:B1:0B:03"
+                          },
+                          "ipConfig": {
+                            "ip": "192.168.20.30",
+                            "prefix": 24
+                          },
                           "gateway": null
                         },
                         {
@@ -266,27 +471,54 @@
                           "id": "c1b-sw",
                           "hostname": "SW-TANG-2",
                           "ports": [
-                            { "id": "p1", "vlan": 1 },
-                            { "id": "p2", "vlan": 1 },
-                            { "id": "p3", "vlan": 1 }
+                            {
+                              "id": "p1",
+                              "vlan": 1
+                            },
+                            {
+                              "id": "p2",
+                              "vlan": 1
+                            },
+                            {
+                              "id": "p3",
+                              "vlan": 1
+                            }
                           ]
                         }
                       ],
                       "links": [
                         {
                           "id": "c1b-w-seat",
-                          "a": { "deviceId": "c1b-ke-toan", "portId": "eth0" },
-                          "b": { "deviceId": "c1b-sw", "portId": "p1" }
+                          "a": {
+                            "deviceId": "c1b-ke-toan",
+                            "portId": "eth0"
+                          },
+                          "b": {
+                            "deviceId": "c1b-sw",
+                            "portId": "p1"
+                          }
                         },
                         {
                           "id": "c1b-w-in",
-                          "a": { "deviceId": "c1b-may-in", "portId": "eth0" },
-                          "b": { "deviceId": "c1b-sw", "portId": "p2" }
+                          "a": {
+                            "deviceId": "c1b-may-in",
+                            "portId": "eth0"
+                          },
+                          "b": {
+                            "deviceId": "c1b-sw",
+                            "portId": "p2"
+                          }
                         },
                         {
                           "id": "c1b-w-cham-cong",
-                          "a": { "deviceId": "c1b-cham-cong", "portId": "eth0" },
-                          "b": { "deviceId": "c1b-sw", "portId": "p3" }
+                          "a": {
+                            "deviceId": "c1b-cham-cong",
+                            "portId": "eth0"
+                          },
+                          "b": {
+                            "deviceId": "c1b-sw",
+                            "portId": "p3"
+                          }
                         }
                       ]
                     }
@@ -294,27 +526,53 @@
                 },
                 "diagnosis": {
                   "choices": [
-                    { "vi": "Dây của MAY-CHAM-CONG bị tuột" },
-                    { "vi": "Dây của chính máy bạn bị tuột" },
-                    { "vi": "Máy bạn thiếu gateway" }
+                    {
+                      "vi": "Dây của MAY-CHAM-CONG bị tuột"
+                    },
+                    {
+                      "vi": "Dây của chính máy bạn bị tuột"
+                    },
+                    {
+                      "vi": "Máy bạn thiếu gateway"
+                    }
                   ],
                   "answerIndex": 0
                 },
-                "hintTopic": { "vi": "phía nào không trả lời tiếng gọi" }
+                "hintTopic": {
+                  "vi": "phía nào không trả lời tiếng gọi"
+                }
               },
-              "hint": { "vi": "Ping máy in vẫn Reply — mạng phía bạn đang sống, loại ngay ca \"dây mình tuột\". Ping máy chấm công thì \"Destination host unreachable\": gói rời được máy, chỉ là lời gọi \"ai giữ 192.168.20.30?\" không ai đáp. Ai đang không nghe được lời gọi đó?" },
-              "solution": { "vi": "Bệnh nằm ở phía máy đích: MAY-CHAM-CONG bị tuột dây nên không nghe được tiếng gọi ARP. Trong pha sửa, nối cổng eth0 của nó vào cổng trống p3 của switch — ping lại là có Reply. So với ca trước: General failure là dây MÌNH, còn unreachable với mạng-mình-vẫn-sống là dây ĐÍCH." }
+              "hint": {
+                "vi": "Ping máy in vẫn Reply — mạng phía bạn đang sống, loại ngay ca \"dây mình tuột\". Ping máy chấm công thì \"Destination host unreachable\": gói rời được máy, chỉ là lời gọi \"ai giữ 192.168.20.30?\" không ai đáp. Ai đang không nghe được lời gọi đó?"
+              },
+              "solution": {
+                "vi": "Bệnh nằm ở phía máy đích: MAY-CHAM-CONG bị tuột dây nên không nghe được tiếng gọi ARP. Trong pha sửa, nối cổng eth0 của nó vào cổng trống p3 của switch — ping lại là có Reply. So với ca trước: General failure là dây MÌNH, còn unreachable với mạng-mình-vẫn-sống là dây ĐÍCH."
+              }
             },
             {
               "question": {
                 "kind": "typed",
                 "id": "m11-b1-prac-1",
-                "prompt": { "vi": "Bạn ping một máy cùng phòng và nhận \"Destination host unreachable\" trong khi ping các máy khác vẫn Reply. Bệnh khả năng cao nằm ở phía nào — máy mình hay máy đích?" },
-                "accept": ["máy đích", "phía đích", "phía máy đích", "ben may dich", "đích"],
-                "hintTopic": { "vi": "gói có rời được máy bạn không" }
+                "prompt": {
+                  "vi": "Bạn ping một máy cùng phòng và nhận \"Destination host unreachable\" trong khi ping các máy khác vẫn Reply. Bệnh khả năng cao nằm ở phía nào — máy mình hay máy đích?"
+                },
+                "accept": [
+                  "máy đích",
+                  "phía đích",
+                  "phía máy đích",
+                  "ben may dich",
+                  "đích"
+                ],
+                "hintTopic": {
+                  "vi": "gói có rời được máy bạn không"
+                }
               },
-              "hint": { "vi": "Các máy khác vẫn Reply nghĩa là dây và cấu hình phía bạn đều ổn. Vậy tiếng gọi \"ai giữ địa chỉ này?\" chết ở đâu?" },
-              "solution": { "vi": "Ở phía máy đích: mạng của bạn sống (ping máy khác vẫn Reply), nhưng máy đích không đáp lời gọi ARP — thường là nó tuột dây, tắt nguồn, hoặc tự chặn." }
+              "hint": {
+                "vi": "Các máy khác vẫn Reply nghĩa là dây và cấu hình phía bạn đều ổn. Vậy tiếng gọi \"ai giữ địa chỉ này?\" chết ở đâu?"
+              },
+              "solution": {
+                "vi": "Ở phía máy đích: mạng của bạn sống (ping máy khác vẫn Reply), nhưng máy đích không đáp lời gọi ARP — thường là nó tuột dây, tắt nguồn, hoặc tự chặn."
+              }
             }
           ]
         },
@@ -325,41 +583,81 @@
               "question": {
                 "kind": "typed",
                 "id": "m11-b1-ret-1",
-                "prompt": { "vi": "Không nhìn lại bài: khám theo tầng (bottom-up) luôn bắt đầu từ tầng nào?" },
-                "accept": ["dây", "dây cắm", "tầng vật lý", "vật lý", "tầng thấp nhất"],
-                "hintTopic": { "vi": "tầng thấp nhất của mạng" }
+                "prompt": {
+                  "vi": "Không nhìn lại bài: khám theo tầng (bottom-up) luôn bắt đầu từ tầng nào?"
+                },
+                "accept": [
+                  "dây",
+                  "dây cắm",
+                  "tầng vật lý",
+                  "vật lý",
+                  "tầng thấp nhất"
+                ],
+                "hintTopic": {
+                  "vi": "tầng thấp nhất của mạng"
+                }
               },
-              "hint": { "vi": "Là thứ hữu hình nhất, nằm dưới cùng — hỏng nó thì mọi tầng trên hỏng theo." },
-              "solution": { "vi": "Bắt đầu từ tầng vật lý — sợi dây. Tầng dưới hỏng kéo mọi tầng trên hỏng theo, nên loại trừ từ nền móng lên là nhanh nhất." }
+              "hint": {
+                "vi": "Là thứ hữu hình nhất, nằm dưới cùng — hỏng nó thì mọi tầng trên hỏng theo."
+              },
+              "solution": {
+                "vi": "Bắt đầu từ tầng vật lý — sợi dây. Tầng dưới hỏng kéo mọi tầng trên hỏng theo, nên loại trừ từ nền móng lên là nhanh nhất."
+              }
             }
           ],
           "selfExplain": {
-            "prompt": { "vi": "Giải thích bằng lời của bạn: vì sao nên khám từ tầng thấp lên thay vì đoán ngay \"chắc do DNS\" hay \"chắc do web\"?" },
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: vì sao nên khám từ tầng thấp lên thay vì đoán ngay \"chắc do DNS\" hay \"chắc do web\"?"
+            },
             "keywords": [
-              ["tầng thấp", "dây", "vật lý", "nền"],
-              ["loại trừ", "khoanh vùng", "thu hẹp", "chắc chắn"]
+              [
+                "tầng thấp",
+                "dây",
+                "vật lý",
+                "nền"
+              ],
+              [
+                "loại trừ",
+                "khoanh vùng",
+                "thu hẹp",
+                "chắc chắn"
+              ]
             ],
-            "exampleAnswer": { "vi": "Vì tầng dưới hỏng thì mọi tầng trên hỏng theo — đoán ngay tầng cao là có thể sửa nhầm chỗ không bệnh. Khám từ dây lên giúp loại trừ từng tầng một cách chắc chắn, khoanh vùng bệnh ngày càng hẹp thay vì đoán mò." }
+            "exampleAnswer": {
+              "vi": "Vì tầng dưới hỏng thì mọi tầng trên hỏng theo — đoán ngay tầng cao là có thể sửa nhầm chỗ không bệnh. Khám từ dây lên giúp loại trừ từng tầng một cách chắc chắn, khoanh vùng bệnh ngày càng hẹp thay vì đoán mò."
+            }
           }
         },
         {
           "type": "summary",
           "bullets": [
-            { "vi": "Khám theo tầng từ thấp lên: dây → IP → đường đi → dịch vụ." },
-            { "vi": "ipconfig đọc giấy tờ của máy; ping bắt mạch đường truyền." },
-            { "vi": "General failure = bệnh tại máy mình; unreachable khi mạng mình sống = bệnh phía đích." }
+            {
+              "vi": "Khám theo tầng từ thấp lên: dây → IP → đường đi → dịch vụ."
+            },
+            {
+              "vi": "ipconfig đọc giấy tờ của máy; ping bắt mạch đường truyền."
+            },
+            {
+              "vi": "General failure = bệnh tại máy mình; unreachable khi mạng mình sống = bệnh phía đích."
+            }
           ],
-          "nextTeaser": { "vi": "Ca sau lạ hơn: trong nhà gọi nhau ngon lành, nhưng cứ bước ra khỏi cửa là lạc. Cánh cửa nào của mạng đang hỏng?" }
+          "nextTeaser": {
+            "vi": "Ca sau lạ hơn: trong nhà gọi nhau ngon lành, nhưng cứ bước ra khỏi cửa là lạc. Cánh cửa nào của mạng đang hỏng?"
+          }
         }
       ]
     },
     {
       "id": "m11-bai-2",
-      "missionTitle": { "vi": "Trong nhà gọi được, ra ngoài thì không" },
+      "missionTitle": {
+        "vi": "Trong nhà gọi được, ra ngoài thì không"
+      },
       "steps": [
         {
           "type": "hook",
-          "question": { "vi": "Chị kế toán in được, chấm công được — nhưng không mở nổi web công ty nằm ngoài Internet. Trong nhà nói chuyện rôm rả mà ra khỏi cửa là lạc đường: bệnh này nằm ở đâu?" },
+          "question": {
+            "vi": "Chị kế toán in được, chấm công được — nhưng không mở nổi web công ty nằm ngoài Internet. Trong nhà nói chuyện rôm rả mà ra khỏi cửa là lạc đường: bệnh này nằm ở đâu?"
+          },
           "visualId": "vis-hook-tracert"
         },
         {
@@ -368,7 +666,9 @@
             {
               "kind": "clinic",
               "id": "m11-b2-pre-ca",
-              "prompt": { "vi": "Bệnh nhân than: \"máy chị vào máy in bình thường mà web công ty (203.0.113.1) thì chịu\". Khám bằng đồ nghề bài trước xem — để ý kỹ tờ ipconfig, rồi thử ping từng chặng một." },
+              "prompt": {
+                "vi": "Bệnh nhân than: \"máy chị vào máy in bình thường mà web công ty (203.0.113.1) thì chịu\". Khám bằng đồ nghề bài trước xem — để ý kỹ tờ ipconfig, rồi thử ping từng chặng một."
+              },
               "spec": {
                 "patient": {
                   "topology": {
@@ -377,8 +677,14 @@
                         "kind": "pc",
                         "id": "c2a-ke-toan",
                         "hostname": "MAY-KE-TOAN",
-                        "port": { "id": "eth0", "mac": "AA:BB:CC:B2:0A:01" },
-                        "ipConfig": { "ip": "192.168.20.10", "prefix": 24 },
+                        "port": {
+                          "id": "eth0",
+                          "mac": "AA:BB:CC:B2:0A:01"
+                        },
+                        "ipConfig": {
+                          "ip": "192.168.20.10",
+                          "prefix": 24
+                        },
                         "gateway": "192.168.20.99"
                       },
                       {
@@ -386,8 +692,14 @@
                         "id": "c2a-sw",
                         "hostname": "SW-TANG-2",
                         "ports": [
-                          { "id": "p1", "vlan": 1 },
-                          { "id": "p2", "vlan": 1 }
+                          {
+                            "id": "p1",
+                            "vlan": 1
+                          },
+                          {
+                            "id": "p2",
+                            "vlan": 1
+                          }
                         ]
                       },
                       {
@@ -395,42 +707,90 @@
                         "id": "c2a-rt",
                         "hostname": "RT-VAN-PHONG",
                         "ports": [
-                          { "id": "lan", "mac": "AA:BB:CC:B2:0A:11", "ipConfig": { "ip": "192.168.20.1", "prefix": 24 } },
-                          { "id": "wan", "mac": "AA:BB:CC:B2:0A:12", "ipConfig": { "ip": "203.0.113.2", "prefix": 30 } }
+                          {
+                            "id": "lan",
+                            "mac": "AA:BB:CC:B2:0A:11",
+                            "ipConfig": {
+                              "ip": "192.168.20.1",
+                              "prefix": 24
+                            }
+                          },
+                          {
+                            "id": "wan",
+                            "mac": "AA:BB:CC:B2:0A:12",
+                            "ipConfig": {
+                              "ip": "203.0.113.2",
+                              "prefix": 30
+                            }
+                          }
                         ],
-                        "staticRoutes": [{ "destination": "0.0.0.0", "prefix": 0, "nextHop": "203.0.113.1" }]
+                        "staticRoutes": [
+                          {
+                            "destination": "0.0.0.0",
+                            "prefix": 0,
+                            "nextHop": "203.0.113.1"
+                          }
+                        ]
                       },
                       {
                         "kind": "pc",
                         "id": "c2a-web",
                         "hostname": "WEB-CONG-TY",
-                        "port": { "id": "eth0", "mac": "AA:BB:CC:B2:0A:09" },
-                        "ipConfig": { "ip": "203.0.113.1", "prefix": 30 },
+                        "port": {
+                          "id": "eth0",
+                          "mac": "AA:BB:CC:B2:0A:09"
+                        },
+                        "ipConfig": {
+                          "ip": "203.0.113.1",
+                          "prefix": 30
+                        },
                         "gateway": "203.0.113.2"
                       }
                     ],
                     "links": [
                       {
                         "id": "c2a-w-seat",
-                        "a": { "deviceId": "c2a-ke-toan", "portId": "eth0" },
-                        "b": { "deviceId": "c2a-sw", "portId": "p1" }
+                        "a": {
+                          "deviceId": "c2a-ke-toan",
+                          "portId": "eth0"
+                        },
+                        "b": {
+                          "deviceId": "c2a-sw",
+                          "portId": "p1"
+                        }
                       },
                       {
                         "id": "c2a-w-rt",
-                        "a": { "deviceId": "c2a-sw", "portId": "p2" },
-                        "b": { "deviceId": "c2a-rt", "portId": "lan" }
+                        "a": {
+                          "deviceId": "c2a-sw",
+                          "portId": "p2"
+                        },
+                        "b": {
+                          "deviceId": "c2a-rt",
+                          "portId": "lan"
+                        }
                       },
                       {
                         "id": "c2a-w-web",
-                        "a": { "deviceId": "c2a-rt", "portId": "wan" },
-                        "b": { "deviceId": "c2a-web", "portId": "eth0" }
+                        "a": {
+                          "deviceId": "c2a-rt",
+                          "portId": "wan"
+                        },
+                        "b": {
+                          "deviceId": "c2a-web",
+                          "portId": "eth0"
+                        }
                       }
                     ]
                   },
                   "overlay": {},
                   "seatId": "c2a-ke-toan"
                 },
-                "symptom": { "kind": "ping-fails", "from": "c2a-ke-toan", "target": "203.0.113.1" },
+                "symptom": {
+                  "kind": "ping-fails",
+                  "from": "c2a-ke-toan",
+                  "target": "203.0.113.1"
+                },
                 "fix": {
                   "kind": "edit-network",
                   "allow": {
@@ -443,15 +803,28 @@
                     "setRoutes": false,
                     "maxDevices": 4
                   },
-                  "goals": [{ "kind": "ping", "from": "c2a-ke-toan", "to": "c2a-web", "expect": "reach" }],
+                  "goals": [
+                    {
+                      "kind": "ping",
+                      "from": "c2a-ke-toan",
+                      "to": "c2a-web",
+                      "expect": "reach"
+                    }
+                  ],
                   "solution": {
                     "devices": [
                       {
                         "kind": "pc",
                         "id": "c2a-ke-toan",
                         "hostname": "MAY-KE-TOAN",
-                        "port": { "id": "eth0", "mac": "AA:BB:CC:B2:0A:01" },
-                        "ipConfig": { "ip": "192.168.20.10", "prefix": 24 },
+                        "port": {
+                          "id": "eth0",
+                          "mac": "AA:BB:CC:B2:0A:01"
+                        },
+                        "ipConfig": {
+                          "ip": "192.168.20.10",
+                          "prefix": 24
+                        },
                         "gateway": "192.168.20.1"
                       },
                       {
@@ -459,8 +832,14 @@
                         "id": "c2a-sw",
                         "hostname": "SW-TANG-2",
                         "ports": [
-                          { "id": "p1", "vlan": 1 },
-                          { "id": "p2", "vlan": 1 }
+                          {
+                            "id": "p1",
+                            "vlan": 1
+                          },
+                          {
+                            "id": "p2",
+                            "vlan": 1
+                          }
                         ]
                       },
                       {
@@ -468,35 +847,79 @@
                         "id": "c2a-rt",
                         "hostname": "RT-VAN-PHONG",
                         "ports": [
-                          { "id": "lan", "mac": "AA:BB:CC:B2:0A:11", "ipConfig": { "ip": "192.168.20.1", "prefix": 24 } },
-                          { "id": "wan", "mac": "AA:BB:CC:B2:0A:12", "ipConfig": { "ip": "203.0.113.2", "prefix": 30 } }
+                          {
+                            "id": "lan",
+                            "mac": "AA:BB:CC:B2:0A:11",
+                            "ipConfig": {
+                              "ip": "192.168.20.1",
+                              "prefix": 24
+                            }
+                          },
+                          {
+                            "id": "wan",
+                            "mac": "AA:BB:CC:B2:0A:12",
+                            "ipConfig": {
+                              "ip": "203.0.113.2",
+                              "prefix": 30
+                            }
+                          }
                         ],
-                        "staticRoutes": [{ "destination": "0.0.0.0", "prefix": 0, "nextHop": "203.0.113.1" }]
+                        "staticRoutes": [
+                          {
+                            "destination": "0.0.0.0",
+                            "prefix": 0,
+                            "nextHop": "203.0.113.1"
+                          }
+                        ]
                       },
                       {
                         "kind": "pc",
                         "id": "c2a-web",
                         "hostname": "WEB-CONG-TY",
-                        "port": { "id": "eth0", "mac": "AA:BB:CC:B2:0A:09" },
-                        "ipConfig": { "ip": "203.0.113.1", "prefix": 30 },
+                        "port": {
+                          "id": "eth0",
+                          "mac": "AA:BB:CC:B2:0A:09"
+                        },
+                        "ipConfig": {
+                          "ip": "203.0.113.1",
+                          "prefix": 30
+                        },
                         "gateway": "203.0.113.2"
                       }
                     ],
                     "links": [
                       {
                         "id": "c2a-w-seat",
-                        "a": { "deviceId": "c2a-ke-toan", "portId": "eth0" },
-                        "b": { "deviceId": "c2a-sw", "portId": "p1" }
+                        "a": {
+                          "deviceId": "c2a-ke-toan",
+                          "portId": "eth0"
+                        },
+                        "b": {
+                          "deviceId": "c2a-sw",
+                          "portId": "p1"
+                        }
                       },
                       {
                         "id": "c2a-w-rt",
-                        "a": { "deviceId": "c2a-sw", "portId": "p2" },
-                        "b": { "deviceId": "c2a-rt", "portId": "lan" }
+                        "a": {
+                          "deviceId": "c2a-sw",
+                          "portId": "p2"
+                        },
+                        "b": {
+                          "deviceId": "c2a-rt",
+                          "portId": "lan"
+                        }
                       },
                       {
                         "id": "c2a-w-web",
-                        "a": { "deviceId": "c2a-rt", "portId": "wan" },
-                        "b": { "deviceId": "c2a-web", "portId": "eth0" }
+                        "a": {
+                          "deviceId": "c2a-rt",
+                          "portId": "wan"
+                        },
+                        "b": {
+                          "deviceId": "c2a-web",
+                          "portId": "eth0"
+                        }
                       }
                     ]
                   }
@@ -504,17 +927,29 @@
               },
               "diagnosis": {
                 "choices": [
-                  { "vi": "Gateway của máy trỏ về một địa chỉ không ai giữ" },
-                  { "vi": "Dây mạng của máy bị tuột" },
-                  { "vi": "Máy chủ web bên ngoài đã sập" }
+                  {
+                    "vi": "Gateway của máy trỏ về một địa chỉ không ai giữ"
+                  },
+                  {
+                    "vi": "Dây mạng của máy bị tuột"
+                  },
+                  {
+                    "vi": "Máy chủ web bên ngoài đã sập"
+                  }
                 ],
                 "answerIndex": 0
               },
-              "hintTopic": { "vi": "cánh cửa ra khỏi dải mạng của máy" },
-              "explain": { "vi": "ipconfig lộ manh mối: Default Gateway ghi 192.168.20.99. Ping thử chính 192.168.20.99 — \"Destination host unreachable\": không ai giữ địa chỉ đó cả! Cửa ra được trỏ về một cánh cửa ma, nên mọi chuyến đi ra ngoài dải đều chết từ bước đầu, còn trong dải thì vẫn chạy vì không cần qua gateway. Sửa gateway về 192.168.20.1 (cổng LAN của router) là thông." }
+              "hintTopic": {
+                "vi": "cánh cửa ra khỏi dải mạng của máy"
+              },
+              "explain": {
+                "vi": "ipconfig lộ manh mối: Default Gateway ghi 192.168.20.99. Ping thử chính 192.168.20.99 — \"Destination host unreachable\": không ai giữ địa chỉ đó cả! Cửa ra được trỏ về một cánh cửa ma, nên mọi chuyến đi ra ngoài dải đều chết từ bước đầu, còn trong dải thì vẫn chạy vì không cần qua gateway. Sửa gateway về 192.168.20.1 (cổng LAN của router) là thông."
+              }
             }
           ],
-          "encouragement": { "vi": "Không sao cả — ca này xảo hơn ca trước thật. Cái bạn vừa vấp chính là nội dung của bài: đọc đường đi của gói tin từng chặng một." }
+          "encouragement": {
+            "vi": "Không sao cả — ca này xảo hơn ca trước thật. Cái bạn vừa vấp chính là nội dung của bài: đọc đường đi của gói tin từng chặng một."
+          }
         },
         {
           "type": "teach",
@@ -522,8 +957,12 @@
             {
               "conceptId": "m11-tracert",
               "visualId": "vis-tracert-chang",
-              "body": { "vi": "Khi bệnh kiểu \"trong được, ngoài không\", nghi phạm số một là cánh cửa ra: gateway. Lệnh tracert gọi tên từng trạm trên đường đi — trạm nào còn trả lời tức là đường tới đó còn sống; trạm nào im lặng (* * *) thì chỗ nghẽn nằm ngay sau trạm cuối cùng còn lên tiếng. Bệnh chết từ chặng 1 nghĩa là gói còn chưa qua nổi gateway của chính mình." },
-              "deepDive": { "vi": "Vì sao \"trong dải vẫn chạy\"? Nhớ Module 3: đích cùng dải thì máy gọi thẳng nhau bằng ARP, không cần gateway. Chỉ khi đích NGOÀI dải, máy mới đưa gói cho gateway — nên gateway sai/thiếu chỉ giết những chuyến đi xa. Cặp triệu chứng \"trong sống, ngoài chết\" gần như chỉ tay vào đúng một trường cấu hình." }
+              "body": {
+                "vi": "Khi bệnh kiểu \"trong được, ngoài không\", nghi phạm số một là cánh cửa ra: gateway. Lệnh tracert gọi tên từng trạm trên đường đi — trạm nào còn trả lời tức là đường tới đó còn sống; trạm nào im lặng (* * *) thì chỗ nghẽn nằm ngay sau trạm cuối cùng còn lên tiếng. Bệnh chết từ chặng 1 nghĩa là gói còn chưa qua nổi gateway của chính mình."
+              },
+              "deepDive": {
+                "vi": "Vì sao \"trong dải vẫn chạy\"? Nhớ Module 3: đích cùng dải thì máy gọi thẳng nhau bằng ARP, không cần gateway. Chỉ khi đích NGOÀI dải, máy mới đưa gói cho gateway — nên gateway sai/thiếu chỉ giết những chuyến đi xa. Cặp triệu chứng \"trong sống, ngoài chết\" gần như chỉ tay vào đúng một trường cấu hình."
+              }
             }
           ]
         },
@@ -535,7 +974,9 @@
               "question": {
                 "kind": "clinic",
                 "id": "m11-b2-prac-ca",
-                "prompt": { "vi": "Máy anh bảo vệ mới lắp: trong mạng chạy tốt, ra web công ty (203.0.113.1) thì \"General failure\" ngay lập tức. Điền nốt chỗ trống của quy trình: ipconfig xem giấy tờ → phát hiện thiếu gì → sửa." },
+                "prompt": {
+                  "vi": "Máy anh bảo vệ mới lắp: trong mạng chạy tốt, ra web công ty (203.0.113.1) thì \"General failure\" ngay lập tức. Điền nốt chỗ trống của quy trình: ipconfig xem giấy tờ → phát hiện thiếu gì → sửa."
+                },
                 "spec": {
                   "patient": {
                     "topology": {
@@ -544,8 +985,14 @@
                           "kind": "pc",
                           "id": "c2b-bao-ve",
                           "hostname": "MAY-BAO-VE",
-                          "port": { "id": "eth0", "mac": "AA:BB:CC:B2:0B:01" },
-                          "ipConfig": { "ip": "192.168.20.15", "prefix": 24 },
+                          "port": {
+                            "id": "eth0",
+                            "mac": "AA:BB:CC:B2:0B:01"
+                          },
+                          "ipConfig": {
+                            "ip": "192.168.20.15",
+                            "prefix": 24
+                          },
                           "gateway": null
                         },
                         {
@@ -553,8 +1000,14 @@
                           "id": "c2b-sw",
                           "hostname": "SW-TANG-2",
                           "ports": [
-                            { "id": "p1", "vlan": 1 },
-                            { "id": "p2", "vlan": 1 }
+                            {
+                              "id": "p1",
+                              "vlan": 1
+                            },
+                            {
+                              "id": "p2",
+                              "vlan": 1
+                            }
                           ]
                         },
                         {
@@ -562,42 +1015,90 @@
                           "id": "c2b-rt",
                           "hostname": "RT-VAN-PHONG",
                           "ports": [
-                            { "id": "lan", "mac": "AA:BB:CC:B2:0B:11", "ipConfig": { "ip": "192.168.20.1", "prefix": 24 } },
-                            { "id": "wan", "mac": "AA:BB:CC:B2:0B:12", "ipConfig": { "ip": "203.0.113.2", "prefix": 30 } }
+                            {
+                              "id": "lan",
+                              "mac": "AA:BB:CC:B2:0B:11",
+                              "ipConfig": {
+                                "ip": "192.168.20.1",
+                                "prefix": 24
+                              }
+                            },
+                            {
+                              "id": "wan",
+                              "mac": "AA:BB:CC:B2:0B:12",
+                              "ipConfig": {
+                                "ip": "203.0.113.2",
+                                "prefix": 30
+                              }
+                            }
                           ],
-                          "staticRoutes": [{ "destination": "0.0.0.0", "prefix": 0, "nextHop": "203.0.113.1" }]
+                          "staticRoutes": [
+                            {
+                              "destination": "0.0.0.0",
+                              "prefix": 0,
+                              "nextHop": "203.0.113.1"
+                            }
+                          ]
                         },
                         {
                           "kind": "pc",
                           "id": "c2b-web",
                           "hostname": "WEB-CONG-TY",
-                          "port": { "id": "eth0", "mac": "AA:BB:CC:B2:0B:09" },
-                          "ipConfig": { "ip": "203.0.113.1", "prefix": 30 },
+                          "port": {
+                            "id": "eth0",
+                            "mac": "AA:BB:CC:B2:0B:09"
+                          },
+                          "ipConfig": {
+                            "ip": "203.0.113.1",
+                            "prefix": 30
+                          },
                           "gateway": "203.0.113.2"
                         }
                       ],
                       "links": [
                         {
                           "id": "c2b-w-seat",
-                          "a": { "deviceId": "c2b-bao-ve", "portId": "eth0" },
-                          "b": { "deviceId": "c2b-sw", "portId": "p1" }
+                          "a": {
+                            "deviceId": "c2b-bao-ve",
+                            "portId": "eth0"
+                          },
+                          "b": {
+                            "deviceId": "c2b-sw",
+                            "portId": "p1"
+                          }
                         },
                         {
                           "id": "c2b-w-rt",
-                          "a": { "deviceId": "c2b-sw", "portId": "p2" },
-                          "b": { "deviceId": "c2b-rt", "portId": "lan" }
+                          "a": {
+                            "deviceId": "c2b-sw",
+                            "portId": "p2"
+                          },
+                          "b": {
+                            "deviceId": "c2b-rt",
+                            "portId": "lan"
+                          }
                         },
                         {
                           "id": "c2b-w-web",
-                          "a": { "deviceId": "c2b-rt", "portId": "wan" },
-                          "b": { "deviceId": "c2b-web", "portId": "eth0" }
+                          "a": {
+                            "deviceId": "c2b-rt",
+                            "portId": "wan"
+                          },
+                          "b": {
+                            "deviceId": "c2b-web",
+                            "portId": "eth0"
+                          }
                         }
                       ]
                     },
                     "overlay": {},
                     "seatId": "c2b-bao-ve"
                   },
-                  "symptom": { "kind": "ping-fails", "from": "c2b-bao-ve", "target": "203.0.113.1" },
+                  "symptom": {
+                    "kind": "ping-fails",
+                    "from": "c2b-bao-ve",
+                    "target": "203.0.113.1"
+                  },
                   "fix": {
                     "kind": "edit-network",
                     "allow": {
@@ -610,16 +1111,31 @@
                       "setRoutes": false,
                       "maxDevices": 4
                     },
-                    "goals": [{ "kind": "ping", "from": "c2b-bao-ve", "to": "c2b-web", "expect": "reach" }],
-                    "mustClearDiagnoses": ["missing-gateway"],
+                    "goals": [
+                      {
+                        "kind": "ping",
+                        "from": "c2b-bao-ve",
+                        "to": "c2b-web",
+                        "expect": "reach"
+                      }
+                    ],
+                    "mustClearDiagnoses": [
+                      "missing-gateway"
+                    ],
                     "solution": {
                       "devices": [
                         {
                           "kind": "pc",
                           "id": "c2b-bao-ve",
                           "hostname": "MAY-BAO-VE",
-                          "port": { "id": "eth0", "mac": "AA:BB:CC:B2:0B:01" },
-                          "ipConfig": { "ip": "192.168.20.15", "prefix": 24 },
+                          "port": {
+                            "id": "eth0",
+                            "mac": "AA:BB:CC:B2:0B:01"
+                          },
+                          "ipConfig": {
+                            "ip": "192.168.20.15",
+                            "prefix": 24
+                          },
                           "gateway": "192.168.20.1"
                         },
                         {
@@ -627,8 +1143,14 @@
                           "id": "c2b-sw",
                           "hostname": "SW-TANG-2",
                           "ports": [
-                            { "id": "p1", "vlan": 1 },
-                            { "id": "p2", "vlan": 1 }
+                            {
+                              "id": "p1",
+                              "vlan": 1
+                            },
+                            {
+                              "id": "p2",
+                              "vlan": 1
+                            }
                           ]
                         },
                         {
@@ -636,35 +1158,79 @@
                           "id": "c2b-rt",
                           "hostname": "RT-VAN-PHONG",
                           "ports": [
-                            { "id": "lan", "mac": "AA:BB:CC:B2:0B:11", "ipConfig": { "ip": "192.168.20.1", "prefix": 24 } },
-                            { "id": "wan", "mac": "AA:BB:CC:B2:0B:12", "ipConfig": { "ip": "203.0.113.2", "prefix": 30 } }
+                            {
+                              "id": "lan",
+                              "mac": "AA:BB:CC:B2:0B:11",
+                              "ipConfig": {
+                                "ip": "192.168.20.1",
+                                "prefix": 24
+                              }
+                            },
+                            {
+                              "id": "wan",
+                              "mac": "AA:BB:CC:B2:0B:12",
+                              "ipConfig": {
+                                "ip": "203.0.113.2",
+                                "prefix": 30
+                              }
+                            }
                           ],
-                          "staticRoutes": [{ "destination": "0.0.0.0", "prefix": 0, "nextHop": "203.0.113.1" }]
+                          "staticRoutes": [
+                            {
+                              "destination": "0.0.0.0",
+                              "prefix": 0,
+                              "nextHop": "203.0.113.1"
+                            }
+                          ]
                         },
                         {
                           "kind": "pc",
                           "id": "c2b-web",
                           "hostname": "WEB-CONG-TY",
-                          "port": { "id": "eth0", "mac": "AA:BB:CC:B2:0B:09" },
-                          "ipConfig": { "ip": "203.0.113.1", "prefix": 30 },
+                          "port": {
+                            "id": "eth0",
+                            "mac": "AA:BB:CC:B2:0B:09"
+                          },
+                          "ipConfig": {
+                            "ip": "203.0.113.1",
+                            "prefix": 30
+                          },
                           "gateway": "203.0.113.2"
                         }
                       ],
                       "links": [
                         {
                           "id": "c2b-w-seat",
-                          "a": { "deviceId": "c2b-bao-ve", "portId": "eth0" },
-                          "b": { "deviceId": "c2b-sw", "portId": "p1" }
+                          "a": {
+                            "deviceId": "c2b-bao-ve",
+                            "portId": "eth0"
+                          },
+                          "b": {
+                            "deviceId": "c2b-sw",
+                            "portId": "p1"
+                          }
                         },
                         {
                           "id": "c2b-w-rt",
-                          "a": { "deviceId": "c2b-sw", "portId": "p2" },
-                          "b": { "deviceId": "c2b-rt", "portId": "lan" }
+                          "a": {
+                            "deviceId": "c2b-sw",
+                            "portId": "p2"
+                          },
+                          "b": {
+                            "deviceId": "c2b-rt",
+                            "portId": "lan"
+                          }
                         },
                         {
                           "id": "c2b-w-web",
-                          "a": { "deviceId": "c2b-rt", "portId": "wan" },
-                          "b": { "deviceId": "c2b-web", "portId": "eth0" }
+                          "a": {
+                            "deviceId": "c2b-rt",
+                            "portId": "wan"
+                          },
+                          "b": {
+                            "deviceId": "c2b-web",
+                            "portId": "eth0"
+                          }
                         }
                       ]
                     }
@@ -672,27 +1238,54 @@
                 },
                 "diagnosis": {
                   "choices": [
-                    { "vi": "Máy chưa được khai gateway — không có cửa ra" },
-                    { "vi": "Router văn phòng bị treo" },
-                    { "vi": "Dây từ switch lên router bị đứt" }
+                    {
+                      "vi": "Máy chưa được khai gateway — không có cửa ra"
+                    },
+                    {
+                      "vi": "Router văn phòng bị treo"
+                    },
+                    {
+                      "vi": "Dây từ switch lên router bị đứt"
+                    }
                   ],
                   "answerIndex": 0
                 },
-                "hintTopic": { "vi": "ô Default Gateway trên tờ ipconfig" }
+                "hintTopic": {
+                  "vi": "ô Default Gateway trên tờ ipconfig"
+                }
               },
-              "hint": { "vi": "ipconfig đi: ô Default Gateway trống trơn. Không có cửa ra thì gói ngoài dải chết ngay tại máy — đúng chữ \"General failure\" tức thì. Còn router có treo không? Ping 192.168.20.1 thử là biết." },
-              "solution": { "vi": "Máy thiếu gateway. Ping 192.168.20.1 vẫn Reply nghĩa là router sống và đường trong nhà thông — chỉ cần điền gateway 192.168.20.1 cho MAY-BAO-VE là chuyến đi xa có người dẫn đường." }
+              "hint": {
+                "vi": "ipconfig đi: ô Default Gateway trống trơn. Không có cửa ra thì gói ngoài dải chết ngay tại máy — đúng chữ \"General failure\" tức thì. Còn router có treo không? Ping 192.168.20.1 thử là biết."
+              },
+              "solution": {
+                "vi": "Máy thiếu gateway. Ping 192.168.20.1 vẫn Reply nghĩa là router sống và đường trong nhà thông — chỉ cần điền gateway 192.168.20.1 cho MAY-BAO-VE là chuyến đi xa có người dẫn đường."
+              }
             },
             {
               "question": {
                 "kind": "typed",
                 "id": "m11-b2-prac-1",
-                "prompt": { "vi": "Tracert tới một máy ngoài Internet in được chặng 1 là 192.168.20.1 (<1ms) rồi từ chặng 2 toàn * * *. Đường đứt ở khoảng nào?" },
-                "accept": ["sau gateway", "sau router", "sau chặng 1", "ngoài router", "từ router ra ngoài", "sau 192.168.20.1"],
-                "hintTopic": { "vi": "trạm cuối cùng còn lên tiếng" }
+                "prompt": {
+                  "vi": "Tracert tới một máy ngoài Internet in được chặng 1 là 192.168.20.1 (<1ms) rồi từ chặng 2 toàn * * *. Đường đứt ở khoảng nào?"
+                },
+                "accept": [
+                  "sau gateway",
+                  "sau router",
+                  "sau chặng 1",
+                  "ngoài router",
+                  "từ router ra ngoài",
+                  "sau 192.168.20.1"
+                ],
+                "hintTopic": {
+                  "vi": "trạm cuối cùng còn lên tiếng"
+                }
               },
-              "hint": { "vi": "Trạm 192.168.20.1 (gateway) còn trả lời — đường tới đó sống. Chỗ nghẽn nằm ngay sau trạm cuối cùng còn lên tiếng." },
-              "solution": { "vi": "Đứt ở đoạn SAU gateway: từ máy tới router văn phòng còn sống (chặng 1 trả lời), nhưng từ router ra ngoài thì im lặng — nghi đường lên nhà mạng hoặc chặng kế tiếp." }
+              "hint": {
+                "vi": "Trạm 192.168.20.1 (gateway) còn trả lời — đường tới đó sống. Chỗ nghẽn nằm ngay sau trạm cuối cùng còn lên tiếng."
+              },
+              "solution": {
+                "vi": "Đứt ở đoạn SAU gateway: từ máy tới router văn phòng còn sống (chặng 1 trả lời), nhưng từ router ra ngoài thì im lặng — nghi đường lên nhà mạng hoặc chặng kế tiếp."
+              }
             }
           ]
         },
@@ -703,41 +1296,81 @@
               "question": {
                 "kind": "typed",
                 "id": "m11-b2-ret-1",
-                "prompt": { "vi": "Không nhìn lại bài: ping máy CÙNG dải thì sống, ping mọi thứ NGOÀI dải đều chết. Trường cấu hình nào của máy đáng nghi nhất?" },
-                "accept": ["gateway", "default gateway", "cổng mặc định", "cửa ra"],
-                "hintTopic": { "vi": "thứ chỉ dùng khi đi ra khỏi dải" }
+                "prompt": {
+                  "vi": "Không nhìn lại bài: ping máy CÙNG dải thì sống, ping mọi thứ NGOÀI dải đều chết. Trường cấu hình nào của máy đáng nghi nhất?"
+                },
+                "accept": [
+                  "gateway",
+                  "default gateway",
+                  "cổng mặc định",
+                  "cửa ra"
+                ],
+                "hintTopic": {
+                  "vi": "thứ chỉ dùng khi đi ra khỏi dải"
+                }
               },
-              "hint": { "vi": "Trong dải thì máy gọi thẳng nhau, không cần nó. Chỉ chuyến đi xa mới phải qua nó." },
-              "solution": { "vi": "Gateway. Trong dải máy gọi thẳng nhau bằng ARP nên gateway sai/thiếu không lộ; ra ngoài dải mọi gói phải qua gateway — nó hỏng là mọi chuyến đi xa chết." }
+              "hint": {
+                "vi": "Trong dải thì máy gọi thẳng nhau, không cần nó. Chỉ chuyến đi xa mới phải qua nó."
+              },
+              "solution": {
+                "vi": "Gateway. Trong dải máy gọi thẳng nhau bằng ARP nên gateway sai/thiếu không lộ; ra ngoài dải mọi gói phải qua gateway — nó hỏng là mọi chuyến đi xa chết."
+              }
             }
           ],
           "selfExplain": {
-            "prompt": { "vi": "Giải thích bằng lời của bạn: vì sao gateway sai mà ping máy cùng phòng vẫn chạy bình thường?" },
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: vì sao gateway sai mà ping máy cùng phòng vẫn chạy bình thường?"
+            },
             "keywords": [
-              ["cùng dải", "trong dải", "gọi thẳng", "trực tiếp", "arp"],
-              ["ngoài dải", "qua gateway", "cửa ra", "đi xa"]
+              [
+                "cùng dải",
+                "trong dải",
+                "gọi thẳng",
+                "trực tiếp",
+                "arp"
+              ],
+              [
+                "ngoài dải",
+                "qua gateway",
+                "cửa ra",
+                "đi xa"
+              ]
             ],
-            "exampleAnswer": { "vi": "Vì đích cùng dải thì máy hỏi thẳng nhau bằng ARP rồi gửi trực tiếp, không đụng tới gateway. Gateway chỉ được dùng khi đích nằm ngoài dải — nên gateway sai chỉ giết các chuyến đi xa, còn trong phòng vẫn nói chuyện bình thường." }
+            "exampleAnswer": {
+              "vi": "Vì đích cùng dải thì máy hỏi thẳng nhau bằng ARP rồi gửi trực tiếp, không đụng tới gateway. Gateway chỉ được dùng khi đích nằm ngoài dải — nên gateway sai chỉ giết các chuyến đi xa, còn trong phòng vẫn nói chuyện bình thường."
+            }
           }
         },
         {
           "type": "summary",
           "bullets": [
-            { "vi": "\"Trong sống, ngoài chết\" — nghi phạm số một là gateway." },
-            { "vi": "tracert gọi tên từng trạm: chỗ nghẽn nằm ngay sau trạm cuối còn lên tiếng." },
-            { "vi": "Ping thẳng địa chỉ gateway để kiểm tra cánh cửa có thật và còn sống." }
+            {
+              "vi": "\"Trong sống, ngoài chết\" — nghi phạm số một là gateway."
+            },
+            {
+              "vi": "tracert gọi tên từng trạm: chỗ nghẽn nằm ngay sau trạm cuối còn lên tiếng."
+            },
+            {
+              "vi": "Ping thẳng địa chỉ gateway để kiểm tra cánh cửa có thật và còn sống."
+            }
           ],
-          "nextTeaser": { "vi": "Ca sau còn lạ nữa: máy chủ sống nhăn răng, ping số thì Reply — mà gõ tên miền thì chịu chết. Ai mới là kẻ ốm?" }
+          "nextTeaser": {
+            "vi": "Ca sau còn lạ nữa: máy chủ sống nhăn răng, ping số thì Reply — mà gõ tên miền thì chịu chết. Ai mới là kẻ ốm?"
+          }
         }
       ]
     },
     {
       "id": "m11-bai-3",
-      "missionTitle": { "vi": "Máy chủ sống mà tên miền chết" },
+      "missionTitle": {
+        "vi": "Máy chủ sống mà tên miền chết"
+      },
       "steps": [
         {
           "type": "hook",
-          "question": { "vi": "Ping 192.168.20.80 — Reply ngon lành. Gõ web.noibo.vn — trình duyệt quay mòng mòng rồi bó tay. Máy chủ rõ ràng đang sống, vậy đứa nào ốm?" },
+          "question": {
+            "vi": "Ping 192.168.20.80 — Reply ngon lành. Gõ web.noibo.vn — trình duyệt quay mòng mòng rồi bó tay. Máy chủ rõ ràng đang sống, vậy đứa nào ốm?"
+          },
           "visualId": "vis-hook-ten-so"
         },
         {
@@ -746,7 +1379,9 @@
             {
               "kind": "clinic",
               "id": "m11-b3-pre-ca",
-              "prompt": { "vi": "Cả phòng kế toán nhao nhao: \"web nội bộ sập rồi!\". Bạn ngồi vào máy chị kế toán. Đừng vội tin lời than — thử tách bạch xem: bằng SỐ thì sao, bằng TÊN thì sao, và đứa trung gian nào đứng giữa hai thứ đó." },
+              "prompt": {
+                "vi": "Cả phòng kế toán nhao nhao: \"web nội bộ sập rồi!\". Bạn ngồi vào máy chị kế toán. Đừng vội tin lời than — thử tách bạch xem: bằng SỐ thì sao, bằng TÊN thì sao, và đứa trung gian nào đứng giữa hai thứ đó."
+              },
               "spec": {
                 "patient": {
                   "topology": {
@@ -755,24 +1390,42 @@
                         "kind": "pc",
                         "id": "c3a-ke-toan",
                         "hostname": "MAY-KE-TOAN",
-                        "port": { "id": "eth0", "mac": "AA:BB:CC:B3:0A:01" },
-                        "ipConfig": { "ip": "192.168.20.10", "prefix": 24 },
+                        "port": {
+                          "id": "eth0",
+                          "mac": "AA:BB:CC:B3:0A:01"
+                        },
+                        "ipConfig": {
+                          "ip": "192.168.20.10",
+                          "prefix": 24
+                        },
                         "gateway": null
                       },
                       {
                         "kind": "pc",
                         "id": "c3a-dns",
                         "hostname": "DNS-NOI-BO",
-                        "port": { "id": "eth0", "mac": "AA:BB:CC:B3:0A:53" },
-                        "ipConfig": { "ip": "192.168.20.53", "prefix": 24 },
+                        "port": {
+                          "id": "eth0",
+                          "mac": "AA:BB:CC:B3:0A:53"
+                        },
+                        "ipConfig": {
+                          "ip": "192.168.20.53",
+                          "prefix": 24
+                        },
                         "gateway": null
                       },
                       {
                         "kind": "pc",
                         "id": "c3a-web",
                         "hostname": "WEB-NOI-BO",
-                        "port": { "id": "eth0", "mac": "AA:BB:CC:B3:0A:80" },
-                        "ipConfig": { "ip": "192.168.20.80", "prefix": 24 },
+                        "port": {
+                          "id": "eth0",
+                          "mac": "AA:BB:CC:B3:0A:80"
+                        },
+                        "ipConfig": {
+                          "ip": "192.168.20.80",
+                          "prefix": 24
+                        },
                         "gateway": null
                       },
                       {
@@ -780,63 +1433,119 @@
                         "id": "c3a-sw",
                         "hostname": "SW-TANG-2",
                         "ports": [
-                          { "id": "p1", "vlan": 1 },
-                          { "id": "p2", "vlan": 1 },
-                          { "id": "p3", "vlan": 1 }
+                          {
+                            "id": "p1",
+                            "vlan": 1
+                          },
+                          {
+                            "id": "p2",
+                            "vlan": 1
+                          },
+                          {
+                            "id": "p3",
+                            "vlan": 1
+                          }
                         ]
                       }
                     ],
                     "links": [
                       {
                         "id": "c3a-w-seat",
-                        "a": { "deviceId": "c3a-ke-toan", "portId": "eth0" },
-                        "b": { "deviceId": "c3a-sw", "portId": "p1" }
+                        "a": {
+                          "deviceId": "c3a-ke-toan",
+                          "portId": "eth0"
+                        },
+                        "b": {
+                          "deviceId": "c3a-sw",
+                          "portId": "p1"
+                        }
                       },
                       {
                         "id": "c3a-w-dns",
-                        "a": { "deviceId": "c3a-dns", "portId": "eth0" },
-                        "b": { "deviceId": "c3a-sw", "portId": "p2" }
+                        "a": {
+                          "deviceId": "c3a-dns",
+                          "portId": "eth0"
+                        },
+                        "b": {
+                          "deviceId": "c3a-sw",
+                          "portId": "p2"
+                        }
                       },
                       {
                         "id": "c3a-w-web",
-                        "a": { "deviceId": "c3a-web", "portId": "eth0" },
-                        "b": { "deviceId": "c3a-sw", "portId": "p3" }
+                        "a": {
+                          "deviceId": "c3a-web",
+                          "portId": "eth0"
+                        },
+                        "b": {
+                          "deviceId": "c3a-sw",
+                          "portId": "p3"
+                        }
                       }
                     ]
                   },
                   "overlay": {
                     "dns": {
                       "serverIp": "192.168.20.53",
-                      "records": [{ "name": "web.noibo.vn", "ip": "192.168.20.80" }],
+                      "records": [
+                        {
+                          "name": "web.noibo.vn",
+                          "ip": "192.168.20.80"
+                        }
+                      ],
                       "down": true
                     }
                   },
                   "seatId": "c3a-ke-toan"
                 },
-                "symptom": { "kind": "resolve-fails", "from": "c3a-ke-toan", "name": "web.noibo.vn" },
-                "fix": { "kind": "choose-action" }
+                "symptom": {
+                  "kind": "resolve-fails",
+                  "from": "c3a-ke-toan",
+                  "name": "web.noibo.vn"
+                },
+                "fix": {
+                  "kind": "choose-action"
+                }
               },
               "diagnosis": {
                 "choices": [
-                  { "vi": "Dịch vụ DNS nội bộ đang ngừng chạy" },
-                  { "vi": "Máy chủ web đã tắt" },
-                  { "vi": "Dây mạng máy bạn bị tuột" }
+                  {
+                    "vi": "Dịch vụ DNS nội bộ đang ngừng chạy"
+                  },
+                  {
+                    "vi": "Máy chủ web đã tắt"
+                  },
+                  {
+                    "vi": "Dây mạng máy bạn bị tuột"
+                  }
                 ],
                 "answerIndex": 0
               },
               "actions": {
                 "choices": [
-                  { "vi": "Khởi động lại dịch vụ DNS trên máy DNS-NOI-BO" },
-                  { "vi": "Cắm lại dây mạng cho máy bạn" },
-                  { "vi": "Đổi địa chỉ IP của máy chủ web" }
+                  {
+                    "vi": "Khởi động lại dịch vụ DNS trên máy DNS-NOI-BO"
+                  },
+                  {
+                    "vi": "Cắm lại dây mạng cho máy bạn"
+                  },
+                  {
+                    "vi": "Đổi địa chỉ IP của máy chủ web"
+                  }
                 ],
                 "answerIndex": 0
               },
-              "hintTopic": { "vi": "đứa trung gian giữa tên và số" },
-              "explain": { "vi": "Ping 192.168.20.80 Reply — web sống. Ping cả 192.168.20.53 cũng Reply — MÁY DNS sống. Nhưng nslookup web.noibo.vn thì \"DNS request timed out\": máy sống mà DỊCH VỤ trên nó đã chết. Web không sập, dây không tuột — cuốn danh bạ ngừng trả lời nên cả phòng tưởng web chết. Việc đúng là khởi động lại dịch vụ DNS." }
+              "hintTopic": {
+                "vi": "đứa trung gian giữa tên và số"
+              },
+              "explain": {
+                "vi": "Ping 192.168.20.80 Reply — web sống. Ping cả 192.168.20.53 cũng Reply — MÁY DNS sống. Nhưng nslookup web.noibo.vn thì \"DNS request timed out\": máy sống mà DỊCH VỤ trên nó đã chết. Web không sập, dây không tuột — cuốn danh bạ ngừng trả lời nên cả phòng tưởng web chết. Việc đúng là khởi động lại dịch vụ DNS."
+              }
             }
           ],
-          "encouragement": { "vi": "Ca này lừa được khối người làm IT lâu năm đấy — \"máy còn ping được\" không có nghĩa \"dịch vụ còn sống\". Bài học ngay sau đây." }
+          "encouragement": {
+            "vi": "Ca này lừa được khối người làm IT lâu năm đấy — \"máy còn ping được\" không có nghĩa \"dịch vụ còn sống\". Bài học ngay sau đây."
+          }
         },
         {
           "type": "teach",
@@ -844,8 +1553,12 @@
             {
               "conceptId": "m11-tach-ten-so",
               "visualId": "vis-tach-ten-so",
-              "body": { "vi": "Phép thử tách đôi: ping bằng SỐ trước, rồi ping bằng TÊN. Số sống mà tên chết — bệnh không nằm ở đích, nó nằm ở cuốn danh bạ DNS (Module 6) đứng giữa hai thứ đó. Lệnh nslookup hỏi thẳng danh bạ; và hãy đọc kỹ lời từ chối: \"request timed out\" là dịch vụ không trả lời, còn \"Non-existent domain\" là dịch vụ SỐNG nhưng không có bản ghi cho tên đó — hai bệnh khác nhau, hai cách chữa khác nhau." },
-              "deepDive": { "vi": "Vì sao \"máy sống, dịch vụ chết\" lại xảy ra được? Ping đi bằng ICMP, do hệ điều hành trả lời; còn DNS là một chương trình lắng nghe trên port 53 (bạn đã ghé phòng 53 của cung điện Module 5). Máy bật mà chương trình tắt thì ping vẫn Reply, còn nslookup thì timeout. Đó là lý do người trực phải khám tới TẦNG DỊCH VỤ chứ không dừng ở \"máy còn sống\"." }
+              "body": {
+                "vi": "Phép thử tách đôi: ping bằng SỐ trước, rồi ping bằng TÊN. Số sống mà tên chết — bệnh không nằm ở đích, nó nằm ở cuốn danh bạ DNS (Module 6) đứng giữa hai thứ đó. Lệnh nslookup hỏi thẳng danh bạ; và hãy đọc kỹ lời từ chối: \"request timed out\" là dịch vụ không trả lời, còn \"Non-existent domain\" là dịch vụ SỐNG nhưng không có bản ghi cho tên đó — hai bệnh khác nhau, hai cách chữa khác nhau."
+              },
+              "deepDive": {
+                "vi": "Vì sao \"máy sống, dịch vụ chết\" lại xảy ra được? Ping đi bằng ICMP, do hệ điều hành trả lời; còn DNS là một chương trình lắng nghe trên port 53 (bạn đã ghé phòng 53 của cung điện Module 5). Máy bật mà chương trình tắt thì ping vẫn Reply, còn nslookup thì timeout. Đó là lý do người trực phải khám tới TẦNG DỊCH VỤ chứ không dừng ở \"máy còn sống\"."
+              }
             }
           ]
         },
@@ -857,7 +1570,9 @@
               "question": {
                 "kind": "clinic",
                 "id": "m11-b3-prac-ca",
-                "prompt": { "vi": "Sáng nay công ty vừa lắp máy chấm công mới, và có người kêu: \"gõ chamcong.noibo.vn không được, chắc DNS lại chết rồi!\". Khoan tin — làm lại phép thử của bài, và đọc KỸ lời từ chối của nslookup trước khi kết luận." },
+                "prompt": {
+                  "vi": "Sáng nay công ty vừa lắp máy chấm công mới, và có người kêu: \"gõ chamcong.noibo.vn không được, chắc DNS lại chết rồi!\". Khoan tin — làm lại phép thử của bài, và đọc KỸ lời từ chối của nslookup trước khi kết luận."
+                },
                 "spec": {
                   "patient": {
                     "topology": {
@@ -866,24 +1581,42 @@
                           "kind": "pc",
                           "id": "c3b-ke-toan",
                           "hostname": "MAY-KE-TOAN",
-                          "port": { "id": "eth0", "mac": "AA:BB:CC:B3:0B:01" },
-                          "ipConfig": { "ip": "192.168.20.10", "prefix": 24 },
+                          "port": {
+                            "id": "eth0",
+                            "mac": "AA:BB:CC:B3:0B:01"
+                          },
+                          "ipConfig": {
+                            "ip": "192.168.20.10",
+                            "prefix": 24
+                          },
                           "gateway": null
                         },
                         {
                           "kind": "pc",
                           "id": "c3b-dns",
                           "hostname": "DNS-NOI-BO",
-                          "port": { "id": "eth0", "mac": "AA:BB:CC:B3:0B:53" },
-                          "ipConfig": { "ip": "192.168.20.53", "prefix": 24 },
+                          "port": {
+                            "id": "eth0",
+                            "mac": "AA:BB:CC:B3:0B:53"
+                          },
+                          "ipConfig": {
+                            "ip": "192.168.20.53",
+                            "prefix": 24
+                          },
                           "gateway": null
                         },
                         {
                           "kind": "pc",
                           "id": "c3b-cham-cong",
                           "hostname": "MAY-CHAM-CONG",
-                          "port": { "id": "eth0", "mac": "AA:BB:CC:B3:0B:30" },
-                          "ipConfig": { "ip": "192.168.20.30", "prefix": 24 },
+                          "port": {
+                            "id": "eth0",
+                            "mac": "AA:BB:CC:B3:0B:30"
+                          },
+                          "ipConfig": {
+                            "ip": "192.168.20.30",
+                            "prefix": 24
+                          },
                           "gateway": null
                         },
                         {
@@ -891,72 +1624,141 @@
                           "id": "c3b-sw",
                           "hostname": "SW-TANG-2",
                           "ports": [
-                            { "id": "p1", "vlan": 1 },
-                            { "id": "p2", "vlan": 1 },
-                            { "id": "p3", "vlan": 1 }
+                            {
+                              "id": "p1",
+                              "vlan": 1
+                            },
+                            {
+                              "id": "p2",
+                              "vlan": 1
+                            },
+                            {
+                              "id": "p3",
+                              "vlan": 1
+                            }
                           ]
                         }
                       ],
                       "links": [
                         {
                           "id": "c3b-w-seat",
-                          "a": { "deviceId": "c3b-ke-toan", "portId": "eth0" },
-                          "b": { "deviceId": "c3b-sw", "portId": "p1" }
+                          "a": {
+                            "deviceId": "c3b-ke-toan",
+                            "portId": "eth0"
+                          },
+                          "b": {
+                            "deviceId": "c3b-sw",
+                            "portId": "p1"
+                          }
                         },
                         {
                           "id": "c3b-w-dns",
-                          "a": { "deviceId": "c3b-dns", "portId": "eth0" },
-                          "b": { "deviceId": "c3b-sw", "portId": "p2" }
+                          "a": {
+                            "deviceId": "c3b-dns",
+                            "portId": "eth0"
+                          },
+                          "b": {
+                            "deviceId": "c3b-sw",
+                            "portId": "p2"
+                          }
                         },
                         {
                           "id": "c3b-w-cham-cong",
-                          "a": { "deviceId": "c3b-cham-cong", "portId": "eth0" },
-                          "b": { "deviceId": "c3b-sw", "portId": "p3" }
+                          "a": {
+                            "deviceId": "c3b-cham-cong",
+                            "portId": "eth0"
+                          },
+                          "b": {
+                            "deviceId": "c3b-sw",
+                            "portId": "p3"
+                          }
                         }
                       ]
                     },
                     "overlay": {
                       "dns": {
                         "serverIp": "192.168.20.53",
-                        "records": [{ "name": "web.noibo.vn", "ip": "192.168.20.80" }]
+                        "records": [
+                          {
+                            "name": "web.noibo.vn",
+                            "ip": "192.168.20.80"
+                          }
+                        ]
                       }
                     },
                     "seatId": "c3b-ke-toan"
                   },
-                  "symptom": { "kind": "resolve-fails", "from": "c3b-ke-toan", "name": "chamcong.noibo.vn" },
-                  "fix": { "kind": "choose-action" }
+                  "symptom": {
+                    "kind": "resolve-fails",
+                    "from": "c3b-ke-toan",
+                    "name": "chamcong.noibo.vn"
+                  },
+                  "fix": {
+                    "kind": "choose-action"
+                  }
                 },
                 "diagnosis": {
                   "choices": [
-                    { "vi": "DNS sống nhưng chưa có bản ghi cho tên mới" },
-                    { "vi": "Dịch vụ DNS đã chết hẳn" },
-                    { "vi": "Máy chấm công chưa cắm mạng" }
+                    {
+                      "vi": "DNS sống nhưng chưa có bản ghi cho tên mới"
+                    },
+                    {
+                      "vi": "Dịch vụ DNS đã chết hẳn"
+                    },
+                    {
+                      "vi": "Máy chấm công chưa cắm mạng"
+                    }
                   ],
                   "answerIndex": 0
                 },
                 "actions": {
                   "choices": [
-                    { "vi": "Thêm bản ghi chamcong.noibo.vn → 192.168.20.30 trên DNS server" },
-                    { "vi": "Khởi động lại dịch vụ DNS" },
-                    { "vi": "Đổi gateway của máy bạn" }
+                    {
+                      "vi": "Thêm bản ghi chamcong.noibo.vn → 192.168.20.30 trên DNS server"
+                    },
+                    {
+                      "vi": "Khởi động lại dịch vụ DNS"
+                    },
+                    {
+                      "vi": "Đổi gateway của máy bạn"
+                    }
                   ],
                   "answerIndex": 0
                 },
-                "hintTopic": { "vi": "khác nhau giữa timeout và Non-existent domain" }
+                "hintTopic": {
+                  "vi": "khác nhau giữa timeout và Non-existent domain"
+                }
               },
-              "hint": { "vi": "nslookup chamcong.noibo.vn trả \"Non-existent domain\" — tức danh bạ CÓ trả lời, chỉ là không tìm thấy tên. Thử nslookup web.noibo.vn: vẫn ra số ngon lành. Vậy dịch vụ chết hay thiếu trang?" },
-              "solution": { "vi": "DNS đang sống khỏe (tên cũ vẫn tra được, lời từ chối là \"Non-existent domain\" chứ không phải timeout) — chỉ là máy chấm công MỚI chưa được ghi vào danh bạ. Việc đúng: thêm bản ghi chamcong.noibo.vn → 192.168.20.30. Khởi động lại DNS là chữa nhầm bệnh." }
+              "hint": {
+                "vi": "nslookup chamcong.noibo.vn trả \"Non-existent domain\" — tức danh bạ CÓ trả lời, chỉ là không tìm thấy tên. Thử nslookup web.noibo.vn: vẫn ra số ngon lành. Vậy dịch vụ chết hay thiếu trang?"
+              },
+              "solution": {
+                "vi": "DNS đang sống khỏe (tên cũ vẫn tra được, lời từ chối là \"Non-existent domain\" chứ không phải timeout) — chỉ là máy chấm công MỚI chưa được ghi vào danh bạ. Việc đúng: thêm bản ghi chamcong.noibo.vn → 192.168.20.30. Khởi động lại DNS là chữa nhầm bệnh."
+              }
             },
             {
               "question": {
                 "kind": "typed",
                 "id": "m11-b3-prac-1",
-                "prompt": { "vi": "nslookup một tên trả về \"Non-existent domain\". Đó là dấu hiệu dịch vụ DNS đã chết, hay DNS sống nhưng thiếu bản ghi?" },
-                "accept": ["thiếu bản ghi", "chưa có bản ghi", "không có bản ghi", "sống nhưng thiếu bản ghi"],
-                "hintTopic": { "vi": "ai là người đang từ chối bạn" }
+                "prompt": {
+                  "vi": "nslookup một tên trả về \"Non-existent domain\". Đó là dấu hiệu dịch vụ DNS đã chết, hay DNS sống nhưng thiếu bản ghi?"
+                },
+                "accept": [
+                  "thiếu bản ghi",
+                  "chưa có bản ghi",
+                  "không có bản ghi",
+                  "sống nhưng thiếu bản ghi"
+                ],
+                "hintTopic": {
+                  "vi": "ai là người đang từ chối bạn"
+                }
               },
-              "hint": { "vi": "Muốn nói \"không có tên này\" thì phải CÓ AI ĐÓ đang trả lời đã. Dịch vụ chết thì chỉ có im lặng — timeout." },
-              "solution": { "vi": "DNS sống nhưng thiếu bản ghi: \"Non-existent domain\" là một CÂU TRẢ LỜI — dịch vụ phải sống mới nói được câu đó. Dịch vụ chết cho ra \"request timed out\" — im lặng hoàn toàn." }
+              "hint": {
+                "vi": "Muốn nói \"không có tên này\" thì phải CÓ AI ĐÓ đang trả lời đã. Dịch vụ chết thì chỉ có im lặng — timeout."
+              },
+              "solution": {
+                "vi": "DNS sống nhưng thiếu bản ghi: \"Non-existent domain\" là một CÂU TRẢ LỜI — dịch vụ phải sống mới nói được câu đó. Dịch vụ chết cho ra \"request timed out\" — im lặng hoàn toàn."
+              }
             }
           ]
         },
@@ -967,41 +1769,77 @@
               "question": {
                 "kind": "typed",
                 "id": "m11-b3-ret-1",
-                "prompt": { "vi": "Không nhìn lại bài: lệnh nào hỏi thẳng danh bạ DNS xem một tên trỏ về số nào?" },
-                "accept": ["nslookup"],
-                "hintTopic": { "vi": "đồ nghề chuyên hỏi danh bạ" }
+                "prompt": {
+                  "vi": "Không nhìn lại bài: lệnh nào hỏi thẳng danh bạ DNS xem một tên trỏ về số nào?"
+                },
+                "accept": [
+                  "nslookup"
+                ],
+                "hintTopic": {
+                  "vi": "đồ nghề chuyên hỏi danh bạ"
+                }
               },
-              "hint": { "vi": "ns là name server — lệnh này \"tra cứu\" trên đó." },
-              "solution": { "vi": "nslookup — hỏi thẳng DNS server, bỏ qua trình duyệt, để cô lập xem cuốn danh bạ có vấn đề không." }
+              "hint": {
+                "vi": "ns là name server — lệnh này \"tra cứu\" trên đó."
+              },
+              "solution": {
+                "vi": "nslookup — hỏi thẳng DNS server, bỏ qua trình duyệt, để cô lập xem cuốn danh bạ có vấn đề không."
+              }
             }
           ],
           "selfExplain": {
-            "prompt": { "vi": "Giải thích bằng lời của bạn: vì sao phải ping bằng SỐ trước khi kết luận \"web sập\" hay \"DNS hỏng\"?" },
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: vì sao phải ping bằng SỐ trước khi kết luận \"web sập\" hay \"DNS hỏng\"?"
+            },
             "keywords": [
-              ["tách", "cô lập", "khoanh", "phân biệt", "loại trừ"],
-              ["dns", "danh bạ", "tên"]
+              [
+                "tách",
+                "cô lập",
+                "khoanh",
+                "phân biệt",
+                "loại trừ"
+              ],
+              [
+                "dns",
+                "danh bạ",
+                "tên"
+              ]
             ],
-            "exampleAnswer": { "vi": "Vì \"gõ tên không vào được\" gộp hai nghi phạm làm một: đích chết, hoặc danh bạ hỏng. Ping bằng số bỏ DNS ra khỏi cuộc chơi — số sống mà tên chết thì bệnh chắc chắn nằm ở khâu phân giải tên, không phải ở đích. Tách được hai nghi phạm là đã khoanh vùng xong một nửa ca bệnh." }
+            "exampleAnswer": {
+              "vi": "Vì \"gõ tên không vào được\" gộp hai nghi phạm làm một: đích chết, hoặc danh bạ hỏng. Ping bằng số bỏ DNS ra khỏi cuộc chơi — số sống mà tên chết thì bệnh chắc chắn nằm ở khâu phân giải tên, không phải ở đích. Tách được hai nghi phạm là đã khoanh vùng xong một nửa ca bệnh."
+            }
           }
         },
         {
           "type": "summary",
           "bullets": [
-            { "vi": "Tách tên khỏi số: ping số trước — số sống + tên chết = bệnh ở DNS." },
-            { "vi": "\"Máy còn ping được\" chưa chắc \"dịch vụ còn sống\" — khám tới tầng dịch vụ." },
-            { "vi": "Timeout là dịch vụ im lặng; \"Non-existent domain\" là dịch vụ sống nhưng thiếu bản ghi." }
+            {
+              "vi": "Tách tên khỏi số: ping số trước — số sống + tên chết = bệnh ở DNS."
+            },
+            {
+              "vi": "\"Máy còn ping được\" chưa chắc \"dịch vụ còn sống\" — khám tới tầng dịch vụ."
+            },
+            {
+              "vi": "Timeout là dịch vụ im lặng; \"Non-existent domain\" là dịch vụ sống nhưng thiếu bản ghi."
+            }
           ],
-          "nextTeaser": { "vi": "Ca sau thuộc loại khó chịu nhất phòng khám: bệnh CHẬP CHỜN — lúc in được lúc không, chẳng theo quy luật nào. May là có một lệnh bắt được nó tại trận." }
+          "nextTeaser": {
+            "vi": "Ca sau thuộc loại khó chịu nhất phòng khám: bệnh CHẬP CHỜN — lúc in được lúc không, chẳng theo quy luật nào. May là có một lệnh bắt được nó tại trận."
+          }
         }
       ]
     },
     {
       "id": "m11-bai-4",
-      "missionTitle": { "vi": "Hai kẻ giành một số nhà" },
+      "missionTitle": {
+        "vi": "Hai kẻ giành một số nhà"
+      },
       "steps": [
         {
           "type": "hook",
-          "question": { "vi": "\"Máy in lúc được lúc không, sáng in ầm ầm, chiều lại đơ!\" — bệnh chập chờn không tái hiện được theo ý mình là ác mộng của người trực. Nhưng có một cuốn sổ trên chính máy bạn ghi lại thủ phạm." },
+          "question": {
+            "vi": "\"Máy in lúc được lúc không, sáng in ầm ầm, chiều lại đơ!\" — bệnh chập chờn không tái hiện được theo ý mình là ác mộng của người trực. Nhưng có một cuốn sổ trên chính máy bạn ghi lại thủ phạm."
+          },
           "visualId": "vis-hook-doi-chu"
         },
         {
@@ -1010,7 +1848,9 @@
             {
               "kind": "clinic",
               "id": "m11-b4-pre-ca",
-              "prompt": { "vi": "Phòng kế toán vừa nhận thêm một máy in mới. Từ hôm đó, in sang máy in cũ (192.168.20.21) lúc được lúc mất. Mẹo cho người trực: bệnh chập chờn thì đừng thử MỘT lần rồi kết luận — làm đi làm lại và so hai lần với nhau." },
+              "prompt": {
+                "vi": "Phòng kế toán vừa nhận thêm một máy in mới. Từ hôm đó, in sang máy in cũ (192.168.20.21) lúc được lúc mất. Mẹo cho người trực: bệnh chập chờn thì đừng thử MỘT lần rồi kết luận — làm đi làm lại và so hai lần với nhau."
+              },
               "spec": {
                 "patient": {
                   "topology": {
@@ -1019,24 +1859,42 @@
                         "kind": "pc",
                         "id": "c4a-ke-toan",
                         "hostname": "MAY-KE-TOAN",
-                        "port": { "id": "eth0", "mac": "AA:BB:CC:B4:0A:01" },
-                        "ipConfig": { "ip": "192.168.20.10", "prefix": 24 },
+                        "port": {
+                          "id": "eth0",
+                          "mac": "AA:BB:CC:B4:0A:01"
+                        },
+                        "ipConfig": {
+                          "ip": "192.168.20.10",
+                          "prefix": 24
+                        },
                         "gateway": null
                       },
                       {
                         "kind": "pc",
                         "id": "c4a-may-in-cu",
                         "hostname": "MAY-IN-KE-TOAN",
-                        "port": { "id": "eth0", "mac": "AA:BB:CC:B4:0A:20" },
-                        "ipConfig": { "ip": "192.168.20.21", "prefix": 24 },
+                        "port": {
+                          "id": "eth0",
+                          "mac": "AA:BB:CC:B4:0A:20"
+                        },
+                        "ipConfig": {
+                          "ip": "192.168.20.21",
+                          "prefix": 24
+                        },
                         "gateway": null
                       },
                       {
                         "kind": "pc",
                         "id": "c4a-may-in-moi",
                         "hostname": "MAY-IN-MOI",
-                        "port": { "id": "eth0", "mac": "AA:BB:CC:B4:0A:21" },
-                        "ipConfig": { "ip": "192.168.20.21", "prefix": 24 },
+                        "port": {
+                          "id": "eth0",
+                          "mac": "AA:BB:CC:B4:0A:21"
+                        },
+                        "ipConfig": {
+                          "ip": "192.168.20.21",
+                          "prefix": 24
+                        },
                         "gateway": null
                       },
                       {
@@ -1044,34 +1902,65 @@
                         "id": "c4a-sw",
                         "hostname": "SW-TANG-2",
                         "ports": [
-                          { "id": "p1", "vlan": 1 },
-                          { "id": "p2", "vlan": 1 },
-                          { "id": "p3", "vlan": 1 }
+                          {
+                            "id": "p1",
+                            "vlan": 1
+                          },
+                          {
+                            "id": "p2",
+                            "vlan": 1
+                          },
+                          {
+                            "id": "p3",
+                            "vlan": 1
+                          }
                         ]
                       }
                     ],
                     "links": [
                       {
                         "id": "c4a-w-seat",
-                        "a": { "deviceId": "c4a-ke-toan", "portId": "eth0" },
-                        "b": { "deviceId": "c4a-sw", "portId": "p1" }
+                        "a": {
+                          "deviceId": "c4a-ke-toan",
+                          "portId": "eth0"
+                        },
+                        "b": {
+                          "deviceId": "c4a-sw",
+                          "portId": "p1"
+                        }
                       },
                       {
                         "id": "c4a-w-cu",
-                        "a": { "deviceId": "c4a-may-in-cu", "portId": "eth0" },
-                        "b": { "deviceId": "c4a-sw", "portId": "p2" }
+                        "a": {
+                          "deviceId": "c4a-may-in-cu",
+                          "portId": "eth0"
+                        },
+                        "b": {
+                          "deviceId": "c4a-sw",
+                          "portId": "p2"
+                        }
                       },
                       {
                         "id": "c4a-w-moi",
-                        "a": { "deviceId": "c4a-may-in-moi", "portId": "eth0" },
-                        "b": { "deviceId": "c4a-sw", "portId": "p3" }
+                        "a": {
+                          "deviceId": "c4a-may-in-moi",
+                          "portId": "eth0"
+                        },
+                        "b": {
+                          "deviceId": "c4a-sw",
+                          "portId": "p3"
+                        }
                       }
                     ]
                   },
                   "overlay": {},
                   "seatId": "c4a-ke-toan"
                 },
-                "symptom": { "kind": "ping-flaps", "from": "c4a-ke-toan", "target": "192.168.20.21" },
+                "symptom": {
+                  "kind": "ping-flaps",
+                  "from": "c4a-ke-toan",
+                  "target": "192.168.20.21"
+                },
                 "fix": {
                   "kind": "edit-network",
                   "allow": {
@@ -1084,32 +1973,59 @@
                     "setRoutes": false,
                     "maxDevices": 4
                   },
-                  "goals": [{ "kind": "ping", "from": "c4a-ke-toan", "to": "c4a-may-in-cu", "expect": "reach" }],
-                  "mustClearDiagnoses": ["duplicate-ip"],
+                  "goals": [
+                    {
+                      "kind": "ping",
+                      "from": "c4a-ke-toan",
+                      "to": "c4a-may-in-cu",
+                      "expect": "reach"
+                    }
+                  ],
+                  "mustClearDiagnoses": [
+                    "duplicate-ip"
+                  ],
                   "solution": {
                     "devices": [
                       {
                         "kind": "pc",
                         "id": "c4a-ke-toan",
                         "hostname": "MAY-KE-TOAN",
-                        "port": { "id": "eth0", "mac": "AA:BB:CC:B4:0A:01" },
-                        "ipConfig": { "ip": "192.168.20.10", "prefix": 24 },
+                        "port": {
+                          "id": "eth0",
+                          "mac": "AA:BB:CC:B4:0A:01"
+                        },
+                        "ipConfig": {
+                          "ip": "192.168.20.10",
+                          "prefix": 24
+                        },
                         "gateway": null
                       },
                       {
                         "kind": "pc",
                         "id": "c4a-may-in-cu",
                         "hostname": "MAY-IN-KE-TOAN",
-                        "port": { "id": "eth0", "mac": "AA:BB:CC:B4:0A:20" },
-                        "ipConfig": { "ip": "192.168.20.21", "prefix": 24 },
+                        "port": {
+                          "id": "eth0",
+                          "mac": "AA:BB:CC:B4:0A:20"
+                        },
+                        "ipConfig": {
+                          "ip": "192.168.20.21",
+                          "prefix": 24
+                        },
                         "gateway": null
                       },
                       {
                         "kind": "pc",
                         "id": "c4a-may-in-moi",
                         "hostname": "MAY-IN-MOI",
-                        "port": { "id": "eth0", "mac": "AA:BB:CC:B4:0A:21" },
-                        "ipConfig": { "ip": "192.168.20.22", "prefix": 24 },
+                        "port": {
+                          "id": "eth0",
+                          "mac": "AA:BB:CC:B4:0A:21"
+                        },
+                        "ipConfig": {
+                          "ip": "192.168.20.22",
+                          "prefix": 24
+                        },
                         "gateway": null
                       },
                       {
@@ -1117,27 +2033,54 @@
                         "id": "c4a-sw",
                         "hostname": "SW-TANG-2",
                         "ports": [
-                          { "id": "p1", "vlan": 1 },
-                          { "id": "p2", "vlan": 1 },
-                          { "id": "p3", "vlan": 1 }
+                          {
+                            "id": "p1",
+                            "vlan": 1
+                          },
+                          {
+                            "id": "p2",
+                            "vlan": 1
+                          },
+                          {
+                            "id": "p3",
+                            "vlan": 1
+                          }
                         ]
                       }
                     ],
                     "links": [
                       {
                         "id": "c4a-w-seat",
-                        "a": { "deviceId": "c4a-ke-toan", "portId": "eth0" },
-                        "b": { "deviceId": "c4a-sw", "portId": "p1" }
+                        "a": {
+                          "deviceId": "c4a-ke-toan",
+                          "portId": "eth0"
+                        },
+                        "b": {
+                          "deviceId": "c4a-sw",
+                          "portId": "p1"
+                        }
                       },
                       {
                         "id": "c4a-w-cu",
-                        "a": { "deviceId": "c4a-may-in-cu", "portId": "eth0" },
-                        "b": { "deviceId": "c4a-sw", "portId": "p2" }
+                        "a": {
+                          "deviceId": "c4a-may-in-cu",
+                          "portId": "eth0"
+                        },
+                        "b": {
+                          "deviceId": "c4a-sw",
+                          "portId": "p2"
+                        }
                       },
                       {
                         "id": "c4a-w-moi",
-                        "a": { "deviceId": "c4a-may-in-moi", "portId": "eth0" },
-                        "b": { "deviceId": "c4a-sw", "portId": "p3" }
+                        "a": {
+                          "deviceId": "c4a-may-in-moi",
+                          "portId": "eth0"
+                        },
+                        "b": {
+                          "deviceId": "c4a-sw",
+                          "portId": "p3"
+                        }
                       }
                     ]
                   }
@@ -1145,17 +2088,29 @@
               },
               "diagnosis": {
                 "choices": [
-                  { "vi": "Hai thiết bị đang giành nhau một địa chỉ IP" },
-                  { "vi": "Dây máy in cũ bị lỏng" },
-                  { "vi": "DNS trả sai địa chỉ" }
+                  {
+                    "vi": "Hai thiết bị đang giành nhau một địa chỉ IP"
+                  },
+                  {
+                    "vi": "Dây máy in cũ bị lỏng"
+                  },
+                  {
+                    "vi": "DNS trả sai địa chỉ"
+                  }
                 ],
                 "answerIndex": 0
               },
-              "hintTopic": { "vi": "cuốn sổ MAC mà máy bạn tự ghi" },
-              "explain": { "vi": "Ping 192.168.20.21 hai lượt rồi mở arp -a mà xem: lượt đầu địa chỉ đó gắn MAC …:20, lượt sau đã thành …:21 — MỘT số nhà, HAI chủ thay nhau trả lời. Máy in mới bị đặt trùng IP với máy in cũ, ai đáp ARP sau cùng thì \"giành\" được gói tin, nên dịch vụ chập chờn theo vận may. Sửa: cấp cho máy in mới một địa chỉ khác (ví dụ .22)." }
+              "hintTopic": {
+                "vi": "cuốn sổ MAC mà máy bạn tự ghi"
+              },
+              "explain": {
+                "vi": "Ping 192.168.20.21 hai lượt rồi mở arp -a mà xem: lượt đầu địa chỉ đó gắn MAC …:20, lượt sau đã thành …:21 — MỘT số nhà, HAI chủ thay nhau trả lời. Máy in mới bị đặt trùng IP với máy in cũ, ai đáp ARP sau cùng thì \"giành\" được gói tin, nên dịch vụ chập chờn theo vận may. Sửa: cấp cho máy in mới một địa chỉ khác (ví dụ .22)."
+              }
             }
           ],
-          "encouragement": { "vi": "Bệnh chập chờn mà bắt được ngay thì bạn giỏi hơn khối người trực thật rồi. Chưa bắt được cũng không sao — lệnh \"làm chứng\" của ca này nằm ngay bài dạy." }
+          "encouragement": {
+            "vi": "Bệnh chập chờn mà bắt được ngay thì bạn giỏi hơn khối người trực thật rồi. Chưa bắt được cũng không sao — lệnh \"làm chứng\" của ca này nằm ngay bài dạy."
+          }
         },
         {
           "type": "teach",
@@ -1163,8 +2118,12 @@
             {
               "conceptId": "m11-arp-doi-chu",
               "visualId": "vis-arp-doi-chu",
-              "body": { "vi": "Nhớ Module 4: MAC là số khung đóng chết vào máy, IP là biển số tháo lắp được. Lệnh arp -a mở cuốn sổ \"biển số ↔ số khung\" mà máy bạn tự ghi qua mỗi lần hỏi ARP. Bệnh trùng IP hiện nguyên hình ở đó: ping cùng một IP hai lượt mà MAC trong sổ ĐỔI — tức là hai cái máy khác nhau đang thay phiên trả lời cùng một biển số. Đó là bằng chứng thép, không cần đoán." },
-              "deepDive": { "vi": "Vì sao lúc được lúc mất? Khi hai máy cùng giữ một IP, cả hai đều đáp lời gọi ARP — ai đáp SAU CÙNG thì đè câu trả lời của kẻ trước trong cache của máy hỏi. Gói tin vì thế lúc chảy về máy này, lúc về máy kia, tùy vận may từng đợt ARP. Ngoài đời bạn còn thấy Windows kêu \"IP address conflict\" — chính là nó tự soi thấy chuyện này." }
+              "body": {
+                "vi": "Nhớ Module 4: MAC là số khung đóng chết vào máy, IP là biển số tháo lắp được. Lệnh arp -a mở cuốn sổ \"biển số ↔ số khung\" mà máy bạn tự ghi qua mỗi lần hỏi ARP. Bệnh trùng IP hiện nguyên hình ở đó: ping cùng một IP hai lượt mà MAC trong sổ ĐỔI — tức là hai cái máy khác nhau đang thay phiên trả lời cùng một biển số. Đó là bằng chứng thép, không cần đoán."
+              },
+              "deepDive": {
+                "vi": "Vì sao lúc được lúc mất? Khi hai máy cùng giữ một IP, cả hai đều đáp lời gọi ARP — ai đáp SAU CÙNG thì đè câu trả lời của kẻ trước trong cache của máy hỏi. Gói tin vì thế lúc chảy về máy này, lúc về máy kia, tùy vận may từng đợt ARP. Ngoài đời bạn còn thấy Windows kêu \"IP address conflict\" — chính là nó tự soi thấy chuyện này."
+              }
             }
           ]
         },
@@ -1176,28 +2135,56 @@
               "question": {
                 "kind": "typed",
                 "id": "m11-b4-prac-1",
-                "prompt": { "vi": "Bạn ping cùng một địa chỉ hai lượt. arp -a lượt đầu ghi MAC đuôi :20, lượt sau thành đuôi :21. Tên bệnh là gì?" },
-                "accept": ["trùng ip", "trùng địa chỉ ip", "duplicate ip", "ip conflict", "xung đột ip"],
-                "hintTopic": { "vi": "một biển số, mấy chủ xe" }
+                "prompt": {
+                  "vi": "Bạn ping cùng một địa chỉ hai lượt. arp -a lượt đầu ghi MAC đuôi :20, lượt sau thành đuôi :21. Tên bệnh là gì?"
+                },
+                "accept": [
+                  "trùng ip",
+                  "trùng địa chỉ ip",
+                  "duplicate ip",
+                  "ip conflict",
+                  "xung đột ip"
+                ],
+                "hintTopic": {
+                  "vi": "một biển số, mấy chủ xe"
+                }
               },
-              "hint": { "vi": "MAC là số khung — mỗi máy một số, không đổi được. Cùng một IP mà số khung đổi qua đổi lại nghĩa là mấy máy đang giữ IP đó?" },
-              "solution": { "vi": "Trùng IP (IP conflict): hai máy cùng giữ một địa chỉ, thay phiên trả lời ARP nên MAC trong sổ đổi qua đổi lại. Một biển số mà hai số khung là bằng chứng không cãi được." }
+              "hint": {
+                "vi": "MAC là số khung — mỗi máy một số, không đổi được. Cùng một IP mà số khung đổi qua đổi lại nghĩa là mấy máy đang giữ IP đó?"
+              },
+              "solution": {
+                "vi": "Trùng IP (IP conflict): hai máy cùng giữ một địa chỉ, thay phiên trả lời ARP nên MAC trong sổ đổi qua đổi lại. Một biển số mà hai số khung là bằng chứng không cãi được."
+              }
             },
             {
               "question": {
                 "kind": "mcq",
                 "id": "m11-b4-prac-2",
-                "prompt": { "vi": "Vì sao trùng IP làm dịch vụ LÚC ĐƯỢC LÚC MẤT thay vì chết hẳn?" },
+                "prompt": {
+                  "vi": "Vì sao trùng IP làm dịch vụ LÚC ĐƯỢC LÚC MẤT thay vì chết hẳn?"
+                },
                 "choices": [
-                  { "vi": "Ai trả lời ARP sau cùng sẽ giành được IP — gói lúc chảy về máy này, lúc về máy kia" },
-                  { "vi": "Switch tự động chặn cả hai máy khi thấy trùng" },
-                  { "vi": "Gói tin bị chia đôi cho cả hai máy nên mất một nửa" }
+                  {
+                    "vi": "Ai trả lời ARP sau cùng sẽ giành được IP — gói lúc chảy về máy này, lúc về máy kia"
+                  },
+                  {
+                    "vi": "Switch tự động chặn cả hai máy khi thấy trùng"
+                  },
+                  {
+                    "vi": "Gói tin bị chia đôi cho cả hai máy nên mất một nửa"
+                  }
                 ],
                 "answerIndex": 0,
-                "hintTopic": { "vi": "ai là người trả lời câu hỏi ARP" }
+                "hintTopic": {
+                  "vi": "ai là người trả lời câu hỏi ARP"
+                }
               },
-              "hint": { "vi": "Cả hai máy đều nghe thấy câu hỏi \"ai giữ IP này?\" — và cả hai đều trả lời. Cache của máy hỏi giữ câu trả lời của ai?" },
-              "solution": { "vi": "Cả hai máy đều đáp ARP; câu trả lời đến SAU đè câu trả lời trước trong cache. Gói tin vì thế lúc về máy này lúc về máy kia — dịch vụ chập chờn theo từng đợt ARP, chứ không chết hẳn." }
+              "hint": {
+                "vi": "Cả hai máy đều nghe thấy câu hỏi \"ai giữ IP này?\" — và cả hai đều trả lời. Cache của máy hỏi giữ câu trả lời của ai?"
+              },
+              "solution": {
+                "vi": "Cả hai máy đều đáp ARP; câu trả lời đến SAU đè câu trả lời trước trong cache. Gói tin vì thế lúc về máy này lúc về máy kia — dịch vụ chập chờn theo từng đợt ARP, chứ không chết hẳn."
+              }
             }
           ]
         },
@@ -1208,41 +2195,77 @@
               "question": {
                 "kind": "typed",
                 "id": "m11-b4-ret-1",
-                "prompt": { "vi": "Không nhìn lại bài: lệnh nào mở cuốn sổ \"IP ↔ MAC\" mà máy bạn tự ghi, để bắt tại trận bệnh trùng IP?" },
-                "accept": ["arp", "arp -a"],
-                "hintTopic": { "vi": "cuốn sổ ghi từ những lần hỏi \"ai giữ địa chỉ này\"" }
+                "prompt": {
+                  "vi": "Không nhìn lại bài: lệnh nào mở cuốn sổ \"IP ↔ MAC\" mà máy bạn tự ghi, để bắt tại trận bệnh trùng IP?"
+                },
+                "accept": [
+                  "arp",
+                  "arp -a"
+                ],
+                "hintTopic": {
+                  "vi": "cuốn sổ ghi từ những lần hỏi \"ai giữ địa chỉ này\""
+                }
               },
-              "hint": { "vi": "Chính là giao thức \"gọi giữa sân\" của Module 4 — lệnh cùng tên." },
-              "solution": { "vi": "arp -a — xem ARP cache. Ping hai lượt rồi so MAC của cùng một IP giữa hai lần xem: MAC đổi là trùng IP." }
+              "hint": {
+                "vi": "Chính là giao thức \"gọi giữa sân\" của Module 4 — lệnh cùng tên."
+              },
+              "solution": {
+                "vi": "arp -a — xem ARP cache. Ping hai lượt rồi so MAC của cùng một IP giữa hai lần xem: MAC đổi là trùng IP."
+              }
             }
           ],
           "selfExplain": {
-            "prompt": { "vi": "Giải thích bằng lời của bạn: vì sao MAC trong arp -a đổi qua đổi lại lại là bằng chứng của bệnh trùng IP?" },
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: vì sao MAC trong arp -a đổi qua đổi lại lại là bằng chứng của bệnh trùng IP?"
+            },
             "keywords": [
-              ["mac", "số khung", "không đổi"],
-              ["hai máy", "giành", "thay phiên", "trùng"]
+              [
+                "mac",
+                "số khung",
+                "không đổi"
+              ],
+              [
+                "hai máy",
+                "giành",
+                "thay phiên",
+                "trùng"
+              ]
             ],
-            "exampleAnswer": { "vi": "MAC gắn chết vào từng máy, không đổi được — nên một IP tử tế chỉ được phép đi kèm một MAC. Thấy cùng một IP mà MAC đổi qua đổi lại nghĩa là hai máy khác nhau đang thay phiên trả lời cho địa chỉ đó, tức hai máy đang giành nhau cùng một IP." }
+            "exampleAnswer": {
+              "vi": "MAC gắn chết vào từng máy, không đổi được — nên một IP tử tế chỉ được phép đi kèm một MAC. Thấy cùng một IP mà MAC đổi qua đổi lại nghĩa là hai máy khác nhau đang thay phiên trả lời cho địa chỉ đó, tức hai máy đang giành nhau cùng một IP."
+            }
           }
         },
         {
           "type": "summary",
           "bullets": [
-            { "vi": "Bệnh chập chờn: đừng thử một lần — làm đi làm lại rồi so hai lần với nhau." },
-            { "vi": "arp -a là cuốn sổ IP ↔ MAC; cùng IP mà MAC đổi = hai máy giành một địa chỉ." },
-            { "vi": "Chữa trùng IP: cấp cho một trong hai máy địa chỉ khác còn trống." }
+            {
+              "vi": "Bệnh chập chờn: đừng thử một lần — làm đi làm lại rồi so hai lần với nhau."
+            },
+            {
+              "vi": "arp -a là cuốn sổ IP ↔ MAC; cùng IP mà MAC đổi = hai máy giành một địa chỉ."
+            },
+            {
+              "vi": "Chữa trùng IP: cấp cho một trong hai máy địa chỉ khác còn trống."
+            }
           ],
-          "nextTeaser": { "vi": "Ca chót là ca hắc búa nhất khoa: mạng sống nhăn răng, web chạy ầm ầm — mà ping thì chết ngay trên máy. Nghe vô lý? Chờ xem thủ phạm là ai." }
+          "nextTeaser": {
+            "vi": "Ca chót là ca hắc búa nhất khoa: mạng sống nhăn răng, web chạy ầm ầm — mà ping thì chết ngay trên máy. Nghe vô lý? Chờ xem thủ phạm là ai."
+          }
         }
       ]
     },
     {
       "id": "m11-bai-5",
-      "missionTitle": { "vi": "Bệnh nằm ngay trên máy" },
+      "missionTitle": {
+        "vi": "Bệnh nằm ngay trên máy"
+      },
       "steps": [
         {
           "type": "hook",
-          "question": { "vi": "Web mở được, chat chạy, file server vào ngon — nhưng gõ ping là \"General failure\" ngay tại chỗ. Mạng sống mà ping chết: nghe vô lý, cho tới khi bạn nhớ ra gói tin phải XIN PHÉP rời máy trước đã." },
+          "question": {
+            "vi": "Web mở được, chat chạy, file server vào ngon — nhưng gõ ping là \"General failure\" ngay tại chỗ. Mạng sống mà ping chết: nghe vô lý, cho tới khi bạn nhớ ra gói tin phải XIN PHÉP rời máy trước đã."
+          },
           "visualId": "vis-hook-manh-moi"
         },
         {
@@ -1251,7 +2274,9 @@
             {
               "kind": "clinic",
               "id": "m11-b5-pre-ca",
-              "prompt": { "vi": "Anh trưởng phòng kế toán (máy vào miền công ty) than: \"web nội bộ chị vẫn xem được, mà ping kiểm tra thì toàn lỗi — máy anh hỏng mạng à?\". Khám đi: lần này đủ đồ nghề rồi đấy, kể cả mấy lệnh dành riêng cho máy trong miền (Module 9)." },
+              "prompt": {
+                "vi": "Anh trưởng phòng kế toán (máy vào miền công ty) than: \"web nội bộ chị vẫn xem được, mà ping kiểm tra thì toàn lỗi — máy anh hỏng mạng à?\". Khám đi: lần này đủ đồ nghề rồi đấy, kể cả mấy lệnh dành riêng cho máy trong miền (Module 9)."
+              },
               "spec": {
                 "patient": {
                   "topology": {
@@ -1260,16 +2285,28 @@
                         "kind": "pc",
                         "id": "c5a-truong-phong",
                         "hostname": "MAY-TRUONG-PHONG",
-                        "port": { "id": "eth0", "mac": "AA:BB:CC:B5:0A:01" },
-                        "ipConfig": { "ip": "192.168.20.11", "prefix": 24 },
+                        "port": {
+                          "id": "eth0",
+                          "mac": "AA:BB:CC:B5:0A:01"
+                        },
+                        "ipConfig": {
+                          "ip": "192.168.20.11",
+                          "prefix": 24
+                        },
                         "gateway": null
                       },
                       {
                         "kind": "pc",
                         "id": "c5a-web",
                         "hostname": "WEB-NOI-BO",
-                        "port": { "id": "eth0", "mac": "AA:BB:CC:B5:0A:80" },
-                        "ipConfig": { "ip": "192.168.20.80", "prefix": 24 },
+                        "port": {
+                          "id": "eth0",
+                          "mac": "AA:BB:CC:B5:0A:80"
+                        },
+                        "ipConfig": {
+                          "ip": "192.168.20.80",
+                          "prefix": 24
+                        },
                         "gateway": null
                       },
                       {
@@ -1277,21 +2314,39 @@
                         "id": "c5a-sw",
                         "hostname": "SW-TANG-2",
                         "ports": [
-                          { "id": "p1", "vlan": 1 },
-                          { "id": "p2", "vlan": 1 }
+                          {
+                            "id": "p1",
+                            "vlan": 1
+                          },
+                          {
+                            "id": "p2",
+                            "vlan": 1
+                          }
                         ]
                       }
                     ],
                     "links": [
                       {
                         "id": "c5a-w-seat",
-                        "a": { "deviceId": "c5a-truong-phong", "portId": "eth0" },
-                        "b": { "deviceId": "c5a-sw", "portId": "p1" }
+                        "a": {
+                          "deviceId": "c5a-truong-phong",
+                          "portId": "eth0"
+                        },
+                        "b": {
+                          "deviceId": "c5a-sw",
+                          "portId": "p1"
+                        }
                       },
                       {
                         "id": "c5a-w-web",
-                        "a": { "deviceId": "c5a-web", "portId": "eth0" },
-                        "b": { "deviceId": "c5a-sw", "portId": "p2" }
+                        "a": {
+                          "deviceId": "c5a-web",
+                          "portId": "eth0"
+                        },
+                        "b": {
+                          "deviceId": "c5a-sw",
+                          "portId": "p2"
+                        }
                       }
                     ]
                   },
@@ -1306,44 +2361,85 @@
                     ],
                     "gpos": {
                       "c5a-truong-phong": [
-                        { "name": "HinhNen-CongTy" },
-                        { "name": "GPO-Chan-ICMP-Ra", "blocking": true },
-                        { "name": "CamUSB-KeToan" }
+                        {
+                          "name": "HinhNen-CongTy"
+                        },
+                        {
+                          "name": "GPO-Chan-ICMP-Ra",
+                          "blocking": true
+                        },
+                        {
+                          "name": "CamUSB-KeToan"
+                        }
                       ]
                     },
                     "connections": {
                       "c5a-truong-phong": [
-                        { "proto": "TCP", "local": "192.168.20.11:51344", "remote": "192.168.20.80:443", "state": "ESTABLISHED" },
-                        { "proto": "TCP", "local": "0.0.0.0:445", "remote": "*:*", "state": "LISTENING" }
+                        {
+                          "proto": "TCP",
+                          "local": "192.168.20.11:51344",
+                          "remote": "192.168.20.80:443",
+                          "state": "ESTABLISHED"
+                        },
+                        {
+                          "proto": "TCP",
+                          "local": "0.0.0.0:445",
+                          "remote": "*:*",
+                          "state": "LISTENING"
+                        }
                       ]
                     }
                   },
                   "seatId": "c5a-truong-phong"
                 },
-                "symptom": { "kind": "ping-fails", "from": "c5a-truong-phong", "target": "192.168.20.80" },
-                "fix": { "kind": "choose-action" }
+                "symptom": {
+                  "kind": "ping-fails",
+                  "from": "c5a-truong-phong",
+                  "target": "192.168.20.80"
+                },
+                "fix": {
+                  "kind": "choose-action"
+                }
               },
               "diagnosis": {
                 "choices": [
-                  { "vi": "Một chính sách (GPO) trên máy đang chặn ping chiều đi" },
-                  { "vi": "Mạng tới máy chủ web bị đứt" },
-                  { "vi": "Máy đang trùng địa chỉ IP với máy khác" }
+                  {
+                    "vi": "Một chính sách (GPO) trên máy đang chặn ping chiều đi"
+                  },
+                  {
+                    "vi": "Mạng tới máy chủ web bị đứt"
+                  },
+                  {
+                    "vi": "Máy đang trùng địa chỉ IP với máy khác"
+                  }
                 ],
                 "answerIndex": 0
               },
               "actions": {
                 "choices": [
-                  { "vi": "Báo quản trị miền sửa GPO đang chặn ICMP chiều đi" },
-                  { "vi": "Thay dây mạng cho máy" },
-                  { "vi": "Khởi động lại máy chủ web" }
+                  {
+                    "vi": "Báo quản trị miền sửa GPO đang chặn ICMP chiều đi"
+                  },
+                  {
+                    "vi": "Thay dây mạng cho máy"
+                  },
+                  {
+                    "vi": "Khởi động lại máy chủ web"
+                  }
                 ],
                 "answerIndex": 0
               },
-              "hintTopic": { "vi": "luật đang áp lên chính máy đó" },
-              "explain": { "vi": "netstat cho thấy máy đang có kết nối ESTABLISHED tới 192.168.20.80:443 — tức đường mạng tới đúng máy chủ đó ĐANG SỐNG. Ping lại \"General failure\" ngay tại chỗ, capture trống trơn: gói ICMP không được phép rời máy. Mạng không đứt, không trùng IP — có luật chặn ngay trên máy. gpresult lôi thủ phạm ra ánh sáng: GPO-Chan-ICMP-Ra. Máy vào miền thì luật đến từ miền — việc đúng là báo quản trị miền sửa GPO đó." }
+              "hintTopic": {
+                "vi": "luật đang áp lên chính máy đó"
+              },
+              "explain": {
+                "vi": "netstat cho thấy máy đang có kết nối ESTABLISHED tới 192.168.20.80:443 — tức đường mạng tới đúng máy chủ đó ĐANG SỐNG. Ping lại \"General failure\" ngay tại chỗ, capture trống trơn: gói ICMP không được phép rời máy. Mạng không đứt, không trùng IP — có luật chặn ngay trên máy. gpresult lôi thủ phạm ra ánh sáng: GPO-Chan-ICMP-Ra. Máy vào miền thì luật đến từ miền — việc đúng là báo quản trị miền sửa GPO đó."
+              }
             }
           ],
-          "encouragement": { "vi": "Ca này đánh gục nhiều người trực thật vì nó ngược đời — chính vì thế nó được xếp cuối khoa. Bài dạy ngay sau đây gom đủ ba lệnh soi tại chỗ." }
+          "encouragement": {
+            "vi": "Ca này đánh gục nhiều người trực thật vì nó ngược đời — chính vì thế nó được xếp cuối khoa. Bài dạy ngay sau đây gom đủ ba lệnh soi tại chỗ."
+          }
         },
         {
           "type": "teach",
@@ -1351,8 +2447,12 @@
             {
               "conceptId": "m11-manh-moi-tai-cho",
               "visualId": "vis-manh-moi-tai-cho",
-              "body": { "vi": "Khi \"mạng sống mà ping chết\", đừng đổ tội cho dây hay switch — soi ngay trên máy. Ba ngọn đèn: netstat liệt kê các kết nối đang mở (có ESTABLISHED tới đích tức đường tới đó còn sống); capture xem gói ICMP có thật sự rời máy không (trống trơn = bị giữ lại từ trong nhà); gpresult (máy vào miền, Module 9) kê các chính sách đang áp — luật chặn ICMP nếu có sẽ nằm ngay trong danh sách đó." },
-              "deepDive": { "vi": "Ping dùng giao thức ICMP — một loại gói RIÊNG, khác với TCP mà web (443) hay file (445) đang dùng. Tường lửa và GPO chặn được TỪNG LOẠI gói theo TỪNG CHIỀU: chặn ICMP chiều đi thì ping chết mà web vẫn chạy; chặn ICMP chiều vào trên máy đích thì máy đích \"câm\" với ping nhưng dịch vụ thật vẫn phục vụ. Vì thế \"ping chết\" không bao giờ đủ để kết luận \"mạng chết\" — nó chỉ nói ICMP đang không qua được." }
+              "body": {
+                "vi": "Khi \"mạng sống mà ping chết\", đừng đổ tội cho dây hay switch — soi ngay trên máy. Ba ngọn đèn: netstat liệt kê các kết nối đang mở (có ESTABLISHED tới đích tức đường tới đó còn sống); capture xem gói ICMP có thật sự rời máy không (trống trơn = bị giữ lại từ trong nhà); gpresult (máy vào miền, Module 9) kê các chính sách đang áp — luật chặn ICMP nếu có sẽ nằm ngay trong danh sách đó."
+              },
+              "deepDive": {
+                "vi": "Ping dùng giao thức ICMP — một loại gói RIÊNG, khác với TCP mà web (443) hay file (445) đang dùng. Tường lửa và GPO chặn được TỪNG LOẠI gói theo TỪNG CHIỀU: chặn ICMP chiều đi thì ping chết mà web vẫn chạy; chặn ICMP chiều vào trên máy đích thì máy đích \"câm\" với ping nhưng dịch vụ thật vẫn phục vụ. Vì thế \"ping chết\" không bao giờ đủ để kết luận \"mạng chết\" — nó chỉ nói ICMP đang không qua được."
+              }
             }
           ]
         },
@@ -1364,7 +2464,9 @@
               "question": {
                 "kind": "clinic",
                 "id": "m11-b5-prac-ca",
-                "prompt": { "vi": "Ca ngược chiều: từ máy bạn ping MAY-CHU-FILE (192.168.20.40) toàn \"Request timed out\", nhưng ổ mạng chia sẻ từ đúng máy chủ đó vẫn mở phà phà. Máy bạn KHÔNG vào miền, không có GPO nào cả. Tự khám từ đầu tới cuối rồi chọn cách xử lý." },
+                "prompt": {
+                  "vi": "Ca ngược chiều: từ máy bạn ping MAY-CHU-FILE (192.168.20.40) toàn \"Request timed out\", nhưng ổ mạng chia sẻ từ đúng máy chủ đó vẫn mở phà phà. Máy bạn KHÔNG vào miền, không có GPO nào cả. Tự khám từ đầu tới cuối rồi chọn cách xử lý."
+                },
                 "spec": {
                   "patient": {
                     "topology": {
@@ -1373,16 +2475,28 @@
                           "kind": "pc",
                           "id": "c5b-ke-toan",
                           "hostname": "MAY-KE-TOAN",
-                          "port": { "id": "eth0", "mac": "AA:BB:CC:B5:0B:01" },
-                          "ipConfig": { "ip": "192.168.20.10", "prefix": 24 },
+                          "port": {
+                            "id": "eth0",
+                            "mac": "AA:BB:CC:B5:0B:01"
+                          },
+                          "ipConfig": {
+                            "ip": "192.168.20.10",
+                            "prefix": 24
+                          },
                           "gateway": null
                         },
                         {
                           "kind": "pc",
                           "id": "c5b-file",
                           "hostname": "MAY-CHU-FILE",
-                          "port": { "id": "eth0", "mac": "AA:BB:CC:B5:0B:40" },
-                          "ipConfig": { "ip": "192.168.20.40", "prefix": 24 },
+                          "port": {
+                            "id": "eth0",
+                            "mac": "AA:BB:CC:B5:0B:40"
+                          },
+                          "ipConfig": {
+                            "ip": "192.168.20.40",
+                            "prefix": 24
+                          },
                           "gateway": null
                         },
                         {
@@ -1390,21 +2504,39 @@
                           "id": "c5b-sw",
                           "hostname": "SW-TANG-2",
                           "ports": [
-                            { "id": "p1", "vlan": 1 },
-                            { "id": "p2", "vlan": 1 }
+                            {
+                              "id": "p1",
+                              "vlan": 1
+                            },
+                            {
+                              "id": "p2",
+                              "vlan": 1
+                            }
                           ]
                         }
                       ],
                       "links": [
                         {
                           "id": "c5b-w-seat",
-                          "a": { "deviceId": "c5b-ke-toan", "portId": "eth0" },
-                          "b": { "deviceId": "c5b-sw", "portId": "p1" }
+                          "a": {
+                            "deviceId": "c5b-ke-toan",
+                            "portId": "eth0"
+                          },
+                          "b": {
+                            "deviceId": "c5b-sw",
+                            "portId": "p1"
+                          }
                         },
                         {
                           "id": "c5b-w-file",
-                          "a": { "deviceId": "c5b-file", "portId": "eth0" },
-                          "b": { "deviceId": "c5b-sw", "portId": "p2" }
+                          "a": {
+                            "deviceId": "c5b-file",
+                            "portId": "eth0"
+                          },
+                          "b": {
+                            "deviceId": "c5b-sw",
+                            "portId": "p2"
+                          }
                         }
                       ]
                     },
@@ -1419,46 +2551,89 @@
                       ],
                       "connections": {
                         "c5b-ke-toan": [
-                          { "proto": "TCP", "local": "192.168.20.10:52001", "remote": "192.168.20.40:445", "state": "ESTABLISHED" }
+                          {
+                            "proto": "TCP",
+                            "local": "192.168.20.10:52001",
+                            "remote": "192.168.20.40:445",
+                            "state": "ESTABLISHED"
+                          }
                         ]
                       }
                     },
                     "seatId": "c5b-ke-toan"
                   },
-                  "symptom": { "kind": "ping-fails", "from": "c5b-ke-toan", "target": "192.168.20.40" },
-                  "fix": { "kind": "choose-action" }
+                  "symptom": {
+                    "kind": "ping-fails",
+                    "from": "c5b-ke-toan",
+                    "target": "192.168.20.40"
+                  },
+                  "fix": {
+                    "kind": "choose-action"
+                  }
                 },
                 "diagnosis": {
                   "choices": [
-                    { "vi": "Tường lửa trên máy chủ file đang nuốt gói ping chiều vào" },
-                    { "vi": "Dây của máy chủ file bị tuột" },
-                    { "vi": "Máy bạn sai gateway" }
+                    {
+                      "vi": "Tường lửa trên máy chủ file đang nuốt gói ping chiều vào"
+                    },
+                    {
+                      "vi": "Dây của máy chủ file bị tuột"
+                    },
+                    {
+                      "vi": "Máy bạn sai gateway"
+                    }
                   ],
                   "answerIndex": 0
                 },
                 "actions": {
                   "choices": [
-                    { "vi": "Mở luật cho ICMP chiều vào trong tường lửa của MAY-CHU-FILE" },
-                    { "vi": "Cắm lại dây mạng cho MAY-CHU-FILE" },
-                    { "vi": "Đặt lại gateway cho máy bạn" }
+                    {
+                      "vi": "Mở luật cho ICMP chiều vào trong tường lửa của MAY-CHU-FILE"
+                    },
+                    {
+                      "vi": "Cắm lại dây mạng cho MAY-CHU-FILE"
+                    },
+                    {
+                      "vi": "Đặt lại gateway cho máy bạn"
+                    }
                   ],
                   "answerIndex": 0
                 },
-                "hintTopic": { "vi": "gói ping có RỜI được máy bạn không, và có VỀ được không" }
+                "hintTopic": {
+                  "vi": "gói ping có RỜI được máy bạn không, và có VỀ được không"
+                }
               },
-              "hint": { "vi": "Lần này ping ra \"Request timed out\" chứ không phải General failure — gói RỜI được máy bạn. netstat thấy ESTABLISHED tới :445 của chính máy chủ đó — đường mạng sống. Chạy capture xem: echo-request bay TỚI nơi mà không có echo-reply bay về. Ai đang nuốt gói ở cửa NHÀ NÓ?" },
-              "solution": { "vi": "Đường mạng thông (dịch vụ file :445 vẫn ESTABLISHED, capture thấy echo-request tới đích), nhưng máy chủ file lặng thinh với ICMP — tường lửa của chính nó chặn chiều VÀO. So với ca trước: chặn outbound chết từ General failure ngay tại máy mình; chặn inbound thì gói đi được mà không có hồi âm. Việc đúng: mở luật ICMP inbound trên MAY-CHU-FILE." }
+              "hint": {
+                "vi": "Lần này ping ra \"Request timed out\" chứ không phải General failure — gói RỜI được máy bạn. netstat thấy ESTABLISHED tới :445 của chính máy chủ đó — đường mạng sống. Chạy capture xem: echo-request bay TỚI nơi mà không có echo-reply bay về. Ai đang nuốt gói ở cửa NHÀ NÓ?"
+              },
+              "solution": {
+                "vi": "Đường mạng thông (dịch vụ file :445 vẫn ESTABLISHED, capture thấy echo-request tới đích), nhưng máy chủ file lặng thinh với ICMP — tường lửa của chính nó chặn chiều VÀO. So với ca trước: chặn outbound chết từ General failure ngay tại máy mình; chặn inbound thì gói đi được mà không có hồi âm. Việc đúng: mở luật ICMP inbound trên MAY-CHU-FILE."
+              }
             },
             {
               "question": {
                 "kind": "typed",
                 "id": "m11-b5-prac-1",
-                "prompt": { "vi": "netstat thấy kết nối ESTABLISHED tới máy chủ, nhưng ping chính máy chủ đó lại thất bại. Đường mạng giữa hai máy còn sống hay đã đứt?" },
-                "accept": ["còn sống", "vẫn sống", "sống", "còn thông", "vẫn thông"],
-                "hintTopic": { "vi": "ESTABLISHED nghĩa là gì" }
+                "prompt": {
+                  "vi": "netstat thấy kết nối ESTABLISHED tới máy chủ, nhưng ping chính máy chủ đó lại thất bại. Đường mạng giữa hai máy còn sống hay đã đứt?"
+                },
+                "accept": [
+                  "còn sống",
+                  "vẫn sống",
+                  "sống",
+                  "còn thông",
+                  "vẫn thông"
+                ],
+                "hintTopic": {
+                  "vi": "ESTABLISHED nghĩa là gì"
+                }
               },
-              "hint": { "vi": "Một kết nối TCP muốn ở trạng thái ESTABLISHED thì hai máy phải đang bắt tay nói chuyện được với nhau — qua đúng con đường đó." },
-              "solution": { "vi": "Còn sống: ESTABLISHED nghĩa là TCP đang nói chuyện thành công qua chính con đường ấy. Ping chết chỉ chứng tỏ ICMP bị chặn ở đâu đó — không đủ để kết luận mạng đứt." }
+              "hint": {
+                "vi": "Một kết nối TCP muốn ở trạng thái ESTABLISHED thì hai máy phải đang bắt tay nói chuyện được với nhau — qua đúng con đường đó."
+              },
+              "solution": {
+                "vi": "Còn sống: ESTABLISHED nghĩa là TCP đang nói chuyện thành công qua chính con đường ấy. Ping chết chỉ chứng tỏ ICMP bị chặn ở đâu đó — không đủ để kết luận mạng đứt."
+              }
             }
           ]
         },
@@ -1469,31 +2644,64 @@
               "question": {
                 "kind": "typed",
                 "id": "m11-b5-ret-1",
-                "prompt": { "vi": "Không nhìn lại bài: trên máy đã vào miền, lệnh nào liệt kê các chính sách (GPO) đang áp — nơi tìm luật chặn nhầm?" },
-                "accept": ["gpresult", "gpresult /r"],
-                "hintTopic": { "vi": "lệnh quen từ Module 9" }
+                "prompt": {
+                  "vi": "Không nhìn lại bài: trên máy đã vào miền, lệnh nào liệt kê các chính sách (GPO) đang áp — nơi tìm luật chặn nhầm?"
+                },
+                "accept": [
+                  "gpresult",
+                  "gpresult /r"
+                ],
+                "hintTopic": {
+                  "vi": "lệnh quen từ Module 9"
+                }
               },
-              "hint": { "vi": "Chính là lệnh bạn dùng ở bài kế thừa GPO — \"kết quả group policy\"." },
-              "solution": { "vi": "gpresult — kê mọi GPO đang áp lên máy. Máy vào miền mà tự dưng đổi tính, soi danh sách này trước khi đổ tội cho phần cứng." }
+              "hint": {
+                "vi": "Chính là lệnh bạn dùng ở bài kế thừa GPO — \"kết quả group policy\"."
+              },
+              "solution": {
+                "vi": "gpresult — kê mọi GPO đang áp lên máy. Máy vào miền mà tự dưng đổi tính, soi danh sách này trước khi đổ tội cho phần cứng."
+              }
             }
           ],
           "selfExplain": {
-            "prompt": { "vi": "Giải thích bằng lời của bạn: vì sao \"ping chết\" chưa đủ để kết luận \"mạng chết\"?" },
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: vì sao \"ping chết\" chưa đủ để kết luận \"mạng chết\"?"
+            },
             "keywords": [
-              ["icmp", "loại gói", "riêng", "một loại"],
-              ["chặn", "luật", "tường lửa", "gpo"]
+              [
+                "icmp",
+                "loại gói",
+                "riêng",
+                "một loại"
+              ],
+              [
+                "chặn",
+                "luật",
+                "tường lửa",
+                "gpo"
+              ]
             ],
-            "exampleAnswer": { "vi": "Ping dùng ICMP — chỉ là MỘT loại gói. Tường lửa hay GPO chặn được riêng ICMP theo từng chiều trong khi TCP của web, file vẫn chạy bình thường. Nên ping chết chỉ nói \"ICMP không qua được\"; muốn kết luận mạng chết phải soi thêm netstat, capture, gpresult xem gói bị nuốt ở đâu." }
+            "exampleAnswer": {
+              "vi": "Ping dùng ICMP — chỉ là MỘT loại gói. Tường lửa hay GPO chặn được riêng ICMP theo từng chiều trong khi TCP của web, file vẫn chạy bình thường. Nên ping chết chỉ nói \"ICMP không qua được\"; muốn kết luận mạng chết phải soi thêm netstat, capture, gpresult xem gói bị nuốt ở đâu."
+            }
           }
         },
         {
           "type": "summary",
           "bullets": [
-            { "vi": "Mạng sống mà ping chết: soi luật ngay trên máy — gpresult, netstat, capture." },
-            { "vi": "Chặn ICMP chiều đi = General failure tại chỗ; chặn chiều vào = timeout mà dịch vụ vẫn chạy." },
-            { "vi": "Ping chỉ đo ICMP — nó chết không có nghĩa cả mạng chết." }
+            {
+              "vi": "Mạng sống mà ping chết: soi luật ngay trên máy — gpresult, netstat, capture."
+            },
+            {
+              "vi": "Chặn ICMP chiều đi = General failure tại chỗ; chặn chiều vào = timeout mà dịch vụ vẫn chạy."
+            },
+            {
+              "vi": "Ping chỉ đo ICMP — nó chết không có nghĩa cả mạng chết."
+            }
           ],
-          "nextTeaser": { "vi": "Hết khoa khám lẻ — bài thi tổng của phòng khám sẽ trộn đủ mọi loại bệnh bạn từng gặp, không báo trước ca nào. Đúng như một buổi trực thật." }
+          "nextTeaser": {
+            "vi": "Hết khoa khám lẻ — bài thi tổng của phòng khám sẽ trộn đủ mọi loại bệnh bạn từng gặp, không báo trước ca nào. Đúng như một buổi trực thật."
+          }
         }
       ]
     }
@@ -1503,66 +2711,102 @@
       "id": "m11-kham-theo-tang",
       "term": "Bottom-up troubleshooting",
       "glossVi": "Khám theo tầng — lần từ dây cắm lên tới dịch vụ",
-      "metaphor": { "vi": "Như bác sĩ bắt mạch trước khi hỏi chuyện ăn ngủ: tầng dưới hỏng thì mọi tầng trên hỏng theo, nên khám từ nền móng lên là loại trừ nhanh nhất." },
+      "metaphor": {
+        "vi": "Như bác sĩ bắt mạch trước khi hỏi chuyện ăn ngủ: tầng dưới hỏng thì mọi tầng trên hỏng theo, nên khám từ nền móng lên là loại trừ nhanh nhất."
+      },
       "iconId": "icon-m11-kham-theo-tang",
       "flashcard": {
-        "front": { "vi": "Khám theo tầng (bottom-up) là khám theo thứ tự nào?" },
-        "back": { "vi": "Từ thấp lên cao: dây cắm → địa chỉ IP → đường đi (gateway/router) → dịch vụ (DNS, web). Tầng dưới hỏng kéo mọi tầng trên hỏng theo." }
+        "front": {
+          "vi": "Khám theo tầng (bottom-up) là khám theo thứ tự nào?"
+        },
+        "back": {
+          "vi": "Từ thấp lên cao: dây cắm → địa chỉ IP → đường đi (gateway/router) → dịch vụ (DNS, web). Tầng dưới hỏng kéo mọi tầng trên hỏng theo."
+        }
       }
     },
     {
       "id": "m11-ipconfig-ping",
       "term": "ipconfig & ping",
       "glossVi": "Cặp đồ nghề đầu tay: đọc giấy tờ của máy và bắt mạch đường truyền",
-      "metaphor": { "vi": "ipconfig là xem giấy tờ tùy thân; ping là cái ống nghe — ba kiểu đáp (Reply, General failure, unreachable) là ba nhịp mạch khác nhau." },
+      "metaphor": {
+        "vi": "ipconfig là xem giấy tờ tùy thân; ping là cái ống nghe — ba kiểu đáp (Reply, General failure, unreachable) là ba nhịp mạch khác nhau."
+      },
       "iconId": "icon-m11-ipconfig-ping",
       "flashcard": {
-        "front": { "vi": "Ping ra \"General failure\" khác gì \"Destination host unreachable\"?" },
-        "back": { "vi": "General failure: gói không rời nổi MÁY MÌNH (dây mình tuột, thiếu gateway, bị chặn outbound). Unreachable: gói rời được máy nhưng lời gọi ARP không ai đáp — bệnh phía trước, thường ở máy đích." }
+        "front": {
+          "vi": "Ping ra \"General failure\" khác gì \"Destination host unreachable\"?"
+        },
+        "back": {
+          "vi": "General failure: gói không rời nổi MÁY MÌNH (dây mình tuột, thiếu gateway, bị chặn outbound). Unreachable: gói rời được máy nhưng lời gọi ARP không ai đáp — bệnh phía trước, thường ở máy đích."
+        }
       }
     },
     {
       "id": "m11-tracert",
       "term": "tracert",
       "glossVi": "Gọi tên từng trạm trên đường đi để tìm chỗ nghẽn",
-      "metaphor": { "vi": "Như gọi điện lần lượt cho từng trạm giao hàng: trạm nào còn bắt máy thì hàng đã qua đó — chỗ mất hàng nằm ngay sau trạm cuối còn bắt máy." },
+      "metaphor": {
+        "vi": "Như gọi điện lần lượt cho từng trạm giao hàng: trạm nào còn bắt máy thì hàng đã qua đó — chỗ mất hàng nằm ngay sau trạm cuối còn bắt máy."
+      },
       "iconId": "icon-m11-tracert",
       "flashcard": {
-        "front": { "vi": "Đọc kết quả tracert thế nào để tìm chỗ nghẽn?" },
-        "back": { "vi": "Trạm còn trả lời = đường tới đó còn sống. Chỗ nghẽn nằm ngay sau trạm cuối cùng còn lên tiếng; * * * từ chặng 1 nghĩa là chưa qua nổi gateway của chính mình." }
+        "front": {
+          "vi": "Đọc kết quả tracert thế nào để tìm chỗ nghẽn?"
+        },
+        "back": {
+          "vi": "Trạm còn trả lời = đường tới đó còn sống. Chỗ nghẽn nằm ngay sau trạm cuối cùng còn lên tiếng; * * * từ chặng 1 nghĩa là chưa qua nổi gateway của chính mình."
+        }
       }
     },
     {
       "id": "m11-tach-ten-so",
       "term": "nslookup",
       "glossVi": "Tách tên khỏi số để khoanh bệnh về DNS",
-      "metaphor": { "vi": "Gọi bằng số điện thoại thì được, gọi qua danh bạ thì lạc — người ốm là cuốn danh bạ, không phải người nghe máy." },
+      "metaphor": {
+        "vi": "Gọi bằng số điện thoại thì được, gọi qua danh bạ thì lạc — người ốm là cuốn danh bạ, không phải người nghe máy."
+      },
       "iconId": "icon-m11-tach-ten-so",
       "flashcard": {
-        "front": { "vi": "nslookup trả \"request timed out\" khác gì \"Non-existent domain\"?" },
-        "back": { "vi": "Timeout: dịch vụ DNS im lặng — nghi nó chết. Non-existent domain: DNS SỐNG và trả lời hẳn hoi, chỉ là không có bản ghi cho tên đó — chữa bằng cách thêm bản ghi, không phải khởi động lại." }
+        "front": {
+          "vi": "nslookup trả \"request timed out\" khác gì \"Non-existent domain\"?"
+        },
+        "back": {
+          "vi": "Timeout: dịch vụ DNS im lặng — nghi nó chết. Non-existent domain: DNS SỐNG và trả lời hẳn hoi, chỉ là không có bản ghi cho tên đó — chữa bằng cách thêm bản ghi, không phải khởi động lại."
+        }
       }
     },
     {
       "id": "m11-arp-doi-chu",
       "term": "arp -a",
       "glossVi": "Cuốn sổ IP ↔ MAC làm chứng cho bệnh trùng IP",
-      "metaphor": { "vi": "MAC là số khung, IP là biển số. Một biển số mà sổ ghi hai số khung thay phiên nhau — hai xe đang giành một tấm biển." },
+      "metaphor": {
+        "vi": "MAC là số khung, IP là biển số. Một biển số mà sổ ghi hai số khung thay phiên nhau — hai xe đang giành một tấm biển."
+      },
       "iconId": "icon-m11-arp-doi-chu",
       "flashcard": {
-        "front": { "vi": "Bắt bệnh trùng IP bằng arp -a như thế nào?" },
-        "back": { "vi": "Ping cùng một IP vài lượt rồi so arp -a giữa các lần: cùng IP mà MAC đổi nghĩa là hai máy thay phiên trả lời ARP — hai máy đang giữ chung một địa chỉ." }
+        "front": {
+          "vi": "Bắt bệnh trùng IP bằng arp -a như thế nào?"
+        },
+        "back": {
+          "vi": "Ping cùng một IP vài lượt rồi so arp -a giữa các lần: cùng IP mà MAC đổi nghĩa là hai máy thay phiên trả lời ARP — hai máy đang giữ chung một địa chỉ."
+        }
       }
     },
     {
       "id": "m11-manh-moi-tai-cho",
       "term": "gpresult & netstat",
       "glossVi": "Soi manh mối ngay trên máy khi mạng sống mà ping chết",
-      "metaphor": { "vi": "Cửa nhà bị dán bùa thì trách gì đường sá: netstat xem các cuộc nói chuyện đang mở, capture xem gói có rời nhà, gpresult đọc các lá bùa đang dán." },
+      "metaphor": {
+        "vi": "Cửa nhà bị dán bùa thì trách gì đường sá: netstat xem các cuộc nói chuyện đang mở, capture xem gói có rời nhà, gpresult đọc các lá bùa đang dán."
+      },
       "iconId": "icon-m11-manh-moi-tai-cho",
       "flashcard": {
-        "front": { "vi": "\"Mạng sống mà ping chết\" — soi ba thứ gì ngay trên máy?" },
-        "back": { "vi": "netstat (còn kết nối ESTABLISHED = đường sống), capture (gói ICMP có rời máy/có hồi âm không), gpresult (máy vào miền — luật GPO nào đang chặn). Ping chỉ đo ICMP, nó chết không có nghĩa mạng chết." }
+        "front": {
+          "vi": "\"Mạng sống mà ping chết\" — soi ba thứ gì ngay trên máy?"
+        },
+        "back": {
+          "vi": "netstat (còn kết nối ESTABLISHED = đường sống), capture (gói ICMP có rời máy/có hồi âm không), gpresult (máy vào miền — luật GPO nào đang chặn). Ping chỉ đo ICMP, nó chết không có nghĩa mạng chết."
+        }
       }
     }
   ],
@@ -1570,110 +2814,216 @@
     {
       "kind": "typed",
       "id": "m11-mt-1",
-      "prompt": { "vi": "Lệnh nào cho xem địa chỉ IP, subnet mask và gateway của máy đang ngồi?" },
-      "accept": ["ipconfig"],
-      "hintTopic": { "vi": "tờ giấy tùy thân của máy" },
-      "explain": { "vi": "ipconfig — bước mở đầu của mọi buổi khám: đọc giấy tờ của máy trước khi thăm dò ra ngoài." }
+      "prompt": {
+        "vi": "Lệnh nào cho xem địa chỉ IP, subnet mask và gateway của máy đang ngồi?"
+      },
+      "accept": [
+        "ipconfig"
+      ],
+      "hintTopic": {
+        "vi": "tờ giấy tùy thân của máy"
+      },
+      "explain": {
+        "vi": "ipconfig — bước mở đầu của mọi buổi khám: đọc giấy tờ của máy trước khi thăm dò ra ngoài."
+      }
     },
     {
       "kind": "mcq",
       "id": "m11-mt-2",
-      "prompt": { "vi": "Khám theo tầng (bottom-up) đi theo thứ tự nào?" },
+      "prompt": {
+        "vi": "Khám theo tầng (bottom-up) đi theo thứ tự nào?"
+      },
       "choices": [
-        { "vi": "Dịch vụ → đường đi → IP → dây" },
-        { "vi": "Dây → IP → đường đi → dịch vụ" },
-        { "vi": "IP → dây → dịch vụ → đường đi" }
+        {
+          "vi": "Dịch vụ → đường đi → IP → dây"
+        },
+        {
+          "vi": "Dây → IP → đường đi → dịch vụ"
+        },
+        {
+          "vi": "IP → dây → dịch vụ → đường đi"
+        }
       ],
       "answerIndex": 1,
-      "explain": { "vi": "Từ thấp lên cao: dây cắm → địa chỉ IP → đường đi → dịch vụ. Tầng dưới hỏng thì mọi tầng trên hỏng theo, nên loại trừ từ nền móng lên." }
+      "explain": {
+        "vi": "Từ thấp lên cao: dây cắm → địa chỉ IP → đường đi → dịch vụ. Tầng dưới hỏng thì mọi tầng trên hỏng theo, nên loại trừ từ nền móng lên."
+      }
     },
     {
       "kind": "typed",
       "id": "m11-mt-3",
-      "prompt": { "vi": "Ping bằng địa chỉ IP thì Reply, ping bằng tên miền thì \"could not find host\". Bệnh nằm ở hệ thống nào?" },
-      "accept": ["dns", "danh bạ", "phân giải tên"],
-      "hintTopic": { "vi": "đứa trung gian giữa tên và số" },
-      "explain": { "vi": "Số sống mà tên chết — đích không ốm, kẻ ốm là DNS (khâu phân giải tên). Đây chính là phép thử tách-tên-khỏi-số." }
+      "prompt": {
+        "vi": "Ping bằng địa chỉ IP thì Reply, ping bằng tên miền thì \"could not find host\". Bệnh nằm ở hệ thống nào?"
+      },
+      "accept": [
+        "dns",
+        "danh bạ",
+        "phân giải tên"
+      ],
+      "hintTopic": {
+        "vi": "đứa trung gian giữa tên và số"
+      },
+      "explain": {
+        "vi": "Số sống mà tên chết — đích không ốm, kẻ ốm là DNS (khâu phân giải tên). Đây chính là phép thử tách-tên-khỏi-số."
+      }
     },
     {
       "kind": "typed",
       "id": "m11-mt-4",
-      "prompt": { "vi": "Ping ra \"Reply from … TTL=126\" trên máy Windows (xuất phát TTL 128). Gói đã đi qua mấy router?" },
-      "accept": ["2", "hai", "2 router", "hai router"],
-      "hintTopic": { "vi": "mỗi router trừ TTL đi một" },
-      "explain": { "vi": "128 − 126 = 2: mỗi router trên đường trừ TTL đi 1 (kiến thức định tuyến Module 4). Đọc TTL là ước được quãng đường mà chưa cần tracert." }
+      "prompt": {
+        "vi": "Ping ra \"Reply from … TTL=126\" trên máy Windows (xuất phát TTL 128). Gói đã đi qua mấy router?"
+      },
+      "accept": [
+        "2",
+        "hai",
+        "2 router",
+        "hai router"
+      ],
+      "hintTopic": {
+        "vi": "mỗi router trừ TTL đi một"
+      },
+      "explain": {
+        "vi": "128 − 126 = 2: mỗi router trên đường trừ TTL đi 1 (kiến thức định tuyến Module 4). Đọc TTL là ước được quãng đường mà chưa cần tracert."
+      }
     },
     {
       "kind": "mcq",
       "id": "m11-mt-5",
-      "prompt": { "vi": "arp -a sau hai lượt ping cùng một IP cho hai MAC khác nhau. Kết luận nào đúng?" },
+      "prompt": {
+        "vi": "arp -a sau hai lượt ping cùng một IP cho hai MAC khác nhau. Kết luận nào đúng?"
+      },
       "choices": [
-        { "vi": "Hai thiết bị đang giành nhau một địa chỉ IP" },
-        { "vi": "Switch ghi sai bảng MAC nên trả về lung tung" },
-        { "vi": "DNS đang trả về sai bản ghi cho tên máy đó" }
+        {
+          "vi": "Hai thiết bị đang giành nhau một địa chỉ IP"
+        },
+        {
+          "vi": "Switch ghi sai bảng MAC nên trả về lung tung"
+        },
+        {
+          "vi": "DNS đang trả về sai bản ghi cho tên máy đó"
+        }
       ],
       "answerIndex": 0,
-      "explain": { "vi": "MAC gắn chết vào máy — cùng một IP mà MAC đổi nghĩa là hai máy thay phiên trả lời ARP: bệnh trùng IP, bắt tại trận bằng chính cuốn sổ arp." }
+      "explain": {
+        "vi": "MAC gắn chết vào máy — cùng một IP mà MAC đổi nghĩa là hai máy thay phiên trả lời ARP: bệnh trùng IP, bắt tại trận bằng chính cuốn sổ arp."
+      }
     },
     {
       "kind": "typed",
       "id": "m11-mt-6",
-      "prompt": { "vi": "Máy vào miền tự dưng ping chết ngay tại chỗ dù web vẫn chạy. Lệnh nào lôi danh sách chính sách đang áp lên máy ra ánh sáng?" },
-      "accept": ["gpresult", "gpresult /r"],
-      "hintTopic": { "vi": "lệnh soi GPO từ Module 9" },
-      "explain": { "vi": "gpresult — kê mọi GPO đang áp (Module 9). Máy vào miền thì luật đến từ miền; luật chặn ICMP nếu có sẽ nằm ngay trong danh sách đó." }
+      "prompt": {
+        "vi": "Máy vào miền tự dưng ping chết ngay tại chỗ dù web vẫn chạy. Lệnh nào lôi danh sách chính sách đang áp lên máy ra ánh sáng?"
+      },
+      "accept": [
+        "gpresult",
+        "gpresult /r"
+      ],
+      "hintTopic": {
+        "vi": "lệnh soi GPO từ Module 9"
+      },
+      "explain": {
+        "vi": "gpresult — kê mọi GPO đang áp (Module 9). Máy vào miền thì luật đến từ miền; luật chặn ICMP nếu có sẽ nằm ngay trong danh sách đó."
+      }
     },
     {
       "kind": "mcq",
       "id": "m11-mt-9",
-      "prompt": { "vi": "Ping ra \"PING: transmit failed. General failure.\" khác gì với \"Destination host unreachable\"?" },
+      "prompt": {
+        "vi": "Ping ra \"PING: transmit failed. General failure.\" khác gì với \"Destination host unreachable\"?"
+      },
       "choices": [
-        { "vi": "Câu đầu là hỏng ngay tại máy mình; câu sau là đi được nhưng không tới đích" },
-        { "vi": "Câu đầu là máy đích đã tắt hẳn; câu sau là tên miền không phân giải ra được số" },
-        { "vi": "Hai câu như nhau, Windows in ngẫu nhiên một trong hai khi ping hỏng" }
+        {
+          "vi": "Câu đầu là hỏng ngay tại máy mình; câu sau là đi được nhưng không tới đích"
+        },
+        {
+          "vi": "Câu đầu là máy đích đã tắt hẳn; câu sau là tên miền không phân giải ra được số"
+        },
+        {
+          "vi": "Hai câu như nhau, Windows in ngẫu nhiên một trong hai khi ping hỏng"
+        }
       ],
       "answerIndex": 0,
-      "hintTopic": { "vi": "hai lời từ chối của ping khác nhau ở chỗ nào" },
-      "explain": { "vi": "General failure: card hoặc dây của CHÍNH máy mình có vấn đề, gói chưa rời khỏi máy. Destination host unreachable: gói đi được nhưng đường tới đích đứt. Đọc đúng hai câu này là khoanh xong nửa ca bệnh." }
+      "hintTopic": {
+        "vi": "hai lời từ chối của ping khác nhau ở chỗ nào"
+      },
+      "explain": {
+        "vi": "General failure: card hoặc dây của CHÍNH máy mình có vấn đề, gói chưa rời khỏi máy. Destination host unreachable: gói đi được nhưng đường tới đích đứt. Đọc đúng hai câu này là khoanh xong nửa ca bệnh."
+      }
     },
     {
       "kind": "typed",
       "id": "m11-mt-10",
-      "prompt": { "vi": "Trang web mở rất chậm và bạn muốn biết gói tin nghẽn ở trạm nào trên đường đi. Lệnh nào gọi tên từng trạm?" },
-      "accept": ["tracert", "tracert -d", "traceroute"],
-      "hintTopic": { "vi": "lệnh gọi tên từng trạm trên đường đi" },
-      "explain": { "vi": "tracert kê từng trạm kèm thời gian. Trạm nào bắt đầu chậm hẳn hoặc dừng hẳn là chỗ đáng nghi — nó khoanh vùng giúp bạn chứ không sửa hộ bạn." }
+      "prompt": {
+        "vi": "Trang web mở rất chậm và bạn muốn biết gói tin nghẽn ở trạm nào trên đường đi. Lệnh nào gọi tên từng trạm?"
+      },
+      "accept": [
+        "tracert",
+        "tracert -d",
+        "traceroute"
+      ],
+      "hintTopic": {
+        "vi": "lệnh gọi tên từng trạm trên đường đi"
+      },
+      "explain": {
+        "vi": "tracert kê từng trạm kèm thời gian. Trạm nào bắt đầu chậm hẳn hoặc dừng hẳn là chỗ đáng nghi — nó khoanh vùng giúp bạn chứ không sửa hộ bạn."
+      }
     },
     {
       "kind": "mcq",
       "id": "m11-mt-11",
-      "prompt": { "vi": "nslookup trả \"Request timed out\" khác gì với \"Non-existent domain\"?" },
+      "prompt": {
+        "vi": "nslookup trả \"Request timed out\" khác gì với \"Non-existent domain\"?"
+      },
       "choices": [
-        { "vi": "Timeout: máy chủ DNS không trả lời. Non-existent: DNS trả lời rằng tên đó không có" },
-        { "vi": "Timeout: tên miền bị viết sai chính tả. Non-existent: máy chủ DNS đang quá tải nặng" },
-        { "vi": "Hai câu cùng nghĩa là DNS hỏng, chỉ khác ở phiên bản Windows in câu nào" }
+        {
+          "vi": "Timeout: máy chủ DNS không trả lời. Non-existent: DNS trả lời rằng tên đó không có"
+        },
+        {
+          "vi": "Timeout: tên miền bị viết sai chính tả. Non-existent: máy chủ DNS đang quá tải nặng"
+        },
+        {
+          "vi": "Hai câu cùng nghĩa là DNS hỏng, chỉ khác ở phiên bản Windows in câu nào"
+        }
       ],
       "answerIndex": 0,
-      "hintTopic": { "vi": "hai lời của nslookup: im lặng và trả lời không có" },
-      "explain": { "vi": "Timeout là DNS không nói gì — nghi máy chủ DNS chết. Non-existent là DNS nói rõ \"không có tên này\" — nghi thiếu bản ghi. Cùng vùng bệnh, hai cách chữa khác nhau." }
+      "hintTopic": {
+        "vi": "hai lời của nslookup: im lặng và trả lời không có"
+      },
+      "explain": {
+        "vi": "Timeout là DNS không nói gì — nghi máy chủ DNS chết. Non-existent là DNS nói rõ \"không có tên này\" — nghi thiếu bản ghi. Cùng vùng bệnh, hai cách chữa khác nhau."
+      }
     },
     {
       "kind": "mcq",
       "id": "m11-mt-12",
-      "prompt": { "vi": "Ping tới máy khác thì chết, nhưng netstat trên chính máy đó vẫn kê ra các kết nối ESTABLISHED. Đọc thế nào?" },
+      "prompt": {
+        "vi": "Ping tới máy khác thì chết, nhưng netstat trên chính máy đó vẫn kê ra các kết nối ESTABLISHED. Đọc thế nào?"
+      },
       "choices": [
-        { "vi": "Mạng vẫn thông; ICMP đang bị chặn tại chỗ bởi tường lửa hoặc GPO" },
-        { "vi": "Card mạng đã hỏng hẳn; các kết nối kia chỉ là dấu vết cũ chưa được dọn" },
-        { "vi": "Máy đã rơi khỏi miền nên chỉ còn giữ được kết nối ra ngoài Internet" }
+        {
+          "vi": "Mạng vẫn thông; ICMP đang bị chặn tại chỗ bởi tường lửa hoặc GPO"
+        },
+        {
+          "vi": "Card mạng đã hỏng hẳn; các kết nối kia chỉ là dấu vết cũ chưa được dọn"
+        },
+        {
+          "vi": "Máy đã rơi khỏi miền nên chỉ còn giữ được kết nối ra ngoài Internet"
+        }
       ],
       "answerIndex": 0,
-      "hintTopic": { "vi": "netstat khi ping chết mà mạng vẫn sống" },
-      "explain": { "vi": "ESTABLISHED nghĩa là dữ liệu vẫn đi về được. Chỉ mỗi ping chết thì thủ phạm là luật chặn ICMP ngay trên máy — đúng cái bẫy \"mạng sống mà ping chết\"." }
+      "hintTopic": {
+        "vi": "netstat khi ping chết mà mạng vẫn sống"
+      },
+      "explain": {
+        "vi": "ESTABLISHED nghĩa là dữ liệu vẫn đi về được. Chỉ mỗi ping chết thì thủ phạm là luật chặn ICMP ngay trên máy — đúng cái bẫy \"mạng sống mà ping chết\"."
+      }
     },
     {
       "kind": "clinic",
       "id": "m11-mt-7",
-      "prompt": { "vi": "Ca thi thứ nhất: sau buổi dọn tủ rack cuối tuần, KE-TOAN-A không gọi được KE-TOAN-B (192.168.30.20) nữa dù hai máy cùng dải. Máy KY-THUAT thì theo quy định vốn phải tách riêng khỏi kế toán. Khám, gọi tên bệnh, và sửa cho đúng — đừng phá luôn bức tường ngăn với kỹ thuật." },
+      "prompt": {
+        "vi": "Ca thi thứ nhất: sau buổi dọn tủ rack cuối tuần, KE-TOAN-A không gọi được KE-TOAN-B (192.168.30.20) nữa dù hai máy cùng dải. Máy KY-THUAT thì theo quy định vốn phải tách riêng khỏi kế toán. Khám, gọi tên bệnh, và sửa cho đúng — đừng phá luôn bức tường ngăn với kỹ thuật."
+      },
       "spec": {
         "patient": {
           "topology": {
@@ -1682,24 +3032,42 @@
                 "kind": "pc",
                 "id": "mt7-kt-a",
                 "hostname": "KE-TOAN-A",
-                "port": { "id": "eth0", "mac": "AA:BB:CC:BC:07:01" },
-                "ipConfig": { "ip": "192.168.30.10", "prefix": 24 },
+                "port": {
+                  "id": "eth0",
+                  "mac": "AA:BB:CC:BC:07:01"
+                },
+                "ipConfig": {
+                  "ip": "192.168.30.10",
+                  "prefix": 24
+                },
                 "gateway": null
               },
               {
                 "kind": "pc",
                 "id": "mt7-kt-b",
                 "hostname": "KE-TOAN-B",
-                "port": { "id": "eth0", "mac": "AA:BB:CC:BC:07:02" },
-                "ipConfig": { "ip": "192.168.30.20", "prefix": 24 },
+                "port": {
+                  "id": "eth0",
+                  "mac": "AA:BB:CC:BC:07:02"
+                },
+                "ipConfig": {
+                  "ip": "192.168.30.20",
+                  "prefix": 24
+                },
                 "gateway": null
               },
               {
                 "kind": "pc",
                 "id": "mt7-ky-thuat",
                 "hostname": "KY-THUAT",
-                "port": { "id": "eth0", "mac": "AA:BB:CC:BC:07:03" },
-                "ipConfig": { "ip": "192.168.30.30", "prefix": 24 },
+                "port": {
+                  "id": "eth0",
+                  "mac": "AA:BB:CC:BC:07:03"
+                },
+                "ipConfig": {
+                  "ip": "192.168.30.30",
+                  "prefix": 24
+                },
                 "gateway": null
               },
               {
@@ -1707,34 +3075,65 @@
                 "id": "mt7-sw",
                 "hostname": "SW-TANG-3",
                 "ports": [
-                  { "id": "p1", "vlan": 10 },
-                  { "id": "p2", "vlan": 20 },
-                  { "id": "p3", "vlan": 20 }
+                  {
+                    "id": "p1",
+                    "vlan": 10
+                  },
+                  {
+                    "id": "p2",
+                    "vlan": 20
+                  },
+                  {
+                    "id": "p3",
+                    "vlan": 20
+                  }
                 ]
               }
             ],
             "links": [
               {
                 "id": "mt7-w-a",
-                "a": { "deviceId": "mt7-kt-a", "portId": "eth0" },
-                "b": { "deviceId": "mt7-sw", "portId": "p1" }
+                "a": {
+                  "deviceId": "mt7-kt-a",
+                  "portId": "eth0"
+                },
+                "b": {
+                  "deviceId": "mt7-sw",
+                  "portId": "p1"
+                }
               },
               {
                 "id": "mt7-w-b",
-                "a": { "deviceId": "mt7-kt-b", "portId": "eth0" },
-                "b": { "deviceId": "mt7-sw", "portId": "p2" }
+                "a": {
+                  "deviceId": "mt7-kt-b",
+                  "portId": "eth0"
+                },
+                "b": {
+                  "deviceId": "mt7-sw",
+                  "portId": "p2"
+                }
               },
               {
                 "id": "mt7-w-kt",
-                "a": { "deviceId": "mt7-ky-thuat", "portId": "eth0" },
-                "b": { "deviceId": "mt7-sw", "portId": "p3" }
+                "a": {
+                  "deviceId": "mt7-ky-thuat",
+                  "portId": "eth0"
+                },
+                "b": {
+                  "deviceId": "mt7-sw",
+                  "portId": "p3"
+                }
               }
             ]
           },
           "overlay": {},
           "seatId": "mt7-kt-a"
         },
-        "symptom": { "kind": "ping-fails", "from": "mt7-kt-a", "target": "192.168.30.20" },
+        "symptom": {
+          "kind": "ping-fails",
+          "from": "mt7-kt-a",
+          "target": "192.168.30.20"
+        },
         "fix": {
           "kind": "edit-network",
           "allow": {
@@ -1748,34 +3147,64 @@
             "maxDevices": 4
           },
           "goals": [
-            { "kind": "ping", "from": "mt7-kt-a", "to": "mt7-kt-b", "expect": "reach" },
-            { "kind": "ping", "from": "mt7-kt-a", "to": "mt7-ky-thuat", "expect": "blocked" }
+            {
+              "kind": "ping",
+              "from": "mt7-kt-a",
+              "to": "mt7-kt-b",
+              "expect": "reach"
+            },
+            {
+              "kind": "ping",
+              "from": "mt7-kt-a",
+              "to": "mt7-ky-thuat",
+              "expect": "blocked"
+            }
           ],
-          "mustClearDiagnoses": ["same-subnet-different-vlan"],
+          "mustClearDiagnoses": [
+            "same-subnet-different-vlan"
+          ],
           "solution": {
             "devices": [
               {
                 "kind": "pc",
                 "id": "mt7-kt-a",
                 "hostname": "KE-TOAN-A",
-                "port": { "id": "eth0", "mac": "AA:BB:CC:BC:07:01" },
-                "ipConfig": { "ip": "192.168.30.10", "prefix": 24 },
+                "port": {
+                  "id": "eth0",
+                  "mac": "AA:BB:CC:BC:07:01"
+                },
+                "ipConfig": {
+                  "ip": "192.168.30.10",
+                  "prefix": 24
+                },
                 "gateway": null
               },
               {
                 "kind": "pc",
                 "id": "mt7-kt-b",
                 "hostname": "KE-TOAN-B",
-                "port": { "id": "eth0", "mac": "AA:BB:CC:BC:07:02" },
-                "ipConfig": { "ip": "192.168.30.20", "prefix": 24 },
+                "port": {
+                  "id": "eth0",
+                  "mac": "AA:BB:CC:BC:07:02"
+                },
+                "ipConfig": {
+                  "ip": "192.168.30.20",
+                  "prefix": 24
+                },
                 "gateway": null
               },
               {
                 "kind": "pc",
                 "id": "mt7-ky-thuat",
                 "hostname": "KY-THUAT",
-                "port": { "id": "eth0", "mac": "AA:BB:CC:BC:07:03" },
-                "ipConfig": { "ip": "192.168.30.30", "prefix": 24 },
+                "port": {
+                  "id": "eth0",
+                  "mac": "AA:BB:CC:BC:07:03"
+                },
+                "ipConfig": {
+                  "ip": "192.168.30.30",
+                  "prefix": 24
+                },
                 "gateway": null
               },
               {
@@ -1783,27 +3212,54 @@
                 "id": "mt7-sw",
                 "hostname": "SW-TANG-3",
                 "ports": [
-                  { "id": "p1", "vlan": 10 },
-                  { "id": "p2", "vlan": 10 },
-                  { "id": "p3", "vlan": 20 }
+                  {
+                    "id": "p1",
+                    "vlan": 10
+                  },
+                  {
+                    "id": "p2",
+                    "vlan": 10
+                  },
+                  {
+                    "id": "p3",
+                    "vlan": 20
+                  }
                 ]
               }
             ],
             "links": [
               {
                 "id": "mt7-w-a",
-                "a": { "deviceId": "mt7-kt-a", "portId": "eth0" },
-                "b": { "deviceId": "mt7-sw", "portId": "p1" }
+                "a": {
+                  "deviceId": "mt7-kt-a",
+                  "portId": "eth0"
+                },
+                "b": {
+                  "deviceId": "mt7-sw",
+                  "portId": "p1"
+                }
               },
               {
                 "id": "mt7-w-b",
-                "a": { "deviceId": "mt7-kt-b", "portId": "eth0" },
-                "b": { "deviceId": "mt7-sw", "portId": "p2" }
+                "a": {
+                  "deviceId": "mt7-kt-b",
+                  "portId": "eth0"
+                },
+                "b": {
+                  "deviceId": "mt7-sw",
+                  "portId": "p2"
+                }
               },
               {
                 "id": "mt7-w-kt",
-                "a": { "deviceId": "mt7-ky-thuat", "portId": "eth0" },
-                "b": { "deviceId": "mt7-sw", "portId": "p3" }
+                "a": {
+                  "deviceId": "mt7-ky-thuat",
+                  "portId": "eth0"
+                },
+                "b": {
+                  "deviceId": "mt7-sw",
+                  "portId": "p3"
+                }
               }
             ]
           }
@@ -1811,19 +3267,31 @@
       },
       "diagnosis": {
         "choices": [
-          { "vi": "Hai máy kế toán bị chia vào hai VLAN khác nhau" },
-          { "vi": "Hai máy đang trùng địa chỉ IP" },
-          { "vi": "Máy KE-TOAN-A thiếu gateway" }
+          {
+            "vi": "Hai máy kế toán bị chia vào hai VLAN khác nhau"
+          },
+          {
+            "vi": "Hai máy kế toán đang trùng một địa chỉ IP nên giành nhau"
+          },
+          {
+            "vi": "Máy KE-TOAN-A thiếu default gateway nên gói không ra nổi"
+          }
         ],
         "answerIndex": 0
       },
-      "hintTopic": { "vi": "bức tường vô hình trong switch (Module 4)" },
-      "explain": { "vi": "Cùng dải mà \"Destination host unreachable\" — lời gọi ARP không vượt qua được bức tường VLAN (Module 4): buổi dọn tủ rack đã cắm KE-TOAN-B vào cổng thuộc VLAN 20. Kéo cổng đó về VLAN 10 cho khớp KE-TOAN-A; giữ nguyên KY-THUAT ở VLAN 20 — gộp tất cả vào một VLAN thì thông chỗ này nhưng phá bức tường mà quy định công ty yêu cầu." }
+      "hintTopic": {
+        "vi": "bức tường vô hình trong switch (Module 4)"
+      },
+      "explain": {
+        "vi": "Cùng dải mà \"Destination host unreachable\" — lời gọi ARP không vượt qua được bức tường VLAN (Module 4): buổi dọn tủ rack đã cắm KE-TOAN-B vào cổng thuộc VLAN 20. Kéo cổng đó về VLAN 10 cho khớp KE-TOAN-A; giữ nguyên KY-THUAT ở VLAN 20 — gộp tất cả vào một VLAN thì thông chỗ này nhưng phá bức tường mà quy định công ty yêu cầu."
+      }
     },
     {
       "kind": "clinic",
       "id": "m11-mt-8",
-      "prompt": { "vi": "Ca thi cuối: cả công ty kêu \"portal nội bộ sập\". Bạn ngồi vào một máy bất kỳ. Khám cho ra kẻ ốm thật sự — rồi chọn đúng một việc để làm." },
+      "prompt": {
+        "vi": "Ca thi cuối: cả công ty kêu \"portal nội bộ sập\". Bạn ngồi vào một máy bất kỳ. Khám cho ra kẻ ốm thật sự — rồi chọn đúng một việc để làm."
+      },
       "spec": {
         "patient": {
           "topology": {
@@ -1832,24 +3300,42 @@
                 "kind": "pc",
                 "id": "mt8-nhan-vien",
                 "hostname": "MAY-NHAN-VIEN",
-                "port": { "id": "eth0", "mac": "AA:BB:CC:BC:08:01" },
-                "ipConfig": { "ip": "192.168.20.12", "prefix": 24 },
+                "port": {
+                  "id": "eth0",
+                  "mac": "AA:BB:CC:BC:08:01"
+                },
+                "ipConfig": {
+                  "ip": "192.168.20.12",
+                  "prefix": 24
+                },
                 "gateway": null
               },
               {
                 "kind": "pc",
                 "id": "mt8-dns",
                 "hostname": "DNS-NOI-BO",
-                "port": { "id": "eth0", "mac": "AA:BB:CC:BC:08:53" },
-                "ipConfig": { "ip": "192.168.20.53", "prefix": 24 },
+                "port": {
+                  "id": "eth0",
+                  "mac": "AA:BB:CC:BC:08:53"
+                },
+                "ipConfig": {
+                  "ip": "192.168.20.53",
+                  "prefix": 24
+                },
                 "gateway": null
               },
               {
                 "kind": "pc",
                 "id": "mt8-portal",
                 "hostname": "PORTAL-NOI-BO",
-                "port": { "id": "eth0", "mac": "AA:BB:CC:BC:08:90" },
-                "ipConfig": { "ip": "192.168.20.90", "prefix": 24 },
+                "port": {
+                  "id": "eth0",
+                  "mac": "AA:BB:CC:BC:08:90"
+                },
+                "ipConfig": {
+                  "ip": "192.168.20.90",
+                  "prefix": 24
+                },
                 "gateway": null
               },
               {
@@ -1857,60 +3343,114 @@
                 "id": "mt8-sw",
                 "hostname": "SW-TANG-2",
                 "ports": [
-                  { "id": "p1", "vlan": 1 },
-                  { "id": "p2", "vlan": 1 },
-                  { "id": "p3", "vlan": 1 }
+                  {
+                    "id": "p1",
+                    "vlan": 1
+                  },
+                  {
+                    "id": "p2",
+                    "vlan": 1
+                  },
+                  {
+                    "id": "p3",
+                    "vlan": 1
+                  }
                 ]
               }
             ],
             "links": [
               {
                 "id": "mt8-w-seat",
-                "a": { "deviceId": "mt8-nhan-vien", "portId": "eth0" },
-                "b": { "deviceId": "mt8-sw", "portId": "p1" }
+                "a": {
+                  "deviceId": "mt8-nhan-vien",
+                  "portId": "eth0"
+                },
+                "b": {
+                  "deviceId": "mt8-sw",
+                  "portId": "p1"
+                }
               },
               {
                 "id": "mt8-w-dns",
-                "a": { "deviceId": "mt8-dns", "portId": "eth0" },
-                "b": { "deviceId": "mt8-sw", "portId": "p2" }
+                "a": {
+                  "deviceId": "mt8-dns",
+                  "portId": "eth0"
+                },
+                "b": {
+                  "deviceId": "mt8-sw",
+                  "portId": "p2"
+                }
               },
               {
                 "id": "mt8-w-portal",
-                "a": { "deviceId": "mt8-portal", "portId": "eth0" },
-                "b": { "deviceId": "mt8-sw", "portId": "p3" }
+                "a": {
+                  "deviceId": "mt8-portal",
+                  "portId": "eth0"
+                },
+                "b": {
+                  "deviceId": "mt8-sw",
+                  "portId": "p3"
+                }
               }
             ]
           },
           "overlay": {
             "dns": {
               "serverIp": "192.168.20.53",
-              "records": [{ "name": "portal.noibo.vn", "ip": "192.168.20.90" }],
+              "records": [
+                {
+                  "name": "portal.noibo.vn",
+                  "ip": "192.168.20.90"
+                }
+              ],
               "down": true
             }
           },
           "seatId": "mt8-nhan-vien"
         },
-        "symptom": { "kind": "resolve-fails", "from": "mt8-nhan-vien", "name": "portal.noibo.vn" },
-        "fix": { "kind": "choose-action" }
+        "symptom": {
+          "kind": "resolve-fails",
+          "from": "mt8-nhan-vien",
+          "name": "portal.noibo.vn"
+        },
+        "fix": {
+          "kind": "choose-action"
+        }
       },
       "diagnosis": {
         "choices": [
-          { "vi": "Dịch vụ DNS nội bộ ngừng chạy — portal vẫn sống" },
-          { "vi": "Máy chủ portal đã sập" },
-          { "vi": "Switch tầng 2 mất điện" }
+          {
+            "vi": "Dịch vụ DNS nội bộ ngừng chạy — portal vẫn sống"
+          },
+          {
+            "vi": "Máy chủ portal đã sập hẳn — ping số cũng không trả lời"
+          },
+          {
+            "vi": "Switch tầng 2 mất điện nên cả dải máy chủ biến mất"
+          }
         ],
         "answerIndex": 0
       },
       "actions": {
         "choices": [
-          { "vi": "Khởi động lại dịch vụ DNS trên DNS-NOI-BO" },
-          { "vi": "Khởi động lại máy chủ portal" },
-          { "vi": "Thay switch tầng 2" }
+          {
+            "vi": "Khởi động lại dịch vụ DNS trên DNS-NOI-BO"
+          },
+          {
+            "vi": "Khởi động lại máy chủ portal rồi chờ nó lên"
+          },
+          {
+            "vi": "Thay switch tầng 2 và kiểm tra nguồn điện"
+          }
         ],
         "answerIndex": 0
       },
-      "hintTopic": { "vi": "số thì sao, tên thì sao" },
-      "explain": { "vi": "Ping 192.168.20.90 vẫn Reply — portal sống, switch càng không mất điện. nslookup portal.noibo.vn timeout — cuốn danh bạ mới là kẻ ốm: cả công ty gõ TÊN nên cả công ty tưởng portal sập. Khởi động lại dịch vụ DNS là đúng bệnh; khởi động lại portal là chữa nhầm người đang khỏe." }
+      "hintTopic": {
+        "vi": "số thì sao, tên thì sao"
+      },
+      "explain": {
+        "vi": "Ping 192.168.20.90 vẫn Reply — portal sống, switch càng không mất điện. nslookup portal.noibo.vn timeout — cuốn danh bạ mới là kẻ ốm: cả công ty gõ TÊN nên cả công ty tưởng portal sập. Khởi động lại dịch vụ DNS là đúng bệnh; khởi động lại portal là chữa nhầm người đang khỏe."
+      }
     }
   ]
 }

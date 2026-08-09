@@ -107,6 +107,9 @@ const ClinicCaseBaseSchema = z.object({
   }),
   symptom: ClinicSymptomSchema,
   fix: ClinicFixSchema,
+  // Console thiết bị chỉ-đọc trong pha khám (spec v2 mục 4.2) — chỉ có
+  // nghĩa khi sơ đồ có switch/router; ca toàn PC khai cờ này là đề soạn ẩu.
+  deviceConsole: z.literal(true).optional(),
 })
 
 function clinicCrossChecks(spec: ClinicCaseSpec, ctx: z.RefinementCtx): void {
@@ -116,6 +119,14 @@ function clinicCrossChecks(spec: ClinicCaseSpec, ctx: z.RefinementCtx): void {
   const patient: ClinicPatient = spec.patient
   for (const problem of validatePatient(patient)) {
     issue(`Hồ sơ bệnh nhân lỗi cấu trúc: ${problem.code} tại ${problem.where}`, ['patient'])
+  }
+
+  // deviceConsole chỉ có nghĩa khi có thiết bị mang CLI để cắm vào.
+  if (spec.deviceConsole === true) {
+    const hasCliDevice = patient.topology.devices.some((d) => d.kind === 'switch' || d.kind === 'router')
+    if (!hasCliDevice) {
+      issue('deviceConsole khai true nhưng sơ đồ không có switch/router nào để cắm console', ['deviceConsole'])
+    }
   }
 
   // Người than phiền trong triệu chứng phải là một PC có thật — terminal

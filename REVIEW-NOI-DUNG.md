@@ -2935,7 +2935,7 @@ Phần C · 5 chặng · 5 bài · 8 khái niệm
 **2 · Đoán thử (pretest):**
 - **Đề:** Đoán thử nhé: security group trên mây mặc định xử lý lưu lượng ĐI VÀO máy ảo thế nào?
   - **Dạng:** trắc nghiệm · **Chặn hết — bạn phải tự mở từng luật cho thứ mình cần** ✓ / Cho hết vào, chặn dần về sau / Chỉ chặn ban đêm
-  - **Vì sao:** Mặc định của security group là ĐÓNG: chưa khai luật nào thì không ai vào được. Muốn mở cổng 443 cho web? Tự tay thêm một dòng. An toàn nằm ở chỗ quên thì ĐÓNG chứ không phải quên thì mở.
+  - **Vì sao:** Mặc định của security group là ĐÓNG: chưa khai luật nào thì không ai vào được. Muốn mở port 443 cho web? Tự tay thêm một dòng. An toàn nằm ở chỗ quên thì ĐÓNG chứ không phải quên thì mở.
 
 **3 · Khám phá (teach):**
 - *[m10-security-group]* SO SÁNH SONG SONG — tường lửa nhà (đã học) ↔ security group (mới): GIỐNG nhau ở chỗ cùng là stateful — nhớ kết nối đang mở, thư trả lời tự được vào (Module 7). KHÁC ở vị trí đứng: tường lửa nhà đứng ở MỘT cái cổng che cả mạng; security group bám SÁT TỪNG máy ảo, mỗi máy một bộ luật riêng, và mặc định chặn hết chiều vào.
@@ -3533,7 +3533,7 @@ Phần C · 5 chặng · 5 bài · 6 khái niệm
     - **Ngồi ở máy:** KE-TOAN-A
     - **Hồ sơ bệnh:** không có (bệnh nằm trọn trong sơ đồ)
     - **Triệu chứng:** KE-TOAN-A ping 192.168.30.20 PHẢI hỏng
-    - **Chẩn đoán (chọn 1):** **Hai máy kế toán bị chia vào hai VLAN khác nhau** ✓ · Hai máy đang trùng địa chỉ IP · Máy KE-TOAN-A thiếu gateway
+    - **Chẩn đoán (chọn 1):** **Hai máy kế toán bị chia vào hai VLAN khác nhau** ✓ · Hai máy kế toán đang trùng một địa chỉ IP nên giành nhau · Máy KE-TOAN-A thiếu default gateway nên gói không ra nổi
     - **Sửa:** trực tiếp trên sơ đồ — mục tiêu:
       - mt7-kt-a PHẢI gọi được mt7-kt-b
       - mt7-kt-a phải KHÔNG gọi được mt7-ky-thuat
@@ -3548,8 +3548,8 @@ Phần C · 5 chặng · 5 bài · 6 khái niệm
     - **Ngồi ở máy:** MAY-NHAN-VIEN
     - **Hồ sơ bệnh:** DNS 192.168.20.53 (ĐANG CHẾT) [portal.noibo.vn → 192.168.20.90]
     - **Triệu chứng:** MAY-NHAN-VIEN phân giải tên "portal.noibo.vn" PHẢI hỏng
-    - **Chẩn đoán (chọn 1):** **Dịch vụ DNS nội bộ ngừng chạy — portal vẫn sống** ✓ · Máy chủ portal đã sập · Switch tầng 2 mất điện
-    - **Sửa:** chọn hành động — **Khởi động lại dịch vụ DNS trên DNS-NOI-BO** ✓ · Khởi động lại máy chủ portal · Thay switch tầng 2
+    - **Chẩn đoán (chọn 1):** **Dịch vụ DNS nội bộ ngừng chạy — portal vẫn sống** ✓ · Máy chủ portal đã sập hẳn — ping số cũng không trả lời · Switch tầng 2 mất điện nên cả dải máy chủ biến mất
+    - **Sửa:** chọn hành động — **Khởi động lại dịch vụ DNS trên DNS-NOI-BO** ✓ · Khởi động lại máy chủ portal rồi chờ nó lên · Thay switch tầng 2 và kiểm tra nguồn điện
   - **Chủ đề gợi ý (tầng 1):** số thì sao, tên thì sao
   - **Vì sao:** Ping 192.168.20.90 vẫn Reply — portal sống, switch càng không mất điện. nslookup portal.noibo.vn timeout — cuốn danh bạ mới là kẻ ốm: cả công ty gõ TÊN nên cả công ty tưởng portal sập. Khởi động lại dịch vụ DNS là đúng bệnh; khởi động lại portal là chữa nhầm người đang khỏe.
 
@@ -4037,7 +4037,7 @@ Phần D · 5 chặng · 5 bài · 6 khái niệm · drill: vlsm
 
 **3 · Khám phá (teach):**
 - *[wildcard-mask]* Wildcard mask là mặt nạ lộn ngược của subnet mask: bit 0 nghĩa là ô này phải khớp đúng, bit 1 nghĩa là ô này mặc kệ. Cách tính nhanh: lấy 255 trừ đi từng ô. Mask 255.255.255.192 thành wildcard 0.0.0.63; mask 255.255.255.0 thành 0.0.0.255; mask 255.255.0.0 thành 0.0.255.255. Router dùng dạng này ở hai chỗ bạn sẽ gặp ngay ở các module sau: khai mạng cho định tuyến động, và viết luật lọc gói tin.
-  - **Đào sâu hơn:** Vì sao lại có hai kiểu ngược nhau? Vì subnet mask trả lời câu hỏi của một máy — phần nào của địa chỉ là mạng của tôi; còn wildcard trả lời câu hỏi của một bộ lọc — những bit nào tôi được phép bỏ qua khi đối chiếu. Wildcard vì thế linh hoạt hơn mask: nó cho phép những mẫu mà mask không viết nổi, ví dụ 0.0.0.1 để chỉ riêng các địa chỉ lẻ. Trong phạm vi khóa này bạn chỉ cần dạng lộn ngược đơn giản, nhưng biết lý do thì không bao giờ gõ nhầm hai chỗ cho nhau.
+  - **Đào sâu hơn:** Vì sao lại có hai kiểu ngược nhau? Vì subnet mask trả lời câu hỏi của một máy — phần nào của địa chỉ là mạng của tôi; còn wildcard trả lời câu hỏi của một bộ lọc — những bit nào tôi được phép bỏ qua khi đối chiếu. Wildcard vì thế linh hoạt hơn mask: nó cho phép những mẫu mà mask không viết nổi — ví dụ nền 10.0.0.1 với wildcard 0.0.0.254 nghĩa là GIỮ bit cuối bằng 1 còn các bit giữa mặc kệ, tức tóm riêng mọi địa chỉ LẺ trong dải /24; không subnet mask nào tả nổi một nhóm như vậy vì mask bắt buộc phần khớp phải nằm liền bên trái. Trong phạm vi khóa này bạn chỉ cần dạng lộn ngược đơn giản, nhưng biết lý do thì không bao giờ gõ nhầm hai chỗ cho nhau.
 
 **4 · Thử tay (practice, fading 2):**
 - **Đề:** Mạng 192.168.10.0/27 có wildcard mask là gì?
@@ -4472,11 +4472,11 @@ Phần D · 5 chặng · 5 bài · 5 khái niệm
     - **Sơ đồ đề bài:** PC-A (kế toán) [192.168.1.10/24] · PC-B (kế toán) [192.168.1.20/24] · Switch-1 [p1:VLAN 1, p2:VLAN 20, p4:VLAN 1] · Switch-2 [p1:VLAN 1, p2:VLAN 20, p4:VLAN 1] — dây: PC-A (kế toán)·eth0 — Switch-1·p1 | PC-B (kế toán)·eth0 — Switch-2·p1 | Switch-1·p4 — Switch-2·p4
     - **Console cắm ở:** Switch-2
     - **Mục tiêu:**
-      - trunk ở cổng p4 của Switch-2 phải khai native VLAN 1
+      - hai đầu trunk p4 của Switch-1 và p4 của Switch-2 phải khai CÙNG native VLAN
       - pc-a PHẢI gọi được pc-b
     - **Lệnh mẫu trên Switch-2:** `enable` rồi `configure terminal` rồi `interface p4` rồi `switchport trunk native vlan 1` rồi `end`
   - **Chủ đề gợi ý (tầng 1):** số native VLAN ở hai đầu trunk
-  - **Vì sao:** Hai đầu phải cùng một số native. Sửa đầu nào cũng được, miễn khớp — nhưng đổi đầu đang đúng thì bạn lại phải dời cả các máy đang nằm trong xóm đó.
+  - **Vì sao:** Hai đầu phải cùng một số native — và bộ chấm đo đúng điều đó: sửa đầu nào cũng được, miễn hai đầu khớp lại. Ngoài đời người ta thường đưa đầu LỆCH về theo quy hoạch chung, vì đổi đầu đang đúng chuẩn nghĩa là sửa hồ sơ của cả xóm đang chạy yên.
 - **Đề:** Máy tính cắm vào cổng access có nhìn thấy nhãn 802.1Q không?
   - **Dạng:** trắc nghiệm · **Không, switch đã gỡ nhãn trước khi giao khung xuống cổng access** ✓ / Có, card mạng phải tự đọc nhãn mới biết mình thuộc VLAN nào / Có, nhưng chỉ khi máy chạy hệ điều hành hỗ trợ chuẩn 802.1Q
   - **Chủ đề gợi ý (tầng 1):** nhãn tồn tại trên đoạn dây nào
@@ -5249,15 +5249,15 @@ Phần D · 5 chặng · 5 bài · 12 khái niệm
 
 **2 · Đoán thử (pretest):**
 - **Đề:** Đoán thử: một danh sách lọc CHUẨN (số 1 tới 99) nhìn được thông tin nào của gói tin?
-  - **Dạng:** trắc nghiệm · **Chỉ địa chỉ người gửi** ✓ / Cả người gửi lẫn người nhận / Người gửi, người nhận và cả cổng dịch vụ
+  - **Dạng:** trắc nghiệm · **Chỉ địa chỉ người gửi** ✓ / Cả người gửi lẫn người nhận / Người gửi, người nhận và cả port dịch vụ
   - **Chủ đề gợi ý (tầng 1):** chữ chuẩn ở đây nghĩa là đơn giản nhất
   - **Vì sao:** Chỉ nhìn được địa chỉ nguồn. Đó vừa là ưu điểm (viết một dòng là xong) vừa là cái bẫy: đã chặn một nguồn thì chặn nó đi mọi nơi, không tách được nơi nào cấm nơi nào cho.
 
 **3 · Khám phá (teach):**
 - *[m17-acl-chuan]* Danh sách CHUẨN mang số từ 1 tới 99. Nó chỉ soi được một thứ: gói tin này của ai gửi. Không biết gói đang đi đâu, không biết là ping hay web. Vì thế một dòng cấm trong danh sách chuẩn là cấm nguồn ấy đi TẤT CẢ mọi nơi — đúng cảnh máy phòng khách mất mạng sạch ở phần mở đầu. Nó hợp cho những việc thô mà rõ: cấm hẳn một dải, hoặc chỉ cho đúng một dải quản trị vào.
   - **Đào sâu hơn:** Fidelity cần nói rõ: trên thiết bị thật, danh sách chuẩn viết ngắn hơn vì nó chỉ khai một vế nguồn. Console trong app này rút gọn ngữ pháp cho đồng nhất — mọi dòng đều viết đủ giao thức, nguồn rồi đích, dù bạn dùng số hiệu nào. Bạn vẫn học đúng cái quan trọng (loại nào nhìn được gì, đặt ở đâu), chỉ cần nhớ rằng ngoài đời một dòng chuẩn thật gọn hơn dòng bạn gõ ở đây.
-- *[m17-acl-mo-rong]* Danh sách MỞ RỘNG mang số từ 100 tới 199 và nhìn được cả bốn thứ: giao thức, nguồn, đích, và với tcp hay udp thì thêm cổng dịch vụ. Nhờ vậy nó nói được đúng câu của sếp: máy 192.168.1.66 không được ping tới 192.168.2.50, còn đi chỗ khác thì tùy. Cái giá phải trả là mỗi dòng dài hơn và bạn phải nghĩ kỹ hơn về vế đích — nhưng đó chính là chỗ luật trở nên đúng người đúng việc.
-  - **Đào sâu hơn:** Địa chỉ trong mọi dòng luật viết bằng wildcard mask của Module 13, không phải subnet mask: bit 0 là chỗ phải khớp, bit 1 là chỗ mặc kệ. Ba lối viết tắt hay gặp: any là 0.0.0.0 với wildcard 255.255.255.255 (mặc kệ tất), host 192.168.2.50 là wildcard 0.0.0.0 (khớp từng bit), còn 192.168.1.0 0.0.0.255 nghĩa là cả xóm .1. Phòng lab chỉ sinh lưu lượng ping, nên dòng luật tcp hay udp kèm cổng dịch vụ ở đây là để ĐỌC và để hiểu, chứ không có gói nào của app khớp vào chúng.
+- *[m17-acl-mo-rong]* Danh sách MỞ RỘNG mang số từ 100 tới 199 và nhìn được cả bốn thứ: giao thức, nguồn, đích, và với tcp hay udp thì thêm port dịch vụ. Nhờ vậy nó nói được đúng câu của sếp: máy 192.168.1.66 không được ping tới 192.168.2.50, còn đi chỗ khác thì tùy. Cái giá phải trả là mỗi dòng dài hơn và bạn phải nghĩ kỹ hơn về vế đích — nhưng đó chính là chỗ luật trở nên đúng người đúng việc.
+  - **Đào sâu hơn:** Địa chỉ trong mọi dòng luật viết bằng wildcard mask của Module 13, không phải subnet mask: bit 0 là chỗ phải khớp, bit 1 là chỗ mặc kệ. Ba lối viết tắt hay gặp: any là 0.0.0.0 với wildcard 255.255.255.255 (mặc kệ tất), host 192.168.2.50 là wildcard 0.0.0.0 (khớp từng bit), còn 192.168.1.0 0.0.0.255 nghĩa là cả xóm .1. Phòng lab chỉ sinh lưu lượng ping, nên dòng luật tcp hay udp kèm port dịch vụ ở đây là để ĐỌC và để hiểu, chứ không có gói nào của app khớp vào chúng.
 
 **4 · Thử tay (practice, fading 1):**
 - **Đề:** Router R-Van-phong hiện chưa có luật nào. Hãy viết đúng ý sếp: PC-Phong-khach (192.168.1.66) không được ping tới SRV-Ke-toan (192.168.2.50), còn PC-Giam-doc (192.168.1.10) thì vẫn phải gọi được máy chủ. Đây là việc cần loại danh sách nhìn thấy cả vế đích — và đừng quên phần còn lại của văn phòng.
@@ -5289,7 +5289,7 @@ Phần D · 5 chặng · 5 bài · 12 khái niệm
 
 **6 · Tổng kết:**
 - Danh sách chuẩn (1 tới 99) chỉ soi được nguồn: cấm một nguồn là cấm nó đi mọi nơi.
-- Danh sách mở rộng (100 tới 199) soi được giao thức, nguồn, đích và cổng dịch vụ.
+- Danh sách mở rộng (100 tới 199) soi được giao thức, nguồn, đích và port dịch vụ.
 - Địa chỉ trong luật viết bằng wildcard: any là mặc kệ tất, host là khớp từng bit.
 - *Úp mở bài sau:* Luật đã viết đúng chữ rồi. Nhưng cùng một danh sách, gắn vào cổng này thay vì cổng kia, hoặc chiều vào thay vì chiều ra, sẽ cho ra hai kết quả khác hẳn nhau — bài sau là chuyện đặt luật đứng ở đâu.
 
@@ -5465,9 +5465,9 @@ Phần D · 5 chặng · 5 bài · 12 khái niệm
 - **ACL chuẩn** `m17-acl-chuan` — Danh sách số 1 tới 99, chỉ so được địa chỉ nguồn nên cấm một nguồn là cấm nó đi mọi nơi
   - Ẩn dụ: Như người gác chỉ nhìn mặt khách chứ không hỏi khách định vào phòng nào: đã chặn thì chặn khỏi cả tòa nhà.
   - Thẻ ôn: *ACL chuẩn mang dải số nào, so được vế nào, và vì thế phải đặt ở đâu?* → Số 1 tới 99, chỉ so được địa chỉ nguồn. Vì mù vế đích nên đặt nó gần nguồn sẽ chặn kẻ đó đi mọi nơi; phải đặt gần ĐÍCH cần bảo vệ thì việc chặn mới đúng phạm vi mong muốn.
-- **ACL mở rộng** `m17-acl-mo-rong` — Danh sách số 100 tới 199, so được giao thức, nguồn, đích và cổng dịch vụ với tcp hay udp
+- **ACL mở rộng** `m17-acl-mo-rong` — Danh sách số 100 tới 199, so được giao thức, nguồn, đích và port dịch vụ với tcp hay udp
   - Ẩn dụ: Như người gác hỏi đủ ba câu: anh là ai, anh định vào phòng nào, và anh tới có việc gì.
-  - Thẻ ôn: *ACL mở rộng mang dải số nào, nhìn được những gì, và đặt ở đâu?* → Số 100 tới 199; nhìn được giao thức, nguồn, đích và cả cổng dịch vụ với tcp hay udp. Vì biết đủ để chặn đúng nên đặt gần NGUỒN: gói chết sớm, không tốn đường truyền của cả chặng sau.
+  - Thẻ ôn: *ACL mở rộng mang dải số nào, nhìn được những gì, và đặt ở đâu?* → Số 100 tới 199; nhìn được giao thức, nguồn, đích và cả port dịch vụ với tcp hay udp. Vì biết đủ để chặn đúng nên đặt gần NGUỒN: gói chết sớm, không tốn đường truyền của cả chặng sau.
 - **Chiều in và out** `m17-chieu-in-out` — Chiều tính theo mắt router: in là gói vừa vào cổng, out là gói sắp rời cổng
   - Ẩn dụ: Như bảo vệ đứng ở cửa: soi lúc khách bước vào là một việc, soi lúc khách bước ra lại là việc khác hẳn.
   - Thẻ ôn: *Chiều in và out của một ACL được tính theo cái gì, và chặn ở chiều nào thì rẻ hơn?* → Tính theo con mắt của router: in là gói vừa đi vào cổng, trước khi tra bảng định tuyến; out là gói đã chọn xong đường và sắp rời cổng. Chặn ở chiều in rẻ hơn vì gói bị loại trước cả bước tra bảng.
@@ -5789,15 +5789,15 @@ Phần E · 5 chặng · 5 bài · 10 khái niệm
   - **Đào sâu hơn:** Vì sao phải hạ TRƯỚC vài ngày mà không phải vài phút? Vì lời hứa cũ vẫn còn hiệu lực: bản ghi đang để TTL một ngày nghĩa là ngoài kia có những bộ đệm được phép nhớ câu trả lời cũ tới hết một ngày nữa — bạn hạ TTL hôm nay thì phải đợi trọn vòng hạn CŨ trôi qua, mọi bộ đệm mới cầm bản TTL ngắn. Hạ sớm bao lâu = TTL cũ dài bao nhiêu. Đó là phép tính người vận hành làm trên lịch, trước khi chạm vào bất cứ máy chủ nào.
 
 **4 · Thử tay (practice, fading 2):**
-- **Đề:** Trước giờ chuyển hạ tầng, bạn phải kiểm chứng máy DNS nội bộ 10.20.0.53 còn đang NGHE ở đúng cổng dịch vụ của DNS hay không — bằng terminal PowerShell, như một người vận hành thật.
+- **Đề:** Trước giờ chuyển hạ tầng, bạn phải kiểm chứng máy DNS nội bộ 10.20.0.53 còn đang NGHE ở đúng port dịch vụ của DNS hay không — bằng terminal PowerShell, như một người vận hành thật.
   - **Dạng:** terminal PowerShell (gõ lệnh đạt mục tiêu)
     - **Thế giới:** máy MAY-QUAN-TRI [10.20.2.5/24] — đích: dns.congty.vn=10.20.0.53 cổng 53 · portal.noibo.congty.vn=10.20.0.80 cổng 80/443
     - **Mục tiêu:**
       - phải kiểm tra cổng 53 của 10.20.0.53 thành công
     - **Lệnh mẫu:** `Test-NetConnection 10.20.0.53 -Port 53`
-  - **Chủ đề gợi ý (tầng 1):** cổng dịch vụ của DNS và cmdlet kiểm tra kết nối
-  - **Gợi ý (tầng 2):** Cmdlet là Test-NetConnection, đích là 10.20.0.53, còn cổng của DNS thì bạn đã thuộc từ cung điện Module 5 — con số nằm ở tầng hai của tòa nhà.
-  - **Lời giải (tầng 3):** Test-NetConnection 10.20.0.53 -Port 53. Cổng 53 là cửa của DNS; TcpTestSucceeded : True nghĩa là dịch vụ đang nghe — kiểm chứng bằng lệnh trước giờ đổi hạ tầng là thói quen sống còn của người vận hành.
+  - **Chủ đề gợi ý (tầng 1):** port dịch vụ của DNS và cmdlet kiểm tra kết nối
+  - **Gợi ý (tầng 2):** Cmdlet là Test-NetConnection, đích là 10.20.0.53, còn port của DNS thì bạn đã thuộc từ cung điện Module 5 — con số nằm ở tầng hai của tòa nhà.
+  - **Lời giải (tầng 3):** Test-NetConnection 10.20.0.53 -Port 53. Port 53 là cửa của DNS; TcpTestSucceeded : True nghĩa là dịch vụ đang nghe — kiểm chứng bằng lệnh trước giờ đổi hạ tầng là thói quen sống còn của người vận hành.
 - **Đề:** Ping tới địa chỉ IP máy chủ của đối tác qua VPN thì thông, nhưng gọi bằng tên noibo.doitac.vn thì báo không tồn tại. Thiếu mảnh nào?
   - **Dạng:** trắc nghiệm · **Conditional forwarder trỏ các tên doitac.vn về máy DNS của đối tác** ✓ / Một tuyến đường tĩnh mới, vì đường VPN hiện tại chưa dẫn tới máy chủ đó / Bản ghi các tên đối tác trên máy chủ DNS công cộng ngoài Internet
   - **Chủ đề gợi ý (tầng 1):** ping số thông thì tầng đường đi còn thiếu gì đâu
@@ -5909,15 +5909,15 @@ Phần E · 5 chặng · 5 bài · 10 khái niệm
     - **Mục tiêu:**
       - phải kiểm tra cổng 53 của 10.20.0.54 thành công
     - **Lệnh mẫu:** `Test-NetConnection 10.20.0.54 -Port 53`
-  - **Chủ đề gợi ý (tầng 1):** cổng dịch vụ của DNS nằm trong cung điện Module 5
-  - **Vì sao:** Test-NetConnection 10.20.0.54 -Port 53 — cổng 53 là cửa của DNS. TcpTestSucceeded : True mới đủ tin để khai máy này cho các máy trạm; ping thông thôi chỉ chứng minh máy sống, không chứng minh dịch vụ đang nghe.
+  - **Chủ đề gợi ý (tầng 1):** port dịch vụ của DNS nằm trong cung điện Module 5
+  - **Vì sao:** Test-NetConnection 10.20.0.54 -Port 53 — port 53 là cửa của DNS. TcpTestSucceeded : True mới đủ tin để khai máy này cho các máy trạm; ping thông thôi chỉ chứng minh máy sống, không chứng minh dịch vụ đang nghe.
 - **Đề:** "Tầng năm gọi xuống: sáng nay cả phòng không ai vào được hệ thống, các tầng khác vẫn chạy ầm ầm." Bạn ngồi ở MAY-TANG-5. Khám đi — bắt đầu từ chính địa chỉ của mình như một người trực có nghề.
   - **Dạng:** ca bệnh phòng khám (khám qua terminal → chẩn đoán → sửa)
     - **Mạng bệnh nhân:** MAY-TANG-5 [169.254.31.8/16] · MAY-TANG-4 [10.20.4.18/24, gw 10.20.4.1] · SRV-HE-THONG [10.20.0.9/24, gw 10.20.0.1] · SW-TANG-5 [p1:VLAN 1, p2:VLAN 1] · SW-TANG-4 [p1:VLAN 1, p2:VLAN 1] · SW-MAY-CHU [p1:VLAN 1, p2:VLAN 1] · R-TOA-NHA [g0:10.20.5.1/24, g1:10.20.4.1/24, g2:10.20.0.1/24] — dây: MAY-TANG-5·eth0 — SW-TANG-5·p1 | SW-TANG-5·p2 — R-TOA-NHA·g0 | MAY-TANG-4·eth0 — SW-TANG-4·p1 | SW-TANG-4·p2 — R-TOA-NHA·g1 | SRV-HE-THONG·eth0 — SW-MAY-CHU·p1 | SW-MAY-CHU·p2 — R-TOA-NHA·g2
     - **Ngồi ở máy:** MAY-TANG-5
     - **Hồ sơ bệnh:** không có (bệnh nằm trọn trong sơ đồ)
     - **Triệu chứng:** MAY-TANG-5 ping 10.20.0.9 PHẢI hỏng
-    - **Chẩn đoán (chọn 1):** **Nguồn cấp DHCP của tầng năm chết — máy xin không ai đáp nên tự bịa địa chỉ 169.254** ✓ · Sợi cáp trục nối tầng năm xuống phòng máy chủ bị đứt hoàn toàn · Máy chủ hệ thống quá tải nên từ chối kết nối của cả một tầng
+    - **Chẩn đoán (chọn 1):** **Nguồn cấp DHCP của tầng năm chết — máy xin không ai đáp nên tự bịa địa chỉ 169.254** ✓ · Sợi cáp trục nối tầng năm xuống phòng máy chủ đứt — cả tầng mất mạng ngay lập tức · Máy chủ hệ thống quá tải nên từ chối kết nối của nguyên một tầng đông người nhất
     - **Sửa:** chọn hành động — **Kiểm tra phía DHCP: scope tầng năm cạn hoặc relay của tầng hỏng — sửa ở đó** ✓ · Thay toàn bộ dây mạng của tầng năm rồi khởi động lại từng máy một · Nâng cấp máy chủ hệ thống lên cấu hình mạnh hơn để chịu tải tốt hơn
   - **Chủ đề gợi ý (tầng 1):** ipconfig của chính bạn — địa chỉ ấy ai cấp
   - **Vì sao:** ipconfig lộ địa chỉ 169.254.31.8, không gateway, không DNS — cả tầng xin DHCP mà không ai đáp nên đồng loạt tự bịa số. Dây trục mà đứt thì máy vẫn giữ địa chỉ 10.20.5.x cũ chứ không đổi sang 169.254; server quá tải thì tầng khác cũng phải kêu. Thủ phạm nằm ở phía cấp phát của TẦNG NĂM: scope cạn hoặc relay hỏng — sửa ở phòng máy chủ, không phải thay dây hay nâng server.
@@ -5984,7 +5984,7 @@ Phần E · 5 chặng · 5 bài · 8 khái niệm
   - **Vì sao:** Mỗi DC giữ MỘT BẢN ĐẦY ĐỦ — nhờ vậy đứt cáp giữa hai thành phố thì chi nhánh vẫn tự đăng nhập được bằng DC tại chỗ. Cái giá của sự độc lập đó: các bản sổ phải chép thay đổi cho nhau, và chép thì cần thời gian — đó chính là bốn mươi phút bí ẩn ở phần mở đầu.
 
 **3 · Khám phá (teach):**
-- *[m19-replication]* Mỗi Domain Controller giữ một bản đầy đủ của cuốn sổ miền, và mọi thay đổi — thêm user, đổi nhóm, sửa mật khẩu — ghi vào một DC rồi được CHÉP dần sang các DC khác. Đó là replication. Nhịp chép ăn theo site của bài trước: TRONG một site, dây nhanh nên thay đổi lan gần như tức thì; GIỮA hai site, đường vừa chậm vừa đắt nên thay đổi được gom lại, nén nhỏ và gửi THEO LỊCH — mặc định mười lăm phút một chuyến, có nơi đặt thưa hơn nữa để tiết kiệm đường truyền.
+- *[m19-replication]* Mỗi Domain Controller giữ một bản đầy đủ của cuốn sổ miền, và mọi thay đổi — thêm user, đổi nhóm, sửa mật khẩu — ghi vào một DC rồi được CHÉP dần sang các DC khác. Đó là replication. Nhịp chép ăn theo site của bài trước: TRONG một site, dây nhanh nên thay đổi lan gần như tức thì; GIỮA hai site, đường vừa chậm vừa đắt nên thay đổi được gom lại, nén nhỏ và gửi THEO LỊCH — thường được đặt cỡ mười lăm phút một chuyến (mặc định của AD là 180 phút — nơi nào cần tươi hơn thì rút xuống), có nơi đặt thưa hơn nữa để tiết kiệm đường truyền.
   - **Đào sâu hơn:** Vì sao không chép tức thì cho khỏe? Vì đường WAN giữa hai thành phố là tài nguyên đắt: hàng nghìn thay đổi lặt vặt mỗi giờ mà chuyến nào cũng chạy tức thì thì đường truyền nghẹt vì việc sổ sách. Gom lại theo chuyến là cái giá hợp lý — miễn là người vận hành BIẾT mình đã chọn cái giá đó, thay vì ngơ ngác như người trực ở phần mở đầu.
 - *[m19-do-tre]* Hệ quả vận hành: giữa hai site luôn có một KHE TRỄ. Vừa cấp quyền ở Hà Nội thì trong dăm phút tới vài chục phút, cuốn sổ ở Đà Nẵng vẫn là bản cũ — người dùng trong đó chưa thấy gì, và điều đó KHÔNG PHẢI HỎNG. Phản xạ đúng của người trực: trước khi lao vào sửa một ca "cấp quyền rồi mà chưa có", hỏi hai câu — thay đổi ghi ở site nào, người dùng đang đứng ở site nào? Nếu khác nhau, hãy đợi hết một chuyến chép rồi mới kết luận. Sửa loạn trong khe trễ là cách nhanh nhất biến một ca không-phải-bệnh thành bệnh thật.
   - **Đào sâu hơn:** Một ngoại lệ đáng biết để khỏi hoang mang ngược: ĐỔI MẬT KHẨU không chịu đợi lịch như thay đổi thường — mật khẩu mới được ưu tiên báo ngay về một DC đầu đàn, nên anh nhân viên đổi mật khẩu ở Hà Nội rồi bay vào Đà Nẵng thường vẫn đăng nhập được bằng mật khẩu mới. AD cố tình dành đường khẩn cho thứ người dùng cảm nhận rõ nhất — dạy đúng, không làm tròn: thay đổi thường đi theo lịch, mật khẩu có đường riêng.
@@ -6177,7 +6177,7 @@ Phần E · 5 chặng · 5 bài · 8 khái niệm
   - Thẻ ôn: *Chi nhánh mới có DC tại chỗ mà đăng nhập vẫn chậm khó hiểu — nghi phạm số một?* → Dải mạng của chi nhánh chưa được khai gắn vào site. Máy nhìn IP để tra site của mình — dải vô chủ thì máy mù vị trí, gõ cửa DC bất kỳ (thường ở thành phố khác). Dựng DC tại chỗ chỉ là nửa việc; khai subnet-thuộc-site là nửa còn lại.
 - **Replication giữa DC** `m19-replication` — Mỗi DC giữ một bản sổ miền đầy đủ; thay đổi ghi một nơi rồi chép dần sang nơi khác — trong site tức thì, giữa site nén và theo lịch
   - Ẩn dụ: Như các chi nhánh ngân hàng cùng giữ một cuốn sổ cái: bút toán ghi ở đâu cũng được, nhưng cuối mỗi chuyến xe liên tỉnh các chi nhánh mới khớp sổ với nhau.
-  - Thẻ ôn: *Replication trong site và giữa site khác nhau thế nào, và vì sao?* → Trong site: dây nhanh, thay đổi lan gần như tức thì. Giữa site: đường WAN chậm và đắt nên thay đổi được gom, nén, gửi theo lịch (mặc định cỡ 15 phút một chuyến). Ngoại lệ đáng nhớ: đổi mật khẩu có đường ưu tiên riêng, không đợi lịch.
+  - Thẻ ôn: *Replication trong site và giữa site khác nhau thế nào, và vì sao?* → Trong site: dây nhanh, thay đổi lan gần như tức thì. Giữa site: đường WAN chậm và đắt nên thay đổi được gom, nén, gửi theo lịch (thường đặt cỡ 15 phút một chuyến; mặc định gốc của AD là 180 phút). Ngoại lệ đáng nhớ: đổi mật khẩu có đường ưu tiên riêng, không đợi lịch.
 - **Khe trễ giữa site** `m19-do-tre` — Quãng thời gian thay đổi ghi ở site này chưa lan tới site kia — là tính chất của hệ thống, không phải bệnh
   - Ẩn dụ: Như gửi tiền ở quầy tỉnh này rồi lập tức rút ở tỉnh khác: sổ bên kia chưa kịp khớp thì máy báo thiếu — đợi chuyến khớp sổ, không phải ngân hàng mất tiền.
   - Thẻ ôn: *Cấp quyền ở site A, người dùng ở site B chưa thấy — người trực làm gì trước tiên?* → Hỏi hai câu: thay đổi ghi ở site nào, người dùng đứng site nào. Khác site thì đối chiếu lịch replication và đợi hết một chuyến chép rồi mới kết luận — ghi đè lần nữa hay khởi động lại DC là sửa loạn trong khe trễ, biến ca không-phải-bệnh thành bệnh thật.
@@ -6614,7 +6614,7 @@ Phần E · 5 chặng · 5 bài · 8 khái niệm
       - phải lôi ra được dòng chứa "link down on port 12"
     - **Lệnh mẫu:** `Get-Content sw-core.log | Select-String ERROR`
   - **Chủ đề gợi ý (tầng 1):** lọc trước, đọc sau
-  - **Vì sao:** Get-Content sw-core.log | Select-String ERROR — một nhát dao theo mức nặng và dòng 03:12:44 ERROR link down on port 12 nổi lên giữa 160 dòng. Mấy chục WARNING quạt và quảng bá là nền quen mặt của mọi đêm; camera tầng bốn cắm ở cổng 12 — thời gian và vị trí khớp trọn.
+  - **Vì sao:** Get-Content sw-core.log | Select-String ERROR — một nhát dao theo mức nặng và dòng 03:41:17 ERROR link down on port 12 nổi lên giữa 160 dòng. Mấy chục WARNING quạt và quảng bá là nền quen mặt của mọi đêm; camera tầng bốn cắm ở cổng 12 — thời gian và vị trí khớp trọn.
 
 ## Capstone — Dựng mạng chi nhánh `module-21`
 
@@ -6679,7 +6679,7 @@ Phần E · 4 chặng · 4 bài · 2 khái niệm
 
 ### Bài: Nối chi nhánh về trụ sở bằng trunk và OSPF `m21-bai-2`
 
-**1 · Khởi động (hook):** Đội thi công vừa rút đi: hai switch chi nhánh đã nối nhau một sợi dây, đường WAN về trụ sở đã sáng đèn. Nhưng máy kinh doanh gọi máy chủ kế toán ở trụ sở thì lặng thinh — khung tin của xóm 10 chết ngay trên sợi dây giữa hai switch, còn router chi nhánh thì chưa hề biết trụ sở có những mạng nào. Hai việc, hai tầng, một chặng: bạn còn nhớ dụng cụ của Module 14 và 16 chứ?
+**1 · Khởi động (hook):** Đội thi công vừa rút đi — và mang theo một tin mới: phòng kỹ thuật dời sang tòa nhà bên cạnh, dải /27 bạn cắt ở chặng 1 thành của để dành (địa chỉ để dành là chuyện thường ngày của người thiết kế — bản cắt không hề uổng). Ở tòa này còn lại kinh doanh và khách: hai switch đã nối nhau một sợi dây, đường WAN về trụ sở đã sáng đèn. Nhưng máy kinh doanh gọi máy chủ kế toán ở trụ sở thì lặng thinh — khung tin của xóm 10 chết ngay trên sợi dây giữa hai switch, còn router chi nhánh thì chưa hề biết trụ sở có những mạng nào. Hai việc, hai tầng, một chặng: bạn còn nhớ dụng cụ của Module 14 và 16 chứ?
 
 **2 · Đoán thử (pretest):**
 - **Đề:** Một sợi dây giữa hai switch phải chở khung tin của CẢ VLAN 10 lẫn VLAN 20. Hai đầu dây đó phải là gì?
@@ -6799,16 +6799,16 @@ Phần E · 4 chặng · 4 bài · 2 khái niệm
 **4 · Thử tay (practice, fading 2):**
 - **Đề:** "Phòng kinh doanh không mở được kho tài liệu kho.chi-nhanh.vn — gõ tên báo không tồn tại, gõ thẳng số 10.20.0.40 cũng không thông!" Bạn ngồi ở PC-KinhDoanh. Khám cho ra TẤT CẢ các bệnh — ca này không hứa chỉ có một.
   - **Dạng:** ca bệnh phòng khám (khám qua terminal → chẩn đoán → sửa)
-    - **Mạng bệnh nhân:** PC-KinhDoanh [10.40.0.2/26, gw 10.40.0.1] · SRV-KhoTaiLieu [10.20.0.40/24, gw 10.20.0.1] · SRV-DNS [10.20.0.53/24, gw 10.20.0.1] · SW-1 [p1:VLAN 10, p3:VLAN 1] · SW-2 [p1:VLAN 10, p3:VLAN 1] · R-ChiNhanh [g0:10.40.0.1/26, g2:10.40.0.113/30] · R-TruSo [g0:10.40.0.114/30, g1:10.20.0.1/24] · SW-TruSo [p1:VLAN 1, p2:VLAN 1, p3:VLAN 1] — dây: PC-KinhDoanh·eth0 — SW-1·p1 | SW-1·p3 — SW-2·p3 | SW-2·p1 — R-ChiNhanh·g0 | R-ChiNhanh·g2 — R-TruSo·g0 | R-TruSo·g1 — SW-TruSo·p1 | SW-TruSo·p2 — SRV-KhoTaiLieu·eth0 | SW-TruSo·p3 — SRV-DNS·eth0
+    - **Mạng bệnh nhân:** PC-KinhDoanh [10.40.0.2/26, gw 10.40.0.1] · SRV-KhoTaiLieu [10.20.0.40/24, gw 10.20.0.1] · SRV-DNS [10.40.0.4/26, gw 10.40.0.1] · SW-1 [p1:VLAN 10, p2:VLAN 10, p3:VLAN 1] · SW-2 [p1:VLAN 10, p3:VLAN 1] · R-ChiNhanh [g0:10.40.0.1/26, g2:10.40.0.113/30] · R-TruSo [g0:10.40.0.114/30, g1:10.20.0.1/24] · SW-TruSo [p1:VLAN 1, p2:VLAN 1, p3:VLAN 1] — dây: PC-KinhDoanh·eth0 — SW-1·p1 | SW-1·p3 — SW-2·p3 | SW-2·p1 — R-ChiNhanh·g0 | R-ChiNhanh·g2 — R-TruSo·g0 | R-TruSo·g1 — SW-TruSo·p1 | SW-TruSo·p2 — SRV-KhoTaiLieu·eth0 | SW-1·p2 — SRV-DNS·eth0
     - **Ngồi ở máy:** PC-KinhDoanh
-    - **Hồ sơ bệnh:** DNS 10.20.0.53 [portal.chi-nhanh.vn → 10.20.0.41]
+    - **Hồ sơ bệnh:** DNS 10.40.0.4 [portal.chi-nhanh.vn → 10.20.0.41]
     - **Triệu chứng:** PC-KinhDoanh ping 10.20.0.40 PHẢI hỏng
-    - **Chẩn đoán (chọn 1):** **HAI bệnh chồng nhau: trunk hai đầu lệch native VLAN, và DNS thiếu bản ghi kho tài liệu** ✓ · Một bệnh duy nhất: đường trunk giữa hai switch đang lệch native VLAN · Một bệnh duy nhất: máy chủ DNS thiếu bản ghi tên của kho tài liệu
-    - **Sửa:** chọn hành động — **Sửa CẢ HAI: khai native VLAN khớp hai đầu trunk, và thêm bản ghi kho.chi-nhanh.vn trỏ về 10.20.0.40** ✓ · Chỉ thêm bản ghi DNS — đường số sẽ tự thông khi cái tên phân giải được · Chỉ sửa native VLAN — bản ghi DNS sẽ tự đồng bộ lại từ máy chủ trụ sở
+    - **Chẩn đoán (chọn 1):** **HAI bệnh chồng nhau: allowed list của trunk không cho VLAN kinh doanh đi qua, và DNS thiếu bản ghi kho tài liệu** ✓ · HAI bệnh chồng nhau: trunk hai đầu khai lệch native VLAN, và bản ghi kho tài liệu trỏ về một địa chỉ sai · HAI bệnh chồng nhau: cổng nối PC kinh doanh bị gán sai VLAN, và máy chủ DNS không trả lời truy vấn
+    - **Sửa:** chọn hành động — **Sửa CẢ HAI: thêm VLAN kinh doanh vào allowed list hai đầu trunk, và thêm bản ghi kho.chi-nhanh.vn trỏ về 10.20.0.40** ✓ · Sửa CẢ HAI: khai lại native VLAN cho khớp hai đầu trunk, và sửa bản ghi kho tài liệu về đúng địa chỉ máy chủ · Sửa CẢ HAI: đưa cổng của PC kinh doanh về đúng VLAN, và khởi động lại dịch vụ DNS trên máy chủ tên
   - **Chủ đề gợi ý (tầng 1):** khám tầng tên và tầng đường ĐỘC LẬP — đủ dấu chân mới đếm đủ con
-  - **Vì sao:** Hai tầng, hai bằng chứng độc lập. Tầng tên: nslookup kho.chi-nhanh.vn → Non-existent domain — DNS thiếu bản ghi (portal có, kho thì không). Tầng đường: ping 10.20.0.40 bằng số vẫn rớt — tên không thể là thủ phạm của cú này; nhìn trunk giữa hai switch: SW-1 khai native 10, SW-2 để native 1 — khung kinh doanh đi trần qua dây và lạc xóm ở đầu kia. Sửa một trong hai chỉ khỏi nửa bệnh: phải khai lại native cho khớp VÀ thêm bản ghi. Ca liên tầng chấm người khám ĐẾM ĐỦ.
-  - **Gợi ý (tầng 2):** Tách tên khỏi số như M11: nslookup nói gì về cái tên? ping bằng số nói gì về con đường? Nếu cả hai cùng bệnh thì mỗi tầng phải có một thủ phạm riêng — soi tiếp cấu hình trunk hai đầu.
-  - **Lời giải (tầng 3):** nslookup ra Non-existent domain → thiếu bản ghi (bệnh tầng tên). ping số vẫn rớt → bệnh tầng đường: trunk SW-1 native 10 nhưng SW-2 native 1 — lệch native, khung lạc xóm. Chọn chẩn đoán HAI bệnh và hành động sửa CẢ HAI. Dừng ở một bệnh là cái bẫy của ca — và của nghề.
+  - **Vì sao:** Hai tầng, hai bằng chứng độc lập. Tầng tên: nslookup kho.chi-nhanh.vn → Non-existent domain, trong khi ping 10.40.0.4 (máy chủ DNS ngồi ngay cùng xóm) vẫn thông — DNS SỐNG và trả lời đàng hoàng, nó chỉ THIẾU bản ghi: portal có, kho thì không. Tầng đường: ping 10.20.0.40 bằng số vẫn rớt — mở console SW-1 gõ show interfaces trunk: allowed list hai đầu chỉ còn VLAN 20, khung VLAN 10 của kinh doanh bị chặn ngay cửa trunk. Ba lựa chọn đều kể HAI bệnh — chỉ cặp bằng chứng thật mới chọn nổi. Sửa một trong hai chỉ khỏi nửa bệnh: phải mở allowed list VÀ thêm bản ghi.
+  - **Gợi ý (tầng 2):** Tách tên khỏi số như M11: nslookup nói gì về cái tên? ping thẳng máy chủ DNS cùng xóm nói gì về con đường tới nó? ping bằng số nói gì về con đường xa? Console thiết bị có show interfaces trunk — soi allowed list và native hai đầu rồi hãy chốt cặp bệnh.
+  - **Lời giải (tầng 3):** nslookup ra Non-existent domain trong khi ping 10.40.0.4 vẫn thông → DNS sống nhưng thiếu bản ghi (bệnh tầng tên). ping số vẫn rớt → bệnh tầng đường: show interfaces trunk trên SW-1 và SW-2 — allowed list hai đầu chỉ cho VLAN 20, thiếu VLAN 10. Chọn đúng CẶP bệnh và hành động sửa cả hai. Ca không còn cho đoán bằng mẹo phương-án-bao-trùm: cả ba lựa chọn đều là hai bệnh.
 
 **5 · Nhớ lại (retrieval):**
 - **Đề:** Không nhìn lại bài: xếp lại quy trình bốn bước đã theo bạn suốt module.
@@ -6839,7 +6839,7 @@ Phần E · 4 chặng · 4 bài · 2 khái niệm
   - Ẩn dụ: Như thợ leo giàn giáo thử từng tầng trước khi bước lên: sập ở đâu biết ngay ở đó — còn kẻ leo một mạch tới nóc, lúc rơi chẳng biết mình rơi từ tầng nào.
   - Thẻ ôn: *Chuỗi kiểm chứng ba bậc của một mạng hai site, và luật cấm của ca bệnh liên tầng?* → show interfaces trunk (tầng 2 sống) → show ip ospf neighbor ra Full (tầng 3 quen nhau) → ping xuyên site (đường trọn vẹn). Luật cấm khi khám ca liên tầng: KHÔNG dừng ở thủ phạm đầu tiên — mỗi tầng khám độc lập, kết luận độc lập, vì mạng mới thi công hỏng theo lô.
 
-### Bài kiểm tra module (pool 14 câu, mỗi lượt rút 8, cần ≥ 85%)
+### Bài kiểm tra module (pool 16 câu, mỗi lượt rút 8, cần ≥ 85%)
 
 - **Đề:** Xếp bốn bước của quy trình dựng mạng theo đúng thứ tự:
   - **Dạng:** xếp thứ tự (thứ tự đúng):
@@ -6861,6 +6861,14 @@ Phần E · 4 chặng · 4 bài · 2 khái niệm
   - **Dạng:** trắc nghiệm · **Khung mang nhãn đâm vào cổng access thì bị bỏ — VLAN chết trên dây** ✓ / Hai đầu tự đàm phán để cùng thành trunk sau vài giây bắt tay / Chỉ VLAN số chẵn qua được còn VLAN số lẻ bị chặn lại ở giữa dây
   - **Chủ đề gợi ý (tầng 1):** cổng access không đọc nhãn
   - **Vì sao:** Đầu trunk dán nhãn khung rồi gửi đi; đầu access không đọc nhãn nên bỏ khung — bệnh trunk-một-đầu. Mô hình này không có đàm phán DTP (đơn giản hóa đã khai), và chẵn lẻ thì không liên quan gì.
+- **Đề:** Ba switch nối tam giác, STP bật, priority để mặc định cả ba. Cây hình thành thế nào?
+  - **Dạng:** trắc nghiệm · **Địa chỉ nhỏ nhất thắng cử làm root, một cổng trong vòng nằm im** ✓ / Ba switch thay nhau làm root theo giờ để chia đều tải các dây / Không có root — STP chặn ngẫu nhiên một cổng là vòng hết bão
+  - **Chủ đề gợi ý (tầng 1):** luật bầu root: priority trước, hòa thì địa chỉ nhỏ hơn thắng
+  - **Vì sao:** Priority hòa thì so địa chỉ — nhỏ nhất làm root, và kết quả là TẤT ĐỊNH chứ không ngẫu nhiên hay luân phiên: cùng sơ đồ luôn ra cùng cây. Vòng ba dây thì đúng một cổng phải nằm im để bão không thành.
+- **Đề:** STP đang canh một mạng có vòng. Sợi dây chính vừa đứt mà mạng vẫn thông — nhờ loại cổng nào tỉnh dậy?
+  - **Dạng:** gõ tay · **Chấp nhận:** cổng dự phòng | cong du phong | cổng bị chặn | cong bi chan | cổng block | cong block | blocked port | cổng đang nằm im | cong dang nam im
+  - **Chủ đề gợi ý (tầng 1):** cổng đang nằm im của STP không phải cổng hỏng
+  - **Vì sao:** Cổng dự phòng — cái cổng STP vẫn bắt nằm im (BLK). Mất dây là cây tính lại tức thì và cổng block mở ra thành đường thay thế. Bài 15 dặn đúng câu này: cổng im lìm không phải cổng hỏng, nó là đường sống để dành.
 - **Đề:** Lệnh kiểm chứng hai router OSPF đã đồng bộ trọn bản đồ với nhau?
   - **Dạng:** gõ tay · **Chấp nhận:** show ip ospf neighbor | sh ip ospf neighbor | show ip ospf neighbour
   - **Chủ đề gợi ý (tầng 1):** bảng phải ra chữ Full
@@ -6905,11 +6913,11 @@ Phần E · 4 chặng · 4 bài · 2 khái niệm
   - **Vì sao:** Trên R-Moi: router ospf 1 → network 10.60.0.0 0.0.0.255 area 0 → network 10.99.1.0 0.0.0.3 area 0 → end → show ip ospf neighbor ra Full. Hai bên cùng subnet WAN và cùng khai network là láng giềng lên; bảng định tuyến tự học và ping xuyên site tự thông.
 - **Đề:** "Chi nhánh mới bàn giao được ba hôm: phòng kinh doanh không vào được máy chủ kế toán bằng tên ketoan.congty.vn — mà anh kỹ thuật thử gõ thẳng số cũng chịu chết!" Bạn ngồi ở PC-KinhDoanh. Ca nghiệm thu cuối cùng của khóa: khám cho ĐỦ, đừng dừng ở dấu chân đầu tiên.
   - **Dạng:** ca bệnh phòng khám (khám qua terminal → chẩn đoán → sửa)
-    - **Mạng bệnh nhân:** PC-KinhDoanh [10.40.0.2/26, gw 10.40.0.1] · SRV-KeToan [10.20.0.9/24, gw 10.20.0.1] · SRV-DNS [10.20.0.53/24, gw 10.20.0.1] · SW-1 [p1:VLAN 10, p3:VLAN 1] · SW-2 [p1:VLAN 10, p3:VLAN 1] · R-ChiNhanh [g0:10.40.0.1/26, g2:10.40.0.113/30] · R-TruSo [g0:10.40.0.114/30, g1:10.20.0.1/24] · SW-TruSo [p1:VLAN 1, p2:VLAN 1, p3:VLAN 1] — dây: PC-KinhDoanh·eth0 — SW-1·p1 | SW-1·p3 — SW-2·p3 | SW-2·p1 — R-ChiNhanh·g0 | R-ChiNhanh·g2 — R-TruSo·g0 | R-TruSo·g1 — SW-TruSo·p1 | SW-TruSo·p2 — SRV-KeToan·eth0 | SW-TruSo·p3 — SRV-DNS·eth0
+    - **Mạng bệnh nhân:** PC-KinhDoanh [10.40.0.2/26, gw 10.40.0.1] · SRV-KeToan [10.20.0.9/24, gw 10.20.0.1] · SRV-DNS [10.40.0.4/26, gw 10.40.0.1] · SW-1 [p1:VLAN 10, p2:VLAN 10, p3:VLAN 1] · SW-2 [p1:VLAN 10, p3:VLAN 1] · R-ChiNhanh [g0:10.40.0.1/26, g2:10.40.0.113/30] · R-TruSo [g0:10.40.0.114/30, g1:10.20.0.1/24] · SW-TruSo [p1:VLAN 1, p2:VLAN 1, p3:VLAN 1] — dây: PC-KinhDoanh·eth0 — SW-1·p1 | SW-1·p3 — SW-2·p3 | SW-2·p1 — R-ChiNhanh·g0 | R-ChiNhanh·g2 — R-TruSo·g0 | R-TruSo·g1 — SW-TruSo·p1 | SW-TruSo·p2 — SRV-KeToan·eth0 | SW-1·p2 — SRV-DNS·eth0
     - **Ngồi ở máy:** PC-KinhDoanh
-    - **Hồ sơ bệnh:** DNS 10.20.0.53 [ketoan.congty.vn → 10.20.0.99, portal.congty.vn → 10.20.0.41]
+    - **Hồ sơ bệnh:** DNS 10.40.0.4 [ketoan.congty.vn → 10.20.0.99, portal.congty.vn → 10.20.0.41]
     - **Triệu chứng:** PC-KinhDoanh ping 10.20.0.9 PHẢI hỏng
-    - **Chẩn đoán (chọn 1):** **HAI bệnh chồng nhau: trunk hai đầu lệch native VLAN, và bản ghi DNS trỏ máy kế toán về địa chỉ sai** ✓ · Một bệnh duy nhất: bản ghi DNS của máy kế toán đang trỏ về một địa chỉ không tồn tại · Một bệnh duy nhất: đường trunk giữa hai switch chi nhánh đang lệch native VLAN
-    - **Sửa:** chọn hành động — **Sửa CẢ HAI: khai native VLAN khớp hai đầu trunk, và sửa bản ghi ketoan.congty.vn về 10.20.0.9** ✓ · Chỉ sửa bản ghi DNS — hết bệnh tên là đường số cũng tự thông theo · Chỉ khai lại native VLAN — DNS sẽ tự phát hiện địa chỉ đúng và cập nhật
+    - **Chẩn đoán (chọn 1):** **HAI bệnh chồng nhau: trunk hai đầu khai lệch native VLAN, và bản ghi DNS trỏ máy kế toán về địa chỉ sai** ✓ · HAI bệnh chồng nhau: allowed list của trunk chặn mất VLAN kinh doanh, và DNS thiếu hẳn bản ghi máy kế toán · HAI bệnh chồng nhau: cổng của router chi nhánh đang bị shutdown, và máy chủ DNS không trả lời truy vấn
+    - **Sửa:** chọn hành động — **Sửa CẢ HAI: khai native VLAN khớp hai đầu trunk, và sửa bản ghi ketoan.congty.vn về 10.20.0.9** ✓ · Sửa CẢ HAI: thêm VLAN kinh doanh vào allowed list trunk, và thêm mới một bản ghi cho máy kế toán · Sửa CẢ HAI: gõ no shutdown trên cổng router chi nhánh, và khởi động lại dịch vụ DNS trên máy chủ
   - **Chủ đề gợi ý (tầng 1):** tách tên khỏi số, rồi soi cấu hình trunk hai đầu
-  - **Vì sao:** Tầng tên: nslookup ketoan.congty.vn trả về 10.20.0.99 — bản ghi TRỎ SAI (máy thật là 10.20.0.9). Tầng đường: ping thẳng 10.20.0.9 vẫn rớt — soi trunk: SW-1 khai native 10, SW-2 để native 1, khung kinh doanh đi trần và lạc xóm ở đầu kia. Hai bệnh độc lập, sửa một chỉ khỏi nửa: phải khai native khớp VÀ sửa bản ghi. Đây là tổng ôn trá hình của cả trung cấp — người đếm đủ hai dấu chân mới qua.
+  - **Vì sao:** Tầng tên: nslookup ketoan.congty.vn trả về 10.20.0.99 — máy chủ DNS (10.40.0.4, ngồi cùng xóm nên tra được) đang giữ bản ghi TRỎ SAI: máy thật là 10.20.0.9. Tầng đường: ping thẳng 10.20.0.9 vẫn rớt — show interfaces trunk hai đầu: SW-1 khai native 10, SW-2 để native 1, khung đi trần lạc xóm ở đầu kia. Ba lựa chọn đều kể hai bệnh — allowed list thì show đã cho thấy vẫn đủ 10 với 20, router không cổng nào administratively down, nên chỉ cặp native-lệch + bản-ghi-sai đứng vững. Sửa một chỉ khỏi nửa: khai native khớp VÀ sửa bản ghi.

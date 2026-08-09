@@ -431,6 +431,17 @@ describe('bộ nội dung', () => {
     }
   })
 
+  it('M13: kỹ năng cắt VLSM liên hoàn phải có câu TRỤ — không được rút trượt', () => {
+    // Biên bản hội đồng trung cấp: M13 từng là module trung cấp duy nhất
+    // không có câu trụ nào — rút 8/12 có thể bỏ đúng các câu đòi THỰC HIỆN
+    // trình tự cắt/gộp, người học đậu module VLSM mà chưa cắt trọn dải nào.
+    // Cờ `anchor: true` theo câu (contentSchema) chở kỹ năng này.
+    const m13 = modules.find((m) => m.id === 'module-13')
+    expect(m13).toBeDefined()
+    const anchors = m13!.masteryTest.filter(isAnchorQuestion)
+    expect(anchors.length, 'module-13: cần ít nhất 2 câu trụ tính-tay (cắt liên hoàn + gộp tuyến)').toBeGreaterThanOrEqual(2)
+  })
+
   it('bài thi mastery: đáp án MCQ không lộ mình bằng ĐỘ DÀI', () => {
     // Cue độ-dài là chị em với cue vị-trí (đã vá bằng xáo lựa chọn lúc
     // render): người không thuộc bài vẫn ăn điểm bằng cách bấm lựa chọn
@@ -477,6 +488,60 @@ describe('bộ nội dung', () => {
       strictLongest / mcqCount,
       `${strictLongest}/${mcqCount} câu có đáp án là lựa chọn dài nhất — chiến thuật "bấm câu dài" đang ăn điểm`,
     ).toBeLessThanOrEqual(0.45)
+  })
+
+  it('ca bệnh trong đề thi: lựa chọn chẩn đoán/hành động không lộ mình bằng độ dài hay cấu trúc bao-trùm', () => {
+    // Biên bản hội đồng trung cấp: ca hai tầng của M21 từng có đúng MỘT
+    // lựa chọn "HAI bệnh chồng nhau…" giữa hai distractor "Một bệnh duy
+    // nhất…" — người thi lụa bấm phương án bao trùm mà không cần mở
+    // terminal. Hai hàng rào cho MỌI ca clinic trong pool thi:
+    //   (a) cue độ-dài như MCQ (đáp án <= 1.1x distractor dài nhất);
+    //   (b) cue bao-trùm: nếu đáp án kể NHIỀU bệnh ("cả A lẫn B") thì mọi
+    //       distractor cũng phải cùng cấu trúc nhiều-vế — không được để
+    //       đáp án là lựa chọn "gộp" duy nhất.
+    const GRACE_CHARS = 8
+    const checkChoices = (
+      moduleId: string,
+      questionId: string,
+      label: string,
+      choices: { vi: string }[],
+      answerIndex: number,
+    ) => {
+      const lens = choices.map((c) => c.vi.length)
+      const answerLen = lens[answerIndex]!
+      const distractors = lens.filter((_, i) => i !== answerIndex)
+      const maxD = Math.max(...distractors)
+      const spread = Math.max(...lens) - Math.min(...lens)
+      if (spread > GRACE_CHARS) {
+        expect(
+          answerLen,
+          `${moduleId}/${questionId} (${label}): đáp án dài vượt distractor (${lens.join('/')})`,
+        ).toBeLessThanOrEqual(Math.round(maxD * 1.1))
+      }
+      // Cue bao-trùm: đáp án tự nhận NHIỀU bệnh ("hai bệnh", "cả hai")
+      // trong khi distractor tự nhận một vế là lộ đề không cần khám.
+      const multi = (s: string) => /hai bệnh|cả hai/i.test(s)
+      if (multi(choices[answerIndex]!.vi)) {
+        const oneSided = choices.filter((c, i) => i !== answerIndex && /một bệnh duy nhất|chỉ /i.test(c.vi))
+        expect(
+          oneSided.length,
+          `${moduleId}/${questionId} (${label}): đáp án gộp-hai-vế đứng giữa distractor một-vế — bấm bao trùm là ăn điểm`,
+        ).toBe(0)
+      }
+    }
+
+    let clinicCount = 0
+    for (const m of modules) {
+      for (const q of m.masteryTest) {
+        if (q.kind !== 'clinic') continue
+        clinicCount++
+        checkChoices(m.id, q.id, 'diagnosis', q.diagnosis.choices as { vi: string }[], q.diagnosis.answerIndex)
+        if (q.actions !== undefined) {
+          checkChoices(m.id, q.id, 'actions', q.actions.choices as { vi: string }[], q.actions.answerIndex)
+        }
+      }
+    }
+    expect(clinicCount, 'phải có ca clinic trong pool thi để đo').toBeGreaterThan(0)
   })
 
   it('accept gõ tay nhận đủ các cách viết mà người thật hay gõ', () => {

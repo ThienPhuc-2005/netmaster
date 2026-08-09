@@ -39,6 +39,11 @@ export const CliGoalSchema = z.discriminatedUnion('kind', [
   z.object({ kind: z.literal('trunk-carries'), ...portRef, vlans: z.array(vlanSchema).min(1) }),
   z.object({ kind: z.literal('trunk-blocks'), ...portRef, vlans: z.array(vlanSchema).min(1) }),
   z.object({ kind: z.literal('native-vlan'), ...portRef, vlan: vlanSchema }),
+  z.object({
+    kind: z.literal('native-match'),
+    a: z.object({ deviceId: idSchema, portId: idSchema }),
+    b: z.object({ deviceId: idSchema, portId: idSchema }),
+  }),
   z.object({ kind: z.literal('port-up'), ...portRef }),
   z.object({ kind: z.literal('port-ip'), ...portRef, ip: ipSchema, prefix: prefixSchema }),
   z.object({

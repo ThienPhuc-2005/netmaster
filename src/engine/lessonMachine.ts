@@ -16,7 +16,8 @@
 // canAdvance/state first); they are never shown to the learner.
 
 import type { ExerciseAttempt } from './types'
-import { conceptIdsInLesson, type Lesson, type Step } from './contentSchema'
+import { conceptIdsInLesson } from './contentPure'
+import type { Lesson, Step } from './contentSchema'
 
 // Fixed tuple indices of the 6-step pipeline (enforced by StepsSchema).
 const PRETEST = 1

@@ -20,14 +20,8 @@
 
 import type { AnswerRecord } from './types'
 import { HISTORY_CAP, accuracyPct } from './answerHistory'
-import {
-  conceptIdsInLesson,
-  orderedLessonIds,
-  type Lesson,
-  type McqQuestion,
-  type Module,
-  type TypedQuestion,
-} from './contentSchema'
+import { conceptIdsInLesson, orderedLessonIds } from './contentPure'
+import type { Lesson, McqQuestion, Module, TypedQuestion } from './contentSchema'
 import { normalizeAnswer } from './grading/normalize'
 
 /** Đúng > 90% trên cửa sổ đầy → tăng độ khó (spec 2.3, nghĩa đen dấu ">"). */

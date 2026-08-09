@@ -18,7 +18,15 @@ import { Navigate } from 'react-router'
 import { AppLayout } from '../components/AppLayout'
 import { OnboardingPage } from '../features/onboarding/OnboardingPage'
 import { LearnPage } from '../features/learn/LearnPage'
+import { primeModules } from '../content'
 import { shouldReviewFirst, todayIso, useProgress } from '../store/progress'
+
+// Kéo nội dung NGAY khi bundle chạy — song song với hydrate store, không
+// chờ React mount. AppGate chỉ mở AppLayout khi promise này xong, nên mọi
+// `loadModules()` đồng bộ phía sau cổng luôn đọc được cache đã đầy.
+// (Onboarding KHÔNG chờ nội dung: aha 60 giây đứng trước mọi thứ, và màn
+// đó không đọc module nào.)
+const contentReady = primeModules()
 
 // Luật "mỗi ngày mở app, việc ĐẦU TIÊN là ôn thẻ đến hạn" (spec 2.2) chỉ
 // áp cho lần điều hướng ĐẦU của phiên; sau đó người học đi lại tự do
@@ -66,9 +74,22 @@ export function AppGate() {
     if (hydrated) return
     return useProgress.persist.onFinishHydration(() => setHydrated(true))
   }, [hydrated])
+  const [ready, setReady] = useState(false)
+  useEffect(() => {
+    let alive = true
+    void contentReady.then(() => {
+      if (alive) setReady(true)
+    })
+    return () => {
+      alive = false
+    }
+  }, [])
   const onboardingDone = useProgress((s) => s.onboardingDone)
 
   if (!hydrated) return null
+  // Onboarding mở được ngay cả khi nội dung còn đang kéo (màn đó tự đủ);
+  // nội dung thường xong từ lâu trước khi người mới bấm hết onboarding.
   if (!onboardingDone) return <OnboardingPage />
+  if (!ready) return null
   return <AppLayout />
 }

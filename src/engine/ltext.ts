@@ -5,14 +5,14 @@
 // Phase 1 chỉ có tiếng Việt; trường `en` chừa sẵn cho bản dịch sau
 // (đã chốt: khung UI song ngữ VI/EN, nội dung bài học VI trước).
 
-import { z } from 'zod'
-
-export const LTextSchema = z.object({
-  vi: z.string().min(1),
-  en: z.string().min(1).optional(),
-})
-
-export type LText = z.infer<typeof LTextSchema>
+// KHÔNG import zod ở đây — file này đi theo `lt()` vào mọi component,
+// tức là vào bundle mở app của PROD. Schema zod của LText nằm ở
+// ltextSchema.ts (đường DEV/TEST + /design); chốt chặn thuần-kiểu bên đó
+// giữ hai mô tả khớp nhau.
+export interface LText {
+  vi: string
+  en?: string
+}
 
 /**
  * Đường đọc DUY NHẤT của LText phía UI (hội đồng 2026-08-07, ghế i18n):

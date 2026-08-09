@@ -3345,7 +3345,7 @@ function ExtendedAcl({ title }: { title?: string }) {
     { x: 14, label: 'giao thức' },
     { x: 64, label: 'nguồn' },
     { x: 114, label: 'đích' },
-    { x: 164, label: 'cổng' },
+    { x: 164, label: 'port' },
   ]
   return (
     <Frame title={title}>
@@ -3364,7 +3364,7 @@ function ExtendedAcl({ title }: { title?: string }) {
         nói được: ai, tới đâu, bằng gì
       </text>
       <text x="110" y="116" textAnchor="middle" {...monoText}>
-        (cổng chỉ có với tcp và udp)
+        (port chỉ có với tcp và udp)
       </text>
     </Frame>
   )

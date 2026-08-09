@@ -259,13 +259,25 @@ const REGISTRY: Record<string, GlyphFn> = {
       <path d="M34 70 h28" {...stroke} strokeWidth={1.5} />
     </Glyph>
   ),
-  // Hai phong bì mục lục bay chéo qua nhau — OSPF bậc Exchange.
+  // Hai phong bì mục lục BAY CHÉO qua nhau — OSPF bậc Exchange. Nghiêng
+  // ngược chiều + vệt bay, KHÔNG chồng lên nhau: bóng dáng "hai vật đang
+  // bay" phải khác xa "hai tấm đè khít" của Full ở cuối tòa nhà — hai
+  // phòng gần kề mà na ná là móc nhớ chập vào nhau (luật đầu file, và là
+  // phát hiện của hội đồng trung cấp; tiền lệ cặp 587/389).
   'ospf-two-envelopes': (label) => (
     <Glyph label={label}>
-      <rect x="14" y="22" width="42" height="28" rx="3" {...stroke} />
-      <path d="M14 26 35 40 56 26" {...stroke} strokeWidth={1.5} />
-      <rect x="40" y="50" width="42" height="28" rx="3" {...stroke} />
-      <path d="M40 54 61 68 82 54" {...stroke} strokeWidth={1.5} />
+      <g transform="rotate(-18 32 28)">
+        <rect x="14" y="16" width="36" height="24" rx="3" {...stroke} />
+        <path d="M14 20 32 32 50 20" {...stroke} strokeWidth={1.5} />
+      </g>
+      <g transform="rotate(18 64 68)">
+        <rect x="46" y="56" width="36" height="24" rx="3" {...stroke} />
+        <path d="M46 60 64 72 82 60" {...stroke} strokeWidth={1.5} />
+      </g>
+      {/* Vệt bay ngược chiều nhau: phong bì trên lao xuống phải, phong bì
+          dưới lao lên trái — đúng chuyện "bay chéo qua nhau". */}
+      <path d="M6 44 l12 4 M10 54 l10 3" {...stroke} strokeWidth={1.5} />
+      <path d="M78 48 l-12 -4 M74 38 l-10 -3" {...stroke} strokeWidth={1.5} />
     </Glyph>
   ),
   // Phễu rót nốt phần còn thiếu vào kho — OSPF bậc Loading.

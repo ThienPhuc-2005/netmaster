@@ -34,8 +34,11 @@ export const MASTERY_DRAW_COUNT = 8
 /** Dạng câu là KỸ NĂNG của module, không phải câu hỏi thay thế được. */
 const ANCHOR_KINDS: ReadonlySet<Question['kind']> = new Set(['lab', 'palace-walk', 'clinic', 'ps', 'cli'])
 
-/** Câu trụ — luôn có mặt trong mọi lượt thi của module. */
+/** Câu trụ — luôn có mặt trong mọi lượt thi của module. Cờ `anchor: true`
+ *  theo câu đi trước (M13: kỹ năng chính nằm trong câu typed tính-tay),
+ *  rồi mới tới luật theo kind. */
 export function isAnchorQuestion(question: Question): boolean {
+  if ('anchor' in question && question.anchor === true) return true
   return ANCHOR_KINDS.has(question.kind)
 }
 

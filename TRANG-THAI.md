@@ -38,18 +38,17 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
    viewBox, task riêng của chủ dự án) — ĐỪNG đụng component Journey
    trong `ConceptVisual.tsx` cho tới khi phiên đó nhập về.
 
-**Hạng mục 20 phần máy làm được đã KHÉP (08-09, khối 20.1):** bảng DoD
-ĐẠT/CHƯA ĐẠT in ở khối 20.1 dưới; kịch bản test trung cấp ở
-`KICH-BAN-TEST.md` mục 12-13; hội đồng 15 ghế đã họp, biên bản ở
-`DANH-GIA-HOI-DONG-TRUNG-CAP.md` (điểm trung bình 7.6/10, 3 P0 + 25 P1
-+ 52 P2). Còn lại là việc của CHỦ DỰ ÁN:
-- **Duyệt các đợt sửa** ở mục 6 của biên bản — đề xuất bắt đầu bằng đợt
-  1 (ba câu dạy sai P0: vai Root trong `show spanning-tree`, "mặc định
-  15 phút" của replication, ví dụ wildcard 0.0.0.1 — cả ba sửa dưới một
-  buổi). Gật là làm luôn.
+**Hạng mục 20 KHÉP (08-09, khối 20.1 + 20.2):** DoD đối chiếu, kịch bản
+test trung cấp (`KICH-BAN-TEST.md` mục 12-13), hội đồng 15 ghế đã họp
+(biên bản `DANH-GIA-HOI-DONG-TRUNG-CAP.md`, trung bình 7.6/10) — và
+**chủ dự án đã duyệt trọn 4 đợt sửa của biên bản, cả 15 việc mục 6 đã
+SỬA XONG trong khối 20.2** (3 câu dạy sai P0, vá phép đo, capstone trung
+thực, nền móng hiệu năng + dữ liệu). Còn lại:
 - **Tuyển người test**: 2 dòng DoD còn CHƯA ĐẠT đều là buổi đo người
-  thật (bài vẽ M1-2 của DoD v1; ba bài đo trung cấp của DoD v2) — app
-  phần code sẵn sàng bàn giao.
+  thật (bài vẽ M1-2 của DoD v1; ba bài đo trung cấp của DoD v2 — kịch
+  bản mục 12-13). App phần code sẵn sàng bàn giao.
+- Kho việc nhỏ còn lại: **52 phát hiện P2** của biên bản (mục 5 từng
+  ghế) — đáng gom thành một "lượt dọn" như nếp đợt ba cũ khi rảnh.
 
 **Cách làm một module nội dung** (đã chạy 4 lần liền, cứ theo đúng nếp):
 1. Viết `content/modules/module-XX.json` — 5 bài × 6 bước, concepts có
@@ -705,6 +704,58 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
     `DANH-GIA-HOI-DONG-TRUNG-CAP.md`.
   - Sức khỏe lượt này: 1155/1155 test xanh, typecheck sạch, build qua
     (không sửa dòng code nào — toàn giấy tờ, đúng đề bài hạng mục 20).
+
+- **Khối 20.2 XONG (08-09): LƯỢT SỬA THEO BIÊN BẢN TRUNG CẤP** — chủ dự
+  án duyệt trọn gói ("làm hết đi tôi duyệt"), cả 15 việc mục 6 của
+  `DANH-GIA-HOI-DONG-TRUNG-CAP.md` đã đóng trong một lượt.
+  - **Đợt 1 — 3 câu dạy sai (P0):** `show spanning-tree` in vai
+    **Root FWD** cho root port (`rootPorts` vào `StpState`, test khóa
+    "đúng một cổng Root mỗi switch không phải root"); replication giữa
+    site sửa thành "thường đặt cỡ 15 phút; mặc định gốc của AD là 180
+    phút" ở cả teach lẫn flashcard M19; ví dụ wildcard M13 đổi thành
+    nền .1 + wildcard 0.0.0.254 (đúng luật bit vừa dạy).
+  - **Đợt 2 — vá phép đo:** ca hai tầng M21 (luyện + thi) viết lại — ba
+    lựa chọn ĐỀU là "hai bệnh" khác cặp, luyện đổi sang cặp bệnh KHÁC
+    thi (allowed-list thiếu + thiếu bản ghi ↔ native lệch + bản ghi trỏ
+    sai); test cue mở rộng sang clinic (độ dài + chống bao-trùm — quét
+    ra và vá luôn 3 ca cũ m11-mt-7/m11-mt-8/m18-mt-ca); **examMode**:
+    bài thi không chấm sống ✓/○ ở CẢ BA bề mặt lab/CLI/PS, lab ẩn thêm
+    "Chỗ đáng nhìn lại" (giữ lời "không có gợi ý giữa chừng"); cờ
+    **`anchor: true` theo câu** — M13 có 2 câu trụ tính-tay (cắt liên
+    hoàn + gộp tuyến, content.test khóa); pool M21 thêm 2 câu STP (hết
+    trống M15, pool 16); goal **`native-match`** đo hai-đầu-khớp thay
+    goal một phía ở m14-mt-cli-2 (sửa đầu nào cũng được công nhận, test
+    khóa cả hai chiều); M20 sửa explain trích sai giờ + log DHCP hết tự
+    mâu thuẫn (không tái cấp IP, scope cạn ngừng cấp, utilization không
+    tụt).
+  - **Đợt 3 — capstone trung thực:** SRV-DNS hai ca M21 dời về CÙNG XÓM
+    chi nhánh (10.40.0.4) — nslookup hết phi vật lý, ping kiểm chứng
+    được; **console thiết bị CHỈ-ĐỌC trong phòng khám**
+    (`deviceConsole: true`, spec 4.2): chip chọn switch/router,
+    enable/show chạy thật trên sơ đồ sống, lệnh cấu hình bị chặn bằng
+    lời Việt — nửa bệnh L2 giờ KHÁM được thay vì đoán; hook chặng 2
+    khai thật chuyện phòng kỹ thuật dời tòa, dải /27 thành của để dành.
+  - **Đợt 4 — nền móng:** nội dung nạp LƯỜI (`primeModules` + AppGate;
+    21 module = 21 chunk riêng, sửa một chữ chỉ invalidate đúng chunk
+    đó) và **zod rời hẳn PROD** (tách `contentPure.ts` + `ltextSchema.ts`,
+    engine index thôi re-export schema) — **khởi động ~530KB → ~215KB
+    gzip**, đo thật trên dist; nút "Dùng cửa sổ này" reload để không ghi
+    đè tiến độ bằng RAM cũ; bài dở lab có lưới đỡ nội-dung-đã-đổi (lệch
+    tập thiết bị là bỏ draft) + reset regen layout; CLI từ chối ACL
+    1-99 (chỉ extended 100-199, schema siết theo); quét thuật ngữ "cổng
+    dịch vụ"→"port" (M17/M18/M10 + hình ExtendedAcl); VlsmDrill hết rơi
+    focus (autoFocus + dồn focus màn tổng kết); phòng Exchange vẽ lại
+    thành hai phong bì BAY CHÉO (hết na ná phòng Full); `net` của bộ
+    chấm hành vi nối vào console — `show mac address-table` và cột match
+    `show access-lists` có dữ liệu thật.
+  - 1162/1162 test xanh (+7), typecheck sạch, build qua, content:review
+    render 21 module. Kiểm browser thật: 296 hình không tràn getBBox;
+    ca M21 bài 4 — console thiết bị từ chối config bằng lời Việt, `show
+    interfaces trunk` lộ đúng bệnh allowed-list, chip sang SW-2 có dấu
+    mốc, ping 10.40.0.4 thông + nslookup NXDOMAIN hợp lý; thi vượt M14
+    câu CLI — bảng mục tiêu tĩnh có dòng "Bài thi không chấm sống",
+    không ✓ sống, goal native-match nói đúng lời hai đầu; VlsmDrill
+    focus rơi đúng ô đầu; console browser sạch lỗi.
 
 Cập nhật: 2026-08-09. File này chỉ để nắm nhanh tình hình khi mở lại dự
 án. Nguồn chân lý: `SPEC-APP-HOC-MANG.md` (M1-12) và

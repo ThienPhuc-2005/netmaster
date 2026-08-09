@@ -92,7 +92,9 @@ const AclRuleSchema = z.object({
 
 const AccessListSchema = z.object({
   /** 1-99 là ACL chuẩn, 100-199 là ACL mở rộng (spec v2 mục 5.1). */
-  number: z.number().int().min(1).max(199),
+  // Chỉ dải extended: 1-99 là ACL chuẩn với cú pháp khác hẳn mà mô hình
+  // không có — xem chú thích parseAclRule (engine/cli/interpret.ts).
+  number: z.number().int().min(100).max(199),
   rules: z.array(AclRuleSchema).min(1),
 })
 

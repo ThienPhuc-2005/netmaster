@@ -153,6 +153,12 @@ export interface NetworkLabProps {
    * (phòng khám chạy terminal/triệu chứng trên đúng sơ đồ đang sửa).
    */
   onTopologyChange?: (topology: Topology) => void
+  /**
+   * Bài THI: mục tiêu là đề bài tĩnh (không ✓/○ sống) và không có "Chỗ
+   * đáng nhìn lại" — màn intro hứa "không có gợi ý giữa chừng" thì phòng
+   * lab phải giữ lời. "Gửi thử" vẫn miễn phí: tự kiểm là kỹ năng được đo.
+   */
+  examMode?: boolean
 }
 
 export function NetworkLab({
@@ -162,15 +168,36 @@ export function NetworkLab({
   onTopologyChange,
   initialDraft,
   onDraftChange,
+  examMode,
 }: NetworkLabProps) {
   const t = useT()
+  // Lưới đỡ nội-dung-đã-đổi (biên bản hội đồng trung cấp, ghế dữ liệu):
+  // question id còn nhưng sơ đồ đề đã đổi — thiết bị mới của spec không
+  // có trong bài dở thì restore là mở một mặt bàn THIẾU ĐỒ, goal trỏ vào
+  // thiết bị tàng hình và người học kẹt câm lặng. Lệch tập thiết bị bắt
+  // buộc → bỏ bài dở, mở bài sạch (mất một bài dở còn hơn kẹt — đúng
+  // triết lý lưới lessonRuntimes của store).
+  const draft = useMemo(() => {
+    if (initialDraft == null) return null
+    const have = new Set(initialDraft.topology.devices.map((d) => d.id))
+    const required = [
+      ...spec.initial.devices.map((d) => d.id),
+      ...spec.goals.flatMap((g) =>
+        g.kind === 'macLearned' ? [g.switchId] : g.kind === 'arpResolved' ? [g.deviceId] : [g.from, g.to],
+      ),
+    ]
+    return required.every((id) => have.has(id)) ? initialDraft : null
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- chỉ tính một lần lúc mount, như chính initialDraft
+  }, [])
   const [session, setSession] = useState(() =>
-    initialDraft == null
-      ? startLab(spec.initial, spec.allow)
-      : restoreLab(spec.initial, spec.allow, initialDraft.topology),
+    draft == null ? startLab(spec.initial, spec.allow) : restoreLab(spec.initial, spec.allow, draft.topology),
   )
-  const [layout, setLayout] = useState<Record<string, Point>>(
-    () => initialDraft?.layout ?? autoLayout(spec.initial.devices),
+  // Trộn autoLayout làm nền: thiết bị nào bài dở chưa lưu chỗ đứng vẫn có
+  // tọa độ — không bao giờ có thiết bị tàng hình vì thiếu layout.
+  const [layout, setLayout] = useState<Record<string, Point>>(() =>
+    draft == null
+      ? autoLayout(spec.initial.devices)
+      : { ...autoLayout(draft.topology.devices), ...draft.layout },
   )
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [armedPort, setArmedPort] = useState<PortRef | null>(null)
@@ -306,6 +333,9 @@ export function NetworkLab({
             }}
             onReset={() => {
               setSession(resetLab(session))
+              // Về sơ đồ ban đầu là về CẢ chỗ đứng thiết bị của đề — không
+              // thì thiết bị mà bài dở chưa từng đặt vẫn không có tọa độ.
+              setLayout(autoLayout(resetLab(session).present.devices))
               setArmedPort(null)
               setRefusal(null)
             }}
@@ -324,7 +354,7 @@ export function NetworkLab({
         </div>
 
         <div className="space-y-4">
-          <GoalList topology={topology} outcomes={evaluation.goals} />
+          <GoalList topology={topology} outcomes={evaluation.goals} hideStatus={examMode === true} />
           <DeviceTray kinds={spec.allow.addDevices} onAdd={handleAddDevice} />
           <ConfigPanel
             topology={topology}
@@ -401,7 +431,9 @@ export function NetworkLab({
         <HopLog topology={topology} result={run} visibleCount={flight.visibleHops} />
       </div>
 
-      {hideDiagnosis !== true && <DiagnosisList codes={evaluation.diagnosis} />}
+      {/* Bài thi cũng ẩn "Chỗ đáng nhìn lại" — máy gọi tên bệnh giữa bài thi
+          là gợi ý giữa chừng, còn lộ hơn cả bảng ✓/○. */}
+      {hideDiagnosis !== true && examMode !== true && <DiagnosisList codes={evaluation.diagnosis} />}
 
       {onSubmit !== undefined && (
         <div className="flex flex-wrap items-center gap-3 rounded-md border border-edge bg-panel px-4 py-3">

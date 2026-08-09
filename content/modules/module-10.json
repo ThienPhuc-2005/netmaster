@@ -148,7 +148,7 @@
                 { "vi": "Chỉ chặn ban đêm" }
               ],
               "answerIndex": 0,
-              "explain": { "vi": "Mặc định của security group là ĐÓNG: chưa khai luật nào thì không ai vào được. Muốn mở cổng 443 cho web? Tự tay thêm một dòng. An toàn nằm ở chỗ quên thì ĐÓNG chứ không phải quên thì mở." }
+              "explain": { "vi": "Mặc định của security group là ĐÓNG: chưa khai luật nào thì không ai vào được. Muốn mở port 443 cho web? Tự tay thêm một dòng. An toàn nằm ở chỗ quên thì ĐÓNG chứ không phải quên thì mở." }
             }
           ],
           "encouragement": { "vi": "So với người gác cửa nhớ mặt của Module 7 — giờ mỗi máy có một người gác riêng." }

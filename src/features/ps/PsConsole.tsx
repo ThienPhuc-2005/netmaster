@@ -118,9 +118,15 @@ export interface PsConsoleProps {
    * thế giới trắng.
    */
   onDraftChange?: (draft: PsDraftSnapshot | null) => void
+  /**
+   * Bài THI: bảng mục tiêu là đề bài tĩnh, KHÔNG lật ✓/○ theo từng lệnh —
+   * cùng luật với lab và CLI (biên bản hội đồng trung cấp): màn intro hứa
+   * "không có gợi ý giữa chừng". Tự kiểm bằng Get-* là kỹ năng được đo.
+   */
+  examMode?: boolean
 }
 
-export function PsConsole({ question, onSubmit, initialDraft, onDraftChange }: PsConsoleProps) {
+export function PsConsole({ question, onSubmit, initialDraft, onDraftChange, examMode }: PsConsoleProps) {
   const t = useT()
   const spec = question.spec
   const [state, setState] = useState<PsRunState>(() => initialDraft?.state ?? initialPsState(spec.world))
@@ -140,6 +146,7 @@ export function PsConsole({ question, onSubmit, initialDraft, onDraftChange }: P
   const [goalAnnounce, setGoalAnnounce] = useState('')
   const prevMet = useRef<boolean[] | null>(null)
   useEffect(() => {
+    if (examMode === true) return // bài thi không chấm sống thì cũng không announce
     const met = evaluation.goals.map((g) => g.met)
     if (prevMet.current !== null) {
       const fresh = evaluation.goals.filter(({ met: m }, i) => m && prevMet.current![i] === false)
@@ -148,7 +155,7 @@ export function PsConsole({ question, onSubmit, initialDraft, onDraftChange }: P
       }
     }
     prevMet.current = met
-  }, [evaluation, t])
+  }, [evaluation, t, examMode])
 
   useEffect(() => {
     const el = scrollRef.current
@@ -209,16 +216,26 @@ export function PsConsole({ question, onSubmit, initialDraft, onDraftChange }: P
         <ul className="flex flex-col gap-1.5">
           {evaluation.goals.map(({ goal, met }, i) => (
             <li key={i} className="flex items-start gap-2 text-sm">
-              <span className={met ? 'text-ok' : 'text-ink-muted'}>{met ? '✓' : '○'}</span>
-              <span className="text-ink">
-                {goalText(goal, t)}{' '}
-                <span className={met ? 'text-ok' : 'text-ink-muted'}>
-                  ({met ? t('lab.goalMet') : t('lab.goalUnmet')})
-                </span>
-              </span>
+              {examMode === true ? (
+                <>
+                  <span className="text-ink-muted">○</span>
+                  <span className="text-ink">{goalText(goal, t)}</span>
+                </>
+              ) : (
+                <>
+                  <span className={met ? 'text-ok' : 'text-ink-muted'}>{met ? '✓' : '○'}</span>
+                  <span className="text-ink">
+                    {goalText(goal, t)}{' '}
+                    <span className={met ? 'text-ok' : 'text-ink-muted'}>
+                      ({met ? t('lab.goalMet') : t('lab.goalUnmet')})
+                    </span>
+                  </span>
+                </>
+              )}
             </li>
           ))}
         </ul>
+        {examMode === true && <p className="mt-2 text-xs text-ink-muted">{t('ps.examGoalsNote')}</p>}
       </div>
 
       <div className="overflow-hidden rounded-md border border-edge bg-surface">

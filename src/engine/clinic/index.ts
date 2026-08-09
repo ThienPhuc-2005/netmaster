@@ -4,4 +4,7 @@
 export * from './patient'
 export * from './terminal'
 export * from './gradeClinic'
-export * from './clinicSchema'
+// KHÔNG re-export clinicSchema — schema là đồ nghề của cổng nội dung (DEV/TEST)
+// và trang /design; re-export ở đây là kéo tháp zod vào đường nóng PROD
+// (biên bản hội đồng trung cấp, ghế Hiệu năng). Cần schema thì import
+// thẳng file schema.

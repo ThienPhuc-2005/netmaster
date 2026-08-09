@@ -692,7 +692,11 @@ Capstone có xương sống tốt (số liệu VLSM/wildcard/ACL đúng tuyệt 
 
 ---
 
-## 6. Việc đề xuất theo thứ tự đáng làm (chờ chủ dự án duyệt)
+## 6. Việc đề xuất theo thứ tự đáng làm
+
+**CẬP NHẬT 2026-08-09: chủ dự án đã duyệt trọn gói cả 4 đợt — toàn bộ
+15 việc dưới đây ĐÃ SỬA XONG trong khối 20.2 (xem TRANG-THAI.md).
+Còn treo duy nhất: 52 phát hiện P2 ở mục 5 — chờ một lượt dọn.**
 
 Hội đồng chỉ đánh giá — mọi việc dưới đây đụng nội dung/hành vi nhìn
 thấy được nên cần duyệt trước khi code (luật CLAUDE.md).

@@ -400,7 +400,7 @@
               "choices": [
                 { "vi": "Chỉ địa chỉ người gửi" },
                 { "vi": "Cả người gửi lẫn người nhận" },
-                { "vi": "Người gửi, người nhận và cả cổng dịch vụ" }
+                { "vi": "Người gửi, người nhận và cả port dịch vụ" }
               ],
               "answerIndex": 0,
               "hintTopic": { "vi": "chữ chuẩn ở đây nghĩa là đơn giản nhất" },
@@ -430,10 +430,10 @@
               "conceptId": "m17-acl-mo-rong",
               "visualId": "vis-acl-mo-rong",
               "body": {
-                "vi": "Danh sách MỞ RỘNG mang số từ 100 tới 199 và nhìn được cả bốn thứ: giao thức, nguồn, đích, và với tcp hay udp thì thêm cổng dịch vụ. Nhờ vậy nó nói được đúng câu của sếp: máy 192.168.1.66 không được ping tới 192.168.2.50, còn đi chỗ khác thì tùy. Cái giá phải trả là mỗi dòng dài hơn và bạn phải nghĩ kỹ hơn về vế đích — nhưng đó chính là chỗ luật trở nên đúng người đúng việc."
+                "vi": "Danh sách MỞ RỘNG mang số từ 100 tới 199 và nhìn được cả bốn thứ: giao thức, nguồn, đích, và với tcp hay udp thì thêm port dịch vụ. Nhờ vậy nó nói được đúng câu của sếp: máy 192.168.1.66 không được ping tới 192.168.2.50, còn đi chỗ khác thì tùy. Cái giá phải trả là mỗi dòng dài hơn và bạn phải nghĩ kỹ hơn về vế đích — nhưng đó chính là chỗ luật trở nên đúng người đúng việc."
               },
               "deepDive": {
-                "vi": "Địa chỉ trong mọi dòng luật viết bằng wildcard mask của Module 13, không phải subnet mask: bit 0 là chỗ phải khớp, bit 1 là chỗ mặc kệ. Ba lối viết tắt hay gặp: any là 0.0.0.0 với wildcard 255.255.255.255 (mặc kệ tất), host 192.168.2.50 là wildcard 0.0.0.0 (khớp từng bit), còn 192.168.1.0 0.0.0.255 nghĩa là cả xóm .1. Phòng lab chỉ sinh lưu lượng ping, nên dòng luật tcp hay udp kèm cổng dịch vụ ở đây là để ĐỌC và để hiểu, chứ không có gói nào của app khớp vào chúng."
+                "vi": "Địa chỉ trong mọi dòng luật viết bằng wildcard mask của Module 13, không phải subnet mask: bit 0 là chỗ phải khớp, bit 1 là chỗ mặc kệ. Ba lối viết tắt hay gặp: any là 0.0.0.0 với wildcard 255.255.255.255 (mặc kệ tất), host 192.168.2.50 là wildcard 0.0.0.0 (khớp từng bit), còn 192.168.1.0 0.0.0.255 nghĩa là cả xóm .1. Phòng lab chỉ sinh lưu lượng ping, nên dòng luật tcp hay udp kèm port dịch vụ ở đây là để ĐỌC và để hiểu, chứ không có gói nào của app khớp vào chúng."
               }
             }
           ]
@@ -625,7 +625,7 @@
           "type": "summary",
           "bullets": [
             { "vi": "Danh sách chuẩn (1 tới 99) chỉ soi được nguồn: cấm một nguồn là cấm nó đi mọi nơi." },
-            { "vi": "Danh sách mở rộng (100 tới 199) soi được giao thức, nguồn, đích và cổng dịch vụ." },
+            { "vi": "Danh sách mở rộng (100 tới 199) soi được giao thức, nguồn, đích và port dịch vụ." },
             { "vi": "Địa chỉ trong luật viết bằng wildcard: any là mặc kệ tất, host là khớp từng bit." }
           ],
           "nextTeaser": {
@@ -1554,7 +1554,7 @@
     {
       "id": "m17-acl-mo-rong",
       "term": "ACL mở rộng",
-      "glossVi": "Danh sách số 100 tới 199, so được giao thức, nguồn, đích và cổng dịch vụ với tcp hay udp",
+      "glossVi": "Danh sách số 100 tới 199, so được giao thức, nguồn, đích và port dịch vụ với tcp hay udp",
       "metaphor": {
         "vi": "Như người gác hỏi đủ ba câu: anh là ai, anh định vào phòng nào, và anh tới có việc gì."
       },
@@ -1562,7 +1562,7 @@
       "flashcard": {
         "front": { "vi": "ACL mở rộng mang dải số nào, nhìn được những gì, và đặt ở đâu?" },
         "back": {
-          "vi": "Số 100 tới 199; nhìn được giao thức, nguồn, đích và cả cổng dịch vụ với tcp hay udp. Vì biết đủ để chặn đúng nên đặt gần NGUỒN: gói chết sớm, không tốn đường truyền của cả chặng sau."
+          "vi": "Số 100 tới 199; nhìn được giao thức, nguồn, đích và cả port dịch vụ với tcp hay udp. Vì biết đủ để chặn đúng nên đặt gần NGUỒN: gói chết sớm, không tốn đường truyền của cả chặng sau."
         }
       }
     },

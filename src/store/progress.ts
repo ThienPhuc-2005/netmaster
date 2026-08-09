@@ -17,7 +17,8 @@
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
 import type { AnswerRecord, DrillMode, DrillResult, ISODate, ModuleStatus, ReviewCard, StreakState } from '../engine/types'
-import { palaceRoomsInLesson, type ClinicQuestion, type Lesson, type Module } from '../engine/contentSchema'
+import { palaceRoomsInLesson } from '../engine/contentPure'
+import type { ClinicQuestion, Lesson, Module } from '../engine/contentSchema'
 import { palaceCardId } from '../engine/palace'
 import { isoFromDate } from '../engine/dates'
 import {

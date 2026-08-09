@@ -83,12 +83,18 @@ export function VlsmDrill() {
   const [elapsed, setElapsed] = useState(0)
   const outcomes = useRef<{ correct: boolean; seconds: number }[]>([])
   const problemStart = useRef(0)
+  const doneHeadingRef = useRef<HTMLHeadingElement>(null)
 
   useEffect(() => {
     if (phase !== 'running') return
     const tick = setInterval(() => setElapsed(Math.floor((Date.now() - problemStart.current) / 1000)), 500)
     return () => clearInterval(tick)
   }, [phase, index])
+
+  // Form vừa unmount lúc phiên kết thúc — dồn focus vào tiêu đề tổng kết.
+  useEffect(() => {
+    if (phase === 'done') doneHeadingRef.current?.focus()
+  }, [phase])
 
   const start = () => {
     const seed = Number(today.replaceAll('-', '')) + sessionsToday * 7_919 + 13
@@ -182,7 +188,12 @@ export function VlsmDrill() {
         {heading}
         <div className="flex flex-col gap-6">
           <div className="rounded-md border border-ok/40 bg-panel px-5 py-4">
-            <h2 className="text-base font-bold text-ink">{t('drill.doneTitle')}</h2>
+            {/* tabIndex -1 + focus qua ref: form vừa unmount thì focus rơi
+                về body — dồn vào tiêu đề tổng kết để người dùng bàn phím /
+                screen reader đứng đúng chỗ cần đọc (WCAG 2.4.3). */}
+            <h2 ref={doneHeadingRef} tabIndex={-1} className="text-base font-bold text-ink focus:outline-none">
+              {t('drill.doneTitle')}
+            </h2>
             {last !== undefined && (
               <p className="mt-1 text-sm text-ink-muted">
                 {t('drill.doneBody', { correct: last.correct, total: last.total, avg: last.avgSeconds })}
@@ -249,6 +260,10 @@ export function VlsmDrill() {
                           onChange={(e) => setCell(need.id, 'ip', e.target.value)}
                           aria-label={t('vlsm.networkAria', { dept: name })}
                           placeholder="192.168.10.0"
+                          // Nút "Bắt đầu" unmount khi phiên mở — không autoFocus
+                          // thì focus rơi về body, người dùng bàn phím phải Tab
+                          // lại từ đầu trang (drill subnet cũ đã làm đúng).
+                          autoFocus={i === 0}
                           autoComplete="off"
                           className="w-40 rounded-md border border-edge bg-panel px-2 py-1.5 font-mono text-sm text-ink placeholder:text-ink-muted"
                         />

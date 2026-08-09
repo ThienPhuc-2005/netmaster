@@ -44,6 +44,13 @@ export interface ClinicCaseSpec {
   patient: ClinicPatient
   symptom: ClinicSymptom
   fix: ClinicFix
+  /**
+   * Cấp thêm console thiết bị CHỈ-ĐỌC (enable/exit/end + các lệnh show)
+   * bên cạnh terminal Windows — lời hứa spec v2 mục 4.2 cho phòng khám
+   * trung cấp: ca liên tầng phải soi được cấu hình trunk/ACL bằng lệnh,
+   * không bắt người học đoán nửa bệnh L2 bằng loại trừ.
+   */
+  deviceConsole?: true
 }
 
 // ---------------------------------------------------------------

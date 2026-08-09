@@ -59,7 +59,21 @@ export function goalText(t: TFunc, topo: Topology, goal: LabGoal): string {
   }
 }
 
-export function GoalList({ topology, outcomes }: { topology: Topology; outcomes: readonly GoalOutcome[] }) {
+export function GoalList({
+  topology,
+  outcomes,
+  hideStatus,
+}: {
+  topology: Topology
+  outcomes: readonly GoalOutcome[]
+  /**
+   * Bài THI: mục tiêu vẫn là đề bài nhưng KHÔNG chấm sống — màn intro đã
+   * hứa "không có gợi ý giữa chừng", bảng ✓/○ đổi theo từng thao tác chính
+   * là gợi ý giữa chừng (biên bản hội đồng trung cấp). Tự kiểm bằng
+   * "Gửi thử" — vốn là kỹ năng bài muốn đo.
+   */
+  hideStatus?: boolean
+}) {
   const t = useT()
   return (
     <section aria-labelledby="lab-goals" className="rounded-md border border-edge bg-panel p-4">
@@ -69,19 +83,29 @@ export function GoalList({ topology, outcomes }: { topology: Topology; outcomes:
       <ul className="space-y-1.5 text-sm">
         {outcomes.map((outcome, index) => (
           <li key={index} className="flex items-start gap-2">
-            <span
-              aria-hidden
-              className={`mt-1.5 h-2 w-2 shrink-0 rounded-full ${outcome.met ? 'bg-ok' : 'bg-edge'}`}
-            />
-            <span className={outcome.met ? 'text-ink' : 'text-ink-muted'}>
-              {goalText(t, topology, outcome.goal)}
-              <span className="ml-1 text-xs">
-                ({t(outcome.met ? 'lab.goalMet' : 'lab.goalUnmet')})
-              </span>
-            </span>
+            {hideStatus === true ? (
+              <>
+                <span aria-hidden className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-edge" />
+                <span className="text-ink">{goalText(t, topology, outcome.goal)}</span>
+              </>
+            ) : (
+              <>
+                <span
+                  aria-hidden
+                  className={`mt-1.5 h-2 w-2 shrink-0 rounded-full ${outcome.met ? 'bg-ok' : 'bg-edge'}`}
+                />
+                <span className={outcome.met ? 'text-ink' : 'text-ink-muted'}>
+                  {goalText(t, topology, outcome.goal)}
+                  <span className="ml-1 text-xs">
+                    ({t(outcome.met ? 'lab.goalMet' : 'lab.goalUnmet')})
+                  </span>
+                </span>
+              </>
+            )}
           </li>
         ))}
       </ul>
+      {hideStatus === true && <p className="mt-2 text-xs text-ink-muted">{t('lab.examGoalsNote')}</p>}
     </section>
   )
 }

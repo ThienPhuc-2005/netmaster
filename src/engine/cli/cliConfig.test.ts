@@ -29,7 +29,7 @@ import { diagnose } from '../lab/gradeLab'
 import { simulatePing } from '../lab/simulate'
 import { computeStp, isPortBlocked } from '../lab/stp'
 import { findDevice } from '../lab/topology'
-import { ringOfSwitches, trunkMissing, routedNetwork, twoRouterOspf } from '../../../tests/fixtures/labFixture'
+import { ringOfSwitches, trunkMissing, trunkNativeMismatch, routedNetwork, twoRouterOspf } from '../../../tests/fixtures/labFixture'
 import { routerPortByCli, routerWithDownPort, trunkByCli, vlanDatabaseByCli } from '../../../tests/fixtures/cliFixture'
 
 /** Gõ một chuỗi lệnh, trả state cuối + kết quả lệnh cuối. */
@@ -396,6 +396,15 @@ describe('ACL bằng lệnh (khối 16.1)', () => {
     expect(type(inConfig, 'ip access-group 101 in').last.outcome.kind).toBe('error')
   })
 
+  it('số ACL chuẩn 1-99 bị từ chối — mô hình chỉ có cú pháp extended', () => {
+    // IOS thật: 1-99 là ACL chuẩn (chỉ nguồn). Nhận số đó với cú pháp
+    // extended là dạy một cấu hình không tồn tại (biên bản trung cấp).
+    const inConfig = type(onRouter(), 'enable', 'configure terminal').state
+    expect(type(inConfig, 'access-list 10 permit ip any any').last.outcome.kind).toBe('error')
+    expect(type(inConfig, 'access-list 99 deny icmp any any').last.outcome.kind).toBe('error')
+    expect(type(inConfig, 'access-list 100 permit ip any any').last.outcome.kind).toBe('ok')
+  })
+
   it('running-config in lại cả danh sách lẫn dòng áp lên cổng', () => {
     const { state } = type(
       onRouter(),
@@ -490,5 +499,42 @@ describe('OSPF bằng lệnh (khối 16.2) — chế độ thứ năm', () => {
     const text = type(state, 'show running-config').text
     expect(text).toContain('router ospf 1')
     expect(text).toContain(' network 10.0.99.0 0.0.0.255 area 0')
+  })
+})
+
+describe('goal native-match: đo HAI ĐẦU KHỚP, không đóng đinh phía phải sửa', () => {
+  // Biên bản hội đồng trung cấp (ghế Đo lường): goal native-vlan một phía
+  // từng chấm rớt cách sửa hợp lệ mà chính explain của đề công nhận.
+  const spec = () => ({
+    initial: trunkNativeMismatch(),
+    deviceId: 'sw-2',
+    goals: [
+      {
+        kind: 'native-match' as const,
+        a: { deviceId: 'sw-1', portId: 'p4' },
+        b: { deviceId: 'sw-2', portId: 'p4' },
+      },
+    ],
+    solution: [],
+  })
+
+  it('trạng thái đầu (native lệch 1 ↔ 99) chưa đạt', () => {
+    expect(isCliSolved(spec(), initialCliState(trunkNativeMismatch(), 'sw-2'))).toBe(false)
+  })
+
+  it('đưa sw-2 về native 1 → đạt', () => {
+    const { state } = type(
+      initialCliState(trunkNativeMismatch(), 'sw-2'),
+      'enable', 'configure terminal', 'interface p4', 'switchport trunk native vlan 1', 'end',
+    )
+    expect(isCliSolved(spec(), state)).toBe(true)
+  })
+
+  it('đưa sw-1 lên native 99 CŨNG đạt — cách sửa hợp lệ ở đầu kia không bị chấm rớt', () => {
+    const { state } = type(
+      initialCliState(trunkNativeMismatch(), 'sw-1'),
+      'enable', 'configure terminal', 'interface p4', 'switchport trunk native vlan 99', 'end',
+    )
+    expect(isCliSolved(spec(), state)).toBe(true)
   })
 })

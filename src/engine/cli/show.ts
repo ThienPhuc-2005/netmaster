@@ -24,7 +24,7 @@ import {
   type Topology,
   type VlanId,
 } from '../lab/topology'
-import { computeStp, isPortBlocked, stpEnabled, bridgePriorityOf } from '../lab/stp'
+import { computeStp, isPortBlocked, isRootPort, stpEnabled, bridgePriorityOf } from '../lab/stp'
 import { aclRuleText } from '../lab/acl'
 import { ospfNeighborsOf, ospfRouterId, ospfRoutesOf } from '../lab/ospf'
 import type { NetState } from '../lab/simulate'
@@ -264,10 +264,13 @@ export function showSpanningTree(topo: Topology, device: Device): string[] {
   ]
   for (const port of device.ports) {
     if (!linkUp(topo, device.id, port.id)) continue
-    const blocked = isPortBlocked(stp, { deviceId: device.id, portId: port.id })
-    lines.push(
-      `${pad(port.id, 19)}${pad(blocked ? 'Altn' : 'Desg', 11)}${pad(blocked ? 'BLK' : 'FWD', 5)}${pad('19', 7)}P2p`,
-    )
+    const ref = { deviceId: device.id, portId: port.id }
+    const blocked = isPortBlocked(stp, ref)
+    // Vai đúng như IOS thật: cổng hướng về gốc là Root (switch không phải
+    // root có đúng một cổng như thế — bài 3 Module 15 dạy vậy, bảng phải
+    // nói cùng một chuyện), cổng bị chặn là Altn, còn lại Desg.
+    const role = blocked ? 'Altn' : isRootPort(stp, ref) ? 'Root' : 'Desg'
+    lines.push(`${pad(port.id, 19)}${pad(role, 11)}${pad(blocked ? 'BLK' : 'FWD', 5)}${pad('19', 7)}P2p`)
   }
   return lines
 }
@@ -295,7 +298,9 @@ export function showAccessLists(net: NetState, device: Device): string[] {
   const lists = device.accessLists ?? []
   const lines: string[] = []
   for (const list of [...lists].sort((a, b) => a.number - b.number)) {
-    lines.push(`${list.number <= 99 ? 'Standard' : 'Extended'} IP access list ${list.number}`)
+    // Mô hình chỉ có ACL extended (schema + CLI đều siết 100-199) — nhãn
+    // Standard cho số nhỏ từng in ra một khuôn không tồn tại trên IOS.
+    lines.push(`Extended IP access list ${list.number}`)
     for (const rule of [...list.rules].sort((a, b) => a.seq - b.seq)) {
       const hits = net.aclHits[device.id]?.[list.number]?.[rule.seq] ?? 0
       const matches = hits === 0 ? '' : ` (${hits} match${hits === 1 ? '' : 'es'})`

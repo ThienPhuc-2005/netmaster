@@ -65,10 +65,23 @@ quan trước khi "sửa test cho xanh".
   tải trọng sư phạm nằm ở đó, animation chỉ đắp thêm.
 - `geometry.ts`: tọa độ bằng MỘT hệ số, không `getScreenCTM` — nếu không
   sẽ mất khả năng test kéo-thả.
+- **Bài dở lab có lưới đỡ nội-dung-đã-đổi** (biên bản trung cấp): lúc
+  restore, tập thiết bị của spec.initial + thiết bị mà goals nhắc tới
+  phải nằm TRỌN trong draft — lệch là bỏ draft mở bài sạch (mất một bài
+  dở còn hơn kẹt với thiết bị tàng hình). Layout khi restore TRỘN
+  autoLayout làm nền để thiết bị nào cũng có tọa độ; "Về sơ đồ ban đầu"
+  regen cả layout.
+- `runLabGoals` trả về cả `net` (NetState sau các gói thăm dò, gồm
+  aclHits) — console CLI nối nó vào phiên để `show mac address-table` và
+  cột match của `show access-lists` có dữ liệu thật. Đừng cắt trường này.
 - `hasCycle` (gradeLab) chỉ đếm dây NẰM TRONG tầng 2: router chặn khung
   quảng bá nên vòng qua router không sinh bão — mạng nhiều router nối
   vòng là ĐƯỜNG DỰ PHÒNG (M16 dựng lên để khen), chẩn đoán `l2-loop` ở
   đó là dạy ngược. `l2-loop` cũng chỉ là bệnh khi CHƯA bật STP.
+- **ACL chỉ dải extended 100-199.** Số 1-99 là ACL chuẩn của IOS với cú
+  pháp KHÁC HẲN (chỉ nguồn) mà mô hình không có — CLI từ chối, schema
+  siết min 100, `show access-lists` chỉ in nhãn Extended. Nhận số nhỏ với
+  cú pháp extended là dạy một cấu hình không tồn tại (biên bản trung cấp).
 - **ACL chỉ THÊM được vào CUỐI** — 24 lệnh không có `no ip access-group`
   hay lệnh xóa dòng. Mọi đề ACL phải giải bằng THÊM luật hoặc ÁP luật,
   không bao giờ bằng gỡ. Không phải hạn chế đáng vá: nó ép bài học "thứ
@@ -108,6 +121,16 @@ quan trước khi "sửa test cho xanh".
   tiêu chấm SỐNG, "Làm lại từ đầu" thay undo (thiết bị thật không có
   undo). RÚT DÂY CONSOLE là hàng nút chọn thiết bị (thao tác vật lý,
   không phải lệnh); cắm sang máy mới thì mode về `user`.
+- **Bài THI không chấm sống** (`examMode` — biên bản trung cấp): màn
+  intro hứa "không có gợi ý giữa chừng" nên trong `ModuleTestPage`, bảng
+  mục tiêu của CẢ BA bề mặt lab/CLI/PS là ĐỀ BÀI TĨNH (không ✓/○ lật
+  theo thao tác, không announce), lab còn ẩn luôn "Chỗ đáng nhìn lại".
+  Gửi thử / lệnh show / Get-* vẫn miễn phí — tự kiểm là kỹ năng được đo.
+  Bài HỌC giữ nguyên chấm sống; đừng "thống nhất" hai chế độ vào nhau.
+- `show spanning-tree` in vai **Root FWD** cho root port (rootPorts nằm
+  trong `StpState`) — dán Desg cho cổng hướng về gốc là dạy ngược bài 15
+  (từng là P0). Goal `native-match` đo HAI ĐẦU KHỚP, không đóng đinh phía
+  phải sửa — đề "chữa native lệch" cấm dùng goal `native-vlan` một phía.
 
 ## 4. Terminal PowerShell (engine/ps + features/ps)
 
@@ -192,6 +215,18 @@ quan trước khi "sửa test cho xanh".
 - `clinicSchema` ép: bệnh nhân phải ỐM THẬT, lời giải chữa được ca của
   chính nó, trạng thái đầu chưa đạt sẵn, `mustClearDiagnoses` phải là
   bệnh thật của sơ đồ đầu.
+- **`deviceConsole: true` (cấp spec ca)**: cấp console thiết bị CHỈ-ĐỌC
+  cạnh terminal Windows — lời hứa spec v2 mục 4.2 cho ca liên tầng trung
+  cấp (nửa bệnh L2 phải KHÁM được, không đoán bằng loại trừ). Chỉ nhận
+  enable/exit/end + mọi lệnh show + `?`; lệnh cấu hình chặn bằng
+  microcopy `clinic.deviceReadOnly` — sửa mạng là việc của pha sửa.
+  Schema bắt sơ đồ phải có switch/router mới được khai cờ. Console soi
+  topology SỐNG của ClinicRoom (pha sửa đổi sơ đồ là show thấy ngay).
+- **Bằng chứng của ca phải HỢP VẬT LÝ**: nslookup chỉ được trả lời khi
+  đường tới DNS server đi được (terminal không kiểm reachability — nên
+  đặt DNS server CÙNG segment với ghế ngồi khi đường xa đang đứt; hai ca
+  M21 từng phạm, đã dời DNS về chi nhánh). Người học giỏi sẽ ping máy
+  chủ DNS để kiểm — bằng chứng tự đá nhau là ca hỏng.
 
 ## 7. Nội dung & bài thi mastery
 
@@ -206,6 +241,17 @@ quan trước khi "sửa test cho xanh".
   rào: từng câu ≤ 1.1× distractor dài nhất trừ khi chênh ≤ 8 ký tự; toàn
   đề ≤ 45% câu có đáp án dài nhất). Distractor phải là lỗi hiểu nhầm
   THẬT, cấm distractor "đùa".
+- **Ca clinic trong pool thi cũng bị test cue**: độ dài như MCQ, cộng
+  luật chống cue BAO-TRÙM — đáp án kể "hai bệnh"/"cả hai" thì mọi
+  distractor cũng phải hai-vế (khác cặp bệnh), không được để đáp án là
+  lựa chọn gộp duy nhất giữa các lựa chọn một-bệnh (ca hai tầng M21 từng
+  đoán được bằng mẹo, không cần mở terminal). Ca luyện và ca thi cùng
+  dạng phải KHÁC cặp bệnh (M21: luyện = allowed-list + thiếu bản ghi,
+  thi = native lệch + bản ghi trỏ sai).
+- **Cờ `anchor: true` theo câu** (typed/mcq/order): câu tính-tay vẫn làm
+  câu TRỤ được — `isAnchorQuestion` đọc cờ trước rồi mới xét kind. M13
+  phải có ≥ 2 câu trụ tính-tay (content.test khóa); module mới mà kỹ
+  năng chính không có kind trụ thì cắm cờ, đừng để gate rút trượt nó.
 - **Accept gõ tay phủ cách gõ người thật**: bộ chấm tách token nên ký
   hiệu biến mất ("dấu |" → "dau", "65,535" → hai số). Đáp án là KÝ HIỆU
   thì accept có cả biến thể đọc thành chữ + biến thể có dấu phân cách
@@ -260,7 +306,11 @@ quan trước khi "sửa test cho xanh".
   được; CHỈ lượt chấm đầu ghi SM-2 + XP (`ReviewPage.test.tsx` khóa).
 - Điều hướng: mở app còn thẻ đến hạn → vào Ôn tập trước (gate ở
   main.tsx, quyết định trong effect SAU khi zustand rehydrate). AppGate
-  chặn mọi route tới khi `onboardingDone`.
+  chặn mọi route tới khi `onboardingDone` VÀ nội dung prime xong.
+- **Nút "Dùng cửa sổ này" của SingleWindowGuard phải `location.reload()`**,
+  không được chỉ mở khóa: cửa sổ bị chặn giữ state RAM cũ từ lúc mount —
+  mở khóa suông là action đầu tiên persist bản cũ đè lên tiến độ vừa học
+  ở cửa sổ kia (đúng loại mất-dữ-liệu guard này sinh ra để chặn).
 
 ## 9. Học vượt — "thi vượt" (ngoài spec, đã duyệt 08-08)
 
@@ -298,6 +348,19 @@ chỉ bỏ điều kiện "học hết bài trước đã".
 - KHÔNG import tĩnh NetworkLab/ClinicRoom/PsConsole/CliConsole vào đường
   nóng — chúng lazy trong QuestionInput; route ngoài Learn/Review/Lesson
   lazy trong main.tsx.
+- **Nội dung nạp LƯỜI** (biên bản trung cấp, ghế Hiệu năng): glob
+  non-eager, `primeModules()` async đổ cache, `loadModules()` đồng bộ
+  đọc cache — AppGate prime (mọi route sau cổng), test prime ở
+  `tests/setup.ts`. Mỗi module một chunk riêng: sửa một chữ chỉ
+  invalidate đúng chunk đó. ĐỪNG đổi glob về eager "cho tiện".
+- **Zod không được vào đường nóng PROD**: hàm thuần trên nội dung nằm ở
+  `contentPure.ts` (flow/lessonMachine/progress/content chỉ import từ
+  đó); `LTextSchema` ở `ltextSchema.ts` (ltext.ts chỉ có interface +
+  `lt()` — nó đi vào MỌI component); engine index KHÔNG re-export
+  `*Schema` (cần schema thì import thẳng file schema — DEV/TEST và
+  /design là nơi duy nhất được cần). Kiểm bằng build: chunk chứa `_zod`
+  không được nằm trong modulepreload của dist/index.html. Khởi động
+  từ ~530KB gzip xuống ~215KB nhờ ba luật này.
 - i18n: vi.json + en.json cùng cấu trúc key, test parity khóa cả bộ
   `{placeholder}` từng key; lang lưu localStorage key `lang`;
   `<html lang>` theo nút VI/EN (`applyLang`); chuỗi EN có số viết dạng

@@ -50,7 +50,13 @@ export function SingleWindowGuard({ children }: { children: ReactNode }) {
         <button
           onClick={() => {
             channelRef.current?.postMessage('takeover')
-            setBlocked(false)
+            // TẢI LẠI thay vì chỉ mở khóa: cửa sổ này bị chặn từ lúc mount
+            // nên state trong RAM là bản CŨ — mở khóa suông thì action đầu
+            // tiên sẽ persist bản cũ đó đè lên tiến độ vừa học ở cửa sổ kia
+            // (đúng kiểu mất-tiến-độ-im-lặng mà guard này sinh ra để chặn;
+            // biên bản hội đồng trung cấp, ghế dữ liệu). Reload là hydrate
+            // lại từ localStorage mới nhất — không cần đồng bộ tay từng store.
+            window.location.reload()
           }}
           className="rounded-md bg-accent px-4 py-2 text-sm font-semibold text-accent-contrast hover:brightness-110"
         >
