@@ -35,6 +35,12 @@ const AdUserSchema = z.object({
   enabled: z.boolean(),
 })
 
+const AdGroupSchema = z.object({
+  name: idText,
+  scope: z.enum(['Global', 'DomainLocal']),
+  members: z.array(idText),
+})
+
 export const PsWorldSchema = z.object({
   hostname: idText,
   interfaces: z.array(PsInterfaceSchema).min(1),
@@ -44,6 +50,8 @@ export const PsWorldSchema = z.object({
       domain: idText,
       ous: z.array(idText).min(1),
       users: z.array(AdUserSchema),
+      /** Thiếu = miền không có nhóm — thế giới Module 12 giữ nguyên nghĩa. */
+      groups: z.array(AdGroupSchema).optional(),
     })
     .nullable(),
   files: z.record(z.string(), z.array(z.string())),
@@ -52,6 +60,7 @@ export const PsWorldSchema = z.object({
 export const PsGoalSchema = z.discriminatedUnion('kind', [
   z.object({ kind: z.literal('ad-user'), sam: idText, ou: idText.optional() }),
   z.object({ kind: z.literal('ad-user-count'), ou: idText, atLeast: z.number().int().min(1) }),
+  z.object({ kind: z.literal('group-member'), group: idText, sam: idText }),
   z.object({ kind: z.literal('tested-connection'), ip: z.string().min(7), port: z.number().int().min(1).max(65535).optional() }),
   z.object({ kind: z.literal('found-line'), mustContain: idText }),
 ])

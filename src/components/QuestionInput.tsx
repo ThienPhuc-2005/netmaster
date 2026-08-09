@@ -21,6 +21,7 @@ import { todayIso, useProgress, type PracticeDraft } from '../store/progress'
 const NetworkLab = lazy(() => import('../features/lab/NetworkLab').then((m) => ({ default: m.NetworkLab })))
 const ClinicRoom = lazy(() => import('../features/clinic/ClinicRoom').then((m) => ({ default: m.ClinicRoom })))
 const PsConsole = lazy(() => import('../features/ps/PsConsole').then((m) => ({ default: m.PsConsole })))
+const CliConsole = lazy(() => import('../features/cli/CliConsole').then((m) => ({ default: m.CliConsole })))
 
 interface QuestionInputProps {
   question: Question
@@ -247,6 +248,27 @@ export function QuestionInput({ question, onSubmit, disabled, draftKey }: Questi
                     draft === null
                       ? clearDraft(draftKey)
                       : saveDraft(draftKey, { kind: 'ps', ...draft, savedAt: todayIso() })
+            }
+            onSubmit={disabled === true ? undefined : onSubmit}
+          />
+        </Suspense>
+      )
+    case 'cli':
+      // Console thiết bị: gõ lệnh miễn phí, bảng mục tiêu chấm sống; chỉ
+      // "Nộp bài" mới trao trạng thái phiên lên thành một lượt.
+      return (
+        <Suspense fallback={null}>
+          <CliConsole
+            key={question.id}
+            question={question}
+            initialDraft={savedDraft?.kind === 'cli' ? savedDraft : null}
+            onDraftChange={
+              draftKey === undefined
+                ? undefined
+                : (draft) =>
+                    draft === null
+                      ? clearDraft(draftKey)
+                      : saveDraft(draftKey, { kind: 'cli', ...draft, savedAt: todayIso() })
             }
             onSubmit={disabled === true ? undefined : onSubmit}
           />

@@ -1,0 +1,1530 @@
+{
+  "id": "module-18",
+  "order": 18,
+  "part": "E",
+  "title": { "vi": "DHCP và DNS doanh nghiệp — Dịch vụ không được chết" },
+  "stages": [
+    { "id": "m18-chang-1", "title": { "vi": "Chuyển lời qua ranh giới xóm" }, "lessonIds": ["m18-bai-1"] },
+    { "id": "m18-chang-2", "title": { "vi": "Sáng thứ hai câm lặng" }, "lessonIds": ["m18-bai-2"] },
+    { "id": "m18-chang-3", "title": { "vi": "Hai người làm mối" }, "lessonIds": ["m18-bai-3"] },
+    { "id": "m18-chang-4", "title": { "vi": "Một cái tên, hai câu trả lời" }, "lessonIds": ["m18-bai-4"] },
+    { "id": "m18-chang-5", "title": { "vi": "Hỏi hộ và trí nhớ có hạn" }, "lessonIds": ["m18-bai-5"] }
+  ],
+
+  "lessons": [
+    {
+      "id": "m18-bai-1",
+      "missionTitle": { "vi": "Đưa lời hỏi cưới vượt ranh giới xóm" },
+      "steps": [
+        {
+          "type": "hook",
+          "question": {
+            "vi": "Công ty có mười tầng, mỗi tầng một xóm mạng riêng, nhưng phòng máy chủ chỉ nuôi ĐÚNG MỘT máy DHCP. Mà bạn còn nhớ từ bài hỏi cưới: lời xin địa chỉ là một tiếng hét quảng bá, và tiếng hét thì không bao giờ lọt qua router. Vậy máy mới ở tầng chín cắm dây vào, ai nghe được nó — và bằng cách nào lời của nó tới được phòng máy chủ?"
+          },
+          "visualId": "vis-hook-chuyen-loi"
+        },
+        {
+          "type": "pretest",
+          "questions": [
+            {
+              "kind": "mcq",
+              "id": "m18-b1-pre-1",
+              "prompt": {
+                "vi": "Đoán thử: gói DISCOVER mà máy mới hét lên để xin địa chỉ có tự đi qua router sang xóm khác được không?"
+              },
+              "choices": [
+                { "vi": "Không — nó là quảng bá, mà router thì chặn mọi tiếng hét quảng bá" },
+                { "vi": "Được — router chuyển mọi gói tin, quảng bá hay không cũng vậy" },
+                { "vi": "Được, nhưng chỉ khi hai xóm nằm chung một chiếc switch lớn" }
+              ],
+              "answerIndex": 0,
+              "hintTopic": { "vi": "ranh giới của một tiếng hét quảng bá" },
+              "explain": {
+                "vi": "Không qua được. DISCOVER gửi tới địa chỉ quảng bá, và ranh giới của quảng bá chính là router (bài học miền quảng bá từ hồi VLAN). Đó là lý do tồn tại của cả bài hôm nay: phải có ai đó trong xóm chuyển lời hộ."
+              }
+            }
+          ],
+          "encouragement": {
+            "vi": "Nhớ ra được chuyện tiếng hét kẹt trong xóm là bạn đã cầm sẵn một nửa bài học hôm nay rồi."
+          }
+        },
+        {
+          "type": "teach",
+          "screens": [
+            {
+              "conceptId": "m18-ranh-gioi-dora",
+              "visualId": "vis-ranh-gioi-dora",
+              "body": {
+                "vi": "Cuộc hỏi cưới DORA của Module 6 có một chi tiết hồi đó chưa thành vấn đề: hai nhịp đầu đi bằng QUẢNG BÁ, vì máy mới chưa có địa chỉ nên chỉ biết hét lên cho cả xóm nghe. Trong mạng nhà một xóm thì thế là đủ. Nhưng doanh nghiệp chia hàng chục xóm, mà quảng bá chết ở ranh giới router — nghĩa là máy DHCP đặt ở xóm máy chủ sẽ vĩnh viễn không nghe thấy tiếng hét từ tầng chín. Nếu không có gì thêm, mỗi xóm phải tự nuôi một máy DHCP riêng — mười tầng là mười máy phải trông nom."
+              },
+              "deepDive": {
+                "vi": "Vì sao không cho quảng bá qua router luôn cho tiện? Vì đó chính là thứ đã làm nên bão quảng bá của Module 15: quảng bá lan tới đâu, mọi máy ở đó phải dừng tay xử lý tới đó. Ranh giới router là cái phanh giữ cho một tiếng hét chỉ làm phiền một xóm — bỏ cái phanh đó đi để tiện cho DHCP là chữa một chỗ ngứa bằng cách tháo cả hàng rào."
+              }
+            },
+            {
+              "conceptId": "m18-relay",
+              "visualId": "vis-dhcp-relay",
+              "body": {
+                "vi": "Lời giải của nghề là đặt trong mỗi xóm một NGƯỜI CHUYỂN LỜI: DHCP relay (trên thiết bị thật là lệnh ip helper-address trên cổng router). Relay đứng trong xóm nên nghe được tiếng hét. Nghe xong, nó không hét tiếp — nó gói lời xin vào một lá thư gửi ĐÍCH DANH tới máy DHCP ở xóm máy chủ, và thư đích danh thì qua router bình thường. Quan trọng nhất: trước khi gửi, relay ghi vào ô giaddr địa chỉ của chính xóm mình. Nhờ ô đó mà máy chủ ở xa biết tiếng hét này phát từ xóm nào."
+              },
+              "deepDive": {
+                "vi": "Trên router thật, relay thường chính là cái cổng router của xóm: một dòng ip helper-address 10.20.0.10 trên cổng tầng chín là xong. Còn giaddr là tên một ô có thật trong gói DHCP (gateway address) — relay điền địa chỉ cổng xóm của nó vào đó. Toàn bộ phép màu một-server-cho-mười-xóm nằm gọn trong một ô địa chỉ ấy."
+              }
+            }
+          ]
+        },
+        {
+          "type": "practice",
+          "fadingLevel": 0,
+          "workedExample": {
+            "vi": "Theo chân một lời xin địa chỉ từ tầng chín về phòng máy chủ, từng chặng. Chặng 1: máy mới hét DISCOVER — cả xóm tầng chín nghe, router chặn lại đúng luật quảng bá. Chặng 2: relay của xóm (chính cổng router tầng chín) nghe được tiếng hét, ghi địa chỉ xóm 10.20.9.1 vào ô giaddr. Chặng 3: relay gửi lá thư đích danh tới máy DHCP 10.20.0.10 — thư có địa chỉ người nhận nên qua router êm ru. Chặng 4: máy chủ mở thư, nhìn ô giaddr thấy 10.20.9.1, hiểu ngay là xóm tầng chín đang hỏi, bèn chọn dải 10.20.9.x mà cấp. Chặng 5: OFFER quay về relay, relay trao tận tay máy mới — cuộc hỏi cưới tiếp tục như Module 6 đã kể."
+          },
+          "exercises": [
+            {
+              "question": {
+                "kind": "order",
+                "id": "m18-b1-prac-1",
+                "prompt": {
+                  "vi": "Xếp lại đường đi của một lời xin địa chỉ khi xóm có relay:"
+                },
+                "items": [
+                  { "vi": "Máy mới hét DISCOVER, cả xóm nghe, router chặn lại" },
+                  { "vi": "Relay trong xóm nghe được, ghi địa chỉ xóm vào ô giaddr" },
+                  { "vi": "Relay gửi thư đích danh tới máy DHCP ở xóm máy chủ" },
+                  { "vi": "Máy chủ nhìn giaddr, chọn đúng dải của xóm đang hỏi" },
+                  { "vi": "OFFER quay về relay, relay trao tận tay máy mới" }
+                ],
+                "hintTopic": { "vi": "ai nghe được tiếng hét, và ai đọc ô giaddr" }
+              },
+              "hint": {
+                "vi": "Bắt đầu từ tiếng hét kẹt trong xóm. Người duy nhất vừa nghe được tiếng hét vừa viết được thư đích danh là ai?"
+              },
+              "solution": {
+                "vi": "Hét trong xóm → relay nghe và ghi giaddr → thư đích danh vượt router → máy chủ đọc giaddr chọn dải → OFFER quay về qua relay. Mấu chốt là hai chặng giữa: đổi tiếng hét thành thư, và ghi rõ xóm nào đang hỏi."
+              }
+            },
+            {
+              "question": {
+                "kind": "mcq",
+                "id": "m18-b1-prac-2",
+                "prompt": {
+                  "vi": "Một máy DHCP duy nhất cấp đúng dải cho mười xóm khác nhau. Nó phân biệt các xóm bằng cách nào?"
+                },
+                "choices": [
+                  { "vi": "Nhìn ô giaddr mà relay đã ghi để biết lời xin phát từ xóm nào" },
+                  { "vi": "Đoán theo địa chỉ MAC của máy xin, vì MAC có ghi mã tòa nhà" },
+                  { "vi": "Cấp lần lượt từng dải theo thứ tự lời xin gửi tới trong ngày" }
+                ],
+                "answerIndex": 0,
+                "hintTopic": { "vi": "ô địa chỉ mà relay điền trước khi gửi" }
+              },
+              "hint": {
+                "vi": "MAC không mang thông tin vị trí, và cấp theo thứ tự thì máy tầng chín có ngày nhận địa chỉ tầng hai. Manh mối duy nhất về XÓM nằm trong lá thư của ai?"
+              },
+              "solution": {
+                "vi": "Nhờ ô giaddr. Relay ghi địa chỉ xóm mình vào đó trước khi chuyển lời, nên máy chủ chỉ cần đối chiếu giaddr với danh sách scope là chọn đúng dải. Không có giaddr thì mười xóm trông giống hệt nhau."
+              }
+            }
+          ]
+        },
+        {
+          "type": "retrieval",
+          "questions": [
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m18-b1-ret-1",
+                "prompt": {
+                  "vi": "Không nhìn lại bài: relay ghi địa chỉ xóm mình vào Ô NÀO của gói DHCP trước khi chuyển cho máy chủ?"
+                },
+                "accept": ["giaddr", "ô giaddr", "o giaddr", "truong giaddr", "trường giaddr", "gateway address"],
+                "hintTopic": { "vi": "tên ô bắt đầu bằng chữ g" }
+              },
+              "hint": { "vi": "Tên ô ghép từ chữ gateway và address — viết tắt sáu chữ cái." },
+              "solution": {
+                "vi": "Ô giaddr (gateway address). Máy chủ đọc ô này để biết xóm nào đang hỏi mà chọn dải cho đúng — cả phép màu một-server-nhiều-xóm nằm ở đó."
+              }
+            }
+          ],
+          "selfExplain": {
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: vì sao relay phải ghi giaddr thay vì cứ chuyển tiếp nguyên xi tiếng hét cho máy chủ?"
+            },
+            "keywords": [
+              ["giaddr", "địa chỉ xóm", "dia chi xom", "địa chỉ của xóm", "dia chi cua xom"],
+              ["chọn dải", "chon dai", "chọn scope", "chon scope", "đúng dải", "dung dai", "dải nào", "dai nao"],
+              ["không biết xóm nào", "khong biet xom nao", "tưởng cùng xóm", "tuong cung xom", "mất dấu", "mat dau", "không phân biệt", "khong phan biet"],
+              ["quảng bá", "quang ba", "không qua router", "khong qua router", "thư đích danh", "thu dich danh"]
+            ],
+            "exampleAnswer": {
+              "vi": "Vì tiếng hét gốc không nói nó phát từ xóm nào — nếu relay chuyển tiếp nguyên xi, máy chủ nhận được lời xin mà mất dấu nơi phát, không biết phải chọn dải nào trong hàng chục scope. Relay ghi địa chỉ xóm mình vào ô giaddr rồi gửi thành thư đích danh: thư thì qua được router, còn giaddr cho máy chủ đúng một manh mối cần thiết — xóm nào đang hỏi."
+            }
+          }
+        },
+        {
+          "type": "summary",
+          "bullets": [
+            { "vi": "DISCOVER là tiếng hét quảng bá — chết ở ranh giới router, không tự tới được máy DHCP ở xóm khác." },
+            { "vi": "Relay trong xóm đổi tiếng hét thành thư đích danh gửi máy chủ — một server lo được cả chục xóm." },
+            { "vi": "Ô giaddr do relay ghi là manh mối duy nhất cho máy chủ biết xóm nào đang hỏi mà chọn đúng dải." }
+          ],
+          "nextTeaser": {
+            "vi": "Relay đã đưa được lời xin về máy chủ. Nhưng máy chủ cũng có lúc HẾT ĐỊA CHỈ để cấp — và cái buổi sáng nó hết sạch bao giờ cũng là sáng thứ hai. Bài sau bạn trực ca đúng buổi sáng đó."
+          }
+        }
+      ]
+    },
+    {
+      "id": "m18-bai-2",
+      "missionTitle": { "vi": "Trực ca sáng thứ hai cả tầng câm lặng" },
+      "steps": [
+        {
+          "type": "hook",
+          "question": {
+            "vi": "Thứ sáu mọi máy còn chạy ngon lành. Sáng thứ hai, một loạt máy tầng ba cùng lúc không vào được gì — mà lạ thay, máy nào cũng ĐANG CÓ một địa chỉ IP, chỉ là một địa chỉ không ai đặt, bắt đầu bằng 169.254. Địa chỉ đó ở đâu ra, và vì sao bệnh này thích bùng vào sáng đầu tuần?"
+          },
+          "visualId": "vis-hook-tang-ba-cam"
+        },
+        {
+          "type": "pretest",
+          "questions": [
+            {
+              "kind": "clinic",
+              "id": "m18-b2-pre-ca",
+              "prompt": {
+                "vi": "\"Cả tầng ba sáng nay không ai vào được hệ thống, gọi xuống dồn dập!\" Bạn đang ngồi ở MAY-TANG-3. Tầng hai bên cạnh vẫn làm việc bình thường. Khám đi — và nhớ nhìn kỹ địa chỉ IP của chính máy mình trước tiên."
+              },
+              "spec": {
+                "patient": {
+                  "topology": {
+                    "devices": [
+                      {
+                        "kind": "pc",
+                        "id": "m18a-t3",
+                        "hostname": "MAY-TANG-3",
+                        "port": { "id": "eth0", "mac": "AA:BB:CC:18:0A:01" },
+                        "ipConfig": { "ip": "169.254.7.23", "prefix": 16 },
+                        "gateway": null
+                      },
+                      {
+                        "kind": "pc",
+                        "id": "m18a-t2",
+                        "hostname": "MAY-TANG-2",
+                        "port": { "id": "eth0", "mac": "AA:BB:CC:18:0A:02" },
+                        "ipConfig": { "ip": "10.20.2.15", "prefix": 24 },
+                        "gateway": "10.20.2.1"
+                      },
+                      {
+                        "kind": "pc",
+                        "id": "m18a-srv",
+                        "hostname": "SRV-HE-THONG",
+                        "port": { "id": "eth0", "mac": "AA:BB:CC:18:0A:09" },
+                        "ipConfig": { "ip": "10.20.0.9", "prefix": 24 },
+                        "gateway": "10.20.0.1"
+                      },
+                      {
+                        "kind": "switch",
+                        "id": "m18a-sw3",
+                        "hostname": "SW-TANG-3",
+                        "ports": [
+                          { "id": "p1", "vlan": 1 },
+                          { "id": "p2", "vlan": 1 }
+                        ]
+                      },
+                      {
+                        "kind": "switch",
+                        "id": "m18a-sw2",
+                        "hostname": "SW-TANG-2",
+                        "ports": [
+                          { "id": "p1", "vlan": 1 },
+                          { "id": "p2", "vlan": 1 }
+                        ]
+                      },
+                      {
+                        "kind": "switch",
+                        "id": "m18a-swsrv",
+                        "hostname": "SW-MAY-CHU",
+                        "ports": [
+                          { "id": "p1", "vlan": 1 },
+                          { "id": "p2", "vlan": 1 }
+                        ]
+                      },
+                      {
+                        "kind": "router",
+                        "id": "m18a-r",
+                        "hostname": "R-TOA-NHA",
+                        "ports": [
+                          { "id": "g0", "mac": "AA:BB:CC:18:0A:11", "ipConfig": { "ip": "10.20.3.1", "prefix": 24 } },
+                          { "id": "g1", "mac": "AA:BB:CC:18:0A:12", "ipConfig": { "ip": "10.20.2.1", "prefix": 24 } },
+                          { "id": "g2", "mac": "AA:BB:CC:18:0A:13", "ipConfig": { "ip": "10.20.0.1", "prefix": 24 } }
+                        ],
+                        "staticRoutes": []
+                      }
+                    ],
+                    "links": [
+                      { "id": "w1", "a": { "deviceId": "m18a-t3", "portId": "eth0" }, "b": { "deviceId": "m18a-sw3", "portId": "p1" } },
+                      { "id": "w2", "a": { "deviceId": "m18a-sw3", "portId": "p2" }, "b": { "deviceId": "m18a-r", "portId": "g0" } },
+                      { "id": "w3", "a": { "deviceId": "m18a-t2", "portId": "eth0" }, "b": { "deviceId": "m18a-sw2", "portId": "p1" } },
+                      { "id": "w4", "a": { "deviceId": "m18a-sw2", "portId": "p2" }, "b": { "deviceId": "m18a-r", "portId": "g1" } },
+                      { "id": "w5", "a": { "deviceId": "m18a-srv", "portId": "eth0" }, "b": { "deviceId": "m18a-swsrv", "portId": "p1" } },
+                      { "id": "w6", "a": { "deviceId": "m18a-swsrv", "portId": "p2" }, "b": { "deviceId": "m18a-r", "portId": "g2" } }
+                    ]
+                  },
+                  "overlay": {},
+                  "seatId": "m18a-t3"
+                },
+                "symptom": { "kind": "ping-fails", "from": "m18a-t3", "target": "10.20.0.9" },
+                "fix": { "kind": "choose-action" }
+              },
+              "diagnosis": {
+                "choices": [
+                  { "vi": "DHCP không còn địa chỉ để cấp — máy tự bịa một địa chỉ 169.254 vô dụng" },
+                  { "vi": "Switch tầng ba hỏng nên toàn bộ khung tin của tầng bị nuốt mất" },
+                  { "vi": "DNS của công ty chết nên mọi tên miền đều không phân giải được" }
+                ],
+                "answerIndex": 0
+              },
+              "actions": {
+                "choices": [
+                  { "vi": "Kiểm tra DHCP server: scope của tầng ba đã cạn — mở rộng dải hoặc rút ngắn thời gian thuê" },
+                  { "vi": "Thay dây mạng cho từng máy ở tầng ba rồi khởi động lại toàn bộ" },
+                  { "vi": "Đổi DNS trên từng máy tầng ba sang một máy chủ DNS công cộng" }
+                ],
+                "answerIndex": 0
+              },
+              "hintTopic": { "vi": "địa chỉ IP mà ipconfig của chính bạn đang cầm" },
+              "explain": {
+                "vi": "ipconfig trên máy bạn lộ ngay manh mối: địa chỉ 169.254.7.23, không gateway, không DNS — bộ ba của một máy XIN ĐỊA CHỈ THẤT BẠI rồi tự bịa số để khỏi trắng tay. Tầng hai vẫn chạy nên mạng trục không chết; thứ chết là nguồn cấp địa chỉ cho tầng ba: scope đã cạn. Sửa ở máy chủ DHCP (mở rộng dải, rút thời gian thuê), không phải ở dây hay ở DNS — hai thứ đó chẳng liên quan tới địa chỉ tự bịa."
+              }
+            }
+          ],
+          "encouragement": {
+            "vi": "Nhìn thấy 169.254 mà nghĩ ngay tới DHCP là phản xạ của người trực lâu năm — chưa có phản xạ đó thì bài dạy ngay sau đây trồng nó vào tay bạn."
+          }
+        },
+        {
+          "type": "teach",
+          "screens": [
+            {
+              "conceptId": "m18-scope",
+              "visualId": "vis-scope-can",
+              "body": {
+                "vi": "Scope là dải địa chỉ mà máy DHCP được phép đem cho thuê ở một xóm — ví dụ 10.20.3.50 tới 10.20.3.250, tức hai trăm suất. Mỗi máy thuê một suất theo thời hạn lease của Module 6. Chuyện cạn xảy ra khi số KHÁCH THUÊ vượt số suất: nhân viên đông lên, mỗi người thêm điện thoại với laptop cá nhân, khách ghé xin wifi — và những chiếc máy chỉ ghé một buổi vẫn giữ suất tới hết hạn thuê. Người vận hành tử tế theo dõi TỈ LỆ CẤP PHÁT của từng scope: chạm 90% là tin xấu đang xếp hàng, chứ không đợi tới sáng nó cạn hẳn."
+              },
+              "deepDive": {
+                "vi": "Vì sao hay bùng sáng thứ hai? Cuối tuần văn phòng vắng nhưng lease chưa hết hạn — suất của người về quê vẫn bị giữ. Sáng thứ hai cả công ty ùa vào cùng lúc: máy cũ xin gia hạn, máy mới xin suất mới, đám khách vãng lai tuần trước vẫn chiếm chỗ — cầu vọt đúng lúc cung đã mòn. Hai núm vặn của người vận hành: mở rộng dải (thêm suất) và rút ngắn lease ở xóm đông khách vãng lai (suất được trả nhanh hơn)."
+              }
+            },
+            {
+              "conceptId": "m18-apipa",
+              "visualId": "vis-apipa",
+              "body": {
+                "vi": "Máy xin DHCP mà không ai trả lời thì không chịu trắng tay: nó tự bịa cho mình một địa chỉ trong dải 169.254.x.x — gọi là APIPA. Địa chỉ tự bịa này chỉ đủ để nói chuyện với hàng xóm CÙNG cảnh ngộ trong xóm, còn gateway và DNS thì trống trơn, nên với người dùng nó đồng nghĩa với mất mạng. Với người trực thì ngược lại — nó là manh mối quý: thấy 169.254 là biết chắc máy này ĐÃ XIN mà KHÔNG AI CẤP, tức thủ phạm nằm ở phía dịch vụ DHCP, không phải ở sợi dây."
+              },
+              "deepDive": {
+                "vi": "Phân biệt hai cảnh cùng chữ mất mạng: máy cầm 169.254 nghĩa là đường dây tới switch vẫn sống (nó đã hét được và chờ mãi không ai đáp) — bệnh ở dịch vụ cấp phát. Còn máy báo cáp mạng bị rút thì tiếng hét còn chưa rời khỏi máy. Cùng một lời than của người dùng, hai hướng khám khác hẳn nhau — đó là lý do ipconfig luôn là lệnh mở màn."
+              }
+            }
+          ]
+        },
+        {
+          "type": "practice",
+          "fadingLevel": 1,
+          "exercises": [
+            {
+              "question": {
+                "kind": "mcq",
+                "id": "m18-b2-prac-1",
+                "prompt": {
+                  "vi": "Hai máy cùng tầng đều xin DHCP thất bại và đều tự nhận địa chỉ 169.254.x.x. Chúng có ping được NHAU không?"
+                },
+                "choices": [
+                  { "vi": "Được — hai địa chỉ tự bịa nằm cùng dải, nói chuyện trong xóm vẫn ổn" },
+                  { "vi": "Không — địa chỉ tự bịa là địa chỉ giả nên không gửi nổi gói tin nào" },
+                  { "vi": "Chỉ được nếu switch của tầng có bật sẵn tính năng chuyển tiếp DHCP" }
+                ],
+                "answerIndex": 0,
+                "hintTopic": { "vi": "hai máy cùng dải 169.254 và cùng một switch" }
+              },
+              "hint": {
+                "vi": "169.254.x.x với prefix 16 — hai máy cùng dải, cùng xóm. Ping trong xóm cần gateway không?"
+              },
+              "solution": {
+                "vi": "Được. Hai máy cùng nằm trong dải 169.254.0.0/16 và cùng xóm nên gọi nhau không cần gateway. Cái chúng mất là đường RA KHỎI xóm — vì gateway và DNS đều trống. APIPA là phao cứu sinh trong xóm, không phải mạng thật."
+              }
+            },
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m18-b2-prac-2",
+                "prompt": {
+                  "vi": "Người vận hành muốn biết một scope sắp cạn TRƯỚC khi nó cạn. Con số nào của scope phải được theo dõi thường xuyên?"
+                },
+                "accept": [
+                  "tỉ lệ cấp phát",
+                  "ti le cap phat",
+                  "tỷ lệ cấp phát",
+                  "ty le cap phat",
+                  "tỉ lệ đã cấp",
+                  "ti le da cap",
+                  "phần trăm đã cấp",
+                  "phan tram da cap",
+                  "số địa chỉ đã cấp",
+                  "so dia chi da cap",
+                  "tỉ lệ sử dụng",
+                  "ti le su dung"
+                ],
+                "hintTopic": { "vi": "so số suất đã cho thuê với tổng số suất" }
+              },
+              "hint": {
+                "vi": "Không phải đợi chuông reo — là một con số phần trăm nhìn vào biết còn bao nhiêu suất trống."
+              },
+              "solution": {
+                "vi": "Tỉ lệ cấp phát — số địa chỉ đã cho thuê trên tổng số suất của scope. Chạm ngưỡng 90% là lúc hành động (mở rộng dải, rút lease), chứ không đợi sáng thứ hai chuông reo dồn dập."
+              }
+            }
+          ]
+        },
+        {
+          "type": "retrieval",
+          "questions": [
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m18-b2-ret-1",
+                "prompt": {
+                  "vi": "Không nhìn lại bài: máy xin địa chỉ mà không ai đáp sẽ tự bịa một địa chỉ bắt đầu bằng cặp số nào?"
+                },
+                "accept": ["169.254", "169254", "169 254", "dải 169.254", "dai 169.254", "169.254.x.x"],
+                "hintTopic": { "vi": "dải địa chỉ tự cấp của APIPA" }
+              },
+              "hint": { "vi": "Cặp số mở đầu mà mọi người trực đều thuộc lòng — một trăm sáu chín, hai trăm năm tư." },
+              "solution": {
+                "vi": "169.254 — dải APIPA. Thấy nó trong ipconfig là biết máy đã hét xin địa chỉ mà không ai đáp: thủ phạm ở phía dịch vụ DHCP, không phải sợi dây."
+              }
+            }
+          ],
+          "selfExplain": {
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: vì sao bệnh scope cạn hay bùng đúng sáng thứ hai?"
+            },
+            "keywords": [
+              ["cuối tuần", "cuoi tuan", "thứ sáu", "thu sau", "về quê", "ve que", "vắng", "vang"],
+              ["lease", "thời hạn thuê", "thoi han thue", "chưa hết hạn", "chua het han", "giữ suất", "giu suat", "chiếm chỗ", "chiem cho"],
+              ["cùng lúc", "cung luc", "ùa vào", "ua vao", "đồng loạt", "dong loat", "sáng thứ hai", "sang thu hai"],
+              ["hết suất", "het suat", "cạn", "can", "không còn địa chỉ", "khong con dia chi"]
+            ],
+            "exampleAnswer": {
+              "vi": "Vì cuối tuần văn phòng vắng nhưng các suất thuê chưa hết hạn — máy của người nghỉ vẫn giữ chỗ, kể cả máy khách vãng lai ghé một buổi tuần trước. Sáng thứ hai cả công ty ùa vào cùng lúc: máy cũ gia hạn, máy mới xin suất, trong khi kho suất đã mòn sẵn — cầu vọt đúng lúc cung cạn, và loạt máy đến sau nhận 169.254 đồng loạt."
+            }
+          }
+        },
+        {
+          "type": "summary",
+          "bullets": [
+            { "vi": "Scope là kho suất cho thuê của một xóm — theo dõi tỉ lệ cấp phát, chạm 90% là hành động." },
+            { "vi": "169.254 là địa chỉ máy tự bịa khi xin không ai đáp: dây vẫn sống, bệnh nằm ở dịch vụ DHCP." },
+            { "vi": "Sáng thứ hai là giờ vàng của bệnh scope cạn: lease cuối tuần giữ suất, cả công ty ùa vào một lượt." }
+          ],
+          "nextTeaser": {
+            "vi": "Mở rộng scope rồi — nhưng vẫn còn đúng MỘT máy DHCP. Nó mà nằm bảo trì thì sao? Bài sau: hai người làm mối chia nhau một làng, và cái bẫy chết người khi cả hai cùng cầm một cuốn sổ."
+          }
+        }
+      ]
+    },
+    {
+      "id": "m18-bai-3",
+      "missionTitle": { "vi": "Dựng người làm mối thứ hai không giẫm chân nhau" },
+      "steps": [
+        {
+          "type": "hook",
+          "question": {
+            "vi": "Máy DHCP duy nhất của công ty cần tắt 30 phút để vá lỗi. Người mới vào nghề toát mồ hôi: cả công ty sắp rớt mạng? Người cũ thản nhiên: đa số chẳng ai nhận ra đâu. Cả hai đều có lý — vậy ai đúng, và chuyện gì quyết định điều đó?"
+          },
+          "visualId": "vis-hook-hai-nguoi-moi"
+        },
+        {
+          "type": "pretest",
+          "questions": [
+            {
+              "kind": "mcq",
+              "id": "m18-b3-pre-1",
+              "prompt": {
+                "vi": "Máy DHCP tắt 30 phút giữa giờ làm. Các máy ĐANG DÙNG MẠNG có mất kết nối ngay không?"
+              },
+              "choices": [
+                { "vi": "Không — địa chỉ đã thuê còn hạn thì cứ dùng tiếp, chẳng cần hỏi ai" },
+                { "vi": "Có — mất máy chủ cấp phát là mọi địa chỉ lập tức bị thu hồi" },
+                { "vi": "Có — vì mỗi gói tin gửi đi đều phải qua máy DHCP đóng dấu trước" }
+              ],
+              "answerIndex": 0,
+              "hintTopic": { "vi": "bản chất của một hợp đồng thuê còn hạn" },
+              "explain": {
+                "vi": "Không mất ngay. Địa chỉ là hợp đồng thuê CÓ THỜI HẠN — server tắt thì hợp đồng còn hạn vẫn nguyên giá trị, máy cứ dùng tiếp. Kẻ khổ là máy MỚI cắm vào (không ai đáp tiếng hét) và máy vừa hết hạn thuê. DHCP chỉ đứng ở cửa cấp phát, không đứng trên đường đi của từng gói tin."
+              }
+            }
+          ],
+          "encouragement": {
+            "vi": "Câu này tách người hiểu lease khỏi người học vẹt DORA — sai cũng đáng, vì đáp án nằm ngay trong chữ thuê của Module 6."
+          }
+        },
+        {
+          "type": "teach",
+          "screens": [
+            {
+              "conceptId": "m18-failover",
+              "visualId": "vis-dhcp-failover",
+              "body": {
+                "vi": "Muốn dịch vụ cấp phát sống qua cả lúc một máy chủ nằm viện thì nuôi HAI máy. Cách mộc mạc nhất: chia đôi kho suất — máy A giữ 80% dải, máy B giữ 20% còn lại, hai kho KHÔNG chồng lên nhau; A tắt thì B vẫn cấp được từ phần của nó. Cách sang hơn: hai máy bắt cặp failover, dùng CHUNG một cuốn sổ cho thuê và liên tục kể cho nhau nghe từng hợp đồng — một máy gục, máy kia cầm nguyên cuốn sổ cấp tiếp như chưa có gì xảy ra. Mức khái niệm cần nhớ: hoặc chia kho tách bạch, hoặc chung sổ có đồng bộ — không có kiểu thứ ba."
+              },
+              "deepDive": {
+                "vi": "Tỉ lệ 80/20 không phải phép chia công bằng mà là phép chia VAI: máy A gánh việc hằng ngày, máy B là phao dự phòng — 20% suất của nó chỉ cần đủ cho quãng thời gian A nằm viện, vì các máy còn hạn thuê đâu cần hỏi ai. Đó cũng là câu trả lời cho thắc mắc vì sao phao chỉ cần bé: lease chính là chiếc phao thứ nhất rồi."
+              }
+            },
+            {
+              "conceptId": "m18-trung-dai",
+              "visualId": "vis-trung-dai-dhcp",
+              "body": {
+                "vi": "Cái bẫy chết người của kẻ vội: dựng máy B bằng cách BÊ NGUYÊN cấu hình máy A — hai máy cùng phát MỘT dải, không chia, không chung sổ. Trông thì chạy: máy nào hỏi cũng được đáp, còn nhanh gấp đôi. Nhưng hai cuốn sổ rời nhau không biết đối phương đã cho thuê số nào — sớm muộn máy A cấp 10.20.3.77 cho người này trong khi máy B cũng cấp đúng 10.20.3.77 cho người khác. Và thế là bệnh TRÙNG IP chập chờn của Module 11 quay lại, lần này không phải do ai gõ nhầm tay, mà do chính hạ tầng đẻ ra đều đặn."
+              },
+              "deepDive": {
+                "vi": "Bệnh này ác ở chỗ nó ủ lâu: hai server cùng phát một dải có thể chạy êm hàng tuần — chừng nào hai bên tình cờ chưa cấp trùng số. Tới lúc trùng, triệu chứng lại y hệt ca máy in Module 11 (một IP hai MAC thay nhau trả lời), khiến người trực đi tìm kẻ gõ nhầm trong khi thủ phạm ngồi trong phòng máy chủ. Gặp trùng IP tái đi tái lại ở một xóm cấp phát tự động: đừng hỏi ai gõ — hỏi có mấy máy DHCP đang phát dải đó."
+              }
+            }
+          ]
+        },
+        {
+          "type": "practice",
+          "fadingLevel": 1,
+          "exercises": [
+            {
+              "question": {
+                "kind": "mcq",
+                "id": "m18-b3-prac-1",
+                "prompt": {
+                  "vi": "Cách nào dựng máy DHCP thứ hai ĐÚNG?"
+                },
+                "choices": [
+                  { "vi": "Chia kho tách bạch cho hai máy, hoặc bắt cặp failover dùng chung một cuốn sổ" },
+                  { "vi": "Bê nguyên cấu hình máy một sang máy hai cho đồng bộ, cùng phát một dải" },
+                  { "vi": "Cho máy hai chỉ phát địa chỉ vào ban đêm để tránh đụng giờ với máy một" }
+                ],
+                "answerIndex": 0,
+                "hintTopic": { "vi": "hai cuốn sổ rời nhau thì biết gì về nhau" }
+              },
+              "hint": {
+                "vi": "Câu hỏi cốt lõi: hai máy có cách nào biết ĐỐI PHƯƠNG đã cho thuê số nào chưa?"
+              },
+              "solution": {
+                "vi": "Chia kho tách bạch hoặc chung sổ failover. Bê nguyên cấu hình là hai cuốn sổ rời cùng phát một dải — máy nào cũng tưởng số còn trống, và bệnh trùng IP được hạ tầng sản xuất đều đặn. Phát theo giờ cũng chung một lỗi: hai sổ vẫn chẳng biết gì về nhau."
+              }
+            },
+            {
+              "question": {
+                "kind": "mcq",
+                "id": "m18-b3-prac-2",
+                "prompt": {
+                  "vi": "Trộn lại Module 11: một xóm cấp DHCP tự động cứ vài ngày lại có ca trùng IP, mỗi lần một máy khác nhau. Nghi phạm số một của bạn?"
+                },
+                "choices": [
+                  { "vi": "Hai máy DHCP đang cùng phát một dải mà không chia kho, không chung sổ" },
+                  { "vi": "Một nhân viên nào đó cứ vài ngày lại gõ nhầm địa chỉ tĩnh một lần" },
+                  { "vi": "Switch của xóm bị lỗi bảng MAC nên gán nhầm địa chỉ cho các máy" }
+                ],
+                "answerIndex": 0,
+                "hintTopic": { "vi": "trùng IP lặp lại có hệ thống thì thủ phạm là hệ thống" }
+              },
+              "hint": {
+                "vi": "Gõ nhầm là tai nạn lẻ tẻ của MỘT máy. Bệnh tái phát đều đặn, nạn nhân đổi liên tục — cái gì sản xuất được lỗi đều đặn như thế?"
+              },
+              "solution": {
+                "vi": "Hai máy DHCP cùng phát một dải. Lỗi con người thì lẻ tẻ và dính một máy; lỗi lặp có hệ thống với nạn nhân ngẫu nhiên là chữ ký của hạ tầng cấp phát đôi. Switch thì không gán địa chỉ IP cho ai bao giờ — nó sống ở tầng 2."
+              }
+            }
+          ]
+        },
+        {
+          "type": "retrieval",
+          "questions": [
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m18-b3-ret-1",
+                "prompt": {
+                  "vi": "Không nhìn lại bài: hai máy DHCP cùng phục vụ một xóm mà KHÔNG chia kho, không chung sổ — sớm muộn sinh ra bệnh gì?"
+                },
+                "accept": [
+                  "trùng ip",
+                  "trung ip",
+                  "trùng địa chỉ",
+                  "trung dia chi",
+                  "cấp trùng ip",
+                  "cap trung ip",
+                  "hai máy một ip",
+                  "hai may mot ip",
+                  "duplicate ip"
+                ],
+                "hintTopic": { "vi": "bệnh chập chờn quen mặt từ phòng khám" }
+              },
+              "hint": { "vi": "Chính là ca máy in chập chờn của Module 11 — nhưng lần này do hạ tầng đẻ ra." },
+              "solution": {
+                "vi": "Trùng IP. Hai cuốn sổ rời nhau không biết đối phương đã cho thuê số nào, nên sớm muộn hai máy khác nhau cùng được cấp một địa chỉ — bệnh chập chờn Module 11 quay lại, lần này theo lịch của hạ tầng chứ không theo bàn tay gõ nhầm."
+              }
+            }
+          ],
+          "selfExplain": {
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: vì sao máy DHCP dự phòng chỉ cần giữ 20% kho suất mà vẫn đủ cứu cả xóm khi máy chính nằm viện?"
+            },
+            "keywords": [
+              ["lease", "còn hạn", "con han", "hợp đồng thuê", "hop dong thue", "dùng tiếp", "dung tiep"],
+              ["không cần hỏi", "khong can hoi", "không phải xin lại", "khong phai xin lai", "chẳng hỏi ai", "chang hoi ai"],
+              ["máy mới", "may moi", "hết hạn", "het han", "số ít", "so it", "ít máy", "it may"],
+              ["tạm thời", "tam thoi", "quãng bảo trì", "quang bao tri", "trong lúc", "trong luc"]
+            ],
+            "exampleAnswer": {
+              "vi": "Vì các máy đang giữ hợp đồng thuê còn hạn cứ thế dùng tiếp, chẳng cần hỏi ai — lease chính là chiếc phao thứ nhất. Trong quãng máy chính nằm viện, chỉ máy mới cắm vào và máy vừa hết hạn mới cần xin, mà số đó ít, nên 20% kho suất của máy dự phòng là đủ đắp qua cơn."
+            }
+          }
+        },
+        {
+          "type": "summary",
+          "bullets": [
+            { "vi": "Server tắt không làm máy đang dùng rớt mạng — lease còn hạn là chiếc phao thứ nhất." },
+            { "vi": "Dự phòng đúng kiểu: chia kho tách bạch (80/20) hoặc bắt cặp failover chung một cuốn sổ." },
+            { "vi": "Hai máy cùng phát một dải không chia là nhà máy sản xuất bệnh trùng IP — đừng bê nguyên cấu hình." }
+          ],
+          "nextTeaser": {
+            "vi": "Địa chỉ đã có người lo ngày đêm. Nhưng còn CÁI TÊN: vì sao cùng gõ một địa chỉ web mà ngồi trong công ty lại thấy khác hẳn ngồi quán cà phê? Bài sau: một cái tên, hai câu trả lời — và cả hai đều đúng."
+          }
+        }
+      ]
+    },
+    {
+      "id": "m18-bai-4",
+      "missionTitle": { "vi": "Giải nghĩa một cái tên có hai câu trả lời" },
+      "steps": [
+        {
+          "type": "hook",
+          "question": {
+            "vi": "Chị kế toán cầm laptop ra quán cà phê thì mở trang chủ công ty ngon lành; về tới bàn làm việc, cũng chiếc laptop đó, cũng địa chỉ đó — lại vào được luôn, nhưng nhanh hơn hẳn. Trong khi anh thực tập gõ tên hệ thống nội bộ ở nhà thì máy báo không tồn tại, dù ở công ty nó chạy. Cùng những cái tên ấy — ai đang trả lời khác nhau, và vì sao lại nên như thế?"
+          },
+          "visualId": "vis-hook-mot-ten-hai-so-phan"
+        },
+        {
+          "type": "pretest",
+          "questions": [
+            {
+              "kind": "clinic",
+              "id": "m18-b4-pre-ca",
+              "prompt": {
+                "vi": "\"Công ty vừa chuyển sang máy chủ DNS mới, từ đó không ai mở được hệ thống nội bộ portal.noibo.congty.vn nữa — báo không tồn tại. Web bên ngoài thì vẫn lướt bình thường!\" Bạn ngồi ở MAY-KE-TOAN. Khám bằng nslookup xem cái tên ấy chết ở đâu."
+              },
+              "spec": {
+                "patient": {
+                  "topology": {
+                    "devices": [
+                      {
+                        "kind": "pc",
+                        "id": "m18b-kt",
+                        "hostname": "MAY-KE-TOAN",
+                        "port": { "id": "eth0", "mac": "AA:BB:CC:18:1B:01" },
+                        "ipConfig": { "ip": "10.20.2.21", "prefix": 24 },
+                        "gateway": "10.20.2.1"
+                      },
+                      {
+                        "kind": "pc",
+                        "id": "m18b-dns",
+                        "hostname": "SRV-DNS-MOI",
+                        "port": { "id": "eth0", "mac": "AA:BB:CC:18:1B:53" },
+                        "ipConfig": { "ip": "10.20.0.53", "prefix": 24 },
+                        "gateway": "10.20.0.1"
+                      },
+                      {
+                        "kind": "pc",
+                        "id": "m18b-portal",
+                        "hostname": "SRV-PORTAL",
+                        "port": { "id": "eth0", "mac": "AA:BB:CC:18:1B:80" },
+                        "ipConfig": { "ip": "10.20.0.80", "prefix": 24 },
+                        "gateway": "10.20.0.1"
+                      },
+                      {
+                        "kind": "switch",
+                        "id": "m18b-sw",
+                        "hostname": "SW-VAN-PHONG",
+                        "ports": [
+                          { "id": "p1", "vlan": 1 },
+                          { "id": "p2", "vlan": 1 }
+                        ]
+                      },
+                      {
+                        "kind": "switch",
+                        "id": "m18b-swsrv",
+                        "hostname": "SW-MAY-CHU",
+                        "ports": [
+                          { "id": "p1", "vlan": 1 },
+                          { "id": "p2", "vlan": 1 },
+                          { "id": "p3", "vlan": 1 }
+                        ]
+                      },
+                      {
+                        "kind": "router",
+                        "id": "m18b-r",
+                        "hostname": "R-CONG-TY",
+                        "ports": [
+                          { "id": "g0", "mac": "AA:BB:CC:18:1B:11", "ipConfig": { "ip": "10.20.2.1", "prefix": 24 } },
+                          { "id": "g1", "mac": "AA:BB:CC:18:1B:12", "ipConfig": { "ip": "10.20.0.1", "prefix": 24 } }
+                        ],
+                        "staticRoutes": []
+                      }
+                    ],
+                    "links": [
+                      { "id": "x1", "a": { "deviceId": "m18b-kt", "portId": "eth0" }, "b": { "deviceId": "m18b-sw", "portId": "p1" } },
+                      { "id": "x2", "a": { "deviceId": "m18b-sw", "portId": "p2" }, "b": { "deviceId": "m18b-r", "portId": "g0" } },
+                      { "id": "x3", "a": { "deviceId": "m18b-r", "portId": "g1" }, "b": { "deviceId": "m18b-swsrv", "portId": "p1" } },
+                      { "id": "x4", "a": { "deviceId": "m18b-swsrv", "portId": "p2" }, "b": { "deviceId": "m18b-dns", "portId": "eth0" } },
+                      { "id": "x5", "a": { "deviceId": "m18b-swsrv", "portId": "p3" }, "b": { "deviceId": "m18b-portal", "portId": "eth0" } }
+                    ]
+                  },
+                  "overlay": {
+                    "dns": {
+                      "serverIp": "10.20.0.53",
+                      "records": [
+                        { "name": "www.congty.vn", "ip": "203.0.113.80" },
+                        { "name": "mail.congty.vn", "ip": "203.0.113.25" }
+                      ]
+                    }
+                  },
+                  "seatId": "m18b-kt"
+                },
+                "symptom": { "kind": "resolve-fails", "from": "m18b-kt", "name": "portal.noibo.congty.vn" },
+                "fix": { "kind": "choose-action" }
+              },
+              "diagnosis": {
+                "choices": [
+                  { "vi": "DNS mới chỉ biết tên công cộng — zone nội bộ chưa được dựng nên tên trong nhà thành vô chủ" },
+                  { "vi": "Máy chủ portal đã tắt hẳn nên cái tên của nó bị xóa khỏi mọi máy DNS" },
+                  { "vi": "Dây mạng từ văn phòng lên tủ máy chủ đứt nên mọi câu hỏi DNS rơi rụng" }
+                ],
+                "answerIndex": 0
+              },
+              "actions": {
+                "choices": [
+                  { "vi": "Dựng zone noibo.congty.vn trên DNS trong, thêm bản ghi portal trỏ về 10.20.0.80" },
+                  { "vi": "Đổi DNS trên từng máy nhân viên sang một máy chủ DNS công cộng ngoài Internet" },
+                  { "vi": "Khởi động lại máy chủ portal và toàn bộ switch trong phòng máy chủ" }
+                ],
+                "answerIndex": 0
+              },
+              "hintTopic": { "vi": "nslookup nói tên chết kiểu gì — im lặng hay không tồn tại" },
+              "explain": {
+                "vi": "nslookup portal.noibo.congty.vn trả về Non-existent domain — máy DNS SỐNG và TRẢ LỜI đàng hoàng, chỉ là câu trả lời của nó là \"tôi không biết tên này\". Nó vẫn phân giải được www và mail, tức bệnh không nằm ở dây hay ở dịch vụ, mà ở CUỐN SỔ: DNS mới chỉ chép phần tên công cộng, quên dựng zone nội bộ. Đổi sang DNS công cộng càng tệ — DNS ngoài Internet lại càng không biết tên trong nhà bạn. Thuốc đúng: dựng zone noibo.congty.vn ngay trên DNS trong."
+              }
+            }
+          ],
+          "encouragement": {
+            "vi": "Phân biệt được \"DNS chết\" với \"DNS sống nhưng thiếu bản ghi\" là kỹ năng bạn mang từ Module 11 sang — ca này chỉ khoác thêm bộ áo doanh nghiệp."
+          }
+        },
+        {
+          "type": "teach",
+          "screens": [
+            {
+              "conceptId": "m18-split-dns",
+              "visualId": "vis-split-dns",
+              "body": {
+                "vi": "Doanh nghiệp giữ HAI cuốn sổ tên cho cùng một miền — gọi là split DNS. Cuốn NGOÀI đặt trên Internet, ai hỏi cũng đáp, nhưng chỉ ghi những tên đáng phơi ra đời: www, mail, và trỏ chúng về địa chỉ công cộng. Cuốn TRONG đặt ở phòng máy chủ, chỉ người trong mạng hỏi được: ghi đủ tên nội bộ (portal, kho file, máy in) trỏ thẳng về địa chỉ trong nhà — và với chính www, nó có thể trả địa chỉ NỘI BỘ để nhân viên đi đường tắt trong nhà thay vì vòng ra Internet rồi quay về. Cùng một cái tên, hai câu trả lời — mỗi câu đúng cho chỗ đứng của người hỏi."
+              },
+              "deepDive": {
+                "vi": "Vì sao không gộp một cuốn cho đỡ mệt? Hai lý do. Bảo mật: phơi cuốn sổ nội bộ ra Internet là phát miễn phí bản đồ phòng máy chủ cho kẻ dò la — tên máy, vai trò, địa chỉ trong nhà. Đường đi: người trong nhà mà bị trỏ ra địa chỉ công cộng sẽ đi vòng qua cửa NAT rồi quay ngược vào — chậm, và có kiến trúc còn tắc hẳn. Ca anh thực tập ở phần mở đầu là mặt còn lại của cùng đồng xu: ở nhà anh hỏi cuốn NGOÀI, mà cuốn ngoài thì cố tình không ghi tên nội bộ."
+              }
+            }
+          ]
+        },
+        {
+          "type": "practice",
+          "fadingLevel": 2,
+          "exercises": [
+            {
+              "question": {
+                "kind": "mcq",
+                "id": "m18-b4-prac-1",
+                "prompt": {
+                  "vi": "Máy trong công ty không phân giải được tên nội bộ. Một người đề nghị: đổi DNS của máy sang máy chủ DNS công cộng nổi tiếng cho khỏe. Kết quả sẽ ra sao?"
+                },
+                "choices": [
+                  { "vi": "Tệ hơn — DNS công cộng càng không biết tên nội bộ, lại mất luôn các tên trong nhà khác" },
+                  { "vi": "Khỏi hẳn — máy chủ DNS công cộng lớn thì cuốn sổ nào cũng đầy đủ hơn DNS công ty" },
+                  { "vi": "Không đổi gì — mọi máy DNS trên đời đều chép chung một cuốn sổ như nhau" }
+                ],
+                "answerIndex": 0,
+                "hintTopic": { "vi": "tên nội bộ nằm trong cuốn sổ của ai" }
+              },
+              "hint": {
+                "vi": "portal.noibo.congty.vn có nằm trên Internet không? Máy chủ DNS công cộng tra nó ở đâu ra?"
+              },
+              "solution": {
+                "vi": "Tệ hơn. Tên nội bộ chỉ tồn tại trong cuốn sổ TRONG của công ty — DNS công cộng không có và không bao giờ có nó. Đổi DNS ra ngoài là tự cắt mình khỏi toàn bộ tên trong nhà. Đây là phản xạ sai phổ biến nhất của người mới, nên nó đứng đầu danh sách bẫy."
+              }
+            },
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m18-b4-prac-2",
+                "prompt": {
+                  "vi": "Nhân viên trong công ty mở www.congty.vn mà không phải đi vòng ra Internet rồi quay về. Cuốn sổ TRONG đã làm gì với cái tên www đó?"
+                },
+                "accept": [
+                  "trỏ về địa chỉ nội bộ",
+                  "tro ve dia chi noi bo",
+                  "trả địa chỉ nội bộ",
+                  "tra dia chi noi bo",
+                  "trỏ về ip nội bộ",
+                  "tro ve ip noi bo",
+                  "trả ip trong nhà",
+                  "tra ip trong nha",
+                  "trỏ thẳng vào máy chủ trong nhà",
+                  "tro thang vao may chu trong nha"
+                ],
+                "hintTopic": { "vi": "cùng một tên nhưng câu trả lời dành cho người trong nhà" }
+              },
+              "hint": {
+                "vi": "Đó chính là chỗ chị kế toán thấy \"nhanh hơn hẳn\" khi về bàn làm việc — sổ trong trả một địa chỉ khác sổ ngoài."
+              },
+              "solution": {
+                "vi": "Sổ trong trỏ www về địa chỉ NỘI BỘ của máy chủ web, nên người trong nhà đi đường tắt trong nhà. Sổ ngoài vẫn trỏ về địa chỉ công cộng cho khách Internet — hai câu trả lời cùng đúng, mỗi câu cho một chỗ đứng."
+              }
+            }
+          ]
+        },
+        {
+          "type": "retrieval",
+          "questions": [
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m18-b4-ret-1",
+                "prompt": {
+                  "vi": "Không nhìn lại bài: kiểu triển khai giữ hai cuốn sổ tên trong/ngoài cho cùng một miền gọi là gì?"
+                },
+                "accept": ["split dns", "split-dns", "dns tách đôi", "dns tach doi", "dns hai cuốn sổ", "dns hai cuon so"],
+                "hintTopic": { "vi": "tên tiếng Anh, có chữ chia/tách" }
+              },
+              "hint": { "vi": "Chữ đầu nghĩa là tách đôi — split." },
+              "solution": {
+                "vi": "Split DNS: cuốn ngoài phơi tên công cộng cho Internet, cuốn trong giữ đủ tên nội bộ cho người trong nhà — cùng một miền, hai câu trả lời có chủ đích."
+              }
+            }
+          ],
+          "selfExplain": {
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: vì sao KHÔNG nên phơi cuốn sổ tên nội bộ ra Internet cho tiện một cuốn?"
+            },
+            "keywords": [
+              ["bản đồ", "ban do", "lộ", "lo ", "phơi", "phoi", "dò la", "do la", "trinh sát", "trinh sat"],
+              ["tên nội bộ", "ten noi bo", "máy chủ trong nhà", "may chu trong nha", "địa chỉ trong", "dia chi trong"],
+              ["bảo mật", "bao mat", "kẻ tấn công", "ke tan cong", "an toàn", "an toan"],
+              ["đường vòng", "duong vong", "đi vòng", "di vong", "nat", "chậm", "cham", "đường tắt", "duong tat"]
+            ],
+            "exampleAnswer": {
+              "vi": "Vì cuốn sổ nội bộ chính là tấm bản đồ phòng máy chủ: tên máy, vai trò, địa chỉ trong nhà. Phơi nó ra Internet là tặng không tấm bản đồ đó cho kẻ dò la. Chưa kể chuyện đường đi: người trong nhà bị trỏ ra địa chỉ công cộng sẽ đi vòng qua cửa NAT rồi quay lại, chậm và có khi tắc — trong khi sổ trong cho họ đi đường tắt nội bộ."
+            }
+          }
+        },
+        {
+          "type": "summary",
+          "bullets": [
+            { "vi": "Split DNS = hai cuốn sổ cho một miền: sổ ngoài phơi tên công cộng, sổ trong giữ đủ tên nội bộ." },
+            { "vi": "Tên nội bộ chỉ sống trong sổ trong — đổi máy sang DNS công cộng là tự cắt mình khỏi chúng." },
+            { "vi": "Non-existent domain từ một DNS đang sống nghĩa là thiếu bản ghi/zone — bệnh ở cuốn sổ, không ở dây." }
+          ],
+          "nextTeaser": {
+            "vi": "Sổ trong không biết một cái tên ngoài Internet thì sao — nó bó tay à? Không: nó đi HỎI HỘ. Và mọi câu trả lời xin về đều có hạn sử dụng — thứ sẽ phản chủ đúng cái ngày bạn thay máy chủ. Bài cuối: forwarder và TTL."
+          }
+        }
+      ]
+    },
+    {
+      "id": "m18-bai-5",
+      "missionTitle": { "vi": "Điều khiển trí nhớ của cả hệ thống tên" },
+      "steps": [
+        {
+          "type": "hook",
+          "question": {
+            "vi": "Chín giờ sáng bạn chuyển trang nội bộ sang máy chủ mới và sửa bản ghi DNS ngay lập tức. Chín giờ năm phút, phòng kế toán vẫn vào bản cũ. Mười giờ, vài người vẫn thế — trong khi máy bạn thì thấy bản mới từ lâu. Không có gì hỏng cả. Ai đang \"nhớ dai\" giữa đường, và lẽ ra bạn phải làm gì từ MẤY NGÀY TRƯỚC?"
+          },
+          "visualId": "vis-hook-nho-dai"
+        },
+        {
+          "type": "pretest",
+          "questions": [
+            {
+              "kind": "mcq",
+              "id": "m18-b5-pre-1",
+              "prompt": {
+                "vi": "Đoán thử: sửa bản ghi DNS xong mà một số máy vẫn ra địa chỉ cũ thêm cả tiếng — vì sao?"
+              },
+              "choices": [
+                { "vi": "Câu trả lời cũ còn hạn nhớ trong các bộ đệm dọc đường nên chưa ai thèm hỏi lại" },
+                { "vi": "Bản ghi mới cần thời gian lan truyền vật lý qua từng sợi cáp tới mọi máy" },
+                { "vi": "Máy chủ DNS chỉ đọc lại cuốn sổ của nó vào đầu mỗi giờ chẵn" }
+              ],
+              "answerIndex": 0,
+              "hintTopic": { "vi": "mỗi câu trả lời DNS đều kèm một hạn sử dụng" },
+              "explain": {
+                "vi": "Mỗi câu trả lời DNS mang theo một hạn nhớ (TTL). Máy nào xin được câu trả lời cũ TRƯỚC lúc bạn sửa sẽ dùng nó tới hết hạn mới chịu hỏi lại — chẳng có gì lan truyền vật lý, cũng chẳng có giờ chẵn nào cả. Trí nhớ có hạn chính là thứ làm DNS nhanh, và cũng là thứ phản chủ khi bạn đổi hạ tầng mà quên báo trước."
+              }
+            }
+          ],
+          "encouragement": {
+            "vi": "Đoán được chữ \"nhớ\" là bạn đã chạm đúng nhân vật chính của bài — giờ xem điều khiển trí nhớ đó thế nào."
+          }
+        },
+        {
+          "type": "teach",
+          "screens": [
+            {
+              "conceptId": "m18-forwarder",
+              "visualId": "vis-dns-forwarder",
+              "body": {
+                "vi": "Máy DNS trong công ty giữ zone nội bộ, nhưng thế giới ngoài kia thì nó không biết hết — và không cần biết. Gặp tên lạ, nó chuyển câu hỏi cho một người HỎI HỘ đã chỉ định sẵn: forwarder. Mọi thắc mắc ra Internet dồn về một cửa duy nhất, và cái cửa đó thành chỗ vàng để vận hành: bộ đệm chung cho cả công ty (một người hỏi xong, nghìn người sau hưởng), một chỗ duy nhất để lọc tên độc hại, một chỗ duy nhất để nhìn xem cả công ty đang hỏi gì."
+              },
+              "deepDive": {
+                "vi": "Không khai forwarder thì máy DNS tự đi hỏi từ gốc: root, rồi máy chủ của vn, rồi của congty.vn — cách này tự lập nhưng mỗi máy DNS trong công ty đều phải tự bơi ra Internet, khó lọc, khó nhìn. Chọn forwarder vì thế ít khi là chuyện kỹ thuật thuần: nó là quyết định gom mọi cánh cửa ra thế giới về một chỗ canh được."
+              }
+            },
+            {
+              "conceptId": "m18-cond-forwarder",
+              "visualId": "vis-conditional-forwarder",
+              "body": {
+                "vi": "Có những cái tên không nên hỏi vòng ra Internet: tên nội bộ của CÔNG TY ĐỐI TÁC vừa nối VPN với bạn chẳng hạn — Internet không biết chúng, chỉ DNS nội bộ của đối tác biết. Conditional forwarder là luật hỏi đúng nhà: riêng những tên thuộc doitac.vn thì chuyển thẳng câu hỏi tới máy DNS của đối tác qua đường VPN, còn mọi tên khác vẫn đi cửa forwarder thường. Một dòng luật cho mỗi người quen — thay vì bắt cả thế giới trả lời hộ thứ chỉ hàng xóm biết."
+              },
+              "deepDive": {
+                "vi": "Đây chính là mảnh ghép DNS cho mạng nhiều công ty nối nhau: sáp nhập, thuê ngoài, chi nhánh dùng miền riêng. Dấu hiệu nhận biết đang thiếu nó: ping địa chỉ IP của máy đối tác thì thông (đường VPN sống) mà gọi bằng TÊN thì Non-existent domain — tầng đường đi ổn, tầng tên chưa ai chỉ lối."
+              }
+            },
+            {
+              "conceptId": "m18-ttl",
+              "visualId": "vis-ttl-han-nho",
+              "body": {
+                "vi": "Mỗi bản ghi DNS mang một hạn nhớ — TTL, tính bằng giây: ai xin được câu trả lời thì được phép nhớ nó đúng chừng ấy lâu rồi mới phải hỏi lại. TTL dài thì cả hệ thống nhẹ gánh nhưng trí nhớ cũ lởn vởn lâu; TTL ngắn thì đổi gì cũng lan nhanh nhưng máy DNS bị hỏi dồn dập. Luật vàng khi ĐỔI HẠ TẦNG: hạ TTL của bản ghi sắp đổi xuống thật ngắn TRƯỚC vài ngày — đợi hạn nhớ cũ trôi hết — rồi mới đổi địa chỉ; xong xuôi ổn định thì nâng TTL về như cũ. Trí nhớ của cả Internet không xóa được bằng lệnh, chỉ điều khiển được bằng cách hẹn giờ từ trước."
+              },
+              "deepDive": {
+                "vi": "Vì sao phải hạ TRƯỚC vài ngày mà không phải vài phút? Vì lời hứa cũ vẫn còn hiệu lực: bản ghi đang để TTL một ngày nghĩa là ngoài kia có những bộ đệm được phép nhớ câu trả lời cũ tới hết một ngày nữa — bạn hạ TTL hôm nay thì phải đợi trọn vòng hạn CŨ trôi qua, mọi bộ đệm mới cầm bản TTL ngắn. Hạ sớm bao lâu = TTL cũ dài bao nhiêu. Đó là phép tính người vận hành làm trên lịch, trước khi chạm vào bất cứ máy chủ nào."
+              }
+            }
+          ]
+        },
+        {
+          "type": "practice",
+          "fadingLevel": 2,
+          "exercises": [
+            {
+              "question": {
+                "kind": "ps",
+                "id": "m18-b5-prac-ps",
+                "prompt": {
+                  "vi": "Trước giờ chuyển hạ tầng, bạn phải kiểm chứng máy DNS nội bộ 10.20.0.53 còn đang NGHE ở đúng cổng dịch vụ của DNS hay không — bằng terminal PowerShell, như một người vận hành thật."
+                },
+                "spec": {
+                  "world": {
+                    "hostname": "MAY-QUAN-TRI",
+                    "interfaces": [{ "alias": "Ethernet0", "ip": "10.20.2.5", "prefix": 24 }],
+                    "targets": [
+                      { "ip": "10.20.0.53", "name": "dns.congty.vn", "pingable": true, "openPorts": [53] },
+                      { "ip": "10.20.0.80", "name": "portal.noibo.congty.vn", "pingable": true, "openPorts": [80, 443] }
+                    ],
+                    "ad": null,
+                    "files": {}
+                  },
+                  "goals": [{ "kind": "tested-connection", "ip": "10.20.0.53", "port": 53 }],
+                  "solution": ["Test-NetConnection 10.20.0.53 -Port 53"]
+                },
+                "hintTopic": { "vi": "cổng dịch vụ của DNS và cmdlet kiểm tra kết nối" }
+              },
+              "hint": {
+                "vi": "Cmdlet là Test-NetConnection, đích là 10.20.0.53, còn cổng của DNS thì bạn đã thuộc từ cung điện Module 5 — con số nằm ở tầng hai của tòa nhà."
+              },
+              "solution": {
+                "vi": "Test-NetConnection 10.20.0.53 -Port 53. Cổng 53 là cửa của DNS; TcpTestSucceeded : True nghĩa là dịch vụ đang nghe — kiểm chứng bằng lệnh trước giờ đổi hạ tầng là thói quen sống còn của người vận hành."
+              }
+            },
+            {
+              "question": {
+                "kind": "mcq",
+                "id": "m18-b5-prac-2",
+                "prompt": {
+                  "vi": "Ping tới địa chỉ IP máy chủ của đối tác qua VPN thì thông, nhưng gọi bằng tên noibo.doitac.vn thì báo không tồn tại. Thiếu mảnh nào?"
+                },
+                "choices": [
+                  { "vi": "Conditional forwarder trỏ các tên doitac.vn về máy DNS của đối tác" },
+                  { "vi": "Một tuyến đường tĩnh mới, vì đường VPN hiện tại chưa dẫn tới máy chủ đó" },
+                  { "vi": "Bản ghi các tên đối tác trên máy chủ DNS công cộng ngoài Internet" }
+                ],
+                "answerIndex": 0,
+                "hintTopic": { "vi": "ping số thông thì tầng đường đi còn thiếu gì đâu" }
+              },
+              "hint": {
+                "vi": "Bài Module 11 dạy tách tên khỏi số: số sống mà tên chết thì bệnh nằm ở tầng nào?"
+              },
+              "solution": {
+                "vi": "Thiếu conditional forwarder. Ping số thông chứng tỏ đường VPN ổn — tuyến tĩnh không thiếu; còn tên nội bộ của đối tác thì Internet không biết nên đưa lên DNS công cộng là vô ích. Phải có luật hỏi đúng nhà: tên doitac.vn chuyển thẳng tới DNS của đối tác."
+              }
+            }
+          ]
+        },
+        {
+          "type": "retrieval",
+          "questions": [
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m18-b5-ret-1",
+                "prompt": {
+                  "vi": "Không nhìn lại bài: vài ngày TRƯỚC khi đổi địa chỉ một máy chủ, người vận hành phải làm gì với TTL của bản ghi sắp đổi?"
+                },
+                "accept": [
+                  "hạ ttl",
+                  "ha ttl",
+                  "giảm ttl",
+                  "giam ttl",
+                  "hạ xuống",
+                  "ha xuong",
+                  "rút ngắn ttl",
+                  "rut ngan ttl",
+                  "hạ ttl xuống thật ngắn",
+                  "ha ttl xuong that ngan"
+                ],
+                "hintTopic": { "vi": "điều khiển hạn nhớ từ trước, không xóa được lúc sau" }
+              },
+              "hint": { "vi": "Trí nhớ ngoài kia không xóa được bằng lệnh — chỉ hẹn giờ cho nó ngắn lại từ trước." },
+              "solution": {
+                "vi": "Hạ TTL xuống thật ngắn từ trước vài ngày, đợi hạn nhớ cũ trôi hết rồi mới đổi địa chỉ — đổi xong ổn định thì nâng TTL về như cũ. Đây là phép tính làm trên lịch, trước khi chạm vào máy chủ."
+              }
+            }
+          ],
+          "selfExplain": {
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: vì sao phải hạ TTL từ TRƯỚC vài ngày chứ không phải ngay lúc đổi địa chỉ?"
+            },
+            "keywords": [
+              ["hạn cũ", "han cu", "ttl cũ", "ttl cu", "lời hứa cũ", "loi hua cu", "còn hiệu lực", "con hieu luc"],
+              ["bộ đệm", "bo dem", "cache", "nhớ", "nho ", "trí nhớ", "tri nho"],
+              ["trôi hết", "troi het", "hết hạn", "het han", "đợi", "doi ", "chờ", "cho "],
+              ["hỏi lại", "hoi lai", "xin lại", "xin lai", "cầm bản mới", "cam ban moi", "ttl ngắn", "ttl ngan"]
+            ],
+            "exampleAnswer": {
+              "vi": "Vì các bộ đệm ngoài kia đang cầm câu trả lời cũ kèm hạn nhớ CŨ — lời hứa đó còn hiệu lực tới hết hạn, mình không xóa hộ họ được. Hạ TTL hôm nay thì phải đợi trọn vòng hạn cũ trôi qua, mọi bộ đệm hỏi lại và cầm bản TTL ngắn; tới lúc ấy mới đổi địa chỉ thì trí nhớ cũ chỉ sống thêm vài phút thay vì cả ngày."
+            }
+          }
+        },
+        {
+          "type": "summary",
+          "bullets": [
+            { "vi": "Gặp tên lạ, DNS trong hỏi hộ qua forwarder — một cửa ra để đệm chung, lọc chung, nhìn chung." },
+            { "vi": "Tên của đối tác thì hỏi đúng nhà bằng conditional forwarder, đừng bắt Internet trả lời hộ." },
+            { "vi": "TTL là hạn nhớ của mỗi câu trả lời: đổi hạ tầng thì hạ TTL trước vài ngày, xong nâng lại." }
+          ],
+          "nextTeaser": {
+            "vi": "Địa chỉ có người phát, cái tên có người giữ — hạ tầng dịch vụ đã đứng vững. Phần tiếp theo bước sang con người: một miền, nhiều tòa nhà, và câu hỏi ai được quyền làm gì ở đâu — Active Directory đa site đang đợi."
+          }
+        }
+      ]
+    }
+  ],
+
+  "concepts": [
+    {
+      "id": "m18-ranh-gioi-dora",
+      "term": "Quảng bá DHCP và ranh giới router",
+      "glossVi": "Hai nhịp đầu của DORA đi bằng quảng bá nên chết ở ranh giới router — máy DHCP khác xóm không tự nghe được lời xin",
+      "metaphor": {
+        "vi": "Như lời hỏi cưới hét giữa sân đình làng mình: cả làng nghe rõ, nhưng bà mối ở làng bên thì không — giữa hai làng có con sông không tiếng hét nào vượt qua."
+      },
+      "iconId": "icon-ranh-gioi-dora",
+      "flashcard": {
+        "front": { "vi": "Vì sao máy DHCP đặt ở xóm khác không tự nghe được máy mới xin địa chỉ?" },
+        "back": {
+          "vi": "Vì DISCOVER và REQUEST gửi bằng quảng bá — máy mới chưa có địa chỉ nên chỉ biết hét cho cả xóm. Mà quảng bá chết ở ranh giới router, nên lời xin không bao giờ tự tới được xóm máy chủ; phải có relay chuyển lời."
+        }
+      }
+    },
+    {
+      "id": "m18-relay",
+      "term": "DHCP relay (ip helper)",
+      "glossVi": "Người chuyển lời trong xóm: nghe tiếng hét DISCOVER, ghi địa chỉ xóm vào ô giaddr rồi gửi thư đích danh tới máy DHCP",
+      "metaphor": {
+        "vi": "Như nhà mai mối trong làng: nghe lời hỏi cưới hét giữa sân, chép thành thư ghi rõ làng nào gửi, rồi đưa tận tay bà mối ở làng bên."
+      },
+      "iconId": "icon-dhcp-relay",
+      "flashcard": {
+        "front": { "vi": "DHCP relay làm hai việc gì với tiếng hét xin địa chỉ?" },
+        "back": {
+          "vi": "Một: đổi tiếng hét quảng bá thành thư đích danh gửi máy DHCP — thư thì qua được router. Hai: ghi địa chỉ xóm mình vào ô giaddr, để máy chủ biết xóm nào đang hỏi mà chọn đúng dải cấp. Trên router thật là lệnh ip helper-address."
+        }
+      }
+    },
+    {
+      "id": "m18-scope",
+      "term": "Scope và tỉ lệ cạn",
+      "glossVi": "Dải địa chỉ cho thuê của một xóm; theo dõi tỉ lệ cấp phát để hành động trước khi cạn — chạm 90% là tin xấu xếp hàng",
+      "metaphor": {
+        "vi": "Như bãi gửi xe của một tòa nhà: đếm chỗ trống mỗi sáng thì không bao giờ bị cảnh cả đoàn xe đứng chờ trước rào chắn."
+      },
+      "iconId": "icon-scope-can",
+      "flashcard": {
+        "front": { "vi": "Scope là gì, và người vận hành theo dõi con số nào để nó không cạn bất ngờ?" },
+        "back": {
+          "vi": "Scope là dải địa chỉ máy DHCP được phép cho một xóm thuê. Theo dõi tỉ lệ cấp phát (số đã cho thuê trên tổng suất): chạm ~90% là mở rộng dải hoặc rút ngắn lease ở xóm đông khách vãng lai — hành động trước khi chuông reo."
+        }
+      }
+    },
+    {
+      "id": "m18-apipa",
+      "term": "APIPA 169.254",
+      "glossVi": "Địa chỉ máy tự bịa trong dải 169.254.x.x khi xin DHCP không ai đáp — không gateway, không DNS, chỉ nói chuyện được trong xóm",
+      "metaphor": {
+        "vi": "Như người xếp hàng mãi không được phát số thứ tự bèn tự viết một con số lên tay: trong phòng chờ ai cũng hiểu, nhưng ra khỏi cửa thì con số ấy vô giá trị."
+      },
+      "iconId": "icon-apipa",
+      "flashcard": {
+        "front": { "vi": "Thấy máy cầm địa chỉ 169.254.x.x thì người trực kết luận được ngay điều gì?" },
+        "back": {
+          "vi": "Máy ĐÃ hét xin DHCP mà KHÔNG AI đáp — nên đường dây tới switch vẫn sống, thủ phạm nằm ở phía dịch vụ cấp phát (scope cạn, server chết, relay hỏng), không phải sợi dây. Địa chỉ tự bịa không có gateway lẫn DNS nên với người dùng là mất mạng."
+        }
+      }
+    },
+    {
+      "id": "m18-failover",
+      "term": "DHCP failover",
+      "glossVi": "Hai máy DHCP cùng gánh một xóm: chia kho tách bạch (80/20) hoặc bắt cặp dùng chung một cuốn sổ cho thuê có đồng bộ",
+      "metaphor": {
+        "vi": "Như hai người làm mối chia nhau một làng: hoặc mỗi người một nửa cuốn danh sách, hoặc ngồi chung một cuốn và kể nhau nghe từng đám — không bao giờ hai người cùng gả một cô."
+      },
+      "iconId": "icon-dhcp-failover",
+      "flashcard": {
+        "front": { "vi": "Hai kiểu dựng DHCP dự phòng đúng là gì, và vì sao máy dự phòng chỉ cần kho nhỏ?" },
+        "back": {
+          "vi": "Chia kho tách bạch (vd 80/20, hai dải không chồng nhau) hoặc bắt cặp failover chung một cuốn sổ có đồng bộ. Kho dự phòng nhỏ vẫn đủ vì lease còn hạn là các máy cứ dùng tiếp — chỉ máy mới và máy hết hạn cần xin trong quãng máy chính nằm viện."
+        }
+      }
+    },
+    {
+      "id": "m18-trung-dai",
+      "term": "Bẫy hai server một dải",
+      "glossVi": "Hai máy DHCP cùng phát một dải mà không chia kho, không chung sổ — hạ tầng tự sản xuất bệnh trùng IP đều đặn",
+      "metaphor": {
+        "vi": "Như hai quầy vé cùng bán một khoang tàu mà không nhìn sổ của nhau: sớm muộn hai hành khách cầm vé trùng số ghế, và cãi nhau trên tàu chứ không phải ở quầy."
+      },
+      "iconId": "icon-trung-dai",
+      "flashcard": {
+        "front": { "vi": "Xóm cấp DHCP tự động mà bệnh trùng IP cứ tái phát, nạn nhân đổi liên tục — nghi phạm số một?" },
+        "back": {
+          "vi": "Hai máy DHCP đang cùng phát một dải không chia kho, không chung sổ. Lỗi người gõ nhầm thì lẻ tẻ và dính một máy; lỗi lặp đều đặn với nạn nhân ngẫu nhiên là chữ ký của hạ tầng cấp phát đôi — sửa ở phòng máy chủ, không phải đi tìm người gõ."
+        }
+      }
+    },
+    {
+      "id": "m18-split-dns",
+      "term": "Split DNS",
+      "glossVi": "Hai cuốn sổ tên cho cùng một miền: sổ ngoài phơi tên công cộng cho Internet, sổ trong giữ đủ tên nội bộ cho người trong nhà",
+      "metaphor": {
+        "vi": "Như danh bạ của một gia đình: tấm treo ngoài cổng chỉ ghi số tiếp khách, còn cuốn trong bếp ghi đủ số phòng từng người — khách và người nhà tra hai cuốn khác nhau."
+      },
+      "iconId": "icon-split-dns",
+      "flashcard": {
+        "front": { "vi": "Split DNS là gì, và vì sao không gộp hai cuốn sổ làm một?" },
+        "back": {
+          "vi": "Cùng một miền giữ hai bản: DNS ngoài chỉ ghi tên công cộng, DNS trong ghi đủ tên nội bộ (và có thể trỏ cả www về địa chỉ trong nhà cho đường tắt). Không gộp vì phơi sổ nội bộ ra Internet là tặng bản đồ phòng máy chủ cho kẻ dò la, và người trong nhà sẽ phải đi vòng qua NAT."
+        }
+      }
+    },
+    {
+      "id": "m18-forwarder",
+      "term": "DNS forwarder",
+      "glossVi": "Người hỏi hộ được chỉ định: DNS trong gặp tên lạ thì chuyển câu hỏi ra một cửa duy nhất — nơi đệm chung, lọc chung, giám sát chung",
+      "metaphor": {
+        "vi": "Như cả cơ quan chỉ nhờ một người chuyên đi hỏi giấy tờ hộ: hỏi một lần cả sở được nhờ, và mọi câu hỏi ra ngoài đều đi qua đúng một cái bàn nhìn thấy được."
+      },
+      "iconId": "icon-dns-forwarder",
+      "flashcard": {
+        "front": { "vi": "Forwarder là gì, và gom mọi câu hỏi ra một cửa thì được những gì?" },
+        "back": {
+          "vi": "Là máy DNS được chỉ định để hỏi hộ mọi tên mà DNS trong không biết. Một cửa ra cho: bộ đệm chung (một người hỏi, nghìn người hưởng), một chỗ lọc tên độc hại, một chỗ nhìn toàn cảnh cả công ty đang hỏi gì. Không khai thì mỗi máy DNS tự bơi ra Internet từ gốc."
+        }
+      }
+    },
+    {
+      "id": "m18-cond-forwarder",
+      "term": "Conditional forwarder",
+      "glossVi": "Luật hỏi đúng nhà: tên thuộc miền của đối tác thì chuyển thẳng tới DNS của đối tác, không hỏi vòng ra Internet",
+      "metaphor": {
+        "vi": "Như dặn lễ tân: giấy tờ của công ty bên kia thì gọi thẳng lễ tân bên đó mà hỏi — đừng tra danh bạ thành phố, thành phố không ghi số nội bộ nhà người ta."
+      },
+      "iconId": "icon-cond-forwarder",
+      "flashcard": {
+        "front": { "vi": "Khi nào cần conditional forwarder, và dấu hiệu đang thiếu nó là gì?" },
+        "back": {
+          "vi": "Khi phải phân giải tên NỘI BỘ của một miền khác (đối tác nối VPN, công ty sáp nhập) — Internet không biết những tên đó. Dấu hiệu thiếu: ping IP của máy đối tác thì thông mà gọi bằng tên thì Non-existent domain — đường sống, tên chưa ai chỉ lối."
+        }
+      }
+    },
+    {
+      "id": "m18-ttl",
+      "term": "TTL của bản ghi DNS",
+      "glossVi": "Hạn nhớ kèm theo mỗi câu trả lời DNS; đổi hạ tầng thì hạ TTL trước vài ngày, đợi hạn cũ trôi hết rồi mới đổi, xong nâng lại",
+      "metaphor": {
+        "vi": "Như hạn sử dụng in trên hộp sữa đã bán ra: sữa giao rồi thì không thu về được nữa — muốn ngày mai ai cũng uống lô mới thì từ tuần trước phải bán loại hạn ngắn."
+      },
+      "iconId": "icon-ttl-han-nho",
+      "flashcard": {
+        "front": { "vi": "TTL của bản ghi DNS là gì, và luật vàng khi sắp đổi địa chỉ một máy chủ?" },
+        "back": {
+          "vi": "Là hạn nhớ (tính bằng giây) mà mọi bộ đệm được phép giữ câu trả lời trước khi hỏi lại. Luật vàng: hạ TTL xuống thật ngắn TRƯỚC vài ngày (đợi trọn vòng hạn cũ trôi qua), đổi địa chỉ, ổn định rồi nâng TTL về như cũ — trí nhớ ngoài kia không xóa được bằng lệnh, chỉ hẹn giờ được từ trước."
+        }
+      }
+    }
+  ],
+
+  "masteryTest": [
+    {
+      "kind": "mcq",
+      "id": "m18-mt-1",
+      "prompt": {
+        "vi": "Vì sao một máy DHCP đặt ở phòng máy chủ không tự phục vụ được máy mới ở các tầng khác, nếu thiếu relay?"
+      },
+      "choices": [
+        { "vi": "Vì lời xin địa chỉ là quảng bá, mà quảng bá thì chết ở ranh giới router" },
+        { "vi": "Vì mỗi tầng dùng một chuẩn dây mạng riêng nên gói tin không tương thích" },
+        { "vi": "Vì máy DHCP chỉ đủ sức trả lời các máy nằm chung một chiếc switch" }
+      ],
+      "answerIndex": 0,
+      "hintTopic": { "vi": "DISCOVER là loại gói gì" },
+      "explain": {
+        "vi": "DISCOVER là tiếng hét quảng bá — máy mới chưa có địa chỉ nên chỉ biết hét, và router chặn quảng bá đúng luật miền quảng bá. Không phải chuyện dây hay sức máy: thiếu người chuyển lời thì tiếng hét vĩnh viễn kẹt trong xóm."
+      }
+    },
+    {
+      "kind": "typed",
+      "id": "m18-mt-2",
+      "prompt": {
+        "vi": "Relay ghi địa chỉ của xóm đang hỏi vào ô nào trong gói DHCP để máy chủ chọn đúng dải?"
+      },
+      "accept": ["giaddr", "ô giaddr", "o giaddr", "trường giaddr", "truong giaddr", "gateway address"],
+      "hintTopic": { "vi": "sáu chữ cái, ghép từ gateway và address" },
+      "explain": {
+        "vi": "Ô giaddr (gateway address). Máy chủ đối chiếu giaddr với danh sách scope để biết cấp dải nào — thiếu nó thì mười xóm trông giống hệt nhau."
+      }
+    },
+    {
+      "kind": "mcq",
+      "id": "m18-mt-3",
+      "prompt": {
+        "vi": "Một loạt máy cùng tầng đồng loạt cầm địa chỉ 169.254.x.x vào sáng thứ hai. Kết luận nào đứng vững nhất?"
+      },
+      "choices": [
+        { "vi": "Nguồn cấp DHCP của tầng đó hỏng — máy xin không ai đáp nên tự bịa số" },
+        { "vi": "Có kẻ đang mạo danh ARP chiếm địa chỉ cổng ra của tầng để nghe lén" },
+        { "vi": "Switch của tầng vừa mất điện nên bảng MAC bị xóa trắng toàn bộ" }
+      ],
+      "answerIndex": 0,
+      "hintTopic": { "vi": "169.254 nghĩa là đã hét mà không ai đáp" },
+      "explain": {
+        "vi": "169.254 là địa chỉ tự bịa của máy xin DHCP thất bại. Cả loạt máy cùng bịa nghĩa là nguồn cấp của tầng chết chung (scope cạn, server tắt, relay hỏng). Mạo danh ARP không làm máy đổi địa chỉ của chính nó; bảng MAC trắng thì tự học lại trong vài giây."
+      }
+    },
+    {
+      "kind": "typed",
+      "id": "m18-mt-4",
+      "prompt": {
+        "vi": "Máy xin DHCP mà không ai trả lời sẽ tự cấp cho mình một địa chỉ bắt đầu bằng cặp số nào?"
+      },
+      "accept": ["169.254", "169254", "169 254", "169.254.x.x", "dải 169.254", "dai 169.254"],
+      "hintTopic": { "vi": "dải địa chỉ APIPA" },
+      "explain": {
+        "vi": "169.254 — dải APIPA. Nó chỉ đủ nói chuyện trong xóm với máy cùng cảnh ngộ; gateway và DNS trống trơn nên với người dùng là mất mạng, còn với người trực là manh mối chỉ thẳng về phía dịch vụ DHCP."
+      }
+    },
+    {
+      "kind": "mcq",
+      "id": "m18-mt-5",
+      "prompt": {
+        "vi": "Người vận hành muốn scope không bao giờ cạn bất ngờ. Việc nào là ĐÚNG NGHỀ nhất?"
+      },
+      "choices": [
+        { "vi": "Theo dõi tỉ lệ cấp phát từng scope, chạm ngưỡng ~90% là mở dải hoặc rút lease" },
+        { "vi": "Đặt thời gian thuê thật dài cho mọi xóm để các máy khỏi phải xin lại nhiều lần" },
+        { "vi": "Khởi động lại máy DHCP mỗi tối để nó tự dọn sạch các hợp đồng thuê cũ" }
+      ],
+      "answerIndex": 0,
+      "hintTopic": { "vi": "hành động trước khi chuông reo, không phải sau" },
+      "explain": {
+        "vi": "Theo dõi tỉ lệ cấp phát và hành động ở ngưỡng. Lease dài làm bệnh NẶNG THÊM ở xóm đông khách vãng lai (suất bị giữ lâu hơn); khởi động lại server không xóa hợp đồng còn hạn — và không nên xóa."
+      }
+    },
+    {
+      "kind": "mcq",
+      "id": "m18-mt-6",
+      "prompt": {
+        "vi": "Máy DHCP duy nhất tắt 30 phút giữa giờ làm. Nhóm máy nào bị ảnh hưởng?"
+      },
+      "choices": [
+        { "vi": "Chỉ máy mới cắm vào và máy vừa hết hạn thuê — máy còn hạn cứ dùng tiếp" },
+        { "vi": "Toàn bộ máy trong công ty, vì mất server là mọi địa chỉ bị thu hồi ngay" },
+        { "vi": "Không máy nào cả, vì router sẽ tạm đứng ra cấp địa chỉ thay cho server" }
+      ],
+      "answerIndex": 0,
+      "hintTopic": { "vi": "hợp đồng thuê còn hạn thì cần hỏi ai" },
+      "explain": {
+        "vi": "Lease còn hạn thì cứ dùng, chẳng cần hỏi ai — DHCP đứng ở cửa cấp phát chứ không đứng trên đường đi của gói tin. Khổ chủ chỉ là máy mới và máy vừa hết hạn. Router không tự thay vai server trừ khi được cấu hình làm DHCP."
+      }
+    },
+    {
+      "kind": "mcq",
+      "id": "m18-mt-7",
+      "prompt": {
+        "vi": "Dựng máy DHCP thứ hai bằng cách bê nguyên cấu hình máy thứ nhất — cùng phát một dải. Hậu quả?"
+      },
+      "choices": [
+        { "vi": "Hai cuốn sổ rời nhau sớm muộn cấp trùng địa chỉ cho hai máy khác nhau" },
+        { "vi": "Hai máy tự phát hiện nhau rồi tự động chia đôi dải địa chỉ cho khỏi đụng" },
+        { "vi": "Không sao cả, vì máy xin địa chỉ chỉ nhận lời đáp của server tới trước" }
+      ],
+      "answerIndex": 0,
+      "hintTopic": { "vi": "hai cuốn sổ có nhìn thấy nhau không" },
+      "explain": {
+        "vi": "Hai server không chia kho, không chung sổ thì không biết đối phương đã cho thuê số nào — sớm muộn cấp trùng, và bệnh chập chờn Module 11 quay lại đều đặn. Chẳng có phép tự phát hiện nào, còn nhận lời đáp tới trước chính là cách hai máy khác nhau nhận trùng số từ hai server."
+      }
+    },
+    {
+      "kind": "mcq",
+      "id": "m18-mt-8",
+      "prompt": {
+        "vi": "Split DNS nghĩa là gì?"
+      },
+      "choices": [
+        { "vi": "Một miền hai bản trả lời: sổ trong đủ tên nội bộ, sổ ngoài chỉ tên công cộng" },
+        { "vi": "Chia đều các câu hỏi DNS cho hai máy chủ để không máy nào bị quá tải nặng" },
+        { "vi": "Tách phần tên miền khỏi phần địa chỉ IP để hai đội kỹ thuật quản lý riêng" }
+      ],
+      "answerIndex": 0,
+      "hintTopic": { "vi": "hai cuốn sổ cho hai chỗ đứng của người hỏi" },
+      "explain": {
+        "vi": "Split DNS là hai cuốn sổ cho CÙNG một miền: người trong nhà tra sổ trong (đủ tên nội bộ, đường tắt trong nhà), khách Internet tra sổ ngoài (chỉ tên đáng phơi ra). Không phải chuyện chia tải hay chia đội."
+      }
+    },
+    {
+      "kind": "mcq",
+      "id": "m18-mt-9",
+      "prompt": {
+        "vi": "Máy trong công ty không phân giải được tên nội bộ, một người bèn đổi DNS của máy sang máy chủ công cộng ngoài Internet. Vì sao cách này thất bại?"
+      },
+      "choices": [
+        { "vi": "Vì tên nội bộ chỉ nằm trong sổ DNS trong — ngoài Internet không ai giữ nó" },
+        { "vi": "Vì máy chủ DNS công cộng luôn chặn mọi câu hỏi phát ra từ mạng doanh nghiệp" },
+        { "vi": "Vì đổi DNS trên máy trạm bắt buộc phải khởi động lại toàn bộ hệ thống mạng" }
+      ],
+      "answerIndex": 0,
+      "hintTopic": { "vi": "cuốn sổ nào giữ tên trong nhà" },
+      "explain": {
+        "vi": "Tên nội bộ sống duy nhất trong sổ trong — DNS công cộng không có và không bao giờ có. Đổi ra ngoài là tự cắt mình khỏi mọi tên trong nhà, kể cả những tên đang chạy tốt. Đây là phản xạ sai kinh điển của người mới trực."
+      }
+    },
+    {
+      "kind": "typed",
+      "id": "m18-mt-10",
+      "prompt": {
+        "vi": "DNS nội bộ gặp một tên ngoài Internet mà nó không biết — nó chuyển câu hỏi cho ai?"
+      },
+      "accept": [
+        "forwarder",
+        "dns forwarder",
+        "máy hỏi hộ",
+        "may hoi ho",
+        "máy chủ chuyển tiếp",
+        "may chu chuyen tiep",
+        "người hỏi hộ",
+        "nguoi hoi ho"
+      ],
+      "hintTopic": { "vi": "người hỏi hộ được chỉ định sẵn" },
+      "explain": {
+        "vi": "Forwarder — máy DNS được chỉ định hỏi hộ mọi tên lạ. Gom về một cửa để cả công ty dùng chung bộ đệm, lọc tên độc hại một chỗ và nhìn toàn cảnh một chỗ."
+      }
+    },
+    {
+      "kind": "mcq",
+      "id": "m18-mt-11",
+      "prompt": {
+        "vi": "Công ty vừa nối VPN với đối tác. Ping IP máy chủ đối tác thì thông, gọi bằng tên nội bộ của họ thì báo không tồn tại. Mảnh còn thiếu?"
+      },
+      "choices": [
+        { "vi": "Conditional forwarder chuyển các tên thuộc miền đối tác thẳng tới DNS của họ" },
+        { "vi": "Một tuyến đường tĩnh bổ sung, vì VPN hiện chưa dẫn tới được máy chủ đó" },
+        { "vi": "Bản ghi các tên của đối tác đăng lên máy chủ DNS công cộng ngoài Internet" }
+      ],
+      "answerIndex": 0,
+      "hintTopic": { "vi": "số thông tên chết thì bệnh ở tầng nào" },
+      "explain": {
+        "vi": "Ping số thông nghĩa là tầng đường đi ổn — không thiếu tuyến. Tên nội bộ của đối tác thì Internet không biết nên đăng ra ngoài là vô nghĩa. Thiếu đúng một luật hỏi-đúng-nhà: conditional forwarder trỏ miền đối tác về DNS của họ."
+      }
+    },
+    {
+      "kind": "typed",
+      "id": "m18-mt-12",
+      "prompt": {
+        "vi": "Vài ngày trước khi đổi địa chỉ một máy chủ, người vận hành làm gì với TTL của bản ghi sắp đổi?"
+      },
+      "accept": [
+        "hạ ttl",
+        "ha ttl",
+        "giảm ttl",
+        "giam ttl",
+        "rút ngắn ttl",
+        "rut ngan ttl",
+        "hạ xuống thật ngắn",
+        "ha xuong that ngan",
+        "giảm xuống",
+        "giam xuong"
+      ],
+      "hintTopic": { "vi": "trí nhớ ngoài kia chỉ hẹn giờ được từ trước" },
+      "explain": {
+        "vi": "Hạ TTL xuống thật ngắn từ trước — đợi trọn vòng hạn cũ trôi qua để mọi bộ đệm cầm bản hạn ngắn, rồi mới đổi địa chỉ; ổn định xong nâng TTL về như cũ. Không hạ trước thì bản cũ sống lởn vởn tới hết hạn dài, chẳng lệnh nào xóa hộ được."
+      }
+    },
+    {
+      "kind": "ps",
+      "id": "m18-mt-ps",
+      "prompt": {
+        "vi": "Công ty vừa dựng máy DNS dự phòng 10.20.0.54. Trước khi khai nó cho các máy trạm, hãy kiểm chứng bằng terminal PowerShell rằng dịch vụ DNS trên đó đã thật sự nghe ở đúng cổng của nghề."
+      },
+      "spec": {
+        "world": {
+          "hostname": "MAY-QUAN-TRI",
+          "interfaces": [{ "alias": "Ethernet0", "ip": "10.20.2.5", "prefix": 24 }],
+          "targets": [
+            { "ip": "10.20.0.53", "name": "dns1.congty.vn", "pingable": true, "openPorts": [53] },
+            { "ip": "10.20.0.54", "name": "dns2.congty.vn", "pingable": true, "openPorts": [53] },
+            { "ip": "10.20.0.80", "name": "portal.noibo.congty.vn", "pingable": true, "openPorts": [80, 443] }
+          ],
+          "ad": null,
+          "files": {}
+        },
+        "goals": [{ "kind": "tested-connection", "ip": "10.20.0.54", "port": 53 }],
+        "solution": ["Test-NetConnection 10.20.0.54 -Port 53"]
+      },
+      "hintTopic": { "vi": "cổng dịch vụ của DNS nằm trong cung điện Module 5" },
+      "explain": {
+        "vi": "Test-NetConnection 10.20.0.54 -Port 53 — cổng 53 là cửa của DNS. TcpTestSucceeded : True mới đủ tin để khai máy này cho các máy trạm; ping thông thôi chỉ chứng minh máy sống, không chứng minh dịch vụ đang nghe."
+      }
+    },
+    {
+      "kind": "clinic",
+      "id": "m18-mt-ca",
+      "prompt": {
+        "vi": "\"Tầng năm gọi xuống: sáng nay cả phòng không ai vào được hệ thống, các tầng khác vẫn chạy ầm ầm.\" Bạn ngồi ở MAY-TANG-5. Khám đi — bắt đầu từ chính địa chỉ của mình như một người trực có nghề."
+      },
+      "spec": {
+        "patient": {
+          "topology": {
+            "devices": [
+              {
+                "kind": "pc",
+                "id": "m18c-t5",
+                "hostname": "MAY-TANG-5",
+                "port": { "id": "eth0", "mac": "AA:BB:CC:18:2C:01" },
+                "ipConfig": { "ip": "169.254.31.8", "prefix": 16 },
+                "gateway": null
+              },
+              {
+                "kind": "pc",
+                "id": "m18c-t4",
+                "hostname": "MAY-TANG-4",
+                "port": { "id": "eth0", "mac": "AA:BB:CC:18:2C:02" },
+                "ipConfig": { "ip": "10.20.4.18", "prefix": 24 },
+                "gateway": "10.20.4.1"
+              },
+              {
+                "kind": "pc",
+                "id": "m18c-srv",
+                "hostname": "SRV-HE-THONG",
+                "port": { "id": "eth0", "mac": "AA:BB:CC:18:2C:09" },
+                "ipConfig": { "ip": "10.20.0.9", "prefix": 24 },
+                "gateway": "10.20.0.1"
+              },
+              {
+                "kind": "switch",
+                "id": "m18c-sw5",
+                "hostname": "SW-TANG-5",
+                "ports": [
+                  { "id": "p1", "vlan": 1 },
+                  { "id": "p2", "vlan": 1 }
+                ]
+              },
+              {
+                "kind": "switch",
+                "id": "m18c-sw4",
+                "hostname": "SW-TANG-4",
+                "ports": [
+                  { "id": "p1", "vlan": 1 },
+                  { "id": "p2", "vlan": 1 }
+                ]
+              },
+              {
+                "kind": "switch",
+                "id": "m18c-swsrv",
+                "hostname": "SW-MAY-CHU",
+                "ports": [
+                  { "id": "p1", "vlan": 1 },
+                  { "id": "p2", "vlan": 1 }
+                ]
+              },
+              {
+                "kind": "router",
+                "id": "m18c-r",
+                "hostname": "R-TOA-NHA",
+                "ports": [
+                  { "id": "g0", "mac": "AA:BB:CC:18:2C:11", "ipConfig": { "ip": "10.20.5.1", "prefix": 24 } },
+                  { "id": "g1", "mac": "AA:BB:CC:18:2C:12", "ipConfig": { "ip": "10.20.4.1", "prefix": 24 } },
+                  { "id": "g2", "mac": "AA:BB:CC:18:2C:13", "ipConfig": { "ip": "10.20.0.1", "prefix": 24 } }
+                ],
+                "staticRoutes": []
+              }
+            ],
+            "links": [
+              { "id": "y1", "a": { "deviceId": "m18c-t5", "portId": "eth0" }, "b": { "deviceId": "m18c-sw5", "portId": "p1" } },
+              { "id": "y2", "a": { "deviceId": "m18c-sw5", "portId": "p2" }, "b": { "deviceId": "m18c-r", "portId": "g0" } },
+              { "id": "y3", "a": { "deviceId": "m18c-t4", "portId": "eth0" }, "b": { "deviceId": "m18c-sw4", "portId": "p1" } },
+              { "id": "y4", "a": { "deviceId": "m18c-sw4", "portId": "p2" }, "b": { "deviceId": "m18c-r", "portId": "g1" } },
+              { "id": "y5", "a": { "deviceId": "m18c-srv", "portId": "eth0" }, "b": { "deviceId": "m18c-swsrv", "portId": "p1" } },
+              { "id": "y6", "a": { "deviceId": "m18c-swsrv", "portId": "p2" }, "b": { "deviceId": "m18c-r", "portId": "g2" } }
+            ]
+          },
+          "overlay": {},
+          "seatId": "m18c-t5"
+        },
+        "symptom": { "kind": "ping-fails", "from": "m18c-t5", "target": "10.20.0.9" },
+        "fix": { "kind": "choose-action" }
+      },
+      "diagnosis": {
+        "choices": [
+          { "vi": "Nguồn cấp DHCP của tầng năm chết — máy xin không ai đáp nên tự bịa địa chỉ 169.254" },
+          { "vi": "Sợi cáp trục nối tầng năm xuống phòng máy chủ bị đứt hoàn toàn" },
+          { "vi": "Máy chủ hệ thống quá tải nên từ chối kết nối của cả một tầng" }
+        ],
+        "answerIndex": 0
+      },
+      "actions": {
+        "choices": [
+          { "vi": "Kiểm tra phía DHCP: scope tầng năm cạn hoặc relay của tầng hỏng — sửa ở đó" },
+          { "vi": "Thay toàn bộ dây mạng của tầng năm rồi khởi động lại từng máy một" },
+          { "vi": "Nâng cấp máy chủ hệ thống lên cấu hình mạnh hơn để chịu tải tốt hơn" }
+        ],
+        "answerIndex": 0
+      },
+      "hintTopic": { "vi": "ipconfig của chính bạn — địa chỉ ấy ai cấp" },
+      "explain": {
+        "vi": "ipconfig lộ địa chỉ 169.254.31.8, không gateway, không DNS — cả tầng xin DHCP mà không ai đáp nên đồng loạt tự bịa số. Dây trục mà đứt thì máy vẫn giữ địa chỉ 10.20.5.x cũ chứ không đổi sang 169.254; server quá tải thì tầng khác cũng phải kêu. Thủ phạm nằm ở phía cấp phát của TẦNG NĂM: scope cạn hoặc relay hỏng — sửa ở phòng máy chủ, không phải thay dây hay nâng server."
+      }
+    }
+  ]
+}

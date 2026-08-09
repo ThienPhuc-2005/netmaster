@@ -7,6 +7,8 @@ import { isLabSolved } from '../lab/gradeLab'
 import { isClinicFixSolved } from '../clinic/gradeClinic'
 import { isPsSolved } from '../ps/gradePs'
 import type { PsRunState } from '../ps/world'
+import { isCliSolved } from '../cli/gradeCli'
+import type { CliState } from '../cli/state'
 import type { Topology } from '../lab/topology'
 import { walkOutcomesPassed, type RoomOutcome } from '../palace/walk'
 import { openAcceptsOf } from '../flow'
@@ -45,6 +47,12 @@ export type QuestionResponse =
    * hỏi "mục tiêu đạt chưa" — không so chuỗi lệnh.
    */
   | { kind: 'ps'; state: PsRunState }
+  /**
+   * `cli` = trạng thái phiên CLI thiết bị lúc nộp (sơ đồ đã bị lệnh của
+   * người học biến đổi + dấu vết đã tra bảng nào). Chấm bằng "mục tiêu
+   * đạt chưa" — không so chuỗi lệnh.
+   */
+  | { kind: 'cli'; state: CliState }
 
 export type ClinicFixResponse =
   | { kind: 'edit-network'; topology: Topology }
@@ -126,5 +134,10 @@ export function gradeQuestion(q: Question, r: QuestionResponse): boolean {
       // Chấm HIỆU ỨNG + DẤU VẾT: mọi chuỗi lệnh hợp lệ đạt mục tiêu đều
       // được công nhận (IKEA effect — cùng triết lý lab/clinic).
       return isPsSolved(q.spec, r.state)
+    case 'cli':
+      if (q.kind !== 'cli') throw kindMismatch(q, r)
+      // Cũng chấm HIỆU ỨNG + DẤU VẾT: cấu hình bằng lệnh hay bằng đường
+      // bấm chọn đều ra một sơ đồ, và bộ chấm chỉ nhìn sơ đồ đó.
+      return isCliSolved(q.spec, r.state)
   }
 }

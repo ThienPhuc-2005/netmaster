@@ -1,0 +1,1205 @@
+{
+  "id": "module-14",
+  "order": 14,
+  "part": "D",
+  "title": { "vi": "Trunk 802.1Q — Một sợi dây chở nhiều xóm" },
+  "stages": [
+    { "id": "m14-chang-1", "title": { "vi": "Hết cổng vì mỗi xóm một dây" }, "lessonIds": ["m14-bai-1"] },
+    { "id": "m14-chang-2", "title": { "vi": "Dán nhãn xóm lên khung" }, "lessonIds": ["m14-bai-2"] },
+    { "id": "m14-chang-3", "title": { "vi": "Xóm đi trần: native VLAN" }, "lessonIds": ["m14-bai-3"] },
+    { "id": "m14-chang-4", "title": { "vi": "Danh sách khách được qua" }, "lessonIds": ["m14-bai-4"] },
+    { "id": "m14-chang-5", "title": { "vi": "Một chân router cho nhiều xóm" }, "lessonIds": ["m14-bai-5"] }
+  ],
+  "lessons": [
+    {
+      "id": "m14-bai-1",
+      "missionTitle": { "vi": "Ngồi xuống trước console lần đầu" },
+      "steps": [
+        {
+          "type": "hook",
+          "question": {
+            "vi": "Hai tòa nhà của công ty, mỗi tòa một switch, và bốn phòng ban đã chia VLAN đàng hoàng. Muốn kế toán tòa này nói chuyện với kế toán tòa kia, người ta kéo một sợi cáp cho VLAN kế toán, rồi lại kéo thêm một sợi cho VLAN kỹ thuật. Bốn VLAN là bốn sợi, mà switch chỉ có 24 cổng. Có cách nào để MỘT sợi chở được cả bốn xóm không?"
+          },
+          "visualId": "vis-hook-mot-day-nhieu-xom"
+        },
+        {
+          "type": "pretest",
+          "questions": [
+            {
+              "kind": "cli",
+              "id": "m14-b1-pre-cli",
+              "prompt": {
+                "vi": "Trước khi mình giảng gì cả: bạn đang ngồi trước console của Switch-1. Gõ dấu ? để xem thiết bị hiểu những lệnh nào, rồi tự tìm lấy bảng VLAN của nó. Sai cũng không sao — phần này không tính điểm."
+              },
+              "spec": {
+                "initial": {
+                  "devices": [
+                    {
+                      "kind": "pc",
+                      "id": "pc-a",
+                      "hostname": "PC-A (kế toán)",
+                      "port": { "id": "eth0", "mac": "AA:BB:CC:00:00:01" },
+                      "ipConfig": { "ip": "192.168.1.10", "prefix": 24 },
+                      "gateway": null
+                    },
+                    {
+                      "kind": "pc",
+                      "id": "pc-c",
+                      "hostname": "PC-C (kỹ thuật)",
+                      "port": { "id": "eth0", "mac": "AA:BB:CC:00:00:03" },
+                      "ipConfig": { "ip": "192.168.1.30", "prefix": 24 },
+                      "gateway": null
+                    },
+                    {
+                      "kind": "switch",
+                      "id": "sw-1",
+                      "hostname": "Switch-1",
+                      "ports": [
+                        { "id": "p1", "vlan": 10 },
+                        { "id": "p2", "vlan": 20 },
+                        { "id": "p3", "vlan": 10 },
+                        { "id": "p4", "vlan": 1 }
+                      ]
+                    }
+                  ],
+                  "links": [
+                    { "id": "l1", "a": { "deviceId": "pc-a", "portId": "eth0" }, "b": { "deviceId": "sw-1", "portId": "p1" } },
+                    { "id": "l2", "a": { "deviceId": "pc-c", "portId": "eth0" }, "b": { "deviceId": "sw-1", "portId": "p2" } }
+                  ]
+                },
+                "deviceId": "sw-1",
+                "goals": [{ "kind": "viewed", "command": "show vlan brief", "deviceId": "sw-1" }],
+                "solution": [{ "deviceId": "sw-1", "lines": ["show vlan brief"] }]
+              },
+              "hintTopic": { "vi": "lệnh xem bảng VLAN của switch" },
+              "explain": {
+                "vi": "Lệnh đó là show vlan brief. Bảng nó in ra cho biết switch đang có những VLAN nào và cổng nào thuộc VLAN nào — đây là thứ đầu tiên người làm mạng nhìn khi ngồi xuống một switch lạ."
+              }
+            }
+          ],
+          "encouragement": {
+            "vi": "Mò được tới đâu cũng là tốt — gõ ? rồi thử là đúng cách người làm nghề đối diện một thiết bị chưa quen."
+          }
+        },
+        {
+          "type": "teach",
+          "screens": [
+            {
+              "conceptId": "trunk",
+              "visualId": "vis-trunk-mot-day",
+              "body": {
+                "vi": "Cổng access mà bạn học ở Module 4 chỉ thuộc đúng một VLAN, nên nối hai switch bằng cổng access thì mỗi VLAN phải ăn một sợi dây riêng. Trunk là vai thứ hai của một cổng switch: nó chở MỌI VLAN trên cùng một sợi. Hai đầu sợi dây giữa hai switch cùng khai trunk là bốn xóm đi chung một cáp, và 24 cổng của switch để dành cho máy người dùng thay vì để đấu nối nội bộ."
+              },
+              "deepDive": {
+                "vi": "Tên gọi trong nghề: cổng access nối XUỐNG máy người dùng, cổng trunk nối NGANG giữa các thiết bị mạng. Chuẩn dán nhãn tên là 802.1Q, còn gọi là dot1q; nó là chuẩn mở nên switch của hãng nào cũng nói chuyện được với nhau. Ở phòng lab của app này, cổng là trunk vì người ta khai nó là trunk — thiết bị thật còn có kiểu tự đàm phán gọi là DTP, nhưng mọi tài liệu bảo mật đều khuyên tắt nó đi và khai tay cho chắc."
+              }
+            }
+          ]
+        },
+        {
+          "type": "practice",
+          "fadingLevel": 0,
+          "workedExample": {
+            "vi": "Đây là trọn bộ lệnh khai một cổng thành trunk, gõ trên console của Switch-1. Bước 1: gõ enable để vào chế độ có quyền — dấu nhắc đổi từ Switch-1> sang Switch-1#. Bước 2: gõ configure terminal để vào chế độ cấu hình — dấu nhắc thành Switch-1(config)#. Bước 3: gõ interface p4 để chọn đúng cổng đang nối sang switch kia — dấu nhắc thành Switch-1(config-if)#. Bước 4: gõ switchport mode trunk. Bước 5: gõ end để về lại Switch-1#, rồi show interfaces trunk để tự kiểm chứng: cổng p4 phải xuất hiện trong bảng. Nhớ luật chế độ: gõ interface khi chưa configure terminal thì máy từ chối, và đó là máy đang dạy bạn chứ không phải máy khó tính."
+          },
+          "exercises": [
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m14-b1-prac-1",
+                "prompt": {
+                  "vi": "Đang ở dấu nhắc Switch-1(config-if)# của cổng p4, gõ lệnh gì để biến cổng này thành trunk?"
+                },
+                "accept": [
+                  "switchport mode trunk",
+                  "switchport mode trunk ",
+                  "sw mode trunk"
+                ],
+                "hintTopic": { "vi": "lệnh đặt vai cho một cổng switch" }
+              },
+              "hint": {
+                "vi": "Cú pháp khuyết: switchport mode … — chỗ trống điền vai bạn muốn cổng nhận, và vai đó chính là tên bài học hôm nay."
+              },
+              "solution": {
+                "vi": "switchport mode trunk. Cũng lệnh switchport mode ấy, thay trunk bằng access là trả cổng về vai cũ của Module 4."
+              }
+            },
+            {
+              "question": {
+                "kind": "mcq",
+                "id": "m14-b1-prac-2",
+                "prompt": { "vi": "Vì sao nối hai switch bằng cổng access lại tốn dây đến thế?" },
+                "choices": [
+                  { "vi": "Vì một cổng access chỉ thuộc đúng một VLAN, nên mỗi VLAN muốn qua phải có một sợi riêng" },
+                  { "vi": "Vì cổng access chạy chậm hơn cổng trunk nên phải chia tải ra nhiều sợi dây" },
+                  { "vi": "Vì switch chỉ cho phép mỗi sợi cáp mang tối đa một trăm khung tin mỗi giây" }
+                ],
+                "answerIndex": 0,
+                "hintTopic": { "vi": "số VLAN mà một cổng access thuộc về" }
+              },
+              "hint": {
+                "vi": "Nhớ lại Module 4: một cổng access đứng tên đúng mấy VLAN? Vậy bốn VLAN cần mấy cổng như thế?"
+              },
+              "solution": {
+                "vi": "Vì cổng access chỉ thuộc một VLAN duy nhất — bốn VLAN là bốn sợi dây và bốn cổng ở mỗi đầu. Tốc độ cổng không liên quan gì tới chuyện này; trunk nhanh hơn không phải vì cáp mà vì nó gộp được nhiều xóm."
+              }
+            }
+          ]
+        },
+        {
+          "type": "retrieval",
+          "questions": [
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m14-b1-ret-1",
+                "prompt": {
+                  "vi": "Không nhìn lại bài: lệnh nào cho bạn xem switch đang có những VLAN nào và cổng nào thuộc VLAN nào?"
+                },
+                "accept": ["show vlan brief", "show vlan", "sh vlan brief"]
+              },
+              "hint": { "vi": "Ba từ, bắt đầu bằng show — đúng lệnh bạn mò ra ở bước Đoán thử." },
+              "solution": {
+                "vi": "show vlan brief. Bảng của nó có cột VLAN, tên, trạng thái và danh sách cổng — riêng cổng trunk sẽ không đứng tên VLAN nào, vì nó chở nhiều xóm cùng lúc."
+              }
+            }
+          ],
+          "selfExplain": {
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: trunk giải quyết được vấn đề gì mà cổng access không giải quyết nổi?"
+            },
+            "keywords": [
+              ["một sợi", "một dây", "một cáp", "cùng một dây"],
+              ["nhiều vlan", "nhiều xóm", "cả bốn", "tất cả vlan"],
+              ["tiết kiệm cổng", "đỡ tốn dây", "hết cổng", "tốn cổng"]
+            ],
+            "exampleAnswer": {
+              "vi": "Cổng access chỉ thuộc một VLAN nên mỗi xóm phải có một sợi dây riêng giữa hai switch, và switch cạn cổng rất nhanh. Trunk cho phép một sợi chở nhiều VLAN cùng lúc, nên chỉ cần một cáp nối ngang là đủ cho tất cả các xóm."
+            }
+          }
+        },
+        {
+          "type": "summary",
+          "bullets": [
+            { "vi": "Cổng access thuộc đúng một VLAN; cổng trunk chở nhiều VLAN trên một sợi." },
+            { "vi": "Khai trunk bằng lệnh: enable, configure terminal, interface p4, switchport mode trunk." },
+            { "vi": "Ngồi xuống một switch lạ thì show vlan brief là bảng nhìn đầu tiên." }
+          ],
+          "nextTeaser": {
+            "vi": "Một sợi chở bốn xóm — nhưng đầu bên kia làm sao biết khung này của xóm nào? Bài sau mở phong bì ra xem cái nhãn mà switch dán lên đó."
+          }
+        }
+      ]
+    },
+    {
+      "id": "m14-bai-2",
+      "missionTitle": { "vi": "Đọc được cái nhãn trên khung" },
+      "steps": [
+        {
+          "type": "hook",
+          "question": {
+            "vi": "Cùng một sợi cáp, cùng một lúc, khung của kế toán và khung của kỹ thuật nối đuôi nhau chạy qua. Sang tới switch bên kia, không khung nào đi lạc sang xóm của khung kia. Switch bên nhận dựa vào đâu để biết khung nào là của ai?"
+          },
+          "visualId": "vis-hook-dan-nhan"
+        },
+        {
+          "type": "pretest",
+          "questions": [
+            {
+              "kind": "mcq",
+              "id": "m14-b2-pre-1",
+              "prompt": { "vi": "Đoán thử: khi khung của VLAN 20 đi qua trunk, switch làm gì với nó?" },
+              "choices": [
+                { "vi": "Chèn thêm một nhãn ghi số VLAN vào khung" },
+                { "vi": "Đổi địa chỉ MAC nguồn thành MAC của switch" },
+                { "vi": "Ghi số VLAN vào phần địa chỉ IP của gói tin" }
+              ],
+              "answerIndex": 0,
+              "explain": {
+                "vi": "Switch chèn một nhãn 802.1Q dài 4 byte vào khung, trong đó có số VLAN. Đầu kia đọc nhãn, biết khung thuộc xóm nào, rồi gỡ nhãn ra trước khi giao xuống cổng access."
+              }
+            }
+          ],
+          "encouragement": {
+            "vi": "Đoán trượt cũng đáng — chỗ này rất dễ nhầm sang địa chỉ, mà nhãn VLAN thì nằm ở tầng khác hẳn."
+          }
+        },
+        {
+          "type": "teach",
+          "screens": [
+            {
+              "conceptId": "tagged-frame",
+              "visualId": "vis-khung-mang-nhan",
+              "body": {
+                "vi": "Trên trunk, mỗi khung được dán thêm một nhãn 802.1Q ghi rõ số VLAN của nó — khung mang nhãn gọi là tagged frame. Đầu nhận đọc nhãn để biết khung thuộc xóm nào, rồi GỠ nhãn trước khi giao xuống cổng access, nên máy người dùng không bao giờ nhìn thấy cái nhãn ấy. Nói cách khác: VLAN đi theo khung suốt chặng, còn nhãn chỉ là cách ghi số xóm trên sợi dây giữa hai switch."
+              },
+              "deepDive": {
+                "vi": "Nhãn dài 4 byte, chèn ngay sau địa chỉ MAC nguồn. Trong 4 byte đó có 12 bit dành cho số VLAN — nên VLAN chỉ chạy từ 1 tới 4094, đúng con số bạn gặp trong mọi bảng cấu hình. Vì khung dài thêm 4 byte, khung tối đa trên trunk là 1522 byte thay vì 1518; switch đời cũ không hiểu điều này sẽ báo lỗi khung quá cỡ, và đó là một trong những lỗi khó chịu nhất khi đấu nối thiết bị nhiều thế hệ."
+              }
+            }
+          ]
+        },
+        {
+          "type": "practice",
+          "fadingLevel": 1,
+          "exercises": [
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m14-b2-prac-1",
+                "prompt": {
+                  "vi": "Máy trong VLAN 10 gửi một khung sang tòa nhà bên kia. Trên sợi trunk, khung ấy mang theo con số nào trong nhãn của nó?"
+                },
+                "accept": ["10", "vlan 10", "vlan10"],
+                "hintTopic": { "vi": "nhãn 802.1Q ghi lại số của xóm nào" }
+              },
+              "hint": {
+                "vi": "Điền chỗ trống: nhãn ghi số VLAN của chính khung đó, mà khung này xuất phát từ cổng access thuộc VLAN …"
+              },
+              "solution": {
+                "vi": "Số 10 — nhãn ghi đúng VLAN mà khung đang thuộc về. Sang tới đầu kia, switch đọc số 10, gỡ nhãn, rồi chỉ giao khung xuống các cổng access của VLAN 10."
+              }
+            },
+            {
+              "question": {
+                "kind": "mcq",
+                "id": "m14-b2-prac-2",
+                "prompt": { "vi": "Máy tính cắm vào cổng access có nhìn thấy nhãn 802.1Q không?" },
+                "choices": [
+                  { "vi": "Không, vì switch đã gỡ nhãn ra trước khi giao khung xuống cổng access" },
+                  { "vi": "Có, và card mạng của máy phải tự đọc nhãn để biết mình thuộc VLAN nào" },
+                  { "vi": "Có, nhưng chỉ khi máy được cấu hình đúng số VLAN trong phần cài đặt mạng" }
+                ],
+                "answerIndex": 0,
+                "hintTopic": { "vi": "nhãn tồn tại trên đoạn dây nào" }
+              },
+              "hint": {
+                "vi": "Nhãn chỉ sống trên đoạn dây giữa hai thiết bị mạng. Cổng nối xuống máy người dùng là cổng gì, và cổng đó có đọc nhãn không?"
+              },
+              "solution": {
+                "vi": "Không. Nhãn chỉ tồn tại trên trunk; tới cổng access thì switch gỡ ra, nên máy người dùng nhận một khung trần y như thời chưa có VLAN. Chính vì thế bạn không phải cấu hình gì trên máy khi phòng mình được chia VLAN."
+              }
+            }
+          ]
+        },
+        {
+          "type": "retrieval",
+          "questions": [
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m14-b2-ret-1",
+                "prompt": {
+                  "vi": "Không nhìn lại bài: tên chuẩn dán nhãn VLAN lên khung là gì? (viết dạng số hiệu chuẩn)"
+                },
+                "accept": ["802.1q", "802.1Q", "ieee 802.1q", "dot1q", "8021q"]
+              },
+              "hint": { "vi": "Bắt đầu bằng 802.1 — chuẩn của tổ chức IEEE, tên tắt trong nghề là dot1q." },
+              "solution": {
+                "vi": "802.1Q. Đây là chuẩn mở nên switch của các hãng khác nhau vẫn hiểu nhãn của nhau."
+              }
+            }
+          ],
+          "selfExplain": {
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: nhãn 802.1Q sinh ra rồi biến mất ở những chỗ nào trên đường đi của khung?"
+            },
+            "keywords": [
+              ["dán", "chèn", "gắn thêm", "thêm nhãn"],
+              ["trunk", "dây giữa hai switch", "đường trục"],
+              ["gỡ", "tháo", "bỏ nhãn", "tách ra"],
+              ["cổng access", "xuống máy", "máy người dùng"]
+            ],
+            "exampleAnswer": {
+              "vi": "Switch dán nhãn khi đẩy khung ra trunk, để đầu kia biết khung thuộc VLAN nào. Tới nơi, switch bên nhận đọc nhãn rồi gỡ ra trước khi giao khung xuống cổng access, nên máy người dùng không bao giờ thấy nhãn."
+            }
+          }
+        },
+        {
+          "type": "summary",
+          "bullets": [
+            { "vi": "Trên trunk, khung được dán nhãn 802.1Q ghi số VLAN của nó." },
+            { "vi": "Đầu nhận đọc nhãn rồi gỡ ra trước khi giao xuống cổng access." },
+            { "vi": "Nhãn chỉ sống trên trunk — máy người dùng không bao giờ thấy nó." }
+          ],
+          "nextTeaser": {
+            "vi": "Có đúng MỘT xóm được đi qua trunk mà không cần nhãn. Bài sau cho bạn xem cái xóm đặc biệt ấy — và vì sao nó là nguồn của một ca bệnh im lặng nhất nghề mạng."
+          }
+        }
+      ]
+    },
+    {
+      "id": "m14-bai-3",
+      "missionTitle": { "vi": "Chữa ca native VLAN lệch" },
+      "steps": [
+        {
+          "type": "hook",
+          "question": {
+            "vi": "Nửa văn phòng chạy ngon, nửa kia mất kết nối mà không thiết bị nào báo lỗi, không đèn nào đỏ. Người trực ca đêm khai trunk ở Switch-2 và gõ thêm một dòng cấu hình mà anh ấy tin là vô hại. Dòng ấy đã làm khung của một xóm lặng lẽ rơi sang xóm khác. Xóm nào bị nạn, và vì sao?"
+          },
+          "visualId": "vis-hook-native-lech"
+        },
+        {
+          "type": "pretest",
+          "questions": [
+            {
+              "kind": "mcq",
+              "id": "m14-b3-pre-1",
+              "prompt": { "vi": "Đoán thử: trên một trunk, khung của native VLAN đi qua như thế nào?" },
+              "choices": [
+                { "vi": "Đi trần, không mang nhãn nào cả" },
+                { "vi": "Mang nhãn ghi số 0 để đánh dấu là xóm mặc định" },
+                { "vi": "Mang hai nhãn chồng lên nhau để phân biệt với xóm khác" }
+              ],
+              "answerIndex": 0,
+              "explain": {
+                "vi": "Native VLAN là xóm duy nhất đi qua trunk mà không dán nhãn. Chuẩn 802.1Q quy định vậy để trunk vẫn nói chuyện được với thiết bị không hiểu nhãn."
+              }
+            }
+          ],
+          "encouragement": {
+            "vi": "Đây là chi tiết ít ai nhớ cho tới lúc gặp sự cố thật — biết trước là bạn đã đi trước một bước."
+          }
+        },
+        {
+          "type": "teach",
+          "screens": [
+            {
+              "conceptId": "native-vlan",
+              "visualId": "vis-native-vlan",
+              "body": {
+                "vi": "Trên mỗi trunk có đúng một xóm được đi trần, không nhãn — đó là native VLAN, mặc định là VLAN 1. Chuyện chỉ lành khi HAI ĐẦU khai cùng một số. Nếu Switch-1 khai native là 1 còn Switch-2 khai native là 99, thì khung đi trần từ VLAN 1 sang tới đầu kia sẽ được hiểu thành khung của VLAN 99: nó rơi sang xóm khác, im lặng, không lỗi, không cảnh báo. Khung mang nhãn thì không hề hấn gì — nên bệnh này chỉ giết nửa văn phòng, và đó là lý do nó khó tìm."
+              },
+              "deepDive": {
+                "vi": "Vì sao chuẩn lại chừa một xóm đi trần? Vì thời trunk mới ra đời, còn nhiều thiết bị không hiểu nhãn; xóm không nhãn giúp chúng vẫn nói chuyện được. Ngày nay lời khuyên chung là đổi native sang một VLAN không ai dùng và không cắm máy nào vào đó, để tránh cả bệnh lệch native lẫn kiểu tấn công nhồi hai nhãn. Thiết bị thật có cơ chế phát hiện lệch native qua giao thức khám phá láng giềng — nhưng nó chỉ ghi vào nhật ký, và nhật ký thì phải có người đọc."
+              }
+            }
+          ]
+        },
+        {
+          "type": "practice",
+          "fadingLevel": 1,
+          "exercises": [
+            {
+              "question": {
+                "kind": "cli",
+                "id": "m14-b3-prac-cli",
+                "prompt": {
+                  "vi": "Đây đúng là mạng của ca đêm hôm ấy: Switch-1 khai native VLAN 1, Switch-2 khai native VLAN 99, nên hai máy kế toán ở VLAN 1 mất nhau. Vào console sửa cho hai đầu khớp lại. Gõ thử bao nhiêu cũng miễn phí, chỉ Nộp bài mới tính một lượt."
+                },
+                "spec": {
+                  "initial": {
+                    "devices": [
+                      {
+                        "kind": "pc",
+                        "id": "pc-a",
+                        "hostname": "PC-A (kế toán)",
+                        "port": { "id": "eth0", "mac": "AA:BB:CC:00:00:01" },
+                        "ipConfig": { "ip": "192.168.1.10", "prefix": 24 },
+                        "gateway": null
+                      },
+                      {
+                        "kind": "pc",
+                        "id": "pc-b",
+                        "hostname": "PC-B (kế toán)",
+                        "port": { "id": "eth0", "mac": "AA:BB:CC:00:00:02" },
+                        "ipConfig": { "ip": "192.168.1.20", "prefix": 24 },
+                        "gateway": null
+                      },
+                      {
+                        "kind": "switch",
+                        "id": "sw-1",
+                        "hostname": "Switch-1",
+                        "ports": [
+                          { "id": "p1", "vlan": 1 },
+                          { "id": "p2", "vlan": 20 },
+                          { "id": "p4", "vlan": 1, "mode": "trunk", "allowedVlans": [1, 20, 99], "nativeVlan": 1 }
+                        ]
+                      },
+                      {
+                        "kind": "switch",
+                        "id": "sw-2",
+                        "hostname": "Switch-2",
+                        "ports": [
+                          { "id": "p1", "vlan": 1 },
+                          { "id": "p2", "vlan": 20 },
+                          { "id": "p4", "vlan": 1, "mode": "trunk", "allowedVlans": [1, 20, 99], "nativeVlan": 99 }
+                        ]
+                      }
+                    ],
+                    "links": [
+                      { "id": "l1", "a": { "deviceId": "pc-a", "portId": "eth0" }, "b": { "deviceId": "sw-1", "portId": "p1" } },
+                      { "id": "l2", "a": { "deviceId": "pc-b", "portId": "eth0" }, "b": { "deviceId": "sw-2", "portId": "p1" } },
+                      { "id": "uplink", "a": { "deviceId": "sw-1", "portId": "p4" }, "b": { "deviceId": "sw-2", "portId": "p4" } }
+                    ]
+                  },
+                  "deviceId": "sw-2",
+                  "goals": [
+                    { "kind": "native-vlan", "deviceId": "sw-2", "portId": "p4", "vlan": 1 },
+                    { "kind": "behavior", "goal": { "kind": "ping", "from": "pc-a", "to": "pc-b", "expect": "reach" } }
+                  ],
+                  "solution": [
+                    {
+                      "deviceId": "sw-2",
+                      "lines": [
+                        "enable",
+                        "configure terminal",
+                        "interface p4",
+                        "switchport trunk native vlan 1",
+                        "end",
+                        "show interfaces trunk"
+                      ]
+                    }
+                  ]
+                },
+                "hintTopic": { "vi": "số native VLAN ở hai đầu trunk" }
+              },
+              "hint": {
+                "vi": "Cú pháp khuyết: vào interface p4 rồi gõ switchport trunk native vlan … — con số điền vào phải khớp với đầu bên kia, và bảng show interfaces trunk cho bạn thấy đầu này đang khai số mấy."
+              },
+              "solution": {
+                "vi": "Trên Switch-2: enable, configure terminal, interface p4, switchport trunk native vlan 1, end. Sửa ở đầu nào cũng được, miễn hai đầu cùng một số — nhưng đổi đầu đang đúng thành 99 thì bạn lại phải đi dời cả các máy VLAN 1 sang xóm khác."
+              }
+            }
+          ]
+        },
+        {
+          "type": "retrieval",
+          "questions": [
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m14-b3-ret-1",
+                "prompt": {
+                  "vi": "Không nhìn lại bài: native VLAN mặc định của một trunk là VLAN số mấy?"
+                },
+                "accept": ["1", "vlan 1", "vlan1"]
+              },
+              "hint": { "vi": "Cùng số với VLAN mặc định mà mọi cổng switch thuộc về khi chưa ai cấu hình gì." },
+              "solution": {
+                "vi": "VLAN 1. Vì đó là mặc định của mọi thiết bị nên hai đầu thường tự khớp — bệnh chỉ xuất hiện khi có người đổi một đầu mà quên đầu kia."
+              }
+            }
+          ],
+          "selfExplain": {
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: vì sao native VLAN lệch hai đầu lại là ca bệnh im lặng, chỉ hỏng một nửa?"
+            },
+            "keywords": [
+              ["không nhãn", "đi trần", "không dán nhãn"],
+              ["hiểu nhầm", "rơi sang", "lạc sang", "sang xóm khác"],
+              ["mang nhãn", "có nhãn", "vlan khác vẫn chạy", "nửa còn lại"]
+            ],
+            "exampleAnswer": {
+              "vi": "Vì chỉ khung của native VLAN mới đi trần. Sang đầu kia, khung không nhãn ấy bị hiểu thành khung của native VLAN bên đó, tức là rơi sang xóm khác mà không ai báo lỗi. Các VLAN còn lại đi có nhãn nên vẫn chạy bình thường — thành ra chỉ hỏng đúng một nửa."
+            }
+          }
+        },
+        {
+          "type": "summary",
+          "bullets": [
+            { "vi": "Native VLAN là xóm duy nhất đi qua trunk không mang nhãn; mặc định là VLAN 1." },
+            { "vi": "Hai đầu trunk khai native lệch nhau thì khung trần lặng lẽ rơi sang xóm khác." },
+            { "vi": "Sửa bằng switchport trunk native vlan, và luôn kiểm lại bằng show interfaces trunk." }
+          ],
+          "nextTeaser": {
+            "vi": "Trunk chở được mọi xóm — nhưng bạn có muốn nó chở TẤT CẢ không? Bài sau là danh sách khách mời của sợi cáp, và một ca hỏng chỉ vì thiếu đúng một số trong danh sách."
+          }
+        }
+      ]
+    },
+    {
+      "id": "m14-bai-4",
+      "missionTitle": { "vi": "Thêm xóm còn thiếu vào danh sách" },
+      "steps": [
+        {
+          "type": "hook",
+          "question": {
+            "vi": "Trunk đã dựng, VLAN kế toán đi lại bình thường giữa hai tòa nhà. Nhưng VLAN kỹ thuật thì không: máy bên này ping máy bên kia mãi không tới, dù cả hai đều cắm đúng cổng, đúng xóm. Sợi cáp vẫn là sợi cáp ấy. Thiếu cái gì?"
+          },
+          "visualId": "vis-hook-danh-sach-khach"
+        },
+        {
+          "type": "pretest",
+          "questions": [
+            {
+              "kind": "mcq",
+              "id": "m14-b4-pre-1",
+              "prompt": { "vi": "Đoán thử: một trunk chưa khai gì thêm thì cho những VLAN nào đi qua?" },
+              "choices": [
+                { "vi": "Tất cả các VLAN" },
+                { "vi": "Chỉ VLAN 1" },
+                { "vi": "Không VLAN nào, phải khai từng cái một" }
+              ],
+              "answerIndex": 0,
+              "explain": {
+                "vi": "Mặc định trunk cho tất cả VLAN qua. Chỉ khi người ta khai một danh sách allowed thì trunk mới thành cánh cửa có kiểm soát — và cũng từ đó mới có bệnh thiếu tên trong danh sách."
+              }
+            }
+          ],
+          "encouragement": {
+            "vi": "Đoán sao cũng được — điều đáng nhớ là mặc định rộng, còn cái danh sách là do người khai ra."
+          }
+        },
+        {
+          "type": "teach",
+          "screens": [
+            {
+              "conceptId": "allowed-list",
+              "visualId": "vis-allowed-list",
+              "body": {
+                "vi": "Allowed list là danh sách khách được qua trunk. Mặc định trunk cho mọi VLAN đi, nhưng người quản trị thường thu hẹp lại chỉ những xóm thật sự cần — vừa an toàn hơn, vừa đỡ khung quảng bá chạy lung tung. Cái giá là một ca hỏng rất hay gặp: khai thiếu một số trong danh sách thì đúng xóm đó chết, còn các xóm khác vẫn chạy ngon lành nên chẳng ai ngờ tới sợi trunk. Lệnh khai là switchport trunk allowed vlan, và bảng show interfaces trunk luôn in ra danh sách hiện hành."
+              },
+              "deepDive": {
+                "vi": "Trên thiết bị thật, gõ lại lệnh allowed vlan là GHI ĐÈ cả danh sách chứ không phải thêm vào — muốn thêm phải dùng dạng có từ add, và không ít sự cố đã sinh ra từ đúng chỗ này: một dòng lệnh tưởng là bổ sung hóa ra xóa sạch phần còn lại. Trong app này chỉ có dạng ghi đè, nên cứ liệt kê đủ mọi VLAN cần chở trong một dòng."
+              }
+            }
+          ]
+        },
+        {
+          "type": "practice",
+          "fadingLevel": 2,
+          "exercises": [
+            {
+              "question": {
+                "kind": "cli",
+                "id": "m14-b4-prac-cli",
+                "prompt": {
+                  "vi": "Kế toán (VLAN 10) đi lại được giữa hai tòa nhà, nhưng kỹ thuật (VLAN 20) thì không. Vào console tìm ra chỗ nghẽn rồi sửa, sao cho cả hai xóm cùng qua được sợi trunk."
+                },
+                "spec": {
+                  "initial": {
+                    "devices": [
+                      {
+                        "kind": "pc",
+                        "id": "pc-a",
+                        "hostname": "PC-A (kế toán)",
+                        "port": { "id": "eth0", "mac": "AA:BB:CC:00:00:01" },
+                        "ipConfig": { "ip": "192.168.1.10", "prefix": 24 },
+                        "gateway": null
+                      },
+                      {
+                        "kind": "pc",
+                        "id": "pc-b",
+                        "hostname": "PC-B (kế toán)",
+                        "port": { "id": "eth0", "mac": "AA:BB:CC:00:00:02" },
+                        "ipConfig": { "ip": "192.168.1.20", "prefix": 24 },
+                        "gateway": null
+                      },
+                      {
+                        "kind": "pc",
+                        "id": "pc-c",
+                        "hostname": "PC-C (kỹ thuật)",
+                        "port": { "id": "eth0", "mac": "AA:BB:CC:00:00:03" },
+                        "ipConfig": { "ip": "192.168.1.30", "prefix": 24 },
+                        "gateway": null
+                      },
+                      {
+                        "kind": "pc",
+                        "id": "pc-d",
+                        "hostname": "PC-D (kỹ thuật)",
+                        "port": { "id": "eth0", "mac": "AA:BB:CC:00:00:04" },
+                        "ipConfig": { "ip": "192.168.1.40", "prefix": 24 },
+                        "gateway": null
+                      },
+                      {
+                        "kind": "switch",
+                        "id": "sw-1",
+                        "hostname": "Switch-1",
+                        "ports": [
+                          { "id": "p1", "vlan": 10 },
+                          { "id": "p2", "vlan": 20 },
+                          { "id": "p4", "vlan": 1, "mode": "trunk", "allowedVlans": [10, 20], "nativeVlan": 1 }
+                        ]
+                      },
+                      {
+                        "kind": "switch",
+                        "id": "sw-2",
+                        "hostname": "Switch-2",
+                        "ports": [
+                          { "id": "p1", "vlan": 10 },
+                          { "id": "p2", "vlan": 20 },
+                          { "id": "p4", "vlan": 1, "mode": "trunk", "allowedVlans": [10], "nativeVlan": 1 }
+                        ]
+                      }
+                    ],
+                    "links": [
+                      { "id": "l1", "a": { "deviceId": "pc-a", "portId": "eth0" }, "b": { "deviceId": "sw-1", "portId": "p1" } },
+                      { "id": "l2", "a": { "deviceId": "pc-c", "portId": "eth0" }, "b": { "deviceId": "sw-1", "portId": "p2" } },
+                      { "id": "l3", "a": { "deviceId": "pc-b", "portId": "eth0" }, "b": { "deviceId": "sw-2", "portId": "p1" } },
+                      { "id": "l4", "a": { "deviceId": "pc-d", "portId": "eth0" }, "b": { "deviceId": "sw-2", "portId": "p2" } },
+                      { "id": "uplink", "a": { "deviceId": "sw-1", "portId": "p4" }, "b": { "deviceId": "sw-2", "portId": "p4" } }
+                    ]
+                  },
+                  "deviceId": "sw-2",
+                  "goals": [
+                    { "kind": "trunk-carries", "deviceId": "sw-2", "portId": "p4", "vlans": [10, 20] },
+                    { "kind": "behavior", "goal": { "kind": "ping", "from": "pc-c", "to": "pc-d", "expect": "reach" } },
+                    { "kind": "behavior", "goal": { "kind": "ping", "from": "pc-a", "to": "pc-b", "expect": "reach" } }
+                  ],
+                  "solution": [
+                    {
+                      "deviceId": "sw-2",
+                      "lines": [
+                        "enable",
+                        "show interfaces trunk",
+                        "configure terminal",
+                        "interface p4",
+                        "switchport trunk allowed vlan 10,20",
+                        "end"
+                      ]
+                    }
+                  ]
+                },
+                "hintTopic": { "vi": "danh sách VLAN mà trunk cho đi qua" }
+              },
+              "hint": {
+                "vi": "Chạy show interfaces trunk ở cả hai switch và so hai danh sách với nhau — một bên có hai số, bên kia chỉ có một."
+              },
+              "solution": {
+                "vi": "Switch-2 khai allowed vlan 10 nên VLAN 20 bị chặn ngay tại trunk. Sửa: enable, configure terminal, interface p4, switchport trunk allowed vlan 10,20, end. Nhớ liệt kê CẢ VLAN 10 trong dòng lệnh — lệnh này ghi đè cả danh sách, không phải thêm vào."
+              }
+            }
+          ]
+        },
+        {
+          "type": "retrieval",
+          "questions": [
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m14-b4-ret-1",
+                "prompt": {
+                  "vi": "Không nhìn lại bài: lệnh nào in ra danh sách VLAN mà từng trunk đang cho đi qua?"
+                },
+                "accept": ["show interfaces trunk", "show interface trunk", "sh int trunk", "show int trunk"]
+              },
+              "hint": { "vi": "Cũng họ lệnh show, nói về interface, và tên bài học hôm nay đứng cuối." },
+              "solution": {
+                "vi": "show interfaces trunk. Bảng của nó có ba phần: cổng nào đang trunk, native VLAN của từng cổng, và danh sách VLAN được phép đi qua."
+              }
+            }
+          ],
+          "selfExplain": {
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: vì sao thiếu một số trong allowed list lại là ca khó tìm?"
+            },
+            "keywords": [
+              ["một vlan", "đúng xóm đó", "riêng vlan"],
+              ["vẫn chạy", "bình thường", "không ai ngờ", "các vlan khác"],
+              ["trunk", "danh sách", "allowed"]
+            ],
+            "exampleAnswer": {
+              "vi": "Vì chỉ đúng VLAN bị thiếu tên mới chết, còn các VLAN khác vẫn đi lại bình thường qua chính sợi trunk ấy. Mọi người thấy mạng vẫn chạy nên đi tìm ở máy, ở dây, mà không nghĩ tới danh sách trên trunk."
+            }
+          }
+        },
+        {
+          "type": "summary",
+          "bullets": [
+            { "vi": "Mặc định trunk cho mọi VLAN qua; allowed list là danh sách thu hẹp do người khai." },
+            { "vi": "Thiếu một số trong danh sách thì đúng xóm đó chết, các xóm khác vẫn chạy." },
+            { "vi": "Lệnh allowed vlan GHI ĐÈ cả danh sách — liệt kê đủ mọi VLAN cần chở trong một dòng." }
+          ],
+          "nextTeaser": {
+            "vi": "Bốn xóm đã đi chung một dây giữa hai switch. Nhưng muốn kế toán gọi sang kỹ thuật thì vẫn phải qua router — và bài cuối module cho bạn xem cách cắm router bằng đúng MỘT sợi cáp."
+          }
+        }
+      ]
+    },
+    {
+      "id": "m14-bai-5",
+      "missionTitle": { "vi": "Nối router bằng một chân duy nhất" },
+      "steps": [
+        {
+          "type": "hook",
+          "question": {
+            "vi": "Công ty có bốn VLAN và muốn chúng gọi được sang nhau. Cách cũ: router phải có bốn chân, mỗi chân cắm vào một VLAN. Nhưng router bạn đang có chỉ còn đúng một chân trống. Người ta vẫn làm được — bằng cách nào?"
+          },
+          "visualId": "vis-hook-router-mot-chan"
+        },
+        {
+          "type": "pretest",
+          "questions": [
+            {
+              "kind": "mcq",
+              "id": "m14-b5-pre-1",
+              "prompt": { "vi": "Đoán thử: muốn một chân router phục vụ bốn VLAN thì sợi dây nối vào nó phải là gì?" },
+              "choices": [
+                { "vi": "Một trunk, để cả bốn xóm cùng đi vào một chân" },
+                { "vi": "Một cổng access của VLAN quan trọng nhất trong bốn xóm" },
+                { "vi": "Một sợi cáp đặc biệt chạy nhanh gấp bốn lần cáp thường" }
+              ],
+              "answerIndex": 0,
+              "explain": {
+                "vi": "Chính là trunk — thứ bạn học suốt module này. Chân router nhận cả bốn xóm qua một sợi, rồi tự tách ra bốn cửa logic bên trong."
+              }
+            }
+          ],
+          "encouragement": {
+            "vi": "Nếu bạn đoán ra trunk thì đúng là bạn đã nắm được ý chính của cả module."
+          }
+        },
+        {
+          "type": "teach",
+          "screens": [
+            {
+              "conceptId": "router-on-a-stick",
+              "visualId": "vis-router-mot-chan",
+              "body": {
+                "vi": "Router-on-a-stick là cách cho một chân router phục vụ nhiều VLAN: sợi dây nối switch với router được khai là trunk, còn bên trong router, cái chân vật lý ấy được chia thành nhiều cửa logic gọi là sub-interface — mỗi cửa mang một số VLAN và một địa chỉ IP làm gateway cho xóm đó. Khung của VLAN 10 đi vào, router đọc nhãn, giao cho cửa của VLAN 10 xử lý, rồi đẩy ngược ra cũng trên sợi ấy nhưng mang nhãn của VLAN đích."
+              },
+              "deepDive": {
+                "vi": "Điểm yếu của cách này: mọi lưu lượng giữa các VLAN đều đi vào rồi lại đi ra trên CÙNG một sợi, nên sợi đó gánh gấp đôi. Mạng lớn vì thế dùng switch lớp 3 với cửa logic ngay trong switch thay vì đẩy hết lên router. Trong phòng lab của app này, sơ đồ dùng router nhiều chân cho dễ nhìn; cú pháp sub-interface thuộc phần đọc-hiểu ở đây, và bạn sẽ gặp lại ý tưởng cửa-logic-trên-một-chân khi học định tuyến ở các module sau."
+              }
+            }
+          ]
+        },
+        {
+          "type": "practice",
+          "fadingLevel": 2,
+          "exercises": [
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m14-b5-prac-1",
+                "prompt": {
+                  "vi": "Trong kiểu router-on-a-stick, mỗi cửa logic chia ra từ một chân router được gọi là gì?"
+                },
+                "accept": ["sub-interface", "subinterface", "sub interface", "cửa logic", "cua logic"],
+                "hintTopic": { "vi": "tên gọi của cửa logic trên một chân vật lý" }
+              },
+              "hint": {
+                "vi": "Tiếng Anh ghép từ interface với tiền tố mang nghĩa con, phụ — cùng tiền tố với subnet."
+              },
+              "solution": {
+                "vi": "Sub-interface. Mỗi sub-interface mang một số VLAN và một địa chỉ IP đóng vai gateway cho chính xóm đó."
+              }
+            },
+            {
+              "question": {
+                "kind": "mcq",
+                "id": "m14-b5-prac-2",
+                "prompt": { "vi": "Nhược điểm rõ nhất của router-on-a-stick là gì?" },
+                "choices": [
+                  { "vi": "Lưu lượng giữa các VLAN đi vào rồi ra trên cùng một sợi, nên sợi đó gánh gấp đôi" },
+                  { "vi": "Router bắt buộc phải có ít nhất bốn chân vật lý mới chia được cửa logic" },
+                  { "vi": "Các VLAN đi qua kiểu này sẽ mất nhãn nên switch không phân biệt được nữa" }
+                ],
+                "answerIndex": 0,
+                "hintTopic": { "vi": "đường đi của gói tin khi hai VLAN nói chuyện với nhau" }
+              },
+              "hint": {
+                "vi": "Vẽ đường đi của một gói từ VLAN 10 sang VLAN 20: nó qua sợi dây router mấy lần?"
+              },
+              "solution": {
+                "vi": "Gói đi lên router rồi lại quay xuống trên đúng sợi ấy, nên sợi gánh cả chiều vào lẫn chiều ra. Cách này sinh ra chính là để dùng một chân, và nhãn VLAN vẫn nguyên vẹn trên trunk."
+              }
+            }
+          ]
+        },
+        {
+          "type": "retrieval",
+          "questions": [
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m14-b5-ret-1",
+                "prompt": {
+                  "vi": "Không nhìn lại bài: sợi dây nối switch với router trong kiểu router-on-a-stick phải được khai là gì?"
+                },
+                "accept": ["trunk", "cổng trunk", "cong trunk", "đường trunk"]
+              },
+              "hint": { "vi": "Chính là thứ cả module này nói về — một sợi chở nhiều xóm." },
+              "solution": {
+                "vi": "Trunk. Không có trunk thì chân router chỉ nhận được đúng một VLAN, và ý tưởng một-chân-cho-nhiều-xóm sụp ngay từ đầu."
+              }
+            }
+          ],
+          "selfExplain": {
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: một chân router phục vụ được bốn VLAN bằng cách nào?"
+            },
+            "keywords": [
+              ["trunk", "một sợi", "chung một dây"],
+              ["sub-interface", "cửa logic", "chia nhỏ", "nhiều cửa"],
+              ["gateway", "địa chỉ ip", "mỗi vlan một"]
+            ],
+            "exampleAnswer": {
+              "vi": "Sợi nối switch với router được khai là trunk nên cả bốn xóm cùng đi vào một chân. Bên trong router, chân đó chia thành nhiều sub-interface, mỗi cửa mang một số VLAN và một địa chỉ IP làm gateway cho xóm ấy."
+            }
+          }
+        },
+        {
+          "type": "summary",
+          "bullets": [
+            { "vi": "Router-on-a-stick: một chân router phục vụ nhiều VLAN nhờ sợi nối là trunk." },
+            { "vi": "Mỗi sub-interface mang một số VLAN và một IP gateway cho xóm đó." },
+            { "vi": "Cái giá phải trả: lưu lượng liên VLAN đi vào và ra trên cùng một sợi." }
+          ],
+          "nextTeaser": {
+            "vi": "Hai switch nối nhau đã ngon. Nhưng nếu ai đó cắm thêm một sợi thứ hai cho chắc ăn, mạng sẽ chết trong vài giây — module sau cho bạn xem cơn bão đó, và người canh gác đứng ra dập nó."
+          }
+        }
+      ]
+    }
+  ],
+  "concepts": [
+    {
+      "id": "trunk",
+      "term": "Trunk",
+      "glossVi": "Cổng trunk — cổng switch chở nhiều VLAN trên cùng một sợi dây, khác cổng access chỉ thuộc một VLAN",
+      "metaphor": {
+        "vi": "Như xe buýt đường dài chạy qua nhiều xóm: một chuyến chở khách của cả bốn xóm, thay vì mỗi xóm phải có một chuyến riêng."
+      },
+      "iconId": "icon-trunk",
+      "flashcard": {
+        "front": { "vi": "Cổng trunk khác cổng access ở chỗ nào?" },
+        "back": {
+          "vi": "Cổng access chỉ thuộc đúng một VLAN và gửi khung trần; cổng trunk chở nhiều VLAN trên một sợi và dán nhãn cho khung để đầu kia biết khung thuộc xóm nào."
+        }
+      }
+    },
+    {
+      "id": "tagged-frame",
+      "term": "Tagged frame",
+      "glossVi": "Khung mang nhãn — khung được chèn thêm nhãn 802.1Q ghi số VLAN khi đi qua trunk",
+      "metaphor": {
+        "vi": "Như dán mẩu giấy ghi tên xóm lên từng kiện hàng trước khi chất chung một chuyến xe — tới nơi, người ta bóc giấy ra rồi mới giao."
+      },
+      "iconId": "icon-tagged-frame",
+      "flashcard": {
+        "front": { "vi": "Nhãn 802.1Q được dán vào lúc nào và gỡ ra lúc nào?" },
+        "back": {
+          "vi": "Dán khi khung đi ra trunk, gỡ khi khung được giao xuống cổng access. Máy người dùng không bao giờ thấy nhãn, nên chia VLAN không đòi cấu hình gì trên máy."
+        }
+      }
+    },
+    {
+      "id": "native-vlan",
+      "term": "Native VLAN",
+      "glossVi": "VLAN đi qua trunk mà KHÔNG mang nhãn; mặc định là VLAN 1 và phải khớp ở hai đầu",
+      "metaphor": {
+        "vi": "Như một kiện hàng không dán giấy vì ai cũng ngầm hiểu nó của xóm nào. Hai bên hiểu khác nhau là kiện hàng đi lạc mà không ai biết."
+      },
+      "iconId": "icon-native-vlan",
+      "flashcard": {
+        "front": { "vi": "Chuyện gì xảy ra khi hai đầu trunk khai native VLAN khác nhau?" },
+        "back": {
+          "vi": "Khung đi trần từ native VLAN bên này bị hiểu thành khung của native VLAN bên kia — rơi sang xóm khác, im lặng, không báo lỗi. Các VLAN mang nhãn vẫn chạy nên chỉ hỏng một nửa."
+        }
+      }
+    },
+    {
+      "id": "allowed-list",
+      "term": "Allowed VLAN list",
+      "glossVi": "Danh sách VLAN được phép đi qua một trunk; thiếu = mặc định cho tất cả đi qua",
+      "metaphor": {
+        "vi": "Như danh sách khách mời dán ở cổng: không có danh sách thì ai cũng vào; có danh sách mà quên một tên thì đúng người đó bị chặn, còn cả đoàn vẫn vào bình thường."
+      },
+      "iconId": "icon-allowed-list",
+      "flashcard": {
+        "front": { "vi": "Trunk khai thiếu một VLAN trong allowed list thì hỏng thế nào?" },
+        "back": {
+          "vi": "Đúng VLAN đó không qua được trunk, các VLAN khác vẫn chạy bình thường. Xem danh sách hiện hành bằng show interfaces trunk; sửa bằng switchport trunk allowed vlan, và lệnh này ghi đè cả danh sách."
+        }
+      }
+    },
+    {
+      "id": "router-on-a-stick",
+      "term": "Router-on-a-stick",
+      "glossVi": "Một chân router phục vụ nhiều VLAN: dây nối là trunk, chân được chia thành các sub-interface",
+      "metaphor": {
+        "vi": "Như một quầy tiếp dân duy nhất chia thành bốn ô cửa: khách xóm nào tới đúng ô của xóm đó, mà tòa nhà vẫn chỉ có một lối vào."
+      },
+      "iconId": "icon-router-on-a-stick",
+      "flashcard": {
+        "front": { "vi": "Router-on-a-stick hoạt động thế nào, và cái giá của nó là gì?" },
+        "back": {
+          "vi": "Dây nối switch với router là trunk; chân router chia thành các sub-interface, mỗi cửa mang một VLAN và một IP gateway. Cái giá: lưu lượng liên VLAN đi vào rồi ra trên cùng một sợi nên sợi đó gánh gấp đôi."
+        }
+      }
+    }
+  ],
+  "masteryTest": [
+    {
+      "kind": "mcq",
+      "id": "m14-mt-1",
+      "prompt": { "vi": "Cổng trunk khác cổng access ở điểm cốt lõi nào?" },
+      "choices": [
+        { "vi": "Trunk chở nhiều VLAN trên một sợi, access chỉ thuộc đúng một VLAN" },
+        { "vi": "Trunk chạy nhanh hơn access vì dùng loại cáp có nhiều lõi đồng hơn" },
+        { "vi": "Trunk chỉ nối được xuống máy người dùng, access chỉ nối ngang thiết bị" }
+      ],
+      "answerIndex": 0,
+      "hintTopic": { "vi": "số VLAN mà mỗi loại cổng phục vụ" },
+      "explain": {
+        "vi": "Khác nhau ở số xóm phục vụ, không phải ở tốc độ hay loại cáp. Trunk còn nối NGANG giữa các thiết bị mạng, còn access nối XUỐNG máy người dùng."
+      }
+    },
+    {
+      "kind": "typed",
+      "id": "m14-mt-2",
+      "prompt": { "vi": "Tên chuẩn dán nhãn VLAN lên khung là gì? (viết dạng số hiệu chuẩn)" },
+      "accept": ["802.1q", "802.1Q", "dot1q", "ieee 802.1q", "8021q"],
+      "hintTopic": { "vi": "chuẩn dán nhãn của IEEE" },
+      "explain": { "vi": "802.1Q, tên tắt trong nghề là dot1q; nhãn dài 4 byte và chứa 12 bit số VLAN." }
+    },
+    {
+      "kind": "typed",
+      "id": "m14-mt-3",
+      "prompt": {
+        "vi": "Đang ở dấu nhắc Switch-1(config-if)#, gõ lệnh gì để biến cổng đang chọn thành trunk?"
+      },
+      "accept": ["switchport mode trunk", "sw mode trunk"],
+      "hintTopic": { "vi": "lệnh đặt vai cho một cổng switch" },
+      "explain": {
+        "vi": "switchport mode trunk. Thay trunk bằng access là trả cổng về vai chỉ phục vụ một VLAN."
+      }
+    },
+    {
+      "kind": "mcq",
+      "id": "m14-mt-4",
+      "prompt": { "vi": "Hai đầu trunk khai native VLAN khác nhau thì hậu quả là gì?" },
+      "choices": [
+        { "vi": "Khung đi trần lặng lẽ rơi sang VLAN khác, không thiết bị nào báo lỗi" },
+        { "vi": "Cả sợi trunk ngừng hoạt động và mọi VLAN đều mất kết nối lập tức" },
+        { "vi": "Switch tự động đổi native của một đầu cho khớp với đầu còn lại" }
+      ],
+      "answerIndex": 0,
+      "hintTopic": { "vi": "xóm nào đi qua trunk mà không mang nhãn" },
+      "explain": {
+        "vi": "Chỉ khung của native VLAN đi trần nên chỉ nó bị hiểu nhầm; các VLAN mang nhãn vẫn chạy, và đó chính là lý do ca bệnh này khó tìm."
+      }
+    },
+    {
+      "kind": "typed",
+      "id": "m14-mt-5",
+      "prompt": { "vi": "Native VLAN mặc định của một trunk là VLAN số mấy?" },
+      "accept": ["1", "vlan 1", "vlan1"],
+      "hintTopic": { "vi": "VLAN mặc định của mọi cổng switch" },
+      "explain": {
+        "vi": "VLAN 1 — cũng là VLAN mặc định của mọi cổng, nên hai đầu thường tự khớp cho tới khi có người đổi một bên."
+      }
+    },
+    {
+      "kind": "mcq",
+      "id": "m14-mt-6",
+      "prompt": { "vi": "Một trunk chưa khai allowed list thì cho VLAN nào đi qua?" },
+      "choices": [{ "vi": "Tất cả các VLAN" }, { "vi": "Chỉ native VLAN" }, { "vi": "Chỉ VLAN 10 và 20" }],
+      "answerIndex": 0,
+      "hintTopic": { "vi": "mặc định rộng hay hẹp của một trunk" },
+      "explain": {
+        "vi": "Mặc định trunk cho tất cả VLAN qua. Danh sách allowed là do người quản trị thu hẹp lại, và cũng từ đó mới có bệnh thiếu tên trong danh sách."
+      }
+    },
+    {
+      "kind": "typed",
+      "id": "m14-mt-7",
+      "prompt": { "vi": "Lệnh nào in ra bảng cho biết cổng nào đang là trunk, native VLAN và danh sách VLAN được phép đi qua?" },
+      "accept": ["show interfaces trunk", "show interface trunk", "sh int trunk", "show int trunk"],
+      "hintTopic": { "vi": "bảng tra cứu của một sợi trunk" },
+      "explain": {
+        "vi": "show interfaces trunk. Bảng rỗng nghĩa là switch này chưa có cổng trunk nào — và chính cái bảng rỗng ấy thường là câu trả lời."
+      }
+    },
+    {
+      "kind": "order",
+      "id": "m14-mt-8",
+      "prompt": { "vi": "Xếp lại đúng thứ tự các lệnh để khai cổng p4 thành trunk từ dấu nhắc Switch-1>." },
+      "items": [
+        { "vi": "enable" },
+        { "vi": "configure terminal" },
+        { "vi": "interface p4" },
+        { "vi": "switchport mode trunk" }
+      ],
+      "hintTopic": { "vi": "thứ tự các chế độ của CLI" },
+      "explain": {
+        "vi": "Đi từ chế độ xem lên chế độ có quyền, vào cấu hình chung, chọn đúng cổng, rồi mới đặt vai. Gõ nhảy cóc thì máy từ chối bằng đúng câu lỗi của thiết bị thật."
+      }
+    },
+    {
+      "kind": "cli",
+      "id": "m14-mt-cli-1",
+      "prompt": {
+        "vi": "Sợi nối hai switch vẫn đang là cổng access nên hai tòa nhà chưa thấy nhau. Vào console dựng trunk cho VLAN 10 và VLAN 20 cùng đi chung sợi đó — nhớ làm đủ cả hai đầu."
+      },
+      "spec": {
+        "initial": {
+          "devices": [
+            {
+              "kind": "pc",
+              "id": "pc-a",
+              "hostname": "PC-A (kế toán)",
+              "port": { "id": "eth0", "mac": "AA:BB:CC:00:00:01" },
+              "ipConfig": { "ip": "192.168.1.10", "prefix": 24 },
+              "gateway": null
+            },
+            {
+              "kind": "pc",
+              "id": "pc-b",
+              "hostname": "PC-B (kế toán)",
+              "port": { "id": "eth0", "mac": "AA:BB:CC:00:00:02" },
+              "ipConfig": { "ip": "192.168.1.20", "prefix": 24 },
+              "gateway": null
+            },
+            {
+              "kind": "pc",
+              "id": "pc-c",
+              "hostname": "PC-C (kỹ thuật)",
+              "port": { "id": "eth0", "mac": "AA:BB:CC:00:00:03" },
+              "ipConfig": { "ip": "192.168.1.30", "prefix": 24 },
+              "gateway": null
+            },
+            {
+              "kind": "switch",
+              "id": "sw-1",
+              "hostname": "Switch-1",
+              "ports": [
+                { "id": "p1", "vlan": 10 },
+                { "id": "p2", "vlan": 20 },
+                { "id": "p4", "vlan": 1 }
+              ]
+            },
+            {
+              "kind": "switch",
+              "id": "sw-2",
+              "hostname": "Switch-2",
+              "ports": [
+                { "id": "p1", "vlan": 10 },
+                { "id": "p2", "vlan": 20 },
+                { "id": "p4", "vlan": 1 }
+              ]
+            }
+          ],
+          "links": [
+            { "id": "l1", "a": { "deviceId": "pc-a", "portId": "eth0" }, "b": { "deviceId": "sw-1", "portId": "p1" } },
+            { "id": "l2", "a": { "deviceId": "pc-c", "portId": "eth0" }, "b": { "deviceId": "sw-1", "portId": "p2" } },
+            { "id": "l3", "a": { "deviceId": "pc-b", "portId": "eth0" }, "b": { "deviceId": "sw-2", "portId": "p1" } },
+            { "id": "uplink", "a": { "deviceId": "sw-1", "portId": "p4" }, "b": { "deviceId": "sw-2", "portId": "p4" } }
+          ]
+        },
+        "deviceId": "sw-1",
+        "goals": [
+          { "kind": "port-mode", "deviceId": "sw-1", "portId": "p4", "mode": "trunk" },
+          { "kind": "port-mode", "deviceId": "sw-2", "portId": "p4", "mode": "trunk" },
+          { "kind": "behavior", "goal": { "kind": "ping", "from": "pc-a", "to": "pc-b", "expect": "reach" } },
+          { "kind": "behavior", "goal": { "kind": "ping", "from": "pc-a", "to": "pc-c", "expect": "blocked" } }
+        ],
+        "solution": [
+          {
+            "deviceId": "sw-1",
+            "lines": ["enable", "configure terminal", "interface p4", "switchport mode trunk", "end"]
+          },
+          {
+            "deviceId": "sw-2",
+            "lines": ["enable", "configure terminal", "interface p4", "switchport mode trunk", "end"]
+          }
+        ]
+      },
+      "hintTopic": { "vi": "vai của cổng nối giữa hai switch" },
+      "explain": {
+        "vi": "Khai trunk ở CẢ HAI đầu thì VLAN 10 đi lại được giữa hai tòa nhà, mà kế toán vẫn không gọi được sang kỹ thuật — bức tường VLAN của Module 4 còn nguyên."
+      }
+    },
+    {
+      "kind": "cli",
+      "id": "m14-mt-cli-2",
+      "prompt": {
+        "vi": "Trunk đã dựng nhưng ai đó khai native VLAN lệch nhau giữa hai đầu, và hai máy kế toán mất nhau. Vào console chữa cho hai đầu khớp lại."
+      },
+      "spec": {
+        "initial": {
+          "devices": [
+            {
+              "kind": "pc",
+              "id": "pc-a",
+              "hostname": "PC-A (kế toán)",
+              "port": { "id": "eth0", "mac": "AA:BB:CC:00:00:01" },
+              "ipConfig": { "ip": "192.168.1.10", "prefix": 24 },
+              "gateway": null
+            },
+            {
+              "kind": "pc",
+              "id": "pc-b",
+              "hostname": "PC-B (kế toán)",
+              "port": { "id": "eth0", "mac": "AA:BB:CC:00:00:02" },
+              "ipConfig": { "ip": "192.168.1.20", "prefix": 24 },
+              "gateway": null
+            },
+            {
+              "kind": "switch",
+              "id": "sw-1",
+              "hostname": "Switch-1",
+              "ports": [
+                { "id": "p1", "vlan": 1 },
+                { "id": "p2", "vlan": 20 },
+                { "id": "p4", "vlan": 1, "mode": "trunk", "allowedVlans": [1, 20, 99], "nativeVlan": 1 }
+              ]
+            },
+            {
+              "kind": "switch",
+              "id": "sw-2",
+              "hostname": "Switch-2",
+              "ports": [
+                { "id": "p1", "vlan": 1 },
+                { "id": "p2", "vlan": 20 },
+                { "id": "p4", "vlan": 1, "mode": "trunk", "allowedVlans": [1, 20, 99], "nativeVlan": 99 }
+              ]
+            }
+          ],
+          "links": [
+            { "id": "l1", "a": { "deviceId": "pc-a", "portId": "eth0" }, "b": { "deviceId": "sw-1", "portId": "p1" } },
+            { "id": "l2", "a": { "deviceId": "pc-b", "portId": "eth0" }, "b": { "deviceId": "sw-2", "portId": "p1" } },
+            { "id": "uplink", "a": { "deviceId": "sw-1", "portId": "p4" }, "b": { "deviceId": "sw-2", "portId": "p4" } }
+          ]
+        },
+        "deviceId": "sw-2",
+        "goals": [
+          { "kind": "native-vlan", "deviceId": "sw-2", "portId": "p4", "vlan": 1 },
+          { "kind": "behavior", "goal": { "kind": "ping", "from": "pc-a", "to": "pc-b", "expect": "reach" } }
+        ],
+        "solution": [
+          {
+            "deviceId": "sw-2",
+            "lines": ["enable", "configure terminal", "interface p4", "switchport trunk native vlan 1", "end"]
+          }
+        ]
+      },
+      "hintTopic": { "vi": "số native VLAN ở hai đầu trunk" },
+      "explain": {
+        "vi": "Hai đầu phải cùng một số native. Sửa đầu nào cũng được, miễn khớp — nhưng đổi đầu đang đúng thì bạn lại phải dời cả các máy đang nằm trong xóm đó."
+      }
+    },
+    {
+      "kind": "mcq",
+      "id": "m14-mt-11",
+      "prompt": { "vi": "Máy tính cắm vào cổng access có nhìn thấy nhãn 802.1Q không?" },
+      "choices": [
+        { "vi": "Không, switch đã gỡ nhãn trước khi giao khung xuống cổng access" },
+        { "vi": "Có, card mạng phải tự đọc nhãn mới biết mình thuộc VLAN nào" },
+        { "vi": "Có, nhưng chỉ khi máy chạy hệ điều hành hỗ trợ chuẩn 802.1Q" }
+      ],
+      "answerIndex": 0,
+      "hintTopic": { "vi": "nhãn tồn tại trên đoạn dây nào" },
+      "explain": {
+        "vi": "Nhãn chỉ sống trên trunk. Nhờ vậy chia VLAN không đòi cấu hình gì trên máy người dùng."
+      }
+    },
+    {
+      "kind": "mcq",
+      "id": "m14-mt-12",
+      "prompt": { "vi": "Trong kiểu router-on-a-stick, sợi dây nối switch với router phải được khai là gì?" },
+      "choices": [
+        { "vi": "Trunk, để mọi VLAN cùng đi vào một chân router" },
+        { "vi": "Cổng access của VLAN có nhiều máy nhất trong công ty" },
+        { "vi": "Cổng access của native VLAN để router khỏi phải đọc nhãn" }
+      ],
+      "answerIndex": 0,
+      "hintTopic": { "vi": "cách nhiều xóm cùng đi vào một chân" },
+      "explain": {
+        "vi": "Phải là trunk. Chân router sau đó chia thành các sub-interface, mỗi cửa một VLAN và một IP gateway."
+      }
+    }
+  ]
+}

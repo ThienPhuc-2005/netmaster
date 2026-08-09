@@ -14,14 +14,21 @@ import { Button } from '../../components/Button'
 import { useT } from '../../i18n'
 import type { TFunc } from '../../i18n'
 import {
+  DEFAULT_BRIDGE_PRIORITY,
+  bridgePriorityOf,
+  computeStp,
   findDevice,
   freePortsOf,
   linkOfPort,
+  nativeVlanOf,
   peerOfPort,
   portIdsOf,
+  portModeOf,
+  stpEnabled,
   type Device,
   type LabGoal,
   type PortRef,
+  type SwitchPortMode,
   type Topology,
 } from '../../engine/lab'
 import type { GoalOutcome } from '../../engine/lab'
@@ -123,6 +130,7 @@ export interface ConfigPanelProps {
   device: Device | null
   armedPort: PortRef | null
   canSetVlan: boolean
+  canSetTrunk: boolean
   canSetIp: boolean
   canRemoveDevice: boolean
   canWire: boolean
@@ -130,6 +138,9 @@ export interface ConfigPanelProps {
   onPickPort: (ref: PortRef) => void
   onRemoveWire: (linkId: string) => void
   onSetVlan: (portId: string, vlan: number) => void
+  onSetPortMode: (portId: string, mode: SwitchPortMode) => void
+  onSetTrunkAllowed: (portId: string, vlans: number[] | null) => void
+  onSetTrunkNative: (portId: string, vlan: number) => void
   onSetPcIp: (ip: string, prefix: number, gateway: string) => void
   onSetRouterIp: (portId: string, ip: string, prefix: number) => void
   onRemoveDevice: () => void
@@ -246,6 +257,16 @@ export function ConfigPanel(props: ConfigPanelProps) {
         />
       )}
 
+      {device.kind === 'switch' && props.canSetTrunk && (
+        <SwitchTrunkEditor
+          device={device}
+          vlanChoices={props.vlanChoices}
+          onSetPortMode={props.onSetPortMode}
+          onSetTrunkAllowed={props.onSetTrunkAllowed}
+          onSetTrunkNative={props.onSetTrunkNative}
+        />
+      )}
+
       {device.kind === 'pc' && props.canSetIp && <PcAddressEditor device={device} onApply={props.onSetPcIp} />}
 
       {device.kind === 'router' && props.canSetIp && (
@@ -295,6 +316,203 @@ function SwitchVlanEditor({
         </div>
       ))}
     </div>
+  )
+}
+
+/** Chip bấm chọn dùng chung cho các bảng "chọn một trong nhiều". */
+function Chip({
+  checked,
+  label,
+  onClick,
+  role = 'radio',
+}: {
+  checked: boolean
+  label: string
+  onClick: () => void
+  role?: 'radio' | 'checkbox'
+}) {
+  return (
+    <button
+      type="button"
+      role={role}
+      aria-checked={checked}
+      onClick={onClick}
+      className={[
+        'rounded-md border px-2.5 py-1 font-mono text-xs transition-colors duration-(--dur)',
+        'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
+        checked ? 'border-accent bg-accent/15 text-accent' : 'border-edge text-ink-muted hover:text-ink',
+      ].join(' ')}
+    >
+      {label}
+    </button>
+  )
+}
+
+/**
+ * Bảng cấu hình TRUNK (Module 14) — mọi thao tác đi bằng ĐƯỜNG BẤM CHỌN,
+ * đúng luật của phòng lab: một đường mã cho chuột, bàn phím, điện thoại
+ * và test.
+ *
+ * Chỉ cổng đang là trunk mới hiện allowed list và native — cổng access
+ * không có hai thứ đó, bày ra là mời người học điền vào chỗ vô nghĩa.
+ */
+function SwitchTrunkEditor({
+  device,
+  vlanChoices,
+  onSetPortMode,
+  onSetTrunkAllowed,
+  onSetTrunkNative,
+}: {
+  device: Extract<Device, { kind: 'switch' }>
+  vlanChoices: readonly number[]
+  onSetPortMode: (portId: string, mode: SwitchPortMode) => void
+  onSetTrunkAllowed: (portId: string, vlans: number[] | null) => void
+  onSetTrunkNative: (portId: string, vlan: number) => void
+}) {
+  const t = useT()
+  return (
+    <div className="space-y-3">
+      {device.ports.map((port) => {
+        const mode = portModeOf(port)
+        const allowed = port.allowedVlans ?? null
+        const native = nativeVlanOf(port)
+        return (
+          <div key={port.id} className="space-y-1.5">
+            <div role="radiogroup" aria-label={t('lab.trunkTitle', { port: port.id })}>
+              <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-ink-muted">
+                {t('lab.trunkTitle', { port: port.id })}
+              </p>
+              <div className="flex flex-wrap gap-1.5">
+                <Chip
+                  checked={mode === 'access'}
+                  label={t('lab.trunkAccess')}
+                  onClick={() => onSetPortMode(port.id, 'access')}
+                />
+                <Chip
+                  checked={mode === 'trunk'}
+                  label={t('lab.trunkTrunk')}
+                  onClick={() => onSetPortMode(port.id, 'trunk')}
+                />
+              </div>
+            </div>
+
+            {mode === 'trunk' && (
+              <>
+                <div role="group" aria-label={t('lab.trunkAllowedTitle', { port: port.id })}>
+                  <p className="mb-1 text-xs text-ink-muted">{t('lab.trunkAllowedTitle', { port: port.id })}</p>
+                  <div className="flex flex-wrap gap-1.5">
+                    <Chip
+                      role="checkbox"
+                      checked={allowed === null}
+                      label={t('lab.trunkAllowedAll')}
+                      onClick={() => onSetTrunkAllowed(port.id, null)}
+                    />
+                    {vlanChoices.map((vlan) => {
+                      const on = allowed !== null && allowed.includes(vlan)
+                      return (
+                        <Chip
+                          key={vlan}
+                          role="checkbox"
+                          checked={on}
+                          label={t('lab.vlanOption', { vlan: String(vlan) })}
+                          onClick={() => {
+                            const base = allowed ?? []
+                            const next = on ? base.filter((v) => v !== vlan) : [...base, vlan]
+                            // Bỏ hết là trunk câm — engine từ chối, nên ở
+                            // đây quay về "cho tất cả" cho đúng ý người bấm.
+                            onSetTrunkAllowed(port.id, next.length === 0 ? null : next)
+                          }}
+                        />
+                      )
+                    })}
+                  </div>
+                </div>
+
+                <div role="radiogroup" aria-label={t('lab.trunkNativeTitle', { port: port.id })}>
+                  <p className="mb-1 text-xs text-ink-muted">{t('lab.trunkNativeTitle', { port: port.id })}</p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {vlanChoices.map((vlan) => (
+                      <Chip
+                        key={vlan}
+                        checked={native === vlan}
+                        label={t('lab.vlanOption', { vlan: String(vlan) })}
+                        onClick={() => onSetTrunkNative(port.id, vlan)}
+                      />
+                    ))}
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+        )
+      })}
+    </div>
+  )
+}
+
+/**
+ * Bảng STP (Module 15): bật/tắt cho cả sơ đồ, chỉ định root bằng
+ * priority, và NÓI RA cây đang thế nào — ai làm gốc, mấy cổng nằm im.
+ *
+ * Câu "cổng đang nằm im" là tải trọng sư phạm: không nói ra thì người
+ * học chỉ thấy một cổng im lìm và tưởng nó hỏng.
+ */
+export function StpPanel({
+  topology,
+  onSetStp,
+  onSetPriority,
+}: {
+  topology: Topology
+  onSetStp: (enabled: boolean) => void
+  onSetPriority: (deviceId: string, priority: number) => void
+}) {
+  const t = useT()
+  const on = stpEnabled(topology)
+  const state = computeStp(topology)
+  const switches = topology.devices.filter((d): d is Extract<Device, { kind: 'switch' }> => d.kind === 'switch')
+  const name = (id: string) => findDevice(topology, id)?.hostname ?? id
+
+  return (
+    <section aria-labelledby="lab-stp" className="space-y-3 rounded-md border border-edge bg-panel p-4">
+      <div className="flex items-center justify-between gap-2">
+        <h3 id="lab-stp" className="text-sm font-semibold text-ink">
+          {t('lab.stpTitle')}
+        </h3>
+        <span className={`text-xs ${on ? 'text-ok' : 'text-ink-muted'}`}>{t(on ? 'lab.stpOn' : 'lab.stpOff')}</span>
+      </div>
+
+      <Button variant="ghost" onClick={() => onSetStp(!on)}>
+        {t(on ? 'lab.stpToggleOff' : 'lab.stpToggleOn')}
+      </Button>
+
+      {on && (
+        <div className="space-y-1 text-xs text-ink-muted">
+          {state.rootId !== null && <p>{t('lab.stpRoot', { name: name(state.rootId) })}</p>}
+          <p className={state.blocked.length > 0 ? 'text-warn' : undefined}>
+            {state.blocked.length > 0
+              ? t('lab.stpBlockedCount', { count: String(state.blocked.length) })
+              : t('lab.stpNoBlocked')}
+          </p>
+        </div>
+      )}
+
+      {on &&
+        switches.map((sw) => (
+          <div key={sw.id} role="radiogroup" aria-label={t('lab.stpPriorityTitle', { name: sw.hostname })}>
+            <p className="mb-1 text-xs text-ink-muted">{t('lab.stpPriorityTitle', { name: sw.hostname })}</p>
+            <div className="flex flex-wrap gap-1.5">
+              {[4096, 8192, DEFAULT_BRIDGE_PRIORITY].map((priority) => (
+                <Chip
+                  key={priority}
+                  checked={bridgePriorityOf(sw) === priority}
+                  label={String(priority)}
+                  onClick={() => onSetPriority(sw.id, priority)}
+                />
+              ))}
+            </div>
+          </div>
+        ))}
+    </section>
   )
 }
 
@@ -574,6 +792,14 @@ export function HopLog({
                 to: name(entry.hop.to.deviceId),
                 reason: t(REASON_KEY[entry.hop.reason]),
               })}
+              {/* Nhãn 802.1Q là tải trọng sư phạm của Module 14: nhìn
+                  nhật ký phải thấy khung nào mang nhãn, khung nào đi trần,
+                  và trần thì đang thuộc VLAN nào. */}
+              {entry.hop.vlan !== null && (
+                <span className="ml-1 text-ink-muted/80">
+                  ({t(entry.hop.tagged ? 'lab.hopTagged' : 'lab.hopUntagged', { vlan: String(entry.hop.vlan) })})
+                </span>
+              )}
             </span>
           </li>
         ))}
@@ -583,6 +809,20 @@ export function HopLog({
       </p>
       {result.failure !== null && (
         <p className="mt-1 text-xs text-ink-muted">{t(`lab.failure.${result.failure}`)}</p>
+      )}
+      {/* Dòng luật đã cấm gói — tải trọng sư phạm của Module 17: biết
+          CHÍNH XÁC dòng nào ăn gói mới sửa đúng chỗ, và ca "không dòng
+          nào khớp" phải nói khác ca "dòng 10 ăn", vì hai bệnh khác nhau. */}
+      {result.deniedBy !== null && (
+        <p className="mt-1 text-xs text-ink-muted">
+          {t(result.deniedBy.seq === null ? 'lab.deniedByImplicit' : 'lab.deniedByRule', {
+            list: String(result.deniedBy.listNumber),
+            seq: String(result.deniedBy.seq ?? ''),
+            port: result.deniedBy.portId,
+            device: name(result.deniedBy.deviceId),
+            direction: result.deniedBy.direction,
+          })}
+        </p>
       )}
     </section>
   )

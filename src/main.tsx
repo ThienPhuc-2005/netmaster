@@ -29,11 +29,15 @@ const ModuleTestPage = lazy(() =>
   import('./features/learn/ModuleTestPage').then((mod) => ({ default: mod.ModuleTestPage })),
 )
 const DrillPage = lazy(() => import('./features/drill/DrillPage').then((mod) => ({ default: mod.DrillPage })))
+const VlsmDrill = lazy(() => import('./features/drill/VlsmDrill').then((mod) => ({ default: mod.VlsmDrill })))
 const ClinicPage = lazy(() => import('./features/clinic/ClinicPage').then((mod) => ({ default: mod.ClinicPage })))
 const ProfilePage = lazy(() =>
   import('./features/profile/ProfilePage').then((mod) => ({ default: mod.ProfilePage })),
 )
 const DesignPage = lazy(() => import('./features/design/DesignPage').then((mod) => ({ default: mod.DesignPage })))
+const GraduationPage = lazy(() =>
+  import('./features/graduation/GraduationPage').then((mod) => ({ default: mod.GraduationPage })),
+)
 
 /** Fallback null: chunk route nhỏ, nháy spinner còn ồn hơn là đợi ~100ms. */
 function lazyRoute(element: React.ReactNode) {
@@ -51,8 +55,10 @@ const router = createBrowserRouter(
         { path: 'kiem-tra/:moduleId', element: lazyRoute(<ModuleTestPage />) },
         { path: 'on-tap', element: <ReviewPage /> },
         { path: 'luyen-subnet', element: lazyRoute(<DrillPage />) },
+        { path: 'luyen-vlsm', element: lazyRoute(<VlsmDrill />) },
         { path: 'phong-kham', element: lazyRoute(<ClinicPage />) },
         { path: 'ho-so', element: lazyRoute(<ProfilePage />) },
+        { path: 'tot-nghiep/:milestoneId', element: lazyRoute(<GraduationPage />) },
         { path: 'design', element: lazyRoute(<DesignPage />) },
       ],
     },

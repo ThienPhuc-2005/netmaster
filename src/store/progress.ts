@@ -16,7 +16,7 @@
 
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
-import type { AnswerRecord, DrillResult, ISODate, ModuleStatus, ReviewCard, StreakState } from '../engine/types'
+import type { AnswerRecord, DrillMode, DrillResult, ISODate, ModuleStatus, ReviewCard, StreakState } from '../engine/types'
 import { palaceRoomsInLesson, type ClinicQuestion, type Lesson, type Module } from '../engine/contentSchema'
 import { palaceCardId } from '../engine/palace'
 import { isoFromDate } from '../engine/dates'
@@ -37,6 +37,7 @@ import {
 import { findNearMiss, gradeQuestion, type QuestionResponse } from '../engine/grading/gradeQuestion'
 import type { Topology } from '../engine/lab'
 import type { PsOutcome, PsRunState } from '../engine/ps'
+import type { CliOutcome, CliState } from '../engine/cli'
 import { matchKeywords, type KeywordMatchResult } from '../engine/grading/keywordMatch'
 import { createCard, reviewCard } from '../engine/sm2'
 import { computeModuleStatuses, evaluateModuleTest, type ModuleTestEvaluation } from '../engine/masteryGate'
@@ -75,6 +76,28 @@ export interface PsTranscriptEntry {
 }
 
 /**
+ * Một dòng nhật ký console thiết bị.
+ *
+ * `prompt` lưu theo từng dòng chứ không dựng lại lúc render: dấu nhắc đổi
+ * theo chế độ (`>` → `#` → `(config)#`), mà chính chuỗi dấu nhắc ấy là
+ * bằng chứng người học đã đi qua những chế độ nào. Dựng lại bằng chế độ
+ * HIỆN TẠI là viết lại lịch sử.
+ *
+ * Ngoài các outcome của engine còn một dấu MỐC riêng của UI: `moved` —
+ * lúc người học rút dây console sang thiết bị khác. Không ghi mốc đó thì
+ * đọc lại nhật ký sẽ thấy một loạt lệnh như gõ nhầm máy.
+ */
+export type CliLogOutcome = CliOutcome | { kind: 'moved'; deviceId: string }
+
+export interface CliTranscriptEntry {
+  id: number
+  input: string
+  lines: string[]
+  prompt: string
+  outcome: CliLogOutcome
+}
+
+/**
  * BÀI DỞ của hai bề mặt thực hành nặng (hội đồng 07-08, ghế UX #20).
  *
  * Vì sao phải lưu: một bài lab lắp 8 thiết bị hoặc một phiên terminal 15
@@ -90,10 +113,16 @@ export interface PsTranscriptEntry {
  * KHÔNG lưu bài dở của BÀI THI (ModuleTestPage không truyền draftKey):
  * rời bài thi giữa chừng là mất lượt thi, nạp lại một sơ đồ đã lắp dở
  * của đề thi là mở đường mang bài về nhà làm dần.
+ *
+ * Thêm một NHÁNH vào union này (lab → ps → cli) không phải đổi shape dữ
+ * liệu cũ: bài dở lab/ps đã lưu vẫn đọc đúng nguyên vẹn, nên cửa migrate
+ * không cần thêm bậc. Bump version chỉ dành cho thay đổi khiến dữ liệu cũ
+ * bị ĐỌC SAI.
  */
 export type PracticeDraft =
   | { kind: 'lab'; topology: Topology; layout: Record<string, { x: number; y: number }>; savedAt: ISODate }
   | { kind: 'ps'; state: PsRunState; entries: PsTranscriptEntry[]; savedAt: ISODate }
+  | { kind: 'cli'; state: CliState; entries: CliTranscriptEntry[]; savedAt: ISODate }
 
 /** Khóa bài dở — một câu hỏi trong một bài học là một mặt bàn riêng. */
 export function practiceDraftKey(lessonId: string, questionId: string): string {
@@ -186,7 +215,11 @@ export interface ProgressState {
   gradeReviewCard: (conceptId: string, remembered: boolean) => void
   completeReviewSession: () => void
 
-  recordDrillSession: (outcomes: { correct: boolean; seconds: number }[], xpEligibleCount: number) => void
+  recordDrillSession: (
+    mode: DrillMode,
+    outcomes: { correct: boolean; seconds: number }[],
+    xpEligibleCount: number,
+  ) => void
 
   completeOnboarding: () => void
 
@@ -480,8 +513,8 @@ export const useProgress = create<ProgressState>()(
           touchStreak('reviewCardCorrect')
         },
 
-        recordDrillSession: (outcomes, xpEligibleCount) => {
-          const result = sessionStats(outcomes, todayIso())
+        recordDrillSession: (mode, outcomes, xpEligibleCount) => {
+          const result = sessionStats(outcomes, todayIso(), mode)
           set((s) => ({
             // Trần 100 phiên gần nhất — trường DUY NHẤT từng phình vô hạn
             // (answerHistory đã có trần từ đầu): người luyện mỗi ngày một
@@ -627,7 +660,7 @@ export const useProgress = create<ProgressState>()(
     },
     {
       name: 'netmaster-progress',
-      version: 3,
+      version: 4,
       // Mặc định của zustand trỏ window.localStorage — không tồn tại trong
       // node/test. Trỏ thẳng global localStorage: browser dùng bản thật,
       // test dùng stub in-memory từ tests/setup.ts.
@@ -661,7 +694,17 @@ export const useProgress = create<ProgressState>()(
         if (version <= 2) {
           state = { ...state, practiceDrafts: {} }
         }
-        if (version <= 3) return state
+        // v3 → v4 (drill VLSM, 08-09): phiên drill giờ có `mode`. Mọi
+        // phiên đã ghi trước đây đều là drill subnetting của Module 3 —
+        // đóng dấu đúng như thế, đừng để chúng thành phiên "không loại"
+        // rồi rơi khỏi biểu đồ tiến bộ mà người học đã xây cả tháng.
+        if (version <= 3) {
+          state = {
+            ...state,
+            drillHistory: (state.drillHistory ?? []).map((d) => ({ ...d, mode: d.mode ?? 'subnet' })),
+          }
+        }
+        if (version <= 4) return state
         // Version lạ (mới hơn code — người dùng lùi bản app): giữ nguyên
         // và để shallow-merge với default đỡ phần thiếu, còn hơn vứt trắng.
         return persisted as ProgressState

@@ -1,0 +1,1321 @@
+{
+  "id": "module-19",
+  "order": 19,
+  "part": "E",
+  "title": { "vi": "AD đa site và ủy quyền — Một miền, nhiều tòa nhà" },
+  "stages": [
+    { "id": "m19-chang-1", "title": { "vi": "Một miền, nhiều tòa nhà" }, "lessonIds": ["m19-bai-1"] },
+    { "id": "m19-chang-2", "title": { "vi": "Hai cuốn sổ cái chép cho nhau" }, "lessonIds": ["m19-bai-2"] },
+    { "id": "m19-chang-3", "title": { "vi": "Xếp quyền như nối ống nước" }, "lessonIds": ["m19-bai-3"] },
+    { "id": "m19-chang-4", "title": { "vi": "Điền nốt mắt xích" }, "lessonIds": ["m19-bai-4"] },
+    { "id": "m19-chang-5", "title": { "vi": "Giao chìa khóa hẹp" }, "lessonIds": ["m19-bai-5"] }
+  ],
+
+  "lessons": [
+    {
+      "id": "m19-bai-1",
+      "missionTitle": { "vi": "Tìm ra ai chỉ đường sai cho chi nhánh" },
+      "steps": [
+        {
+          "type": "hook",
+          "question": {
+            "vi": "Công ty mở chi nhánh Đà Nẵng, dựng hẳn một Domain Controller ngay tầng ba cho oách. Vậy mà sáng nào nhân viên trong đó cũng than đăng nhập chậm cả nửa phút. Soi kỹ mới tá hỏa: mọi máy Đà Nẵng đang vượt tám trăm cây số ra Hà Nội để hỏi một chuyện mà cái máy chủ ngay tầng trên trả lời được. Ai — hay đúng hơn, THIẾU cái gì — khiến chúng mù đường đến vậy?"
+          },
+          "visualId": "vis-hook-dang-nhap-cham"
+        },
+        {
+          "type": "pretest",
+          "questions": [
+            {
+              "kind": "mcq",
+              "id": "m19-b1-pre-1",
+              "prompt": {
+                "vi": "Đoán thử: máy ở Đà Nẵng dựa vào manh mối nào để biết mình đang đứng gần Domain Controller nào?"
+              },
+              "choices": [
+                { "vi": "Địa chỉ IP của chính nó — nếu có ai đó đã khai dải nào thuộc nơi nào" },
+                { "vi": "Đo thời gian ping tới từng DC trong miền rồi tự chọn máy nhanh nhất" },
+                { "vi": "Không cần biết — DC nào nhận được yêu cầu trước thì trả lời trước" }
+              ],
+              "answerIndex": 0,
+              "hintTopic": { "vi": "thứ duy nhất trên máy nói lên vị trí của nó" },
+              "explain": {
+                "vi": "Manh mối là địa chỉ IP — nhưng chỉ khi người quản trị ĐÃ KHAI dải nào thuộc nơi nào trong AD. Máy không tự đo ping tới từng DC, và nếu để mặc ai nhận trước trả lời trước thì tám trăm cây số với tầng trên là như nhau. Cái tên của lời khai đó là bài học hôm nay: site."
+              }
+            }
+          ],
+          "encouragement": {
+            "vi": "Đoán được chữ IP là bạn đã lần đúng sợi dây — giờ xem AD buộc sợi dây đó vào bản đồ thế nào."
+          }
+        },
+        {
+          "type": "teach",
+          "screens": [
+            {
+              "conceptId": "m19-site",
+              "visualId": "vis-site-hai-toa",
+              "body": {
+                "vi": "Một miền AD có thể trải trên nhiều tòa nhà, nhiều thành phố — nhưng dây mạng trong một tòa thì nhanh, còn đường nối giữa hai thành phố vừa chậm vừa đắt. AD mô tả sự thật địa lý đó bằng SITE: một site là một cụm mạng con gần nhau, nối nhau bằng đường nhanh. Hà Nội một site, Đà Nẵng một site — vẫn chung MỘT miền, một bộ tài khoản. Và tầng Site trong chuỗi LSDOU bạn học ở Module 9 tới hôm nay mới có nghĩa thật: một chính sách gắn vào site là gắn theo VỊ TRÍ NGỒI, áp cho mọi máy đang đứng ở đó, bất kể thuộc phòng ban nào."
+              },
+              "deepDive": {
+                "vi": "Site không phải OU. OU chia theo TỔ CHỨC (phòng kế toán, phòng nhân sự — dù ngồi đâu), site chia theo ĐỊA LÝ (tòa nhà này, thành phố kia — dù thuộc phòng nào). Một nhân viên kế toán ở Đà Nẵng: tài khoản nằm trong OU KeToan, còn máy của chị ấy đứng trong site DaNang. Hai trục đó vuông góc với nhau, và AD cần cả hai."
+              }
+            },
+            {
+              "conceptId": "m19-subnet-site",
+              "visualId": "vis-subnet-gan-site",
+              "body": {
+                "vi": "AD không có mắt để nhìn bản đồ — thứ duy nhất nó thấy là địa chỉ IP. Nên người quản trị phải KHAI: dải 10.30.0.0/16 thuộc site DaNang, dải 10.20.0.0/16 thuộc site HaNoi. Từ đó máy trạm tự định vị: nhìn IP của mình, tra ra site của mình, rồi tìm Domain Controller CÙNG SITE mà hỏi — đăng nhập, đổi mật khẩu, tra nhóm đều gõ cửa gần nhà. Chi nhánh Đà Nẵng ở phần mở đầu chậm vì đúng một lỗ hổng: dải mạng mới chưa được gắn vào site nào, nên máy mù vị trí và đành hỏi vu vơ ra tận Hà Nội."
+              },
+              "deepDive": {
+                "vi": "Dấu hiệu nhận biết quên-gắn-subnet là một chi nhánh MỚI chậm một cách khó hiểu dù hạ tầng tại chỗ đầy đủ. Việc dựng DC tại chỗ chỉ là một nửa; nửa kia là ba dòng khai báo subnet-thuộc-site. Quên nửa sau thì DC mới đứng đó làm cảnh — như phần mở đầu bạn vừa thấy."
+              }
+            }
+          ]
+        },
+        {
+          "type": "practice",
+          "fadingLevel": 0,
+          "workedExample": {
+            "vi": "Lần theo một máy Đà Nẵng lúc đăng nhập, từng bước. Bước 1: máy nhìn địa chỉ của chính nó — 10.30.2.15. Bước 2: nó tra trong AD xem dải 10.30.2.x đã được khai thuộc site nào — thấy site DaNang, vậy là biết mình đang đứng đâu. Bước 3: nó hỏi tiếp: site DaNang có những Domain Controller nào? — thấy DC-DN ngay tầng ba. Bước 4: mọi câu chuyện đăng nhập diễn ra với DC-DN, vài mili giây một câu. Bước 5: thử tưởng tượng bước 2 thất bại vì không ai khai dải này — máy mù vị trí, đành gõ cửa DC bất kỳ trong miền, và tám trăm cây số biến thành nửa phút chờ."
+          },
+          "exercises": [
+            {
+              "question": {
+                "kind": "mcq",
+                "id": "m19-b1-prac-1",
+                "prompt": {
+                  "vi": "Chi nhánh mới có DC tại chỗ hẳn hoi mà máy vẫn chạy ra DC thành phố khác hỏi. Thiếu mảnh nào?"
+                },
+                "choices": [
+                  { "vi": "Dải mạng của chi nhánh chưa được khai gắn vào site nào trong AD" },
+                  { "vi": "DC tại chỗ chưa được bật tính năng trả lời các máy trạm ở gần" },
+                  { "vi": "Đường truyền giữa hai thành phố còn quá nhanh nên máy không phân biệt" }
+                ],
+                "answerIndex": 0,
+                "hintTopic": { "vi": "máy định vị bằng lời khai subnet-thuộc-site" }
+              },
+              "hint": {
+                "vi": "DC không có nút bật-tắt trả-lời-gần; máy tự tìm DC theo site. Vậy nó tra site của mình từ đâu?"
+              },
+              "solution": {
+                "vi": "Thiếu lời khai subnet-thuộc-site. Máy nhìn IP để tra site — dải chưa gắn site thì máy mù vị trí và hỏi vu vơ. Dựng DC tại chỗ mới là một nửa việc; ba dòng khai báo kia là nửa còn lại."
+              }
+            },
+            {
+              "question": {
+                "kind": "mcq",
+                "id": "m19-b1-prac-2",
+                "prompt": {
+                  "vi": "Site và OU khác nhau ở trục chia. Câu nào nói ĐÚNG?"
+                },
+                "choices": [
+                  { "vi": "OU chia theo tổ chức phòng ban, site chia theo vị trí địa lý của mạng" },
+                  { "vi": "Site chia theo phòng ban còn OU chia theo tòa nhà đặt máy trạm" },
+                  { "vi": "Hai thứ là một — site chỉ là tên gọi mới của OU từ bản AD gần đây" }
+                ],
+                "answerIndex": 0,
+                "hintTopic": { "vi": "một nhân viên kế toán ngồi ở Đà Nẵng thuộc cả hai trục" }
+              },
+              "hint": {
+                "vi": "Tài khoản chị kế toán ở Đà Nẵng nằm trong OU nào, còn máy chị ấy đứng trong site nào?"
+              },
+              "solution": {
+                "vi": "OU theo tổ chức (kế toán, nhân sự — dù ngồi đâu), site theo địa lý (Hà Nội, Đà Nẵng — dù phòng nào). Hai trục vuông góc: tài khoản vào OU, máy đứng trong site — AD cần cả hai."
+              }
+            }
+          ]
+        },
+        {
+          "type": "retrieval",
+          "questions": [
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m19-b1-ret-1",
+                "prompt": {
+                  "vi": "Không nhìn lại bài: khai subnet gắn site để máy trạm tự tìm được CÁI GÌ ở gần mình?"
+                },
+                "accept": [
+                  "dc",
+                  "domain controller",
+                  "dc gần nhất",
+                  "dc gan nhat",
+                  "domain controller gần nhất",
+                  "domain controller gan nhat",
+                  "máy chủ miền",
+                  "may chu mien",
+                  "dc cùng site",
+                  "dc cung site"
+                ],
+                "hintTopic": { "vi": "máy chủ mà mọi cuộc đăng nhập phải gõ cửa" }
+              },
+              "hint": { "vi": "Chính là cái máy đứng tầng ba ở Đà Nẵng mà suýt bị bỏ quên." },
+              "solution": {
+                "vi": "Domain Controller cùng site. Máy nhìn IP → tra ra site → gõ cửa DC gần nhà, thay vì vượt tám trăm cây số hỏi chuyện đăng nhập."
+              }
+            }
+          ],
+          "selfExplain": {
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: vì sao AD bắt người quản trị phải KHAI subnet gắn site thay vì tự biết máy nào đứng đâu?"
+            },
+            "keywords": [
+              ["không có mắt", "khong co mat", "không tự biết", "khong tu biet", "không nhìn thấy", "khong nhin thay", "mù", "mu "],
+              ["ip", "địa chỉ", "dia chi", "dải mạng", "dai mang", "subnet"],
+              ["khai", "khai báo", "khai bao", "gắn", "gan ", "quản trị khai", "quan tri khai"],
+              ["vị trí", "vi tri", "địa lý", "dia ly", "gần", "gan nhat", "site"]
+            ],
+            "exampleAnswer": {
+              "vi": "Vì AD không có mắt nhìn bản đồ — thứ duy nhất nó thấy là địa chỉ IP, mà IP tự thân không nói lên thành phố nào. Người quản trị phải khai dải nào thuộc site nào; từ lời khai đó máy mới tra được vị trí của mình rồi tìm DC cùng site. Quên khai là máy mù đường, hỏi vu vơ ra tận chi nhánh xa."
+            }
+          }
+        },
+        {
+          "type": "summary",
+          "bullets": [
+            { "vi": "Site là cụm mạng con gần nhau về địa lý — chung miền nhưng khác chỗ đứng; tầng Site của LSDOU giờ có nghĩa thật." },
+            { "vi": "OU chia theo tổ chức, site chia theo địa lý — hai trục vuông góc, AD cần cả hai." },
+            { "vi": "Phải KHAI subnet gắn site: máy nhìn IP tra ra site rồi tìm DC gần nhà — quên khai là chi nhánh chậm khó hiểu." }
+          ],
+          "nextTeaser": {
+            "vi": "Hai site, mỗi bên một DC — tức là hai cuốn sổ cái của cùng một miền. Chúng chép cho nhau bằng cách nào, và nhanh tới đâu? Bài sau có một nhân viên đổi mật khẩu ở Hà Nội rồi lên máy bay."
+          }
+        }
+      ]
+    },
+    {
+      "id": "m19-bai-2",
+      "missionTitle": { "vi": "Đoán xem cuốn sổ nào đã kịp chép" },
+      "steps": [
+        {
+          "type": "hook",
+          "question": {
+            "vi": "Chín giờ sáng, anh trưởng phòng được thêm vào nhóm dự án ở Hà Nội. Chín giờ mười, anh gọi từ Đà Nẵng: \"vẫn chưa mở được thư mục dự án!\" Người trực xanh mặt tưởng mình thao tác hỏng. Mười giờ kém, tự nhiên nó chạy — chẳng ai sửa gì cả. Không có gì hỏng, không có ai nhầm. Vậy trong bốn mươi phút đó, chuyện gì đang xảy ra giữa hai thành phố?"
+          },
+          "visualId": "vis-hook-doi-mat-khau-bay"
+        },
+        {
+          "type": "pretest",
+          "questions": [
+            {
+              "kind": "mcq",
+              "id": "m19-b2-pre-1",
+              "prompt": {
+                "vi": "Đoán thử: miền có nhiều Domain Controller thì cuốn sổ tài khoản nằm ở đâu?"
+              },
+              "choices": [
+                { "vi": "Mỗi DC giữ một bản đầy đủ, và chúng phải chép thay đổi cho nhau" },
+                { "vi": "Chỉ DC đầu tiên giữ sổ gốc, các DC còn lại hỏi nó từng câu một" },
+                { "vi": "Sổ được cắt đôi: mỗi DC giữ nửa danh sách tài khoản của miền" }
+              ],
+              "answerIndex": 0,
+              "hintTopic": { "vi": "vì sao chi nhánh vẫn đăng nhập được khi đứt cáp ra trụ sở" },
+              "explain": {
+                "vi": "Mỗi DC giữ MỘT BẢN ĐẦY ĐỦ — nhờ vậy đứt cáp giữa hai thành phố thì chi nhánh vẫn tự đăng nhập được bằng DC tại chỗ. Cái giá của sự độc lập đó: các bản sổ phải chép thay đổi cho nhau, và chép thì cần thời gian — đó chính là bốn mươi phút bí ẩn ở phần mở đầu."
+              }
+            }
+          ],
+          "encouragement": {
+            "vi": "Chọn phương án nào cũng lộ ra một góc của vấn đề — sổ sách nhân bản là loại câu chuyện mà trực giác hay đoán thiếu một vế."
+          }
+        },
+        {
+          "type": "teach",
+          "screens": [
+            {
+              "conceptId": "m19-replication",
+              "visualId": "vis-replication-hai-so",
+              "body": {
+                "vi": "Mỗi Domain Controller giữ một bản đầy đủ của cuốn sổ miền, và mọi thay đổi — thêm user, đổi nhóm, sửa mật khẩu — ghi vào một DC rồi được CHÉP dần sang các DC khác. Đó là replication. Nhịp chép ăn theo site của bài trước: TRONG một site, dây nhanh nên thay đổi lan gần như tức thì; GIỮA hai site, đường vừa chậm vừa đắt nên thay đổi được gom lại, nén nhỏ và gửi THEO LỊCH — mặc định mười lăm phút một chuyến, có nơi đặt thưa hơn nữa để tiết kiệm đường truyền."
+              },
+              "deepDive": {
+                "vi": "Vì sao không chép tức thì cho khỏe? Vì đường WAN giữa hai thành phố là tài nguyên đắt: hàng nghìn thay đổi lặt vặt mỗi giờ mà chuyến nào cũng chạy tức thì thì đường truyền nghẹt vì việc sổ sách. Gom lại theo chuyến là cái giá hợp lý — miễn là người vận hành BIẾT mình đã chọn cái giá đó, thay vì ngơ ngác như người trực ở phần mở đầu."
+              }
+            },
+            {
+              "conceptId": "m19-do-tre",
+              "visualId": "vis-do-tre-site",
+              "body": {
+                "vi": "Hệ quả vận hành: giữa hai site luôn có một KHE TRỄ. Vừa cấp quyền ở Hà Nội thì trong dăm phút tới vài chục phút, cuốn sổ ở Đà Nẵng vẫn là bản cũ — người dùng trong đó chưa thấy gì, và điều đó KHÔNG PHẢI HỎNG. Phản xạ đúng của người trực: trước khi lao vào sửa một ca \"cấp quyền rồi mà chưa có\", hỏi hai câu — thay đổi ghi ở site nào, người dùng đang đứng ở site nào? Nếu khác nhau, hãy đợi hết một chuyến chép rồi mới kết luận. Sửa loạn trong khe trễ là cách nhanh nhất biến một ca không-phải-bệnh thành bệnh thật."
+              },
+              "deepDive": {
+                "vi": "Một ngoại lệ đáng biết để khỏi hoang mang ngược: ĐỔI MẬT KHẨU không chịu đợi lịch như thay đổi thường — mật khẩu mới được ưu tiên báo ngay về một DC đầu đàn, nên anh nhân viên đổi mật khẩu ở Hà Nội rồi bay vào Đà Nẵng thường vẫn đăng nhập được bằng mật khẩu mới. AD cố tình dành đường khẩn cho thứ người dùng cảm nhận rõ nhất — dạy đúng, không làm tròn: thay đổi thường đi theo lịch, mật khẩu có đường riêng."
+              }
+            }
+          ]
+        },
+        {
+          "type": "practice",
+          "fadingLevel": 1,
+          "exercises": [
+            {
+              "question": {
+                "kind": "mcq",
+                "id": "m19-b2-prac-1",
+                "prompt": {
+                  "vi": "9:00 thêm user vào nhóm tại DC Hà Nội. 9:10 user đó ở Đà Nẵng chưa thấy quyền. Người trực nên làm gì TRƯỚC TIÊN?"
+                },
+                "choices": [
+                  { "vi": "Đối chiếu lịch chép giữa hai site rồi đợi hết một chuyến trước khi kết luận" },
+                  { "vi": "Thêm user vào nhóm lần nữa ngay trên DC Đà Nẵng cho chắc chắn ăn" },
+                  { "vi": "Khởi động lại DC Đà Nẵng để nó tải lại cuốn sổ mới nhất từ Hà Nội" }
+                ],
+                "answerIndex": 0,
+                "hintTopic": { "vi": "khe trễ giữa site không phải là bệnh" }
+              },
+              "hint": {
+                "vi": "Thay đổi ghi ở site nào, người dùng đứng site nào? Hai nơi khác nhau thì giữa chúng có gì?"
+              },
+              "solution": {
+                "vi": "Đối chiếu lịch chép và đợi hết một chuyến. Ghi đè lần nữa hay khởi động lại DC đều là sửa loạn trong khe trễ — thứ tự nhiên sẽ tự lành lại còn bị tay người khuấy thành bệnh thật."
+              }
+            },
+            {
+              "question": {
+                "kind": "mcq",
+                "id": "m19-b2-prac-2",
+                "prompt": {
+                  "vi": "Vì sao replication GIỮA hai site đi theo lịch thay vì chép tức thì như trong một site?"
+                },
+                "choices": [
+                  { "vi": "Vì đường giữa hai site chậm và đắt — gom thay đổi rồi nén gửi theo chuyến" },
+                  { "vi": "Vì hai site thuộc hai miền khác nhau nên phải chờ xác nhận của cả hai" },
+                  { "vi": "Vì luật AD cấm hai DC ở xa nhau trao đổi dữ liệu quá một lần mỗi giờ" }
+                ],
+                "answerIndex": 0,
+                "hintTopic": { "vi": "site sinh ra để mô tả đường nhanh và đường chậm" }
+              },
+              "hint": {
+                "vi": "Nhớ lại lý do site tồn tại: trong site dây nhanh, giữa site là đường WAN. Đường đắt thì chở hàng kiểu gì?"
+              },
+              "solution": {
+                "vi": "Vì đường WAN giữa site vừa chậm vừa đắt — nên thay đổi được gom, nén và gửi theo chuyến. Hai site vẫn chung một miền, và chẳng có luật một-lần-mỗi-giờ nào: lịch chép là thứ người vận hành tự đặt theo túi tiền đường truyền."
+              }
+            }
+          ]
+        },
+        {
+          "type": "retrieval",
+          "questions": [
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m19-b2-ret-1",
+                "prompt": {
+                  "vi": "Không nhìn lại bài: việc các DC chép thay đổi cho nhau để mọi bản sổ giống nhau gọi là gì?"
+                },
+                "accept": ["replication", "sao chép", "sao chep", "nhân bản", "nhan ban", "đồng bộ", "dong bo"],
+                "hintTopic": { "vi": "thuật ngữ tiếng Anh bắt đầu bằng repli" }
+              },
+              "hint": { "vi": "Tiếng Anh, cùng họ với chữ replica — bản sao." },
+              "solution": {
+                "vi": "Replication. Trong site lan gần như tức thì; giữa site gom lại, nén và đi theo lịch — khe trễ giữa hai site là tính chất, không phải bệnh."
+              }
+            }
+          ],
+          "selfExplain": {
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: vì sao ca \"cấp quyền rồi mà bên kia chưa thấy\" thường KHÔNG phải là hỏng, và phản xạ đúng của người trực là gì?"
+            },
+            "keywords": [
+              ["khe trễ", "khe tre", "độ trễ", "do tre", "chưa kịp chép", "chua kip chep", "chưa lan tới", "chua lan toi"],
+              ["theo lịch", "theo lich", "chuyến", "chuyen", "gom", "nén", "nen "],
+              ["hai site", "khác site", "khac site", "site nào", "site nao", "đứng ở đâu", "dung o dau"],
+              ["đợi", "doi ", "chờ", "cho het", "không sửa loạn", "khong sua loan", "đừng vội", "dung voi"]
+            ],
+            "exampleAnswer": {
+              "vi": "Vì thay đổi ghi ở một site cần thời gian mới chép sang site kia — giữa hai site, sổ đi theo chuyến chứ không tức thì, nên có một khe trễ vài phút tới vài chục phút là bình thường. Phản xạ đúng: hỏi thay đổi ghi ở đâu và người dùng đứng ở đâu; nếu khác site thì đợi hết một chuyến chép rồi mới kết luận, đừng ghi đè hay khởi động lại giữa chừng."
+            }
+          }
+        },
+        {
+          "type": "summary",
+          "bullets": [
+            { "vi": "Mỗi DC giữ một bản sổ đầy đủ — thay đổi ghi một nơi rồi replication chép dần sang các nơi khác." },
+            { "vi": "Trong site chép gần như tức thì; giữa site gom, nén, đi theo lịch — vì đường WAN chậm và đắt." },
+            { "vi": "Khe trễ giữa site là tính chất: cấp quyền rồi bên kia chưa thấy thì đợi hết chuyến chép, đừng sửa loạn." }
+          ],
+          "nextTeaser": {
+            "vi": "Sổ sách đã chảy thông giữa các tòa nhà. Giờ tới câu hỏi khó hơn: QUYỀN nên chảy thế nào từ một con người tới một thư mục? Bài sau bạn được thả vào miền thật với bộ lệnh nhóm mới toanh — và đa số người mới sẽ đi đúng vào cái bẫy đã giăng sẵn."
+          }
+        }
+      ]
+    },
+    {
+      "id": "m19-bai-3",
+      "missionTitle": { "vi": "Nối ống nước cho quyền chảy đúng nếp" },
+      "steps": [
+        {
+          "type": "hook",
+          "question": {
+            "vi": "Anh Chí chuyển sang phòng kế toán, cần đọc được thư mục Báo cáo. Cách nhanh nhất ai cũng nghĩ ra: mở thẳng nhóm có quyền đọc rồi nhét anh vào — năm giây, chạy ngay. Sáu tháng sau công ty có ba trăm người, mỗi lần ai đó chuyển phòng là một cơn ác mộng truy vết: ai đang nằm trong nhóm nào, vì sao, và ai cho phép? Cái lối tắt năm giây ấy đắt tới mức nào — và nghề này xếp quyền kiểu gì để ba trăm người vẫn gọn như ba chục?"
+          },
+          "visualId": "vis-hook-loi-tat-do"
+        },
+        {
+          "type": "pretest",
+          "questions": [
+            {
+              "kind": "ps",
+              "id": "m19-b3-pre-ps",
+              "prompt": {
+                "vi": "Thử sức trước khi học: anh Le Van Chi (lvchi) vừa chuyển sang kế toán và cần đọc được Báo cáo. Miền đã có sẵn các nhóm — mò bằng Get-ADGroup -Filter * và Get-ADGroupMember xem quyền đang chảy kiểu gì, rồi xếp anh Chí vào chỗ bạn cho là đúng. Sai cũng không sao — phần này không tính điểm, và bảng mục tiêu sẽ nói thật với bạn."
+              },
+              "spec": {
+                "world": {
+                  "hostname": "MAY-QUAN-TRI",
+                  "interfaces": [{ "alias": "Ethernet0", "ip": "10.20.2.5", "prefix": 24 }],
+                  "targets": [],
+                  "ad": {
+                    "domain": "congty.vn",
+                    "ous": ["KeToan", "KinhDoanh"],
+                    "users": [
+                      { "name": "Tran Thi Mai", "sam": "ttmai", "ou": "KeToan", "enabled": true },
+                      { "name": "Le Van Chi", "sam": "lvchi", "ou": "KinhDoanh", "enabled": true }
+                    ],
+                    "groups": [
+                      { "name": "KeToan-GG", "scope": "Global", "members": ["ttmai"] },
+                      { "name": "QuyenDocBaoCao-DL", "scope": "DomainLocal", "members": ["KeToan-GG"] }
+                    ]
+                  },
+                  "files": {}
+                },
+                "goals": [
+                  { "kind": "group-member", "group": "KeToan-GG", "sam": "lvchi" },
+                  { "kind": "group-member", "group": "QuyenDocBaoCao-DL", "sam": "lvchi" }
+                ],
+                "solution": ["Add-ADGroupMember KeToan-GG -Members lvchi"]
+              },
+              "hintTopic": { "vi": "nhóm nào gom NGƯỜI, nhóm nào giữ QUYỀN" },
+              "explain": {
+                "vi": "Nếu bạn nhét lvchi thẳng vào QuyenDocBaoCao-DL: mục tiêu về nhóm quyền bật xanh mà mục tiêu về KeToan-GG vẫn đỏ — đó chính là cái lối tắt năm giây của phần mở đầu, chạy được nhưng sai nếp. Đường đúng chỉ một dòng: Add-ADGroupMember KeToan-GG -Members lvchi. Anh Chí vào nhóm VAI kế toán, mà nhóm vai đã cắm sẵn vào nhóm quyền — quyền tự chảy tới, cả hai mục tiêu cùng xanh. Get-ADGroupMember QuyenDocBaoCao-DL sẽ cho bạn thấy vì sao: thành viên của nó là một NHÓM, không phải từng con người."
+              }
+            }
+          ],
+          "encouragement": {
+            "vi": "Đi vào lối tắt ở đây là trải nghiệm đáng tiền nhất của cả module — bảng mục tiêu đỏ một nửa chính là bài giảng mở đầu."
+          }
+        },
+        {
+          "type": "teach",
+          "screens": [
+            {
+              "conceptId": "m19-agdlp",
+              "visualId": "vis-agdlp-ong-nuoc",
+              "body": {
+                "vi": "Nếp xếp quyền của nghề gói trong bốn chữ AGDLP — một đường ống bốn khúc: Account (con người) vào Global group (nhóm VAI — kế toán, nhân sự); Global group cắm vào Domain Local group (nhóm QUYỀN — được đọc Báo cáo, được sửa Hồ sơ); và Permission (quyền thật trên thư mục) chỉ gắn vào nhóm Domain Local. Người KHÔNG bao giờ chạm thẳng vào quyền. Nghe vòng vèo, nhưng chính các khúc nối đó làm hệ thống sống được với thay đổi: người chuyển phòng — rút khỏi một nhóm vai, cắm vào nhóm vai khác, mọi quyền tự chảy theo; thêm tài nguyên mới — dựng một nhóm quyền, cắm các nhóm vai vào, xong."
+              },
+              "deepDive": {
+                "vi": "Đường ống này bạn đã cầm trên tay từ khối engine: Get-ADGroupMember trên một nhóm quyền tử tế sẽ hiện ObjectClass group — thành viên của nó là NHÓM, không phải người. Còn thấy một danh sách dài ObjectClass user nằm thẳng trong nhóm quyền là dấu vết của những lối tắt năm giây chồng chất — mỗi cái tên ở đó là một câu hỏi \"ai cho vào, vì sao\" không còn ai trả lời được."
+              }
+            },
+            {
+              "conceptId": "m19-gg-dl",
+              "visualId": "vis-gg-vs-dl",
+              "body": {
+                "vi": "Hai loại nhóm, hai câu hỏi khác nhau. Nhóm GLOBAL trả lời \"người này LÀ AI trong tổ chức?\" — nó gom người theo vai và đi theo con người: chuyển phòng là đổi nhóm Global. Nhóm DOMAIN LOCAL trả lời \"tài nguyên này AI ĐƯỢC ĐỘNG VÀO?\" — nó đứng cạnh tài nguyên và giữ quyền: thư mục Báo cáo có nhóm đọc của nó, máy in màu có nhóm in của nó. Vai thì cắm vào quyền, không bao giờ ngược lại — và AD khóa cứng chiều ngược: nhét một nhóm Domain Local vào nhóm Global là máy từ chối thẳng, như bạn sẽ thấy nếu thử."
+              },
+              "deepDive": {
+                "vi": "Vì sao luật cứng đó tồn tại? Nhóm Global được thiết kế để mang đi khắp nơi (kể cả sang miền khác khi công ty sáp nhập), còn nhóm Domain Local bị neo tại miền của tài nguyên. Cho DL chui vào GG là để một thứ bị neo trốn trong một thứ hay di chuyển — mâu thuẫn tự thân, nên AD cấm từ gốc chứ không đợi hậu quả."
+              }
+            }
+          ]
+        },
+        {
+          "type": "practice",
+          "fadingLevel": 0,
+          "workedExample": {
+            "vi": "Đọc một sơ đồ AGDLP mẫu của phòng kế toán, từng khúc ống. Khúc 1 — Account: chị Tran Thi Mai (ttmai), một con người bằng xương thịt. Khúc 2 — Global: ttmai nằm trong KeToan-GG, nhóm VAI của phòng kế toán; nhìn tên nhóm là biết nó gom NGƯỜI. Khúc 3 — Domain Local: KeToan-GG được cắm vào QuyenDocBaoCao-DL, nhóm QUYỀN đứng cạnh thư mục Báo cáo; gõ Get-ADGroupMember QuyenDocBaoCao-DL sẽ thấy thành viên duy nhất là một nhóm — ObjectClass group. Khúc 4 — Permission: thư mục Báo cáo cấp quyền đọc cho đúng một cái tên: QuyenDocBaoCao-DL. Giờ thử chạy nước qua ống: chị Mai đọc được Báo cáo vì Mai thuộc KeToan-GG, KeToan-GG nằm trong QuyenDocBaoCao-DL, và nhóm đó có quyền đọc — ba khúc nối, không khúc nào chạm thẳng người vào quyền."
+          },
+          "exercises": [
+            {
+              "question": {
+                "kind": "mcq",
+                "id": "m19-b3-prac-1",
+                "prompt": {
+                  "vi": "Gõ Get-ADGroupMember trên một nhóm QUYỀN được xếp đúng nếp AGDLP, cột ObjectClass sẽ hiện gì?"
+                },
+                "choices": [
+                  { "vi": "group — thành viên của nhóm quyền là các nhóm vai, không phải từng người" },
+                  { "vi": "user — nhóm quyền phải liệt kê đủ từng con người được động vào tài nguyên" },
+                  { "vi": "computer — vì quyền gắn với máy trạm chứ không gắn với tài khoản người" }
+                ],
+                "answerIndex": 0,
+                "hintTopic": { "vi": "thành viên của nhóm quyền là loại đối tượng nào" }
+              },
+              "hint": {
+                "vi": "Trong đường ống AGDLP, cái gì được cắm vào nhóm Domain Local?"
+              },
+              "solution": {
+                "vi": "ObjectClass group. Nhóm quyền chứa các nhóm vai — thấy một dãy user nằm thẳng trong đó là dấu vết lối tắt chồng chất, mỗi tên là một câu hỏi không ai còn trả lời được."
+              }
+            },
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m19-b3-prac-2",
+                "prompt": {
+                  "vi": "Trong chuỗi AGDLP, quyền thật trên thư mục chỉ được gắn vào loại nhóm nào?"
+                },
+                "accept": [
+                  "domain local",
+                  "domainlocal",
+                  "nhóm domain local",
+                  "nhom domain local",
+                  "dl",
+                  "nhóm quyền",
+                  "nhom quyen",
+                  "domain local group"
+                ],
+                "hintTopic": { "vi": "chữ DL trong bốn chữ cái" }
+              },
+              "hint": {
+                "vi": "Không phải nhóm vai, càng không phải từng người — là loại nhóm đứng cạnh tài nguyên."
+              },
+              "solution": {
+                "vi": "Nhóm Domain Local — nhóm quyền đứng cạnh tài nguyên. Người vào nhóm vai (Global), vai cắm vào quyền (Domain Local), quyền gắn vào tài nguyên: ba khúc nối của một đường ống."
+              }
+            }
+          ]
+        },
+        {
+          "type": "retrieval",
+          "questions": [
+            {
+              "question": {
+                "kind": "order",
+                "id": "m19-b3-ret-1",
+                "prompt": {
+                  "vi": "Không nhìn lại bài: xếp bốn khúc của đường ống quyền theo đúng thứ tự nước chảy."
+                },
+                "items": [
+                  { "vi": "Account — con người có tài khoản" },
+                  { "vi": "Global group — nhóm vai gom người" },
+                  { "vi": "Domain Local group — nhóm quyền cạnh tài nguyên" },
+                  { "vi": "Permission — quyền thật trên thư mục" }
+                ],
+                "hintTopic": { "vi": "bốn chữ cái A G DL P đọc xuôi" }
+              },
+              "hint": { "vi": "Bắt đầu từ con người, kết thúc ở quyền trên thư mục — đúng thứ tự bốn chữ cái." },
+              "solution": {
+                "vi": "Account → Global group → Domain Local group → Permission. Người vào vai, vai cắm vào quyền, quyền gắn tài nguyên — không khúc nào được nhảy cóc."
+              }
+            }
+          ],
+          "selfExplain": {
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: nhét thẳng một người vào nhóm quyền thì chạy được ngay — vậy nó đắt ở chỗ nào?"
+            },
+            "keywords": [
+              ["chuyển phòng", "chuyen phong", "đổi vai", "doi vai", "thay đổi", "thay doi", "ba trăm người", "ba tram nguoi"],
+              ["truy vết", "truy vet", "ai cho vào", "ai cho vao", "vì sao", "vi sao", "không ai trả lời", "khong ai tra loi"],
+              ["từng nhóm", "tung nhom", "từng tài nguyên", "tung tai nguyen", "sửa từng", "sua tung", "dọn từng", "don tung"],
+              ["nhóm vai", "nhom vai", "global", "tự chảy", "tu chay", "quyền theo vai", "quyen theo vai"]
+            ],
+            "exampleAnswer": {
+              "vi": "Nó đắt ở ngày mai: người chuyển phòng thì quyền cũ không tự rút — phải nhớ ra từng nhóm quyền đã nhét họ vào mà dọn tay, và sáu tháng sau chẳng ai còn trả lời được ai cho vào, vì sao. Đi qua nhóm vai thì mọi thay đổi chỉ chạm một chỗ: đổi nhóm Global là toàn bộ quyền tự chảy theo vai mới, còn sơ đồ thì tự kể được chuyện của nó."
+            }
+          }
+        },
+        {
+          "type": "summary",
+          "bullets": [
+            { "vi": "AGDLP: người vào nhóm vai (Global), vai cắm vào nhóm quyền (Domain Local), quyền gắn tài nguyên." },
+            { "vi": "Global trả lời \"là ai trong tổ chức\", Domain Local trả lời \"tài nguyên này ai được động\" — vai cắm vào quyền, không ngược lại." },
+            { "vi": "Nhét thẳng người vào nhóm quyền chạy được ngay nhưng đắt ở ngày mai — mọi thay đổi và truy vết đều thành thủ công." }
+          ],
+          "nextTeaser": {
+            "vi": "Bạn đã thấy đường ống mẫu. Bài sau là ca thật đầu tiên: người mới về phòng, đường ống có sẵn — điền nốt mắt xích còn thiếu bằng một dòng lệnh."
+          }
+        }
+      ]
+    },
+    {
+      "id": "m19-bai-4",
+      "missionTitle": { "vi": "Điền nốt mắt xích cho người mới về phòng" },
+      "steps": [
+        {
+          "type": "hook",
+          "question": {
+            "vi": "Chị Phạm Thị Lan nhận việc ở phòng nhân sự từ thứ hai. Thứ tư chị vẫn ngồi chờ ai đó \"cấp quyền vào hồ sơ\" — phiếu yêu cầu chạy lòng vòng qua ba chữ ký. Trong khi ở công ty xếp quyền tử tế, toàn bộ việc đó là MỘT dòng lệnh năm giây của người trực. Khoảng cách giữa ba ngày và năm giây nằm ở đâu?"
+          },
+          "visualId": "vis-hook-cho-quyen-3-ngay"
+        },
+        {
+          "type": "pretest",
+          "questions": [
+            {
+              "kind": "mcq",
+              "id": "m19-b4-pre-1",
+              "prompt": {
+                "vi": "Người mới về phòng nhân sự. Theo nếp AGDLP, người trực cần đụng vào NHÓM nào?"
+              },
+              "choices": [
+                { "vi": "Chỉ nhóm vai Global của phòng nhân sự — quyền sẽ tự chảy qua các khúc sau" },
+                { "vi": "Mọi nhóm quyền Domain Local có liên quan tới từng thư mục của phòng" },
+                { "vi": "Không nhóm nào — cấp quyền đọc ghi thẳng trên từng thư mục cho nhanh" }
+              ],
+              "answerIndex": 0,
+              "hintTopic": { "vi": "một người mới = một mắt xích ở khúc nào" },
+              "explain": {
+                "vi": "Chỉ nhóm vai Global. Đường ống đã nối sẵn từ trước: vai cắm vào các nhóm quyền, quyền gắn vào tài nguyên — người mới chỉ cần vào đúng vai là mọi thứ tự chảy. Đụng vào từng nhóm quyền hay từng thư mục chính là con đường ba-ngày-ba-chữ-ký của phần mở đầu."
+              }
+            }
+          ],
+          "encouragement": {
+            "vi": "Trả lời đúng câu này nghĩa là bài trước đã ngấm — giờ biến nó thành động tác tay."
+          }
+        },
+        {
+          "type": "teach",
+          "screens": [
+            {
+              "conceptId": "m19-vong-doi",
+              "visualId": "vis-vong-doi-nhan-su",
+              "body": {
+                "vi": "Sức mạnh thật của AGDLP lộ ra ở VÒNG ĐỜI NHÂN SỰ — thứ xảy ra hàng tuần ở mọi công ty. Người MỚI: thêm vào nhóm vai của phòng, một dòng lệnh, toàn bộ quyền cần thiết tự chảy tới. Người CHUYỂN PHÒNG: rút khỏi nhóm vai cũ, thêm vào nhóm vai mới — quyền cũ tự rút, quyền mới tự tới, không sót lại mẩu quyền nào của đời trước. Người NGHỈ: khóa tài khoản là mọi cửa đóng cùng lúc. Cả ba kịch bản chỉ chạm vào MỘT chỗ: quan hệ giữa con người và nhóm vai. Không kịch bản nào phải mở từng thư mục, từng nhóm quyền ra soát."
+              },
+              "deepDive": {
+                "vi": "Phạm vi lệnh của app dừng ở chiều THÊM (Add-ADGroupMember) — chiều rút khỏi nhóm ngoài đời là Remove-ADGroupMember, cùng ngữ pháp. Điều đáng nhớ không phải cái tên lệnh, mà là chỗ đứng của nó: mọi biến động nhân sự đều xử lý ở khúc Account–Global, hai khúc sau của đường ống không ai phải chạm tới. Đó là phép đo một hệ thống quyền tử tế: ngày bận rộn nhất của phòng nhân sự, người trực vẫn chỉ gõ những lệnh một dòng."
+              }
+            }
+          ]
+        },
+        {
+          "type": "practice",
+          "fadingLevel": 1,
+          "exercises": [
+            {
+              "question": {
+                "kind": "ps",
+                "id": "m19-b4-prac-ps",
+                "prompt": {
+                  "vi": "Chị Phạm Thị Lan (ptlan) chính thức về phòng nhân sự. Đường ống của phòng đã nối sẵn: NhanSu-GG cắm trong QuyenSuaHoSo-DL. Điền nốt mắt xích còn thiếu để chị Lan sửa được hồ sơ — và nhớ tra lại bằng Get-ADGroupMember cho chắc tay."
+                },
+                "spec": {
+                  "world": {
+                    "hostname": "MAY-QUAN-TRI",
+                    "interfaces": [{ "alias": "Ethernet0", "ip": "10.20.2.5", "prefix": 24 }],
+                    "targets": [],
+                    "ad": {
+                      "domain": "congty.vn",
+                      "ous": ["NhanSu", "KeToan"],
+                      "users": [
+                        { "name": "Hoang Thi Yen", "sam": "htyen", "ou": "NhanSu", "enabled": true },
+                        { "name": "Pham Thi Lan", "sam": "ptlan", "ou": "NhanSu", "enabled": true }
+                      ],
+                      "groups": [
+                        { "name": "NhanSu-GG", "scope": "Global", "members": ["htyen"] },
+                        { "name": "QuyenSuaHoSo-DL", "scope": "DomainLocal", "members": ["NhanSu-GG"] }
+                      ]
+                    },
+                    "files": {}
+                  },
+                  "goals": [
+                    { "kind": "group-member", "group": "NhanSu-GG", "sam": "ptlan" },
+                    { "kind": "group-member", "group": "QuyenSuaHoSo-DL", "sam": "ptlan" }
+                  ],
+                  "solution": ["Add-ADGroupMember NhanSu-GG -Members ptlan"]
+                },
+                "hintTopic": { "vi": "một dòng Add vào đúng nhóm VAI" }
+              },
+              "hint": {
+                "vi": "Cú pháp khuyết: Add-ADGroupMember <nhóm vai của phòng> -Members <sam của chị Lan>. Nhóm vai là cái có đuôi GG."
+              },
+              "solution": {
+                "vi": "Add-ADGroupMember NhanSu-GG -Members ptlan. Chị Lan vào nhóm vai, mà NhanSu-GG đã nằm sẵn trong QuyenSuaHoSo-DL nên cả hai mục tiêu cùng xanh — quyền chảy tới mà không ai phải chạm vào nhóm quyền hay thư mục."
+              }
+            },
+            {
+              "question": {
+                "kind": "mcq",
+                "id": "m19-b4-prac-2",
+                "prompt": {
+                  "vi": "Anh Nam chuyển từ kế toán sang kinh doanh. Theo nếp AGDLP, hai động tác của người trực là gì?"
+                },
+                "choices": [
+                  { "vi": "Rút anh khỏi nhóm vai kế toán và thêm vào nhóm vai kinh doanh — hết" },
+                  { "vi": "Soát từng nhóm quyền của kế toán để gỡ tên anh rồi cấp lại từ đầu" },
+                  { "vi": "Khóa tài khoản cũ và tạo cho anh một tài khoản mới bên kinh doanh" }
+                ],
+                "answerIndex": 0,
+                "hintTopic": { "vi": "biến động nhân sự chỉ chạm khúc nào của ống" }
+              },
+              "hint": {
+                "vi": "Quyền cũ tự rút khi cái gì thay đổi? Người và VAI — không phải người và từng thư mục."
+              },
+              "solution": {
+                "vi": "Đổi nhóm vai: rút khỏi KeToan-GG, thêm vào KinhDoanh-GG. Quyền cũ tự rút, quyền mới tự tới — không sót mẩu quyền nào của đời trước, không ai phải soát từng nhóm quyền, càng không phải đập tài khoản làm lại."
+              }
+            }
+          ]
+        },
+        {
+          "type": "retrieval",
+          "questions": [
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m19-b4-ret-1",
+                "prompt": {
+                  "vi": "Không nhìn lại bài: muốn xem một nhóm đang chứa những ai (người hay nhóm), bạn gõ lệnh nào?"
+                },
+                "accept": [
+                  "get-adgroupmember",
+                  "get adgroupmember",
+                  "getadgroupmember",
+                  "get-adgroupmember -identity",
+                  "lệnh get-adgroupmember",
+                  "lenh get-adgroupmember"
+                ],
+                "hintTopic": { "vi": "họ Get, danh từ GroupMember" }
+              },
+              "hint": { "vi": "Động từ Get, danh từ ADGroupMember — đúng nếp động từ gạch danh từ của Module 12." },
+              "solution": {
+                "vi": "Get-ADGroupMember -Identity <tên nhóm>. Cột ObjectClass của nó nói thật nhóm đang chứa NGƯỜI hay chứa NHÓM — công cụ soi nếp AGDLP nhanh nhất trong tay bạn."
+              }
+            }
+          ],
+          "selfExplain": {
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: vì sao ở hệ thống xếp đúng nếp, người chuyển phòng KHÔNG bao giờ mang theo quyền của phòng cũ?"
+            },
+            "keywords": [
+              ["rút khỏi", "rut khoi", "ra khỏi nhóm", "ra khoi nhom", "rời nhóm vai", "roi nhom vai", "đổi nhóm", "doi nhom"],
+              ["quyền theo vai", "quyen theo vai", "quyền qua nhóm", "quyen qua nhom", "tự rút", "tu rut", "tự mất", "tu mat"],
+              ["không gắn thẳng", "khong gan thang", "không trực tiếp", "khong truc tiep", "không chạm quyền", "khong cham quyen"],
+              ["nhóm vai cũ", "nhom vai cu", "vai mới", "vai moi", "global"]
+            ],
+            "exampleAnswer": {
+              "vi": "Vì quyền của họ chưa bao giờ gắn thẳng vào con người — tất cả đi qua nhóm vai. Rút họ khỏi nhóm vai cũ là mọi quyền của phòng cũ tự đứt theo, thêm vào nhóm vai mới là quyền mới tự chảy tới. Không có mẩu quyền nào dính trực tiếp vào người để mà sót lại."
+            }
+          }
+        },
+        {
+          "type": "summary",
+          "bullets": [
+            { "vi": "Người mới về phòng = một dòng Add vào nhóm vai — đường ống nối sẵn lo phần còn lại." },
+            { "vi": "Chuyển phòng = đổi nhóm vai; nghỉ việc = khóa tài khoản — mọi biến động chỉ chạm khúc Account–Global." },
+            { "vi": "Get-ADGroupMember với cột ObjectClass là máy soi nếp: nhóm quyền tử tế chứa NHÓM, không chứa người lẻ." }
+          ],
+          "nextTeaser": {
+            "vi": "Còn một câu hỏi treo từ đầu module: chính người trực lấy đâu ra quyền để gõ những lệnh này — chẳng lẽ phát cho cả đội helpdesk chức admin toàn miền? Bài cuối: giao chìa khóa mà không giao cả chùm."
+          }
+        }
+      ]
+    },
+    {
+      "id": "m19-bai-5",
+      "missionTitle": { "vi": "Giao chìa khóa hẹp cho đúng người" },
+      "steps": [
+        {
+          "type": "hook",
+          "question": {
+            "vi": "Đội helpdesk mỗi ngày nhận chục cuộc \"em quên mật khẩu\". Muốn họ tự xử được thì phải cho quyền reset mật khẩu — và cách nhanh nhất ai cũng biết: thêm cả đội vào Domain Admins. Từ hôm đó, ba bạn trẻ mới ra trường cầm trong tay quyền xóa được CẢ MIỀN — để làm một việc bé bằng cái reset. Nghề này có cách nào trao đúng một chiếc chìa, thay vì cả chùm chìa khóa của tòa nhà?"
+          },
+          "visualId": "vis-hook-chia-khoa-to"
+        },
+        {
+          "type": "pretest",
+          "questions": [
+            {
+              "kind": "mcq",
+              "id": "m19-b5-pre-1",
+              "prompt": {
+                "vi": "Đoán thử: quyền mà đội helpdesk THẬT SỰ cần cho việc \"em quên mật khẩu\" trông như thế nào?"
+              },
+              "choices": [
+                { "vi": "Đúng thao tác reset mật khẩu, trên đúng nhánh OU chứa nhân viên thường" },
+                { "vi": "Quyền quản trị toàn miền, vì reset mật khẩu đụng vào cơ sở dữ liệu AD" },
+                { "vi": "Không cần quyền gì — helpdesk chỉ việc gọi lên cấp trên làm hộ mỗi lần" }
+              ],
+              "answerIndex": 0,
+              "hintTopic": { "vi": "việc bé thì chìa khóa bé" },
+              "explain": {
+                "vi": "Đúng thao tác, đúng phạm vi: reset mật khẩu, trên nhánh OU nhân viên thường — không đụng được tài khoản sếp, càng không đụng cấu trúc miền. Admin toàn miền cho một việc bé là treo rủi ro cả tòa nhà vào túi áo thực tập sinh; còn \"gọi cấp trên làm hộ\" thì chính là cái cảnh chờ ba ngày của bài trước."
+              }
+            }
+          ],
+          "encouragement": {
+            "vi": "Nguyên tắc bạn vừa chạm tới có tên riêng trong nghề — quyền tối thiểu đủ dùng. Bài này cho nó hình hài trong AD."
+          }
+        },
+        {
+          "type": "teach",
+          "screens": [
+            {
+              "conceptId": "m19-delegation",
+              "visualId": "vis-delegation-chia-hep",
+              "body": {
+                "vi": "AD có cơ chế trao chìa hẹp tên là DELEGATION — ủy quyền: chọn một NHÁNH OU, chọn một BỘ THAO TÁC, rồi trao đúng gói đó cho một nhóm. Ví dụ kinh điển: nhóm Helpdesk-GG được reset mật khẩu và mở khóa tài khoản TRÊN nhánh OU NhanVien — hết. Không đụng được OU Lãnh đạo, không sửa được nhóm, không sờ được cấu trúc miền. Ba đặc điểm làm nên một cú ủy quyền tử tế: hẹp THAO TÁC (chỉ việc cần), hẹp PHẠM VI (chỉ nhánh cần), và trao cho NHÓM chứ không cho cá nhân — người vào đội thì vào nhóm, rời đội thì rút, đúng nếp AGDLP bạn vừa học."
+              },
+              "deepDive": {
+                "vi": "Vì sao trao cho nhóm quan trọng đến thế? Vì ủy quyền cho cá nhân là quay lại đúng cái bẫy lối tắt: nửa năm sau không ai nhớ đã trao gì cho ai, người nghỉ việc mang theo quyền mồ côi nằm rải rác trên từng nhánh OU. Trao cho nhóm thì câu hỏi \"ai đang có quyền này\" luôn trả lời được bằng một lệnh Get-ADGroupMember — và thu hồi là một động tác rút khỏi nhóm. Quyền tối thiểu đủ dùng cộng với truy vết được: đó là hai chân của mọi hệ thống ủy quyền đứng vững."
+              }
+            }
+          ]
+        },
+        {
+          "type": "practice",
+          "fadingLevel": 2,
+          "exercises": [
+            {
+              "question": {
+                "kind": "ps",
+                "id": "m19-b5-prac-ps",
+                "prompt": {
+                  "vi": "Phòng dự án tuyển hai kỹ sư mới: Vu Van Long (vvlong) và Do Thi Thu (dtthu). Cả hai phải vào được kho tài liệu dự án. Miền đã dựng sẵn các nhóm — tự tra, tự quyết định, tự xếp cho đúng nếp; bảng mục tiêu sẽ chấm sống từng bước của bạn."
+                },
+                "spec": {
+                  "world": {
+                    "hostname": "MAY-QUAN-TRI",
+                    "interfaces": [{ "alias": "Ethernet0", "ip": "10.20.2.5", "prefix": 24 }],
+                    "targets": [],
+                    "ad": {
+                      "domain": "congty.vn",
+                      "ous": ["DuAn", "KeToan"],
+                      "users": [
+                        { "name": "Ngo Van Hai", "sam": "nvhai", "ou": "DuAn", "enabled": true },
+                        { "name": "Vu Van Long", "sam": "vvlong", "ou": "DuAn", "enabled": true },
+                        { "name": "Do Thi Thu", "sam": "dtthu", "ou": "DuAn", "enabled": true },
+                        { "name": "Tran Thi Mai", "sam": "ttmai", "ou": "KeToan", "enabled": true }
+                      ],
+                      "groups": [
+                        { "name": "DuAn-GG", "scope": "Global", "members": ["nvhai"] },
+                        { "name": "KeToan-GG", "scope": "Global", "members": ["ttmai"] },
+                        { "name": "QuyenKhoTaiLieu-DL", "scope": "DomainLocal", "members": ["DuAn-GG"] },
+                        { "name": "QuyenDocBaoCao-DL", "scope": "DomainLocal", "members": ["KeToan-GG"] }
+                      ]
+                    },
+                    "files": {}
+                  },
+                  "goals": [
+                    { "kind": "group-member", "group": "DuAn-GG", "sam": "vvlong" },
+                    { "kind": "group-member", "group": "QuyenKhoTaiLieu-DL", "sam": "vvlong" },
+                    { "kind": "group-member", "group": "DuAn-GG", "sam": "dtthu" },
+                    { "kind": "group-member", "group": "QuyenKhoTaiLieu-DL", "sam": "dtthu" }
+                  ],
+                  "solution": ["Add-ADGroupMember DuAn-GG -Members vvlong,dtthu"]
+                },
+                "hintTopic": { "vi": "hai người, một nhóm vai, một dòng lệnh" }
+              },
+              "hint": {
+                "vi": "Tra Get-ADGroupMember QuyenKhoTaiLieu-DL xem nhóm quyền đang chứa nhóm vai nào — rồi Add cả hai người vào đúng nhóm vai đó (tham số -Members nhận danh sách cách nhau dấu phẩy)."
+              },
+              "solution": {
+                "vi": "Add-ADGroupMember DuAn-GG -Members vvlong,dtthu. Cả hai vào nhóm vai dự án; DuAn-GG đã cắm sẵn trong QuyenKhoTaiLieu-DL nên bốn mục tiêu cùng xanh. Nhét thẳng vào nhóm quyền thì hai mục tiêu nhóm vai vẫn đỏ — đúng cái lối tắt mà module này dạy bạn tránh."
+              }
+            },
+            {
+              "question": {
+                "kind": "mcq",
+                "id": "m19-b5-prac-2",
+                "prompt": {
+                  "vi": "Cú ủy quyền nào dưới đây là TỬ TẾ theo chuẩn của bài?"
+                },
+                "choices": [
+                  { "vi": "Nhóm Helpdesk-GG được reset mật khẩu trên đúng nhánh OU NhanVien" },
+                  { "vi": "Từng bạn helpdesk được ủy quyền riêng cho gọn từng con người một" },
+                  { "vi": "Nhóm Helpdesk-GG vào Domain Admins nhưng mọi người hứa chỉ dùng để reset" }
+                ],
+                "answerIndex": 0,
+                "hintTopic": { "vi": "hẹp thao tác, hẹp phạm vi, trao cho nhóm" }
+              },
+              "hint": {
+                "vi": "Ba tiêu chí: đúng việc, đúng nhánh, và trao cho ai để còn truy vết được?"
+              },
+              "solution": {
+                "vi": "Nhóm Helpdesk-GG + đúng thao tác + đúng nhánh OU — đủ ba chân: hẹp thao tác, hẹp phạm vi, trao cho nhóm. Ủy quyền cho từng cá nhân là gieo quyền mồ côi; còn lời hứa \"chỉ dùng để reset\" không phải là một cơ chế bảo mật."
+              }
+            }
+          ]
+        },
+        {
+          "type": "retrieval",
+          "questions": [
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m19-b5-ret-1",
+                "prompt": {
+                  "vi": "Không nhìn lại bài: cơ chế trao một bộ thao tác hẹp trên một nhánh OU cho một nhóm — không phát admin — gọi là gì?"
+                },
+                "accept": [
+                  "delegation",
+                  "ủy quyền",
+                  "uy quyen",
+                  "delegation of control",
+                  "ủy quyền trên ou",
+                  "uy quyen tren ou"
+                ],
+                "hintTopic": { "vi": "tiếng Việt hai chữ, tiếng Anh một chữ" }
+              },
+              "hint": { "vi": "Chữ tiếng Anh cùng họ với delegate — người được cử đi thay." },
+              "solution": {
+                "vi": "Delegation — ủy quyền. Hẹp thao tác, hẹp phạm vi, trao cho nhóm: helpdesk làm được việc của mình mà chùm chìa khóa của tòa nhà vẫn nằm nguyên trong két."
+              }
+            }
+          ],
+          "selfExplain": {
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: vì sao thêm helpdesk vào Domain Admins là sai NGAY CẢ KHI họ chỉ định dùng nó để reset mật khẩu?"
+            },
+            "keywords": [
+              ["quyền tối thiểu", "quyen toi thieu", "đủ dùng", "du dung", "việc bé", "viec be", "chìa hẹp", "chia hep"],
+              ["cả miền", "ca mien", "toàn miền", "toan mien", "mọi thứ", "moi thu", "cả tòa nhà", "ca toa nha"],
+              ["lộ", "lo ", "mất tài khoản", "mat tai khoan", "bị chiếm", "bi chiem", "rủi ro", "rui ro", "kẻ tấn công", "ke tan cong"],
+              ["lời hứa", "loi hua", "không phải cơ chế", "khong phai co che", "ý định", "y dinh", "nhầm tay", "nham tay"]
+            ],
+            "exampleAnswer": {
+              "vi": "Vì quyền không đo bằng ý định mà đo bằng thứ có thể xảy ra: một tài khoản Domain Admins bị lộ, bị lừa, hay lỡ tay là cả miền lãnh đủ — bất kể chủ nhân của nó tử tế đến đâu. Lời hứa chỉ-dùng-để-reset không phải cơ chế. Quyền tối thiểu đủ dùng thu nhỏ bán kính sát thương: chìa hẹp thì mất chìa cũng chỉ mất một cánh cửa."
+            }
+          }
+        },
+        {
+          "type": "summary",
+          "bullets": [
+            { "vi": "Delegation: trao đúng thao tác, trên đúng nhánh OU, cho một NHÓM — không phát admin toàn miền." },
+            { "vi": "Trao cho nhóm để truy vết bằng một lệnh và thu hồi bằng một động tác rút — không gieo quyền mồ côi." },
+            { "vi": "Quyền đo bằng thứ có thể xảy ra, không đo bằng ý định — chìa hẹp thì mất chìa chỉ mất một cửa." }
+          ],
+          "nextTeaser": {
+            "vi": "Miền đã có trật tự: đúng người, đúng vai, đúng chìa. Nhưng hệ thống tử tế đến mấy cũng sẽ có ngày trục trặc — và lúc đó thứ cứu bạn là những dòng NHẬT KÝ nó để lại. Module sau: nhìn thấy sự cố trước cả người dùng."
+          }
+        }
+      ]
+    }
+  ],
+
+  "concepts": [
+    {
+      "id": "m19-site",
+      "term": "Site trong AD",
+      "glossVi": "Cụm mạng con gần nhau về địa lý, nối nhau bằng đường nhanh — chung miền nhưng khác chỗ đứng; tầng Site của LSDOU áp chính sách theo vị trí",
+      "metaphor": {
+        "vi": "Như các chi nhánh của một dòng họ: vẫn chung gia phả, nhưng ai ở tòa nào thì sinh hoạt ở tòa đó — việc chung mới gửi thư qua lại giữa các tòa."
+      },
+      "iconId": "icon-ad-site",
+      "flashcard": {
+        "front": { "vi": "Site khác OU ở trục chia nào?" },
+        "back": {
+          "vi": "Site chia theo ĐỊA LÝ (cụm subnet gần nhau, đường nhanh — Hà Nội, Đà Nẵng), OU chia theo TỔ CHỨC (kế toán, nhân sự — dù ngồi đâu). Hai trục vuông góc: tài khoản nằm trong OU, máy đứng trong site; GPO gắn site áp theo vị trí ngồi."
+        }
+      }
+    },
+    {
+      "id": "m19-subnet-site",
+      "term": "Subnet gắn site",
+      "glossVi": "Lời khai dải-nào-thuộc-nơi-nào trong AD; máy nhìn IP của mình tra ra site rồi tìm DC cùng site mà hỏi",
+      "metaphor": {
+        "vi": "Như bảng mã vùng điện thoại dán ở tổng đài: nhìn đầu số biết người gọi ở tỉnh nào mà nối cho tổng đài viên gần đó — không có bảng thì cuộc nào cũng dồn về trụ sở."
+      },
+      "iconId": "icon-subnet-site",
+      "flashcard": {
+        "front": { "vi": "Chi nhánh mới có DC tại chỗ mà đăng nhập vẫn chậm khó hiểu — nghi phạm số một?" },
+        "back": {
+          "vi": "Dải mạng của chi nhánh chưa được khai gắn vào site. Máy nhìn IP để tra site của mình — dải vô chủ thì máy mù vị trí, gõ cửa DC bất kỳ (thường ở thành phố khác). Dựng DC tại chỗ chỉ là nửa việc; khai subnet-thuộc-site là nửa còn lại."
+        }
+      }
+    },
+    {
+      "id": "m19-replication",
+      "term": "Replication giữa DC",
+      "glossVi": "Mỗi DC giữ một bản sổ miền đầy đủ; thay đổi ghi một nơi rồi chép dần sang nơi khác — trong site tức thì, giữa site nén và theo lịch",
+      "metaphor": {
+        "vi": "Như các chi nhánh ngân hàng cùng giữ một cuốn sổ cái: bút toán ghi ở đâu cũng được, nhưng cuối mỗi chuyến xe liên tỉnh các chi nhánh mới khớp sổ với nhau."
+      },
+      "iconId": "icon-replication",
+      "flashcard": {
+        "front": { "vi": "Replication trong site và giữa site khác nhau thế nào, và vì sao?" },
+        "back": {
+          "vi": "Trong site: dây nhanh, thay đổi lan gần như tức thì. Giữa site: đường WAN chậm và đắt nên thay đổi được gom, nén, gửi theo lịch (mặc định cỡ 15 phút một chuyến). Ngoại lệ đáng nhớ: đổi mật khẩu có đường ưu tiên riêng, không đợi lịch."
+        }
+      }
+    },
+    {
+      "id": "m19-do-tre",
+      "term": "Khe trễ giữa site",
+      "glossVi": "Quãng thời gian thay đổi ghi ở site này chưa lan tới site kia — là tính chất của hệ thống, không phải bệnh",
+      "metaphor": {
+        "vi": "Như gửi tiền ở quầy tỉnh này rồi lập tức rút ở tỉnh khác: sổ bên kia chưa kịp khớp thì máy báo thiếu — đợi chuyến khớp sổ, không phải ngân hàng mất tiền."
+      },
+      "iconId": "icon-do-tre-site",
+      "flashcard": {
+        "front": { "vi": "Cấp quyền ở site A, người dùng ở site B chưa thấy — người trực làm gì trước tiên?" },
+        "back": {
+          "vi": "Hỏi hai câu: thay đổi ghi ở site nào, người dùng đứng site nào. Khác site thì đối chiếu lịch replication và đợi hết một chuyến chép rồi mới kết luận — ghi đè lần nữa hay khởi động lại DC là sửa loạn trong khe trễ, biến ca không-phải-bệnh thành bệnh thật."
+        }
+      }
+    },
+    {
+      "id": "m19-agdlp",
+      "term": "AGDLP",
+      "glossVi": "Nếp xếp quyền bốn khúc: Account vào Global group (vai), Global cắm vào Domain Local group (quyền), Permission chỉ gắn vào Domain Local",
+      "metaphor": {
+        "vi": "Như đường ống nước bốn khúc nối sẵn: người là nguồn nước, vai là ống nhánh, quyền là ống gom, thư mục là vòi — nước chảy được vì các khúc đã cắm nhau, không ai nối nguồn thẳng vào vòi."
+      },
+      "iconId": "icon-agdlp",
+      "flashcard": {
+        "front": { "vi": "Đọc xuôi bốn khúc của chuỗi AGDLP và việc mỗi khúc đảm nhận?" },
+        "back": {
+          "vi": "Account (con người) → Global group (nhóm VAI gom người theo phòng ban) → Domain Local group (nhóm QUYỀN đứng cạnh tài nguyên) → Permission (quyền thật trên thư mục, chỉ gắn vào nhóm DL). Người không bao giờ chạm thẳng vào quyền."
+        }
+      }
+    },
+    {
+      "id": "m19-gg-dl",
+      "term": "Global vs Domain Local",
+      "glossVi": "Global gom NGƯỜI theo vai và đi theo con người; Domain Local giữ QUYỀN và đứng cạnh tài nguyên — vai cắm vào quyền, AD cấm chiều ngược",
+      "metaphor": {
+        "vi": "Như thẻ nhân viên và ổ khóa cửa: thẻ đi theo người (đổi phòng là đổi thẻ), ổ khóa đứng yên cạnh cửa — người ta lập trình cho Ổ nhận loại thẻ nào, chứ không nhét ổ khóa vào túi áo nhân viên."
+      },
+      "iconId": "icon-gg-dl",
+      "flashcard": {
+        "front": { "vi": "Nhóm Global và Domain Local mỗi loại trả lời câu hỏi gì, và luật cứng giữa chúng?" },
+        "back": {
+          "vi": "Global: \"người này LÀ AI trong tổ chức\" — gom người theo vai, đi theo con người. Domain Local: \"tài nguyên này AI ĐƯỢC ĐỘNG\" — giữ quyền, neo cạnh tài nguyên. Vai cắm vào quyền; chiều ngược (DL chui vào GG) bị AD từ chối thẳng."
+        }
+      }
+    },
+    {
+      "id": "m19-vong-doi",
+      "term": "Vòng đời nhân sự trong AGDLP",
+      "glossVi": "Người mới = thêm vào nhóm vai; chuyển phòng = đổi nhóm vai; nghỉ = khóa tài khoản — mọi biến động chỉ chạm khúc Account–Global",
+      "metaphor": {
+        "vi": "Như đổi chỗ ở trong khu tập thể có sổ trực chung: chỉ cần sửa một dòng tên-thuộc-nhà-nào, còn điện nước chìa khóa của căn mới tự theo về — không phải đi đấu lại từng đường dây."
+      },
+      "iconId": "icon-vong-doi",
+      "flashcard": {
+        "front": { "vi": "Ba kịch bản nhân sự (mới, chuyển phòng, nghỉ) xử lý thế nào trong hệ AGDLP tử tế?" },
+        "back": {
+          "vi": "Mới: một dòng Add vào nhóm vai của phòng — quyền tự chảy. Chuyển phòng: rút khỏi vai cũ, thêm vào vai mới — quyền cũ tự đứt, không sót mẩu nào. Nghỉ: khóa tài khoản — mọi cửa đóng cùng lúc. Cả ba chỉ chạm quan hệ người–nhóm vai."
+        }
+      }
+    },
+    {
+      "id": "m19-delegation",
+      "term": "Delegation (ủy quyền)",
+      "glossVi": "Trao một bộ thao tác hẹp, trên một nhánh OU, cho một nhóm — helpdesk làm được việc mà không cầm admin toàn miền",
+      "metaphor": {
+        "vi": "Như giao cho bác bảo vệ chiếc chìa mở đúng phòng họp tầng ba: bác làm trọn việc của mình, còn chùm chìa khóa của cả tòa nhà vẫn nằm trong két giám đốc."
+      },
+      "iconId": "icon-delegation",
+      "flashcard": {
+        "front": { "vi": "Ba đặc điểm của một cú ủy quyền tử tế trong AD?" },
+        "back": {
+          "vi": "Hẹp THAO TÁC (chỉ việc cần — vd reset mật khẩu), hẹp PHẠM VI (chỉ nhánh OU cần — vd NhanVien, không đụng Lãnh đạo), và trao cho NHÓM chứ không cho cá nhân — để truy vết bằng một lệnh Get-ADGroupMember và thu hồi bằng một động tác rút khỏi nhóm."
+        }
+      }
+    }
+  ],
+
+  "masteryTest": [
+    {
+      "kind": "mcq",
+      "id": "m19-mt-1",
+      "prompt": {
+        "vi": "Site trong AD là gì?"
+      },
+      "choices": [
+        { "vi": "Cụm mạng con gần nhau về địa lý, nối nhau bằng đường nhanh, chung một miền" },
+        { "vi": "Một nhánh phòng ban trong cây tổ chức, chứa tài khoản của nhân viên nhánh đó" },
+        { "vi": "Một miền con tách riêng cho chi nhánh, có bộ tài khoản độc lập với trụ sở" }
+      ],
+      "answerIndex": 0,
+      "hintTopic": { "vi": "trục địa lý, không phải trục tổ chức" },
+      "explain": {
+        "vi": "Site chia theo địa lý: cụm subnet gần nhau, dây nhanh — vẫn chung miền, chung bộ tài khoản. Nhánh phòng ban là OU (trục tổ chức); miền con là chuyện khác hẳn, chi nhánh trong bài vẫn nằm nguyên trong một miền."
+      }
+    },
+    {
+      "kind": "typed",
+      "id": "m19-mt-2",
+      "prompt": {
+        "vi": "Khai subnet gắn site giúp máy trạm tự tìm được cái gì ở gần mình?"
+      },
+      "accept": [
+        "dc",
+        "domain controller",
+        "dc gần nhất",
+        "dc gan nhat",
+        "dc cùng site",
+        "dc cung site",
+        "domain controller cùng site",
+        "domain controller cung site",
+        "máy chủ miền",
+        "may chu mien"
+      ],
+      "hintTopic": { "vi": "máy chủ mà cuộc đăng nhập nào cũng phải gõ cửa" },
+      "explain": {
+        "vi": "Domain Controller cùng site. Máy nhìn IP của mình → tra lời khai subnet-thuộc-site → biết site của mình → hỏi DC gần nhà. Quên khai là chi nhánh mới chậm khó hiểu dù DC đứng ngay tầng trên."
+      }
+    },
+    {
+      "kind": "mcq",
+      "id": "m19-mt-3",
+      "prompt": {
+        "vi": "9:00 thêm user vào nhóm ở DC Hà Nội; 9:10 tại Đà Nẵng quyền chưa xuất hiện. Cách hiểu ĐÚNG?"
+      },
+      "choices": [
+        { "vi": "Bình thường — giữa hai site, thay đổi đi theo lịch chép nên có khe trễ" },
+        { "vi": "Thao tác thêm nhóm đã thất bại và cần được thực hiện lại ngay lập tức" },
+        { "vi": "DC Đà Nẵng đã hỏng dịch vụ sao chép và cần khởi động lại khẩn cấp" }
+      ],
+      "answerIndex": 0,
+      "hintTopic": { "vi": "khe trễ giữa site là tính chất" },
+      "explain": {
+        "vi": "Giữa hai site, replication gom thay đổi và đi theo lịch — mươi phút chưa thấy là nằm trong khe trễ bình thường. Làm lại hay khởi động lại DC lúc này là sửa loạn một ca không-phải-bệnh."
+      }
+    },
+    {
+      "kind": "mcq",
+      "id": "m19-mt-4",
+      "prompt": {
+        "vi": "Vì sao replication GIỮA site không chạy tức thì như TRONG site?"
+      },
+      "choices": [
+        { "vi": "Đường WAN giữa site chậm và đắt — thay đổi được gom, nén, gửi theo chuyến" },
+        { "vi": "Hai site bắt buộc thuộc hai miền nên mọi trao đổi phải qua bước xác thực chéo" },
+        { "vi": "AD giới hạn cứng mỗi giờ một lần để bảo vệ cơ sở dữ liệu khỏi ghi đè" }
+      ],
+      "answerIndex": 0,
+      "hintTopic": { "vi": "site sinh ra để mô tả đường nhanh, đường chậm" },
+      "explain": {
+        "vi": "Site mô tả sự thật đường truyền: trong site dây nhanh nên chép tức thì; giữa site là WAN chậm và đắt nên gom chuyến. Hai site vẫn chung miền, và lịch chép do người vận hành đặt chứ không có giới hạn cứng nào."
+      }
+    },
+    {
+      "kind": "order",
+      "id": "m19-mt-5",
+      "prompt": {
+        "vi": "Xếp bốn khúc của chuỗi AGDLP theo đúng chiều quyền chảy:"
+      },
+      "items": [
+        { "vi": "Account — con người có tài khoản" },
+        { "vi": "Global group — nhóm vai gom người" },
+        { "vi": "Domain Local group — nhóm quyền cạnh tài nguyên" },
+        { "vi": "Permission — quyền thật trên thư mục" }
+      ],
+      "hintTopic": { "vi": "đọc xuôi bốn chữ cái A G DL P" },
+      "explain": {
+        "vi": "Account → Global → Domain Local → Permission: người vào vai, vai cắm vào quyền, quyền gắn tài nguyên. Chuỗi này là xương sống của cả module — không khúc nào được nhảy cóc."
+      }
+    },
+    {
+      "kind": "mcq",
+      "id": "m19-mt-6",
+      "prompt": {
+        "vi": "Nhóm GLOBAL trong nếp AGDLP gom cái gì?"
+      },
+      "choices": [
+        { "vi": "Gom NGƯỜI theo vai — kế toán, nhân sự — và đi theo con người" },
+        { "vi": "Gom QUYỀN của một tài nguyên — ai được đọc, ai được sửa thư mục đó" },
+        { "vi": "Gom MÁY TRẠM theo tầng nhà để tiện áp chính sách phần mềm chung" }
+      ],
+      "answerIndex": 0,
+      "hintTopic": { "vi": "nhóm trả lời câu hỏi là-ai" },
+      "explain": {
+        "vi": "Global gom người theo VAI — nó trả lời \"người này là ai trong tổ chức\" và đi theo con người khi họ chuyển vai. Gom quyền là việc của Domain Local; máy trạm theo tầng là chuyện của OU/GPO."
+      }
+    },
+    {
+      "kind": "mcq",
+      "id": "m19-mt-7",
+      "prompt": {
+        "vi": "Nhóm DOMAIN LOCAL trong nếp AGDLP dùng để làm gì?"
+      },
+      "choices": [
+        { "vi": "Giữ quyền của một tài nguyên — quyền thật trên thư mục chỉ gắn vào nó" },
+        { "vi": "Gom người của một chi nhánh để chào cờ điểm danh mỗi sáng thứ hai" },
+        { "vi": "Chứa các tài khoản quản trị miền được phép sửa cấu trúc thư mục AD" }
+      ],
+      "answerIndex": 0,
+      "hintTopic": { "vi": "nhóm đứng cạnh tài nguyên" },
+      "explain": {
+        "vi": "Domain Local là nhóm QUYỀN: nó đứng cạnh tài nguyên và là cái tên duy nhất được gắn quyền thật. Thành viên của nó là các nhóm vai — không phải người lẻ, càng không phải chỗ chứa admin."
+      }
+    },
+    {
+      "kind": "mcq",
+      "id": "m19-mt-8",
+      "prompt": {
+        "vi": "Thao tác nào bị AD TỪ CHỐI THẲNG, không cần đợi hậu quả?"
+      },
+      "choices": [
+        { "vi": "Nhét một nhóm Domain Local vào trong một nhóm Global" },
+        { "vi": "Nhét một nhóm Global vào trong một nhóm Domain Local" },
+        { "vi": "Thêm một người dùng vào cùng lúc hai nhóm Global khác nhau" }
+      ],
+      "answerIndex": 0,
+      "hintTopic": { "vi": "chiều ngược của đường ống" },
+      "explain": {
+        "vi": "Global không chứa được Domain Local — DL bị neo cạnh tài nguyên còn GG sinh ra để mang đi, nên AD cấm từ gốc. Chiều xuôi (GG vào DL) chính là nếp AGDLP; một người thuộc nhiều nhóm vai là chuyện thường ngày."
+      }
+    },
+    {
+      "kind": "mcq",
+      "id": "m19-mt-9",
+      "prompt": {
+        "vi": "Chị Hoa chuyển từ nhân sự sang kế toán. Trong hệ AGDLP tử tế, người trực làm gì?"
+      },
+      "choices": [
+        { "vi": "Rút chị khỏi NhanSu-GG, thêm vào KeToan-GG — quyền tự đổi theo vai" },
+        { "vi": "Soát mọi nhóm quyền có tên chị để gỡ từng chỗ rồi cấp lại từ đầu" },
+        { "vi": "Giữ nguyên nhóm cũ và cấp thêm quyền kế toán thẳng vào tài khoản chị" }
+      ],
+      "answerIndex": 0,
+      "hintTopic": { "vi": "biến động nhân sự chỉ chạm khúc người–vai" },
+      "explain": {
+        "vi": "Đổi nhóm vai là xong: quyền nhân sự tự đứt, quyền kế toán tự chảy. Soát từng nhóm quyền là hệ quả của lối tắt ngày trước; còn giữ vai cũ + cấp thẳng là vừa sót quyền cũ vừa gieo thêm quyền mồ côi."
+      }
+    },
+    {
+      "kind": "typed",
+      "id": "m19-mt-10",
+      "prompt": {
+        "vi": "Cơ chế trao một bộ thao tác hẹp trên một nhánh OU cho một nhóm — không phát admin toàn miền — gọi là gì?"
+      },
+      "accept": [
+        "delegation",
+        "ủy quyền",
+        "uy quyen",
+        "delegation of control",
+        "ủy quyền trên ou",
+        "uy quyen tren ou"
+      ],
+      "hintTopic": { "vi": "tiếng Anh cùng họ với delegate" },
+      "explain": {
+        "vi": "Delegation — ủy quyền. Ba chân của một cú ủy quyền tử tế: hẹp thao tác, hẹp phạm vi OU, và trao cho nhóm để còn truy vết và thu hồi được."
+      }
+    },
+    {
+      "kind": "mcq",
+      "id": "m19-mt-11",
+      "prompt": {
+        "vi": "Helpdesk cần reset mật khẩu cho nhân viên thường. Cách trao quyền ĐÚNG?"
+      },
+      "choices": [
+        { "vi": "Ủy quyền thao tác reset trên nhánh OU NhanVien cho nhóm Helpdesk-GG" },
+        { "vi": "Thêm cả đội helpdesk vào Domain Admins kèm quy định chỉ dùng để reset" },
+        { "vi": "Ủy quyền riêng cho từng bạn helpdesk trên toàn bộ cây OU của miền" }
+      ],
+      "answerIndex": 0,
+      "hintTopic": { "vi": "ba chân: thao tác, phạm vi, nhóm" },
+      "explain": {
+        "vi": "Đúng thao tác (reset), đúng phạm vi (OU NhanVien), trao cho nhóm (Helpdesk-GG). Domain Admins cho việc bé là treo cả miền vào rủi ro — quy định miệng không phải cơ chế; ủy quyền cho từng cá nhân trên toàn cây thì vừa rộng vừa không truy vết nổi."
+      }
+    },
+    {
+      "kind": "mcq",
+      "id": "m19-mt-12",
+      "prompt": {
+        "vi": "Vì sao KHÔNG gán quyền thẳng cho từng người dù cách đó chạy được ngay?"
+      },
+      "choices": [
+        { "vi": "Vì mọi thay đổi nhân sự sau đó đều thành việc dọn tay từng quyền" },
+        { "vi": "Vì AD giới hạn mỗi tài khoản người dùng chỉ được nhận tối đa một quyền" },
+        { "vi": "Vì quyền gán thẳng cho người chạy chậm hơn hẳn quyền đi qua các nhóm" }
+      ],
+      "answerIndex": 0,
+      "hintTopic": { "vi": "cái giá nằm ở ngày mai, không ở hôm nay" },
+      "explain": {
+        "vi": "Cái giá là ngày mai: người chuyển phòng thì quyền cũ không tự rút, nửa năm sau không ai trả lời được ai-cho-vào-vì-sao. AD không giới hạn một quyền, và tốc độ chẳng khác nhau — khác nhau ở chi phí thay đổi và truy vết."
+      }
+    },
+    {
+      "kind": "typed",
+      "id": "m19-mt-13",
+      "prompt": {
+        "vi": "Lệnh nào cho bạn xem một nhóm đang chứa những ai — kèm cột nói rõ thành viên là người hay nhóm?"
+      },
+      "accept": [
+        "get-adgroupmember",
+        "get adgroupmember",
+        "getadgroupmember",
+        "get-adgroupmember -identity",
+        "lệnh get-adgroupmember",
+        "lenh get-adgroupmember"
+      ],
+      "hintTopic": { "vi": "động từ Get, danh từ ADGroupMember" },
+      "explain": {
+        "vi": "Get-ADGroupMember -Identity <tên nhóm>. Cột ObjectClass là máy soi nếp AGDLP: nhóm quyền tử tế hiện group (chứa nhóm vai), còn một dãy user nằm thẳng trong nhóm quyền là dấu vết lối tắt chồng chất."
+      }
+    },
+    {
+      "kind": "ps",
+      "id": "m19-mt-ps1",
+      "prompt": {
+        "vi": "Đợt kiểm toán phát hiện anh Hoang Van Nam (hvnam) đang nằm THẲNG trong nhóm quyền in ấn — sai nếp, và không rõ ai cho vào. Bạn không có lệnh gỡ, nhưng phải vá lại cho quyền chảy ĐÚNG CHUỖI: anh Nam thuộc nhóm vai, và nhóm vai nằm trong nhóm quyền. Tra kỹ bằng Get-ADGroupMember rồi bổ sung mắt xích còn thiếu."
+      },
+      "spec": {
+        "world": {
+          "hostname": "MAY-QUAN-TRI",
+          "interfaces": [{ "alias": "Ethernet0", "ip": "10.20.2.5", "prefix": 24 }],
+          "targets": [],
+          "ad": {
+            "domain": "congty.vn",
+            "ous": ["VanPhong"],
+            "users": [
+              { "name": "Hoang Van Nam", "sam": "hvnam", "ou": "VanPhong", "enabled": true },
+              { "name": "Ly Thi Hoa", "sam": "lthoa", "ou": "VanPhong", "enabled": true }
+            ],
+            "groups": [
+              { "name": "InAn-GG", "scope": "Global", "members": ["lthoa"] },
+              { "name": "QuyenInAn-DL", "scope": "DomainLocal", "members": ["hvnam", "InAn-GG"] }
+            ]
+          },
+          "files": {}
+        },
+        "goals": [
+          { "kind": "group-member", "group": "InAn-GG", "sam": "hvnam" },
+          { "kind": "group-member", "group": "QuyenInAn-DL", "sam": "hvnam" }
+        ],
+        "solution": ["Add-ADGroupMember InAn-GG -Members hvnam"]
+      },
+      "hintTopic": { "vi": "mắt xích nhóm VAI đang thiếu tên anh Nam" },
+      "explain": {
+        "vi": "Add-ADGroupMember InAn-GG -Members hvnam. Anh Nam đang có quyền nhờ nằm thẳng trong nhóm quyền — mục tiêu DL xanh sẵn nhưng mục tiêu nhóm vai đỏ. Bổ sung anh vào InAn-GG là chuỗi liền lại: về sau ai tra Get-ADGroupMember cũng đọc ra được vì-sao-anh-có-quyền, và ngày anh chuyển phòng chỉ cần rút khỏi nhóm vai."
+      }
+    },
+    {
+      "kind": "ps",
+      "id": "m19-mt-ps2",
+      "prompt": {
+        "vi": "Chị Dang Thi Thu (dtthu2) vừa về phòng kinh doanh và cần gửi được báo giá. Miền có sẵn nhiều nhóm — kể cả vài nhóm không liên quan. Tự tra bằng Get-ADGroup và Get-ADGroupMember, tìm đúng đường ống của kinh doanh, rồi xếp chị vào đúng nếp AGDLP."
+      },
+      "spec": {
+        "world": {
+          "hostname": "MAY-QUAN-TRI",
+          "interfaces": [{ "alias": "Ethernet0", "ip": "10.20.2.5", "prefix": 24 }],
+          "targets": [],
+          "ad": {
+            "domain": "congty.vn",
+            "ous": ["KinhDoanh", "KeToan"],
+            "users": [
+              { "name": "Bui Van Son", "sam": "bvson", "ou": "KinhDoanh", "enabled": true },
+              { "name": "Dang Thi Thu", "sam": "dtthu2", "ou": "KinhDoanh", "enabled": true },
+              { "name": "Tran Thi Mai", "sam": "ttmai", "ou": "KeToan", "enabled": true }
+            ],
+            "groups": [
+              { "name": "KinhDoanh-GG", "scope": "Global", "members": ["bvson"] },
+              { "name": "KeToan-GG", "scope": "Global", "members": ["ttmai"] },
+              { "name": "QuyenGuiBaoGia-DL", "scope": "DomainLocal", "members": ["KinhDoanh-GG"] },
+              { "name": "QuyenDocBaoCao-DL", "scope": "DomainLocal", "members": ["KeToan-GG"] }
+            ]
+          },
+          "files": {}
+        },
+        "goals": [
+          { "kind": "group-member", "group": "KinhDoanh-GG", "sam": "dtthu2" },
+          { "kind": "group-member", "group": "QuyenGuiBaoGia-DL", "sam": "dtthu2" }
+        ],
+        "solution": ["Add-ADGroupMember KinhDoanh-GG -Members dtthu2"]
+      },
+      "hintTopic": { "vi": "tìm nhóm VAI của kinh doanh trước, đừng đụng nhóm quyền" },
+      "explain": {
+        "vi": "Add-ADGroupMember KinhDoanh-GG -Members dtthu2. Tra QuyenGuiBaoGia-DL thấy nó chứa KinhDoanh-GG — vậy chỉ cần đưa chị Thu vào nhóm vai đó là cả hai mục tiêu xanh. Nhét thẳng vào nhóm quyền thì mục tiêu nhóm vai vẫn đỏ; còn mấy nhóm kế toán đứng đó để thử xem bạn có tra trước khi xếp hay không."
+      }
+    }
+  ]
+}

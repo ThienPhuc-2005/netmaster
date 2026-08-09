@@ -12,7 +12,12 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { cleanup, fireEvent, render, screen, within } from '@testing-library/react'
 import { NetworkLab } from './NetworkLab'
-import { vlanRepairLab, wiringLab } from '../../../tests/fixtures/labFixture'
+import { vlanRepairLab, wiringLab,
+  stpLab,
+  trunkLab,
+  aclLab,
+  routedWithAcl,
+} from '../../../tests/fixtures/labFixture'
 import type { Topology } from '../../engine/lab'
 
 afterEach(cleanup)
@@ -219,6 +224,24 @@ describe('gửi gói tin', () => {
     render(<NetworkLab spec={vlanRepairLab()} />)
     expect(screen.getByText(/không tính vào bài/)).toBeTruthy()
   })
+
+  // Module 17: bị ACL chặn thì "một danh sách nào đó cấm" là chưa đủ để
+  // sửa. Phải nói ra DÒNG NÀO trên CỔNG NÀO — và phải phân biệt được dòng
+  // người ta gõ với dòng cấm vô hình cuối danh sách, vì hai bệnh khác
+  // nhau: một cái sửa bằng xóa luật, cái kia sửa bằng THÊM luật.
+  it('bị luật lọc chặn thì nhật ký nói rõ dòng nào ăn gói, trên cổng nào', () => {
+    render(<NetworkLab spec={aclLab()} />)
+    fireEvent.click(screen.getByRole('button', { name: /Gửi thử/ }))
+    expect(screen.getByText(/danh sách lọc trên cổng router đã cấm/)).toBeTruthy()
+    expect(screen.getByText(/danh sách 101 dòng 20.*cổng g0.*chiều in/)).toBeTruthy()
+  })
+
+  it('không dòng nào khớp thì nhật ký gọi tên dòng cấm vô hình', () => {
+    const spec = { ...aclLab(), initial: routedWithAcl({ apply: true, onlyPermitOther: true }) }
+    render(<NetworkLab spec={spec} />)
+    fireEvent.click(screen.getByRole('button', { name: /Gửi thử/ }))
+    expect(screen.getByText(/Không dòng nào của danh sách 101 khớp/)).toBeTruthy()
+  })
 })
 
 describe('chẩn đoán', () => {
@@ -344,5 +367,80 @@ describe('bàn phím dời được thiết bị (hội đồng, ghế a11y)', (
     const before = device.style.left
     fireEvent.keyDown(device, { key: 'a' })
     expect(deviceButton('PC-A (kế toán)').style.left).toBe(before)
+  })
+})
+
+describe('trunk và STP trên mặt bàn (Module 14-15)', () => {
+  /** Chip trong một nhóm chọn — đường bấm chọn của mọi bảng cấu hình. */
+  const chip = (groupLabel: string, chipLabel: string) =>
+    within(screen.getByRole('radiogroup', { name: groupLabel })).getByRole('radio', { name: chipLabel })
+
+  it('đề không cho đụng trunk thì không có bảng vai cổng', () => {
+    // Bài Module 4 cũ phải trông y như trước khi có trunk.
+    render(<NetworkLab spec={vlanRepairLab()} />)
+    fireEvent.click(deviceButton('Switch-1'))
+    expect(screen.queryByRole('radiogroup', { name: /Vai của cổng/ })).toBeNull()
+  })
+
+  it('đổi cổng thành trunk bằng bấm chọn, rồi mở allowed list và native', () => {
+    render(<NetworkLab spec={trunkLab()} />)
+    fireEvent.click(deviceButton('Switch-1'))
+    // Cổng access chưa có allowed list — bày ra là mời điền vào chỗ vô nghĩa.
+    expect(screen.queryByRole('group', { name: /VLAN cho qua trunk p4/ })).toBeNull()
+
+    fireEvent.click(chip('Vai của cổng p4', 'Trunk'))
+    expect(screen.getByRole('group', { name: /VLAN cho qua trunk p4/ })).toBeTruthy()
+    expect(screen.getByRole('radiogroup', { name: /Native VLAN của trunk p4/ })).toBeTruthy()
+  })
+
+  it('lời giải Module 14 đi trọn bằng đường bấm chọn: hai đầu trunk, mục tiêu xanh', () => {
+    render(<NetworkLab spec={trunkLab()} />)
+    expect(unfinished()).toHaveLength(1)
+
+    for (const host of ['Switch-1', 'Switch-2']) {
+      fireEvent.click(deviceButton(host))
+      fireEvent.click(chip('Vai của cổng p4', 'Trunk'))
+    }
+    expect(unfinished(), 'trunk hai đầu là kế toán gọi được nhau, kỹ thuật vẫn bị chặn').toHaveLength(0)
+  })
+
+  it('cổng trunk và cổng bị STP chặn nói ra trong TÊN nút, không chỉ đổi màu', () => {
+    // Người dùng bàn phím và trình đọc màn hình phải biết được hai trạng
+    // thái này — chúng là nội dung bài học, không phải trang trí.
+    render(<NetworkLab spec={trunkLab()} />)
+    fireEvent.click(deviceButton('Switch-1'))
+    fireEvent.click(chip('Vai của cổng p4', 'Trunk'))
+    expect(screen.getByRole('button', { name: /Switch-1 · p4 —.*trunk/ })).toBeTruthy()
+  })
+
+  it('bảng STP: bật lên thì nói rõ ai làm gốc và mấy cổng đang nằm im', () => {
+    render(<NetworkLab spec={stpLab()} />)
+    expect(screen.getByText('Đang tắt')).toBeTruthy()
+
+    fireEvent.click(screen.getByRole('button', { name: 'Bật STP' }))
+    expect(screen.getByText(/Gốc cây: Switch-2/)).toBeTruthy()
+    expect(screen.getByText(/Cổng đang nằm im: 1/)).toBeTruthy()
+    // Và cổng đó phải tự khai trong tên nút của chính nó.
+    expect(screen.getAllByRole('button', { name: /STP chặn/ }).length).toBeGreaterThan(0)
+  })
+
+  it('bật STP là mạng vòng hết bão — mục tiêu bài 15 xanh ngay', () => {
+    render(<NetworkLab spec={stpLab()} />)
+    expect(unfinished()).toHaveLength(1)
+    fireEvent.click(screen.getByRole('button', { name: 'Bật STP' }))
+    expect(unfinished()).toHaveLength(0)
+  })
+
+  it('nhật ký chặng nói được khung mang nhãn hay đi trần', () => {
+    // Tải trọng sư phạm của Module 14 nằm ở đây, không nằm ở animation.
+    render(<NetworkLab spec={trunkLab()} />)
+    for (const host of ['Switch-1', 'Switch-2']) {
+      fireEvent.click(deviceButton(host))
+      fireEvent.click(chip('Vai của cổng p4', 'Trunk'))
+    }
+    fireEvent.click(screen.getByRole('button', { name: /Gửi thử/ }))
+    const log = within(screen.getByRole('region', { name: 'Hành trình gói tin' })).getByRole('list')
+    expect(within(log).getAllByText(/VLAN 10, mang nhãn/).length).toBeGreaterThan(0)
+    expect(within(log).getAllByText(/VLAN 10, đi trần/).length).toBeGreaterThan(0)
   })
 })

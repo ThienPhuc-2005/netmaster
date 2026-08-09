@@ -17,9 +17,20 @@ import {
   sameSubnet,
   validateTopology,
   vlanOfPort,
+  DEFAULT_NATIVE_VLAN,
+  nativeVlanOf,
+  portModeOf,
+  trunkAllows,
   type Topology,
 } from './topology'
-import { flatNetwork, looseParts, routedNetwork, splitVlanNetwork, MAC } from '../../../tests/fixtures/labFixture'
+import {
+  flatNetwork,
+  looseParts,
+  routedNetwork,
+  splitVlanNetwork,
+  trunkHealthy,
+  MAC,
+} from '../../../tests/fixtures/labFixture'
 
 describe('chuẩn hóa & kiểm định dạng', () => {
   it('normalizeMac đưa về dạng HOA hai chấm', () => {
@@ -243,5 +254,52 @@ describe('validateTopology', () => {
     const snapshot = JSON.stringify(topo)
     validateTopology(topo)
     expect(JSON.stringify(topo)).toBe(snapshot)
+  })
+})
+
+describe('trunk 802.1Q — đọc cấu hình cổng (Module 14)', () => {
+  it('cổng không khai mode là ACCESS — nội dung viết trước Module 14 giữ nguyên nghĩa', () => {
+    // Đây là lời hứa giữ cho toàn bộ Module 4 không phải sửa một chữ.
+    const port = { id: 'p1', vlan: 10 }
+    expect(portModeOf(port)).toBe('access')
+  })
+
+  it('trunk thiếu allowedVlans thì cho MỌI VLAN qua (mặc định thiết bị thật)', () => {
+    const port = { id: 'p4', vlan: 1, mode: 'trunk' as const }
+    expect(trunkAllows(port, 10)).toBe(true)
+    expect(trunkAllows(port, 4094)).toBe(true)
+  })
+
+  it('trunk có allowedVlans thì chỉ những VLAN trong danh sách qua được', () => {
+    const port = { id: 'p4', vlan: 1, mode: 'trunk' as const, allowedVlans: [10, 20] }
+    expect(trunkAllows(port, 10)).toBe(true)
+    expect(trunkAllows(port, 30)).toBe(false)
+  })
+
+  it('native thiếu thì là VLAN 1', () => {
+    expect(nativeVlanOf({ id: 'p4', vlan: 1, mode: 'trunk' })).toBe(DEFAULT_NATIVE_VLAN)
+    expect(nativeVlanOf({ id: 'p4', vlan: 1, mode: 'trunk', nativeVlan: 99 })).toBe(99)
+  })
+
+  it('cổng access mà khai trường của trunk là LỖI CẤU TRÚC, không phải lỗi cấu hình', () => {
+    // Đọc sơ đồ sẽ tưởng cổng chở nhiều VLAN, mà engine thì không — dữ
+    // liệu tự mâu thuẫn thuộc về người soạn bài, không phải người học.
+    const topo = trunkHealthy()
+    const sw = topo.devices.find((d) => d.id === 'sw-1')
+    if (sw?.kind === 'switch') {
+      const port = sw.ports.find((p) => p.id === 'p1')
+      if (port !== undefined) port.nativeVlan = 5
+    }
+    expect(validateTopology(topo).map((p) => p.code)).toContain('trunk-fields-on-access')
+  })
+
+  it('trunk khai allowed rỗng là lỗi cấu trúc (trunk câm, chắc chắn gõ nhầm)', () => {
+    const topo = trunkHealthy()
+    const sw = topo.devices.find((d) => d.id === 'sw-1')
+    if (sw?.kind === 'switch') {
+      const port = sw.ports.find((p) => p.id === 'p4')
+      if (port !== undefined) port.allowedVlans = []
+    }
+    expect(validateTopology(topo).map((p) => p.code)).toContain('trunk-allowed-empty')
   })
 })

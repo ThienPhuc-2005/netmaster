@@ -239,13 +239,19 @@ function Journey({ leg, title }: { leg: JourneyLeg; title?: string }) {
  * học "đây là toàn cảnh, bạn đang ở đâu" — đếm cứng 3 module Phần A sẽ
  * biến nó thành lời nói dối ngay khi module tiếp theo ra đời.
  */
-// labelX đặt ngay sau ô cuối của từng hàng (ô rộng 18, cách nhau 26,
-// hàng bắt đầu ở x=28). Hàng C dài nhất nên nhãn của nó là chỗ dễ tràn
-// khung nhất — đã từng tràn thật, chữ "C · 8-12" bị cắt mất đuôi.
+// labelX đặt ngay sau ô cuối của từng hàng (ô rộng 14, cách nhau 20,
+// hàng bắt đầu ở x=24). Hàng dài nhất (5 ô) là chỗ dễ tràn khung nhất —
+// đã từng tràn thật, chữ "C · 8-12" bị cắt mất đuôi.
+//
+// Lộ trình có 5 phần từ spec v2 (nhập môn A-C, trung cấp D-E). Hàng nào
+// chưa có module viết xong thì ô để RỖNG — bản đồ nói thật cả về phần
+// đang còn dang dở, thay vì giấu đi để trông cho đẹp.
 const COURSE_PARTS = [
-  { part: 'A', color: 'var(--part-a)', orders: [1, 2, 3], y: 30, labelX: 106, labelY: 43 },
-  { part: 'B', color: 'var(--part-b)', orders: [4, 5, 6, 7], y: 58, labelX: 132, labelY: 71 },
-  { part: 'C', color: 'var(--part-c)', orders: [8, 9, 10, 11, 12], y: 86, labelX: 158, labelY: 99 },
+  { part: 'A', color: 'var(--part-a)', orders: [1, 2, 3], y: 16 },
+  { part: 'B', color: 'var(--part-b)', orders: [4, 5, 6, 7], y: 38 },
+  { part: 'C', color: 'var(--part-c)', orders: [8, 9, 10, 11, 12], y: 60 },
+  { part: 'D', color: 'var(--part-d)', orders: [13, 14, 15, 16, 17], y: 82 },
+  { part: 'E', color: 'var(--part-e)', orders: [18, 19, 20, 21], y: 104 },
 ] as const
 
 function CourseMap({ title }: { title?: string }) {
@@ -255,8 +261,8 @@ function CourseMap({ title }: { title?: string }) {
       key={`${x}-${y}`}
       x={x}
       y={y}
-      width="18"
-      height="18"
+      width="14"
+      height="14"
       rx="3"
       fill={filled ? color : 'none'}
       stroke={color}
@@ -266,10 +272,16 @@ function CourseMap({ title }: { title?: string }) {
   )
   return (
     <Frame title={title}>
-      {COURSE_PARTS.map(({ part, color, orders, y, labelX, labelY }) => (
+      {COURSE_PARTS.map(({ part, color, orders, y }) => (
         <g key={part}>
-          {orders.map((order, i) => cell(28 + i * 26, y, color, published.has(order)))}
-          <text x={labelX} y={labelY} fontSize="10" fill={color} style={{ fontFamily: 'var(--font-mono)' }}>
+          {orders.map((order, i) => cell(24 + i * 20, y, color, published.has(order)))}
+          <text
+            x={24 + orders.length * 20 + 4}
+            y={y + 11}
+            fontSize="10"
+            fill={color}
+            style={{ fontFamily: 'var(--font-mono)' }}
+          >
             {`${part} · ${orders[0]}-${orders.at(-1)}`}
           </text>
         </g>
@@ -2411,6 +2423,2077 @@ type VisualComponent = (props: { title?: string }) => ReactNode
 
 // visualId của nội dung → hình. Hook của mỗi bài dùng lại hình của khái
 // niệm chính (cùng một hình cho một khái niệm ở mọi nơi — spec 4.2).
+// ---------------------------------------------------------------
+// Module 13 — VLSM: cắt đất cho đúng người
+// ---------------------------------------------------------------
+
+/** Cắt đều nhau: lô to thì thiếu chỗ, lô nhỏ thì bỏ hoang. */
+function EvenSplitWaste({ title }: { title?: string }) {
+  const cells = [0, 1, 2, 3]
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        {cells.map((i) => (
+          <rect key={i} x={18 + i * 48} y="34" width="44" height="34" rx="3" {...stroke} strokeWidth={1.2} />
+        ))}
+        <text x="88" y="55" textAnchor="middle" {...monoText}>/26</text>
+        <text x="136" y="55" textAnchor="middle" {...monoText}>/26</text>
+        <text x="184" y="55" textAnchor="middle" {...monoText}>/26</text>
+        <text x="184" y="82" textAnchor="middle" {...monoText}>10 máy</text>
+      </g>
+      <g className="text-warn">
+        <rect x="18" y="34" width="44" height="34" rx="3" {...stroke} strokeWidth={2} />
+        <text x="40" y="55" textAnchor="middle" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          /26
+        </text>
+        <text x="40" y="82" textAnchor="middle" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          100 máy
+        </text>
+      </g>
+      <text x="110" y="112" textAnchor="middle" {...monoText}>
+        vừa thiếu chỗ, vừa bỏ hoang
+      </text>
+    </Frame>
+  )
+}
+
+/** VLSM: mỗi phòng một cỡ lô, cắt vừa người ở. */
+function VlsmBlocks({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-accent">
+        <rect x="18" y="34" width="96" height="34" rx="3" {...stroke} strokeWidth={2} />
+        <text x="66" y="55" textAnchor="middle" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          /25
+        </text>
+      </g>
+      <g className="text-ink-muted">
+        <rect x="118" y="34" width="48" height="34" rx="3" {...stroke} strokeWidth={1.5} />
+        <rect x="170" y="34" width="24" height="34" rx="3" {...stroke} strokeWidth={1.5} />
+        <rect x="198" y="34" width="12" height="34" rx="3" {...stroke} strokeWidth={1.5} />
+        <text x="142" y="55" textAnchor="middle" {...monoText}>/26</text>
+        <text x="182" y="55" textAnchor="middle" {...monoText}>/27</text>
+      </g>
+      <text x="110" y="86" textAnchor="middle" {...monoText}>
+        100 · 50 · 25 · 10 máy
+      </text>
+      <text x="110" y="110" textAnchor="middle" {...monoText}>
+        mỗi phòng một cỡ lô
+      </text>
+    </Frame>
+  )
+}
+
+/** Cỡ khối vừa đủ: bậc thang lũy thừa 2, trừ 2 địa chỉ đầu cuối. */
+function BlockSizeLadder({ title }: { title?: string }) {
+  const steps = [
+    { p: '/28', label: '16-2=14', w: 26 },
+    { p: '/27', label: '32-2=30', w: 46 },
+    { p: '/26', label: '64-2=62', w: 66 },
+    { p: '/25', label: '128-2=126', w: 86 },
+  ]
+  return (
+    <Frame title={title}>
+      {steps.map((s, i) => (
+        <g key={s.p} className={i === 2 ? 'text-accent' : 'text-ink-muted'}>
+          <rect x="52" y={22 + i * 20} width={s.w} height="14" rx="2" {...stroke} strokeWidth={i === 2 ? 2 : 1.2} />
+          <text x="46" y={33 + i * 20} textAnchor="end" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+            {s.p}
+          </text>
+          <text x={58 + s.w} y={33 + i * 20} fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+            {s.label}
+          </text>
+        </g>
+      ))}
+      <text x="110" y="118" textAnchor="middle" {...monoText}>
+        bậc thấp nhất còn chứa đủ
+      </text>
+    </Frame>
+  )
+}
+
+/** Cắt lớn trước: xếp nhu cầu giảm dần rồi lấp từ đầu dải. */
+function BiggestFirst({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <text x="24" y="30" {...monoText}>50</text>
+        <text x="60" y="30" {...monoText}>10</text>
+        <text x="96" y="30" {...monoText}>100</text>
+        <text x="140" y="30" {...monoText}>25</text>
+      </g>
+      <g className="text-accent">
+        <path d="M110 38 v12" {...stroke} strokeWidth={1.5} markerEnd="url(#cv-arrow)" />
+        <text x="24" y="70" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          100
+        </text>
+        <text x="68" y="70" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          50
+        </text>
+        <text x="104" y="70" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          25
+        </text>
+        <text x="140" y="70" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          10
+        </text>
+      </g>
+      <g className="text-ink-muted">
+        <rect x="18" y="80" width="88" height="16" rx="2" {...stroke} strokeWidth={1.5} />
+        <rect x="108" y="80" width="44" height="16" rx="2" {...stroke} strokeWidth={1.2} />
+        <rect x="154" y="80" width="22" height="16" rx="2" {...stroke} strokeWidth={1.2} />
+        <rect x="178" y="80" width="12" height="16" rx="2" {...stroke} strokeWidth={1.2} />
+      </g>
+      <text x="110" y="116" textAnchor="middle" {...monoText}>
+        to trước, nhỏ sau
+      </text>
+    </Frame>
+  )
+}
+
+/** Căn khối: khối chỉ được bắt đầu ở vạch chia hết cho cỡ của nó. */
+function BlockAlign({ title }: { title?: string }) {
+  const ticks = [0, 1, 2, 3, 4]
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <path d="M20 60 H200" {...stroke} strokeWidth={1.2} />
+        {ticks.map((i) => (
+          <g key={i}>
+            <path d={`M${20 + i * 45} 54 v12`} {...stroke} strokeWidth={1.2} />
+            <text x={20 + i * 45} y="80" textAnchor="middle" {...monoText}>
+              {i * 64}
+            </text>
+          </g>
+        ))}
+      </g>
+      <g className="text-accent">
+        <rect x="110" y="38" width="45" height="14" rx="2" {...stroke} strokeWidth={2} />
+        <text x="132" y="32" textAnchor="middle" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          /26 đúng vạch
+        </text>
+      </g>
+      <g className="text-warn">
+        <rect x="88" y="90" width="45" height="14" rx="2" {...stroke} strokeWidth={2} />
+        <text x="110" y="118" textAnchor="middle" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          bắt đầu ở 96 — lệch vạch
+        </text>
+      </g>
+    </Frame>
+  )
+}
+
+/** Wildcard mask: mặt nạ lộn ngược — 0 là phải khớp, 1 là mặc kệ. */
+function WildcardMask({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <text x="24" y="26" {...monoText}>subnet mask</text>
+        <rect x="24" y="32" width="172" height="24" rx="3" {...stroke} strokeWidth={1.2} />
+        <text x="110" y="48" textAnchor="middle" {...monoText}>
+          255.255.255.192
+        </text>
+      </g>
+      <g className="text-accent">
+        <path d="M110 58 v14" {...stroke} strokeWidth={1.5} markerEnd="url(#cv-arrow)" />
+        <rect x="24" y="76" width="172" height="24" rx="3" {...stroke} strokeWidth={2} />
+        <text x="110" y="92" textAnchor="middle" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          0.0.0.63
+        </text>
+      </g>
+      <text x="110" y="118" textAnchor="middle" {...monoText}>
+        255 trừ đi từng ô
+      </text>
+    </Frame>
+  )
+}
+
+/** Tóm tắt tuyến: bốn dòng tuyến gộp thành một. */
+function RouteSummary({ title }: { title?: string }) {
+  const rows = [8, 9, 10, 11]
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        {rows.map((n, i) => (
+          <g key={n}>
+            <rect x="14" y={24 + i * 20} width="86" height="14" rx="2" {...stroke} strokeWidth={1.2} />
+            <text x="57" y={35 + i * 20} textAnchor="middle" {...monoText}>
+              {`192.168.${n}.0/24`}
+            </text>
+          </g>
+        ))}
+      </g>
+      <g className="text-accent">
+        <path d="M104 61 h14" {...stroke} strokeWidth={1.5} markerEnd="url(#cv-arrow)" />
+        <rect x="124" y="50" width="90" height="22" rx="3" {...stroke} strokeWidth={2} />
+        <text x="169" y="65" textAnchor="middle" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          192.168.8.0/22
+        </text>
+      </g>
+      <text x="110" y="118" textAnchor="middle" {...monoText}>
+        bốn dòng thành một dòng
+      </text>
+    </Frame>
+  )
+}
+
+// ---------------------------------------------------------------
+// Module 14 — Trunk 802.1Q
+// ---------------------------------------------------------------
+
+/** Bốn xóm bốn sợi dây (cũ) so với bốn xóm một sợi trunk (mới). */
+function TrunkOneCable({ title }: { title?: string }) {
+  const lanes = [30, 42, 54, 66]
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <rect x="14" y="24" width="20" height="52" rx="3" {...stroke} strokeWidth={1.2} />
+        <rect x="82" y="24" width="20" height="52" rx="3" {...stroke} strokeWidth={1.2} />
+        {lanes.map((y) => (
+          <path key={y} d={`M36 ${y} H80`} {...stroke} strokeWidth={1.2} />
+        ))}
+        <text x="58" y="92" textAnchor="middle" {...monoText}>4 dây</text>
+      </g>
+      <g className="text-accent">
+        <rect x="130" y="24" width="20" height="52" rx="3" {...stroke} strokeWidth={1.5} />
+        <rect x="192" y="24" width="20" height="52" rx="3" {...stroke} strokeWidth={1.5} />
+        <path d="M152 50 H190" {...stroke} strokeWidth={2.5} />
+        <text x="171" y="92" textAnchor="middle" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          1 trunk
+        </text>
+      </g>
+      <text x="110" y="114" textAnchor="middle" {...monoText}>
+        cùng chở 4 xóm
+      </text>
+    </Frame>
+  )
+}
+
+/** Khung mang nhãn trên trunk, gỡ nhãn khi xuống cổng access. */
+function TaggedFrame({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <rect x="16" y="44" width="46" height="20" rx="3" {...stroke} strokeWidth={1.2} />
+        <text x="39" y="58" textAnchor="middle" {...monoText}>khung</text>
+        <text x="39" y="80" textAnchor="middle" {...monoText}>access</text>
+      </g>
+      <g className="text-accent">
+        <path d="M66 54 h12" {...stroke} strokeWidth={1.5} markerEnd="url(#cv-arrow)" />
+        <rect x="84" y="44" width="20" height="20" rx="3" {...stroke} strokeWidth={2} />
+        <text x="94" y="58" textAnchor="middle" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          20
+        </text>
+        <rect x="104" y="44" width="46" height="20" rx="3" {...stroke} strokeWidth={1.5} />
+        <text x="117" y="80" textAnchor="middle" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          trunk: có nhãn
+        </text>
+      </g>
+      <g className="text-ink-muted">
+        <path d="M154 54 h12" {...stroke} strokeWidth={1.5} markerEnd="url(#cv-arrow)" />
+        <rect x="170" y="44" width="40" height="20" rx="3" {...stroke} strokeWidth={1.2} />
+        <text x="190" y="80" textAnchor="middle" {...monoText}>gỡ nhãn</text>
+      </g>
+      <text x="110" y="106" textAnchor="middle" {...monoText}>
+        máy người dùng không thấy nhãn
+      </text>
+    </Frame>
+  )
+}
+
+/** Native VLAN lệch: khung trần đi từ xóm 1 sang tới nơi hóa xóm 99. */
+function NativeVlanMismatch({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <rect x="14" y="34" width="26" height="44" rx="3" {...stroke} strokeWidth={1.2} />
+        <rect x="180" y="34" width="26" height="44" rx="3" {...stroke} strokeWidth={1.2} />
+        <path d="M42 56 H178" {...stroke} strokeWidth={1.2} />
+        <text x="27" y="94" textAnchor="middle" {...monoText}>SW-1</text>
+        <text x="193" y="94" textAnchor="middle" {...monoText}>SW-2</text>
+      </g>
+      <text x="60" y="30" textAnchor="middle" {...monoText}>native 1</text>
+      <g className="text-warn">
+        <text x="160" y="30" textAnchor="middle" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          native 99
+        </text>
+        <rect x="92" y="46" width="36" height="18" rx="3" {...stroke} strokeWidth={2} />
+        <text x="110" y="59" textAnchor="middle" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          trần
+        </text>
+      </g>
+      <text x="110" y="112" textAnchor="middle" {...monoText}>
+        vào xóm 1, ra thành xóm 99
+      </text>
+    </Frame>
+  )
+}
+
+/** Allowed list: danh sách khách ở cổng, thiếu tên là bị chặn. */
+function AllowedVlanList({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <rect x="16" y="26" width="70" height="72" rx="3" {...stroke} strokeWidth={1.2} />
+        <text x="51" y="40" textAnchor="middle" {...monoText}>allowed</text>
+        <text x="51" y="58" textAnchor="middle" {...monoText}>10</text>
+      </g>
+      <g className="text-warn">
+        <text x="51" y="78" textAnchor="middle" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          20 ?
+        </text>
+      </g>
+      <g className="text-accent">
+        <path d="M92 46 H190" {...stroke} strokeWidth={1.5} markerEnd="url(#cv-arrow)" />
+        <text x="140" y="40" textAnchor="middle" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          VLAN 10 qua
+        </text>
+      </g>
+      <g className="text-warn">
+        <path d="M92 76 H150" {...stroke} strokeWidth={1.5} />
+        <path d="M154 70 l12 12 M166 70 l-12 12" {...stroke} strokeWidth={2} />
+        <text x="140" y="98" textAnchor="middle" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          VLAN 20 bị chặn
+        </text>
+      </g>
+      <text x="110" y="118" textAnchor="middle" {...monoText}>
+        thiếu tên là đứng ngoài cổng
+      </text>
+    </Frame>
+  )
+}
+
+/** Router-on-a-stick: một chân, nhiều cửa logic. */
+function RouterOnAStick({ title }: { title?: string }) {
+  const doors = [34, 52, 70]
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <rect x="16" y="30" width="26" height="60" rx="3" {...stroke} strokeWidth={1.2} />
+        <text x="29" y="106" textAnchor="middle" {...monoText}>switch</text>
+      </g>
+      <g className="text-accent">
+        <path d="M44 60 H120" {...stroke} strokeWidth={2.5} />
+        <text x="82" y="52" textAnchor="middle" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          trunk
+        </text>
+      </g>
+      <g className="text-ink-muted">
+        <rect x="122" y="24" width="80" height="72" rx="4" {...stroke} strokeWidth={1.5} />
+        {doors.map((y, i) => (
+          <g key={y}>
+            <rect x="150" y={y - 6} width="44" height="14" rx="2" {...stroke} strokeWidth={1.2} />
+            <text x="172" y={y + 4} textAnchor="middle" {...monoText}>
+              {`vlan ${[10, 20, 30][i]}`}
+            </text>
+          </g>
+        ))}
+        <text x="162" y="106" textAnchor="middle" {...monoText}>router</text>
+      </g>
+      <text x="110" y="118" textAnchor="middle" {...monoText}>
+        một chân, nhiều cửa logic
+      </text>
+    </Frame>
+  )
+}
+
+// ---------------------------------------------------------------
+// Module 15 — STP: người canh vòng lặp
+// ---------------------------------------------------------------
+
+/** Bão quảng bá: khung quay vòng và nhân lên trong tam giác switch. */
+function BroadcastStorm({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <rect x="94" y="18" width="32" height="20" rx="3" {...stroke} strokeWidth={1.2} />
+        <rect x="30" y="78" width="32" height="20" rx="3" {...stroke} strokeWidth={1.2} />
+        <rect x="158" y="78" width="32" height="20" rx="3" {...stroke} strokeWidth={1.2} />
+      </g>
+      <g className="text-warn">
+        <path d="M96 38 L60 76" {...stroke} strokeWidth={2} markerEnd="url(#cv-arrow)" />
+        <path d="M64 92 H154" {...stroke} strokeWidth={2} markerEnd="url(#cv-arrow)" />
+        <path d="M172 76 L126 38" {...stroke} strokeWidth={2} markerEnd="url(#cv-arrow)" />
+        <text x="110" y="60" textAnchor="middle" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          x2 · x4 · x8
+        </text>
+      </g>
+      <text x="110" y="118" textAnchor="middle" {...monoText}>
+        khung quay vòng, không TTL để chết
+      </text>
+    </Frame>
+  )
+}
+
+/** BPDU: tiếng điểm danh đều đặn giữa các switch. */
+function BpduHello({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <rect x="20" y="46" width="34" height="24" rx="3" {...stroke} strokeWidth={1.2} />
+        <rect x="166" y="46" width="34" height="24" rx="3" {...stroke} strokeWidth={1.2} />
+      </g>
+      <g className="text-accent">
+        <path d="M58 54 H162" {...stroke} strokeWidth={1.5} markerEnd="url(#cv-arrow)" />
+        <path d="M162 66 H58" {...stroke} strokeWidth={1.5} markerEnd="url(#cv-arrow)" />
+        <rect x="88" y="24" width="44" height="16" rx="3" {...stroke} strokeWidth={1.5} />
+        <text x="110" y="36" textAnchor="middle" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          BPDU
+        </text>
+      </g>
+      <text x="110" y="92" textAnchor="middle" {...monoText}>
+        tôi là ai · tôi cách gốc bao xa
+      </text>
+      <text x="110" y="112" textAnchor="middle" {...monoText}>
+        vài giây một lần
+      </text>
+    </Frame>
+  )
+}
+
+/** Bầu root: priority nhỏ hơn thắng, hòa thì MAC nhỏ hơn. */
+function RootBridgeElection({ title }: { title?: string }) {
+  const boxes = [
+    { x: 16, prio: '32768', root: false },
+    { x: 88, prio: '4096', root: true },
+    { x: 160, prio: '32768', root: false },
+  ]
+  return (
+    <Frame title={title}>
+      {boxes.map((b) => (
+        <g key={b.x} className={b.root ? 'text-accent' : 'text-ink-muted'}>
+          <rect x={b.x} y="44" width="44" height="26" rx="3" {...stroke} strokeWidth={b.root ? 2 : 1.2} />
+          <text x={b.x + 22} y="61" textAnchor="middle" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+            {b.prio}
+          </text>
+        </g>
+      ))}
+      <g className="text-accent">
+        <path d="M110 34 v6" {...stroke} strokeWidth={1.5} markerEnd="url(#cv-arrow)" />
+        <text x="110" y="28" textAnchor="middle" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          gốc cây
+        </text>
+      </g>
+      <text x="110" y="92" textAnchor="middle" {...monoText}>
+        nhỏ hơn là thắng
+      </text>
+      <text x="110" y="112" textAnchor="middle" {...monoText}>
+        hòa priority thì so MAC
+      </text>
+    </Frame>
+  )
+}
+
+/** Cổng bị chặn: rỗng ruột viền hổ phách, vẫn nghe BPDU. */
+function BlockedPort({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <rect x="20" y="40" width="34" height="24" rx="3" {...stroke} strokeWidth={1.2} />
+        <rect x="166" y="40" width="34" height="24" rx="3" {...stroke} strokeWidth={1.2} />
+        <path d="M58 52 H162" {...stroke} strokeWidth={1.2} />
+      </g>
+      <g className="text-warn">
+        <circle cx="150" cy="52" r="7" {...stroke} strokeWidth={2} />
+        <text x="150" y="80" textAnchor="middle" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          BLK · Altn
+        </text>
+      </g>
+      <text x="110" y="100" textAnchor="middle" {...monoText}>
+        không phát khung dữ liệu
+      </text>
+      <text x="110" y="118" textAnchor="middle" {...monoText}>
+        nhưng vẫn nghe BPDU
+      </text>
+    </Frame>
+  )
+}
+
+/** Hội tụ lại: dây chính đứt, cổng dự phòng mở ra. */
+function StpReconverge({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <rect x="16" y="46" width="30" height="22" rx="3" {...stroke} strokeWidth={1.2} />
+        <rect x="95" y="18" width="30" height="22" rx="3" {...stroke} strokeWidth={1.2} />
+        <rect x="174" y="46" width="30" height="22" rx="3" {...stroke} strokeWidth={1.2} />
+      </g>
+      <g className="text-warn">
+        <path d="M48 50 L93 32" {...stroke} strokeWidth={1.5} />
+        <path d="M64 34 l14 14 M78 34 l-14 14" {...stroke} strokeWidth={2} />
+      </g>
+      <g className="text-ink-muted">
+        <path d="M127 32 L172 50" {...stroke} strokeWidth={1.2} />
+      </g>
+      <g className="text-accent">
+        <path d="M50 62 H172" {...stroke} strokeWidth={2.5} markerEnd="url(#cv-arrow)" />
+        <text x="110" y="84" textAnchor="middle" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          cổng chặn tự mở
+        </text>
+      </g>
+      <text x="110" y="110" textAnchor="middle" {...monoText}>
+        không ai chạm vào thiết bị
+      </text>
+    </Frame>
+  )
+}
+
+/** PortFast: cổng máy con vào việc ngay, cổng nối switch thì không. */
+function PortFast({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-accent">
+        <rect x="18" y="30" width="30" height="20" rx="3" {...stroke} strokeWidth={1.5} />
+        <path d="M52 40 H104" {...stroke} strokeWidth={2} markerEnd="url(#cv-arrow)" />
+        <text x="78" y="26" textAnchor="middle" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          máy con: ngay
+        </text>
+      </g>
+      <g className="text-warn">
+        <rect x="18" y="76" width="30" height="20" rx="3" {...stroke} strokeWidth={1.5} />
+        <path d="M52 86 H96" {...stroke} strokeWidth={2} />
+        <path d="M100 80 l12 12 M112 80 l-12 12" {...stroke} strokeWidth={2} />
+        <text x="86" y="112" textAnchor="middle" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          switch: cấm bật
+        </text>
+      </g>
+      <g className="text-ink-muted">
+        <rect x="150" y="30" width="52" height="20" rx="3" {...stroke} strokeWidth={1.2} />
+        <text x="176" y="44" textAnchor="middle" {...monoText}>PortFast</text>
+        <rect x="150" y="76" width="52" height="20" rx="3" {...stroke} strokeWidth={1.2} />
+        <text x="176" y="90" textAnchor="middle" {...monoText}>vòng lặp</text>
+      </g>
+    </Frame>
+  )
+}
+
+// ---------------------------------------------------------------
+// Module 16 — OSPF: các router tự hỏi đường nhau
+// ---------------------------------------------------------------
+
+/** Tuyến tĩnh: số dòng phải gõ tay phình theo số router. */
+function StaticRouteLimit({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        {[18, 68, 118, 168].map((x) => (
+          <rect key={x} x={x} y="20" width="34" height="18" rx="3" {...stroke} strokeWidth={1.2} />
+        ))}
+      </g>
+      <g className="text-warn">
+        {[18, 68, 118, 168].map((x) => (
+          <g key={x}>
+            <path d={`M${x + 4} 50 h26 M${x + 4} 58 h26 M${x + 4} 66 h26`} {...stroke} strokeWidth={1.5} />
+          </g>
+        ))}
+        <text x="110" y="88" textAnchor="middle" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          4 router x 3 dòng = 12 dòng gõ tay
+        </text>
+      </g>
+      <text x="110" y="112" textAnchor="middle" {...monoText}>
+        thêm một site: mở lại từng router
+      </text>
+    </Frame>
+  )
+}
+
+/** Định tuyến động: mỗi router chỉ khai mạng của mình, rồi tự kể cho nhau. */
+function DynamicRouting({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <rect x="20" y="44" width="36" height="22" rx="3" {...stroke} strokeWidth={1.2} />
+        <rect x="92" y="44" width="36" height="22" rx="3" {...stroke} strokeWidth={1.2} />
+        <rect x="164" y="44" width="36" height="22" rx="3" {...stroke} strokeWidth={1.2} />
+        <text x="38" y="82" textAnchor="middle" {...monoText}>LAN 1</text>
+        <text x="110" y="82" textAnchor="middle" {...monoText}>LAN 2</text>
+        <text x="182" y="82" textAnchor="middle" {...monoText}>LAN 3</text>
+      </g>
+      <g className="text-accent">
+        <path d="M58 50 H90" {...stroke} strokeWidth={1.5} markerEnd="url(#cv-arrow)" />
+        <path d="M90 60 H58" {...stroke} strokeWidth={1.5} markerEnd="url(#cv-arrow)" />
+        <path d="M130 50 H162" {...stroke} strokeWidth={1.5} markerEnd="url(#cv-arrow)" />
+        <path d="M162 60 H130" {...stroke} strokeWidth={1.5} markerEnd="url(#cv-arrow)" />
+        <text x="110" y="28" textAnchor="middle" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          tự kể đường cho nhau
+        </text>
+      </g>
+      <text x="110" y="108" textAnchor="middle" {...monoText}>
+        mỗi nơi chỉ khai mạng của chính mình
+      </text>
+    </Frame>
+  )
+}
+
+/** Gói hello: đi tìm hàng xóm rồi ở lại làm nhịp tim. */
+function HelloPacket({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <rect x="16" y="40" width="34" height="24" rx="3" {...stroke} strokeWidth={1.2} />
+        <rect x="170" y="40" width="34" height="24" rx="3" {...stroke} strokeWidth={1.2} />
+      </g>
+      <g className="text-accent">
+        <path d="M54 46 H166" {...stroke} strokeWidth={1.5} markerEnd="url(#cv-arrow)" />
+        <path d="M166 58 H54" {...stroke} strokeWidth={1.5} markerEnd="url(#cv-arrow)" />
+        <rect x="88" y="18" width="44" height="16" rx="3" {...stroke} strokeWidth={1.5} />
+        <text x="110" y="30" textAnchor="middle" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          hello
+        </text>
+        <path d="M20 90 h30 l8 -12 8 24 8 -12 h26 l8 -12 8 24 8 -12 h30" {...stroke} strokeWidth={1.5} />
+      </g>
+      <text x="110" y="116" textAnchor="middle" {...monoText}>
+        vừa tìm hàng xóm, vừa làm nhịp tim
+      </text>
+    </Frame>
+  )
+}
+
+/** Tòa nhà làm quen: 4 tầng x 2 phòng, hai tầng dưới đang được đi xem. */
+function NeighborLadder({ title }: { title?: string }) {
+  const floors = [
+    { y: 92, left: 'Down', right: 'Attempt', lit: true },
+    { y: 70, left: 'Init', right: '2-Way', lit: true },
+    { y: 48, left: 'ExStart', right: 'Exchange', lit: false },
+    { y: 26, left: 'Loading', right: 'Full', lit: false },
+  ]
+  return (
+    <Frame title={title}>
+      {floors.map((f) => (
+        <g key={f.y} className={f.lit ? 'text-accent' : 'text-ink-muted'}>
+          <rect x="26" y={f.y} width="76" height="18" rx="2" {...stroke} strokeWidth={f.lit ? 1.8 : 1.2} />
+          <rect x="110" y={f.y} width="76" height="18" rx="2" {...stroke} strokeWidth={f.lit ? 1.8 : 1.2} />
+          <text x="64" y={f.y + 13} textAnchor="middle" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+            {f.left}
+          </text>
+          <text x="148" y={f.y + 13} textAnchor="middle" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+            {f.right}
+          </text>
+        </g>
+      ))}
+      <g className="text-ink-muted">
+        <path d="M14 110 h192" {...stroke} strokeWidth={1.2} />
+        <path d="M18 110 V22" {...stroke} strokeWidth={1.2} markerEnd="url(#cv-arrow)" />
+      </g>
+      <text x="110" y="122" textAnchor="middle" {...monoText}>
+        đi từ tầng trệt lên nóc
+      </text>
+    </Frame>
+  )
+}
+
+/** Đồng bộ bản đồ: hai tấm chồng khít nhau là trạng thái Full. */
+function LsdbSync({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <rect x="20" y="26" width="66" height="52" rx="3" {...stroke} strokeWidth={1.2} />
+        <path d="M28 40 h50 M28 52 h50 M28 64 h34" {...stroke} strokeWidth={1.2} />
+        <rect x="134" y="26" width="66" height="52" rx="3" {...stroke} strokeWidth={1.2} />
+        <path d="M142 40 h50 M142 52 h50 M142 64 h34" {...stroke} strokeWidth={1.2} />
+      </g>
+      <g className="text-accent">
+        <path d="M90 40 H130" {...stroke} strokeWidth={1.5} markerEnd="url(#cv-arrow)" />
+        <path d="M130 64 H90" {...stroke} strokeWidth={1.5} markerEnd="url(#cv-arrow)" />
+        <path d="M100 96 l8 8 14 -18" {...stroke} strokeWidth={2} />
+        <text x="110" y="122" textAnchor="middle" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          Full: giống nhau từng dòng
+        </text>
+      </g>
+    </Frame>
+  )
+}
+
+/** Câu network: dải, wildcard, area 0 — ba mảnh của một dòng lệnh. */
+function NetworkAreaZero({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-accent">
+        <text x="110" y="32" textAnchor="middle" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          network 192.168.2.0 0.0.0.255 area 0
+        </text>
+        <path d="M22 40 h176" {...stroke} strokeWidth={1.2} />
+      </g>
+      <g className="text-ink-muted">
+        <text x="110" y="60" textAnchor="middle" {...monoText}>192.168.2.0 = dải mạng</text>
+        <text x="110" y="80" textAnchor="middle" {...monoText}>0.0.0.255 = wildcard đảo</text>
+        <text x="110" y="100" textAnchor="middle" {...monoText}>area 0 = vùng xương sống</text>
+      </g>
+      <text x="110" y="120" textAnchor="middle" {...monoText}>
+        chọn CỔNG nào tham gia OSPF
+      </text>
+    </Frame>
+  )
+}
+
+/** Cost: hai lối tới cùng đích, lối rẻ hơn được chọn. */
+function OspfCost({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <rect x="14" y="52" width="34" height="20" rx="3" {...stroke} strokeWidth={1.2} />
+        <rect x="93" y="14" width="34" height="20" rx="3" {...stroke} strokeWidth={1.2} />
+        <rect x="172" y="52" width="34" height="20" rx="3" {...stroke} strokeWidth={1.2} />
+        <path d="M50 56 L91 30" {...stroke} strokeWidth={1.2} />
+        <path d="M129 30 L170 56" {...stroke} strokeWidth={1.2} />
+        <text x="110" y="48" textAnchor="middle" {...monoText}>vòng: cost 2</text>
+      </g>
+      <g className="text-accent">
+        <path d="M50 66 H170" {...stroke} strokeWidth={2.5} markerEnd="url(#cv-arrow)" />
+        <text x="110" y="90" textAnchor="middle" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          thẳng: cost 1 — chọn lối này
+        </text>
+      </g>
+      <text x="110" y="114" textAnchor="middle" {...monoText}>
+        cộng cost dọc đường, nhỏ nhất thắng
+      </text>
+    </Frame>
+  )
+}
+
+/** Bảng định tuyến: chữ đầu dòng nói tuyến đó ở đâu ra. */
+function LearnedRouteTable({ title }: { title?: string }) {
+  const rows = [
+    { y: 34, code: 'C', text: '192.168.1.0/24  nối trực tiếp' },
+    { y: 58, code: 'S', text: '10.9.0.0/24     gõ tay [1/0]' },
+    { y: 82, code: 'O', text: '192.168.3.0/24  OSPF [110/2]' },
+  ]
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <rect x="16" y="20" width="188" height="80" rx="4" {...stroke} strokeWidth={1.2} />
+      </g>
+      {rows.map((r) => (
+        <g key={r.code} className={r.code === 'O' ? 'text-accent' : 'text-ink-muted'}>
+          <text x="28" y={r.y} fontSize="12" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+            {r.code}
+          </text>
+          <text x="46" y={r.y} fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+            {r.text}
+          </text>
+        </g>
+      ))}
+      <text x="110" y="118" textAnchor="middle" {...monoText}>
+        show ip route
+      </text>
+    </Frame>
+  )
+}
+
+/** Đứt đường thẳng, OSPF chuyển sang lối vòng. */
+function OspfReroute({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <rect x="14" y="66" width="34" height="20" rx="3" {...stroke} strokeWidth={1.2} />
+        <rect x="93" y="18" width="34" height="20" rx="3" {...stroke} strokeWidth={1.2} />
+        <rect x="172" y="66" width="34" height="20" rx="3" {...stroke} strokeWidth={1.2} />
+      </g>
+      <g className="text-warn">
+        <path d="M50 80 H170" {...stroke} strokeWidth={1.5} />
+        <path d="M102 72 l16 16 M118 72 l-16 16" {...stroke} strokeWidth={2} />
+      </g>
+      <g className="text-accent">
+        <path d="M48 68 L91 36" {...stroke} strokeWidth={2.5} markerEnd="url(#cv-arrow)" />
+        <path d="M129 36 L172 68" {...stroke} strokeWidth={2.5} markerEnd="url(#cv-arrow)" />
+        <text x="110" y="58" textAnchor="middle" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          cost 2, đi vòng
+        </text>
+      </g>
+      <text x="110" y="110" textAnchor="middle" {...monoText}>
+        bảng tự viết lại, không ai gõ lệnh
+      </text>
+    </Frame>
+  )
+}
+
+/** Khoảng cách quản trị: số nhỏ hơn thì được tin hơn. */
+function AdminDistance({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-accent">
+        <rect x="18" y="30" width="80" height="30" rx="4" {...stroke} strokeWidth={2} />
+        <text x="58" y="50" textAnchor="middle" fontSize="11" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          tĩnh: 1
+        </text>
+        <text x="58" y="76" textAnchor="middle" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          được tin hơn
+        </text>
+      </g>
+      <g className="text-ink-muted">
+        <rect x="122" y="30" width="80" height="30" rx="4" {...stroke} strokeWidth={1.2} />
+        <text x="162" y="50" textAnchor="middle" fontSize="11" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          OSPF: 110
+        </text>
+        <text x="110" y="100" textAnchor="middle" {...monoText}>
+          số nhỏ hơn thì thắng
+        </text>
+        <text x="110" y="118" textAnchor="middle" {...monoText}>
+          nhưng tuyến tĩnh chẳng tự sửa
+        </text>
+      </g>
+    </Frame>
+  )
+}
+
+/** Danh sách lọc dán lên MỘT cánh cửa: một luồng lọt, một luồng chết. */
+function AclGate({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <rect x="86" y="18" width="48" height="94" rx="4" {...stroke} strokeWidth={1.2} />
+        <path d="M94 34 h32 M94 46 h32 M94 58 h22" {...stroke} strokeWidth={1.2} />
+      </g>
+      <g className="text-ok">
+        <path d="M16 40 H82" {...stroke} strokeWidth={1.8} />
+        <path d="M138 40 H204" {...stroke} strokeWidth={1.8} markerEnd="url(#cv-arrow)" />
+      </g>
+      <g className="text-warn">
+        <path d="M16 84 H82" {...stroke} strokeWidth={1.8} />
+        <path d="M96 76 l16 16 M112 76 l-16 16" {...stroke} strokeWidth={2} />
+      </g>
+      <text x="110" y="126" textAnchor="middle" {...monoText}>
+        luật dán lên một cổng, một chiều
+      </text>
+    </Frame>
+  )
+}
+
+/** Đọc từ trên xuống, dừng ở dòng khớp đầu tiên. */
+function RuleOrder({ title }: { title?: string }) {
+  const rows = [
+    { y: 24, label: '10 deny  host .66', hit: false },
+    { y: 50, label: '20 permit 192.168.1.0', hit: true },
+    { y: 76, label: '30 deny  any', hit: false },
+  ]
+  return (
+    <Frame title={title}>
+      {rows.map((r) => (
+        <g key={r.y} className={r.hit ? 'text-accent' : 'text-ink-muted'}>
+          <rect x="34" y={r.y} width="152" height="20" rx="3" {...stroke} strokeWidth={r.hit ? 1.8 : 1.2} />
+          <text x="42" y={r.y + 14} fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+            {r.label}
+          </text>
+        </g>
+      ))}
+      <g className="text-accent">
+        <path d="M22 24 V58" {...stroke} strokeWidth={1.5} markerEnd="url(#cv-arrow)" />
+        <path d="M190 60 l8 8 12 -16" {...stroke} strokeWidth={2} />
+      </g>
+      <text x="110" y="110" textAnchor="middle" {...monoText}>
+        khớp dòng 20 là dừng, không đọc tiếp
+      </text>
+    </Frame>
+  )
+}
+
+/** Dòng cấm cuối danh sách: có thật, nhưng không ai gõ và không ai thấy. */
+function ImplicitDeny({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <rect x="30" y="20" width="160" height="20" rx="3" {...stroke} strokeWidth={1.2} />
+        <text x="38" y="34" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          10 deny icmp host .66 any
+        </text>
+      </g>
+      <g className="text-warn">
+        <rect x="30" y="52" width="160" height="22" rx="3" fill="none" stroke="currentColor" strokeWidth="1.6" strokeDasharray="5 4" />
+        <text x="38" y="67" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          deny any any (vô hình)
+        </text>
+      </g>
+      <text x="110" y="96" textAnchor="middle" {...monoText}>
+        không ai gõ, không ai in ra
+      </text>
+      <text x="110" y="116" textAnchor="middle" {...monoText}>
+        mà mọi gói lạc đều chết ở đó
+      </text>
+    </Frame>
+  )
+}
+
+/** ACL chuẩn: chỉ soi được vế nguồn. */
+function StandardAcl({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <text x="110" y="24" textAnchor="middle" fontSize="10" className="text-ink-muted" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+        access-list 1..99
+      </text>
+      <g className="text-accent">
+        <rect x="20" y="40" width="80" height="34" rx="4" {...stroke} strokeWidth={1.8} />
+        <text x="60" y="61" textAnchor="middle" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          nguồn
+        </text>
+      </g>
+      <g className="text-warn">
+        <rect x="120" y="40" width="80" height="34" rx="4" fill="none" stroke="currentColor" strokeWidth="1.2" strokeDasharray="4 4" />
+        <path d="M148 46 l24 22 M172 46 l-24 22" {...stroke} strokeWidth={1.6} />
+        <text x="160" y="86" textAnchor="middle" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          đích: không thấy
+        </text>
+      </g>
+      <text x="110" y="112" textAnchor="middle" {...monoText}>
+        cấm một nguồn là cấm đi mọi nơi
+      </text>
+    </Frame>
+  )
+}
+
+/** ACL mở rộng: bốn vế nhìn được. */
+function ExtendedAcl({ title }: { title?: string }) {
+  const cells = [
+    { x: 14, label: 'giao thức' },
+    { x: 64, label: 'nguồn' },
+    { x: 114, label: 'đích' },
+    { x: 164, label: 'cổng' },
+  ]
+  return (
+    <Frame title={title}>
+      <text x="110" y="26" textAnchor="middle" fontSize="10" className="text-ink-muted" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+        access-list 100..199
+      </text>
+      {cells.map((c) => (
+        <g key={c.x} className="text-accent">
+          <rect x={c.x} y="42" width="42" height="34" rx="3" {...stroke} strokeWidth={1.6} />
+          <text x={c.x + 21} y="63" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+            {c.label}
+          </text>
+        </g>
+      ))}
+      <text x="110" y="96" textAnchor="middle" {...monoText}>
+        nói được: ai, tới đâu, bằng gì
+      </text>
+      <text x="110" y="116" textAnchor="middle" {...monoText}>
+        (cổng chỉ có với tcp và udp)
+      </text>
+    </Frame>
+  )
+}
+
+/** Chiều in và out tính theo con mắt của router. */
+function InOutDirection({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <rect x="72" y="40" width="76" height="46" rx="6" {...stroke} strokeWidth={1.4} />
+        <text x="110" y="68" textAnchor="middle" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          router
+        </text>
+      </g>
+      <g className="text-accent">
+        <path d="M14 56 H68" {...stroke} strokeWidth={1.8} markerEnd="url(#cv-arrow)" />
+        <text x="40" y="46" textAnchor="middle" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          in
+        </text>
+      </g>
+      <g className="text-ink-muted">
+        <path d="M152 56 H206" {...stroke} strokeWidth={1.8} markerEnd="url(#cv-arrow)" />
+        <text x="180" y="46" textAnchor="middle" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          out
+        </text>
+      </g>
+      <text x="110" y="106" textAnchor="middle" {...monoText}>
+        in: vừa vào cổng, chưa tra đường
+      </text>
+      <text x="110" y="122" textAnchor="middle" {...monoText}>
+        out: đã chọn đường, sắp rời cổng
+      </text>
+    </Frame>
+  )
+}
+
+/** Đặt luật ở đâu: mở rộng sát nguồn, chuẩn sát đích. */
+function PlacementRule({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <rect x="12" y="46" width="32" height="24" rx="3" {...stroke} strokeWidth={1.2} />
+        <rect x="176" y="46" width="32" height="24" rx="3" {...stroke} strokeWidth={1.2} />
+        <path d="M46 58 H174" {...stroke} strokeWidth={1.2} />
+        <text x="28" y="84" textAnchor="middle" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          nguồn
+        </text>
+        <text x="192" y="84" textAnchor="middle" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          đích
+        </text>
+      </g>
+      <g className="text-accent">
+        <path d="M58 40 V76" {...stroke} strokeWidth={2.2} />
+        <text x="58" y="32" textAnchor="middle" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          mở rộng
+        </text>
+      </g>
+      <g className="text-warn">
+        <path d="M162 40 V76" {...stroke} strokeWidth={2.2} />
+        <text x="162" y="32" textAnchor="middle" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          chuẩn
+        </text>
+      </g>
+      <text x="110" y="112" textAnchor="middle" {...monoText}>
+        chặn gần nhất mà vẫn chặn ĐÚNG
+      </text>
+    </Frame>
+  )
+}
+
+/** ACL không trí nhớ, tường lửa stateful có cuốn sổ. */
+function StatelessVsStateful({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <path d="M110 14 V116" fill="none" stroke="currentColor" strokeWidth="1" strokeDasharray="4 4" className="text-ink-muted" />
+      <g className="text-warn">
+        <text x="54" y="26" textAnchor="middle" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          ACL
+        </text>
+        <path d="M18 46 H94" {...stroke} strokeWidth={1.6} markerEnd="url(#cv-arrow)" />
+        <path d="M94 68 H18" {...stroke} strokeWidth={1.6} strokeDasharray="4 3" markerEnd="url(#cv-arrow)" />
+        <text x="54" y="90" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          chiều về: tự lo
+        </text>
+      </g>
+      <g className="text-ok">
+        <text x="166" y="26" textAnchor="middle" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          stateful
+        </text>
+        <path d="M126 46 H202" {...stroke} strokeWidth={1.6} markerEnd="url(#cv-arrow)" />
+        <path d="M202 68 H126" {...stroke} strokeWidth={1.6} markerEnd="url(#cv-arrow)" />
+        <rect x="146" y="76" width="40" height="16" rx="2" {...stroke} strokeWidth={1.2} />
+        <text x="166" y="88" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          sổ ghi
+        </text>
+      </g>
+      <text x="110" y="114" textAnchor="middle" {...monoText}>
+        có sổ thì lời đáp tự được vào
+      </text>
+    </Frame>
+  )
+}
+
+/** Nhồi bảng MAC: bảng đầy thì switch phát tràn mọi cổng. */
+function MacFlood({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-warn">
+        <rect x="16" y="18" width="86" height="60" rx="3" {...stroke} strokeWidth={1.4} />
+        {[28, 40, 52, 64].map((y) => (
+          <path key={y} d={`M24 ${y} h70`} {...stroke} strokeWidth={1.2} />
+        ))}
+        <text x="59" y="92" textAnchor="middle" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          bảng MAC đầy
+        </text>
+      </g>
+      <g className="text-ink-muted">
+        <rect x="130" y="34" width="30" height="28" rx="3" {...stroke} strokeWidth={1.2} />
+        <path d="M106 48 H126" {...stroke} strokeWidth={1.2} markerEnd="url(#cv-arrow)" />
+      </g>
+      <g className="text-accent">
+        <path d="M164 40 H204" {...stroke} strokeWidth={1.5} markerEnd="url(#cv-arrow)" />
+        <path d="M164 48 H204" {...stroke} strokeWidth={1.5} markerEnd="url(#cv-arrow)" />
+        <path d="M164 56 H204" {...stroke} strokeWidth={1.5} markerEnd="url(#cv-arrow)" />
+        <text x="182" y="80" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          phát tràn
+        </text>
+      </g>
+      <text x="110" y="116" textAnchor="middle" {...monoText}>
+        hết chỗ nhớ thì đọc to giữa sảnh
+      </text>
+    </Frame>
+  )
+}
+
+/** Port security: quá số MAC cho phép thì cổng tự sập. */
+function PortSecurity({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <rect x="86" y="20" width="48" height="40" rx="4" {...stroke} strokeWidth={1.4} />
+        <path d="M98 20 V12 a12 12 0 0 1 24 0 V20" {...stroke} strokeWidth={1.4} />
+        <text x="110" y="46" textAnchor="middle" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          max 1
+        </text>
+      </g>
+      <g className="text-ok">
+        <rect x="16" y="70" width="34" height="22" rx="3" {...stroke} strokeWidth={1.4} />
+        <path d="M52 80 H84" {...stroke} strokeWidth={1.5} markerEnd="url(#cv-arrow)" />
+      </g>
+      <g className="text-warn">
+        <rect x="170" y="70" width="34" height="22" rx="3" {...stroke} strokeWidth={1.4} />
+        <path d="M166 80 H138" {...stroke} strokeWidth={1.5} strokeDasharray="4 3" />
+        <path d="M144 72 l14 16 M158 72 l-14 16" {...stroke} strokeWidth={1.8} />
+      </g>
+      <text x="110" y="112" textAnchor="middle" {...monoText}>
+        máy thứ hai: cổng bị đánh sập
+      </text>
+      <text x="110" y="126" textAnchor="middle" {...monoText}>
+        administratively down
+      </text>
+    </Frame>
+  )
+}
+
+/** Mạo danh ARP: hai kẻ cùng nhận là cổng ra. */
+function ArpSpoof({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <rect x="20" y="24" width="52" height="28" rx="3" {...stroke} strokeWidth={1.3} />
+        <text x="46" y="42" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          router
+        </text>
+      </g>
+      <g className="text-warn">
+        <rect x="20" y="76" width="52" height="28" rx="3" {...stroke} strokeWidth={1.6} />
+        <text x="46" y="94" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          máy lạ
+        </text>
+      </g>
+      <g className="text-accent">
+        <rect x="128" y="44" width="76" height="34" rx="4" {...stroke} strokeWidth={1.8} />
+        <text x="166" y="65" textAnchor="middle" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          .1 là tôi
+        </text>
+      </g>
+      <path d="M76 38 L124 54" {...stroke} strokeWidth={1.3} className="text-ink-muted" markerEnd="url(#cv-arrow)" />
+      <path d="M76 90 L124 70" {...stroke} strokeWidth={1.6} className="text-warn" markerEnd="url(#cv-arrow)" />
+      <text x="110" y="122" textAnchor="middle" {...monoText}>
+        ai đáp sau thì sổ ARP nghe theo
+      </text>
+    </Frame>
+  )
+}
+
+/** VLAN hopping: hai lớp nhãn, switch đầu bóc lớp ngoài. */
+function VlanHopping({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-warn">
+        <rect x="12" y="40" width="66" height="30" rx="3" {...stroke} strokeWidth={1.5} />
+        <rect x="22" y="47" width="46" height="16" rx="2" {...stroke} strokeWidth={1.2} />
+        <text x="45" y="86" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          hai lớp nhãn
+        </text>
+      </g>
+      <g className="text-ink-muted">
+        <path d="M82 55 H100" {...stroke} strokeWidth={1.3} markerEnd="url(#cv-arrow)" />
+        <rect x="104" y="42" width="26" height="26" rx="3" {...stroke} strokeWidth={1.2} />
+        <text x="117" y="34" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          bóc lớp ngoài
+        </text>
+        <path d="M134 55 H152" {...stroke} strokeWidth={1.3} markerEnd="url(#cv-arrow)" />
+      </g>
+      <g className="text-accent">
+        <rect x="156" y="42" width="50" height="26" rx="3" {...stroke} strokeWidth={1.6} />
+        <text x="181" y="59" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          xóm khác
+        </text>
+      </g>
+      <text x="110" y="106" textAnchor="middle" {...monoText}>
+        sống nhờ native VLAN đi không nhãn
+      </text>
+      <text x="110" y="122" textAnchor="middle" {...monoText}>
+        chặn: native là VLAN không ai dùng
+      </text>
+    </Frame>
+  )
+}
+
+/** DORA hét trong xóm, router chặn — tiếng hét không qua ranh giới. */
+function DoraBoundary({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-accent">
+        <rect x="16" y="50" width="30" height="22" rx="3" {...stroke} strokeWidth={1.4} />
+        {[0, 1, 2].map((i) => (
+          <path key={i} d={`M${52 + i * 10} ${54 - i * 2} a${8 + i * 5} ${8 + i * 5} 0 0 1 0 ${14 + i * 4}`} {...stroke} strokeWidth={1.3} />
+        ))}
+        <text x="60" y="40" textAnchor="middle" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          DISCOVER
+        </text>
+      </g>
+      <g className="text-warn">
+        <rect x="104" y="42" width="34" height="38" rx="4" {...stroke} strokeWidth={1.6} />
+        <text x="121" y="65" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          router
+        </text>
+        <path d="M96 46 l16 30 M112 46 l-16 30" {...stroke} strokeWidth={1.6} />
+      </g>
+      <g className="text-ink-muted">
+        <rect x="168" y="50" width="36" height="22" rx="3" {...stroke} strokeWidth={1.3} />
+        <text x="186" y="86" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          DHCP xóm khác
+        </text>
+      </g>
+      <text x="110" y="116" textAnchor="middle" {...monoText}>
+        tiếng hét chết ở ranh giới router
+      </text>
+    </Frame>
+  )
+}
+
+/** Relay: nghe hét trong xóm, ghi giaddr, gửi thư đích danh vượt router. */
+function DhcpRelay({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <rect x="12" y="46" width="28" height="20" rx="3" {...stroke} strokeWidth={1.3} />
+        <path d="M44 50 a8 8 0 0 1 0 12" {...stroke} strokeWidth={1.2} />
+      </g>
+      <g className="text-accent">
+        <rect x="62" y="42" width="40" height="28" rx="3" {...stroke} strokeWidth={1.8} />
+        <text x="82" y="60" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          relay
+        </text>
+        <rect x="70" y="80" width="52" height="16" rx="2" {...stroke} strokeWidth={1.4} />
+        <text x="96" y="92" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          giaddr
+        </text>
+        <path d="M106 56 H160" {...stroke} strokeWidth={1.8} markerEnd="url(#cv-arrow)" />
+      </g>
+      <g className="text-ink-muted">
+        <rect x="132" y="44" width="14" height="24" rx="2" {...stroke} strokeWidth={1.2} />
+        <rect x="164" y="42" width="40" height="28" rx="3" {...stroke} strokeWidth={1.4} />
+        <text x="184" y="60" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          DHCP
+        </text>
+      </g>
+      <text x="110" y="118" textAnchor="middle" {...monoText}>
+        đổi tiếng hét thành thư đích danh
+      </text>
+    </Frame>
+  )
+}
+
+/** Scope như bãi gửi xe: gần đầy — vạch cảnh báo 90%. */
+function ScopeGauge({ title }: { title?: string }) {
+  const slots = [...Array(10)].map((_, i) => i < 9)
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <rect x="20" y="40" width="180" height="30" rx="4" {...stroke} strokeWidth={1.3} />
+      </g>
+      {slots.map((filled, i) => (
+        <rect
+          key={i}
+          x={26 + i * 17.4}
+          y="46"
+          width="13"
+          height="18"
+          rx="2"
+          fill={filled ? 'currentColor' : 'none'}
+          stroke="currentColor"
+          strokeWidth="1.2"
+          className={filled ? (i < 7 ? 'text-accent' : 'text-warn') : 'text-ink-muted'}
+        />
+      ))}
+      <g className="text-warn">
+        <path d="M182 34 V76" {...stroke} strokeWidth={1.4} strokeDasharray="4 3" />
+        <text x="182" y="28" textAnchor="middle" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          90%
+        </text>
+      </g>
+      <text x="110" y="98" textAnchor="middle" {...monoText}>
+        9/10 suất đã cho thuê — sắp cạn
+      </text>
+      <text x="110" y="116" textAnchor="middle" {...monoText}>
+        mở dải / rút lease TRƯỚC khi cạn
+      </text>
+    </Frame>
+  )
+}
+
+/** APIPA: xin không ai đáp, tự viết số lên tay. */
+function ApipaSelf({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <rect x="20" y="36" width="34" height="24" rx="3" {...stroke} strokeWidth={1.4} />
+        <path d="M58 44 H100" {...stroke} strokeWidth={1.3} strokeDasharray="4 3" markerEnd="url(#cv-arrow)" />
+        <text x="79" y="36" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          DISCOVER?
+        </text>
+        <text x="118" y="48" textAnchor="middle" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          …
+        </text>
+      </g>
+      <g className="text-warn">
+        <rect x="24" y="76" width="110" height="20" rx="3" {...stroke} strokeWidth={1.6} />
+        <text x="79" y="90" textAnchor="middle" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          169.254.7.23
+        </text>
+      </g>
+      <g className="text-ink-muted">
+        <text x="168" y="82" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          gateway: —
+        </text>
+        <text x="168" y="94" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          DNS: —
+        </text>
+      </g>
+      <text x="110" y="118" textAnchor="middle" {...monoText}>
+        không ai đáp thì tự bịa số
+      </text>
+    </Frame>
+  )
+}
+
+/** Failover: hai server, kho chia 80/20 hoặc chung một cuốn sổ. */
+function DhcpFailover({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-accent">
+        <rect x="24" y="30" width="44" height="26" rx="3" {...stroke} strokeWidth={1.6} />
+        <text x="46" y="47" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          A · 80%
+        </text>
+      </g>
+      <g className="text-ink-muted">
+        <rect x="152" y="30" width="44" height="26" rx="3" {...stroke} strokeWidth={1.4} />
+        <text x="174" y="47" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          B · 20%
+        </text>
+      </g>
+      <g className="text-ok">
+        <rect x="76" y="66" width="68" height="22" rx="3" {...stroke} strokeWidth={1.5} />
+        <path d="M84 77 h52 M84 82 h36" {...stroke} strokeWidth={1} />
+        <path d="M68 43 L84 66 M152 43 L136 66" {...stroke} strokeWidth={1.3} />
+        <text x="110" y="62" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          một cuốn sổ chung
+        </text>
+      </g>
+      <text x="110" y="106" textAnchor="middle" {...monoText}>
+        chia kho, hoặc chung một cuốn sổ
+      </text>
+      <text x="110" y="122" textAnchor="middle" {...monoText}>
+        hai người không cùng gả một cô
+      </text>
+    </Frame>
+  )
+}
+
+/** Bẫy: hai server hai cuốn sổ rời cùng phát một dải → trùng số. */
+function OverlapTrap({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <rect x="24" y="26" width="40" height="24" rx="3" {...stroke} strokeWidth={1.4} />
+        <rect x="156" y="26" width="40" height="24" rx="3" {...stroke} strokeWidth={1.4} />
+      </g>
+      <g className="text-warn">
+        <rect x="46" y="66" width="56" height="18" rx="2" {...stroke} strokeWidth={1.5} />
+        <text x="74" y="79" textAnchor="middle" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          .77
+        </text>
+        <rect x="118" y="66" width="56" height="18" rx="2" {...stroke} strokeWidth={1.5} />
+        <text x="146" y="79" textAnchor="middle" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          .77
+        </text>
+        <path d="M52 50 L66 66 M168 50 L154 66" {...stroke} strokeWidth={1.3} />
+        <text x="110" y="104" textAnchor="middle" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          hai sổ rời — một số cấp hai lần
+        </text>
+      </g>
+      <text x="110" y="122" textAnchor="middle" {...monoText}>
+        bệnh trùng IP do hạ tầng đẻ đều đặn
+      </text>
+    </Frame>
+  )
+}
+
+/** Split DNS: một tên, sổ trong và sổ ngoài trả hai địa chỉ. */
+function SplitDns({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <rect x="76" y="14" width="68" height="18" rx="3" {...stroke} strokeWidth={1.4} />
+        <text x="110" y="27" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          www.congty.vn
+        </text>
+        <path d="M96 34 L62 52" {...stroke} strokeWidth={1.3} markerEnd="url(#cv-arrow)" />
+        <path d="M124 34 L158 52" {...stroke} strokeWidth={1.3} markerEnd="url(#cv-arrow)" />
+      </g>
+      <g className="text-accent">
+        <rect x="18" y="56" width="88" height="34" rx="3" {...stroke} strokeWidth={1.6} />
+        <text x="62" y="70" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          sổ TRONG
+        </text>
+        <text x="62" y="84" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          10.20.0.80
+        </text>
+      </g>
+      <g className="text-ink-muted">
+        <rect x="114" y="56" width="88" height="34" rx="3" {...stroke} strokeWidth={1.4} />
+        <text x="158" y="70" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          sổ NGOÀI
+        </text>
+        <text x="158" y="84" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          203.0.113.80
+        </text>
+      </g>
+      <text x="110" y="112" textAnchor="middle" {...monoText}>
+        nhà đi đường tắt, khách cửa chính
+      </text>
+      <text x="110" y="126" textAnchor="middle" {...monoText}>
+        tên nội bộ KHÔNG phơi ra sổ ngoài
+      </text>
+    </Frame>
+  )
+}
+
+/** Forwarder: mọi câu hỏi lạ dồn về một cửa ra. */
+function DnsForwarder({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        {[26, 52, 78].map((y) => (
+          <g key={y}>
+            <rect x="16" y={y} width="26" height="16" rx="2" {...stroke} strokeWidth={1.2} />
+            <path d={`M46 ${y + 8} H84`} {...stroke} strokeWidth={1.2} markerEnd="url(#cv-arrow)" />
+          </g>
+        ))}
+      </g>
+      <g className="text-accent">
+        <rect x="88" y="42" width="48" height="34" rx="3" {...stroke} strokeWidth={1.8} />
+        <text x="112" y="56" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          forwarder
+        </text>
+        <text x="112" y="69" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          + bộ đệm
+        </text>
+        <path d="M140 59 H196" {...stroke} strokeWidth={1.8} markerEnd="url(#cv-arrow)" />
+        <text x="168" y="50" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          Internet
+        </text>
+      </g>
+      <text x="110" y="104" textAnchor="middle" {...monoText}>
+        một cửa ra: đệm chung, lọc chung
+      </text>
+      <text x="110" y="120" textAnchor="middle" {...monoText}>
+        một người hỏi, nghìn người sau hưởng
+      </text>
+    </Frame>
+  )
+}
+
+/** Conditional forwarder: tên đối tác rẽ thẳng sang DNS đối tác. */
+function CondForwarder({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <rect x="16" y="48" width="44" height="26" rx="3" {...stroke} strokeWidth={1.4} />
+        <text x="38" y="65" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          DNS trong
+        </text>
+        <path d="M64 54 L120 30" {...stroke} strokeWidth={1.3} markerEnd="url(#cv-arrow)" />
+        <text x="96" y="26" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          tên khác → Internet
+        </text>
+      </g>
+      <g className="text-accent">
+        <path d="M64 68 L120 92" {...stroke} strokeWidth={1.8} markerEnd="url(#cv-arrow)" />
+        <text x="86" y="94" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          doitac.vn
+        </text>
+        <rect x="126" y="82" width="78" height="26" rx="3" {...stroke} strokeWidth={1.6} />
+        <text x="165" y="99" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          DNS của đối tác
+        </text>
+      </g>
+      <text x="110" y="124" textAnchor="middle" {...monoText}>
+        hỏi đúng nhà, khỏi vòng Internet
+      </text>
+    </Frame>
+  )
+}
+
+/** TTL: hạ hạn nhớ trước, đổi địa chỉ sau — trục thời gian ba nhịp. */
+function TtlTimeline({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <path d="M16 64 H204" {...stroke} strokeWidth={1.3} markerEnd="url(#cv-arrow)" />
+      </g>
+      <g className="text-accent">
+        <circle cx="48" cy="64" r="5" {...stroke} strokeWidth={1.6} />
+        <text x="48" y="46" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          hạ TTL
+        </text>
+        <text x="48" y="86" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          trước vài ngày
+        </text>
+      </g>
+      <g className="text-warn">
+        <circle cx="116" cy="64" r="5" {...stroke} strokeWidth={1.6} />
+        <text x="116" y="46" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          đổi địa chỉ
+        </text>
+      </g>
+      <g className="text-ok">
+        <circle cx="178" cy="64" r="5" {...stroke} strokeWidth={1.6} />
+        <text x="178" y="46" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          nâng TTL lại
+        </text>
+      </g>
+      <text x="110" y="108" textAnchor="middle" {...monoText}>
+        trí nhớ ngoài kia không xóa được
+      </text>
+      <text x="110" y="124" textAnchor="middle" {...monoText}>
+        chỉ hẹn giờ được từ trước
+      </text>
+    </Frame>
+  )
+}
+
+/** Hai tòa nhà, một miền: site HN và site ĐN nối bằng đường WAN chậm. */
+function SiteTwoBuildings({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-accent">
+        <rect x="20" y="34" width="62" height="48" rx="3" {...stroke} strokeWidth={1.6} />
+        <path d="M30 46 h42 M30 58 h42 M30 70 h42" {...stroke} strokeWidth={1} />
+        <text x="51" y="96" textAnchor="middle" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          site HaNoi
+        </text>
+      </g>
+      <g className="text-ink-muted">
+        <rect x="138" y="34" width="62" height="48" rx="3" {...stroke} strokeWidth={1.6} />
+        <path d="M148 46 h42 M148 58 h42 M148 70 h42" {...stroke} strokeWidth={1} />
+        <text x="169" y="96" textAnchor="middle" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          site DaNang
+        </text>
+        <path d="M84 58 H136" {...stroke} strokeWidth={1.2} strokeDasharray="5 4" />
+        <text x="110" y="50" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          WAN chậm
+        </text>
+      </g>
+      <text x="110" y="118" textAnchor="middle" {...monoText}>
+        chung MỘT miền, khác chỗ đứng
+      </text>
+    </Frame>
+  )
+}
+
+/** Subnet gắn site: IP → tra site → DC gần nhà. */
+function SubnetToSite({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <rect x="16" y="26" width="86" height="18" rx="2" {...stroke} strokeWidth={1.3} />
+        <text x="59" y="39" textAnchor="middle" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          IP: 10.30.2.15
+        </text>
+        <path d="M59 48 V60" {...stroke} strokeWidth={1.3} markerEnd="url(#cv-arrow)" />
+      </g>
+      <g className="text-accent">
+        <rect x="16" y="64" width="118" height="18" rx="2" {...stroke} strokeWidth={1.6} />
+        <text x="75" y="77" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          10.30.0.0/16 → DaNang
+        </text>
+        <path d="M138 73 H166" {...stroke} strokeWidth={1.6} markerEnd="url(#cv-arrow)" />
+        <rect x="170" y="60" width="36" height="26" rx="3" {...stroke} strokeWidth={1.6} />
+        <text x="188" y="77" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          DC-DN
+        </text>
+      </g>
+      <text x="110" y="106" textAnchor="middle" {...monoText}>
+        nhìn IP → tra site → gõ cửa gần nhà
+      </text>
+      <text x="110" y="122" textAnchor="middle" {...monoText}>
+        quên khai dải là máy mù vị trí
+      </text>
+    </Frame>
+  )
+}
+
+/** Replication: hai cuốn sổ chép nhau — trong site nhanh, giữa site theo lịch. */
+function ReplicationLedgers({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <rect x="24" y="28" width="56" height="44" rx="3" {...stroke} strokeWidth={1.4} />
+        <path d="M32 40 h40 M32 50 h40 M32 60 h26" {...stroke} strokeWidth={1.1} />
+        <rect x="140" y="28" width="56" height="44" rx="3" {...stroke} strokeWidth={1.4} />
+        <path d="M148 40 h40 M148 50 h40 M148 60 h26" {...stroke} strokeWidth={1.1} />
+      </g>
+      <g className="text-accent">
+        <path d="M84 42 H136" {...stroke} strokeWidth={1.6} markerEnd="url(#cv-arrow)" />
+        <path d="M136 58 H84" {...stroke} strokeWidth={1.6} markerEnd="url(#cv-arrow)" />
+        <text x="110" y="34" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          theo lịch, nén
+        </text>
+      </g>
+      <text x="110" y="96" textAnchor="middle" {...monoText}>
+        mỗi DC một bản sổ ĐẦY ĐỦ
+      </text>
+      <text x="110" y="114" textAnchor="middle" {...monoText}>
+        trong site: tức thì · giữa: chuyến
+      </text>
+    </Frame>
+  )
+}
+
+/** Khe trễ: đổi ở A lúc 9:00, B thấy lúc 9:15 — trục thời gian. */
+function SiteLagTimeline({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <path d="M18 70 H202" {...stroke} strokeWidth={1.3} markerEnd="url(#cv-arrow)" />
+      </g>
+      <g className="text-accent">
+        <circle cx="52" cy="70" r="5" {...stroke} strokeWidth={1.6} />
+        <text x="52" y="52" textAnchor="middle" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          9:00 ghi ở A
+        </text>
+      </g>
+      <g className="text-warn">
+        <path d="M60 82 H136" {...stroke} strokeWidth={1.4} strokeDasharray="4 3" />
+        <text x="98" y="96" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          khe trễ — không phải hỏng
+        </text>
+      </g>
+      <g className="text-ok">
+        <circle cx="144" cy="70" r="5" {...stroke} strokeWidth={1.6} />
+        <text x="144" y="52" textAnchor="middle" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          9:15 B thấy
+        </text>
+      </g>
+      <text x="110" y="118" textAnchor="middle" {...monoText}>
+        đợi hết một chuyến rồi kết luận
+      </text>
+    </Frame>
+  )
+}
+
+/** AGDLP: đường ống bốn khúc A → G → DL → P. */
+function AgdlpPipe({ title }: { title?: string }) {
+  const boxes = [
+    { x: 10, label: 'A', sub: 'người' },
+    { x: 62, label: 'G', sub: 'vai' },
+    { x: 114, label: 'DL', sub: 'quyền' },
+    { x: 166, label: 'P', sub: 'thư mục' },
+  ]
+  return (
+    <Frame title={title}>
+      {boxes.map((b, i) => (
+        <g key={b.label} className={i === 3 ? 'text-ok' : i === 0 ? 'text-ink-muted' : 'text-accent'}>
+          <rect x={b.x} y="42" width="42" height="30" rx="4" {...stroke} strokeWidth={1.6} />
+          <text x={b.x + 21} y="60" textAnchor="middle" fontSize="11" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+            {b.label}
+          </text>
+          <text x={b.x + 21} y="86" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+            {b.sub}
+          </text>
+          {i < 3 && <path d={`M${b.x + 44} 57 h6`} {...stroke} strokeWidth={1.6} markerEnd="url(#cv-arrow)" />}
+        </g>
+      ))}
+      <text x="110" y="112" textAnchor="middle" {...monoText}>
+        người vào vai, vai cắm vào quyền
+      </text>
+      <text x="110" y="126" textAnchor="middle" {...monoText}>
+        không ai nối nguồn thẳng vào vòi
+      </text>
+    </Frame>
+  )
+}
+
+/** Global vs Domain Local: thẻ đi theo người, ổ khóa đứng cạnh cửa. */
+function GgVsDl({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <path d="M110 14 V104" fill="none" stroke="currentColor" strokeWidth="1" strokeDasharray="4 4" className="text-ink-muted" />
+      <g className="text-accent">
+        <text x="58" y="28" textAnchor="middle" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          Global
+        </text>
+        <rect x="34" y="38" width="30" height="20" rx="3" {...stroke} strokeWidth={1.5} />
+        <rect x="58" y="52" width="30" height="20" rx="3" {...stroke} strokeWidth={1.5} />
+        <text x="58" y="92" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          gom NGƯỜI theo vai
+        </text>
+      </g>
+      <g className="text-ok">
+        <text x="164" y="28" textAnchor="middle" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          Domain Local
+        </text>
+        <rect x="148" y="40" width="32" height="26" rx="4" {...stroke} strokeWidth={1.5} />
+        <circle cx="164" cy="50" r="4" {...stroke} strokeWidth={1.3} />
+        <path d="M164 54 v6" {...stroke} strokeWidth={1.3} />
+        <text x="164" y="92" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          giữ QUYỀN cạnh cửa
+        </text>
+      </g>
+      <text x="110" y="122" textAnchor="middle" {...monoText}>
+        vai cắm vào quyền — cấm chiều ngược
+      </text>
+    </Frame>
+  )
+}
+
+/** Vòng đời nhân sự: mới / chuyển / nghỉ — đều chạm đúng một chỗ. */
+function StaffLifecycle({ title }: { title?: string }) {
+  const rows = [
+    { y: 26, label: 'mới vào', action: '+ vào nhóm vai' },
+    { y: 52, label: 'chuyển phòng', action: 'đổi nhóm vai' },
+    { y: 78, label: 'nghỉ việc', action: 'khóa tài khoản' },
+  ]
+  return (
+    <Frame title={title}>
+      {rows.map((r) => (
+        <g key={r.y} className="text-ink-muted">
+          <rect x="22" y={r.y} width="78" height="18" rx="2" {...stroke} strokeWidth={1.2} />
+          <text x="61" y={r.y + 13} textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+            {r.label}
+          </text>
+          <path d={`M104 ${r.y + 9} H124`} {...stroke} strokeWidth={1.2} markerEnd="url(#cv-arrow)" />
+        </g>
+      ))}
+      {rows.map((r) => (
+        <g key={`a${r.y}`} className="text-accent">
+          <rect x="128" y={r.y} width="72" height="18" rx="2" {...stroke} strokeWidth={1.4} />
+          <text x="164" y={r.y + 13} textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+            {r.action}
+          </text>
+        </g>
+      ))}
+      <text x="110" y="118" textAnchor="middle" {...monoText}>
+        biến động chỉ chạm khúc người–vai
+      </text>
+    </Frame>
+  )
+}
+
+/** Delegation: chùm chìa to trong két, một chìa hẹp trao ra đúng cửa. */
+function DelegationKeys({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <rect x="22" y="30" width="52" height="52" rx="4" {...stroke} strokeWidth={1.5} />
+        {[0, 1, 2].map((i) => (
+          <g key={i}>
+            <circle cx={36 + i * 13} cy="50" r="4" {...stroke} strokeWidth={1.2} />
+            <path d={`M${36 + i * 13} 54 v10`} {...stroke} strokeWidth={1.2} />
+          </g>
+        ))}
+        <text x="48" y="96" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          cả chùm: trong két
+        </text>
+      </g>
+      <g className="text-accent">
+        <path d="M80 56 H126" {...stroke} strokeWidth={1.6} markerEnd="url(#cv-arrow)" />
+        <circle cx="146" cy="50" r="5" {...stroke} strokeWidth={1.7} />
+        <path d="M146 55 v14 M146 63 h6" {...stroke} strokeWidth={1.7} />
+        <text x="146" y="34" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          một chìa hẹp
+        </text>
+      </g>
+      <g className="text-ok">
+        <rect x="170" y="42" width="34" height="34" rx="3" {...stroke} strokeWidth={1.5} />
+        <text x="187" y="92" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          OU NhanVien
+        </text>
+      </g>
+      <text x="110" y="118" textAnchor="middle" {...monoText}>
+        đúng việc · đúng nhánh · cho NHÓM
+      </text>
+    </Frame>
+  )
+}
+
+/** Một dòng syslog tách thành bốn mảnh: khi nào, máy nào, mức nào, chuyện gì. */
+function SyslogLine({ title }: { title?: string }) {
+  const parts = [
+    { x: 12, w: 58, label: '03:12:44', sub: 'khi nào' },
+    { x: 74, w: 52, label: 'sw-core', sub: 'máy nào' },
+    { x: 130, w: 40, label: 'ERROR', sub: 'mức nào' },
+    { x: 174, w: 34, label: 'link…', sub: 'chuyện gì' },
+  ]
+  return (
+    <Frame title={title}>
+      {parts.map((p, i) => (
+        <g key={p.x} className={i === 2 ? 'text-warn' : 'text-ink-muted'}>
+          <rect x={p.x} y="42" width={p.w} height="22" rx="3" {...stroke} strokeWidth={i === 2 ? 1.8 : 1.3} />
+          <text x={p.x + p.w / 2} y="57" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+            {p.label}
+          </text>
+          <text x={p.x + p.w / 2} y="80" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+            {p.sub}
+          </text>
+        </g>
+      ))}
+      <text x="110" y="112" textAnchor="middle" {...monoText}>
+        bốn câu hỏi, một khuôn cho mọi máy
+      </text>
+    </Frame>
+  )
+}
+
+/** Thang severity 0-7: số nhỏ nóng, số lớn nguội. */
+function SeverityLadder({ title }: { title?: string }) {
+  const levels = ['0 Emerg', '1 Alert', '2 Crit', '3 Error', '4 Warn', '5 Notice', '6 Info', '7 Debug']
+  return (
+    <Frame title={title}>
+      {levels.map((l, i) => (
+        <g key={l} className={i <= 3 ? 'text-warn' : 'text-ink-muted'}>
+          <rect x={14 + i * 24} y={30 + i * 6} width="22" height={64 - i * 6} rx="2" {...stroke} strokeWidth={i <= 3 ? 1.6 : 1.1} />
+          <text
+            x={25 + i * 24}
+            y={104}
+            textAnchor="middle"
+            fontSize="6.5"
+            fill="currentColor"
+            style={{ fontFamily: 'var(--font-mono)' }}
+          >
+            {l}
+          </text>
+        </g>
+      ))}
+      <text x="110" y="122" textAnchor="middle" {...monoText}>
+        số càng NHỎ chuyện càng lớn
+      </text>
+    </Frame>
+  )
+}
+
+/** Log tập trung: ba thiết bị đổ sổ về một máy thu. */
+function CentralLog({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        {[24, 52, 80].map((y) => (
+          <g key={y}>
+            <rect x="16" y={y} width="34" height="18" rx="2" {...stroke} strokeWidth={1.2} />
+            <path d={`M54 ${y + 9} L96 58`} {...stroke} strokeWidth={1.2} markerEnd="url(#cv-arrow)" />
+          </g>
+        ))}
+      </g>
+      <g className="text-accent">
+        <rect x="100" y="40" width="56" height="40" rx="3" {...stroke} strokeWidth={1.8} />
+        <path d="M108 52 h40 M108 60 h40 M108 68 h28" {...stroke} strokeWidth={1.1} />
+        <text x="128" y="94" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          máy thu log
+        </text>
+      </g>
+      <g className="text-ok">
+        <path d="M176 52 l6 8 10 -14" {...stroke} strokeWidth={1.8} />
+      </g>
+      <text x="110" y="116" textAnchor="middle" {...monoText}>
+        sổ rời tàu từng dòng một
+      </text>
+    </Frame>
+  )
+}
+
+/** Giờ lệch: hai đồng hồ, thứ tự sự kiện đảo ngược. */
+function ClockSkew({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <circle cx="60" cy="46" r="18" {...stroke} strokeWidth={1.4} />
+        <path d="M60 46 V34 M60 46 L69 51" {...stroke} strokeWidth={1.4} />
+        <text x="60" y="80" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          router 02:09
+        </text>
+      </g>
+      <g className="text-warn">
+        <circle cx="160" cy="46" r="18" {...stroke} strokeWidth={1.4} />
+        <path d="M160 46 V34 M160 46 L151 53" {...stroke} strokeWidth={1.4} />
+        <text x="160" y="80" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          switch 02:14
+        </text>
+        <text x="110" y="100" textAnchor="middle" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          đồng hồ lệch 6 phút?
+        </text>
+      </g>
+      <text x="110" y="120" textAnchor="middle" {...monoText}>
+        thứ tự trước-sau thành chuyện bịa
+      </text>
+    </Frame>
+  )
+}
+
+/** Lọc trước, đọc sau: chồng log qua phễu còn vài dòng. */
+function FilterFirst({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <rect x="20" y="20" width="70" height="72" rx="3" {...stroke} strokeWidth={1.3} />
+        {[30, 38, 46, 54, 62, 70, 78, 86].map((y) => (
+          <path key={y} d={`M28 ${y} h54`} {...stroke} strokeWidth={1} />
+        ))}
+        <text x="55" y="106" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          160 dòng
+        </text>
+      </g>
+      <g className="text-accent">
+        <path d="M94 50 L118 50 L128 62 L118 74 L94 74" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
+        <text x="110" y="42" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          ERROR
+        </text>
+        <path d="M132 62 H150" {...stroke} strokeWidth={1.6} markerEnd="url(#cv-arrow)" />
+      </g>
+      <g className="text-warn">
+        <rect x="154" y="52" width="52" height="20" rx="2" {...stroke} strokeWidth={1.7} />
+        <text x="180" y="66" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          1 dòng thật
+        </text>
+      </g>
+      <text x="110" y="122" textAnchor="middle" {...monoText}>
+        lọc trước, đọc sau
+      </text>
+    </Frame>
+  )
+}
+
+/** Polling: vòng hỏi thăm định kỳ vẽ thành đồ thị. */
+function SnmpPolling({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-accent">
+        <rect x="18" y="34" width="48" height="30" rx="3" {...stroke} strokeWidth={1.6} />
+        <text x="42" y="53" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          giám sát
+        </text>
+        <path d="M70 42 H114" {...stroke} strokeWidth={1.5} markerEnd="url(#cv-arrow)" />
+        <path d="M114 56 H70" {...stroke} strokeWidth={1.5} strokeDasharray="4 3" markerEnd="url(#cv-arrow)" />
+        <text x="92" y="34" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          5 phút/lượt
+        </text>
+      </g>
+      <g className="text-ink-muted">
+        <rect x="118" y="34" width="40" height="30" rx="3" {...stroke} strokeWidth={1.3} />
+        <text x="138" y="53" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          switch
+        </text>
+      </g>
+      <g className="text-ok">
+        <path d="M26 104 l24 -6 l24 -3 l24 -8 l24 -4 l24 -10 l24 -3" {...stroke} strokeWidth={1.6} />
+        <text x="110" y="118" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          hỏi đều → thấy được sự yếu dần
+        </text>
+      </g>
+    </Frame>
+  )
+}
+
+/** Trap: thiết bị tự hô — tia chớp bay về máy giám sát. */
+function SnmpTrap({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <rect x="18" y="44" width="44" height="30" rx="3" {...stroke} strokeWidth={1.3} />
+        <text x="40" y="63" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          giám sát
+        </text>
+      </g>
+      <g className="text-warn">
+        <rect x="156" y="44" width="44" height="30" rx="3" {...stroke} strokeWidth={1.6} />
+        <text x="178" y="63" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          switch
+        </text>
+        <path d="M178 40 l-6 -12 h8 l-6 -12" {...stroke} strokeWidth={1.6} />
+        <path d="M152 59 H70" {...stroke} strokeWidth={2} markerEnd="url(#cv-arrow)" />
+        <text x="110" y="50" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          TRAP! nguồn hỏng
+        </text>
+      </g>
+      <text x="110" y="100" textAnchor="middle" {...monoText}>
+        có biến là tự hô — không đợi ai hỏi
+      </text>
+      <text x="110" y="118" textAnchor="middle" {...monoText}>
+        nhưng chuông không vẽ được đồ thị
+      </text>
+    </Frame>
+  )
+}
+
+/** Baseline: dải nếp cũ và hai kiểu bật khỏi nếp. */
+function BaselineBand({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <rect x="18" y="46" width="184" height="26" rx="3" fill="none" stroke="currentColor" strokeWidth="1" strokeDasharray="4 3" />
+        <text x="110" y="42" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          nếp cũ (baseline)
+        </text>
+      </g>
+      <g className="text-ok">
+        <path d="M22 60 l20 -4 l20 5 l20 -6 l20 4" {...stroke} strokeWidth={1.6} />
+      </g>
+      <g className="text-warn">
+        <path d="M102 59 l18 -34 l16 8" {...stroke} strokeWidth={1.6} />
+        <text x="146" y="26" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          vọt lên
+        </text>
+        <path d="M136 33 l16 52 l28 6" {...stroke} strokeWidth={1.6} strokeDasharray="4 3" />
+        <text x="176" y="102" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          im ắng khác nếp
+        </text>
+      </g>
+      <text x="110" y="122" textAnchor="middle" {...monoText}>
+        bật khỏi nếp: hai phía đều là chuông
+      </text>
+    </Frame>
+  )
+}
+
+/** Quy trình 4 bước capstone: giấy → dây → lệnh → bằng chứng. */
+function FourStepProcess({ title }: { title?: string }) {
+  const steps = [
+    { x: 10, label: '1', sub: 'địa chỉ' },
+    { x: 62, label: '2', sub: 'nối dây' },
+    { x: 114, label: '3', sub: 'cấu hình' },
+    { x: 166, label: '4', sub: 'kiểm chứng' },
+  ]
+  return (
+    <Frame title={title}>
+      {steps.map((b, i) => (
+        <g key={b.label} className={i === 3 ? 'text-ok' : 'text-accent'}>
+          <rect x={b.x} y="40" width="44" height="32" rx="4" {...stroke} strokeWidth={1.6} />
+          <text x={b.x + 22} y="60" textAnchor="middle" fontSize="12" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+            {b.label}
+          </text>
+          <text x={b.x + 22} y="86" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+            {b.sub}
+          </text>
+          {i < 3 && <path d={`M${b.x + 46} 56 h6`} {...stroke} strokeWidth={1.6} markerEnd="url(#cv-arrow)" />}
+        </g>
+      ))}
+      <text x="110" y="112" textAnchor="middle" {...monoText}>
+        giấy trước, dây sau, lệnh tiếp
+      </text>
+      <text x="110" y="126" textAnchor="middle" {...monoText}>
+        và không tin gì khi chưa kiểm
+      </text>
+    </Frame>
+  )
+}
+
+/** Kiểm chứng leo thang ba bậc: trunk sống → Full → ping. */
+function VerifyLadder({ title }: { title?: string }) {
+  const rungs = [
+    { y: 88, label: 'show interfaces trunk', note: 'tầng 2 sống' },
+    { y: 58, label: 'show ip ospf neighbor → FULL', note: 'tầng 3 quen' },
+    { y: 28, label: 'ping xuyên site', note: 'trọn đường' },
+  ]
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <path d="M24 108 V20 M196 108 V20" {...stroke} strokeWidth={1.3} />
+      </g>
+      {rungs.map((r, i) => (
+        <g key={r.y} className={i === 2 ? 'text-ok' : 'text-accent'}>
+          <path d={`M24 ${r.y + 10} H196`} {...stroke} strokeWidth={1.5} />
+          <text x="110" y={r.y + 4} textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+            {r.label}
+          </text>
+        </g>
+      ))}
+      <text x="110" y="124" textAnchor="middle" {...monoText}>
+        mỗi bậc một bằng chứng rồi mới leo
+      </text>
+    </Frame>
+  )
+}
+
 const REGISTRY: Record<string, VisualComponent> = {
   // Module 1 — bưu điện
   'vis-phong-bi-thu': EnvelopePackets,
@@ -2554,6 +4637,128 @@ const REGISTRY: Record<string, VisualComponent> = {
   'vis-hook-pipeline': PipelineFlow,
   'vis-loc-dong-log': LogFilter,
   'vis-hook-doc-log': LogFilter,
+  // Module 13 — VLSM
+  'vis-chia-deu-phi-dat': EvenSplitWaste,
+  'vis-hook-chia-deu': EvenSplitWaste,
+  'vis-vlsm-lo-dat': VlsmBlocks,
+  'vis-co-khoi-vua-du': BlockSizeLadder,
+  'vis-hook-co-khoi': BlockSizeLadder,
+  'vis-cat-lon-truoc': BiggestFirst,
+  'vis-hook-thu-tu-cat': BiggestFirst,
+  'vis-can-khoi': BlockAlign,
+  'vis-hook-can-khoi': BlockAlign,
+  'vis-wildcard-mask': WildcardMask,
+  'vis-hook-wildcard': WildcardMask,
+  'vis-tom-tat-tuyen': RouteSummary,
+  'vis-hook-tom-tat': RouteSummary,
+  // Module 14 — Trunk 802.1Q
+  'vis-trunk-mot-day': TrunkOneCable,
+  'vis-hook-mot-day-nhieu-xom': TrunkOneCable,
+  'vis-khung-mang-nhan': TaggedFrame,
+  'vis-hook-dan-nhan': TaggedFrame,
+  'vis-native-vlan': NativeVlanMismatch,
+  'vis-hook-native-lech': NativeVlanMismatch,
+  'vis-allowed-list': AllowedVlanList,
+  'vis-hook-danh-sach-khach': AllowedVlanList,
+  'vis-router-mot-chan': RouterOnAStick,
+  'vis-hook-router-mot-chan': RouterOnAStick,
+  // Module 15 — STP
+  'vis-bao-quang-ba': BroadcastStorm,
+  'vis-hook-bao-quang-ba': BroadcastStorm,
+  'vis-bpdu': BpduHello,
+  'vis-root-bridge': RootBridgeElection,
+  'vis-hook-bau-root': RootBridgeElection,
+  'vis-cong-chan': BlockedPort,
+  'vis-hook-cong-nam-im': BlockedPort,
+  'vis-hoi-tu-lai': StpReconverge,
+  'vis-hook-dut-day': StpReconverge,
+  'vis-portfast': PortFast,
+  'vis-hook-portfast': PortFast,
+  // Module 16 — OSPF
+  'vis-gioi-han-tuyen-tinh': StaticRouteLimit,
+  'vis-hook-so-tuyen-tay': StaticRouteLimit,
+  'vis-dinh-tuyen-dong': DynamicRouting,
+  'vis-goi-hello': HelloPacket,
+  'vis-hook-lam-quen-router': HelloPacket,
+  'vis-toa-lam-quen': NeighborLadder,
+  'vis-dong-bo-ban-do': LsdbSync,
+  'vis-hook-chu-full': LsdbSync,
+  'vis-network-area-0': NetworkAreaZero,
+  'vis-cost-duong-re': OspfCost,
+  'vis-hook-hai-duong': OspfCost,
+  'vis-bang-tu-hoc': LearnedRouteTable,
+  'vis-ospf-di-loi-vong': OspfReroute,
+  'vis-hook-dut-duong-ospf': OspfReroute,
+  'vis-ad-tinh-thang': AdminDistance,
+  // Module 17 — ACL và bảo mật lớp 2
+  'vis-acl-loc-tren-cong': AclGate,
+  'vis-thu-tu-dong-luat': RuleOrder,
+  'vis-cam-vo-hinh': ImplicitDeny,
+  'vis-hook-dong-cam-vo-hinh': ImplicitDeny,
+  'vis-acl-chuan': StandardAcl,
+  'vis-acl-mo-rong': ExtendedAcl,
+  'vis-hook-chuan-hay-mo-rong': StandardAcl,
+  'vis-chieu-in-out': InOutDirection,
+  'vis-dat-acl-o-dau': PlacementRule,
+  'vis-hook-dat-sai-cho': PlacementRule,
+  'vis-acl-vs-stateful': StatelessVsStateful,
+  'vis-mac-flooding': MacFlood,
+  'vis-port-security': PortSecurity,
+  'vis-hook-cong-tu-sap': PortSecurity,
+  'vis-arp-mao-danh': ArpSpoof,
+  'vis-hook-mao-danh': ArpSpoof,
+  'vis-vlan-hopping': VlanHopping,
+  // Module 18 — DHCP & DNS doanh nghiệp
+  'vis-ranh-gioi-dora': DoraBoundary,
+  'vis-hook-chuyen-loi': DoraBoundary,
+  'vis-dhcp-relay': DhcpRelay,
+  'vis-scope-can': ScopeGauge,
+  'vis-hook-tang-ba-cam': ApipaSelf,
+  'vis-apipa': ApipaSelf,
+  'vis-dhcp-failover': DhcpFailover,
+  'vis-hook-hai-nguoi-moi': DhcpFailover,
+  'vis-trung-dai-dhcp': OverlapTrap,
+  'vis-split-dns': SplitDns,
+  'vis-hook-mot-ten-hai-so-phan': SplitDns,
+  'vis-dns-forwarder': DnsForwarder,
+  'vis-conditional-forwarder': CondForwarder,
+  'vis-ttl-han-nho': TtlTimeline,
+  'vis-hook-nho-dai': TtlTimeline,
+  // Module 19 — AD đa site & ủy quyền
+  'vis-site-hai-toa': SiteTwoBuildings,
+  'vis-hook-dang-nhap-cham': SiteTwoBuildings,
+  'vis-subnet-gan-site': SubnetToSite,
+  'vis-replication-hai-so': ReplicationLedgers,
+  'vis-hook-doi-mat-khau-bay': ReplicationLedgers,
+  'vis-do-tre-site': SiteLagTimeline,
+  'vis-agdlp-ong-nuoc': AgdlpPipe,
+  'vis-hook-loi-tat-do': AgdlpPipe,
+  'vis-gg-vs-dl': GgVsDl,
+  'vis-vong-doi-nhan-su': StaffLifecycle,
+  'vis-hook-cho-quyen-3-ngay': StaffLifecycle,
+  'vis-delegation-chia-hep': DelegationKeys,
+  'vis-hook-chia-khoa-to': DelegationKeys,
+  // Module 20 — Giám sát & nhật ký
+  'vis-dong-syslog': SyslogLine,
+  'vis-hook-dong-chu-2-gio-sang': SyslogLine,
+  'vis-severity-thang': SeverityLadder,
+  'vis-log-tap-trung': CentralLog,
+  'vis-hook-ba-cuon-so': ClockSkew,
+  'vis-gio-lech': ClockSkew,
+  'vis-loc-truoc-doc': FilterFirst,
+  'vis-hook-dong-rom': FilterFirst,
+  'vis-snmp-polling': SnmpPolling,
+  'vis-hook-y-ta-va-chuong': SnmpTrap,
+  'vis-snmp-trap': SnmpTrap,
+  'vis-baseline': BaselineBand,
+  'vis-hook-60-phan-tram': BaselineBand,
+  // Module 21 — capstone
+  'vis-quy-trinh-4-buoc': FourStepProcess,
+  'vis-hook-thung-thiet-bi': FourStepProcess,
+  'vis-kiem-chung-tung-buoc': VerifyLadder,
+  'vis-hook-oc-dao': VerifyLadder,
+  'vis-hook-yeu-cau-sep': FourStepProcess,
+  'vis-hook-hai-benh-chong': VerifyLadder,
 }
 
 /**

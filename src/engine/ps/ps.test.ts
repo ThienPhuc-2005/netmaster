@@ -19,7 +19,7 @@ const run = (...inputs: string[]) => runPsScript(WORLD_VAN_PHONG, inputs)
 const lastOf = (...inputs: string[]) => run(...inputs).results.at(-1)!
 
 describe('thế giới mẫu — kiểm cấu trúc', () => {
-  it('cả 4 đề fixture sạch lỗi cấu trúc và qua schema', () => {
+  it('mọi đề fixture sạch lỗi cấu trúc và qua schema', () => {
     for (const make of ALL_PS_SPECS) {
       const spec = make()
       expect(validatePsWorld(spec.world)).toEqual([])

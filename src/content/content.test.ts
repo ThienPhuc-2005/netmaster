@@ -20,7 +20,7 @@ function moduleById(id: string) {
   return found!
 }
 
-const PART_RANK = { A: 0, B: 1, C: 2 } as const
+const PART_RANK = { A: 0, B: 1, C: 2, D: 3, E: 4 } as const
 
 describe('bộ nội dung', () => {
   it('order liên tục từ 1, không đứt quãng', () => {
@@ -29,10 +29,10 @@ describe('bộ nội dung', () => {
     expect(modules.map((m) => m.order)).toEqual(modules.map((_, i) => i + 1))
   })
 
-  it('phần không lùi: A đứng trước B, B trước C', () => {
+  it('phần không lùi: A trước B, B trước C, C trước D', () => {
     const ranks = modules.map((m) => PART_RANK[m.part])
     const sorted = [...ranks].sort((a, b) => a - b)
-    expect(ranks, 'thứ tự phần phải là A → B → C theo order').toEqual(sorted)
+    expect(ranks, 'thứ tự phần phải là A → B → C → D theo order').toEqual(sorted)
   })
 
   it('Module 3: đúng 6 chặng (spec: module dài nhất Phần A) + bật drill subnetting', () => {
@@ -95,12 +95,18 @@ describe('bộ nội dung', () => {
       for (const q of [...allQuestions, ...m.masteryTest]) {
         if (q.kind !== 'lab') continue
         const allow = q.spec.allow
+        // Giữ ĐỒNG BỘ với `allowsAnything` của labSchema: quyền nào mở ra
+        // cho người học thao tác thì đều tính, kể cả hai quyền của Phần D
+        // (đổi vai trunk, bật/tắt STP). Thiếu chúng ở đây thì một bài lab
+        // hợp lệ vẫn bị báo là "không cho làm gì".
         const canDoSomething =
           allow.addDevices.length > 0 ||
           allow.removeDevices ||
           allow.addLinks ||
           allow.removeLinks ||
           allow.setVlan ||
+          allow.setTrunk === true ||
+          allow.setStp === true ||
           allow.setIp ||
           allow.setRoutes
         expect(canDoSomething, `${m.id}: lab "${q.id}" không cho thao tác gì`).toBe(true)
@@ -154,6 +160,34 @@ describe('bộ nội dung', () => {
     expect(palace.keyStyle).toBe('text')
     const keysByFloor = [...palace.rooms].sort((a, b) => a.floor - b.floor).flatMap((r) => r.keys)
     expect(keysByFloor).toEqual(['Local', 'Site', 'Domain', 'OU'])
+  })
+
+  it('Module 16: cung điện OSPF 4 tầng × 2 phòng, đúng 8 trạng thái neighbor theo thứ tự', () => {
+    // Spec v2 mục 3 (Module 16): "tòa nhà 4 tầng × 2 phòng cho 8 trạng
+    // thái neighbor, mỗi tầng một giai đoạn". Thứ tự CHÍNH LÀ kiến thức —
+    // xếp sai tầng là dạy sai cuộc làm quen, không chỉ sai hình. Bậc
+    // Attempt phải giữ ghi chú NBMA: spec đòi "dạy đúng, không làm tròn".
+    const m16 = moduleById('module-16')
+    expect(m16.palace, 'Module 16 phải có cung điện 8 trạng thái').toBeDefined()
+    const palace = m16.palace!
+    expect(palace.floors).toBe(4)
+    expect(palace.roomsPerFloor).toBe(2)
+    expect(palace.keyStyle).toBe('text')
+
+    const inRouteOrder = [...palace.rooms].sort((a, b) => a.floor - b.floor || a.position - b.position)
+    expect(inRouteOrder.flatMap((r) => r.keys)).toEqual([
+      'Down',
+      'Attempt',
+      'Init',
+      '2-Way',
+      'ExStart',
+      'Exchange',
+      'Loading',
+      'Full',
+    ])
+
+    const attempt = palace.rooms.find((r) => r.keys[0] === 'Attempt')!
+    expect(attempt.note?.vi, 'bậc Attempt phải nói rõ chỉ có ở mạng NBMA').toMatch(/NBMA/)
   })
 
   it('Module 9: khai checklist lab VMware (spec: app track tiến độ lab)', () => {
@@ -311,6 +345,62 @@ describe('bộ nội dung', () => {
     // terminal, không phải câu hỏi về PowerShell.
     const m12 = moduleById('module-12')
     expect(m12.masteryTest.at(-1)?.kind).toBe('ps')
+  })
+
+  it('Module 17: ca "ACL chặn nhầm cả sếp" có thật và chẩn đoán được bằng show access-lists', () => {
+    // Spec v2 mục 3 (Module 17) gọi đích danh ca này: danh sách mới có
+    // đúng một dòng cấm mà cả văn phòng tắc, vì dòng cấm vô hình cuối
+    // danh sách ra tay. Đo được bằng ba dấu hiệu cùng lúc trên MỘT câu:
+    // đề đã áp một danh sách chỉ có dòng deny, mục tiêu có cả "phải
+    // thông" lẫn "phải chặn" (thiếu vế chặn thì mở toang là qua bài), và
+    // có mục tiêu dấu vết đã tra bảng luật.
+    const m17 = moduleById('module-17')
+    const cliSpecs = [
+      ...m17.lessons.flatMap((l) => [
+        ...l.steps[1].questions,
+        ...l.steps[3].exercises.map((e) => e.question),
+        ...l.steps[4].questions.map((e) => e.question),
+      ]),
+      ...m17.masteryTest,
+    ].flatMap((q) => (q.kind === 'cli' ? [q.spec] : []))
+    expect(cliSpecs.length, 'ACL chỉ cấu hình được bằng CLI nên module phải có nhiều câu cli').toBeGreaterThanOrEqual(4)
+
+    const bossBlockedCase = cliSpecs.some((spec) => {
+      const routers = spec.initial.devices.filter((d) => d.kind === 'router')
+      const onlyDenyApplied = routers.some((r) =>
+        r.ports.some((p) => p.aclIn !== undefined || p.aclOut !== undefined) &&
+        (r.accessLists ?? []).some((list) => list.rules.every((rule) => rule.action === 'deny')),
+      )
+      const pings = spec.goals.flatMap((g) => (g.kind === 'behavior' && g.goal.kind === 'ping' ? [g.goal] : []))
+      return (
+        onlyDenyApplied &&
+        pings.some((g) => g.expect === 'reach') &&
+        pings.some((g) => g.expect === 'blocked') &&
+        spec.goals.some((g) => g.kind === 'viewed' && g.command === 'show access-lists')
+      )
+    })
+    expect(bossBlockedCase, 'thiếu ca danh sách chỉ có dòng cấm khiến cả văn phòng tắc').toBe(true)
+  })
+
+  it('Module 17: interleaving tường lửa stateful M7 ↔ ACL không trạng thái', () => {
+    // Spec đòi trộn hai họ trong bài tập để người học phân biệt được
+    // chúng. Đo bằng chỗ chắc chắn nhất: phải có câu (bài tập lẫn đề thi)
+    // nhắc tới stateful, và câu đó phải nằm ở Module 17 chứ không phải
+    // chỉ còn nằm lại ở Module 7.
+    const m17 = moduleById('module-17')
+    const mentionsStateful = (text: string) => /stateful/i.test(text)
+    /** Cả gói một bài tập: đề, các lựa chọn và lời giải đều là chữ người học đọc. */
+    const exerciseText = (e: { question: { prompt: { vi: string } }; hint: { vi: string }; solution: { vi: string } }) =>
+      [
+        e.question.prompt.vi,
+        ...('choices' in e.question ? (e.question.choices as { vi: string }[]).map((c) => c.vi) : []),
+        e.hint.vi,
+        e.solution.vi,
+      ].join(' ')
+    const inPractice = m17.lessons.some((l) => l.steps[3].exercises.some((e) => mentionsStateful(exerciseText(e))))
+    const inExam = m17.masteryTest.some((q) => mentionsStateful(q.prompt.vi) || mentionsStateful(q.explain?.vi ?? ''))
+    expect(inPractice, 'bài tập chưa trộn câu tường lửa stateful với ACL').toBe(true)
+    expect(inExam, 'đề thi chưa hỏi tới chỗ phân biệt hai họ').toBe(true)
   })
 
   it('mastery test là POOL đủ rộng: mỗi module >= 12 câu để rút ra đề 8 câu', () => {

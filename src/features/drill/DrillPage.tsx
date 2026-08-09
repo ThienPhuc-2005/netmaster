@@ -118,9 +118,13 @@ type Phase = 'idle' | 'running' | 'done'
 export function DrillPage() {
   const t = useT()
   const problemText = useProblemText()
-  const drillHistory = useProgress((s) => s.drillHistory)
+  const allHistory = useProgress((s) => s.drillHistory)
   const recordDrillSession = useProgress((s) => s.recordDrillSession)
 
+  // Chỉ đọc phiên CÙNG LOẠI: drill VLSM của Module 13 là 5 bài thiết kế
+  // vài phút mỗi bài — trộn chung một đường "giây/bài" là bóp méo cả
+  // biểu đồ tiến bộ mà người học đã xây cả tháng.
+  const drillHistory = useMemo(() => allHistory.filter((d) => d.mode === 'subnet'), [allHistory])
   const today = todayIso()
   const sessionsToday = drillHistory.filter((d) => d.date === today).length
 
@@ -170,7 +174,7 @@ export function DrillPage() {
         seconds: Math.max((Date.now() - problemStart.current) / 1000, 0.1),
       })
       if (index + 1 >= problems.length) {
-        recordDrillSession(outcomes.current, outcomes.current.filter((o) => o.correct).length)
+        recordDrillSession('subnet', outcomes.current, outcomes.current.filter((o) => o.correct).length)
         playEarcon('lessonComplete')
         setPhase('done')
       } else {

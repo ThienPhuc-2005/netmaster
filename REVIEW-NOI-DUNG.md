@@ -1,6 +1,6 @@
-# REVIEW NỘI DUNG — Module 1-12 (Phần A+B+C)
+# REVIEW NỘI DUNG — Module 1-21 (Phần A+B+C+D+E)
 
-> Sinh tự động từ `content/modules/module-01.json`, `content/modules/module-02.json`, `content/modules/module-03.json`, `content/modules/module-04.json`, `content/modules/module-05.json`, `content/modules/module-06.json`, `content/modules/module-07.json`, `content/modules/module-08.json`, `content/modules/module-09.json`, `content/modules/module-10.json`, `content/modules/module-11.json`, `content/modules/module-12.json` bằng `npm run content:review`.
+> Sinh tự động từ `content/modules/module-01.json`, `content/modules/module-02.json`, `content/modules/module-03.json`, `content/modules/module-04.json`, `content/modules/module-05.json`, `content/modules/module-06.json`, `content/modules/module-07.json`, `content/modules/module-08.json`, `content/modules/module-09.json`, `content/modules/module-10.json`, `content/modules/module-11.json`, `content/modules/module-12.json`, `content/modules/module-13.json`, `content/modules/module-14.json`, `content/modules/module-15.json`, `content/modules/module-16.json`, `content/modules/module-17.json`, `content/modules/module-18.json`, `content/modules/module-19.json`, `content/modules/module-20.json`, `content/modules/module-21.json` bằng `npm run content:review`.
 > Đây là bản để ĐỌC DUYỆT; muốn sửa thì sửa file JSON rồi render lại.
 
 ## Mạng là gì? — Câu chuyện bưu điện `module-1`
@@ -3896,3 +3896,3020 @@ Mẹo nghề: lọc lấy dòng ERROR ra rồi, đừng dừng ở đó. Nhìn s
     - **Lệnh mẫu:** `Get-Content dhcp.log | Select-String ERROR`
   - **Chủ đề gợi ý (tầng 1):** đọc cả file rồi lọc lấy dòng đáng đọc
   - **Vì sao:** Get-Content dhcp.log | Select-String ERROR lôi ra dòng dhcp pool exhausted on scope 192.168.20.0 — dải địa chỉ cho thuê đã hết sạch, nên máy mới xin không còn gì để cấp. Đây là bệnh của Module 6 quay lại, lần này bạn bắt được nó bằng một dòng lệnh.
+
+## VLSM — Cắt đất cho đúng người `module-13`
+
+Phần D · 5 chặng · 5 bài · 6 khái niệm · drill: vlsm
+
+**Chặng:** Chia đều là phí đất (m13-bai-1) → Cắt phòng to trước (m13-bai-2) → Đứng đúng ranh giới (m13-bai-3) → Mặt nạ lộn ngược (m13-bai-4) → Gom tuyến cho gọn bảng (m13-bai-5)
+
+### Bài: Cứu dải địa chỉ bị chia đều `m13-bai-1`
+
+**1 · Khởi động (hook):** Công ty có bốn phòng: kinh doanh 100 máy, kế toán 50, kỹ thuật 25, giám đốc 10. Người làm mạng trước bạn lấy dải 192.168.10.0/24 chia đều làm bốn phần, mỗi phòng một /26. Tuần đầu tiên, phòng kinh doanh đã kêu hết địa chỉ, còn phòng giám đốc bỏ không hơn năm mươi chỗ. Cùng một dải ấy, chia thế nào mới đủ?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử: một mạng /26 cấp được cho bao nhiêu máy?
+  - **Dạng:** trắc nghiệm · 64 máy / **62 máy** ✓ / 26 máy
+  - **Vì sao:** /26 có 64 địa chỉ, nhưng hai địa chỉ đầu và cuối đã có chủ: một làm địa chỉ mạng, một làm broadcast. Còn lại 62 chỗ cho máy thật.
+
+**3 · Khám phá (teach):**
+- *[vlsm]* Chia đều là cách chia của người không nhìn người ở. VLSM (Variable Length Subnet Mask — mặt nạ mạng dài ngắn khác nhau) làm ngược lại: mỗi phòng một cỡ lô, cắt vừa số máy của phòng đó. Cùng dải 192.168.10.0/24, phòng 100 máy nhận một /25, phòng 50 máy nhận /26, phòng 25 máy nhận /27, phòng 10 máy nhận /28 — cộng lại vẫn nằm gọn trong dải, mà không phòng nào thiếu chỗ.
+  - **Đào sâu hơn:** Chia đều là thói quen từ thời trước CIDR, khi mỗi mạng chỉ có một subnet mask duy nhất áp cho tất cả. Router hiện đại gắn mặt nạ theo TỪNG tuyến nên mỗi subnet mang mask riêng được — đó chính là chữ Variable trong VLSM. Cũng vì thế mà bảng định tuyến ghi kèm prefix cho từng dòng, chứ không ghi một mask chung cho cả mạng.
+- *[co-khoi-vua-du]* Cỡ khối chỉ nhảy theo lũy thừa của 2: /28 là 16 địa chỉ, /27 là 32, /26 là 64, /25 là 128. Mỗi khối mất hai địa chỉ cho mạng và broadcast, nên số máy dùng được là 14, 30, 62, 126. Quy tắc chọn cỡ: lấy số máy của phòng, cộng 2, rồi tìm bậc thấp nhất còn chứa nổi. Phòng 50 máy cần 52 chỗ, /27 chỉ có 32 nên trượt, /26 có 64 nên vừa — chọn /26.
+  - **Đào sâu hơn:** Cộng 2 rồi mới so là cách nhẩm an toàn hơn so trực tiếp: phòng đúng 30 máy nhìn qua tưởng /27 (30 host) là khít, nhưng nếu ngày mai thêm một máy in mạng thì hết chỗ ngay. Người làm nghề thường cộng thêm khoảng 20% dự phòng trước khi chọn cỡ — dải địa chỉ riêng thì rẻ, còn đi chia lại cả mạng thì đắt.
+
+**4 · Thử tay (practice, fading 0):**
+- **Ví dụ giải sẵn:** Cắt dải 192.168.10.0/24 cho bốn phòng 100 / 50 / 25 / 10 máy. Bước 1 — chọn cỡ cho từng phòng: 100 máy cần 102 chỗ nên lấy /25 (126 chỗ); 50 máy lấy /26 (62); 25 máy lấy /27 (30); 10 máy lấy /28 (14). Bước 2 — xếp từ đầu dải, khối to đi trước: kinh doanh 192.168.10.0/25 chiếm .0 tới .127; kế toán 192.168.10.128/26 chiếm .128 tới .191; kỹ thuật 192.168.10.192/27 chiếm .192 tới .223; giám đốc 192.168.10.224/28 chiếm .224 tới .239. Bước 3 — soi lại: bốn khối không giẫm lên nhau, còn dư 16 địa chỉ cuối dải (.240 tới .255) để dành cho phòng mới. Cùng một dải mà chia đều thì phòng kinh doanh chết ngay từ dòng đầu.
+- **Đề:** Phòng kho có 28 máy và sắp thêm 2 máy quét mã. Prefix nhỏ nhất đủ dùng cho phòng này là bao nhiêu (dạng /xx)?
+  - **Dạng:** gõ tay · **Chấp nhận:** /27 | 27 | 255.255.255.224
+  - **Chủ đề gợi ý (tầng 1):** số chỗ thật của từng cỡ khối sau khi trừ 2
+  - **Gợi ý (tầng 2):** Phòng cần 30 chỗ. Đi từ bậc nhỏ lên: /28 cho 14 chỗ — thiếu; bậc kế tiếp cho 30 chỗ — vừa khít. Bậc kế tiếp đó là prefix nào?
+  - **Lời giải (tầng 3):** Là /27: nó có 32 địa chỉ, trừ địa chỉ mạng và broadcast còn đúng 30 chỗ cho 30 máy. Lấy /26 thì chạy được nhưng bỏ phí 32 địa chỉ; lấy /28 thì thiếu hẳn 16 chỗ.
+- **Đề:** Vì sao chia đều dải /24 thành bốn phần /26 lại hỏng với bộ nhu cầu 100 / 50 / 25 / 10 máy?
+  - **Dạng:** trắc nghiệm · **Vì /26 không đủ chỗ cho phòng 100 máy, trong khi phòng 10 máy bỏ không hơn năm mươi địa chỉ** ✓ / Vì một dải /24 chỉ được cắt thành tối đa hai mạng con, cắt bốn phần là vượt giới hạn / Vì các mạng con của cùng một dải bắt buộc phải mang cùng một subnet mask
+  - **Chủ đề gợi ý (tầng 1):** cỡ lô so với số người ở của từng phòng
+  - **Gợi ý (tầng 2):** Đếm thử: /26 có 62 chỗ. Phòng 100 máy nhét vừa không? Còn phòng 10 máy thì thừa bao nhiêu?
+  - **Lời giải (tầng 3):** Vì cắt đều là cắt theo cái lô, không theo người ở: 62 chỗ không chứa nổi 100 máy, còn phòng 10 máy ôm 62 chỗ thì bỏ hoang 52. Một dải /24 cắt được nhiều hơn hai mạng con, và mỗi mạng con hoàn toàn được mang mask riêng — đó chính là VLSM.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: phòng 100 máy cần prefix nhỏ nhất là bao nhiêu (dạng /xx)?
+  - **Dạng:** gõ tay · **Chấp nhận:** /25 | 25 | 255.255.255.128
+  - **Gợi ý (tầng 2):** Phòng cần 102 chỗ. /26 cho 62 chỗ — thiếu. Bậc ngay trên /26 là bậc nào?
+  - **Lời giải (tầng 3):** Là /25: 128 địa chỉ, còn 126 chỗ dùng được — đủ cho 100 máy và còn dư chỗ cho máy mới.
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao chia một dải thành các phần BẰNG NHAU lại vừa thiếu vừa thừa?
+  - **Nhóm ý cần chạm:** [nhu cầu, số máy, số lượng máy, người ở] · [khác nhau, không giống nhau, chênh lệch] · [thiếu chỗ, không đủ, hết địa chỉ] · [bỏ phí, lãng phí, thừa, bỏ hoang]
+  - **Trả lời mẫu:** Vì các phòng có số máy khác nhau hẳn nhau. Cắt lô bằng nhau thì phòng đông máy không đủ chỗ, còn phòng ít máy ôm một đống địa chỉ bỏ hoang. Cắt theo nhu cầu từng phòng mới vừa.
+
+**6 · Tổng kết:**
+- VLSM là cắt mỗi phòng một cỡ lô theo số máy, không cắt đều.
+- Cỡ khối nhảy theo lũy thừa 2, và mỗi khối mất 2 địa chỉ cho mạng và broadcast.
+- Chọn cỡ: số máy cộng 2, rồi lấy bậc thấp nhất còn chứa đủ.
+- *Úp mở bài sau:* Biết cỡ của từng phòng rồi, nhưng cắt phòng nào trước? Bài sau cho bạn xem hai người cùng bộ nhu cầu, cắt hai thứ tự — một người vừa khít, một người hết chỗ giữa chừng.
+
+### Bài: Xếp thứ tự cắt cho khỏi kẹt `m13-bai-2`
+
+**1 · Khởi động (hook):** Hai người cùng nhận dải 192.168.10.0/24 và cùng bộ nhu cầu 100 / 50 / 25 / 10 máy. Người thứ nhất cắt phòng 10 máy trước, người thứ hai cắt phòng 100 máy trước. Người thứ hai xếp gọn cả bốn phòng; người thứ nhất tới phòng cuối thì hết chỗ đứng. Cùng số địa chỉ, sao lại lệch nhau?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử: khi cắt VLSM, nên bắt đầu từ phòng nào?
+  - **Dạng:** trắc nghiệm · **Phòng đông máy nhất** ✓ / Phòng ít máy nhất / Phòng nào cũng như nhau
+  - **Vì sao:** Khối to kén chỗ đứng hơn hẳn khối nhỏ: một /25 chỉ đứng được ở hai vạch trong cả dải /24. Cắt nó trước, khi dải còn nguyên, thì chắc chắn có chỗ; để lại sau cùng thì phần trống còn lại thường đã bị cắt vụn.
+
+**3 · Khám phá (teach):**
+- *[cat-lon-truoc]* Luật cắt VLSM chỉ có một câu: xếp nhu cầu giảm dần rồi cắt từ khối to nhất, lấp liên tiếp từ đầu dải. Với 100 / 50 / 25 / 10 máy: /25 nằm ở .0, /26 tiếp ngay ở .128, /27 ở .192, /28 ở .224 — không hở khe nào. Nếu cắt phòng 10 máy trước và đặt nó ở .0, thì phần còn lại bắt đầu từ .16, mà một /25 không được phép đứng ở .16 — thế là kẹt dù tổng số địa chỉ vẫn thừa.
+  - **Đào sâu hơn:** Đây chính là bài toán xếp hộp: khối càng to thì càng ít chỗ đặt hợp lệ, nên phải đặt nó trước lúc mặt bằng còn nguyên. Trong cả dải /24 có 256 địa chỉ, một khối /25 chỉ có đúng hai chỗ đứng (.0 và .128), còn một khối /28 có mười sáu chỗ. Cắt to trước là cách chắc chắn không bao giờ phải cắt đi cắt lại — và nó cũng là thứ tự mà mọi đề thi chứng chỉ mạng chấm.
+
+**4 · Thử tay (practice, fading 1):**
+- **Đề:** Dải 192.168.20.0/24, ba phòng: 60 / 12 / 28 máy. Cắt đúng thứ tự thì phòng 60 máy đứng ở địa chỉ mạng nào? Điền dạng đầy đủ, ví dụ 192.168.20.x
+  - **Dạng:** gõ tay · **Chấp nhận:** 192.168.20.0 | 192.168.20.0/26
+  - **Chủ đề gợi ý (tầng 1):** khối to nhất được cắt trước, ngay từ đầu dải
+  - **Gợi ý (tầng 2):** Điền chỗ trống: phòng to nhất là phòng … máy, nó nhận cỡ /26, và vì cắt trước tiên nên nó đứng ngay ở đầu dải là 192.168.20.…
+  - **Lời giải (tầng 3):** 192.168.20.0/26. Phòng 60 máy là phòng to nhất nên được cắt trước, đặt ngay đầu dải; sau nó là phòng 28 máy ở 192.168.20.64/27, rồi phòng 12 máy ở 192.168.20.96/28.
+- **Đề:** Vẫn dải 192.168.20.0/24 và ba phòng 60 / 12 / 28 máy, nhưng người làm cắt phòng 12 máy trước và đặt nó ở 192.168.20.0/28. Hậu quả gần nhất là gì?
+  - **Dạng:** trắc nghiệm · **Phần trống còn lại bắt đầu ở .16, mà khối /26 của phòng 60 máy không được phép đứng ở đó** ✓ / Phòng 12 máy sẽ mất kết nối vì khối /28 luôn phải nằm ở cuối dải địa chỉ / Cả ba phòng vẫn xếp vừa, chỉ là bảng định tuyến của router dài thêm một dòng
+  - **Chủ đề gợi ý (tầng 1):** chỗ đứng hợp lệ của một khối lớn
+  - **Gợi ý (tầng 2):** Khối /26 rộng 64 địa chỉ nên chỉ đứng được ở .0, .64, .128, .192. Sau khi .0 tới .15 đã có chủ, khối ấy còn cửa nào không mất thêm đất?
+  - **Lời giải (tầng 3):** Phần trống bắt đầu ở .16 nhưng /26 chỉ đứng được ở .0, .64, .128 hoặc .192 — muốn nhét vào thì phải bỏ trống từ .16 tới .63, tức là mất không 48 địa chỉ. Khối /28 đứng ở cuối dải hay đầu dải đều được; vấn đề nằm ở THỨ TỰ cắt, không phải ở chỗ đứng của nó.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: khi cắt VLSM, phòng nào được cắt trước — phòng đông máy nhất hay ít máy nhất?
+  - **Dạng:** gõ tay · **Chấp nhận:** đông máy nhất | phòng đông máy nhất | nhiều máy nhất | phòng nhiều máy nhất | to nhất | phòng to nhất | lớn nhất | phòng lớn nhất | dong may nhat | nhieu may nhat | to nhat | lon nhat
+  - **Gợi ý (tầng 2):** Khối nào kén chỗ đứng hơn thì phải xếp lúc mặt bằng còn nguyên.
+  - **Lời giải (tầng 3):** Phòng đông máy nhất. Khối to có rất ít chỗ đứng hợp lệ, nên cắt nó trước là cách duy nhất chắc chắn không phải cắt lại từ đầu.
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao cắt khối to trước lại tránh được cảnh hết chỗ giữa chừng?
+  - **Nhóm ý cần chạm:** [khối to, khối lớn, phòng to, phòng đông, mạng lớn] · [ít chỗ đứng, kén chỗ, chỗ đặt, vạch, ranh giới] · [cắt trước, làm trước, ưu tiên, xếp trước]
+  - **Trả lời mẫu:** Vì khối càng to thì càng ít chỗ đứng hợp lệ — một /25 chỉ đứng được ở hai vạch trong cả dải /24. Cắt nó lúc dải còn nguyên thì luôn có chỗ; để nó lại sau cùng thì phần trống đã bị cắt vụn, có đủ địa chỉ cũng không nhét vừa.
+
+**6 · Tổng kết:**
+- Xếp nhu cầu giảm dần rồi cắt từ khối to nhất, lấp liên tiếp từ đầu dải.
+- Khối càng to càng ít chỗ đứng hợp lệ — nên nó phải được xếp trước.
+- Đủ tổng số địa chỉ vẫn có thể kẹt, nếu cắt sai thứ tự.
+- *Úp mở bài sau:* Bài sau mổ xẻ đúng cái luật vừa nhắc tới ba lần: vì sao một khối /26 chỉ được đứng ở .0, .64, .128 và .192, chứ không phải chỗ nào cũng được?
+
+### Bài: Đặt khối đúng vạch `m13-bai-3`
+
+**1 · Khởi động (hook):** Bạn cấp cho phòng kế toán khối 192.168.10.160/26 — địa chỉ đọc lên nghe rất gọn gàng. Nhưng router từ chối nhận, và máy nào cấu hình theo cũng không nói chuyện được với ai. Con số 160 sai ở chỗ nào?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử: một khối /27 được phép bắt đầu ở địa chỉ nào?
+  - **Dạng:** trắc nghiệm · **.0, .32, .64, .96 …** ✓ / .0, .27, .54, .81 … / Bất kỳ địa chỉ nào còn trống
+  - **Vì sao:** Khối /27 rộng 32 địa chỉ, nên nó chỉ được bắt đầu ở những mốc chia hết cho 32. Con số 27 là số bit phần mạng, không phải bước nhảy của khối.
+
+**3 · Khám phá (teach):**
+- *[can-khoi]* Một subnet chỉ được bắt đầu ở địa chỉ chia hết cho chính cỡ của nó — đó là luật căn khối. Khối /26 rộng 64 nên chỉ đứng được ở .0, .64, .128, .192; khối /27 rộng 32 nên đứng ở .0, .32, .64, .96 và cứ thế. Vì vậy 192.168.10.160/26 là địa chỉ không tồn tại: 160 không chia hết cho 64. Nếu bạn gõ nó vào, thiết bị sẽ tự hiểu thành khối .128/26 — tức là bạn nghĩ một đằng, mạng chạy một nẻo.
+  - **Đào sâu hơn:** Luật này chính là magic number của Module 3 nhìn từ phía người thiết kế. Ở đó bạn lấy 256 trừ đi ô cuối của mask để biết bước nhảy; ở đây bạn dùng chính bước nhảy ấy làm danh sách chỗ đứng hợp lệ. Lý do sâu xa nằm ở nhị phân: phần mạng phải là các bit đầu giống hệt nhau cho mọi địa chỉ trong khối, mà điều đó chỉ đúng khi khối bắt đầu ở bội số của cỡ nó.
+
+**4 · Thử tay (practice, fading 1):**
+- **Đề:** Bạn vừa cấp 192.168.10.0/25 cho phòng kinh doanh. Khối kế tiếp bắt đầu ở địa chỉ nào? Điền dạng đầy đủ.
+  - **Dạng:** gõ tay · **Chấp nhận:** 192.168.10.128
+  - **Chủ đề gợi ý (tầng 1):** khối vừa cấp chiếm tới đâu thì khối sau bắt đầu từ đó
+  - **Gợi ý (tầng 2):** Điền chỗ trống: /25 rộng … địa chỉ, chiếm từ .0 tới .127, nên chỗ trống kế tiếp bắt đầu ở .…
+  - **Lời giải (tầng 3):** 192.168.10.128. Khối /25 rộng 128 địa chỉ, ăn từ .0 tới .127; địa chỉ còn trống đầu tiên là .128 — và may thay 128 cũng chia hết cho mọi cỡ khối nhỏ hơn, nên khối sau đứng đó là hợp lệ.
+- **Đề:** Khối nào dưới đây KHÔNG hợp lệ?
+  - **Dạng:** trắc nghiệm · 192.168.10.96/27 / **192.168.10.96/26** ✓ / 192.168.10.64/26
+  - **Chủ đề gợi ý (tầng 1):** địa chỉ đầu khối phải chia hết cho cỡ khối
+  - **Gợi ý (tầng 2):** Với mỗi dòng, lấy số cuối chia cho cỡ khối: /27 rộng 32, /26 rộng 64. Dòng nào chia không hết?
+  - **Lời giải (tầng 3):** 192.168.10.96/26 là dòng hỏng: 96 chia cho 64 không hết. Còn 96 chia hết cho 32 nên 96/27 hợp lệ, và 64 chia hết cho 64 nên 64/26 cũng hợp lệ.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: khối /26 nằm ngay sau 192.168.10.64/26 bắt đầu ở địa chỉ nào? Điền dạng đầy đủ.
+  - **Dạng:** gõ tay · **Chấp nhận:** 192.168.10.128
+  - **Gợi ý (tầng 2):** Cứ cộng đúng cỡ khối vào địa chỉ đầu của khối trước.
+  - **Lời giải (tầng 3):** 192.168.10.128 — khối /26 rộng 64 địa chỉ, nên 64 cộng 64 là 128. Các mốc hợp lệ của /26 luôn là .0, .64, .128, .192.
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao 192.168.10.160/26 là một khối không tồn tại?
+  - **Nhóm ý cần chạm:** [chia hết, bội số, chia được, đúng vạch] · [cỡ khối, 64, độ rộng, kích thước] · [không hợp lệ, không tồn tại, sai, bị hiểu thành]
+  - **Trả lời mẫu:** Vì khối /26 rộng 64 địa chỉ, mà 160 không chia hết cho 64. Khối chỉ được bắt đầu ở các mốc .0, .64, .128, .192; gõ 160 vào thì thiết bị tự quy về khối .128/26 chứ không tạo ra khối mới nào.
+
+**6 · Tổng kết:**
+- Một subnet chỉ được bắt đầu ở địa chỉ chia hết cho cỡ của chính nó.
+- Cỡ khối là bước nhảy: /26 nhảy 64, /27 nhảy 32, /28 nhảy 16.
+- Gõ sai vạch thì thiết bị tự quy về khối gần nhất — mạng chạy khác điều bạn nghĩ.
+- *Úp mở bài sau:* Ba bài vừa rồi bạn luôn viết mặt nạ kiểu 255.255.255.192. Bài sau, router sẽ đòi bạn viết đúng mạng đó thành 0.0.0.63 — và đó không phải trò đánh đố.
+
+### Bài: Đọc được mặt nạ lộn ngược `m13-bai-4`
+
+**1 · Khởi động (hook):** Bạn khai một mạng vào router. Chỗ cấu hình định tuyến và chỗ viết luật lọc đều bắt gõ 0.0.0.63, trong khi trên máy tính vẫn là 255.255.255.192. Cùng một mạng, vì sao lại có hai kiểu mặt nạ ngược nhau?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử: wildcard mask của một mạng /24 là gì?
+  - **Dạng:** trắc nghiệm · **0.0.0.255** ✓ / 255.255.255.0 / 0.0.0.24
+  - **Vì sao:** Wildcard là mặt nạ lộn ngược: lấy 255 trừ từng ô của subnet mask. Mạng /24 có mask 255.255.255.0 nên wildcard là 0.0.0.255.
+
+**3 · Khám phá (teach):**
+- *[wildcard-mask]* Wildcard mask là mặt nạ lộn ngược của subnet mask: bit 0 nghĩa là ô này phải khớp đúng, bit 1 nghĩa là ô này mặc kệ. Cách tính nhanh: lấy 255 trừ đi từng ô. Mask 255.255.255.192 thành wildcard 0.0.0.63; mask 255.255.255.0 thành 0.0.0.255; mask 255.255.0.0 thành 0.0.255.255. Router dùng dạng này ở hai chỗ bạn sẽ gặp ngay ở các module sau: khai mạng cho định tuyến động, và viết luật lọc gói tin.
+  - **Đào sâu hơn:** Vì sao lại có hai kiểu ngược nhau? Vì subnet mask trả lời câu hỏi của một máy — phần nào của địa chỉ là mạng của tôi; còn wildcard trả lời câu hỏi của một bộ lọc — những bit nào tôi được phép bỏ qua khi đối chiếu. Wildcard vì thế linh hoạt hơn mask: nó cho phép những mẫu mà mask không viết nổi, ví dụ 0.0.0.1 để chỉ riêng các địa chỉ lẻ. Trong phạm vi khóa này bạn chỉ cần dạng lộn ngược đơn giản, nhưng biết lý do thì không bao giờ gõ nhầm hai chỗ cho nhau.
+
+**4 · Thử tay (practice, fading 2):**
+- **Đề:** Mạng 192.168.10.0/27 có wildcard mask là gì?
+  - **Dạng:** gõ tay · **Chấp nhận:** 0.0.0.31
+  - **Chủ đề gợi ý (tầng 1):** 255 trừ đi từng ô của subnet mask
+  - **Gợi ý (tầng 2):** Mask của /27 là 255.255.255.224. Lấy 255 trừ từng ô: 255 trừ 255 là 0, còn ô cuối 255 trừ 224 là bao nhiêu?
+  - **Lời giải (tầng 3):** 0.0.0.31. Mask của /27 là 255.255.255.224, và 255 trừ 224 bằng 31 — cũng chính là số địa chỉ trong khối trừ đi 1.
+- **Đề:** Trong wildcard mask, một bit mang giá trị 1 có nghĩa là gì?
+  - **Dạng:** trắc nghiệm · **Bit tương ứng của địa chỉ được bỏ qua khi đối chiếu** ✓ / Bit tương ứng của địa chỉ bắt buộc phải khớp đúng / Bit tương ứng thuộc phần mạng chứ không thuộc phần máy
+  - **Chủ đề gợi ý (tầng 1):** vai trò ngược nhau của bit 0 và bit 1 trong wildcard
+  - **Gợi ý (tầng 2):** Wildcard là mặt nạ của bộ lọc, và cái tên của nó chính là gợi ý: wildcard nghĩa là quân bài thay được cho mọi quân khác.
+  - **Lời giải (tầng 3):** Bit 1 nghĩa là bỏ qua, bit 0 nghĩa là phải khớp — ngược hẳn với subnet mask. Còn chuyện bit nào thuộc phần mạng là việc của subnet mask, không phải của wildcard.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: subnet mask 255.255.255.240 đổi sang wildcard mask là gì?
+  - **Dạng:** gõ tay · **Chấp nhận:** 0.0.0.15
+  - **Gợi ý (tầng 2):** Ba ô đầu đều là 255 trừ 255. Ô cuối: 255 trừ 240.
+  - **Lời giải (tầng 3):** 0.0.0.15 — tương ứng mạng /28, khối 16 địa chỉ nên wildcard là 15.
+- **Tự giải thích:** Giải thích bằng lời của bạn: wildcard mask khác subnet mask ở chỗ nào, và tính nó thế nào?
+  - **Nhóm ý cần chạm:** [lộn ngược, ngược lại, đảo, nghịch đảo] · [255 trừ, lấy 255, trừ đi] · [bỏ qua, mặc kệ, không cần khớp, phải khớp]
+  - **Trả lời mẫu:** Wildcard là mặt nạ lộn ngược của subnet mask, tính bằng cách lấy 255 trừ đi từng ô. Trong wildcard, bit 0 là chỗ phải khớp đúng, bit 1 là chỗ được bỏ qua — nên router dùng nó khi cần đối chiếu một dải địa chỉ.
+
+**6 · Tổng kết:**
+- Wildcard mask là subnet mask lộn ngược: lấy 255 trừ từng ô.
+- Bit 0 là phải khớp, bit 1 là bỏ qua — ngược hẳn subnet mask.
+- Router đòi dạng này khi khai mạng cho định tuyến và khi viết luật lọc.
+- *Úp mở bài sau:* Chi nhánh của bạn có bốn mạng con liền nhau, và router đang quảng bá bốn dòng tuyến. Bài cuối module cho bạn cách gộp cả bốn thành đúng một dòng.
+
+### Bài: Gộp bốn dòng tuyến thành một `m13-bai-5`
+
+**1 · Khởi động (hook):** Router chi nhánh đang báo lên trụ sở bốn mạng: 192.168.8.0/24, 192.168.9.0/24, 192.168.10.0/24 và 192.168.11.0/24. Người có nghề nhìn qua rồi thay cả bốn dòng bằng đúng một dòng, mà trụ sở vẫn tới được mọi máy. Dòng đó viết thế nào?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử: gộp bốn mạng /24 liền nhau lại thì được một mạng có prefix nào?
+  - **Dạng:** trắc nghiệm · **/22** ✓ / /26 / /24 vẫn giữ nguyên
+  - **Vì sao:** Gộp là đi ngược chiều cắt: mỗi lần gấp đôi số mạng thì prefix ngắn đi 1. Bốn mạng là gấp đôi hai lần, nên /24 thành /22.
+
+**3 · Khám phá (teach):**
+- *[tom-tat-tuyen]* Tóm tắt tuyến (route summarization) là gộp nhiều mạng liền kề thành một dòng tuyến duy nhất. Bốn mạng 192.168.8.0/24 tới 192.168.11.0/24 gộp lại thành 192.168.8.0/22: dải này phủ đúng từ 192.168.8.0 tới 192.168.11.255, không thiếu và không thừa mạng nào. Điều kiện để gộp được: các mạng phải liền kề và khối gộp phải bắt đầu đúng vạch — chính luật căn khối của bài trước, chỉ nhìn theo chiều ngược lại.
+  - **Đào sâu hơn:** Vì sao trụ sở lại thích một dòng hơn bốn dòng? Vì bảng định tuyến càng ngắn thì router tra càng nhanh và càng ít tốn bộ nhớ; quan trọng hơn, khi một mạng con ở chi nhánh chập chờn thì trụ sở không phải cập nhật lại bảng — dòng tóm tắt vẫn đứng yên. Cái giá phải trả: gói tin gửi tới một mạng con đã chết vẫn được đưa tới chi nhánh rồi mới bị bỏ. Ở mức khóa này bạn chỉ cần đọc hiểu và nhận ra dòng tóm tắt khi thấy nó; viết nó vào cấu hình thật là việc của phần định tuyến động.
+
+**4 · Thử tay (practice, fading 2):**
+- **Đề:** Gộp hai mạng 10.1.4.0/24 và 10.1.5.0/24 thành một dòng tuyến. Viết dạng đầy đủ, ví dụ 10.1.x.x/xx
+  - **Dạng:** gõ tay · **Chấp nhận:** 10.1.4.0/23 | 10.1.4.0 /23
+  - **Chủ đề gợi ý (tầng 1):** gộp gấp đôi số mạng thì prefix ngắn đi một bậc
+  - **Gợi ý (tầng 2):** Hai mạng /24 liền nhau gộp lại thì prefix ngắn đi 1 bậc, thành /23. Địa chỉ đầu vẫn là địa chỉ của mạng nhỏ hơn.
+  - **Lời giải (tầng 3):** 10.1.4.0/23 — dải này phủ từ 10.1.4.0 tới 10.1.5.255, đúng hai mạng cần gộp. Gộp hai mạng thì prefix ngắn đi 1; muốn tới /22 thì phải gộp tới bốn mạng.
+- **Đề:** Cặp mạng nào dưới đây KHÔNG gộp được thành một dòng tuyến gọn?
+  - **Dạng:** trắc nghiệm · 192.168.6.0/24 và 192.168.7.0/24 / **192.168.5.0/24 và 192.168.6.0/24** ✓ / 192.168.4.0/24 và 192.168.5.0/24
+  - **Chủ đề gợi ý (tầng 1):** khối gộp cũng phải bắt đầu đúng vạch
+  - **Gợi ý (tầng 2):** Khối gộp của hai mạng /24 rộng 2 nên phải bắt đầu ở số chẵn. Cặp nào có mạng đầu là số lẻ?
+  - **Lời giải (tầng 3):** Cặp 5 và 6 không gộp được: khối /23 phải bắt đầu ở số chẵn nên 5 không đứng đầu khối được. Cặp 4-5 và cặp 6-7 đều bắt đầu ở số chẵn nên gộp gọn thành /23.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: gộp bốn mạng 172.16.12.0/24 tới 172.16.15.0/24 thành một dòng thì được gì? Viết dạng đầy đủ.
+  - **Dạng:** gõ tay · **Chấp nhận:** 172.16.12.0/22 | 172.16.12.0 /22
+  - **Gợi ý (tầng 2):** Bốn mạng là hai lần gấp đôi, nên prefix ngắn đi 2 bậc từ /24.
+  - **Lời giải (tầng 3):** 172.16.12.0/22 — phủ từ 172.16.12.0 tới 172.16.15.255, và 12 chia hết cho 4 nên khối gộp đứng đúng vạch.
+- **Tự giải thích:** Giải thích bằng lời của bạn: tóm tắt tuyến là gì, và cần điều kiện nào mới gộp được?
+  - **Nhóm ý cần chạm:** [gộp, gom, nhập lại, một dòng] · [liền kề, liền nhau, kế tiếp, cạnh nhau] · [đúng vạch, chia hết, bội số, bắt đầu đúng]
+  - **Trả lời mẫu:** Tóm tắt tuyến là gộp nhiều mạng con thành một dòng tuyến duy nhất cho ngắn bảng định tuyến. Muốn gộp được thì các mạng phải liền kề nhau và khối gộp phải bắt đầu đúng vạch — y như luật căn khối lúc cắt, chỉ nhìn ngược chiều.
+
+**6 · Tổng kết:**
+- Tóm tắt tuyến gộp nhiều mạng liền kề thành một dòng tuyến duy nhất.
+- Gấp đôi số mạng thì prefix ngắn đi một bậc: bốn mạng /24 thành một /22.
+- Chỉ gộp được khi các mạng liền kề và khối gộp bắt đầu đúng vạch.
+- *Úp mở bài sau:* Bạn đã biết cắt dải cho từng phòng. Module sau đưa bạn tới sợi dây nối hai tòa nhà: một sợi cáp phải chở được nhiều xóm cùng lúc, và bạn sẽ cấu hình nó bằng lệnh gõ thẳng vào switch.
+
+### Khái niệm & flashcard (6)
+
+- **VLSM** `vlsm` — Variable Length Subnet Mask — chia một dải thành các mạng con KHÁC CỠ nhau theo nhu cầu từng nơi
+  - Ẩn dụ: Như cắt đất cho thuê: xưởng cần lô lớn, quán nước cần lô nhỏ. Cắt lô bằng nhau là vừa thiếu chỗ cho xưởng, vừa bỏ hoang đất của quán.
+  - Thẻ ôn: *VLSM là gì, và nó khác cách chia đều ở chỗ nào?* → Là cách chia một dải thành các mạng con khác cỡ nhau, mỗi nơi một cỡ vừa với số máy của nó. Chia đều thì nơi đông máy thiếu chỗ còn nơi ít máy bỏ hoang địa chỉ.
+- **Cỡ khối vừa đủ** `co-khoi-vua-du` — Prefix nhỏ nhất mà vẫn chứa đủ số máy, sau khi đã trừ 2 địa chỉ cho mạng và broadcast
+  - Ẩn dụ: Như mua giày: chọn size nhỏ nhất mà chân vẫn thoải mái, chứ không phải cứ lấy size to nhất cho chắc.
+  - Thẻ ôn: *Phòng có N máy thì chọn cỡ khối thế nào?* → Lấy N cộng 2 (địa chỉ mạng và broadcast), rồi chọn bậc lũy thừa 2 thấp nhất còn chứa nổi: /28 cho 14 máy, /27 cho 30, /26 cho 62, /25 cho 126.
+- **Cắt lớn trước** `cat-lon-truoc` — Thứ tự cấp phát VLSM: xếp nhu cầu giảm dần rồi cắt từ khối to nhất, lấp liên tiếp từ đầu dải
+  - Ẩn dụ: Xếp hành lý vào cốp xe: bỏ vali to xuống trước, đồ lặt vặt nhét khe sau. Làm ngược lại thì vali không còn chỗ nào đặt vừa.
+  - Thẻ ôn: *Vì sao khi cắt VLSM phải bắt đầu từ phòng đông máy nhất?* → Vì khối càng to càng ít chỗ đứng hợp lệ — một /25 chỉ đứng được ở hai vạch trong cả dải /24. Cắt nó lúc dải còn nguyên thì luôn vừa; để sau cùng thì phần trống đã bị cắt vụn.
+- **Căn khối** `can-khoi` — Luật block alignment: một subnet chỉ được bắt đầu ở địa chỉ chia hết cho cỡ của chính nó
+  - Ẩn dụ: Như gạch lát nền: viên gạch phải nằm đúng ô lưới. Đặt lệch nửa ô thì không viên nào ăn khớp với viên nào.
+  - Thẻ ôn: *Một khối /26 được phép bắt đầu ở những địa chỉ nào?* → Ở các mốc chia hết cho 64: .0, .64, .128, .192. Khối chỉ được bắt đầu ở bội số của cỡ chính nó, nên 192.168.10.160/26 là khối không tồn tại.
+- **Wildcard mask** `wildcard-mask` — Mặt nạ lộn ngược của subnet mask — bit 0 là phải khớp, bit 1 là bỏ qua
+  - Ẩn dụ: Như tờ giấy khoét lỗ soi lên danh sách: chỗ bịt kín là chỗ bắt buộc trùng, chỗ khoét thủng là chỗ ai cũng được.
+  - Thẻ ôn: *Wildcard mask của mạng /26 là gì, và tính bằng cách nào?* → Là 0.0.0.63 — lấy 255 trừ đi từng ô của subnet mask 255.255.255.192. Trong wildcard, bit 0 nghĩa là phải khớp đúng, bit 1 nghĩa là bỏ qua.
+- **Route summarization** `tom-tat-tuyen` — Tóm tắt tuyến — gộp nhiều mạng liền kề thành một dòng tuyến ngắn hơn
+  - Ẩn dụ: Như ghi địa chỉ nhận: thay vì liệt kê bốn căn hộ liền nhau, chỉ cần ghi tên tòa nhà — bưu tá tới nơi rồi tự chia tiếp.
+  - Thẻ ôn: *Tóm tắt tuyến là gì, và cần điều kiện nào mới gộp được?* → Là gộp nhiều mạng liền kề thành một dòng tuyến cho gọn bảng định tuyến. Điều kiện: các mạng phải liền kề và khối gộp phải bắt đầu đúng vạch — ví dụ bốn mạng 192.168.8.0/24 tới 192.168.11.0/24 gộp thành 192.168.8.0/22.
+
+### Bài kiểm tra module (pool 12 câu, mỗi lượt rút 8, cần ≥ 85%)
+
+- **Đề:** Một mạng /26 cấp được cho bao nhiêu máy?
+  - **Dạng:** trắc nghiệm · **62 máy** ✓ / 64 máy / 60 máy
+  - **Chủ đề gợi ý (tầng 1):** hai địa chỉ bị giữ lại trong mỗi khối
+  - **Vì sao:** /26 có 64 địa chỉ, trừ địa chỉ mạng và broadcast còn 62 chỗ cho máy thật.
+- **Đề:** Một phòng có 50 máy. Prefix nhỏ nhất đủ dùng cho phòng đó là bao nhiêu (dạng /xx)?
+  - **Dạng:** gõ tay · **Chấp nhận:** /26 | 26 | 255.255.255.192
+  - **Chủ đề gợi ý (tầng 1):** số chỗ thật của từng bậc khối
+  - **Vì sao:** Phòng cần 52 chỗ. /27 chỉ có 30 nên trượt; /26 có 62 nên vừa và không phí quá nhiều.
+- **Đề:** Khi cắt VLSM, vì sao phải cấp cho phòng đông máy nhất trước?
+  - **Dạng:** trắc nghiệm · **Vì khối lớn có rất ít chỗ đứng hợp lệ, cắt sau cùng thì thường không còn chỗ nào vừa** ✓ / Vì phòng đông máy luôn phải nằm ở đầu dải, còn phòng ít máy phải nằm ở cuối dải / Vì cấp cho phòng nhỏ trước sẽ làm tổng số địa chỉ cần dùng lớn hơn dải được giao
+  - **Chủ đề gợi ý (tầng 1):** chỗ đứng hợp lệ của khối lớn
+  - **Vì sao:** Khối càng to càng kén vạch: một /25 chỉ đứng được ở .0 hoặc .128 trong cả dải /24. Cắt nó lúc dải còn nguyên thì luôn có chỗ.
+- **Đề:** Bạn vừa cấp 192.168.10.0/25 cho phòng đầu tiên. Khối kế tiếp bắt đầu ở địa chỉ nào? Điền dạng đầy đủ.
+  - **Dạng:** gõ tay · **Chấp nhận:** 192.168.10.128
+  - **Chủ đề gợi ý (tầng 1):** độ rộng của khối vừa cấp
+  - **Vì sao:** /25 rộng 128 địa chỉ, chiếm từ .0 tới .127, nên chỗ trống kế tiếp bắt đầu ở .128.
+- **Đề:** Subnet mask 255.255.255.240 đổi sang wildcard mask là gì?
+  - **Dạng:** gõ tay · **Chấp nhận:** 0.0.0.15
+  - **Chủ đề gợi ý (tầng 1):** cách tính mặt nạ lộn ngược
+  - **Vì sao:** Lấy 255 trừ từng ô: ba ô đầu ra 0, ô cuối 255 trừ 240 bằng 15.
+- **Đề:** Trong wildcard mask, bit mang giá trị 0 có nghĩa là gì?
+  - **Dạng:** trắc nghiệm · **Bit tương ứng của địa chỉ phải khớp đúng** ✓ / Bit tương ứng của địa chỉ được bỏ qua / Bit tương ứng thuộc về phần máy trong địa chỉ
+  - **Chủ đề gợi ý (tầng 1):** vai trò ngược nhau của bit 0 và bit 1
+  - **Vì sao:** Wildcard ngược với subnet mask: bit 0 là chỗ phải khớp, bit 1 là chỗ bỏ qua khi đối chiếu.
+- **Đề:** Gộp bốn mạng 192.168.4.0/24, 192.168.5.0/24, 192.168.6.0/24 và 192.168.7.0/24 thành một dòng tuyến. Viết dạng đầy đủ.
+  - **Dạng:** gõ tay · **Chấp nhận:** 192.168.4.0/22 | 192.168.4.0 /22
+  - **Chủ đề gợi ý (tầng 1):** gấp đôi số mạng thì prefix ngắn đi một bậc
+  - **Vì sao:** Bốn mạng là hai lần gấp đôi nên /24 thành /22; khối 192.168.4.0/22 phủ đúng từ .4.0 tới .7.255.
+- **Đề:** Xếp lại đúng thứ tự bốn bước làm một bài chia VLSM.
+  - **Dạng:** xếp thứ tự (thứ tự đúng):
+    1. Liệt kê số máy của từng phòng
+    2. Chọn cỡ khối vừa đủ cho từng phòng
+    3. Xếp các phòng theo số máy giảm dần
+    4. Cắt từ đầu dải, khối to trước, khối nhỏ sau
+  - **Chủ đề gợi ý (tầng 1):** trình tự làm một bài thiết kế dải địa chỉ
+  - **Vì sao:** Biết nhu cầu trước, rồi mới quy ra cỡ khối, rồi mới sắp thứ tự, cuối cùng mới đặt bút cắt. Đảo hai bước cuối là nguồn gốc của cảnh hết chỗ giữa chừng.
+- **Đề:** Một mạng /25 cấp được cho bao nhiêu máy?
+  - **Dạng:** gõ tay · **Chấp nhận:** 126 | 126 máy
+  - **Chủ đề gợi ý (tầng 1):** tổng địa chỉ của khối trừ đi hai
+  - **Vì sao:** /25 có 128 địa chỉ, trừ địa chỉ mạng và broadcast còn 126 chỗ.
+- **Đề:** Khối nào dưới đây không phải là một mạng hợp lệ?
+  - **Dạng:** trắc nghiệm · 192.168.10.32/27 / **192.168.10.96/26** ✓ / 192.168.10.192/26
+  - **Chủ đề gợi ý (tầng 1):** địa chỉ đầu khối phải chia hết cho cỡ khối
+  - **Vì sao:** 96 không chia hết cho 64 nên 96/26 không tồn tại. Còn 32 chia hết cho 32 và 192 chia hết cho 64 nên hai khối kia hợp lệ.
+- **Đề:** Dải 10.20.30.0/24 chia cho ba phòng 100 / 30 / 12 máy, cắt đúng thứ tự. Phòng 30 máy nhận địa chỉ mạng nào? Điền dạng đầy đủ.
+  - **Dạng:** gõ tay · **Chấp nhận:** 10.20.30.128 | 10.20.30.128/27
+  - **Chủ đề gợi ý (tầng 1):** khối to đứng trước thì khối sau bắt đầu ở đâu
+  - **Vì sao:** Phòng 100 máy lấy /25 từ .0 tới .127. Phòng 30 máy là phòng to kế tiếp, nhận /27 bắt đầu ngay ở .128.
+- **Đề:** Cặp mạng nào dưới đây gộp được thành một dòng tuyến /23?
+  - **Dạng:** trắc nghiệm · 10.0.9.0/24 và 10.0.10.0/24 / **10.0.6.0/24 và 10.0.7.0/24** ✓ / 10.0.7.0/24 và 10.0.9.0/24
+  - **Chủ đề gợi ý (tầng 1):** khối gộp cũng phải bắt đầu đúng vạch
+  - **Vì sao:** Khối /23 rộng hai mạng nên phải bắt đầu ở số chẵn: cặp 6-7 đạt cả hai điều kiện liền kề và đúng vạch. Cặp 9-10 liền kề nhưng bắt đầu ở số lẻ; cặp 7-9 thì không liền kề.
+
+## Trunk 802.1Q — Một sợi dây chở nhiều xóm `module-14`
+
+Phần D · 5 chặng · 5 bài · 5 khái niệm
+
+**Chặng:** Hết cổng vì mỗi xóm một dây (m14-bai-1) → Dán nhãn xóm lên khung (m14-bai-2) → Xóm đi trần: native VLAN (m14-bai-3) → Danh sách khách được qua (m14-bai-4) → Một chân router cho nhiều xóm (m14-bai-5)
+
+### Bài: Ngồi xuống trước console lần đầu `m14-bai-1`
+
+**1 · Khởi động (hook):** Hai tòa nhà của công ty, mỗi tòa một switch, và bốn phòng ban đã chia VLAN đàng hoàng. Muốn kế toán tòa này nói chuyện với kế toán tòa kia, người ta kéo một sợi cáp cho VLAN kế toán, rồi lại kéo thêm một sợi cho VLAN kỹ thuật. Bốn VLAN là bốn sợi, mà switch chỉ có 24 cổng. Có cách nào để MỘT sợi chở được cả bốn xóm không?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Trước khi mình giảng gì cả: bạn đang ngồi trước console của Switch-1. Gõ dấu ? để xem thiết bị hiểu những lệnh nào, rồi tự tìm lấy bảng VLAN của nó. Sai cũng không sao — phần này không tính điểm.
+  - **Dạng:** console thiết bị (gõ lệnh IOS đạt mục tiêu)
+    - **Sơ đồ đề bài:** PC-A (kế toán) [192.168.1.10/24] · PC-C (kỹ thuật) [192.168.1.30/24] · Switch-1 [p1:VLAN 10, p2:VLAN 20, p3:VLAN 10, p4:VLAN 1] — dây: PC-A (kế toán)·eth0 — Switch-1·p1 | PC-C (kỹ thuật)·eth0 — Switch-1·p2
+    - **Console cắm ở:** Switch-1
+    - **Mục tiêu:**
+      - phải xem "show vlan brief" trên Switch-1
+    - **Lệnh mẫu trên Switch-1:** `show vlan brief`
+  - **Chủ đề gợi ý (tầng 1):** lệnh xem bảng VLAN của switch
+  - **Vì sao:** Lệnh đó là show vlan brief. Bảng nó in ra cho biết switch đang có những VLAN nào và cổng nào thuộc VLAN nào — đây là thứ đầu tiên người làm mạng nhìn khi ngồi xuống một switch lạ.
+
+**3 · Khám phá (teach):**
+- *[trunk]* Cổng access mà bạn học ở Module 4 chỉ thuộc đúng một VLAN, nên nối hai switch bằng cổng access thì mỗi VLAN phải ăn một sợi dây riêng. Trunk là vai thứ hai của một cổng switch: nó chở MỌI VLAN trên cùng một sợi. Hai đầu sợi dây giữa hai switch cùng khai trunk là bốn xóm đi chung một cáp, và 24 cổng của switch để dành cho máy người dùng thay vì để đấu nối nội bộ.
+  - **Đào sâu hơn:** Tên gọi trong nghề: cổng access nối XUỐNG máy người dùng, cổng trunk nối NGANG giữa các thiết bị mạng. Chuẩn dán nhãn tên là 802.1Q, còn gọi là dot1q; nó là chuẩn mở nên switch của hãng nào cũng nói chuyện được với nhau. Ở phòng lab của app này, cổng là trunk vì người ta khai nó là trunk — thiết bị thật còn có kiểu tự đàm phán gọi là DTP, nhưng mọi tài liệu bảo mật đều khuyên tắt nó đi và khai tay cho chắc.
+
+**4 · Thử tay (practice, fading 0):**
+- **Ví dụ giải sẵn:** Đây là trọn bộ lệnh khai một cổng thành trunk, gõ trên console của Switch-1. Bước 1: gõ enable để vào chế độ có quyền — dấu nhắc đổi từ Switch-1> sang Switch-1#. Bước 2: gõ configure terminal để vào chế độ cấu hình — dấu nhắc thành Switch-1(config)#. Bước 3: gõ interface p4 để chọn đúng cổng đang nối sang switch kia — dấu nhắc thành Switch-1(config-if)#. Bước 4: gõ switchport mode trunk. Bước 5: gõ end để về lại Switch-1#, rồi show interfaces trunk để tự kiểm chứng: cổng p4 phải xuất hiện trong bảng. Nhớ luật chế độ: gõ interface khi chưa configure terminal thì máy từ chối, và đó là máy đang dạy bạn chứ không phải máy khó tính.
+- **Đề:** Đang ở dấu nhắc Switch-1(config-if)# của cổng p4, gõ lệnh gì để biến cổng này thành trunk?
+  - **Dạng:** gõ tay · **Chấp nhận:** switchport mode trunk | switchport mode trunk  | sw mode trunk
+  - **Chủ đề gợi ý (tầng 1):** lệnh đặt vai cho một cổng switch
+  - **Gợi ý (tầng 2):** Cú pháp khuyết: switchport mode … — chỗ trống điền vai bạn muốn cổng nhận, và vai đó chính là tên bài học hôm nay.
+  - **Lời giải (tầng 3):** switchport mode trunk. Cũng lệnh switchport mode ấy, thay trunk bằng access là trả cổng về vai cũ của Module 4.
+- **Đề:** Vì sao nối hai switch bằng cổng access lại tốn dây đến thế?
+  - **Dạng:** trắc nghiệm · **Vì một cổng access chỉ thuộc đúng một VLAN, nên mỗi VLAN muốn qua phải có một sợi riêng** ✓ / Vì cổng access chạy chậm hơn cổng trunk nên phải chia tải ra nhiều sợi dây / Vì switch chỉ cho phép mỗi sợi cáp mang tối đa một trăm khung tin mỗi giây
+  - **Chủ đề gợi ý (tầng 1):** số VLAN mà một cổng access thuộc về
+  - **Gợi ý (tầng 2):** Nhớ lại Module 4: một cổng access đứng tên đúng mấy VLAN? Vậy bốn VLAN cần mấy cổng như thế?
+  - **Lời giải (tầng 3):** Vì cổng access chỉ thuộc một VLAN duy nhất — bốn VLAN là bốn sợi dây và bốn cổng ở mỗi đầu. Tốc độ cổng không liên quan gì tới chuyện này; trunk nhanh hơn không phải vì cáp mà vì nó gộp được nhiều xóm.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: lệnh nào cho bạn xem switch đang có những VLAN nào và cổng nào thuộc VLAN nào?
+  - **Dạng:** gõ tay · **Chấp nhận:** show vlan brief | show vlan | sh vlan brief
+  - **Gợi ý (tầng 2):** Ba từ, bắt đầu bằng show — đúng lệnh bạn mò ra ở bước Đoán thử.
+  - **Lời giải (tầng 3):** show vlan brief. Bảng của nó có cột VLAN, tên, trạng thái và danh sách cổng — riêng cổng trunk sẽ không đứng tên VLAN nào, vì nó chở nhiều xóm cùng lúc.
+- **Tự giải thích:** Giải thích bằng lời của bạn: trunk giải quyết được vấn đề gì mà cổng access không giải quyết nổi?
+  - **Nhóm ý cần chạm:** [một sợi, một dây, một cáp, cùng một dây] · [nhiều vlan, nhiều xóm, cả bốn, tất cả vlan] · [tiết kiệm cổng, đỡ tốn dây, hết cổng, tốn cổng]
+  - **Trả lời mẫu:** Cổng access chỉ thuộc một VLAN nên mỗi xóm phải có một sợi dây riêng giữa hai switch, và switch cạn cổng rất nhanh. Trunk cho phép một sợi chở nhiều VLAN cùng lúc, nên chỉ cần một cáp nối ngang là đủ cho tất cả các xóm.
+
+**6 · Tổng kết:**
+- Cổng access thuộc đúng một VLAN; cổng trunk chở nhiều VLAN trên một sợi.
+- Khai trunk bằng lệnh: enable, configure terminal, interface p4, switchport mode trunk.
+- Ngồi xuống một switch lạ thì show vlan brief là bảng nhìn đầu tiên.
+- *Úp mở bài sau:* Một sợi chở bốn xóm — nhưng đầu bên kia làm sao biết khung này của xóm nào? Bài sau mở phong bì ra xem cái nhãn mà switch dán lên đó.
+
+### Bài: Đọc được cái nhãn trên khung `m14-bai-2`
+
+**1 · Khởi động (hook):** Cùng một sợi cáp, cùng một lúc, khung của kế toán và khung của kỹ thuật nối đuôi nhau chạy qua. Sang tới switch bên kia, không khung nào đi lạc sang xóm của khung kia. Switch bên nhận dựa vào đâu để biết khung nào là của ai?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử: khi khung của VLAN 20 đi qua trunk, switch làm gì với nó?
+  - **Dạng:** trắc nghiệm · **Chèn thêm một nhãn ghi số VLAN vào khung** ✓ / Đổi địa chỉ MAC nguồn thành MAC của switch / Ghi số VLAN vào phần địa chỉ IP của gói tin
+  - **Vì sao:** Switch chèn một nhãn 802.1Q dài 4 byte vào khung, trong đó có số VLAN. Đầu kia đọc nhãn, biết khung thuộc xóm nào, rồi gỡ nhãn ra trước khi giao xuống cổng access.
+
+**3 · Khám phá (teach):**
+- *[tagged-frame]* Trên trunk, mỗi khung được dán thêm một nhãn 802.1Q ghi rõ số VLAN của nó — khung mang nhãn gọi là tagged frame. Đầu nhận đọc nhãn để biết khung thuộc xóm nào, rồi GỠ nhãn trước khi giao xuống cổng access, nên máy người dùng không bao giờ nhìn thấy cái nhãn ấy. Nói cách khác: VLAN đi theo khung suốt chặng, còn nhãn chỉ là cách ghi số xóm trên sợi dây giữa hai switch.
+  - **Đào sâu hơn:** Nhãn dài 4 byte, chèn ngay sau địa chỉ MAC nguồn. Trong 4 byte đó có 12 bit dành cho số VLAN — nên VLAN chỉ chạy từ 1 tới 4094, đúng con số bạn gặp trong mọi bảng cấu hình. Vì khung dài thêm 4 byte, khung tối đa trên trunk là 1522 byte thay vì 1518; switch đời cũ không hiểu điều này sẽ báo lỗi khung quá cỡ, và đó là một trong những lỗi khó chịu nhất khi đấu nối thiết bị nhiều thế hệ.
+
+**4 · Thử tay (practice, fading 1):**
+- **Đề:** Máy trong VLAN 10 gửi một khung sang tòa nhà bên kia. Trên sợi trunk, khung ấy mang theo con số nào trong nhãn của nó?
+  - **Dạng:** gõ tay · **Chấp nhận:** 10 | vlan 10 | vlan10
+  - **Chủ đề gợi ý (tầng 1):** nhãn 802.1Q ghi lại số của xóm nào
+  - **Gợi ý (tầng 2):** Điền chỗ trống: nhãn ghi số VLAN của chính khung đó, mà khung này xuất phát từ cổng access thuộc VLAN …
+  - **Lời giải (tầng 3):** Số 10 — nhãn ghi đúng VLAN mà khung đang thuộc về. Sang tới đầu kia, switch đọc số 10, gỡ nhãn, rồi chỉ giao khung xuống các cổng access của VLAN 10.
+- **Đề:** Máy tính cắm vào cổng access có nhìn thấy nhãn 802.1Q không?
+  - **Dạng:** trắc nghiệm · **Không, vì switch đã gỡ nhãn ra trước khi giao khung xuống cổng access** ✓ / Có, và card mạng của máy phải tự đọc nhãn để biết mình thuộc VLAN nào / Có, nhưng chỉ khi máy được cấu hình đúng số VLAN trong phần cài đặt mạng
+  - **Chủ đề gợi ý (tầng 1):** nhãn tồn tại trên đoạn dây nào
+  - **Gợi ý (tầng 2):** Nhãn chỉ sống trên đoạn dây giữa hai thiết bị mạng. Cổng nối xuống máy người dùng là cổng gì, và cổng đó có đọc nhãn không?
+  - **Lời giải (tầng 3):** Không. Nhãn chỉ tồn tại trên trunk; tới cổng access thì switch gỡ ra, nên máy người dùng nhận một khung trần y như thời chưa có VLAN. Chính vì thế bạn không phải cấu hình gì trên máy khi phòng mình được chia VLAN.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: tên chuẩn dán nhãn VLAN lên khung là gì? (viết dạng số hiệu chuẩn)
+  - **Dạng:** gõ tay · **Chấp nhận:** 802.1q | 802.1Q | ieee 802.1q | dot1q | 8021q
+  - **Gợi ý (tầng 2):** Bắt đầu bằng 802.1 — chuẩn của tổ chức IEEE, tên tắt trong nghề là dot1q.
+  - **Lời giải (tầng 3):** 802.1Q. Đây là chuẩn mở nên switch của các hãng khác nhau vẫn hiểu nhãn của nhau.
+- **Tự giải thích:** Giải thích bằng lời của bạn: nhãn 802.1Q sinh ra rồi biến mất ở những chỗ nào trên đường đi của khung?
+  - **Nhóm ý cần chạm:** [dán, chèn, gắn thêm, thêm nhãn] · [trunk, dây giữa hai switch, đường trục] · [gỡ, tháo, bỏ nhãn, tách ra] · [cổng access, xuống máy, máy người dùng]
+  - **Trả lời mẫu:** Switch dán nhãn khi đẩy khung ra trunk, để đầu kia biết khung thuộc VLAN nào. Tới nơi, switch bên nhận đọc nhãn rồi gỡ ra trước khi giao khung xuống cổng access, nên máy người dùng không bao giờ thấy nhãn.
+
+**6 · Tổng kết:**
+- Trên trunk, khung được dán nhãn 802.1Q ghi số VLAN của nó.
+- Đầu nhận đọc nhãn rồi gỡ ra trước khi giao xuống cổng access.
+- Nhãn chỉ sống trên trunk — máy người dùng không bao giờ thấy nó.
+- *Úp mở bài sau:* Có đúng MỘT xóm được đi qua trunk mà không cần nhãn. Bài sau cho bạn xem cái xóm đặc biệt ấy — và vì sao nó là nguồn của một ca bệnh im lặng nhất nghề mạng.
+
+### Bài: Chữa ca native VLAN lệch `m14-bai-3`
+
+**1 · Khởi động (hook):** Nửa văn phòng chạy ngon, nửa kia mất kết nối mà không thiết bị nào báo lỗi, không đèn nào đỏ. Người trực ca đêm khai trunk ở Switch-2 và gõ thêm một dòng cấu hình mà anh ấy tin là vô hại. Dòng ấy đã làm khung của một xóm lặng lẽ rơi sang xóm khác. Xóm nào bị nạn, và vì sao?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử: trên một trunk, khung của native VLAN đi qua như thế nào?
+  - **Dạng:** trắc nghiệm · **Đi trần, không mang nhãn nào cả** ✓ / Mang nhãn ghi số 0 để đánh dấu là xóm mặc định / Mang hai nhãn chồng lên nhau để phân biệt với xóm khác
+  - **Vì sao:** Native VLAN là xóm duy nhất đi qua trunk mà không dán nhãn. Chuẩn 802.1Q quy định vậy để trunk vẫn nói chuyện được với thiết bị không hiểu nhãn.
+
+**3 · Khám phá (teach):**
+- *[native-vlan]* Trên mỗi trunk có đúng một xóm được đi trần, không nhãn — đó là native VLAN, mặc định là VLAN 1. Chuyện chỉ lành khi HAI ĐẦU khai cùng một số. Nếu Switch-1 khai native là 1 còn Switch-2 khai native là 99, thì khung đi trần từ VLAN 1 sang tới đầu kia sẽ được hiểu thành khung của VLAN 99: nó rơi sang xóm khác, im lặng, không lỗi, không cảnh báo. Khung mang nhãn thì không hề hấn gì — nên bệnh này chỉ giết nửa văn phòng, và đó là lý do nó khó tìm.
+  - **Đào sâu hơn:** Vì sao chuẩn lại chừa một xóm đi trần? Vì thời trunk mới ra đời, còn nhiều thiết bị không hiểu nhãn; xóm không nhãn giúp chúng vẫn nói chuyện được. Ngày nay lời khuyên chung là đổi native sang một VLAN không ai dùng và không cắm máy nào vào đó, để tránh cả bệnh lệch native lẫn kiểu tấn công nhồi hai nhãn. Thiết bị thật có cơ chế phát hiện lệch native qua giao thức khám phá láng giềng — nhưng nó chỉ ghi vào nhật ký, và nhật ký thì phải có người đọc.
+
+**4 · Thử tay (practice, fading 1):**
+- **Đề:** Đây đúng là mạng của ca đêm hôm ấy: Switch-1 khai native VLAN 1, Switch-2 khai native VLAN 99, nên hai máy kế toán ở VLAN 1 mất nhau. Vào console sửa cho hai đầu khớp lại. Gõ thử bao nhiêu cũng miễn phí, chỉ Nộp bài mới tính một lượt.
+  - **Dạng:** console thiết bị (gõ lệnh IOS đạt mục tiêu)
+    - **Sơ đồ đề bài:** PC-A (kế toán) [192.168.1.10/24] · PC-B (kế toán) [192.168.1.20/24] · Switch-1 [p1:VLAN 1, p2:VLAN 20, p4:VLAN 1] · Switch-2 [p1:VLAN 1, p2:VLAN 20, p4:VLAN 1] — dây: PC-A (kế toán)·eth0 — Switch-1·p1 | PC-B (kế toán)·eth0 — Switch-2·p1 | Switch-1·p4 — Switch-2·p4
+    - **Console cắm ở:** Switch-2
+    - **Mục tiêu:**
+      - trunk ở cổng p4 của Switch-2 phải khai native VLAN 1
+      - pc-a PHẢI gọi được pc-b
+    - **Lệnh mẫu trên Switch-2:** `enable` rồi `configure terminal` rồi `interface p4` rồi `switchport trunk native vlan 1` rồi `end` rồi `show interfaces trunk`
+  - **Chủ đề gợi ý (tầng 1):** số native VLAN ở hai đầu trunk
+  - **Gợi ý (tầng 2):** Cú pháp khuyết: vào interface p4 rồi gõ switchport trunk native vlan … — con số điền vào phải khớp với đầu bên kia, và bảng show interfaces trunk cho bạn thấy đầu này đang khai số mấy.
+  - **Lời giải (tầng 3):** Trên Switch-2: enable, configure terminal, interface p4, switchport trunk native vlan 1, end. Sửa ở đầu nào cũng được, miễn hai đầu cùng một số — nhưng đổi đầu đang đúng thành 99 thì bạn lại phải đi dời cả các máy VLAN 1 sang xóm khác.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: native VLAN mặc định của một trunk là VLAN số mấy?
+  - **Dạng:** gõ tay · **Chấp nhận:** 1 | vlan 1 | vlan1
+  - **Gợi ý (tầng 2):** Cùng số với VLAN mặc định mà mọi cổng switch thuộc về khi chưa ai cấu hình gì.
+  - **Lời giải (tầng 3):** VLAN 1. Vì đó là mặc định của mọi thiết bị nên hai đầu thường tự khớp — bệnh chỉ xuất hiện khi có người đổi một đầu mà quên đầu kia.
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao native VLAN lệch hai đầu lại là ca bệnh im lặng, chỉ hỏng một nửa?
+  - **Nhóm ý cần chạm:** [không nhãn, đi trần, không dán nhãn] · [hiểu nhầm, rơi sang, lạc sang, sang xóm khác] · [mang nhãn, có nhãn, vlan khác vẫn chạy, nửa còn lại]
+  - **Trả lời mẫu:** Vì chỉ khung của native VLAN mới đi trần. Sang đầu kia, khung không nhãn ấy bị hiểu thành khung của native VLAN bên đó, tức là rơi sang xóm khác mà không ai báo lỗi. Các VLAN còn lại đi có nhãn nên vẫn chạy bình thường — thành ra chỉ hỏng đúng một nửa.
+
+**6 · Tổng kết:**
+- Native VLAN là xóm duy nhất đi qua trunk không mang nhãn; mặc định là VLAN 1.
+- Hai đầu trunk khai native lệch nhau thì khung trần lặng lẽ rơi sang xóm khác.
+- Sửa bằng switchport trunk native vlan, và luôn kiểm lại bằng show interfaces trunk.
+- *Úp mở bài sau:* Trunk chở được mọi xóm — nhưng bạn có muốn nó chở TẤT CẢ không? Bài sau là danh sách khách mời của sợi cáp, và một ca hỏng chỉ vì thiếu đúng một số trong danh sách.
+
+### Bài: Thêm xóm còn thiếu vào danh sách `m14-bai-4`
+
+**1 · Khởi động (hook):** Trunk đã dựng, VLAN kế toán đi lại bình thường giữa hai tòa nhà. Nhưng VLAN kỹ thuật thì không: máy bên này ping máy bên kia mãi không tới, dù cả hai đều cắm đúng cổng, đúng xóm. Sợi cáp vẫn là sợi cáp ấy. Thiếu cái gì?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử: một trunk chưa khai gì thêm thì cho những VLAN nào đi qua?
+  - **Dạng:** trắc nghiệm · **Tất cả các VLAN** ✓ / Chỉ VLAN 1 / Không VLAN nào, phải khai từng cái một
+  - **Vì sao:** Mặc định trunk cho tất cả VLAN qua. Chỉ khi người ta khai một danh sách allowed thì trunk mới thành cánh cửa có kiểm soát — và cũng từ đó mới có bệnh thiếu tên trong danh sách.
+
+**3 · Khám phá (teach):**
+- *[allowed-list]* Allowed list là danh sách khách được qua trunk. Mặc định trunk cho mọi VLAN đi, nhưng người quản trị thường thu hẹp lại chỉ những xóm thật sự cần — vừa an toàn hơn, vừa đỡ khung quảng bá chạy lung tung. Cái giá là một ca hỏng rất hay gặp: khai thiếu một số trong danh sách thì đúng xóm đó chết, còn các xóm khác vẫn chạy ngon lành nên chẳng ai ngờ tới sợi trunk. Lệnh khai là switchport trunk allowed vlan, và bảng show interfaces trunk luôn in ra danh sách hiện hành.
+  - **Đào sâu hơn:** Trên thiết bị thật, gõ lại lệnh allowed vlan là GHI ĐÈ cả danh sách chứ không phải thêm vào — muốn thêm phải dùng dạng có từ add, và không ít sự cố đã sinh ra từ đúng chỗ này: một dòng lệnh tưởng là bổ sung hóa ra xóa sạch phần còn lại. Trong app này chỉ có dạng ghi đè, nên cứ liệt kê đủ mọi VLAN cần chở trong một dòng.
+
+**4 · Thử tay (practice, fading 2):**
+- **Đề:** Kế toán (VLAN 10) đi lại được giữa hai tòa nhà, nhưng kỹ thuật (VLAN 20) thì không. Vào console tìm ra chỗ nghẽn rồi sửa, sao cho cả hai xóm cùng qua được sợi trunk.
+  - **Dạng:** console thiết bị (gõ lệnh IOS đạt mục tiêu)
+    - **Sơ đồ đề bài:** PC-A (kế toán) [192.168.1.10/24] · PC-B (kế toán) [192.168.1.20/24] · PC-C (kỹ thuật) [192.168.1.30/24] · PC-D (kỹ thuật) [192.168.1.40/24] · Switch-1 [p1:VLAN 10, p2:VLAN 20, p4:VLAN 1] · Switch-2 [p1:VLAN 10, p2:VLAN 20, p4:VLAN 1] — dây: PC-A (kế toán)·eth0 — Switch-1·p1 | PC-C (kỹ thuật)·eth0 — Switch-1·p2 | PC-B (kế toán)·eth0 — Switch-2·p1 | PC-D (kỹ thuật)·eth0 — Switch-2·p2 | Switch-1·p4 — Switch-2·p4
+    - **Console cắm ở:** Switch-2
+    - **Mục tiêu:**
+      - trunk ở cổng p4 của Switch-2 phải cho VLAN 10, 20 đi qua
+      - pc-c PHẢI gọi được pc-d
+      - pc-a PHẢI gọi được pc-b
+    - **Lệnh mẫu trên Switch-2:** `enable` rồi `show interfaces trunk` rồi `configure terminal` rồi `interface p4` rồi `switchport trunk allowed vlan 10,20` rồi `end`
+  - **Chủ đề gợi ý (tầng 1):** danh sách VLAN mà trunk cho đi qua
+  - **Gợi ý (tầng 2):** Chạy show interfaces trunk ở cả hai switch và so hai danh sách với nhau — một bên có hai số, bên kia chỉ có một.
+  - **Lời giải (tầng 3):** Switch-2 khai allowed vlan 10 nên VLAN 20 bị chặn ngay tại trunk. Sửa: enable, configure terminal, interface p4, switchport trunk allowed vlan 10,20, end. Nhớ liệt kê CẢ VLAN 10 trong dòng lệnh — lệnh này ghi đè cả danh sách, không phải thêm vào.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: lệnh nào in ra danh sách VLAN mà từng trunk đang cho đi qua?
+  - **Dạng:** gõ tay · **Chấp nhận:** show interfaces trunk | show interface trunk | sh int trunk | show int trunk
+  - **Gợi ý (tầng 2):** Cũng họ lệnh show, nói về interface, và tên bài học hôm nay đứng cuối.
+  - **Lời giải (tầng 3):** show interfaces trunk. Bảng của nó có ba phần: cổng nào đang trunk, native VLAN của từng cổng, và danh sách VLAN được phép đi qua.
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao thiếu một số trong allowed list lại là ca khó tìm?
+  - **Nhóm ý cần chạm:** [một vlan, đúng xóm đó, riêng vlan] · [vẫn chạy, bình thường, không ai ngờ, các vlan khác] · [trunk, danh sách, allowed]
+  - **Trả lời mẫu:** Vì chỉ đúng VLAN bị thiếu tên mới chết, còn các VLAN khác vẫn đi lại bình thường qua chính sợi trunk ấy. Mọi người thấy mạng vẫn chạy nên đi tìm ở máy, ở dây, mà không nghĩ tới danh sách trên trunk.
+
+**6 · Tổng kết:**
+- Mặc định trunk cho mọi VLAN qua; allowed list là danh sách thu hẹp do người khai.
+- Thiếu một số trong danh sách thì đúng xóm đó chết, các xóm khác vẫn chạy.
+- Lệnh allowed vlan GHI ĐÈ cả danh sách — liệt kê đủ mọi VLAN cần chở trong một dòng.
+- *Úp mở bài sau:* Bốn xóm đã đi chung một dây giữa hai switch. Nhưng muốn kế toán gọi sang kỹ thuật thì vẫn phải qua router — và bài cuối module cho bạn xem cách cắm router bằng đúng MỘT sợi cáp.
+
+### Bài: Nối router bằng một chân duy nhất `m14-bai-5`
+
+**1 · Khởi động (hook):** Công ty có bốn VLAN và muốn chúng gọi được sang nhau. Cách cũ: router phải có bốn chân, mỗi chân cắm vào một VLAN. Nhưng router bạn đang có chỉ còn đúng một chân trống. Người ta vẫn làm được — bằng cách nào?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử: muốn một chân router phục vụ bốn VLAN thì sợi dây nối vào nó phải là gì?
+  - **Dạng:** trắc nghiệm · **Một trunk, để cả bốn xóm cùng đi vào một chân** ✓ / Một cổng access của VLAN quan trọng nhất trong bốn xóm / Một sợi cáp đặc biệt chạy nhanh gấp bốn lần cáp thường
+  - **Vì sao:** Chính là trunk — thứ bạn học suốt module này. Chân router nhận cả bốn xóm qua một sợi, rồi tự tách ra bốn cửa logic bên trong.
+
+**3 · Khám phá (teach):**
+- *[router-on-a-stick]* Router-on-a-stick là cách cho một chân router phục vụ nhiều VLAN: sợi dây nối switch với router được khai là trunk, còn bên trong router, cái chân vật lý ấy được chia thành nhiều cửa logic gọi là sub-interface — mỗi cửa mang một số VLAN và một địa chỉ IP làm gateway cho xóm đó. Khung của VLAN 10 đi vào, router đọc nhãn, giao cho cửa của VLAN 10 xử lý, rồi đẩy ngược ra cũng trên sợi ấy nhưng mang nhãn của VLAN đích.
+  - **Đào sâu hơn:** Điểm yếu của cách này: mọi lưu lượng giữa các VLAN đều đi vào rồi lại đi ra trên CÙNG một sợi, nên sợi đó gánh gấp đôi. Mạng lớn vì thế dùng switch lớp 3 với cửa logic ngay trong switch thay vì đẩy hết lên router. Trong phòng lab của app này, sơ đồ dùng router nhiều chân cho dễ nhìn; cú pháp sub-interface thuộc phần đọc-hiểu ở đây, và bạn sẽ gặp lại ý tưởng cửa-logic-trên-một-chân khi học định tuyến ở các module sau.
+
+**4 · Thử tay (practice, fading 2):**
+- **Đề:** Trong kiểu router-on-a-stick, mỗi cửa logic chia ra từ một chân router được gọi là gì?
+  - **Dạng:** gõ tay · **Chấp nhận:** sub-interface | subinterface | sub interface | cửa logic | cua logic
+  - **Chủ đề gợi ý (tầng 1):** tên gọi của cửa logic trên một chân vật lý
+  - **Gợi ý (tầng 2):** Tiếng Anh ghép từ interface với tiền tố mang nghĩa con, phụ — cùng tiền tố với subnet.
+  - **Lời giải (tầng 3):** Sub-interface. Mỗi sub-interface mang một số VLAN và một địa chỉ IP đóng vai gateway cho chính xóm đó.
+- **Đề:** Nhược điểm rõ nhất của router-on-a-stick là gì?
+  - **Dạng:** trắc nghiệm · **Lưu lượng giữa các VLAN đi vào rồi ra trên cùng một sợi, nên sợi đó gánh gấp đôi** ✓ / Router bắt buộc phải có ít nhất bốn chân vật lý mới chia được cửa logic / Các VLAN đi qua kiểu này sẽ mất nhãn nên switch không phân biệt được nữa
+  - **Chủ đề gợi ý (tầng 1):** đường đi của gói tin khi hai VLAN nói chuyện với nhau
+  - **Gợi ý (tầng 2):** Vẽ đường đi của một gói từ VLAN 10 sang VLAN 20: nó qua sợi dây router mấy lần?
+  - **Lời giải (tầng 3):** Gói đi lên router rồi lại quay xuống trên đúng sợi ấy, nên sợi gánh cả chiều vào lẫn chiều ra. Cách này sinh ra chính là để dùng một chân, và nhãn VLAN vẫn nguyên vẹn trên trunk.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: sợi dây nối switch với router trong kiểu router-on-a-stick phải được khai là gì?
+  - **Dạng:** gõ tay · **Chấp nhận:** trunk | cổng trunk | cong trunk | đường trunk
+  - **Gợi ý (tầng 2):** Chính là thứ cả module này nói về — một sợi chở nhiều xóm.
+  - **Lời giải (tầng 3):** Trunk. Không có trunk thì chân router chỉ nhận được đúng một VLAN, và ý tưởng một-chân-cho-nhiều-xóm sụp ngay từ đầu.
+- **Tự giải thích:** Giải thích bằng lời của bạn: một chân router phục vụ được bốn VLAN bằng cách nào?
+  - **Nhóm ý cần chạm:** [trunk, một sợi, chung một dây] · [sub-interface, cửa logic, chia nhỏ, nhiều cửa] · [gateway, địa chỉ ip, mỗi vlan một]
+  - **Trả lời mẫu:** Sợi nối switch với router được khai là trunk nên cả bốn xóm cùng đi vào một chân. Bên trong router, chân đó chia thành nhiều sub-interface, mỗi cửa mang một số VLAN và một địa chỉ IP làm gateway cho xóm ấy.
+
+**6 · Tổng kết:**
+- Router-on-a-stick: một chân router phục vụ nhiều VLAN nhờ sợi nối là trunk.
+- Mỗi sub-interface mang một số VLAN và một IP gateway cho xóm đó.
+- Cái giá phải trả: lưu lượng liên VLAN đi vào và ra trên cùng một sợi.
+- *Úp mở bài sau:* Hai switch nối nhau đã ngon. Nhưng nếu ai đó cắm thêm một sợi thứ hai cho chắc ăn, mạng sẽ chết trong vài giây — module sau cho bạn xem cơn bão đó, và người canh gác đứng ra dập nó.
+
+### Khái niệm & flashcard (5)
+
+- **Trunk** `trunk` — Cổng trunk — cổng switch chở nhiều VLAN trên cùng một sợi dây, khác cổng access chỉ thuộc một VLAN
+  - Ẩn dụ: Như xe buýt đường dài chạy qua nhiều xóm: một chuyến chở khách của cả bốn xóm, thay vì mỗi xóm phải có một chuyến riêng.
+  - Thẻ ôn: *Cổng trunk khác cổng access ở chỗ nào?* → Cổng access chỉ thuộc đúng một VLAN và gửi khung trần; cổng trunk chở nhiều VLAN trên một sợi và dán nhãn cho khung để đầu kia biết khung thuộc xóm nào.
+- **Tagged frame** `tagged-frame` — Khung mang nhãn — khung được chèn thêm nhãn 802.1Q ghi số VLAN khi đi qua trunk
+  - Ẩn dụ: Như dán mẩu giấy ghi tên xóm lên từng kiện hàng trước khi chất chung một chuyến xe — tới nơi, người ta bóc giấy ra rồi mới giao.
+  - Thẻ ôn: *Nhãn 802.1Q được dán vào lúc nào và gỡ ra lúc nào?* → Dán khi khung đi ra trunk, gỡ khi khung được giao xuống cổng access. Máy người dùng không bao giờ thấy nhãn, nên chia VLAN không đòi cấu hình gì trên máy.
+- **Native VLAN** `native-vlan` — VLAN đi qua trunk mà KHÔNG mang nhãn; mặc định là VLAN 1 và phải khớp ở hai đầu
+  - Ẩn dụ: Như một kiện hàng không dán giấy vì ai cũng ngầm hiểu nó của xóm nào. Hai bên hiểu khác nhau là kiện hàng đi lạc mà không ai biết.
+  - Thẻ ôn: *Chuyện gì xảy ra khi hai đầu trunk khai native VLAN khác nhau?* → Khung đi trần từ native VLAN bên này bị hiểu thành khung của native VLAN bên kia — rơi sang xóm khác, im lặng, không báo lỗi. Các VLAN mang nhãn vẫn chạy nên chỉ hỏng một nửa.
+- **Allowed VLAN list** `allowed-list` — Danh sách VLAN được phép đi qua một trunk; thiếu = mặc định cho tất cả đi qua
+  - Ẩn dụ: Như danh sách khách mời dán ở cổng: không có danh sách thì ai cũng vào; có danh sách mà quên một tên thì đúng người đó bị chặn, còn cả đoàn vẫn vào bình thường.
+  - Thẻ ôn: *Trunk khai thiếu một VLAN trong allowed list thì hỏng thế nào?* → Đúng VLAN đó không qua được trunk, các VLAN khác vẫn chạy bình thường. Xem danh sách hiện hành bằng show interfaces trunk; sửa bằng switchport trunk allowed vlan, và lệnh này ghi đè cả danh sách.
+- **Router-on-a-stick** `router-on-a-stick` — Một chân router phục vụ nhiều VLAN: dây nối là trunk, chân được chia thành các sub-interface
+  - Ẩn dụ: Như một quầy tiếp dân duy nhất chia thành bốn ô cửa: khách xóm nào tới đúng ô của xóm đó, mà tòa nhà vẫn chỉ có một lối vào.
+  - Thẻ ôn: *Router-on-a-stick hoạt động thế nào, và cái giá của nó là gì?* → Dây nối switch với router là trunk; chân router chia thành các sub-interface, mỗi cửa mang một VLAN và một IP gateway. Cái giá: lưu lượng liên VLAN đi vào rồi ra trên cùng một sợi nên sợi đó gánh gấp đôi.
+
+### Bài kiểm tra module (pool 12 câu, mỗi lượt rút 8, cần ≥ 85%)
+
+- **Đề:** Cổng trunk khác cổng access ở điểm cốt lõi nào?
+  - **Dạng:** trắc nghiệm · **Trunk chở nhiều VLAN trên một sợi, access chỉ thuộc đúng một VLAN** ✓ / Trunk chạy nhanh hơn access vì dùng loại cáp có nhiều lõi đồng hơn / Trunk chỉ nối được xuống máy người dùng, access chỉ nối ngang thiết bị
+  - **Chủ đề gợi ý (tầng 1):** số VLAN mà mỗi loại cổng phục vụ
+  - **Vì sao:** Khác nhau ở số xóm phục vụ, không phải ở tốc độ hay loại cáp. Trunk còn nối NGANG giữa các thiết bị mạng, còn access nối XUỐNG máy người dùng.
+- **Đề:** Tên chuẩn dán nhãn VLAN lên khung là gì? (viết dạng số hiệu chuẩn)
+  - **Dạng:** gõ tay · **Chấp nhận:** 802.1q | 802.1Q | dot1q | ieee 802.1q | 8021q
+  - **Chủ đề gợi ý (tầng 1):** chuẩn dán nhãn của IEEE
+  - **Vì sao:** 802.1Q, tên tắt trong nghề là dot1q; nhãn dài 4 byte và chứa 12 bit số VLAN.
+- **Đề:** Đang ở dấu nhắc Switch-1(config-if)#, gõ lệnh gì để biến cổng đang chọn thành trunk?
+  - **Dạng:** gõ tay · **Chấp nhận:** switchport mode trunk | sw mode trunk
+  - **Chủ đề gợi ý (tầng 1):** lệnh đặt vai cho một cổng switch
+  - **Vì sao:** switchport mode trunk. Thay trunk bằng access là trả cổng về vai chỉ phục vụ một VLAN.
+- **Đề:** Hai đầu trunk khai native VLAN khác nhau thì hậu quả là gì?
+  - **Dạng:** trắc nghiệm · **Khung đi trần lặng lẽ rơi sang VLAN khác, không thiết bị nào báo lỗi** ✓ / Cả sợi trunk ngừng hoạt động và mọi VLAN đều mất kết nối lập tức / Switch tự động đổi native của một đầu cho khớp với đầu còn lại
+  - **Chủ đề gợi ý (tầng 1):** xóm nào đi qua trunk mà không mang nhãn
+  - **Vì sao:** Chỉ khung của native VLAN đi trần nên chỉ nó bị hiểu nhầm; các VLAN mang nhãn vẫn chạy, và đó chính là lý do ca bệnh này khó tìm.
+- **Đề:** Native VLAN mặc định của một trunk là VLAN số mấy?
+  - **Dạng:** gõ tay · **Chấp nhận:** 1 | vlan 1 | vlan1
+  - **Chủ đề gợi ý (tầng 1):** VLAN mặc định của mọi cổng switch
+  - **Vì sao:** VLAN 1 — cũng là VLAN mặc định của mọi cổng, nên hai đầu thường tự khớp cho tới khi có người đổi một bên.
+- **Đề:** Một trunk chưa khai allowed list thì cho VLAN nào đi qua?
+  - **Dạng:** trắc nghiệm · **Tất cả các VLAN** ✓ / Chỉ native VLAN / Chỉ VLAN 10 và 20
+  - **Chủ đề gợi ý (tầng 1):** mặc định rộng hay hẹp của một trunk
+  - **Vì sao:** Mặc định trunk cho tất cả VLAN qua. Danh sách allowed là do người quản trị thu hẹp lại, và cũng từ đó mới có bệnh thiếu tên trong danh sách.
+- **Đề:** Lệnh nào in ra bảng cho biết cổng nào đang là trunk, native VLAN và danh sách VLAN được phép đi qua?
+  - **Dạng:** gõ tay · **Chấp nhận:** show interfaces trunk | show interface trunk | sh int trunk | show int trunk
+  - **Chủ đề gợi ý (tầng 1):** bảng tra cứu của một sợi trunk
+  - **Vì sao:** show interfaces trunk. Bảng rỗng nghĩa là switch này chưa có cổng trunk nào — và chính cái bảng rỗng ấy thường là câu trả lời.
+- **Đề:** Xếp lại đúng thứ tự các lệnh để khai cổng p4 thành trunk từ dấu nhắc Switch-1>.
+  - **Dạng:** xếp thứ tự (thứ tự đúng):
+    1. enable
+    2. configure terminal
+    3. interface p4
+    4. switchport mode trunk
+  - **Chủ đề gợi ý (tầng 1):** thứ tự các chế độ của CLI
+  - **Vì sao:** Đi từ chế độ xem lên chế độ có quyền, vào cấu hình chung, chọn đúng cổng, rồi mới đặt vai. Gõ nhảy cóc thì máy từ chối bằng đúng câu lỗi của thiết bị thật.
+- **Đề:** Sợi nối hai switch vẫn đang là cổng access nên hai tòa nhà chưa thấy nhau. Vào console dựng trunk cho VLAN 10 và VLAN 20 cùng đi chung sợi đó — nhớ làm đủ cả hai đầu.
+  - **Dạng:** console thiết bị (gõ lệnh IOS đạt mục tiêu)
+    - **Sơ đồ đề bài:** PC-A (kế toán) [192.168.1.10/24] · PC-B (kế toán) [192.168.1.20/24] · PC-C (kỹ thuật) [192.168.1.30/24] · Switch-1 [p1:VLAN 10, p2:VLAN 20, p4:VLAN 1] · Switch-2 [p1:VLAN 10, p2:VLAN 20, p4:VLAN 1] — dây: PC-A (kế toán)·eth0 — Switch-1·p1 | PC-C (kỹ thuật)·eth0 — Switch-1·p2 | PC-B (kế toán)·eth0 — Switch-2·p1 | Switch-1·p4 — Switch-2·p4
+    - **Console cắm ở:** Switch-1
+    - **Mục tiêu:**
+      - cổng p4 của Switch-1 phải là trunk
+      - cổng p4 của Switch-2 phải là trunk
+      - pc-a PHẢI gọi được pc-b
+      - pc-a phải KHÔNG gọi được pc-c
+    - **Lệnh mẫu trên Switch-1:** `enable` rồi `configure terminal` rồi `interface p4` rồi `switchport mode trunk` rồi `end`
+    - **Lệnh mẫu trên Switch-2:** `enable` rồi `configure terminal` rồi `interface p4` rồi `switchport mode trunk` rồi `end`
+  - **Chủ đề gợi ý (tầng 1):** vai của cổng nối giữa hai switch
+  - **Vì sao:** Khai trunk ở CẢ HAI đầu thì VLAN 10 đi lại được giữa hai tòa nhà, mà kế toán vẫn không gọi được sang kỹ thuật — bức tường VLAN của Module 4 còn nguyên.
+- **Đề:** Trunk đã dựng nhưng ai đó khai native VLAN lệch nhau giữa hai đầu, và hai máy kế toán mất nhau. Vào console chữa cho hai đầu khớp lại.
+  - **Dạng:** console thiết bị (gõ lệnh IOS đạt mục tiêu)
+    - **Sơ đồ đề bài:** PC-A (kế toán) [192.168.1.10/24] · PC-B (kế toán) [192.168.1.20/24] · Switch-1 [p1:VLAN 1, p2:VLAN 20, p4:VLAN 1] · Switch-2 [p1:VLAN 1, p2:VLAN 20, p4:VLAN 1] — dây: PC-A (kế toán)·eth0 — Switch-1·p1 | PC-B (kế toán)·eth0 — Switch-2·p1 | Switch-1·p4 — Switch-2·p4
+    - **Console cắm ở:** Switch-2
+    - **Mục tiêu:**
+      - trunk ở cổng p4 của Switch-2 phải khai native VLAN 1
+      - pc-a PHẢI gọi được pc-b
+    - **Lệnh mẫu trên Switch-2:** `enable` rồi `configure terminal` rồi `interface p4` rồi `switchport trunk native vlan 1` rồi `end`
+  - **Chủ đề gợi ý (tầng 1):** số native VLAN ở hai đầu trunk
+  - **Vì sao:** Hai đầu phải cùng một số native. Sửa đầu nào cũng được, miễn khớp — nhưng đổi đầu đang đúng thì bạn lại phải dời cả các máy đang nằm trong xóm đó.
+- **Đề:** Máy tính cắm vào cổng access có nhìn thấy nhãn 802.1Q không?
+  - **Dạng:** trắc nghiệm · **Không, switch đã gỡ nhãn trước khi giao khung xuống cổng access** ✓ / Có, card mạng phải tự đọc nhãn mới biết mình thuộc VLAN nào / Có, nhưng chỉ khi máy chạy hệ điều hành hỗ trợ chuẩn 802.1Q
+  - **Chủ đề gợi ý (tầng 1):** nhãn tồn tại trên đoạn dây nào
+  - **Vì sao:** Nhãn chỉ sống trên trunk. Nhờ vậy chia VLAN không đòi cấu hình gì trên máy người dùng.
+- **Đề:** Trong kiểu router-on-a-stick, sợi dây nối switch với router phải được khai là gì?
+  - **Dạng:** trắc nghiệm · **Trunk, để mọi VLAN cùng đi vào một chân router** ✓ / Cổng access của VLAN có nhiều máy nhất trong công ty / Cổng access của native VLAN để router khỏi phải đọc nhãn
+  - **Chủ đề gợi ý (tầng 1):** cách nhiều xóm cùng đi vào một chân
+  - **Vì sao:** Phải là trunk. Chân router sau đó chia thành các sub-interface, mỗi cửa một VLAN và một IP gateway.
+
+## STP — Người canh vòng lặp `module-15`
+
+Phần D · 5 chặng · 5 bài · 6 khái niệm
+
+**Chặng:** Cơn bão trong ba giây (m15-bai-1) → Bầu ra gốc cây (m15-bai-2) → Cổng nằm im không phải cổng hỏng (m15-bai-3) → Đứt dây chính, cây mọc lối khác (m15-bai-4) → Cổng cắm máy khỏi phải chờ (m15-bai-5)
+
+### Bài: Dập cơn bão quảng bá `m15-bai-1`
+
+**1 · Khởi động (hook):** Ba switch của ba tầng nhà được nối thành một vòng khép kín — người lắp nghĩ rằng có đường dự phòng thì chắc ăn hơn. Cắm xong sợi cuối cùng, cả ba tầng mất mạng trong vòng vài giây, đèn trên switch nhấp nháy như đèn vũ trường. Sợi dây dự phòng ấy đã gây ra chuyện gì?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đây đúng là mạng ba tầng ấy. Bấm Gửi thử để tự xem chuyện gì xảy ra, rồi tìm cách cho PC-A gọi được PC-B mà KHÔNG rút sợi dây nào. Sai cũng không sao — phần này không tính điểm.
+  - **Dạng:** phòng lab (lắp/sửa sơ đồ mạng)
+    - **Sơ đồ đề bài:** PC-A (tầng 1) [192.168.1.10/24] · PC-B (tầng 3) [192.168.1.20/24] · Switch-1 [p1:VLAN 1, p2:VLAN 1, p3:VLAN 1] · Switch-2 [p1:VLAN 1, p2:VLAN 1, p3:VLAN 1] · Switch-3 [p1:VLAN 1, p2:VLAN 1, p3:VLAN 1] — dây: PC-A (tầng 1)·eth0 — Switch-1·p1 | PC-B (tầng 3)·eth0 — Switch-3·p1 | Switch-1·p2 — Switch-2·p2 | Switch-2·p3 — Switch-3·p2 | Switch-3·p3 — Switch-1·p3
+    - **Mục tiêu:**
+      - pc-a PHẢI gọi được pc-b
+    - **Được phép:** KHÔNG cho phép thao tác nào (đề bài hỏng)
+    - **Lời giải mẫu:** PC-A (tầng 1) [192.168.1.10/24] · PC-B (tầng 3) [192.168.1.20/24] · Switch-1 [p1:VLAN 1, p2:VLAN 1, p3:VLAN 1] · Switch-2 [p1:VLAN 1, p2:VLAN 1, p3:VLAN 1] · Switch-3 [p1:VLAN 1, p2:VLAN 1, p3:VLAN 1] — dây: PC-A (tầng 1)·eth0 — Switch-1·p1 | PC-B (tầng 3)·eth0 — Switch-3·p1 | Switch-1·p2 — Switch-2·p2 | Switch-2·p3 — Switch-3·p2 | Switch-3·p3 — Switch-1·p3
+  - **Chủ đề gợi ý (tầng 1):** thứ canh chừng vòng lặp trên sơ đồ
+  - **Vì sao:** Vòng kín ở tầng 2 làm khung quảng bá quay lại chính chỗ nó vừa đi qua rồi nhân lên mãi — đó là bão quảng bá. Bật Spanning Tree lên, switch tự chặn bớt một cổng để cắt vòng, và mạng sống lại ngay mà sợi dây dự phòng vẫn còn nguyên.
+
+**3 · Khám phá (teach):**
+- *[bao-quang-ba]* Ở tầng 2 không có thứ gì giống TTL của gói tin IP: khung quảng bá không có bộ đếm để tự chết. Nối ba switch thành vòng kín thì một khung quảng bá đi hết vòng lại quay về switch đầu tiên, switch này lại phát tiếp ra mọi cổng, và mỗi vòng lại nhân đôi số bản sao. Chỉ vài giây là đường truyền đầy khung rác, bảng MAC loạn lên vì cùng một địa chỉ lúc thấy ở cổng này lúc thấy ở cổng kia, và cả mạng đứng hình. Đó là bão quảng bá.
+  - **Đào sâu hơn:** Vì sao khung tầng 2 không có TTL? Vì Ethernet sinh ra cho một đoạn cáp chung, nơi không có khái niệm đi qua nhiều chặng — không ai nghĩ sẽ có vòng. Khi mạng lớn lên và người ta nối switch với nhau để dự phòng, vòng lặp thành chuyện có thật, và lời giải là một giao thức đứng canh chứ không phải sửa lại khuôn khung tin. Hậu quả thực tế của một cơn bão còn nặng hơn mất mạng: CPU của switch chạy hết công suất nên console cũng đơ, người quản trị không vào nổi thiết bị để chữa.
+
+**4 · Thử tay (practice, fading 0):**
+- **Ví dụ giải sẵn:** Cách đọc một cơn bão trên phòng lab, từng bước. Bước 1: bấm Gửi thử với sơ đồ vòng chưa bật STP, rồi đọc nhật ký chặng — bạn sẽ thấy cùng một khung ARP xuất hiện lại ở switch đã đi qua, và kết quả trả về là mã bão quảng bá. Bước 2: hỏi đúng câu hỏi chẩn đoán — sơ đồ này có đường nào đi vòng về chỗ cũ không? Ba switch nối tam giác thì có. Bước 3: đừng rút dây. Rút là mất luôn đường dự phòng, mà đường dự phòng là lý do người ta kéo sợi đó. Bước 4: bật Spanning Tree ở bảng điều khiển của phòng lab. Switch sẽ tự chọn ra một cổng để chặn, vòng bị cắt, khung quảng bá hết đường quay lại. Bước 5: bấm Gửi thử lần nữa — gói tin đi tới nơi và có trả lời về.
+- **Đề:** Vì sao khung quảng bá đi vòng mãi không tự chết như gói tin IP?
+  - **Dạng:** trắc nghiệm · **Vì khung tầng 2 không có bộ đếm chặng, nên không có gì bảo nó dừng lại** ✓ / Vì switch cố tình giữ lại bản sao của mọi khung quảng bá để tra cứu sau / Vì khung quảng bá luôn được ưu tiên hơn khung thường nên không bị bỏ
+  - **Chủ đề gợi ý (tầng 1):** thứ mà gói tin IP có còn khung tầng 2 thì không
+  - **Gợi ý (tầng 2):** Nhớ lại Module 4: cái gì làm gói tin IP tự chết sau một số chặng? Khung tầng 2 có thứ tương đương không?
+  - **Lời giải (tầng 3):** Vì khung tầng 2 không có TTL — không có bộ đếm chặng nào để nó tự hết hạn. Switch không giữ bản sao, và khung quảng bá cũng không được ưu tiên gì cả; vấn đề nằm ở chỗ không ai bảo nó dừng.
+- **Đề:** Mạng có vòng kín đang bão. Bạn muốn giữ nguyên sợi dây dự phòng mà mạng vẫn sống — phải bật thứ gì lên?
+  - **Dạng:** gõ tay · **Chấp nhận:** stp | spanning tree | spanning-tree | giao thức spanning tree
+  - **Chủ đề gợi ý (tầng 1):** tên giao thức đứng canh vòng lặp
+  - **Gợi ý (tầng 2):** Điền chỗ trống: tên tiếng Anh của nó là Spanning Tree Protocol, viết tắt ba chữ cái.
+  - **Lời giải (tầng 3):** STP — Spanning Tree Protocol. Nó không rút dây của bạn; nó chỉ chọn ra một cổng và cho cổng đó nằm im, đủ để cắt vòng mà vẫn giữ sợi dây làm dự phòng.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: hiện tượng khung quảng bá nhân lên mãi trong một mạng có vòng kín gọi là gì?
+  - **Dạng:** gõ tay · **Chấp nhận:** bão quảng bá | bao quang ba | broadcast storm | bão broadcast | bao broadcast
+  - **Gợi ý (tầng 2):** Hai chữ: một chữ chỉ hiện tượng thời tiết dữ dội, một chữ là kiểu gửi cho cả phòng.
+  - **Lời giải (tầng 3):** Bão quảng bá — tiếng Anh là broadcast storm. Mỗi vòng lại nhân đôi số bản sao, nên chỉ vài giây là mạng tắc nghẽn hoàn toàn.
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao thêm một sợi dây dự phòng lại làm sập cả mạng?
+  - **Nhóm ý cần chạm:** [vòng, vòng kín, vòng lặp, tam giác] · [quảng bá, broadcast, khung phát cho cả phòng] · [nhân lên, quay lại, lặp mãi, không dừng] · [không có ttl, không tự chết, không có bộ đếm]
+  - **Trả lời mẫu:** Vì sợi dây thứ hai tạo ra một vòng kín. Khung quảng bá đi hết vòng lại quay về chỗ cũ, switch phát tiếp ra mọi cổng, và vì khung tầng 2 không có bộ đếm chặng nào để tự chết nên số bản sao cứ nhân lên tới khi mạng tắc.
+
+**6 · Tổng kết:**
+- Vòng kín ở tầng 2 sinh ra bão quảng bá: khung nhân lên mãi vì không có TTL.
+- Chữa bằng cách bật STP, không phải bằng cách rút dây dự phòng.
+- STP chặn bớt một cổng để cắt vòng, sợi dây vẫn nằm đó chờ tới lượt.
+- *Úp mở bài sau:* STP chặn một cổng — nhưng cổng nào, trên switch nào? Bài sau cho bạn xem cuộc bầu cử mà các switch tự tổ chức với nhau, và luật thắng cử hơi ngược đời.
+
+### Bài: Tìm ra gốc của cây `m15-bai-2`
+
+**1 · Khởi động (hook):** Ba switch vừa được cắm điện cùng lúc, không ai cấu hình gì thêm. Vài giây sau, cả ba đã thống nhất được với nhau ai là trung tâm và cổng nào phải nằm im — không có máy chủ nào đứng ra phân xử. Chúng bầu bằng cách nào, và ai thắng?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử: switch nào được bầu làm root bridge?
+  - **Dạng:** trắc nghiệm · **Switch có số priority NHỎ nhất** ✓ / Switch có số priority LỚN nhất / Switch được cắm điện sớm nhất trong cả nhóm
+  - **Vì sao:** Số nhỏ hơn thắng — đây là chỗ rất dễ nhớ ngược. Hòa priority thì so tiếp địa chỉ MAC, và cũng là MAC nhỏ hơn thắng.
+
+**3 · Khám phá (teach):**
+- *[bpdu]* Các switch nói chuyện với nhau bằng một loại khung riêng gọi là BPDU (Bridge Protocol Data Unit). Cứ vài giây một lần, mỗi switch phát BPDU ra các cổng để khoe mình là ai và mình cách gốc cây bao xa. Nhờ dòng tin đó, cả nhóm tự thống nhất được sơ đồ cây mà không cần ai đứng ra chỉ huy — và cũng nhờ nó mà khi có sợi dây đứt, cả nhóm biết ngay để tính lại.
+  - **Đào sâu hơn:** Trong app này, cây STP được tính ra một lần theo sơ đồ chứ không mô phỏng dòng BPDU theo thời gian — bạn thấy KẾT QUẢ của cuộc bầu, không thấy từng khung chạy. Thiết bị thật gửi BPDU mỗi 2 giây và một cổng phải đi qua các bậc lắng nghe rồi học hỏi trước khi được phát, tổng cộng khoảng 30 giây với STP đời đầu. Con số 30 giây đó chính là lý do bài cuối module tồn tại.
+- *[root-bridge]* Root bridge là gốc của cây: mọi đường đi đều được tính theo khoảng cách tới nó. Luật bầu chọn theo thứ tự: ai có số priority NHỎ hơn thì thắng; hòa priority thì ai có địa chỉ MAC nhỏ hơn thắng. Mặc định mọi switch đều mang priority 32768, nên nếu không ai cấu hình gì thì kết cục do MAC quyết định — tức là do lô sản xuất quyết định. Người làm mạng nghiêm túc luôn tự chỉ định root bằng cách hạ priority của switch trung tâm xuống, thay vì để may rủi chọn hộ.
+  - **Đào sâu hơn:** Vì sao để MAC quyết định lại tệ? Vì MAC nhỏ thường thuộc về thiết bị CŨ nhất trong phòng máy — cái switch mua từ đời nào, đặt ở góc nhà, đường lên yếu nhất. Cây STP khi đó lấy nó làm trung tâm và mọi lưu lượng bị hút vòng qua đó. Trên thiết bị thật, priority chỉ nhận bội số của 4096, nên các mức hay dùng là 0, 4096, 8192 — đặt switch lõi ở 4096 và switch dự phòng ở 8192 là nếp phổ biến.
+
+**4 · Thử tay (practice, fading 1):**
+- **Đề:** Ba switch trong sơ đồ này đã bật STP. Vào console của Switch-1 và tra xem cây đang lấy switch nào làm gốc.
+  - **Dạng:** console thiết bị (gõ lệnh IOS đạt mục tiêu)
+    - **Sơ đồ đề bài:** PC-A (tầng 1) [192.168.1.10/24] · PC-B (tầng 3) [192.168.1.20/24] · Switch-1 [p1:VLAN 1, p2:VLAN 1, p3:VLAN 1] · Switch-2 [p1:VLAN 1, p2:VLAN 1, p3:VLAN 1] · Switch-3 [p1:VLAN 1, p2:VLAN 1, p3:VLAN 1] — dây: PC-A (tầng 1)·eth0 — Switch-1·p1 | PC-B (tầng 3)·eth0 — Switch-3·p1 | Switch-1·p2 — Switch-2·p2 | Switch-2·p3 — Switch-3·p2 | Switch-3·p3 — Switch-1·p3
+    - **Console cắm ở:** Switch-1
+    - **Mục tiêu:**
+      - phải xem "show spanning-tree" trên Switch-1
+    - **Lệnh mẫu trên Switch-1:** `show spanning-tree`
+  - **Chủ đề gợi ý (tầng 1):** lệnh xem trạng thái cây STP
+  - **Gợi ý (tầng 2):** Cú pháp khuyết: show … — phần còn thiếu chính là tên tiếng Anh của cây, viết có dấu gạch nối ở giữa.
+  - **Lời giải (tầng 3):** show spanning-tree. Bảng in ra dòng Root bridge: Switch-2 — vì Switch-2 mang priority 4096, nhỏ hơn 32768 của hai switch còn lại nên nó thắng cuộc bầu.
+- **Đề:** Ba switch đều để nguyên priority mặc định 32768. Ai sẽ thành root bridge?
+  - **Dạng:** trắc nghiệm · **Switch có địa chỉ MAC nhỏ nhất, thường là thiết bị cũ nhất trong phòng máy** ✓ / Switch nằm ở giữa sơ đồ vì nó có nhiều đường nối tới các switch khác nhất / Không switch nào cả, vì hòa priority thì cây STP sẽ không dựng được
+  - **Chủ đề gợi ý (tầng 1):** cái được đem ra so khi priority hòa nhau
+  - **Gợi ý (tầng 2):** Hòa priority thì luật chuyển sang so một con số gắn chết vào phần cứng từ nhà máy — Module 3 gọi nó là số khung.
+  - **Lời giải (tầng 3):** Switch có MAC nhỏ nhất thắng — và MAC nhỏ thường thuộc thiết bị cũ nhất, thường cũng là cái yếu nhất. Vị trí trong sơ đồ không được tính tới, còn hòa priority thì cây vẫn dựng được vì luôn còn MAC để phân định.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: hai switch có priority bằng nhau thì cái nào thắng cuộc bầu root?
+  - **Dạng:** gõ tay · **Chấp nhận:** mac nhỏ hơn | mac nho hon | địa chỉ mac nhỏ hơn | dia chi mac nho hon | cái có mac nhỏ hơn | mac thấp hơn | mac thap hon
+  - **Gợi ý (tầng 2):** Vẫn là luật nhỏ hơn thắng, nhưng lần này so con số gắn chết vào card mạng.
+  - **Lời giải (tầng 3):** Cái có địa chỉ MAC nhỏ hơn. Vì thế để mặc định là giao cây cho lô sản xuất quyết định — nên người làm nghề luôn tự hạ priority của switch trung tâm xuống.
+- **Tự giải thích:** Giải thích bằng lời của bạn: các switch bầu root bridge theo luật nào, và vì sao không nên để mặc định?
+  - **Nhóm ý cần chạm:** [priority, độ ưu tiên, số ưu tiên] · [nhỏ hơn, thấp hơn, bé hơn] · [mac, địa chỉ mac, số khung] · [thiết bị cũ, máy cũ, may rủi, ngẫu nhiên, không kiểm soát]
+  - **Trả lời mẫu:** Ai có priority nhỏ hơn thì thắng; hòa priority thì so MAC, cũng nhỏ hơn thắng. Để mặc định thì mọi switch cùng 32768 nên kết cục do MAC quyết định, mà MAC nhỏ thường là thiết bị cũ nhất — cây sẽ lấy đúng cái yếu nhất làm trung tâm.
+
+**6 · Tổng kết:**
+- Switch nói chuyện với nhau bằng BPDU để tự dựng cây, không cần ai chỉ huy.
+- Bầu root: priority nhỏ hơn thắng; hòa thì MAC nhỏ hơn thắng.
+- Để mặc định là giao cây cho lô sản xuất chọn — hãy tự chỉ định switch trung tâm.
+- *Úp mở bài sau:* Cây đã có gốc, và đâu đó trong sơ đồ có một cổng đang nằm im. Bài sau nói về cái cổng ấy — thứ mà người mới nhìn thấy là tưởng hỏng và đi thay dây.
+
+### Bài: Đọc đúng một cổng đang nằm im `m15-bai-3`
+
+**1 · Khởi động (hook):** Bạn mới nhận bàn giao một phòng máy. Trên switch tầng ba có một cổng cắm dây đàng hoàng nhưng đèn không sáng như các cổng khác, và nó đã như thế nhiều tháng. Người bàn giao bảo cứ để yên. Đây là một cổng hỏng cần thay dây, hay là một thứ khác?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử: một cổng bị STP chặn nghĩa là gì?
+  - **Dạng:** trắc nghiệm · **Nó đang được giữ làm dự phòng, không phát khung để tránh vòng lặp** ✓ / Nó đã hỏng phần cứng và cần được thay bằng cổng khác trên switch / Nó đang bị quản trị viên tắt bằng lệnh nên không hoạt động nữa
+  - **Vì sao:** Cổng bị chặn là TÍNH NĂNG chứ không phải hỏng: nó vẫn nghe ngóng, chỉ không phát khung dữ liệu, và sẽ mở ra ngay khi đường chính đứt.
+
+**3 · Khám phá (teach):**
+- *[cong-chan]* Cắt vòng nghĩa là phải có ai đó ngừng phát. STP chọn ra cổng xa gốc cây nhất trên sợi dây thừa và cho nó ở trạng thái chặn: cổng vẫn nghe BPDU để biết cây có đổi không, nhưng không phát khung dữ liệu nào. Trong bảng show spanning-tree, cổng ấy hiện vai Altn và trạng thái BLK; trên sơ đồ của phòng lab, nó được vẽ rỗng ruột viền hổ phách để bạn nhận ra ngay — nó không hỏng, nó đang chờ tới lượt.
+  - **Đào sâu hơn:** Mỗi switch không phải root có đúng một root port — cổng hướng về gốc cây, luôn được phát. Trên mỗi sợi dây còn lại, đầu nào xa gốc hơn thì bị chặn. Vì thế số cổng bị chặn đúng bằng số sợi dây thừa so với một cây: ba switch nối tam giác có ba dây nhưng cây chỉ cần hai, nên đúng một cổng nằm im. Nếu bạn thấy nhiều cổng bị chặn hơn dự đoán, thường là sơ đồ có nhiều vòng hơn bạn tưởng — và đó là một manh mối chẩn đoán rất tốt.
+
+**4 · Thử tay (practice, fading 1):**
+- **Đề:** Trong bảng show spanning-tree, cổng đang bị chặn hiện trạng thái viết tắt là gì? (ba chữ cái)
+  - **Dạng:** gõ tay · **Chấp nhận:** blk | BLK | blocking
+  - **Chủ đề gợi ý (tầng 1):** cột trạng thái của bảng spanning-tree
+  - **Gợi ý (tầng 2):** Điền chỗ trống: cổng đang phát ghi FWD (forwarding), còn cổng nằm im ghi … — viết tắt của blocking.
+  - **Lời giải (tầng 3):** BLK, viết tắt của blocking. Cùng dòng đó, cột vai ghi Altn — cổng thay thế, tức là đường dự phòng.
+- **Đề:** Ba switch nối thành tam giác và đã bật STP. Có bao nhiêu cổng bị chặn?
+  - **Dạng:** trắc nghiệm · **Đúng một cổng** ✓ / Đúng ba cổng / Không cổng nào
+  - **Chủ đề gợi ý (tầng 1):** số dây thừa so với một cây không vòng
+  - **Gợi ý (tầng 2):** Ba switch muốn nối liền nhau mà không có vòng thì cần mấy sợi dây? Tam giác đang có mấy sợi?
+  - **Lời giải (tầng 3):** Đúng một. Ba switch chỉ cần hai sợi là đã liền mạch; tam giác có ba sợi nên thừa một, và STP chặn đúng một cổng để cắt vòng đó.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: cổng bị STP chặn có còn nghe BPDU không?
+  - **Dạng:** gõ tay · **Chấp nhận:** có | co | vẫn nghe | van nghe | có, vẫn nghe
+  - **Gợi ý (tầng 2):** Nếu nó điếc hẳn thì làm sao biết lúc nào đường chính đứt để mở ra?
+  - **Lời giải (tầng 3):** Có. Cổng chặn vẫn nghe BPDU để theo dõi cây — nhờ vậy nó biết khi nào đường chính hỏng và tới lượt mình phát.
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao cổng bị chặn là tính năng chứ không phải sự cố?
+  - **Nhóm ý cần chạm:** [cắt vòng, chống vòng lặp, tránh bão, chặn vòng] · [dự phòng, chờ tới lượt, để dành, thay thế] · [vẫn nghe, vẫn theo dõi, bpdu, mở ra khi đứt]
+  - **Trả lời mẫu:** Vì phải có một cổng ngừng phát thì vòng mới bị cắt và mạng mới hết bão. Cổng ấy không hỏng: nó vẫn nghe BPDU, và khi đường chính đứt thì nó mở ra gánh lưu lượng — đó chính là lý do người ta kéo sợi dây thứ hai.
+
+**6 · Tổng kết:**
+- Cổng bị chặn không phát khung dữ liệu nhưng vẫn nghe BPDU.
+- Bảng show spanning-tree ghi vai Altn, trạng thái BLK cho cổng ấy.
+- Số cổng bị chặn đúng bằng số sợi dây thừa so với một cây không vòng.
+- *Úp mở bài sau:* Vậy cái cổng nằm im ấy bao giờ mới tới lượt? Bài sau cắt đứt sợi dây chính ngay trước mắt bạn — và bạn sẽ tự kiểm chứng lưu lượng đi lối nào.
+
+### Bài: Chứng minh đường dự phòng có thật `m15-bai-4`
+
+**1 · Khởi động (hook):** Máy xúc ngoài đường vừa cắt trúng sợi cáp chạy giữa tầng 1 và tầng 2 — đúng sợi mà mọi lưu lượng đang đi qua. Không ai kịp chạm vào switch, mà vài giây sau nhân viên báo mạng vẫn dùng được bình thường. Lưu lượng đã đi lối nào?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử: đường chính đứt thì cổng đang bị chặn sẽ ra sao?
+  - **Dạng:** trắc nghiệm · **Tự mở ra và bắt đầu phát khung** ✓ / Vẫn nằm im cho tới khi có người vào bật lại bằng lệnh / Bị đánh dấu hỏng luôn vì cây STP đã tính xong từ trước
+  - **Vì sao:** Cổng chặn vẫn nghe BPDU nên nhận ra cây đã đổi. Nó tự chuyển sang phát — không cần ai chạm vào thiết bị.
+
+**3 · Khám phá (teach):**
+- *[hoi-tu-lai]* Cây STP không phải bức tranh vẽ một lần rồi treo đó. Dòng BPDU chạy đều đặn, nên khi một sợi dây đứt, các switch quanh đó phát hiện ra và cả nhóm tính lại cây. Cổng đang bị chặn thấy đường về gốc không còn nữa liền chuyển sang phát, và lưu lượng đi lối mới. Đó là lý do người ta chịu kéo sợi cáp thứ hai dù biết nó sẽ nằm im: nó không nằm im mãi mãi, nó nằm im tới đúng cái ngày cần tới.
+  - **Đào sâu hơn:** Trong app này, cây được tính lại tức thì theo sơ đồ hiện tại — bạn rút dây thì lượt Gửi thử kế tiếp đã đi lối mới. Thiết bị thật cần thời gian: STP đời đầu mất khoảng 30 tới 50 giây để một cổng chặn chuyển hẳn sang phát, đủ lâu để người dùng kịp than phiền. Đó là lý do các phiên bản sau như RSTP ra đời, rút thời gian ấy xuống dưới một giây — nhưng luật bầu cây thì vẫn y nguyên những gì bạn học ở bài trước.
+
+**4 · Thử tay (practice, fading 2):**
+- **Đề:** Sơ đồ này đang chạy ổn, lưu lượng từ PC-A đi vòng qua Switch-2 để tới PC-B. Hãy đóng vai máy xúc: rút sợi dây giữa Switch-1 và Switch-2 ra, rồi chứng minh PC-A vẫn gọi được PC-B và Switch-3 giờ nhận khung của PC-A ngay trên cổng p3 — cái cổng vốn đang nằm im.
+  - **Dạng:** phòng lab (lắp/sửa sơ đồ mạng)
+    - **Sơ đồ đề bài:** PC-A (tầng 1) [192.168.1.10/24] · PC-B (tầng 3) [192.168.1.20/24] · Switch-1 [p1:VLAN 1, p2:VLAN 1, p3:VLAN 1] · Switch-2 [p1:VLAN 1, p2:VLAN 1, p3:VLAN 1] · Switch-3 [p1:VLAN 1, p2:VLAN 1, p3:VLAN 1] — dây: PC-A (tầng 1)·eth0 — Switch-1·p1 | PC-B (tầng 3)·eth0 — Switch-3·p1 | Switch-1·p2 — Switch-2·p2 | Switch-2·p3 — Switch-3·p2 | Switch-3·p3 — Switch-1·p3
+    - **Mục tiêu:**
+      - pc-a PHẢI gọi được pc-b
+      - sw-3 học được AA:BB:CC:00:00:01 ở cổng p3 (VLAN 1)
+    - **Được phép:** gỡ dây
+    - **Lời giải mẫu:** PC-A (tầng 1) [192.168.1.10/24] · PC-B (tầng 3) [192.168.1.20/24] · Switch-1 [p1:VLAN 1, p2:VLAN 1, p3:VLAN 1] · Switch-2 [p1:VLAN 1, p2:VLAN 1, p3:VLAN 1] · Switch-3 [p1:VLAN 1, p2:VLAN 1, p3:VLAN 1] — dây: PC-A (tầng 1)·eth0 — Switch-1·p1 | PC-B (tầng 3)·eth0 — Switch-3·p1 | Switch-2·p3 — Switch-3·p2 | Switch-3·p3 — Switch-1·p3
+  - **Chủ đề gợi ý (tầng 1):** lối đi mới khi đường chính không còn
+  - **Gợi ý (tầng 2):** Chọn sợi dây nối Switch-1 với Switch-2 rồi gỡ nó ra, sau đó bấm Gửi thử và đọc nhật ký chặng xem khung của PC-A đi qua những cổng nào.
+  - **Lời giải (tầng 3):** Gỡ sợi ring-12 giữa Switch-1 và Switch-2. Vòng biến mất nên cổng p3 của Switch-3 không còn phải nằm im; PC-A đi thẳng sang Switch-3 qua chính cổng đó, và nhật ký chặng cho thấy Switch-3 học được địa chỉ của PC-A ngay trên p3.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: sau khi đường chính đứt, ai là người ra lệnh cho cổng dự phòng mở ra?
+  - **Dạng:** gõ tay · **Chấp nhận:** không ai | khong ai | tự nó | tu no | stp | chính switch | chinh switch | switch tự làm | switch tu lam
+  - **Gợi ý (tầng 2):** Nhớ lại cảnh máy xúc: có ai kịp chạm vào thiết bị đâu.
+  - **Lời giải (tầng 3):** Không ai cả — chính các switch tự tính lại cây nhờ dòng BPDU, rồi cổng đang chặn tự chuyển sang phát.
+- **Tự giải thích:** Giải thích bằng lời của bạn: chuyện gì diễn ra bên trong mạng trong vài giây sau khi sợi cáp chính bị cắt?
+  - **Nhóm ý cần chạm:** [bpdu, tin nhắn giữa switch, phát hiện, nhận ra] · [tính lại, dựng lại cây, bầu lại, cây đổi] · [cổng chặn, cổng dự phòng, cổng nằm im] · [mở ra, chuyển sang phát, gánh lưu lượng]
+  - **Trả lời mẫu:** Các switch không còn nhận được BPDU trên sợi vừa đứt nên biết cây đã đổi và tính lại. Cổng vốn bị chặn thấy đường về gốc mất rồi liền chuyển sang phát, lưu lượng đi theo lối vòng còn lại — tất cả tự động, không ai chạm vào thiết bị.
+
+**6 · Tổng kết:**
+- Cây STP được tính lại mỗi khi sơ đồ đổi, nhờ dòng BPDU chạy đều đặn.
+- Đường chính đứt thì cổng đang chặn tự mở ra và gánh lưu lượng.
+- Sợi cáp dự phòng nằm im tới đúng cái ngày cần tới — đó là lý do người ta kéo nó.
+- *Úp mở bài sau:* Còn một chỗ mà cái cẩn thận của STP lại thành phiền phức: cổng cắm máy nhân viên. Bài cuối module cho bạn cách bỏ qua quãng chờ ở đúng những cổng ấy.
+
+### Bài: Cho cổng máy con vào việc ngay `m15-bai-5`
+
+**1 · Khởi động (hook):** Nhân viên phàn nàn: cắm dây mạng vào máy xong phải đợi gần nửa phút mới có mạng, ngày nào cũng vậy. Dây tốt, switch tốt, không ai cấu hình sai gì cả. Nửa phút đó máy đang chờ điều gì?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử: vì sao cổng vừa cắm dây lại phải chờ trước khi cho dữ liệu đi?
+  - **Dạng:** trắc nghiệm · **Vì STP phải nghe ngóng xem cổng này có tạo ra vòng lặp không** ✓ / Vì switch cần thời gian cấp một địa chỉ IP mới cho máy vừa cắm / Vì card mạng của máy phải tự kiểm tra dây trước khi gửi khung
+  - **Vì sao:** STP mặc định coi mọi cổng đều có thể nối tới switch khác, nên nó nghe ngóng vài chục giây trước khi cho phát. Với cổng cắm máy con, quãng chờ ấy là thừa.
+
+**3 · Khám phá (teach):**
+- *[portfast]* STP không biết cổng vừa cắm dây nối tới máy con hay tới một switch khác, nên nó nghe ngóng vài chục giây cho chắc. PortFast là lời khai của người quản trị: cổng này nối tới máy con, cho nó phát ngay đi. Nhờ vậy máy vừa cắm dây là có mạng. Điều kiện đi kèm rất nghiêm: chỉ bật PortFast trên cổng chắc chắn nối tới máy con — cắm một switch vào cổng ấy là bạn vừa mở đường cho vòng lặp hình thành trước khi STP kịp phản ứng.
+  - **Đào sâu hơn:** App này không mô phỏng thời gian hội tụ nên bạn sẽ không thấy quãng chờ ấy trong phòng lab — nó là kiến thức của thiết bị thật, và đây là chỗ nội dung nói thẳng ra thay vì giả vờ. Trên thiết bị thật, PortFast thường đi kèm BPDU Guard: nếu cổng đã khai là cổng máy con mà lại nhận được BPDU, tức là có người cắm switch vào đó, thiết bị tắt luôn cổng để giữ an toàn cho cả mạng. Cặp PortFast cộng BPDU Guard là cấu hình chuẩn cho mọi cổng người dùng trong doanh nghiệp.
+
+**4 · Thử tay (practice, fading 2):**
+- **Đề:** Tính năng cho phép một cổng bỏ qua quãng chờ của STP và phát ngay tên là gì?
+  - **Dạng:** gõ tay · **Chấp nhận:** portfast | port fast | port-fast
+  - **Chủ đề gợi ý (tầng 1):** tên tính năng dành cho cổng cắm máy con
+  - **Gợi ý (tầng 2):** Ghép hai từ tiếng Anh: cổng và nhanh.
+  - **Lời giải (tầng 3):** PortFast. Chỉ bật nó trên cổng chắc chắn nối tới máy con — cắm switch vào cổng đã bật PortFast là mời vòng lặp vào nhà.
+- **Đề:** Bật PortFast trên cổng nối sang một switch khác thì rủi ro là gì?
+  - **Dạng:** trắc nghiệm · **Cổng phát ngay nên vòng lặp kịp hình thành trước khi STP nhận ra** ✓ / Cổng sẽ mất khả năng nhận BPDU nên switch kia không bao giờ thấy nó / Switch sẽ tự hạ priority của mình xuống và giành làm root bridge
+  - **Chủ đề gợi ý (tầng 1):** cái mà quãng chờ của STP vốn dùng để ngăn
+  - **Gợi ý (tầng 2):** Quãng chờ ấy sinh ra để làm gì? Bỏ nó đi ở đúng chỗ nối switch-switch thì thứ đó có cơ hội xảy ra.
+  - **Lời giải (tầng 3):** Cổng phát ngay lập tức nên nếu đầu kia là switch, vòng lặp hình thành và bão nổ ra trước khi cây kịp tính lại. Cổng vẫn nhận BPDU bình thường, và PortFast không dính gì tới priority.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: PortFast chỉ được bật trên loại cổng nào?
+  - **Dạng:** gõ tay · **Chấp nhận:** cổng nối máy con | cong noi may con | cổng cắm máy | cong cam may | cổng access | cong access | cổng nối tới máy tính | cong noi toi may tinh | cổng người dùng | cong nguoi dung
+  - **Gợi ý (tầng 2):** Cổng nối XUỐNG thứ gì thì an toàn, còn nối NGANG thì nguy hiểm?
+  - **Lời giải (tầng 3):** Cổng nối tới máy con của người dùng. Cổng nối sang switch khác thì tuyệt đối không — đó là mời vòng lặp vào nhà.
+- **Tự giải thích:** Giải thích bằng lời của bạn: PortFast giải quyết chuyện gì, và vì sao nó nguy hiểm nếu đặt nhầm chỗ?
+  - **Nhóm ý cần chạm:** [chờ, quãng chờ, chậm, ba mươi giây, vài chục giây] · [máy con, máy người dùng, cổng access, cắm máy] · [vòng lặp, bão, switch khác, nối switch]
+  - **Trả lời mẫu:** PortFast bỏ quãng chờ nghe ngóng của STP để máy vừa cắm dây là có mạng ngay. Nhưng nếu bật nhầm trên cổng nối sang switch khác thì cổng phát ngay lập tức, vòng lặp kịp hình thành và bão nổ ra trước khi cây kịp tính lại.
+
+**6 · Tổng kết:**
+- STP bắt cổng mới cắm chờ vài chục giây vì không biết đầu kia là máy hay switch.
+- PortFast là lời khai cổng này nối máy con — cho phát ngay, khỏi chờ.
+- Bật nhầm trên cổng nối switch là mở đường cho vòng lặp và bão.
+- *Úp mở bài sau:* Tầng 2 đã có người canh vòng lặp. Nhưng khi mạng lớn tới mức có hàng chục router, việc chỉ đường bằng tay sẽ sụp — module sau cho các router tự hỏi đường nhau.
+
+### Khái niệm & flashcard (6)
+
+- **Broadcast storm** `bao-quang-ba` — Bão quảng bá — khung quảng bá chạy vòng trong mạng có vòng kín tầng 2 và nhân lên tới khi mạng tắc
+  - Ẩn dụ: Như tin đồn trong một dãy phòng nối vòng: mỗi phòng nghe xong lại kể cho mọi phòng khác, tin quay về phòng cũ rồi lại được kể tiếp — chỉ vài vòng là không ai làm việc nổi.
+  - Thẻ ôn: *Bão quảng bá xảy ra khi nào, và vì sao nó không tự dừng?* → Khi mạng tầng 2 có vòng kín. Khung quảng bá đi hết vòng lại quay về switch cũ và được phát tiếp; khung tầng 2 không có TTL nên không có gì bảo nó dừng, số bản sao nhân lên tới khi mạng tắc.
+- **BPDU** `bpdu` — Bridge Protocol Data Unit — khung mà các switch trao đổi để tự dựng và cập nhật cây STP
+  - Ẩn dụ: Như tiếng điểm danh vài giây một lần trong tòa nhà: ai còn đó, ai cách trung tâm bao xa. Im tiếng ở một hướng là cả nhóm biết có chuyện.
+  - Thẻ ôn: *BPDU là gì và dùng để làm gì?* → Là khung riêng của các switch, phát đều đặn vài giây một lần để khoe mình là ai và cách gốc cây bao xa. Nhờ nó cả nhóm tự dựng được cây STP và biết ngay khi có dây đứt để tính lại.
+- **Root bridge** `root-bridge` — Switch gốc của cây STP; bầu theo priority nhỏ hơn thắng, hòa thì MAC nhỏ hơn thắng
+  - Ẩn dụ: Như chọn nhà trưởng họ để mọi đường đi trong làng tính theo khoảng cách tới nhà đó — chọn nhầm nhà ở rìa làng thì ai cũng phải đi vòng.
+  - Thẻ ôn: *Luật bầu root bridge là gì, và vì sao không nên để mặc định?* → Priority nhỏ hơn thắng; hòa thì MAC nhỏ hơn thắng. Để mặc định thì mọi switch cùng 32768 nên MAC quyết định, mà MAC nhỏ thường là thiết bị cũ nhất — cây lấy đúng cái yếu nhất làm trung tâm.
+- **Blocked port** `cong-chan` — Cổng bị STP chặn — không phát khung dữ liệu nhưng vẫn nghe BPDU; là tính năng, không phải hỏng
+  - Ẩn dụ: Như cửa thoát hiểm luôn khóa nhưng có người trực bên trong: ngày thường không ai qua, cháy một cái là nó mở ngay.
+  - Thẻ ôn: *Cổng bị STP chặn khác cổng hỏng ở chỗ nào?* → Cổng chặn vẫn nghe BPDU và sẽ tự mở khi đường chính đứt; nó chỉ không phát khung dữ liệu để cắt vòng. Bảng show spanning-tree ghi vai Altn, trạng thái BLK.
+- **Hội tụ lại** `hoi-tu-lai` — STP tính lại cây khi sơ đồ đổi, và cổng đang chặn tự chuyển sang phát
+  - Ẩn dụ: Như dòng nước gặp đá chắn: bịt lối này thì nó tự tìm lối kia, không cần ai đào kênh mới.
+  - Thẻ ôn: *Đường chính đứt thì ai ra lệnh cho cổng dự phòng mở ra?* → Không ai cả. Các switch mất BPDU trên sợi vừa đứt, tự tính lại cây, và cổng đang chặn chuyển sang phát. Thiết bị thật mất khoảng 30 tới 50 giây với STP đời đầu.
+- **PortFast** `portfast` — Cho một cổng bỏ qua quãng chờ của STP và phát ngay; chỉ dùng cho cổng nối tới máy con
+  - Ẩn dụ: Như lối đi riêng cho khách quen: không phải xếp hàng kiểm tra, nhưng chỉ mở cho đúng người mình chắc chắn.
+  - Thẻ ôn: *PortFast dùng để làm gì, và cấm bật ở đâu?* → Cho cổng phát ngay khỏi chờ STP nghe ngóng, để máy vừa cắm dây là có mạng. Cấm bật trên cổng nối sang switch khác — cổng phát ngay thì vòng lặp kịp hình thành trước khi cây tính lại.
+
+### Bài kiểm tra module (pool 12 câu, mỗi lượt rút 8, cần ≥ 85%)
+
+- **Đề:** Vì sao vòng kín ở tầng 2 lại sinh ra bão quảng bá?
+  - **Dạng:** trắc nghiệm · **Vì khung tầng 2 không có bộ đếm chặng nên đi vòng mãi không tự chết** ✓ / Vì switch phải giữ lại một bản sao của mỗi khung quảng bá để tra cứu / Vì hai sợi dây song song luôn nhân đôi băng thông của đường truyền
+  - **Chủ đề gợi ý (tầng 1):** thứ mà gói tin IP có còn khung tầng 2 thì không
+  - **Vì sao:** Khung tầng 2 không có TTL. Đi hết vòng nó quay về switch cũ, được phát tiếp, và số bản sao nhân lên tới khi mạng tắc.
+- **Đề:** Giao thức đứng canh vòng lặp ở tầng 2 tên viết tắt là gì?
+  - **Dạng:** gõ tay · **Chấp nhận:** stp | spanning tree | spanning-tree | spanning tree protocol
+  - **Chủ đề gợi ý (tầng 1):** tên giao thức dựng cây không vòng
+  - **Vì sao:** STP — Spanning Tree Protocol. Nó chặn bớt cổng để cắt vòng chứ không đòi bạn rút dây dự phòng.
+- **Đề:** Switch nào thắng cuộc bầu root bridge?
+  - **Dạng:** trắc nghiệm · **Switch có priority nhỏ nhất; hòa thì switch có MAC nhỏ hơn** ✓ / Switch có priority lớn nhất; hòa thì switch có MAC lớn hơn / Switch có nhiều cổng đang cắm dây nhất trong cả nhóm
+  - **Chủ đề gợi ý (tầng 1):** hướng so sánh của cuộc bầu
+  - **Vì sao:** Nhỏ hơn là mạnh hơn — cả với priority lẫn với MAC. Số cổng đang dùng không được tính tới.
+- **Đề:** Trong bảng show spanning-tree, cổng đang bị chặn mang trạng thái viết tắt là gì?
+  - **Dạng:** gõ tay · **Chấp nhận:** blk | BLK | blocking
+  - **Chủ đề gợi ý (tầng 1):** cột trạng thái của bảng spanning-tree
+  - **Vì sao:** BLK, viết tắt của blocking; cột vai của nó ghi Altn — cổng thay thế.
+- **Đề:** Một cổng bị STP chặn có còn nghe BPDU không?
+  - **Dạng:** trắc nghiệm · **Có, nhờ vậy nó biết lúc nào cây đổi để tự mở ra** ✓ / Không, cổng bị chặn ngừng hẳn mọi hoạt động thu và phát / Không, trừ khi quản trị viên bật riêng chế độ nghe cho nó
+  - **Chủ đề gợi ý (tầng 1):** cách cổng dự phòng biết tới lượt mình
+  - **Vì sao:** Cổng chặn chỉ ngừng phát khung dữ liệu; nó vẫn nghe BPDU, nếu không thì chẳng bao giờ biết đường chính đã đứt.
+- **Đề:** Ba switch nối thành tam giác và đã bật STP thì có mấy cổng bị chặn?
+  - **Dạng:** trắc nghiệm · **Một** ✓ / Hai / Ba
+  - **Chủ đề gợi ý (tầng 1):** số dây thừa so với một cây không vòng
+  - **Vì sao:** Ba switch chỉ cần hai sợi để liền mạch, tam giác có ba nên thừa một — STP chặn đúng một cổng.
+- **Đề:** Tính năng cho cổng bỏ qua quãng chờ của STP và phát ngay tên là gì?
+  - **Dạng:** gõ tay · **Chấp nhận:** portfast | port fast | port-fast
+  - **Chủ đề gợi ý (tầng 1):** tính năng dành cho cổng cắm máy con
+  - **Vì sao:** PortFast — chỉ bật trên cổng nối tới máy con; cắm switch vào cổng đã bật PortFast là mời vòng lặp vào nhà.
+- **Đề:** Xếp lại đúng trình tự những gì xảy ra khi sợi cáp chính giữa hai switch bị cắt.
+  - **Dạng:** xếp thứ tự (thứ tự đúng):
+    1. Switch không còn nhận BPDU trên sợi vừa đứt
+    2. Các switch tính lại cây STP
+    3. Cổng đang bị chặn chuyển sang trạng thái phát
+    4. Lưu lượng đi theo lối vòng còn lại
+  - **Chủ đề gợi ý (tầng 1):** chuỗi phản ứng sau khi một sợi dây đứt
+  - **Vì sao:** Mất tín hiệu BPDU là dấu hiệu đầu tiên; từ đó cả nhóm tính lại cây, cổng dự phòng mở ra, rồi lưu lượng mới đổi lối.
+- **Đề:** Mạng ba switch nối vòng này đang bão, PC-A không gọi được PC-B. Hãy cứu nó mà KHÔNG được rút sợi dây nào — đường dự phòng phải còn nguyên.
+  - **Dạng:** phòng lab (lắp/sửa sơ đồ mạng)
+    - **Sơ đồ đề bài:** PC-A (tầng 1) [192.168.1.10/24] · PC-B (tầng 3) [192.168.1.20/24] · Switch-1 [p1:VLAN 1, p2:VLAN 1, p3:VLAN 1] · Switch-2 [p1:VLAN 1, p2:VLAN 1, p3:VLAN 1] · Switch-3 [p1:VLAN 1, p2:VLAN 1, p3:VLAN 1] — dây: PC-A (tầng 1)·eth0 — Switch-1·p1 | PC-B (tầng 3)·eth0 — Switch-3·p1 | Switch-1·p2 — Switch-2·p2 | Switch-2·p3 — Switch-3·p2 | Switch-3·p3 — Switch-1·p3
+    - **Mục tiêu:**
+      - pc-a PHẢI gọi được pc-b
+    - **Được phép:** KHÔNG cho phép thao tác nào (đề bài hỏng)
+    - **Lời giải mẫu:** PC-A (tầng 1) [192.168.1.10/24] · PC-B (tầng 3) [192.168.1.20/24] · Switch-1 [p1:VLAN 1, p2:VLAN 1, p3:VLAN 1] · Switch-2 [p1:VLAN 1, p2:VLAN 1, p3:VLAN 1] · Switch-3 [p1:VLAN 1, p2:VLAN 1, p3:VLAN 1] — dây: PC-A (tầng 1)·eth0 — Switch-1·p1 | PC-B (tầng 3)·eth0 — Switch-3·p1 | Switch-1·p2 — Switch-2·p2 | Switch-2·p3 — Switch-3·p2 | Switch-3·p3 — Switch-1·p3
+  - **Chủ đề gợi ý (tầng 1):** thứ canh chừng vòng lặp trên sơ đồ
+  - **Vì sao:** Bật Spanning Tree là đủ: switch tự chặn một cổng để cắt vòng, mạng sống lại mà sợi dây dự phòng vẫn nằm nguyên chờ ngày cần tới.
+- **Đề:** Vào console của Switch-3 và tra bảng spanning-tree để xem cây đang lấy switch nào làm gốc và cổng nào đang nằm im.
+  - **Dạng:** console thiết bị (gõ lệnh IOS đạt mục tiêu)
+    - **Sơ đồ đề bài:** PC-A (tầng 1) [192.168.1.10/24] · PC-B (tầng 3) [192.168.1.20/24] · Switch-1 [p1:VLAN 1, p2:VLAN 1, p3:VLAN 1] · Switch-2 [p1:VLAN 1, p2:VLAN 1, p3:VLAN 1] · Switch-3 [p1:VLAN 1, p2:VLAN 1, p3:VLAN 1] — dây: PC-A (tầng 1)·eth0 — Switch-1·p1 | PC-B (tầng 3)·eth0 — Switch-3·p1 | Switch-1·p2 — Switch-2·p2 | Switch-2·p3 — Switch-3·p2 | Switch-3·p3 — Switch-1·p3
+    - **Console cắm ở:** Switch-3
+    - **Mục tiêu:**
+      - phải xem "show spanning-tree" trên Switch-3
+    - **Lệnh mẫu trên Switch-3:** `show spanning-tree`
+  - **Chủ đề gợi ý (tầng 1):** lệnh xem trạng thái cây STP
+  - **Vì sao:** show spanning-tree. Bảng cho biết gốc cây là Switch-2 (priority 4096) và cổng p3 của Switch-3 đang mang vai Altn, trạng thái BLK.
+- **Đề:** Bật PortFast trên cổng nối sang một switch khác thì chuyện gì có thể xảy ra?
+  - **Dạng:** trắc nghiệm · **Cổng phát ngay nên vòng lặp kịp hình thành trước khi STP nhận ra** ✓ / Cổng ngừng nhận BPDU nên switch bên kia không bao giờ thấy nó / Switch tự hạ priority của mình xuống để giành làm root bridge
+  - **Chủ đề gợi ý (tầng 1):** công dụng của quãng chờ mà PortFast bỏ đi
+  - **Vì sao:** Quãng chờ sinh ra chính để phát hiện vòng lặp. Bỏ nó ở cổng nối switch là mở đường cho bão nổ ra trước khi cây kịp tính lại.
+- **Đề:** Các switch trao đổi với nhau bằng loại khung nào để dựng và cập nhật cây STP? (viết tắt bốn chữ cái)
+  - **Dạng:** gõ tay · **Chấp nhận:** bpdu | BPDU | bridge protocol data unit
+  - **Chủ đề gợi ý (tầng 1):** tiếng điểm danh giữa các switch
+  - **Vì sao:** BPDU — Bridge Protocol Data Unit, phát đều đặn vài giây một lần; im tiếng trên một hướng là cả nhóm biết có dây đứt.
+
+## OSPF — Các router tự hỏi đường nhau `module-16`
+
+Phần D · 5 chặng · 5 bài · 10 khái niệm
+
+**Chặng:** Khai đường bằng tay tới lúc gãy (m16-bai-1) → Hai router làm quen (m16-bai-2) → Chép bản đồ cho giống nhau (m16-bai-3) → Đường nào rẻ thì đi (m16-bai-4) → Đứt đường, tự tìm lối vòng (m16-bai-5)
+
+### Cung điện ký ức: Tòa nhà 4 tầng làm quen `m16-cung-dien-ospf` (8 phòng)
+
+- `m16-r-down` — tầng 1 phòng 1 · Down · im lặng hoàn toàn · hình `ospf-silent-speaker` — Tầng trệt phòng Down: chiếc loa treo trên tường im bặt, chẳng một tiếng chào nào vọng tới — trong sổ của router, hàng xóm vẫn còn là chỗ trống.
+- `m16-r-attempt` — tầng 1 phòng 2 · Attempt · gọi riêng từng nhà · hình `ospf-lone-phone` — Cạnh đó, phòng Attempt: một chiếc điện thoại quay số gọi đích danh sang nhà hàng xóm, vì ở xóm này hét chung ra giữa đường thì chẳng ai nghe thấy.
+- `m16-r-init` — tầng 2 phòng 1 · Init · mới nghe tiếng chào một chiều · hình `ospf-name-card` — Tầng hai phòng Init: một tấm danh thiếp vừa luồn qua khe cửa, trên đó có tên hàng xóm mà tìm mỏi mắt vẫn thiếu tên mình.
+- `m16-r-2way` — tầng 2 phòng 2 · 2-Way · hai bên đã thấy tên nhau · hình `ospf-handshake` — Kế bên là phòng 2-Way: hai bàn tay bắt chặt giữa sảnh, vì tấm thiếp lần này có cả tên mình nằm trong danh sách hàng xóm.
+- `m16-r-exstart` — tầng 3 phòng 1 · ExStart · chốt ai nói trước · hình `ospf-gavel` — Tầng ba phòng ExStart: chiếc búa chủ tọa gõ một tiếng xuống bàn để chốt xem ai được mở lời trước trong cuộc trao đổi sắp tới.
+- `m16-r-exchange` — tầng 3 phòng 2 · Exchange · trao mục lục cho nhau · hình `ospf-two-envelopes` — Sát vách là phòng Exchange: hai phong bì mục lục bay chéo qua nhau, mỗi bên khoe mình đang giữ những trang bản đồ mạng nào.
+- `m16-r-loading` — tầng 4 phòng 1 · Loading · xin nốt phần còn thiếu · hình `ospf-funnel` — Tầng nóc phòng Loading: một cái phễu lớn rót nốt những trang bản đồ còn thiếu vào kho, xin đúng phần mình đang hụt.
+- `m16-r-full` — tầng 4 phòng 2 · Full · hai bản đồ giống hệt nhau · hình `ospf-twin-maps` — Phòng cuối cùng, phòng Full: hai tấm bản đồ đặt chồng khít lên nhau, lệch nhau đúng không một nét — từ giây đó hai router nhìn mạng y hệt nhau.
+
+### Bài: Đếm số dòng phải gõ bằng tay `m16-bai-1`
+
+**1 · Khởi động (hook):** Công ty vừa mở chi nhánh thứ tư. Người quản trị mở sổ ra và thấy mình phải gõ thêm tuyến tĩnh trên cả ba router cũ, rồi gõ tiếp ba tuyến trên router mới — quên đúng một dòng là một chi nhánh câm tiếng. Tới chi nhánh thứ mười thì cuốn sổ ấy dài bao nhiêu, và hôm nào đứt cáp thì ai sửa?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** PC-A ở Hà Nội gọi PC-B ở Đà Nẵng thì lặng thinh, dù dây nối giữa hai router vẫn tốt. Console đang cắm vào Router-DN. Hãy tra bảng định tuyến của nó và tự xem router này có biết đường về mạng 192.168.1.0 hay không. Sai cũng không sao — phần này không tính điểm.
+  - **Dạng:** console thiết bị (gõ lệnh IOS đạt mục tiêu)
+    - **Sơ đồ đề bài:** PC-A (Hà Nội) [192.168.1.10/24, gw 192.168.1.1] · PC-B (Đà Nẵng) [192.168.2.10/24, gw 192.168.2.1] · Switch-HN [p1:VLAN 1, p2:VLAN 1] · Switch-DN [p1:VLAN 1, p2:VLAN 1] · Router-HN [g0:192.168.1.1/24, g1:10.0.12.1/24] · Router-DN [g0:192.168.2.1/24, g1:10.0.12.2/24] — dây: PC-A (Hà Nội)·eth0 — Switch-HN·p1 | Switch-HN·p2 — Router-HN·g0 | PC-B (Đà Nẵng)·eth0 — Switch-DN·p1 | Switch-DN·p2 — Router-DN·g0 | Router-HN·g1 — Router-DN·g1
+    - **Console cắm ở:** Router-DN
+    - **Mục tiêu:**
+      - phải xem "show ip route" trên Router-DN
+    - **Lệnh mẫu trên Router-DN:** `show ip route`
+  - **Chủ đề gợi ý (tầng 1):** lệnh xem bảng định tuyến của router
+  - **Vì sao:** Bảng của Router-DN chỉ có hai dòng chữ C — hai mạng nó nối trực tiếp. Đường về 192.168.1.0 thì trống trơn, vì người quản trị gõ tuyến tĩnh ở Hà Nội mà quên gõ chiều ngược lại. Gói tin đi được sang tới nơi nhưng lời đáp lạc đường về, và người dùng chỉ thấy mạng câm.
+
+**3 · Khám phá (teach):**
+- *[m16-gioi-han-tinh]* Tuyến tĩnh là bạn cầm tay chỉ đường cho router: mạng đó đi lối này. Cách ấy gọn khi có hai ba router, nhưng số dòng phải gõ phình theo số mạng nhân số router. Bốn chi nhánh, mỗi nơi một mạng LAN thì mỗi router phải biết ba mạng của người khác — thêm một chi nhánh là mở lại từng router cũ để gõ thêm. Tệ hơn nữa, tuyến tĩnh không biết cựa quậy: đường bạn chỉ mà đứt thì router vẫn cắm cúi đẩy gói tin vào chỗ đứt, tới khi có người tới sửa bằng tay.
+  - **Đào sâu hơn:** Có một chỗ tuyến tĩnh vẫn là lựa chọn đúng tới tận hôm nay: tuyến mặc định ra Internet. Mạng nhà bạn chỉ có đúng một lối ra, chẳng có gì để chọn, nên khai một dòng là xong và không cần giao thức nào bàn bạc. Quy tắc nghề gọn lại thành: chỗ nào chỉ có một đường thì chỉ tay, chỗ nào có nhiều đường và đường có thể đứt thì để router tự lo.
+- *[m16-dinh-tuyen-dong]* Định tuyến động lật ngược việc: thay vì bạn kể cho router nghe về mạng của người khác, bạn chỉ khai những mạng của CHÍNH NÓ, rồi các router tự kể cho nhau nghe. OSPF là giao thức làm việc đó trong mạng doanh nghiệp. Thêm một chi nhánh thì chỉ cấu hình router mới, các router cũ tự nghe tin và tự thêm dòng vào bảng. Đường đứt thì tin xấu cũng lan theo cách đó, và bảng tự sửa lại trong vài giây.
+  - **Đào sâu hơn:** OSPF viết tắt của Open Shortest Path First: mở (ai cũng dùng được, không thuộc riêng hãng nào) và chọn đường ngắn nhất trước. Mỗi router giữ một tấm bản đồ toàn mạng rồi tự tính đường ngắn nhất trên tấm bản đồ ấy, chứ không nghe hàng xóm mách rằng đường này xa mấy chặng. Chính vì tự tính trên bản đồ mà OSPF không bị lừa bởi những vòng lặp mà các họ giao thức đời cũ hay vấp.
+
+**4 · Thử tay (practice, fading 0):**
+- **Ví dụ giải sẵn:** Đếm thử số dòng tuyến tĩnh phải gõ, từng bước. Bước 1: đếm số mạng LAN — bốn chi nhánh là bốn mạng. Bước 2: nhìn từ chỗ đứng của MỘT router: nó nối trực tiếp mạng của mình nên khỏi khai, còn lại ba mạng của người khác phải chỉ đường, tức là ba dòng. Bước 3: nhân lên cho cả nhóm — bốn router, mỗi cái ba dòng, tổng cộng mười hai dòng phải gõ đúng và không sót. Bước 4: thêm chi nhánh thứ năm và đếm lại — giờ mỗi router bốn dòng, tổng hai mươi dòng, tức là bạn phải mở lại cả bốn router cũ. Bước 5: rút ra công thức đơn giản để nhớ — mỗi router phải khai số mạng của người khác, và con số đó lớn dần theo mỗi lần mở chi nhánh.
+- **Đề:** Năm router, mỗi router một mạng LAN riêng, nối nhau đủ đường. Nếu chỉ đường bằng tuyến tĩnh thì MỖI router phải khai bao nhiêu tuyến để biết đường tới mọi LAN còn lại?
+  - **Dạng:** gõ tay · **Chấp nhận:** 4 | bốn | bon | 4 tuyến | 4 tuyen | bốn tuyến | bon tuyen | bốn dòng | bon dong
+  - **Chủ đề gợi ý (tầng 1):** số mạng mà router phải nghe kể về
+  - **Gợi ý (tầng 2):** Mạng của chính nó thì router đã nối trực tiếp, khỏi khai. Còn lại mấy mạng của người khác?
+  - **Lời giải (tầng 3):** Bốn. Router nối trực tiếp mạng của mình nên chỉ còn bốn mạng của người khác phải chỉ đường — và cả nhóm năm router gộp lại là hai mươi dòng phải gõ đúng.
+- **Đề:** Một sợi cáp trên đường tuyến tĩnh đang trỏ tới bị đứt, trong khi vẫn còn một lối vòng khác đi tới đích. Router làm gì?
+  - **Dạng:** trắc nghiệm · **Vẫn đẩy gói tin vào lối cũ, vì tuyến tĩnh chỉ đổi khi có người sửa** ✓ / Tự dò tìm lối vòng còn lại rồi ghi đè dòng tuyến tĩnh đã hỏng / Xóa hẳn tuyến tĩnh đó khỏi bảng và báo lỗi về cho máy quản trị
+  - **Chủ đề gợi ý (tầng 1):** ai là người sửa một dòng tuyến tĩnh
+  - **Gợi ý (tầng 2):** Dòng tuyến tĩnh do ai gõ vào? Vậy nó đổi được nhờ ai?
+  - **Lời giải (tầng 3):** Nó vẫn đẩy gói tin vào lối cũ. Tuyến tĩnh là lời của con người, và chỉ con người sửa được — router chẳng tự dò lối vòng, cũng chẳng tự xóa dòng bạn đã gõ.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: với định tuyến động, trên mỗi router bạn khai những mạng của ai?
+  - **Dạng:** gõ tay · **Chấp nhận:** mạng của chính nó | mang cua chinh no | mạng của mình | mang cua minh | mạng nối trực tiếp | mang noi truc tiep | mạng của chính router đó | mang cua chinh router do
+  - **Gợi ý (tầng 2):** Đó chính là chỗ khác nhau với tuyến tĩnh: tĩnh thì kể về mạng của người khác.
+  - **Lời giải (tầng 3):** Mạng của chính nó — những mạng router đang nối trực tiếp. Phần còn lại các router tự kể cho nhau nghe, đó mới là cái làm nên chữ động.
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao mạng càng lớn thì tuyến tĩnh càng đuối?
+  - **Nhóm ý cần chạm:** [số dòng, so dong, nhiều tuyến, nhieu tuyen, phình, phinh, nhân lên, nhan len] · [từng router, tung router, gõ tay, go tay, sửa tay, sua tay, mở lại, mo lai] · [đứt, dut, hỏng đường, hong duong, sự cố, su co] · [tự sửa, tu sua, tự học, tu hoc, tự đổi, tu doi, chết đứng, chet dung]
+  - **Trả lời mẫu:** Vì số dòng phải gõ phình lên theo số mạng nhân số router, nên thêm một chi nhánh là phải mở lại từng router cũ và chỉ cần sót một dòng là có chỗ mất liên lạc. Tệ hơn, đường đứt thì tuyến tĩnh nằm im chờ người tới sửa, trong khi định tuyến động tự đổi bảng trong vài giây.
+
+**6 · Tổng kết:**
+- Tuyến tĩnh là bạn chỉ tay từng đường: số dòng phình theo số mạng nhân số router.
+- Tuyến tĩnh không tự cựa quậy — đường đứt thì nằm im chờ người sửa.
+- Định tuyến động lật ngược việc: khai mạng của chính mình, để router tự kể cho nhau.
+- *Úp mở bài sau:* Nhưng hai router chưa từng biết nhau thì kể chuyện cho ai nghe? Bài sau xem chúng làm quen — và có một tòa nhà bốn tầng để bạn nhớ trọn cuộc làm quen ấy.
+
+### Bài: Bắt được tiếng chào của hàng xóm `m16-bai-2`
+
+**1 · Khởi động (hook):** Hai router vừa được nối vào nhau bằng một sợi cáp. Không ai khai tên, không ai khai địa chỉ của bên kia. Vậy mà vài giây sau, mỗi cái đã có tên hàng xóm trong bảng và biết đường sang các mạng phía bên kia. Chúng làm quen bằng cách nào, và cái bắt tay ấy đi qua mấy bậc?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử: hai router nối dây với nhau thì cần gì nữa mới thành láng giềng OSPF?
+  - **Dạng:** trắc nghiệm · **Hai cổng phải cùng subnet và mỗi bên phải khai cổng đó vào OSPF** ✓ / Chỉ cần nối dây là đủ, OSPF tự bật khi thấy cổng có địa chỉ / Phải khai tay địa chỉ của router bên kia vào danh sách láng giềng
+  - **Vì sao:** Nối dây mới là điều kiện đầu. Hai cổng còn phải cùng một subnet, và MỖI BÊN phải tự khai cổng của mình vào một câu network — đây là chỗ hay hỏng nhất khi cấu hình OSPF.
+
+**3 · Khám phá (teach):**
+- *[m16-hello]* Cứ mười giây một lần, router bật OSPF lại phát ra một gói hello trên mỗi cổng đã được khai vào OSPF. Gói ấy nói ba điều: tôi là ai, tôi ở subnet nào, và tôi đang nghe thấy những ai. Ai bắt được tiếng chào đó, thấy mình cùng subnet và cũng đang khai cổng của mình vào OSPF thì đáp lại — thế là hai bên vào cuộc làm quen. Dòng hello ấy còn làm thêm một việc: nó là nhịp tim. Im tiếng vài nhịp là bên kia biết hàng xóm đã mất, và bảng đường phải tính lại.
+  - **Đào sâu hơn:** Ba điều kiện thật sự để một cặp láng giềng lên được, đúng thứ tự phòng lab kiểm: hai đầu dây đều là router đã bật tiến trình OSPF; hai cổng cùng một subnet; và mỗi đầu đều đã khai cổng của mình trong một câu network. Thiết bị thật còn soi thêm vài thứ nữa — hello timer hai bên phải bằng nhau, area phải khớp, xác thực nếu bật cũng phải khớp. App này đóng băng ở ba điều kiện trên và nói thẳng chỗ mình giản lược, thay vì vờ như đã mô phỏng hết.
+- *[m16-lam-quen]* Cuộc làm quen của hai router đi qua tám bậc có tên, và cách chắc nhất để nhớ chúng là đi bộ qua một tòa nhà bốn tầng, mỗi tầng hai phòng. Hai tầng dưới là chuyện chào hỏi. Hãy đi xem tầng trệt và tầng hai trước: bốn phòng đầu kể lại quãng từ lúc còn im lặng tới lúc hai bên chính thức nhìn thấy nhau.
+  - **Đi xem cung điện (4 phòng):**
+    - tầng 1 phòng 1 · Down · im lặng hoàn toàn · hình `ospf-silent-speaker` — Tầng trệt phòng Down: chiếc loa treo trên tường im bặt, chẳng một tiếng chào nào vọng tới — trong sổ của router, hàng xóm vẫn còn là chỗ trống.
+    - tầng 1 phòng 2 · Attempt · gọi riêng từng nhà · hình `ospf-lone-phone` — Cạnh đó, phòng Attempt: một chiếc điện thoại quay số gọi đích danh sang nhà hàng xóm, vì ở xóm này hét chung ra giữa đường thì chẳng ai nghe thấy.
+    - tầng 2 phòng 1 · Init · mới nghe tiếng chào một chiều · hình `ospf-name-card` — Tầng hai phòng Init: một tấm danh thiếp vừa luồn qua khe cửa, trên đó có tên hàng xóm mà tìm mỏi mắt vẫn thiếu tên mình.
+    - tầng 2 phòng 2 · 2-Way · hai bên đã thấy tên nhau · hình `ospf-handshake` — Kế bên là phòng 2-Way: hai bàn tay bắt chặt giữa sảnh, vì tấm thiếp lần này có cả tên mình nằm trong danh sách hàng xóm.
+  - **Đào sâu hơn:** Vì sao 2-Way đã nhìn thấy nhau rồi mà cuộc làm quen vẫn chưa xong? Vì thấy nhau khác với tin nhau: tới đây hai router mới biết có hàng xóm, còn bản đồ mạng thì mỗi bên vẫn giữ một bản của riêng mình. Trên mạng nhiều router chung một đoạn cáp, có những cặp dừng lại vĩnh viễn ở 2-Way và thế là đủ — chúng chỉ đồng bộ đầy đủ với router được bầu làm đầu mối. Đó là kiến thức đọc-hiểu, không phải hành vi app này mô phỏng.
+
+**4 · Thử tay (practice, fading 1):**
+- **Đề:** Router-HN đã bật OSPF và khai đủ hai mạng, nhưng PC-A vẫn không gọi được PC-B. Console đang cắm vào Router-HN. Hãy tra đúng bảng cho biết cuộc làm quen với hàng xóm đang dừng ở đâu và vì sao.
+  - **Dạng:** console thiết bị (gõ lệnh IOS đạt mục tiêu)
+    - **Sơ đồ đề bài:** PC-A (Hà Nội) [192.168.1.10/24, gw 192.168.1.1] · PC-B (Đà Nẵng) [192.168.2.10/24, gw 192.168.2.1] · Switch-HN [p1:VLAN 1, p2:VLAN 1] · Switch-DN [p1:VLAN 1, p2:VLAN 1] · Router-HN [g0:192.168.1.1/24, g1:10.0.12.1/24] · Router-DN [g0:192.168.2.1/24, g1:10.0.12.2/24] — dây: PC-A (Hà Nội)·eth0 — Switch-HN·p1 | Switch-HN·p2 — Router-HN·g0 | PC-B (Đà Nẵng)·eth0 — Switch-DN·p1 | Switch-DN·p2 — Router-DN·g0 | Router-HN·g1 — Router-DN·g1
+    - **Console cắm ở:** Router-HN
+    - **Mục tiêu:**
+      - phải xem "show ip ospf neighbor" trên Router-HN
+    - **Lệnh mẫu trên Router-HN:** `show ip ospf neighbor`
+  - **Chủ đề gợi ý (tầng 1):** bảng liệt kê hàng xóm OSPF
+  - **Gợi ý (tầng 2):** Cú pháp khuyết: show ip ospf … — phần còn thiếu là từ tiếng Anh chỉ hàng xóm.
+  - **Lời giải (tầng 3):** show ip ospf neighbor. Bảng in ra một dòng ở trạng thái DOWN kèm lý do no-ospf-process: đầu bên kia còn chưa bật tiến trình OSPF, nên tiếng chào của Router-HN bay sang mà chẳng ai đáp.
+- **Đề:** Router-HN nhận được hello của hàng xóm nhưng trong tiếng chào đó thiếu hẳn tên mình. Cuộc làm quen đang ở bậc nào?
+  - **Dạng:** trắc nghiệm · **Init — mới nghe được tiếng chào đi một chiều** ✓ / 2-Way — hai bên đều đã thấy tên của nhau / Full — hai bên đã chép xong bản đồ mạng
+  - **Chủ đề gợi ý (tầng 1):** bậc mà tiếng chào mới đi được một chiều
+  - **Gợi ý (tầng 2):** Nhớ lại tấm danh thiếp luồn qua khe cửa ở tầng hai: trên đó có tên hàng xóm mà thiếu tên mình.
+  - **Lời giải (tầng 3):** Init. Nghe được tiếng chào nhưng tên mình còn vắng trong đó nghĩa là bên kia chưa nghe thấy mình — tiếng chào mới đi được một chiều. Có tên mình trong đó thì mới lên 2-Way.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Đóng bài lại và đi bộ hai tầng dưới của tòa nhà từ trí nhớ: mỗi phòng là bậc nào của cuộc làm quen, và ở bậc đó đang xảy ra chuyện gì?
+  - **Dạng:** đi lại cung điện từ trí nhớ (4 phòng)
+    - tầng 1 phòng 1 · Down · im lặng hoàn toàn · hình `ospf-silent-speaker` — Tầng trệt phòng Down: chiếc loa treo trên tường im bặt, chẳng một tiếng chào nào vọng tới — trong sổ của router, hàng xóm vẫn còn là chỗ trống.
+    - tầng 1 phòng 2 · Attempt · gọi riêng từng nhà · hình `ospf-lone-phone` — Cạnh đó, phòng Attempt: một chiếc điện thoại quay số gọi đích danh sang nhà hàng xóm, vì ở xóm này hét chung ra giữa đường thì chẳng ai nghe thấy.
+    - tầng 2 phòng 1 · Init · mới nghe tiếng chào một chiều · hình `ospf-name-card` — Tầng hai phòng Init: một tấm danh thiếp vừa luồn qua khe cửa, trên đó có tên hàng xóm mà tìm mỏi mắt vẫn thiếu tên mình.
+    - tầng 2 phòng 2 · 2-Way · hai bên đã thấy tên nhau · hình `ospf-handshake` — Kế bên là phòng 2-Way: hai bàn tay bắt chặt giữa sảnh, vì tấm thiếp lần này có cả tên mình nằm trong danh sách hàng xóm.
+  - **Chủ đề gợi ý (tầng 1):** đi từ tầng trệt lên, trái sang phải
+  - **Gợi ý (tầng 2):** Tầng trệt là lúc còn chưa nghe thấy gì; tầng hai là lúc tiếng chào đã bay qua bay lại.
+  - **Lời giải (tầng 3):** Down (im lặng hoàn toàn) → Attempt (gọi riêng từng nhà, chỉ có ở mạng NBMA) → Init (mới nghe tiếng chào một chiều) → 2-Way (hai bên đã thấy tên nhau).
+- **Tự giải thích:** Giải thích bằng lời của bạn: gói hello làm những việc gì cho OSPF?
+  - **Nhóm ý cần chạm:** [tìm, tim, làm quen, lam quen, phát hiện, phat hien, hàng xóm, hang xom] · [cùng subnet, cung subnet, kiểm, kiem, khớp, khop, điều kiện, dieu kien] · [nhịp tim, nhip tim, đều đặn, deu dan, giữ, giu, còn sống, con song] · [mất, mat, im tiếng, im tieng, tính lại, tinh lai, đứt, dut]
+  - **Trả lời mẫu:** Gói hello vừa để tìm hàng xóm vừa để kiểm xem hai bên có hợp nhau không: cùng subnet, cùng khai cổng đó vào OSPF thì mới đáp lời. Sau khi quen rồi, nó thành nhịp tim — im tiếng vài nhịp là bên kia biết hàng xóm đã mất và tính lại đường ngay.
+
+**6 · Tổng kết:**
+- Gói hello đi tìm hàng xóm và sau đó làm nhịp tim giữ mối quan hệ.
+- Ba điều kiện lên láng giềng: đều bật OSPF, cùng subnet, mỗi bên tự khai cổng của mình.
+- Hai tầng dưới của tòa nhà: Down, Attempt, Init, 2-Way — từ im lặng tới thấy tên nhau.
+- *Úp mở bài sau:* Thấy tên nhau xong thì hai router bắt đầu chép bản đồ cho giống hệt nhau. Bài sau đi nốt hai tầng trên của tòa nhà, và bạn sẽ tự tay bật OSPF cho một router đang câm.
+
+### Bài: Chép bản đồ tới lúc giống hệt `m16-bai-3`
+
+**1 · Khởi động (hook):** Bảng láng giềng in ra đúng một chữ: FULL. Người mới đọc thường mừng vì thấy chữ đầy đủ, rồi bỏ qua luôn. Nhưng đầy đủ ở đây là đầy đủ CÁI GÌ, và giữa 2-Way với Full thì hai router đã kịp trao nhau những gì?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử: hai router ở trạng thái Full nghĩa là gì?
+  - **Dạng:** trắc nghiệm · **Hai bên đã giữ cùng một tấm bản đồ mạng, giống nhau từng dòng** ✓ / Hai bên đã dùng hết băng thông của sợi cáp nối giữa chúng / Hai bên đã khai đủ mọi mạng LAN của công ty vào câu network
+  - **Vì sao:** Full nói về BẢN ĐỒ, không nói về băng thông hay số câu lệnh: hai router đã đồng bộ xong cơ sở dữ liệu trạng thái đường đi và giờ nhìn mạng giống hệt nhau.
+
+**3 · Khám phá (teach):**
+- *[m16-dong-bo]* Sau khi thấy tên nhau, hai router chuyển sang việc nặng hơn: chép bản đồ mạng cho giống hệt nhau. Tấm bản đồ ấy là danh sách mọi đường nối mà cả vùng đang có, và chỉ khi hai bên giữ bản y hệt thì đường tính ra mới tin được. Hãy đi nốt tầng ba và tầng nóc của tòa nhà: bốn phòng còn lại kể lại quãng từ lúc chốt ai nói trước tới lúc hai bản đồ chồng khít lên nhau.
+  - **Đi xem cung điện (4 phòng):**
+    - tầng 3 phòng 1 · ExStart · chốt ai nói trước · hình `ospf-gavel` — Tầng ba phòng ExStart: chiếc búa chủ tọa gõ một tiếng xuống bàn để chốt xem ai được mở lời trước trong cuộc trao đổi sắp tới.
+    - tầng 3 phòng 2 · Exchange · trao mục lục cho nhau · hình `ospf-two-envelopes` — Sát vách là phòng Exchange: hai phong bì mục lục bay chéo qua nhau, mỗi bên khoe mình đang giữ những trang bản đồ mạng nào.
+    - tầng 4 phòng 1 · Loading · xin nốt phần còn thiếu · hình `ospf-funnel` — Tầng nóc phòng Loading: một cái phễu lớn rót nốt những trang bản đồ còn thiếu vào kho, xin đúng phần mình đang hụt.
+    - tầng 4 phòng 2 · Full · hai bản đồ giống hệt nhau · hình `ospf-twin-maps` — Phòng cuối cùng, phòng Full: hai tấm bản đồ đặt chồng khít lên nhau, lệch nhau đúng không một nét — từ giây đó hai router nhìn mạng y hệt nhau.
+  - **Đào sâu hơn:** Vì sao phải chốt ai nói trước ở bậc ExStart? Vì nếu hai bên cùng mở lời một lúc thì cuộc trao đổi loạn ngay từ câu đầu — router có số hiệu lớn hơn được cầm trịch, y như một cuộc họp phải có người điều khiển. Ở bậc Exchange, cái được trao là MỤC LỤC chứ chưa phải nội dung: mỗi bên gửi danh sách những trang mình đang giữ. Nhờ vậy tới bậc Loading, mỗi bên chỉ xin đúng phần mình đang hụt, thay vì chép lại cả tập từ đầu.
+- *[m16-area-0]* Bật OSPF trên router gồm hai việc. Việc thứ nhất là mở tiến trình bằng lệnh router ospf kèm một số hiệu — số này chỉ có ý nghĩa trong nội bộ máy đó, hai router mang số khác nhau vẫn quen nhau bình thường. Việc thứ hai mới quan trọng: mỗi câu network khai một dải địa chỉ và mọi cổng có địa chỉ nằm trong dải ấy sẽ tham gia OSPF. Dải viết bằng wildcard mask bạn đã học ở Module 13, tức mặt nạ đảo: 0.0.0.255 nghĩa là ba nhóm số đầu phải khớp, nhóm cuối tùy ý. Cuối câu là area 0 — vùng xương sống mà mọi mạng OSPF đều phải có.
+  - **Đào sâu hơn:** Mạng lớn chia thành nhiều area để mỗi vùng chỉ phải giữ bản đồ chi tiết của chính mình, và mọi area khác đều phải nối về area 0. Phạm vi của app này đóng băng ở area 0 nên bạn sẽ luôn gõ area 0 — gõ số khác là máy từ chối, cố ý như vậy để bạn quen tay với vùng xương sống trước. Một mẹo đọc câu network cho đúng: nó không nói mạng nào được quảng bá, mà nói CỔNG NÀO tham gia OSPF; cổng đã tham gia thì mạng của cổng đó tự được quảng bá theo.
+
+**4 · Thử tay (practice, fading 1):**
+- **Đề:** Đây đúng là mạng của bài trước: Router-DN còn chưa bật OSPF nên hai chi nhánh chưa gọi được nhau. Console đang cắm sẵn vào Router-DN. Hãy bật tiến trình OSPF số 1 và khai cả hai mạng của nó vào area 0, sao cho PC-A gọi được PC-B.
+  - **Dạng:** console thiết bị (gõ lệnh IOS đạt mục tiêu)
+    - **Sơ đồ đề bài:** PC-A (Hà Nội) [192.168.1.10/24, gw 192.168.1.1] · PC-B (Đà Nẵng) [192.168.2.10/24, gw 192.168.2.1] · Switch-HN [p1:VLAN 1, p2:VLAN 1] · Switch-DN [p1:VLAN 1, p2:VLAN 1] · Router-HN [g0:192.168.1.1/24, g1:10.0.12.1/24] · Router-DN [g0:192.168.2.1/24, g1:10.0.12.2/24] — dây: PC-A (Hà Nội)·eth0 — Switch-HN·p1 | Switch-HN·p2 — Router-HN·g0 | PC-B (Đà Nẵng)·eth0 — Switch-DN·p1 | Switch-DN·p2 — Router-DN·g0 | Router-HN·g1 — Router-DN·g1
+    - **Console cắm ở:** Router-DN
+    - **Mục tiêu:**
+      - pc-a PHẢI gọi được pc-b
+    - **Lệnh mẫu trên Router-DN:** `enable` rồi `configure terminal` rồi `router ospf 1` rồi `network 192.168.2.0 0.0.0.255 area 0` rồi `network 10.0.12.0 0.0.0.255 area 0` rồi `end`
+  - **Chủ đề gợi ý (tầng 1):** hai việc phải làm để bật OSPF trên một router
+  - **Gợi ý (tầng 2):** Cú pháp khuyết, gõ trong chế độ cấu hình: router ospf … rồi network <dải> <wildcard> area 0. Nhớ khai CẢ HAI mạng của Router-DN, kể cả đường nối sang Hà Nội.
+  - **Lời giải (tầng 3):** Vào chế độ cấu hình rồi gõ: router ospf 1, network 192.168.2.0 0.0.0.255 area 0, network 10.0.12.0 0.0.0.255 area 0. Khai thiếu câu thứ hai thì cổng g1 không tham gia OSPF, láng giềng đứng im ở lý do network-not-declared và mạng vẫn câm.
+- **Đề:** Trong câu network của OSPF, dải địa chỉ được viết bằng loại mặt nạ đảo tên là gì?
+  - **Dạng:** gõ tay · **Chấp nhận:** wildcard | wildcard mask | mặt nạ đảo | mat na dao | mặt nạ ngược | mat na nguoc
+  - **Chủ đề gợi ý (tầng 1):** loại mặt nạ đã học ở Module 13
+  - **Gợi ý (tầng 2):** Nó là subnet mask lộn ngược: chỗ nào phải khớp thì ghi 0, chỗ nào tùy ý thì ghi 255.
+  - **Lời giải (tầng 3):** Wildcard mask, tức mặt nạ đảo. Với 0.0.0.255 thì ba nhóm số đầu phải khớp, nhóm cuối tùy ý — nên câu network 192.168.2.0 0.0.0.255 tóm đúng mọi cổng thuộc mạng 192.168.2.0/24.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Đóng bài lại và đi nốt hai tầng trên của tòa nhà từ trí nhớ: mỗi phòng là bậc nào, và ở bậc đó hai router đang trao nhau cái gì?
+  - **Dạng:** đi lại cung điện từ trí nhớ (4 phòng)
+    - tầng 3 phòng 1 · ExStart · chốt ai nói trước · hình `ospf-gavel` — Tầng ba phòng ExStart: chiếc búa chủ tọa gõ một tiếng xuống bàn để chốt xem ai được mở lời trước trong cuộc trao đổi sắp tới.
+    - tầng 3 phòng 2 · Exchange · trao mục lục cho nhau · hình `ospf-two-envelopes` — Sát vách là phòng Exchange: hai phong bì mục lục bay chéo qua nhau, mỗi bên khoe mình đang giữ những trang bản đồ mạng nào.
+    - tầng 4 phòng 1 · Loading · xin nốt phần còn thiếu · hình `ospf-funnel` — Tầng nóc phòng Loading: một cái phễu lớn rót nốt những trang bản đồ còn thiếu vào kho, xin đúng phần mình đang hụt.
+    - tầng 4 phòng 2 · Full · hai bản đồ giống hệt nhau · hình `ospf-twin-maps` — Phòng cuối cùng, phòng Full: hai tấm bản đồ đặt chồng khít lên nhau, lệch nhau đúng không một nét — từ giây đó hai router nhìn mạng y hệt nhau.
+  - **Chủ đề gợi ý (tầng 1):** tầng ba là thỏa thuận, tầng nóc là đồng bộ
+  - **Gợi ý (tầng 2):** Tầng ba mở đầu bằng tiếng búa chủ tọa; tầng nóc kết thúc bằng hai tấm bản đồ chồng khít.
+  - **Lời giải (tầng 3):** ExStart (chốt ai nói trước) → Exchange (trao mục lục cho nhau) → Loading (xin nốt phần còn thiếu) → Full (hai bản đồ giống hệt nhau).
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao ở bậc Exchange hai router trao MỤC LỤC trước, thay vì gửi thẳng cả tập bản đồ?
+  - **Nhóm ý cần chạm:** [mục lục, muc luc, danh sách, danh sach, danh mục, danh muc] · [thiếu, thieu, hụt, hut, phần cần, phan can, cái chưa có, cai chua co] · [đỡ, do ton, tiết kiệm, tiet kiem, nhanh hơn, nhanh hon, khỏi chép lại, khoi chep lai]
+  - **Trả lời mẫu:** Vì trao mục lục trước thì mỗi bên tự đối chiếu và biết mình đang hụt những trang nào, rồi tới bậc Loading chỉ xin đúng phần đó. Gửi thẳng cả tập là chép lại cả những trang bên kia đã có, vừa tốn đường truyền vừa lâu hơn hẳn.
+
+**6 · Tổng kết:**
+- Full nghĩa là hai router đã giữ cùng một tấm bản đồ mạng, giống nhau từng dòng.
+- Tầng ba và tầng nóc: ExStart, Exchange, Loading, Full — chốt vai, trao mục lục, xin phần thiếu, khớp nhau.
+- Bật OSPF là hai việc: mở tiến trình router ospf, rồi khai từng dải bằng network với wildcard và area 0.
+- *Úp mở bài sau:* Bản đồ đã giống nhau, nhưng từ đây sang chi nhánh kia có hai lối đi. Bài sau xem router chọn lối nào và nó đo đường bằng thước gì.
+
+### Bài: Đọc bảng đường router tự học `m16-bai-4`
+
+**1 · Khởi động (hook):** Từ chi nhánh Hà Nội sang chi nhánh Sài Gòn có hai lối: một sợi cáp nối thẳng, và một đường vòng qua chi nhánh Đà Nẵng. Chẳng ai bảo router phải đi lối nào, vậy mà nó chọn dứt khoát và cả nhóm đều chọn giống nhau. Nó đo hai lối đó bằng thước gì?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử: OSPF chọn đường tới một mạng dựa vào cái gì?
+  - **Dạng:** trắc nghiệm · **Tổng cost của các chặng trên đường, nhỏ hơn thì thắng** ✓ / Số thứ tự cổng trên router, cổng số nhỏ hơn được ưu tiên / Thứ tự các mạng được khai trong những câu network
+  - **Vì sao:** OSPF cộng cost dọc đường và chọn tổng nhỏ nhất. Số hiệu cổng hay thứ tự câu network không dính gì tới việc chọn đường.
+
+**3 · Khám phá (teach):**
+- *[m16-cost]* OSPF đo đường bằng cost — một con số nói đi qua chặng này đắt bao nhiêu. Có bản đồ toàn vùng trong tay, mỗi router tự cộng cost dọc từng lối tới đích rồi giữ lối có tổng nhỏ nhất. Trong phòng lab này mỗi chặng router sang router tính cost 1, nên đường một chặng luôn thắng đường hai chặng. Vì mọi router đều tính trên cùng một tấm bản đồ nên chúng ra cùng kết quả, và không có cảnh hai router đá bóng gói tin qua lại cho nhau.
+  - **Đào sâu hơn:** Thiết bị thật không tính cost bằng số chặng mà tính theo băng thông: cost bằng một trăm triệu chia cho tốc độ cổng tính theo bit mỗi giây, nên cổng nhanh có cost nhỏ và được chuộng hơn. Nhờ vậy OSPF biết chọn đường cáp quang hai chặng thay vì đường thuê bao chậm một chặng. App này đóng băng ở cost 1 mỗi chặng — đơn giản hóa cố ý, khai thẳng ở đầu engine — nên bạn đọc được cách chọn đường mà không phải nhớ công thức.
+- *[m16-bang-tu-hoc]* Kết quả của tất cả những việc trên nằm gọn trong bảng định tuyến, và lệnh show ip route mở nó ra. Đầu mỗi dòng là một chữ cái cho biết dòng đó ở đâu ra: chữ C là mạng router nối trực tiếp, chữ S là tuyến bạn gõ tay, chữ O là tuyến OSPF tự học được. Cuối dòng OSPF có cặp số trong ngoặc vuông, dạng 110 gạch chéo cost: số 110 là mức tin cậy của OSPF, còn số sau là tổng cost tới đích. Nhìn cặp số ấy là biết đường này học từ đâu và xa bao nhiêu.
+  - **Đào sâu hơn:** Đọc bảng định tuyến là kỹ năng chẩn đoán mạnh nhất khi làm việc với router, vì nó trả lời thẳng câu hỏi quan trọng nhất: gói tin đi tới đích này sẽ ra bằng cổng nào. Ba câu hỏi nên hỏi theo thứ tự khi mạng có sự cố. Đích cần tới có mặt trong bảng chưa? Nếu có thì đi ra cổng nào và qua chặng kế nào? Và dòng đó mang chữ gì — chữ O biến mất trong khi trước đó vẫn có nghĩa là láng giềng vừa rớt, chứ chẳng phải bạn gõ sai lệnh nào.
+
+**4 · Thử tay (practice, fading 2):**
+- **Đề:** Ba chi nhánh nối thành vòng, cả ba router đều đã chạy OSPF. Console đang cắm vào Router-HN. Hãy mở bảng định tuyến của nó và tự đọc xem mạng 192.168.3.0 của chi nhánh Sài Gòn được học với cost bao nhiêu, đi ra cổng nào.
+  - **Dạng:** console thiết bị (gõ lệnh IOS đạt mục tiêu)
+    - **Sơ đồ đề bài:** PC-A (Hà Nội) [192.168.1.10/24, gw 192.168.1.1] · PC-C (Sài Gòn) [192.168.3.10/24, gw 192.168.3.1] · Switch-HN [p1:VLAN 1, p2:VLAN 1] · Switch-SG [p1:VLAN 1, p2:VLAN 1] · Router-HN [g0:192.168.1.1/24, g1:10.0.12.1/24, g2:10.0.13.1/24] · Router-DN [g1:10.0.12.2/24, g2:10.0.23.2/24] · Router-SG [g0:192.168.3.1/24, g1:10.0.23.3/24, g2:10.0.13.3/24] — dây: PC-A (Hà Nội)·eth0 — Switch-HN·p1 | Switch-HN·p2 — Router-HN·g0 | PC-C (Sài Gòn)·eth0 — Switch-SG·p1 | Switch-SG·p2 — Router-SG·g0 | Router-HN·g1 — Router-DN·g1 | Router-DN·g2 — Router-SG·g1 | Router-HN·g2 — Router-SG·g2
+    - **Console cắm ở:** Router-HN
+    - **Mục tiêu:**
+      - phải xem "show ip route" trên Router-HN
+    - **Lệnh mẫu trên Router-HN:** `show ip route`
+  - **Chủ đề gợi ý (tầng 1):** lệnh mở bảng định tuyến
+  - **Gợi ý (tầng 2):** Ba từ, bắt đầu bằng show, rồi tới ip, rồi tới từ tiếng Anh nghĩa là tuyến đường.
+  - **Lời giải (tầng 3):** show ip route. Dòng cần tìm là O 192.168.3.0/24 [110/1] via 10.0.13.3, g2 — chữ O nghĩa là học từ OSPF, số 110 là mức tin cậy của OSPF, cost 1 vì đi thẳng một chặng qua cổng g2, chứ không vòng qua Đà Nẵng cho tốn hai chặng.
+- **Đề:** Trong bảng show ip route, tuyến mà router tự học được từ OSPF mang chữ cái đầu dòng nào?
+  - **Dạng:** gõ tay · **Chấp nhận:** o | O | chữ o | chu o | mã o | ma o
+  - **Chủ đề gợi ý (tầng 1):** chữ cái đầu dòng của tuyến OSPF
+  - **Gợi ý (tầng 2):** Chữ C là mạng nối trực tiếp, chữ S là tuyến gõ tay, còn OSPF lấy chính chữ cái đầu tên nó.
+  - **Lời giải (tầng 3):** Chữ O. Trong cùng bảng đó, chữ C là mạng nối trực tiếp và chữ S là tuyến tĩnh bạn gõ tay.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: trong phòng lab này, một chặng từ router sang router có cost bằng bao nhiêu?
+  - **Dạng:** gõ tay · **Chấp nhận:** 1 | một | mot | cost 1 | bằng 1 | bang 1
+  - **Gợi ý (tầng 2):** Đường một chặng thắng đường hai chặng, vì mỗi chặng đều đáng giá đúng chừng đó.
+  - **Lời giải (tầng 3):** Bằng 1. Nhờ vậy tổng cost chính là số chặng, và đường ít chặng hơn thì thắng. Thiết bị thật thì tính cost theo băng thông của cổng.
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao ba router lại chọn đường giống nhau mà chẳng cần bàn bạc thêm?
+  - **Nhóm ý cần chạm:** [cùng bản đồ, cung ban do, bản đồ giống nhau, ban do giong nhau, đồng bộ, dong bo] · [tự tính, tu tinh, cộng cost, cong cost, tính cost, tinh cost] · [nhỏ nhất, nho nhat, rẻ nhất, re nhat, ngắn nhất, ngan nhat]
+  - **Trả lời mẫu:** Vì sau khi đồng bộ, cả ba giữ cùng một tấm bản đồ mạng. Mỗi cái tự cộng cost dọc từng lối rồi giữ lối tổng nhỏ nhất, mà cùng dữ liệu với cùng cách tính thì ra cùng kết quả — nên không có chuyện hai router đá gói tin qua lại cho nhau.
+
+**6 · Tổng kết:**
+- OSPF cộng cost dọc đường và giữ lối có tổng nhỏ nhất; trong app mỗi chặng cost 1.
+- Lệnh show ip route mở bảng: chữ C là nối trực tiếp, S là gõ tay, O là OSPF tự học.
+- Cặp số trong ngoặc là mức tin cậy trên cost — 110 là con số của OSPF.
+- *Úp mở bài sau:* Bây giờ tới phần đáng giá nhất của cả module: cắt phăng sợi cáp mà lưu lượng đang đi qua, rồi xem bảng tự viết lại chính nó trước mắt bạn.
+
+### Bài: Cắt cáp và xem bảng tự viết lại `m16-bai-5`
+
+**1 · Khởi động (hook):** Nhà thầu đào đường cắt trúng sợi cáp nối thẳng Hà Nội với Sài Gòn. Nếu đường ấy được chỉ bằng tuyến tĩnh thì cả hai chi nhánh ngồi chờ người tới sửa. Nhưng mạng này chạy OSPF, và nhân viên còn chẳng kịp nhận ra có sự cố. Trong mấy giây đó, ba router đã làm gì với nhau?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử: dấu hiệu đầu tiên cho ba router biết sợi cáp đã đứt là gì?
+  - **Dạng:** trắc nghiệm · **Gói hello im tiếng vài nhịp trên cổng hướng ra sợi cáp đó** ✓ / Máy quản trị gửi một bản tin báo lỗi tới cả ba router cùng lúc / Gói tin của người dùng dội ngược trở lại router vừa gửi nó đi
+  - **Vì sao:** Hello chính là nhịp tim đã học ở bài 2. Nó im vài nhịp thì láng giềng bị coi là mất, và từ đó cả vùng tính lại bản đồ.
+
+**3 · Khám phá (teach):**
+- *[m16-hoi-tu-vong]* Khi một sợi cáp đứt, hai router hai đầu mất nhịp hello và coi như láng giềng đã mất. Chúng sửa tấm bản đồ của mình rồi loan tin sửa đó ra cả vùng, nên mọi router cùng bỏ đường vừa hỏng khỏi bản đồ. Ai nấy tính lại cost trên tấm bản đồ mới, và nếu còn lối vòng nào tới đích thì lối đó lập tức thành đường chính. Bảng định tuyến tự viết lại: dòng cũ biến mất, dòng mới hiện ra với cost lớn hơn và chặng kế khác hẳn — tất cả xong trong lúc người dùng còn chưa kịp phàn nàn.
+  - **Đào sâu hơn:** Quá trình vừa kể có tên riêng: hội tụ. Nó đúng là thứ Module 15 đã cho bạn xem ở tầng 2 với cây STP, chỉ khác chỗ đứng: STP tính lại cây để cắt vòng lặp, còn OSPF tính lại đường ngắn nhất để đi vòng qua chỗ hỏng. Điểm chung của cả hai là mạng phải có sẵn ĐƯỜNG THỪA thì mới có gì mà chuyển sang. Giao thức chỉ biết chọn trong những lối bạn đã kéo cáp; không có lối vòng nào thì OSPF cũng chỉ báo mất đường mà thôi.
+- *[m16-ad]* Nếu cùng một mạng đích lại có cả tuyến tĩnh bạn gõ tay lẫn tuyến OSPF tự học, router tin cái nào? Nó so mức tin cậy, tiếng nghề gọi là khoảng cách quản trị: tuyến tĩnh mang số 1, tuyến OSPF mang số 110, và số nhỏ hơn thì được tin hơn. Vậy tuyến tĩnh thắng — cũng dễ hiểu, vì đó là lời khẳng định của con người. Nhưng nhớ luôn cái giá: dòng bạn gõ vẫn nằm im khi đường của nó đứt, và nó sẽ che mất đường vòng mà OSPF đã tìm ra.
+  - **Đào sâu hơn:** Khoảng cách quản trị chỉ được đem ra so khi hai tuyến cùng độ dài prefix. Nếu prefix khác nhau thì luật khớp dài nhất thắng trước: dòng 192.168.3.0/24 luôn được dùng thay cho dòng 192.168.0.0/16, bất kể dòng nào học từ đâu. Thứ tự xét trong router vì thế là prefix dài hơn trước, hòa mới xét tới mức tin cậy, hòa nữa mới tới cost. Đây cũng là lý do một tuyến tĩnh gõ ẩu với prefix quá rộng ít khi gây họa, còn tuyến tĩnh gõ đúng dải của một mạng đang chạy OSPF thì có thể ghim lưu lượng vào một đường đã chết.
+
+**4 · Thử tay (practice, fading 2):**
+- **Đề:** Đây là mạng ba chi nhánh của bài trước, lưu lượng từ PC-A sang PC-C đang đi thẳng qua sợi cáp Hà Nội — Sài Gòn. Hãy đóng vai nhà thầu đào đường: cắt đúng sợi cáp đó ra, rồi chứng minh PC-A vẫn gọi được PC-C và lần này đường đi có ghé qua Router-DN.
+  - **Dạng:** phòng lab (lắp/sửa sơ đồ mạng)
+    - **Sơ đồ đề bài:** PC-A (Hà Nội) [192.168.1.10/24, gw 192.168.1.1] · PC-C (Sài Gòn) [192.168.3.10/24, gw 192.168.3.1] · Switch-HN [p1:VLAN 1, p2:VLAN 1] · Switch-SG [p1:VLAN 1, p2:VLAN 1] · Router-HN [g0:192.168.1.1/24, g1:10.0.12.1/24, g2:10.0.13.1/24] · Router-DN [g1:10.0.12.2/24, g2:10.0.23.2/24] · Router-SG [g0:192.168.3.1/24, g1:10.0.23.3/24, g2:10.0.13.3/24] — dây: PC-A (Hà Nội)·eth0 — Switch-HN·p1 | Switch-HN·p2 — Router-HN·g0 | PC-C (Sài Gòn)·eth0 — Switch-SG·p1 | Switch-SG·p2 — Router-SG·g0 | Router-HN·g1 — Router-DN·g1 | Router-DN·g2 — Router-SG·g1 | Router-HN·g2 — Router-SG·g2
+    - **Mục tiêu:**
+      - đường pc-a → pc-c phải qua r-2
+    - **Được phép:** gỡ dây
+    - **Lời giải mẫu:** PC-A (Hà Nội) [192.168.1.10/24, gw 192.168.1.1] · PC-C (Sài Gòn) [192.168.3.10/24, gw 192.168.3.1] · Switch-HN [p1:VLAN 1, p2:VLAN 1] · Switch-SG [p1:VLAN 1, p2:VLAN 1] · Router-HN [g0:192.168.1.1/24, g1:10.0.12.1/24, g2:10.0.13.1/24] · Router-DN [g1:10.0.12.2/24, g2:10.0.23.2/24] · Router-SG [g0:192.168.3.1/24, g1:10.0.23.3/24, g2:10.0.13.3/24] — dây: PC-A (Hà Nội)·eth0 — Switch-HN·p1 | Switch-HN·p2 — Router-HN·g0 | PC-C (Sài Gòn)·eth0 — Switch-SG·p1 | Switch-SG·p2 — Router-SG·g0 | Router-HN·g1 — Router-DN·g1 | Router-DN·g2 — Router-SG·g1
+  - **Chủ đề gợi ý (tầng 1):** lối còn lại khi đường thẳng mất
+  - **Gợi ý (tầng 2):** Chọn sợi cáp nối Router-HN với Router-SG rồi gỡ nó ra, sau đó bấm Gửi thử và đọc nhật ký chặng xem gói tin ghé qua những router nào.
+  - **Lời giải (tầng 3):** Gỡ sợi wan-13 giữa Router-HN và Router-SG. Cả vùng bỏ đường đó khỏi bản đồ và tính lại: mạng 192.168.3.0 giờ học được với cost 2 qua chặng kế 10.0.12.2, nên gói tin của PC-A đi vòng qua Router-DN rồi mới tới Sài Gòn — chẳng ai phải gõ thêm một dòng lệnh nào.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: cùng một mạng đích mà có cả tuyến tĩnh lẫn tuyến OSPF thì router tin cái nào?
+  - **Dạng:** gõ tay · **Chấp nhận:** tuyến tĩnh | tuyen tinh | tĩnh | tinh | static | tuyến static | tuyen static | tuyến tĩnh vì ad nhỏ hơn | tuyen tinh vi ad nho hon
+  - **Gợi ý (tầng 2):** So mức tin cậy: một bên mang số 1, một bên mang số 110 — số nhỏ hơn thì được tin hơn.
+  - **Lời giải (tầng 3):** Tuyến tĩnh, vì khoảng cách quản trị của nó là 1 còn của OSPF là 110. Cái giá phải trả: dòng gõ tay ấy vẫn nằm im khi đường của nó đứt, và nó che mất lối vòng mà OSPF đã tìm ra.
+- **Tự giải thích:** Giải thích bằng lời của bạn: từ lúc sợi cáp đứt tới lúc lưu lượng chạy lối khác, các router đã làm những gì?
+  - **Nhóm ý cần chạm:** [hello, nhịp tim, nhip tim, im tiếng, im tieng, mất láng giềng, mat lang gieng] · [sửa bản đồ, sua ban do, loan tin, báo cho nhau, bao cho nhau, cập nhật, cap nhat] · [tính lại, tinh lai, cost, đường ngắn nhất, duong ngan nhat] · [lối vòng, loi vong, đường vòng, duong vong, đường khác, duong khac, bảng đổi, bang doi]
+  - **Trả lời mẫu:** Hai router hai đầu mất nhịp hello nên coi láng giềng đã mất, sửa bản đồ của mình rồi loan tin ra cả vùng. Mọi router bỏ đường hỏng khỏi bản đồ, tính lại cost, và lối vòng còn lại thành đường chính — bảng định tuyến tự viết lại mà chẳng ai gõ thêm dòng nào.
+
+**6 · Tổng kết:**
+- Mất nhịp hello là dấu hiệu đầu tiên; cả vùng sửa bản đồ rồi tính lại đường.
+- Còn lối vòng thì lối đó thành đường chính ngay, không cần ai gõ lệnh.
+- Tuyến tĩnh có mức tin cậy 1 nên thắng OSPF 110 — kèm cái giá là nó không tự sửa.
+- *Úp mở bài sau:* Giờ mọi máy trong công ty đều gọi được nhau, kể cả những máy lẽ ra không nên gọi tới phòng kế toán. Module sau dạy cách viết luật chặn đúng người mà không chặn nhầm sếp.
+
+### Khái niệm & flashcard (10)
+
+- **Giới hạn của tuyến tĩnh** `m16-gioi-han-tinh` — Chỉ đường bằng tay: số dòng phình theo số mạng nhân số router, và đường đứt thì tuyến nằm im chờ người sửa
+  - Ẩn dụ: Như dán giấy chỉ đường ở từng ngã tư trong thành phố: mở thêm một khu phố là phải đi dán lại khắp nơi, và hôm nào có đường cấm thì tờ giấy vẫn chỉ vào đó.
+  - Thẻ ôn: *Hai điểm yếu của tuyến tĩnh khi mạng lớn lên là gì?* → Một là số dòng phải gõ phình theo số mạng nhân số router, thêm một chi nhánh là mở lại từng router cũ. Hai là nó không tự cựa quậy: đường bị đứt thì router vẫn đẩy gói tin vào chỗ hỏng cho tới khi có người sửa bằng tay.
+- **Định tuyến động** `m16-dinh-tuyen-dong` — Mỗi router chỉ khai mạng của chính nó rồi các router tự kể đường cho nhau; OSPF là giao thức làm việc đó
+  - Ẩn dụ: Như mỗi nhà chỉ cần treo biển số nhà mình, còn bản đồ khu phố thì hàng xóm tự truyền tai nhau và tự cập nhật khi có đường mới.
+  - Thẻ ôn: *Với định tuyến động, trên mỗi router bạn khai những mạng nào?* → Chỉ khai những mạng router đó nối trực tiếp. Phần còn lại các router tự kể cho nhau nghe, nên thêm chi nhánh chỉ phải cấu hình router mới và bảng của các router cũ tự mọc thêm dòng.
+- **Gói hello** `m16-hello` — Gói OSPF phát đều đặn trên mỗi cổng đã khai: vừa để tìm láng giềng, vừa làm nhịp tim giữ mối quan hệ
+  - Ẩn dụ: Như tiếng chào buổi sáng vọng qua hàng rào: lần đầu là để làm quen, những lần sau là để biết hàng xóm vẫn còn ở nhà.
+  - Thẻ ôn: *Gói hello làm những việc gì, và ba điều kiện để hai router thành láng giềng?* → Hello vừa đi tìm láng giềng vừa làm nhịp tim: im vài nhịp là bên kia coi như mất hàng xóm. Ba điều kiện: hai đầu đều bật OSPF, hai cổng cùng subnet, và mỗi bên đều đã khai cổng của mình trong một câu network.
+- **Bốn bậc làm quen** `m16-lam-quen` — Down, Attempt, Init, 2-Way — quãng từ lúc im lặng tới lúc hai router thấy tên nhau
+  - Ẩn dụ: Như hai tầng dưới của một tòa nhà: tầng trệt còn im tiếng và gọi riêng, tầng hai thì tấm danh thiếp đã đi qua đi lại.
+  - Thẻ ôn: *Bốn bậc đầu của quan hệ láng giềng OSPF là gì?* → Down (im lặng hoàn toàn), Attempt (gọi riêng từng nhà, chỉ có ở mạng NBMA), Init (mới nghe tiếng chào một chiều, còn thiếu tên mình trong đó), 2-Way (hai bên đã thấy tên nhau).
+- **Bốn bậc đồng bộ** `m16-dong-bo` — ExStart, Exchange, Loading, Full — quãng chép bản đồ mạng cho tới lúc hai bên giống hệt nhau
+  - Ẩn dụ: Như hai tầng trên của tòa nhà: tầng ba chốt vai và trao mục lục, tầng nóc là hai tấm bản đồ chồng khít lên nhau.
+  - Thẻ ôn: *Bốn bậc sau của quan hệ láng giềng OSPF là gì, và Full nghĩa là gì?* → ExStart (chốt ai nói trước), Exchange (trao mục lục những trang bản đồ mình giữ), Loading (xin nốt phần còn thiếu), Full (hai bên giữ cùng một bản đồ mạng, giống nhau từng dòng).
+- **Câu network và area 0** `m16-area-0` — Mỗi câu network dùng wildcard mask để chọn những cổng tham gia OSPF; area 0 là vùng xương sống
+  - Ẩn dụ: Như khai với ban quản lý xem những cửa nào của nhà mình mở ra sân chung — cửa đã khai thì mới được vào cuộc họp của cả khu.
+  - Thẻ ôn: *Câu network của OSPF thật ra chọn cái gì, và viết bằng loại mặt nạ nào?* → Nó chọn những CỔNG có địa chỉ nằm trong dải khai, và cổng đã tham gia thì mạng của cổng đó tự được quảng bá. Dải viết bằng wildcard mask (mặt nạ đảo), cuối câu là area 0 — vùng xương sống.
+- **OSPF cost** `m16-cost` — Giá của một chặng; router cộng cost dọc đường và giữ lối có tổng nhỏ nhất
+  - Ẩn dụ: Như chọn đường theo tiền vé chứ không theo cảm tính: cộng vé từng chặng rồi đi lối rẻ nhất.
+  - Thẻ ôn: *OSPF chọn đường theo gì, và trong app này một chặng đáng giá bao nhiêu?* → Theo tổng cost dọc đường, nhỏ nhất thì thắng. Trong app mỗi chặng router sang router có cost 1 nên tổng cost chính là số chặng; thiết bị thật tính cost theo băng thông của cổng nên cổng nhanh có cost nhỏ hơn.
+- **Bảng định tuyến tự học** `m16-bang-tu-hoc` — Kết quả cuối cùng của OSPF, đọc bằng show ip route: chữ C nối trực tiếp, S gõ tay, O học từ OSPF
+  - Ẩn dụ: Như tấm bảng chỉ đường ở cổng làng, có ghi rõ mỗi lối này ai dựng: người trong làng, ông trưởng thôn, hay chính đám xe ôm truyền tai nhau.
+  - Thẻ ôn: *Trong show ip route, ba chữ cái đầu dòng C, S, O nghĩa là gì?* → C là mạng router nối trực tiếp, S là tuyến tĩnh gõ tay, O là tuyến học được từ OSPF. Dòng OSPF còn kèm cặp số 110 gạch chéo cost: 110 là mức tin cậy của OSPF, số sau là tổng cost tới đích.
+- **Hội tụ lại của OSPF** `m16-hoi-tu-vong` — Đường đứt thì cả vùng sửa bản đồ, tính lại cost và chuyển sang lối vòng còn lại
+  - Ẩn dụ: Như dòng nước gặp đá chắn: bịt lối này thì nó tự tìm lối kia — miễn là trước đó có ai đã đào sẵn một con mương thứ hai.
+  - Thẻ ôn: *Sợi cáp đứt thì OSPF làm gì, và điều kiện để nó cứu được mạng là gì?* → Hai đầu mất nhịp hello, sửa bản đồ rồi loan tin ra cả vùng; mọi router tính lại cost và lối vòng còn lại thành đường chính. Điều kiện: mạng phải có sẵn đường thừa — giao thức chỉ chọn được trong những lối đã kéo cáp.
+- **Khoảng cách quản trị** `m16-ad` — Mức tin cậy của một nguồn tuyến; tuyến tĩnh là 1, OSPF là 110, số nhỏ hơn thì được tin hơn
+  - Ẩn dụ: Như nghe hai người chỉ đường: lời của người mình tin hơn thì được nghe trước, dù người kia vừa đi qua đó về.
+  - Thẻ ôn: *Cùng một đích mà có cả tuyến tĩnh lẫn tuyến OSPF thì router chọn cái nào, và cái giá là gì?* → Chọn tuyến tĩnh, vì khoảng cách quản trị 1 nhỏ hơn 110 của OSPF. Cái giá: dòng gõ tay nằm im khi đường của nó đứt và che mất lối vòng OSPF đã tìm ra. Luật này chỉ xét khi hai tuyến cùng độ dài prefix.
+
+### Bài kiểm tra module (pool 15 câu, mỗi lượt rút 8, cần ≥ 85%)
+
+- **Đề:** Vì sao tuyến tĩnh đuối dần khi công ty mở thêm chi nhánh?
+  - **Dạng:** trắc nghiệm · **Vì số dòng phải gõ phình theo số mạng nhân số router, sót một dòng là mất liên lạc** ✓ / Vì mỗi tuyến tĩnh chiếm một phần băng thông cố định trên đường truyền giữa hai site / Vì router chỉ chứa được một số tuyến tĩnh nhất định rồi sẽ từ chối nhận thêm dòng
+  - **Chủ đề gợi ý (tầng 1):** thứ phình lên mỗi lần thêm một mạng
+  - **Vì sao:** Tuyến tĩnh không tốn băng thông và cũng chẳng chạm giới hạn số dòng ở cỡ mạng này. Cái gãy là công sức con người: mỗi chi nhánh mới là một vòng mở lại từng router cũ.
+- **Đề:** Với định tuyến động, trên mỗi router bạn khai những mạng của ai?
+  - **Dạng:** gõ tay · **Chấp nhận:** mạng của chính nó | mang cua chinh no | mạng của mình | mang cua minh | mạng nối trực tiếp | mang noi truc tiep | mạng của chính router đó | mang cua chinh router do
+  - **Chủ đề gợi ý (tầng 1):** chỗ khác nhau căn bản với tuyến tĩnh
+  - **Vì sao:** Chỉ khai mạng của chính router đó. Phần còn lại các router tự kể cho nhau nghe — đó mới là cái làm nên chữ động.
+- **Đề:** Hai router đã nối dây và cùng bật OSPF, nhưng bảng láng giềng vẫn trống. Nguyên nhân nào khớp nhất?
+  - **Dạng:** trắc nghiệm · **Một bên còn thiếu câu network phủ cổng đó, hoặc hai cổng khác subnet** ✓ / Hai router mang số hiệu tiến trình OSPF khác nhau nên chúng bỏ qua nhau / Chưa ai khai tay địa chỉ của router bên kia vào danh sách láng giềng tĩnh
+  - **Chủ đề gợi ý (tầng 1):** ba điều kiện lên láng giềng
+  - **Vì sao:** Số hiệu tiến trình chỉ có ý nghĩa nội bộ máy, hai bên khác số vẫn quen nhau. OSPF cũng không cần khai tay láng giềng — thứ hay thiếu là câu network phủ đúng cổng, hoặc hai cổng đặt lệch subnet.
+- **Đề:** Gói mà router OSPF phát đều đặn để tìm láng giềng và giữ nhịp với họ tên là gì?
+  - **Dạng:** gõ tay · **Chấp nhận:** hello | gói hello | goi hello | hello packet | gói tin hello | goi tin hello
+  - **Chủ đề gợi ý (tầng 1):** tiếng chào vọng qua hàng rào
+  - **Vì sao:** Gói hello. Nó vừa đi tìm láng giềng lúc đầu, vừa làm nhịp tim về sau — im vài nhịp là bên kia coi như hàng xóm đã mất.
+- **Đề:** Hai router ở trạng thái Full nghĩa là gì?
+  - **Dạng:** trắc nghiệm · **Hai bên đã giữ cùng một bản đồ mạng, giống nhau từng dòng** ✓ / Hai bên đã dùng hết băng thông của sợi cáp nối giữa chúng / Hai bên đã khai đủ mọi mạng của công ty vào câu network
+  - **Chủ đề gợi ý (tầng 1):** thứ được chép cho đầy đủ
+  - **Vì sao:** Full nói về BẢN ĐỒ: cơ sở dữ liệu đường đi của hai bên đã đồng bộ xong, nên từ đó hai router nhìn mạng giống hệt nhau.
+- **Đề:** Router-A nghe được hello của hàng xóm nhưng trong đó thiếu tên mình. Đang ở bậc nào?
+  - **Dạng:** trắc nghiệm · **Init — tiếng chào mới đi được một chiều** ✓ / 2-Way — hai bên đều đã thấy tên nhau / ExStart — hai bên đang chốt ai nói trước
+  - **Chủ đề gợi ý (tầng 1):** bậc của tấm danh thiếp thiếu tên mình
+  - **Vì sao:** Init: nghe được hello nhưng tên mình còn vắng trong đó, tức bên kia chưa nghe thấy mình. Có tên mình rồi mới lên 2-Way.
+- **Đề:** Câu network của OSPF viết dải địa chỉ bằng loại mặt nạ đảo tên là gì?
+  - **Dạng:** gõ tay · **Chấp nhận:** wildcard | wildcard mask | mặt nạ đảo | mat na dao | mặt nạ ngược | mat na nguoc
+  - **Chủ đề gợi ý (tầng 1):** loại mặt nạ đã học ở Module 13
+  - **Vì sao:** Wildcard mask. Với 0.0.0.255 thì ba nhóm số đầu phải khớp còn nhóm cuối tùy ý, nên nó tóm gọn mọi cổng thuộc một mạng /24.
+- **Đề:** Có hai lối tới cùng một mạng: một chặng, hoặc hai chặng vòng qua router khác. OSPF chọn thế nào?
+  - **Dạng:** trắc nghiệm · **Cộng cost dọc mỗi lối rồi giữ lối có tổng nhỏ hơn, ở đây là lối một chặng** ✓ / Giữ cả hai lối trong bảng và lần lượt gửi gói tin qua từng lối một / Giữ lối đi qua cổng có số hiệu nhỏ hơn trên chính router đang tính
+  - **Chủ đề gợi ý (tầng 1):** thước đo đường của OSPF
+  - **Vì sao:** OSPF cộng cost dọc đường và giữ tổng nhỏ nhất. Trong app mỗi chặng cost 1 nên lối một chặng thắng; số hiệu cổng không dính gì tới việc chọn đường.
+- **Đề:** Trong bảng show ip route, tuyến router tự học được từ OSPF mang chữ cái đầu dòng nào?
+  - **Dạng:** gõ tay · **Chấp nhận:** o | O | chữ o | chu o | mã o | ma o
+  - **Chủ đề gợi ý (tầng 1):** chữ cái đầu dòng của tuyến OSPF
+  - **Vì sao:** Chữ O. Cùng bảng đó, C là mạng nối trực tiếp và S là tuyến tĩnh gõ tay.
+- **Đề:** Cùng một mạng đích có cả tuyến tĩnh lẫn tuyến OSPF, cùng độ dài prefix. Router dùng cái nào?
+  - **Dạng:** trắc nghiệm · **Tuyến tĩnh, vì khoảng cách quản trị 1 nhỏ hơn 110 của OSPF** ✓ / Tuyến OSPF, vì nó mới được cập nhật gần đây hơn tuyến tĩnh / Cả hai luân phiên, để chia đều lưu lượng ra hai đường đó
+  - **Chủ đề gợi ý (tầng 1):** mức tin cậy của hai nguồn tuyến
+  - **Vì sao:** Số nhỏ hơn thì được tin hơn, nên tuyến tĩnh thắng. Cái giá là nó nằm im khi đường của nó đứt và che mất lối vòng OSPF đã tìm ra.
+- **Đề:** Xếp lại đúng trình tự những gì xảy ra sau khi một sợi cáp giữa hai router bị cắt.
+  - **Dạng:** xếp thứ tự (thứ tự đúng):
+    1. Gói hello im tiếng trên cổng hướng ra sợi cáp vừa đứt
+    2. Hai router hai đầu coi láng giềng đã mất và sửa bản đồ của mình
+    3. Tin sửa bản đồ lan ra cả vùng, mọi router bỏ đường hỏng
+    4. Mỗi router tính lại cost và bảng định tuyến chuyển sang lối vòng
+  - **Chủ đề gợi ý (tầng 1):** chuỗi phản ứng sau khi mất một đường
+  - **Vì sao:** Mất nhịp hello là dấu hiệu đầu tiên; từ đó bản đồ được sửa, tin lan ra cả vùng, và cuối cùng mỗi router tính lại đường ngắn nhất.
+- **Đề:** Đi hai tầng dưới của tòa nhà làm quen từ trí nhớ: mỗi phòng là bậc nào, và ở bậc đó đang xảy ra chuyện gì?
+  - **Dạng:** đi lại cung điện từ trí nhớ (4 phòng)
+    - tầng 1 phòng 1 · Down · im lặng hoàn toàn · hình `ospf-silent-speaker` — Tầng trệt phòng Down: chiếc loa treo trên tường im bặt, chẳng một tiếng chào nào vọng tới — trong sổ của router, hàng xóm vẫn còn là chỗ trống.
+    - tầng 1 phòng 2 · Attempt · gọi riêng từng nhà · hình `ospf-lone-phone` — Cạnh đó, phòng Attempt: một chiếc điện thoại quay số gọi đích danh sang nhà hàng xóm, vì ở xóm này hét chung ra giữa đường thì chẳng ai nghe thấy.
+    - tầng 2 phòng 1 · Init · mới nghe tiếng chào một chiều · hình `ospf-name-card` — Tầng hai phòng Init: một tấm danh thiếp vừa luồn qua khe cửa, trên đó có tên hàng xóm mà tìm mỏi mắt vẫn thiếu tên mình.
+    - tầng 2 phòng 2 · 2-Way · hai bên đã thấy tên nhau · hình `ospf-handshake` — Kế bên là phòng 2-Way: hai bàn tay bắt chặt giữa sảnh, vì tấm thiếp lần này có cả tên mình nằm trong danh sách hàng xóm.
+  - **Vì sao:** Down (im lặng hoàn toàn) → Attempt (gọi riêng từng nhà, chỉ có ở mạng NBMA) → Init (mới nghe tiếng chào một chiều) → 2-Way (hai bên đã thấy tên nhau).
+- **Đề:** Đi hai tầng trên của tòa nhà làm quen từ trí nhớ: mỗi phòng là bậc nào, và hai router đang trao nhau cái gì?
+  - **Dạng:** đi lại cung điện từ trí nhớ (4 phòng)
+    - tầng 3 phòng 1 · ExStart · chốt ai nói trước · hình `ospf-gavel` — Tầng ba phòng ExStart: chiếc búa chủ tọa gõ một tiếng xuống bàn để chốt xem ai được mở lời trước trong cuộc trao đổi sắp tới.
+    - tầng 3 phòng 2 · Exchange · trao mục lục cho nhau · hình `ospf-two-envelopes` — Sát vách là phòng Exchange: hai phong bì mục lục bay chéo qua nhau, mỗi bên khoe mình đang giữ những trang bản đồ mạng nào.
+    - tầng 4 phòng 1 · Loading · xin nốt phần còn thiếu · hình `ospf-funnel` — Tầng nóc phòng Loading: một cái phễu lớn rót nốt những trang bản đồ còn thiếu vào kho, xin đúng phần mình đang hụt.
+    - tầng 4 phòng 2 · Full · hai bản đồ giống hệt nhau · hình `ospf-twin-maps` — Phòng cuối cùng, phòng Full: hai tấm bản đồ đặt chồng khít lên nhau, lệch nhau đúng không một nét — từ giây đó hai router nhìn mạng y hệt nhau.
+  - **Vì sao:** ExStart (chốt ai nói trước) → Exchange (trao mục lục cho nhau) → Loading (xin nốt phần còn thiếu) → Full (hai bản đồ giống hệt nhau).
+- **Đề:** Router-DN đã bật OSPF và khai mạng LAN của nó, nhưng hai chi nhánh vẫn không gọi được nhau. Console đang cắm vào Router-DN: hãy khai nốt phần còn thiếu để PC-A gọi được PC-B.
+  - **Dạng:** console thiết bị (gõ lệnh IOS đạt mục tiêu)
+    - **Sơ đồ đề bài:** PC-A (Hà Nội) [192.168.1.10/24, gw 192.168.1.1] · PC-B (Đà Nẵng) [192.168.2.10/24, gw 192.168.2.1] · Switch-HN [p1:VLAN 1, p2:VLAN 1] · Switch-DN [p1:VLAN 1, p2:VLAN 1] · Router-HN [g0:192.168.1.1/24, g1:10.0.12.1/24] · Router-DN [g0:192.168.2.1/24, g1:10.0.12.2/24] — dây: PC-A (Hà Nội)·eth0 — Switch-HN·p1 | Switch-HN·p2 — Router-HN·g0 | PC-B (Đà Nẵng)·eth0 — Switch-DN·p1 | Switch-DN·p2 — Router-DN·g0 | Router-HN·g1 — Router-DN·g1
+    - **Console cắm ở:** Router-DN
+    - **Mục tiêu:**
+      - pc-a PHẢI gọi được pc-b
+    - **Lệnh mẫu trên Router-DN:** `enable` rồi `configure terminal` rồi `router ospf 1` rồi `network 10.0.12.0 0.0.0.255 area 0` rồi `end`
+  - **Chủ đề gợi ý (tầng 1):** cổng nào của Router-DN còn đứng ngoài OSPF
+  - **Vì sao:** Thiếu câu network cho đường nối sang Hà Nội: cổng g1 chưa tham gia OSPF nên láng giềng đứng ở lý do network-not-declared. Gõ network 10.0.12.0 0.0.0.255 area 0 trong tiến trình OSPF là hai bên lên Full và bảng đường tự mọc dòng chữ O.
+- **Đề:** Mạng ba chi nhánh này đang cho lưu lượng đi thẳng từ Hà Nội sang Sài Gòn. Hãy cắt sợi cáp nối thẳng đó ra và chứng minh PC-A vẫn gọi được PC-C, với đường đi ghé qua Router-DN.
+  - **Dạng:** phòng lab (lắp/sửa sơ đồ mạng)
+    - **Sơ đồ đề bài:** PC-A (Hà Nội) [192.168.1.10/24, gw 192.168.1.1] · PC-C (Sài Gòn) [192.168.3.10/24, gw 192.168.3.1] · Switch-HN [p1:VLAN 1, p2:VLAN 1] · Switch-SG [p1:VLAN 1, p2:VLAN 1] · Router-HN [g0:192.168.1.1/24, g1:10.0.12.1/24, g2:10.0.13.1/24] · Router-DN [g1:10.0.12.2/24, g2:10.0.23.2/24] · Router-SG [g0:192.168.3.1/24, g1:10.0.23.3/24, g2:10.0.13.3/24] — dây: PC-A (Hà Nội)·eth0 — Switch-HN·p1 | Switch-HN·p2 — Router-HN·g0 | PC-C (Sài Gòn)·eth0 — Switch-SG·p1 | Switch-SG·p2 — Router-SG·g0 | Router-HN·g1 — Router-DN·g1 | Router-DN·g2 — Router-SG·g1 | Router-HN·g2 — Router-SG·g2
+    - **Mục tiêu:**
+      - đường pc-a → pc-c phải qua r-2
+    - **Được phép:** gỡ dây
+    - **Lời giải mẫu:** PC-A (Hà Nội) [192.168.1.10/24, gw 192.168.1.1] · PC-C (Sài Gòn) [192.168.3.10/24, gw 192.168.3.1] · Switch-HN [p1:VLAN 1, p2:VLAN 1] · Switch-SG [p1:VLAN 1, p2:VLAN 1] · Router-HN [g0:192.168.1.1/24, g1:10.0.12.1/24, g2:10.0.13.1/24] · Router-DN [g1:10.0.12.2/24, g2:10.0.23.2/24] · Router-SG [g0:192.168.3.1/24, g1:10.0.23.3/24, g2:10.0.13.3/24] — dây: PC-A (Hà Nội)·eth0 — Switch-HN·p1 | Switch-HN·p2 — Router-HN·g0 | PC-C (Sài Gòn)·eth0 — Switch-SG·p1 | Switch-SG·p2 — Router-SG·g0 | Router-HN·g1 — Router-DN·g1 | Router-DN·g2 — Router-SG·g1
+  - **Chủ đề gợi ý (tầng 1):** lối còn lại khi đường thẳng mất
+  - **Vì sao:** Gỡ sợi nối thẳng Router-HN với Router-SG là đủ: cả vùng bỏ đường đó khỏi bản đồ, tính lại cost, và mạng 192.168.3.0 được học lại với cost 2 qua Router-DN — không ai phải gõ thêm dòng lệnh nào.
+
+## ACL và bảo mật lớp 2 — Luật chặn đúng người `module-17`
+
+Phần D · 5 chặng · 5 bài · 12 khái niệm
+
+**Chặng:** Dòng cấm không ai nhìn thấy (m17-bai-1) → Chặn cả xóm hay chặn đúng một cửa (m17-bai-2) → Đúng cửa, đúng chiều (m17-bai-3) → Khóa cổng switch lại (m17-bai-4) → Kẻ mạo danh trong xóm (m17-bai-5)
+
+### Bài: Tìm ra dòng luật đang chặn cả sếp `m17-bai-1`
+
+**1 · Khởi động (hook):** Người quản trị viết đúng MỘT dòng luật để chặn máy phòng khách khỏi máy chủ kế toán. Gõ xong, thử lại: máy khách tắc thật. Nửa tiếng sau giám đốc gọi xuống — máy của sếp cũng không vào được nữa. Mở luật ra xem thì trên router vẫn chỉ có một dòng, và dòng ấy không hề nhắc tới máy giám đốc. Vậy ai đang chặn sếp?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Console đang cắm vào R-Van-phong. Trước khi ai giải thích gì cho bạn, hãy tự mở danh sách lọc trên router ra xem nó thật sự có mấy dòng, và dòng nào đang ăn gói tin. Sai cũng không sao — phần này không tính điểm.
+  - **Dạng:** console thiết bị (gõ lệnh IOS đạt mục tiêu)
+    - **Sơ đồ đề bài:** PC-Giam-doc [192.168.1.10/24, gw 192.168.1.1] · PC-Phong-khach [192.168.1.66/24, gw 192.168.1.1] · SRV-Ke-toan [192.168.2.50/24, gw 192.168.2.1] · SW-Van-phong [p1:VLAN 1, p2:VLAN 1, p3:VLAN 1] · SW-May-chu [p1:VLAN 1, p2:VLAN 1] · R-Van-phong [g0:192.168.1.1/24, g1:192.168.2.1/24] — dây: PC-Giam-doc·eth0 — SW-Van-phong·p1 | PC-Phong-khach·eth0 — SW-Van-phong·p2 | SW-Van-phong·p3 — R-Van-phong·g0 | R-Van-phong·g1 — SW-May-chu·p1 | SW-May-chu·p2 — SRV-Ke-toan·eth0
+    - **Console cắm ở:** R-Van-phong
+    - **Mục tiêu:**
+      - phải xem "show access-lists" trên R-Van-phong
+    - **Lệnh mẫu trên R-Van-phong:** `show access-lists`
+  - **Chủ đề gợi ý (tầng 1):** lệnh mở các danh sách lọc trên router
+  - **Vì sao:** Bảng in ra đúng một dòng: 10 deny icmp host 192.168.1.66 any. Không dòng nào nhắc tới 192.168.1.10, mà sếp vẫn tắc. Lý do nằm ở chỗ máy không in ra: cuối MỌI danh sách còn một dòng vô hình — cấm tất cả những gì chưa được cho phép. Máy khách chết ở dòng 10; cả văn phòng còn lại chết ở dòng vô hình ấy.
+
+**3 · Khám phá (teach):**
+- *[m17-acl]* ACL là một danh sách luật gắn lên cổng router, và nó làm đúng việc của người soát vé: mỗi gói tin đi qua cổng đó bị đem ra so với từng dòng, cho đi hay chặn lại. Một dòng luật gồm ba mảnh: cho phép hay cấm, giao thức nào, và cặp nguồn - đích. Danh sách đánh số từ 1 tới 99 gọi là chuẩn, từ 100 tới 199 gọi là mở rộng — bài sau bạn sẽ thấy hai loại ấy nhìn được những gì. Viết luật ra thôi thì chưa lọc ai cả: phải áp nó lên một cổng, theo một chiều, luật mới bắt đầu có hiệu lực.
+  - **Đào sâu hơn:** Hai chỗ dễ hiểu nhầm. Một, ACL chỉ soi gói tin ĐI QUA router; gói do chính router sinh ra không bị danh sách của nó chặn. Hai, ARP là khung tầng 2, không phải gói IP, nên nó luồn qua bên dưới mọi ACL — trong phòng lab của app cũng vậy. Nghĩa là hai máy cùng xóm vẫn hỏi tên nhau được dù bạn có viết luật gì trên router đi nữa; ACL chỉ có tiếng nói ở chỗ gói tin phải nhờ router chuyển giúp.
+- *[m17-thu-tu-dong]* Router đọc danh sách từ trên xuống và DỪNG ở dòng khớp đầu tiên. Dòng đó nói cho đi thì gói đi, nói cấm thì gói chết tại chỗ; những dòng phía dưới không bao giờ được hỏi tới. Vì thế thứ tự chính là luật: viết dòng rộng (cho phép cả dải) lên trên dòng hẹp (cấm một máy) thì dòng hẹp thành vô nghĩa, nó nằm đó cho đẹp. Quy tắc gõ: hẹp trước, rộng sau. Với ACL đánh số, dòng mới luôn rơi xuống CUỐI danh sách — không chèn được vào giữa, nên phải nghĩ trước khi gõ.
+  - **Đào sâu hơn:** Lệnh show access-lists in kèm số đếm sau mỗi dòng: bao nhiêu gói đã khớp dòng đó. Cột ấy là bằng chứng khi chẩn đoán. Dòng có số đếm tăng nghĩa là gói tin CÓ tới được router và CÓ ăn đúng dòng đó — bạn biết mình đang nhìn đúng thủ phạm. Ngược lại, gói bị chặn mà không dòng nào tăng số thì kẻ ra tay là dòng vô hình ở màn hình tiếp theo.
+- *[m17-implicit-deny]* Cuối mọi danh sách lọc có một dòng bạn không gõ và cũng không nhìn thấy: cấm tất cả. Gói tin đọc hết các dòng viết ra mà không khớp dòng nào thì rơi vào đó và chết. Hệ quả rất phũ: ngay khi bạn áp một danh sách lên cổng, mặc định của cổng ấy đổi từ cho tất cả sang cấm tất cả, và chỉ những gì bạn cho phép tường minh mới còn đi được. Nên danh sách nào cũng phải kết bằng một dòng mở cửa cho phần còn lại, nếu ý bạn chỉ là chặn vài kẻ.
+  - **Đào sâu hơn:** Vì sao dòng ấy tồn tại? Vì luật an toàn ngoài đời cũng thế: cái gì không được cho phép thì mặc định là không được. Thà chặn nhầm còn hơn để lọt — miễn là người viết luật biết mình đang bật cái mặc định đó lên. Cái bẫy nằm ở chỗ nó vô hình: show access-lists không in nó ra, nên người mới nhìn danh sách một dòng và tưởng mình chỉ vừa chặn một máy.
+
+**4 · Thử tay (practice, fading 0):**
+- **Ví dụ giải sẵn:** Đọc một danh sách lọc đúng cách router đọc, từng bước một. Danh sách có hai dòng viết ra: dòng 10 cấm icmp từ host 192.168.1.66 đi bất kỳ đâu; dòng 20 cho phép ip từ dải 192.168.1.0 wildcard 0.0.0.255 đi bất kỳ đâu. Cộng thêm dòng vô hình cuối cùng: cấm tất cả. Bước 1 — gói của máy khách 192.168.1.66: so dòng 10, khớp cả giao thức lẫn nguồn, ăn ngay, CẤM, dừng đọc. Bước 2 — gói của máy giám đốc 192.168.1.10: so dòng 10, nguồn không khớp nên bỏ qua; so dòng 20, địa chỉ nằm trong dải 192.168.1.0 tới 192.168.1.255 nên khớp, CHO ĐI, dừng đọc. Bước 3 — gói của một máy ở dải 192.168.9.x: dòng 10 không khớp, dòng 20 cũng không khớp, hết dòng viết ra, dòng vô hình ra tay, CẤM. Bước 4 — rút ra ba thói quen: luôn đọc từ trên xuống, luôn dừng ở dòng khớp đầu tiên, và luôn nhớ dòng cuối cùng dù nó không hiện trên màn hình.
+- **Đề:** Chính là ca lúc nãy, giờ tới lượt bạn chữa. Trên R-Van-phong, danh sách 101 mới có đúng một dòng cấm máy phòng khách và đang áp lên cổng g0 chiều vào. Hãy sửa sao cho máy giám đốc gọi được máy chủ kế toán trở lại, mà máy phòng khách thì vẫn phải tắc. Gõ show access-lists để tự làm chứng cho mình.
+  - **Dạng:** console thiết bị (gõ lệnh IOS đạt mục tiêu)
+    - **Sơ đồ đề bài:** PC-Giam-doc [192.168.1.10/24, gw 192.168.1.1] · PC-Phong-khach [192.168.1.66/24, gw 192.168.1.1] · SRV-Ke-toan [192.168.2.50/24, gw 192.168.2.1] · SW-Van-phong [p1:VLAN 1, p2:VLAN 1, p3:VLAN 1] · SW-May-chu [p1:VLAN 1, p2:VLAN 1] · R-Van-phong [g0:192.168.1.1/24, g1:192.168.2.1/24] — dây: PC-Giam-doc·eth0 — SW-Van-phong·p1 | PC-Phong-khach·eth0 — SW-Van-phong·p2 | SW-Van-phong·p3 — R-Van-phong·g0 | R-Van-phong·g1 — SW-May-chu·p1 | SW-May-chu·p2 — SRV-Ke-toan·eth0
+    - **Console cắm ở:** R-Van-phong
+    - **Mục tiêu:**
+      - pc-sep PHẢI gọi được srv-ke-toan
+      - pc-khach phải KHÔNG gọi được srv-ke-toan
+      - phải xem "show access-lists" trên R-Van-phong
+    - **Lệnh mẫu trên R-Van-phong:** `enable` rồi `configure terminal` rồi `access-list 101 permit ip any any` rồi `end` rồi `show access-lists`
+  - **Chủ đề gợi ý (tầng 1):** dòng dành cho phần còn lại
+  - **Gợi ý (tầng 2):** Danh sách đang thiếu câu nói cho phần còn lại đi qua. ACL đánh số chỉ thêm được vào CUỐI — mà cuối lại đúng là chỗ câu ấy cần nằm.
+  - **Lời giải (tầng 3):** Vào chế độ cấu hình rồi thêm một dòng mở cửa cho phần còn lại: access-list 101 permit ip any any. Nó rơi xuống thành dòng 20, tức là NẰM SAU dòng cấm máy khách — nên máy khách vẫn chết ở dòng 10, còn mọi máy khác gặp dòng 20 và đi được. Gõ show access-lists rồi thử lại, bạn sẽ thấy số đếm của từng dòng nói đúng ai đang ăn gói.
+- **Đề:** Một người gõ hai dòng theo thứ tự này: trước là permit ip any any, sau là deny icmp host 192.168.1.66 any. Kết quả ra sao?
+  - **Dạng:** trắc nghiệm · **Máy 192.168.1.66 vẫn đi được, vì dòng cho phép đứng trên đã ăn gói trước** ✓ / Máy 192.168.1.66 bị chặn, vì dòng cấm nào cũng mạnh hơn dòng cho phép / Cả hai dòng cùng vô hiệu, vì trong một danh sách không được trộn cho phép với cấm
+  - **Chủ đề gợi ý (tầng 1):** dòng nào được đọc trước
+  - **Gợi ý (tầng 2):** Router dừng ở dòng khớp ĐẦU TIÊN. Gói của .66 gặp dòng nào trước?
+  - **Lời giải (tầng 3):** Nó vẫn đi được. Gói của .66 khớp ngay dòng permit ip any any ở trên, router quyết định xong và dừng — dòng cấm phía dưới không bao giờ được hỏi tới. Trong ACL không có chuyện cấm mạnh hơn cho phép; chỉ có trên mạnh hơn dưới.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: cuối mỗi danh sách lọc luôn có một dòng không được in ra. Dòng đó làm gì?
+  - **Dạng:** gõ tay · **Chấp nhận:** cấm tất cả | cam tat ca | cấm hết | cam het | chặn tất cả | chan tat ca | cấm tất cả phần còn lại | cam tat ca phan con lai | cấm những gì chưa được cho phép | cam nhung gi chua duoc cho phep | deny all | deny any
+  - **Chủ đề gợi ý (tầng 1):** mặc định của một cổng đã áp danh sách
+  - **Gợi ý (tầng 2):** Gói tin đọc hết các dòng viết ra mà không khớp dòng nào thì chuyện gì xảy ra với nó?
+  - **Lời giải (tầng 3):** Nó cấm tất cả. Gói không khớp dòng nào thì rơi vào dòng vô hình ấy và chết — nên áp một danh sách lên cổng là đổi mặc định của cổng từ cho tất cả thành cấm tất cả.
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao viết đúng một dòng cấm mà cả văn phòng lại mất đường đi?
+  - **Nhóm ý cần chạm:** [vô hình, vo hinh, không in ra, khong in ra, ngầm, ngam, implicit] · [cấm tất cả, cam tat ca, cấm hết, cam het, chặn tất cả, chan tat ca, deny all] · [cuối danh sách, cuoi danh sach, dòng cuối, dong cuoi, sau cùng, sau cung] · [không khớp, khong khop, không có dòng nào cho phép, khong co dong nao cho phep, thiếu permit, thieu permit]
+  - **Trả lời mẫu:** Vì cuối danh sách có một dòng vô hình cấm tất cả. Dòng tôi gõ chỉ nói về máy phòng khách, nên gói của mọi máy khác không khớp dòng nào và rơi thẳng vào dòng cấm cuối cùng. Áp danh sách lên cổng là bật cái mặc định cấm tất cả lên, muốn giữ đường cho phần còn lại thì phải viết thêm một dòng permit.
+
+**6 · Tổng kết:**
+- ACL là danh sách luật gắn lên cổng router; viết ra thôi chưa lọc ai, phải áp lên cổng theo một chiều.
+- Router đọc từ trên xuống và dừng ở dòng khớp đầu tiên — hẹp viết trước, rộng viết sau.
+- Cuối mọi danh sách có dòng vô hình cấm tất cả; nó là thủ phạm quen mặt của những ca chặn nhầm.
+- *Úp mở bài sau:* Nhưng dòng luật ban nãy chặn máy khách đi MỌI nơi, kể cả ra Internet — trong khi sếp chỉ muốn cấm nó vào máy chủ kế toán. Bài sau: hai họ danh sách, một họ chỉ nhìn được người gửi, họ kia nhìn được cả người nhận.
+
+### Bài: Chọn đúng loại danh sách cho việc mình cần `m17-bai-2`
+
+**1 · Khởi động (hook):** Yêu cầu của sếp nghe rất gọn: máy phòng khách không được vào máy chủ kế toán, nhưng vẫn phải lướt web bình thường. Bạn viết một luật chặn máy đó — và khách kêu mất mạng hoàn toàn. Luật đã chạy đúng như bạn viết. Vậy bạn đã viết thiếu điều gì mà sếp coi là hiển nhiên?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử: một danh sách lọc CHUẨN (số 1 tới 99) nhìn được thông tin nào của gói tin?
+  - **Dạng:** trắc nghiệm · **Chỉ địa chỉ người gửi** ✓ / Cả người gửi lẫn người nhận / Người gửi, người nhận và cả cổng dịch vụ
+  - **Chủ đề gợi ý (tầng 1):** chữ chuẩn ở đây nghĩa là đơn giản nhất
+  - **Vì sao:** Chỉ nhìn được địa chỉ nguồn. Đó vừa là ưu điểm (viết một dòng là xong) vừa là cái bẫy: đã chặn một nguồn thì chặn nó đi mọi nơi, không tách được nơi nào cấm nơi nào cho.
+
+**3 · Khám phá (teach):**
+- *[m17-acl-chuan]* Danh sách CHUẨN mang số từ 1 tới 99. Nó chỉ soi được một thứ: gói tin này của ai gửi. Không biết gói đang đi đâu, không biết là ping hay web. Vì thế một dòng cấm trong danh sách chuẩn là cấm nguồn ấy đi TẤT CẢ mọi nơi — đúng cảnh máy phòng khách mất mạng sạch ở phần mở đầu. Nó hợp cho những việc thô mà rõ: cấm hẳn một dải, hoặc chỉ cho đúng một dải quản trị vào.
+  - **Đào sâu hơn:** Fidelity cần nói rõ: trên thiết bị thật, danh sách chuẩn viết ngắn hơn vì nó chỉ khai một vế nguồn. Console trong app này rút gọn ngữ pháp cho đồng nhất — mọi dòng đều viết đủ giao thức, nguồn rồi đích, dù bạn dùng số hiệu nào. Bạn vẫn học đúng cái quan trọng (loại nào nhìn được gì, đặt ở đâu), chỉ cần nhớ rằng ngoài đời một dòng chuẩn thật gọn hơn dòng bạn gõ ở đây.
+- *[m17-acl-mo-rong]* Danh sách MỞ RỘNG mang số từ 100 tới 199 và nhìn được cả bốn thứ: giao thức, nguồn, đích, và với tcp hay udp thì thêm cổng dịch vụ. Nhờ vậy nó nói được đúng câu của sếp: máy 192.168.1.66 không được ping tới 192.168.2.50, còn đi chỗ khác thì tùy. Cái giá phải trả là mỗi dòng dài hơn và bạn phải nghĩ kỹ hơn về vế đích — nhưng đó chính là chỗ luật trở nên đúng người đúng việc.
+  - **Đào sâu hơn:** Địa chỉ trong mọi dòng luật viết bằng wildcard mask của Module 13, không phải subnet mask: bit 0 là chỗ phải khớp, bit 1 là chỗ mặc kệ. Ba lối viết tắt hay gặp: any là 0.0.0.0 với wildcard 255.255.255.255 (mặc kệ tất), host 192.168.2.50 là wildcard 0.0.0.0 (khớp từng bit), còn 192.168.1.0 0.0.0.255 nghĩa là cả xóm .1. Phòng lab chỉ sinh lưu lượng ping, nên dòng luật tcp hay udp kèm cổng dịch vụ ở đây là để ĐỌC và để hiểu, chứ không có gói nào của app khớp vào chúng.
+
+**4 · Thử tay (practice, fading 1):**
+- **Đề:** Router R-Van-phong hiện chưa có luật nào. Hãy viết đúng ý sếp: PC-Phong-khach (192.168.1.66) không được ping tới SRV-Ke-toan (192.168.2.50), còn PC-Giam-doc (192.168.1.10) thì vẫn phải gọi được máy chủ. Đây là việc cần loại danh sách nhìn thấy cả vế đích — và đừng quên phần còn lại của văn phòng.
+  - **Dạng:** console thiết bị (gõ lệnh IOS đạt mục tiêu)
+    - **Sơ đồ đề bài:** PC-Giam-doc [192.168.1.10/24, gw 192.168.1.1] · PC-Phong-khach [192.168.1.66/24, gw 192.168.1.1] · SRV-Ke-toan [192.168.2.50/24, gw 192.168.2.1] · SW-Van-phong [p1:VLAN 1, p2:VLAN 1, p3:VLAN 1] · SW-May-chu [p1:VLAN 1, p2:VLAN 1] · R-Van-phong [g0:192.168.1.1/24, g1:192.168.2.1/24] — dây: PC-Giam-doc·eth0 — SW-Van-phong·p1 | PC-Phong-khach·eth0 — SW-Van-phong·p2 | SW-Van-phong·p3 — R-Van-phong·g0 | R-Van-phong·g1 — SW-May-chu·p1 | SW-May-chu·p2 — SRV-Ke-toan·eth0
+    - **Console cắm ở:** R-Van-phong
+    - **Mục tiêu:**
+      - pc-khach phải KHÔNG gọi được srv-ke-toan
+      - pc-sep PHẢI gọi được srv-ke-toan
+    - **Lệnh mẫu trên R-Van-phong:** `enable` rồi `configure terminal` rồi `access-list 101 deny icmp host 192.168.1.66 host 192.168.2.50` rồi `access-list 101 permit ip any any` rồi `interface g0` rồi `ip access-group 101 in` rồi `end`
+  - **Chủ đề gợi ý (tầng 1):** loại danh sách nhìn được cả vế đích
+  - **Gợi ý (tầng 2):** Ba mảnh cần gõ, theo đúng thứ tự: một dòng cấm hẹp (deny icmp host … host …), một dòng mở cho phần còn lại (permit ip any any), rồi vào interface g0 và áp danh sách vào chiều in. Số hiệu phải nằm trong khoảng 100 tới 199.
+  - **Lời giải (tầng 3):** Gõ lần lượt: enable, configure terminal, access-list 101 deny icmp host 192.168.1.66 host 192.168.2.50, access-list 101 permit ip any any, interface g0, ip access-group 101 in, end. Dòng cấm hẹp đứng trước nên nó ăn đúng gói của máy khách gửi tới máy chủ; dòng permit đứng sau giữ đường cho tất cả những gì còn lại, kể cả máy khách đi nơi khác.
+- **Đề:** Bạn cần một luật phân biệt được nguồn VÀ đích. Số hiệu danh sách phải nằm trong khoảng nào?
+  - **Dạng:** gõ tay · **Chấp nhận:** 100-199 | 100 199 | 100 tới 199 | 100 toi 199 | từ 100 đến 199 | tu 100 den 199 | 100 den 199 | mở rộng | mo rong | acl mở rộng | acl mo rong | extended
+  - **Chủ đề gợi ý (tầng 1):** dải số của họ danh sách mở rộng
+  - **Gợi ý (tầng 2):** Một họ chiếm dải số nhỏ, họ kia chiếm dải số lớn hơn. Họ nào nhìn được nhiều thứ hơn?
+  - **Lời giải (tầng 3):** Từ 100 tới 199 — dải của danh sách mở rộng. Dải 1 tới 99 là danh sách chuẩn, chỉ soi được nguồn nên không tách được đích này với đích kia.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Đóng bài lại: danh sách CHUẨN chỉ so được vế nào của gói tin?
+  - **Dạng:** gõ tay · **Chấp nhận:** nguồn | nguon | địa chỉ nguồn | dia chi nguon | người gửi | nguoi gui | máy gửi | may gui | source
+  - **Chủ đề gợi ý (tầng 1):** một trong hai vế địa chỉ
+  - **Gợi ý (tầng 2):** Nếu nó biết được vế kia thì đã chẳng có chuyện chặn một máy là chặn nó đi khắp nơi.
+  - **Lời giải (tầng 3):** Chỉ vế nguồn — địa chỉ người gửi. Vì mù vế đích nên một dòng cấm trong danh sách chuẩn là cấm nguồn ấy đi mọi nơi.
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao yêu cầu kiểu "cấm phòng khách vào máy chủ kế toán nhưng vẫn cho lướt web" bắt buộc phải dùng danh sách mở rộng?
+  - **Nhóm ý cần chạm:** [đích, dich, nơi đến, noi den, người nhận, nguoi nhan, máy chủ, may chu] · [chuẩn, chuan, 1 đến 99, 1 den 99, standard] · [mở rộng, mo rong, 100, extended] · [chặn hết, chan het, cấm mọi nơi, cam moi noi, mất mạng, mat mang, tất cả các đích, tat ca cac dich]
+  - **Trả lời mẫu:** Vì yêu cầu đó phân biệt theo NƠI ĐẾN, mà danh sách chuẩn chỉ nhìn được người gửi. Dùng chuẩn thì cấm máy phòng khách là cấm nó đi mọi nơi, mất luôn cả đường ra web. Danh sách mở rộng số 100 tới 199 nhìn được cả đích nên viết được đúng câu: cấm máy đó tới máy chủ kế toán, còn các đích khác vẫn cho đi.
+
+**6 · Tổng kết:**
+- Danh sách chuẩn (1 tới 99) chỉ soi được nguồn: cấm một nguồn là cấm nó đi mọi nơi.
+- Danh sách mở rộng (100 tới 199) soi được giao thức, nguồn, đích và cổng dịch vụ.
+- Địa chỉ trong luật viết bằng wildcard: any là mặc kệ tất, host là khớp từng bit.
+- *Úp mở bài sau:* Luật đã viết đúng chữ rồi. Nhưng cùng một danh sách, gắn vào cổng này thay vì cổng kia, hoặc chiều vào thay vì chiều ra, sẽ cho ra hai kết quả khác hẳn nhau — bài sau là chuyện đặt luật đứng ở đâu.
+
+### Bài: Gắn luật vào đúng cửa, đúng chiều `m17-bai-3`
+
+**1 · Khởi động (hook):** Hai người viết y hệt một danh sách lọc. Người thứ nhất gắn nó vào cổng phía văn phòng, chiều gói tin đi vào router. Người thứ hai gắn vào cổng phía máy chủ, chiều gói tin đi ra. Cùng một dòng chữ, cùng một mạng — nhưng chỉ một trong hai chặn đúng thứ cần chặn. Vì sao chỗ đứng của luật lại đổi được kết quả?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Bạn vừa gõ xong hai dòng access-list trên router và thoát ra. Chưa gõ thêm gì nữa. Lúc này mạng ra sao?
+  - **Dạng:** trắc nghiệm · **Chưa có gì đổi, vì danh sách chưa được gắn vào cổng nào** ✓ / Luật đã có hiệu lực ngay trên mọi cổng của router đó / Router chặn sạch mọi hướng cho tới khi bạn gõ lệnh mở lại
+  - **Chủ đề gợi ý (tầng 1):** quãng giữa viết luật và luật có hiệu lực
+  - **Vì sao:** Chưa có gì đổi. Viết danh sách mới chỉ là soạn nội quy để trong ngăn kéo; phải dán nó lên một cánh cửa cụ thể theo một chiều cụ thể bằng ip access-group thì người gác mới bắt đầu đọc.
+
+**3 · Khám phá (teach):**
+- *[m17-chieu-in-out]* Chiều được tính theo con mắt của ROUTER, không phải theo cảm giác của bạn. Chiều in là lúc gói vừa đi vào cổng đó, trước khi router tra bảng định tuyến. Chiều out là lúc gói đã được chọn đường và sắp rời cổng đó. Cùng một danh sách đặt hai chiều sẽ soi hai luồng gói khác nhau: gói của văn phòng đi lên máy chủ là chiều IN ở cổng phía văn phòng, nhưng lại là chiều OUT ở cổng phía máy chủ. Câu hỏi phải tự trả lời trước khi gõ: luồng mình muốn chặn đi vào cổng nào và ra cổng nào?
+  - **Đào sâu hơn:** Chặn ở chiều in rẻ hơn: gói bị loại trước cả bước tra bảng định tuyến, router đỡ làm việc thừa. Đó là một lý do người ta thích in hơn out khi cả hai cùng chặn đúng. Lý do thứ hai thuộc về chẩn đoán: luật đặt ngay cửa vào thì số đếm match nói thẳng có bao nhiêu gói của nhánh ấy đang bị chặn, không lẫn với gói của nhánh khác cũng đi qua cổng ra.
+- *[m17-dat-o-dau]* Quy tắc nghề gói lại thành một câu: danh sách MỞ RỘNG đặt gần NGUỒN, danh sách CHUẨN đặt gần ĐÍCH. Mở rộng biết cả đích nên chặn được ngay tại cửa nhà kẻ bị cấm, gói chết sớm, không tốn đường truyền. Chuẩn thì mù vế đích — đặt nó gần nguồn là chặn kẻ đó đi mọi nơi, kể cả những nơi lẽ ra được đi; nên phải mang xuống sát đích cần bảo vệ, chỗ mà chặn nguồn ấy đúng bằng chặn nguồn ấy tới đích ấy.
+  - **Đào sâu hơn:** Quy tắc này là hệ quả chứ không phải điều luật thần bí: nó chỉ nói rằng hãy chặn ở chỗ gần nhất mà luật của bạn còn đủ thông tin để chặn ĐÚNG. Khi phải chọn giữa chặn sớm và chặn đúng thì chặn đúng luôn thắng — một luật chặn nhầm cả người ngay tình còn tệ hơn một luật để gói chạy thêm vài chặng.
+- *[m17-acl-vs-stateful]* Nhớ lại tường lửa stateful ở Module 7: nó GHI SỔ cuộc gọi bạn vừa mở, nên khi trang web trả lời, lời đáp được vào thẳng dù chẳng ai viết luật cho chiều về. ACL đánh số không có cuốn sổ đó. Nó xét từng gói một cách rời rạc, không nhớ gói nào vừa đi qua, nên chiều về phải tự bạn lo bằng một dòng luật khác. Hai họ không thay thế nhau: ACL là dao mổ thô đặt trên đường đi của router, tường lửa stateful là người gác nhớ mặt khách.
+  - **Đào sâu hơn:** Đó là lý do các dòng luật ngoài đời hay có chữ established ở vế tcp: nó nhận diện gói của một cuộc trò chuyện đã mở sẵn, tức là mượn tạm một chút trí nhớ mà không cần cả bộ máy stateful. Trong phạm vi của app này chỉ có ping, và ping thì gói đi lẫn lời đáp đều là icmp — nên nếu bạn chặn icmp một chiều thì hãy tự hỏi chiều còn lại đi qua cổng nào.
+
+**4 · Thử tay (practice, fading 1):**
+- **Đề:** Người trực ca trước đã viết sẵn danh sách 101 trên R-Van-phong: dòng 10 cấm máy phòng khách ping máy chủ kế toán, dòng 20 cho phép phần còn lại. Viết xong thì hết ca, chưa gắn vào đâu cả — và máy khách vẫn vào máy chủ ngon lành. Hãy gắn danh sách vào đúng cửa, đúng chiều, rồi mở show access-lists ra kiểm chứng.
+  - **Dạng:** console thiết bị (gõ lệnh IOS đạt mục tiêu)
+    - **Sơ đồ đề bài:** PC-Giam-doc [192.168.1.10/24, gw 192.168.1.1] · PC-Phong-khach [192.168.1.66/24, gw 192.168.1.1] · SRV-Ke-toan [192.168.2.50/24, gw 192.168.2.1] · SW-Van-phong [p1:VLAN 1, p2:VLAN 1, p3:VLAN 1] · SW-May-chu [p1:VLAN 1, p2:VLAN 1] · R-Van-phong [g0:192.168.1.1/24, g1:192.168.2.1/24] — dây: PC-Giam-doc·eth0 — SW-Van-phong·p1 | PC-Phong-khach·eth0 — SW-Van-phong·p2 | SW-Van-phong·p3 — R-Van-phong·g0 | R-Van-phong·g1 — SW-May-chu·p1 | SW-May-chu·p2 — SRV-Ke-toan·eth0
+    - **Console cắm ở:** R-Van-phong
+    - **Mục tiêu:**
+      - pc-khach phải KHÔNG gọi được srv-ke-toan
+      - pc-sep PHẢI gọi được srv-ke-toan
+      - phải xem "show access-lists" trên R-Van-phong
+    - **Lệnh mẫu trên R-Van-phong:** `enable` rồi `configure terminal` rồi `interface g0` rồi `ip access-group 101 in` rồi `end` rồi `show access-lists`
+  - **Chủ đề gợi ý (tầng 1):** cổng phía văn phòng và chiều gói tin đi vào
+  - **Gợi ý (tầng 2):** Danh sách này là loại mở rộng nên đặt gần nguồn: cổng g0 quay về phía văn phòng. Luồng cần chặn đi VÀO cổng ấy, nên chiều cần chọn là in. Vào interface g0 rồi gắn bằng ip access-group.
+  - **Lời giải (tầng 3):** Gõ: enable, configure terminal, interface g0, ip access-group 101 in, end. Đặt ở g0 chiều in là chặn ngay tại cửa vào, gói của máy khách chết trước cả khi router tra bảng đường. Gõ show access-lists sau vài lượt thử, số đếm ở dòng 10 sẽ tăng đúng bằng số gói máy khách vừa gửi.
+- **Đề:** Trộn lại kiến thức Module 7: ở nhà, bạn mở một trang web và lời đáp về được dù chẳng ai viết luật cho chiều về. Nếu đường đi ấy chỉ có ACL đánh số canh gác thì sao?
+  - **Dạng:** trắc nghiệm · **Chiều về phải có luật riêng cho phép, vì ACL không nhớ cuộc gọi nào vừa mở** ✓ / Chiều về vẫn tự lọt, vì ACL ghi sổ cuộc gọi giống hệt tường lửa stateful / Chiều về bị chặn hẳn, vì ACL cấm mọi gói tin không do router tự sinh ra
+  - **Chủ đề gợi ý (tầng 1):** cuốn sổ nhớ cuộc gọi mà ACL không có
+  - **Gợi ý (tầng 2):** Thứ làm nên chữ stateful ở Module 7 là gì? ACL đánh số có thứ đó không?
+  - **Lời giải (tầng 3):** Chiều về phải được cho phép tường minh. Tường lửa stateful nhớ cuộc gọi bạn vừa mở nên lời đáp tự được vào; ACL đánh số xét từng gói rời rạc, không có trí nhớ, nên nếu bạn chặn nhầm chiều về thì cuộc trò chuyện đứt dù chiều đi vẫn thông.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: danh sách mở rộng nên đặt gần đầu nào của đường đi — nguồn hay đích?
+  - **Dạng:** gõ tay · **Chấp nhận:** nguồn | nguon | gần nguồn | gan nguon | gần máy gửi | gan may gui | source
+  - **Chủ đề gợi ý (tầng 1):** loại nào biết đủ thông tin để chặn sớm
+  - **Gợi ý (tầng 2):** Nó biết cả vế đích, nên chặn sớm cũng không sợ chặn nhầm đích khác.
+  - **Lời giải (tầng 3):** Gần nguồn. Vì mở rộng biết cả vế đích nên chặn ngay cửa nhà kẻ bị cấm vẫn đúng người đúng việc, lại tiết kiệm đường truyền. Danh sách chuẩn thì ngược lại: mù vế đích nên phải mang xuống gần đích.
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao danh sách chuẩn lại phải đặt gần đích, trong khi mở rộng thì đặt gần nguồn?
+  - **Nhóm ý cần chạm:** [chỉ biết nguồn, chi biet nguon, mù đích, mu dich, không biết đích, khong biet dich] · [chặn nhầm, chan nham, chặn hết, chan het, mọi nơi, moi noi, mọi đích, moi dich] · [gần đích, gan dich, sát đích, sat dich, cuối đường, cuoi duong] · [mở rộng, mo rong, biết đích, biet dich, chặn sớm, chan som, gần nguồn, gan nguon]
+  - **Trả lời mẫu:** Vì danh sách chuẩn chỉ biết người gửi. Đặt nó gần nguồn thì nó chặn kẻ đó đi tất cả mọi nơi, kể cả những nơi lẽ ra vẫn được đi, nên phải mang xuống sát đích cần bảo vệ để chặn nguồn ấy đúng bằng chặn nguồn ấy tới đích ấy. Danh sách mở rộng biết cả vế đích nên chặn ngay gần nguồn vẫn đúng người đúng việc, lại đỡ tốn đường truyền.
+
+**6 · Tổng kết:**
+- Viết luật xong chưa lọc gì — phải gắn vào một cổng theo một chiều bằng ip access-group.
+- Chiều tính theo mắt router: in là gói vừa vào cổng, out là gói sắp rời cổng.
+- Mở rộng đặt gần nguồn, chuẩn đặt gần đích; ACL không nhớ chiều về như tường lửa stateful.
+- *Úp mở bài sau:* Tới đây bạn đã canh được cửa của router. Nhưng kẻ phá đám nguy hiểm nhất lại không đi qua router: nó cắm thẳng vào một cổng switch trong xóm. Bài sau xuống tầng 2 khóa cổng lại.
+
+### Bài: Dựng lại cổng switch vừa bị đánh sập `m17-bai-4`
+
+**1 · Khởi động (hook):** Có một kiểu nghe lén không cần phần mềm cao siêu nào: chỉ cần cắm máy vào một cổng switch trống rồi bơm cho bảng MAC của nó đầy ứ những địa chỉ bịa ra. Switch hết chỗ ghi thì cư xử ra sao — và vì sao chuyện đó lại khiến kẻ ngồi ở cổng trống nhìn thấy thư của cả xóm?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Bảng MAC của switch bị nhồi đầy bằng hàng vạn địa chỉ giả. Switch xử sự thế nào với khung tiếp theo mà nó không tra ra cổng đích?
+  - **Dạng:** trắc nghiệm · **Phát khung đó ra mọi cổng còn lại, như hồi chưa học được ai ngồi đâu** ✓ / Vứt bỏ khung đó và ghi một dòng cảnh báo vào nhật ký của thiết bị / Tự xóa sạch bảng MAC rồi dựng lại từ đầu trước khi chuyển tiếp khung
+  - **Chủ đề gợi ý (tầng 1):** việc switch làm khi không biết đích ngồi cổng nào
+  - **Vì sao:** Nó phát tràn ra mọi cổng — đúng hành vi mặc định của switch khi chưa học được đích, như bạn thấy từ Module 4. Kẻ tấn công nhồi bảng chính là để ép switch rơi lại vào trạng thái đó, vì lúc ấy mọi khung đều chạy qua chỗ hắn ngồi.
+
+**3 · Khám phá (teach):**
+- *[m17-mac-flooding]* Bảng MAC của switch có sức chứa hữu hạn. Kẻ tấn công cắm vào một cổng rồi gửi liên tục khung với địa chỉ nguồn bịa ra, mỗi khung một địa chỉ mới, cho tới khi bảng đầy. Từ lúc đó switch không còn chỗ ghi ai ngồi cổng nào, nên khung nào tra không ra đích cũng bị phát tràn ra mọi cổng — kể cả cổng của kẻ đang ngồi nghe. Không cần chọc thủng gì cả: hắn chỉ ép cái switch làm đúng hành vi mặc định của nó.
+  - **Đào sâu hơn:** Vì sao chuyện này không ồn ào? Vì mạng vẫn chạy: thư vẫn tới đúng người nhận, chỉ là nó tới cả những người khác nữa. Người dùng không thấy gì bất thường, còn kẻ nghe lén thì chỉ cần ngồi im mà đọc. Dấu hiệu nhìn ra được nằm ở bảng MAC của switch: một cổng access lẽ ra chỉ có một hai địa chỉ mà bỗng đứng tên hàng loạt.
+- *[m17-port-security]* Port security là chốt chặn ngay tại cổng access: khai rằng cổng này chỉ được phép có tối đa mấy địa chỉ MAC. Vượt số đó thì switch coi là vi phạm và xử theo cách đã khai — thường là ĐÁNH SẬP cổng, đưa nó về trạng thái tắt cho tới khi có người tới bật lại bằng tay. Nhờ vậy trò nhồi bảng MAC chết ngay ở cổng đầu tiên nó thử. Cái giá phải trả là công vận hành: đổi máy, thay dây, cắm nhầm ổ đều có thể làm cổng sập, và người trực phải biết đường dựng nó dậy.
+  - **Đào sâu hơn:** Phòng lab của app mô phỏng HẬU QUẢ chứ không mô phỏng bộ đếm MAC: bạn sẽ gặp một cổng đã bị đánh sập và phải dựng lại, chứ không cắm được máy thứ hai để tự làm nó sập. Trên thiết bị thật, cổng ở trạng thái đó hiện là err-disabled và người trực phải shutdown rồi no shutdown mới sống lại; ở đây bảng show ip interface brief ghi administratively down, và một lệnh no shutdown là đủ. Điều đáng nhớ giống hệt nhau: cổng tắt vì bị bảo vệ, không phải vì hỏng.
+
+**4 · Thử tay (practice, fading 2):**
+- **Đề:** Sáng nay có người cắm một switch mini vào ổ mạng phòng khách, port security trên SW-Van-phong đánh sập cổng đó. Thiết bị lạ đã được gỡ, giờ máy phòng khách vẫn chưa có mạng. Console đang cắm vào SW-Van-phong: tìm ra cổng nào đang chết bằng lệnh xem trạng thái các cổng, rồi dựng nó dậy.
+  - **Dạng:** console thiết bị (gõ lệnh IOS đạt mục tiêu)
+    - **Sơ đồ đề bài:** PC-Giam-doc [192.168.1.10/24, gw 192.168.1.1] · PC-Phong-khach [192.168.1.66/24, gw 192.168.1.1] · SRV-Ke-toan [192.168.2.50/24, gw 192.168.2.1] · SW-Van-phong [p1:VLAN 1, p2:VLAN 1, p3:VLAN 1] · SW-May-chu [p1:VLAN 1, p2:VLAN 1] · R-Van-phong [g0:192.168.1.1/24, g1:192.168.2.1/24] — dây: PC-Giam-doc·eth0 — SW-Van-phong·p1 | PC-Phong-khach·eth0 — SW-Van-phong·p2 | SW-Van-phong·p3 — R-Van-phong·g0 | R-Van-phong·g1 — SW-May-chu·p1 | SW-May-chu·p2 — SRV-Ke-toan·eth0
+    - **Console cắm ở:** SW-Van-phong
+    - **Mục tiêu:**
+      - phải xem "show ip interface brief" trên SW-Van-phong
+      - cổng p2 của SW-Van-phong phải đang bật (đã no shutdown)
+      - pc-khach PHẢI gọi được srv-ke-toan
+    - **Lệnh mẫu trên SW-Van-phong:** `show ip interface brief` rồi `enable` rồi `configure terminal` rồi `interface p2` rồi `no shutdown` rồi `end`
+  - **Chủ đề gợi ý (tầng 1):** bảng trạng thái các cổng và lệnh bật cổng
+  - **Gợi ý (tầng 2):** Bảng show ip interface brief phân biệt hai kiểu chết: administratively down là mình tự tắt, còn down là mất tín hiệu đầu kia. Tìm dòng kiểu thứ nhất, rồi vào đúng cổng đó trong chế độ cấu hình.
+  - **Lời giải (tầng 3):** Gõ show ip interface brief, đọc thấy cổng p2 ghi administratively down. Rồi enable, configure terminal, interface p2, no shutdown, end. Cổng sống lại và máy phòng khách gọi được máy chủ. Nhớ rằng dựng cổng dậy chỉ là nửa việc — nửa còn lại là tìm xem ai đã cắm thiết bị lạ vào đó.
+- **Đề:** Trong bảng trạng thái cổng, chữ administratively down nói lên điều gì về nguyên nhân?
+  - **Dạng:** gõ tay · **Chấp nhận:** bị tắt bằng lệnh | bi tat bang lenh | cổng bị tắt bằng lệnh | cong bi tat bang lenh | do người tắt | do nguoi tat | bị shutdown | bi shutdown | tắt chủ động | tat chu dong | tự tắt | tu tat
+  - **Chủ đề gợi ý (tầng 1):** khác nhau giữa cổng bị tắt và cổng mất tín hiệu
+  - **Gợi ý (tầng 2):** Nếu là dây lỏng thì cột đó chỉ ghi down trơn. Thêm chữ administratively nghĩa là có bàn tay ai đó, hoặc một cơ chế bảo vệ, đã ra lệnh.
+  - **Lời giải (tầng 3):** Cổng đang bị tắt bằng lệnh — do người trực gõ shutdown, hoặc do một cơ chế như port security đánh sập. Khác hẳn dòng chỉ ghi down: đó là cổng đang bật nhưng không thấy tín hiệu ở đầu kia, tức là đi tìm sợi dây.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Đóng bài lại: port security giới hạn cái gì trên một cổng access?
+  - **Dạng:** gõ tay · **Chấp nhận:** số địa chỉ mac | so dia chi mac | số lượng mac | so luong mac | số mac | so mac | số máy được cắm | so may duoc cam | số thiết bị | so thiet bi
+  - **Chủ đề gợi ý (tầng 1):** thứ mà kẻ nhồi bảng tạo ra thật nhiều
+  - **Gợi ý (tầng 2):** Trò tấn công là bơm thật nhiều địa chỉ giả. Vậy chốt chặn phải đếm cái gì?
+  - **Lời giải (tầng 3):** Số địa chỉ MAC được phép xuất hiện trên cổng đó. Vượt ngưỡng thì switch coi là vi phạm và thường đánh sập cổng, phải có người bật lại bằng tay.
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao nhồi đầy bảng MAC lại giúp kẻ tấn công nghe lén được cả xóm?
+  - **Nhóm ý cần chạm:** [bảng mac, bang mac, đầy, day, hết chỗ, het cho, tràn bảng, tran bang] · [không tra ra, khong tra ra, không biết đích, khong biet dich, không học được, khong hoc duoc] · [phát tràn, phat tran, phát ra mọi cổng, phat ra moi cong, gửi ra tất cả, gui ra tat ca, flood] · [nghe lén, nghe len, đọc được, doc duoc, nhìn thấy, nhin thay, bắt được, bat duoc]
+  - **Trả lời mẫu:** Vì bảng MAC có sức chứa hữu hạn. Khi nó đầy những địa chỉ giả, switch không còn ghi được ai ngồi cổng nào, nên mỗi khung tra không ra đích đều bị phát tràn ra mọi cổng. Kẻ ngồi ở cổng trống vì thế nhận được cả những khung không gửi cho hắn, mà mạng thì vẫn chạy bình thường nên không ai nghi ngờ gì.
+
+**6 · Tổng kết:**
+- Bảng MAC đầy thì switch phát tràn — nghe lén tầng 2 lợi dụng đúng hành vi mặc định ấy.
+- Port security giới hạn số MAC trên một cổng access; vi phạm thì cổng bị đánh sập.
+- administratively down là cổng bị tắt bằng lệnh, khác hẳn down vì mất tín hiệu đầu kia.
+- *Úp mở bài sau:* Còn một kiểu mạo danh tinh vi hơn nhồi bảng: kẻ tấn công không giành cổng, hắn giành chính cái ĐỊA CHỈ của cổng ra. Bài cuối module là một ca bệnh chập chờn mà bạn từng gặp ở phòng khám, lần này đứng dưới ánh sáng khác.
+
+### Bài: Vạch mặt kẻ nhận vơ địa chỉ cổng ra `m17-bai-5`
+
+**1 · Khởi động (hook):** Ở Module 11 bạn từng gặp bệnh chập chờn vì hai máy giành một số nhà, và chữa nó bằng cách đổi địa chỉ cho kẻ tới sau. Nhưng nếu kẻ tới sau KHÔNG hề nhầm lẫn — nếu hắn cố tình nhận vơ đúng địa chỉ của cổng ra, để mọi gói tin của cả xóm phải đi qua tay hắn trước? Cùng một dấu hiệu trên màn hình, hai câu chuyện khác hẳn nhau.
+
+**2 · Đoán thử (pretest):**
+- **Đề:** "Từ hôm qua mạng ở tầng 3 lúc được lúc mất, chẳng theo quy luật nào cả. Mở trang trong công ty thì khi vào được khi báo lỗi." Bạn đang ngồi ở MAY-NHAN-VIEN. Mẹo cũ của phòng khám: bệnh chập chờn thì thử đi thử lại rồi so hai lần với nhau, và đừng quên cuốn sổ ARP trên chính máy mình.
+  - **Dạng:** ca bệnh phòng khám (khám qua terminal → chẩn đoán → sửa)
+    - **Mạng bệnh nhân:** MAY-NHAN-VIEN [192.168.30.15/24, gw 192.168.30.1] · LAPTOP-LA [192.168.30.1/24, gw 192.168.30.1] · SRV-NOI-BO [10.30.0.9/24, gw 10.30.0.1] · SW-TANG-3 [p1:VLAN 1, p2:VLAN 1, p3:VLAN 1] · SW-MAY-CHU [p1:VLAN 1, p2:VLAN 1] · R-CONG-RA [g0:192.168.30.1/24, g1:10.30.0.1/24] — dây: MAY-NHAN-VIEN·eth0 — SW-TANG-3·p1 | LAPTOP-LA·eth0 — SW-TANG-3·p2 | SW-TANG-3·p3 — R-CONG-RA·g0 | R-CONG-RA·g1 — SW-MAY-CHU·p1 | SW-MAY-CHU·p2 — SRV-NOI-BO·eth0
+    - **Ngồi ở máy:** MAY-NHAN-VIEN
+    - **Hồ sơ bệnh:** không có (bệnh nằm trọn trong sơ đồ)
+    - **Triệu chứng:** MAY-NHAN-VIEN ping 192.168.30.1 lúc được lúc không (nhiều máy giành một IP)
+    - **Chẩn đoán (chọn 1):** **Một máy lạ trong xóm đang giữ đúng địa chỉ của cổng ra** ✓ · Cổng ra của router đã bị tắt bằng lệnh nên gói tin không qua được · Máy chủ nội bộ trả lời chậm nên trang trong công ty lúc mở được lúc không
+    - **Sửa:** trực tiếp trên sơ đồ — mục tiêu:
+      - c17-nv PHẢI gọi được c17-srv
+      - phải hết sạch: duplicate-ip
+    - **Được phép:** đặt địa chỉ
+    - **Lời giải mẫu:** MAY-NHAN-VIEN [192.168.30.15/24, gw 192.168.30.1] · LAPTOP-LA [192.168.30.77/24, gw 192.168.30.1] · SRV-NOI-BO [10.30.0.9/24, gw 10.30.0.1] · SW-TANG-3 [p1:VLAN 1, p2:VLAN 1, p3:VLAN 1] · SW-MAY-CHU [p1:VLAN 1, p2:VLAN 1] · R-CONG-RA [g0:192.168.30.1/24, g1:10.30.0.1/24] — dây: MAY-NHAN-VIEN·eth0 — SW-TANG-3·p1 | LAPTOP-LA·eth0 — SW-TANG-3·p2 | SW-TANG-3·p3 — R-CONG-RA·g0 | R-CONG-RA·g1 — SW-MAY-CHU·p1 | SW-MAY-CHU·p2 — SRV-NOI-BO·eth0
+  - **Chủ đề gợi ý (tầng 1):** cuốn sổ ARP và địa chỉ của cổng ra
+  - **Vì sao:** Ping 192.168.30.1 hai lượt rồi mở arp -a: cùng một địa chỉ mà lần này gắn MAC …:11 của router, lần sau đã thành …:66 của LAPTOP-LA. Một cổng ra, hai kẻ nhận vơ, ai đáp sau thì thắng — nên mạng chập chờn theo vận may. Đây chính là hình dạng của một cú mạo danh ARP: kẻ đứng giữa nhận mình là cổng ra để cả xóm phải đi qua tay hắn. Chữa trước mắt: lấy lại địa chỉ .1 cho router, đẩy máy lạ sang một địa chỉ khác.
+
+**3 · Khám phá (teach):**
+- *[m17-arp-spoofing]* ARP không có cơ chế xác thực: ai đáp cũng được tin, và câu đáp tới sau ghi đè câu đáp tới trước. Kẻ mạo danh lợi dụng đúng chỗ đó — hắn liên tục nói mình là 192.168.30.1, cái cổng ra của cả xóm. Máy trong xóm ghi vào sổ ARP MAC của hắn, rồi ngoan ngoãn gửi mọi gói đi Internet qua hắn. Hắn đọc xong chuyển tiếp cho router thật, nên người dùng chẳng thấy gì lạ ngoài chuyện mạng thỉnh thoảng khựng. Đó là cùng một dấu hiệu với ca trùng IP ở Module 11, chỉ khác động cơ: một bên gõ nhầm, một bên cố ý.
+  - **Đào sâu hơn:** Ba lớp chặn ngoài đời, từ rẻ tới đắt. Một, port security ở bài trước: giới hạn MAC trên cổng khiến kẻ tấn công khó thay hình đổi dạng. Hai, Dynamic ARP Inspection trên switch: nó soi từng lời đáp ARP và vứt bỏ lời nào không khớp cặp địa chỉ mà switch đã biết. Ba, cách thô mà chắc cho máy quan trọng: khai cứng địa chỉ cổng ra vào sổ ARP để không lời đáp nào ghi đè được. Riêng chuyện chia VLAN nhỏ ra cũng đã giúp: ARP không đi xuyên VLAN, nên kẻ mạo danh chỉ lừa được đúng cái xóm hắn đang cắm dây vào.
+- *[m17-vlan-hopping]* VLAN hopping là trò nhảy rào sang xóm khác mà không cần đi qua router. Kiểu hay gặp nhất dựa vào NATIVE VLAN của Module 14: khung đi trong native VLAN không mang nhãn, nên kẻ tấn công dán sẵn hai lớp nhãn vào khung của mình. Switch đầu tiên bóc lớp ngoài (đúng native của nó) rồi đẩy khung qua trunk; switch thứ hai nhìn thấy lớp nhãn còn lại và tưởng khung ấy thuộc VLAN kia. Cách chặn gọn nhất cũng nằm ở đúng chỗ đó: đừng để native VLAN trùng với VLAN đang chở người dùng — đặt nó thành một VLAN không ai dùng, và khai cổng nối máy con là access một cách tường minh.
+  - **Đào sâu hơn:** Vì sao trò này chỉ chạy được một chiều? Vì lớp nhãn thứ hai chỉ sống sót nhờ cú bóc nhãn ở switch đầu — còn đường về thì không ai dán hộ kẻ tấn công hai lớp nhãn cả. Nghĩa là hắn bắn gói sang xóm khác được nhưng không nhận được lời đáp. Nghe thì cụt, nhưng vẫn đủ để phá: một dòng lệnh bắn sang thiết bị bên kia đôi khi là tất cả những gì hắn cần. Phòng lab của app không mô phỏng trò dán hai lớp nhãn — đây là phần đọc hiểu, còn thứ bạn cấu hình được là cái chốt chặn: native VLAN riêng và cổng access khai rõ.
+
+**4 · Thử tay (practice, fading 2):**
+- **Đề:** Máy của bạn ping cổng ra rất tốt, nhưng sổ ARP cho thấy địa chỉ cổng ra lúc gắn MAC này lúc gắn MAC kia. Kết luận nào đứng vững nhất?
+  - **Dạng:** trắc nghiệm · **Có hai thiết bị cùng nhận là chủ địa chỉ đó, dù do nhầm hay do cố ý** ✓ / Router đang quá tải nên nó phải đổi địa chỉ MAC của cổng ra liên tục / Sổ ARP của máy bạn đã hỏng và cần được xóa sạch rồi dựng lại từ đầu
+  - **Chủ đề gợi ý (tầng 1):** một địa chỉ IP mà hai MAC thay nhau trả lời
+  - **Gợi ý (tầng 2):** MAC là số khung đóng chết vào máy, không đổi theo tải. Vậy hai MAC khác nhau nghĩa là mấy cái máy?
+  - **Lời giải (tầng 3):** Có hai thiết bị cùng nhận là chủ của địa chỉ đó. MAC không đổi theo tải, và sổ ARP chỉ ghi lại điều nó nghe được. Còn chuyện do gõ nhầm hay do mạo danh thì phải đi tìm tiếp — nhưng bằng chứng một địa chỉ hai chủ thì đã chắc rồi.
+- **Đề:** Chốt chặn gọn nhất cho trò VLAN hopping kiểu hai lớp nhãn là đổi thứ gì trên đường trunk?
+  - **Dạng:** gõ tay · **Chấp nhận:** native vlan | vlan native | đổi native vlan | doi native vlan | native vlan riêng | native vlan rieng | native vlan không dùng | native vlan khong dung
+  - **Chủ đề gợi ý (tầng 1):** cái VLAN đi không nhãn trên trunk
+  - **Gợi ý (tầng 2):** Trò này sống nhờ cú bóc nhãn ở switch đầu tiên. Cú bóc ấy xảy ra với VLAN nào?
+  - **Lời giải (tầng 3):** Native VLAN. Đặt nó thành một VLAN không ai dùng để khung của người dùng luôn mang nhãn, thế là cú bóc nhãn đầu tiên chẳng còn giúp gì cho kẻ tấn công. Kèm theo: khai tường minh cổng nối máy con là access.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: kẻ mạo danh ARP thường nhận vơ địa chỉ của thiết bị nào trong xóm, và vì sao chọn đúng nó?
+  - **Dạng:** gõ tay · **Chấp nhận:** cổng ra | cong ra | router | gateway | cổng mặc định | cong mac dinh | địa chỉ cổng ra | dia chi cong ra | default gateway
+  - **Chủ đề gợi ý (tầng 1):** thiết bị mà cả xóm phải đi qua để ra ngoài
+  - **Gợi ý (tầng 2):** Muốn đọc thư của cả xóm thì nên đứng ở chỗ nào trên đường đi của họ?
+  - **Lời giải (tầng 3):** Địa chỉ cổng ra, tức router mặc định. Vì mọi gói tin đi khỏi xóm đều phải gửi qua đó, nên chiếm được cái tên ấy là đứng giữa được toàn bộ lưu lượng đi ra mà chẳng cần chạm tới máy nào.
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao cùng một dấu hiệu "một IP hai MAC" mà lần này lại nguy hiểm hơn ca gõ nhầm ở Module 11?
+  - **Nhóm ý cần chạm:** [cổng ra, cong ra, gateway, router, cổng mặc định, cong mac dinh] · [cố ý, co y, mạo danh, mao danh, tấn công, tan cong, kẻ lạ, ke la] · [đứng giữa, dung giua, đi qua tay, di qua tay, nghe lén, nghe len, đọc trộm, doc trom] · [cả xóm, ca xom, mọi máy, moi may, toàn bộ, toan bo, lưu lượng, luu luong]
+  - **Trả lời mẫu:** Vì địa chỉ bị giành lần này là địa chỉ cổng ra, thứ mà cả xóm phải dùng để đi ra ngoài. Ca ở Module 11 chỉ là hai máy in gõ trùng số nên hỏng đúng một dịch vụ; còn ở đây kẻ lạ cố ý nhận vơ để mọi gói tin của mọi máy đều đi qua tay hắn trước, đọc xong mới chuyển tiếp. Người dùng chỉ thấy mạng hơi chập chờn, trong khi dữ liệu của cả tầng đã đi qua một chỗ không ai kiểm soát.
+
+**6 · Tổng kết:**
+- ARP tin bất kỳ ai đáp và câu sau đè câu trước — nền móng của trò mạo danh cổng ra.
+- Một IP hai MAC trong sổ ARP là bằng chứng thép; động cơ nhầm hay cố ý thì phải đi tìm tiếp.
+- VLAN hopping sống nhờ native VLAN trùng VLAN người dùng — đặt native riêng là chặn được.
+- *Úp mở bài sau:* Vậy là bạn đã có đủ đồ nghề của người dựng hạ tầng: cắt dải, nối trunk, canh vòng lặp, để router tự hỏi đường và viết luật chặn đúng người. Phần sau của khóa bước sang phía dịch vụ — nơi mạng đã chạy rồi mà người dùng vẫn kêu, vì thứ hỏng nằm ở DHCP, DNS và những cuốn sổ của hệ thống.
+
+### Khái niệm & flashcard (12)
+
+- **ACL (access control list)** `m17-acl` — Danh sách luật gắn lên cổng router; mỗi gói đi qua bị đem so với từng dòng để cho đi hay chặn lại
+  - Ẩn dụ: Như người soát vé đứng ở một cánh cửa với tờ nội quy trong tay: ai qua cửa cũng bị đối chiếu, và tờ nội quy chỉ có tiếng nói ở đúng cánh cửa nó được dán lên.
+  - Thẻ ôn: *Một ACL gồm những gì, và viết xong đã lọc được gói tin chưa?* → Một danh sách là dãy dòng luật có thứ tự, mỗi dòng gồm cho phép hay cấm, giao thức, nguồn và đích. Viết xong CHƯA lọc gì cả: phải gắn nó lên một cổng cụ thể theo một chiều cụ thể bằng ip access-group thì mới có hiệu lực.
+- **Thứ tự dòng luật** `m17-thu-tu-dong` — Router đọc từ trên xuống và dừng ở dòng khớp đầu tiên; các dòng sau không được hỏi tới
+  - Ẩn dụ: Như đọc nội quy từ trên xuống rồi làm theo điều đầu tiên đúng với trường hợp của mình — đọc tới đó là gấp tờ giấy lại.
+  - Thẻ ôn: *Vì sao luật hẹp phải viết trước luật rộng trong một ACL?* → Vì router dừng ở dòng khớp đầu tiên. Dòng rộng đặt trên sẽ ăn hết gói tin và dòng hẹp phía dưới không bao giờ được hỏi tới. ACL đánh số lại chỉ thêm được vào cuối danh sách, nên phải nghĩ thứ tự trước khi gõ.
+- **Dòng cấm vô hình** `m17-implicit-deny` — Cuối mọi danh sách có một dòng không in ra: cấm tất cả những gì chưa được cho phép
+  - Ẩn dụ: Như câu cuối của mọi bản nội quy mà không ai buồn viết ra: cái gì không ghi là được phép thì mặc nhiên là không được.
+  - Thẻ ôn: *Áp một danh sách lọc lên cổng thì mặc định của cổng đó đổi thế nào?* → Từ cho tất cả đi thành cấm tất cả, vì cuối danh sách luôn có dòng vô hình cấm mọi thứ chưa được cho phép tường minh. Muốn giữ đường cho phần còn lại thì phải viết thêm một dòng permit, thường là permit ip any any ở cuối.
+- **ACL chuẩn** `m17-acl-chuan` — Danh sách số 1 tới 99, chỉ so được địa chỉ nguồn nên cấm một nguồn là cấm nó đi mọi nơi
+  - Ẩn dụ: Như người gác chỉ nhìn mặt khách chứ không hỏi khách định vào phòng nào: đã chặn thì chặn khỏi cả tòa nhà.
+  - Thẻ ôn: *ACL chuẩn mang dải số nào, so được vế nào, và vì thế phải đặt ở đâu?* → Số 1 tới 99, chỉ so được địa chỉ nguồn. Vì mù vế đích nên đặt nó gần nguồn sẽ chặn kẻ đó đi mọi nơi; phải đặt gần ĐÍCH cần bảo vệ thì việc chặn mới đúng phạm vi mong muốn.
+- **ACL mở rộng** `m17-acl-mo-rong` — Danh sách số 100 tới 199, so được giao thức, nguồn, đích và cổng dịch vụ với tcp hay udp
+  - Ẩn dụ: Như người gác hỏi đủ ba câu: anh là ai, anh định vào phòng nào, và anh tới có việc gì.
+  - Thẻ ôn: *ACL mở rộng mang dải số nào, nhìn được những gì, và đặt ở đâu?* → Số 100 tới 199; nhìn được giao thức, nguồn, đích và cả cổng dịch vụ với tcp hay udp. Vì biết đủ để chặn đúng nên đặt gần NGUỒN: gói chết sớm, không tốn đường truyền của cả chặng sau.
+- **Chiều in và out** `m17-chieu-in-out` — Chiều tính theo mắt router: in là gói vừa vào cổng, out là gói sắp rời cổng
+  - Ẩn dụ: Như bảo vệ đứng ở cửa: soi lúc khách bước vào là một việc, soi lúc khách bước ra lại là việc khác hẳn.
+  - Thẻ ôn: *Chiều in và out của một ACL được tính theo cái gì, và chặn ở chiều nào thì rẻ hơn?* → Tính theo con mắt của router: in là gói vừa đi vào cổng, trước khi tra bảng định tuyến; out là gói đã chọn xong đường và sắp rời cổng. Chặn ở chiều in rẻ hơn vì gói bị loại trước cả bước tra bảng.
+- **Đặt ACL ở đâu** `m17-dat-o-dau` — Mở rộng đặt gần nguồn, chuẩn đặt gần đích — chặn ở chỗ gần nhất mà luật vẫn còn đủ thông tin để chặn đúng
+  - Ẩn dụ: Như chặn người ngay ở đầu ngõ nếu bạn biết họ định đi đâu; còn nếu chỉ biết mặt họ thôi thì phải đứng chặn ngay trước cửa phòng cần giữ.
+  - Thẻ ôn: *Quy tắc đặt ACL của nghề nói gì, và lý do đằng sau là gì?* → ACL mở rộng đặt gần nguồn, ACL chuẩn đặt gần đích. Lý do chung: chặn ở chỗ gần nhất mà luật còn đủ thông tin để chặn ĐÚNG. Mở rộng biết cả đích nên chặn sớm vẫn đúng; chuẩn mù đích nên chặn sớm là chặn nhầm cả những nơi lẽ ra được đi.
+- **ACL so với tường lửa stateful** `m17-acl-vs-stateful` — ACL xét từng gói rời rạc và không nhớ gì; tường lửa stateful ghi sổ cuộc gọi nên chiều về tự được vào
+  - Ẩn dụ: Như người soát vé không nhớ mặt ai, so với người gác cổng có cuốn sổ ghi khách vừa vào và tự mở cửa cho họ đi ra.
+  - Thẻ ôn: *Khác nhau căn bản giữa ACL đánh số và tường lửa stateful của Module 7 là gì?* → Tường lửa stateful nhớ cuộc gọi đã mở nên lời đáp về được vào mà không cần luật riêng. ACL đánh số không có trí nhớ: nó xét từng gói một cách rời rạc, nên chiều về phải được cho phép tường minh, nếu không cuộc trò chuyện đứt dù chiều đi vẫn thông.
+- **Nhồi bảng MAC** `m17-mac-flooding` — Bơm hàng loạt MAC giả cho bảng của switch đầy, ép nó phát tràn mọi khung để ngồi một chỗ mà nghe
+  - Ẩn dụ: Như nhét đầy hòm thư của người gác cổng bằng tên giả: hết chỗ nhớ ai ở phòng nào, ông ấy đành đọc to mọi lá thư giữa sảnh.
+  - Thẻ ôn: *Nhồi bảng MAC khiến switch làm gì, và vì sao kẻ tấn công có lợi?* → Bảng đầy thì switch không tra ra đích nên phát tràn khung ra mọi cổng, đúng hành vi mặc định của nó. Kẻ ngồi ở một cổng bất kỳ vì thế nhận được cả khung không gửi cho mình, trong khi mạng vẫn chạy nên không ai nghi ngờ.
+- **Port security** `m17-port-security` — Giới hạn số địa chỉ MAC trên một cổng access; vi phạm thì cổng bị đánh sập và phải bật lại bằng tay
+  - Ẩn dụ: Như quy định mỗi ổ cắm trong phòng chỉ đăng ký được một chiếc máy: cắm thêm cái thứ hai là ổ tự ngắt điện cho tới khi có người tới mở lại.
+  - Thẻ ôn: *Port security giới hạn cái gì, và hậu quả khi vi phạm hiện ra thế nào?* → Giới hạn số địa chỉ MAC được xuất hiện trên một cổng access. Vượt ngưỡng thì switch đánh sập cổng: bảng trạng thái ghi cổng bị tắt bằng lệnh (administratively down, thiết bị thật ghi err-disabled) và phải có người gõ no shutdown mới sống lại.
+- **ARP spoofing** `m17-arp-spoofing` — Kẻ lạ nhận vơ địa chỉ IP của cổng ra để cả xóm gửi gói qua tay hắn trước
+  - Ẩn dụ: Như một người lạ đứng ở đầu ngõ tự nhận mình là bác bưu tá: cả xóm đưa thư cho hắn, hắn đọc xong mới chuyển tiếp cho người thật.
+  - Thẻ ôn: *ARP spoofing lợi dụng điểm yếu nào, và dấu hiệu nhìn ra được là gì?* → Lợi dụng chuyện ARP không xác thực: ai đáp cũng được tin và câu đáp sau đè câu trước. Dấu hiệu: trong sổ arp -a, địa chỉ cổng ra lúc gắn MAC này lúc gắn MAC kia, mạng chập chờn. Chặn bằng port security, Dynamic ARP Inspection, hoặc khai cứng địa chỉ cổng ra cho máy quan trọng.
+- **VLAN hopping** `m17-vlan-hopping` — Nhảy sang VLAN khác bằng cách dán hai lớp nhãn, lợi dụng cú bóc nhãn của native VLAN
+  - Ẩn dụ: Như dán hai lớp phong bì lồng nhau: người gác bóc lớp ngoài rồi chuyển tiếp, và lớp trong đưa lá thư sang một xóm mà người gửi không có quyền vào.
+  - Thẻ ôn: *Trò VLAN hopping hai lớp nhãn dựa vào đâu, và chặn bằng cách nào?* → Dựa vào native VLAN: khung native đi không nhãn nên switch đầu bóc lớp nhãn ngoài, switch sau nhìn lớp còn lại và tưởng khung thuộc VLAN khác. Chặn bằng cách đặt native VLAN thành một VLAN không ai dùng và khai tường minh cổng nối máy con là access.
+
+### Bài kiểm tra module (pool 14 câu, mỗi lượt rút 8, cần ≥ 85%)
+
+- **Đề:** Bạn áp lên cổng một danh sách chỉ có đúng một dòng cấm máy 192.168.1.66. Chuyện gì xảy ra với các máy khác trong văn phòng?
+  - **Dạng:** trắc nghiệm · **Chúng cũng bị chặn, vì dòng vô hình cuối danh sách cấm mọi thứ chưa được cho phép** ✓ / Chúng vẫn đi lại bình thường, vì danh sách chỉ nhắc đích danh một địa chỉ duy nhất / Chúng bị chậm lại đôi chút, vì router phải so từng gói với dòng luật vừa được thêm
+  - **Chủ đề gợi ý (tầng 1):** dòng không được in ra ở cuối danh sách
+  - **Vì sao:** Chúng cũng tắc. Áp một danh sách lên cổng là đổi mặc định của cổng từ cho tất cả thành cấm tất cả — gói không khớp dòng nào sẽ rơi vào dòng vô hình ở cuối. Muốn giữ đường cho phần còn lại thì phải viết thêm một dòng permit.
+- **Đề:** Router đọc danh sách lọc từ trên xuống và dừng lại ở dòng nào?
+  - **Dạng:** gõ tay · **Chấp nhận:** dòng khớp đầu tiên | dong khop dau tien | dòng đầu tiên khớp | dong dau tien khop | dòng khớp đầu | dong khop dau | dòng đầu tiên trùng khớp | dong dau tien trung khop | first match
+  - **Chủ đề gợi ý (tầng 1):** quy tắc dừng khi so luật
+  - **Vì sao:** Dòng khớp đầu tiên. Quyết định xong là router gấp danh sách lại, các dòng phía dưới không bao giờ được hỏi tới — nên thứ tự chính là luật, và luật hẹp phải viết trước luật rộng.
+- **Đề:** Sếp muốn cấm phòng khách vào máy chủ kế toán nhưng vẫn cho họ lướt web. Bạn phải dùng loại danh sách nào, và vì sao?
+  - **Dạng:** trắc nghiệm · **Mở rộng, vì yêu cầu phân biệt theo đích mà danh sách chuẩn không nhìn thấy đích** ✓ / Chuẩn, vì yêu cầu chỉ nhắc tới một nguồn duy nhất là dải máy của phòng khách / Loại nào cũng được, miễn là đặt danh sách ấy đúng chiều trên cổng phía văn phòng
+  - **Chủ đề gợi ý (tầng 1):** vế địa chỉ mà danh sách chuẩn không thấy
+  - **Vì sao:** Phải là mở rộng (100 tới 199). Yêu cầu này phân biệt theo NƠI ĐẾN, mà danh sách chuẩn chỉ soi được người gửi — dùng chuẩn thì cấm phòng khách là cấm họ đi mọi nơi, mất luôn đường ra web.
+- **Đề:** Dải số hiệu của danh sách lọc MỞ RỘNG là bao nhiêu tới bao nhiêu?
+  - **Dạng:** gõ tay · **Chấp nhận:** 100-199 | 100 199 | 100 tới 199 | 100 toi 199 | từ 100 đến 199 | tu 100 den 199 | 100 den 199 | 100 đến 199
+  - **Chủ đề gợi ý (tầng 1):** hai dải số của hai họ danh sách
+  - **Vì sao:** Từ 100 tới 199. Dải 1 tới 99 dành cho danh sách chuẩn — loại chỉ soi được nguồn.
+- **Đề:** Vì sao quy tắc nghề bảo đặt ACL mở rộng gần nguồn, còn ACL chuẩn thì gần đích?
+  - **Dạng:** trắc nghiệm · **Vì chuẩn mù vế đích nên chặn sớm là chặn nhầm cả những đích lẽ ra được đi** ✓ / Vì router gần đích có nhiều bộ nhớ hơn nên nó chứa được danh sách dài hơn / Vì danh sách chuẩn chỉ chạy được ở chiều out, còn mở rộng chỉ chạy ở chiều in
+  - **Chủ đề gợi ý (tầng 1):** chặn ở chỗ gần nhất mà luật còn chặn đúng
+  - **Vì sao:** Vì chuẩn chỉ biết người gửi. Đặt nó gần nguồn thì nó cấm kẻ đó đi tất cả mọi nơi, nên phải mang xuống sát đích cần bảo vệ. Mở rộng biết cả đích nên chặn ngay gần nguồn vẫn đúng người đúng việc, lại đỡ tốn đường truyền.
+- **Đề:** Trên đường đi chỉ có ACL đánh số canh gác. Bạn cho phép chiều đi nhưng quên chiều về. Kết quả?
+  - **Dạng:** trắc nghiệm · **Cuộc trò chuyện đứt, vì ACL không nhớ cuộc gọi nào vừa mở để tự cho lời đáp vào** ✓ / Vẫn chạy bình thường, vì lời đáp của một cuộc gọi hợp lệ luôn được miễn xét luật / Vẫn chạy nhưng chậm, vì mỗi lời đáp phải chờ router hỏi lại bên gửi một lượt
+  - **Chủ đề gợi ý (tầng 1):** thứ tường lửa stateful có mà ACL không có
+  - **Vì sao:** Đứt. Tường lửa stateful của Module 7 ghi sổ cuộc gọi nên lời đáp tự được vào; ACL đánh số xét từng gói rời rạc, không có trí nhớ, nên chiều về phải được cho phép tường minh.
+- **Đề:** Trong lệnh gắn danh sách lên cổng, chiều in nghĩa là soi gói tin ở thời điểm nào?
+  - **Dạng:** gõ tay · **Chấp nhận:** khi gói vừa vào cổng | khi goi vua vao cong | lúc gói đi vào cổng | luc goi di vao cong | gói vừa đi vào | goi vua di vao | trước khi tra bảng định tuyến | truoc khi tra bang dinh tuyen | gói đi vào router | goi di vao router
+  - **Chủ đề gợi ý (tầng 1):** chiều tính theo con mắt của router
+  - **Vì sao:** Lúc gói vừa đi VÀO cổng đó, trước cả bước tra bảng định tuyến. Chiều out thì ngược lại: gói đã chọn xong đường và sắp rời cổng. Cùng một luồng gói sẽ là in ở cổng này nhưng out ở cổng kia.
+- **Đề:** Port security trên một cổng access thật ra đang đếm và giới hạn cái gì?
+  - **Dạng:** trắc nghiệm · **Số địa chỉ MAC được phép xuất hiện trên cổng đó** ✓ / Số gói tin đi qua cổng đó trong mỗi giây đồng hồ / Số VLAN mà cổng đó được phép chở qua một lúc
+  - **Chủ đề gợi ý (tầng 1):** thứ mà trò nhồi bảng tạo ra thật nhiều
+  - **Vì sao:** Số địa chỉ MAC. Trò nhồi bảng MAC sống nhờ việc bịa ra thật nhiều địa chỉ, nên chốt chặn phải đếm đúng thứ đó. Vượt ngưỡng thì cổng bị đánh sập và cần người bật lại bằng tay.
+- **Đề:** Bảng trạng thái cổng ghi administratively down. Nguyên nhân thuộc loại nào?
+  - **Dạng:** gõ tay · **Chấp nhận:** bị tắt bằng lệnh | bi tat bang lenh | cổng bị tắt bằng lệnh | cong bi tat bang lenh | do người tắt | do nguoi tat | bị shutdown | bi shutdown | tắt chủ động | tat chu dong
+  - **Chủ đề gợi ý (tầng 1):** khác nhau giữa cổng bị tắt và cổng mất tín hiệu
+  - **Vì sao:** Cổng đang bị tắt bằng lệnh — người trực gõ shutdown, hoặc một cơ chế như port security đánh sập nó. Dòng chỉ ghi down trơn thì lại là chuyện khác: cổng vẫn bật nhưng không thấy tín hiệu đầu kia, tức là đi tìm sợi dây.
+- **Đề:** Sổ arp -a trên máy bạn cho thấy địa chỉ cổng ra lúc gắn MAC này lúc gắn MAC kia. Điều gì chắc chắn đúng?
+  - **Dạng:** trắc nghiệm · **Có hai thiết bị cùng nhận là chủ của địa chỉ đó trong xóm** ✓ / Router đang đổi địa chỉ MAC của cổng ra theo từng phiên làm việc / Máy bạn đã mất đường tới cổng ra và đang hỏi lại địa chỉ liên tục
+  - **Chủ đề gợi ý (tầng 1):** một địa chỉ IP mà hai MAC thay nhau trả lời
+  - **Vì sao:** Có hai thiết bị cùng nhận là chủ địa chỉ đó — MAC đóng chết vào phần cứng nên không đổi theo phiên. Còn do gõ nhầm hay do mạo danh ARP thì phải đi tìm tiếp, nhưng chuyện một địa chỉ hai chủ thì đã chắc.
+- **Đề:** Cách chặn gọn nhất cho trò VLAN hopping kiểu dán hai lớp nhãn là gì?
+  - **Dạng:** trắc nghiệm · **Đặt native VLAN của trunk thành một VLAN không ai dùng** ✓ / Bật lại STP trên toàn bộ các switch đang nối vòng với nhau / Gắn một danh sách lọc mở rộng lên cổng trunk theo chiều in
+  - **Chủ đề gợi ý (tầng 1):** VLAN đi không nhãn trên trunk
+  - **Vì sao:** Đổi native VLAN sang một VLAN không ai dùng. Trò này sống nhờ cú bóc nhãn của native VLAN ở switch đầu tiên; native không chở người dùng thì khung của họ luôn mang nhãn và cú bóc ấy chẳng còn giúp gì cho kẻ tấn công. STP canh vòng lặp, còn ACL là chuyện tầng 3 — cả hai không đụng tới trò này.
+- **Đề:** Router R-Van-phong đã có sẵn danh sách 101 (dòng 10 cấm 192.168.1.66 ping tới 192.168.2.50, dòng 20 cho phép phần còn lại) nhưng chưa gắn vào cổng nào. Hãy gắn nó vào đúng chỗ để máy phòng khách tắc đường tới máy chủ kế toán, còn máy giám đốc thì vẫn gọi được.
+  - **Dạng:** console thiết bị (gõ lệnh IOS đạt mục tiêu)
+    - **Sơ đồ đề bài:** PC-Giam-doc [192.168.1.10/24, gw 192.168.1.1] · PC-Phong-khach [192.168.1.66/24, gw 192.168.1.1] · SRV-Ke-toan [192.168.2.50/24, gw 192.168.2.1] · SW-Van-phong [p1:VLAN 1, p2:VLAN 1, p3:VLAN 1] · SW-May-chu [p1:VLAN 1, p2:VLAN 1] · R-Van-phong [g0:192.168.1.1/24, g1:192.168.2.1/24] — dây: PC-Giam-doc·eth0 — SW-Van-phong·p1 | PC-Phong-khach·eth0 — SW-Van-phong·p2 | SW-Van-phong·p3 — R-Van-phong·g0 | R-Van-phong·g1 — SW-May-chu·p1 | SW-May-chu·p2 — SRV-Ke-toan·eth0
+    - **Console cắm ở:** R-Van-phong
+    - **Mục tiêu:**
+      - pc-khach phải KHÔNG gọi được srv-ke-toan
+      - pc-sep PHẢI gọi được srv-ke-toan
+    - **Lệnh mẫu trên R-Van-phong:** `enable` rồi `configure terminal` rồi `interface g0` rồi `ip access-group 101 in` rồi `end`
+  - **Chủ đề gợi ý (tầng 1):** cổng phía văn phòng và chiều gói đi vào
+  - **Vì sao:** Danh sách mở rộng thì đặt gần nguồn: vào interface g0 rồi gõ ip access-group 101 in. Gói của máy phòng khách bị loại ngay tại cửa vào, trước cả bước tra bảng định tuyến, còn mọi máy khác gặp dòng 20 và đi tiếp bình thường.
+- **Đề:** Trên R-Van-phong, danh sách 101 chỉ có đúng một dòng cấm máy phòng khách và đang gắn ở cổng g0 chiều in — nhưng cả văn phòng đều mất đường tới máy chủ kế toán. Hãy chữa sao cho máy giám đốc gọi lại được, máy phòng khách vẫn phải tắc, và tự tra bảng luật để làm chứng.
+  - **Dạng:** console thiết bị (gõ lệnh IOS đạt mục tiêu)
+    - **Sơ đồ đề bài:** PC-Giam-doc [192.168.1.10/24, gw 192.168.1.1] · PC-Phong-khach [192.168.1.66/24, gw 192.168.1.1] · SRV-Ke-toan [192.168.2.50/24, gw 192.168.2.1] · SW-Van-phong [p1:VLAN 1, p2:VLAN 1, p3:VLAN 1] · SW-May-chu [p1:VLAN 1, p2:VLAN 1] · R-Van-phong [g0:192.168.1.1/24, g1:192.168.2.1/24] — dây: PC-Giam-doc·eth0 — SW-Van-phong·p1 | PC-Phong-khach·eth0 — SW-Van-phong·p2 | SW-Van-phong·p3 — R-Van-phong·g0 | R-Van-phong·g1 — SW-May-chu·p1 | SW-May-chu·p2 — SRV-Ke-toan·eth0
+    - **Console cắm ở:** R-Van-phong
+    - **Mục tiêu:**
+      - pc-sep PHẢI gọi được srv-ke-toan
+      - pc-khach phải KHÔNG gọi được srv-ke-toan
+      - phải xem "show access-lists" trên R-Van-phong
+    - **Lệnh mẫu trên R-Van-phong:** `enable` rồi `configure terminal` rồi `access-list 101 permit ip any any` rồi `end` rồi `show access-lists`
+  - **Chủ đề gợi ý (tầng 1):** dòng dành cho phần còn lại
+  - **Vì sao:** Thêm access-list 101 permit ip any any. Nó rơi xuống thành dòng 20, đứng SAU dòng cấm máy khách, nên máy khách vẫn chết ở dòng 10 còn mọi máy khác gặp dòng 20 và đi được. Đây chính là thuốc chữa cho dòng cấm vô hình.
+- **Đề:** "Phòng kinh doanh kêu mạng chập chờn từ sáng, mở hệ thống nội bộ lúc được lúc không." Bạn ngồi ở MAY-KINH-DOANH. Khám đi: bệnh chập chờn thì thử vài lượt rồi so với nhau, và mở cuốn sổ ARP ra xem địa chỉ cổng ra đang thuộc về ai.
+  - **Dạng:** ca bệnh phòng khám (khám qua terminal → chẩn đoán → sửa)
+    - **Mạng bệnh nhân:** MAY-KINH-DOANH [192.168.40.20/24, gw 192.168.40.1] · MAY-KHONG-RO [192.168.40.1/24, gw 192.168.40.1] · SRV-NOI-BO [10.40.0.9/24, gw 10.40.0.1] · SW-TANG-4 [p1:VLAN 1, p2:VLAN 1, p3:VLAN 1] · SW-MAY-CHU-4 [p1:VLAN 1, p2:VLAN 1] · R-CONG-RA-4 [g0:192.168.40.1/24, g1:10.40.0.1/24] — dây: MAY-KINH-DOANH·eth0 — SW-TANG-4·p1 | MAY-KHONG-RO·eth0 — SW-TANG-4·p2 | SW-TANG-4·p3 — R-CONG-RA-4·g0 | R-CONG-RA-4·g1 — SW-MAY-CHU-4·p1 | SW-MAY-CHU-4·p2 — SRV-NOI-BO·eth0
+    - **Ngồi ở máy:** MAY-KINH-DOANH
+    - **Hồ sơ bệnh:** không có (bệnh nằm trọn trong sơ đồ)
+    - **Triệu chứng:** MAY-KINH-DOANH ping 192.168.40.1 lúc được lúc không (nhiều máy giành một IP)
+    - **Chẩn đoán (chọn 1):** **Một máy lạ trong xóm đang giữ đúng địa chỉ của cổng ra** ✓ · Danh sách lọc trên router chặn nhầm dải máy của phòng kinh doanh · Cổng nối switch với router đang bị tắt bằng lệnh nên gói không qua
+    - **Sửa:** trực tiếp trên sơ đồ — mục tiêu:
+      - c17b-kd PHẢI gọi được c17b-srv
+      - phải hết sạch: duplicate-ip
+    - **Được phép:** đặt địa chỉ
+    - **Lời giải mẫu:** MAY-KINH-DOANH [192.168.40.20/24, gw 192.168.40.1] · MAY-KHONG-RO [192.168.40.88/24, gw 192.168.40.1] · SRV-NOI-BO [10.40.0.9/24, gw 10.40.0.1] · SW-TANG-4 [p1:VLAN 1, p2:VLAN 1, p3:VLAN 1] · SW-MAY-CHU-4 [p1:VLAN 1, p2:VLAN 1] · R-CONG-RA-4 [g0:192.168.40.1/24, g1:10.40.0.1/24] — dây: MAY-KINH-DOANH·eth0 — SW-TANG-4·p1 | MAY-KHONG-RO·eth0 — SW-TANG-4·p2 | SW-TANG-4·p3 — R-CONG-RA-4·g0 | R-CONG-RA-4·g1 — SW-MAY-CHU-4·p1 | SW-MAY-CHU-4·p2 — SRV-NOI-BO·eth0
+  - **Chủ đề gợi ý (tầng 1):** cuốn sổ ARP và địa chỉ cổng ra
+  - **Vì sao:** Ping 192.168.40.1 vài lượt rồi mở arp -a: địa chỉ cổng ra lúc gắn MAC …:11 của router, lúc gắn …:66 của MAY-KHONG-RO. Một cổng ra, hai kẻ nhận vơ — đúng hình dạng của cú mạo danh ARP. Chữa trước mắt là trả lại địa chỉ .1 cho router và đẩy máy lạ sang địa chỉ khác; chữa lâu dài là port security và Dynamic ARP Inspection ở cổng đó.
+
+## DHCP và DNS doanh nghiệp — Dịch vụ không được chết `module-18`
+
+Phần E · 5 chặng · 5 bài · 10 khái niệm
+
+**Chặng:** Chuyển lời qua ranh giới xóm (m18-bai-1) → Sáng thứ hai câm lặng (m18-bai-2) → Hai người làm mối (m18-bai-3) → Một cái tên, hai câu trả lời (m18-bai-4) → Hỏi hộ và trí nhớ có hạn (m18-bai-5)
+
+### Bài: Đưa lời hỏi cưới vượt ranh giới xóm `m18-bai-1`
+
+**1 · Khởi động (hook):** Công ty có mười tầng, mỗi tầng một xóm mạng riêng, nhưng phòng máy chủ chỉ nuôi ĐÚNG MỘT máy DHCP. Mà bạn còn nhớ từ bài hỏi cưới: lời xin địa chỉ là một tiếng hét quảng bá, và tiếng hét thì không bao giờ lọt qua router. Vậy máy mới ở tầng chín cắm dây vào, ai nghe được nó — và bằng cách nào lời của nó tới được phòng máy chủ?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử: gói DISCOVER mà máy mới hét lên để xin địa chỉ có tự đi qua router sang xóm khác được không?
+  - **Dạng:** trắc nghiệm · **Không — nó là quảng bá, mà router thì chặn mọi tiếng hét quảng bá** ✓ / Được — router chuyển mọi gói tin, quảng bá hay không cũng vậy / Được, nhưng chỉ khi hai xóm nằm chung một chiếc switch lớn
+  - **Chủ đề gợi ý (tầng 1):** ranh giới của một tiếng hét quảng bá
+  - **Vì sao:** Không qua được. DISCOVER gửi tới địa chỉ quảng bá, và ranh giới của quảng bá chính là router (bài học miền quảng bá từ hồi VLAN). Đó là lý do tồn tại của cả bài hôm nay: phải có ai đó trong xóm chuyển lời hộ.
+
+**3 · Khám phá (teach):**
+- *[m18-ranh-gioi-dora]* Cuộc hỏi cưới DORA của Module 6 có một chi tiết hồi đó chưa thành vấn đề: hai nhịp đầu đi bằng QUẢNG BÁ, vì máy mới chưa có địa chỉ nên chỉ biết hét lên cho cả xóm nghe. Trong mạng nhà một xóm thì thế là đủ. Nhưng doanh nghiệp chia hàng chục xóm, mà quảng bá chết ở ranh giới router — nghĩa là máy DHCP đặt ở xóm máy chủ sẽ vĩnh viễn không nghe thấy tiếng hét từ tầng chín. Nếu không có gì thêm, mỗi xóm phải tự nuôi một máy DHCP riêng — mười tầng là mười máy phải trông nom.
+  - **Đào sâu hơn:** Vì sao không cho quảng bá qua router luôn cho tiện? Vì đó chính là thứ đã làm nên bão quảng bá của Module 15: quảng bá lan tới đâu, mọi máy ở đó phải dừng tay xử lý tới đó. Ranh giới router là cái phanh giữ cho một tiếng hét chỉ làm phiền một xóm — bỏ cái phanh đó đi để tiện cho DHCP là chữa một chỗ ngứa bằng cách tháo cả hàng rào.
+- *[m18-relay]* Lời giải của nghề là đặt trong mỗi xóm một NGƯỜI CHUYỂN LỜI: DHCP relay (trên thiết bị thật là lệnh ip helper-address trên cổng router). Relay đứng trong xóm nên nghe được tiếng hét. Nghe xong, nó không hét tiếp — nó gói lời xin vào một lá thư gửi ĐÍCH DANH tới máy DHCP ở xóm máy chủ, và thư đích danh thì qua router bình thường. Quan trọng nhất: trước khi gửi, relay ghi vào ô giaddr địa chỉ của chính xóm mình. Nhờ ô đó mà máy chủ ở xa biết tiếng hét này phát từ xóm nào.
+  - **Đào sâu hơn:** Trên router thật, relay thường chính là cái cổng router của xóm: một dòng ip helper-address 10.20.0.10 trên cổng tầng chín là xong. Còn giaddr là tên một ô có thật trong gói DHCP (gateway address) — relay điền địa chỉ cổng xóm của nó vào đó. Toàn bộ phép màu một-server-cho-mười-xóm nằm gọn trong một ô địa chỉ ấy.
+
+**4 · Thử tay (practice, fading 0):**
+- **Ví dụ giải sẵn:** Theo chân một lời xin địa chỉ từ tầng chín về phòng máy chủ, từng chặng. Chặng 1: máy mới hét DISCOVER — cả xóm tầng chín nghe, router chặn lại đúng luật quảng bá. Chặng 2: relay của xóm (chính cổng router tầng chín) nghe được tiếng hét, ghi địa chỉ xóm 10.20.9.1 vào ô giaddr. Chặng 3: relay gửi lá thư đích danh tới máy DHCP 10.20.0.10 — thư có địa chỉ người nhận nên qua router êm ru. Chặng 4: máy chủ mở thư, nhìn ô giaddr thấy 10.20.9.1, hiểu ngay là xóm tầng chín đang hỏi, bèn chọn dải 10.20.9.x mà cấp. Chặng 5: OFFER quay về relay, relay trao tận tay máy mới — cuộc hỏi cưới tiếp tục như Module 6 đã kể.
+- **Đề:** Xếp lại đường đi của một lời xin địa chỉ khi xóm có relay:
+  - **Dạng:** xếp thứ tự (thứ tự đúng):
+    1. Máy mới hét DISCOVER, cả xóm nghe, router chặn lại
+    2. Relay trong xóm nghe được, ghi địa chỉ xóm vào ô giaddr
+    3. Relay gửi thư đích danh tới máy DHCP ở xóm máy chủ
+    4. Máy chủ nhìn giaddr, chọn đúng dải của xóm đang hỏi
+    5. OFFER quay về relay, relay trao tận tay máy mới
+  - **Chủ đề gợi ý (tầng 1):** ai nghe được tiếng hét, và ai đọc ô giaddr
+  - **Gợi ý (tầng 2):** Bắt đầu từ tiếng hét kẹt trong xóm. Người duy nhất vừa nghe được tiếng hét vừa viết được thư đích danh là ai?
+  - **Lời giải (tầng 3):** Hét trong xóm → relay nghe và ghi giaddr → thư đích danh vượt router → máy chủ đọc giaddr chọn dải → OFFER quay về qua relay. Mấu chốt là hai chặng giữa: đổi tiếng hét thành thư, và ghi rõ xóm nào đang hỏi.
+- **Đề:** Một máy DHCP duy nhất cấp đúng dải cho mười xóm khác nhau. Nó phân biệt các xóm bằng cách nào?
+  - **Dạng:** trắc nghiệm · **Nhìn ô giaddr mà relay đã ghi để biết lời xin phát từ xóm nào** ✓ / Đoán theo địa chỉ MAC của máy xin, vì MAC có ghi mã tòa nhà / Cấp lần lượt từng dải theo thứ tự lời xin gửi tới trong ngày
+  - **Chủ đề gợi ý (tầng 1):** ô địa chỉ mà relay điền trước khi gửi
+  - **Gợi ý (tầng 2):** MAC không mang thông tin vị trí, và cấp theo thứ tự thì máy tầng chín có ngày nhận địa chỉ tầng hai. Manh mối duy nhất về XÓM nằm trong lá thư của ai?
+  - **Lời giải (tầng 3):** Nhờ ô giaddr. Relay ghi địa chỉ xóm mình vào đó trước khi chuyển lời, nên máy chủ chỉ cần đối chiếu giaddr với danh sách scope là chọn đúng dải. Không có giaddr thì mười xóm trông giống hệt nhau.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: relay ghi địa chỉ xóm mình vào Ô NÀO của gói DHCP trước khi chuyển cho máy chủ?
+  - **Dạng:** gõ tay · **Chấp nhận:** giaddr | ô giaddr | o giaddr | truong giaddr | trường giaddr | gateway address
+  - **Chủ đề gợi ý (tầng 1):** tên ô bắt đầu bằng chữ g
+  - **Gợi ý (tầng 2):** Tên ô ghép từ chữ gateway và address — viết tắt sáu chữ cái.
+  - **Lời giải (tầng 3):** Ô giaddr (gateway address). Máy chủ đọc ô này để biết xóm nào đang hỏi mà chọn dải cho đúng — cả phép màu một-server-nhiều-xóm nằm ở đó.
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao relay phải ghi giaddr thay vì cứ chuyển tiếp nguyên xi tiếng hét cho máy chủ?
+  - **Nhóm ý cần chạm:** [giaddr, địa chỉ xóm, dia chi xom, địa chỉ của xóm, dia chi cua xom] · [chọn dải, chon dai, chọn scope, chon scope, đúng dải, dung dai, dải nào, dai nao] · [không biết xóm nào, khong biet xom nao, tưởng cùng xóm, tuong cung xom, mất dấu, mat dau, không phân biệt, khong phan biet] · [quảng bá, quang ba, không qua router, khong qua router, thư đích danh, thu dich danh]
+  - **Trả lời mẫu:** Vì tiếng hét gốc không nói nó phát từ xóm nào — nếu relay chuyển tiếp nguyên xi, máy chủ nhận được lời xin mà mất dấu nơi phát, không biết phải chọn dải nào trong hàng chục scope. Relay ghi địa chỉ xóm mình vào ô giaddr rồi gửi thành thư đích danh: thư thì qua được router, còn giaddr cho máy chủ đúng một manh mối cần thiết — xóm nào đang hỏi.
+
+**6 · Tổng kết:**
+- DISCOVER là tiếng hét quảng bá — chết ở ranh giới router, không tự tới được máy DHCP ở xóm khác.
+- Relay trong xóm đổi tiếng hét thành thư đích danh gửi máy chủ — một server lo được cả chục xóm.
+- Ô giaddr do relay ghi là manh mối duy nhất cho máy chủ biết xóm nào đang hỏi mà chọn đúng dải.
+- *Úp mở bài sau:* Relay đã đưa được lời xin về máy chủ. Nhưng máy chủ cũng có lúc HẾT ĐỊA CHỈ để cấp — và cái buổi sáng nó hết sạch bao giờ cũng là sáng thứ hai. Bài sau bạn trực ca đúng buổi sáng đó.
+
+### Bài: Trực ca sáng thứ hai cả tầng câm lặng `m18-bai-2`
+
+**1 · Khởi động (hook):** Thứ sáu mọi máy còn chạy ngon lành. Sáng thứ hai, một loạt máy tầng ba cùng lúc không vào được gì — mà lạ thay, máy nào cũng ĐANG CÓ một địa chỉ IP, chỉ là một địa chỉ không ai đặt, bắt đầu bằng 169.254. Địa chỉ đó ở đâu ra, và vì sao bệnh này thích bùng vào sáng đầu tuần?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** "Cả tầng ba sáng nay không ai vào được hệ thống, gọi xuống dồn dập!" Bạn đang ngồi ở MAY-TANG-3. Tầng hai bên cạnh vẫn làm việc bình thường. Khám đi — và nhớ nhìn kỹ địa chỉ IP của chính máy mình trước tiên.
+  - **Dạng:** ca bệnh phòng khám (khám qua terminal → chẩn đoán → sửa)
+    - **Mạng bệnh nhân:** MAY-TANG-3 [169.254.7.23/16] · MAY-TANG-2 [10.20.2.15/24, gw 10.20.2.1] · SRV-HE-THONG [10.20.0.9/24, gw 10.20.0.1] · SW-TANG-3 [p1:VLAN 1, p2:VLAN 1] · SW-TANG-2 [p1:VLAN 1, p2:VLAN 1] · SW-MAY-CHU [p1:VLAN 1, p2:VLAN 1] · R-TOA-NHA [g0:10.20.3.1/24, g1:10.20.2.1/24, g2:10.20.0.1/24] — dây: MAY-TANG-3·eth0 — SW-TANG-3·p1 | SW-TANG-3·p2 — R-TOA-NHA·g0 | MAY-TANG-2·eth0 — SW-TANG-2·p1 | SW-TANG-2·p2 — R-TOA-NHA·g1 | SRV-HE-THONG·eth0 — SW-MAY-CHU·p1 | SW-MAY-CHU·p2 — R-TOA-NHA·g2
+    - **Ngồi ở máy:** MAY-TANG-3
+    - **Hồ sơ bệnh:** không có (bệnh nằm trọn trong sơ đồ)
+    - **Triệu chứng:** MAY-TANG-3 ping 10.20.0.9 PHẢI hỏng
+    - **Chẩn đoán (chọn 1):** **DHCP không còn địa chỉ để cấp — máy tự bịa một địa chỉ 169.254 vô dụng** ✓ · Switch tầng ba hỏng nên toàn bộ khung tin của tầng bị nuốt mất · DNS của công ty chết nên mọi tên miền đều không phân giải được
+    - **Sửa:** chọn hành động — **Kiểm tra DHCP server: scope của tầng ba đã cạn — mở rộng dải hoặc rút ngắn thời gian thuê** ✓ · Thay dây mạng cho từng máy ở tầng ba rồi khởi động lại toàn bộ · Đổi DNS trên từng máy tầng ba sang một máy chủ DNS công cộng
+  - **Chủ đề gợi ý (tầng 1):** địa chỉ IP mà ipconfig của chính bạn đang cầm
+  - **Vì sao:** ipconfig trên máy bạn lộ ngay manh mối: địa chỉ 169.254.7.23, không gateway, không DNS — bộ ba của một máy XIN ĐỊA CHỈ THẤT BẠI rồi tự bịa số để khỏi trắng tay. Tầng hai vẫn chạy nên mạng trục không chết; thứ chết là nguồn cấp địa chỉ cho tầng ba: scope đã cạn. Sửa ở máy chủ DHCP (mở rộng dải, rút thời gian thuê), không phải ở dây hay ở DNS — hai thứ đó chẳng liên quan tới địa chỉ tự bịa.
+
+**3 · Khám phá (teach):**
+- *[m18-scope]* Scope là dải địa chỉ mà máy DHCP được phép đem cho thuê ở một xóm — ví dụ 10.20.3.50 tới 10.20.3.250, tức hai trăm suất. Mỗi máy thuê một suất theo thời hạn lease của Module 6. Chuyện cạn xảy ra khi số KHÁCH THUÊ vượt số suất: nhân viên đông lên, mỗi người thêm điện thoại với laptop cá nhân, khách ghé xin wifi — và những chiếc máy chỉ ghé một buổi vẫn giữ suất tới hết hạn thuê. Người vận hành tử tế theo dõi TỈ LỆ CẤP PHÁT của từng scope: chạm 90% là tin xấu đang xếp hàng, chứ không đợi tới sáng nó cạn hẳn.
+  - **Đào sâu hơn:** Vì sao hay bùng sáng thứ hai? Cuối tuần văn phòng vắng nhưng lease chưa hết hạn — suất của người về quê vẫn bị giữ. Sáng thứ hai cả công ty ùa vào cùng lúc: máy cũ xin gia hạn, máy mới xin suất mới, đám khách vãng lai tuần trước vẫn chiếm chỗ — cầu vọt đúng lúc cung đã mòn. Hai núm vặn của người vận hành: mở rộng dải (thêm suất) và rút ngắn lease ở xóm đông khách vãng lai (suất được trả nhanh hơn).
+- *[m18-apipa]* Máy xin DHCP mà không ai trả lời thì không chịu trắng tay: nó tự bịa cho mình một địa chỉ trong dải 169.254.x.x — gọi là APIPA. Địa chỉ tự bịa này chỉ đủ để nói chuyện với hàng xóm CÙNG cảnh ngộ trong xóm, còn gateway và DNS thì trống trơn, nên với người dùng nó đồng nghĩa với mất mạng. Với người trực thì ngược lại — nó là manh mối quý: thấy 169.254 là biết chắc máy này ĐÃ XIN mà KHÔNG AI CẤP, tức thủ phạm nằm ở phía dịch vụ DHCP, không phải ở sợi dây.
+  - **Đào sâu hơn:** Phân biệt hai cảnh cùng chữ mất mạng: máy cầm 169.254 nghĩa là đường dây tới switch vẫn sống (nó đã hét được và chờ mãi không ai đáp) — bệnh ở dịch vụ cấp phát. Còn máy báo cáp mạng bị rút thì tiếng hét còn chưa rời khỏi máy. Cùng một lời than của người dùng, hai hướng khám khác hẳn nhau — đó là lý do ipconfig luôn là lệnh mở màn.
+
+**4 · Thử tay (practice, fading 1):**
+- **Đề:** Hai máy cùng tầng đều xin DHCP thất bại và đều tự nhận địa chỉ 169.254.x.x. Chúng có ping được NHAU không?
+  - **Dạng:** trắc nghiệm · **Được — hai địa chỉ tự bịa nằm cùng dải, nói chuyện trong xóm vẫn ổn** ✓ / Không — địa chỉ tự bịa là địa chỉ giả nên không gửi nổi gói tin nào / Chỉ được nếu switch của tầng có bật sẵn tính năng chuyển tiếp DHCP
+  - **Chủ đề gợi ý (tầng 1):** hai máy cùng dải 169.254 và cùng một switch
+  - **Gợi ý (tầng 2):** 169.254.x.x với prefix 16 — hai máy cùng dải, cùng xóm. Ping trong xóm cần gateway không?
+  - **Lời giải (tầng 3):** Được. Hai máy cùng nằm trong dải 169.254.0.0/16 và cùng xóm nên gọi nhau không cần gateway. Cái chúng mất là đường RA KHỎI xóm — vì gateway và DNS đều trống. APIPA là phao cứu sinh trong xóm, không phải mạng thật.
+- **Đề:** Người vận hành muốn biết một scope sắp cạn TRƯỚC khi nó cạn. Con số nào của scope phải được theo dõi thường xuyên?
+  - **Dạng:** gõ tay · **Chấp nhận:** tỉ lệ cấp phát | ti le cap phat | tỷ lệ cấp phát | ty le cap phat | tỉ lệ đã cấp | ti le da cap | phần trăm đã cấp | phan tram da cap | số địa chỉ đã cấp | so dia chi da cap | tỉ lệ sử dụng | ti le su dung
+  - **Chủ đề gợi ý (tầng 1):** so số suất đã cho thuê với tổng số suất
+  - **Gợi ý (tầng 2):** Không phải đợi chuông reo — là một con số phần trăm nhìn vào biết còn bao nhiêu suất trống.
+  - **Lời giải (tầng 3):** Tỉ lệ cấp phát — số địa chỉ đã cho thuê trên tổng số suất của scope. Chạm ngưỡng 90% là lúc hành động (mở rộng dải, rút lease), chứ không đợi sáng thứ hai chuông reo dồn dập.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: máy xin địa chỉ mà không ai đáp sẽ tự bịa một địa chỉ bắt đầu bằng cặp số nào?
+  - **Dạng:** gõ tay · **Chấp nhận:** 169.254 | 169254 | 169 254 | dải 169.254 | dai 169.254 | 169.254.x.x
+  - **Chủ đề gợi ý (tầng 1):** dải địa chỉ tự cấp của APIPA
+  - **Gợi ý (tầng 2):** Cặp số mở đầu mà mọi người trực đều thuộc lòng — một trăm sáu chín, hai trăm năm tư.
+  - **Lời giải (tầng 3):** 169.254 — dải APIPA. Thấy nó trong ipconfig là biết máy đã hét xin địa chỉ mà không ai đáp: thủ phạm ở phía dịch vụ DHCP, không phải sợi dây.
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao bệnh scope cạn hay bùng đúng sáng thứ hai?
+  - **Nhóm ý cần chạm:** [cuối tuần, cuoi tuan, thứ sáu, thu sau, về quê, ve que, vắng, vang] · [lease, thời hạn thuê, thoi han thue, chưa hết hạn, chua het han, giữ suất, giu suat, chiếm chỗ, chiem cho] · [cùng lúc, cung luc, ùa vào, ua vao, đồng loạt, dong loat, sáng thứ hai, sang thu hai] · [hết suất, het suat, cạn, can, không còn địa chỉ, khong con dia chi]
+  - **Trả lời mẫu:** Vì cuối tuần văn phòng vắng nhưng các suất thuê chưa hết hạn — máy của người nghỉ vẫn giữ chỗ, kể cả máy khách vãng lai ghé một buổi tuần trước. Sáng thứ hai cả công ty ùa vào cùng lúc: máy cũ gia hạn, máy mới xin suất, trong khi kho suất đã mòn sẵn — cầu vọt đúng lúc cung cạn, và loạt máy đến sau nhận 169.254 đồng loạt.
+
+**6 · Tổng kết:**
+- Scope là kho suất cho thuê của một xóm — theo dõi tỉ lệ cấp phát, chạm 90% là hành động.
+- 169.254 là địa chỉ máy tự bịa khi xin không ai đáp: dây vẫn sống, bệnh nằm ở dịch vụ DHCP.
+- Sáng thứ hai là giờ vàng của bệnh scope cạn: lease cuối tuần giữ suất, cả công ty ùa vào một lượt.
+- *Úp mở bài sau:* Mở rộng scope rồi — nhưng vẫn còn đúng MỘT máy DHCP. Nó mà nằm bảo trì thì sao? Bài sau: hai người làm mối chia nhau một làng, và cái bẫy chết người khi cả hai cùng cầm một cuốn sổ.
+
+### Bài: Dựng người làm mối thứ hai không giẫm chân nhau `m18-bai-3`
+
+**1 · Khởi động (hook):** Máy DHCP duy nhất của công ty cần tắt 30 phút để vá lỗi. Người mới vào nghề toát mồ hôi: cả công ty sắp rớt mạng? Người cũ thản nhiên: đa số chẳng ai nhận ra đâu. Cả hai đều có lý — vậy ai đúng, và chuyện gì quyết định điều đó?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Máy DHCP tắt 30 phút giữa giờ làm. Các máy ĐANG DÙNG MẠNG có mất kết nối ngay không?
+  - **Dạng:** trắc nghiệm · **Không — địa chỉ đã thuê còn hạn thì cứ dùng tiếp, chẳng cần hỏi ai** ✓ / Có — mất máy chủ cấp phát là mọi địa chỉ lập tức bị thu hồi / Có — vì mỗi gói tin gửi đi đều phải qua máy DHCP đóng dấu trước
+  - **Chủ đề gợi ý (tầng 1):** bản chất của một hợp đồng thuê còn hạn
+  - **Vì sao:** Không mất ngay. Địa chỉ là hợp đồng thuê CÓ THỜI HẠN — server tắt thì hợp đồng còn hạn vẫn nguyên giá trị, máy cứ dùng tiếp. Kẻ khổ là máy MỚI cắm vào (không ai đáp tiếng hét) và máy vừa hết hạn thuê. DHCP chỉ đứng ở cửa cấp phát, không đứng trên đường đi của từng gói tin.
+
+**3 · Khám phá (teach):**
+- *[m18-failover]* Muốn dịch vụ cấp phát sống qua cả lúc một máy chủ nằm viện thì nuôi HAI máy. Cách mộc mạc nhất: chia đôi kho suất — máy A giữ 80% dải, máy B giữ 20% còn lại, hai kho KHÔNG chồng lên nhau; A tắt thì B vẫn cấp được từ phần của nó. Cách sang hơn: hai máy bắt cặp failover, dùng CHUNG một cuốn sổ cho thuê và liên tục kể cho nhau nghe từng hợp đồng — một máy gục, máy kia cầm nguyên cuốn sổ cấp tiếp như chưa có gì xảy ra. Mức khái niệm cần nhớ: hoặc chia kho tách bạch, hoặc chung sổ có đồng bộ — không có kiểu thứ ba.
+  - **Đào sâu hơn:** Tỉ lệ 80/20 không phải phép chia công bằng mà là phép chia VAI: máy A gánh việc hằng ngày, máy B là phao dự phòng — 20% suất của nó chỉ cần đủ cho quãng thời gian A nằm viện, vì các máy còn hạn thuê đâu cần hỏi ai. Đó cũng là câu trả lời cho thắc mắc vì sao phao chỉ cần bé: lease chính là chiếc phao thứ nhất rồi.
+- *[m18-trung-dai]* Cái bẫy chết người của kẻ vội: dựng máy B bằng cách BÊ NGUYÊN cấu hình máy A — hai máy cùng phát MỘT dải, không chia, không chung sổ. Trông thì chạy: máy nào hỏi cũng được đáp, còn nhanh gấp đôi. Nhưng hai cuốn sổ rời nhau không biết đối phương đã cho thuê số nào — sớm muộn máy A cấp 10.20.3.77 cho người này trong khi máy B cũng cấp đúng 10.20.3.77 cho người khác. Và thế là bệnh TRÙNG IP chập chờn của Module 11 quay lại, lần này không phải do ai gõ nhầm tay, mà do chính hạ tầng đẻ ra đều đặn.
+  - **Đào sâu hơn:** Bệnh này ác ở chỗ nó ủ lâu: hai server cùng phát một dải có thể chạy êm hàng tuần — chừng nào hai bên tình cờ chưa cấp trùng số. Tới lúc trùng, triệu chứng lại y hệt ca máy in Module 11 (một IP hai MAC thay nhau trả lời), khiến người trực đi tìm kẻ gõ nhầm trong khi thủ phạm ngồi trong phòng máy chủ. Gặp trùng IP tái đi tái lại ở một xóm cấp phát tự động: đừng hỏi ai gõ — hỏi có mấy máy DHCP đang phát dải đó.
+
+**4 · Thử tay (practice, fading 1):**
+- **Đề:** Cách nào dựng máy DHCP thứ hai ĐÚNG?
+  - **Dạng:** trắc nghiệm · **Chia kho tách bạch cho hai máy, hoặc bắt cặp failover dùng chung một cuốn sổ** ✓ / Bê nguyên cấu hình máy một sang máy hai cho đồng bộ, cùng phát một dải / Cho máy hai chỉ phát địa chỉ vào ban đêm để tránh đụng giờ với máy một
+  - **Chủ đề gợi ý (tầng 1):** hai cuốn sổ rời nhau thì biết gì về nhau
+  - **Gợi ý (tầng 2):** Câu hỏi cốt lõi: hai máy có cách nào biết ĐỐI PHƯƠNG đã cho thuê số nào chưa?
+  - **Lời giải (tầng 3):** Chia kho tách bạch hoặc chung sổ failover. Bê nguyên cấu hình là hai cuốn sổ rời cùng phát một dải — máy nào cũng tưởng số còn trống, và bệnh trùng IP được hạ tầng sản xuất đều đặn. Phát theo giờ cũng chung một lỗi: hai sổ vẫn chẳng biết gì về nhau.
+- **Đề:** Trộn lại Module 11: một xóm cấp DHCP tự động cứ vài ngày lại có ca trùng IP, mỗi lần một máy khác nhau. Nghi phạm số một của bạn?
+  - **Dạng:** trắc nghiệm · **Hai máy DHCP đang cùng phát một dải mà không chia kho, không chung sổ** ✓ / Một nhân viên nào đó cứ vài ngày lại gõ nhầm địa chỉ tĩnh một lần / Switch của xóm bị lỗi bảng MAC nên gán nhầm địa chỉ cho các máy
+  - **Chủ đề gợi ý (tầng 1):** trùng IP lặp lại có hệ thống thì thủ phạm là hệ thống
+  - **Gợi ý (tầng 2):** Gõ nhầm là tai nạn lẻ tẻ của MỘT máy. Bệnh tái phát đều đặn, nạn nhân đổi liên tục — cái gì sản xuất được lỗi đều đặn như thế?
+  - **Lời giải (tầng 3):** Hai máy DHCP cùng phát một dải. Lỗi con người thì lẻ tẻ và dính một máy; lỗi lặp có hệ thống với nạn nhân ngẫu nhiên là chữ ký của hạ tầng cấp phát đôi. Switch thì không gán địa chỉ IP cho ai bao giờ — nó sống ở tầng 2.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: hai máy DHCP cùng phục vụ một xóm mà KHÔNG chia kho, không chung sổ — sớm muộn sinh ra bệnh gì?
+  - **Dạng:** gõ tay · **Chấp nhận:** trùng ip | trung ip | trùng địa chỉ | trung dia chi | cấp trùng ip | cap trung ip | hai máy một ip | hai may mot ip | duplicate ip
+  - **Chủ đề gợi ý (tầng 1):** bệnh chập chờn quen mặt từ phòng khám
+  - **Gợi ý (tầng 2):** Chính là ca máy in chập chờn của Module 11 — nhưng lần này do hạ tầng đẻ ra.
+  - **Lời giải (tầng 3):** Trùng IP. Hai cuốn sổ rời nhau không biết đối phương đã cho thuê số nào, nên sớm muộn hai máy khác nhau cùng được cấp một địa chỉ — bệnh chập chờn Module 11 quay lại, lần này theo lịch của hạ tầng chứ không theo bàn tay gõ nhầm.
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao máy DHCP dự phòng chỉ cần giữ 20% kho suất mà vẫn đủ cứu cả xóm khi máy chính nằm viện?
+  - **Nhóm ý cần chạm:** [lease, còn hạn, con han, hợp đồng thuê, hop dong thue, dùng tiếp, dung tiep] · [không cần hỏi, khong can hoi, không phải xin lại, khong phai xin lai, chẳng hỏi ai, chang hoi ai] · [máy mới, may moi, hết hạn, het han, số ít, so it, ít máy, it may] · [tạm thời, tam thoi, quãng bảo trì, quang bao tri, trong lúc, trong luc]
+  - **Trả lời mẫu:** Vì các máy đang giữ hợp đồng thuê còn hạn cứ thế dùng tiếp, chẳng cần hỏi ai — lease chính là chiếc phao thứ nhất. Trong quãng máy chính nằm viện, chỉ máy mới cắm vào và máy vừa hết hạn mới cần xin, mà số đó ít, nên 20% kho suất của máy dự phòng là đủ đắp qua cơn.
+
+**6 · Tổng kết:**
+- Server tắt không làm máy đang dùng rớt mạng — lease còn hạn là chiếc phao thứ nhất.
+- Dự phòng đúng kiểu: chia kho tách bạch (80/20) hoặc bắt cặp failover chung một cuốn sổ.
+- Hai máy cùng phát một dải không chia là nhà máy sản xuất bệnh trùng IP — đừng bê nguyên cấu hình.
+- *Úp mở bài sau:* Địa chỉ đã có người lo ngày đêm. Nhưng còn CÁI TÊN: vì sao cùng gõ một địa chỉ web mà ngồi trong công ty lại thấy khác hẳn ngồi quán cà phê? Bài sau: một cái tên, hai câu trả lời — và cả hai đều đúng.
+
+### Bài: Giải nghĩa một cái tên có hai câu trả lời `m18-bai-4`
+
+**1 · Khởi động (hook):** Chị kế toán cầm laptop ra quán cà phê thì mở trang chủ công ty ngon lành; về tới bàn làm việc, cũng chiếc laptop đó, cũng địa chỉ đó — lại vào được luôn, nhưng nhanh hơn hẳn. Trong khi anh thực tập gõ tên hệ thống nội bộ ở nhà thì máy báo không tồn tại, dù ở công ty nó chạy. Cùng những cái tên ấy — ai đang trả lời khác nhau, và vì sao lại nên như thế?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** "Công ty vừa chuyển sang máy chủ DNS mới, từ đó không ai mở được hệ thống nội bộ portal.noibo.congty.vn nữa — báo không tồn tại. Web bên ngoài thì vẫn lướt bình thường!" Bạn ngồi ở MAY-KE-TOAN. Khám bằng nslookup xem cái tên ấy chết ở đâu.
+  - **Dạng:** ca bệnh phòng khám (khám qua terminal → chẩn đoán → sửa)
+    - **Mạng bệnh nhân:** MAY-KE-TOAN [10.20.2.21/24, gw 10.20.2.1] · SRV-DNS-MOI [10.20.0.53/24, gw 10.20.0.1] · SRV-PORTAL [10.20.0.80/24, gw 10.20.0.1] · SW-VAN-PHONG [p1:VLAN 1, p2:VLAN 1] · SW-MAY-CHU [p1:VLAN 1, p2:VLAN 1, p3:VLAN 1] · R-CONG-TY [g0:10.20.2.1/24, g1:10.20.0.1/24] — dây: MAY-KE-TOAN·eth0 — SW-VAN-PHONG·p1 | SW-VAN-PHONG·p2 — R-CONG-TY·g0 | R-CONG-TY·g1 — SW-MAY-CHU·p1 | SW-MAY-CHU·p2 — SRV-DNS-MOI·eth0 | SW-MAY-CHU·p3 — SRV-PORTAL·eth0
+    - **Ngồi ở máy:** MAY-KE-TOAN
+    - **Hồ sơ bệnh:** DNS 10.20.0.53 [www.congty.vn → 203.0.113.80, mail.congty.vn → 203.0.113.25]
+    - **Triệu chứng:** MAY-KE-TOAN phân giải tên "portal.noibo.congty.vn" PHẢI hỏng
+    - **Chẩn đoán (chọn 1):** **DNS mới chỉ biết tên công cộng — zone nội bộ chưa được dựng nên tên trong nhà thành vô chủ** ✓ · Máy chủ portal đã tắt hẳn nên cái tên của nó bị xóa khỏi mọi máy DNS · Dây mạng từ văn phòng lên tủ máy chủ đứt nên mọi câu hỏi DNS rơi rụng
+    - **Sửa:** chọn hành động — **Dựng zone noibo.congty.vn trên DNS trong, thêm bản ghi portal trỏ về 10.20.0.80** ✓ · Đổi DNS trên từng máy nhân viên sang một máy chủ DNS công cộng ngoài Internet · Khởi động lại máy chủ portal và toàn bộ switch trong phòng máy chủ
+  - **Chủ đề gợi ý (tầng 1):** nslookup nói tên chết kiểu gì — im lặng hay không tồn tại
+  - **Vì sao:** nslookup portal.noibo.congty.vn trả về Non-existent domain — máy DNS SỐNG và TRẢ LỜI đàng hoàng, chỉ là câu trả lời của nó là "tôi không biết tên này". Nó vẫn phân giải được www và mail, tức bệnh không nằm ở dây hay ở dịch vụ, mà ở CUỐN SỔ: DNS mới chỉ chép phần tên công cộng, quên dựng zone nội bộ. Đổi sang DNS công cộng càng tệ — DNS ngoài Internet lại càng không biết tên trong nhà bạn. Thuốc đúng: dựng zone noibo.congty.vn ngay trên DNS trong.
+
+**3 · Khám phá (teach):**
+- *[m18-split-dns]* Doanh nghiệp giữ HAI cuốn sổ tên cho cùng một miền — gọi là split DNS. Cuốn NGOÀI đặt trên Internet, ai hỏi cũng đáp, nhưng chỉ ghi những tên đáng phơi ra đời: www, mail, và trỏ chúng về địa chỉ công cộng. Cuốn TRONG đặt ở phòng máy chủ, chỉ người trong mạng hỏi được: ghi đủ tên nội bộ (portal, kho file, máy in) trỏ thẳng về địa chỉ trong nhà — và với chính www, nó có thể trả địa chỉ NỘI BỘ để nhân viên đi đường tắt trong nhà thay vì vòng ra Internet rồi quay về. Cùng một cái tên, hai câu trả lời — mỗi câu đúng cho chỗ đứng của người hỏi.
+  - **Đào sâu hơn:** Vì sao không gộp một cuốn cho đỡ mệt? Hai lý do. Bảo mật: phơi cuốn sổ nội bộ ra Internet là phát miễn phí bản đồ phòng máy chủ cho kẻ dò la — tên máy, vai trò, địa chỉ trong nhà. Đường đi: người trong nhà mà bị trỏ ra địa chỉ công cộng sẽ đi vòng qua cửa NAT rồi quay ngược vào — chậm, và có kiến trúc còn tắc hẳn. Ca anh thực tập ở phần mở đầu là mặt còn lại của cùng đồng xu: ở nhà anh hỏi cuốn NGOÀI, mà cuốn ngoài thì cố tình không ghi tên nội bộ.
+
+**4 · Thử tay (practice, fading 2):**
+- **Đề:** Máy trong công ty không phân giải được tên nội bộ. Một người đề nghị: đổi DNS của máy sang máy chủ DNS công cộng nổi tiếng cho khỏe. Kết quả sẽ ra sao?
+  - **Dạng:** trắc nghiệm · **Tệ hơn — DNS công cộng càng không biết tên nội bộ, lại mất luôn các tên trong nhà khác** ✓ / Khỏi hẳn — máy chủ DNS công cộng lớn thì cuốn sổ nào cũng đầy đủ hơn DNS công ty / Không đổi gì — mọi máy DNS trên đời đều chép chung một cuốn sổ như nhau
+  - **Chủ đề gợi ý (tầng 1):** tên nội bộ nằm trong cuốn sổ của ai
+  - **Gợi ý (tầng 2):** portal.noibo.congty.vn có nằm trên Internet không? Máy chủ DNS công cộng tra nó ở đâu ra?
+  - **Lời giải (tầng 3):** Tệ hơn. Tên nội bộ chỉ tồn tại trong cuốn sổ TRONG của công ty — DNS công cộng không có và không bao giờ có nó. Đổi DNS ra ngoài là tự cắt mình khỏi toàn bộ tên trong nhà. Đây là phản xạ sai phổ biến nhất của người mới, nên nó đứng đầu danh sách bẫy.
+- **Đề:** Nhân viên trong công ty mở www.congty.vn mà không phải đi vòng ra Internet rồi quay về. Cuốn sổ TRONG đã làm gì với cái tên www đó?
+  - **Dạng:** gõ tay · **Chấp nhận:** trỏ về địa chỉ nội bộ | tro ve dia chi noi bo | trả địa chỉ nội bộ | tra dia chi noi bo | trỏ về ip nội bộ | tro ve ip noi bo | trả ip trong nhà | tra ip trong nha | trỏ thẳng vào máy chủ trong nhà | tro thang vao may chu trong nha
+  - **Chủ đề gợi ý (tầng 1):** cùng một tên nhưng câu trả lời dành cho người trong nhà
+  - **Gợi ý (tầng 2):** Đó chính là chỗ chị kế toán thấy "nhanh hơn hẳn" khi về bàn làm việc — sổ trong trả một địa chỉ khác sổ ngoài.
+  - **Lời giải (tầng 3):** Sổ trong trỏ www về địa chỉ NỘI BỘ của máy chủ web, nên người trong nhà đi đường tắt trong nhà. Sổ ngoài vẫn trỏ về địa chỉ công cộng cho khách Internet — hai câu trả lời cùng đúng, mỗi câu cho một chỗ đứng.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: kiểu triển khai giữ hai cuốn sổ tên trong/ngoài cho cùng một miền gọi là gì?
+  - **Dạng:** gõ tay · **Chấp nhận:** split dns | split-dns | dns tách đôi | dns tach doi | dns hai cuốn sổ | dns hai cuon so
+  - **Chủ đề gợi ý (tầng 1):** tên tiếng Anh, có chữ chia/tách
+  - **Gợi ý (tầng 2):** Chữ đầu nghĩa là tách đôi — split.
+  - **Lời giải (tầng 3):** Split DNS: cuốn ngoài phơi tên công cộng cho Internet, cuốn trong giữ đủ tên nội bộ cho người trong nhà — cùng một miền, hai câu trả lời có chủ đích.
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao KHÔNG nên phơi cuốn sổ tên nội bộ ra Internet cho tiện một cuốn?
+  - **Nhóm ý cần chạm:** [bản đồ, ban do, lộ, lo , phơi, phoi, dò la, do la, trinh sát, trinh sat] · [tên nội bộ, ten noi bo, máy chủ trong nhà, may chu trong nha, địa chỉ trong, dia chi trong] · [bảo mật, bao mat, kẻ tấn công, ke tan cong, an toàn, an toan] · [đường vòng, duong vong, đi vòng, di vong, nat, chậm, cham, đường tắt, duong tat]
+  - **Trả lời mẫu:** Vì cuốn sổ nội bộ chính là tấm bản đồ phòng máy chủ: tên máy, vai trò, địa chỉ trong nhà. Phơi nó ra Internet là tặng không tấm bản đồ đó cho kẻ dò la. Chưa kể chuyện đường đi: người trong nhà bị trỏ ra địa chỉ công cộng sẽ đi vòng qua cửa NAT rồi quay lại, chậm và có khi tắc — trong khi sổ trong cho họ đi đường tắt nội bộ.
+
+**6 · Tổng kết:**
+- Split DNS = hai cuốn sổ cho một miền: sổ ngoài phơi tên công cộng, sổ trong giữ đủ tên nội bộ.
+- Tên nội bộ chỉ sống trong sổ trong — đổi máy sang DNS công cộng là tự cắt mình khỏi chúng.
+- Non-existent domain từ một DNS đang sống nghĩa là thiếu bản ghi/zone — bệnh ở cuốn sổ, không ở dây.
+- *Úp mở bài sau:* Sổ trong không biết một cái tên ngoài Internet thì sao — nó bó tay à? Không: nó đi HỎI HỘ. Và mọi câu trả lời xin về đều có hạn sử dụng — thứ sẽ phản chủ đúng cái ngày bạn thay máy chủ. Bài cuối: forwarder và TTL.
+
+### Bài: Điều khiển trí nhớ của cả hệ thống tên `m18-bai-5`
+
+**1 · Khởi động (hook):** Chín giờ sáng bạn chuyển trang nội bộ sang máy chủ mới và sửa bản ghi DNS ngay lập tức. Chín giờ năm phút, phòng kế toán vẫn vào bản cũ. Mười giờ, vài người vẫn thế — trong khi máy bạn thì thấy bản mới từ lâu. Không có gì hỏng cả. Ai đang "nhớ dai" giữa đường, và lẽ ra bạn phải làm gì từ MẤY NGÀY TRƯỚC?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử: sửa bản ghi DNS xong mà một số máy vẫn ra địa chỉ cũ thêm cả tiếng — vì sao?
+  - **Dạng:** trắc nghiệm · **Câu trả lời cũ còn hạn nhớ trong các bộ đệm dọc đường nên chưa ai thèm hỏi lại** ✓ / Bản ghi mới cần thời gian lan truyền vật lý qua từng sợi cáp tới mọi máy / Máy chủ DNS chỉ đọc lại cuốn sổ của nó vào đầu mỗi giờ chẵn
+  - **Chủ đề gợi ý (tầng 1):** mỗi câu trả lời DNS đều kèm một hạn sử dụng
+  - **Vì sao:** Mỗi câu trả lời DNS mang theo một hạn nhớ (TTL). Máy nào xin được câu trả lời cũ TRƯỚC lúc bạn sửa sẽ dùng nó tới hết hạn mới chịu hỏi lại — chẳng có gì lan truyền vật lý, cũng chẳng có giờ chẵn nào cả. Trí nhớ có hạn chính là thứ làm DNS nhanh, và cũng là thứ phản chủ khi bạn đổi hạ tầng mà quên báo trước.
+
+**3 · Khám phá (teach):**
+- *[m18-forwarder]* Máy DNS trong công ty giữ zone nội bộ, nhưng thế giới ngoài kia thì nó không biết hết — và không cần biết. Gặp tên lạ, nó chuyển câu hỏi cho một người HỎI HỘ đã chỉ định sẵn: forwarder. Mọi thắc mắc ra Internet dồn về một cửa duy nhất, và cái cửa đó thành chỗ vàng để vận hành: bộ đệm chung cho cả công ty (một người hỏi xong, nghìn người sau hưởng), một chỗ duy nhất để lọc tên độc hại, một chỗ duy nhất để nhìn xem cả công ty đang hỏi gì.
+  - **Đào sâu hơn:** Không khai forwarder thì máy DNS tự đi hỏi từ gốc: root, rồi máy chủ của vn, rồi của congty.vn — cách này tự lập nhưng mỗi máy DNS trong công ty đều phải tự bơi ra Internet, khó lọc, khó nhìn. Chọn forwarder vì thế ít khi là chuyện kỹ thuật thuần: nó là quyết định gom mọi cánh cửa ra thế giới về một chỗ canh được.
+- *[m18-cond-forwarder]* Có những cái tên không nên hỏi vòng ra Internet: tên nội bộ của CÔNG TY ĐỐI TÁC vừa nối VPN với bạn chẳng hạn — Internet không biết chúng, chỉ DNS nội bộ của đối tác biết. Conditional forwarder là luật hỏi đúng nhà: riêng những tên thuộc doitac.vn thì chuyển thẳng câu hỏi tới máy DNS của đối tác qua đường VPN, còn mọi tên khác vẫn đi cửa forwarder thường. Một dòng luật cho mỗi người quen — thay vì bắt cả thế giới trả lời hộ thứ chỉ hàng xóm biết.
+  - **Đào sâu hơn:** Đây chính là mảnh ghép DNS cho mạng nhiều công ty nối nhau: sáp nhập, thuê ngoài, chi nhánh dùng miền riêng. Dấu hiệu nhận biết đang thiếu nó: ping địa chỉ IP của máy đối tác thì thông (đường VPN sống) mà gọi bằng TÊN thì Non-existent domain — tầng đường đi ổn, tầng tên chưa ai chỉ lối.
+- *[m18-ttl]* Mỗi bản ghi DNS mang một hạn nhớ — TTL, tính bằng giây: ai xin được câu trả lời thì được phép nhớ nó đúng chừng ấy lâu rồi mới phải hỏi lại. TTL dài thì cả hệ thống nhẹ gánh nhưng trí nhớ cũ lởn vởn lâu; TTL ngắn thì đổi gì cũng lan nhanh nhưng máy DNS bị hỏi dồn dập. Luật vàng khi ĐỔI HẠ TẦNG: hạ TTL của bản ghi sắp đổi xuống thật ngắn TRƯỚC vài ngày — đợi hạn nhớ cũ trôi hết — rồi mới đổi địa chỉ; xong xuôi ổn định thì nâng TTL về như cũ. Trí nhớ của cả Internet không xóa được bằng lệnh, chỉ điều khiển được bằng cách hẹn giờ từ trước.
+  - **Đào sâu hơn:** Vì sao phải hạ TRƯỚC vài ngày mà không phải vài phút? Vì lời hứa cũ vẫn còn hiệu lực: bản ghi đang để TTL một ngày nghĩa là ngoài kia có những bộ đệm được phép nhớ câu trả lời cũ tới hết một ngày nữa — bạn hạ TTL hôm nay thì phải đợi trọn vòng hạn CŨ trôi qua, mọi bộ đệm mới cầm bản TTL ngắn. Hạ sớm bao lâu = TTL cũ dài bao nhiêu. Đó là phép tính người vận hành làm trên lịch, trước khi chạm vào bất cứ máy chủ nào.
+
+**4 · Thử tay (practice, fading 2):**
+- **Đề:** Trước giờ chuyển hạ tầng, bạn phải kiểm chứng máy DNS nội bộ 10.20.0.53 còn đang NGHE ở đúng cổng dịch vụ của DNS hay không — bằng terminal PowerShell, như một người vận hành thật.
+  - **Dạng:** terminal PowerShell (gõ lệnh đạt mục tiêu)
+    - **Thế giới:** máy MAY-QUAN-TRI [10.20.2.5/24] — đích: dns.congty.vn=10.20.0.53 cổng 53 · portal.noibo.congty.vn=10.20.0.80 cổng 80/443
+    - **Mục tiêu:**
+      - phải kiểm tra cổng 53 của 10.20.0.53 thành công
+    - **Lệnh mẫu:** `Test-NetConnection 10.20.0.53 -Port 53`
+  - **Chủ đề gợi ý (tầng 1):** cổng dịch vụ của DNS và cmdlet kiểm tra kết nối
+  - **Gợi ý (tầng 2):** Cmdlet là Test-NetConnection, đích là 10.20.0.53, còn cổng của DNS thì bạn đã thuộc từ cung điện Module 5 — con số nằm ở tầng hai của tòa nhà.
+  - **Lời giải (tầng 3):** Test-NetConnection 10.20.0.53 -Port 53. Cổng 53 là cửa của DNS; TcpTestSucceeded : True nghĩa là dịch vụ đang nghe — kiểm chứng bằng lệnh trước giờ đổi hạ tầng là thói quen sống còn của người vận hành.
+- **Đề:** Ping tới địa chỉ IP máy chủ của đối tác qua VPN thì thông, nhưng gọi bằng tên noibo.doitac.vn thì báo không tồn tại. Thiếu mảnh nào?
+  - **Dạng:** trắc nghiệm · **Conditional forwarder trỏ các tên doitac.vn về máy DNS của đối tác** ✓ / Một tuyến đường tĩnh mới, vì đường VPN hiện tại chưa dẫn tới máy chủ đó / Bản ghi các tên đối tác trên máy chủ DNS công cộng ngoài Internet
+  - **Chủ đề gợi ý (tầng 1):** ping số thông thì tầng đường đi còn thiếu gì đâu
+  - **Gợi ý (tầng 2):** Bài Module 11 dạy tách tên khỏi số: số sống mà tên chết thì bệnh nằm ở tầng nào?
+  - **Lời giải (tầng 3):** Thiếu conditional forwarder. Ping số thông chứng tỏ đường VPN ổn — tuyến tĩnh không thiếu; còn tên nội bộ của đối tác thì Internet không biết nên đưa lên DNS công cộng là vô ích. Phải có luật hỏi đúng nhà: tên doitac.vn chuyển thẳng tới DNS của đối tác.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: vài ngày TRƯỚC khi đổi địa chỉ một máy chủ, người vận hành phải làm gì với TTL của bản ghi sắp đổi?
+  - **Dạng:** gõ tay · **Chấp nhận:** hạ ttl | ha ttl | giảm ttl | giam ttl | hạ xuống | ha xuong | rút ngắn ttl | rut ngan ttl | hạ ttl xuống thật ngắn | ha ttl xuong that ngan
+  - **Chủ đề gợi ý (tầng 1):** điều khiển hạn nhớ từ trước, không xóa được lúc sau
+  - **Gợi ý (tầng 2):** Trí nhớ ngoài kia không xóa được bằng lệnh — chỉ hẹn giờ cho nó ngắn lại từ trước.
+  - **Lời giải (tầng 3):** Hạ TTL xuống thật ngắn từ trước vài ngày, đợi hạn nhớ cũ trôi hết rồi mới đổi địa chỉ — đổi xong ổn định thì nâng TTL về như cũ. Đây là phép tính làm trên lịch, trước khi chạm vào máy chủ.
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao phải hạ TTL từ TRƯỚC vài ngày chứ không phải ngay lúc đổi địa chỉ?
+  - **Nhóm ý cần chạm:** [hạn cũ, han cu, ttl cũ, ttl cu, lời hứa cũ, loi hua cu, còn hiệu lực, con hieu luc] · [bộ đệm, bo dem, cache, nhớ, nho , trí nhớ, tri nho] · [trôi hết, troi het, hết hạn, het han, đợi, doi , chờ, cho ] · [hỏi lại, hoi lai, xin lại, xin lai, cầm bản mới, cam ban moi, ttl ngắn, ttl ngan]
+  - **Trả lời mẫu:** Vì các bộ đệm ngoài kia đang cầm câu trả lời cũ kèm hạn nhớ CŨ — lời hứa đó còn hiệu lực tới hết hạn, mình không xóa hộ họ được. Hạ TTL hôm nay thì phải đợi trọn vòng hạn cũ trôi qua, mọi bộ đệm hỏi lại và cầm bản TTL ngắn; tới lúc ấy mới đổi địa chỉ thì trí nhớ cũ chỉ sống thêm vài phút thay vì cả ngày.
+
+**6 · Tổng kết:**
+- Gặp tên lạ, DNS trong hỏi hộ qua forwarder — một cửa ra để đệm chung, lọc chung, nhìn chung.
+- Tên của đối tác thì hỏi đúng nhà bằng conditional forwarder, đừng bắt Internet trả lời hộ.
+- TTL là hạn nhớ của mỗi câu trả lời: đổi hạ tầng thì hạ TTL trước vài ngày, xong nâng lại.
+- *Úp mở bài sau:* Địa chỉ có người phát, cái tên có người giữ — hạ tầng dịch vụ đã đứng vững. Phần tiếp theo bước sang con người: một miền, nhiều tòa nhà, và câu hỏi ai được quyền làm gì ở đâu — Active Directory đa site đang đợi.
+
+### Khái niệm & flashcard (10)
+
+- **Quảng bá DHCP và ranh giới router** `m18-ranh-gioi-dora` — Hai nhịp đầu của DORA đi bằng quảng bá nên chết ở ranh giới router — máy DHCP khác xóm không tự nghe được lời xin
+  - Ẩn dụ: Như lời hỏi cưới hét giữa sân đình làng mình: cả làng nghe rõ, nhưng bà mối ở làng bên thì không — giữa hai làng có con sông không tiếng hét nào vượt qua.
+  - Thẻ ôn: *Vì sao máy DHCP đặt ở xóm khác không tự nghe được máy mới xin địa chỉ?* → Vì DISCOVER và REQUEST gửi bằng quảng bá — máy mới chưa có địa chỉ nên chỉ biết hét cho cả xóm. Mà quảng bá chết ở ranh giới router, nên lời xin không bao giờ tự tới được xóm máy chủ; phải có relay chuyển lời.
+- **DHCP relay (ip helper)** `m18-relay` — Người chuyển lời trong xóm: nghe tiếng hét DISCOVER, ghi địa chỉ xóm vào ô giaddr rồi gửi thư đích danh tới máy DHCP
+  - Ẩn dụ: Như nhà mai mối trong làng: nghe lời hỏi cưới hét giữa sân, chép thành thư ghi rõ làng nào gửi, rồi đưa tận tay bà mối ở làng bên.
+  - Thẻ ôn: *DHCP relay làm hai việc gì với tiếng hét xin địa chỉ?* → Một: đổi tiếng hét quảng bá thành thư đích danh gửi máy DHCP — thư thì qua được router. Hai: ghi địa chỉ xóm mình vào ô giaddr, để máy chủ biết xóm nào đang hỏi mà chọn đúng dải cấp. Trên router thật là lệnh ip helper-address.
+- **Scope và tỉ lệ cạn** `m18-scope` — Dải địa chỉ cho thuê của một xóm; theo dõi tỉ lệ cấp phát để hành động trước khi cạn — chạm 90% là tin xấu xếp hàng
+  - Ẩn dụ: Như bãi gửi xe của một tòa nhà: đếm chỗ trống mỗi sáng thì không bao giờ bị cảnh cả đoàn xe đứng chờ trước rào chắn.
+  - Thẻ ôn: *Scope là gì, và người vận hành theo dõi con số nào để nó không cạn bất ngờ?* → Scope là dải địa chỉ máy DHCP được phép cho một xóm thuê. Theo dõi tỉ lệ cấp phát (số đã cho thuê trên tổng suất): chạm ~90% là mở rộng dải hoặc rút ngắn lease ở xóm đông khách vãng lai — hành động trước khi chuông reo.
+- **APIPA 169.254** `m18-apipa` — Địa chỉ máy tự bịa trong dải 169.254.x.x khi xin DHCP không ai đáp — không gateway, không DNS, chỉ nói chuyện được trong xóm
+  - Ẩn dụ: Như người xếp hàng mãi không được phát số thứ tự bèn tự viết một con số lên tay: trong phòng chờ ai cũng hiểu, nhưng ra khỏi cửa thì con số ấy vô giá trị.
+  - Thẻ ôn: *Thấy máy cầm địa chỉ 169.254.x.x thì người trực kết luận được ngay điều gì?* → Máy ĐÃ hét xin DHCP mà KHÔNG AI đáp — nên đường dây tới switch vẫn sống, thủ phạm nằm ở phía dịch vụ cấp phát (scope cạn, server chết, relay hỏng), không phải sợi dây. Địa chỉ tự bịa không có gateway lẫn DNS nên với người dùng là mất mạng.
+- **DHCP failover** `m18-failover` — Hai máy DHCP cùng gánh một xóm: chia kho tách bạch (80/20) hoặc bắt cặp dùng chung một cuốn sổ cho thuê có đồng bộ
+  - Ẩn dụ: Như hai người làm mối chia nhau một làng: hoặc mỗi người một nửa cuốn danh sách, hoặc ngồi chung một cuốn và kể nhau nghe từng đám — không bao giờ hai người cùng gả một cô.
+  - Thẻ ôn: *Hai kiểu dựng DHCP dự phòng đúng là gì, và vì sao máy dự phòng chỉ cần kho nhỏ?* → Chia kho tách bạch (vd 80/20, hai dải không chồng nhau) hoặc bắt cặp failover chung một cuốn sổ có đồng bộ. Kho dự phòng nhỏ vẫn đủ vì lease còn hạn là các máy cứ dùng tiếp — chỉ máy mới và máy hết hạn cần xin trong quãng máy chính nằm viện.
+- **Bẫy hai server một dải** `m18-trung-dai` — Hai máy DHCP cùng phát một dải mà không chia kho, không chung sổ — hạ tầng tự sản xuất bệnh trùng IP đều đặn
+  - Ẩn dụ: Như hai quầy vé cùng bán một khoang tàu mà không nhìn sổ của nhau: sớm muộn hai hành khách cầm vé trùng số ghế, và cãi nhau trên tàu chứ không phải ở quầy.
+  - Thẻ ôn: *Xóm cấp DHCP tự động mà bệnh trùng IP cứ tái phát, nạn nhân đổi liên tục — nghi phạm số một?* → Hai máy DHCP đang cùng phát một dải không chia kho, không chung sổ. Lỗi người gõ nhầm thì lẻ tẻ và dính một máy; lỗi lặp đều đặn với nạn nhân ngẫu nhiên là chữ ký của hạ tầng cấp phát đôi — sửa ở phòng máy chủ, không phải đi tìm người gõ.
+- **Split DNS** `m18-split-dns` — Hai cuốn sổ tên cho cùng một miền: sổ ngoài phơi tên công cộng cho Internet, sổ trong giữ đủ tên nội bộ cho người trong nhà
+  - Ẩn dụ: Như danh bạ của một gia đình: tấm treo ngoài cổng chỉ ghi số tiếp khách, còn cuốn trong bếp ghi đủ số phòng từng người — khách và người nhà tra hai cuốn khác nhau.
+  - Thẻ ôn: *Split DNS là gì, và vì sao không gộp hai cuốn sổ làm một?* → Cùng một miền giữ hai bản: DNS ngoài chỉ ghi tên công cộng, DNS trong ghi đủ tên nội bộ (và có thể trỏ cả www về địa chỉ trong nhà cho đường tắt). Không gộp vì phơi sổ nội bộ ra Internet là tặng bản đồ phòng máy chủ cho kẻ dò la, và người trong nhà sẽ phải đi vòng qua NAT.
+- **DNS forwarder** `m18-forwarder` — Người hỏi hộ được chỉ định: DNS trong gặp tên lạ thì chuyển câu hỏi ra một cửa duy nhất — nơi đệm chung, lọc chung, giám sát chung
+  - Ẩn dụ: Như cả cơ quan chỉ nhờ một người chuyên đi hỏi giấy tờ hộ: hỏi một lần cả sở được nhờ, và mọi câu hỏi ra ngoài đều đi qua đúng một cái bàn nhìn thấy được.
+  - Thẻ ôn: *Forwarder là gì, và gom mọi câu hỏi ra một cửa thì được những gì?* → Là máy DNS được chỉ định để hỏi hộ mọi tên mà DNS trong không biết. Một cửa ra cho: bộ đệm chung (một người hỏi, nghìn người hưởng), một chỗ lọc tên độc hại, một chỗ nhìn toàn cảnh cả công ty đang hỏi gì. Không khai thì mỗi máy DNS tự bơi ra Internet từ gốc.
+- **Conditional forwarder** `m18-cond-forwarder` — Luật hỏi đúng nhà: tên thuộc miền của đối tác thì chuyển thẳng tới DNS của đối tác, không hỏi vòng ra Internet
+  - Ẩn dụ: Như dặn lễ tân: giấy tờ của công ty bên kia thì gọi thẳng lễ tân bên đó mà hỏi — đừng tra danh bạ thành phố, thành phố không ghi số nội bộ nhà người ta.
+  - Thẻ ôn: *Khi nào cần conditional forwarder, và dấu hiệu đang thiếu nó là gì?* → Khi phải phân giải tên NỘI BỘ của một miền khác (đối tác nối VPN, công ty sáp nhập) — Internet không biết những tên đó. Dấu hiệu thiếu: ping IP của máy đối tác thì thông mà gọi bằng tên thì Non-existent domain — đường sống, tên chưa ai chỉ lối.
+- **TTL của bản ghi DNS** `m18-ttl` — Hạn nhớ kèm theo mỗi câu trả lời DNS; đổi hạ tầng thì hạ TTL trước vài ngày, đợi hạn cũ trôi hết rồi mới đổi, xong nâng lại
+  - Ẩn dụ: Như hạn sử dụng in trên hộp sữa đã bán ra: sữa giao rồi thì không thu về được nữa — muốn ngày mai ai cũng uống lô mới thì từ tuần trước phải bán loại hạn ngắn.
+  - Thẻ ôn: *TTL của bản ghi DNS là gì, và luật vàng khi sắp đổi địa chỉ một máy chủ?* → Là hạn nhớ (tính bằng giây) mà mọi bộ đệm được phép giữ câu trả lời trước khi hỏi lại. Luật vàng: hạ TTL xuống thật ngắn TRƯỚC vài ngày (đợi trọn vòng hạn cũ trôi qua), đổi địa chỉ, ổn định rồi nâng TTL về như cũ — trí nhớ ngoài kia không xóa được bằng lệnh, chỉ hẹn giờ được từ trước.
+
+### Bài kiểm tra module (pool 14 câu, mỗi lượt rút 8, cần ≥ 85%)
+
+- **Đề:** Vì sao một máy DHCP đặt ở phòng máy chủ không tự phục vụ được máy mới ở các tầng khác, nếu thiếu relay?
+  - **Dạng:** trắc nghiệm · **Vì lời xin địa chỉ là quảng bá, mà quảng bá thì chết ở ranh giới router** ✓ / Vì mỗi tầng dùng một chuẩn dây mạng riêng nên gói tin không tương thích / Vì máy DHCP chỉ đủ sức trả lời các máy nằm chung một chiếc switch
+  - **Chủ đề gợi ý (tầng 1):** DISCOVER là loại gói gì
+  - **Vì sao:** DISCOVER là tiếng hét quảng bá — máy mới chưa có địa chỉ nên chỉ biết hét, và router chặn quảng bá đúng luật miền quảng bá. Không phải chuyện dây hay sức máy: thiếu người chuyển lời thì tiếng hét vĩnh viễn kẹt trong xóm.
+- **Đề:** Relay ghi địa chỉ của xóm đang hỏi vào ô nào trong gói DHCP để máy chủ chọn đúng dải?
+  - **Dạng:** gõ tay · **Chấp nhận:** giaddr | ô giaddr | o giaddr | trường giaddr | truong giaddr | gateway address
+  - **Chủ đề gợi ý (tầng 1):** sáu chữ cái, ghép từ gateway và address
+  - **Vì sao:** Ô giaddr (gateway address). Máy chủ đối chiếu giaddr với danh sách scope để biết cấp dải nào — thiếu nó thì mười xóm trông giống hệt nhau.
+- **Đề:** Một loạt máy cùng tầng đồng loạt cầm địa chỉ 169.254.x.x vào sáng thứ hai. Kết luận nào đứng vững nhất?
+  - **Dạng:** trắc nghiệm · **Nguồn cấp DHCP của tầng đó hỏng — máy xin không ai đáp nên tự bịa số** ✓ / Có kẻ đang mạo danh ARP chiếm địa chỉ cổng ra của tầng để nghe lén / Switch của tầng vừa mất điện nên bảng MAC bị xóa trắng toàn bộ
+  - **Chủ đề gợi ý (tầng 1):** 169.254 nghĩa là đã hét mà không ai đáp
+  - **Vì sao:** 169.254 là địa chỉ tự bịa của máy xin DHCP thất bại. Cả loạt máy cùng bịa nghĩa là nguồn cấp của tầng chết chung (scope cạn, server tắt, relay hỏng). Mạo danh ARP không làm máy đổi địa chỉ của chính nó; bảng MAC trắng thì tự học lại trong vài giây.
+- **Đề:** Máy xin DHCP mà không ai trả lời sẽ tự cấp cho mình một địa chỉ bắt đầu bằng cặp số nào?
+  - **Dạng:** gõ tay · **Chấp nhận:** 169.254 | 169254 | 169 254 | 169.254.x.x | dải 169.254 | dai 169.254
+  - **Chủ đề gợi ý (tầng 1):** dải địa chỉ APIPA
+  - **Vì sao:** 169.254 — dải APIPA. Nó chỉ đủ nói chuyện trong xóm với máy cùng cảnh ngộ; gateway và DNS trống trơn nên với người dùng là mất mạng, còn với người trực là manh mối chỉ thẳng về phía dịch vụ DHCP.
+- **Đề:** Người vận hành muốn scope không bao giờ cạn bất ngờ. Việc nào là ĐÚNG NGHỀ nhất?
+  - **Dạng:** trắc nghiệm · **Theo dõi tỉ lệ cấp phát từng scope, chạm ngưỡng ~90% là mở dải hoặc rút lease** ✓ / Đặt thời gian thuê thật dài cho mọi xóm để các máy khỏi phải xin lại nhiều lần / Khởi động lại máy DHCP mỗi tối để nó tự dọn sạch các hợp đồng thuê cũ
+  - **Chủ đề gợi ý (tầng 1):** hành động trước khi chuông reo, không phải sau
+  - **Vì sao:** Theo dõi tỉ lệ cấp phát và hành động ở ngưỡng. Lease dài làm bệnh NẶNG THÊM ở xóm đông khách vãng lai (suất bị giữ lâu hơn); khởi động lại server không xóa hợp đồng còn hạn — và không nên xóa.
+- **Đề:** Máy DHCP duy nhất tắt 30 phút giữa giờ làm. Nhóm máy nào bị ảnh hưởng?
+  - **Dạng:** trắc nghiệm · **Chỉ máy mới cắm vào và máy vừa hết hạn thuê — máy còn hạn cứ dùng tiếp** ✓ / Toàn bộ máy trong công ty, vì mất server là mọi địa chỉ bị thu hồi ngay / Không máy nào cả, vì router sẽ tạm đứng ra cấp địa chỉ thay cho server
+  - **Chủ đề gợi ý (tầng 1):** hợp đồng thuê còn hạn thì cần hỏi ai
+  - **Vì sao:** Lease còn hạn thì cứ dùng, chẳng cần hỏi ai — DHCP đứng ở cửa cấp phát chứ không đứng trên đường đi của gói tin. Khổ chủ chỉ là máy mới và máy vừa hết hạn. Router không tự thay vai server trừ khi được cấu hình làm DHCP.
+- **Đề:** Dựng máy DHCP thứ hai bằng cách bê nguyên cấu hình máy thứ nhất — cùng phát một dải. Hậu quả?
+  - **Dạng:** trắc nghiệm · **Hai cuốn sổ rời nhau sớm muộn cấp trùng địa chỉ cho hai máy khác nhau** ✓ / Hai máy tự phát hiện nhau rồi tự động chia đôi dải địa chỉ cho khỏi đụng / Không sao cả, vì máy xin địa chỉ chỉ nhận lời đáp của server tới trước
+  - **Chủ đề gợi ý (tầng 1):** hai cuốn sổ có nhìn thấy nhau không
+  - **Vì sao:** Hai server không chia kho, không chung sổ thì không biết đối phương đã cho thuê số nào — sớm muộn cấp trùng, và bệnh chập chờn Module 11 quay lại đều đặn. Chẳng có phép tự phát hiện nào, còn nhận lời đáp tới trước chính là cách hai máy khác nhau nhận trùng số từ hai server.
+- **Đề:** Split DNS nghĩa là gì?
+  - **Dạng:** trắc nghiệm · **Một miền hai bản trả lời: sổ trong đủ tên nội bộ, sổ ngoài chỉ tên công cộng** ✓ / Chia đều các câu hỏi DNS cho hai máy chủ để không máy nào bị quá tải nặng / Tách phần tên miền khỏi phần địa chỉ IP để hai đội kỹ thuật quản lý riêng
+  - **Chủ đề gợi ý (tầng 1):** hai cuốn sổ cho hai chỗ đứng của người hỏi
+  - **Vì sao:** Split DNS là hai cuốn sổ cho CÙNG một miền: người trong nhà tra sổ trong (đủ tên nội bộ, đường tắt trong nhà), khách Internet tra sổ ngoài (chỉ tên đáng phơi ra). Không phải chuyện chia tải hay chia đội.
+- **Đề:** Máy trong công ty không phân giải được tên nội bộ, một người bèn đổi DNS của máy sang máy chủ công cộng ngoài Internet. Vì sao cách này thất bại?
+  - **Dạng:** trắc nghiệm · **Vì tên nội bộ chỉ nằm trong sổ DNS trong — ngoài Internet không ai giữ nó** ✓ / Vì máy chủ DNS công cộng luôn chặn mọi câu hỏi phát ra từ mạng doanh nghiệp / Vì đổi DNS trên máy trạm bắt buộc phải khởi động lại toàn bộ hệ thống mạng
+  - **Chủ đề gợi ý (tầng 1):** cuốn sổ nào giữ tên trong nhà
+  - **Vì sao:** Tên nội bộ sống duy nhất trong sổ trong — DNS công cộng không có và không bao giờ có. Đổi ra ngoài là tự cắt mình khỏi mọi tên trong nhà, kể cả những tên đang chạy tốt. Đây là phản xạ sai kinh điển của người mới trực.
+- **Đề:** DNS nội bộ gặp một tên ngoài Internet mà nó không biết — nó chuyển câu hỏi cho ai?
+  - **Dạng:** gõ tay · **Chấp nhận:** forwarder | dns forwarder | máy hỏi hộ | may hoi ho | máy chủ chuyển tiếp | may chu chuyen tiep | người hỏi hộ | nguoi hoi ho
+  - **Chủ đề gợi ý (tầng 1):** người hỏi hộ được chỉ định sẵn
+  - **Vì sao:** Forwarder — máy DNS được chỉ định hỏi hộ mọi tên lạ. Gom về một cửa để cả công ty dùng chung bộ đệm, lọc tên độc hại một chỗ và nhìn toàn cảnh một chỗ.
+- **Đề:** Công ty vừa nối VPN với đối tác. Ping IP máy chủ đối tác thì thông, gọi bằng tên nội bộ của họ thì báo không tồn tại. Mảnh còn thiếu?
+  - **Dạng:** trắc nghiệm · **Conditional forwarder chuyển các tên thuộc miền đối tác thẳng tới DNS của họ** ✓ / Một tuyến đường tĩnh bổ sung, vì VPN hiện chưa dẫn tới được máy chủ đó / Bản ghi các tên của đối tác đăng lên máy chủ DNS công cộng ngoài Internet
+  - **Chủ đề gợi ý (tầng 1):** số thông tên chết thì bệnh ở tầng nào
+  - **Vì sao:** Ping số thông nghĩa là tầng đường đi ổn — không thiếu tuyến. Tên nội bộ của đối tác thì Internet không biết nên đăng ra ngoài là vô nghĩa. Thiếu đúng một luật hỏi-đúng-nhà: conditional forwarder trỏ miền đối tác về DNS của họ.
+- **Đề:** Vài ngày trước khi đổi địa chỉ một máy chủ, người vận hành làm gì với TTL của bản ghi sắp đổi?
+  - **Dạng:** gõ tay · **Chấp nhận:** hạ ttl | ha ttl | giảm ttl | giam ttl | rút ngắn ttl | rut ngan ttl | hạ xuống thật ngắn | ha xuong that ngan | giảm xuống | giam xuong
+  - **Chủ đề gợi ý (tầng 1):** trí nhớ ngoài kia chỉ hẹn giờ được từ trước
+  - **Vì sao:** Hạ TTL xuống thật ngắn từ trước — đợi trọn vòng hạn cũ trôi qua để mọi bộ đệm cầm bản hạn ngắn, rồi mới đổi địa chỉ; ổn định xong nâng TTL về như cũ. Không hạ trước thì bản cũ sống lởn vởn tới hết hạn dài, chẳng lệnh nào xóa hộ được.
+- **Đề:** Công ty vừa dựng máy DNS dự phòng 10.20.0.54. Trước khi khai nó cho các máy trạm, hãy kiểm chứng bằng terminal PowerShell rằng dịch vụ DNS trên đó đã thật sự nghe ở đúng cổng của nghề.
+  - **Dạng:** terminal PowerShell (gõ lệnh đạt mục tiêu)
+    - **Thế giới:** máy MAY-QUAN-TRI [10.20.2.5/24] — đích: dns1.congty.vn=10.20.0.53 cổng 53 · dns2.congty.vn=10.20.0.54 cổng 53 · portal.noibo.congty.vn=10.20.0.80 cổng 80/443
+    - **Mục tiêu:**
+      - phải kiểm tra cổng 53 của 10.20.0.54 thành công
+    - **Lệnh mẫu:** `Test-NetConnection 10.20.0.54 -Port 53`
+  - **Chủ đề gợi ý (tầng 1):** cổng dịch vụ của DNS nằm trong cung điện Module 5
+  - **Vì sao:** Test-NetConnection 10.20.0.54 -Port 53 — cổng 53 là cửa của DNS. TcpTestSucceeded : True mới đủ tin để khai máy này cho các máy trạm; ping thông thôi chỉ chứng minh máy sống, không chứng minh dịch vụ đang nghe.
+- **Đề:** "Tầng năm gọi xuống: sáng nay cả phòng không ai vào được hệ thống, các tầng khác vẫn chạy ầm ầm." Bạn ngồi ở MAY-TANG-5. Khám đi — bắt đầu từ chính địa chỉ của mình như một người trực có nghề.
+  - **Dạng:** ca bệnh phòng khám (khám qua terminal → chẩn đoán → sửa)
+    - **Mạng bệnh nhân:** MAY-TANG-5 [169.254.31.8/16] · MAY-TANG-4 [10.20.4.18/24, gw 10.20.4.1] · SRV-HE-THONG [10.20.0.9/24, gw 10.20.0.1] · SW-TANG-5 [p1:VLAN 1, p2:VLAN 1] · SW-TANG-4 [p1:VLAN 1, p2:VLAN 1] · SW-MAY-CHU [p1:VLAN 1, p2:VLAN 1] · R-TOA-NHA [g0:10.20.5.1/24, g1:10.20.4.1/24, g2:10.20.0.1/24] — dây: MAY-TANG-5·eth0 — SW-TANG-5·p1 | SW-TANG-5·p2 — R-TOA-NHA·g0 | MAY-TANG-4·eth0 — SW-TANG-4·p1 | SW-TANG-4·p2 — R-TOA-NHA·g1 | SRV-HE-THONG·eth0 — SW-MAY-CHU·p1 | SW-MAY-CHU·p2 — R-TOA-NHA·g2
+    - **Ngồi ở máy:** MAY-TANG-5
+    - **Hồ sơ bệnh:** không có (bệnh nằm trọn trong sơ đồ)
+    - **Triệu chứng:** MAY-TANG-5 ping 10.20.0.9 PHẢI hỏng
+    - **Chẩn đoán (chọn 1):** **Nguồn cấp DHCP của tầng năm chết — máy xin không ai đáp nên tự bịa địa chỉ 169.254** ✓ · Sợi cáp trục nối tầng năm xuống phòng máy chủ bị đứt hoàn toàn · Máy chủ hệ thống quá tải nên từ chối kết nối của cả một tầng
+    - **Sửa:** chọn hành động — **Kiểm tra phía DHCP: scope tầng năm cạn hoặc relay của tầng hỏng — sửa ở đó** ✓ · Thay toàn bộ dây mạng của tầng năm rồi khởi động lại từng máy một · Nâng cấp máy chủ hệ thống lên cấu hình mạnh hơn để chịu tải tốt hơn
+  - **Chủ đề gợi ý (tầng 1):** ipconfig của chính bạn — địa chỉ ấy ai cấp
+  - **Vì sao:** ipconfig lộ địa chỉ 169.254.31.8, không gateway, không DNS — cả tầng xin DHCP mà không ai đáp nên đồng loạt tự bịa số. Dây trục mà đứt thì máy vẫn giữ địa chỉ 10.20.5.x cũ chứ không đổi sang 169.254; server quá tải thì tầng khác cũng phải kêu. Thủ phạm nằm ở phía cấp phát của TẦNG NĂM: scope cạn hoặc relay hỏng — sửa ở phòng máy chủ, không phải thay dây hay nâng server.
+
+## AD đa site và ủy quyền — Một miền, nhiều tòa nhà `module-19`
+
+Phần E · 5 chặng · 5 bài · 8 khái niệm
+
+**Chặng:** Một miền, nhiều tòa nhà (m19-bai-1) → Hai cuốn sổ cái chép cho nhau (m19-bai-2) → Xếp quyền như nối ống nước (m19-bai-3) → Điền nốt mắt xích (m19-bai-4) → Giao chìa khóa hẹp (m19-bai-5)
+
+### Bài: Tìm ra ai chỉ đường sai cho chi nhánh `m19-bai-1`
+
+**1 · Khởi động (hook):** Công ty mở chi nhánh Đà Nẵng, dựng hẳn một Domain Controller ngay tầng ba cho oách. Vậy mà sáng nào nhân viên trong đó cũng than đăng nhập chậm cả nửa phút. Soi kỹ mới tá hỏa: mọi máy Đà Nẵng đang vượt tám trăm cây số ra Hà Nội để hỏi một chuyện mà cái máy chủ ngay tầng trên trả lời được. Ai — hay đúng hơn, THIẾU cái gì — khiến chúng mù đường đến vậy?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử: máy ở Đà Nẵng dựa vào manh mối nào để biết mình đang đứng gần Domain Controller nào?
+  - **Dạng:** trắc nghiệm · **Địa chỉ IP của chính nó — nếu có ai đó đã khai dải nào thuộc nơi nào** ✓ / Đo thời gian ping tới từng DC trong miền rồi tự chọn máy nhanh nhất / Không cần biết — DC nào nhận được yêu cầu trước thì trả lời trước
+  - **Chủ đề gợi ý (tầng 1):** thứ duy nhất trên máy nói lên vị trí của nó
+  - **Vì sao:** Manh mối là địa chỉ IP — nhưng chỉ khi người quản trị ĐÃ KHAI dải nào thuộc nơi nào trong AD. Máy không tự đo ping tới từng DC, và nếu để mặc ai nhận trước trả lời trước thì tám trăm cây số với tầng trên là như nhau. Cái tên của lời khai đó là bài học hôm nay: site.
+
+**3 · Khám phá (teach):**
+- *[m19-site]* Một miền AD có thể trải trên nhiều tòa nhà, nhiều thành phố — nhưng dây mạng trong một tòa thì nhanh, còn đường nối giữa hai thành phố vừa chậm vừa đắt. AD mô tả sự thật địa lý đó bằng SITE: một site là một cụm mạng con gần nhau, nối nhau bằng đường nhanh. Hà Nội một site, Đà Nẵng một site — vẫn chung MỘT miền, một bộ tài khoản. Và tầng Site trong chuỗi LSDOU bạn học ở Module 9 tới hôm nay mới có nghĩa thật: một chính sách gắn vào site là gắn theo VỊ TRÍ NGỒI, áp cho mọi máy đang đứng ở đó, bất kể thuộc phòng ban nào.
+  - **Đào sâu hơn:** Site không phải OU. OU chia theo TỔ CHỨC (phòng kế toán, phòng nhân sự — dù ngồi đâu), site chia theo ĐỊA LÝ (tòa nhà này, thành phố kia — dù thuộc phòng nào). Một nhân viên kế toán ở Đà Nẵng: tài khoản nằm trong OU KeToan, còn máy của chị ấy đứng trong site DaNang. Hai trục đó vuông góc với nhau, và AD cần cả hai.
+- *[m19-subnet-site]* AD không có mắt để nhìn bản đồ — thứ duy nhất nó thấy là địa chỉ IP. Nên người quản trị phải KHAI: dải 10.30.0.0/16 thuộc site DaNang, dải 10.20.0.0/16 thuộc site HaNoi. Từ đó máy trạm tự định vị: nhìn IP của mình, tra ra site của mình, rồi tìm Domain Controller CÙNG SITE mà hỏi — đăng nhập, đổi mật khẩu, tra nhóm đều gõ cửa gần nhà. Chi nhánh Đà Nẵng ở phần mở đầu chậm vì đúng một lỗ hổng: dải mạng mới chưa được gắn vào site nào, nên máy mù vị trí và đành hỏi vu vơ ra tận Hà Nội.
+  - **Đào sâu hơn:** Dấu hiệu nhận biết quên-gắn-subnet là một chi nhánh MỚI chậm một cách khó hiểu dù hạ tầng tại chỗ đầy đủ. Việc dựng DC tại chỗ chỉ là một nửa; nửa kia là ba dòng khai báo subnet-thuộc-site. Quên nửa sau thì DC mới đứng đó làm cảnh — như phần mở đầu bạn vừa thấy.
+
+**4 · Thử tay (practice, fading 0):**
+- **Ví dụ giải sẵn:** Lần theo một máy Đà Nẵng lúc đăng nhập, từng bước. Bước 1: máy nhìn địa chỉ của chính nó — 10.30.2.15. Bước 2: nó tra trong AD xem dải 10.30.2.x đã được khai thuộc site nào — thấy site DaNang, vậy là biết mình đang đứng đâu. Bước 3: nó hỏi tiếp: site DaNang có những Domain Controller nào? — thấy DC-DN ngay tầng ba. Bước 4: mọi câu chuyện đăng nhập diễn ra với DC-DN, vài mili giây một câu. Bước 5: thử tưởng tượng bước 2 thất bại vì không ai khai dải này — máy mù vị trí, đành gõ cửa DC bất kỳ trong miền, và tám trăm cây số biến thành nửa phút chờ.
+- **Đề:** Chi nhánh mới có DC tại chỗ hẳn hoi mà máy vẫn chạy ra DC thành phố khác hỏi. Thiếu mảnh nào?
+  - **Dạng:** trắc nghiệm · **Dải mạng của chi nhánh chưa được khai gắn vào site nào trong AD** ✓ / DC tại chỗ chưa được bật tính năng trả lời các máy trạm ở gần / Đường truyền giữa hai thành phố còn quá nhanh nên máy không phân biệt
+  - **Chủ đề gợi ý (tầng 1):** máy định vị bằng lời khai subnet-thuộc-site
+  - **Gợi ý (tầng 2):** DC không có nút bật-tắt trả-lời-gần; máy tự tìm DC theo site. Vậy nó tra site của mình từ đâu?
+  - **Lời giải (tầng 3):** Thiếu lời khai subnet-thuộc-site. Máy nhìn IP để tra site — dải chưa gắn site thì máy mù vị trí và hỏi vu vơ. Dựng DC tại chỗ mới là một nửa việc; ba dòng khai báo kia là nửa còn lại.
+- **Đề:** Site và OU khác nhau ở trục chia. Câu nào nói ĐÚNG?
+  - **Dạng:** trắc nghiệm · **OU chia theo tổ chức phòng ban, site chia theo vị trí địa lý của mạng** ✓ / Site chia theo phòng ban còn OU chia theo tòa nhà đặt máy trạm / Hai thứ là một — site chỉ là tên gọi mới của OU từ bản AD gần đây
+  - **Chủ đề gợi ý (tầng 1):** một nhân viên kế toán ngồi ở Đà Nẵng thuộc cả hai trục
+  - **Gợi ý (tầng 2):** Tài khoản chị kế toán ở Đà Nẵng nằm trong OU nào, còn máy chị ấy đứng trong site nào?
+  - **Lời giải (tầng 3):** OU theo tổ chức (kế toán, nhân sự — dù ngồi đâu), site theo địa lý (Hà Nội, Đà Nẵng — dù phòng nào). Hai trục vuông góc: tài khoản vào OU, máy đứng trong site — AD cần cả hai.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: khai subnet gắn site để máy trạm tự tìm được CÁI GÌ ở gần mình?
+  - **Dạng:** gõ tay · **Chấp nhận:** dc | domain controller | dc gần nhất | dc gan nhat | domain controller gần nhất | domain controller gan nhat | máy chủ miền | may chu mien | dc cùng site | dc cung site
+  - **Chủ đề gợi ý (tầng 1):** máy chủ mà mọi cuộc đăng nhập phải gõ cửa
+  - **Gợi ý (tầng 2):** Chính là cái máy đứng tầng ba ở Đà Nẵng mà suýt bị bỏ quên.
+  - **Lời giải (tầng 3):** Domain Controller cùng site. Máy nhìn IP → tra ra site → gõ cửa DC gần nhà, thay vì vượt tám trăm cây số hỏi chuyện đăng nhập.
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao AD bắt người quản trị phải KHAI subnet gắn site thay vì tự biết máy nào đứng đâu?
+  - **Nhóm ý cần chạm:** [không có mắt, khong co mat, không tự biết, khong tu biet, không nhìn thấy, khong nhin thay, mù, mu ] · [ip, địa chỉ, dia chi, dải mạng, dai mang, subnet] · [khai, khai báo, khai bao, gắn, gan , quản trị khai, quan tri khai] · [vị trí, vi tri, địa lý, dia ly, gần, gan nhat, site]
+  - **Trả lời mẫu:** Vì AD không có mắt nhìn bản đồ — thứ duy nhất nó thấy là địa chỉ IP, mà IP tự thân không nói lên thành phố nào. Người quản trị phải khai dải nào thuộc site nào; từ lời khai đó máy mới tra được vị trí của mình rồi tìm DC cùng site. Quên khai là máy mù đường, hỏi vu vơ ra tận chi nhánh xa.
+
+**6 · Tổng kết:**
+- Site là cụm mạng con gần nhau về địa lý — chung miền nhưng khác chỗ đứng; tầng Site của LSDOU giờ có nghĩa thật.
+- OU chia theo tổ chức, site chia theo địa lý — hai trục vuông góc, AD cần cả hai.
+- Phải KHAI subnet gắn site: máy nhìn IP tra ra site rồi tìm DC gần nhà — quên khai là chi nhánh chậm khó hiểu.
+- *Úp mở bài sau:* Hai site, mỗi bên một DC — tức là hai cuốn sổ cái của cùng một miền. Chúng chép cho nhau bằng cách nào, và nhanh tới đâu? Bài sau có một nhân viên đổi mật khẩu ở Hà Nội rồi lên máy bay.
+
+### Bài: Đoán xem cuốn sổ nào đã kịp chép `m19-bai-2`
+
+**1 · Khởi động (hook):** Chín giờ sáng, anh trưởng phòng được thêm vào nhóm dự án ở Hà Nội. Chín giờ mười, anh gọi từ Đà Nẵng: "vẫn chưa mở được thư mục dự án!" Người trực xanh mặt tưởng mình thao tác hỏng. Mười giờ kém, tự nhiên nó chạy — chẳng ai sửa gì cả. Không có gì hỏng, không có ai nhầm. Vậy trong bốn mươi phút đó, chuyện gì đang xảy ra giữa hai thành phố?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử: miền có nhiều Domain Controller thì cuốn sổ tài khoản nằm ở đâu?
+  - **Dạng:** trắc nghiệm · **Mỗi DC giữ một bản đầy đủ, và chúng phải chép thay đổi cho nhau** ✓ / Chỉ DC đầu tiên giữ sổ gốc, các DC còn lại hỏi nó từng câu một / Sổ được cắt đôi: mỗi DC giữ nửa danh sách tài khoản của miền
+  - **Chủ đề gợi ý (tầng 1):** vì sao chi nhánh vẫn đăng nhập được khi đứt cáp ra trụ sở
+  - **Vì sao:** Mỗi DC giữ MỘT BẢN ĐẦY ĐỦ — nhờ vậy đứt cáp giữa hai thành phố thì chi nhánh vẫn tự đăng nhập được bằng DC tại chỗ. Cái giá của sự độc lập đó: các bản sổ phải chép thay đổi cho nhau, và chép thì cần thời gian — đó chính là bốn mươi phút bí ẩn ở phần mở đầu.
+
+**3 · Khám phá (teach):**
+- *[m19-replication]* Mỗi Domain Controller giữ một bản đầy đủ của cuốn sổ miền, và mọi thay đổi — thêm user, đổi nhóm, sửa mật khẩu — ghi vào một DC rồi được CHÉP dần sang các DC khác. Đó là replication. Nhịp chép ăn theo site của bài trước: TRONG một site, dây nhanh nên thay đổi lan gần như tức thì; GIỮA hai site, đường vừa chậm vừa đắt nên thay đổi được gom lại, nén nhỏ và gửi THEO LỊCH — mặc định mười lăm phút một chuyến, có nơi đặt thưa hơn nữa để tiết kiệm đường truyền.
+  - **Đào sâu hơn:** Vì sao không chép tức thì cho khỏe? Vì đường WAN giữa hai thành phố là tài nguyên đắt: hàng nghìn thay đổi lặt vặt mỗi giờ mà chuyến nào cũng chạy tức thì thì đường truyền nghẹt vì việc sổ sách. Gom lại theo chuyến là cái giá hợp lý — miễn là người vận hành BIẾT mình đã chọn cái giá đó, thay vì ngơ ngác như người trực ở phần mở đầu.
+- *[m19-do-tre]* Hệ quả vận hành: giữa hai site luôn có một KHE TRỄ. Vừa cấp quyền ở Hà Nội thì trong dăm phút tới vài chục phút, cuốn sổ ở Đà Nẵng vẫn là bản cũ — người dùng trong đó chưa thấy gì, và điều đó KHÔNG PHẢI HỎNG. Phản xạ đúng của người trực: trước khi lao vào sửa một ca "cấp quyền rồi mà chưa có", hỏi hai câu — thay đổi ghi ở site nào, người dùng đang đứng ở site nào? Nếu khác nhau, hãy đợi hết một chuyến chép rồi mới kết luận. Sửa loạn trong khe trễ là cách nhanh nhất biến một ca không-phải-bệnh thành bệnh thật.
+  - **Đào sâu hơn:** Một ngoại lệ đáng biết để khỏi hoang mang ngược: ĐỔI MẬT KHẨU không chịu đợi lịch như thay đổi thường — mật khẩu mới được ưu tiên báo ngay về một DC đầu đàn, nên anh nhân viên đổi mật khẩu ở Hà Nội rồi bay vào Đà Nẵng thường vẫn đăng nhập được bằng mật khẩu mới. AD cố tình dành đường khẩn cho thứ người dùng cảm nhận rõ nhất — dạy đúng, không làm tròn: thay đổi thường đi theo lịch, mật khẩu có đường riêng.
+
+**4 · Thử tay (practice, fading 1):**
+- **Đề:** 9:00 thêm user vào nhóm tại DC Hà Nội. 9:10 user đó ở Đà Nẵng chưa thấy quyền. Người trực nên làm gì TRƯỚC TIÊN?
+  - **Dạng:** trắc nghiệm · **Đối chiếu lịch chép giữa hai site rồi đợi hết một chuyến trước khi kết luận** ✓ / Thêm user vào nhóm lần nữa ngay trên DC Đà Nẵng cho chắc chắn ăn / Khởi động lại DC Đà Nẵng để nó tải lại cuốn sổ mới nhất từ Hà Nội
+  - **Chủ đề gợi ý (tầng 1):** khe trễ giữa site không phải là bệnh
+  - **Gợi ý (tầng 2):** Thay đổi ghi ở site nào, người dùng đứng site nào? Hai nơi khác nhau thì giữa chúng có gì?
+  - **Lời giải (tầng 3):** Đối chiếu lịch chép và đợi hết một chuyến. Ghi đè lần nữa hay khởi động lại DC đều là sửa loạn trong khe trễ — thứ tự nhiên sẽ tự lành lại còn bị tay người khuấy thành bệnh thật.
+- **Đề:** Vì sao replication GIỮA hai site đi theo lịch thay vì chép tức thì như trong một site?
+  - **Dạng:** trắc nghiệm · **Vì đường giữa hai site chậm và đắt — gom thay đổi rồi nén gửi theo chuyến** ✓ / Vì hai site thuộc hai miền khác nhau nên phải chờ xác nhận của cả hai / Vì luật AD cấm hai DC ở xa nhau trao đổi dữ liệu quá một lần mỗi giờ
+  - **Chủ đề gợi ý (tầng 1):** site sinh ra để mô tả đường nhanh và đường chậm
+  - **Gợi ý (tầng 2):** Nhớ lại lý do site tồn tại: trong site dây nhanh, giữa site là đường WAN. Đường đắt thì chở hàng kiểu gì?
+  - **Lời giải (tầng 3):** Vì đường WAN giữa site vừa chậm vừa đắt — nên thay đổi được gom, nén và gửi theo chuyến. Hai site vẫn chung một miền, và chẳng có luật một-lần-mỗi-giờ nào: lịch chép là thứ người vận hành tự đặt theo túi tiền đường truyền.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: việc các DC chép thay đổi cho nhau để mọi bản sổ giống nhau gọi là gì?
+  - **Dạng:** gõ tay · **Chấp nhận:** replication | sao chép | sao chep | nhân bản | nhan ban | đồng bộ | dong bo
+  - **Chủ đề gợi ý (tầng 1):** thuật ngữ tiếng Anh bắt đầu bằng repli
+  - **Gợi ý (tầng 2):** Tiếng Anh, cùng họ với chữ replica — bản sao.
+  - **Lời giải (tầng 3):** Replication. Trong site lan gần như tức thì; giữa site gom lại, nén và đi theo lịch — khe trễ giữa hai site là tính chất, không phải bệnh.
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao ca "cấp quyền rồi mà bên kia chưa thấy" thường KHÔNG phải là hỏng, và phản xạ đúng của người trực là gì?
+  - **Nhóm ý cần chạm:** [khe trễ, khe tre, độ trễ, do tre, chưa kịp chép, chua kip chep, chưa lan tới, chua lan toi] · [theo lịch, theo lich, chuyến, chuyen, gom, nén, nen ] · [hai site, khác site, khac site, site nào, site nao, đứng ở đâu, dung o dau] · [đợi, doi , chờ, cho het, không sửa loạn, khong sua loan, đừng vội, dung voi]
+  - **Trả lời mẫu:** Vì thay đổi ghi ở một site cần thời gian mới chép sang site kia — giữa hai site, sổ đi theo chuyến chứ không tức thì, nên có một khe trễ vài phút tới vài chục phút là bình thường. Phản xạ đúng: hỏi thay đổi ghi ở đâu và người dùng đứng ở đâu; nếu khác site thì đợi hết một chuyến chép rồi mới kết luận, đừng ghi đè hay khởi động lại giữa chừng.
+
+**6 · Tổng kết:**
+- Mỗi DC giữ một bản sổ đầy đủ — thay đổi ghi một nơi rồi replication chép dần sang các nơi khác.
+- Trong site chép gần như tức thì; giữa site gom, nén, đi theo lịch — vì đường WAN chậm và đắt.
+- Khe trễ giữa site là tính chất: cấp quyền rồi bên kia chưa thấy thì đợi hết chuyến chép, đừng sửa loạn.
+- *Úp mở bài sau:* Sổ sách đã chảy thông giữa các tòa nhà. Giờ tới câu hỏi khó hơn: QUYỀN nên chảy thế nào từ một con người tới một thư mục? Bài sau bạn được thả vào miền thật với bộ lệnh nhóm mới toanh — và đa số người mới sẽ đi đúng vào cái bẫy đã giăng sẵn.
+
+### Bài: Nối ống nước cho quyền chảy đúng nếp `m19-bai-3`
+
+**1 · Khởi động (hook):** Anh Chí chuyển sang phòng kế toán, cần đọc được thư mục Báo cáo. Cách nhanh nhất ai cũng nghĩ ra: mở thẳng nhóm có quyền đọc rồi nhét anh vào — năm giây, chạy ngay. Sáu tháng sau công ty có ba trăm người, mỗi lần ai đó chuyển phòng là một cơn ác mộng truy vết: ai đang nằm trong nhóm nào, vì sao, và ai cho phép? Cái lối tắt năm giây ấy đắt tới mức nào — và nghề này xếp quyền kiểu gì để ba trăm người vẫn gọn như ba chục?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Thử sức trước khi học: anh Le Van Chi (lvchi) vừa chuyển sang kế toán và cần đọc được Báo cáo. Miền đã có sẵn các nhóm — mò bằng Get-ADGroup -Filter * và Get-ADGroupMember xem quyền đang chảy kiểu gì, rồi xếp anh Chí vào chỗ bạn cho là đúng. Sai cũng không sao — phần này không tính điểm, và bảng mục tiêu sẽ nói thật với bạn.
+  - **Dạng:** terminal PowerShell (gõ lệnh đạt mục tiêu)
+    - **Thế giới:** máy MAY-QUAN-TRI [10.20.2.5/24] — AD congty.vn: OU [KeToan, KinhDoanh], 2 user sẵn có
+    - **Mục tiêu:**
+      - phải lôi ra được dòng chứa "undefined"
+      - phải lôi ra được dòng chứa "undefined"
+    - **Lệnh mẫu:** `Add-ADGroupMember KeToan-GG -Members lvchi`
+  - **Chủ đề gợi ý (tầng 1):** nhóm nào gom NGƯỜI, nhóm nào giữ QUYỀN
+  - **Vì sao:** Nếu bạn nhét lvchi thẳng vào QuyenDocBaoCao-DL: mục tiêu về nhóm quyền bật xanh mà mục tiêu về KeToan-GG vẫn đỏ — đó chính là cái lối tắt năm giây của phần mở đầu, chạy được nhưng sai nếp. Đường đúng chỉ một dòng: Add-ADGroupMember KeToan-GG -Members lvchi. Anh Chí vào nhóm VAI kế toán, mà nhóm vai đã cắm sẵn vào nhóm quyền — quyền tự chảy tới, cả hai mục tiêu cùng xanh. Get-ADGroupMember QuyenDocBaoCao-DL sẽ cho bạn thấy vì sao: thành viên của nó là một NHÓM, không phải từng con người.
+
+**3 · Khám phá (teach):**
+- *[m19-agdlp]* Nếp xếp quyền của nghề gói trong bốn chữ AGDLP — một đường ống bốn khúc: Account (con người) vào Global group (nhóm VAI — kế toán, nhân sự); Global group cắm vào Domain Local group (nhóm QUYỀN — được đọc Báo cáo, được sửa Hồ sơ); và Permission (quyền thật trên thư mục) chỉ gắn vào nhóm Domain Local. Người KHÔNG bao giờ chạm thẳng vào quyền. Nghe vòng vèo, nhưng chính các khúc nối đó làm hệ thống sống được với thay đổi: người chuyển phòng — rút khỏi một nhóm vai, cắm vào nhóm vai khác, mọi quyền tự chảy theo; thêm tài nguyên mới — dựng một nhóm quyền, cắm các nhóm vai vào, xong.
+  - **Đào sâu hơn:** Đường ống này bạn đã cầm trên tay từ khối engine: Get-ADGroupMember trên một nhóm quyền tử tế sẽ hiện ObjectClass group — thành viên của nó là NHÓM, không phải người. Còn thấy một danh sách dài ObjectClass user nằm thẳng trong nhóm quyền là dấu vết của những lối tắt năm giây chồng chất — mỗi cái tên ở đó là một câu hỏi "ai cho vào, vì sao" không còn ai trả lời được.
+- *[m19-gg-dl]* Hai loại nhóm, hai câu hỏi khác nhau. Nhóm GLOBAL trả lời "người này LÀ AI trong tổ chức?" — nó gom người theo vai và đi theo con người: chuyển phòng là đổi nhóm Global. Nhóm DOMAIN LOCAL trả lời "tài nguyên này AI ĐƯỢC ĐỘNG VÀO?" — nó đứng cạnh tài nguyên và giữ quyền: thư mục Báo cáo có nhóm đọc của nó, máy in màu có nhóm in của nó. Vai thì cắm vào quyền, không bao giờ ngược lại — và AD khóa cứng chiều ngược: nhét một nhóm Domain Local vào nhóm Global là máy từ chối thẳng, như bạn sẽ thấy nếu thử.
+  - **Đào sâu hơn:** Vì sao luật cứng đó tồn tại? Nhóm Global được thiết kế để mang đi khắp nơi (kể cả sang miền khác khi công ty sáp nhập), còn nhóm Domain Local bị neo tại miền của tài nguyên. Cho DL chui vào GG là để một thứ bị neo trốn trong một thứ hay di chuyển — mâu thuẫn tự thân, nên AD cấm từ gốc chứ không đợi hậu quả.
+
+**4 · Thử tay (practice, fading 0):**
+- **Ví dụ giải sẵn:** Đọc một sơ đồ AGDLP mẫu của phòng kế toán, từng khúc ống. Khúc 1 — Account: chị Tran Thi Mai (ttmai), một con người bằng xương thịt. Khúc 2 — Global: ttmai nằm trong KeToan-GG, nhóm VAI của phòng kế toán; nhìn tên nhóm là biết nó gom NGƯỜI. Khúc 3 — Domain Local: KeToan-GG được cắm vào QuyenDocBaoCao-DL, nhóm QUYỀN đứng cạnh thư mục Báo cáo; gõ Get-ADGroupMember QuyenDocBaoCao-DL sẽ thấy thành viên duy nhất là một nhóm — ObjectClass group. Khúc 4 — Permission: thư mục Báo cáo cấp quyền đọc cho đúng một cái tên: QuyenDocBaoCao-DL. Giờ thử chạy nước qua ống: chị Mai đọc được Báo cáo vì Mai thuộc KeToan-GG, KeToan-GG nằm trong QuyenDocBaoCao-DL, và nhóm đó có quyền đọc — ba khúc nối, không khúc nào chạm thẳng người vào quyền.
+- **Đề:** Gõ Get-ADGroupMember trên một nhóm QUYỀN được xếp đúng nếp AGDLP, cột ObjectClass sẽ hiện gì?
+  - **Dạng:** trắc nghiệm · **group — thành viên của nhóm quyền là các nhóm vai, không phải từng người** ✓ / user — nhóm quyền phải liệt kê đủ từng con người được động vào tài nguyên / computer — vì quyền gắn với máy trạm chứ không gắn với tài khoản người
+  - **Chủ đề gợi ý (tầng 1):** thành viên của nhóm quyền là loại đối tượng nào
+  - **Gợi ý (tầng 2):** Trong đường ống AGDLP, cái gì được cắm vào nhóm Domain Local?
+  - **Lời giải (tầng 3):** ObjectClass group. Nhóm quyền chứa các nhóm vai — thấy một dãy user nằm thẳng trong đó là dấu vết lối tắt chồng chất, mỗi tên là một câu hỏi không ai còn trả lời được.
+- **Đề:** Trong chuỗi AGDLP, quyền thật trên thư mục chỉ được gắn vào loại nhóm nào?
+  - **Dạng:** gõ tay · **Chấp nhận:** domain local | domainlocal | nhóm domain local | nhom domain local | dl | nhóm quyền | nhom quyen | domain local group
+  - **Chủ đề gợi ý (tầng 1):** chữ DL trong bốn chữ cái
+  - **Gợi ý (tầng 2):** Không phải nhóm vai, càng không phải từng người — là loại nhóm đứng cạnh tài nguyên.
+  - **Lời giải (tầng 3):** Nhóm Domain Local — nhóm quyền đứng cạnh tài nguyên. Người vào nhóm vai (Global), vai cắm vào quyền (Domain Local), quyền gắn vào tài nguyên: ba khúc nối của một đường ống.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: xếp bốn khúc của đường ống quyền theo đúng thứ tự nước chảy.
+  - **Dạng:** xếp thứ tự (thứ tự đúng):
+    1. Account — con người có tài khoản
+    2. Global group — nhóm vai gom người
+    3. Domain Local group — nhóm quyền cạnh tài nguyên
+    4. Permission — quyền thật trên thư mục
+  - **Chủ đề gợi ý (tầng 1):** bốn chữ cái A G DL P đọc xuôi
+  - **Gợi ý (tầng 2):** Bắt đầu từ con người, kết thúc ở quyền trên thư mục — đúng thứ tự bốn chữ cái.
+  - **Lời giải (tầng 3):** Account → Global group → Domain Local group → Permission. Người vào vai, vai cắm vào quyền, quyền gắn tài nguyên — không khúc nào được nhảy cóc.
+- **Tự giải thích:** Giải thích bằng lời của bạn: nhét thẳng một người vào nhóm quyền thì chạy được ngay — vậy nó đắt ở chỗ nào?
+  - **Nhóm ý cần chạm:** [chuyển phòng, chuyen phong, đổi vai, doi vai, thay đổi, thay doi, ba trăm người, ba tram nguoi] · [truy vết, truy vet, ai cho vào, ai cho vao, vì sao, vi sao, không ai trả lời, khong ai tra loi] · [từng nhóm, tung nhom, từng tài nguyên, tung tai nguyen, sửa từng, sua tung, dọn từng, don tung] · [nhóm vai, nhom vai, global, tự chảy, tu chay, quyền theo vai, quyen theo vai]
+  - **Trả lời mẫu:** Nó đắt ở ngày mai: người chuyển phòng thì quyền cũ không tự rút — phải nhớ ra từng nhóm quyền đã nhét họ vào mà dọn tay, và sáu tháng sau chẳng ai còn trả lời được ai cho vào, vì sao. Đi qua nhóm vai thì mọi thay đổi chỉ chạm một chỗ: đổi nhóm Global là toàn bộ quyền tự chảy theo vai mới, còn sơ đồ thì tự kể được chuyện của nó.
+
+**6 · Tổng kết:**
+- AGDLP: người vào nhóm vai (Global), vai cắm vào nhóm quyền (Domain Local), quyền gắn tài nguyên.
+- Global trả lời "là ai trong tổ chức", Domain Local trả lời "tài nguyên này ai được động" — vai cắm vào quyền, không ngược lại.
+- Nhét thẳng người vào nhóm quyền chạy được ngay nhưng đắt ở ngày mai — mọi thay đổi và truy vết đều thành thủ công.
+- *Úp mở bài sau:* Bạn đã thấy đường ống mẫu. Bài sau là ca thật đầu tiên: người mới về phòng, đường ống có sẵn — điền nốt mắt xích còn thiếu bằng một dòng lệnh.
+
+### Bài: Điền nốt mắt xích cho người mới về phòng `m19-bai-4`
+
+**1 · Khởi động (hook):** Chị Phạm Thị Lan nhận việc ở phòng nhân sự từ thứ hai. Thứ tư chị vẫn ngồi chờ ai đó "cấp quyền vào hồ sơ" — phiếu yêu cầu chạy lòng vòng qua ba chữ ký. Trong khi ở công ty xếp quyền tử tế, toàn bộ việc đó là MỘT dòng lệnh năm giây của người trực. Khoảng cách giữa ba ngày và năm giây nằm ở đâu?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Người mới về phòng nhân sự. Theo nếp AGDLP, người trực cần đụng vào NHÓM nào?
+  - **Dạng:** trắc nghiệm · **Chỉ nhóm vai Global của phòng nhân sự — quyền sẽ tự chảy qua các khúc sau** ✓ / Mọi nhóm quyền Domain Local có liên quan tới từng thư mục của phòng / Không nhóm nào — cấp quyền đọc ghi thẳng trên từng thư mục cho nhanh
+  - **Chủ đề gợi ý (tầng 1):** một người mới = một mắt xích ở khúc nào
+  - **Vì sao:** Chỉ nhóm vai Global. Đường ống đã nối sẵn từ trước: vai cắm vào các nhóm quyền, quyền gắn vào tài nguyên — người mới chỉ cần vào đúng vai là mọi thứ tự chảy. Đụng vào từng nhóm quyền hay từng thư mục chính là con đường ba-ngày-ba-chữ-ký của phần mở đầu.
+
+**3 · Khám phá (teach):**
+- *[m19-vong-doi]* Sức mạnh thật của AGDLP lộ ra ở VÒNG ĐỜI NHÂN SỰ — thứ xảy ra hàng tuần ở mọi công ty. Người MỚI: thêm vào nhóm vai của phòng, một dòng lệnh, toàn bộ quyền cần thiết tự chảy tới. Người CHUYỂN PHÒNG: rút khỏi nhóm vai cũ, thêm vào nhóm vai mới — quyền cũ tự rút, quyền mới tự tới, không sót lại mẩu quyền nào của đời trước. Người NGHỈ: khóa tài khoản là mọi cửa đóng cùng lúc. Cả ba kịch bản chỉ chạm vào MỘT chỗ: quan hệ giữa con người và nhóm vai. Không kịch bản nào phải mở từng thư mục, từng nhóm quyền ra soát.
+  - **Đào sâu hơn:** Phạm vi lệnh của app dừng ở chiều THÊM (Add-ADGroupMember) — chiều rút khỏi nhóm ngoài đời là Remove-ADGroupMember, cùng ngữ pháp. Điều đáng nhớ không phải cái tên lệnh, mà là chỗ đứng của nó: mọi biến động nhân sự đều xử lý ở khúc Account–Global, hai khúc sau của đường ống không ai phải chạm tới. Đó là phép đo một hệ thống quyền tử tế: ngày bận rộn nhất của phòng nhân sự, người trực vẫn chỉ gõ những lệnh một dòng.
+
+**4 · Thử tay (practice, fading 1):**
+- **Đề:** Chị Phạm Thị Lan (ptlan) chính thức về phòng nhân sự. Đường ống của phòng đã nối sẵn: NhanSu-GG cắm trong QuyenSuaHoSo-DL. Điền nốt mắt xích còn thiếu để chị Lan sửa được hồ sơ — và nhớ tra lại bằng Get-ADGroupMember cho chắc tay.
+  - **Dạng:** terminal PowerShell (gõ lệnh đạt mục tiêu)
+    - **Thế giới:** máy MAY-QUAN-TRI [10.20.2.5/24] — AD congty.vn: OU [NhanSu, KeToan], 2 user sẵn có
+    - **Mục tiêu:**
+      - phải lôi ra được dòng chứa "undefined"
+      - phải lôi ra được dòng chứa "undefined"
+    - **Lệnh mẫu:** `Add-ADGroupMember NhanSu-GG -Members ptlan`
+  - **Chủ đề gợi ý (tầng 1):** một dòng Add vào đúng nhóm VAI
+  - **Gợi ý (tầng 2):** Cú pháp khuyết: Add-ADGroupMember <nhóm vai của phòng> -Members <sam của chị Lan>. Nhóm vai là cái có đuôi GG.
+  - **Lời giải (tầng 3):** Add-ADGroupMember NhanSu-GG -Members ptlan. Chị Lan vào nhóm vai, mà NhanSu-GG đã nằm sẵn trong QuyenSuaHoSo-DL nên cả hai mục tiêu cùng xanh — quyền chảy tới mà không ai phải chạm vào nhóm quyền hay thư mục.
+- **Đề:** Anh Nam chuyển từ kế toán sang kinh doanh. Theo nếp AGDLP, hai động tác của người trực là gì?
+  - **Dạng:** trắc nghiệm · **Rút anh khỏi nhóm vai kế toán và thêm vào nhóm vai kinh doanh — hết** ✓ / Soát từng nhóm quyền của kế toán để gỡ tên anh rồi cấp lại từ đầu / Khóa tài khoản cũ và tạo cho anh một tài khoản mới bên kinh doanh
+  - **Chủ đề gợi ý (tầng 1):** biến động nhân sự chỉ chạm khúc nào của ống
+  - **Gợi ý (tầng 2):** Quyền cũ tự rút khi cái gì thay đổi? Người và VAI — không phải người và từng thư mục.
+  - **Lời giải (tầng 3):** Đổi nhóm vai: rút khỏi KeToan-GG, thêm vào KinhDoanh-GG. Quyền cũ tự rút, quyền mới tự tới — không sót mẩu quyền nào của đời trước, không ai phải soát từng nhóm quyền, càng không phải đập tài khoản làm lại.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: muốn xem một nhóm đang chứa những ai (người hay nhóm), bạn gõ lệnh nào?
+  - **Dạng:** gõ tay · **Chấp nhận:** get-adgroupmember | get adgroupmember | getadgroupmember | get-adgroupmember -identity | lệnh get-adgroupmember | lenh get-adgroupmember
+  - **Chủ đề gợi ý (tầng 1):** họ Get, danh từ GroupMember
+  - **Gợi ý (tầng 2):** Động từ Get, danh từ ADGroupMember — đúng nếp động từ gạch danh từ của Module 12.
+  - **Lời giải (tầng 3):** Get-ADGroupMember -Identity <tên nhóm>. Cột ObjectClass của nó nói thật nhóm đang chứa NGƯỜI hay chứa NHÓM — công cụ soi nếp AGDLP nhanh nhất trong tay bạn.
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao ở hệ thống xếp đúng nếp, người chuyển phòng KHÔNG bao giờ mang theo quyền của phòng cũ?
+  - **Nhóm ý cần chạm:** [rút khỏi, rut khoi, ra khỏi nhóm, ra khoi nhom, rời nhóm vai, roi nhom vai, đổi nhóm, doi nhom] · [quyền theo vai, quyen theo vai, quyền qua nhóm, quyen qua nhom, tự rút, tu rut, tự mất, tu mat] · [không gắn thẳng, khong gan thang, không trực tiếp, khong truc tiep, không chạm quyền, khong cham quyen] · [nhóm vai cũ, nhom vai cu, vai mới, vai moi, global]
+  - **Trả lời mẫu:** Vì quyền của họ chưa bao giờ gắn thẳng vào con người — tất cả đi qua nhóm vai. Rút họ khỏi nhóm vai cũ là mọi quyền của phòng cũ tự đứt theo, thêm vào nhóm vai mới là quyền mới tự chảy tới. Không có mẩu quyền nào dính trực tiếp vào người để mà sót lại.
+
+**6 · Tổng kết:**
+- Người mới về phòng = một dòng Add vào nhóm vai — đường ống nối sẵn lo phần còn lại.
+- Chuyển phòng = đổi nhóm vai; nghỉ việc = khóa tài khoản — mọi biến động chỉ chạm khúc Account–Global.
+- Get-ADGroupMember với cột ObjectClass là máy soi nếp: nhóm quyền tử tế chứa NHÓM, không chứa người lẻ.
+- *Úp mở bài sau:* Còn một câu hỏi treo từ đầu module: chính người trực lấy đâu ra quyền để gõ những lệnh này — chẳng lẽ phát cho cả đội helpdesk chức admin toàn miền? Bài cuối: giao chìa khóa mà không giao cả chùm.
+
+### Bài: Giao chìa khóa hẹp cho đúng người `m19-bai-5`
+
+**1 · Khởi động (hook):** Đội helpdesk mỗi ngày nhận chục cuộc "em quên mật khẩu". Muốn họ tự xử được thì phải cho quyền reset mật khẩu — và cách nhanh nhất ai cũng biết: thêm cả đội vào Domain Admins. Từ hôm đó, ba bạn trẻ mới ra trường cầm trong tay quyền xóa được CẢ MIỀN — để làm một việc bé bằng cái reset. Nghề này có cách nào trao đúng một chiếc chìa, thay vì cả chùm chìa khóa của tòa nhà?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử: quyền mà đội helpdesk THẬT SỰ cần cho việc "em quên mật khẩu" trông như thế nào?
+  - **Dạng:** trắc nghiệm · **Đúng thao tác reset mật khẩu, trên đúng nhánh OU chứa nhân viên thường** ✓ / Quyền quản trị toàn miền, vì reset mật khẩu đụng vào cơ sở dữ liệu AD / Không cần quyền gì — helpdesk chỉ việc gọi lên cấp trên làm hộ mỗi lần
+  - **Chủ đề gợi ý (tầng 1):** việc bé thì chìa khóa bé
+  - **Vì sao:** Đúng thao tác, đúng phạm vi: reset mật khẩu, trên nhánh OU nhân viên thường — không đụng được tài khoản sếp, càng không đụng cấu trúc miền. Admin toàn miền cho một việc bé là treo rủi ro cả tòa nhà vào túi áo thực tập sinh; còn "gọi cấp trên làm hộ" thì chính là cái cảnh chờ ba ngày của bài trước.
+
+**3 · Khám phá (teach):**
+- *[m19-delegation]* AD có cơ chế trao chìa hẹp tên là DELEGATION — ủy quyền: chọn một NHÁNH OU, chọn một BỘ THAO TÁC, rồi trao đúng gói đó cho một nhóm. Ví dụ kinh điển: nhóm Helpdesk-GG được reset mật khẩu và mở khóa tài khoản TRÊN nhánh OU NhanVien — hết. Không đụng được OU Lãnh đạo, không sửa được nhóm, không sờ được cấu trúc miền. Ba đặc điểm làm nên một cú ủy quyền tử tế: hẹp THAO TÁC (chỉ việc cần), hẹp PHẠM VI (chỉ nhánh cần), và trao cho NHÓM chứ không cho cá nhân — người vào đội thì vào nhóm, rời đội thì rút, đúng nếp AGDLP bạn vừa học.
+  - **Đào sâu hơn:** Vì sao trao cho nhóm quan trọng đến thế? Vì ủy quyền cho cá nhân là quay lại đúng cái bẫy lối tắt: nửa năm sau không ai nhớ đã trao gì cho ai, người nghỉ việc mang theo quyền mồ côi nằm rải rác trên từng nhánh OU. Trao cho nhóm thì câu hỏi "ai đang có quyền này" luôn trả lời được bằng một lệnh Get-ADGroupMember — và thu hồi là một động tác rút khỏi nhóm. Quyền tối thiểu đủ dùng cộng với truy vết được: đó là hai chân của mọi hệ thống ủy quyền đứng vững.
+
+**4 · Thử tay (practice, fading 2):**
+- **Đề:** Phòng dự án tuyển hai kỹ sư mới: Vu Van Long (vvlong) và Do Thi Thu (dtthu). Cả hai phải vào được kho tài liệu dự án. Miền đã dựng sẵn các nhóm — tự tra, tự quyết định, tự xếp cho đúng nếp; bảng mục tiêu sẽ chấm sống từng bước của bạn.
+  - **Dạng:** terminal PowerShell (gõ lệnh đạt mục tiêu)
+    - **Thế giới:** máy MAY-QUAN-TRI [10.20.2.5/24] — AD congty.vn: OU [DuAn, KeToan], 4 user sẵn có
+    - **Mục tiêu:**
+      - phải lôi ra được dòng chứa "undefined"
+      - phải lôi ra được dòng chứa "undefined"
+      - phải lôi ra được dòng chứa "undefined"
+      - phải lôi ra được dòng chứa "undefined"
+    - **Lệnh mẫu:** `Add-ADGroupMember DuAn-GG -Members vvlong,dtthu`
+  - **Chủ đề gợi ý (tầng 1):** hai người, một nhóm vai, một dòng lệnh
+  - **Gợi ý (tầng 2):** Tra Get-ADGroupMember QuyenKhoTaiLieu-DL xem nhóm quyền đang chứa nhóm vai nào — rồi Add cả hai người vào đúng nhóm vai đó (tham số -Members nhận danh sách cách nhau dấu phẩy).
+  - **Lời giải (tầng 3):** Add-ADGroupMember DuAn-GG -Members vvlong,dtthu. Cả hai vào nhóm vai dự án; DuAn-GG đã cắm sẵn trong QuyenKhoTaiLieu-DL nên bốn mục tiêu cùng xanh. Nhét thẳng vào nhóm quyền thì hai mục tiêu nhóm vai vẫn đỏ — đúng cái lối tắt mà module này dạy bạn tránh.
+- **Đề:** Cú ủy quyền nào dưới đây là TỬ TẾ theo chuẩn của bài?
+  - **Dạng:** trắc nghiệm · **Nhóm Helpdesk-GG được reset mật khẩu trên đúng nhánh OU NhanVien** ✓ / Từng bạn helpdesk được ủy quyền riêng cho gọn từng con người một / Nhóm Helpdesk-GG vào Domain Admins nhưng mọi người hứa chỉ dùng để reset
+  - **Chủ đề gợi ý (tầng 1):** hẹp thao tác, hẹp phạm vi, trao cho nhóm
+  - **Gợi ý (tầng 2):** Ba tiêu chí: đúng việc, đúng nhánh, và trao cho ai để còn truy vết được?
+  - **Lời giải (tầng 3):** Nhóm Helpdesk-GG + đúng thao tác + đúng nhánh OU — đủ ba chân: hẹp thao tác, hẹp phạm vi, trao cho nhóm. Ủy quyền cho từng cá nhân là gieo quyền mồ côi; còn lời hứa "chỉ dùng để reset" không phải là một cơ chế bảo mật.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: cơ chế trao một bộ thao tác hẹp trên một nhánh OU cho một nhóm — không phát admin — gọi là gì?
+  - **Dạng:** gõ tay · **Chấp nhận:** delegation | ủy quyền | uy quyen | delegation of control | ủy quyền trên ou | uy quyen tren ou
+  - **Chủ đề gợi ý (tầng 1):** tiếng Việt hai chữ, tiếng Anh một chữ
+  - **Gợi ý (tầng 2):** Chữ tiếng Anh cùng họ với delegate — người được cử đi thay.
+  - **Lời giải (tầng 3):** Delegation — ủy quyền. Hẹp thao tác, hẹp phạm vi, trao cho nhóm: helpdesk làm được việc của mình mà chùm chìa khóa của tòa nhà vẫn nằm nguyên trong két.
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao thêm helpdesk vào Domain Admins là sai NGAY CẢ KHI họ chỉ định dùng nó để reset mật khẩu?
+  - **Nhóm ý cần chạm:** [quyền tối thiểu, quyen toi thieu, đủ dùng, du dung, việc bé, viec be, chìa hẹp, chia hep] · [cả miền, ca mien, toàn miền, toan mien, mọi thứ, moi thu, cả tòa nhà, ca toa nha] · [lộ, lo , mất tài khoản, mat tai khoan, bị chiếm, bi chiem, rủi ro, rui ro, kẻ tấn công, ke tan cong] · [lời hứa, loi hua, không phải cơ chế, khong phai co che, ý định, y dinh, nhầm tay, nham tay]
+  - **Trả lời mẫu:** Vì quyền không đo bằng ý định mà đo bằng thứ có thể xảy ra: một tài khoản Domain Admins bị lộ, bị lừa, hay lỡ tay là cả miền lãnh đủ — bất kể chủ nhân của nó tử tế đến đâu. Lời hứa chỉ-dùng-để-reset không phải cơ chế. Quyền tối thiểu đủ dùng thu nhỏ bán kính sát thương: chìa hẹp thì mất chìa cũng chỉ mất một cánh cửa.
+
+**6 · Tổng kết:**
+- Delegation: trao đúng thao tác, trên đúng nhánh OU, cho một NHÓM — không phát admin toàn miền.
+- Trao cho nhóm để truy vết bằng một lệnh và thu hồi bằng một động tác rút — không gieo quyền mồ côi.
+- Quyền đo bằng thứ có thể xảy ra, không đo bằng ý định — chìa hẹp thì mất chìa chỉ mất một cửa.
+- *Úp mở bài sau:* Miền đã có trật tự: đúng người, đúng vai, đúng chìa. Nhưng hệ thống tử tế đến mấy cũng sẽ có ngày trục trặc — và lúc đó thứ cứu bạn là những dòng NHẬT KÝ nó để lại. Module sau: nhìn thấy sự cố trước cả người dùng.
+
+### Khái niệm & flashcard (8)
+
+- **Site trong AD** `m19-site` — Cụm mạng con gần nhau về địa lý, nối nhau bằng đường nhanh — chung miền nhưng khác chỗ đứng; tầng Site của LSDOU áp chính sách theo vị trí
+  - Ẩn dụ: Như các chi nhánh của một dòng họ: vẫn chung gia phả, nhưng ai ở tòa nào thì sinh hoạt ở tòa đó — việc chung mới gửi thư qua lại giữa các tòa.
+  - Thẻ ôn: *Site khác OU ở trục chia nào?* → Site chia theo ĐỊA LÝ (cụm subnet gần nhau, đường nhanh — Hà Nội, Đà Nẵng), OU chia theo TỔ CHỨC (kế toán, nhân sự — dù ngồi đâu). Hai trục vuông góc: tài khoản nằm trong OU, máy đứng trong site; GPO gắn site áp theo vị trí ngồi.
+- **Subnet gắn site** `m19-subnet-site` — Lời khai dải-nào-thuộc-nơi-nào trong AD; máy nhìn IP của mình tra ra site rồi tìm DC cùng site mà hỏi
+  - Ẩn dụ: Như bảng mã vùng điện thoại dán ở tổng đài: nhìn đầu số biết người gọi ở tỉnh nào mà nối cho tổng đài viên gần đó — không có bảng thì cuộc nào cũng dồn về trụ sở.
+  - Thẻ ôn: *Chi nhánh mới có DC tại chỗ mà đăng nhập vẫn chậm khó hiểu — nghi phạm số một?* → Dải mạng của chi nhánh chưa được khai gắn vào site. Máy nhìn IP để tra site của mình — dải vô chủ thì máy mù vị trí, gõ cửa DC bất kỳ (thường ở thành phố khác). Dựng DC tại chỗ chỉ là nửa việc; khai subnet-thuộc-site là nửa còn lại.
+- **Replication giữa DC** `m19-replication` — Mỗi DC giữ một bản sổ miền đầy đủ; thay đổi ghi một nơi rồi chép dần sang nơi khác — trong site tức thì, giữa site nén và theo lịch
+  - Ẩn dụ: Như các chi nhánh ngân hàng cùng giữ một cuốn sổ cái: bút toán ghi ở đâu cũng được, nhưng cuối mỗi chuyến xe liên tỉnh các chi nhánh mới khớp sổ với nhau.
+  - Thẻ ôn: *Replication trong site và giữa site khác nhau thế nào, và vì sao?* → Trong site: dây nhanh, thay đổi lan gần như tức thì. Giữa site: đường WAN chậm và đắt nên thay đổi được gom, nén, gửi theo lịch (mặc định cỡ 15 phút một chuyến). Ngoại lệ đáng nhớ: đổi mật khẩu có đường ưu tiên riêng, không đợi lịch.
+- **Khe trễ giữa site** `m19-do-tre` — Quãng thời gian thay đổi ghi ở site này chưa lan tới site kia — là tính chất của hệ thống, không phải bệnh
+  - Ẩn dụ: Như gửi tiền ở quầy tỉnh này rồi lập tức rút ở tỉnh khác: sổ bên kia chưa kịp khớp thì máy báo thiếu — đợi chuyến khớp sổ, không phải ngân hàng mất tiền.
+  - Thẻ ôn: *Cấp quyền ở site A, người dùng ở site B chưa thấy — người trực làm gì trước tiên?* → Hỏi hai câu: thay đổi ghi ở site nào, người dùng đứng site nào. Khác site thì đối chiếu lịch replication và đợi hết một chuyến chép rồi mới kết luận — ghi đè lần nữa hay khởi động lại DC là sửa loạn trong khe trễ, biến ca không-phải-bệnh thành bệnh thật.
+- **AGDLP** `m19-agdlp` — Nếp xếp quyền bốn khúc: Account vào Global group (vai), Global cắm vào Domain Local group (quyền), Permission chỉ gắn vào Domain Local
+  - Ẩn dụ: Như đường ống nước bốn khúc nối sẵn: người là nguồn nước, vai là ống nhánh, quyền là ống gom, thư mục là vòi — nước chảy được vì các khúc đã cắm nhau, không ai nối nguồn thẳng vào vòi.
+  - Thẻ ôn: *Đọc xuôi bốn khúc của chuỗi AGDLP và việc mỗi khúc đảm nhận?* → Account (con người) → Global group (nhóm VAI gom người theo phòng ban) → Domain Local group (nhóm QUYỀN đứng cạnh tài nguyên) → Permission (quyền thật trên thư mục, chỉ gắn vào nhóm DL). Người không bao giờ chạm thẳng vào quyền.
+- **Global vs Domain Local** `m19-gg-dl` — Global gom NGƯỜI theo vai và đi theo con người; Domain Local giữ QUYỀN và đứng cạnh tài nguyên — vai cắm vào quyền, AD cấm chiều ngược
+  - Ẩn dụ: Như thẻ nhân viên và ổ khóa cửa: thẻ đi theo người (đổi phòng là đổi thẻ), ổ khóa đứng yên cạnh cửa — người ta lập trình cho Ổ nhận loại thẻ nào, chứ không nhét ổ khóa vào túi áo nhân viên.
+  - Thẻ ôn: *Nhóm Global và Domain Local mỗi loại trả lời câu hỏi gì, và luật cứng giữa chúng?* → Global: "người này LÀ AI trong tổ chức" — gom người theo vai, đi theo con người. Domain Local: "tài nguyên này AI ĐƯỢC ĐỘNG" — giữ quyền, neo cạnh tài nguyên. Vai cắm vào quyền; chiều ngược (DL chui vào GG) bị AD từ chối thẳng.
+- **Vòng đời nhân sự trong AGDLP** `m19-vong-doi` — Người mới = thêm vào nhóm vai; chuyển phòng = đổi nhóm vai; nghỉ = khóa tài khoản — mọi biến động chỉ chạm khúc Account–Global
+  - Ẩn dụ: Như đổi chỗ ở trong khu tập thể có sổ trực chung: chỉ cần sửa một dòng tên-thuộc-nhà-nào, còn điện nước chìa khóa của căn mới tự theo về — không phải đi đấu lại từng đường dây.
+  - Thẻ ôn: *Ba kịch bản nhân sự (mới, chuyển phòng, nghỉ) xử lý thế nào trong hệ AGDLP tử tế?* → Mới: một dòng Add vào nhóm vai của phòng — quyền tự chảy. Chuyển phòng: rút khỏi vai cũ, thêm vào vai mới — quyền cũ tự đứt, không sót mẩu nào. Nghỉ: khóa tài khoản — mọi cửa đóng cùng lúc. Cả ba chỉ chạm quan hệ người–nhóm vai.
+- **Delegation (ủy quyền)** `m19-delegation` — Trao một bộ thao tác hẹp, trên một nhánh OU, cho một nhóm — helpdesk làm được việc mà không cầm admin toàn miền
+  - Ẩn dụ: Như giao cho bác bảo vệ chiếc chìa mở đúng phòng họp tầng ba: bác làm trọn việc của mình, còn chùm chìa khóa của cả tòa nhà vẫn nằm trong két giám đốc.
+  - Thẻ ôn: *Ba đặc điểm của một cú ủy quyền tử tế trong AD?* → Hẹp THAO TÁC (chỉ việc cần — vd reset mật khẩu), hẹp PHẠM VI (chỉ nhánh OU cần — vd NhanVien, không đụng Lãnh đạo), và trao cho NHÓM chứ không cho cá nhân — để truy vết bằng một lệnh Get-ADGroupMember và thu hồi bằng một động tác rút khỏi nhóm.
+
+### Bài kiểm tra module (pool 15 câu, mỗi lượt rút 8, cần ≥ 85%)
+
+- **Đề:** Site trong AD là gì?
+  - **Dạng:** trắc nghiệm · **Cụm mạng con gần nhau về địa lý, nối nhau bằng đường nhanh, chung một miền** ✓ / Một nhánh phòng ban trong cây tổ chức, chứa tài khoản của nhân viên nhánh đó / Một miền con tách riêng cho chi nhánh, có bộ tài khoản độc lập với trụ sở
+  - **Chủ đề gợi ý (tầng 1):** trục địa lý, không phải trục tổ chức
+  - **Vì sao:** Site chia theo địa lý: cụm subnet gần nhau, dây nhanh — vẫn chung miền, chung bộ tài khoản. Nhánh phòng ban là OU (trục tổ chức); miền con là chuyện khác hẳn, chi nhánh trong bài vẫn nằm nguyên trong một miền.
+- **Đề:** Khai subnet gắn site giúp máy trạm tự tìm được cái gì ở gần mình?
+  - **Dạng:** gõ tay · **Chấp nhận:** dc | domain controller | dc gần nhất | dc gan nhat | dc cùng site | dc cung site | domain controller cùng site | domain controller cung site | máy chủ miền | may chu mien
+  - **Chủ đề gợi ý (tầng 1):** máy chủ mà cuộc đăng nhập nào cũng phải gõ cửa
+  - **Vì sao:** Domain Controller cùng site. Máy nhìn IP của mình → tra lời khai subnet-thuộc-site → biết site của mình → hỏi DC gần nhà. Quên khai là chi nhánh mới chậm khó hiểu dù DC đứng ngay tầng trên.
+- **Đề:** 9:00 thêm user vào nhóm ở DC Hà Nội; 9:10 tại Đà Nẵng quyền chưa xuất hiện. Cách hiểu ĐÚNG?
+  - **Dạng:** trắc nghiệm · **Bình thường — giữa hai site, thay đổi đi theo lịch chép nên có khe trễ** ✓ / Thao tác thêm nhóm đã thất bại và cần được thực hiện lại ngay lập tức / DC Đà Nẵng đã hỏng dịch vụ sao chép và cần khởi động lại khẩn cấp
+  - **Chủ đề gợi ý (tầng 1):** khe trễ giữa site là tính chất
+  - **Vì sao:** Giữa hai site, replication gom thay đổi và đi theo lịch — mươi phút chưa thấy là nằm trong khe trễ bình thường. Làm lại hay khởi động lại DC lúc này là sửa loạn một ca không-phải-bệnh.
+- **Đề:** Vì sao replication GIỮA site không chạy tức thì như TRONG site?
+  - **Dạng:** trắc nghiệm · **Đường WAN giữa site chậm và đắt — thay đổi được gom, nén, gửi theo chuyến** ✓ / Hai site bắt buộc thuộc hai miền nên mọi trao đổi phải qua bước xác thực chéo / AD giới hạn cứng mỗi giờ một lần để bảo vệ cơ sở dữ liệu khỏi ghi đè
+  - **Chủ đề gợi ý (tầng 1):** site sinh ra để mô tả đường nhanh, đường chậm
+  - **Vì sao:** Site mô tả sự thật đường truyền: trong site dây nhanh nên chép tức thì; giữa site là WAN chậm và đắt nên gom chuyến. Hai site vẫn chung miền, và lịch chép do người vận hành đặt chứ không có giới hạn cứng nào.
+- **Đề:** Xếp bốn khúc của chuỗi AGDLP theo đúng chiều quyền chảy:
+  - **Dạng:** xếp thứ tự (thứ tự đúng):
+    1. Account — con người có tài khoản
+    2. Global group — nhóm vai gom người
+    3. Domain Local group — nhóm quyền cạnh tài nguyên
+    4. Permission — quyền thật trên thư mục
+  - **Chủ đề gợi ý (tầng 1):** đọc xuôi bốn chữ cái A G DL P
+  - **Vì sao:** Account → Global → Domain Local → Permission: người vào vai, vai cắm vào quyền, quyền gắn tài nguyên. Chuỗi này là xương sống của cả module — không khúc nào được nhảy cóc.
+- **Đề:** Nhóm GLOBAL trong nếp AGDLP gom cái gì?
+  - **Dạng:** trắc nghiệm · **Gom NGƯỜI theo vai — kế toán, nhân sự — và đi theo con người** ✓ / Gom QUYỀN của một tài nguyên — ai được đọc, ai được sửa thư mục đó / Gom MÁY TRẠM theo tầng nhà để tiện áp chính sách phần mềm chung
+  - **Chủ đề gợi ý (tầng 1):** nhóm trả lời câu hỏi là-ai
+  - **Vì sao:** Global gom người theo VAI — nó trả lời "người này là ai trong tổ chức" và đi theo con người khi họ chuyển vai. Gom quyền là việc của Domain Local; máy trạm theo tầng là chuyện của OU/GPO.
+- **Đề:** Nhóm DOMAIN LOCAL trong nếp AGDLP dùng để làm gì?
+  - **Dạng:** trắc nghiệm · **Giữ quyền của một tài nguyên — quyền thật trên thư mục chỉ gắn vào nó** ✓ / Gom người của một chi nhánh để chào cờ điểm danh mỗi sáng thứ hai / Chứa các tài khoản quản trị miền được phép sửa cấu trúc thư mục AD
+  - **Chủ đề gợi ý (tầng 1):** nhóm đứng cạnh tài nguyên
+  - **Vì sao:** Domain Local là nhóm QUYỀN: nó đứng cạnh tài nguyên và là cái tên duy nhất được gắn quyền thật. Thành viên của nó là các nhóm vai — không phải người lẻ, càng không phải chỗ chứa admin.
+- **Đề:** Thao tác nào bị AD TỪ CHỐI THẲNG, không cần đợi hậu quả?
+  - **Dạng:** trắc nghiệm · **Nhét một nhóm Domain Local vào trong một nhóm Global** ✓ / Nhét một nhóm Global vào trong một nhóm Domain Local / Thêm một người dùng vào cùng lúc hai nhóm Global khác nhau
+  - **Chủ đề gợi ý (tầng 1):** chiều ngược của đường ống
+  - **Vì sao:** Global không chứa được Domain Local — DL bị neo cạnh tài nguyên còn GG sinh ra để mang đi, nên AD cấm từ gốc. Chiều xuôi (GG vào DL) chính là nếp AGDLP; một người thuộc nhiều nhóm vai là chuyện thường ngày.
+- **Đề:** Chị Hoa chuyển từ nhân sự sang kế toán. Trong hệ AGDLP tử tế, người trực làm gì?
+  - **Dạng:** trắc nghiệm · **Rút chị khỏi NhanSu-GG, thêm vào KeToan-GG — quyền tự đổi theo vai** ✓ / Soát mọi nhóm quyền có tên chị để gỡ từng chỗ rồi cấp lại từ đầu / Giữ nguyên nhóm cũ và cấp thêm quyền kế toán thẳng vào tài khoản chị
+  - **Chủ đề gợi ý (tầng 1):** biến động nhân sự chỉ chạm khúc người–vai
+  - **Vì sao:** Đổi nhóm vai là xong: quyền nhân sự tự đứt, quyền kế toán tự chảy. Soát từng nhóm quyền là hệ quả của lối tắt ngày trước; còn giữ vai cũ + cấp thẳng là vừa sót quyền cũ vừa gieo thêm quyền mồ côi.
+- **Đề:** Cơ chế trao một bộ thao tác hẹp trên một nhánh OU cho một nhóm — không phát admin toàn miền — gọi là gì?
+  - **Dạng:** gõ tay · **Chấp nhận:** delegation | ủy quyền | uy quyen | delegation of control | ủy quyền trên ou | uy quyen tren ou
+  - **Chủ đề gợi ý (tầng 1):** tiếng Anh cùng họ với delegate
+  - **Vì sao:** Delegation — ủy quyền. Ba chân của một cú ủy quyền tử tế: hẹp thao tác, hẹp phạm vi OU, và trao cho nhóm để còn truy vết và thu hồi được.
+- **Đề:** Helpdesk cần reset mật khẩu cho nhân viên thường. Cách trao quyền ĐÚNG?
+  - **Dạng:** trắc nghiệm · **Ủy quyền thao tác reset trên nhánh OU NhanVien cho nhóm Helpdesk-GG** ✓ / Thêm cả đội helpdesk vào Domain Admins kèm quy định chỉ dùng để reset / Ủy quyền riêng cho từng bạn helpdesk trên toàn bộ cây OU của miền
+  - **Chủ đề gợi ý (tầng 1):** ba chân: thao tác, phạm vi, nhóm
+  - **Vì sao:** Đúng thao tác (reset), đúng phạm vi (OU NhanVien), trao cho nhóm (Helpdesk-GG). Domain Admins cho việc bé là treo cả miền vào rủi ro — quy định miệng không phải cơ chế; ủy quyền cho từng cá nhân trên toàn cây thì vừa rộng vừa không truy vết nổi.
+- **Đề:** Vì sao KHÔNG gán quyền thẳng cho từng người dù cách đó chạy được ngay?
+  - **Dạng:** trắc nghiệm · **Vì mọi thay đổi nhân sự sau đó đều thành việc dọn tay từng quyền** ✓ / Vì AD giới hạn mỗi tài khoản người dùng chỉ được nhận tối đa một quyền / Vì quyền gán thẳng cho người chạy chậm hơn hẳn quyền đi qua các nhóm
+  - **Chủ đề gợi ý (tầng 1):** cái giá nằm ở ngày mai, không ở hôm nay
+  - **Vì sao:** Cái giá là ngày mai: người chuyển phòng thì quyền cũ không tự rút, nửa năm sau không ai trả lời được ai-cho-vào-vì-sao. AD không giới hạn một quyền, và tốc độ chẳng khác nhau — khác nhau ở chi phí thay đổi và truy vết.
+- **Đề:** Lệnh nào cho bạn xem một nhóm đang chứa những ai — kèm cột nói rõ thành viên là người hay nhóm?
+  - **Dạng:** gõ tay · **Chấp nhận:** get-adgroupmember | get adgroupmember | getadgroupmember | get-adgroupmember -identity | lệnh get-adgroupmember | lenh get-adgroupmember
+  - **Chủ đề gợi ý (tầng 1):** động từ Get, danh từ ADGroupMember
+  - **Vì sao:** Get-ADGroupMember -Identity <tên nhóm>. Cột ObjectClass là máy soi nếp AGDLP: nhóm quyền tử tế hiện group (chứa nhóm vai), còn một dãy user nằm thẳng trong nhóm quyền là dấu vết lối tắt chồng chất.
+- **Đề:** Đợt kiểm toán phát hiện anh Hoang Van Nam (hvnam) đang nằm THẲNG trong nhóm quyền in ấn — sai nếp, và không rõ ai cho vào. Bạn không có lệnh gỡ, nhưng phải vá lại cho quyền chảy ĐÚNG CHUỖI: anh Nam thuộc nhóm vai, và nhóm vai nằm trong nhóm quyền. Tra kỹ bằng Get-ADGroupMember rồi bổ sung mắt xích còn thiếu.
+  - **Dạng:** terminal PowerShell (gõ lệnh đạt mục tiêu)
+    - **Thế giới:** máy MAY-QUAN-TRI [10.20.2.5/24] — AD congty.vn: OU [VanPhong], 2 user sẵn có
+    - **Mục tiêu:**
+      - phải lôi ra được dòng chứa "undefined"
+      - phải lôi ra được dòng chứa "undefined"
+    - **Lệnh mẫu:** `Add-ADGroupMember InAn-GG -Members hvnam`
+  - **Chủ đề gợi ý (tầng 1):** mắt xích nhóm VAI đang thiếu tên anh Nam
+  - **Vì sao:** Add-ADGroupMember InAn-GG -Members hvnam. Anh Nam đang có quyền nhờ nằm thẳng trong nhóm quyền — mục tiêu DL xanh sẵn nhưng mục tiêu nhóm vai đỏ. Bổ sung anh vào InAn-GG là chuỗi liền lại: về sau ai tra Get-ADGroupMember cũng đọc ra được vì-sao-anh-có-quyền, và ngày anh chuyển phòng chỉ cần rút khỏi nhóm vai.
+- **Đề:** Chị Dang Thi Thu (dtthu2) vừa về phòng kinh doanh và cần gửi được báo giá. Miền có sẵn nhiều nhóm — kể cả vài nhóm không liên quan. Tự tra bằng Get-ADGroup và Get-ADGroupMember, tìm đúng đường ống của kinh doanh, rồi xếp chị vào đúng nếp AGDLP.
+  - **Dạng:** terminal PowerShell (gõ lệnh đạt mục tiêu)
+    - **Thế giới:** máy MAY-QUAN-TRI [10.20.2.5/24] — AD congty.vn: OU [KinhDoanh, KeToan], 3 user sẵn có
+    - **Mục tiêu:**
+      - phải lôi ra được dòng chứa "undefined"
+      - phải lôi ra được dòng chứa "undefined"
+    - **Lệnh mẫu:** `Add-ADGroupMember KinhDoanh-GG -Members dtthu2`
+  - **Chủ đề gợi ý (tầng 1):** tìm nhóm VAI của kinh doanh trước, đừng đụng nhóm quyền
+  - **Vì sao:** Add-ADGroupMember KinhDoanh-GG -Members dtthu2. Tra QuyenGuiBaoGia-DL thấy nó chứa KinhDoanh-GG — vậy chỉ cần đưa chị Thu vào nhóm vai đó là cả hai mục tiêu xanh. Nhét thẳng vào nhóm quyền thì mục tiêu nhóm vai vẫn đỏ; còn mấy nhóm kế toán đứng đó để thử xem bạn có tra trước khi xếp hay không.
+
+## Giám sát và nhật ký — Nhìn thấy sự cố trước người dùng `module-20`
+
+Phần E · 5 chặng · 5 bài · 8 khái niệm
+
+**Chặng:** Đọc được một dòng nhật ký (m20-bai-1) → Gom nhật ký về một chỗ (m20-bai-2) → Mò kim trong đống rơm thật (m20-bai-3) → Hỏi thăm hay chờ chuông (m20-bai-4) → Biết bình thường mới thấy bất thường (m20-bai-5)
+
+### Bài: Đọc một dòng nhật ký như người có nghề `m20-bai-1`
+
+**1 · Khởi động (hook):** Hai giờ sáng, chiếc switch ở tầng hầm lặng lẽ ghi một dòng chữ vào sổ của nó. Không ai đọc. Sáu tiếng sau cả tòa nhà mất mạng, và người ta mất nửa ngày truy tìm nguyên nhân — trong khi câu trả lời đã nằm sẵn trong sổ từ hai giờ sáng, gắn kèm một con số từ 0 tới 7 nói rõ chuyện này nghiêm trọng cỡ nào. Con số đó đọc thế nào?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử: trong thang mức độ nghiêm trọng của nhật ký hệ thống (syslog), mức số 0 nghĩa là gì?
+  - **Dạng:** trắc nghiệm · **Nặng nhất — hệ thống đang sụp, số càng nhỏ chuyện càng lớn** ✓ / Nhẹ nhất — chỉ là dòng gỡ lỗi, số càng lớn chuyện càng lớn / Số 0 nghĩa là không có gì để ghi, dòng đó có thể bỏ qua
+  - **Chủ đề gợi ý (tầng 1):** chiều của thang đo hay bị đoán ngược
+  - **Vì sao:** Số 0 là Emergency — nặng nhất, hệ thống đang sụp. Thang syslog chạy NGƯỢC trực giác: số càng nhỏ càng nghiêm trọng, 7 (Debug) mới là nhẹ nhất. Đoán ngược chiều thang này là lỗi kinh điển của người mới đọc log.
+
+**3 · Khám phá (teach):**
+- *[m20-dong-syslog]* Mỗi dòng nhật ký hệ thống trả lời bốn câu hỏi, theo đúng thứ tự: KHI NÀO (dấu thời gian), MÁY NÀO (tên thiết bị), NẶNG CỠ NÀO (mức severity), và CHUYỆN GÌ (nội dung). Ví dụ: 2026-08-07 03:12:44 sw-core-01 ERROR link down on port 12 — ba giờ sáng, switch trục, mức Error, cổng 12 mất kết nối. Bốn mảnh đó là khuôn chung của cả nghề: log của switch, router, máy chủ DHCP hay DNS đều kể chuyện theo cùng một nhịp, nên học đọc một dòng là đọc được sổ của mọi thiết bị.
+  - **Đào sâu hơn:** Vì sao dấu thời gian đứng đầu? Vì sự cố hiếm khi là MỘT dòng — nó là một chuỗi dòng nối nhau theo thời gian, thường rải trên nhiều thiết bị. Người có nghề đọc log không đọc từng dòng rời: họ dựng lại DÒNG THỜI GIAN của biến cố. Đó cũng là lý do bài sau sẽ bắt các máy phải chung một đồng hồ — thời gian mà lệch thì câu chuyện tự mâu thuẫn.
+- *[m20-severity]* Mức nghiêm trọng là một con số từ 0 tới 7, và SỐ CÀNG NHỎ CHUYỆN CÀNG LỚN: 0 Emergency (hệ thống sụp), 1 Alert (phải xử ngay), 2 Critical (hỏng nặng), 3 Error (có lỗi thật), 4 Warning (đáng để mắt), 5 Notice (bình thường nhưng đáng ghi), 6 Informational (thông tin thường ngày), 7 Debug (gỡ lỗi). Mẹo nhớ tám chữ đầu bằng một câu: Em Ăn Cơm Em Với Người Iu Đi — Emergency, Alert, Critical, Error, Warning, Notice, Informational, Debug. Ranh giới đáng nhớ nhất nằm giữa 3 và 4: từ Error trở xuống là CÓ CHUYỆN THẬT, còn Warning trở lên là đáng để mắt nhưng chưa chắc là sự cố.
+  - **Đào sâu hơn:** Tám mức này là danh sách rời rạc đúng nghĩa — không có cung điện nào để đi, chỉ có thuộc. Thẻ ôn tập của module sẽ gánh việc đó cho bạn bằng lịch SM-2. Còn trong ca trực, con số này là công cụ LỌC: đêm hôm bận rộn, người ta đặt ngưỡng chỉ báo từ mức 3 trở xuống — vì một trận lụt dòng Warning vô hại có thể nhấn chìm đúng một dòng Error biết nói.
+
+**4 · Thử tay (practice, fading 0):**
+- **Ví dụ giải sẵn:** Đọc thử một dòng log theo đúng bốn câu hỏi. Dòng: 2026-08-07 03:12:44 sw-core-01 ERROR link down on port 12. Bước 1 — KHI NÀO: 03:12 rạng sáng ngày 07, lúc không có bàn tay người nào đang thao tác, tức là thiết bị tự gặp chuyện. Bước 2 — MÁY NÀO: sw-core-01, switch TRỤC của tòa nhà — chuyện của nó là chuyện của nhiều người. Bước 3 — NẶNG CỠ NÀO: ERROR, mức 3 — có chuyện thật, không phải cảnh báo vu vơ. Bước 4 — CHUYỆN GÌ: cổng 12 mất kết nối. Ghép bốn mảnh: ba giờ sáng, một cổng trên switch trục rơi — nếu cổng 12 dẫn lên tầng nào đó thì sáng mai tầng đó sẽ gọi. Một dòng chữ, đủ để người trực đêm hành động trước khi chuông reo.
+- **Đề:** Mức ERROR mang số mấy trong thang syslog?
+  - **Dạng:** gõ tay · **Chấp nhận:** 3 | số 3 | so 3 | mức 3 | muc 3
+  - **Chủ đề gợi ý (tầng 1):** đếm theo câu Em Ăn Cơm Em…
+  - **Gợi ý (tầng 2):** Đếm từ 0: Em (0) Ăn (1) Cơm (2) Em (3)… — chữ Em thứ hai là Error.
+  - **Lời giải (tầng 3):** Số 3. Em Ăn Cơm Em Với Người Iu Đi — Emergency 0, Alert 1, Critical 2, Error 3. Ranh giới có-chuyện-thật nằm ngay tại đây: từ 3 trở xuống là lỗi thật.
+- **Đề:** Đêm trực bận, bạn đặt ngưỡng chỉ hiện dòng từ mức 3 trở xuống. Loại dòng nào sẽ BỊ ẨN đi?
+  - **Dạng:** trắc nghiệm · **Warning, Notice, Informational, Debug — các mức từ 4 tới 7** ✓ / Emergency, Alert, Critical — ba mức nặng nhất của thang / Không dòng nào cả, vì ngưỡng chỉ đổi màu chữ khi hiển thị
+  - **Chủ đề gợi ý (tầng 1):** từ mức 3 trở xuống nghĩa là số nhỏ hơn hoặc bằng 3
+  - **Gợi ý (tầng 2):** Số nhỏ là nặng. Ngưỡng giữ lại 0-3 thì phần bị ẩn là những số nào?
+  - **Lời giải (tầng 3):** Các mức 4-7 (Warning trở lên về phía nhẹ) bị ẩn. Ngưỡng lọc là công cụ sống còn của ca đêm: giữ lại 0-3 để một dòng Error biết nói không bị trận lụt Warning vô hại nhấn chìm.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: xếp tám mức syslog theo đúng thứ tự từ 0 (nặng nhất) tới 7 (nhẹ nhất).
+  - **Dạng:** xếp thứ tự (thứ tự đúng):
+    1. Emergency — hệ thống sụp
+    2. Alert — phải xử ngay
+    3. Critical — hỏng nặng
+    4. Error — có lỗi thật
+    5. Warning — đáng để mắt
+    6. Notice — bình thường nhưng đáng ghi
+    7. Informational — thông tin thường ngày
+    8. Debug — gỡ lỗi
+  - **Chủ đề gợi ý (tầng 1):** câu Em Ăn Cơm Em Với Người Iu Đi
+  - **Gợi ý (tầng 2):** Em Ăn Cơm Em Với Người Iu Đi — mỗi chữ đầu là một mức, đọc xuôi từ nặng tới nhẹ.
+  - **Lời giải (tầng 3):** Emergency, Alert, Critical, Error, Warning, Notice, Informational, Debug — 0 tới 7, số càng nhỏ càng nặng. Câu nhớ: Em Ăn Cơm Em Với Người Iu Đi.
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao ranh giới giữa mức 3 và mức 4 là ranh giới đáng nhớ nhất của thang?
+  - **Nhóm ý cần chạm:** [error, lỗi thật, loi that, có chuyện thật, co chuyen that, mức 3, muc 3] · [warning, cảnh báo, canh bao, đáng để mắt, dang de mat, chưa chắc, chua chac] · [ngưỡng, nguong, lọc, loc , ẩn, an di, giữ lại, giu lai] · [nhấn chìm, nhan chim, lụt, lut , nhiễu, nhieu, vô hại, vo hai]
+  - **Trả lời mẫu:** Vì đó là ranh giới giữa CÓ CHUYỆN THẬT và ĐÁNG ĐỂ MẮT: từ Error (3) trở xuống là lỗi thật cần hành động, còn Warning (4) trở lên nhiều khi vô hại. Ngưỡng lọc của ca trực thường đặt đúng tại đây — giữ 0-3 để dòng lỗi biết nói không bị trận lụt cảnh báo vặt nhấn chìm.
+
+**6 · Tổng kết:**
+- Một dòng log trả lời bốn câu: khi nào, máy nào, nặng cỡ nào, chuyện gì — khuôn chung của mọi thiết bị.
+- Thang severity 0-7 chạy ngược trực giác: số càng nhỏ càng nặng. Mẹo: Em Ăn Cơm Em Với Người Iu Đi.
+- Ranh giới 3/4 là ranh giới có-chuyện-thật: ngưỡng lọc ca trực thường giữ 0-3, ẩn 4-7.
+- *Úp mở bài sau:* Đọc được một dòng rồi — nhưng công ty có ba chục thiết bị, mỗi máy một cuốn sổ riêng. Sự cố xảy ra lúc nửa đêm thì bạn mở cuốn nào trước? Bài sau: gom hết sổ về một chỗ, và cái bẫy đồng hồ khiến ba cuốn sổ kể ba câu chuyện khác nhau.
+
+### Bài: Gom ba chục cuốn sổ về một chỗ `m20-bai-2`
+
+**1 · Khởi động (hook):** Sự cố nửa đêm: người dùng kêu mạng chập chờn khoảng 2 giờ sáng. Bạn mở log của switch — thấy một biến cố lúc 02:14. Mở log của router — 02:09. Máy chủ DHCP — 02:21. Ba cuốn sổ, ba mốc giờ, và câu hỏi chết người: chuyện nào xảy ra TRƯỚC? Nếu ba thiết bị này không chung một đồng hồ, thứ tự đó là chuyện bịa — và bạn sẽ đi sửa cái hậu quả thay vì cái nguyên nhân.
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử: vì sao log để rải trên từng thiết bị là mối nguy, ngay cả khi chẳng máy nào hỏng?
+  - **Dạng:** trắc nghiệm · **Vì thiết bị chết là sổ của nó chết theo — đúng lúc cần đọc nhất thì mất** ✓ / Vì mỗi thiết bị chỉ đủ chỗ ghi log trong một giờ rồi tự xóa sạch / Vì đọc log trên thiết bị bắt buộc phải tắt nó đi mới mở sổ được
+  - **Chủ đề gợi ý (tầng 1):** cuốn sổ nằm trên chính con tàu đang chìm
+  - **Vì sao:** Sổ nằm trên chính thiết bị thì thiết bị chết là sổ chết theo — mà lúc thiết bị chết lại chính là lúc bạn cần đọc sổ nhất. Chưa kể muốn lần một sự cố phải mở ba chục máy. Log tập trung sinh ra để chữa cả hai: bản sao nằm ở nơi an toàn, và mọi câu chuyện nằm cạnh nhau.
+
+**3 · Khám phá (teach):**
+- *[m20-log-tap-trung]* Log tập trung là một máy chủ đứng ra nhận bản sao nhật ký của MỌI thiết bị — switch, router, máy chủ dịch vụ — ngay khi từng dòng được ghi. Ba lý do khiến nó thành chuẩn của nghề: một, thiết bị chết không mang theo sổ (bản sao đã kịp rời tàu từng dòng một); hai, một sự cố liên quan ba thiết bị thì cả ba câu chuyện nằm cạnh nhau trên một màn hình, khỏi mở ba chục máy; ba, kẻ đột nhập xóa dấu vết trên máy nạn nhân cũng không với tay được tới bản sao ở nơi khác.
+  - **Đào sâu hơn:** Giao thức chở những dòng log này đi chính là syslog của bài trước — nó không chỉ là khuôn dòng chữ mà còn là cách gửi dòng chữ đó qua mạng về máy thu. Trong thế giới Windows, vai máy thu này thường do một máy chủ thu thập sự kiện đảm nhận; tên công cụ khác nhau, triết lý y hệt: sổ phải có bản sao rời tàu, và các câu chuyện phải nằm cạnh nhau.
+- *[m20-gio-lech]* Nhưng gom sổ về một chỗ chỉ có nghĩa khi mọi thiết bị CHUNG MỘT ĐỒNG HỒ. Đồng hồ máy móc trôi tự nhiên vài giây mỗi ngày — để mặc một năm là lệch nhau cả chục phút. Lúc đó dòng thời gian ghép từ nhiều máy thành chuyện bịa: hậu quả đứng trước nguyên nhân, và người trực đi sửa nhầm đầu dây. Thuốc của nghề là NTP — mọi thiết bị định kỳ chỉnh giờ theo cùng một nguồn. Quy tắc: trỏ tất cả về cùng nguồn giờ, và kiểm tra độ lệch như kiểm tra một dịch vụ sống còn — vì đúng giờ là điều kiện để mọi cuốn sổ còn đáng tin.
+  - **Đào sâu hơn:** Ca kinh điển của giờ lệch: log router ghi tuyến rơi lúc 02:09, log switch ghi bão quảng bá lúc 02:14 — trông như router gây chuyện trước. Nhưng nếu đồng hồ router chạy chậm 6 phút thì sự thật đảo ngược: bão nổ ra trước, tuyến rơi là hậu quả. Cùng một dữ liệu, hai câu chuyện ngược nhau — chỉ vì một cái đồng hồ lười. Đó là lý do người điều tra sự cố luôn hỏi câu đầu tiên: các máy này có chung giờ không?
+
+**4 · Thử tay (practice, fading 1):**
+- **Đề:** Máy thu log tập trung đã gom sổ của ba thiết bị vào file tap-trung.log. Người dùng kêu mạng tầng ba chập chờn — hãy lôi đúng dòng SỰ CỐ ra khỏi đống log trộn lẫn đó bằng một dòng pipeline như bạn đã học ở Module 12.
+  - **Dạng:** terminal PowerShell (gõ lệnh đạt mục tiêu)
+    - **Thế giới:** máy SRV-GIAM-SAT [10.20.0.15/24] — file: tap-trung.log
+    - **Mục tiêu:**
+      - phải lôi ra được dòng chứa "link flapping on port 7"
+    - **Lệnh mẫu:** `Get-Content tap-trung.log | Select-String ERROR`
+  - **Chủ đề gợi ý (tầng 1):** một dòng Get-Content nối ống sang Select-String
+  - **Gợi ý (tầng 2):** Cú pháp khuyết: Get-Content tap-trung.log | Select-String <cụm cần lọc>. Muốn ra chuyện thật thì lọc theo mức nào của thang syslog?
+  - **Lời giải (tầng 3):** Get-Content tap-trung.log | Select-String ERROR — lọc theo mức có-chuyện-thật là dòng sự cố nổi lên ngay: sw-tang-3 báo link flapping on port 7 (cổng chập chờn), khớp hẳn với lời than của người dùng. Lọc theo tên máy sw-tang-3 cũng tới đích — nhiều đường đúng, miễn là ĐỪNG đọc tuần tự từ dòng một.
+- **Đề:** Log router ghi tuyến rơi lúc 02:09, log switch ghi bão quảng bá lúc 02:14. Kết luận "router gây chuyện trước" đứng vững khi nào?
+  - **Dạng:** trắc nghiệm · **Chỉ khi hai thiết bị đang chung một nguồn giờ NTP — không thì thứ tự là chuyện bịa** ✓ / Luôn luôn — dấu thời gian trong log là thứ không bao giờ nói dối người đọc / Chỉ khi hai thiết bị cùng một hãng sản xuất để khuôn log giống hệt nhau
+  - **Chủ đề gợi ý (tầng 1):** so hai mốc giờ của hai cái đồng hồ khác nhau
+  - **Gợi ý (tầng 2):** 02:09 của router và 02:14 của switch là số đo từ HAI đồng hồ. So chúng với nhau cần điều kiện gì?
+  - **Lời giải (tầng 3):** Chỉ khi hai máy chung nguồn giờ. Đồng hồ router mà chậm 6 phút thì sự thật đảo ngược — bão nổ trước, tuyến rơi là hậu quả. Dấu thời gian chỉ đáng tin bằng cái đồng hồ đẻ ra nó; khuôn log giống nhau chẳng cứu được điều đó.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: dịch vụ giữ cho mọi thiết bị chung một đồng hồ tên là gì?
+  - **Dạng:** gõ tay · **Chấp nhận:** ntp | network time protocol | giao thức ntp | giao thuc ntp
+  - **Chủ đề gợi ý (tầng 1):** ba chữ cái, có chữ T của time
+  - **Gợi ý (tầng 2):** Network Time Protocol — gọi tắt ba chữ.
+  - **Lời giải (tầng 3):** NTP. Trỏ mọi thiết bị về cùng một nguồn giờ và canh độ lệch như canh một dịch vụ sống còn — vì dòng thời gian ghép từ nhiều máy chỉ đáng tin khi các đồng hồ cùng chạy.
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao giờ lệch giữa các thiết bị có thể khiến người trực đi sửa NHẦM nguyên nhân?
+  - **Nhóm ý cần chạm:** [thứ tự, thu tu, trước sau, truoc sau, đảo ngược, dao nguoc, dòng thời gian, dong thoi gian] · [đồng hồ, dong ho, lệch, lech, trôi, troi , chậm, cham ] · [nguyên nhân, nguyen nhan, hậu quả, hau qua, nhầm đầu dây, nham dau day] · [nhiều máy, nhieu may, ghép, ghep, nhiều thiết bị, nhieu thiet bi, so với nhau, so voi nhau]
+  - **Trả lời mẫu:** Vì muốn biết nguyên nhân phải dựng được thứ tự trước-sau từ dấu thời gian của NHIỀU máy. Đồng hồ một máy chạy lệch là thứ tự đó đảo ngược: hậu quả đứng trước nguyên nhân, và người trực lao vào sửa cái đứng trước — tức là sửa hậu quả. Cùng một đống log, đồng hồ lệch kể một câu chuyện bịa.
+
+**6 · Tổng kết:**
+- Log tập trung: bản sao rời tàu từng dòng — thiết bị chết không mang theo sổ, kẻ xóa vết không với tới.
+- Mọi câu chuyện nằm cạnh nhau một chỗ — lần sự cố không phải mở ba chục máy.
+- Điều kiện để tin được dòng thời gian ghép: mọi thiết bị chung giờ NTP — đồng hồ lệch là chuyện bịa.
+- *Úp mở bài sau:* Sổ đã về một mối, giờ đã chung một nhịp. Nhưng sổ thật của một đêm trực dày hàng trăm dòng — và trong đó có những dòng CẢNH BÁO trông rất đáng sợ mà hoàn toàn vô hại. Bài sau bạn nhận nguyên một file như thế, không cắt gọt.
+
+### Bài: Mò đúng cây kim trong đống rơm thật `m20-bai-3`
+
+**1 · Khởi động (hook):** Camera tầng bốn mất kết nối lúc rạng sáng. Trong tay bạn là file log của switch trục: hơn một trăm sáu mươi dòng của một đêm — đầy những dòng WARNING trông phát sợ mà máy vẫn chạy êm, và đâu đó MỘT dòng nói đúng chuyện bạn cần. Người mới đọc từ dòng một và lạc sau hai phút. Người có nghề gõ một câu lệnh và thấy nó sau hai giây. Khác nhau ở đâu?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** File log 160 dòng, nghi có sự cố rạng sáng. Việc ĐẦU TIÊN của người có nghề?
+  - **Dạng:** trắc nghiệm · **Lọc trước theo mức nặng — Select-String ERROR — rồi mới đọc phần lọt lưới** ✓ / Đọc tuần tự từ dòng đầu tới dòng cuối để không bỏ sót manh mối nào / Xóa bớt các dòng cũ hơn ba tiếng cho file gọn lại rồi đọc phần còn lại
+  - **Chủ đề gợi ý (tầng 1):** log không phải truyện để đọc từ trang một
+  - **Vì sao:** Lọc trước, đọc sau. 160 dòng đọc tuần tự thì mắt người trôi qua dòng quan trọng lúc nào không hay; còn xóa dòng cũ là hủy chứng cứ. Thang severity của bài 1 sinh ra để làm lưỡi dao lọc: ERROR trở xuống là chuyện thật — bắt đầu từ đó.
+
+**3 · Khám phá (teach):**
+- *[m20-loc-truoc-doc]* Chiến thuật đọc log của nghề gói trong bốn chữ: LỌC TRƯỚC, ĐỌC SAU. Nhát dao thứ nhất lọc theo mức nặng (Select-String ERROR — chuyện thật nổi lên, thường chỉ còn vài dòng); nhát thứ hai lọc theo thời gian quanh lúc người dùng kêu; nhát thứ ba lọc theo tên thiết bị hoặc từ khóa của triệu chứng. Sau hai ba nhát dao, file trăm dòng còn lại dăm dòng — LÚC ĐÓ mới đọc kỹ từng chữ. Và cái bẫy lớn nhất của đống rơm: những dòng WARNING kêu rất to (quạt quay nhanh, tỉ lệ quảng bá cao) nhưng đêm nào cũng xuất hiện mà chẳng chết ai — cảnh báo giả quen mặt, được sinh ra để dụ người mới dừng nhầm chỗ.
+  - **Đào sâu hơn:** Vì sao cảnh báo giả nguy hiểm? Vì nó đúng NGHĨA ĐEN — quạt quay nhanh thật, tỉ lệ quảng bá cao thật — chỉ là những chuyện đó vô hại ở mạng của bạn, đêm nào cũng thế. Người mới thấy chữ WARNING đầu tiên là dừng lại và tuyên bố tìm ra thủ phạm; người có nghề hỏi tiếp: dòng này có XUẤT HIỆN MỖI ĐÊM không, và nó có ĂN KHỚP với triệu chứng không? Câu hỏi thứ nhất chính là baseline — nhân vật của bài cuối; câu thứ hai là kỷ luật đối chiếu triệu chứng mà phòng khám đã rèn bạn từ Module 11.
+
+**4 · Thử tay (practice, fading 2):**
+- **Đề:** Đây rồi: sw-core.log — nguyên một đêm của switch trục, hơn 160 dòng không cắt gọt. Camera tầng bốn (cắm vào cổng 12) mất kết nối lúc rạng sáng. Lôi đúng dòng sự cố ra. Cẩn thận: đêm đó có rất nhiều cảnh báo trông đáng sợ.
+  - **Dạng:** terminal PowerShell (gõ lệnh đạt mục tiêu)
+    - **Thế giới:** máy SRV-GIAM-SAT [10.20.0.15/24] — file: sw-core.log
+    - **Mục tiêu:**
+      - phải lôi ra được dòng chứa "link down on port 12"
+    - **Lệnh mẫu:** `Get-Content sw-core.log | Select-String ERROR`
+  - **Chủ đề gợi ý (tầng 1):** nhát dao thứ nhất: lọc theo mức có-chuyện-thật
+  - **Gợi ý (tầng 2):** Get-Content sw-core.log | Select-String <gì đó>. Trong 160 dòng, WARNING có hàng chục — nhưng mức NẶNG hơn nó thì hiếm lắm.
+  - **Lời giải (tầng 3):** Get-Content sw-core.log | Select-String ERROR — cả đêm chỉ lọt lưới đúng một chuyện thật: 03:12:44 ERROR link down on port 12, khớp hẳn camera tầng bốn. Mấy chục dòng WARNING quạt và quảng bá là cảnh báo giả quen mặt — lọc theo chúng là lạc cả buổi. Lọc theo port 12 cũng tới đích: nhiều đường đúng, cùng một kỷ luật lọc-trước-đọc-sau.
+- **Đề:** Trong file đêm đó, dòng WARNING fan 2 speed high xuất hiện hàng chục lần. Vì sao KHÔNG kết luận nó là thủ phạm vụ camera?
+  - **Dạng:** trắc nghiệm · **Nó xuất hiện đều đặn mọi đêm và chẳng ăn khớp gì với triệu chứng mất kết nối** ✓ / Vì mức Warning trong thang syslog nghĩa là thiết bị đã tự sửa xong lỗi đó / Vì quạt là phần cơ khí nên nhật ký của nó không được tính là log mạng
+  - **Chủ đề gợi ý (tầng 1):** hai câu hỏi vặn cảnh báo giả
+  - **Gợi ý (tầng 2):** Hai câu của người có nghề: dòng này có xuất hiện mỗi đêm không, và nó có ăn khớp triệu chứng không?
+  - **Lời giải (tầng 3):** Vì nó rớt cả hai câu vặn: xuất hiện đều đặn mọi đêm (nền quen thuộc, không phải biến cố) và quạt quay nhanh chẳng liên quan gì tới một cổng mất kết nối. Warning không có nghĩa là đã-tự-sửa, và log quạt vẫn là log — chỉ là log vô hại ở mạng này.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: bốn chữ tóm gọn chiến thuật đọc log của nghề?
+  - **Dạng:** gõ tay · **Chấp nhận:** lọc trước đọc sau | loc truoc doc sau | lọc trước, đọc sau | loc truoc, doc sau
+  - **Chủ đề gợi ý (tầng 1):** hai động từ, mỗi động từ một trạng từ
+  - **Gợi ý (tầng 2):** Việc gì làm trước khi để mắt chạm vào từng chữ? Lọc… rồi mới…
+  - **Lời giải (tầng 3):** Lọc trước, đọc sau. Nhát dao theo mức nặng, theo thời gian, theo thiết bị — file trăm dòng còn dăm dòng rồi mới đọc kỹ. Không ai có nghề đọc log như đọc truyện.
+- **Tự giải thích:** Giải thích bằng lời của bạn: cảnh báo giả là gì, và người có nghề vặn nó bằng hai câu hỏi nào?
+  - **Nhóm ý cần chạm:** [warning, cảnh báo, canh bao, trông đáng sợ, trong dang so, kêu to, keu to] · [vô hại, vo hai, không chết ai, khong chet ai, quen mặt, quen mat, nền, nen ] · [mỗi đêm, moi dem, đều đặn, deu dan, thường xuyên, thuong xuyen, baseline] · [ăn khớp, an khop, triệu chứng, trieu chung, liên quan, lien quan, khớp với, khop voi]
+  - **Trả lời mẫu:** Cảnh báo giả là dòng WARNING nói chuyện có thật nhưng vô hại ở mạng của mình — quạt quay nhanh, quảng bá cao — đêm nào cũng hiện và chẳng chết ai, sinh ra để dụ người mới dừng nhầm chỗ. Hai câu vặn: dòng này có xuất hiện đều đặn mọi đêm không (nếu có thì nó là nền, không phải biến cố), và nó có ăn khớp với triệu chứng đang điều tra không (không khớp thì không phải thủ phạm).
+
+**6 · Tổng kết:**
+- Lọc trước, đọc sau: nhát dao theo mức nặng → thời gian → thiết bị; còn dăm dòng mới đọc kỹ.
+- Cảnh báo giả nói chuyện có thật nhưng vô hại — vặn nó bằng hai câu: có đều đặn mọi đêm không, có khớp triệu chứng không.
+- Một đêm 160 dòng thường chỉ có một chuyện thật — thang severity là lưỡi dao tách nó ra trong hai giây.
+- *Úp mở bài sau:* Đọc log là nhìn về QUÁ KHỨ — chuyện đã xảy ra rồi. Còn muốn biết thiết bị đang sống hay sắp chết NGAY LÚC NÀY thì sao? Bài sau: hai kiểu canh chừng — đi hỏi thăm từng giường, hay chờ chuông đầu giường reo.
+
+### Bài: Chọn cách canh chừng cho cả tòa thiết bị `m20-bai-4`
+
+**1 · Khởi động (hook):** Bệnh viện có hai cách biết bệnh nhân trở nặng: y tá đi buồng đều đặn từng giường ghi chỉ số, và chuông đầu giường cho bệnh nhân bấm khi thấy khó thở. Bỏ cách một, bạn không có sổ theo dõi để biết ai đang YẾU DẦN; bỏ cách hai, người trở nặng giữa hai lượt đi buồng không ai hay. Mạng máy tính canh chừng thiết bị bằng đúng hai cách đó — và cũng không bỏ được cách nào. Chúng tên là gì?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử: hệ giám sát muốn biết mức CPU của switch NGAY LÚC NÀY thì làm gì?
+  - **Dạng:** trắc nghiệm · **Chủ động hỏi switch qua giao thức giám sát — như y tá tự đi buồng** ✓ / Ngồi chờ switch tự gửi mức CPU về — thiết bị luôn tự khai đều đặn / Đọc lại file log của switch, vì mọi chỉ số đều được ghi vào log
+  - **Chủ đề gợi ý (tầng 1):** muốn có chỉ số đều đặn thì ai phải chủ động
+  - **Vì sao:** Muốn chỉ số đều đặn thì hệ giám sát phải CHỦ ĐỘNG hỏi — gọi là polling. Thiết bị không tự khai CPU định kỳ (nó chỉ tự hô khi có biến — đó là trap, nhân vật thứ hai của bài), còn log ghi BIẾN CỐ chứ không ghi nhịp tim từng phút.
+
+**3 · Khám phá (teach):**
+- *[m20-snmp-polling]* Cách canh chừng thứ nhất: hệ giám sát ĐI HỎI THĂM từng thiết bị theo nhịp đều — vài phút một lượt, qua giao thức SNMP: CPU bao nhiêu, RAM còn mấy, cổng nào đang chạy, nhiệt độ thế nào. Đó là POLLING — y tá đi buồng. Cái quý của nó là sự ĐỀU ĐẶN: hỏi đều thì vẽ được đồ thị theo thời gian, và đồ thị cho thấy thứ mà không biến cố nào báo — con thiết bị đang YẾU DẦN: CPU nhích lên từng tuần, cổng trục ngày càng gần mức nghẽn. Polling nhìn thấy cái chết đến chậm.
+  - **Đào sâu hơn:** Nhược điểm của đi buồng nằm ngay trong chữ nhịp: chuyện xảy ra GIỮA hai lượt hỏi thì phải đợi lượt sau mới biết — nhịp 5 phút nghĩa là mù tối đa 5 phút. Rút nhịp xuống vài giây thì chính việc hỏi thăm lại thành gánh nặng cho mạng và thiết bị. Nhịp hỏi là một cái giá phải chọn — và phần mù giữa hai lượt chính là chỗ cần tới nhân vật thứ hai.
+- *[m20-snmp-trap]* Cách thứ hai: thiết bị TỰ HÔ LÊN ngay khi có biến — cổng vừa rơi, nguồn điện vừa hỏng, nhiệt vượt ngưỡng — gói tin báo động bay thẳng về hệ giám sát, không đợi ai hỏi. Đó là TRAP — chuông đầu giường. Cái quý của nó là TỨC THÌ: biến cố được biết trong giây đầu tiên, không phải cuối nhịp polling. Nhưng chuông chỉ reo khi có biến: nó không vẽ được đồ thị, không thấy được sự yếu dần, và thiết bị chết đột ngột tới mức không kịp hô thì chuông câm luôn. Nghề vì thế dùng CẢ HAI: polling vẽ sức khỏe dài hạn, trap bắt biến cố tức thì — y tá vẫn đi buồng đều, và chuông vẫn treo đầu giường.
+  - **Đào sâu hơn:** Trap còn một điểm yếu kín: nó là một gói tin gửi MỘT LẦN — mạng đang rối đúng lúc có biến (là lúc hay có biến nhất) thì gói báo động có thể rơi giữa đường, và không ai biết mình đã lỡ chuông. Vì thế hệ giám sát trưởng thành không bao giờ tin mình chỉ nhờ trap: polling lượt sau sẽ phát hiện thiết bị im lặng bất thường — hai cách canh chừng làm lưới an toàn cho nhau, đúng nghĩa đen.
+
+**4 · Thử tay (practice, fading 2):**
+- **Đề:** Muốn biết cổng trục của switch đang TIẾN DẦN tới mức nghẽn qua từng tuần, bạn cần dữ liệu từ đâu?
+  - **Dạng:** trắc nghiệm · **Polling — chuỗi số đo đều đặn theo thời gian mới vẽ được xu hướng** ✓ / Trap — thiết bị sẽ tự hô lên ngay khi thấy cổng của nó sắp nghẽn / Log tập trung — mọi mức tải của cổng đều được ghi thành dòng log
+  - **Chủ đề gợi ý (tầng 1):** xu hướng cần chuỗi số đo đều
+  - **Gợi ý (tầng 2):** Yếu DẦN nghĩa là phải so nhiều lần đo theo thời gian. Cách nào đo đều đặn?
+  - **Lời giải (tầng 3):** Polling. Xu hướng chỉ hiện ra từ chuỗi số đo đều — trap chỉ reo khi có biến cố rời rạc (và sắp-nghẽn chưa phải biến cố), log ghi chuyện xảy ra chứ không ghi nhịp tim từng phút. Đây chính là cái polling nhìn thấy mà trap mù.
+- **Đề:** Nguồn điện của switch vừa hỏng — hệ giám sát biết trong giây đầu tiên nhờ cơ chế nào?
+  - **Dạng:** gõ tay · **Chấp nhận:** trap | snmp trap | bẫy trap | bay trap | gửi trap | gui trap
+  - **Chủ đề gợi ý (tầng 1):** chuông đầu giường của thiết bị
+  - **Gợi ý (tầng 2):** Không phải đợi lượt hỏi thăm — thiết bị TỰ hô. Tên tiếng Anh bốn chữ cái.
+  - **Lời giải (tầng 3):** Trap — thiết bị tự gửi gói báo động về hệ giám sát ngay khi có biến, không đợi lượt polling. Tức thì là cái quý của nó; không vẽ được xu hướng là cái nó thiếu — nên nghề dùng cả hai.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: giao thức chuẩn để hệ giám sát hỏi thăm và nhận báo động từ thiết bị mạng tên là gì?
+  - **Dạng:** gõ tay · **Chấp nhận:** snmp | giao thức snmp | giao thuc snmp | simple network management protocol
+  - **Chủ đề gợi ý (tầng 1):** bốn chữ cái, chữ M của management
+  - **Gợi ý (tầng 2):** Simple Network Management Protocol — gọi tắt bốn chữ.
+  - **Lời giải (tầng 3):** SNMP — đường dây chung của cả polling (hỏi thăm định kỳ) lẫn trap (thiết bị tự hô). Hai kiểu canh chừng, một giao thức.
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao hệ giám sát tử tế phải dùng CẢ polling lẫn trap chứ không chọn một?
+  - **Nhóm ý cần chạm:** [xu hướng, xu huong, yếu dần, yeu dan, đồ thị, do thi, dài hạn, dai han, đều đặn, deu dan] · [tức thì, tuc thi, ngay lập tức, ngay lap tuc, giây đầu, giay dau, có biến, co bien] · [giữa hai lượt, giua hai luot, mù, mu , nhịp, nhip, đợi lượt sau, doi luot sau] · [lưới an toàn, luoi an toan, bù cho nhau, bu cho nhau, rơi mất, roi mat, lỡ chuông, lo chuong]
+  - **Trả lời mẫu:** Vì mỗi cách mù đúng chỗ cách kia sáng: polling đo đều nên vẽ được xu hướng yếu dần nhưng mù trong khoảng giữa hai lượt hỏi; trap báo biến cố trong giây đầu nhưng không vẽ được đồ thị và gói báo động có thể rơi mất đúng lúc mạng rối. Dùng cả hai thì polling lượt sau còn bắt được thiết bị im lặng bất thường khi trap thất lạc — hai cách làm lưới an toàn cho nhau.
+
+**6 · Tổng kết:**
+- Polling (SNMP): hỏi thăm đều đặn — vẽ được đồ thị, thấy được thiết bị yếu dần; mù giữa hai lượt hỏi.
+- Trap (SNMP): thiết bị tự hô khi có biến — tức thì; nhưng không vẽ xu hướng và chuông có thể thất lạc.
+- Nghề dùng cả hai làm lưới an toàn cho nhau: y tá vẫn đi buồng đều, chuông vẫn treo đầu giường.
+- *Úp mở bài sau:* Đồ thị polling đã vẽ xong: CPU switch đang chạy 60%. Vậy... đó là tin tốt hay tin xấu? Câu hỏi nghe ngớ ngẩn ấy chính là bài cuối — và không trả lời được nó thì mọi đồ thị trên đời đều vô nghĩa.
+
+### Bài: Vẽ đường bình thường để thấy điều bất thường `m20-bai-5`
+
+**1 · Khởi động (hook):** Đồ thị giám sát báo CPU của switch trục đang ở 60%. Người trực mới toát mồ hôi định báo động; người trực cũ liếc qua rồi thản nhiên rót cà phê. Cũng con số đó, hai phản ứng ngược nhau — và NGƯỜI CŨ đúng. Ông ấy biết một thứ mà đồ thị không vẽ: con số này so với MỌI THỨ TƯ HÀNG TUẦN là cao hay thấp?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** CPU switch đang 60%. Câu hỏi nào phải trả lời TRƯỚC khi kết luận tốt hay xấu?
+  - **Dạng:** trắc nghiệm · **Bình thường của chính máy này, vào khung giờ này, là bao nhiêu?** ✓ / Nhà sản xuất khuyến cáo CPU của dòng switch này tối đa bao nhiêu? / Các switch của công ty khác cùng ngành đang chạy trung bình bao nhiêu?
+  - **Chủ đề gợi ý (tầng 1):** so với chính nó, không so với ai khác
+  - **Vì sao:** Phải so với BÌNH THƯỜNG CỦA CHÍNH NÓ: máy này, khung giờ này, thường chạy bao nhiêu? 60% là báo động nếu mọi thứ tư nó chỉ chạy 20%, và là chuyện thường nếu tuần nào giờ này cũng thế. Khuyến cáo nhà sản xuất hay số của công ty khác không nói được điều đó.
+
+**3 · Khám phá (teach):**
+- *[m20-baseline]* BASELINE là đường bình thường của chính hệ thống bạn: CPU giờ cao điểm quanh mức nào, băng thông trưa thứ hai thường bao nhiêu, đêm có bao nhiêu dòng Warning quen mặt. Nó không nằm trong sách nào — nó được VẼ từ chính dữ liệu polling và log của bạn, tích lũy qua tuần qua tháng. Có baseline, con số 60% mới có nghĩa: nằm trong nếp cũ thì rót cà phê, nhảy vọt khỏi nếp thì báo động — kể cả khi con số tuyệt đối trông vô hại. Không có baseline, mọi đồ thị chỉ là con số trôi nổi và mọi ngưỡng báo động chỉ là đoán mò.
+  - **Đào sâu hơn:** Baseline chính là mảnh ghép còn thiếu của hai bài trước. Câu vặn cảnh-báo-giả "dòng này có xuất hiện mỗi đêm không?" là baseline của log. Đồ thị polling chỉ thành công cụ khi có nếp cũ để so. Và tinh tế nhất: bất thường không chỉ là VƯỢT LÊN — máy mọi ngày 40% nay im ắng ở 5% cũng là chuông báo, vì có khi cả tầng đã mất đường tới nó mà chưa ai kêu. Baseline cho bạn thấy sự cố từ cả hai phía, trước khi người dùng thấy.
+
+**4 · Thử tay (practice, fading 2):**
+- **Đề:** Router biên mọi trưa chạy 45% băng thông; trưa nay đồ thị chỉ 4%, không ai than phiền gì. Người trực có baseline nghĩ gì?
+  - **Dạng:** trắc nghiệm · **Đáng ngờ — im ắng khác nếp cũng là bất thường, có thể lưu lượng đang không tới được nó** ✓ / Tin tốt — tải càng thấp thiết bị càng nhàn, mạng đang khỏe hơn mọi ngày / Không có gì đáng nói, vì chỉ số vượt LÊN mới được tính là bất thường
+  - **Chủ đề gợi ý (tầng 1):** bất thường có cả hai phía của đường nếp
+  - **Gợi ý (tầng 2):** Mọi trưa 45%, nay 4% — lưu lượng của cả công ty biến đi đâu? Nó có còn ĐI QUA máy này không?
+  - **Lời giải (tầng 3):** Đáng ngờ. Im ắng lệch hẳn nếp cũ nghĩa là lưu lượng thường ngày không tới được máy này nữa — có thể một nhánh đã rơi và người dùng chưa kịp kêu. Baseline báo sự cố từ cả hai phía: vọt lên và tụt xuống bất thường đều là chuông.
+- **Đề:** Đường bình thường của chính hệ thống — thứ giúp phân biệt 60% đáng sợ với 60% vô hại — gọi là gì?
+  - **Dạng:** gõ tay · **Chấp nhận:** baseline | đường cơ sở | duong co so | đường nền | duong nen | mức nền | muc nen
+  - **Chủ đề gợi ý (tầng 1):** tiếng Anh, ghép từ base và line
+  - **Gợi ý (tầng 2):** Base + line — đường nền.
+  - **Lời giải (tầng 3):** Baseline. Vẽ từ chính dữ liệu polling và log của hệ thống mình, tích lũy qua tuần tháng — không nằm trong sách nào, và thiếu nó thì mọi ngưỡng báo động chỉ là đoán mò.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: baseline được vẽ từ đâu?
+  - **Dạng:** gõ tay · **Chấp nhận:** từ dữ liệu của chính hệ thống | tu du lieu cua chinh he thong | dữ liệu polling và log | du lieu polling va log | lịch sử của chính hệ thống | lich su cua chinh he thong | dữ liệu của chính mình | du lieu cua chinh minh | polling và log | polling va log
+  - **Chủ đề gợi ý (tầng 1):** không nằm trong sách nào
+  - **Gợi ý (tầng 2):** Không phải sách nhà sản xuất, không phải số công ty khác — từ chính cái gì bạn thu hằng ngày?
+  - **Lời giải (tầng 3):** Từ chính dữ liệu polling và log của hệ thống mình, tích lũy qua tuần tháng. Bình thường của mỗi mạng mỗi khác — nên đường nền phải tự vẽ, không chép được của ai.
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao nói "không có baseline thì mọi đồ thị giám sát đều vô nghĩa"?
+  - **Nhóm ý cần chạm:** [so với, so voi, so sánh, so sanh, đối chiếu, doi chieu] · [bình thường, binh thuong, nếp cũ, nep cu, mọi ngày, moi ngay, đường nền, duong nen] · [con số trôi nổi, con so troi noi, không có nghĩa, khong co nghia, không kết luận, khong ket luan, đoán mò, doan mo] · [cao hay thấp, cao hay thap, tốt hay xấu, tot hay xau, bất thường, bat thuong]
+  - **Trả lời mẫu:** Vì một con số chỉ có nghĩa khi có thứ để so. CPU 60% tự thân không tốt không xấu — nó chỉ thành thông tin khi đặt cạnh nếp cũ của chính máy đó vào chính khung giờ đó: nằm trong nếp là chuyện thường, bật khỏi nếp là chuông báo, kể cả khi bật xuống phía im ắng. Thiếu đường nền để so thì đồ thị chỉ là những con số trôi nổi và mọi ngưỡng báo động là đoán mò.
+
+**6 · Tổng kết:**
+- Baseline là đường bình thường của CHÍNH hệ thống bạn — vẽ từ polling và log, không chép được từ sách.
+- Con số chỉ có nghĩa khi so với nếp cũ: trong nếp thì rót cà phê, bật khỏi nếp thì báo động.
+- Bất thường có hai phía — vọt lên đáng sợ, mà im ắng khác thường cũng là chuông báo.
+- *Úp mở bài sau:* Đồ nghề đã đủ một vòng: thiết kế dải địa chỉ, dựng trunk, canh vòng lặp, định tuyến tự động, luật chặn, dịch vụ có dự phòng, quyền đúng nếp, và giờ là đôi mắt canh cả hệ thống. Module cuối cùng không dạy gì mới — nó đưa bạn một chi nhánh trống trơn và bảo: dựng đi.
+
+### Khái niệm & flashcard (8)
+
+- **Dòng nhật ký syslog** `m20-dong-syslog` — Mỗi dòng log trả lời bốn câu theo thứ tự: khi nào, máy nào, nặng cỡ nào, chuyện gì — khuôn chung của mọi thiết bị
+  - Ẩn dụ: Như một dòng trong sổ trực ban của bảo vệ: giờ nào, chốt nào, mức khẩn nào, chuyện gì — ca sau đọc một dòng là dựng lại được tình hình.
+  - Thẻ ôn: *Một dòng log syslog trả lời bốn câu hỏi nào, theo thứ tự?* → KHI NÀO (dấu thời gian) — MÁY NÀO (tên thiết bị) — NẶNG CỠ NÀO (mức severity 0-7) — CHUYỆN GÌ (nội dung). Sự cố là chuỗi dòng nối theo thời gian, nên dấu thời gian đứng đầu và các máy phải chung giờ.
+- **8 mức severity của syslog** `m20-severity` — 0 Emergency, 1 Alert, 2 Critical, 3 Error, 4 Warning, 5 Notice, 6 Informational, 7 Debug — số càng nhỏ càng nặng
+  - Ẩn dụ: Như còi báo động của tòa nhà: số hồi còi càng ít càng khẩn — một hồi dài là cháy thật, còn bảy tiếng bíp lặt vặt chỉ là thợ đang dò mạch.
+  - Thẻ ôn: *Đọc 8 mức syslog từ 0 tới 7 (có câu nhớ), và ranh giới nào đáng nhớ nhất?* → Emergency, Alert, Critical, Error, Warning, Notice, Informational, Debug — Em Ăn Cơm Em Với Người Iu Đi. Số càng nhỏ càng nặng. Ranh giới 3/4: từ Error trở xuống là CÓ CHUYỆN THẬT, Warning trở lên là đáng để mắt nhưng chưa chắc sự cố.
+- **Log tập trung** `m20-log-tap-trung` — Một máy chủ nhận bản sao nhật ký của mọi thiết bị ngay khi từng dòng được ghi — sổ có bản rời tàu, mọi câu chuyện nằm cạnh nhau
+  - Ẩn dụ: Như hộp đen máy bay đặt ở đài kiểm soát thay vì chỉ trên máy bay: tàu gặp nạn thì băng ghi âm đã kịp về nơi an toàn từng câu một.
+  - Thẻ ôn: *Ba lý do khiến log tập trung thành chuẩn của nghề?* → Một: thiết bị chết không mang theo sổ — bản sao đã rời tàu từng dòng. Hai: sự cố liên quan nhiều máy thì mọi câu chuyện nằm cạnh nhau, khỏi mở ba chục thiết bị. Ba: kẻ đột nhập xóa vết trên máy nạn nhân không với tay được tới bản sao.
+- **Giờ lệch và NTP** `m20-gio-lech` — Đồng hồ thiết bị trôi tự nhiên; các máy không chung giờ thì dòng thời gian ghép từ nhiều log là chuyện bịa — NTP giữ mọi máy chung một nhịp
+  - Ẩn dụ: Như lấy lời khai nhân chứng mà đồng hồ mỗi người một giờ: người nói 2 giờ 9, kẻ nói 2 giờ 14 — thứ tự ai thấy gì trước thành vô nghĩa nếu không chỉnh về một múi.
+  - Thẻ ôn: *Vì sao giờ lệch giữa thiết bị nguy hiểm cho việc điều tra sự cố, và thuốc là gì?* → Vì dựng nguyên nhân cần thứ tự trước-sau ghép từ log NHIỀU máy — một đồng hồ chạy lệch là hậu quả đứng trước nguyên nhân, người trực sửa nhầm đầu dây. Thuốc: NTP — trỏ mọi thiết bị về cùng nguồn giờ và canh độ lệch như dịch vụ sống còn.
+- **Lọc trước, đọc sau** `m20-loc-truoc-doc` — Chiến thuật đọc log: nhát dao theo mức nặng → thời gian → thiết bị, còn dăm dòng mới đọc kỹ; cảnh giác cảnh báo giả quen mặt
+  - Ẩn dụ: Như tìm người trong nhà ga: không nhìn từng khuôn mặt từ cổng vào — khoanh chuyến tàu, khoanh toa, rồi mới nhìn mặt từng người trong toa đó.
+  - Thẻ ôn: *Chiến thuật đọc file log trăm dòng, và hai câu vặn dành cho cảnh báo giả?* → Lọc trước đọc sau: theo mức nặng (Select-String ERROR) → theo thời gian quanh triệu chứng → theo thiết bị/từ khóa; còn dăm dòng mới đọc kỹ. Gặp WARNING đáng sợ, vặn hai câu: có xuất hiện đều đặn mọi đêm không (nền hay biến cố), có ăn khớp triệu chứng không.
+- **SNMP polling** `m20-snmp-polling` — Hệ giám sát chủ động hỏi thăm chỉ số thiết bị theo nhịp đều — vẽ được đồ thị, thấy được thiết bị yếu dần; mù giữa hai lượt hỏi
+  - Ẩn dụ: Như y tá đi buồng đo chỉ số từng giường theo giờ: sổ theo dõi đều đặn cho thấy ai đang yếu dần — nhưng chuyện xảy ra giữa hai lượt đi buồng thì phải đợi lượt sau.
+  - Thẻ ôn: *Polling là gì, quý ở đâu và mù ở đâu?* → Hệ giám sát chủ động hỏi chỉ số (CPU, RAM, cổng, nhiệt) qua SNMP theo nhịp đều. Quý: chuỗi số đo đều vẽ được đồ thị — thấy thiết bị YẾU DẦN trước khi chết. Mù: biến cố giữa hai lượt hỏi phải đợi lượt sau; rút nhịp quá ngắn thì việc hỏi thành gánh nặng.
+- **SNMP trap** `m20-snmp-trap` — Thiết bị tự gửi gói báo động về hệ giám sát ngay khi có biến — tức thì, nhưng không vẽ được xu hướng và chuông có thể thất lạc
+  - Ẩn dụ: Như chuông cấp cứu đầu giường: bệnh nhân khó thở là bấm ngay, không đợi y tá tới lượt — nhưng chuông không ghi sổ theo dõi, và người ngất quá nhanh thì không kịp bấm.
+  - Thẻ ôn: *Trap là gì, và vì sao không thể chỉ dựa vào trap?* → Thiết bị TỰ HÔ khi có biến (cổng rơi, nguồn hỏng) — hệ giám sát biết trong giây đầu, không đợi nhịp polling. Nhưng: không vẽ được xu hướng, thiết bị chết đột ngột không kịp hô, và gói báo động gửi một lần có thể rơi giữa đường. Nên polling và trap làm lưới an toàn cho nhau.
+- **Baseline** `m20-baseline` — Đường bình thường của chính hệ thống, vẽ từ dữ liệu polling và log tích lũy — con số chỉ có nghĩa khi so với nếp cũ, lệch cả hai phía đều là chuông
+  - Ẩn dụ: Như bác sĩ gia đình biết huyết áp nền của từng bệnh nhân: cùng một số đo, người này là bình thường, người kia là cấp cứu — không có sổ khám cũ thì con số nào cũng câm.
+  - Thẻ ôn: *Baseline là gì, lấy từ đâu, và bất thường có mấy phía?* → Đường bình thường của CHÍNH hệ thống mình — CPU giờ cao điểm, băng thông trưa thứ hai, số Warning quen mặt mỗi đêm — vẽ từ dữ liệu polling và log tích lũy, không chép được từ sách. Bất thường có HAI phía: vọt lên khỏi nếp, và im ắng khác nếp (lưu lượng không tới được máy) — cả hai đều là chuông.
+
+### Bài kiểm tra module (pool 15 câu, mỗi lượt rút 8, cần ≥ 85%)
+
+- **Đề:** Trong thang severity của syslog, chiều nào là ĐÚNG?
+  - **Dạng:** trắc nghiệm · **Số càng nhỏ càng nghiêm trọng — 0 là hệ thống sụp, 7 là dòng gỡ lỗi** ✓ / Số càng lớn càng nghiêm trọng — 7 là hệ thống sụp, 0 là dòng gỡ lỗi / Số chẵn dành cho lỗi thật còn số lẻ dành cho các loại cảnh báo nhẹ
+  - **Chủ đề gợi ý (tầng 1):** chiều thang hay bị đoán ngược
+  - **Vì sao:** Số càng nhỏ càng nặng: 0 Emergency là sụp, 7 Debug là gỡ lỗi. Thang chạy ngược trực giác nên nó là câu đầu tiên phải thuộc — Em Ăn Cơm Em Với Người Iu Đi.
+- **Đề:** Mức ERROR trong thang syslog mang số mấy?
+  - **Dạng:** gõ tay · **Chấp nhận:** 3 | số 3 | so 3 | mức 3 | muc 3
+  - **Chủ đề gợi ý (tầng 1):** đếm theo câu nhớ từ số 0
+  - **Vì sao:** Số 3 — Em (0) Ăn (1) Cơm (2) Em (3): Emergency, Alert, Critical, Error. Ranh giới có-chuyện-thật của cả thang nằm ngay sau nó.
+- **Đề:** Xếp tám mức syslog từ 0 (nặng nhất) tới 7 (nhẹ nhất):
+  - **Dạng:** xếp thứ tự (thứ tự đúng):
+    1. Emergency
+    2. Alert
+    3. Critical
+    4. Error
+    5. Warning
+    6. Notice
+    7. Informational
+    8. Debug
+  - **Chủ đề gợi ý (tầng 1):** Em Ăn Cơm Em Với Người Iu Đi
+  - **Vì sao:** Emergency, Alert, Critical, Error, Warning, Notice, Informational, Debug — câu nhớ Em Ăn Cơm Em Với Người Iu Đi, số càng nhỏ càng nặng. Danh sách rời rạc này do thẻ ôn SM-2 gánh — thi xong nó vẫn quay lại thăm bạn.
+- **Đề:** Ca đêm bận, người trực đặt ngưỡng chỉ báo các dòng từ mức 3 trở xuống. Họ đang đánh đổi điều gì?
+  - **Dạng:** trắc nghiệm · **Bỏ qua Warning trở lên về phía nhẹ để dòng lỗi thật không bị nhấn chìm** ✓ / Bỏ qua ba mức nặng nhất của thang để đêm trực được yên tĩnh trọn vẹn / Không đánh đổi gì, vì ngưỡng lọc chỉ thay đổi màu sắc khi hiển thị
+  - **Chủ đề gợi ý (tầng 1):** giữ 0-3 thì phần nào bị ẩn
+  - **Vì sao:** Giữ 0-3 (Emergency tới Error) nghĩa là ẩn 4-7 (Warning tới Debug): chấp nhận không thấy cảnh báo nhẹ để một dòng Error biết nói không chìm trong trận lụt Warning vô hại — đánh đổi có chủ đích của ca đêm.
+- **Đề:** Lý do nào KHÔNG phải là lý do gom log về máy chủ tập trung?
+  - **Dạng:** trắc nghiệm · **Log tập trung giúp thiết bị ghi nhật ký nhanh hơn hẳn ghi vào sổ tại chỗ** ✓ / Thiết bị chết thì bản sao nhật ký đã kịp rời tàu, không mất theo máy / Sự cố liên quan nhiều thiết bị thì mọi câu chuyện nằm cạnh nhau một chỗ
+  - **Chủ đề gợi ý (tầng 1):** ba lý do thật: sổ rời tàu, cạnh nhau, kẻ xóa vết
+  - **Vì sao:** Tốc độ ghi không phải lý do — gửi bản sao qua mạng chẳng làm việc ghi nhanh lên. Ba lý do thật: sổ có bản rời tàu trước khi thiết bị chết, mọi câu chuyện nằm cạnh nhau khi lần sự cố, và kẻ đột nhập xóa vết tại chỗ không với tới bản sao.
+- **Đề:** Dịch vụ nào giữ đồng hồ của mọi thiết bị chạy chung một nhịp — điều kiện để dòng thời gian ghép từ nhiều log đáng tin?
+  - **Dạng:** gõ tay · **Chấp nhận:** ntp | network time protocol | giao thức ntp | giao thuc ntp
+  - **Chủ đề gợi ý (tầng 1):** ba chữ cái, T là time
+  - **Vì sao:** NTP — Network Time Protocol. Đồng hồ thiết bị trôi tự nhiên; không chung nguồn giờ thì thứ tự trước-sau ghép từ nhiều máy là chuyện bịa, và người trực đi sửa hậu quả thay vì nguyên nhân.
+- **Đề:** Log router ghi tuyến rơi 02:09, log switch ghi bão quảng bá 02:14 — nhưng đồng hồ router chạy chậm 6 phút. Sự thật là gì?
+  - **Dạng:** trắc nghiệm · **Bão quảng bá nổ ra trước — tuyến rơi thật ra xảy ra lúc 02:15, là hậu quả** ✓ / Tuyến vẫn rơi trước như log ghi, vì giờ lệch không đổi được thứ tự dòng / Không thể có chuyện đó, vì hai thiết bị trong một mạng luôn chung giờ
+  - **Chủ đề gợi ý (tầng 1):** cộng 6 phút vào mốc giờ của router
+  - **Vì sao:** Đồng hồ router chậm 6 phút nghĩa là 02:09 của nó thật ra là 02:15 — tức bão (02:14) nổ TRƯỚC, tuyến rơi là hậu quả. Một cái đồng hồ lười đảo ngược cả câu chuyện điều tra; và thiết bị không tự chung giờ — NTP phải được cấu hình.
+- **Đề:** Nhận file log 180 dòng của một đêm để tìm một sự cố rạng sáng. Bước mở màn đúng nghề?
+  - **Dạng:** trắc nghiệm · **Lọc theo mức nặng trước — Select-String ERROR — rồi mới đọc phần còn lại** ✓ / Đọc tuần tự từ dòng một để chắc chắn không bỏ sót bất kỳ manh mối nào / Kéo thẳng xuống các dòng cuối file vì sự cố mới nhất luôn nằm ở đó
+  - **Chủ đề gợi ý (tầng 1):** lọc trước, đọc sau
+  - **Vì sao:** Lọc trước đọc sau: nhát dao theo mức nặng đưa file 180 dòng về vài dòng chuyện thật. Đọc tuần tự thì mắt trôi qua dòng quan trọng; nhảy xuống cuối file thì sự cố rạng sáng đã bị hàng giờ log sau đó đè lên.
+- **Đề:** Dòng WARNING broadcast ratio high xuất hiện đều đặn mỗi đêm suốt nửa năm, mạng vẫn êm. Đêm nay điều tra sự cố, bạn gặp lại nó. Xử thế nào?
+  - **Dạng:** trắc nghiệm · **Ghi nhận là nền quen thuộc rồi lọc tiếp — trừ khi nó đột nhiên khác nếp mọi đêm** ✓ / Kết luận thủ phạm ngay, vì tỉ lệ quảng bá cao luôn là dấu hiệu bão quảng bá / Xóa các dòng đó khỏi file log để những lần điều tra sau đỡ bị nhiễu mắt
+  - **Chủ đề gợi ý (tầng 1):** hai câu vặn cảnh báo giả
+  - **Vì sao:** Xuất hiện đều đặn nửa năm mà mạng êm — nó là NỀN, không phải biến cố; chỉ đáng ngờ khi đột nhiên khác nếp (chính là tư duy baseline). Kết luận vội là dừng nhầm chỗ kinh điển; còn xóa dòng log là hủy chứng cứ.
+- **Đề:** Polling và trap khác nhau ở điểm cốt lõi nào?
+  - **Dạng:** trắc nghiệm · **Polling: giám sát chủ động hỏi theo nhịp; trap: thiết bị tự hô khi có biến** ✓ / Polling dùng cho switch còn trap chỉ dùng được cho router và máy chủ / Polling gửi cảnh báo tức thì còn trap gom số liệu để vẽ đồ thị dài hạn
+  - **Chủ đề gợi ý (tầng 1):** y tá đi buồng và chuông đầu giường
+  - **Vì sao:** Polling: giám sát chủ động hỏi đều (vẽ được đồ thị, thấy yếu dần). Trap: thiết bị tự hô khi có biến (tức thì). Phương án ba nói ngược vai; còn cả hai đều chạy trên SNMP cho mọi loại thiết bị.
+- **Đề:** Cơ chế nào cho hệ giám sát biết nguồn điện switch vừa hỏng NGAY trong giây đầu tiên, không đợi lượt hỏi thăm?
+  - **Dạng:** gõ tay · **Chấp nhận:** trap | snmp trap | gửi trap | gui trap
+  - **Chủ đề gợi ý (tầng 1):** chuông đầu giường
+  - **Vì sao:** Trap — thiết bị tự gửi gói báo động ngay khi có biến. Tức thì là cái quý; cái thiếu là không vẽ được xu hướng và gói có thể thất lạc — nên polling vẫn đi buồng đều làm lưới an toàn.
+- **Đề:** CPU switch trục đang 60%. Vì sao người trực có kinh nghiệm CHƯA kết luận gì?
+  - **Dạng:** trắc nghiệm · **Vì 60% chỉ có nghĩa khi so với baseline — nếp cũ của chính máy này giờ này** ✓ / Vì đồng hồ đo CPU của thiết bị mạng luôn sai lệch quá lớn để tin được / Vì CPU dưới 90% theo chuẩn chung của ngành là an toàn tuyệt đối
+  - **Chủ đề gợi ý (tầng 1):** con số cần thứ để so
+  - **Vì sao:** 60% là báo động nếu mọi thứ tư máy này chỉ chạy 20%, là chuyện thường nếu tuần nào cũng thế — con số chỉ thành thông tin khi so với baseline của chính nó. Không có chuẩn chung nào của ngành thay được nếp cũ của từng hệ thống.
+- **Đề:** Router biên mọi trưa chạy 45% băng thông, trưa nay im ắng ở 4%. Người trực có baseline làm gì?
+  - **Dạng:** trắc nghiệm · **Đi kiểm tra ngay — im ắng bật khỏi nếp cũng là chuông báo như vọt lên** ✓ / Ghi nhận tin vui vì thiết bị đang được nghỉ ngơi nhàn hơn mọi ngày / Chờ tới khi có người dùng gọi lên than phiền rồi mới bắt đầu xem xét
+  - **Chủ đề gợi ý (tầng 1):** bất thường có hai phía
+  - **Vì sao:** Bất thường có hai phía: 4% giữa trưa nghĩa là lưu lượng thường ngày không tới được máy này — có thể một nhánh đã rơi mà người dùng chưa kịp kêu. Thấy sự cố TRƯỚC người dùng chính là toàn bộ lý do của môn giám sát.
+- **Đề:** Sáng thứ hai, người dùng tầng ba lại kêu không có mạng. Trong tay bạn là srv-dhcp.log — nhật ký một buổi sáng của máy chủ DHCP, hơn 150 dòng. Lôi đúng dòng sự cố ra bằng một dòng pipeline; kiến thức Module 18 sẽ nói cho bạn biết nó nghĩa là gì.
+  - **Dạng:** terminal PowerShell (gõ lệnh đạt mục tiêu)
+    - **Thế giới:** máy SRV-GIAM-SAT [10.20.0.15/24] — file: srv-dhcp.log
+    - **Mục tiêu:**
+      - phải lôi ra được dòng chứa "no free leases in scope 10.20.3.0"
+    - **Lệnh mẫu:** `Get-Content srv-dhcp.log | Select-String ERROR`
+  - **Chủ đề gợi ý (tầng 1):** lọc theo mức có-chuyện-thật của thang syslog
+  - **Vì sao:** Get-Content srv-dhcp.log | Select-String ERROR lôi ra dòng no free leases in scope 10.20.3.0 — scope tầng ba đã cạn, đúng ca sáng-thứ-hai của Module 18. Đống WARNING utilization phía trước chính là điềm báo bị bỏ qua: 85%, rồi 91%, rồi cạn. Ai theo dõi tỉ lệ cấp phát đã thấy nó từ tuần trước.
+- **Đề:** Camera tầng bốn mất hình lúc rạng sáng; sw-core.log ghi nguyên đêm của switch trục — hơn 160 dòng, thừa mứa cảnh báo giả. Tìm đúng dòng sự cố. Đây là đống rơm bạn từng gặp trong bài học — nhưng lần này không còn gợi ý cú pháp nào nữa.
+  - **Dạng:** terminal PowerShell (gõ lệnh đạt mục tiêu)
+    - **Thế giới:** máy SRV-GIAM-SAT [10.20.0.15/24] — file: sw-core.log
+    - **Mục tiêu:**
+      - phải lôi ra được dòng chứa "link down on port 12"
+    - **Lệnh mẫu:** `Get-Content sw-core.log | Select-String ERROR`
+  - **Chủ đề gợi ý (tầng 1):** lọc trước, đọc sau
+  - **Vì sao:** Get-Content sw-core.log | Select-String ERROR — một nhát dao theo mức nặng và dòng 03:12:44 ERROR link down on port 12 nổi lên giữa 160 dòng. Mấy chục WARNING quạt và quảng bá là nền quen mặt của mọi đêm; camera tầng bốn cắm ở cổng 12 — thời gian và vị trí khớp trọn.
+
+## Capstone — Dựng mạng chi nhánh `module-21`
+
+Phần E · 4 chặng · 4 bài · 2 khái niệm
+
+**Chặng:** Chặng 1: Cắt đất trên giấy (m21-bai-1) → Chặng 2: Nối dây, dạy đường (m21-bai-2) → Chặng 3: Luật chặn đúng người (m21-bai-3) → Tổng duyệt trước bàn giao (m21-bai-4)
+
+### Bài: Cắt dải địa chỉ cho chi nhánh mới `m21-bai-1`
+
+**1 · Khởi động (hook):** Sáng nay công ty ký hợp đồng thuê tầng bảy một tòa nhà ở thành phố khác. Trên bàn bạn: một thùng thiết bị còn nguyên hộp, một dải địa chỉ được cấp — 10.40.0.0/24 — và một tờ yêu cầu ba dòng: phòng kinh doanh 60 máy, phòng kỹ thuật 25 máy, phòng khách 10 máy, cộng một đường nối về trụ sở. Không ai đưa thêm chỉ dẫn nào. Người có nghề bắt đầu từ đâu — và vì sao KHÔNG phải từ cái thùng thiết bị?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử: dựng một mạng mới từ con số không, việc ĐẦU TIÊN của người có nghề là gì?
+  - **Dạng:** trắc nghiệm · **Đặt địa chỉ trên giấy — cắt dải cho từng phòng trước khi chạm vào thiết bị** ✓ / Nối dây toàn bộ thiết bị trước để nhìn thấy mạng chạy rồi tính tiếp / Cấu hình từng thiết bị ngay khi mở hộp cho khỏi quên các bước lệnh
+  - **Chủ đề gợi ý (tầng 1):** thứ rẻ nhất để sửa là thứ nằm trên giấy
+  - **Vì sao:** Đặt địa chỉ trên giấy trước. Bản cắt dải sai mà phát hiện khi còn trên giấy thì sửa mất một phút; phát hiện sau khi đã cấu hình ba chục thiết bị thì đập đi làm lại cả buổi. Quy trình của nghề: đặt địa chỉ → nối dây → cấu hình → kiểm chứng — và bước một không cần cắm điện.
+
+**3 · Khám phá (teach):**
+- *[m21-quy-trinh]* Mọi mạng trong khóa này bạn đều nhận SẴN — capstone là lần đầu bạn dựng từ số không, nên nó cần một quy trình: ĐẶT ĐỊA CHỈ (cắt dải trên giấy — VLSM của Module 13), NỐI DÂY (sơ đồ vật lý), CẤU HÌNH (trunk, định tuyến, luật — bằng CLI), KIỂM CHỨNG (mỗi bước xong phải có bằng chứng bằng lệnh). Thứ tự này không phải nghi thức: mỗi bước đứng trên kết quả của bước trước, và lỗi ở bước nào thì rẻ nhất là bắt được ngay tại bước đó. Cả module này là một công trường: ba chặng nộp riêng, chặng sau xây trên chặng trước — nản ở chặng nào cũng không mất công chặng đã qua.
+  - **Đào sâu hơn:** Vì sao địa chỉ đứng trước cả nối dây? Vì bản cắt dải là thứ MỌI bước sau tra cứu: cổng router lấy địa chỉ nào, câu network của OSPF khai dải nào, luật ACL chặn subnet nào — tất cả chép từ tờ giấy đó. Tờ giấy sai thì mọi thứ xây trên nó sai theo, mà tờ giấy thì sửa bằng cục tẩy. Nghề gọi đây là nguyên tắc lỗi-rẻ: đẩy mọi quyết định dễ sai về nơi sửa nó rẻ nhất.
+
+**4 · Thử tay (practice, fading 0):**
+- **Ví dụ giải sẵn:** Cắt mẫu dải 10.40.0.0/24 cho tờ yêu cầu, từng bước như Module 13 đã dạy. Bước 1 — xếp phòng theo cỡ GIẢM DẦN: kinh doanh 60, kỹ thuật 25, khách 10, liên site 2. Bước 2 — chọn cỡ khối nhỏ nhất đủ dùng cho từng phòng: 60 máy cần /26 (62 chỗ), 25 máy cần /27 (30 chỗ), 10 máy cần /28 (14 chỗ), liên site 2 địa chỉ cần /30. Bước 3 — cắt lớn trước từ đầu dải: kinh doanh lấy 10.40.0.0/26 (hết .63), kỹ thuật lấy 10.40.0.64/27 (hết .95), khách lấy 10.40.0.96/28 (hết .111), liên site lấy 10.40.0.112/30. Bước 4 — kiểm lại ba tiêu chí: không chồng lấn, đủ chỗ từng phòng, không phí đất. Bước 5 — ghi luôn địa chỉ cổng router của từng phòng (theo lệ: địa chỉ đầu dải): 10.40.0.1, 10.40.0.65, 10.40.0.97 — tờ giấy này là kim chỉ nam của cả ba chặng.
+- **Đề:** Theo bản cắt trong ví dụ: phòng kỹ thuật 25 máy nhận dải nào? (viết dạng địa-chỉ/prefix)
+  - **Dạng:** gõ tay · **Chấp nhận:** 10.40.0.64/27 | 10.40.0.64 /27 | 10.40.0.64/ 27
+  - **Chủ đề gợi ý (tầng 1):** khối /27 nằm ngay sau khối /26 của kinh doanh
+  - **Gợi ý (tầng 2):** Kinh doanh chiếm 10.40.0.0/26, tức tới hết .63. Khối kế tiếp bắt đầu ở đâu, và 25 máy cần cỡ nào?
+  - **Lời giải (tầng 3):** 10.40.0.64/27 — bắt đầu ngay sau khối /26 (hết .63), cỡ /27 cho 30 chỗ là cỡ nhỏ nhất đủ 25 máy. Cắt lớn trước, khối sau nối đuôi khối trước là không bao giờ chồng lấn.
+- **Đề:** Đường liên site về trụ sở chỉ cần hai địa chỉ. Dải nhỏ nhất đủ dùng, cắt tiếp theo bản trong ví dụ, là gì?
+  - **Dạng:** gõ tay · **Chấp nhận:** 10.40.0.112/30 | 10.40.0.112 /30 | 10.40.0.112/ 30
+  - **Chủ đề gợi ý (tầng 1):** khối /30 có đúng 2 địa chỉ dùng được
+  - **Gợi ý (tầng 2):** Khách chiếm 10.40.0.96/28 (hết .111). Hai địa chỉ dùng được là cỡ /30 — bắt đầu từ đâu?
+  - **Lời giải (tầng 3):** 10.40.0.112/30 — hai địa chỉ dùng được (.113 và .114), vừa khít cho hai đầu WAN. Cắt /24 to hơn cho một sợi dây nối hai router là kiểu phí đất mà drill VLSM đã dạy bạn tránh.
+- **Đề:** CHẶNG 1 — nộp riêng: đặt bản cắt lên sơ đồ thật. Router chi nhánh đã mang sẵn địa chỉ cổng theo tờ giấy (.1 /26, .65 /27, .97 /28). Ba máy đại diện ba phòng còn TRẮNG TRƠN: cấp địa chỉ và gateway cho từng máy đúng dải phòng nó, sao cho ba phòng gọi được nhau qua router.
+  - **Dạng:** phòng lab (lắp/sửa sơ đồ mạng)
+    - **Sơ đồ đề bài:** PC-KinhDoanh [chưa đặt IP] · PC-KyThuat [chưa đặt IP] · PC-PhongKhach [chưa đặt IP] · SW-KinhDoanh [p1:VLAN 1, p2:VLAN 1] · SW-KyThuat [p1:VLAN 1, p2:VLAN 1] · SW-PhongKhach [p1:VLAN 1, p2:VLAN 1] · R-ChiNhanh [g0:10.40.0.1/26, g1:10.40.0.65/27, g2:10.40.0.97/28] — dây: PC-KinhDoanh·eth0 — SW-KinhDoanh·p1 | SW-KinhDoanh·p2 — R-ChiNhanh·g0 | PC-KyThuat·eth0 — SW-KyThuat·p1 | SW-KyThuat·p2 — R-ChiNhanh·g1 | PC-PhongKhach·eth0 — SW-PhongKhach·p1 | SW-PhongKhach·p2 — R-ChiNhanh·g2
+    - **Mục tiêu:**
+      - pc-kd PHẢI gọi được pc-kt
+      - pc-kt PHẢI gọi được pc-kh
+      - pc-kd PHẢI gọi được pc-kh
+    - **Được phép:** đặt địa chỉ
+    - **Lời giải mẫu:** PC-KinhDoanh [10.40.0.2/26, gw 10.40.0.1] · PC-KyThuat [10.40.0.66/27, gw 10.40.0.65] · PC-PhongKhach [10.40.0.98/28, gw 10.40.0.97] · SW-KinhDoanh [p1:VLAN 1, p2:VLAN 1] · SW-KyThuat [p1:VLAN 1, p2:VLAN 1] · SW-PhongKhach [p1:VLAN 1, p2:VLAN 1] · R-ChiNhanh [g0:10.40.0.1/26, g1:10.40.0.65/27, g2:10.40.0.97/28] — dây: PC-KinhDoanh·eth0 — SW-KinhDoanh·p1 | SW-KinhDoanh·p2 — R-ChiNhanh·g0 | PC-KyThuat·eth0 — SW-KyThuat·p1 | SW-KyThuat·p2 — R-ChiNhanh·g1 | PC-PhongKhach·eth0 — SW-PhongKhach·p1 | SW-PhongKhach·p2 — R-ChiNhanh·g2
+  - **Chủ đề gợi ý (tầng 1):** mỗi máy cùng dải với cổng router phòng nó, gateway là chính cổng đó
+  - **Gợi ý (tầng 2):** Kinh doanh: địa chỉ trong 10.40.0.2-.62 với prefix 26, gateway 10.40.0.1. Làm tương tự cho kỹ thuật (/27, gateway .65) và khách (/28, gateway .97) — nhớ prefix của TỪNG phòng khác nhau.
+  - **Lời giải (tầng 3):** Ví dụ đạt: PC kinh doanh 10.40.0.2/26 gateway 10.40.0.1; PC kỹ thuật 10.40.0.66/27 gateway 10.40.0.65; PC khách 10.40.0.98/28 gateway 10.40.0.97. Địa chỉ nào cùng dải với cổng router phòng đó đều được — sai prefix hoặc sai gateway là ping xuyên phòng đứt ngay, và nhật ký chặng sẽ chỉ chỗ đứt.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: bốn bước của quy trình dựng mạng, theo đúng thứ tự? (viết cách nhau bằng dấu phẩy hoặc mũi tên)
+  - **Dạng:** gõ tay · **Chấp nhận:** đặt địa chỉ, nối dây, cấu hình, kiểm chứng | dat dia chi, noi day, cau hinh, kiem chung | đặt địa chỉ nối dây cấu hình kiểm chứng | dat dia chi noi day cau hinh kiem chung | địa chỉ, nối dây, cấu hình, kiểm chứng | dia chi, noi day, cau hinh, kiem chung
+  - **Chủ đề gợi ý (tầng 1):** bắt đầu từ tờ giấy, kết thúc bằng bằng chứng
+  - **Gợi ý (tầng 2):** Giấy trước, dây sau, lệnh tiếp, và không bao giờ tin mà không kiểm.
+  - **Lời giải (tầng 3):** Đặt địa chỉ → nối dây → cấu hình → kiểm chứng. Mỗi bước đứng trên bước trước, và lỗi bắt sớm ở đâu thì rẻ ở đó — tờ giấy sửa bằng tẩy, mạng chạy rồi sửa bằng cả buổi.
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao VLSM phải cắt khối LỚN trước, khối nhỏ sau?
+  - **Nhóm ý cần chạm:** [lớn trước, lon truoc, giảm dần, giam dan, to trước, to truoc] · [chồng lấn, chong lan, đè lên, de len, trùng, trung ] · [căn khối, can khoi, ranh giới, ranh gioi, biên, bien , lỗ hổng, lo hong, kẽ hở, ke ho] · [nối đuôi, noi duoi, liền mạch, lien mach, khít, khit]
+  - **Trả lời mẫu:** Vì khối to chỉ đứng được ở những ranh giới thưa — cắt khối nhỏ trước là lấp mất các ranh giới đó, đến lượt khối to không còn chỗ đặt vừa và sinh kẽ hở phí đất. Cắt to trước, nhỏ sau thì khối sau cứ nối đuôi khối trước: không chồng lấn, không kẽ hở, và tờ giấy tự khít.
+
+**6 · Tổng kết:**
+- Quy trình bốn bước: đặt địa chỉ → nối dây → cấu hình → kiểm chứng — lỗi bắt sớm là lỗi rẻ.
+- Bản cắt VLSM là kim chỉ nam mọi bước sau: địa chỉ cổng, câu network OSPF, luật ACL đều chép từ nó.
+- Chặng 1 nộp xong: ba phòng ba dải đúng cỡ, gọi nhau thông qua router — nền của hai chặng còn lại.
+- *Úp mở bài sau:* Địa chỉ đã nằm đúng chỗ. Nhưng chi nhánh vẫn là ốc đảo: hai switch chưa chở nổi hai xóm qua một sợi dây, và router chi nhánh chưa từng chào hỏi router trụ sở. Chặng 2: nối dây và để hai bên tự dạy nhau đường.
+
+### Bài: Nối chi nhánh về trụ sở bằng trunk và OSPF `m21-bai-2`
+
+**1 · Khởi động (hook):** Đội thi công vừa rút đi: hai switch chi nhánh đã nối nhau một sợi dây, đường WAN về trụ sở đã sáng đèn. Nhưng máy kinh doanh gọi máy chủ kế toán ở trụ sở thì lặng thinh — khung tin của xóm 10 chết ngay trên sợi dây giữa hai switch, còn router chi nhánh thì chưa hề biết trụ sở có những mạng nào. Hai việc, hai tầng, một chặng: bạn còn nhớ dụng cụ của Module 14 và 16 chứ?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Một sợi dây giữa hai switch phải chở khung tin của CẢ VLAN 10 lẫn VLAN 20. Hai đầu dây đó phải là gì?
+  - **Dạng:** trắc nghiệm · **Cổng trunk cả hai đầu, allowed list cho cả hai VLAN đi qua** ✓ / Cổng access VLAN 10 một đầu và cổng access VLAN 20 đầu kia / Không cần gì đặc biệt — switch tự nhận ra khung của nhiều VLAN
+  - **Chủ đề gợi ý (tầng 1):** một dây chở nhiều xóm là bài mở màn Phần D
+  - **Vì sao:** Trunk cả hai đầu + allowed list đủ hai VLAN — bài học mở màn Module 14. Access hai đầu lệch VLAN là khung lạc xóm trong im lặng; còn switch không tự đàm phán gì trong mô hình này (không DTP — đơn giản hóa đã khai).
+
+**3 · Khám phá (teach):**
+- *[m21-kiem-chung]* Chặng này làm hai việc ở hai tầng — trunk ở tầng 2, OSPF ở tầng 3 — và luật vàng của công trường là KIỂM CHỨNG TỪNG TẦNG XONG MỚI LEO TIẾP. Dựng trunk xong: show interfaces trunk phải thấy đúng vai, đúng allowed list. Bật OSPF xong: show ip ospf neighbor phải thấy chữ FULL — hai router đã đồng bộ trọn bản đồ. Rồi mới tới bằng chứng cuối: ping xuyên site. Người mới hay gõ một mạch rồi ping phát ăn ngay; đến lúc ping câm thì không biết nó chết ở tầng nào. Người có nghề leo thang từng bậc, mỗi bậc một tấm bằng chứng — vì thế lúc có chuyện, họ biết ngay bậc nào gãy.
+  - **Đào sâu hơn:** Chuỗi kiểm chứng của chặng này đọc như một bài thơ ba câu: show interfaces trunk (tầng 2 sống chưa) → show ip ospf neighbor ra Full (tầng 3 quen nhau chưa) → ping xuyên site (đường đi trọn vẹn chưa). Ba lệnh, ba tầng, đúng thứ tự thấp lên cao — chính là cái thang khám bệnh của phòng khám Module 11, giờ chạy chiều xuôi để XÂY thay vì chiều ngược để SỬA.
+
+**4 · Thử tay (practice, fading 1):**
+- **Đề:** CHẶNG 2 — nộp riêng. Hiện trạng: sợi dây giữa SW-1 và SW-2 còn là access mặc định nên VLAN 10 (kinh doanh) và VLAN 20 (khách) không qua nổi; R-ChiNhanh chưa bật OSPF nên chưa biết đường về trụ sở (trụ sở ĐÃ bật sẵn). Việc của bạn: dựng trunk hai đầu dây liên switch (cổng p3 mỗi bên, cho đúng VLAN 10 và 20 đi), bật OSPF trên R-ChiNhanh khai đủ ba mạng của nó, rồi KIỂM CHỨNG láng giềng ra Full trước khi nộp.
+  - **Dạng:** console thiết bị (gõ lệnh IOS đạt mục tiêu)
+    - **Sơ đồ đề bài:** PC-KinhDoanh [10.40.0.2/26, gw 10.40.0.1] · PC-PhongKhach [10.40.0.98/28, gw 10.40.0.97] · SRV-KeToan [10.20.0.9/24, gw 10.20.0.1] · SRV-Web-Internet [203.0.113.80/24, gw 203.0.113.1] · SW-1 [p1:VLAN 10, p2:VLAN 20, p3:VLAN 1] · SW-2 [p1:VLAN 10, p2:VLAN 20, p3:VLAN 1] · R-ChiNhanh [g0:10.40.0.1/26, g1:10.40.0.97/28, g2:10.40.0.113/30] · R-TruSo [g0:10.40.0.114/30, g1:10.20.0.1/24, g2:203.0.113.1/24] · SW-TruSo [p1:VLAN 1, p2:VLAN 1] · SW-Web [p1:VLAN 1, p2:VLAN 1] — dây: PC-KinhDoanh·eth0 — SW-1·p1 | PC-PhongKhach·eth0 — SW-1·p2 | SW-1·p3 — SW-2·p3 | SW-2·p1 — R-ChiNhanh·g0 | SW-2·p2 — R-ChiNhanh·g1 | R-ChiNhanh·g2 — R-TruSo·g0 | R-TruSo·g1 — SW-TruSo·p1 | SW-TruSo·p2 — SRV-KeToan·eth0 | R-TruSo·g2 — SW-Web·p1 | SW-Web·p2 — SRV-Web-Internet·eth0
+    - **Console cắm ở:** SW-1
+    - **Mục tiêu:**
+      - cổng p3 của SW-1 phải là trunk
+      - cổng p3 của SW-2 phải là trunk
+      - trunk ở cổng p3 của SW-1 phải cho VLAN 10, 20 đi qua
+      - trunk ở cổng p3 của SW-2 phải cho VLAN 10, 20 đi qua
+      - phải xem "show ip ospf neighbor" trên R-ChiNhanh
+      - pc-kd PHẢI gọi được srv-kt
+      - pc-kh PHẢI gọi được srv-web
+    - **Lệnh mẫu trên SW-1:** `enable` rồi `configure terminal` rồi `interface p3` rồi `switchport mode trunk` rồi `switchport trunk allowed vlan 10,20` rồi `end`
+    - **Lệnh mẫu trên SW-2:** `enable` rồi `configure terminal` rồi `interface p3` rồi `switchport mode trunk` rồi `switchport trunk allowed vlan 10,20` rồi `end`
+    - **Lệnh mẫu trên R-ChiNhanh:** `enable` rồi `configure terminal` rồi `router ospf 1` rồi `network 10.40.0.0 0.0.0.63 area 0` rồi `network 10.40.0.96 0.0.0.15 area 0` rồi `network 10.40.0.112 0.0.0.3 area 0` rồi `end` rồi `show ip ospf neighbor`
+  - **Chủ đề gợi ý (tầng 1):** trunk hai đầu p3, rồi router ospf 1 với ba câu network wildcard
+  - **Gợi ý (tầng 2):** Ba khối việc: trên MỖI switch vào interface p3 gõ switchport mode trunk + switchport trunk allowed vlan 10,20; trên R-ChiNhanh vào router ospf 1 rồi khai ba câu network với wildcard ĐẢO của từng dải (/26 → 0.0.0.63, /28 → 0.0.0.15, /30 → 0.0.0.3); cuối cùng show ip ospf neighbor phải ra Full.
+  - **Lời giải (tầng 3):** SW-1 và SW-2: interface p3 → switchport mode trunk → switchport trunk allowed vlan 10,20. R-ChiNhanh: router ospf 1 → network 10.40.0.0 0.0.0.63 area 0 → network 10.40.0.96 0.0.0.15 area 0 → network 10.40.0.112 0.0.0.3 area 0 → end → show ip ospf neighbor thấy FULL. Trunk sống thì hai xóm qua được dây liên switch; OSPF lên thì hai router tự kể đường cho nhau — ping xuyên site tự thông, không một tuyến tĩnh nào phải gõ.
+- **Đề:** show ip ospf neighbor trên R-ChiNhanh ra Full. Cột mốc đó chứng minh điều gì?
+  - **Dạng:** trắc nghiệm · **Hai router đã đồng bộ trọn bản đồ mạng — bảng định tuyến hai bên tự đầy đủ** ✓ / Đường WAN giữa hai site đạt tốc độ tối đa theo hợp đồng với nhà mạng / Mọi máy trạm hai site đã ping được nhau, không cần kiểm chứng thêm
+  - **Chủ đề gợi ý (tầng 1):** phòng Full trong tòa nhà làm quen của M16
+  - **Gợi ý (tầng 2):** Full là phòng cuối của tòa nhà bốn tầng — hai bản đồ chồng khít. Nó nói về ROUTER, chưa nói về máy trạm.
+  - **Lời giải (tầng 3):** Full = hai router giữ cùng một bản đồ, bảng định tuyến tự học đủ đường. Nó không đo tốc độ, và cũng CHƯA thay được bước ping cuối — trunk hỏng thì router Full mà máy trạm vẫn câm, vì thế thang kiểm chứng mới cần đủ ba bậc.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: lệnh nào là bằng chứng kiểm chứng của tầng định tuyến trong chặng này?
+  - **Dạng:** gõ tay · **Chấp nhận:** show ip ospf neighbor | sh ip ospf neighbor | show ip ospf neighbour
+  - **Chủ đề gợi ý (tầng 1):** bảng láng giềng phải ra chữ Full
+  - **Gợi ý (tầng 2):** Bảng liệt kê hàng xóm OSPF và trạng thái cuộc làm quen.
+  - **Lời giải (tầng 3):** show ip ospf neighbor — ra FULL mới tính là hai router đồng bộ xong bản đồ. Mỗi tầng một bằng chứng: trunk có show interfaces trunk, định tuyến có bảng láng giềng, đường trọn vẹn có ping.
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao phải kiểm chứng TỪNG TẦNG thay vì gõ hết cấu hình rồi ping một phát cuối cùng?
+  - **Nhóm ý cần chạm:** [tầng nào, tang nao, bậc nào, bac nao, chết ở đâu, chet o dau, khoanh, khoanh vung] · [ping câm, ping cam, không biết, khong biet, mù, mu ] · [từng bước, tung buoc, từng tầng, tung tang, mỗi bậc, moi bac, bằng chứng, bang chung] · [trunk, ospf, full, neighbor, láng giềng, lang gieng]
+  - **Trả lời mẫu:** Vì ping là phép thử của CẢ đường đi — nó câm thì chỉ biết là hỏng, không biết hỏng ở tầng nào. Kiểm từng tầng thì mỗi bậc có một tấm bằng chứng riêng: trunk sống (show interfaces trunk), láng giềng Full (show ip ospf neighbor), rồi mới ping. Lúc có chuyện, người leo thang từng bậc biết ngay bậc nào gãy; người gõ một mạch phải dò lại từ đầu.
+
+**6 · Tổng kết:**
+- Chặng 2 nộp xong: trunk chở hai xóm qua một dây, OSPF cho hai site tự kể đường — không một tuyến tĩnh nào.
+- Wildcard trong câu network chép thẳng từ bản cắt chặng 1: /26 → 0.0.0.63, /28 → 0.0.0.15, /30 → 0.0.0.3.
+- Kiểm chứng leo thang ba bậc: trunk sống → láng giềng Full → ping xuyên site.
+- *Úp mở bài sau:* Mạng đã thông hai site — thông tới mức AI CŨNG tới được máy chủ kế toán, kể cả cái máy ở phòng khách mà khách vãng lai nào cũng cắm được. Chặng cuối: viết luật chặn đúng người, và đừng chặn nhầm cả sếp như ca kinh điển của Module 17.
+
+### Bài: Viết luật bảo vệ máy chủ kế toán `m21-bai-3`
+
+**1 · Khởi động (hook):** Biên bản nghiệm thu chặng 2 vừa ký xong thì trưởng phòng kế toán gọi: "máy nào ở phòng khách cũng mở được đường tới máy chủ kế toán — thế thì khách vãng lai cắm laptop vào là dò được tài liệu lương thưởng à?" Yêu cầu chốt bằng một câu: khách vẫn được ra Internet thoải mái, nhưng tuyệt đối không được chạm vào máy chủ kế toán — và các phòng khác không bị vạ lây. Một câu của sếp, mấy dòng luật của bạn?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Luật "chặn phòng khách tới máy chủ kế toán, còn lại cho qua" cần phân biệt cả NGUỒN lẫn ĐÍCH. Nó thuộc họ ACL nào, và theo quy tắc nghề thì đặt gần đâu?
+  - **Dạng:** trắc nghiệm · **ACL mở rộng (100-199), đặt gần NGUỒN — ngay cổng router phía phòng khách** ✓ / ACL chuẩn (1-99), đặt gần NGUỒN — vì luật nào cũng nên chặn từ sớm / ACL mở rộng (100-199), đặt gần ĐÍCH — sát ngay trước máy chủ kế toán
+  - **Chủ đề gợi ý (tầng 1):** loại nào nhìn được đích thì được phép chặn sớm
+  - **Vì sao:** Cần cả nguồn lẫn đích → họ mở rộng (100-199). Mở rộng biết đủ thông tin để chặn ĐÚNG ngay từ sớm nên đặt gần nguồn — cổng router phía phòng khách; gói xấu chết tại cửa, không tốn đường WAN. Chuẩn mù đích mới phải lùi về gần đích.
+
+**3 · Khám phá (teach):**
+- *[m21-quy-trinh]* Để ý chỗ đứng của chặng này trong quy trình: LUẬT ĐI SAU CÙNG — sau khi địa chỉ đã đúng, đường đã thông, kiểm chứng đã xanh. Không phải ngẫu nhiên: luật chặn viết lên một mạng chưa thông là tự bịt mắt mình — ping câm thì hết biết tại luật hay tại đường. Dựng cho THÔNG trước, kiểm chứng xong, rồi mới THẮT lại đúng chỗ; và sau khi thắt phải kiểm chứng CẢ HAI CHIỀU: thứ phải chặn đã chặn, và mọi thứ từng thông vẫn thông. Cặp bằng chứng thông-và-chặn đó là chữ ký nghiệm thu của người làm luật cẩn thận.
+  - **Đào sâu hơn:** Cặp thông-chặn còn là hàng rào chống hai kiểu giải sai đã gặp suốt khóa: chỉ đo phải-chặn thì rút dây cũng đạt (Module 4 dạy từ những ngày đầu); chỉ đo phải-thông thì permit any any cũng đạt (Module 17 vừa nhắc). Đề nộp của chặng này vì thế chấm đủ bốn mục tiêu: khách bị chặn tới kế toán, khách vẫn ra Internet, kinh doanh không vạ lây, và bạn đã tự tra bảng luật làm bằng chứng.
+
+**4 · Thử tay (practice, fading 2):**
+- **Đề:** CHẶNG 3 — nộp riêng, không còn khuôn gợi ý. Mạng chính là thành quả chặng 2 (trunk sống, OSPF Full, mọi đường đều thông). Yêu cầu của kế toán: phòng khách (dải 10.40.0.96/28) không được ping tới máy chủ kế toán 10.20.0.9; vẫn ra được Internet (203.0.113.80); phòng kinh doanh không bị ảnh hưởng. Tự chọn số hiệu, tự chọn cửa, tự chọn chiều — và tự tra bảng luật để làm bằng chứng trước khi nộp.
+  - **Dạng:** console thiết bị (gõ lệnh IOS đạt mục tiêu)
+    - **Sơ đồ đề bài:** PC-KinhDoanh [10.40.0.2/26, gw 10.40.0.1] · PC-PhongKhach [10.40.0.98/28, gw 10.40.0.97] · SRV-KeToan [10.20.0.9/24, gw 10.20.0.1] · SRV-Web-Internet [203.0.113.80/24, gw 203.0.113.1] · SW-1 [p1:VLAN 10, p2:VLAN 20, p3:VLAN 1] · SW-2 [p1:VLAN 10, p2:VLAN 20, p3:VLAN 1] · R-ChiNhanh [g0:10.40.0.1/26, g1:10.40.0.97/28, g2:10.40.0.113/30] · R-TruSo [g0:10.40.0.114/30, g1:10.20.0.1/24, g2:203.0.113.1/24] · SW-TruSo [p1:VLAN 1, p2:VLAN 1] · SW-Web [p1:VLAN 1, p2:VLAN 1] — dây: PC-KinhDoanh·eth0 — SW-1·p1 | PC-PhongKhach·eth0 — SW-1·p2 | SW-1·p3 — SW-2·p3 | SW-2·p1 — R-ChiNhanh·g0 | SW-2·p2 — R-ChiNhanh·g1 | R-ChiNhanh·g2 — R-TruSo·g0 | R-TruSo·g1 — SW-TruSo·p1 | SW-TruSo·p2 — SRV-KeToan·eth0 | R-TruSo·g2 — SW-Web·p1 | SW-Web·p2 — SRV-Web-Internet·eth0
+    - **Console cắm ở:** R-ChiNhanh
+    - **Mục tiêu:**
+      - pc-kh phải KHÔNG gọi được srv-kt
+      - pc-kh PHẢI gọi được srv-web
+      - pc-kd PHẢI gọi được srv-kt
+      - phải xem "show access-lists" trên R-ChiNhanh
+    - **Lệnh mẫu trên R-ChiNhanh:** `enable` rồi `configure terminal` rồi `access-list 101 deny icmp 10.40.0.96 0.0.0.15 host 10.20.0.9` rồi `access-list 101 permit ip any any` rồi `interface g1` rồi `ip access-group 101 in` rồi `end` rồi `show access-lists`
+  - **Chủ đề gợi ý (tầng 1):** một dòng cấm hẹp, một dòng mở rộng, áp đúng cửa phòng khách
+  - **Gợi ý (tầng 2):** Nếp Module 17: dòng cấm HẸP trước (deny icmp <dải khách với wildcard> host <máy chủ>), dòng permit ip any any sau, rồi vào đúng cổng router phía phòng khách áp chiều in. Wildcard của /28 tra từ bản cắt chặng 1.
+  - **Lời giải (tầng 3):** Trên R-ChiNhanh: access-list 101 deny icmp 10.40.0.96 0.0.0.15 host 10.20.0.9 → access-list 101 permit ip any any → interface g1 → ip access-group 101 in → show access-lists. Dòng hẹp đứng trước ăn đúng gói khách-tới-kế-toán; dòng mở sau giữ đường Internet cho khách và mọi đường của kinh doanh. Bốn mục tiêu xanh là biên bản nghiệm thu tự ký.
+- **Đề:** Nộp chặng 3 mà chỉ đạt mục tiêu "khách bị chặn tới kế toán", còn "khách ra Internet" đỏ. Khả năng cao bạn đã phạm lỗi nào?
+  - **Dạng:** trắc nghiệm · **Thiếu dòng permit cuối danh sách — dòng cấm vô hình đang chặn cả phần còn lại** ✓ / Đặt số hiệu ACL quá lớn nên router tự động chặn mọi loại lưu lượng / Gõ luật trên switch thay vì router nên chỉ một nửa số luật có hiệu lực
+  - **Chủ đề gợi ý (tầng 1):** ca chặn-nhầm-cả-sếp của Module 17
+  - **Gợi ý (tầng 2):** Danh sách chỉ có một dòng deny thì gói KHÔNG khớp dòng nào sẽ gặp ai ở cuối danh sách?
+  - **Lời giải (tầng 3):** Thiếu permit ip any any — mọi gói không khớp dòng cấm rơi vào dòng cấm vô hình cuối danh sách, và khách mất luôn Internet (may mà bảng mục tiêu bắt được trước khi sếp gọi). Số hiệu chỉ chọn họ ACL, còn switch trong app không nhận luật ACL — hai phương án kia là nhiễu.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: wildcard tương ứng với dải /28 của phòng khách là gì?
+  - **Dạng:** gõ tay · **Chấp nhận:** 0.0.0.15 | 0 0 0 15 | 0.0.0.15.
+  - **Chủ đề gợi ý (tầng 1):** mặt nạ đảo của /28
+  - **Gợi ý (tầng 2):** /28 chừa 4 bit cho máy — 4 bit mặc kệ là số 15 ở octet cuối.
+  - **Lời giải (tầng 3):** 0.0.0.15 — mặt nạ đảo của /28: bốn bit cuối mặc kệ, phần còn lại phải khớp. Con số này chép thẳng từ bản cắt chặng 1 — tờ giấy ấy phục vụ tới tận dòng luật cuối cùng.
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao nghiệm thu một luật chặn phải đo CẢ chiều thông lẫn chiều chặn?
+  - **Nhóm ý cần chạm:** [rút dây, rut day, chặn hết, chan het, cấm sạch, cam sach, vạ lây, va lay] · [permit any, mở toang, mo toang, cho hết qua, cho het qua] · [hai chiều, hai chieu, cả hai, ca hai, cặp, cap , thông và chặn, thong va chan] · [vẫn thông, van thong, không ảnh hưởng, khong anh huong, đường cũ, duong cu]
+  - **Trả lời mẫu:** Vì mỗi chiều chặn được một kiểu giải sai: chỉ đo phải-chặn thì cấm sạch mọi thứ (hoặc rút dây) cũng đạt; chỉ đo phải-thông thì mở toang permit any any cũng đạt. Đo cả cặp mới ép được luật đúng nghĩa: thứ cần chặn đã chặn, mọi thứ từng thông vẫn thông, không ai bị vạ lây.
+
+**6 · Tổng kết:**
+- Luật đi sau cùng: dựng cho thông, kiểm chứng xong, rồi mới thắt — chặn trên mạng chưa thông là tự bịt mắt.
+- Chặng 3 nộp xong: khách bị chặn tới kế toán, vẫn ra Internet, kinh doanh vô sự — cặp thông-chặn đủ bốn bằng chứng.
+- Bản cắt chặng 1 phục vụ tới dòng luật cuối: wildcard 0.0.0.15 chép thẳng từ cỡ /28 trên giấy.
+- *Úp mở bài sau:* Chi nhánh đã dựng xong bằng chính tay bạn. Còn đúng một cửa: tổng duyệt — nơi một ca bệnh kiểu mới đợi sẵn: HAI bệnh chồng lên nhau trên cùng một mạng, và khám ra một bệnh mới chỉ là đi được nửa đường.
+
+### Bài: Tổng duyệt: ca bệnh hai tầng chồng nhau `m21-bai-4`
+
+**1 · Khởi động (hook):** Tuần đầu chi nhánh vận hành, người dùng phòng kinh doanh báo: "mở kho tài liệu bằng tên thì báo không tồn tại, mà đồng nghiệp chỉ cho gõ thẳng địa chỉ số cũng không ăn thua." Hai triệu chứng nghe na ná — nhưng người khám giỏi ngửi thấy mùi lạ: nếu chỉ là MỘT bệnh, tại sao cả đường tên lẫn đường số cùng chết theo hai kiểu khác nhau? Có khi nào... đang có HAI bệnh chồng lên nhau?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử: ping theo TÊN báo không phân giải được, ping theo SỐ cũng rớt. Suy luận nào chắc tay nhất?
+  - **Dạng:** trắc nghiệm · **Có thể là hai bệnh ở hai tầng — kiểm tra tầng tên và tầng đường đi riêng nhau** ✓ / Chắc chắn chỉ là bệnh DNS, vì triệu chứng đầu tiên nhắc tới cái tên / Chắc chắn chỉ là bệnh dây, vì đường số rớt nghĩa là phần cứng có vấn đề
+  - **Chủ đề gợi ý (tầng 1):** tách tên khỏi số là bài khám nhập môn của M11
+  - **Vì sao:** Tên chết vì tầng phân giải, số chết vì tầng đường đi — hai tầng ĐỘC LẬP, nên hai triệu chứng cùng lúc hoàn toàn có thể là hai bệnh chồng nhau. Vội gán tất cả cho một thủ phạm là sửa xong một bệnh rồi tưởng ca đã khỏi — cái bẫy của mọi ca liên tầng.
+
+**3 · Khám phá (teach):**
+- *[m21-kiem-chung]* Ca liên tầng là kỳ thi thật của thang khám từng tầng: mỗi tầng phải được khám ĐỘC LẬP và kết luận ĐỘC LẬP. Tầng tên: nslookup — bản ghi có không, trỏ về đâu. Tầng đường: ping bằng SỐ, để tầng tên không che mắt. Tầng 2: khung có qua nổi trunk không — nhật ký chặng và cấu hình hai đầu dây trả lời. Điều cấm kỵ duy nhất: DỪNG SỚM. Tìm ra một bệnh thật rồi vẫn phải khám nốt các tầng còn lại — vì "đã tìm thấy MỘT thủ phạm" và "đã tìm thấy MỌI thủ phạm" là hai mệnh đề khác nhau, và ca tổng duyệt này cố tình chứa nhiều hơn một.
+  - **Đào sâu hơn:** Vì sao bệnh chồng bệnh hay gặp ở mạng mới dựng? Vì các lỗi cấu hình sinh ra CÙNG một đợt thi công — người quên native VLAN cũng dễ là người gõ nhầm bản ghi DNS trong cùng buổi chiều. Mạng chạy lâu năm thì lỗi rơi rớt từng cái một; mạng mới bàn giao thì lỗi đến theo lô. Người nghiệm thu chi nhánh mới vì thế khám như thợ săn đếm đủ dấu chân: một dấu chưa chắc là một con.
+
+**4 · Thử tay (practice, fading 2):**
+- **Đề:** "Phòng kinh doanh không mở được kho tài liệu kho.chi-nhanh.vn — gõ tên báo không tồn tại, gõ thẳng số 10.20.0.40 cũng không thông!" Bạn ngồi ở PC-KinhDoanh. Khám cho ra TẤT CẢ các bệnh — ca này không hứa chỉ có một.
+  - **Dạng:** ca bệnh phòng khám (khám qua terminal → chẩn đoán → sửa)
+    - **Mạng bệnh nhân:** PC-KinhDoanh [10.40.0.2/26, gw 10.40.0.1] · SRV-KhoTaiLieu [10.20.0.40/24, gw 10.20.0.1] · SRV-DNS [10.20.0.53/24, gw 10.20.0.1] · SW-1 [p1:VLAN 10, p3:VLAN 1] · SW-2 [p1:VLAN 10, p3:VLAN 1] · R-ChiNhanh [g0:10.40.0.1/26, g2:10.40.0.113/30] · R-TruSo [g0:10.40.0.114/30, g1:10.20.0.1/24] · SW-TruSo [p1:VLAN 1, p2:VLAN 1, p3:VLAN 1] — dây: PC-KinhDoanh·eth0 — SW-1·p1 | SW-1·p3 — SW-2·p3 | SW-2·p1 — R-ChiNhanh·g0 | R-ChiNhanh·g2 — R-TruSo·g0 | R-TruSo·g1 — SW-TruSo·p1 | SW-TruSo·p2 — SRV-KhoTaiLieu·eth0 | SW-TruSo·p3 — SRV-DNS·eth0
+    - **Ngồi ở máy:** PC-KinhDoanh
+    - **Hồ sơ bệnh:** DNS 10.20.0.53 [portal.chi-nhanh.vn → 10.20.0.41]
+    - **Triệu chứng:** PC-KinhDoanh ping 10.20.0.40 PHẢI hỏng
+    - **Chẩn đoán (chọn 1):** **HAI bệnh chồng nhau: trunk hai đầu lệch native VLAN, và DNS thiếu bản ghi kho tài liệu** ✓ · Một bệnh duy nhất: đường trunk giữa hai switch đang lệch native VLAN · Một bệnh duy nhất: máy chủ DNS thiếu bản ghi tên của kho tài liệu
+    - **Sửa:** chọn hành động — **Sửa CẢ HAI: khai native VLAN khớp hai đầu trunk, và thêm bản ghi kho.chi-nhanh.vn trỏ về 10.20.0.40** ✓ · Chỉ thêm bản ghi DNS — đường số sẽ tự thông khi cái tên phân giải được · Chỉ sửa native VLAN — bản ghi DNS sẽ tự đồng bộ lại từ máy chủ trụ sở
+  - **Chủ đề gợi ý (tầng 1):** khám tầng tên và tầng đường ĐỘC LẬP — đủ dấu chân mới đếm đủ con
+  - **Vì sao:** Hai tầng, hai bằng chứng độc lập. Tầng tên: nslookup kho.chi-nhanh.vn → Non-existent domain — DNS thiếu bản ghi (portal có, kho thì không). Tầng đường: ping 10.20.0.40 bằng số vẫn rớt — tên không thể là thủ phạm của cú này; nhìn trunk giữa hai switch: SW-1 khai native 10, SW-2 để native 1 — khung kinh doanh đi trần qua dây và lạc xóm ở đầu kia. Sửa một trong hai chỉ khỏi nửa bệnh: phải khai lại native cho khớp VÀ thêm bản ghi. Ca liên tầng chấm người khám ĐẾM ĐỦ.
+  - **Gợi ý (tầng 2):** Tách tên khỏi số như M11: nslookup nói gì về cái tên? ping bằng số nói gì về con đường? Nếu cả hai cùng bệnh thì mỗi tầng phải có một thủ phạm riêng — soi tiếp cấu hình trunk hai đầu.
+  - **Lời giải (tầng 3):** nslookup ra Non-existent domain → thiếu bản ghi (bệnh tầng tên). ping số vẫn rớt → bệnh tầng đường: trunk SW-1 native 10 nhưng SW-2 native 1 — lệch native, khung lạc xóm. Chọn chẩn đoán HAI bệnh và hành động sửa CẢ HAI. Dừng ở một bệnh là cái bẫy của ca — và của nghề.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: xếp lại quy trình bốn bước đã theo bạn suốt module.
+  - **Dạng:** xếp thứ tự (thứ tự đúng):
+    1. Đặt địa chỉ — cắt dải trên giấy
+    2. Nối dây — dựng sơ đồ vật lý
+    3. Cấu hình — trunk, định tuyến, luật
+    4. Kiểm chứng — mỗi bước một bằng chứng
+  - **Chủ đề gợi ý (tầng 1):** giấy → dây → lệnh → bằng chứng
+  - **Gợi ý (tầng 2):** Bắt đầu từ thứ sửa được bằng cục tẩy, kết thúc bằng thứ ký được biên bản.
+  - **Lời giải (tầng 3):** Đặt địa chỉ → nối dây → cấu hình → kiểm chứng. Bạn vừa sống trọn quy trình này qua ba chặng nộp riêng — nó là thứ mang được sang mọi mạng thật.
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao tìm ra MỘT bệnh thật rồi vẫn chưa được phép dừng khám?
+  - **Nhóm ý cần chạm:** [hai bệnh, hai benh, nhiều bệnh, nhieu benh, chồng nhau, chong nhau, theo lô, theo lo] · [một thủ phạm, mot thu pham, mọi thủ phạm, moi thu pham, chưa chắc hết, chua chac het] · [từng tầng, tung tang, độc lập, doc lap, khám nốt, kham not, các tầng còn lại, cac tang con lai] · [sửa xong vẫn, sua xong van, nửa bệnh, nua benh, vẫn không thông, van khong thong, tưởng khỏi, tuong khoi]
+  - **Trả lời mẫu:** Vì tìm thấy một thủ phạm không chứng minh là đã thấy mọi thủ phạm — mạng mới thi công hay hỏng theo lô, hai lỗi sinh cùng một buổi chiều. Mỗi tầng phải được khám và kết luận độc lập; dừng ở bệnh đầu tiên thì sửa xong triệu chứng vẫn còn, người khám lại tưởng mình sửa sai trong khi thật ra chỉ sửa THIẾU.
+
+**6 · Tổng kết:**
+- Ca liên tầng: khám từng tầng độc lập, kết luận độc lập — tên bằng nslookup, đường bằng ping số, tầng 2 bằng cấu hình trunk.
+- Một dấu chân chưa chắc một con: tìm ra một bệnh vẫn phải khám nốt các tầng còn lại.
+- Mạng mới bàn giao hỏng theo lô — người nghiệm thu giỏi đếm đủ trước khi ký.
+- *Úp mở bài sau:* Bài thi cuối cùng của cả khóa đang đợi — tám câu rút từ mọi ngóc ngách trung cấp, kết bằng một ca liên tầng bạn chưa từng gặp. Đậu nó là chi nhánh chính thức bàn giao, và hành trình 21 module khép lại tròn một vòng.
+
+### Khái niệm & flashcard (2)
+
+- **Quy trình bốn bước triển khai** `m21-quy-trinh` — Đặt địa chỉ (trên giấy) → nối dây → cấu hình → kiểm chứng; luật chặn đi sau cùng, khi mạng đã thông và đã có bằng chứng
+  - Ẩn dụ: Như xây nhà: bản vẽ trước, móng và khung sau, điện nước tiếp, nghiệm thu cuối — không ai đi dây điện trước khi có bản vẽ, và không ai khóa cửa một căn nhà chưa xây xong.
+  - Thẻ ôn: *Bốn bước của quy trình dựng mạng, và vì sao thứ tự đó?* → Đặt địa chỉ → nối dây → cấu hình → kiểm chứng. Mỗi bước đứng trên kết quả bước trước, và lỗi bắt sớm ở đâu thì rẻ ở đó: bản cắt sai trên giấy sửa bằng tẩy, sai sau khi cấu hình ba chục thiết bị sửa bằng cả buổi. Luật chặn luôn đi sau cùng — thắt một mạng chưa thông là tự bịt mắt.
+- **Kiểm chứng từng tầng** `m21-kiem-chung` — Mỗi tầng xong phải có bằng chứng bằng lệnh trước khi leo tiếp: trunk sống → láng giềng Full → ping trọn đường; khám bệnh cũng từng tầng độc lập, không dừng ở thủ phạm đầu tiên
+  - Ẩn dụ: Như thợ leo giàn giáo thử từng tầng trước khi bước lên: sập ở đâu biết ngay ở đó — còn kẻ leo một mạch tới nóc, lúc rơi chẳng biết mình rơi từ tầng nào.
+  - Thẻ ôn: *Chuỗi kiểm chứng ba bậc của một mạng hai site, và luật cấm của ca bệnh liên tầng?* → show interfaces trunk (tầng 2 sống) → show ip ospf neighbor ra Full (tầng 3 quen nhau) → ping xuyên site (đường trọn vẹn). Luật cấm khi khám ca liên tầng: KHÔNG dừng ở thủ phạm đầu tiên — mỗi tầng khám độc lập, kết luận độc lập, vì mạng mới thi công hỏng theo lô.
+
+### Bài kiểm tra module (pool 14 câu, mỗi lượt rút 8, cần ≥ 85%)
+
+- **Đề:** Xếp bốn bước của quy trình dựng mạng theo đúng thứ tự:
+  - **Dạng:** xếp thứ tự (thứ tự đúng):
+    1. Đặt địa chỉ — cắt dải trên giấy
+    2. Nối dây — dựng sơ đồ vật lý
+    3. Cấu hình — trunk, định tuyến, luật
+    4. Kiểm chứng — bằng chứng bằng lệnh
+  - **Chủ đề gợi ý (tầng 1):** thứ sửa bằng tẩy đứng đầu
+  - **Vì sao:** Đặt địa chỉ → nối dây → cấu hình → kiểm chứng. Mỗi bước đứng trên bước trước; bản cắt trên giấy là thứ mọi bước sau tra cứu nên nó đi đầu, còn bằng chứng nghiệm thu luôn chốt sổ.
+- **Đề:** Phòng 60 máy nhận dải cắt từ 10.50.0.0/24, cắt từ đầu dải. Dải của phòng đó là gì? (địa-chỉ/prefix)
+  - **Dạng:** gõ tay · **Chấp nhận:** 10.50.0.0/26 | 10.50.0.0 /26 | 10.50.0.0/ 26
+  - **Chủ đề gợi ý (tầng 1):** cỡ khối nhỏ nhất đủ 60 máy
+  - **Vì sao:** 10.50.0.0/26 — khối /26 có 62 chỗ, là cỡ nhỏ nhất đủ 60 máy; /25 là phí đất, /27 thì thiếu. Cắt từ đầu dải nên bắt đầu tại .0.
+- **Đề:** Vì sao VLSM cắt khối LỚN trước khối nhỏ?
+  - **Dạng:** trắc nghiệm · **Khối to chỉ đặt vừa ở ranh giới thưa — cắt nhỏ trước là lấp mất chỗ, sinh kẽ hở** ✓ / Vì phòng đông máy bao giờ cũng quan trọng hơn nên được ưu tiên cấp trước / Vì router chỉ chấp nhận các dải được khai theo thứ tự từ lớn tới nhỏ
+  - **Chủ đề gợi ý (tầng 1):** chuyện căn khối, không phải chuyện ưu tiên
+  - **Vì sao:** Là chuyện CĂN KHỐI: khối /26 chỉ đứng được ở ranh giới bội của 64 — cắt mấy khối nhỏ trước là các ranh giới đó bị lấp, khối to phải nhảy xa hơn và sinh kẽ hở phí đất. Router chẳng bắt thứ tự nào, và đây không phải chuyện phòng nào quan trọng.
+- **Đề:** Hai switch nối nhau: một đầu đã khai trunk, đầu kia còn access. Hậu quả đúng như engine mô phỏng?
+  - **Dạng:** trắc nghiệm · **Khung mang nhãn đâm vào cổng access thì bị bỏ — VLAN chết trên dây** ✓ / Hai đầu tự đàm phán để cùng thành trunk sau vài giây bắt tay / Chỉ VLAN số chẵn qua được còn VLAN số lẻ bị chặn lại ở giữa dây
+  - **Chủ đề gợi ý (tầng 1):** cổng access không đọc nhãn
+  - **Vì sao:** Đầu trunk dán nhãn khung rồi gửi đi; đầu access không đọc nhãn nên bỏ khung — bệnh trunk-một-đầu. Mô hình này không có đàm phán DTP (đơn giản hóa đã khai), và chẵn lẻ thì không liên quan gì.
+- **Đề:** Lệnh kiểm chứng hai router OSPF đã đồng bộ trọn bản đồ với nhau?
+  - **Dạng:** gõ tay · **Chấp nhận:** show ip ospf neighbor | sh ip ospf neighbor | show ip ospf neighbour
+  - **Chủ đề gợi ý (tầng 1):** bảng phải ra chữ Full
+  - **Vì sao:** show ip ospf neighbor — trạng thái Full nghĩa là hai bản đồ chồng khít (phòng cuối của tòa nhà làm quen M16). Chưa Full thì bảng còn nói lý-do-chưa-lên để lần tiếp.
+- **Đề:** Hai router nối thẳng nhau, cùng bật OSPF mà láng giềng không lên. Cặp điều kiện nào PHẢI soi đầu tiên?
+  - **Dạng:** trắc nghiệm · **Hai cổng đối diện cùng subnet chưa, và hai bên đã khai network phủ cổng đó chưa** ✓ / Hai router cùng hãng sản xuất chưa, và số hiệu tiến trình OSPF có bằng nhau không / Dây nối có phải loại chéo không, và hai cổng có cùng tốc độ vật lý hay không
+  - **Chủ đề gợi ý (tầng 1):** hai điều kiện lên láng giềng của OSPF-lite
+  - **Vì sao:** Neighbor lên khi hai cổng CÙNG SUBNET và cả hai bên đã KHAI network phủ cổng — đúng hai điều kiện engine mô phỏng. Số hiệu tiến trình không cần khớp, hãng và loại dây là chuyện tầng khác.
+- **Đề:** Luật "chặn phòng khách tới máy chủ kế toán, vẫn cho ra Internet" nên viết bằng gì và đặt ở đâu?
+  - **Dạng:** trắc nghiệm · **ACL mở rộng, đặt gần nguồn — cổng router phía phòng khách, chiều vào** ✓ / ACL chuẩn, đặt gần nguồn — vì luật đơn giản thì nên chặn từ sớm nhất / ACL mở rộng, đặt tại cổng ra Internet của trụ sở cho tiện quản lý chung
+  - **Chủ đề gợi ý (tầng 1):** biết đích thì được chặn sớm
+  - **Vì sao:** Phân biệt nguồn VÀ đích → mở rộng; mở rộng biết đủ để chặn đúng nên đặt gần nguồn (cổng phía khách, chiều in) — gói xấu chết tại cửa. Chuẩn mù đích sẽ chặn khách đi MỌI nơi, mất luôn Internet; còn đặt ở cổng Internet thì gói tới kế toán chẳng bao giờ đi qua đó.
+- **Đề:** Danh sách ACL chỉ có các dòng deny mà thiếu dòng permit cuối — mọi gói còn lại chết vì cái gì?
+  - **Dạng:** gõ tay · **Chấp nhận:** dòng cấm vô hình | dong cam vo hinh | implicit deny | cấm vô hình | cam vo hinh | deny ngầm | deny ngam | dòng deny vô hình | dong deny vo hinh
+  - **Chủ đề gợi ý (tầng 1):** dòng không in ra ở cuối mọi danh sách
+  - **Vì sao:** Dòng cấm vô hình (implicit deny) — cuối mọi danh sách, không in ra trong show access-lists. Áp danh sách lên cổng là đổi mặc định của cổng thành cấm-tất-cả; muốn giữ phần còn lại phải có permit ip any any.
+- **Đề:** Vì sao đề nghiệm thu luật chặn luôn chấm CẶP mục tiêu thông-và-chặn?
+  - **Dạng:** trắc nghiệm · **Vì thiếu vế nào cũng có cách giải sai: rút dây đạt vế chặn, mở toang đạt thông** ✓ / Vì hai mục tiêu giúp bài thi trông dài hơn và có vẻ khó hơn với người học / Vì router yêu cầu số mục tiêu chẵn thì phần cứng mới xử lý được luật
+  - **Chủ đề gợi ý (tầng 1):** mỗi vế chặn một kiểu giải tủ
+  - **Vì sao:** Chỉ đo phải-chặn thì cấm sạch (hay rút dây) cũng đạt; chỉ đo phải-thông thì permit any any cũng đạt. Cặp mục tiêu ép luật đúng nghĩa: chặn đúng kẻ cần chặn, giữ nguyên đường của mọi người khác.
+- **Đề:** Ôn nhanh Phần E: relay ghi địa chỉ xóm đang xin DHCP vào ô nào của gói tin?
+  - **Dạng:** gõ tay · **Chấp nhận:** giaddr | ô giaddr | o giaddr | trường giaddr | truong giaddr | gateway address
+  - **Chủ đề gợi ý (tầng 1):** sáu chữ cái, ghép gateway và address
+  - **Vì sao:** Ô giaddr — nhờ nó máy DHCP một mình phục vụ được hàng chục xóm: nhìn giaddr là biết lời xin phát từ dải nào mà chọn đúng scope.
+- **Đề:** Nhân viên mới về chi nhánh cần đủ quyền làm việc. Trong hệ AGDLP tử tế, người trực làm gì?
+  - **Dạng:** trắc nghiệm · **Thêm vào nhóm vai Global của phòng — quyền tự chảy qua đường ống có sẵn** ✓ / Nhét thẳng vào từng nhóm quyền Domain Local liên quan cho nhanh gọn / Cấp quyền đọc ghi trực tiếp lên từng thư mục mà người đó cần dùng
+  - **Chủ đề gợi ý (tầng 1):** một mắt xích ở khúc người-vai
+  - **Vì sao:** Một dòng Add vào nhóm vai Global — đường ống vai-cắm-vào-quyền đã nối sẵn từ trước. Hai cách còn lại đều là lối tắt chạy-được-ngay nhưng đắt ở ngày mai: không truy vết nổi, chuyển phòng không tự rút.
+- **Đề:** Tuần đầu vận hành, đồ thị CPU của R-ChiNhanh chạy 55%. Người trực nên làm gì với con số đó?
+  - **Dạng:** trắc nghiệm · **Ghi nhận nó vào baseline tuần đầu — có nếp rồi mới phán được cao hay thấp** ✓ / Báo động ngay vì router mới dựng thì CPU phải luôn nằm dưới mức 10% / Bỏ qua vĩnh viễn vì chỉ số CPU không liên quan gì tới thiết bị mạng
+  - **Chủ đề gợi ý (tầng 1):** mạng mới chưa có nếp cũ để so
+  - **Vì sao:** Mạng mới dựng CHƯA có baseline — việc của tuần đầu là ghi nếp: 55% này chính là dữ liệu nền để mai kia phán 70% là bất thường hay chuyện thường. Không có chuẩn dưới-10% nào của ngành, và CPU router dĩ nhiên đáng theo dõi.
+- **Đề:** Trụ sở vừa dựng thêm router R-Moi cho một mạng lab mới, nối thẳng vào R-TruSo. R-TruSo đã bật OSPF sẵn; R-Moi thì chưa biết gì. Bật OSPF trên R-Moi, khai đủ hai mạng của nó, kiểm chứng láng giềng ra Full — và mạng lab phải gọi được máy chủ kế toán.
+  - **Dạng:** console thiết bị (gõ lệnh IOS đạt mục tiêu)
+    - **Sơ đồ đề bài:** PC-Lab [10.60.0.10/24, gw 10.60.0.1] · SRV-KeToan [10.20.0.9/24, gw 10.20.0.1] · SW-Lab [p1:VLAN 1, p2:VLAN 1] · SW-KeToan [p1:VLAN 1, p2:VLAN 1] · R-Moi [g0:10.60.0.1/24, g1:10.99.1.1/30] · R-TruSo [g0:10.99.1.2/30, g1:10.20.0.1/24] — dây: PC-Lab·eth0 — SW-Lab·p1 | SW-Lab·p2 — R-Moi·g0 | R-Moi·g1 — R-TruSo·g0 | R-TruSo·g1 — SW-KeToan·p1 | SW-KeToan·p2 — SRV-KeToan·eth0
+    - **Console cắm ở:** R-Moi
+    - **Mục tiêu:**
+      - phải xem "show ip ospf neighbor" trên R-Moi
+      - pc-lab PHẢI gọi được srv-kt2
+    - **Lệnh mẫu trên R-Moi:** `enable` rồi `configure terminal` rồi `router ospf 1` rồi `network 10.60.0.0 0.0.0.255 area 0` rồi `network 10.99.1.0 0.0.0.3 area 0` rồi `end` rồi `show ip ospf neighbor`
+  - **Chủ đề gợi ý (tầng 1):** router ospf 1 rồi hai câu network với wildcard đảo
+  - **Vì sao:** Trên R-Moi: router ospf 1 → network 10.60.0.0 0.0.0.255 area 0 → network 10.99.1.0 0.0.0.3 area 0 → end → show ip ospf neighbor ra Full. Hai bên cùng subnet WAN và cùng khai network là láng giềng lên; bảng định tuyến tự học và ping xuyên site tự thông.
+- **Đề:** "Chi nhánh mới bàn giao được ba hôm: phòng kinh doanh không vào được máy chủ kế toán bằng tên ketoan.congty.vn — mà anh kỹ thuật thử gõ thẳng số cũng chịu chết!" Bạn ngồi ở PC-KinhDoanh. Ca nghiệm thu cuối cùng của khóa: khám cho ĐỦ, đừng dừng ở dấu chân đầu tiên.
+  - **Dạng:** ca bệnh phòng khám (khám qua terminal → chẩn đoán → sửa)
+    - **Mạng bệnh nhân:** PC-KinhDoanh [10.40.0.2/26, gw 10.40.0.1] · SRV-KeToan [10.20.0.9/24, gw 10.20.0.1] · SRV-DNS [10.20.0.53/24, gw 10.20.0.1] · SW-1 [p1:VLAN 10, p3:VLAN 1] · SW-2 [p1:VLAN 10, p3:VLAN 1] · R-ChiNhanh [g0:10.40.0.1/26, g2:10.40.0.113/30] · R-TruSo [g0:10.40.0.114/30, g1:10.20.0.1/24] · SW-TruSo [p1:VLAN 1, p2:VLAN 1, p3:VLAN 1] — dây: PC-KinhDoanh·eth0 — SW-1·p1 | SW-1·p3 — SW-2·p3 | SW-2·p1 — R-ChiNhanh·g0 | R-ChiNhanh·g2 — R-TruSo·g0 | R-TruSo·g1 — SW-TruSo·p1 | SW-TruSo·p2 — SRV-KeToan·eth0 | SW-TruSo·p3 — SRV-DNS·eth0
+    - **Ngồi ở máy:** PC-KinhDoanh
+    - **Hồ sơ bệnh:** DNS 10.20.0.53 [ketoan.congty.vn → 10.20.0.99, portal.congty.vn → 10.20.0.41]
+    - **Triệu chứng:** PC-KinhDoanh ping 10.20.0.9 PHẢI hỏng
+    - **Chẩn đoán (chọn 1):** **HAI bệnh chồng nhau: trunk hai đầu lệch native VLAN, và bản ghi DNS trỏ máy kế toán về địa chỉ sai** ✓ · Một bệnh duy nhất: bản ghi DNS của máy kế toán đang trỏ về một địa chỉ không tồn tại · Một bệnh duy nhất: đường trunk giữa hai switch chi nhánh đang lệch native VLAN
+    - **Sửa:** chọn hành động — **Sửa CẢ HAI: khai native VLAN khớp hai đầu trunk, và sửa bản ghi ketoan.congty.vn về 10.20.0.9** ✓ · Chỉ sửa bản ghi DNS — hết bệnh tên là đường số cũng tự thông theo · Chỉ khai lại native VLAN — DNS sẽ tự phát hiện địa chỉ đúng và cập nhật
+  - **Chủ đề gợi ý (tầng 1):** tách tên khỏi số, rồi soi cấu hình trunk hai đầu
+  - **Vì sao:** Tầng tên: nslookup ketoan.congty.vn trả về 10.20.0.99 — bản ghi TRỎ SAI (máy thật là 10.20.0.9). Tầng đường: ping thẳng 10.20.0.9 vẫn rớt — soi trunk: SW-1 khai native 10, SW-2 để native 1, khung kinh doanh đi trần và lạc xóm ở đầu kia. Hai bệnh độc lập, sửa một chỉ khỏi nửa: phải khai native khớp VÀ sửa bản ghi. Đây là tổng ôn trá hình của cả trung cấp — người đếm đủ hai dấu chân mới qua.

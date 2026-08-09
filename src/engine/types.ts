@@ -96,9 +96,23 @@ export interface AnswerRecord {
 // Drill subnetting (Module 3)
 // ---------------------------------------------------------------
 
-/** Kết quả 1 phiên drill trong ngày — nguồn vẽ biểu đồ tiến bộ. */
+/**
+ * Hai loại drill của app. `subnet` là bài TÍNH LẠI của Module 3;
+ * `vlsm` là bài THIẾT KẾ của Module 13 — nặng hơn hẳn, mỗi đề vài phút.
+ */
+export type DrillMode = 'subnet' | 'vlsm'
+
+/**
+ * Kết quả 1 phiên drill trong ngày — nguồn vẽ biểu đồ tiến bộ.
+ *
+ * `mode` bắt buộc vì hai loại drill không chung thang đo: một phiên
+ * subnet là 10 bài vài chục giây, một phiên VLSM là 5 bài vài phút. Trộn
+ * chung một biểu đồ thì đường "giây/bài" nhảy dựng lên và người học
+ * tưởng mình đang tệ đi.
+ */
 export interface DrillResult {
   date: ISODate
+  mode: DrillMode
   correct: number
   total: number
   avgSeconds: number

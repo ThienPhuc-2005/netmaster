@@ -32,7 +32,7 @@ import type { Question } from './contentSchema'
 export const MASTERY_DRAW_COUNT = 8
 
 /** Dạng câu là KỸ NĂNG của module, không phải câu hỏi thay thế được. */
-const ANCHOR_KINDS: ReadonlySet<Question['kind']> = new Set(['lab', 'palace-walk', 'clinic', 'ps'])
+const ANCHOR_KINDS: ReadonlySet<Question['kind']> = new Set(['lab', 'palace-walk', 'clinic', 'ps', 'cli'])
 
 /** Câu trụ — luôn có mặt trong mọi lượt thi của module. */
 export function isAnchorQuestion(question: Question): boolean {

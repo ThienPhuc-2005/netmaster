@@ -51,6 +51,7 @@ import {
   HopLog,
   LabToolbar,
   SendPanel,
+  StpPanel,
   flattenHops,
 } from './LabPanels'
 import { autoLayout, wirePath, type Point } from './geometry'
@@ -61,7 +62,15 @@ function vlanChoicesOf(spec: LabSpec): number[] {
   const found = new Set<number>()
   for (const topo of [spec.initial, spec.solution]) {
     for (const device of topo.devices) {
-      if (device.kind === 'switch') for (const port of device.ports) found.add(port.vlan)
+      if (device.kind !== 'switch') continue
+      for (const port of device.ports) {
+        found.add(port.vlan)
+        // VLAN chỉ xuất hiện trong allowed list / native của trunk cũng
+        // phải có mặt trong bảng chọn — nếu không, đề "thêm VLAN 30 vào
+        // trunk" thành đề không bấm được (Module 14).
+        for (const vlan of port.allowedVlans ?? []) found.add(vlan)
+        if (port.nativeVlan !== undefined) found.add(port.nativeVlan)
+      }
     }
   }
   if (found.size === 0) found.add(1)
@@ -322,6 +331,17 @@ export function NetworkLab({
             device={selected}
             armedPort={armedPort}
             canSetVlan={spec.allow.setVlan}
+            canSetTrunk={spec.allow.setTrunk === true}
+            onSetPortMode={(portId, mode) =>
+              selected !== null &&
+              dispatch({ kind: 'set-switch-port-mode', deviceId: selected.id, portId, mode })
+            }
+            onSetTrunkAllowed={(portId, vlans) =>
+              selected !== null && dispatch({ kind: 'set-trunk-allowed', deviceId: selected.id, portId, vlans })
+            }
+            onSetTrunkNative={(portId, vlan) =>
+              selected !== null && dispatch({ kind: 'set-trunk-native', deviceId: selected.id, portId, vlan })
+            }
             canSetIp={spec.allow.setIp}
             canRemoveDevice={spec.allow.removeDevices}
             canWire={wireCanBeChanged}
@@ -357,6 +377,14 @@ export function NetworkLab({
           />
         </div>
       </div>
+
+      {spec.allow.setStp === true && (
+        <StpPanel
+          topology={topology}
+          onSetStp={(enabled) => dispatch({ kind: 'set-stp', enabled })}
+          onSetPriority={(deviceId, priority) => dispatch({ kind: 'set-bridge-priority', deviceId, priority })}
+        />
+      )}
 
       <div className="grid gap-4 lg:grid-cols-2">
         <SendPanel

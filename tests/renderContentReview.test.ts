@@ -8,6 +8,7 @@ import { describe, expect, it } from 'vitest'
 import { renderQuestion, renderReview } from '../scripts/render-content-review.mjs'
 import { makeValidModule } from './fixtures/moduleFixture'
 import { vlanRepairLab } from './fixtures/labFixture'
+import { trunkByCli } from './fixtures/cliFixture'
 
 describe('renderQuestion', () => {
   it('câu gõ tay: in danh sách đáp án chấp nhận', () => {
@@ -68,6 +69,24 @@ describe('renderQuestion', () => {
     expect(lines).toContain('phải KHÔNG gọi được')
     expect(lines).toContain('đổi VLAN')
     expect(lines).toContain('Lời giải mẫu')
+  })
+
+  it('bài CLI: in sơ đồ, chỗ cắm console, mục tiêu và lệnh mẫu TỪNG THIẾT BỊ', () => {
+    const lines = renderQuestion({
+      kind: 'cli',
+      id: 'q-cli',
+      prompt: { vi: 'Dựng trunk giữa hai switch' },
+      spec: trunkByCli(),
+    }).join('\n')
+
+    expect(lines).toContain('console thiết bị')
+    expect(lines).toContain('Console cắm ở:** Switch-1')
+    expect(lines).toContain('phải cho VLAN 10, 20 đi qua')
+    // Lệnh mẫu phải nói rõ gõ ở MÁY NÀO — bài trunk hai switch mà gộp
+    // chung một danh sách lệnh thì người duyệt không kiểm được gì.
+    expect(lines).toContain('Lệnh mẫu trên Switch-1:')
+    expect(lines).toContain('Lệnh mẫu trên Switch-2:')
+    expect(lines).toContain('`switchport mode trunk`')
   })
 })
 

@@ -33,6 +33,7 @@ import { drawMasteryTest, masteryDrawCount } from '../../engine/masteryPool'
 import type { Question } from '../../engine/contentSchema'
 import { loadModules } from '../../content'
 import { canChallengeModule, useProgress } from '../../store/progress'
+import { milestoneOfModule } from '../graduation/milestones'
 import { useT } from '../../i18n'
 import { playEarcon } from '../../audio/earcons'
 import { Button } from '../../components/Button'
@@ -100,6 +101,8 @@ export function ModuleTestPage() {
   // lời nói dối, và nó rơi trúng khoảnh khắc peak-end (spec 2.1 bước 6).
   // Suy từ dữ liệu, không đếm cứng số module.
   const isFinalModule = allModules.at(-1)?.id === module.id
+  // Mốc tốt nghiệp (nếu module này là cửa của một mốc) — nút hiện ở màn ĐẬU.
+  const gradMilestone = milestoneOfModule(module.id)
 
   // Thi sau khi học hết bài trong module — bài thi lấy chất liệu từ đó.
   const allLessonsDone = lessonsInOrder(module).every((l) => completedLessons[l.id] !== undefined)
@@ -301,6 +304,13 @@ export function ModuleTestPage() {
         )}
 
         <div className="flex flex-wrap items-center gap-3">
+          {/* Đậu đúng module MỐC (cuối nhập môn / cuối khóa) thì mở cửa
+              màn tốt nghiệp — mốc suy từ dữ liệu, thêm module là tự dời. */}
+          {phase.passed && gradMilestone !== null && (
+            <Button onClick={() => void navigate(`/tot-nghiep/${gradMilestone.id}`)}>
+              {t('test.gradLink')}
+            </Button>
+          )}
           {nextChallengeable && nextModule !== undefined && (
             <Button
               onClick={() => {

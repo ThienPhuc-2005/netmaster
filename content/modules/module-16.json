@@ -1,0 +1,2086 @@
+{
+  "id": "module-16",
+  "order": 16,
+  "part": "D",
+  "title": { "vi": "OSPF — Các router tự hỏi đường nhau" },
+  "stages": [
+    { "id": "m16-chang-1", "title": { "vi": "Khai đường bằng tay tới lúc gãy" }, "lessonIds": ["m16-bai-1"] },
+    { "id": "m16-chang-2", "title": { "vi": "Hai router làm quen" }, "lessonIds": ["m16-bai-2"] },
+    { "id": "m16-chang-3", "title": { "vi": "Chép bản đồ cho giống nhau" }, "lessonIds": ["m16-bai-3"] },
+    { "id": "m16-chang-4", "title": { "vi": "Đường nào rẻ thì đi" }, "lessonIds": ["m16-bai-4"] },
+    { "id": "m16-chang-5", "title": { "vi": "Đứt đường, tự tìm lối vòng" }, "lessonIds": ["m16-bai-5"] }
+  ],
+
+  "palace": {
+    "id": "m16-cung-dien-ospf",
+    "title": { "vi": "Tòa nhà 4 tầng làm quen" },
+    "floors": 4,
+    "roomsPerFloor": 2,
+    "keyStyle": "text",
+    "keyLabel": { "vi": "Tên bậc" },
+    "nameLabel": { "vi": "Bậc này nghĩa là" },
+    "keyPlaceholder": { "vi": "ví dụ Init" },
+    "namePlaceholder": { "vi": "ví dụ mới nghe tiếng chào một chiều" },
+    "keyHint": { "vi": "tên bậc ghi trên cửa phòng" },
+    "nameHint": { "vi": "chuyện đang xảy ra ở bậc này" },
+    "rooms": [
+      {
+        "id": "m16-r-down",
+        "floor": 1,
+        "position": 1,
+        "keys": ["Down"],
+        "name": "im lặng hoàn toàn",
+        "nameAliases": ["mất hẳn tiếng chào", "im hơi lặng tiếng"],
+        "imageId": "ospf-silent-speaker",
+        "story": {
+          "vi": "Tầng trệt phòng Down: chiếc loa treo trên tường im bặt, chẳng một tiếng chào nào vọng tới — trong sổ của router, hàng xóm vẫn còn là chỗ trống."
+        }
+      },
+      {
+        "id": "m16-r-attempt",
+        "floor": 1,
+        "position": 2,
+        "keys": ["Attempt"],
+        "name": "gọi riêng từng nhà",
+        "nameAliases": ["chủ động gọi riêng", "gọi đích danh hàng xóm"],
+        "imageId": "ospf-lone-phone",
+        "story": {
+          "vi": "Cạnh đó, phòng Attempt: một chiếc điện thoại quay số gọi đích danh sang nhà hàng xóm, vì ở xóm này hét chung ra giữa đường thì chẳng ai nghe thấy."
+        },
+        "note": {
+          "vi": "Bậc này chỉ gặp ở mạng NBMA (kiểu Frame Relay), nơi router phải gọi riêng từng láng giềng thay vì phát chung một tiếng chào. Mạng Ethernet thường bỏ qua bậc này."
+        }
+      },
+      {
+        "id": "m16-r-init",
+        "floor": 2,
+        "position": 1,
+        "keys": ["Init"],
+        "name": "mới nghe tiếng chào một chiều",
+        "nameAliases": ["nghe được hello nhưng thiếu tên mình", "tiếng chào một chiều"],
+        "imageId": "ospf-name-card",
+        "story": {
+          "vi": "Tầng hai phòng Init: một tấm danh thiếp vừa luồn qua khe cửa, trên đó có tên hàng xóm mà tìm mỏi mắt vẫn thiếu tên mình."
+        }
+      },
+      {
+        "id": "m16-r-2way",
+        "floor": 2,
+        "position": 2,
+        "keys": ["2-Way"],
+        "name": "hai bên đã thấy tên nhau",
+        "nameAliases": ["nhìn thấy nhau hai chiều", "đã nhận ra nhau"],
+        "imageId": "ospf-handshake",
+        "story": {
+          "vi": "Kế bên là phòng 2-Way: hai bàn tay bắt chặt giữa sảnh, vì tấm thiếp lần này có cả tên mình nằm trong danh sách hàng xóm."
+        }
+      },
+      {
+        "id": "m16-r-exstart",
+        "floor": 3,
+        "position": 1,
+        "keys": ["ExStart"],
+        "name": "chốt ai nói trước",
+        "nameAliases": ["chia vai chủ trì", "thỏa thuận thứ tự nói"],
+        "imageId": "ospf-gavel",
+        "story": {
+          "vi": "Tầng ba phòng ExStart: chiếc búa chủ tọa gõ một tiếng xuống bàn để chốt xem ai được mở lời trước trong cuộc trao đổi sắp tới."
+        }
+      },
+      {
+        "id": "m16-r-exchange",
+        "floor": 3,
+        "position": 2,
+        "keys": ["Exchange"],
+        "name": "trao mục lục cho nhau",
+        "nameAliases": ["đổi danh mục bản đồ", "khoe mình có trang nào"],
+        "imageId": "ospf-two-envelopes",
+        "story": {
+          "vi": "Sát vách là phòng Exchange: hai phong bì mục lục bay chéo qua nhau, mỗi bên khoe mình đang giữ những trang bản đồ mạng nào."
+        }
+      },
+      {
+        "id": "m16-r-loading",
+        "floor": 4,
+        "position": 1,
+        "keys": ["Loading"],
+        "name": "xin nốt phần còn thiếu",
+        "nameAliases": ["tải về phần thiếu", "lấy nốt trang chưa có"],
+        "imageId": "ospf-funnel",
+        "story": {
+          "vi": "Tầng nóc phòng Loading: một cái phễu lớn rót nốt những trang bản đồ còn thiếu vào kho, xin đúng phần mình đang hụt."
+        }
+      },
+      {
+        "id": "m16-r-full",
+        "floor": 4,
+        "position": 2,
+        "keys": ["Full"],
+        "name": "hai bản đồ giống hệt nhau",
+        "nameAliases": ["đã đồng bộ xong", "khớp nhau từng dòng"],
+        "imageId": "ospf-twin-maps",
+        "story": {
+          "vi": "Phòng cuối cùng, phòng Full: hai tấm bản đồ đặt chồng khít lên nhau, lệch nhau đúng không một nét — từ giây đó hai router nhìn mạng y hệt nhau."
+        }
+      }
+    ]
+  },
+
+  "lessons": [
+    {
+      "id": "m16-bai-1",
+      "missionTitle": { "vi": "Đếm số dòng phải gõ bằng tay" },
+      "steps": [
+        {
+          "type": "hook",
+          "question": {
+            "vi": "Công ty vừa mở chi nhánh thứ tư. Người quản trị mở sổ ra và thấy mình phải gõ thêm tuyến tĩnh trên cả ba router cũ, rồi gõ tiếp ba tuyến trên router mới — quên đúng một dòng là một chi nhánh câm tiếng. Tới chi nhánh thứ mười thì cuốn sổ ấy dài bao nhiêu, và hôm nào đứt cáp thì ai sửa?"
+          },
+          "visualId": "vis-hook-so-tuyen-tay"
+        },
+        {
+          "type": "pretest",
+          "questions": [
+            {
+              "kind": "cli",
+              "id": "m16-b1-pre-cli",
+              "prompt": {
+                "vi": "PC-A ở Hà Nội gọi PC-B ở Đà Nẵng thì lặng thinh, dù dây nối giữa hai router vẫn tốt. Console đang cắm vào Router-DN. Hãy tra bảng định tuyến của nó và tự xem router này có biết đường về mạng 192.168.1.0 hay không. Sai cũng không sao — phần này không tính điểm."
+              },
+              "spec": {
+                "initial": {
+                  "devices": [
+                    {
+                      "kind": "pc",
+                      "id": "pc-a",
+                      "hostname": "PC-A (Hà Nội)",
+                      "port": { "id": "eth0", "mac": "AA:BB:CC:16:00:01" },
+                      "ipConfig": { "ip": "192.168.1.10", "prefix": 24 },
+                      "gateway": "192.168.1.1"
+                    },
+                    {
+                      "kind": "pc",
+                      "id": "pc-b",
+                      "hostname": "PC-B (Đà Nẵng)",
+                      "port": { "id": "eth0", "mac": "AA:BB:CC:16:00:02" },
+                      "ipConfig": { "ip": "192.168.2.10", "prefix": 24 },
+                      "gateway": "192.168.2.1"
+                    },
+                    {
+                      "kind": "switch",
+                      "id": "sw-1",
+                      "hostname": "Switch-HN",
+                      "ports": [
+                        { "id": "p1", "vlan": 1 },
+                        { "id": "p2", "vlan": 1 }
+                      ]
+                    },
+                    {
+                      "kind": "switch",
+                      "id": "sw-2",
+                      "hostname": "Switch-DN",
+                      "ports": [
+                        { "id": "p1", "vlan": 1 },
+                        { "id": "p2", "vlan": 1 }
+                      ]
+                    },
+                    {
+                      "kind": "router",
+                      "id": "r-1",
+                      "hostname": "Router-HN",
+                      "ports": [
+                        { "id": "g0", "mac": "AA:BB:CC:16:00:11", "ipConfig": { "ip": "192.168.1.1", "prefix": 24 } },
+                        { "id": "g1", "mac": "AA:BB:CC:16:00:12", "ipConfig": { "ip": "10.0.12.1", "prefix": 24 } }
+                      ],
+                      "staticRoutes": [{ "destination": "192.168.2.0", "prefix": 24, "nextHop": "10.0.12.2" }]
+                    },
+                    {
+                      "kind": "router",
+                      "id": "r-2",
+                      "hostname": "Router-DN",
+                      "ports": [
+                        { "id": "g0", "mac": "AA:BB:CC:16:00:21", "ipConfig": { "ip": "192.168.2.1", "prefix": 24 } },
+                        { "id": "g1", "mac": "AA:BB:CC:16:00:22", "ipConfig": { "ip": "10.0.12.2", "prefix": 24 } }
+                      ],
+                      "staticRoutes": []
+                    }
+                  ],
+                  "links": [
+                    { "id": "l1", "a": { "deviceId": "pc-a", "portId": "eth0" }, "b": { "deviceId": "sw-1", "portId": "p1" } },
+                    { "id": "l2", "a": { "deviceId": "sw-1", "portId": "p2" }, "b": { "deviceId": "r-1", "portId": "g0" } },
+                    { "id": "l3", "a": { "deviceId": "pc-b", "portId": "eth0" }, "b": { "deviceId": "sw-2", "portId": "p1" } },
+                    { "id": "l4", "a": { "deviceId": "sw-2", "portId": "p2" }, "b": { "deviceId": "r-2", "portId": "g0" } },
+                    { "id": "wan-12", "a": { "deviceId": "r-1", "portId": "g1" }, "b": { "deviceId": "r-2", "portId": "g1" } }
+                  ]
+                },
+                "deviceId": "r-2",
+                "goals": [{ "kind": "viewed", "command": "show ip route", "deviceId": "r-2" }],
+                "solution": [{ "deviceId": "r-2", "lines": ["show ip route"] }]
+              },
+              "hintTopic": { "vi": "lệnh xem bảng định tuyến của router" },
+              "explain": {
+                "vi": "Bảng của Router-DN chỉ có hai dòng chữ C — hai mạng nó nối trực tiếp. Đường về 192.168.1.0 thì trống trơn, vì người quản trị gõ tuyến tĩnh ở Hà Nội mà quên gõ chiều ngược lại. Gói tin đi được sang tới nơi nhưng lời đáp lạc đường về, và người dùng chỉ thấy mạng câm."
+              }
+            }
+          ],
+          "encouragement": {
+            "vi": "Mò được tới đâu cũng tốt — điều đáng nhớ là bảng trống ấy không phải lỗi thiết bị, mà là một dòng con người quên gõ."
+          }
+        },
+        {
+          "type": "teach",
+          "screens": [
+            {
+              "conceptId": "m16-gioi-han-tinh",
+              "visualId": "vis-gioi-han-tuyen-tinh",
+              "body": {
+                "vi": "Tuyến tĩnh là bạn cầm tay chỉ đường cho router: mạng đó đi lối này. Cách ấy gọn khi có hai ba router, nhưng số dòng phải gõ phình theo số mạng nhân số router. Bốn chi nhánh, mỗi nơi một mạng LAN thì mỗi router phải biết ba mạng của người khác — thêm một chi nhánh là mở lại từng router cũ để gõ thêm. Tệ hơn nữa, tuyến tĩnh không biết cựa quậy: đường bạn chỉ mà đứt thì router vẫn cắm cúi đẩy gói tin vào chỗ đứt, tới khi có người tới sửa bằng tay."
+              },
+              "deepDive": {
+                "vi": "Có một chỗ tuyến tĩnh vẫn là lựa chọn đúng tới tận hôm nay: tuyến mặc định ra Internet. Mạng nhà bạn chỉ có đúng một lối ra, chẳng có gì để chọn, nên khai một dòng là xong và không cần giao thức nào bàn bạc. Quy tắc nghề gọn lại thành: chỗ nào chỉ có một đường thì chỉ tay, chỗ nào có nhiều đường và đường có thể đứt thì để router tự lo."
+              }
+            },
+            {
+              "conceptId": "m16-dinh-tuyen-dong",
+              "visualId": "vis-dinh-tuyen-dong",
+              "body": {
+                "vi": "Định tuyến động lật ngược việc: thay vì bạn kể cho router nghe về mạng của người khác, bạn chỉ khai những mạng của CHÍNH NÓ, rồi các router tự kể cho nhau nghe. OSPF là giao thức làm việc đó trong mạng doanh nghiệp. Thêm một chi nhánh thì chỉ cấu hình router mới, các router cũ tự nghe tin và tự thêm dòng vào bảng. Đường đứt thì tin xấu cũng lan theo cách đó, và bảng tự sửa lại trong vài giây."
+              },
+              "deepDive": {
+                "vi": "OSPF viết tắt của Open Shortest Path First: mở (ai cũng dùng được, không thuộc riêng hãng nào) và chọn đường ngắn nhất trước. Mỗi router giữ một tấm bản đồ toàn mạng rồi tự tính đường ngắn nhất trên tấm bản đồ ấy, chứ không nghe hàng xóm mách rằng đường này xa mấy chặng. Chính vì tự tính trên bản đồ mà OSPF không bị lừa bởi những vòng lặp mà các họ giao thức đời cũ hay vấp."
+              }
+            }
+          ]
+        },
+        {
+          "type": "practice",
+          "fadingLevel": 0,
+          "workedExample": {
+            "vi": "Đếm thử số dòng tuyến tĩnh phải gõ, từng bước. Bước 1: đếm số mạng LAN — bốn chi nhánh là bốn mạng. Bước 2: nhìn từ chỗ đứng của MỘT router: nó nối trực tiếp mạng của mình nên khỏi khai, còn lại ba mạng của người khác phải chỉ đường, tức là ba dòng. Bước 3: nhân lên cho cả nhóm — bốn router, mỗi cái ba dòng, tổng cộng mười hai dòng phải gõ đúng và không sót. Bước 4: thêm chi nhánh thứ năm và đếm lại — giờ mỗi router bốn dòng, tổng hai mươi dòng, tức là bạn phải mở lại cả bốn router cũ. Bước 5: rút ra công thức đơn giản để nhớ — mỗi router phải khai số mạng của người khác, và con số đó lớn dần theo mỗi lần mở chi nhánh."
+          },
+          "exercises": [
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m16-b1-prac-1",
+                "prompt": {
+                  "vi": "Năm router, mỗi router một mạng LAN riêng, nối nhau đủ đường. Nếu chỉ đường bằng tuyến tĩnh thì MỖI router phải khai bao nhiêu tuyến để biết đường tới mọi LAN còn lại?"
+                },
+                "accept": ["4", "bốn", "bon", "4 tuyến", "4 tuyen", "bốn tuyến", "bon tuyen", "bốn dòng", "bon dong"],
+                "hintTopic": { "vi": "số mạng mà router phải nghe kể về" }
+              },
+              "hint": {
+                "vi": "Mạng của chính nó thì router đã nối trực tiếp, khỏi khai. Còn lại mấy mạng của người khác?"
+              },
+              "solution": {
+                "vi": "Bốn. Router nối trực tiếp mạng của mình nên chỉ còn bốn mạng của người khác phải chỉ đường — và cả nhóm năm router gộp lại là hai mươi dòng phải gõ đúng."
+              }
+            },
+            {
+              "question": {
+                "kind": "mcq",
+                "id": "m16-b1-prac-2",
+                "prompt": {
+                  "vi": "Một sợi cáp trên đường tuyến tĩnh đang trỏ tới bị đứt, trong khi vẫn còn một lối vòng khác đi tới đích. Router làm gì?"
+                },
+                "choices": [
+                  { "vi": "Vẫn đẩy gói tin vào lối cũ, vì tuyến tĩnh chỉ đổi khi có người sửa" },
+                  { "vi": "Tự dò tìm lối vòng còn lại rồi ghi đè dòng tuyến tĩnh đã hỏng" },
+                  { "vi": "Xóa hẳn tuyến tĩnh đó khỏi bảng và báo lỗi về cho máy quản trị" }
+                ],
+                "answerIndex": 0,
+                "hintTopic": { "vi": "ai là người sửa một dòng tuyến tĩnh" }
+              },
+              "hint": {
+                "vi": "Dòng tuyến tĩnh do ai gõ vào? Vậy nó đổi được nhờ ai?"
+              },
+              "solution": {
+                "vi": "Nó vẫn đẩy gói tin vào lối cũ. Tuyến tĩnh là lời của con người, và chỉ con người sửa được — router chẳng tự dò lối vòng, cũng chẳng tự xóa dòng bạn đã gõ."
+              }
+            }
+          ]
+        },
+        {
+          "type": "retrieval",
+          "questions": [
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m16-b1-ret-1",
+                "prompt": {
+                  "vi": "Không nhìn lại bài: với định tuyến động, trên mỗi router bạn khai những mạng của ai?"
+                },
+                "accept": [
+                  "mạng của chính nó",
+                  "mang cua chinh no",
+                  "mạng của mình",
+                  "mang cua minh",
+                  "mạng nối trực tiếp",
+                  "mang noi truc tiep",
+                  "mạng của chính router đó",
+                  "mang cua chinh router do"
+                ]
+              },
+              "hint": { "vi": "Đó chính là chỗ khác nhau với tuyến tĩnh: tĩnh thì kể về mạng của người khác." },
+              "solution": {
+                "vi": "Mạng của chính nó — những mạng router đang nối trực tiếp. Phần còn lại các router tự kể cho nhau nghe, đó mới là cái làm nên chữ động."
+              }
+            }
+          ],
+          "selfExplain": {
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: vì sao mạng càng lớn thì tuyến tĩnh càng đuối?"
+            },
+            "keywords": [
+              ["số dòng", "so dong", "nhiều tuyến", "nhieu tuyen", "phình", "phinh", "nhân lên", "nhan len"],
+              ["từng router", "tung router", "gõ tay", "go tay", "sửa tay", "sua tay", "mở lại", "mo lai"],
+              ["đứt", "dut", "hỏng đường", "hong duong", "sự cố", "su co"],
+              ["tự sửa", "tu sua", "tự học", "tu hoc", "tự đổi", "tu doi", "chết đứng", "chet dung"]
+            ],
+            "exampleAnswer": {
+              "vi": "Vì số dòng phải gõ phình lên theo số mạng nhân số router, nên thêm một chi nhánh là phải mở lại từng router cũ và chỉ cần sót một dòng là có chỗ mất liên lạc. Tệ hơn, đường đứt thì tuyến tĩnh nằm im chờ người tới sửa, trong khi định tuyến động tự đổi bảng trong vài giây."
+            }
+          }
+        },
+        {
+          "type": "summary",
+          "bullets": [
+            { "vi": "Tuyến tĩnh là bạn chỉ tay từng đường: số dòng phình theo số mạng nhân số router." },
+            { "vi": "Tuyến tĩnh không tự cựa quậy — đường đứt thì nằm im chờ người sửa." },
+            { "vi": "Định tuyến động lật ngược việc: khai mạng của chính mình, để router tự kể cho nhau." }
+          ],
+          "nextTeaser": {
+            "vi": "Nhưng hai router chưa từng biết nhau thì kể chuyện cho ai nghe? Bài sau xem chúng làm quen — và có một tòa nhà bốn tầng để bạn nhớ trọn cuộc làm quen ấy."
+          }
+        }
+      ]
+    },
+    {
+      "id": "m16-bai-2",
+      "missionTitle": { "vi": "Bắt được tiếng chào của hàng xóm" },
+      "steps": [
+        {
+          "type": "hook",
+          "question": {
+            "vi": "Hai router vừa được nối vào nhau bằng một sợi cáp. Không ai khai tên, không ai khai địa chỉ của bên kia. Vậy mà vài giây sau, mỗi cái đã có tên hàng xóm trong bảng và biết đường sang các mạng phía bên kia. Chúng làm quen bằng cách nào, và cái bắt tay ấy đi qua mấy bậc?"
+          },
+          "visualId": "vis-hook-lam-quen-router"
+        },
+        {
+          "type": "pretest",
+          "questions": [
+            {
+              "kind": "mcq",
+              "id": "m16-b2-pre-1",
+              "prompt": { "vi": "Đoán thử: hai router nối dây với nhau thì cần gì nữa mới thành láng giềng OSPF?" },
+              "choices": [
+                { "vi": "Hai cổng phải cùng subnet và mỗi bên phải khai cổng đó vào OSPF" },
+                { "vi": "Chỉ cần nối dây là đủ, OSPF tự bật khi thấy cổng có địa chỉ" },
+                { "vi": "Phải khai tay địa chỉ của router bên kia vào danh sách láng giềng" }
+              ],
+              "answerIndex": 0,
+              "explain": {
+                "vi": "Nối dây mới là điều kiện đầu. Hai cổng còn phải cùng một subnet, và MỖI BÊN phải tự khai cổng của mình vào một câu network — đây là chỗ hay hỏng nhất khi cấu hình OSPF."
+              }
+            }
+          ],
+          "encouragement": {
+            "vi": "Đoán sao cũng được — lát nữa bạn sẽ tự nhìn thấy dòng chữ mà router in ra khi cuộc làm quen chưa xong."
+          }
+        },
+        {
+          "type": "teach",
+          "screens": [
+            {
+              "conceptId": "m16-hello",
+              "visualId": "vis-goi-hello",
+              "body": {
+                "vi": "Cứ mười giây một lần, router bật OSPF lại phát ra một gói hello trên mỗi cổng đã được khai vào OSPF. Gói ấy nói ba điều: tôi là ai, tôi ở subnet nào, và tôi đang nghe thấy những ai. Ai bắt được tiếng chào đó, thấy mình cùng subnet và cũng đang khai cổng của mình vào OSPF thì đáp lại — thế là hai bên vào cuộc làm quen. Dòng hello ấy còn làm thêm một việc: nó là nhịp tim. Im tiếng vài nhịp là bên kia biết hàng xóm đã mất, và bảng đường phải tính lại."
+              },
+              "deepDive": {
+                "vi": "Ba điều kiện thật sự để một cặp láng giềng lên được, đúng thứ tự phòng lab kiểm: hai đầu dây đều là router đã bật tiến trình OSPF; hai cổng cùng một subnet; và mỗi đầu đều đã khai cổng của mình trong một câu network. Thiết bị thật còn soi thêm vài thứ nữa — hello timer hai bên phải bằng nhau, area phải khớp, xác thực nếu bật cũng phải khớp. App này đóng băng ở ba điều kiện trên và nói thẳng chỗ mình giản lược, thay vì vờ như đã mô phỏng hết."
+              }
+            },
+            {
+              "conceptId": "m16-lam-quen",
+              "visualId": "vis-toa-lam-quen",
+              "palaceTour": ["m16-r-down", "m16-r-attempt", "m16-r-init", "m16-r-2way"],
+              "body": {
+                "vi": "Cuộc làm quen của hai router đi qua tám bậc có tên, và cách chắc nhất để nhớ chúng là đi bộ qua một tòa nhà bốn tầng, mỗi tầng hai phòng. Hai tầng dưới là chuyện chào hỏi. Hãy đi xem tầng trệt và tầng hai trước: bốn phòng đầu kể lại quãng từ lúc còn im lặng tới lúc hai bên chính thức nhìn thấy nhau."
+              },
+              "deepDive": {
+                "vi": "Vì sao 2-Way đã nhìn thấy nhau rồi mà cuộc làm quen vẫn chưa xong? Vì thấy nhau khác với tin nhau: tới đây hai router mới biết có hàng xóm, còn bản đồ mạng thì mỗi bên vẫn giữ một bản của riêng mình. Trên mạng nhiều router chung một đoạn cáp, có những cặp dừng lại vĩnh viễn ở 2-Way và thế là đủ — chúng chỉ đồng bộ đầy đủ với router được bầu làm đầu mối. Đó là kiến thức đọc-hiểu, không phải hành vi app này mô phỏng."
+              }
+            }
+          ]
+        },
+        {
+          "type": "practice",
+          "fadingLevel": 1,
+          "exercises": [
+            {
+              "question": {
+                "kind": "cli",
+                "id": "m16-b2-prac-cli",
+                "prompt": {
+                  "vi": "Router-HN đã bật OSPF và khai đủ hai mạng, nhưng PC-A vẫn không gọi được PC-B. Console đang cắm vào Router-HN. Hãy tra đúng bảng cho biết cuộc làm quen với hàng xóm đang dừng ở đâu và vì sao."
+                },
+                "spec": {
+                  "initial": {
+                    "devices": [
+                      {
+                        "kind": "pc",
+                        "id": "pc-a",
+                        "hostname": "PC-A (Hà Nội)",
+                        "port": { "id": "eth0", "mac": "AA:BB:CC:16:00:01" },
+                        "ipConfig": { "ip": "192.168.1.10", "prefix": 24 },
+                        "gateway": "192.168.1.1"
+                      },
+                      {
+                        "kind": "pc",
+                        "id": "pc-b",
+                        "hostname": "PC-B (Đà Nẵng)",
+                        "port": { "id": "eth0", "mac": "AA:BB:CC:16:00:02" },
+                        "ipConfig": { "ip": "192.168.2.10", "prefix": 24 },
+                        "gateway": "192.168.2.1"
+                      },
+                      {
+                        "kind": "switch",
+                        "id": "sw-1",
+                        "hostname": "Switch-HN",
+                        "ports": [
+                          { "id": "p1", "vlan": 1 },
+                          { "id": "p2", "vlan": 1 }
+                        ]
+                      },
+                      {
+                        "kind": "switch",
+                        "id": "sw-2",
+                        "hostname": "Switch-DN",
+                        "ports": [
+                          { "id": "p1", "vlan": 1 },
+                          { "id": "p2", "vlan": 1 }
+                        ]
+                      },
+                      {
+                        "kind": "router",
+                        "id": "r-1",
+                        "hostname": "Router-HN",
+                        "ports": [
+                          { "id": "g0", "mac": "AA:BB:CC:16:00:11", "ipConfig": { "ip": "192.168.1.1", "prefix": 24 } },
+                          { "id": "g1", "mac": "AA:BB:CC:16:00:12", "ipConfig": { "ip": "10.0.12.1", "prefix": 24 } }
+                        ],
+                        "staticRoutes": [],
+                        "ospf": {
+                          "processId": 1,
+                          "networks": [
+                            { "ip": "192.168.1.0", "wildcard": "0.0.0.255", "area": 0 },
+                            { "ip": "10.0.12.0", "wildcard": "0.0.0.255", "area": 0 }
+                          ]
+                        }
+                      },
+                      {
+                        "kind": "router",
+                        "id": "r-2",
+                        "hostname": "Router-DN",
+                        "ports": [
+                          { "id": "g0", "mac": "AA:BB:CC:16:00:21", "ipConfig": { "ip": "192.168.2.1", "prefix": 24 } },
+                          { "id": "g1", "mac": "AA:BB:CC:16:00:22", "ipConfig": { "ip": "10.0.12.2", "prefix": 24 } }
+                        ],
+                        "staticRoutes": []
+                      }
+                    ],
+                    "links": [
+                      { "id": "l1", "a": { "deviceId": "pc-a", "portId": "eth0" }, "b": { "deviceId": "sw-1", "portId": "p1" } },
+                      { "id": "l2", "a": { "deviceId": "sw-1", "portId": "p2" }, "b": { "deviceId": "r-1", "portId": "g0" } },
+                      { "id": "l3", "a": { "deviceId": "pc-b", "portId": "eth0" }, "b": { "deviceId": "sw-2", "portId": "p1" } },
+                      { "id": "l4", "a": { "deviceId": "sw-2", "portId": "p2" }, "b": { "deviceId": "r-2", "portId": "g0" } },
+                      { "id": "wan-12", "a": { "deviceId": "r-1", "portId": "g1" }, "b": { "deviceId": "r-2", "portId": "g1" } }
+                    ]
+                  },
+                  "deviceId": "r-1",
+                  "goals": [{ "kind": "viewed", "command": "show ip ospf neighbor", "deviceId": "r-1" }],
+                  "solution": [{ "deviceId": "r-1", "lines": ["show ip ospf neighbor"] }]
+                },
+                "hintTopic": { "vi": "bảng liệt kê hàng xóm OSPF" }
+              },
+              "hint": {
+                "vi": "Cú pháp khuyết: show ip ospf … — phần còn thiếu là từ tiếng Anh chỉ hàng xóm."
+              },
+              "solution": {
+                "vi": "show ip ospf neighbor. Bảng in ra một dòng ở trạng thái DOWN kèm lý do no-ospf-process: đầu bên kia còn chưa bật tiến trình OSPF, nên tiếng chào của Router-HN bay sang mà chẳng ai đáp."
+              }
+            },
+            {
+              "question": {
+                "kind": "mcq",
+                "id": "m16-b2-prac-2",
+                "prompt": {
+                  "vi": "Router-HN nhận được hello của hàng xóm nhưng trong tiếng chào đó thiếu hẳn tên mình. Cuộc làm quen đang ở bậc nào?"
+                },
+                "choices": [
+                  { "vi": "Init — mới nghe được tiếng chào đi một chiều" },
+                  { "vi": "2-Way — hai bên đều đã thấy tên của nhau" },
+                  { "vi": "Full — hai bên đã chép xong bản đồ mạng" }
+                ],
+                "answerIndex": 0,
+                "hintTopic": { "vi": "bậc mà tiếng chào mới đi được một chiều" }
+              },
+              "hint": {
+                "vi": "Nhớ lại tấm danh thiếp luồn qua khe cửa ở tầng hai: trên đó có tên hàng xóm mà thiếu tên mình."
+              },
+              "solution": {
+                "vi": "Init. Nghe được tiếng chào nhưng tên mình còn vắng trong đó nghĩa là bên kia chưa nghe thấy mình — tiếng chào mới đi được một chiều. Có tên mình trong đó thì mới lên 2-Way."
+              }
+            }
+          ]
+        },
+        {
+          "type": "retrieval",
+          "questions": [
+            {
+              "question": {
+                "kind": "palace-walk",
+                "id": "m16-b2-ret-walk",
+                "prompt": {
+                  "vi": "Đóng bài lại và đi bộ hai tầng dưới của tòa nhà từ trí nhớ: mỗi phòng là bậc nào của cuộc làm quen, và ở bậc đó đang xảy ra chuyện gì?"
+                },
+                "rooms": ["m16-r-down", "m16-r-attempt", "m16-r-init", "m16-r-2way"],
+                "hintTopic": { "vi": "đi từ tầng trệt lên, trái sang phải" }
+              },
+              "hint": {
+                "vi": "Tầng trệt là lúc còn chưa nghe thấy gì; tầng hai là lúc tiếng chào đã bay qua bay lại."
+              },
+              "solution": {
+                "vi": "Down (im lặng hoàn toàn) → Attempt (gọi riêng từng nhà, chỉ có ở mạng NBMA) → Init (mới nghe tiếng chào một chiều) → 2-Way (hai bên đã thấy tên nhau)."
+              }
+            }
+          ],
+          "selfExplain": {
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: gói hello làm những việc gì cho OSPF?"
+            },
+            "keywords": [
+              ["tìm", "tim", "làm quen", "lam quen", "phát hiện", "phat hien", "hàng xóm", "hang xom"],
+              ["cùng subnet", "cung subnet", "kiểm", "kiem", "khớp", "khop", "điều kiện", "dieu kien"],
+              ["nhịp tim", "nhip tim", "đều đặn", "deu dan", "giữ", "giu", "còn sống", "con song"],
+              ["mất", "mat", "im tiếng", "im tieng", "tính lại", "tinh lai", "đứt", "dut"]
+            ],
+            "exampleAnswer": {
+              "vi": "Gói hello vừa để tìm hàng xóm vừa để kiểm xem hai bên có hợp nhau không: cùng subnet, cùng khai cổng đó vào OSPF thì mới đáp lời. Sau khi quen rồi, nó thành nhịp tim — im tiếng vài nhịp là bên kia biết hàng xóm đã mất và tính lại đường ngay."
+            }
+          }
+        },
+        {
+          "type": "summary",
+          "bullets": [
+            { "vi": "Gói hello đi tìm hàng xóm và sau đó làm nhịp tim giữ mối quan hệ." },
+            { "vi": "Ba điều kiện lên láng giềng: đều bật OSPF, cùng subnet, mỗi bên tự khai cổng của mình." },
+            { "vi": "Hai tầng dưới của tòa nhà: Down, Attempt, Init, 2-Way — từ im lặng tới thấy tên nhau." }
+          ],
+          "nextTeaser": {
+            "vi": "Thấy tên nhau xong thì hai router bắt đầu chép bản đồ cho giống hệt nhau. Bài sau đi nốt hai tầng trên của tòa nhà, và bạn sẽ tự tay bật OSPF cho một router đang câm."
+          }
+        }
+      ]
+    },
+    {
+      "id": "m16-bai-3",
+      "missionTitle": { "vi": "Chép bản đồ tới lúc giống hệt" },
+      "steps": [
+        {
+          "type": "hook",
+          "question": {
+            "vi": "Bảng láng giềng in ra đúng một chữ: FULL. Người mới đọc thường mừng vì thấy chữ đầy đủ, rồi bỏ qua luôn. Nhưng đầy đủ ở đây là đầy đủ CÁI GÌ, và giữa 2-Way với Full thì hai router đã kịp trao nhau những gì?"
+          },
+          "visualId": "vis-hook-chu-full"
+        },
+        {
+          "type": "pretest",
+          "questions": [
+            {
+              "kind": "mcq",
+              "id": "m16-b3-pre-1",
+              "prompt": { "vi": "Đoán thử: hai router ở trạng thái Full nghĩa là gì?" },
+              "choices": [
+                { "vi": "Hai bên đã giữ cùng một tấm bản đồ mạng, giống nhau từng dòng" },
+                { "vi": "Hai bên đã dùng hết băng thông của sợi cáp nối giữa chúng" },
+                { "vi": "Hai bên đã khai đủ mọi mạng LAN của công ty vào câu network" }
+              ],
+              "answerIndex": 0,
+              "explain": {
+                "vi": "Full nói về BẢN ĐỒ, không nói về băng thông hay số câu lệnh: hai router đã đồng bộ xong cơ sở dữ liệu trạng thái đường đi và giờ nhìn mạng giống hệt nhau."
+              }
+            }
+          ],
+          "encouragement": {
+            "vi": "Chữ FULL này là chỗ rất dễ hiểu lệch — nhận ra sớm thì lúc đọc bảng thật bạn biết mình đang nhìn cái gì."
+          }
+        },
+        {
+          "type": "teach",
+          "screens": [
+            {
+              "conceptId": "m16-dong-bo",
+              "visualId": "vis-dong-bo-ban-do",
+              "palaceTour": ["m16-r-exstart", "m16-r-exchange", "m16-r-loading", "m16-r-full"],
+              "body": {
+                "vi": "Sau khi thấy tên nhau, hai router chuyển sang việc nặng hơn: chép bản đồ mạng cho giống hệt nhau. Tấm bản đồ ấy là danh sách mọi đường nối mà cả vùng đang có, và chỉ khi hai bên giữ bản y hệt thì đường tính ra mới tin được. Hãy đi nốt tầng ba và tầng nóc của tòa nhà: bốn phòng còn lại kể lại quãng từ lúc chốt ai nói trước tới lúc hai bản đồ chồng khít lên nhau."
+              },
+              "deepDive": {
+                "vi": "Vì sao phải chốt ai nói trước ở bậc ExStart? Vì nếu hai bên cùng mở lời một lúc thì cuộc trao đổi loạn ngay từ câu đầu — router có số hiệu lớn hơn được cầm trịch, y như một cuộc họp phải có người điều khiển. Ở bậc Exchange, cái được trao là MỤC LỤC chứ chưa phải nội dung: mỗi bên gửi danh sách những trang mình đang giữ. Nhờ vậy tới bậc Loading, mỗi bên chỉ xin đúng phần mình đang hụt, thay vì chép lại cả tập từ đầu."
+              }
+            },
+            {
+              "conceptId": "m16-area-0",
+              "visualId": "vis-network-area-0",
+              "body": {
+                "vi": "Bật OSPF trên router gồm hai việc. Việc thứ nhất là mở tiến trình bằng lệnh router ospf kèm một số hiệu — số này chỉ có ý nghĩa trong nội bộ máy đó, hai router mang số khác nhau vẫn quen nhau bình thường. Việc thứ hai mới quan trọng: mỗi câu network khai một dải địa chỉ và mọi cổng có địa chỉ nằm trong dải ấy sẽ tham gia OSPF. Dải viết bằng wildcard mask bạn đã học ở Module 13, tức mặt nạ đảo: 0.0.0.255 nghĩa là ba nhóm số đầu phải khớp, nhóm cuối tùy ý. Cuối câu là area 0 — vùng xương sống mà mọi mạng OSPF đều phải có."
+              },
+              "deepDive": {
+                "vi": "Mạng lớn chia thành nhiều area để mỗi vùng chỉ phải giữ bản đồ chi tiết của chính mình, và mọi area khác đều phải nối về area 0. Phạm vi của app này đóng băng ở area 0 nên bạn sẽ luôn gõ area 0 — gõ số khác là máy từ chối, cố ý như vậy để bạn quen tay với vùng xương sống trước. Một mẹo đọc câu network cho đúng: nó không nói mạng nào được quảng bá, mà nói CỔNG NÀO tham gia OSPF; cổng đã tham gia thì mạng của cổng đó tự được quảng bá theo."
+              }
+            }
+          ]
+        },
+        {
+          "type": "practice",
+          "fadingLevel": 1,
+          "exercises": [
+            {
+              "question": {
+                "kind": "cli",
+                "id": "m16-b3-prac-cli",
+                "prompt": {
+                  "vi": "Đây đúng là mạng của bài trước: Router-DN còn chưa bật OSPF nên hai chi nhánh chưa gọi được nhau. Console đang cắm sẵn vào Router-DN. Hãy bật tiến trình OSPF số 1 và khai cả hai mạng của nó vào area 0, sao cho PC-A gọi được PC-B."
+                },
+                "spec": {
+                  "initial": {
+                    "devices": [
+                      {
+                        "kind": "pc",
+                        "id": "pc-a",
+                        "hostname": "PC-A (Hà Nội)",
+                        "port": { "id": "eth0", "mac": "AA:BB:CC:16:00:01" },
+                        "ipConfig": { "ip": "192.168.1.10", "prefix": 24 },
+                        "gateway": "192.168.1.1"
+                      },
+                      {
+                        "kind": "pc",
+                        "id": "pc-b",
+                        "hostname": "PC-B (Đà Nẵng)",
+                        "port": { "id": "eth0", "mac": "AA:BB:CC:16:00:02" },
+                        "ipConfig": { "ip": "192.168.2.10", "prefix": 24 },
+                        "gateway": "192.168.2.1"
+                      },
+                      {
+                        "kind": "switch",
+                        "id": "sw-1",
+                        "hostname": "Switch-HN",
+                        "ports": [
+                          { "id": "p1", "vlan": 1 },
+                          { "id": "p2", "vlan": 1 }
+                        ]
+                      },
+                      {
+                        "kind": "switch",
+                        "id": "sw-2",
+                        "hostname": "Switch-DN",
+                        "ports": [
+                          { "id": "p1", "vlan": 1 },
+                          { "id": "p2", "vlan": 1 }
+                        ]
+                      },
+                      {
+                        "kind": "router",
+                        "id": "r-1",
+                        "hostname": "Router-HN",
+                        "ports": [
+                          { "id": "g0", "mac": "AA:BB:CC:16:00:11", "ipConfig": { "ip": "192.168.1.1", "prefix": 24 } },
+                          { "id": "g1", "mac": "AA:BB:CC:16:00:12", "ipConfig": { "ip": "10.0.12.1", "prefix": 24 } }
+                        ],
+                        "staticRoutes": [],
+                        "ospf": {
+                          "processId": 1,
+                          "networks": [
+                            { "ip": "192.168.1.0", "wildcard": "0.0.0.255", "area": 0 },
+                            { "ip": "10.0.12.0", "wildcard": "0.0.0.255", "area": 0 }
+                          ]
+                        }
+                      },
+                      {
+                        "kind": "router",
+                        "id": "r-2",
+                        "hostname": "Router-DN",
+                        "ports": [
+                          { "id": "g0", "mac": "AA:BB:CC:16:00:21", "ipConfig": { "ip": "192.168.2.1", "prefix": 24 } },
+                          { "id": "g1", "mac": "AA:BB:CC:16:00:22", "ipConfig": { "ip": "10.0.12.2", "prefix": 24 } }
+                        ],
+                        "staticRoutes": []
+                      }
+                    ],
+                    "links": [
+                      { "id": "l1", "a": { "deviceId": "pc-a", "portId": "eth0" }, "b": { "deviceId": "sw-1", "portId": "p1" } },
+                      { "id": "l2", "a": { "deviceId": "sw-1", "portId": "p2" }, "b": { "deviceId": "r-1", "portId": "g0" } },
+                      { "id": "l3", "a": { "deviceId": "pc-b", "portId": "eth0" }, "b": { "deviceId": "sw-2", "portId": "p1" } },
+                      { "id": "l4", "a": { "deviceId": "sw-2", "portId": "p2" }, "b": { "deviceId": "r-2", "portId": "g0" } },
+                      { "id": "wan-12", "a": { "deviceId": "r-1", "portId": "g1" }, "b": { "deviceId": "r-2", "portId": "g1" } }
+                    ]
+                  },
+                  "deviceId": "r-2",
+                  "goals": [
+                    { "kind": "behavior", "goal": { "kind": "ping", "from": "pc-a", "to": "pc-b", "expect": "reach" } }
+                  ],
+                  "solution": [
+                    {
+                      "deviceId": "r-2",
+                      "lines": [
+                        "enable",
+                        "configure terminal",
+                        "router ospf 1",
+                        "network 192.168.2.0 0.0.0.255 area 0",
+                        "network 10.0.12.0 0.0.0.255 area 0",
+                        "end"
+                      ]
+                    }
+                  ]
+                },
+                "hintTopic": { "vi": "hai việc phải làm để bật OSPF trên một router" }
+              },
+              "hint": {
+                "vi": "Cú pháp khuyết, gõ trong chế độ cấu hình: router ospf … rồi network <dải> <wildcard> area 0. Nhớ khai CẢ HAI mạng của Router-DN, kể cả đường nối sang Hà Nội."
+              },
+              "solution": {
+                "vi": "Vào chế độ cấu hình rồi gõ: router ospf 1, network 192.168.2.0 0.0.0.255 area 0, network 10.0.12.0 0.0.0.255 area 0. Khai thiếu câu thứ hai thì cổng g1 không tham gia OSPF, láng giềng đứng im ở lý do network-not-declared và mạng vẫn câm."
+              }
+            },
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m16-b3-prac-2",
+                "prompt": {
+                  "vi": "Trong câu network của OSPF, dải địa chỉ được viết bằng loại mặt nạ đảo tên là gì?"
+                },
+                "accept": ["wildcard", "wildcard mask", "mặt nạ đảo", "mat na dao", "mặt nạ ngược", "mat na nguoc"],
+                "hintTopic": { "vi": "loại mặt nạ đã học ở Module 13" }
+              },
+              "hint": {
+                "vi": "Nó là subnet mask lộn ngược: chỗ nào phải khớp thì ghi 0, chỗ nào tùy ý thì ghi 255."
+              },
+              "solution": {
+                "vi": "Wildcard mask, tức mặt nạ đảo. Với 0.0.0.255 thì ba nhóm số đầu phải khớp, nhóm cuối tùy ý — nên câu network 192.168.2.0 0.0.0.255 tóm đúng mọi cổng thuộc mạng 192.168.2.0/24."
+              }
+            }
+          ]
+        },
+        {
+          "type": "retrieval",
+          "questions": [
+            {
+              "question": {
+                "kind": "palace-walk",
+                "id": "m16-b3-ret-walk",
+                "prompt": {
+                  "vi": "Đóng bài lại và đi nốt hai tầng trên của tòa nhà từ trí nhớ: mỗi phòng là bậc nào, và ở bậc đó hai router đang trao nhau cái gì?"
+                },
+                "rooms": ["m16-r-exstart", "m16-r-exchange", "m16-r-loading", "m16-r-full"],
+                "hintTopic": { "vi": "tầng ba là thỏa thuận, tầng nóc là đồng bộ" }
+              },
+              "hint": {
+                "vi": "Tầng ba mở đầu bằng tiếng búa chủ tọa; tầng nóc kết thúc bằng hai tấm bản đồ chồng khít."
+              },
+              "solution": {
+                "vi": "ExStart (chốt ai nói trước) → Exchange (trao mục lục cho nhau) → Loading (xin nốt phần còn thiếu) → Full (hai bản đồ giống hệt nhau)."
+              }
+            }
+          ],
+          "selfExplain": {
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: vì sao ở bậc Exchange hai router trao MỤC LỤC trước, thay vì gửi thẳng cả tập bản đồ?"
+            },
+            "keywords": [
+              ["mục lục", "muc luc", "danh sách", "danh sach", "danh mục", "danh muc"],
+              ["thiếu", "thieu", "hụt", "hut", "phần cần", "phan can", "cái chưa có", "cai chua co"],
+              ["đỡ", "do ton", "tiết kiệm", "tiet kiem", "nhanh hơn", "nhanh hon", "khỏi chép lại", "khoi chep lai"]
+            ],
+            "exampleAnswer": {
+              "vi": "Vì trao mục lục trước thì mỗi bên tự đối chiếu và biết mình đang hụt những trang nào, rồi tới bậc Loading chỉ xin đúng phần đó. Gửi thẳng cả tập là chép lại cả những trang bên kia đã có, vừa tốn đường truyền vừa lâu hơn hẳn."
+            }
+          }
+        },
+        {
+          "type": "summary",
+          "bullets": [
+            { "vi": "Full nghĩa là hai router đã giữ cùng một tấm bản đồ mạng, giống nhau từng dòng." },
+            { "vi": "Tầng ba và tầng nóc: ExStart, Exchange, Loading, Full — chốt vai, trao mục lục, xin phần thiếu, khớp nhau." },
+            { "vi": "Bật OSPF là hai việc: mở tiến trình router ospf, rồi khai từng dải bằng network với wildcard và area 0." }
+          ],
+          "nextTeaser": {
+            "vi": "Bản đồ đã giống nhau, nhưng từ đây sang chi nhánh kia có hai lối đi. Bài sau xem router chọn lối nào và nó đo đường bằng thước gì."
+          }
+        }
+      ]
+    },
+    {
+      "id": "m16-bai-4",
+      "missionTitle": { "vi": "Đọc bảng đường router tự học" },
+      "steps": [
+        {
+          "type": "hook",
+          "question": {
+            "vi": "Từ chi nhánh Hà Nội sang chi nhánh Sài Gòn có hai lối: một sợi cáp nối thẳng, và một đường vòng qua chi nhánh Đà Nẵng. Chẳng ai bảo router phải đi lối nào, vậy mà nó chọn dứt khoát và cả nhóm đều chọn giống nhau. Nó đo hai lối đó bằng thước gì?"
+          },
+          "visualId": "vis-hook-hai-duong"
+        },
+        {
+          "type": "pretest",
+          "questions": [
+            {
+              "kind": "mcq",
+              "id": "m16-b4-pre-1",
+              "prompt": { "vi": "Đoán thử: OSPF chọn đường tới một mạng dựa vào cái gì?" },
+              "choices": [
+                { "vi": "Tổng cost của các chặng trên đường, nhỏ hơn thì thắng" },
+                { "vi": "Số thứ tự cổng trên router, cổng số nhỏ hơn được ưu tiên" },
+                { "vi": "Thứ tự các mạng được khai trong những câu network" }
+              ],
+              "answerIndex": 0,
+              "explain": {
+                "vi": "OSPF cộng cost dọc đường và chọn tổng nhỏ nhất. Số hiệu cổng hay thứ tự câu network không dính gì tới việc chọn đường."
+              }
+            }
+          ],
+          "encouragement": {
+            "vi": "Đoán sao cũng được — lát nữa bạn sẽ tự đọc con số ấy ngay trong bảng định tuyến thật."
+          }
+        },
+        {
+          "type": "teach",
+          "screens": [
+            {
+              "conceptId": "m16-cost",
+              "visualId": "vis-cost-duong-re",
+              "body": {
+                "vi": "OSPF đo đường bằng cost — một con số nói đi qua chặng này đắt bao nhiêu. Có bản đồ toàn vùng trong tay, mỗi router tự cộng cost dọc từng lối tới đích rồi giữ lối có tổng nhỏ nhất. Trong phòng lab này mỗi chặng router sang router tính cost 1, nên đường một chặng luôn thắng đường hai chặng. Vì mọi router đều tính trên cùng một tấm bản đồ nên chúng ra cùng kết quả, và không có cảnh hai router đá bóng gói tin qua lại cho nhau."
+              },
+              "deepDive": {
+                "vi": "Thiết bị thật không tính cost bằng số chặng mà tính theo băng thông: cost bằng một trăm triệu chia cho tốc độ cổng tính theo bit mỗi giây, nên cổng nhanh có cost nhỏ và được chuộng hơn. Nhờ vậy OSPF biết chọn đường cáp quang hai chặng thay vì đường thuê bao chậm một chặng. App này đóng băng ở cost 1 mỗi chặng — đơn giản hóa cố ý, khai thẳng ở đầu engine — nên bạn đọc được cách chọn đường mà không phải nhớ công thức."
+              }
+            },
+            {
+              "conceptId": "m16-bang-tu-hoc",
+              "visualId": "vis-bang-tu-hoc",
+              "body": {
+                "vi": "Kết quả của tất cả những việc trên nằm gọn trong bảng định tuyến, và lệnh show ip route mở nó ra. Đầu mỗi dòng là một chữ cái cho biết dòng đó ở đâu ra: chữ C là mạng router nối trực tiếp, chữ S là tuyến bạn gõ tay, chữ O là tuyến OSPF tự học được. Cuối dòng OSPF có cặp số trong ngoặc vuông, dạng 110 gạch chéo cost: số 110 là mức tin cậy của OSPF, còn số sau là tổng cost tới đích. Nhìn cặp số ấy là biết đường này học từ đâu và xa bao nhiêu."
+              },
+              "deepDive": {
+                "vi": "Đọc bảng định tuyến là kỹ năng chẩn đoán mạnh nhất khi làm việc với router, vì nó trả lời thẳng câu hỏi quan trọng nhất: gói tin đi tới đích này sẽ ra bằng cổng nào. Ba câu hỏi nên hỏi theo thứ tự khi mạng có sự cố. Đích cần tới có mặt trong bảng chưa? Nếu có thì đi ra cổng nào và qua chặng kế nào? Và dòng đó mang chữ gì — chữ O biến mất trong khi trước đó vẫn có nghĩa là láng giềng vừa rớt, chứ chẳng phải bạn gõ sai lệnh nào."
+              }
+            }
+          ]
+        },
+        {
+          "type": "practice",
+          "fadingLevel": 2,
+          "exercises": [
+            {
+              "question": {
+                "kind": "cli",
+                "id": "m16-b4-prac-cli",
+                "prompt": {
+                  "vi": "Ba chi nhánh nối thành vòng, cả ba router đều đã chạy OSPF. Console đang cắm vào Router-HN. Hãy mở bảng định tuyến của nó và tự đọc xem mạng 192.168.3.0 của chi nhánh Sài Gòn được học với cost bao nhiêu, đi ra cổng nào."
+                },
+                "spec": {
+                  "initial": {
+                    "devices": [
+                      {
+                        "kind": "pc",
+                        "id": "pc-a",
+                        "hostname": "PC-A (Hà Nội)",
+                        "port": { "id": "eth0", "mac": "AA:BB:CC:16:00:01" },
+                        "ipConfig": { "ip": "192.168.1.10", "prefix": 24 },
+                        "gateway": "192.168.1.1"
+                      },
+                      {
+                        "kind": "pc",
+                        "id": "pc-c",
+                        "hostname": "PC-C (Sài Gòn)",
+                        "port": { "id": "eth0", "mac": "AA:BB:CC:16:00:03" },
+                        "ipConfig": { "ip": "192.168.3.10", "prefix": 24 },
+                        "gateway": "192.168.3.1"
+                      },
+                      {
+                        "kind": "switch",
+                        "id": "sw-1",
+                        "hostname": "Switch-HN",
+                        "ports": [
+                          { "id": "p1", "vlan": 1 },
+                          { "id": "p2", "vlan": 1 }
+                        ]
+                      },
+                      {
+                        "kind": "switch",
+                        "id": "sw-3",
+                        "hostname": "Switch-SG",
+                        "ports": [
+                          { "id": "p1", "vlan": 1 },
+                          { "id": "p2", "vlan": 1 }
+                        ]
+                      },
+                      {
+                        "kind": "router",
+                        "id": "r-1",
+                        "hostname": "Router-HN",
+                        "ports": [
+                          { "id": "g0", "mac": "AA:BB:CC:16:00:11", "ipConfig": { "ip": "192.168.1.1", "prefix": 24 } },
+                          { "id": "g1", "mac": "AA:BB:CC:16:00:12", "ipConfig": { "ip": "10.0.12.1", "prefix": 24 } },
+                          { "id": "g2", "mac": "AA:BB:CC:16:00:13", "ipConfig": { "ip": "10.0.13.1", "prefix": 24 } }
+                        ],
+                        "staticRoutes": [],
+                        "ospf": {
+                          "processId": 1,
+                          "networks": [
+                            { "ip": "192.168.1.0", "wildcard": "0.0.0.255", "area": 0 },
+                            { "ip": "10.0.12.0", "wildcard": "0.0.0.255", "area": 0 },
+                            { "ip": "10.0.13.0", "wildcard": "0.0.0.255", "area": 0 }
+                          ]
+                        }
+                      },
+                      {
+                        "kind": "router",
+                        "id": "r-2",
+                        "hostname": "Router-DN",
+                        "ports": [
+                          { "id": "g1", "mac": "AA:BB:CC:16:00:22", "ipConfig": { "ip": "10.0.12.2", "prefix": 24 } },
+                          { "id": "g2", "mac": "AA:BB:CC:16:00:23", "ipConfig": { "ip": "10.0.23.2", "prefix": 24 } }
+                        ],
+                        "staticRoutes": [],
+                        "ospf": {
+                          "processId": 1,
+                          "networks": [
+                            { "ip": "10.0.12.0", "wildcard": "0.0.0.255", "area": 0 },
+                            { "ip": "10.0.23.0", "wildcard": "0.0.0.255", "area": 0 }
+                          ]
+                        }
+                      },
+                      {
+                        "kind": "router",
+                        "id": "r-3",
+                        "hostname": "Router-SG",
+                        "ports": [
+                          { "id": "g0", "mac": "AA:BB:CC:16:00:31", "ipConfig": { "ip": "192.168.3.1", "prefix": 24 } },
+                          { "id": "g1", "mac": "AA:BB:CC:16:00:32", "ipConfig": { "ip": "10.0.23.3", "prefix": 24 } },
+                          { "id": "g2", "mac": "AA:BB:CC:16:00:33", "ipConfig": { "ip": "10.0.13.3", "prefix": 24 } }
+                        ],
+                        "staticRoutes": [],
+                        "ospf": {
+                          "processId": 1,
+                          "networks": [
+                            { "ip": "192.168.3.0", "wildcard": "0.0.0.255", "area": 0 },
+                            { "ip": "10.0.23.0", "wildcard": "0.0.0.255", "area": 0 },
+                            { "ip": "10.0.13.0", "wildcard": "0.0.0.255", "area": 0 }
+                          ]
+                        }
+                      }
+                    ],
+                    "links": [
+                      { "id": "l1", "a": { "deviceId": "pc-a", "portId": "eth0" }, "b": { "deviceId": "sw-1", "portId": "p1" } },
+                      { "id": "l2", "a": { "deviceId": "sw-1", "portId": "p2" }, "b": { "deviceId": "r-1", "portId": "g0" } },
+                      { "id": "l3", "a": { "deviceId": "pc-c", "portId": "eth0" }, "b": { "deviceId": "sw-3", "portId": "p1" } },
+                      { "id": "l4", "a": { "deviceId": "sw-3", "portId": "p2" }, "b": { "deviceId": "r-3", "portId": "g0" } },
+                      { "id": "wan-12", "a": { "deviceId": "r-1", "portId": "g1" }, "b": { "deviceId": "r-2", "portId": "g1" } },
+                      { "id": "wan-23", "a": { "deviceId": "r-2", "portId": "g2" }, "b": { "deviceId": "r-3", "portId": "g1" } },
+                      { "id": "wan-13", "a": { "deviceId": "r-1", "portId": "g2" }, "b": { "deviceId": "r-3", "portId": "g2" } }
+                    ]
+                  },
+                  "deviceId": "r-1",
+                  "goals": [{ "kind": "viewed", "command": "show ip route", "deviceId": "r-1" }],
+                  "solution": [{ "deviceId": "r-1", "lines": ["show ip route"] }]
+                },
+                "hintTopic": { "vi": "lệnh mở bảng định tuyến" }
+              },
+              "hint": {
+                "vi": "Ba từ, bắt đầu bằng show, rồi tới ip, rồi tới từ tiếng Anh nghĩa là tuyến đường."
+              },
+              "solution": {
+                "vi": "show ip route. Dòng cần tìm là O 192.168.3.0/24 [110/1] via 10.0.13.3, g2 — chữ O nghĩa là học từ OSPF, số 110 là mức tin cậy của OSPF, cost 1 vì đi thẳng một chặng qua cổng g2, chứ không vòng qua Đà Nẵng cho tốn hai chặng."
+              }
+            },
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m16-b4-prac-2",
+                "prompt": {
+                  "vi": "Trong bảng show ip route, tuyến mà router tự học được từ OSPF mang chữ cái đầu dòng nào?"
+                },
+                "accept": ["o", "O", "chữ o", "chu o", "mã o", "ma o"],
+                "hintTopic": { "vi": "chữ cái đầu dòng của tuyến OSPF" }
+              },
+              "hint": {
+                "vi": "Chữ C là mạng nối trực tiếp, chữ S là tuyến gõ tay, còn OSPF lấy chính chữ cái đầu tên nó."
+              },
+              "solution": {
+                "vi": "Chữ O. Trong cùng bảng đó, chữ C là mạng nối trực tiếp và chữ S là tuyến tĩnh bạn gõ tay."
+              }
+            }
+          ]
+        },
+        {
+          "type": "retrieval",
+          "questions": [
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m16-b4-ret-1",
+                "prompt": {
+                  "vi": "Không nhìn lại bài: trong phòng lab này, một chặng từ router sang router có cost bằng bao nhiêu?"
+                },
+                "accept": ["1", "một", "mot", "cost 1", "bằng 1", "bang 1"]
+              },
+              "hint": { "vi": "Đường một chặng thắng đường hai chặng, vì mỗi chặng đều đáng giá đúng chừng đó." },
+              "solution": {
+                "vi": "Bằng 1. Nhờ vậy tổng cost chính là số chặng, và đường ít chặng hơn thì thắng. Thiết bị thật thì tính cost theo băng thông của cổng."
+              }
+            }
+          ],
+          "selfExplain": {
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: vì sao ba router lại chọn đường giống nhau mà chẳng cần bàn bạc thêm?"
+            },
+            "keywords": [
+              ["cùng bản đồ", "cung ban do", "bản đồ giống nhau", "ban do giong nhau", "đồng bộ", "dong bo"],
+              ["tự tính", "tu tinh", "cộng cost", "cong cost", "tính cost", "tinh cost"],
+              ["nhỏ nhất", "nho nhat", "rẻ nhất", "re nhat", "ngắn nhất", "ngan nhat"]
+            ],
+            "exampleAnswer": {
+              "vi": "Vì sau khi đồng bộ, cả ba giữ cùng một tấm bản đồ mạng. Mỗi cái tự cộng cost dọc từng lối rồi giữ lối tổng nhỏ nhất, mà cùng dữ liệu với cùng cách tính thì ra cùng kết quả — nên không có chuyện hai router đá gói tin qua lại cho nhau."
+            }
+          }
+        },
+        {
+          "type": "summary",
+          "bullets": [
+            { "vi": "OSPF cộng cost dọc đường và giữ lối có tổng nhỏ nhất; trong app mỗi chặng cost 1." },
+            { "vi": "Lệnh show ip route mở bảng: chữ C là nối trực tiếp, S là gõ tay, O là OSPF tự học." },
+            { "vi": "Cặp số trong ngoặc là mức tin cậy trên cost — 110 là con số của OSPF." }
+          ],
+          "nextTeaser": {
+            "vi": "Bây giờ tới phần đáng giá nhất của cả module: cắt phăng sợi cáp mà lưu lượng đang đi qua, rồi xem bảng tự viết lại chính nó trước mắt bạn."
+          }
+        }
+      ]
+    },
+    {
+      "id": "m16-bai-5",
+      "missionTitle": { "vi": "Cắt cáp và xem bảng tự viết lại" },
+      "steps": [
+        {
+          "type": "hook",
+          "question": {
+            "vi": "Nhà thầu đào đường cắt trúng sợi cáp nối thẳng Hà Nội với Sài Gòn. Nếu đường ấy được chỉ bằng tuyến tĩnh thì cả hai chi nhánh ngồi chờ người tới sửa. Nhưng mạng này chạy OSPF, và nhân viên còn chẳng kịp nhận ra có sự cố. Trong mấy giây đó, ba router đã làm gì với nhau?"
+          },
+          "visualId": "vis-hook-dut-duong-ospf"
+        },
+        {
+          "type": "pretest",
+          "questions": [
+            {
+              "kind": "mcq",
+              "id": "m16-b5-pre-1",
+              "prompt": { "vi": "Đoán thử: dấu hiệu đầu tiên cho ba router biết sợi cáp đã đứt là gì?" },
+              "choices": [
+                { "vi": "Gói hello im tiếng vài nhịp trên cổng hướng ra sợi cáp đó" },
+                { "vi": "Máy quản trị gửi một bản tin báo lỗi tới cả ba router cùng lúc" },
+                { "vi": "Gói tin của người dùng dội ngược trở lại router vừa gửi nó đi" }
+              ],
+              "answerIndex": 0,
+              "explain": {
+                "vi": "Hello chính là nhịp tim đã học ở bài 2. Nó im vài nhịp thì láng giềng bị coi là mất, và từ đó cả vùng tính lại bản đồ."
+              }
+            }
+          ],
+          "encouragement": {
+            "vi": "Đoán sao cũng được — lát nữa chính tay bạn cắt sợi cáp đó và tự kiểm chứng lối đi mới."
+          }
+        },
+        {
+          "type": "teach",
+          "screens": [
+            {
+              "conceptId": "m16-hoi-tu-vong",
+              "visualId": "vis-ospf-di-loi-vong",
+              "body": {
+                "vi": "Khi một sợi cáp đứt, hai router hai đầu mất nhịp hello và coi như láng giềng đã mất. Chúng sửa tấm bản đồ của mình rồi loan tin sửa đó ra cả vùng, nên mọi router cùng bỏ đường vừa hỏng khỏi bản đồ. Ai nấy tính lại cost trên tấm bản đồ mới, và nếu còn lối vòng nào tới đích thì lối đó lập tức thành đường chính. Bảng định tuyến tự viết lại: dòng cũ biến mất, dòng mới hiện ra với cost lớn hơn và chặng kế khác hẳn — tất cả xong trong lúc người dùng còn chưa kịp phàn nàn."
+              },
+              "deepDive": {
+                "vi": "Quá trình vừa kể có tên riêng: hội tụ. Nó đúng là thứ Module 15 đã cho bạn xem ở tầng 2 với cây STP, chỉ khác chỗ đứng: STP tính lại cây để cắt vòng lặp, còn OSPF tính lại đường ngắn nhất để đi vòng qua chỗ hỏng. Điểm chung của cả hai là mạng phải có sẵn ĐƯỜNG THỪA thì mới có gì mà chuyển sang. Giao thức chỉ biết chọn trong những lối bạn đã kéo cáp; không có lối vòng nào thì OSPF cũng chỉ báo mất đường mà thôi."
+              }
+            },
+            {
+              "conceptId": "m16-ad",
+              "visualId": "vis-ad-tinh-thang",
+              "body": {
+                "vi": "Nếu cùng một mạng đích lại có cả tuyến tĩnh bạn gõ tay lẫn tuyến OSPF tự học, router tin cái nào? Nó so mức tin cậy, tiếng nghề gọi là khoảng cách quản trị: tuyến tĩnh mang số 1, tuyến OSPF mang số 110, và số nhỏ hơn thì được tin hơn. Vậy tuyến tĩnh thắng — cũng dễ hiểu, vì đó là lời khẳng định của con người. Nhưng nhớ luôn cái giá: dòng bạn gõ vẫn nằm im khi đường của nó đứt, và nó sẽ che mất đường vòng mà OSPF đã tìm ra."
+              },
+              "deepDive": {
+                "vi": "Khoảng cách quản trị chỉ được đem ra so khi hai tuyến cùng độ dài prefix. Nếu prefix khác nhau thì luật khớp dài nhất thắng trước: dòng 192.168.3.0/24 luôn được dùng thay cho dòng 192.168.0.0/16, bất kể dòng nào học từ đâu. Thứ tự xét trong router vì thế là prefix dài hơn trước, hòa mới xét tới mức tin cậy, hòa nữa mới tới cost. Đây cũng là lý do một tuyến tĩnh gõ ẩu với prefix quá rộng ít khi gây họa, còn tuyến tĩnh gõ đúng dải của một mạng đang chạy OSPF thì có thể ghim lưu lượng vào một đường đã chết."
+              }
+            }
+          ]
+        },
+        {
+          "type": "practice",
+          "fadingLevel": 2,
+          "exercises": [
+            {
+              "question": {
+                "kind": "lab",
+                "id": "m16-b5-prac-lab",
+                "prompt": {
+                  "vi": "Đây là mạng ba chi nhánh của bài trước, lưu lượng từ PC-A sang PC-C đang đi thẳng qua sợi cáp Hà Nội — Sài Gòn. Hãy đóng vai nhà thầu đào đường: cắt đúng sợi cáp đó ra, rồi chứng minh PC-A vẫn gọi được PC-C và lần này đường đi có ghé qua Router-DN."
+                },
+                "spec": {
+                  "initial": {
+                    "devices": [
+                      {
+                        "kind": "pc",
+                        "id": "pc-a",
+                        "hostname": "PC-A (Hà Nội)",
+                        "port": { "id": "eth0", "mac": "AA:BB:CC:16:00:01" },
+                        "ipConfig": { "ip": "192.168.1.10", "prefix": 24 },
+                        "gateway": "192.168.1.1"
+                      },
+                      {
+                        "kind": "pc",
+                        "id": "pc-c",
+                        "hostname": "PC-C (Sài Gòn)",
+                        "port": { "id": "eth0", "mac": "AA:BB:CC:16:00:03" },
+                        "ipConfig": { "ip": "192.168.3.10", "prefix": 24 },
+                        "gateway": "192.168.3.1"
+                      },
+                      {
+                        "kind": "switch",
+                        "id": "sw-1",
+                        "hostname": "Switch-HN",
+                        "ports": [
+                          { "id": "p1", "vlan": 1 },
+                          { "id": "p2", "vlan": 1 }
+                        ]
+                      },
+                      {
+                        "kind": "switch",
+                        "id": "sw-3",
+                        "hostname": "Switch-SG",
+                        "ports": [
+                          { "id": "p1", "vlan": 1 },
+                          { "id": "p2", "vlan": 1 }
+                        ]
+                      },
+                      {
+                        "kind": "router",
+                        "id": "r-1",
+                        "hostname": "Router-HN",
+                        "ports": [
+                          { "id": "g0", "mac": "AA:BB:CC:16:00:11", "ipConfig": { "ip": "192.168.1.1", "prefix": 24 } },
+                          { "id": "g1", "mac": "AA:BB:CC:16:00:12", "ipConfig": { "ip": "10.0.12.1", "prefix": 24 } },
+                          { "id": "g2", "mac": "AA:BB:CC:16:00:13", "ipConfig": { "ip": "10.0.13.1", "prefix": 24 } }
+                        ],
+                        "staticRoutes": [],
+                        "ospf": {
+                          "processId": 1,
+                          "networks": [
+                            { "ip": "192.168.1.0", "wildcard": "0.0.0.255", "area": 0 },
+                            { "ip": "10.0.12.0", "wildcard": "0.0.0.255", "area": 0 },
+                            { "ip": "10.0.13.0", "wildcard": "0.0.0.255", "area": 0 }
+                          ]
+                        }
+                      },
+                      {
+                        "kind": "router",
+                        "id": "r-2",
+                        "hostname": "Router-DN",
+                        "ports": [
+                          { "id": "g1", "mac": "AA:BB:CC:16:00:22", "ipConfig": { "ip": "10.0.12.2", "prefix": 24 } },
+                          { "id": "g2", "mac": "AA:BB:CC:16:00:23", "ipConfig": { "ip": "10.0.23.2", "prefix": 24 } }
+                        ],
+                        "staticRoutes": [],
+                        "ospf": {
+                          "processId": 1,
+                          "networks": [
+                            { "ip": "10.0.12.0", "wildcard": "0.0.0.255", "area": 0 },
+                            { "ip": "10.0.23.0", "wildcard": "0.0.0.255", "area": 0 }
+                          ]
+                        }
+                      },
+                      {
+                        "kind": "router",
+                        "id": "r-3",
+                        "hostname": "Router-SG",
+                        "ports": [
+                          { "id": "g0", "mac": "AA:BB:CC:16:00:31", "ipConfig": { "ip": "192.168.3.1", "prefix": 24 } },
+                          { "id": "g1", "mac": "AA:BB:CC:16:00:32", "ipConfig": { "ip": "10.0.23.3", "prefix": 24 } },
+                          { "id": "g2", "mac": "AA:BB:CC:16:00:33", "ipConfig": { "ip": "10.0.13.3", "prefix": 24 } }
+                        ],
+                        "staticRoutes": [],
+                        "ospf": {
+                          "processId": 1,
+                          "networks": [
+                            { "ip": "192.168.3.0", "wildcard": "0.0.0.255", "area": 0 },
+                            { "ip": "10.0.23.0", "wildcard": "0.0.0.255", "area": 0 },
+                            { "ip": "10.0.13.0", "wildcard": "0.0.0.255", "area": 0 }
+                          ]
+                        }
+                      }
+                    ],
+                    "links": [
+                      { "id": "l1", "a": { "deviceId": "pc-a", "portId": "eth0" }, "b": { "deviceId": "sw-1", "portId": "p1" } },
+                      { "id": "l2", "a": { "deviceId": "sw-1", "portId": "p2" }, "b": { "deviceId": "r-1", "portId": "g0" } },
+                      { "id": "l3", "a": { "deviceId": "pc-c", "portId": "eth0" }, "b": { "deviceId": "sw-3", "portId": "p1" } },
+                      { "id": "l4", "a": { "deviceId": "sw-3", "portId": "p2" }, "b": { "deviceId": "r-3", "portId": "g0" } },
+                      { "id": "wan-12", "a": { "deviceId": "r-1", "portId": "g1" }, "b": { "deviceId": "r-2", "portId": "g1" } },
+                      { "id": "wan-23", "a": { "deviceId": "r-2", "portId": "g2" }, "b": { "deviceId": "r-3", "portId": "g1" } },
+                      { "id": "wan-13", "a": { "deviceId": "r-1", "portId": "g2" }, "b": { "deviceId": "r-3", "portId": "g2" } }
+                    ]
+                  },
+                  "goals": [
+                    { "kind": "pathThrough", "from": "pc-a", "to": "pc-c", "via": ["r-2"] }
+                  ],
+                  "allow": {
+                    "addDevices": [],
+                    "removeDevices": false,
+                    "addLinks": false,
+                    "removeLinks": true,
+                    "setVlan": false,
+                    "setIp": false,
+                    "setRoutes": false,
+                    "maxDevices": 10
+                  },
+                  "solution": {
+                    "devices": [
+                      {
+                        "kind": "pc",
+                        "id": "pc-a",
+                        "hostname": "PC-A (Hà Nội)",
+                        "port": { "id": "eth0", "mac": "AA:BB:CC:16:00:01" },
+                        "ipConfig": { "ip": "192.168.1.10", "prefix": 24 },
+                        "gateway": "192.168.1.1"
+                      },
+                      {
+                        "kind": "pc",
+                        "id": "pc-c",
+                        "hostname": "PC-C (Sài Gòn)",
+                        "port": { "id": "eth0", "mac": "AA:BB:CC:16:00:03" },
+                        "ipConfig": { "ip": "192.168.3.10", "prefix": 24 },
+                        "gateway": "192.168.3.1"
+                      },
+                      {
+                        "kind": "switch",
+                        "id": "sw-1",
+                        "hostname": "Switch-HN",
+                        "ports": [
+                          { "id": "p1", "vlan": 1 },
+                          { "id": "p2", "vlan": 1 }
+                        ]
+                      },
+                      {
+                        "kind": "switch",
+                        "id": "sw-3",
+                        "hostname": "Switch-SG",
+                        "ports": [
+                          { "id": "p1", "vlan": 1 },
+                          { "id": "p2", "vlan": 1 }
+                        ]
+                      },
+                      {
+                        "kind": "router",
+                        "id": "r-1",
+                        "hostname": "Router-HN",
+                        "ports": [
+                          { "id": "g0", "mac": "AA:BB:CC:16:00:11", "ipConfig": { "ip": "192.168.1.1", "prefix": 24 } },
+                          { "id": "g1", "mac": "AA:BB:CC:16:00:12", "ipConfig": { "ip": "10.0.12.1", "prefix": 24 } },
+                          { "id": "g2", "mac": "AA:BB:CC:16:00:13", "ipConfig": { "ip": "10.0.13.1", "prefix": 24 } }
+                        ],
+                        "staticRoutes": [],
+                        "ospf": {
+                          "processId": 1,
+                          "networks": [
+                            { "ip": "192.168.1.0", "wildcard": "0.0.0.255", "area": 0 },
+                            { "ip": "10.0.12.0", "wildcard": "0.0.0.255", "area": 0 },
+                            { "ip": "10.0.13.0", "wildcard": "0.0.0.255", "area": 0 }
+                          ]
+                        }
+                      },
+                      {
+                        "kind": "router",
+                        "id": "r-2",
+                        "hostname": "Router-DN",
+                        "ports": [
+                          { "id": "g1", "mac": "AA:BB:CC:16:00:22", "ipConfig": { "ip": "10.0.12.2", "prefix": 24 } },
+                          { "id": "g2", "mac": "AA:BB:CC:16:00:23", "ipConfig": { "ip": "10.0.23.2", "prefix": 24 } }
+                        ],
+                        "staticRoutes": [],
+                        "ospf": {
+                          "processId": 1,
+                          "networks": [
+                            { "ip": "10.0.12.0", "wildcard": "0.0.0.255", "area": 0 },
+                            { "ip": "10.0.23.0", "wildcard": "0.0.0.255", "area": 0 }
+                          ]
+                        }
+                      },
+                      {
+                        "kind": "router",
+                        "id": "r-3",
+                        "hostname": "Router-SG",
+                        "ports": [
+                          { "id": "g0", "mac": "AA:BB:CC:16:00:31", "ipConfig": { "ip": "192.168.3.1", "prefix": 24 } },
+                          { "id": "g1", "mac": "AA:BB:CC:16:00:32", "ipConfig": { "ip": "10.0.23.3", "prefix": 24 } },
+                          { "id": "g2", "mac": "AA:BB:CC:16:00:33", "ipConfig": { "ip": "10.0.13.3", "prefix": 24 } }
+                        ],
+                        "staticRoutes": [],
+                        "ospf": {
+                          "processId": 1,
+                          "networks": [
+                            { "ip": "192.168.3.0", "wildcard": "0.0.0.255", "area": 0 },
+                            { "ip": "10.0.23.0", "wildcard": "0.0.0.255", "area": 0 },
+                            { "ip": "10.0.13.0", "wildcard": "0.0.0.255", "area": 0 }
+                          ]
+                        }
+                      }
+                    ],
+                    "links": [
+                      { "id": "l1", "a": { "deviceId": "pc-a", "portId": "eth0" }, "b": { "deviceId": "sw-1", "portId": "p1" } },
+                      { "id": "l2", "a": { "deviceId": "sw-1", "portId": "p2" }, "b": { "deviceId": "r-1", "portId": "g0" } },
+                      { "id": "l3", "a": { "deviceId": "pc-c", "portId": "eth0" }, "b": { "deviceId": "sw-3", "portId": "p1" } },
+                      { "id": "l4", "a": { "deviceId": "sw-3", "portId": "p2" }, "b": { "deviceId": "r-3", "portId": "g0" } },
+                      { "id": "wan-12", "a": { "deviceId": "r-1", "portId": "g1" }, "b": { "deviceId": "r-2", "portId": "g1" } },
+                      { "id": "wan-23", "a": { "deviceId": "r-2", "portId": "g2" }, "b": { "deviceId": "r-3", "portId": "g1" } }
+                    ]
+                  }
+                },
+                "hintTopic": { "vi": "lối còn lại khi đường thẳng mất" }
+              },
+              "hint": {
+                "vi": "Chọn sợi cáp nối Router-HN với Router-SG rồi gỡ nó ra, sau đó bấm Gửi thử và đọc nhật ký chặng xem gói tin ghé qua những router nào."
+              },
+              "solution": {
+                "vi": "Gỡ sợi wan-13 giữa Router-HN và Router-SG. Cả vùng bỏ đường đó khỏi bản đồ và tính lại: mạng 192.168.3.0 giờ học được với cost 2 qua chặng kế 10.0.12.2, nên gói tin của PC-A đi vòng qua Router-DN rồi mới tới Sài Gòn — chẳng ai phải gõ thêm một dòng lệnh nào."
+              }
+            }
+          ]
+        },
+        {
+          "type": "retrieval",
+          "questions": [
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m16-b5-ret-1",
+                "prompt": {
+                  "vi": "Không nhìn lại bài: cùng một mạng đích mà có cả tuyến tĩnh lẫn tuyến OSPF thì router tin cái nào?"
+                },
+                "accept": [
+                  "tuyến tĩnh",
+                  "tuyen tinh",
+                  "tĩnh",
+                  "tinh",
+                  "static",
+                  "tuyến static",
+                  "tuyen static",
+                  "tuyến tĩnh vì ad nhỏ hơn",
+                  "tuyen tinh vi ad nho hon"
+                ]
+              },
+              "hint": { "vi": "So mức tin cậy: một bên mang số 1, một bên mang số 110 — số nhỏ hơn thì được tin hơn." },
+              "solution": {
+                "vi": "Tuyến tĩnh, vì khoảng cách quản trị của nó là 1 còn của OSPF là 110. Cái giá phải trả: dòng gõ tay ấy vẫn nằm im khi đường của nó đứt, và nó che mất lối vòng mà OSPF đã tìm ra."
+              }
+            }
+          ],
+          "selfExplain": {
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: từ lúc sợi cáp đứt tới lúc lưu lượng chạy lối khác, các router đã làm những gì?"
+            },
+            "keywords": [
+              ["hello", "nhịp tim", "nhip tim", "im tiếng", "im tieng", "mất láng giềng", "mat lang gieng"],
+              ["sửa bản đồ", "sua ban do", "loan tin", "báo cho nhau", "bao cho nhau", "cập nhật", "cap nhat"],
+              ["tính lại", "tinh lai", "cost", "đường ngắn nhất", "duong ngan nhat"],
+              ["lối vòng", "loi vong", "đường vòng", "duong vong", "đường khác", "duong khac", "bảng đổi", "bang doi"]
+            ],
+            "exampleAnswer": {
+              "vi": "Hai router hai đầu mất nhịp hello nên coi láng giềng đã mất, sửa bản đồ của mình rồi loan tin ra cả vùng. Mọi router bỏ đường hỏng khỏi bản đồ, tính lại cost, và lối vòng còn lại thành đường chính — bảng định tuyến tự viết lại mà chẳng ai gõ thêm dòng nào."
+            }
+          }
+        },
+        {
+          "type": "summary",
+          "bullets": [
+            { "vi": "Mất nhịp hello là dấu hiệu đầu tiên; cả vùng sửa bản đồ rồi tính lại đường." },
+            { "vi": "Còn lối vòng thì lối đó thành đường chính ngay, không cần ai gõ lệnh." },
+            { "vi": "Tuyến tĩnh có mức tin cậy 1 nên thắng OSPF 110 — kèm cái giá là nó không tự sửa." }
+          ],
+          "nextTeaser": {
+            "vi": "Giờ mọi máy trong công ty đều gọi được nhau, kể cả những máy lẽ ra không nên gọi tới phòng kế toán. Module sau dạy cách viết luật chặn đúng người mà không chặn nhầm sếp."
+          }
+        }
+      ]
+    }
+  ],
+
+  "concepts": [
+    {
+      "id": "m16-gioi-han-tinh",
+      "term": "Giới hạn của tuyến tĩnh",
+      "glossVi": "Chỉ đường bằng tay: số dòng phình theo số mạng nhân số router, và đường đứt thì tuyến nằm im chờ người sửa",
+      "metaphor": {
+        "vi": "Như dán giấy chỉ đường ở từng ngã tư trong thành phố: mở thêm một khu phố là phải đi dán lại khắp nơi, và hôm nào có đường cấm thì tờ giấy vẫn chỉ vào đó."
+      },
+      "iconId": "icon-gioi-han-tinh",
+      "flashcard": {
+        "front": { "vi": "Hai điểm yếu của tuyến tĩnh khi mạng lớn lên là gì?" },
+        "back": {
+          "vi": "Một là số dòng phải gõ phình theo số mạng nhân số router, thêm một chi nhánh là mở lại từng router cũ. Hai là nó không tự cựa quậy: đường bị đứt thì router vẫn đẩy gói tin vào chỗ hỏng cho tới khi có người sửa bằng tay."
+        }
+      }
+    },
+    {
+      "id": "m16-dinh-tuyen-dong",
+      "term": "Định tuyến động",
+      "glossVi": "Mỗi router chỉ khai mạng của chính nó rồi các router tự kể đường cho nhau; OSPF là giao thức làm việc đó",
+      "metaphor": {
+        "vi": "Như mỗi nhà chỉ cần treo biển số nhà mình, còn bản đồ khu phố thì hàng xóm tự truyền tai nhau và tự cập nhật khi có đường mới."
+      },
+      "iconId": "icon-dinh-tuyen-dong",
+      "flashcard": {
+        "front": { "vi": "Với định tuyến động, trên mỗi router bạn khai những mạng nào?" },
+        "back": {
+          "vi": "Chỉ khai những mạng router đó nối trực tiếp. Phần còn lại các router tự kể cho nhau nghe, nên thêm chi nhánh chỉ phải cấu hình router mới và bảng của các router cũ tự mọc thêm dòng."
+        }
+      }
+    },
+    {
+      "id": "m16-hello",
+      "term": "Gói hello",
+      "glossVi": "Gói OSPF phát đều đặn trên mỗi cổng đã khai: vừa để tìm láng giềng, vừa làm nhịp tim giữ mối quan hệ",
+      "metaphor": {
+        "vi": "Như tiếng chào buổi sáng vọng qua hàng rào: lần đầu là để làm quen, những lần sau là để biết hàng xóm vẫn còn ở nhà."
+      },
+      "iconId": "icon-hello-ospf",
+      "flashcard": {
+        "front": { "vi": "Gói hello làm những việc gì, và ba điều kiện để hai router thành láng giềng?" },
+        "back": {
+          "vi": "Hello vừa đi tìm láng giềng vừa làm nhịp tim: im vài nhịp là bên kia coi như mất hàng xóm. Ba điều kiện: hai đầu đều bật OSPF, hai cổng cùng subnet, và mỗi bên đều đã khai cổng của mình trong một câu network."
+        }
+      }
+    },
+    {
+      "id": "m16-lam-quen",
+      "term": "Bốn bậc làm quen",
+      "glossVi": "Down, Attempt, Init, 2-Way — quãng từ lúc im lặng tới lúc hai router thấy tên nhau",
+      "metaphor": {
+        "vi": "Như hai tầng dưới của một tòa nhà: tầng trệt còn im tiếng và gọi riêng, tầng hai thì tấm danh thiếp đã đi qua đi lại."
+      },
+      "iconId": "icon-lam-quen-ospf",
+      "flashcard": {
+        "front": { "vi": "Bốn bậc đầu của quan hệ láng giềng OSPF là gì?" },
+        "back": {
+          "vi": "Down (im lặng hoàn toàn), Attempt (gọi riêng từng nhà, chỉ có ở mạng NBMA), Init (mới nghe tiếng chào một chiều, còn thiếu tên mình trong đó), 2-Way (hai bên đã thấy tên nhau)."
+        }
+      }
+    },
+    {
+      "id": "m16-dong-bo",
+      "term": "Bốn bậc đồng bộ",
+      "glossVi": "ExStart, Exchange, Loading, Full — quãng chép bản đồ mạng cho tới lúc hai bên giống hệt nhau",
+      "metaphor": {
+        "vi": "Như hai tầng trên của tòa nhà: tầng ba chốt vai và trao mục lục, tầng nóc là hai tấm bản đồ chồng khít lên nhau."
+      },
+      "iconId": "icon-dong-bo-ospf",
+      "flashcard": {
+        "front": { "vi": "Bốn bậc sau của quan hệ láng giềng OSPF là gì, và Full nghĩa là gì?" },
+        "back": {
+          "vi": "ExStart (chốt ai nói trước), Exchange (trao mục lục những trang bản đồ mình giữ), Loading (xin nốt phần còn thiếu), Full (hai bên giữ cùng một bản đồ mạng, giống nhau từng dòng)."
+        }
+      }
+    },
+    {
+      "id": "m16-area-0",
+      "term": "Câu network và area 0",
+      "glossVi": "Mỗi câu network dùng wildcard mask để chọn những cổng tham gia OSPF; area 0 là vùng xương sống",
+      "metaphor": {
+        "vi": "Như khai với ban quản lý xem những cửa nào của nhà mình mở ra sân chung — cửa đã khai thì mới được vào cuộc họp của cả khu."
+      },
+      "iconId": "icon-network-area",
+      "flashcard": {
+        "front": { "vi": "Câu network của OSPF thật ra chọn cái gì, và viết bằng loại mặt nạ nào?" },
+        "back": {
+          "vi": "Nó chọn những CỔNG có địa chỉ nằm trong dải khai, và cổng đã tham gia thì mạng của cổng đó tự được quảng bá. Dải viết bằng wildcard mask (mặt nạ đảo), cuối câu là area 0 — vùng xương sống."
+        }
+      }
+    },
+    {
+      "id": "m16-cost",
+      "term": "OSPF cost",
+      "glossVi": "Giá của một chặng; router cộng cost dọc đường và giữ lối có tổng nhỏ nhất",
+      "metaphor": {
+        "vi": "Như chọn đường theo tiền vé chứ không theo cảm tính: cộng vé từng chặng rồi đi lối rẻ nhất."
+      },
+      "iconId": "icon-ospf-cost",
+      "flashcard": {
+        "front": { "vi": "OSPF chọn đường theo gì, và trong app này một chặng đáng giá bao nhiêu?" },
+        "back": {
+          "vi": "Theo tổng cost dọc đường, nhỏ nhất thì thắng. Trong app mỗi chặng router sang router có cost 1 nên tổng cost chính là số chặng; thiết bị thật tính cost theo băng thông của cổng nên cổng nhanh có cost nhỏ hơn."
+        }
+      }
+    },
+    {
+      "id": "m16-bang-tu-hoc",
+      "term": "Bảng định tuyến tự học",
+      "glossVi": "Kết quả cuối cùng của OSPF, đọc bằng show ip route: chữ C nối trực tiếp, S gõ tay, O học từ OSPF",
+      "metaphor": {
+        "vi": "Như tấm bảng chỉ đường ở cổng làng, có ghi rõ mỗi lối này ai dựng: người trong làng, ông trưởng thôn, hay chính đám xe ôm truyền tai nhau."
+      },
+      "iconId": "icon-bang-tu-hoc",
+      "flashcard": {
+        "front": { "vi": "Trong show ip route, ba chữ cái đầu dòng C, S, O nghĩa là gì?" },
+        "back": {
+          "vi": "C là mạng router nối trực tiếp, S là tuyến tĩnh gõ tay, O là tuyến học được từ OSPF. Dòng OSPF còn kèm cặp số 110 gạch chéo cost: 110 là mức tin cậy của OSPF, số sau là tổng cost tới đích."
+        }
+      }
+    },
+    {
+      "id": "m16-hoi-tu-vong",
+      "term": "Hội tụ lại của OSPF",
+      "glossVi": "Đường đứt thì cả vùng sửa bản đồ, tính lại cost và chuyển sang lối vòng còn lại",
+      "metaphor": {
+        "vi": "Như dòng nước gặp đá chắn: bịt lối này thì nó tự tìm lối kia — miễn là trước đó có ai đã đào sẵn một con mương thứ hai."
+      },
+      "iconId": "icon-hoi-tu-ospf",
+      "flashcard": {
+        "front": { "vi": "Sợi cáp đứt thì OSPF làm gì, và điều kiện để nó cứu được mạng là gì?" },
+        "back": {
+          "vi": "Hai đầu mất nhịp hello, sửa bản đồ rồi loan tin ra cả vùng; mọi router tính lại cost và lối vòng còn lại thành đường chính. Điều kiện: mạng phải có sẵn đường thừa — giao thức chỉ chọn được trong những lối đã kéo cáp."
+        }
+      }
+    },
+    {
+      "id": "m16-ad",
+      "term": "Khoảng cách quản trị",
+      "glossVi": "Mức tin cậy của một nguồn tuyến; tuyến tĩnh là 1, OSPF là 110, số nhỏ hơn thì được tin hơn",
+      "metaphor": {
+        "vi": "Như nghe hai người chỉ đường: lời của người mình tin hơn thì được nghe trước, dù người kia vừa đi qua đó về."
+      },
+      "iconId": "icon-ad-tuyen",
+      "flashcard": {
+        "front": { "vi": "Cùng một đích mà có cả tuyến tĩnh lẫn tuyến OSPF thì router chọn cái nào, và cái giá là gì?" },
+        "back": {
+          "vi": "Chọn tuyến tĩnh, vì khoảng cách quản trị 1 nhỏ hơn 110 của OSPF. Cái giá: dòng gõ tay nằm im khi đường của nó đứt và che mất lối vòng OSPF đã tìm ra. Luật này chỉ xét khi hai tuyến cùng độ dài prefix."
+        }
+      }
+    }
+  ],
+
+  "masteryTest": [
+    {
+      "kind": "mcq",
+      "id": "m16-mt-1",
+      "prompt": { "vi": "Vì sao tuyến tĩnh đuối dần khi công ty mở thêm chi nhánh?" },
+      "choices": [
+        { "vi": "Vì số dòng phải gõ phình theo số mạng nhân số router, sót một dòng là mất liên lạc" },
+        { "vi": "Vì mỗi tuyến tĩnh chiếm một phần băng thông cố định trên đường truyền giữa hai site" },
+        { "vi": "Vì router chỉ chứa được một số tuyến tĩnh nhất định rồi sẽ từ chối nhận thêm dòng" }
+      ],
+      "answerIndex": 0,
+      "hintTopic": { "vi": "thứ phình lên mỗi lần thêm một mạng" },
+      "explain": {
+        "vi": "Tuyến tĩnh không tốn băng thông và cũng chẳng chạm giới hạn số dòng ở cỡ mạng này. Cái gãy là công sức con người: mỗi chi nhánh mới là một vòng mở lại từng router cũ."
+      }
+    },
+    {
+      "kind": "typed",
+      "id": "m16-mt-2",
+      "prompt": { "vi": "Với định tuyến động, trên mỗi router bạn khai những mạng của ai?" },
+      "accept": [
+        "mạng của chính nó",
+        "mang cua chinh no",
+        "mạng của mình",
+        "mang cua minh",
+        "mạng nối trực tiếp",
+        "mang noi truc tiep",
+        "mạng của chính router đó",
+        "mang cua chinh router do"
+      ],
+      "hintTopic": { "vi": "chỗ khác nhau căn bản với tuyến tĩnh" },
+      "explain": {
+        "vi": "Chỉ khai mạng của chính router đó. Phần còn lại các router tự kể cho nhau nghe — đó mới là cái làm nên chữ động."
+      }
+    },
+    {
+      "kind": "mcq",
+      "id": "m16-mt-3",
+      "prompt": { "vi": "Hai router đã nối dây và cùng bật OSPF, nhưng bảng láng giềng vẫn trống. Nguyên nhân nào khớp nhất?" },
+      "choices": [
+        { "vi": "Một bên còn thiếu câu network phủ cổng đó, hoặc hai cổng khác subnet" },
+        { "vi": "Hai router mang số hiệu tiến trình OSPF khác nhau nên chúng bỏ qua nhau" },
+        { "vi": "Chưa ai khai tay địa chỉ của router bên kia vào danh sách láng giềng tĩnh" }
+      ],
+      "answerIndex": 0,
+      "hintTopic": { "vi": "ba điều kiện lên láng giềng" },
+      "explain": {
+        "vi": "Số hiệu tiến trình chỉ có ý nghĩa nội bộ máy, hai bên khác số vẫn quen nhau. OSPF cũng không cần khai tay láng giềng — thứ hay thiếu là câu network phủ đúng cổng, hoặc hai cổng đặt lệch subnet."
+      }
+    },
+    {
+      "kind": "typed",
+      "id": "m16-mt-4",
+      "prompt": { "vi": "Gói mà router OSPF phát đều đặn để tìm láng giềng và giữ nhịp với họ tên là gì?" },
+      "accept": ["hello", "gói hello", "goi hello", "hello packet", "gói tin hello", "goi tin hello"],
+      "hintTopic": { "vi": "tiếng chào vọng qua hàng rào" },
+      "explain": {
+        "vi": "Gói hello. Nó vừa đi tìm láng giềng lúc đầu, vừa làm nhịp tim về sau — im vài nhịp là bên kia coi như hàng xóm đã mất."
+      }
+    },
+    {
+      "kind": "mcq",
+      "id": "m16-mt-5",
+      "prompt": { "vi": "Hai router ở trạng thái Full nghĩa là gì?" },
+      "choices": [
+        { "vi": "Hai bên đã giữ cùng một bản đồ mạng, giống nhau từng dòng" },
+        { "vi": "Hai bên đã dùng hết băng thông của sợi cáp nối giữa chúng" },
+        { "vi": "Hai bên đã khai đủ mọi mạng của công ty vào câu network" }
+      ],
+      "answerIndex": 0,
+      "hintTopic": { "vi": "thứ được chép cho đầy đủ" },
+      "explain": {
+        "vi": "Full nói về BẢN ĐỒ: cơ sở dữ liệu đường đi của hai bên đã đồng bộ xong, nên từ đó hai router nhìn mạng giống hệt nhau."
+      }
+    },
+    {
+      "kind": "mcq",
+      "id": "m16-mt-6",
+      "prompt": { "vi": "Router-A nghe được hello của hàng xóm nhưng trong đó thiếu tên mình. Đang ở bậc nào?" },
+      "choices": [
+        { "vi": "Init — tiếng chào mới đi được một chiều" },
+        { "vi": "2-Way — hai bên đều đã thấy tên nhau" },
+        { "vi": "ExStart — hai bên đang chốt ai nói trước" }
+      ],
+      "answerIndex": 0,
+      "hintTopic": { "vi": "bậc của tấm danh thiếp thiếu tên mình" },
+      "explain": {
+        "vi": "Init: nghe được hello nhưng tên mình còn vắng trong đó, tức bên kia chưa nghe thấy mình. Có tên mình rồi mới lên 2-Way."
+      }
+    },
+    {
+      "kind": "typed",
+      "id": "m16-mt-7",
+      "prompt": { "vi": "Câu network của OSPF viết dải địa chỉ bằng loại mặt nạ đảo tên là gì?" },
+      "accept": ["wildcard", "wildcard mask", "mặt nạ đảo", "mat na dao", "mặt nạ ngược", "mat na nguoc"],
+      "hintTopic": { "vi": "loại mặt nạ đã học ở Module 13" },
+      "explain": {
+        "vi": "Wildcard mask. Với 0.0.0.255 thì ba nhóm số đầu phải khớp còn nhóm cuối tùy ý, nên nó tóm gọn mọi cổng thuộc một mạng /24."
+      }
+    },
+    {
+      "kind": "mcq",
+      "id": "m16-mt-8",
+      "prompt": { "vi": "Có hai lối tới cùng một mạng: một chặng, hoặc hai chặng vòng qua router khác. OSPF chọn thế nào?" },
+      "choices": [
+        { "vi": "Cộng cost dọc mỗi lối rồi giữ lối có tổng nhỏ hơn, ở đây là lối một chặng" },
+        { "vi": "Giữ cả hai lối trong bảng và lần lượt gửi gói tin qua từng lối một" },
+        { "vi": "Giữ lối đi qua cổng có số hiệu nhỏ hơn trên chính router đang tính" }
+      ],
+      "answerIndex": 0,
+      "hintTopic": { "vi": "thước đo đường của OSPF" },
+      "explain": {
+        "vi": "OSPF cộng cost dọc đường và giữ tổng nhỏ nhất. Trong app mỗi chặng cost 1 nên lối một chặng thắng; số hiệu cổng không dính gì tới việc chọn đường."
+      }
+    },
+    {
+      "kind": "typed",
+      "id": "m16-mt-9",
+      "prompt": { "vi": "Trong bảng show ip route, tuyến router tự học được từ OSPF mang chữ cái đầu dòng nào?" },
+      "accept": ["o", "O", "chữ o", "chu o", "mã o", "ma o"],
+      "hintTopic": { "vi": "chữ cái đầu dòng của tuyến OSPF" },
+      "explain": {
+        "vi": "Chữ O. Cùng bảng đó, C là mạng nối trực tiếp và S là tuyến tĩnh gõ tay."
+      }
+    },
+    {
+      "kind": "mcq",
+      "id": "m16-mt-10",
+      "prompt": { "vi": "Cùng một mạng đích có cả tuyến tĩnh lẫn tuyến OSPF, cùng độ dài prefix. Router dùng cái nào?" },
+      "choices": [
+        { "vi": "Tuyến tĩnh, vì khoảng cách quản trị 1 nhỏ hơn 110 của OSPF" },
+        { "vi": "Tuyến OSPF, vì nó mới được cập nhật gần đây hơn tuyến tĩnh" },
+        { "vi": "Cả hai luân phiên, để chia đều lưu lượng ra hai đường đó" }
+      ],
+      "answerIndex": 0,
+      "hintTopic": { "vi": "mức tin cậy của hai nguồn tuyến" },
+      "explain": {
+        "vi": "Số nhỏ hơn thì được tin hơn, nên tuyến tĩnh thắng. Cái giá là nó nằm im khi đường của nó đứt và che mất lối vòng OSPF đã tìm ra."
+      }
+    },
+    {
+      "kind": "order",
+      "id": "m16-mt-11",
+      "prompt": { "vi": "Xếp lại đúng trình tự những gì xảy ra sau khi một sợi cáp giữa hai router bị cắt." },
+      "items": [
+        { "vi": "Gói hello im tiếng trên cổng hướng ra sợi cáp vừa đứt" },
+        { "vi": "Hai router hai đầu coi láng giềng đã mất và sửa bản đồ của mình" },
+        { "vi": "Tin sửa bản đồ lan ra cả vùng, mọi router bỏ đường hỏng" },
+        { "vi": "Mỗi router tính lại cost và bảng định tuyến chuyển sang lối vòng" }
+      ],
+      "hintTopic": { "vi": "chuỗi phản ứng sau khi mất một đường" },
+      "explain": {
+        "vi": "Mất nhịp hello là dấu hiệu đầu tiên; từ đó bản đồ được sửa, tin lan ra cả vùng, và cuối cùng mỗi router tính lại đường ngắn nhất."
+      }
+    },
+    {
+      "kind": "palace-walk",
+      "id": "m16-mt-12",
+      "prompt": {
+        "vi": "Đi hai tầng dưới của tòa nhà làm quen từ trí nhớ: mỗi phòng là bậc nào, và ở bậc đó đang xảy ra chuyện gì?"
+      },
+      "rooms": ["m16-r-down", "m16-r-attempt", "m16-r-init", "m16-r-2way"],
+      "explain": {
+        "vi": "Down (im lặng hoàn toàn) → Attempt (gọi riêng từng nhà, chỉ có ở mạng NBMA) → Init (mới nghe tiếng chào một chiều) → 2-Way (hai bên đã thấy tên nhau)."
+      }
+    },
+    {
+      "kind": "palace-walk",
+      "id": "m16-mt-13",
+      "prompt": {
+        "vi": "Đi hai tầng trên của tòa nhà làm quen từ trí nhớ: mỗi phòng là bậc nào, và hai router đang trao nhau cái gì?"
+      },
+      "rooms": ["m16-r-exstart", "m16-r-exchange", "m16-r-loading", "m16-r-full"],
+      "explain": {
+        "vi": "ExStart (chốt ai nói trước) → Exchange (trao mục lục cho nhau) → Loading (xin nốt phần còn thiếu) → Full (hai bản đồ giống hệt nhau)."
+      }
+    },
+    {
+      "kind": "cli",
+      "id": "m16-mt-cli-1",
+      "prompt": {
+        "vi": "Router-DN đã bật OSPF và khai mạng LAN của nó, nhưng hai chi nhánh vẫn không gọi được nhau. Console đang cắm vào Router-DN: hãy khai nốt phần còn thiếu để PC-A gọi được PC-B."
+      },
+      "spec": {
+        "initial": {
+          "devices": [
+            {
+              "kind": "pc",
+              "id": "pc-a",
+              "hostname": "PC-A (Hà Nội)",
+              "port": { "id": "eth0", "mac": "AA:BB:CC:16:00:01" },
+              "ipConfig": { "ip": "192.168.1.10", "prefix": 24 },
+              "gateway": "192.168.1.1"
+            },
+            {
+              "kind": "pc",
+              "id": "pc-b",
+              "hostname": "PC-B (Đà Nẵng)",
+              "port": { "id": "eth0", "mac": "AA:BB:CC:16:00:02" },
+              "ipConfig": { "ip": "192.168.2.10", "prefix": 24 },
+              "gateway": "192.168.2.1"
+            },
+            {
+              "kind": "switch",
+              "id": "sw-1",
+              "hostname": "Switch-HN",
+              "ports": [
+                { "id": "p1", "vlan": 1 },
+                { "id": "p2", "vlan": 1 }
+              ]
+            },
+            {
+              "kind": "switch",
+              "id": "sw-2",
+              "hostname": "Switch-DN",
+              "ports": [
+                { "id": "p1", "vlan": 1 },
+                { "id": "p2", "vlan": 1 }
+              ]
+            },
+            {
+              "kind": "router",
+              "id": "r-1",
+              "hostname": "Router-HN",
+              "ports": [
+                { "id": "g0", "mac": "AA:BB:CC:16:00:11", "ipConfig": { "ip": "192.168.1.1", "prefix": 24 } },
+                { "id": "g1", "mac": "AA:BB:CC:16:00:12", "ipConfig": { "ip": "10.0.12.1", "prefix": 24 } }
+              ],
+              "staticRoutes": [],
+              "ospf": {
+                "processId": 1,
+                "networks": [
+                  { "ip": "192.168.1.0", "wildcard": "0.0.0.255", "area": 0 },
+                  { "ip": "10.0.12.0", "wildcard": "0.0.0.255", "area": 0 }
+                ]
+              }
+            },
+            {
+              "kind": "router",
+              "id": "r-2",
+              "hostname": "Router-DN",
+              "ports": [
+                { "id": "g0", "mac": "AA:BB:CC:16:00:21", "ipConfig": { "ip": "192.168.2.1", "prefix": 24 } },
+                { "id": "g1", "mac": "AA:BB:CC:16:00:22", "ipConfig": { "ip": "10.0.12.2", "prefix": 24 } }
+              ],
+              "staticRoutes": [],
+              "ospf": {
+                "processId": 1,
+                "networks": [{ "ip": "192.168.2.0", "wildcard": "0.0.0.255", "area": 0 }]
+              }
+            }
+          ],
+          "links": [
+            { "id": "l1", "a": { "deviceId": "pc-a", "portId": "eth0" }, "b": { "deviceId": "sw-1", "portId": "p1" } },
+            { "id": "l2", "a": { "deviceId": "sw-1", "portId": "p2" }, "b": { "deviceId": "r-1", "portId": "g0" } },
+            { "id": "l3", "a": { "deviceId": "pc-b", "portId": "eth0" }, "b": { "deviceId": "sw-2", "portId": "p1" } },
+            { "id": "l4", "a": { "deviceId": "sw-2", "portId": "p2" }, "b": { "deviceId": "r-2", "portId": "g0" } },
+            { "id": "wan-12", "a": { "deviceId": "r-1", "portId": "g1" }, "b": { "deviceId": "r-2", "portId": "g1" } }
+          ]
+        },
+        "deviceId": "r-2",
+        "goals": [
+          { "kind": "behavior", "goal": { "kind": "ping", "from": "pc-a", "to": "pc-b", "expect": "reach" } }
+        ],
+        "solution": [
+          {
+            "deviceId": "r-2",
+            "lines": ["enable", "configure terminal", "router ospf 1", "network 10.0.12.0 0.0.0.255 area 0", "end"]
+          }
+        ]
+      },
+      "hintTopic": { "vi": "cổng nào của Router-DN còn đứng ngoài OSPF" },
+      "explain": {
+        "vi": "Thiếu câu network cho đường nối sang Hà Nội: cổng g1 chưa tham gia OSPF nên láng giềng đứng ở lý do network-not-declared. Gõ network 10.0.12.0 0.0.0.255 area 0 trong tiến trình OSPF là hai bên lên Full và bảng đường tự mọc dòng chữ O."
+      }
+    },
+    {
+      "kind": "lab",
+      "id": "m16-mt-lab-1",
+      "prompt": {
+        "vi": "Mạng ba chi nhánh này đang cho lưu lượng đi thẳng từ Hà Nội sang Sài Gòn. Hãy cắt sợi cáp nối thẳng đó ra và chứng minh PC-A vẫn gọi được PC-C, với đường đi ghé qua Router-DN."
+      },
+      "spec": {
+        "initial": {
+          "devices": [
+            {
+              "kind": "pc",
+              "id": "pc-a",
+              "hostname": "PC-A (Hà Nội)",
+              "port": { "id": "eth0", "mac": "AA:BB:CC:16:00:01" },
+              "ipConfig": { "ip": "192.168.1.10", "prefix": 24 },
+              "gateway": "192.168.1.1"
+            },
+            {
+              "kind": "pc",
+              "id": "pc-c",
+              "hostname": "PC-C (Sài Gòn)",
+              "port": { "id": "eth0", "mac": "AA:BB:CC:16:00:03" },
+              "ipConfig": { "ip": "192.168.3.10", "prefix": 24 },
+              "gateway": "192.168.3.1"
+            },
+            {
+              "kind": "switch",
+              "id": "sw-1",
+              "hostname": "Switch-HN",
+              "ports": [
+                { "id": "p1", "vlan": 1 },
+                { "id": "p2", "vlan": 1 }
+              ]
+            },
+            {
+              "kind": "switch",
+              "id": "sw-3",
+              "hostname": "Switch-SG",
+              "ports": [
+                { "id": "p1", "vlan": 1 },
+                { "id": "p2", "vlan": 1 }
+              ]
+            },
+            {
+              "kind": "router",
+              "id": "r-1",
+              "hostname": "Router-HN",
+              "ports": [
+                { "id": "g0", "mac": "AA:BB:CC:16:00:11", "ipConfig": { "ip": "192.168.1.1", "prefix": 24 } },
+                { "id": "g1", "mac": "AA:BB:CC:16:00:12", "ipConfig": { "ip": "10.0.12.1", "prefix": 24 } },
+                { "id": "g2", "mac": "AA:BB:CC:16:00:13", "ipConfig": { "ip": "10.0.13.1", "prefix": 24 } }
+              ],
+              "staticRoutes": [],
+              "ospf": {
+                "processId": 1,
+                "networks": [
+                  { "ip": "192.168.1.0", "wildcard": "0.0.0.255", "area": 0 },
+                  { "ip": "10.0.12.0", "wildcard": "0.0.0.255", "area": 0 },
+                  { "ip": "10.0.13.0", "wildcard": "0.0.0.255", "area": 0 }
+                ]
+              }
+            },
+            {
+              "kind": "router",
+              "id": "r-2",
+              "hostname": "Router-DN",
+              "ports": [
+                { "id": "g1", "mac": "AA:BB:CC:16:00:22", "ipConfig": { "ip": "10.0.12.2", "prefix": 24 } },
+                { "id": "g2", "mac": "AA:BB:CC:16:00:23", "ipConfig": { "ip": "10.0.23.2", "prefix": 24 } }
+              ],
+              "staticRoutes": [],
+              "ospf": {
+                "processId": 1,
+                "networks": [
+                  { "ip": "10.0.12.0", "wildcard": "0.0.0.255", "area": 0 },
+                  { "ip": "10.0.23.0", "wildcard": "0.0.0.255", "area": 0 }
+                ]
+              }
+            },
+            {
+              "kind": "router",
+              "id": "r-3",
+              "hostname": "Router-SG",
+              "ports": [
+                { "id": "g0", "mac": "AA:BB:CC:16:00:31", "ipConfig": { "ip": "192.168.3.1", "prefix": 24 } },
+                { "id": "g1", "mac": "AA:BB:CC:16:00:32", "ipConfig": { "ip": "10.0.23.3", "prefix": 24 } },
+                { "id": "g2", "mac": "AA:BB:CC:16:00:33", "ipConfig": { "ip": "10.0.13.3", "prefix": 24 } }
+              ],
+              "staticRoutes": [],
+              "ospf": {
+                "processId": 1,
+                "networks": [
+                  { "ip": "192.168.3.0", "wildcard": "0.0.0.255", "area": 0 },
+                  { "ip": "10.0.23.0", "wildcard": "0.0.0.255", "area": 0 },
+                  { "ip": "10.0.13.0", "wildcard": "0.0.0.255", "area": 0 }
+                ]
+              }
+            }
+          ],
+          "links": [
+            { "id": "l1", "a": { "deviceId": "pc-a", "portId": "eth0" }, "b": { "deviceId": "sw-1", "portId": "p1" } },
+            { "id": "l2", "a": { "deviceId": "sw-1", "portId": "p2" }, "b": { "deviceId": "r-1", "portId": "g0" } },
+            { "id": "l3", "a": { "deviceId": "pc-c", "portId": "eth0" }, "b": { "deviceId": "sw-3", "portId": "p1" } },
+            { "id": "l4", "a": { "deviceId": "sw-3", "portId": "p2" }, "b": { "deviceId": "r-3", "portId": "g0" } },
+            { "id": "wan-12", "a": { "deviceId": "r-1", "portId": "g1" }, "b": { "deviceId": "r-2", "portId": "g1" } },
+            { "id": "wan-23", "a": { "deviceId": "r-2", "portId": "g2" }, "b": { "deviceId": "r-3", "portId": "g1" } },
+            { "id": "wan-13", "a": { "deviceId": "r-1", "portId": "g2" }, "b": { "deviceId": "r-3", "portId": "g2" } }
+          ]
+        },
+        "goals": [{ "kind": "pathThrough", "from": "pc-a", "to": "pc-c", "via": ["r-2"] }],
+        "allow": {
+          "addDevices": [],
+          "removeDevices": false,
+          "addLinks": false,
+          "removeLinks": true,
+          "setVlan": false,
+          "setIp": false,
+          "setRoutes": false,
+          "maxDevices": 10
+        },
+        "solution": {
+          "devices": [
+            {
+              "kind": "pc",
+              "id": "pc-a",
+              "hostname": "PC-A (Hà Nội)",
+              "port": { "id": "eth0", "mac": "AA:BB:CC:16:00:01" },
+              "ipConfig": { "ip": "192.168.1.10", "prefix": 24 },
+              "gateway": "192.168.1.1"
+            },
+            {
+              "kind": "pc",
+              "id": "pc-c",
+              "hostname": "PC-C (Sài Gòn)",
+              "port": { "id": "eth0", "mac": "AA:BB:CC:16:00:03" },
+              "ipConfig": { "ip": "192.168.3.10", "prefix": 24 },
+              "gateway": "192.168.3.1"
+            },
+            {
+              "kind": "switch",
+              "id": "sw-1",
+              "hostname": "Switch-HN",
+              "ports": [
+                { "id": "p1", "vlan": 1 },
+                { "id": "p2", "vlan": 1 }
+              ]
+            },
+            {
+              "kind": "switch",
+              "id": "sw-3",
+              "hostname": "Switch-SG",
+              "ports": [
+                { "id": "p1", "vlan": 1 },
+                { "id": "p2", "vlan": 1 }
+              ]
+            },
+            {
+              "kind": "router",
+              "id": "r-1",
+              "hostname": "Router-HN",
+              "ports": [
+                { "id": "g0", "mac": "AA:BB:CC:16:00:11", "ipConfig": { "ip": "192.168.1.1", "prefix": 24 } },
+                { "id": "g1", "mac": "AA:BB:CC:16:00:12", "ipConfig": { "ip": "10.0.12.1", "prefix": 24 } },
+                { "id": "g2", "mac": "AA:BB:CC:16:00:13", "ipConfig": { "ip": "10.0.13.1", "prefix": 24 } }
+              ],
+              "staticRoutes": [],
+              "ospf": {
+                "processId": 1,
+                "networks": [
+                  { "ip": "192.168.1.0", "wildcard": "0.0.0.255", "area": 0 },
+                  { "ip": "10.0.12.0", "wildcard": "0.0.0.255", "area": 0 },
+                  { "ip": "10.0.13.0", "wildcard": "0.0.0.255", "area": 0 }
+                ]
+              }
+            },
+            {
+              "kind": "router",
+              "id": "r-2",
+              "hostname": "Router-DN",
+              "ports": [
+                { "id": "g1", "mac": "AA:BB:CC:16:00:22", "ipConfig": { "ip": "10.0.12.2", "prefix": 24 } },
+                { "id": "g2", "mac": "AA:BB:CC:16:00:23", "ipConfig": { "ip": "10.0.23.2", "prefix": 24 } }
+              ],
+              "staticRoutes": [],
+              "ospf": {
+                "processId": 1,
+                "networks": [
+                  { "ip": "10.0.12.0", "wildcard": "0.0.0.255", "area": 0 },
+                  { "ip": "10.0.23.0", "wildcard": "0.0.0.255", "area": 0 }
+                ]
+              }
+            },
+            {
+              "kind": "router",
+              "id": "r-3",
+              "hostname": "Router-SG",
+              "ports": [
+                { "id": "g0", "mac": "AA:BB:CC:16:00:31", "ipConfig": { "ip": "192.168.3.1", "prefix": 24 } },
+                { "id": "g1", "mac": "AA:BB:CC:16:00:32", "ipConfig": { "ip": "10.0.23.3", "prefix": 24 } },
+                { "id": "g2", "mac": "AA:BB:CC:16:00:33", "ipConfig": { "ip": "10.0.13.3", "prefix": 24 } }
+              ],
+              "staticRoutes": [],
+              "ospf": {
+                "processId": 1,
+                "networks": [
+                  { "ip": "192.168.3.0", "wildcard": "0.0.0.255", "area": 0 },
+                  { "ip": "10.0.23.0", "wildcard": "0.0.0.255", "area": 0 },
+                  { "ip": "10.0.13.0", "wildcard": "0.0.0.255", "area": 0 }
+                ]
+              }
+            }
+          ],
+          "links": [
+            { "id": "l1", "a": { "deviceId": "pc-a", "portId": "eth0" }, "b": { "deviceId": "sw-1", "portId": "p1" } },
+            { "id": "l2", "a": { "deviceId": "sw-1", "portId": "p2" }, "b": { "deviceId": "r-1", "portId": "g0" } },
+            { "id": "l3", "a": { "deviceId": "pc-c", "portId": "eth0" }, "b": { "deviceId": "sw-3", "portId": "p1" } },
+            { "id": "l4", "a": { "deviceId": "sw-3", "portId": "p2" }, "b": { "deviceId": "r-3", "portId": "g0" } },
+            { "id": "wan-12", "a": { "deviceId": "r-1", "portId": "g1" }, "b": { "deviceId": "r-2", "portId": "g1" } },
+            { "id": "wan-23", "a": { "deviceId": "r-2", "portId": "g2" }, "b": { "deviceId": "r-3", "portId": "g1" } }
+          ]
+        }
+      },
+      "hintTopic": { "vi": "lối còn lại khi đường thẳng mất" },
+      "explain": {
+        "vi": "Gỡ sợi nối thẳng Router-HN với Router-SG là đủ: cả vùng bỏ đường đó khỏi bản đồ, tính lại cost, và mạng 192.168.3.0 được học lại với cost 2 qua Router-DN — không ai phải gõ thêm dòng lệnh nào."
+      }
+    }
+  ]
+}

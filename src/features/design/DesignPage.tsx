@@ -22,10 +22,12 @@ import { NetworkLab } from '../lab/NetworkLab'
 import { isLabSolved, parseLabSpec, type Topology } from '../../engine/lab'
 import { ClinicRoom } from '../clinic/ClinicRoom'
 import { PsConsole } from '../ps/PsConsole'
-import { QuestionSchema, type ClinicQuestion, type PsQuestion } from '../../engine/contentSchema'
+import { CliConsole } from '../cli/CliConsole'
+import { QuestionSchema, type CliQuestion, type ClinicQuestion, type PsQuestion } from '../../engine/contentSchema'
 import { gradeQuestion } from '../../engine/grading/gradeQuestion'
 import { CASE_SAI_GATEWAY } from '../../../tests/fixtures/clinicFixture'
 import { specTaoHangLoat } from '../../../tests/fixtures/psFixture'
+import { trunkByCli } from '../../../tests/fixtures/cliFixture'
 import { PalaceTour } from '../palace/PalaceTour'
 import { PalaceWalk } from '../palace/PalaceWalk'
 import { parsePalace, walkOutcomesPassed } from '../../engine/palace'
@@ -130,6 +132,96 @@ const DEMO_LAB = parseLabSpec({
   solution: demoTopology(10),
 })
 
+/**
+ * Đề TRUNK + STP của Phần D — dựng ngay tại đây thay vì mượn fixture test
+ * (fixture nằm ngoài src, trang này phải tự đứng được). Vẫn đi qua
+ * `parseLabSpec` nên nó hợp lệ y hệt một đề bài thật.
+ *
+ * Ba switch nối vòng, hai VLAN đi chung một trunk: một sơ đồ soi được cả
+ * hai thứ mới của Module 14-15 — nhãn 802.1Q trên nhật ký chặng, và cổng
+ * nằm im do STP.
+ */
+function demoRing(stpOn: boolean, trunk: boolean): unknown {
+  const uplink = (id: string) =>
+    trunk
+      ? { id, vlan: 1, mode: 'trunk', allowedVlans: [10, 20], nativeVlan: 1 }
+      : { id, vlan: 1 }
+  const sw = (id: string, hostname: string, priority: number) => ({
+    kind: 'switch',
+    id,
+    hostname,
+    bridgePriority: priority,
+    ports: [{ id: 'p1', vlan: 10 }, { id: 'p2', vlan: 20 }, uplink('p3'), uplink('p4')],
+  })
+  return {
+    stpEnabled: stpOn,
+    devices: [
+      {
+        kind: 'pc',
+        id: 'pc-a',
+        hostname: 'PC-A (kế toán)',
+        port: { id: 'eth0', mac: 'AA:BB:CC:00:00:01' },
+        ipConfig: { ip: '192.168.1.10', prefix: 24 },
+        gateway: null,
+      },
+      {
+        kind: 'pc',
+        id: 'pc-b',
+        hostname: 'PC-B (kế toán)',
+        port: { id: 'eth0', mac: 'AA:BB:CC:00:00:02' },
+        ipConfig: { ip: '192.168.1.20', prefix: 24 },
+        gateway: null,
+      },
+      sw('sw-1', 'Switch-1', 32768),
+      sw('sw-2', 'Switch-2', 4096),
+      sw('sw-3', 'Switch-3', 32768),
+    ],
+    links: [
+      { id: 'la', a: { deviceId: 'pc-a', portId: 'eth0' }, b: { deviceId: 'sw-1', portId: 'p1' } },
+      { id: 'lb', a: { deviceId: 'pc-b', portId: 'eth0' }, b: { deviceId: 'sw-3', portId: 'p1' } },
+      { id: 'r12', a: { deviceId: 'sw-1', portId: 'p3' }, b: { deviceId: 'sw-2', portId: 'p3' } },
+      { id: 'r23', a: { deviceId: 'sw-2', portId: 'p4' }, b: { deviceId: 'sw-3', portId: 'p3' } },
+      { id: 'r31', a: { deviceId: 'sw-3', portId: 'p4' }, b: { deviceId: 'sw-1', portId: 'p4' } },
+    ],
+  }
+}
+
+const DEMO_TRUNK_STP_LAB = parseLabSpec({
+  initial: demoRing(false, false),
+  goals: [{ kind: 'ping', from: 'pc-a', to: 'pc-b', expect: 'reach' }],
+  allow: {
+    addDevices: [],
+    removeDevices: false,
+    addLinks: false,
+    removeLinks: true,
+    setVlan: false,
+    setTrunk: true,
+    setStp: true,
+    setIp: false,
+    setRoutes: false,
+    maxDevices: 8,
+  },
+  solution: demoRing(true, true),
+})
+
+function TrunkStpShowcase() {
+  const [verdict, setVerdict] = useState<'chưa nộp' | 'đạt' | 'chưa đạt'>('chưa nộp')
+  return (
+    <div className="space-y-3">
+      <p className="text-sm text-ink-muted">
+        Ba switch nối vòng, hai VLAN chung một dây. Bật STP cho hết bão, khai trunk hai đầu cho VLAN
+        đi được — kết quả lần nộp gần nhất: <strong className="text-ink">{verdict}</strong>
+      </p>
+      <NetworkLab
+        spec={DEMO_TRUNK_STP_LAB}
+        onSubmit={(topology) =>
+          setVerdict(isLabSolved(DEMO_TRUNK_STP_LAB, topology) ? 'đạt' : 'chưa đạt')
+        }
+      />
+    </div>
+  )
+}
+
 function LabShowcase() {
   const [verdict, setVerdict] = useState<'chưa nộp' | 'đạt' | 'chưa đạt'>('chưa nộp')
   return (
@@ -206,6 +298,35 @@ function PsShowcase() {
       <PsConsole
         question={DEMO_PS}
         onSubmit={(resp) => setVerdict(gradeQuestion(DEMO_PS, resp) ? 'đạt' : 'chưa đạt')}
+      />
+    </div>
+  )
+}
+
+// Bài CLI thiết bị trưng bày: đúng đề "một sợi dây, hai xóm" của Module
+// 14, lấy từ fixture engine rồi bọc thành câu hỏi kind 'cli' đi qua
+// QuestionSchema — hợp lệ y hệt câu thật (lời giải chạy sạch, đề chưa
+// đạt sẵn). Đây cũng là chỗ soi mắt xem console có nói đúng giọng máy.
+const DEMO_CLI = QuestionSchema.parse({
+  kind: 'cli',
+  id: 'design-cli-1',
+  prompt: {
+    vi: 'Kế toán và kỹ thuật ngồi ở hai tòa nhà, giữa hai switch chỉ có MỘT sợi dây. Vào console dựng trunk cho cả hai VLAN cùng đi chung sợi dây đó — nhớ làm đủ hai đầu.',
+  },
+  spec: trunkByCli(),
+  hintTopic: { vi: 'vai của cổng nối giữa hai switch' },
+}) as CliQuestion
+
+function CliShowcase() {
+  const [verdict, setVerdict] = useState<'chưa nộp' | 'đạt' | 'chưa đạt'>('chưa nộp')
+  return (
+    <div className="space-y-3">
+      <p className="text-sm text-ink-muted">
+        Kết quả lần nộp gần nhất: <strong className="text-ink">{verdict}</strong>
+      </p>
+      <CliConsole
+        question={DEMO_CLI}
+        onSubmit={(resp) => setVerdict(gradeQuestion(DEMO_CLI, resp) ? 'đạt' : 'chưa đạt')}
       />
     </div>
   )
@@ -325,12 +446,20 @@ export function DesignPage() {
         <LabShowcase />
       </Section>
 
+      <Section title="Phòng lab — trunk 802.1Q và STP (Phần D)">
+        <TrunkStpShowcase />
+      </Section>
+
       <Section title={t('clinic.title')}>
         <ClinicShowcase />
       </Section>
 
       <Section title="Terminal PowerShell">
         <PsShowcase />
+      </Section>
+
+      <Section title="Console thiết bị — CLI kiểu IOS (Phần D)">
+        <CliShowcase />
       </Section>
 
       <Section title={lt(DEMO_PALACE.title)}>

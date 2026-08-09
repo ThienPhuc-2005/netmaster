@@ -45,6 +45,8 @@ function goalText(goal: PsGoal, t: ReturnType<typeof useT>): string {
         : t('ps.goalAdUserOu', { sam: goal.sam, ou: goal.ou })
     case 'ad-user-count':
       return t('ps.goalAdUserCount', { ou: goal.ou, atLeast: goal.atLeast })
+    case 'group-member':
+      return t('ps.goalGroupMember', { sam: goal.sam, group: goal.group })
     case 'tested-connection':
       return goal.port === undefined
         ? t('ps.goalTestPing', { ip: goal.ip })
@@ -78,6 +80,11 @@ function EntryBody({ entry }: { entry: TermEntry }) {
   // không tưởng lệnh chết, nhưng vẫn đẩy họ đi Get-ADUser kiểm chứng.
   if (outcome.kind === 'ok' && outcome.createdUsers !== undefined && entry.lines.length === 0) {
     return <p className="text-ink-muted">{t('ps.termCreatedSilent', { count: outcome.createdUsers })}</p>
+  }
+  // Add-ADGroupMember cũng im lặng — nhịp tự-kiểm-chứng y hệt: đi
+  // Get-ADGroupMember mà xem tận mắt.
+  if (outcome.kind === 'ok' && outcome.addedMembers !== undefined && entry.lines.length === 0) {
+    return <p className="text-ink-muted">{t('ps.termAddedSilent')}</p>
   }
   return (
     <pre className={`overflow-x-auto whitespace-pre ${outcome.kind === 'error' ? 'text-warn' : 'text-ink'}`}>

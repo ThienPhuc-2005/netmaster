@@ -2,7 +2,8 @@
 
 Phần lõi (mục 1-6): Phase 1, Module 1-2. Buổi bổ sung: Module 4 (mục 7),
 Module 5 (mục 8) và Phần C — Module 8-9-10 (mục 9) — làm sau khi người
-tham gia đã qua phần lõi.
+tham gia đã qua phần lõi. **Trung cấp: Phần D (mục 12) và capstone
+(mục 13)** — kiểm Definition of Done trung cấp (SPEC-TRUNG-CAP.md mục 6).
 
 Mục tiêu: kiểm chứng Definition of Done cuối cùng của Phase 1 (spec mục 6):
 **một người chưa biết gì về mạng, sau khi tự học Module 1-2 trong app,
@@ -475,7 +476,163 @@ Buổi M12: bắt đầu …h — kết thúc …h
   KẾT LUẬN: ĐẬU / ĐẬU CÓ GHI CHÚ / RỚT (bài cần mở lại: …)
 ```
 
-## 12. Sau buổi test
+## 12. Buổi trung cấp — Phần D (sau Module 14-15): trunk bằng CLI & chẩn đoán native lệch
+
+Đo hai tiêu chí (a) và (b) của DoD trung cấp (SPEC-TRUNG-CAP.md mục 6):
+người học phải **TỰ GÕ được cấu hình từ yêu cầu suông** (generation
+effect trên CLI) và **khoanh được bệnh chưa gặp bằng lệnh show trong 10
+phút**. Không đo trí nhớ bài — đo kỹ năng mang đi làm được.
+
+### Điều kiện người tham gia
+
+- Đã đậu Module 12 (học thật hoặc học vượt — vượt vẫn tính, cổng 85%
+  như nhau), và đã tự học xong Module 13, 14, 15 trong app. Việc tự học
+  làm ở nhà, nhiều ngày càng tốt (lịch ôn SM-2 cần qua đêm).
+- Người từng đậu bài đo Module 4 (mục 7) là ứng viên đẹp nhất: có mốc
+  so sánh "bấm chọn sửa VLAN" hồi nhập môn với "gõ lệnh dựng trunk" bây
+  giờ.
+
+### Chuẩn bị
+
+- Máy màn hình ≥ 13", app chạy sẵn với hồ sơ của chính người tham gia
+  (KHÔNG dùng cửa sổ ẩn danh — cần tiến độ thật của họ).
+- In sẵn hoặc viết tay **tờ yêu cầu** cho bài (a) — nội dung ở dưới.
+  Người tham gia không được mở lại bài học nào từ lúc nhận tờ yêu cầu.
+- Đồng hồ bấm giờ cho bài (b).
+
+### Bài (a) — dựng trunk hai switch từ yêu cầu suông (~20 phút)
+
+1. Điều phối viên mở trang `/design`, mục **"Console thiết bị — CLI kiểu
+   IOS (Phần D)"** — đề trunk hai switch hợp lệ y hệt câu thật, nhưng
+   không nằm trong bài học nào nên không có ngữ cảnh gợi ý.
+2. Đưa tờ yêu cầu, đọc đúng một lần:
+   > "Hai switch nối nhau bằng một sợi dây. Xóm Kế toán là VLAN 10, xóm
+   > Kỹ thuật là VLAN 20, máy hai xóm nằm rải trên cả hai switch. Bạn
+   > cấu hình sao cho máy cùng xóm gọi được nhau xuyên switch, và sợi
+   > dây giữa hai switch chở được cả hai xóm. Chỉ được dùng màn console."
+3. **Không nhắc lệnh, không nhắc "phải sang máy thứ hai".** Được phép
+   trả lời câu hỏi thao tác ("chip này để làm gì?") đúng như luật mục 3.
+   Người tham gia được dùng `?` của console — đó là thứ đang đo, không
+   phải gian lận.
+4. Điểm quan sát, ghi nguyên văn:
+   - Lệnh ĐẦU TIÊN họ gõ là gì? (`show ...` trước khi cấu hình là dấu
+     hiệu quy trình tốt; `configure terminal` ngay cũng không sai.)
+   - Có tự nhớ ra `switchport mode trunk` không, hay mò qua `?`?
+   - Có tự bấm chip sang Switch-2 để cấu hình đầu dây bên kia không —
+     hay dựng trunk một đầu rồi nộp? (Đây là lỗi `trunk-one-side-only`
+     kinh điển; bảng mục tiêu sẽ nói. Ghi lại họ đọc bảng hay không.)
+   - Có gõ `show interfaces trunk` kiểm chứng TRƯỚC khi bấm Nộp không?
+
+### Bài (b) — ca native lệch chưa gặp, khoanh bệnh trong 10 phút (~15 phút)
+
+5. Điều phối viên chuẩn bị TRƯỚC (người tham gia không nhìn): mở lại
+   bài lab trunk của Module 14, bấm "Về sơ đồ ban đầu", rồi qua bảng
+   vai cổng tự tay đổi **native VLAN một đầu trunk** sang số khác đầu
+   kia (ví dụ một đầu để 1, một đầu đổi thành 99). Giao máy ở trạng
+   thái đó — đây là ca native-lệch NGƯỜI NÀY CHƯA GẶP (bài 3 họ học là
+   sơ đồ khác).
+6. Đề bài đọc một lần, bấm giờ 10 phút:
+   > "Mạng này hôm qua chạy tốt, sáng nay có người than máy hai xóm lúc
+   > được lúc không. Bạn tìm xem bệnh nằm ở đâu — chỉ cần KHOANH đúng
+   > chỗ và gọi tên bệnh, chưa cần sửa."
+7. Điểm quan sát:
+   - Lệnh show nào được gõ, theo thứ tự nào? (Đường vua: `show
+     interfaces trunk` ở một máy → thấy native, sang máy kia so — hoặc
+     nhìn cột native hai đầu lệch nhau.)
+   - Có dùng nhật ký chặng của "Gửi thử" không (chặng ghi "đi trần" là
+     manh mối)?
+   - Phút thứ mấy thì khoanh được? Gọi tên bệnh bằng lời gì (nguyên văn)?
+
+### Tiêu chí đậu
+
+- **ĐẬU:** bài (a) dựng trunk đạt trọn mục tiêu KHÔNG mở lại bài học,
+  số lượt Nộp ≤ 3 (gõ `?` và Gửi thử thoải mái); VÀ bài (b) trong 10
+  phút chỉ đúng chỗ native lệch, nói được đại ý "hai đầu dây đang gọi
+  hai VLAN khác nhau cho khung đi trần". Diễn đạt đời thường vẫn tính.
+- **ĐẬU CÓ GHI CHÚ:** đạt cả hai nhưng bài (a) phải mò `?` cho hầu hết
+  lệnh (chưa thuộc tay — ghi lại lệnh nào phải mò), hoặc bài (b) khoanh
+  đúng nhưng giải thích sai cơ chế (ví dụ đổ cho allowed list) — ghi
+  nguyên văn để sửa nội dung bài 3.
+- **RỚT:** bài (a) không dựng nổi trunk hai đầu hoặc phải mở lại bài
+  học; bài (b) hết 10 phút chưa khoanh được, hoặc khoanh bằng cách thử
+  ngẫu nhiên. Rớt nghĩa là Module 14 chưa dạy được kỹ năng nó tuyên bố
+  — mở lại nội dung bài 2-3 của module đó, không đổ cho người học.
+
+### Mẫu ghi chép
+
+```
+Buổi Phần D: bắt đầu …h — kết thúc …h
+  Tự học M13-15 trong … ngày; thi lần 1: M13 …% M14 …% M15 …%
+  Bài (a): lệnh đầu tiên: … ; tự nhớ switchport mode trunk: có/mò ?
+    Tự sang Switch-2: có/không (nếu không: đọc bảng mục tiêu rồi mới sang?)
+    show kiểm chứng trước khi Nộp: có/không ; số lượt Nộp: …
+  Bài (b): các lệnh show theo thứ tự: …
+    Dùng nhật ký chặng: có/không ; khoanh được ở phút: …
+    Gọi tên bệnh (nguyên văn): …
+  KẾT LUẬN: ĐẬU / ĐẬU CÓ GHI CHÚ / RỚT (bài cần mở lại: …)
+```
+
+## 13. Buổi trung cấp — Capstone (Module 21): ba chặng không cần tầng 3
+
+Đo tiêu chí (c) của DoD trung cấp: người học dựng trọn mạng chi nhánh
+**chặng 1-3 mà không phải mở gợi ý tầng 3** (tầng bày lời giải). Đây là
+phép đo tổng hợp cuối cùng của cả khóa trung cấp — VLSM, đặt địa chỉ,
+trunk, OSPF, ACL trong một mạch.
+
+### Điều kiện và chuẩn bị
+
+- Người tham gia đã học xong Module 13-20 (thi đậu đủ, học thật hay học
+  vượt đều được) và CHƯA học Module 21.
+- Buổi này để họ học Module 21 **tại chỗ** (60-120 phút), điều phối
+  viên ngồi quan sát từ bài 1. Giấy nháp + máy tính bỏ túi cho phần
+  VLSM (tính tay là hợp lệ — app không cấm).
+
+### Điểm quan sát từng chặng
+
+1. **Chặng 1 (VLSM + đặt địa chỉ):** họ cắt 10.40.0.0/24 theo thứ tự
+   nào — có tự cắt phòng to trước không (bài học M13)? Prefix ba phòng
+   (60/25/10 máy) ra /26 /27 /28 đúng ngay hay phải sửa? Gợi ý dùng tới
+   tầng mấy?
+2. **Chặng 2 (trunk + OSPF):** wildcard trong câu `network` họ lấy đâu
+   ra — chép từ bản cắt chặng 1 (đường thiết kế đúng) hay đoán? Có gõ
+   `show ip ospf neighbor` kiểm Full trước khi nộp không (goal ép,
+   nhưng ghi lại họ gõ TRƯỚC hay SAU khi bảng mục tiêu nhắc)?
+3. **Chặng 3 (ACL):** luật viết theo thứ tự nào — có nhớ "hẹp trước
+   rộng sau" không? Có dính bẫy dòng cấm vô hình (quên permit cuối)
+   không, và khi cả văn phòng tắc, họ đọc `show access-lists` (số đếm
+   dòng nào ăn) hay đoán mò?
+4. Với MỖI chặng ghi: số lần Gửi thử, số lượt Nộp, **tầng gợi ý cao
+   nhất đã mở** (0 = không mở gợi ý nào).
+
+### Tiêu chí đậu
+
+- **ĐẬU:** cả ba chặng hoàn thành, không chặng nào phải mở **tầng 3**.
+  Tầng 1-2 dùng thoải mái — gợi ý tồn tại để dùng.
+- **ĐẬU CÓ GHI CHÚ:** đúng một chặng phải mở tầng 3 nhưng sau đó tự
+  làm lại được (không chép nguyên văn) — ghi chặng nào, vì kiến thức
+  chặng đó là thứ cần gia cố trong module gốc của nó.
+- **RỚT:** từ hai chặng trở lên cần tầng 3, hoặc bỏ cuộc giữa chuỗi.
+  Rớt trỏ ngược về module gốc của chặng rớt (chặng 1 → M13, chặng 2 →
+  M14/M16, chặng 3 → M17) — mở lại nội dung module đó, không đổ cho
+  người học.
+
+### Mẫu ghi chép
+
+```
+Buổi capstone: bắt đầu …h — kết thúc …h
+  Chặng 1: cắt to-trước: có/không ; /26 /27 /28 đúng ngay: có/không
+           Gửi thử … lần; Nộp … lượt; tầng gợi ý cao nhất: …
+  Chặng 2: wildcard chép từ bản cắt: có/đoán ; show neighbor trước nhắc: có/không
+           Gửi thử … lần; Nộp … lượt; tầng gợi ý cao nhất: …
+  Chặng 3: dính bẫy dòng cấm vô hình: có/không ; đọc show access-lists: có/không
+           Gửi thử … lần; Nộp … lượt; tầng gợi ý cao nhất: …
+  Ca bệnh liên tầng (bài 4/đề thi): chẩn đoán GỘP đúng lượt: …
+  KẾT LUẬN: ĐẬU / ĐẬU CÓ GHI CHÚ / RỚT (chặng rớt: … → module gốc: …)
+  Câu khép khóa trung cấp (nguyên văn, không tính điểm):
+    "Xong 21 module, việc nào ở chỗ làm bạn dám nhận ngay?" — …
+```
+
+## 14. Sau buổi test
 
 - Mỗi mục RỚT hoặc ghi chú hiểu sai → mở issue nội dung: ghi rõ khái
   niệm hiểu sai, bài nào dạy nó, và câu người tham gia đã nói.

@@ -30,10 +30,14 @@
   --ok: #34d399;
   --warn: #fbbf24;
   --danger: #f87171;
-  /* tông phụ theo Phần A/B/C */
+  /* tông phụ theo Phần A/B/C/D/E */
   --part-a: #38bdf8;
   --part-b: #2dd4bf;
   --part-c: #fb923c;
+  --part-d: #c084fc;
+  /* Phần E (vận hành hệ thống): lục mạ — đứng cạnh teal của B và xanh
+     của --ok vẫn phân biệt được, vì nó ngả vàng rõ rệt. */
+  --part-e: #a3e635;
 
   --font-ui: 'Be Vietnam Pro', 'Segoe UI', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', Consolas, monospace;
@@ -60,6 +64,8 @@
   --part-a: #0369a1;
   --part-b: #0f766e;
   --part-c: #c2410c;
+  --part-d: #7e22ce;
+  --part-e: #4d7c0f;
 
   color-scheme: light;
 }
@@ -73,6 +79,12 @@
 }
 [data-part='C'] {
   --part-accent: var(--part-c);
+}
+[data-part='D'] {
+  --part-accent: var(--part-d);
+}
+[data-part='E'] {
+  --part-accent: var(--part-e);
 }
 
 /* Người dùng tắt chuyển động ở HĐH thì app im theo */

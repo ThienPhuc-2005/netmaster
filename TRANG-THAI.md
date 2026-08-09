@@ -1,15 +1,727 @@
-# Trạng thái dự án — NetMaster (Phase 1 + 2 + 3 XONG — hết phạm vi spec)
+# Trạng thái dự án — NetMaster (Phase 1-3 XONG; đang làm Phase 4: TRUNG CẤP)
 
-Cập nhật: 2026-08-07. File này chỉ để nắm nhanh tình hình khi
-mở lại dự án. Nguồn chân lý vẫn là `SPEC-APP-HOC-MANG.md`; luật làm việc
-ở `CLAUDE.md`; nội dung bài đọc duyệt ở `REVIEW-NOI-DUNG.md`.
+## ĐỌC 30 GIÂY: ĐANG ĐỨNG ĐÂU, LÀM GÌ TIẾP (cập nhật 2026-08-09)
+
+**App hiện có ĐỦ 21/21 MODULE NỘI DUNG + MÀN TỐT NGHIỆP** (M1-12 nhập
+môn, M13-17 Phần D, M18-21 Phần E), 1155 test xanh, typecheck sạch,
+build qua. **Cả hạng mục 20 cũng đã xong phần làm-được-bằng-máy (08-09):
+DoD đối chiếu, kịch bản test trung cấp, hội đồng D/E đã họp.** Việc kế
+tiếp là của CHỦ DỰ ÁN: duyệt đợt sửa theo biên bản
+`DANH-GIA-HOI-DONG-TRUNG-CAP.md` (đợt 1 = 3 câu dạy sai P0, sửa dưới
+một buổi) và tuyển người cho các buổi test người thật.
+
+**Toàn bộ ENGINE của Phần D đã xong.** Không còn engine nào phải viết cho
+M13-17: lab lớp 2 (trunk + STP), CLI thiết bị đủ **24/24 lệnh** của spec
+mục 5.1, drill VLSM, ACL, OSPF-lite.
+
+| Hạng mục (KE-HOACH-TRUNG-CAP.md) | Trạng thái |
+|---|---|
+| (11) Spec v2 `SPEC-TRUNG-CAP.md` | XONG |
+| (12) Engine lab lớp 2: trunk → STP-lite → UI canvas | XONG |
+| (13) Engine CLI: show → cấu hình + gradeCli → `kind:'cli'` + console UI → /design | XONG |
+| (14) M13 VLSM: engine drill + màn luyện + `module-13.json` | XONG |
+| (15) Nội dung `module-14.json` (trunk) + `module-15.json` (STP) | XONG |
+| (16) Engine ACL → OSPF-lite (mở nốt 4 lệnh CLI treo) | XONG |
+| (17.1) Nội dung M16 (OSPF, cung điện 8 phòng) | XONG |
+| (17.2) Nội dung M17 (ACL, bảo mật lớp 2) | XONG — **hết PHẦN D** |
+| (18) Phần E: PS +3 cmdlet → M18 → M19 → M20 | XONG |
+| (19) M21 capstone + màn tốt nghiệp | XONG |
+| (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
+
+**HAI VIỆC ĐANG TREO, phiên mới cần biết:**
+1. **Cây làm việc CHƯA COMMIT** — toàn bộ Phase 4-5 (M13-21, engine
+   lab/CLI/PS mở rộng, màn tốt nghiệp, tái cấu trúc CLAUDE.md/GHI-CHU/
+   Y-TUONG) đang nằm ở working tree. Commit là việc chủ dự án ra lệnh
+   (luật: không tự commit); folder nằm trong OneDrive nên chưa commit
+   là chưa có bản sao lịch sử tử tế — nên nhắc chủ dự án sớm.
+2. **Phiên nền đang sửa hình `Journey`** (5 hình vis-hanh-trinh-* tràn
+   viewBox, task riêng của chủ dự án) — ĐỪNG đụng component Journey
+   trong `ConceptVisual.tsx` cho tới khi phiên đó nhập về.
+
+**Hạng mục 20 phần máy làm được đã KHÉP (08-09, khối 20.1):** bảng DoD
+ĐẠT/CHƯA ĐẠT in ở khối 20.1 dưới; kịch bản test trung cấp ở
+`KICH-BAN-TEST.md` mục 12-13; hội đồng 15 ghế đã họp, biên bản ở
+`DANH-GIA-HOI-DONG-TRUNG-CAP.md` (điểm trung bình 7.6/10, 3 P0 + 25 P1
++ 52 P2). Còn lại là việc của CHỦ DỰ ÁN:
+- **Duyệt các đợt sửa** ở mục 6 của biên bản — đề xuất bắt đầu bằng đợt
+  1 (ba câu dạy sai P0: vai Root trong `show spanning-tree`, "mặc định
+  15 phút" của replication, ví dụ wildcard 0.0.0.1 — cả ba sửa dưới một
+  buổi). Gật là làm luôn.
+- **Tuyển người test**: 2 dòng DoD còn CHƯA ĐẠT đều là buổi đo người
+  thật (bài vẽ M1-2 của DoD v1; ba bài đo trung cấp của DoD v2) — app
+  phần code sẵn sàng bàn giao.
+
+**Cách làm một module nội dung** (đã chạy 4 lần liền, cứ theo đúng nếp):
+1. Viết `content/modules/module-XX.json` — 5 bài × 6 bước, concepts có
+   flashcard, `masteryTest` **>= 12 câu** (pool rút 8), câu TRỤ là
+   lab/cli/palace-walk. Không dùng dấu backtick trong nội dung (app không
+   render markdown).
+2. `npx vitest run src/content` → sửa tới khi sạch (schema CHẠY THẬT mọi
+   lời giải lab/CLI nên sai một lệnh là đỏ ngay).
+3. `npx vitest run src/components/ConceptVisual.test.tsx` sẽ liệt kê
+   visualId còn thiếu → vẽ hình mới trong `ConceptVisual.tsx` + đăng ký
+   vào REGISTRY (kèm alias `vis-hook-*`).
+4. `npm run typecheck` → `npm test` → `npm run content:review` →
+   `npm run build`.
+5. Kiểm browser thật: mở `/bai/mXX-bai-1`, đi vài bước, soi `getBBox`
+   không hình nào tràn viewBox 220×130, mobile 375px không cuộn ngang.
+   (Muốn mở khóa để kiểm thì sửa `passedModules` trong localStorage key
+   `netmaster-progress`, **nhớ xóa sau khi xong**.)
+6. Ghi lại vào file này + in mục "Sai lệch so với spec" cuối lượt.
+
+## NHẬT KÝ CÁC KHỐI ĐÃ LÀM (trung cấp)
+
+- Chủ dự án đã duyệt `KE-HOACH-TRUNG-CAP.md`: 9 module mới M13-21
+  (Phần D hạ tầng: VLSM, trunk, STP, OSPF, ACL; Phần E hệ thống: DHCP/
+  DNS doanh nghiệp, AD đa site, giám sát, capstone), engine CLI thiết
+  bị kiểu IOS (dạng câu hỏi thứ 8), mở phạm vi lab lớp 2.
+- Khối 11.1 XONG: `SPEC-TRUNG-CAP.md` (spec v2) — nguồn chân lý cho
+  M13-21. **Cả 5 quyết định ở spec mục 7 đã được duyệt (08-08)**: 24
+  lệnh CLI, PS 8→11 cmdlet, cung điện OSPF 4 tầng × 2 phòng, capstone
+  chuỗi 3 chặng, màn tốt nghiệp gộp với màn kết cả khóa.
+- **Khối 12.1 XONG (08-08): engine trunk 802.1Q** — headless, app chưa
+  đổi một pixel.
+  - `topology.ts`: `SwitchPort` thêm `mode` / `allowedVlans` /
+    `nativeVlan`, tất cả TÙY CHỌN — **thiếu `mode` = access**, nên toàn
+    bộ nội dung Module 4 giữ nguyên nghĩa, không sửa một chữ. Phạm vi
+    đóng băng ghi lại thành MỐC 2 ở đầu file (có trunk; vẫn không VTP,
+    EtherChannel, RSTP, QinQ) + đơn giản hóa thứ tư: trunk không đàm
+    phán (không DTP).
+  - `simulate.ts`: **VLAN đi theo khung**, nhãn chỉ là cách ghi trên
+    dây. Cổng access đưa khung vào VLAN của cổng và gửi trần; trunk giữ
+    VLAN, dán nhãn mọi VLAN trừ native. Nhờ mô hình đó, **cả ba bệnh
+    trunk tự hiện ra** chứ không phải viết riêng từng ca:
+    `trunk-vlan-not-allowed`, `native-vlan-mismatch`,
+    `tagged-frame-on-access`. `PacketHop` thêm `tagged` để nhật ký
+    chặng nói được khung nào mang nhãn.
+  - `session.ts`: 3 thao tác mới (đổi vai cổng, allowed list, native) +
+    quyền `setTrunk` tùy chọn (thiếu = không cho). Về access thì DỌN
+    sạch trường trunk — không để dữ liệu tự mâu thuẫn.
+  - `gradeLab.ts`: tách bệnh cho đúng — `vlan-mismatch-on-link` chỉ còn
+    dành cho hai đầu ACCESS; thêm `trunk-one-side-only` và
+    `native-vlan-mismatch-on-trunk`.
+  - Fixture `trunkHealthy/trunkMissing/trunkAllowedMissingVlan/
+    trunkNativeMismatch/trunkLab` — hai switch, hai xóm, một sợi dây.
+  - 959/959 test xanh (+23), typecheck sạch, build qua.
+- **Khối 12.2 XONG (08-08): STP-lite** — vẫn headless.
+  - `src/engine/lab/stp.ts`: **mô phỏng KẾT QUẢ, không mô phỏng giao
+    thức** — không timer, không BPDU, không listening/learning. Cho một
+    sơ đồ trả về đúng một đáp án: ai làm root, cổng nào chặn. Luật bầu
+    đúng thứ tự thật: priority nhỏ hơn thắng, hòa thì `bridgeMac`, hòa
+    nữa thì id thiết bị (switch trong mô hình này vốn không có MAC nền —
+    đơn giản hóa đã khai).
+  - `Topology.stpEnabled` + `SwitchDevice.bridgePriority/bridgeMac`, tất
+    cả TÙY CHỌN — **thiếu = STP tắt**, nên Module 4 giữ nguyên hành vi
+    "có vòng là có bão".
+  - Màn diễn của Module 15 chạy được end-to-end: mạng vòng ba switch
+    chưa bật STP → `broadcast-storm`; bật lên → cùng mạng đó ping thông;
+    **rút dây chính → cổng dự phòng tự mở, mạng vẫn thông**.
+  - `diagnose` theo kịp: `l2-loop` chỉ còn là bệnh khi **chưa** bật STP —
+    nêu "sơ đồ có vòng" lúc STP đang canh là dạy ngược bài vừa học.
+  - `session.ts`: 2 thao tác mới (`set-stp`, `set-bridge-priority` — ép
+    bội của 4096 như thiết bị thật) + quyền `setStp`; `ChangeClass` tách
+    **`trunk` và `stp` thành hai nhóm quyền RIÊNG** (đề "sửa VLAN" không
+    được ngầm cho phép dựng trunk hay bật STP).
+  - 977/977 test xanh (+18), typecheck sạch, build qua.
+- **Khối 12.3 XONG (08-08): UI phòng lab cho trunk + STP** — khối đầu
+  tiên nhìn thấy được bằng mắt.
+  - **Bảng vai cổng** (`SwitchTrunkEditor`): chip Access/Trunk, allowed
+    list dạng chip bật-tắt (có chip "Tất cả"), native VLAN. Chỉ cổng
+    ĐANG là trunk mới hiện allowed/native — cổng access không có hai thứ
+    đó, bày ra là mời điền vào chỗ vô nghĩa. Mọi thao tác đi bằng ĐƯỜNG
+    BẤM CHỌN, đúng luật phòng lab.
+  - **Bảng Spanning Tree** (`StpPanel`): bật/tắt, chọn priority để chỉ
+    định root, và NÓI RA cây đang thế nào — "Gốc cây: Switch-2", "Cổng
+    đang nằm im: 1". Không nói ra thì người học chỉ thấy một cổng im lìm
+    và tưởng nó hỏng.
+  - **Cổng trên mặt bàn**: trunk có bóng dáng riêng; cổng bị STP chặn
+    vẽ RỖNG RUỘT viền hổ phách (Von Restorff — nó không hỏng, nó đang
+    nằm im). Cả hai trạng thái đi THẲNG vào tên đọc được của nút, không
+    chỉ đổi màu.
+  - **Nhật ký chặng nói được nhãn**: mỗi chặng ghi "(VLAN 10, mang nhãn)"
+    hoặc "(VLAN 1, đi trần)" — tải trọng sư phạm của Module 14 nằm ở
+    đây, không nằm ở animation.
+  - `vlanChoicesOf` gom cả VLAN chỉ xuất hiện trong allowed list/native,
+    nếu không thì đề "thêm VLAN 30 vào trunk" thành đề không bấm được.
+  - `/design` thêm mục **"Phòng lab — trunk 802.1Q và STP (Phần D)"**:
+    ba switch nối vòng, hai VLAN chung một trunk, đi qua `parseLabSpec`
+    nên hợp lệ y hệt đề thật.
+  - 984/984 test xanh (+7 test UI đi trọn lời giải bằng bấm chọn),
+    typecheck sạch, build qua.
+- **Khối 13.1 XONG (08-08): engine CLI thiết bị — phần XEM.**
+  `src/engine/cli/` (state.ts + show.ts + interpret.ts), headless.
+  - **Thế giới của CLI là CHÍNH topology phòng lab** — không bản sao,
+    không đồng bộ hai chiều. Có test khóa: sửa VLAN thẳng trên sơ đồ thì
+    `show vlan brief` đổi theo ngay.
+  - 4 chế độ đúng hình dạng IOS (`Switch-1>` → `#` → `(config)#` →
+    `(config-if)#`). **Luật chế độ là BÀI HỌC**: gõ `configure terminal`
+    khi chưa `enable` bị từ chối bằng đúng câu
+    `% Invalid input detected at '^' marker.` — `exit` lùi một bậc,
+    `end` nhảy thẳng về privileged.
+  - 7 lệnh show dựng bảng TỪ SƠ ĐỒ: `show vlan brief` (cổng trunk KHÔNG
+    đứng tên VLAN nào — đúng thiết bị thật), `show interfaces trunk`
+    (native + allowed + đang chở VLAN nào; chưa khai trunk thì bảng RỖNG
+    và chính nó là câu trả lời), `show mac address-table` (đọc trạng thái
+    học được của lượt "Gửi thử"), `show ip interface brief`,
+    `show ip route` (mã C/S), `show spanning-tree` (chỉ rõ root và cổng
+    `BLK`/`Altn`), `show running-config`.
+  - Lệnh ngoài phạm vi → outcome rỗng cho UI kể tiếng Việt; `?` là
+    outcome `help` riêng. Đúng nếp ba terminal trước.
+  - **Một đơn giản hóa VỀ CÁCH GHI, đã khai ở đầu `show.ts`**: MAC in
+    theo dạng chuẩn của app (`AA:BB:CC:00:00:01`) chứ không phải dạng
+    chấm của IOS — app đã chọn một dạng từ Module 4 và terminal Phòng
+    khám cũng theo dạng đó. HÀNH VI thì không đơn giản hóa dòng nào.
+  - **Hoãn có chủ đích sang khối sau**: `show ip ospf neighbor` và
+    `show access-lists` (chờ engine OSPF/ACL ở hạng mục 16), cùng nhóm
+    lệnh cấu hình (khối 13.2). Khai lệnh cho engine chưa tồn tại chỉ
+    tạo code chết.
+  - 1004/1004 test xanh (+20), typecheck sạch.
+- **Khối 13.2 XONG (08-09): engine CLI — phần CẤU HÌNH + `gradeCli`.**
+  Vẫn headless, app chưa đổi một pixel.
+  - **7 trong 9 lệnh cấu hình của spec mục 5.1**: `vlan <n>`,
+    `switchport mode access|trunk`, `switchport access vlan <n>`,
+    `switchport trunk allowed vlan <list>` (nhận cả `10-12,30` và `all`),
+    `switchport trunk native vlan <n>`, `ip address <ip> <mask>`,
+    `ip route <net> <mask> <next-hop>`, cùng cặp `shutdown`/`no shutdown`.
+    Bốn lệnh còn lại (`router ospf`, `network … area 0`, `access-list`,
+    `ip access-group`) HOÃN sang hạng mục 16 cùng hai lệnh show của
+    chúng — khai lệnh cho engine chưa tồn tại chỉ tạo code chết.
+  - **Lệnh cấu hình đi CHUNG một phép biến đổi với phòng lab**:
+    `session.ts` xuất `applyTopologyChange`, nên luật "về access thì dọn
+    sạch trường trunk" chỉ được viết một lần. Quyền thì mỗi bề mặt tự lo —
+    phòng lab hỏi `LabAllowance`, CLI hỏi CHẾ ĐỘ và loại thiết bị.
+  - **`shutdown` là trạng thái QUẢN TRỊ, không phải rớt dây** — trường
+    `shutdown?` trên cổng switch/router, **thiếu = đang bật** (đơn giản
+    hóa số 5 ghi ở đầu `topology.ts`: router thật xuất xưởng admin-down,
+    ở đây mặc định bật để nội dung cũ giữ nguyên nghĩa). Ba nơi cùng nói
+    một chuyện: mô phỏng trả mã bệnh RIÊNG `port-shutdown` (khác
+    `src-no-link` — một bên đi cắm dây, một bên gõ `no shutdown`), cây STP
+    coi dây đó như đã rút nên cổng dự phòng tự mở, và
+    `show ip interface brief` in **`administratively down`** thay vì
+    `down`. Gộp hai cột đó lại là xóa mất manh mối đắt nhất của bảng.
+  - `vlan <n>` khai vào **VLAN database** (`declaredVlans`) nên
+    `show vlan brief` thấy ngay VLAN chưa có cổng nào đứng tên — không
+    thấy gì sau khi gõ thì người học tưởng lệnh trượt. **Cố ý KHÔNG mở
+    chế độ `(config-vlan)#`** (bộ chế độ đã đóng băng ở bốn, mà trong đó
+    phạm vi này không có lệnh nào để gõ).
+  - **Cố ý khác IOS chỗ thứ hai, đã khai:** khai `switchport trunk
+    allowed/native` cho cổng ĐANG LÀ ACCESS bị từ chối bằng
+    `% Command rejected: the interface is in access mode.` IOS thật nhận
+    rồi cất đó; mô hình này không có chỗ cất, và nói thẳng "đổi vai trước
+    đã" dạy tốt hơn là im lặng nhận một lệnh không tác dụng.
+  - `gradeCli` chấm **hiệu ứng + hình dạng + dấu vết**: `behavior` ủy
+    quyền `runLabGoals` (tách ra từ `gradeLab`, hai bộ chấm dùng CHUNG
+    một phép đo); `port-mode`/`access-vlan`/`trunk-carries`/
+    `trunk-blocks`/`native-vlan`/`port-up`/`port-ip`/`static-route`/
+    `vlan-exists` nhìn sơ đồ cuối; `viewed` đọc `CliFlags` — cách DUY
+    NHẤT đo được đề "chẩn đoán bằng lệnh nào" (nếp `PsFlags` của M12).
+    Cặp `trunk-carries`/`trunk-blocks` giữ đúng vai trò cặp
+    `reach`/`blocked`: thiếu vế chặn thì người học "giải" bài lọc VLAN
+    bằng cách cho tất cả đi qua — có test khóa.
+  - **Chấm hiệu ứng nghĩa là dựng trunk bằng ĐƯỜNG BẤM CHỌN vẫn được
+    công nhận y hệt gõ lệnh** (test khóa, đúng nếp gradePs).
+  - `solution` của đề CLI là **chuỗi CHẶNG theo thiết bị**, vì bài "dựng
+    trunk hai switch" phải rút dây console sang máy thứ hai
+    (`moveCliConsole` đưa chế độ về `user` — ngồi xuống máy mới là phải
+    `enable` lại). `runCliSolution` gom luôn những dòng bị máy từ chối:
+    lời giải mẫu để lọt một dòng như thế là đề bài hỏng.
+  - Fixture `tests/fixtures/cliFixture.ts` — 3 đề thật: trunk hai switch
+    bằng lệnh, cổng router quên `no shutdown`, khai VLAN rồi tự tra bảng
+    kiểm chứng.
+  - 1030/1030 test xanh (+26), typecheck sạch, build qua.
+- **Khối 13.3 XONG (08-09): `kind: 'cli'` vào pipeline + console UI +
+  /design.** Khối đầu tiên của hạng mục 13 nhìn thấy được bằng mắt.
+  - `kind: 'cli'` là **nhánh thứ TÁM** của `QuestionSchema`; response là
+    `{kind:'cli', state}` — TRẠNG THÁI PHIÊN, chấm bằng `isCliSolved`.
+    `lessonMachine.ts` KHÔNG bị sửa một dòng nào —
+    `cliInPipeline.test.ts` khóa (lần thứ NĂM của bất biến này: lab →
+    palace → clinic → ps → cli).
+  - `cliSchema.ts` — chốt chặn nội dung nối gót labSchema/psSchema: sơ đồ
+    sạch lỗi cấu trúc, console chỉ cắm được vào thiết bị CÓ CLI (máy tính
+    không có), lời giải mẫu **không dòng nào bị máy từ chối** và chạy
+    xong phải đạt trọn goals, đề chưa đạt sẵn.
+  - `src/features/cli/CliConsole.tsx` — bảng mục tiêu **chấm sống** theo
+    từng lệnh; dấu nhắc đổi theo chế độ; `?` và lệnh lạ nói tiếng Việt
+    (i18n `cli.*`, 20 dòng mô tả lệnh, vi+en); "Làm lại từ đầu" thay undo
+    (thiết bị thật không có undo); gõ miễn phí, chỉ "Nộp bài" tính lượt.
+  - **Rút dây console là thao tác VẬT LÝ nên nó là NÚT BẤM, không phải
+    câu lệnh** — hàng chip chọn thiết bị. Bấm sang máy khác thì chế độ về
+    `user` (ngồi xuống máy lạ phải `enable` lại) và nhật ký ghi một DẤU
+    MỐC; thiếu mốc đó thì đọc lại phiên sẽ thấy một loạt lệnh như gõ nhầm
+    máy.
+  - Bài dở: `PracticeDraft` thêm nhánh `kind: 'cli'` (sơ đồ đang sửa +
+    nguyên nhật ký, **mỗi dòng lưu kèm dấu nhắc của lúc gõ** — chuỗi
+    `>` → `#` → `(config)#` chính là bằng chứng đã đi qua những chế độ
+    nào; dựng lại bằng chế độ hiện tại là viết lại lịch sử). Luật
+    bài-học-lưu / bài-thi-không giữ nguyên (`ModuleTestPage` vẫn không
+    truyền `draftKey`).
+  - `masteryPool`: `cli` vào nhóm **câu TRỤ** — kỹ năng chính của Module
+    14-17, rút trượt là có lượt thi không đo tới nó.
+  - `/design` thêm mục **"Console thiết bị — CLI kiểu IOS (Phần D)"**
+    (đề trunk hai switch, đi qua `QuestionSchema.parse` nên hợp lệ y hệt
+    câu thật); `render-content-review.mjs` tả được đề CLI, **lệnh mẫu ghi
+    rõ gõ ở MÁY NÀO** (bài hai switch mà gộp một danh sách thì người
+    duyệt không kiểm được gì).
+  - 1048/1048 test xanh (+18), typecheck sạch, build qua,
+    `content:review` render lại 12 module. Kiểm browser thật trên
+    /design: đi trọn đề bằng console — dấu nhắc chạy đủ 4 bậc,
+    `switchport trunk allowed vlan` trên cổng access bị từ chối đúng lúc,
+    `show interfaces trunk` in đúng bảng, bấm chip sang Switch-2 (nhật ký
+    có dấu mốc, dấu nhắc về `Switch-2>`), 6 mục tiêu lật ✓ sống, nộp ra
+    **"đạt"**; `?` liệt kê 20 lệnh và lệnh lạ nói tiếng Việt; mobile 375px
+    document không cuộn ngang (375/375), output cuộn ngang TRONG `<pre>`
+    của chính nó (317/439).
+  - **Khối 13.4 gộp luôn vào đây** (/design + review script là hai việc
+    nhỏ đi liền với UI). **Hạng mục (13) coi như khép**, còn treo đúng
+    một mảnh: 4 lệnh OSPF/ACL chờ engine ở hạng mục 16.
+- **Khối 14.1 XONG (08-09): drill VLSM — engine + màn luyện.**
+  - `src/engine/subnet/vlsm.ts` — thuần TS: `gradeVlsm` chấm BA TIÊU CHÍ
+    của spec (đúng / đủ / không phí đất), `solveVlsm` (lời giải tham
+    chiếu: to trước, xếp liền nhau), `generateVlsmProblem` (rng bơm từ
+    ngoài, tất định theo seed).
+  - **Chấm THIẾT KẾ, không so lời giải mẫu**: bài này không có một đáp án
+    đúng. Cắt theo thứ tự khác, chừa cả khoảng trống để dành — vẫn đạt.
+    **Khoảng trống KHÔNG bị tính là lỗi** (quyết định có chủ ý, ghi ở đầu
+    file): địa chỉ để dành là việc bình thường của người thiết kế; cái bị
+    bắt là chồng lấn và cấp thừa cỡ.
+  - **Tiêu chí "không phí đất" là cái giữ cho bài là VLSM**: thiếu nó thì
+    "chia đều mỗi phòng một /26" cũng qua bài, mà đó đúng là thói quen
+    VLSM sinh ra để chữa. Có test khóa.
+  - Sinh đề NGƯỢC TỪ CỠ KHỐI (chọn cỡ trước, sinh số máy vừa khít sau)
+    nên đề nào cũng có lời giải khít 100% — nếu không thì tiêu chí thứ ba
+    vô nghĩa. Mỗi phòng một cỡ khác nhau (ba phòng cùng cỡ là bài chia
+    đều của Module 3), và đề **không sắp sẵn từ lớn tới nhỏ** — tự nhận
+    ra thứ tự cắt là bài học của module. Cả ba luật đều có test.
+  - `src/features/drill/VlsmDrill.tsx` (route `/luyen-vlsm`) — mặt bàn là
+    một BẢNG THIẾT KẾ, mỗi phòng một dòng hai ô. Thang 3 tầng bám đúng ba
+    tiêu chí: **tầng 1 chỉ nói tiêu chí nào hỏng, tầng 2 mới chỉ ra từng
+    dòng, tầng 3 mới bày một cách cắt** — đúng luật "feedback chỉ được
+    chỗ sai, không đọc hộ đáp án".
+  - `drill` trong schema module: `'subnet'` → **enum `'subnet' | 'vlsm'`**;
+    card ở trang Học tự trỏ đúng route theo giá trị đó.
+  - **`DrillResult` thêm `mode`** — hai loại drill không chung thang đo
+    (10 bài vài chục giây ≠ 5 bài vài phút), trộn một biểu đồ là đường
+    "giây/bài" nhảy dựng lên và người học tưởng mình đang tệ đi. Mỗi màn
+    lọc lịch sử theo loại của mình. **Persist v3 → v4 kèm bậc migrate
+    THẬT** (đóng dấu `mode: 'subnet'` cho mọi phiên cũ) + test.
+  - 1073/1073 test xanh (+24), typecheck sạch, build qua. Kiểm browser
+    thật: đi trọn một đề (dải /23, ba phòng 8/27/60 máy) → chấm đạt, nhảy
+    sang đề sau và đồng hồ reset; bỏ trống nộp lần đầu chỉ hiện ba tiêu
+    chí, chưa hiện dòng nào hỏng; mobile 375px document không cuộn ngang
+    (375/375), bảng cuộn ngang trong khung riêng (343/480).
+- **Khối 14.2 XONG (08-09): `module-13.json` — MODULE TRUNG CẤP ĐẦU TIÊN.**
+  - **Phần D mở ở tầng khung**: `part` enum thêm `'D'`, token `--part-d`
+    (tím, đạt AA cả hai nền — tokens.test đo), `[data-part='D']`,
+    `PART_RANK` của content.test.
+  - Nội dung: 5 bài theo đúng spec mục 3 — chia đều là phí đất → cắt lớn
+    trước → căn khối → wildcard mask → tóm tắt tuyến. 6 khái niệm, 12 câu
+    pool (mcq/typed/order), `drill: 'vlsm'` bật màn luyện của khối 14.1.
+  - **Một mạch tình huống chạy suốt module**: công ty bốn phòng
+    100/50/25/10 máy trên dải 192.168.10.0/24. Bài 1 cho thấy chia đều
+    /26 làm phòng kinh doanh chết ngay, bài 2 cho thấy cắt sai THỨ TỰ thì
+    đủ địa chỉ vẫn kẹt, bài 3 giải thích vì sao 192.168.10.160/26 là khối
+    không tồn tại.
+  - **Wildcard dạy Ở ĐÂY để M16 dùng cho OSPF** (spec chỉ đích danh);
+    tóm tắt tuyến giữ mức đọc-hiểu như spec ghi.
+  - 7 hình khái niệm mới trong `ConceptVisual` (+6 alias hook). Đã soi
+    `getBBox` trên browser thật: **143 hình, không hình nào tràn viewBox**.
+  - **Bản đồ khóa học vẽ lại theo spec v2**: 12 ô → **21 ô, 5 hàng
+    A-E**; hàng chưa có nội dung để RỖNG (bản đồ nói thật cả về phần dang
+    dở), hàng E chưa có tông riêng nên vẽ bằng màu chữ mờ. Test đổi từ
+    "đủ lưới 12" sang "đủ lưới 21".
+  - 1077/1077 test xanh (+4), typecheck sạch, build qua, `content:review`
+    render **13 module**. Kiểm browser thật: card Module 13 mang
+    `data-part="D"` (--part-accent = #c084fc), 5 chặng, cửa Học vượt và
+    cửa `/luyen-vlsm` hiện đúng khi module mở; đi bài 1 từ Khởi động tới
+    Thử tay — hình VLSM và hình bậc thang cỡ khối render đúng, ví dụ giải
+    sẵn hiện nguyên vẹn, gõ `/27` chấm đúng ngay. Dữ liệu mở khóa dùng để
+    kiểm đã xóa sau khi xong.
+- **Khối 15.1 XONG (08-09): `module-14.json` — trunk 802.1Q, module CLI
+  RA MẮT.**
+  - 5 bài: hết cổng vì mỗi xóm một dây → dán nhãn 802.1Q → native VLAN
+    lệch → allowed list thiếu tên → router-on-a-stick. 5 khái niệm, pool
+    12 câu, 5 hình khái niệm mới (+5 alias hook).
+  - **CLI ra mắt ĐÚNG CHỖ spec chỉ: bước Đoán thử của bài 1** — người học
+    bị thả vào `Switch-1>` với lời nhắc "gõ ? xem có gì", mục tiêu là tự
+    mò ra `show vlan brief` TRƯỚC khi được giảng chữ nào (đúng chiêu
+    productive failure của M4/M11/M12).
+  - **Ba câu CLI thật trong module**: pretest bài 1 (mò lệnh show), bài 3
+    chữa **native VLAN lệch** (ca bệnh spec gọi là kinh điển của nghề —
+    engine tái hiện được nên không phải kể suông), bài 4 chữa **allowed
+    list thiếu VLAN 20** (đúng đề spec đặt hàng). Bài thi có 2 câu CLI
+    làm **câu TRỤ** nên lượt thi nào cũng đo tới kỹ năng gõ lệnh.
+  - `cliSchema` đã CHẠY THẬT mọi lời giải mẫu lúc parse — không dòng lệnh
+    nào trong nội dung là lời hứa suông.
+  - **Vá một chỗ lộ ruột dữ liệu**: màn hé đáp án câu CLI in `sw-1:` (id
+    trong JSON) thay vì `Switch-1:` (tên trên dấu nhắc). Đã đổi sang
+    hostname — id là lời của lập trình viên, không phải của người học.
+  - 1077/1077 test xanh, typecheck sạch, build qua, `content:review`
+    render **14 module**. Kiểm browser thật: bài 1 bước Đoán thử mở đúng
+    console `Switch-1>`, gõ `?` ra bảng 20 lệnh tiếng Việt, `show vlan
+    brief` in bảng VLAN thật (p1/p3 ở VLAN 10, p2 ở VLAN 20), mục tiêu
+    lật ✓ sống, nộp ra "đoán đúng luôn" kèm đáp án đọc được; đề thi vượt
+    Module 14 rút ra câu 1/8 chính là câu CLI dựng trunk hai switch.
+- **Khối 15.2 XONG (08-09): `module-15.json` — STP, người canh vòng lặp.
+  HẠNG MỤC (15) KHÉP.**
+  - 5 bài: bão quảng bá → bầu root bridge → cổng nằm im → đứt dây chính
+    cây mọc lối khác → PortFast. 6 khái niệm, pool 12 câu, 6 hình mới.
+  - **Productive failure trứ danh của module, đúng như spec đặt hàng**:
+    bước Đoán thử bài 1 là một BÀI LAB — ba switch nối tam giác chưa bật
+    STP, người học bấm "Gửi thử" và tự xem cơn bão chạy vòng, rồi tìm ra
+    nút bật STP. Không giảng chữ nào trước.
+  - **Bài 4 mã hóa được "cổng dự phòng tự mở" thành mục tiêu chấm
+    ĐƯỢC**: rút sợi dây chính ra, rồi phải đạt goal `macLearned` —
+    Switch-3 học địa chỉ của PC-A **ngay trên cổng p3**, cái cổng vốn
+    đang bị STP chặn. Trước khi rút, MAC ấy học ở cổng khác nên đề chưa
+    đạt sẵn. Đây là cách nói "đường dự phòng có thật" bằng dữ liệu thay
+    vì bằng lời hứa.
+  - PortFast khai thẳng là **kiến thức thiết bị thật, app không mô phỏng
+    thời gian hội tụ** — nói ra thay vì giả vờ (deepDive bài 5).
+  - Câu trụ của bài thi: 1 lab (bật STP cứu mạng) + 1 CLI
+    (`show spanning-tree`).
+  - **Đồng bộ một cổng chặn cũ đã lạc hậu**: `content.test` kiểm "lab có
+    cho người học làm gì không" nhưng chưa biết hai quyền của Phần D
+    (`setTrunk`, `setStp`) — một bài lab hợp lệ vẫn bị báo là không cho
+    làm gì. Đã cho khớp lại với `allowsAnything` của labSchema.
+  - 1077/1077 test xanh, typecheck sạch, build qua, `content:review`
+    render **15 module**. Kiểm browser thật bài 1: bấm "Gửi thử" ra nhật
+    ký chặng khung quay vòng qua cả ba switch + lời "Mạng có vòng kín:
+    câu hỏi quảng bá quay lại chính nơi vừa đi qua và nhân lên mãi" +
+    chẩn đoán "Sơ đồ có vòng kín giữa các switch"; bấm "Bật STP" →
+    bảng nói "Gốc cây: Switch-2, Cổng đang nằm im: 1", gửi lại thì "Gói
+    tin tới nơi và có trả lời về", mục tiêu lật (xong). Cổng bị chặn có
+    tên đọc được đầy đủ: "Switch-3 · p3 — nối tới Switch-1 (STP chặn)".
+    Dữ liệu mở khóa dùng để kiểm đã xóa.
+- **Khối 16.1 XONG (08-09): engine ACL đánh số** — headless, app chưa đổi
+  một pixel.
+  - `src/engine/lab/acl.ts`: luật ĐẦU TIÊN khớp là luật quyết định, cuối
+    danh sách luôn có **DÒNG CẤM VÔ HÌNH** (implicit deny) — thứ đốn ngã
+    người mới nhiều nhất; địa chỉ so bằng **wildcard** (nối thẳng vào bài
+    Module 13), ba dạng `any` / `host x` / `x wildcard`.
+  - **Ba đơn giản hóa cố ý, khai ở đầu file**: phòng lab chỉ sinh ICMP nên
+    luật tcp/udp khai được nhưng không bao giờ ăn gói ping (đó là bài học
+    về tính CỤ THỂ của luật, không phải lỗ hổng); ARP không bị ACL lọc như
+    thiết bị thật; chỉ có ACL đánh số, không named ACL.
+  - **Khai suông chưa lọc gì**: `accessLists` sống trên router,
+    `aclIn`/`aclOut` mới là thứ áp nó lên cổng. Áp một số danh sách chưa
+    hề khai thì mọi gói vẫn qua — đúng hành vi thiết bị thật, và là một ca
+    bệnh đáng dạy.
+  - `simulate.ts` thi hành ACL đúng thứ tự thật: chiều **out** xét trước
+    cả ARP (gói bị cấm thì router không đi hỏi địa chỉ làm gì), chiều
+    **in** xét NGAY khi gói vào cổng, trước cả câu hỏi "router có phải
+    đích không". Mã bệnh mới `acl-denied` kèm `deniedBy` nói rõ **dòng
+    luật nào ăn** — `seq: null` nghĩa là dòng cấm vô hình ra tay.
+  - `NetState.aclHits` đếm số lần từng dòng ăn khớp; đây chính là cột số
+    của `show access-lists`, và là bằng chứng chẩn đoán đắt nhất: luật có
+    số nghĩa là gói CÓ đi tới đó.
+  - **CLI mở thêm 3 lệnh** (còn đúng 2 lệnh OSPF treo): `access-list`
+    (số dòng tự sinh bước 10, luật mới luôn xuống CUỐI — chính điều đó dạy
+    vì sao phải viết luật hẹp trước luật rộng), `ip access-group … in|out`,
+    và `show access-lists` in kèm số đếm. `show running-config` in lại cả
+    danh sách lẫn dòng áp lên cổng.
+  - `ChangeClass` thêm `'acl'` — cũng như `port-state`, đây là việc CHỈ
+    CLI làm được nên `LabAllowance` không bao giờ cho, và đề lab nào lỡ
+    cần tới nó sẽ bị chốt chặn schema chặn ngay.
+  - 1100/1100 test xanh (+23), typecheck sạch, build qua.
+- **Khối 16.2 XONG (08-09): engine OSPF-lite — HẠNG MỤC (16) KHÉP, và
+  danh sách 24 lệnh CLI giờ ĐỦ CẢ 24.**
+  - `src/engine/lab/ospf.ts`: **mô phỏng KẾT QUẢ, không mô phỏng giao
+    thức** (đúng nếp STP-lite) — không timer, không gói hello, KHÔNG máy
+    trạng thái 8 bậc. Tám bậc ấy là kiến thức THUỘC, để cung điện ký ức
+    của Module 16 dạy; mô phỏng nửa vời chúng chỉ tạo thứ nhìn có vẻ thật.
+  - **Láng giềng lên khi đủ BA điều kiện** (hai đầu đều bật tiến trình,
+    hai cổng cùng subnet, mỗi đầu đã khai cổng của mình trong câu
+    `network`), và không lên thì trả về đúng **LÝ DO**:
+    `no-ospf-process` / `subnet-mismatch` / `network-not-declared` /
+    `link-down`. Một chữ "down" trơ trọi thì chẩn đoán bằng gì.
+  - **Bảng định tuyến TỰ HỌC**: lan theo từng lớp trên đồ thị láng giềng
+    đã lên, cost 1 mỗi chặng, chặng đầu quyết định next hop. Router ID là
+    IP lớn nhất trong các cổng — mô hình không có loopback nên luật rơi
+    về vế thứ hai của chính chuẩn OSPF, vẫn là luật thật.
+  - **Khoảng cách quản trị có nghĩa**: `routerNextHop` chọn theo HAI BẬC
+    — longest prefix match trước, cùng prefix thì AD nhỏ hơn thắng
+    (connected 0 < tĩnh 1 < OSPF 110). Có test: tuyến tĩnh cùng đích kéo
+    gói đi đường khác với đường OSPF biết.
+  - **Đứt đường thì OSPF tự đi vòng** (cost 1 → 2, ping vẫn thông) — đúng
+    cái mà tuyến tĩnh không làm được, và là bài học lõi của Module 16.
+  - `matchesWildcard` tách ra `wildcard.ts` dùng chung cho ACL và OSPF —
+    hai nơi hỏi cùng một câu thì không được có hai câu trả lời.
+  - **CLI: chế độ thứ NĂM `(config-router)#`** — spec mục 5.1 xếp
+    `router ospf <id>` vào nhóm lệnh chế độ, nên thiếu chế độ này thì
+    `network … area 0` không có chỗ để gõ. `exit` lùi về `(config)#`,
+    `end` nhảy về privileged. Thêm `show ip ospf neighbor` (in cả dòng
+    CHƯA lên kèm lý do — app cố ý nói nhiều hơn thiết bị thật, đã khai
+    trong comment) và mã `O` trong `show ip route` kèm cặp
+    `[110/cost]`.
+  - 1122/1122 test xanh (+22), typecheck sạch, build qua.
+- **Khối 17.1 XONG (08-09): nội dung `module-16.json` (OSPF)** — module
+  thứ 16, và là **cung điện ký ức lần thứ BA**.
+  - 5 bài đúng nếp Phần D: giới hạn tuyến tĩnh (mở màn bằng câu `cli` ở
+    bước Đoán thử — người học tự tra `show ip route` của router câm rồi
+    mới đọc lý thuyết) → láng giềng và gói hello → đồng bộ bản đồ + câu
+    `network … area 0` → cost và bảng tự học → đứt cáp thì đi lối vòng +
+    khoảng cách quản trị. 10 khái niệm, 14 câu trong pool thi.
+  - **Cung điện 4 tầng × 2 phòng, `keyStyle: 'text'`**: Down, Attempt,
+    Init, 2-Way / ExStart, Exchange, Loading, Full. Đi xem tầng 1-2 ở bài
+    2 và tầng 3-4 ở bài 3, mỗi bài nhớ lại ngay đoạn vừa đi — 8 phòng
+    chia hai lượt thay vì nhồi một lượt. Bậc Attempt giữ ghi chú **chỉ có
+    ở mạng NBMA** (spec đòi dạy đúng, không làm tròn), và `content.test`
+    khóa cả thứ tự 8 bậc lẫn ghi chú đó.
+  - 8 hình phòng mới trong `RoomGlyph` (loa im tiếng, ống nghe gọi riêng,
+    danh thiếp thiếu tên mình, bắt tay, búa chủ tọa, hai phong bì mục
+    lục, phễu rót phần thiếu, hai bản đồ chồng khít) + 10 hình khái niệm
+    mới trong `ConceptVisual`.
+  - `parsePorts.test.ts` giờ **suy danh sách tòa nhà TỪ NỘI DUNG THẬT**
+    thay vì chép tay fixture: quên khai tòa mới vào đó là ba phép kiểm
+    hình gác nhầm chỗ (xanh trong khi tòa mới thiếu hình, còn app thì ném
+    lỗi lúc chạy).
+  - **Một lỗi engine thật lộ ra khi kiểm bằng browser**: `diagnose` báo
+    "sơ đồ có vòng kín giữa các switch" cho mạng ba ROUTER nối vòng —
+    tức là chê đúng cái đường dự phòng mà cả module dựng lên để khen.
+    `hasCycle` giờ chỉ đếm dây nằm trọn trong tầng 2 (router chặn khung
+    quảng bá nên vòng qua router không sinh bão), có test khóa.
+  - 1124/1124 test xanh (+2), typecheck sạch, build qua. Đã kiểm bằng
+    browser thật: 179 hình không hình nào tràn viewBox (đo `getBBox`),
+    mobile 375px không cuộn ngang, cung điện đi lại chấm đúng, câu `cli`
+    chạy trọn lời giải và mục tiêu bật xanh ngay khi khai đủ network.
+- **Khối 17.2 XONG (08-09): nội dung `module-17.json` (ACL + bảo mật lớp
+  2)** — module thứ 17, khép lại PHẦN D.
+  - 5 bài: dòng cấm vô hình → chuẩn hay mở rộng → đúng cửa đúng chiều →
+    khóa cổng switch (MAC flooding + port security) → kẻ mạo danh trong
+    xóm (ARP spoofing + VLAN hopping mức đọc-hiểu). 12 khái niệm, 14 câu
+    trong pool thi (3 câu trụ: 2 `cli` + 1 `clinic`).
+  - **Ca "ACL chặn nhầm cả sếp" dựng đúng theo cơ chế THẬT của engine**:
+    danh sách mới có đúng một dòng deny máy phòng khách, áp lên g0 chiều
+    in — cả văn phòng tắc vì DÒNG CẤM VÔ HÌNH, không phải vì dòng người
+    ta gõ. Chữa bằng `access-list 101 permit ip any any` (rơi xuống cuối,
+    đứng sau dòng cấm nên máy khách vẫn tắc). Mở màn ở bước Đoán thử bài
+    1 bằng câu `cli` chỉ có mỗi mục tiêu `viewed show access-lists` —
+    người học tự tra bảng luật trước khi đọc một chữ lý thuyết nào.
+  - **ACL chỉ cấu hình được bằng CLI** (luật Phần D), nên cả 5 đề ACL đều
+    là câu `cli`; `content.test` khóa ca chặn-nhầm-sếp và luật interleaving
+    tường lửa stateful M7 ↔ ACL không trạng thái.
+  - **Nhật ký chặng giờ gọi tên DÒNG LUẬT đã ăn gói** (`lab.deniedByRule`
+    / `deniedByImplicit`): engine vốn đã trả `deniedBy` nhưng UI im lặng,
+    mà "một danh sách nào đó cấm" thì chưa sửa được. Hai câu tách bạch —
+    dòng người ta gõ thì xóa/đảo thứ tự, dòng vô hình thì THÊM permit.
+    Có test khóa cả hai nhánh.
+  - Bài 5 nối thẳng ca trùng-IP của M11: cùng dấu hiệu một IP hai MAC,
+    nhưng địa chỉ bị giành là địa chỉ CỔNG RA — hai ca `clinic` dùng
+    `ping-flaps` + `mustClearDiagnoses: duplicate-ip`.
+  - 12 hình khái niệm mới trong `ConceptVisual` (cửa có nội quy, ba dòng
+    luật dừng ở dòng khớp, dòng cấm nét đứt, một vế nguồn ↔ bốn vế mở
+    rộng, mũi tên in/out, hai mốc đặt luật, ACL ↔ stateful có sổ, bảng
+    MAC tràn, ổ khóa cổng, hai kẻ nhận vơ .1, hai lớp nhãn).
+  - **Ba đơn giản hóa đã khai thẳng trong bài** (không giấu): cú pháp
+    console viết đủ giao thức-nguồn-đích cho cả số hiệu chuẩn; port
+    security mô phỏng HẬU QUẢ (cổng đã bị đánh sập, dựng lại bằng
+    `no shutdown`) chứ không mô phỏng bộ đếm MAC; VLAN hopping là phần
+    đọc-hiểu, thứ cấu hình được là cái chốt chặn (native VLAN riêng).
+  - 1128/1128 test xanh (+4), typecheck sạch, build qua, `content:review`
+    render 17 module. Đã kiểm bằng browser thật: 196 hình không hình nào
+    tràn viewBox (đo `getBBox`), mobile 375px không cuộn ngang, câu `cli`
+    bài 1 chạy thật — gõ `show access-lists` ra đúng khuôn IOS và mục
+    tiêu bật xanh ngay.
+- **Khối 18.1 XONG (08-09): PS mở 8 → 11 cmdlet** — khối engine mở màn
+  Phần E, app chưa đổi nội dung nào.
+  - Thế giới PS thêm sổ NHÓM: `ad.groups` tùy chọn (thiếu = không nhóm,
+    mọi đề Module 12 giữ nguyên nghĩa), scope Global | DomainLocal.
+  - Ba lệnh mới đúng fidelity: `Get-ADGroup` (tra nhóm, -Identity /
+    -Filter *), `Get-ADGroupMember` (cột ObjectClass nói nhóm đang chứa
+    NGƯỜI hay NHÓM — hình dạng chữ G→DL nhìn thấy được),
+    `Add-ADGroupMember` (lệnh GHI: im lặng như thật, idempotent, nhận
+    danh sách -Members cách nhau dấu phẩy). Hai luật thật của AD được
+    giữ vì chúng LÀ bài học: Global không chứa DomainLocal, không được
+    tạo vòng thành viên.
+  - Goal chấm mới `group-member` tính CẢ nhóm lồng nhóm — một goal trên
+    nhóm DomainLocal kiểm trọn chuỗi AGDLP; đề khai CẶP goal (GG + DL)
+    thì lối tắt nhét-thẳng-user-vào-DL bị chấm đỏ (test khóa).
+  - Fixture `worldAgdlp()` + `specXepNhom()` — hình dạng đề M19 sẽ dùng;
+    4 mã lỗi soạn bài mới trong `validatePsWorld`.
+  - Mốc đóng băng MỚI: **11 cmdlet, pipeline vẫn MỘT tầng**, không
+    scriptblock/biến/vòng lặp.
+  - 1143/1143 test xanh (+15), typecheck sạch, build qua. Kiểm browser
+    thật: bảng Get-Help trong `/design` liệt kê đủ 11 lệnh kèm mô tả
+    tiếng Việt, console không lỗi.
+- **Khối 18.2 XONG (08-09): nội dung `module-18.json` (DHCP & DNS doanh
+  nghiệp)** — module ĐẦU TIÊN của Phần E, kèm mở khung Phần E.
+  - Khung Phần E: schema `part` nhận 'E', token `--part-e` (lục mạ, cả
+    hai theme, test contrast AA), `[data-part='E']`, hàng E của bản đồ
+    khóa học đổi từ màu mờ sang tông thật.
+  - 5 bài: relay + giaddr (ẩn dụ hỏi cưới M6 quay lại, self-explain đậm
+    "vì sao relay phải ghi giaddr" đúng spec) → scope cạn + APIPA (ca
+    "sáng thứ hai cả tầng câm" ở bước Đoán thử — productive failure) →
+    DHCP failover + bẫy hai-server-một-dải (nối bệnh trùng IP M11) →
+    split DNS (ca "chuyển DNS mới xong tên nội bộ chết" — resolve-fails)
+    → forwarder + conditional forwarder + TTL. 10 khái niệm, 14 câu pool
+    (2 trụ: 1 clinic APIPA + 1 ps Test-NetConnection cổng 53).
+  - **Ca DHCP không cần mở overlay**: máy APIPA khai thẳng
+    `169.254.x.x/16 + gateway null` trong topology — `ping-fails` tự ốm
+    nhờ `no-gateway`, ipconfig tự lộ manh mối; cả hai ca đều
+    `choose-action` vì thứ hỏng (scope, zone DNS) nằm ngoài mô hình mạng.
+  - 10 hình khái niệm mới + 5 alias hook trong `ConceptVisual`; học được
+    một luật mới: chú thích mono đáy hình quá ~34 ký tự là tràn viewBox
+    (9 hình dính một lượt, đã đo `getBBox` và rút gọn — ghi vào
+    GHI-CHU-KY-THUAT mục 7).
+  - 1147/1147 test xanh (+4), typecheck sạch, build qua, content:review
+    render 18 module. Kiểm browser thật: 211 hình không tràn (trừ 5 hình
+    hanh-trinh tràn từ trước — nợ cũ, không thuộc khối này), card M18
+    trên trang Học ăn đúng tông `#a3e635`, mobile 375px không cuộn
+    ngang, console sạch.
+- **Khối 18.3 XONG (08-09): nội dung `module-19.json` (AD đa site & ủy
+  quyền)** — mảnh giữa của Phần E.
+  - 5 bài: site & subnet gắn site (tầng Site của LSDOU M9 có nghĩa
+    thật; ca "chi nhánh có DC mà vẫn chậm") → replication + khe trễ
+    giữa site (đổi mật khẩu có đường ưu tiên — dạy đúng, không làm
+    tròn) → AGDLP mở màn bằng **productive failure đúng kế hoạch: bước
+    Đoán thử thả người học vào miền thật, đa số sẽ nhét thẳng user vào
+    nhóm quyền và bảng mục tiêu đỏ một nửa — cái nửa đỏ là bài giảng**
+    → vòng đời nhân sự (điền mắt xích, fading 1) → delegation + bài tự
+    xếp từ yêu cầu suông có nhóm nhiễu (fading 2). Worked example
+    fading trên AGDLP 0→1→2 đúng chiêu GPO M9.
+  - 8 khái niệm, 15 câu pool (2 trụ đều là `ps`: ca kiểm-toán-vá-chuỗi
+    — user nằm thẳng trong DL, bổ sung mắt xích GG; và ca xếp-mới có
+    nhóm nhiễu). 4 bài `ps` của module đều dùng cặp goal
+    `group-member` (GG + DL) để lối tắt bị chấm đỏ.
+  - 8 hình khái niệm mới + 5 alias hook; 4 chú thích dài quá 34 ký tự
+    bị tràn — đo `getBBox` rồi rút gọn (luật đã ghi ở GHI-CHU mục 7).
+  - 1147/1147 test xanh, typecheck sạch, build qua, content:review
+    render 19 module. Kiểm browser thật: cái bẫy lối tắt chạy đúng
+    thiết kế (Add vào DL → goal DL ✓ goal GG ○; Add vào GG → cả hai ✓),
+    lời "lệnh im lặng" mới hiện đúng, console sạch, không cuộn ngang.
+- **Khối 18.4 XONG (08-09): nội dung `module-20.json` (Giám sát & nhật
+  ký)** — khép hạng mục 18, Phần E chỉ còn capstone.
+  - 5 bài: đọc một dòng syslog (4 câu hỏi: khi nào/máy nào/nặng cỡ
+    nào/chuyện gì) + 8 mức severity với câu nhớ tiếng Việt **"Em Ăn Cơm
+    Em Với Người Iu Đi"** (spec đòi mẹo câu nhớ; danh sách rời rạc để
+    thẻ SM-2 gánh, có câu order 8 mức ở retrieval + đề thi) → log tập
+    trung + giờ lệch/NTP (ca "đồng hồ chậm 6 phút đảo ngược nhân quả")
+    → **đọc log THẬT độ dài thật** → SNMP polling vs trap (ẩn dụ y tá
+    đi buồng / chuông đầu giường) → baseline (bất thường có HAI phía —
+    im ắng khác nếp cũng là chuông).
+  - **Generation effect đúng spec**: 3 file log SINH BẰNG SCRIPT tất
+    định — sw-core.log 162 dòng (đúng MỘT dòng ERROR thật giữa hàng
+    chục WARNING quạt/quảng bá làm cảnh báo giả), srv-dhcp.log 153
+    dòng (chuỗi WARNING utilization 78→96% leo thang rồi ERROR no free
+    leases — nối thẳng ca sáng-thứ-hai của M18), tap-trung.log 24 dòng
+    3 máy trộn. Bài dạy chiến thuật "lọc trước, đọc sau" + hai câu vặn
+    cảnh báo giả.
+  - 15 câu pool (2 trụ `ps`: log DHCP cạn scope, log switch không còn
+    gợi ý cú pháp). 8 khái niệm, 8 hình mới + alias.
+  - 1147/1147 test xanh, typecheck sạch, build qua, content:review
+    render 20 module. Kiểm browser thật: đi trọn bài 3 từ Đoán thử tới
+    console, gõ một nhát Select-String ERROR giữa 162 dòng — đúng một
+    dòng sự cố nổi lên, goal bật xanh; 237 hình không tràn (đã rút gọn
+    4 chú thích); console sạch.
+- **Khối 19.1 XONG (08-09): `module-21.json` CAPSTONE — nội dung khép
+  lộ trình 21/21 module.**
+  - 4 bài quanh CHUỖI 3 CHẶNG trên cùng mạng chi nhánh (quyết định 4):
+    ① VLSM cắt 10.40.0.0/24 cho 3 phòng (60/25/10 máy → /26, /27, /28)
+    + liên site /30, rồi câu `lab` đặt địa chỉ lên sơ đồ (chỉ setIp) —
+    sai prefix/gateway là ping xuyên phòng tự đứt; ② câu `cli` dựng
+    trunk hai switch + bật OSPF trên R-ChiNhanh (wildcard chép từ bản
+    cắt: 0.0.0.63 / 0.0.0.15 / 0.0.0.3), goal `viewed show ip ospf
+    neighbor` ép kiểm chứng Full; ③ câu `cli` ACL: khách bị chặn tới
+    máy chủ kế toán, vẫn ra Internet, kinh doanh không vạ lây + tự tra
+    bảng luật. Mỗi chặng một câu nộp riêng, thang 3 tầng riêng.
+  - Chỉ 2 concept meta đúng spec (quy trình 4 bước: đặt địa chỉ → nối
+    dây → cấu hình → kiểm chứng; kiểm chứng từng tầng) — không khái
+    niệm mới.
+  - Bài 4 + đề thi: **ca bệnh liên tầng** (trunk lệch native + DNS hỏng
+    — bài luyện là bản-ghi-thiếu, ca thi là bản-ghi-trỏ-sai; chẩn đoán
+    và hành động đều là phương án GỘP HAI BỆNH, một-bệnh là distractor).
+    Pool 15 câu tổng ôn trá hình cả trung cấp (VLSM, trunk, OSPF, ACL,
+    giaddr, AGDLP, baseline), 2 trụ: 1 `cli` + 1 `clinic` kết đề.
+  - **Bắt và vá một bug engine thật khi chạy chặng 2 trên browser**:
+    `router ospf 1` vừa gõ (chưa kịp câu network) → `validateTopology`
+    coi networks rỗng là lỗi cấu trúc → bộ chấm sống ném lỗi, màn
+    console TRẮNG XÓA. Vá: trạng thái đi-qua đó là hợp lệ (thiết bị
+    thật cũng vậy); schema nội dung (min 1) vẫn gác đề soạn sẵn. Test
+    khóa 2 tầng (ospf.test + cliConfig.test). Ghi bất biến vào
+    GHI-CHU-KY-THUAT mục 2.
+  - 1148/1148 test xanh (+1), typecheck sạch, build qua, content:review
+    render 21 module. Kiểm browser thật: đi trọn bài 2 từ hook tới
+    console, tự tay dựng trunk 2 switch + OSPF — 7/7 mục tiêu xanh,
+    bảng láng giềng ra FULL đúng khuôn IOS; 243 hình không tràn.
+- **Khối 19.2 XONG (08-09): MÀN TỐT NGHIỆP** — khép hạng mục 19 và toàn
+  bộ phần CODE của cả hai spec.
+  - `src/features/graduation/`: `milestones.ts` (hai mốc SUY TỪ DỮ LIỆU:
+    nhập môn = module cuối Phần A-C, trung cấp = module cuối lộ trình —
+    thêm module là mốc tự dời, cùng nếp isFinalModule) +
+    `GraduationPage` (route lazy `/tot-nghiep/:milestoneId`).
+  - Một trang hai mốc (quyết định 5): tiêu đề/lời dẫn riêng từng mốc,
+    **bản đồ hành trình tô theo MODULE ĐÃ ĐẬU của chính người học**
+    (hàng theo Phần, tông token `--part-*` — chính tấm bản đồ 21 ô của
+    Module 1, giờ hết ô rỗng), 6 ô số liệu đọc từ store (module đậu,
+    XP, streak, thẻ ôn, bài học, ca bệnh đã chữa), lời nhắc "không cộng
+    XP — tấm gương, không phải phần thưởng".
+  - Cửa vào: nút ở màn ĐẬU của bài thi hai module mốc + mục "Mốc tốt
+    nghiệp đã đạt" trong Hồ sơ (xem lại được mãi). Gõ URL thẳng khi
+    chưa đậu → màn chưa-mở, không lộ số liệu.
+  - 7 test mới khóa: mốc suy từ data, cổng chặn URL, bản đồ tô đúng số
+    ô, và bất biến KHÔNG-XP (render xong store y nguyên). Chuỗi song
+    ngữ `grad.*` + `test.gradLink` đủ hai file.
+  - 1155/1155 test xanh (+7), typecheck sạch, build qua. Kiểm browser
+    thật: mốc trung cấp bản đồ kín 21 ô + số liệu đúng seed; mốc nhập
+    môn tô đúng 12 ô + lời dẫn "con đường trung cấp đã mở"; cổng chặn
+    hoạt động; Hồ sơ chỉ hiện mốc đã đạt; mobile không cuộn ngang; tab
+    sạch không lỗi console (tiện thể xác nhận khiên chặn-hai-cửa-sổ
+    vẫn gác đúng).
+
+- **Khối 20.1 XONG (08-09): KHÉP HẠNG MỤC 20 phần máy làm được** — DoD
+  toàn phần + kịch bản test người thật trung cấp + hội đồng chấm D/E.
+  - **Bảng DoD ĐẠT/CHƯA ĐẠT** (rà từng dòng, bằng chứng tươi cùng ngày:
+    1155/1155 test xanh, typecheck sạch, build qua):
+
+    | Dòng DoD | Nguồn | Kết quả |
+    |---|---|---|
+    | Mọi bài đủ 6 bước, kết bằng retrieval | v1 mục 6 | **ĐẠT** — `StepsSchema` là `z.tuple` 6 bước nên không thể thiếu (contentSchema.ts:329), áp cả 21 module |
+    | Flashcard tự sinh, ôn đúng lịch SM-2 | v1 mục 6 | **ĐẠT** — sm2 + relearning có test; học vượt cũng sinh đủ thẻ (test khóa) |
+    | Không màn nào quá 1 khái niệm mới | v1 mục 6 | **ĐẠT** — mỗi screen một conceptId; ghế sư phạm hội đồng trung cấp không tìm ra vi phạm |
+    | Test người thật M1-2 (bài vẽ từ trí nhớ) | v1 mục 6 | **CHƯA ĐẠT — cần người**; kịch bản mục 1-6 sẵn |
+    | Bất biến cũ nguyên + `cliInPipeline.test` | v2 mục 6 | **ĐẠT** — lần khóa thứ 5 của bất biến lessonMachine, nằm trong 1155 test xanh |
+    | Module mới: pool ≥ 12, câu trụ đúng luật, review render, hình không tràn | v2 mục 6 | **ĐẠT, kèm ghi chú** — POOL_MIN=12 có test (content.test.ts:406); review render 21 module; getBBox kiểm từng khối. Ghi chú: M13 không có câu KIND trụ — không phạm luật cứng nhưng là lỗ phép đo, hội đồng đã ghi P1 |
+    | Phần D qua lượt kiểm fidelity riêng | v2 mục 6 | **ĐẠT, kèm ghi chú** — từng khối 12-17 có lượt kiểm browser; hội đồng chấm lại lộ thêm 2 lỗi dạy sai (vai Root, wildcard) — đúng vai trò của lượt chấm lại, chờ duyệt sửa |
+    | Test người thật trung cấp (a)(b)(c) | v2 mục 6 | **CHƯA ĐẠT — cần người**; kịch bản mục 12-13 vừa viết |
+
+    Hai dòng CHƯA ĐẠT đều là việc-cần-người — không dòng nào chặn được
+    bằng code.
+  - **`KICH-BAN-TEST.md` thêm mục 12 + 13** (mục "Sau buổi test" cũ dời
+    xuống 14): mục 12 đo (a) dựng trunk hai switch từ TỜ YÊU CẦU SUÔNG
+    qua đề /design (không ngữ cảnh bài học) và (b) ca native-lệch do
+    điều phối viên tự cấy vào lab rồi bấm giờ 10 phút khoanh bệnh; mục
+    13 đo (c) học M21 tại chỗ, ghi tầng gợi ý cao nhất từng chặng —
+    ĐẬU khi không chặng nào cần tầng 3. Mỗi mục đủ bộ theo nếp cũ:
+    điều kiện chọn người, chuẩn bị, điểm quan sát, tiêu chí ĐẬU/ĐẬU CÓ
+    GHI CHÚ/RỚT (rớt trỏ về module gốc, không đổ cho người học), mẫu
+    ghi chép.
+  - **Hội đồng trung cấp đã họp** — nếp 07-08 mở rộng: 15 ghế (14 mảng
+    cũ + ghế Capstone) chấm độc lập có bằng chứng file:dòng, 14 phát
+    hiện nặng nhất qua phản biện chéo (14/14 tái lập, 0 loại), chủ tịch
+    tự kiểm mẫu cả 3 lỗi gốc P0 — tái lập đúng nguyên văn. Kết quả:
+    **trung bình 7.6/10** (cao nhất 8.2 kiến trúc + i18n, thấp nhất 6.5
+    hiệu năng), 80 phát hiện → sau phản biện: **3 P0** (đều sửa S) +
+    25 P1 + 52 P2. Biên bản đầy đủ + 4 đợt sửa đề xuất:
+    `DANH-GIA-HOI-DONG-TRUNG-CAP.md`.
+  - Sức khỏe lượt này: 1155/1155 test xanh, typecheck sạch, build qua
+    (không sửa dòng code nào — toàn giấy tờ, đúng đề bài hạng mục 20).
+
+Cập nhật: 2026-08-09. File này chỉ để nắm nhanh tình hình khi mở lại dự
+án. Nguồn chân lý: `SPEC-APP-HOC-MANG.md` (M1-12) và
+`SPEC-TRUNG-CAP.md` (M13-21); luật làm việc ở `CLAUDE.md`; **bất biến
+kỹ thuật theo vùng ở `GHI-CHU-KY-THUAT.md` (sửa vùng nào đọc mục đó
+trước)**; kho ý tưởng chờ duyệt ở `Y-TUONG.md`; nội dung bài đọc duyệt
+ở `REVIEW-NOI-DUNG.md`; kế hoạch trung cấp ở `KE-HOACH-TRUNG-CAP.md`.
 
 ## MỞ PHIÊN MỚI THÌ ĐỌC ĐÂY TRƯỚC
 
-**Đang đứng đâu:** **CẢ BA PHASE ĐÃ XONG — hết phạm vi spec.** Phase 3
-hạng mục (8), (9), (10) đều khép; hạng mục (10) là hạng mục cuối cùng
-của spec mục 6. App có đủ **12 module** + tab Phòng khám + tab Ôn tập +
-drill subnetting.
+**Phần dưới đây là LỊCH SỬ của spec v1 (Phase 1-3).** Trạng thái hiện
+tại đọc ở đầu file; mục này giữ lại vì nó ghi các quyết định và bất biến
+vẫn còn hiệu lực.
+
+**Spec v1 đã đóng:** Phase 3 hạng mục (8), (9), (10) đều khép; hạng mục
+(10) là hạng mục cuối cùng của spec mục 6. App có đủ **12 module** nhập
+môn + tab Phòng khám + tab Ôn tập + drill subnetting.
 
 **Sau khi hết phạm vi spec, dự án đã qua BA việc lớn ngoài spec (07-08
 và 08-08):**

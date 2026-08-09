@@ -16,6 +16,10 @@ import {
   vlanRepairLab,
   wiredUp,
   wiringLab,
+  trunkHealthy,
+  trunkLab,
+  trunkNativeMismatch,
+  threeRouterRing,
 } from '../../../tests/fixtures/labFixture'
 
 describe('chấm bài "sửa VLAN"', () => {
@@ -197,6 +201,13 @@ describe('chẩn đoán tĩnh (nguyên liệu cho phản hồi tầng 1-2)', () 
     expect(diagnose(flatNetwork(), [])).not.toContain('l2-loop')
   })
 
+  it('vòng ĐI QUA ROUTER không phải vòng lặp tầng 2', () => {
+    // Ba router nối vòng là đường DỰ PHÒNG — cả Module 16 dựng lên để
+    // khen nó. Router chặn khung quảng bá nên vòng đó không sinh bão;
+    // báo "sơ đồ có vòng kín giữa các switch" ở đây là chỉ sai hướng.
+    expect(diagnose(threeRouterRing({}), [])).not.toContain('l2-loop')
+  })
+
   it('chẩn đoán vẫn có kể cả khi mọi mục tiêu đều trượt', () => {
     const evaluation = gradeLab(vlanRepairLab(), teamsNetwork())
     expect(evaluation.passed).toBe(false)
@@ -232,5 +243,43 @@ describe('hợp đồng của bộ chấm', () => {
 
   it('devicesReferencedBy gom đủ thiết bị mà mục tiêu nhắc tới', () => {
     expect(devicesReferencedBy(wiringLab().goals).sort()).toEqual(['pc-a', 'pc-b', 'sw-1'])
+  })
+})
+
+describe('chẩn đoán bệnh trunk (Module 14)', () => {
+  it('mới khai trunk MỘT đầu: gọi đúng tên, không nhầm với "hai đầu khác VLAN"', () => {
+    // Đây là bệnh riêng của trunk, và lời chẩn đoán phải khác hẳn ca
+    // access-khác-VLAN của Module 4 — hai bệnh, hai chỗ phải nhìn.
+    const topo = trunkHealthy()
+    const sw = topo.devices.find((d) => d.id === 'sw-2')
+    if (sw?.kind === 'switch') {
+      const uplink = sw.ports.find((p) => p.id === 'p4')
+      if (uplink !== undefined) {
+        delete uplink.mode
+        delete uplink.allowedVlans
+        delete uplink.nativeVlan
+      }
+    }
+    const found = diagnose(topo, trunkLab().goals)
+    expect(found).toContain('trunk-one-side-only')
+    expect(found).not.toContain('vlan-mismatch-on-link')
+  })
+
+  it('hai đầu trunk lệch native: nêu ra dù ping của mục tiêu này vẫn chạy', () => {
+    // Native lệch là bệnh IM LẶNG — nêu được nó lúc sơ đồ còn "trông ổn"
+    // mới là giá trị của bảng chẩn đoán.
+    const found = diagnose(trunkNativeMismatch(), trunkLab().goals)
+    expect(found).toContain('native-vlan-mismatch-on-trunk')
+  })
+
+  it('trunk khai đúng hai đầu: không bịa ra bệnh nào', () => {
+    expect(diagnose(trunkHealthy(), trunkLab().goals)).not.toContain('trunk-one-side-only')
+    expect(diagnose(trunkHealthy(), trunkLab().goals)).not.toContain('native-vlan-mismatch-on-trunk')
+  })
+
+  it('đề lab Module 14 chấm được: đề chưa đạt, lời giải đạt trọn', () => {
+    const spec = trunkLab()
+    expect(gradeLab(spec, spec.initial).passed, 'đề bài không được đạt sẵn').toBe(false)
+    expect(gradeLab(spec, spec.solution).passed, 'lời giải phải thật sự giải được').toBe(true)
   })
 })

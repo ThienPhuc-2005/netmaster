@@ -1,10 +1,17 @@
 import { describe, expect, it } from 'vitest'
 import { formatPorts, parseKeys, parsePorts } from './parsePorts'
-import { GPO_PALACE, PORT_PALACE } from '../../../tests/fixtures/palaceFixture'
 import { hasRoomGlyph, roomGlyphIds } from './RoomGlyph'
+import { loadModules } from '../../content'
 
-/** Mọi tòa nhà đang có trong app — thêm tòa mới thì thêm vào đây. */
-const ALL_PALACES = [PORT_PALACE, GPO_PALACE]
+/**
+ * Mọi tòa nhà đang có trong app — SUY TỪ NỘI DUNG THẬT, không chép tay.
+ *
+ * Trước đây chỗ này liệt kê fixture và người thêm tòa mới phải nhớ khai
+ * thêm vào đây; quên là ba phép kiểm dưới đây gác nhầm chỗ (chúng vẫn
+ * xanh trong khi tòa mới thiếu hình, và RoomGlyph thì ném lỗi lúc chạy).
+ * Đọc thẳng từ content/modules/*.json thì thêm tòa là tự được gác.
+ */
+const ALL_PALACES = loadModules().flatMap((m) => (m.palace === undefined ? [] : [m.palace]))
 
 describe('đọc số cổng người học gõ', () => {
   it('một số', () => {

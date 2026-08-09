@@ -19,6 +19,7 @@ import { z } from 'zod'
 import { LabSpecSchema } from './lab/labSchema'
 import { ClinicCaseSpecSchema } from './clinic/clinicSchema'
 import { PsSpecSchema } from './ps/psSchema'
+import { CliSpecSchema } from './cli/cliSchema'
 import { PalaceSchema } from './palace/palaceSchema'
 import { LTextSchema, type LText } from './ltext'
 
@@ -177,6 +178,23 @@ const PsQuestionSchema = z.object({
   explain: explainField,
 })
 
+/**
+ * Bài CLI thiết bị (spec v2 Phần D) — dạng câu hỏi thứ TÁM. Người học gõ
+ * lệnh IOS thật lên console của switch/router để đạt mục tiêu; chấm theo
+ * hiệu ứng trên sơ đồ + dấu vết đã tra bảng nào, không so chuỗi lệnh.
+ * Thang gợi ý mờ dần dùng lại thang 3 tầng sẵn có: hintTopic → cú pháp
+ * khuyết (hint của Exercise) → chuỗi lệnh mẫu. Về hợp đồng nó VẪN LÀ MỘT
+ * CÂU HỎI, nên máy trạng thái 6 bước, XP và mastery gate không đổi.
+ */
+const CliQuestionSchema = z.object({
+  kind: z.literal('cli'),
+  id: idSchema,
+  prompt: LTextSchema,
+  spec: CliSpecSchema,
+  hintTopic: LTextSchema.optional(),
+  explain: explainField,
+})
+
 export const QuestionSchema = z.discriminatedUnion('kind', [
   TypedQuestionSchema,
   McqQuestionSchema,
@@ -185,6 +203,7 @@ export const QuestionSchema = z.discriminatedUnion('kind', [
   PalaceWalkQuestionSchema,
   ClinicQuestionSchema,
   PsQuestionSchema,
+  CliQuestionSchema,
 ])
 
 // ---------------------------------------------------------------
@@ -333,7 +352,7 @@ export const StageSchema = z.object({
 const ModuleBaseSchema = z.object({
   id: idSchema,
   order: z.number().int().min(1),
-  part: z.enum(['A', 'B', 'C']),
+  part: z.enum(['A', 'B', 'C', 'D', 'E']),
   title: LTextSchema,
   /** 4-6 chặng nhìn thấy được (spec 2.4); Module 3 dùng đủ 6. */
   stages: z.array(StageSchema).min(4).max(6),
@@ -347,8 +366,11 @@ const ModuleBaseSchema = z.object({
    * — luật đó ép ở content.test.ts vì nó là quy ước nội dung.
    */
   masteryTest: z.array(QuestionSchema).min(5),
-  /** Module 3 bật chế độ drill subnetting hằng ngày. */
-  drill: z.literal('subnet').optional(),
+  /**
+   * Chế độ drill hằng ngày của module: `subnet` là bài TÍNH LẠI của
+   * Module 3, `vlsm` là bài THIẾT KẾ của Module 13 (spec v2 mục 4.4).
+   */
+  drill: z.enum(['subnet', 'vlsm']).optional(),
   /**
    * Cung điện ký ức của module (spec Module 5 — tòa nhà 15 phòng). Khai
    * ở cấp module chứ không ở từng bài: tòa nhà là MỘT, các bài chỉ đi
@@ -667,6 +689,7 @@ export type LabQuestion = Extract<Question, { kind: 'lab' }>
 export type PalaceWalkQuestion = Extract<Question, { kind: 'palace-walk' }>
 export type ClinicQuestion = Extract<Question, { kind: 'clinic' }>
 export type PsQuestion = Extract<Question, { kind: 'ps' }>
+export type CliQuestion = Extract<Question, { kind: 'cli' }>
 export type Concept = z.infer<typeof ConceptSchema>
 export type HookStep = z.infer<typeof HookStepSchema>
 export type PretestStep = z.infer<typeof PretestStepSchema>

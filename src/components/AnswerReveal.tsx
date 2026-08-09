@@ -41,6 +41,17 @@ export function canonicalAnswer(q: Question): string | null {
       // của thang gợi ý mờ dần. Mọi cách viết khác đạt mục tiêu vẫn được
       // chấm đúng; đây chỉ là bản tham chiếu để đọc lại.
       return q.spec.solution.join('  ·  ')
+    case 'cli': {
+      // Cùng lối với ps, thêm TÊN THIẾT BỊ ở đầu mỗi chặng: bài trunk hai
+      // switch mà không nói lệnh nào gõ ở máy nào thì đọc lại vô nghĩa.
+      // Tên là HOSTNAME người học nhìn thấy trên dấu nhắc, không phải id
+      // trong dữ liệu — "sw-1: show vlan brief" là lời của lập trình viên.
+      const hostname = (deviceId: string) =>
+        q.spec.initial.devices.find((d) => d.id === deviceId)?.hostname ?? deviceId
+      return q.spec.solution
+        .map((step) => `${hostname(step.deviceId)}: ${step.lines.join('  ·  ')}`)
+        .join('   |   ')
+    }
   }
 }
 
@@ -70,6 +81,7 @@ export function formatResponse(q: Question, r: QuestionResponse): string | null 
       return diagnosis
     }
     case 'ps':
+    case 'cli':
       // Cả phiên gõ lệnh xem lại ngay trên terminal, không phải ở đây.
       return null
   }

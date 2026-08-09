@@ -20,6 +20,7 @@ import {
   isValidPrefix,
   isValidVlan,
   linkOfPort,
+  portModeOf,
   type Device,
   type DeviceId,
   type DeviceKind,
@@ -28,6 +29,10 @@ import {
   type Link,
   type PortId,
   type StaticRoute,
+  type RouterDevice,
+  type SwitchDevice,
+  type SwitchPort,
+  type SwitchPortMode,
   type Topology,
   type VlanId,
 } from './topology'
@@ -47,6 +52,17 @@ export interface LabAllowance {
   addLinks: boolean
   removeLinks: boolean
   setVlan: boolean
+  /**
+   * Cho phép đổi vai cổng switch access <-> trunk (allowed list, native).
+   * Tùy chọn để mọi đề lab viết trước Module 14 không phải khai lại —
+   * thiếu = KHÔNG cho, đúng nếp "quyền phải xin tường minh".
+   */
+  setTrunk?: boolean
+  /**
+   * Cho phép bật/tắt STP và chỉnh bridge priority (Module 15).
+   * Tùy chọn, thiếu = không cho — nếp "quyền phải xin tường minh".
+   */
+  setStp?: boolean
   setIp: boolean
   setRoutes: boolean
   /** Trần số thiết bị — chặn "thêm bừa cho tới khi hên". */
@@ -60,6 +76,8 @@ export const ALLOW_EVERYTHING: LabAllowance = {
   addLinks: true,
   removeLinks: true,
   setVlan: true,
+  setTrunk: true,
+  setStp: true,
   setIp: true,
   setRoutes: true,
   maxDevices: 12,
@@ -71,6 +89,12 @@ export type LabAction =
   | { kind: 'add-link'; link: Link }
   | { kind: 'remove-link'; linkId: string }
   | { kind: 'set-switch-port-vlan'; deviceId: DeviceId; portId: PortId; vlan: VlanId }
+  | { kind: 'set-switch-port-mode'; deviceId: DeviceId; portId: PortId; mode: SwitchPortMode }
+  /** `vlans: null` = cho MỌI VLAN qua (mặc định của thiết bị thật). */
+  | { kind: 'set-trunk-allowed'; deviceId: DeviceId; portId: PortId; vlans: VlanId[] | null }
+  | { kind: 'set-trunk-native'; deviceId: DeviceId; portId: PortId; vlan: VlanId }
+  | { kind: 'set-stp'; enabled: boolean }
+  | { kind: 'set-bridge-priority'; deviceId: DeviceId; priority: number }
   | { kind: 'set-pc-ip'; deviceId: DeviceId; ipConfig: IpConfig | null; gateway: Ipv4 | null }
   | { kind: 'set-router-port-ip'; deviceId: DeviceId; portId: PortId; ipConfig: IpConfig | null }
   | { kind: 'set-static-routes'; deviceId: DeviceId; routes: StaticRoute[] }
@@ -90,6 +114,7 @@ export type LabRejection =
   | 'invalid-vlan'
   | 'invalid-ip'
   | 'invalid-prefix'
+  | 'invalid-priority'
 
 export interface LabSession {
   allow: LabAllowance
@@ -186,6 +211,47 @@ export function canApplyLabAction(session: LabSession, action: LabAction): LabRe
       return null
     }
 
+    case 'set-switch-port-mode':
+    case 'set-trunk-allowed':
+    case 'set-trunk-native': {
+      if (allow.setTrunk !== true) return 'not-allowed'
+      const device = findDevice(present, action.deviceId)
+      if (device === null) return 'unknown-device'
+      if (device.kind !== 'switch') return 'wrong-device-kind'
+      const port = device.ports.find((p) => p.id === action.portId)
+      if (port === undefined) return 'unknown-port'
+      if (action.kind === 'set-trunk-native' && !isValidVlan(action.vlan)) return 'invalid-vlan'
+      if (action.kind === 'set-trunk-allowed' && action.vlans !== null) {
+        // Allowed rỗng = trunk câm; đó là gõ nhầm chứ không phải ý đồ,
+        // nên chặn ngay thay vì để người học đi tìm một mạng chết.
+        if (action.vlans.length === 0) return 'invalid-vlan'
+        if (action.vlans.some((v) => !isValidVlan(v))) return 'invalid-vlan'
+      }
+      // Khai allowed/native cho một cổng đang là access là tự mâu thuẫn —
+      // đổi vai trước đã.
+      if (action.kind !== 'set-switch-port-mode' && portModeOf(port) !== 'trunk') return 'wrong-device-kind'
+      return null
+    }
+
+    case 'set-stp': {
+      if (allow.setStp !== true) return 'not-allowed'
+      return null
+    }
+
+    case 'set-bridge-priority': {
+      if (allow.setStp !== true) return 'not-allowed'
+      const device = findDevice(present, action.deviceId)
+      if (device === null) return 'unknown-device'
+      if (device.kind !== 'switch') return 'wrong-device-kind'
+      // Chuẩn 802.1D: priority là bội của 4096 trong khoảng 0..61440.
+      // Gõ số lẻ vào thiết bị thật cũng bị từ chối y như vậy.
+      if (!Number.isInteger(action.priority) || action.priority < 0 || action.priority > 61440) {
+        return 'invalid-priority'
+      }
+      if (action.priority % 4096 !== 0) return 'invalid-priority'
+      return null
+    }
+
     case 'set-pc-ip': {
       if (!allow.setIp) return 'not-allowed'
       const device = findDevice(present, action.deviceId)
@@ -228,6 +294,32 @@ function mapDevice(topo: Topology, deviceId: DeviceId, fn: (device: Device) => D
   return { ...topo, devices: topo.devices.map((d) => (d.id === deviceId ? fn(d) : d)) }
 }
 
+/** Sửa đúng MỘT cổng của một switch, giữ nguyên mọi thứ khác. */
+function mapSwitchPort(
+  topo: Topology,
+  deviceId: DeviceId,
+  portId: PortId,
+  fn: (port: SwitchPort) => SwitchPort,
+): Topology {
+  return mapDevice(topo, deviceId, (device) =>
+    device.kind !== 'switch'
+      ? device
+      : { ...device, ports: device.ports.map((p) => (p.id === portId ? fn(p) : p)) },
+  )
+}
+
+/**
+ * Áp một thao tác lên sơ đồ, KHÔNG hỏi quyền.
+ *
+ * Xuất ra ngoài để CLI thiết bị (Module 14-17) dùng chung đúng phép biến
+ * đổi này — luật "về access thì dọn sạch trường trunk" chỉ được viết một
+ * lần. Quyền thì mỗi bề mặt tự lo: phòng lab hỏi `LabAllowance`, còn CLI
+ * hỏi CHẾ ĐỘ và loại thiết bị đúng như thiết bị thật.
+ */
+export function applyTopologyChange(topo: Topology, action: LabAction): Topology {
+  return nextTopology(topo, action)
+}
+
 function nextTopology(topo: Topology, action: LabAction): Topology {
   switch (action.kind) {
     case 'add-device':
@@ -255,6 +347,38 @@ function nextTopology(topo: Topology, action: LabAction): Topology {
               ...device,
               ports: device.ports.map((p) => (p.id === action.portId ? { ...p, vlan: action.vlan } : p)),
             },
+      )
+
+    case 'set-switch-port-mode':
+      return mapSwitchPort(topo, action.deviceId, action.portId, (port) =>
+        action.mode === 'access'
+          ? // Về access thì DỌN sạch trường của trunk: để sót allowed/native
+            // là dữ liệu tự mâu thuẫn (validateTopology bắt được ngay).
+            { id: port.id, vlan: port.vlan }
+          : { ...port, mode: 'trunk' },
+      )
+
+    case 'set-trunk-allowed':
+      return mapSwitchPort(topo, action.deviceId, action.portId, (port) => {
+        if (action.vlans === null) {
+          const { allowedVlans: _dropped, ...rest } = port
+          return rest
+        }
+        return { ...port, allowedVlans: [...action.vlans].sort((a, b) => a - b) }
+      })
+
+    case 'set-trunk-native':
+      return mapSwitchPort(topo, action.deviceId, action.portId, (port) => ({
+        ...port,
+        nativeVlan: action.vlan,
+      }))
+
+    case 'set-stp':
+      return { ...topo, stpEnabled: action.enabled }
+
+    case 'set-bridge-priority':
+      return mapDevice(topo, action.deviceId, (device) =>
+        device.kind !== 'switch' ? device : { ...device, bridgePriority: action.priority },
       )
 
     case 'set-pc-ip':
@@ -344,8 +468,24 @@ export type ChangeClass =
   | 'add-link'
   | 'remove-link'
   | 'vlan'
+  | 'trunk'
+  | 'stp'
   | 'ip'
   | 'routes'
+  /**
+   * Bật/tắt cổng bằng lệnh (`shutdown` / `no shutdown`) và khai VLAN vào
+   * VLAN database. Đây là việc CHỈ CLI làm được — phòng khám và phòng lab
+   * không có đường bấm chọn nào cho nó, nên `LabAllowance` mặc định KHÔNG
+   * cho. Có mặt ở đây để lời giải lab nào lỡ cần tới nó thì cross-check
+   * của schema chặn ngay, thay vì đẻ ra một bài không bấm nổi.
+   */
+  | 'port-state'
+  /**
+   * Danh sách lọc và việc áp nó lên cổng (Module 17). Cũng như
+   * `port-state`, đây là việc CHỈ CLI làm được — phòng lab không có
+   * đường bấm chọn nào cho nó, nên `LabAllowance` không bao giờ cho.
+   */
+  | 'acl'
 
 function ipConfigEqual(a: IpConfig | null, b: IpConfig | null): boolean {
   if (a === null || b === null) return a === b
@@ -356,9 +496,27 @@ function deviceChanges(before: Device, after: Device): ChangeClass[] {
   const classes: ChangeClass[] = []
   if (before.kind !== after.kind) return ['remove-device', 'add-device']
 
+  const beforePortState = new Map(
+    (before.kind === 'pc' ? [] : before.ports).map((p) => [p.id, p.shutdown === true]),
+  )
+  if ((after.kind === 'pc' ? [] : after.ports).some((p) => beforePortState.get(p.id) !== (p.shutdown === true))) {
+    classes.push('port-state')
+  }
+
   if (before.kind === 'switch' && after.kind === 'switch') {
     const beforeVlans = new Map(before.ports.map((p) => [p.id, p.vlan]))
     if (after.ports.some((p) => beforeVlans.get(p.id) !== p.vlan)) classes.push('vlan')
+    const vlanDb = (device: SwitchDevice) => [...(device.declaredVlans ?? [])].sort((a, b) => a - b).join(',')
+    if (vlanDb(before) !== vlanDb(after)) classes.push('port-state')
+    // Vai cổng, allowed list và native là MỘT nhóm quyền riêng: đề "sửa
+    // VLAN" không được ngầm cho phép dựng cả trunk.
+    const trunkShape = (port: SwitchPort) =>
+      JSON.stringify([port.mode ?? 'access', port.allowedVlans ?? null, port.nativeVlan ?? null])
+    const beforeTrunk = new Map(before.ports.map((p) => [p.id, trunkShape(p)]))
+    if (after.ports.some((p) => beforeTrunk.get(p.id) !== trunkShape(p))) classes.push('trunk')
+    if (before.bridgePriority !== after.bridgePriority || before.bridgeMac !== after.bridgeMac) {
+      classes.push('stp')
+    }
   }
   if (before.kind === 'pc' && after.kind === 'pc') {
     if (!ipConfigEqual(before.ipConfig, after.ipConfig) || before.gateway !== after.gateway) classes.push('ip')
@@ -367,6 +525,13 @@ function deviceChanges(before: Device, after: Device): ChangeClass[] {
     const beforePorts = new Map(before.ports.map((p) => [p.id, p.ipConfig]))
     if (after.ports.some((p) => !ipConfigEqual(beforePorts.get(p.id) ?? null, p.ipConfig))) classes.push('ip')
     if (JSON.stringify(before.staticRoutes) !== JSON.stringify(after.staticRoutes)) classes.push('routes')
+
+    const aclShape = (device: RouterDevice) =>
+      JSON.stringify([
+        device.accessLists ?? [],
+        device.ports.map((p) => [p.id, p.aclIn ?? null, p.aclOut ?? null]),
+      ])
+    if (aclShape(before) !== aclShape(after)) classes.push('acl')
   }
   return classes
 }
@@ -394,6 +559,8 @@ export function classifyDiff(from: Topology, to: Topology): ChangeClass[] {
   for (const id of fromLinks) if (!toLinks.has(id)) classes.add('remove-link')
   for (const id of toLinks) if (!fromLinks.has(id)) classes.add('add-link')
 
+  if ((from.stpEnabled === true) !== (to.stpEnabled === true)) classes.add('stp')
+
   return [...classes]
 }
 
@@ -405,8 +572,14 @@ export function allowanceViolations(allow: LabAllowance, classes: readonly Chang
     'add-link': allow.addLinks,
     'remove-link': allow.removeLinks,
     vlan: allow.setVlan,
+    trunk: allow.setTrunk === true,
+    stp: allow.setStp === true,
     ip: allow.setIp,
     routes: allow.setRoutes,
+    // Không có cờ nào bật được: phòng lab không làm được hai việc này
+    // (xem ghi chú ở ChangeClass).
+    'port-state': false,
+    acl: false,
   }
   return classes.filter((c) => !permitted[c])
 }

@@ -386,7 +386,8 @@ describe('sessionStats', () => {
       ],
       '2026-08-04',
     )
-    expect(result).toEqual({ date: '2026-08-04', correct: 2, total: 3, avgSeconds: 12.3 })
+    // Thiếu `mode` thì mặc định 'subnet' — mọi chỗ gọi cũ giữ nguyên nghĩa.
+    expect(result).toEqual({ date: '2026-08-04', mode: 'subnet', correct: 2, total: 3, avgSeconds: 12.3 })
   })
 
   it('rounds halves and thirds correctly', () => {

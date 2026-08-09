@@ -17,6 +17,10 @@ import {
   routedNetwork,
   splitVlanFixed,
   splitVlanNetwork,
+  trunkAllowedMissingVlan,
+  trunkHealthy,
+  trunkMissing,
+  trunkNativeMismatch,
 } from '../../../tests/fixtures/labFixture'
 
 const phases = (r: PingResult): string[] => r.stages.map((s) => s.phase)
@@ -337,5 +341,75 @@ describe('các ca lỗi cấu hình cơ bản', () => {
     }
     const result = simulatePing(topo, { from: 'pc-a', to: 'pc-x' })
     expect(result.failure).toBe('hop-budget-exceeded')
+  })
+})
+
+describe('trunk 802.1Q — một sợi dây chở nhiều xóm (Module 14)', () => {
+  it('chưa làm trunk: hai máy cùng VLAN 10 ở hai switch không gọi được nhau', () => {
+    // Dây giữa hai switch còn là cổng access VLAN 1: khung của VLAN 10
+    // không có đường sang. Đây là ĐỀ BÀI của Module 14.
+    const result = simulatePing(trunkMissing(), { from: 'pc-a', to: 'pc-b' })
+    expect(pingSucceeded(result)).toBe(false)
+  })
+
+  it('khai trunk hai đầu: VLAN 10 sang được, và khung MANG NHÃN trên dây trunk', () => {
+    const result = simulatePing(trunkHealthy(), { from: 'pc-a', to: 'pc-b' })
+    expect(pingSucceeded(result)).toBe(true)
+
+    // Nhãn là tải trọng sư phạm của bài: nhật ký phải nói được khung nào
+    // đi trần, khung nào mang nhãn, và mang nhãn VLAN mấy.
+    const onUplink = allHops(result).filter((h) => h.linkId === 'uplink')
+    expect(onUplink.length).toBeGreaterThan(0)
+    for (const hop of onUplink) {
+      expect(hop.vlan).toBe(10)
+      expect(hop.tagged, 'VLAN 10 không phải native nên phải mang nhãn').toBe(true)
+    }
+    // Đoạn dây từ máy tới switch vẫn đi trần — nhãn chỉ sống trên trunk.
+    const toHost = allHops(result).filter((h) => h.linkId === 'l1')
+    expect(toHost.every((h) => !h.tagged)).toBe(true)
+  })
+
+  it('trunk vẫn giữ bức tường VLAN: kế toán không gọi được kỹ thuật', () => {
+    // Trunk chở nhiều xóm trên một dây, KHÔNG phải gộp các xóm làm một.
+    const result = simulatePing(trunkHealthy(), { from: 'pc-a', to: 'pc-c' })
+    expect(pingSucceeded(result)).toBe(false)
+  })
+
+  it('BỆNH allowed list thiếu VLAN: gọi đúng tên bệnh, không nói chung chung', () => {
+    const result = simulatePing(trunkAllowedMissingVlan(), { from: 'pc-a', to: 'pc-b' })
+    expect(pingSucceeded(result)).toBe(false)
+    expect(result.failure).toBe('trunk-vlan-not-allowed')
+  })
+
+  it('BỆNH native lệch hai đầu: khung trần lạc sang VLAN khác', () => {
+    // Bệnh kinh điển vì nó IM LẶNG: không cổng nào báo lỗi, khung vẫn
+    // qua dây, chỉ là sang tới nơi thì nó đã thuộc xóm khác.
+    const result = simulatePing(trunkNativeMismatch(), { from: 'pc-a', to: 'pc-b' })
+    expect(pingSucceeded(result)).toBe(false)
+    expect(result.failure).toBe('native-vlan-mismatch')
+  })
+
+  it('native VLAN đi TRẦN, các VLAN khác mang nhãn — trên cùng một trunk', () => {
+    // Đặt native = 10 thì chính VLAN 10 đi trần; đây là chỗ người học hay
+    // lẫn, nên engine phải phân biệt được rành mạch.
+    const topo = trunkHealthy()
+    for (const device of topo.devices) {
+      if (device.kind !== 'switch') continue
+      const uplink = device.ports.find((p) => p.id === 'p4')
+      if (uplink !== undefined) uplink.nativeVlan = 10
+    }
+    const result = simulatePing(topo, { from: 'pc-a', to: 'pc-b' })
+    expect(pingSucceeded(result)).toBe(true)
+    const onUplink = allHops(result).filter((h) => h.linkId === 'uplink')
+    expect(onUplink.every((h) => h.vlan === 10 && !h.tagged)).toBe(true)
+  })
+
+  it('bảng MAC của switch ghi theo VLAN, học được cả máy ở đầu kia trunk', () => {
+    const result = simulatePing(trunkHealthy(), { from: 'pc-a', to: 'pc-b' })
+    const table = macTableOf(result.state, 'sw-2')
+    const entry = table.find((e) => e.mac === MAC.pcA)
+    expect(entry, 'Switch-2 phải học được PC-A qua cổng trunk').toBeDefined()
+    expect(entry?.vlan).toBe(10)
+    expect(entry?.portId).toBe('p4')
   })
 })

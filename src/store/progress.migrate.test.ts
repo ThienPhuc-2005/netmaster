@@ -83,11 +83,27 @@ describe('persist migrate: hợp đồng payload v1', () => {
     expect(s.reviewCards).toHaveLength(2)
   })
 
-  it('v1 đi trọn chuỗi tới v3: cả hai trường mới đều mọc ra rỗng', async () => {
+  it('v1 đi trọn chuỗi tới v4: các trường mới mọc ra rỗng, phiên drill cũ được đóng dấu', async () => {
     await rehydrateFrom(v1Payload)
     const s = useProgress.getState()
     expect(s.challengeUsed).toEqual({})
     expect(s.practiceDrafts).toEqual({})
+    // Phiên drill ghi trước khi có VLSM đều là drill subnetting — đóng
+    // dấu đúng như thế, đừng để chúng thành phiên "không loại" rồi rơi
+    // khỏi biểu đồ tiến bộ người học đã xây cả tháng.
+    expect(s.drillHistory).toHaveLength(1)
+    expect(s.drillHistory[0]).toMatchObject({ mode: 'subnet', correct: 8, total: 10, avgSeconds: 21.5 })
+  })
+
+  it('v3 → v4 (drill VLSM): phiên đã có mode thì migrate KHÔNG đụng vào', async () => {
+    const v3 = JSON.parse(JSON.stringify(v1Payload)) as { state: Record<string, unknown>; version: number }
+    v3.version = 3
+    v3.state['drillHistory'] = [
+      { date: '2026-08-02', mode: 'vlsm', correct: 4, total: 5, avgSeconds: 96.2 },
+      { date: '2026-08-03', correct: 9, total: 10, avgSeconds: 18 },
+    ]
+    await rehydrateFrom(v3)
+    expect(useProgress.getState().drillHistory.map((d) => d.mode)).toEqual(['vlsm', 'subnet'])
   })
 
   it('v1 → v2 (học vượt): sổ lượt thi vượt mọc ra rỗng, phần còn lại nguyên', async () => {

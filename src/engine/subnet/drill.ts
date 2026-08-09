@@ -6,7 +6,7 @@
 // cấu trúc) — mọi câu chữ hiển thị thuộc tầng i18n/UI. Ngẫu nhiên được
 // bơm từ ngoài qua Rng để phiên drill tái lập được 100% trong test.
 
-import type { DrillResult, ISODate } from '../types'
+import type { DrillMode, DrillResult, ISODate } from '../types'
 import { addDays } from '../dates'
 import {
   broadcastAddress,
@@ -525,6 +525,7 @@ export function gradeDrillAnswer(problem: DrillProblem, raw: string): boolean {
 export function sessionStats(
   outcomes: { correct: boolean; seconds: number }[],
   date: ISODate,
+  mode: DrillMode = 'subnet',
 ): DrillResult {
   if (outcomes.length === 0) {
     throw new Error('sessionStats: outcomes must not be empty')
@@ -542,6 +543,7 @@ export function sessionStats(
   }
   return {
     date: validDate,
+    mode,
     correct,
     total: outcomes.length,
     // Round to 1 decimal — enough resolution for the progress chart.

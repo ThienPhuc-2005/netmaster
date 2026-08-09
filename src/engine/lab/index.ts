@@ -3,6 +3,9 @@
 
 export * from './topology'
 export * from './simulate'
+export * from './stp'
+export * from './acl'
+export * from './ospf'
 export * from './session'
 export * from './gradeLab'
 export * from './labSchema'

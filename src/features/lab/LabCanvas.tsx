@@ -9,7 +9,12 @@
 // bàn phím, trình đọc màn hình và test đều dùng được đúng một đường mã
 // với chuột — thay vì phải dựng ba hệ thống song song.
 
-import { useRef, type KeyboardEvent as ReactKeyboardEvent, type PointerEvent as ReactPointerEvent } from 'react'
+import {
+  useMemo,
+  useRef,
+  type KeyboardEvent as ReactKeyboardEvent,
+  type PointerEvent as ReactPointerEvent,
+} from 'react'
 import { m } from 'motion/react'
 import { PacketShape } from '../../components/PacketShape'
 import { DeviceGlyph } from '../../components/DeviceGlyph'
@@ -28,13 +33,18 @@ import {
 } from './geometry'
 import { HOP_MS, type PacketFlight } from './usePacketFlight'
 import {
+  computeStp,
   findDevice,
+  isPortBlocked,
   linkOfPort,
   peerOfPort,
   portIdsOf,
+  portModeOf,
   samePort,
+  switchPortOf,
   type Device,
   type PortRef,
+  type StpState,
   type Topology,
 } from '../../engine/lab'
 
@@ -58,10 +68,11 @@ interface PortDotProps {
   portId: string
   at: Point
   armed: PortRef | null
+  stp: StpState
   onPick: (ref: PortRef) => void
 }
 
-function PortDot({ topo, device, portId, at, armed, onPick }: PortDotProps) {
+function PortDot({ topo, device, portId, at, armed, stp, onPick }: PortDotProps) {
   const t = useT()
   const ref: PortRef = { deviceId: device.id, portId }
   const connected = linkOfPort(topo, ref) !== null
@@ -72,9 +83,18 @@ function PortDot({ topo, device, portId, at, armed, onPick }: PortDotProps) {
 
   const peer = peerOfPort(topo, ref)
   const peerName = peer === null ? null : (findDevice(topo, peer.deviceId)?.hostname ?? peer.deviceId)
+  // Hai vai của cổng (Module 14) và trạng thái STP (Module 15) đi THẲNG
+  // vào tên đọc được của nút: người dùng bàn phím và trình đọc màn hình
+  // phải biết cổng này là trunk hay đang bị chặn, không chỉ nhìn màu.
+  const switchPort = switchPortOf(topo, ref)
+  const isTrunk = switchPort !== null && portModeOf(switchPort) === 'trunk'
+  const blocked = isPortBlocked(stp, ref)
+  const badges = [isTrunk ? t('lab.portTrunkBadge') : '', blocked ? t('lab.portBlockedBadge') : '']
+    .filter((x) => x !== '')
+    .join(', ')
   const label = `${device.hostname} · ${portId} — ${
     peerName === null ? t('lab.portFree') : t('lab.portTo', { target: peerName })
-  }`
+  }${badges === '' ? '' : ` (${badges})`}`
 
   return (
     <button
@@ -91,8 +111,16 @@ function PortDot({ topo, device, portId, at, armed, onPick }: PortDotProps) {
           'block rounded-full border-2 transition-all duration-(--dur)',
           isArmed ? 'h-3.5 w-3.5 border-accent bg-accent' : '',
           isCandidate ? 'h-3.5 w-3.5 border-accent bg-panel' : '',
-          !isArmed && !isCandidate && connected ? 'h-2.5 w-2.5 border-ink-muted bg-ink-muted' : '',
-          !isArmed && !isCandidate && !connected ? 'h-2.5 w-2.5 border-edge bg-panel' : '',
+          // Cổng STP chặn: RỖNG RUỘT viền hổ phách — bóng dáng khác hẳn
+          // cổng thường (Von Restorff). Nó không hỏng, nó đang nằm im.
+          !isArmed && !isCandidate && blocked ? 'h-3.5 w-3.5 border-warn bg-transparent' : '',
+          !isArmed && !isCandidate && !blocked && isTrunk ? 'h-3 w-3 border-accent bg-panel' : '',
+          !isArmed && !isCandidate && !blocked && !isTrunk && connected
+            ? 'h-2.5 w-2.5 border-ink-muted bg-ink-muted'
+            : '',
+          !isArmed && !isCandidate && !blocked && !isTrunk && !connected
+            ? 'h-2.5 w-2.5 border-edge bg-panel'
+            : '',
         ].join(' ')}
       />
     </button>
@@ -247,6 +275,9 @@ export function LabCanvas({
   const t = useT()
   const canvasRef = useRef<HTMLDivElement>(null)
   const { frames, phase, railRef, railD, onHopComplete } = flight
+  // Cây STP suy TỪ SƠ ĐỒ (thuần, rẻ) — không phải state của UI, nên sửa
+  // mạng xong là hình vẽ đúng ngay, không cần ai nhớ đồng bộ.
+  const stp = useMemo(() => computeStp(topology), [topology])
 
   const wires = topology.links.flatMap((link) => {
     const a = pointOfPort(topology, layout, link.a)
@@ -305,6 +336,7 @@ export function LabCanvas({
                   portId={portId}
                   at={at}
                   armed={armedPort}
+                  stp={stp}
                   onPick={onPickPort}
                 />
               )

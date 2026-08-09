@@ -111,6 +111,34 @@ function describePsGoal(goal) {
   return `phải lôi ra được dòng chứa "${goal.mustContain}"`
 }
 
+function describeCliGoal(goal, topo) {
+  const where = () => `cổng ${goal.portId} của ${hostnameOf(topo, goal.deviceId)}`
+  switch (goal.kind) {
+    case 'behavior':
+      return describeGoal(goal.goal)
+    case 'port-mode':
+      return `${where()} phải là ${goal.mode === 'trunk' ? 'trunk' : 'cổng access'}`
+    case 'access-vlan':
+      return `${where()} phải thuộc VLAN ${goal.vlan}`
+    case 'trunk-carries':
+      return `trunk ở ${where()} phải cho VLAN ${goal.vlans.join(', ')} đi qua`
+    case 'trunk-blocks':
+      return `trunk ở ${where()} phải CHẶN VLAN ${goal.vlans.join(', ')}`
+    case 'native-vlan':
+      return `trunk ở ${where()} phải khai native VLAN ${goal.vlan}`
+    case 'port-up':
+      return `${where()} phải đang bật (đã no shutdown)`
+    case 'port-ip':
+      return `${where()} phải mang địa chỉ ${goal.ip}/${goal.prefix}`
+    case 'static-route':
+      return `${hostnameOf(topo, goal.deviceId)} phải có tuyến tĩnh tới ${goal.destination}/${goal.prefix} qua ${goal.nextHop}`
+    case 'vlan-exists':
+      return `${hostnameOf(topo, goal.deviceId)} phải có VLAN ${goal.vlan}`
+    default:
+      return `phải xem "${goal.command}" trên ${hostnameOf(topo, goal.deviceId)}`
+  }
+}
+
 function describeSymptom(symptom, topo) {
   const from = hostnameOf(topo, symptom.from)
   if (symptom.kind === 'ping-fails') return `${from} ping ${symptom.target} PHẢI hỏng`
@@ -181,6 +209,16 @@ export function renderQuestion(q, indent = '', palace = null) {
     lines.push(`${indent}    - **Mục tiêu:**`)
     for (const goal of q.spec.goals) lines.push(`${indent}      - ${describePsGoal(goal)}`)
     lines.push(`${indent}    - **Lệnh mẫu:** ${q.spec.solution.map((s) => `\`${s}\``).join(' rồi ')}`)
+  } else if (q.kind === 'cli') {
+    lines.push(`${indent}  - **Dạng:** console thiết bị (gõ lệnh IOS đạt mục tiêu)`)
+    lines.push(`${indent}    - **Sơ đồ đề bài:** ${describeTopology(q.spec.initial)}`)
+    lines.push(`${indent}    - **Console cắm ở:** ${hostnameOf(q.spec.initial, q.spec.deviceId)}`)
+    lines.push(`${indent}    - **Mục tiêu:**`)
+    for (const goal of q.spec.goals) lines.push(`${indent}      - ${describeCliGoal(goal, q.spec.initial)}`)
+    for (const step of q.spec.solution) {
+      const cmds = step.lines.map((s) => `\`${s}\``).join(' rồi ')
+      lines.push(`${indent}    - **Lệnh mẫu trên ${hostnameOf(q.spec.initial, step.deviceId)}:** ${cmds}`)
+    }
   } else {
     // Kind mới mà quên bổ sung nhánh render → NỔ NGAY, không im lặng bỏ
     // qua. Bản duyệt thiếu phần đáp án còn tệ hơn không có bản duyệt:

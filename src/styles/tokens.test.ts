@@ -78,9 +78,13 @@ const PAIRS: [fg: string, bg: string][] = [
   ['part-a', 'surface'],
   ['part-b', 'surface'],
   ['part-c', 'surface'],
+  ['part-d', 'surface'],
+  ['part-e', 'surface'],
   ['part-a', 'panel'],
   ['part-b', 'panel'],
   ['part-c', 'panel'],
+  ['part-d', 'panel'],
+  ['part-e', 'panel'],
 ]
 
 describe.each([

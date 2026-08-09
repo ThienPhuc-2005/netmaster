@@ -216,6 +216,75 @@ const REGISTRY: Record<string, GlyphFn> = {
       <path d="M18 80 h60" {...stroke} />
     </Glyph>
   ),
+  // Chiếc loa gạch chéo, im bặt — OSPF bậc Down (tòa nhà làm quen).
+  'ospf-silent-speaker': (label) => (
+    <Glyph label={label}>
+      <path d="M22 40 h14 L56 24 v48 L36 56 H22 z" {...stroke} />
+      <path d="M66 34 82 62 M82 34 66 62" {...stroke} strokeWidth={1.5} />
+    </Glyph>
+  ),
+  // Ống nghe quay số gọi riêng từng nhà — OSPF bậc Attempt.
+  'ospf-lone-phone': (label) => (
+    <Glyph label={label}>
+      <path d="M26 22 a8 8 0 0 1 12 0 l6 10 -8 8 a26 26 0 0 0 20 20 l8 -8 10 6 a8 8 0 0 1 0 12 l-6 6 C50 82 24 56 20 34 z" {...stroke} />
+      <circle cx="74" cy="26" r="2.5" fill="currentColor" />
+      <circle cx="84" cy="34" r="2.5" fill="currentColor" />
+    </Glyph>
+  ),
+  // Tấm danh thiếp một tên luồn qua khe cửa — OSPF bậc Init.
+  'ospf-name-card': (label) => (
+    <Glyph label={label}>
+      <rect x="18" y="34" width="60" height="36" rx="4" {...stroke} />
+      <path d="M28 48 h22" {...stroke} strokeWidth={1.5} />
+      <path d="M28 58 h14" {...stroke} strokeWidth={1.5} />
+      <path d="M62 44 v18" {...stroke} strokeWidth={1.5} />
+      <path d="M12 78 h72" {...stroke} strokeWidth={3} />
+    </Glyph>
+  ),
+  // Hai bàn tay bắt nhau — OSPF bậc 2-Way.
+  'ospf-handshake': (label) => (
+    <Glyph label={label}>
+      <path d="M14 52 h18 l12 -8 12 8 h18" {...stroke} />
+      <path d="M32 52 l10 12 a6 6 0 0 0 10 -2 l8 -10" {...stroke} />
+      <path d="M14 42 h12 M70 42 h12" {...stroke} strokeWidth={1.5} />
+      <path d="M14 62 h12 M70 62 h12" {...stroke} strokeWidth={1.5} />
+    </Glyph>
+  ),
+  // Búa chủ tọa gõ xuống bàn — OSPF bậc ExStart.
+  'ospf-gavel': (label) => (
+    <Glyph label={label}>
+      <rect x="40" y="18" width="34" height="16" rx="3" {...stroke} transform="rotate(35 57 26)" />
+      <path d="M44 38 24 62" {...stroke} />
+      <path d="M20 78 h56" {...stroke} strokeWidth={3} />
+      <path d="M34 70 h28" {...stroke} strokeWidth={1.5} />
+    </Glyph>
+  ),
+  // Hai phong bì mục lục bay chéo qua nhau — OSPF bậc Exchange.
+  'ospf-two-envelopes': (label) => (
+    <Glyph label={label}>
+      <rect x="14" y="22" width="42" height="28" rx="3" {...stroke} />
+      <path d="M14 26 35 40 56 26" {...stroke} strokeWidth={1.5} />
+      <rect x="40" y="50" width="42" height="28" rx="3" {...stroke} />
+      <path d="M40 54 61 68 82 54" {...stroke} strokeWidth={1.5} />
+    </Glyph>
+  ),
+  // Phễu rót nốt phần còn thiếu vào kho — OSPF bậc Loading.
+  'ospf-funnel': (label) => (
+    <Glyph label={label}>
+      <path d="M20 20 h56 L54 50 v14 h-12 V50 z" {...stroke} />
+      <path d="M48 68 v10" {...stroke} strokeWidth={1.5} />
+      <path d="M32 84 h32" {...stroke} strokeWidth={3} />
+    </Glyph>
+  ),
+  // Hai tấm bản đồ chồng khít lên nhau — OSPF bậc Full.
+  'ospf-twin-maps': (label) => (
+    <Glyph label={label}>
+      <rect x="16" y="20" width="46" height="42" rx="3" {...stroke} />
+      <rect x="34" y="34" width="46" height="42" rx="3" {...stroke} />
+      <path d="M42 58 h30 M42 68 h20" {...stroke} strokeWidth={1.5} />
+      <path d="M44 46 l6 6 12 -14" {...stroke} strokeWidth={2} />
+    </Glyph>
+  ),
 }
 
 export function hasRoomGlyph(imageId: string): boolean {

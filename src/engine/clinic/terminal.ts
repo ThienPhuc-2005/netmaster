@@ -378,8 +378,14 @@ function cmdPing(patient: ClinicPatient, state: TerminalState, target: string): 
   // gói không rời nổi máy — Windows thật báo transmit failed ngay, khác
   // hẳn "Destination host unreachable" khi dây MÁY ĐÍCH rơi (ARP không
   // ai đáp). Phân biệt được hai ca đó chính là bài học của phòng khám.
+  // 'port-shutdown' đứng cùng nhóm: cổng switch phía mình bị tắt thì card
+  // mạng của máy cũng mất tín hiệu, Windows báo y hệt lúc rớt dây.
   const transmitFailed =
-    failure === 'src-no-ip' || failure === 'src-no-link' || failure === 'no-gateway' || failure === 'gateway-off-subnet'
+    failure === 'src-no-ip' ||
+    failure === 'src-no-link' ||
+    failure === 'port-shutdown' ||
+    failure === 'no-gateway' ||
+    failure === 'gateway-off-subnet'
   const unreachableVia = failure === 'no-route' && seatGateway(patient) !== null
   const unreachable = failure === 'arp-unresolved' || unreachableVia
   const body = transmitFailed

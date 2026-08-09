@@ -14,10 +14,14 @@
 // Technical contract: thuần và tất định — không đồng hồ, không random.
 
 import {
+  adGroups,
+  findAdGroup,
   findAdUser,
   findTarget,
   initialPsState,
   isIpv4,
+  isMemberOfGroup,
+  type AdGroup,
   type AdUser,
   type PsRunState,
   type PsWorld,
@@ -31,7 +35,7 @@ export type PsOutcome =
   | { kind: 'help' }
   | { kind: 'unknown'; input: string }
   | { kind: 'error'; message: string }
-  | { kind: 'ok'; command: string; createdUsers?: number; matches?: number }
+  | { kind: 'ok'; command: string; createdUsers?: number; matches?: number; addedMembers?: number }
 
 export interface PsResult {
   outcome: PsOutcome
@@ -40,13 +44,16 @@ export interface PsResult {
   state: PsRunState
 }
 
-/** 8 cmdlet của phạm vi đóng băng — UI dùng cho help và gợi ý gõ. */
+/** 11 cmdlet của phạm vi đóng băng (mốc 2) — UI dùng cho help và gợi ý gõ. */
 export const PS_COMMANDS = [
   'Get-Help',
   'Get-NetIPAddress',
   'Test-NetConnection',
   'Get-ADUser',
   'New-ADUser',
+  'Get-ADGroup',
+  'Get-ADGroupMember',
+  'Add-ADGroupMember',
   'Import-Csv',
   'Get-Content',
   'Select-String',
@@ -64,6 +71,9 @@ const SYNTAX: Record<string, string[]> = {
     'New-ADUser [-Name] <String> -SamAccountName <String> [-Path <String>] [-Enabled <Boolean>]',
     '<rows> | New-ADUser        (columns: Name, SamAccountName, Path)',
   ],
+  'get-adgroup': ['Get-ADGroup [-Identity] <String>', 'Get-ADGroup -Filter *'],
+  'get-adgroupmember': ['Get-ADGroupMember [-Identity] <String>'],
+  'add-adgroupmember': ['Add-ADGroupMember [-Identity] <String> -Members <String[]>'],
   'import-csv': ['Import-Csv [-Path] <String>'],
   'get-content': ['Get-Content [-Path] <String>'],
   'select-string': ['Select-String [-Pattern] <String> [-Path <String>]'],
@@ -319,6 +329,144 @@ function runNewAdUser(state: PsRunState, stage: ParsedStage, piped: PsValue[] | 
   return { values: [], lines: [], outcome: { kind: 'ok', command: 'New-ADUser', createdUsers: 1 }, world, flags: state.flags }
 }
 
+// ---------------------------------------------------------------
+// Nhóm AD — ba cmdlet của AGDLP (M19, spec v2 mục 4.5)
+// ---------------------------------------------------------------
+
+function domainDn(world: PsWorld): string {
+  return world.ad!.domain.split('.').map((p) => `DC=${p}`).join(',')
+}
+
+function formatAdGroup(world: PsWorld, group: AdGroup): string[] {
+  // Nhóm nằm ở CN=Users như chỗ AD thật sinh nhóm mặc định — mô hình
+  // không xếp nhóm vào OU (đơn giản hóa cố ý, đủ cho bài AGDLP).
+  return [
+    `Name              : ${group.name}`,
+    `GroupScope        : ${group.scope}`,
+    `GroupCategory     : Security`,
+    `DistinguishedName : CN=${group.name},CN=Users,${domainDn(world)}`,
+  ]
+}
+
+function runGetAdGroup(state: PsRunState, stage: ParsedStage): StageOutput {
+  const world = state.world
+  if (world.ad === null) err('Get-ADGroup : Unable to contact the server. This computer is not joined to a domain.')
+
+  const identity = stage.named['identity'] ?? stage.positional[0]
+  const filter = stage.named['filter']
+
+  if (identity !== undefined && identity !== '') {
+    const group = findAdGroup(world, identity)
+    if (group === null) err(`Get-ADGroup : Cannot find an object with identity: '${identity}'.`)
+    return { values: [], lines: formatAdGroup(world, group!), outcome: { kind: 'ok', command: 'Get-ADGroup' }, world, flags: state.flags }
+  }
+
+  if (filter === undefined) {
+    err(`Get-ADGroup : Parameter set cannot be resolved. Use -Identity <name> or -Filter *.`)
+  }
+  if (filter !== '*') {
+    err(`Get-ADGroup : Only '-Filter *' is supported on this machine.`)
+  }
+  const groups = adGroups(world)
+  const lines = groups.flatMap((g, i) => (i === 0 ? formatAdGroup(world, g) : ['', ...formatAdGroup(world, g)]))
+  return { values: [], lines, outcome: { kind: 'ok', command: 'Get-ADGroup' }, world, flags: state.flags }
+}
+
+function runGetAdGroupMember(state: PsRunState, stage: ParsedStage): StageOutput {
+  const world = state.world
+  if (world.ad === null) err('Get-ADGroupMember : Unable to contact the server. This computer is not joined to a domain.')
+
+  const identity = stage.named['identity'] ?? stage.positional[0]
+  if (identity === undefined || identity === '') {
+    err('Get-ADGroupMember : Missing an argument for parameter -Identity.')
+  }
+  const group = findAdGroup(world, identity!)
+  if (group === null) err(`Get-ADGroupMember : Cannot find an object with identity: '${identity}'.`)
+
+  // Chỉ liệt kê thành viên TRỰC TIẾP — đúng cmdlet thật (không -Recursive
+  // trong phạm vi đóng băng). Cột ObjectClass là mấu chốt sư phạm: nhìn
+  // vào là biết nhóm đang chứa NGƯỜI hay chứa NHÓM — chính là hình dạng
+  // của chữ G→DL trong AGDLP.
+  const blocks = group!.members.map((member) => {
+    const memberGroup = findAdGroup(world, member)
+    if (memberGroup !== null) {
+      return [
+        `Name           : ${memberGroup.name}`,
+        `SamAccountName : ${memberGroup.name}`,
+        `ObjectClass    : group`,
+      ]
+    }
+    const user = findAdUser(world, member)!
+    return [
+      `Name           : ${user.name}`,
+      `SamAccountName : ${user.sam}`,
+      `ObjectClass    : user`,
+    ]
+  })
+  const lines = blocks.flatMap((b, i) => (i === 0 ? b : ['', ...b]))
+  return { values: [], lines, outcome: { kind: 'ok', command: 'Get-ADGroupMember' }, world, flags: state.flags }
+}
+
+function runAddAdGroupMember(state: PsRunState, stage: ParsedStage): StageOutput {
+  const world = state.world
+  if (world.ad === null) err('Add-ADGroupMember : Unable to contact the server. This computer is not joined to a domain.')
+
+  const identity = stage.named['identity'] ?? stage.positional[0]
+  if (identity === undefined || identity === '') {
+    err('Add-ADGroupMember : Missing an argument for parameter -Identity.')
+  }
+  const membersText = stage.named['members']
+  if (membersText === undefined || membersText === '') {
+    err('Add-ADGroupMember : Missing an argument for parameter -Members.')
+  }
+  const group = findAdGroup(world, identity!)
+  if (group === null) err(`Add-ADGroupMember : Cannot find an object with identity: '${identity}'.`)
+
+  // -Members nhận danh sách cách nhau dấu phẩy như PowerShell thật.
+  const requested = membersText!.split(',').map((m) => m.trim()).filter((m) => m !== '')
+  if (requested.length === 0) err('Add-ADGroupMember : Missing an argument for parameter -Members.')
+
+  let members = [...group!.members]
+  let added = 0
+  for (const member of requested) {
+    const memberGroup = findAdGroup(world, member)
+    const memberUser = findAdUser(world, member)
+    if (memberGroup === null && memberUser === null) {
+      err(`Add-ADGroupMember : Cannot find an object with identity: '${member}'.`)
+    }
+    if (memberGroup !== null) {
+      // Hai luật thật của AD, giữ nguyên vì chúng CHÍNH LÀ bài học AGDLP:
+      // Global không chứa được DomainLocal (chiều đúng là DL chứa G), và
+      // không được tạo vòng thành viên.
+      if (group!.scope === 'Global' && memberGroup.scope === 'DomainLocal') {
+        err('Add-ADGroupMember : A global group cannot have a domain local group as a member.')
+      }
+      if (
+        memberGroup.name.toLowerCase() === group!.name.toLowerCase() ||
+        isMemberOfGroup(world, memberGroup.name, group!.name)
+      ) {
+        err('Add-ADGroupMember : The operation would create a circular group membership.')
+      }
+    }
+    // Đã là thành viên thì thôi — cmdlet thật cũng lặng lẽ cho qua.
+    const canonical = memberGroup?.name ?? memberUser!.sam
+    if (!members.some((m) => m.toLowerCase() === canonical.toLowerCase())) {
+      members = [...members, canonical]
+      added++
+    }
+  }
+
+  const nextWorld: PsWorld = {
+    ...world,
+    ad: {
+      ...world.ad!,
+      groups: adGroups(world).map((g) => (g.name === group!.name ? { ...g, members } : g)),
+    },
+  }
+  // Im lặng như mọi lệnh GHI của AD — muốn thấy thì Get-ADGroupMember lại.
+  return { values: [], lines: [], outcome: { kind: 'ok', command: 'Add-ADGroupMember', addedMembers: added }, world: nextWorld, flags: state.flags }
+}
+
 function readFileLines(world: PsWorld, path: string, cmdlet: string): string[] {
   const key = Object.keys(world.files).find((f) => f.toLowerCase() === path.toLowerCase())
   if (key === undefined) err(`${cmdlet} : Cannot find path '${path}' because it does not exist.`)
@@ -428,6 +576,12 @@ function runStage(state: PsRunState, stage: ParsedStage, piped: PsValue[] | null
       return runGetAdUser(state, stage)
     case 'new-aduser':
       return runNewAdUser(state, stage, piped)
+    case 'get-adgroup':
+      return runGetAdGroup(state, stage)
+    case 'get-adgroupmember':
+      return runGetAdGroupMember(state, stage)
+    case 'add-adgroupmember':
+      return runAddAdGroupMember(state, stage)
     case 'import-csv':
       return runImportCsv(state, stage)
     case 'get-content':

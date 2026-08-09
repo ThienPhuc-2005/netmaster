@@ -58,8 +58,11 @@ describe('bản đồ khóa học (advance organizer)', () => {
     expect(filled).toHaveLength(loadModules().length)
   })
 
-  it('luôn vẽ đủ lưới 12 module của lộ trình (spec mục 3)', () => {
+  it('luôn vẽ đủ lưới 21 module của lộ trình (spec v1 mục 3 + spec v2)', () => {
+    // Lưới là LỘ TRÌNH, không phải danh sách đã viết xong: 12 module nhập
+    // môn (A-C) cộng 9 module trung cấp (D-E). Ô chưa có nội dung để rỗng
+    // — bản đồ nói thật cả về phần còn dang dở.
     const { container } = render(<ConceptVisual visualId="vis-ban-do-khoa-hoc" title="Bản đồ" />)
-    expect(container.querySelectorAll('rect')).toHaveLength(12)
+    expect(container.querySelectorAll('rect')).toHaveLength(21)
   })
 })

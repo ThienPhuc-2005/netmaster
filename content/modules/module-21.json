@@ -1,0 +1,1679 @@
+{
+  "id": "module-21",
+  "order": 21,
+  "part": "E",
+  "title": { "vi": "Capstone — Dựng mạng chi nhánh" },
+  "stages": [
+    { "id": "m21-chang-1", "title": { "vi": "Chặng 1: Cắt đất trên giấy" }, "lessonIds": ["m21-bai-1"] },
+    { "id": "m21-chang-2", "title": { "vi": "Chặng 2: Nối dây, dạy đường" }, "lessonIds": ["m21-bai-2"] },
+    { "id": "m21-chang-3", "title": { "vi": "Chặng 3: Luật chặn đúng người" }, "lessonIds": ["m21-bai-3"] },
+    { "id": "m21-chang-4", "title": { "vi": "Tổng duyệt trước bàn giao" }, "lessonIds": ["m21-bai-4"] }
+  ],
+
+  "lessons": [
+    {
+      "id": "m21-bai-1",
+      "missionTitle": { "vi": "Cắt dải địa chỉ cho chi nhánh mới" },
+      "steps": [
+        {
+          "type": "hook",
+          "question": {
+            "vi": "Sáng nay công ty ký hợp đồng thuê tầng bảy một tòa nhà ở thành phố khác. Trên bàn bạn: một thùng thiết bị còn nguyên hộp, một dải địa chỉ được cấp — 10.40.0.0/24 — và một tờ yêu cầu ba dòng: phòng kinh doanh 60 máy, phòng kỹ thuật 25 máy, phòng khách 10 máy, cộng một đường nối về trụ sở. Không ai đưa thêm chỉ dẫn nào. Người có nghề bắt đầu từ đâu — và vì sao KHÔNG phải từ cái thùng thiết bị?"
+          },
+          "visualId": "vis-hook-thung-thiet-bi"
+        },
+        {
+          "type": "pretest",
+          "questions": [
+            {
+              "kind": "mcq",
+              "id": "m21-b1-pre-1",
+              "prompt": {
+                "vi": "Đoán thử: dựng một mạng mới từ con số không, việc ĐẦU TIÊN của người có nghề là gì?"
+              },
+              "choices": [
+                { "vi": "Đặt địa chỉ trên giấy — cắt dải cho từng phòng trước khi chạm vào thiết bị" },
+                { "vi": "Nối dây toàn bộ thiết bị trước để nhìn thấy mạng chạy rồi tính tiếp" },
+                { "vi": "Cấu hình từng thiết bị ngay khi mở hộp cho khỏi quên các bước lệnh" }
+              ],
+              "answerIndex": 0,
+              "hintTopic": { "vi": "thứ rẻ nhất để sửa là thứ nằm trên giấy" },
+              "explain": {
+                "vi": "Đặt địa chỉ trên giấy trước. Bản cắt dải sai mà phát hiện khi còn trên giấy thì sửa mất một phút; phát hiện sau khi đã cấu hình ba chục thiết bị thì đập đi làm lại cả buổi. Quy trình của nghề: đặt địa chỉ → nối dây → cấu hình → kiểm chứng — và bước một không cần cắm điện."
+              }
+            }
+          ],
+          "encouragement": {
+            "vi": "Bốn module Phần D đã gieo sẵn phản xạ này — capstone chỉ là nơi nó thành quy trình có tên."
+          }
+        },
+        {
+          "type": "teach",
+          "screens": [
+            {
+              "conceptId": "m21-quy-trinh",
+              "visualId": "vis-quy-trinh-4-buoc",
+              "body": {
+                "vi": "Mọi mạng trong khóa này bạn đều nhận SẴN — capstone là lần đầu bạn dựng từ số không, nên nó cần một quy trình: ĐẶT ĐỊA CHỈ (cắt dải trên giấy — VLSM của Module 13), NỐI DÂY (sơ đồ vật lý), CẤU HÌNH (trunk, định tuyến, luật — bằng CLI), KIỂM CHỨNG (mỗi bước xong phải có bằng chứng bằng lệnh). Thứ tự này không phải nghi thức: mỗi bước đứng trên kết quả của bước trước, và lỗi ở bước nào thì rẻ nhất là bắt được ngay tại bước đó. Cả module này là một công trường: ba chặng nộp riêng, chặng sau xây trên chặng trước — nản ở chặng nào cũng không mất công chặng đã qua."
+              },
+              "deepDive": {
+                "vi": "Vì sao địa chỉ đứng trước cả nối dây? Vì bản cắt dải là thứ MỌI bước sau tra cứu: cổng router lấy địa chỉ nào, câu network của OSPF khai dải nào, luật ACL chặn subnet nào — tất cả chép từ tờ giấy đó. Tờ giấy sai thì mọi thứ xây trên nó sai theo, mà tờ giấy thì sửa bằng cục tẩy. Nghề gọi đây là nguyên tắc lỗi-rẻ: đẩy mọi quyết định dễ sai về nơi sửa nó rẻ nhất."
+              }
+            }
+          ]
+        },
+        {
+          "type": "practice",
+          "fadingLevel": 0,
+          "workedExample": {
+            "vi": "Cắt mẫu dải 10.40.0.0/24 cho tờ yêu cầu, từng bước như Module 13 đã dạy. Bước 1 — xếp phòng theo cỡ GIẢM DẦN: kinh doanh 60, kỹ thuật 25, khách 10, liên site 2. Bước 2 — chọn cỡ khối nhỏ nhất đủ dùng cho từng phòng: 60 máy cần /26 (62 chỗ), 25 máy cần /27 (30 chỗ), 10 máy cần /28 (14 chỗ), liên site 2 địa chỉ cần /30. Bước 3 — cắt lớn trước từ đầu dải: kinh doanh lấy 10.40.0.0/26 (hết .63), kỹ thuật lấy 10.40.0.64/27 (hết .95), khách lấy 10.40.0.96/28 (hết .111), liên site lấy 10.40.0.112/30. Bước 4 — kiểm lại ba tiêu chí: không chồng lấn, đủ chỗ từng phòng, không phí đất. Bước 5 — ghi luôn địa chỉ cổng router của từng phòng (theo lệ: địa chỉ đầu dải): 10.40.0.1, 10.40.0.65, 10.40.0.97 — tờ giấy này là kim chỉ nam của cả ba chặng."
+          },
+          "exercises": [
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m21-b1-prac-1",
+                "prompt": {
+                  "vi": "Theo bản cắt trong ví dụ: phòng kỹ thuật 25 máy nhận dải nào? (viết dạng địa-chỉ/prefix)"
+                },
+                "accept": ["10.40.0.64/27", "10.40.0.64 /27", "10.40.0.64/ 27"],
+                "hintTopic": { "vi": "khối /27 nằm ngay sau khối /26 của kinh doanh" }
+              },
+              "hint": {
+                "vi": "Kinh doanh chiếm 10.40.0.0/26, tức tới hết .63. Khối kế tiếp bắt đầu ở đâu, và 25 máy cần cỡ nào?"
+              },
+              "solution": {
+                "vi": "10.40.0.64/27 — bắt đầu ngay sau khối /26 (hết .63), cỡ /27 cho 30 chỗ là cỡ nhỏ nhất đủ 25 máy. Cắt lớn trước, khối sau nối đuôi khối trước là không bao giờ chồng lấn."
+              }
+            },
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m21-b1-prac-2",
+                "prompt": {
+                  "vi": "Đường liên site về trụ sở chỉ cần hai địa chỉ. Dải nhỏ nhất đủ dùng, cắt tiếp theo bản trong ví dụ, là gì?"
+                },
+                "accept": ["10.40.0.112/30", "10.40.0.112 /30", "10.40.0.112/ 30"],
+                "hintTopic": { "vi": "khối /30 có đúng 2 địa chỉ dùng được" }
+              },
+              "hint": {
+                "vi": "Khách chiếm 10.40.0.96/28 (hết .111). Hai địa chỉ dùng được là cỡ /30 — bắt đầu từ đâu?"
+              },
+              "solution": {
+                "vi": "10.40.0.112/30 — hai địa chỉ dùng được (.113 và .114), vừa khít cho hai đầu WAN. Cắt /24 to hơn cho một sợi dây nối hai router là kiểu phí đất mà drill VLSM đã dạy bạn tránh."
+              }
+            },
+            {
+              "question": {
+                "kind": "lab",
+                "id": "m21-b1-prac-lab",
+                "prompt": {
+                  "vi": "CHẶNG 1 — nộp riêng: đặt bản cắt lên sơ đồ thật. Router chi nhánh đã mang sẵn địa chỉ cổng theo tờ giấy (.1 /26, .65 /27, .97 /28). Ba máy đại diện ba phòng còn TRẮNG TRƠN: cấp địa chỉ và gateway cho từng máy đúng dải phòng nó, sao cho ba phòng gọi được nhau qua router."
+                },
+                "spec": {
+                  "initial": {
+                    "devices": [
+                      {
+                        "kind": "pc",
+                        "id": "pc-kd",
+                        "hostname": "PC-KinhDoanh",
+                        "port": { "id": "eth0", "mac": "AA:BB:CC:21:00:01" },
+                        "ipConfig": null,
+                        "gateway": null
+                      },
+                      {
+                        "kind": "pc",
+                        "id": "pc-kt",
+                        "hostname": "PC-KyThuat",
+                        "port": { "id": "eth0", "mac": "AA:BB:CC:21:00:02" },
+                        "ipConfig": null,
+                        "gateway": null
+                      },
+                      {
+                        "kind": "pc",
+                        "id": "pc-kh",
+                        "hostname": "PC-PhongKhach",
+                        "port": { "id": "eth0", "mac": "AA:BB:CC:21:00:03" },
+                        "ipConfig": null,
+                        "gateway": null
+                      },
+                      {
+                        "kind": "switch",
+                        "id": "sw-kd",
+                        "hostname": "SW-KinhDoanh",
+                        "ports": [
+                          { "id": "p1", "vlan": 1 },
+                          { "id": "p2", "vlan": 1 }
+                        ]
+                      },
+                      {
+                        "kind": "switch",
+                        "id": "sw-kt",
+                        "hostname": "SW-KyThuat",
+                        "ports": [
+                          { "id": "p1", "vlan": 1 },
+                          { "id": "p2", "vlan": 1 }
+                        ]
+                      },
+                      {
+                        "kind": "switch",
+                        "id": "sw-kh",
+                        "hostname": "SW-PhongKhach",
+                        "ports": [
+                          { "id": "p1", "vlan": 1 },
+                          { "id": "p2", "vlan": 1 }
+                        ]
+                      },
+                      {
+                        "kind": "router",
+                        "id": "r-cn",
+                        "hostname": "R-ChiNhanh",
+                        "ports": [
+                          { "id": "g0", "mac": "AA:BB:CC:21:00:11", "ipConfig": { "ip": "10.40.0.1", "prefix": 26 } },
+                          { "id": "g1", "mac": "AA:BB:CC:21:00:12", "ipConfig": { "ip": "10.40.0.65", "prefix": 27 } },
+                          { "id": "g2", "mac": "AA:BB:CC:21:00:13", "ipConfig": { "ip": "10.40.0.97", "prefix": 28 } }
+                        ],
+                        "staticRoutes": []
+                      }
+                    ],
+                    "links": [
+                      { "id": "w1", "a": { "deviceId": "pc-kd", "portId": "eth0" }, "b": { "deviceId": "sw-kd", "portId": "p1" } },
+                      { "id": "w2", "a": { "deviceId": "sw-kd", "portId": "p2" }, "b": { "deviceId": "r-cn", "portId": "g0" } },
+                      { "id": "w3", "a": { "deviceId": "pc-kt", "portId": "eth0" }, "b": { "deviceId": "sw-kt", "portId": "p1" } },
+                      { "id": "w4", "a": { "deviceId": "sw-kt", "portId": "p2" }, "b": { "deviceId": "r-cn", "portId": "g1" } },
+                      { "id": "w5", "a": { "deviceId": "pc-kh", "portId": "eth0" }, "b": { "deviceId": "sw-kh", "portId": "p1" } },
+                      { "id": "w6", "a": { "deviceId": "sw-kh", "portId": "p2" }, "b": { "deviceId": "r-cn", "portId": "g2" } }
+                    ]
+                  },
+                  "goals": [
+                    { "kind": "ping", "from": "pc-kd", "to": "pc-kt", "expect": "reach" },
+                    { "kind": "ping", "from": "pc-kt", "to": "pc-kh", "expect": "reach" },
+                    { "kind": "ping", "from": "pc-kd", "to": "pc-kh", "expect": "reach" }
+                  ],
+                  "allow": {
+                    "addDevices": [],
+                    "removeDevices": false,
+                    "addLinks": false,
+                    "removeLinks": false,
+                    "setVlan": false,
+                    "setIp": true,
+                    "setRoutes": false,
+                    "maxDevices": 8
+                  },
+                  "solution": {
+                    "devices": [
+                      {
+                        "kind": "pc",
+                        "id": "pc-kd",
+                        "hostname": "PC-KinhDoanh",
+                        "port": { "id": "eth0", "mac": "AA:BB:CC:21:00:01" },
+                        "ipConfig": { "ip": "10.40.0.2", "prefix": 26 },
+                        "gateway": "10.40.0.1"
+                      },
+                      {
+                        "kind": "pc",
+                        "id": "pc-kt",
+                        "hostname": "PC-KyThuat",
+                        "port": { "id": "eth0", "mac": "AA:BB:CC:21:00:02" },
+                        "ipConfig": { "ip": "10.40.0.66", "prefix": 27 },
+                        "gateway": "10.40.0.65"
+                      },
+                      {
+                        "kind": "pc",
+                        "id": "pc-kh",
+                        "hostname": "PC-PhongKhach",
+                        "port": { "id": "eth0", "mac": "AA:BB:CC:21:00:03" },
+                        "ipConfig": { "ip": "10.40.0.98", "prefix": 28 },
+                        "gateway": "10.40.0.97"
+                      },
+                      {
+                        "kind": "switch",
+                        "id": "sw-kd",
+                        "hostname": "SW-KinhDoanh",
+                        "ports": [
+                          { "id": "p1", "vlan": 1 },
+                          { "id": "p2", "vlan": 1 }
+                        ]
+                      },
+                      {
+                        "kind": "switch",
+                        "id": "sw-kt",
+                        "hostname": "SW-KyThuat",
+                        "ports": [
+                          { "id": "p1", "vlan": 1 },
+                          { "id": "p2", "vlan": 1 }
+                        ]
+                      },
+                      {
+                        "kind": "switch",
+                        "id": "sw-kh",
+                        "hostname": "SW-PhongKhach",
+                        "ports": [
+                          { "id": "p1", "vlan": 1 },
+                          { "id": "p2", "vlan": 1 }
+                        ]
+                      },
+                      {
+                        "kind": "router",
+                        "id": "r-cn",
+                        "hostname": "R-ChiNhanh",
+                        "ports": [
+                          { "id": "g0", "mac": "AA:BB:CC:21:00:11", "ipConfig": { "ip": "10.40.0.1", "prefix": 26 } },
+                          { "id": "g1", "mac": "AA:BB:CC:21:00:12", "ipConfig": { "ip": "10.40.0.65", "prefix": 27 } },
+                          { "id": "g2", "mac": "AA:BB:CC:21:00:13", "ipConfig": { "ip": "10.40.0.97", "prefix": 28 } }
+                        ],
+                        "staticRoutes": []
+                      }
+                    ],
+                    "links": [
+                      { "id": "w1", "a": { "deviceId": "pc-kd", "portId": "eth0" }, "b": { "deviceId": "sw-kd", "portId": "p1" } },
+                      { "id": "w2", "a": { "deviceId": "sw-kd", "portId": "p2" }, "b": { "deviceId": "r-cn", "portId": "g0" } },
+                      { "id": "w3", "a": { "deviceId": "pc-kt", "portId": "eth0" }, "b": { "deviceId": "sw-kt", "portId": "p1" } },
+                      { "id": "w4", "a": { "deviceId": "sw-kt", "portId": "p2" }, "b": { "deviceId": "r-cn", "portId": "g1" } },
+                      { "id": "w5", "a": { "deviceId": "pc-kh", "portId": "eth0" }, "b": { "deviceId": "sw-kh", "portId": "p1" } },
+                      { "id": "w6", "a": { "deviceId": "sw-kh", "portId": "p2" }, "b": { "deviceId": "r-cn", "portId": "g2" } }
+                    ]
+                  }
+                },
+                "hintTopic": { "vi": "mỗi máy cùng dải với cổng router phòng nó, gateway là chính cổng đó" }
+              },
+              "hint": {
+                "vi": "Kinh doanh: địa chỉ trong 10.40.0.2-.62 với prefix 26, gateway 10.40.0.1. Làm tương tự cho kỹ thuật (/27, gateway .65) và khách (/28, gateway .97) — nhớ prefix của TỪNG phòng khác nhau."
+              },
+              "solution": {
+                "vi": "Ví dụ đạt: PC kinh doanh 10.40.0.2/26 gateway 10.40.0.1; PC kỹ thuật 10.40.0.66/27 gateway 10.40.0.65; PC khách 10.40.0.98/28 gateway 10.40.0.97. Địa chỉ nào cùng dải với cổng router phòng đó đều được — sai prefix hoặc sai gateway là ping xuyên phòng đứt ngay, và nhật ký chặng sẽ chỉ chỗ đứt."
+              }
+            }
+          ]
+        },
+        {
+          "type": "retrieval",
+          "questions": [
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m21-b1-ret-1",
+                "prompt": {
+                  "vi": "Không nhìn lại bài: bốn bước của quy trình dựng mạng, theo đúng thứ tự? (viết cách nhau bằng dấu phẩy hoặc mũi tên)"
+                },
+                "accept": [
+                  "đặt địa chỉ, nối dây, cấu hình, kiểm chứng",
+                  "dat dia chi, noi day, cau hinh, kiem chung",
+                  "đặt địa chỉ nối dây cấu hình kiểm chứng",
+                  "dat dia chi noi day cau hinh kiem chung",
+                  "địa chỉ, nối dây, cấu hình, kiểm chứng",
+                  "dia chi, noi day, cau hinh, kiem chung"
+                ],
+                "hintTopic": { "vi": "bắt đầu từ tờ giấy, kết thúc bằng bằng chứng" }
+              },
+              "hint": { "vi": "Giấy trước, dây sau, lệnh tiếp, và không bao giờ tin mà không kiểm." },
+              "solution": {
+                "vi": "Đặt địa chỉ → nối dây → cấu hình → kiểm chứng. Mỗi bước đứng trên bước trước, và lỗi bắt sớm ở đâu thì rẻ ở đó — tờ giấy sửa bằng tẩy, mạng chạy rồi sửa bằng cả buổi."
+              }
+            }
+          ],
+          "selfExplain": {
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: vì sao VLSM phải cắt khối LỚN trước, khối nhỏ sau?"
+            },
+            "keywords": [
+              ["lớn trước", "lon truoc", "giảm dần", "giam dan", "to trước", "to truoc"],
+              ["chồng lấn", "chong lan", "đè lên", "de len", "trùng", "trung "],
+              ["căn khối", "can khoi", "ranh giới", "ranh gioi", "biên", "bien ", "lỗ hổng", "lo hong", "kẽ hở", "ke ho"],
+              ["nối đuôi", "noi duoi", "liền mạch", "lien mach", "khít", "khit"]
+            ],
+            "exampleAnswer": {
+              "vi": "Vì khối to chỉ đứng được ở những ranh giới thưa — cắt khối nhỏ trước là lấp mất các ranh giới đó, đến lượt khối to không còn chỗ đặt vừa và sinh kẽ hở phí đất. Cắt to trước, nhỏ sau thì khối sau cứ nối đuôi khối trước: không chồng lấn, không kẽ hở, và tờ giấy tự khít."
+            }
+          }
+        },
+        {
+          "type": "summary",
+          "bullets": [
+            { "vi": "Quy trình bốn bước: đặt địa chỉ → nối dây → cấu hình → kiểm chứng — lỗi bắt sớm là lỗi rẻ." },
+            { "vi": "Bản cắt VLSM là kim chỉ nam mọi bước sau: địa chỉ cổng, câu network OSPF, luật ACL đều chép từ nó." },
+            { "vi": "Chặng 1 nộp xong: ba phòng ba dải đúng cỡ, gọi nhau thông qua router — nền của hai chặng còn lại." }
+          ],
+          "nextTeaser": {
+            "vi": "Địa chỉ đã nằm đúng chỗ. Nhưng chi nhánh vẫn là ốc đảo: hai switch chưa chở nổi hai xóm qua một sợi dây, và router chi nhánh chưa từng chào hỏi router trụ sở. Chặng 2: nối dây và để hai bên tự dạy nhau đường."
+          }
+        }
+      ]
+    },
+    {
+      "id": "m21-bai-2",
+      "missionTitle": { "vi": "Nối chi nhánh về trụ sở bằng trunk và OSPF" },
+      "steps": [
+        {
+          "type": "hook",
+          "question": {
+            "vi": "Đội thi công vừa rút đi: hai switch chi nhánh đã nối nhau một sợi dây, đường WAN về trụ sở đã sáng đèn. Nhưng máy kinh doanh gọi máy chủ kế toán ở trụ sở thì lặng thinh — khung tin của xóm 10 chết ngay trên sợi dây giữa hai switch, còn router chi nhánh thì chưa hề biết trụ sở có những mạng nào. Hai việc, hai tầng, một chặng: bạn còn nhớ dụng cụ của Module 14 và 16 chứ?"
+          },
+          "visualId": "vis-hook-oc-dao"
+        },
+        {
+          "type": "pretest",
+          "questions": [
+            {
+              "kind": "mcq",
+              "id": "m21-b2-pre-1",
+              "prompt": {
+                "vi": "Một sợi dây giữa hai switch phải chở khung tin của CẢ VLAN 10 lẫn VLAN 20. Hai đầu dây đó phải là gì?"
+              },
+              "choices": [
+                { "vi": "Cổng trunk cả hai đầu, allowed list cho cả hai VLAN đi qua" },
+                { "vi": "Cổng access VLAN 10 một đầu và cổng access VLAN 20 đầu kia" },
+                { "vi": "Không cần gì đặc biệt — switch tự nhận ra khung của nhiều VLAN" }
+              ],
+              "answerIndex": 0,
+              "hintTopic": { "vi": "một dây chở nhiều xóm là bài mở màn Phần D" },
+              "explain": {
+                "vi": "Trunk cả hai đầu + allowed list đủ hai VLAN — bài học mở màn Module 14. Access hai đầu lệch VLAN là khung lạc xóm trong im lặng; còn switch không tự đàm phán gì trong mô hình này (không DTP — đơn giản hóa đã khai)."
+              }
+            }
+          ],
+          "encouragement": {
+            "vi": "Nhớ được là tốt — lát nữa bạn phải TỰ TAY gõ nó trên hai switch thật, không nhìn lại Module 14."
+          }
+        },
+        {
+          "type": "teach",
+          "screens": [
+            {
+              "conceptId": "m21-kiem-chung",
+              "visualId": "vis-kiem-chung-tung-buoc",
+              "body": {
+                "vi": "Chặng này làm hai việc ở hai tầng — trunk ở tầng 2, OSPF ở tầng 3 — và luật vàng của công trường là KIỂM CHỨNG TỪNG TẦNG XONG MỚI LEO TIẾP. Dựng trunk xong: show interfaces trunk phải thấy đúng vai, đúng allowed list. Bật OSPF xong: show ip ospf neighbor phải thấy chữ FULL — hai router đã đồng bộ trọn bản đồ. Rồi mới tới bằng chứng cuối: ping xuyên site. Người mới hay gõ một mạch rồi ping phát ăn ngay; đến lúc ping câm thì không biết nó chết ở tầng nào. Người có nghề leo thang từng bậc, mỗi bậc một tấm bằng chứng — vì thế lúc có chuyện, họ biết ngay bậc nào gãy."
+              },
+              "deepDive": {
+                "vi": "Chuỗi kiểm chứng của chặng này đọc như một bài thơ ba câu: show interfaces trunk (tầng 2 sống chưa) → show ip ospf neighbor ra Full (tầng 3 quen nhau chưa) → ping xuyên site (đường đi trọn vẹn chưa). Ba lệnh, ba tầng, đúng thứ tự thấp lên cao — chính là cái thang khám bệnh của phòng khám Module 11, giờ chạy chiều xuôi để XÂY thay vì chiều ngược để SỬA."
+              }
+            }
+          ]
+        },
+        {
+          "type": "practice",
+          "fadingLevel": 1,
+          "exercises": [
+            {
+              "question": {
+                "kind": "cli",
+                "id": "m21-b2-prac-cli",
+                "prompt": {
+                  "vi": "CHẶNG 2 — nộp riêng. Hiện trạng: sợi dây giữa SW-1 và SW-2 còn là access mặc định nên VLAN 10 (kinh doanh) và VLAN 20 (khách) không qua nổi; R-ChiNhanh chưa bật OSPF nên chưa biết đường về trụ sở (trụ sở ĐÃ bật sẵn). Việc của bạn: dựng trunk hai đầu dây liên switch (cổng p3 mỗi bên, cho đúng VLAN 10 và 20 đi), bật OSPF trên R-ChiNhanh khai đủ ba mạng của nó, rồi KIỂM CHỨNG láng giềng ra Full trước khi nộp."
+                },
+                "spec": {
+                  "initial": {
+                    "devices": [
+                      {
+                        "kind": "pc",
+                        "id": "pc-kd",
+                        "hostname": "PC-KinhDoanh",
+                        "port": { "id": "eth0", "mac": "AA:BB:CC:21:01:01" },
+                        "ipConfig": { "ip": "10.40.0.2", "prefix": 26 },
+                        "gateway": "10.40.0.1"
+                      },
+                      {
+                        "kind": "pc",
+                        "id": "pc-kh",
+                        "hostname": "PC-PhongKhach",
+                        "port": { "id": "eth0", "mac": "AA:BB:CC:21:01:03" },
+                        "ipConfig": { "ip": "10.40.0.98", "prefix": 28 },
+                        "gateway": "10.40.0.97"
+                      },
+                      {
+                        "kind": "pc",
+                        "id": "srv-kt",
+                        "hostname": "SRV-KeToan",
+                        "port": { "id": "eth0", "mac": "AA:BB:CC:21:01:09" },
+                        "ipConfig": { "ip": "10.20.0.9", "prefix": 24 },
+                        "gateway": "10.20.0.1"
+                      },
+                      {
+                        "kind": "pc",
+                        "id": "srv-web",
+                        "hostname": "SRV-Web-Internet",
+                        "port": { "id": "eth0", "mac": "AA:BB:CC:21:01:08" },
+                        "ipConfig": { "ip": "203.0.113.80", "prefix": 24 },
+                        "gateway": "203.0.113.1"
+                      },
+                      {
+                        "kind": "switch",
+                        "id": "sw-1",
+                        "hostname": "SW-1",
+                        "ports": [
+                          { "id": "p1", "vlan": 10 },
+                          { "id": "p2", "vlan": 20 },
+                          { "id": "p3", "vlan": 1 }
+                        ]
+                      },
+                      {
+                        "kind": "switch",
+                        "id": "sw-2",
+                        "hostname": "SW-2",
+                        "ports": [
+                          { "id": "p1", "vlan": 10 },
+                          { "id": "p2", "vlan": 20 },
+                          { "id": "p3", "vlan": 1 }
+                        ]
+                      },
+                      {
+                        "kind": "router",
+                        "id": "r-cn",
+                        "hostname": "R-ChiNhanh",
+                        "ports": [
+                          { "id": "g0", "mac": "AA:BB:CC:21:01:11", "ipConfig": { "ip": "10.40.0.1", "prefix": 26 } },
+                          { "id": "g1", "mac": "AA:BB:CC:21:01:12", "ipConfig": { "ip": "10.40.0.97", "prefix": 28 } },
+                          { "id": "g2", "mac": "AA:BB:CC:21:01:13", "ipConfig": { "ip": "10.40.0.113", "prefix": 30 } }
+                        ],
+                        "staticRoutes": []
+                      },
+                      {
+                        "kind": "router",
+                        "id": "r-hq",
+                        "hostname": "R-TruSo",
+                        "ports": [
+                          { "id": "g0", "mac": "AA:BB:CC:21:01:21", "ipConfig": { "ip": "10.40.0.114", "prefix": 30 } },
+                          { "id": "g1", "mac": "AA:BB:CC:21:01:22", "ipConfig": { "ip": "10.20.0.1", "prefix": 24 } },
+                          { "id": "g2", "mac": "AA:BB:CC:21:01:23", "ipConfig": { "ip": "203.0.113.1", "prefix": 24 } }
+                        ],
+                        "staticRoutes": [],
+                        "ospf": {
+                          "processId": 1,
+                          "networks": [
+                            { "ip": "10.40.0.112", "wildcard": "0.0.0.3", "area": 0 },
+                            { "ip": "10.20.0.0", "wildcard": "0.0.0.255", "area": 0 },
+                            { "ip": "203.0.113.0", "wildcard": "0.0.0.255", "area": 0 }
+                          ]
+                        }
+                      },
+                      {
+                        "kind": "switch",
+                        "id": "sw-hq",
+                        "hostname": "SW-TruSo",
+                        "ports": [
+                          { "id": "p1", "vlan": 1 },
+                          { "id": "p2", "vlan": 1 }
+                        ]
+                      },
+                      {
+                        "kind": "switch",
+                        "id": "sw-web",
+                        "hostname": "SW-Web",
+                        "ports": [
+                          { "id": "p1", "vlan": 1 },
+                          { "id": "p2", "vlan": 1 }
+                        ]
+                      }
+                    ],
+                    "links": [
+                      { "id": "c1", "a": { "deviceId": "pc-kd", "portId": "eth0" }, "b": { "deviceId": "sw-1", "portId": "p1" } },
+                      { "id": "c2", "a": { "deviceId": "pc-kh", "portId": "eth0" }, "b": { "deviceId": "sw-1", "portId": "p2" } },
+                      { "id": "c3", "a": { "deviceId": "sw-1", "portId": "p3" }, "b": { "deviceId": "sw-2", "portId": "p3" } },
+                      { "id": "c4", "a": { "deviceId": "sw-2", "portId": "p1" }, "b": { "deviceId": "r-cn", "portId": "g0" } },
+                      { "id": "c5", "a": { "deviceId": "sw-2", "portId": "p2" }, "b": { "deviceId": "r-cn", "portId": "g1" } },
+                      { "id": "c6", "a": { "deviceId": "r-cn", "portId": "g2" }, "b": { "deviceId": "r-hq", "portId": "g0" } },
+                      { "id": "c7", "a": { "deviceId": "r-hq", "portId": "g1" }, "b": { "deviceId": "sw-hq", "portId": "p1" } },
+                      { "id": "c8", "a": { "deviceId": "sw-hq", "portId": "p2" }, "b": { "deviceId": "srv-kt", "portId": "eth0" } },
+                      { "id": "c9", "a": { "deviceId": "r-hq", "portId": "g2" }, "b": { "deviceId": "sw-web", "portId": "p1" } },
+                      { "id": "c10", "a": { "deviceId": "sw-web", "portId": "p2" }, "b": { "deviceId": "srv-web", "portId": "eth0" } }
+                    ]
+                  },
+                  "deviceId": "sw-1",
+                  "goals": [
+                    { "kind": "port-mode", "deviceId": "sw-1", "portId": "p3", "mode": "trunk" },
+                    { "kind": "port-mode", "deviceId": "sw-2", "portId": "p3", "mode": "trunk" },
+                    { "kind": "trunk-carries", "deviceId": "sw-1", "portId": "p3", "vlans": [10, 20] },
+                    { "kind": "trunk-carries", "deviceId": "sw-2", "portId": "p3", "vlans": [10, 20] },
+                    { "kind": "viewed", "command": "show ip ospf neighbor", "deviceId": "r-cn" },
+                    { "kind": "behavior", "goal": { "kind": "ping", "from": "pc-kd", "to": "srv-kt", "expect": "reach" } },
+                    { "kind": "behavior", "goal": { "kind": "ping", "from": "pc-kh", "to": "srv-web", "expect": "reach" } }
+                  ],
+                  "solution": [
+                    {
+                      "deviceId": "sw-1",
+                      "lines": [
+                        "enable",
+                        "configure terminal",
+                        "interface p3",
+                        "switchport mode trunk",
+                        "switchport trunk allowed vlan 10,20",
+                        "end"
+                      ]
+                    },
+                    {
+                      "deviceId": "sw-2",
+                      "lines": [
+                        "enable",
+                        "configure terminal",
+                        "interface p3",
+                        "switchport mode trunk",
+                        "switchport trunk allowed vlan 10,20",
+                        "end"
+                      ]
+                    },
+                    {
+                      "deviceId": "r-cn",
+                      "lines": [
+                        "enable",
+                        "configure terminal",
+                        "router ospf 1",
+                        "network 10.40.0.0 0.0.0.63 area 0",
+                        "network 10.40.0.96 0.0.0.15 area 0",
+                        "network 10.40.0.112 0.0.0.3 area 0",
+                        "end",
+                        "show ip ospf neighbor"
+                      ]
+                    }
+                  ]
+                },
+                "hintTopic": { "vi": "trunk hai đầu p3, rồi router ospf 1 với ba câu network wildcard" }
+              },
+              "hint": {
+                "vi": "Ba khối việc: trên MỖI switch vào interface p3 gõ switchport mode trunk + switchport trunk allowed vlan 10,20; trên R-ChiNhanh vào router ospf 1 rồi khai ba câu network với wildcard ĐẢO của từng dải (/26 → 0.0.0.63, /28 → 0.0.0.15, /30 → 0.0.0.3); cuối cùng show ip ospf neighbor phải ra Full."
+              },
+              "solution": {
+                "vi": "SW-1 và SW-2: interface p3 → switchport mode trunk → switchport trunk allowed vlan 10,20. R-ChiNhanh: router ospf 1 → network 10.40.0.0 0.0.0.63 area 0 → network 10.40.0.96 0.0.0.15 area 0 → network 10.40.0.112 0.0.0.3 area 0 → end → show ip ospf neighbor thấy FULL. Trunk sống thì hai xóm qua được dây liên switch; OSPF lên thì hai router tự kể đường cho nhau — ping xuyên site tự thông, không một tuyến tĩnh nào phải gõ."
+              }
+            },
+            {
+              "question": {
+                "kind": "mcq",
+                "id": "m21-b2-prac-2",
+                "prompt": {
+                  "vi": "show ip ospf neighbor trên R-ChiNhanh ra Full. Cột mốc đó chứng minh điều gì?"
+                },
+                "choices": [
+                  { "vi": "Hai router đã đồng bộ trọn bản đồ mạng — bảng định tuyến hai bên tự đầy đủ" },
+                  { "vi": "Đường WAN giữa hai site đạt tốc độ tối đa theo hợp đồng với nhà mạng" },
+                  { "vi": "Mọi máy trạm hai site đã ping được nhau, không cần kiểm chứng thêm" }
+                ],
+                "answerIndex": 0,
+                "hintTopic": { "vi": "phòng Full trong tòa nhà làm quen của M16" }
+              },
+              "hint": {
+                "vi": "Full là phòng cuối của tòa nhà bốn tầng — hai bản đồ chồng khít. Nó nói về ROUTER, chưa nói về máy trạm."
+              },
+              "solution": {
+                "vi": "Full = hai router giữ cùng một bản đồ, bảng định tuyến tự học đủ đường. Nó không đo tốc độ, và cũng CHƯA thay được bước ping cuối — trunk hỏng thì router Full mà máy trạm vẫn câm, vì thế thang kiểm chứng mới cần đủ ba bậc."
+              }
+            }
+          ]
+        },
+        {
+          "type": "retrieval",
+          "questions": [
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m21-b2-ret-1",
+                "prompt": {
+                  "vi": "Không nhìn lại bài: lệnh nào là bằng chứng kiểm chứng của tầng định tuyến trong chặng này?"
+                },
+                "accept": [
+                  "show ip ospf neighbor",
+                  "sh ip ospf neighbor",
+                  "show ip ospf neighbour"
+                ],
+                "hintTopic": { "vi": "bảng láng giềng phải ra chữ Full" }
+              },
+              "hint": { "vi": "Bảng liệt kê hàng xóm OSPF và trạng thái cuộc làm quen." },
+              "solution": {
+                "vi": "show ip ospf neighbor — ra FULL mới tính là hai router đồng bộ xong bản đồ. Mỗi tầng một bằng chứng: trunk có show interfaces trunk, định tuyến có bảng láng giềng, đường trọn vẹn có ping."
+              }
+            }
+          ],
+          "selfExplain": {
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: vì sao phải kiểm chứng TỪNG TẦNG thay vì gõ hết cấu hình rồi ping một phát cuối cùng?"
+            },
+            "keywords": [
+              ["tầng nào", "tang nao", "bậc nào", "bac nao", "chết ở đâu", "chet o dau", "khoanh", "khoanh vung"],
+              ["ping câm", "ping cam", "không biết", "khong biet", "mù", "mu "],
+              ["từng bước", "tung buoc", "từng tầng", "tung tang", "mỗi bậc", "moi bac", "bằng chứng", "bang chung"],
+              ["trunk", "ospf", "full", "neighbor", "láng giềng", "lang gieng"]
+            ],
+            "exampleAnswer": {
+              "vi": "Vì ping là phép thử của CẢ đường đi — nó câm thì chỉ biết là hỏng, không biết hỏng ở tầng nào. Kiểm từng tầng thì mỗi bậc có một tấm bằng chứng riêng: trunk sống (show interfaces trunk), láng giềng Full (show ip ospf neighbor), rồi mới ping. Lúc có chuyện, người leo thang từng bậc biết ngay bậc nào gãy; người gõ một mạch phải dò lại từ đầu."
+            }
+          }
+        },
+        {
+          "type": "summary",
+          "bullets": [
+            { "vi": "Chặng 2 nộp xong: trunk chở hai xóm qua một dây, OSPF cho hai site tự kể đường — không một tuyến tĩnh nào." },
+            { "vi": "Wildcard trong câu network chép thẳng từ bản cắt chặng 1: /26 → 0.0.0.63, /28 → 0.0.0.15, /30 → 0.0.0.3." },
+            { "vi": "Kiểm chứng leo thang ba bậc: trunk sống → láng giềng Full → ping xuyên site." }
+          ],
+          "nextTeaser": {
+            "vi": "Mạng đã thông hai site — thông tới mức AI CŨNG tới được máy chủ kế toán, kể cả cái máy ở phòng khách mà khách vãng lai nào cũng cắm được. Chặng cuối: viết luật chặn đúng người, và đừng chặn nhầm cả sếp như ca kinh điển của Module 17."
+          }
+        }
+      ]
+    },
+    {
+      "id": "m21-bai-3",
+      "missionTitle": { "vi": "Viết luật bảo vệ máy chủ kế toán" },
+      "steps": [
+        {
+          "type": "hook",
+          "question": {
+            "vi": "Biên bản nghiệm thu chặng 2 vừa ký xong thì trưởng phòng kế toán gọi: \"máy nào ở phòng khách cũng mở được đường tới máy chủ kế toán — thế thì khách vãng lai cắm laptop vào là dò được tài liệu lương thưởng à?\" Yêu cầu chốt bằng một câu: khách vẫn được ra Internet thoải mái, nhưng tuyệt đối không được chạm vào máy chủ kế toán — và các phòng khác không bị vạ lây. Một câu của sếp, mấy dòng luật của bạn?"
+          },
+          "visualId": "vis-hook-yeu-cau-sep"
+        },
+        {
+          "type": "pretest",
+          "questions": [
+            {
+              "kind": "mcq",
+              "id": "m21-b3-pre-1",
+              "prompt": {
+                "vi": "Luật \"chặn phòng khách tới máy chủ kế toán, còn lại cho qua\" cần phân biệt cả NGUỒN lẫn ĐÍCH. Nó thuộc họ ACL nào, và theo quy tắc nghề thì đặt gần đâu?"
+              },
+              "choices": [
+                { "vi": "ACL mở rộng (100-199), đặt gần NGUỒN — ngay cổng router phía phòng khách" },
+                { "vi": "ACL chuẩn (1-99), đặt gần NGUỒN — vì luật nào cũng nên chặn từ sớm" },
+                { "vi": "ACL mở rộng (100-199), đặt gần ĐÍCH — sát ngay trước máy chủ kế toán" }
+              ],
+              "answerIndex": 0,
+              "hintTopic": { "vi": "loại nào nhìn được đích thì được phép chặn sớm" },
+              "explain": {
+                "vi": "Cần cả nguồn lẫn đích → họ mở rộng (100-199). Mở rộng biết đủ thông tin để chặn ĐÚNG ngay từ sớm nên đặt gần nguồn — cổng router phía phòng khách; gói xấu chết tại cửa, không tốn đường WAN. Chuẩn mù đích mới phải lùi về gần đích."
+              }
+            }
+          ],
+          "encouragement": {
+            "vi": "Câu này là ruột của Module 17 — trả lời trơn tru nghĩa là bạn sẵn sàng cho chặng nộp cuối."
+          }
+        },
+        {
+          "type": "teach",
+          "screens": [
+            {
+              "conceptId": "m21-quy-trinh",
+              "visualId": "vis-quy-trinh-4-buoc",
+              "body": {
+                "vi": "Để ý chỗ đứng của chặng này trong quy trình: LUẬT ĐI SAU CÙNG — sau khi địa chỉ đã đúng, đường đã thông, kiểm chứng đã xanh. Không phải ngẫu nhiên: luật chặn viết lên một mạng chưa thông là tự bịt mắt mình — ping câm thì hết biết tại luật hay tại đường. Dựng cho THÔNG trước, kiểm chứng xong, rồi mới THẮT lại đúng chỗ; và sau khi thắt phải kiểm chứng CẢ HAI CHIỀU: thứ phải chặn đã chặn, và mọi thứ từng thông vẫn thông. Cặp bằng chứng thông-và-chặn đó là chữ ký nghiệm thu của người làm luật cẩn thận."
+              },
+              "deepDive": {
+                "vi": "Cặp thông-chặn còn là hàng rào chống hai kiểu giải sai đã gặp suốt khóa: chỉ đo phải-chặn thì rút dây cũng đạt (Module 4 dạy từ những ngày đầu); chỉ đo phải-thông thì permit any any cũng đạt (Module 17 vừa nhắc). Đề nộp của chặng này vì thế chấm đủ bốn mục tiêu: khách bị chặn tới kế toán, khách vẫn ra Internet, kinh doanh không vạ lây, và bạn đã tự tra bảng luật làm bằng chứng."
+              }
+            }
+          ]
+        },
+        {
+          "type": "practice",
+          "fadingLevel": 2,
+          "exercises": [
+            {
+              "question": {
+                "kind": "cli",
+                "id": "m21-b3-prac-cli",
+                "prompt": {
+                  "vi": "CHẶNG 3 — nộp riêng, không còn khuôn gợi ý. Mạng chính là thành quả chặng 2 (trunk sống, OSPF Full, mọi đường đều thông). Yêu cầu của kế toán: phòng khách (dải 10.40.0.96/28) không được ping tới máy chủ kế toán 10.20.0.9; vẫn ra được Internet (203.0.113.80); phòng kinh doanh không bị ảnh hưởng. Tự chọn số hiệu, tự chọn cửa, tự chọn chiều — và tự tra bảng luật để làm bằng chứng trước khi nộp."
+                },
+                "spec": {
+                  "initial": {
+                    "devices": [
+                      {
+                        "kind": "pc",
+                        "id": "pc-kd",
+                        "hostname": "PC-KinhDoanh",
+                        "port": { "id": "eth0", "mac": "AA:BB:CC:21:02:01" },
+                        "ipConfig": { "ip": "10.40.0.2", "prefix": 26 },
+                        "gateway": "10.40.0.1"
+                      },
+                      {
+                        "kind": "pc",
+                        "id": "pc-kh",
+                        "hostname": "PC-PhongKhach",
+                        "port": { "id": "eth0", "mac": "AA:BB:CC:21:02:03" },
+                        "ipConfig": { "ip": "10.40.0.98", "prefix": 28 },
+                        "gateway": "10.40.0.97"
+                      },
+                      {
+                        "kind": "pc",
+                        "id": "srv-kt",
+                        "hostname": "SRV-KeToan",
+                        "port": { "id": "eth0", "mac": "AA:BB:CC:21:02:09" },
+                        "ipConfig": { "ip": "10.20.0.9", "prefix": 24 },
+                        "gateway": "10.20.0.1"
+                      },
+                      {
+                        "kind": "pc",
+                        "id": "srv-web",
+                        "hostname": "SRV-Web-Internet",
+                        "port": { "id": "eth0", "mac": "AA:BB:CC:21:02:08" },
+                        "ipConfig": { "ip": "203.0.113.80", "prefix": 24 },
+                        "gateway": "203.0.113.1"
+                      },
+                      {
+                        "kind": "switch",
+                        "id": "sw-1",
+                        "hostname": "SW-1",
+                        "ports": [
+                          { "id": "p1", "vlan": 10 },
+                          { "id": "p2", "vlan": 20 },
+                          { "id": "p3", "vlan": 1, "mode": "trunk", "allowedVlans": [10, 20] }
+                        ]
+                      },
+                      {
+                        "kind": "switch",
+                        "id": "sw-2",
+                        "hostname": "SW-2",
+                        "ports": [
+                          { "id": "p1", "vlan": 10 },
+                          { "id": "p2", "vlan": 20 },
+                          { "id": "p3", "vlan": 1, "mode": "trunk", "allowedVlans": [10, 20] }
+                        ]
+                      },
+                      {
+                        "kind": "router",
+                        "id": "r-cn",
+                        "hostname": "R-ChiNhanh",
+                        "ports": [
+                          { "id": "g0", "mac": "AA:BB:CC:21:02:11", "ipConfig": { "ip": "10.40.0.1", "prefix": 26 } },
+                          { "id": "g1", "mac": "AA:BB:CC:21:02:12", "ipConfig": { "ip": "10.40.0.97", "prefix": 28 } },
+                          { "id": "g2", "mac": "AA:BB:CC:21:02:13", "ipConfig": { "ip": "10.40.0.113", "prefix": 30 } }
+                        ],
+                        "staticRoutes": [],
+                        "ospf": {
+                          "processId": 1,
+                          "networks": [
+                            { "ip": "10.40.0.0", "wildcard": "0.0.0.63", "area": 0 },
+                            { "ip": "10.40.0.96", "wildcard": "0.0.0.15", "area": 0 },
+                            { "ip": "10.40.0.112", "wildcard": "0.0.0.3", "area": 0 }
+                          ]
+                        }
+                      },
+                      {
+                        "kind": "router",
+                        "id": "r-hq",
+                        "hostname": "R-TruSo",
+                        "ports": [
+                          { "id": "g0", "mac": "AA:BB:CC:21:02:21", "ipConfig": { "ip": "10.40.0.114", "prefix": 30 } },
+                          { "id": "g1", "mac": "AA:BB:CC:21:02:22", "ipConfig": { "ip": "10.20.0.1", "prefix": 24 } },
+                          { "id": "g2", "mac": "AA:BB:CC:21:02:23", "ipConfig": { "ip": "203.0.113.1", "prefix": 24 } }
+                        ],
+                        "staticRoutes": [],
+                        "ospf": {
+                          "processId": 1,
+                          "networks": [
+                            { "ip": "10.40.0.112", "wildcard": "0.0.0.3", "area": 0 },
+                            { "ip": "10.20.0.0", "wildcard": "0.0.0.255", "area": 0 },
+                            { "ip": "203.0.113.0", "wildcard": "0.0.0.255", "area": 0 }
+                          ]
+                        }
+                      },
+                      {
+                        "kind": "switch",
+                        "id": "sw-hq",
+                        "hostname": "SW-TruSo",
+                        "ports": [
+                          { "id": "p1", "vlan": 1 },
+                          { "id": "p2", "vlan": 1 }
+                        ]
+                      },
+                      {
+                        "kind": "switch",
+                        "id": "sw-web",
+                        "hostname": "SW-Web",
+                        "ports": [
+                          { "id": "p1", "vlan": 1 },
+                          { "id": "p2", "vlan": 1 }
+                        ]
+                      }
+                    ],
+                    "links": [
+                      { "id": "d1", "a": { "deviceId": "pc-kd", "portId": "eth0" }, "b": { "deviceId": "sw-1", "portId": "p1" } },
+                      { "id": "d2", "a": { "deviceId": "pc-kh", "portId": "eth0" }, "b": { "deviceId": "sw-1", "portId": "p2" } },
+                      { "id": "d3", "a": { "deviceId": "sw-1", "portId": "p3" }, "b": { "deviceId": "sw-2", "portId": "p3" } },
+                      { "id": "d4", "a": { "deviceId": "sw-2", "portId": "p1" }, "b": { "deviceId": "r-cn", "portId": "g0" } },
+                      { "id": "d5", "a": { "deviceId": "sw-2", "portId": "p2" }, "b": { "deviceId": "r-cn", "portId": "g1" } },
+                      { "id": "d6", "a": { "deviceId": "r-cn", "portId": "g2" }, "b": { "deviceId": "r-hq", "portId": "g0" } },
+                      { "id": "d7", "a": { "deviceId": "r-hq", "portId": "g1" }, "b": { "deviceId": "sw-hq", "portId": "p1" } },
+                      { "id": "d8", "a": { "deviceId": "sw-hq", "portId": "p2" }, "b": { "deviceId": "srv-kt", "portId": "eth0" } },
+                      { "id": "d9", "a": { "deviceId": "r-hq", "portId": "g2" }, "b": { "deviceId": "sw-web", "portId": "p1" } },
+                      { "id": "d10", "a": { "deviceId": "sw-web", "portId": "p2" }, "b": { "deviceId": "srv-web", "portId": "eth0" } }
+                    ]
+                  },
+                  "deviceId": "r-cn",
+                  "goals": [
+                    { "kind": "behavior", "goal": { "kind": "ping", "from": "pc-kh", "to": "srv-kt", "expect": "blocked" } },
+                    { "kind": "behavior", "goal": { "kind": "ping", "from": "pc-kh", "to": "srv-web", "expect": "reach" } },
+                    { "kind": "behavior", "goal": { "kind": "ping", "from": "pc-kd", "to": "srv-kt", "expect": "reach" } },
+                    { "kind": "viewed", "command": "show access-lists", "deviceId": "r-cn" }
+                  ],
+                  "solution": [
+                    {
+                      "deviceId": "r-cn",
+                      "lines": [
+                        "enable",
+                        "configure terminal",
+                        "access-list 101 deny icmp 10.40.0.96 0.0.0.15 host 10.20.0.9",
+                        "access-list 101 permit ip any any",
+                        "interface g1",
+                        "ip access-group 101 in",
+                        "end",
+                        "show access-lists"
+                      ]
+                    }
+                  ]
+                },
+                "hintTopic": { "vi": "một dòng cấm hẹp, một dòng mở rộng, áp đúng cửa phòng khách" }
+              },
+              "hint": {
+                "vi": "Nếp Module 17: dòng cấm HẸP trước (deny icmp <dải khách với wildcard> host <máy chủ>), dòng permit ip any any sau, rồi vào đúng cổng router phía phòng khách áp chiều in. Wildcard của /28 tra từ bản cắt chặng 1."
+              },
+              "solution": {
+                "vi": "Trên R-ChiNhanh: access-list 101 deny icmp 10.40.0.96 0.0.0.15 host 10.20.0.9 → access-list 101 permit ip any any → interface g1 → ip access-group 101 in → show access-lists. Dòng hẹp đứng trước ăn đúng gói khách-tới-kế-toán; dòng mở sau giữ đường Internet cho khách và mọi đường của kinh doanh. Bốn mục tiêu xanh là biên bản nghiệm thu tự ký."
+              }
+            },
+            {
+              "question": {
+                "kind": "mcq",
+                "id": "m21-b3-prac-2",
+                "prompt": {
+                  "vi": "Nộp chặng 3 mà chỉ đạt mục tiêu \"khách bị chặn tới kế toán\", còn \"khách ra Internet\" đỏ. Khả năng cao bạn đã phạm lỗi nào?"
+                },
+                "choices": [
+                  { "vi": "Thiếu dòng permit cuối danh sách — dòng cấm vô hình đang chặn cả phần còn lại" },
+                  { "vi": "Đặt số hiệu ACL quá lớn nên router tự động chặn mọi loại lưu lượng" },
+                  { "vi": "Gõ luật trên switch thay vì router nên chỉ một nửa số luật có hiệu lực" }
+                ],
+                "answerIndex": 0,
+                "hintTopic": { "vi": "ca chặn-nhầm-cả-sếp của Module 17" }
+              },
+              "hint": {
+                "vi": "Danh sách chỉ có một dòng deny thì gói KHÔNG khớp dòng nào sẽ gặp ai ở cuối danh sách?"
+              },
+              "solution": {
+                "vi": "Thiếu permit ip any any — mọi gói không khớp dòng cấm rơi vào dòng cấm vô hình cuối danh sách, và khách mất luôn Internet (may mà bảng mục tiêu bắt được trước khi sếp gọi). Số hiệu chỉ chọn họ ACL, còn switch trong app không nhận luật ACL — hai phương án kia là nhiễu."
+              }
+            }
+          ]
+        },
+        {
+          "type": "retrieval",
+          "questions": [
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m21-b3-ret-1",
+                "prompt": {
+                  "vi": "Không nhìn lại bài: wildcard tương ứng với dải /28 của phòng khách là gì?"
+                },
+                "accept": ["0.0.0.15", "0 0 0 15", "0.0.0.15."],
+                "hintTopic": { "vi": "mặt nạ đảo của /28" }
+              },
+              "hint": { "vi": "/28 chừa 4 bit cho máy — 4 bit mặc kệ là số 15 ở octet cuối." },
+              "solution": {
+                "vi": "0.0.0.15 — mặt nạ đảo của /28: bốn bit cuối mặc kệ, phần còn lại phải khớp. Con số này chép thẳng từ bản cắt chặng 1 — tờ giấy ấy phục vụ tới tận dòng luật cuối cùng."
+              }
+            }
+          ],
+          "selfExplain": {
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: vì sao nghiệm thu một luật chặn phải đo CẢ chiều thông lẫn chiều chặn?"
+            },
+            "keywords": [
+              ["rút dây", "rut day", "chặn hết", "chan het", "cấm sạch", "cam sach", "vạ lây", "va lay"],
+              ["permit any", "mở toang", "mo toang", "cho hết qua", "cho het qua"],
+              ["hai chiều", "hai chieu", "cả hai", "ca hai", "cặp", "cap ", "thông và chặn", "thong va chan"],
+              ["vẫn thông", "van thong", "không ảnh hưởng", "khong anh huong", "đường cũ", "duong cu"]
+            ],
+            "exampleAnswer": {
+              "vi": "Vì mỗi chiều chặn được một kiểu giải sai: chỉ đo phải-chặn thì cấm sạch mọi thứ (hoặc rút dây) cũng đạt; chỉ đo phải-thông thì mở toang permit any any cũng đạt. Đo cả cặp mới ép được luật đúng nghĩa: thứ cần chặn đã chặn, mọi thứ từng thông vẫn thông, không ai bị vạ lây."
+            }
+          }
+        },
+        {
+          "type": "summary",
+          "bullets": [
+            { "vi": "Luật đi sau cùng: dựng cho thông, kiểm chứng xong, rồi mới thắt — chặn trên mạng chưa thông là tự bịt mắt." },
+            { "vi": "Chặng 3 nộp xong: khách bị chặn tới kế toán, vẫn ra Internet, kinh doanh vô sự — cặp thông-chặn đủ bốn bằng chứng." },
+            { "vi": "Bản cắt chặng 1 phục vụ tới dòng luật cuối: wildcard 0.0.0.15 chép thẳng từ cỡ /28 trên giấy." }
+          ],
+          "nextTeaser": {
+            "vi": "Chi nhánh đã dựng xong bằng chính tay bạn. Còn đúng một cửa: tổng duyệt — nơi một ca bệnh kiểu mới đợi sẵn: HAI bệnh chồng lên nhau trên cùng một mạng, và khám ra một bệnh mới chỉ là đi được nửa đường."
+          }
+        }
+      ]
+    },
+    {
+      "id": "m21-bai-4",
+      "missionTitle": { "vi": "Tổng duyệt: ca bệnh hai tầng chồng nhau" },
+      "steps": [
+        {
+          "type": "hook",
+          "question": {
+            "vi": "Tuần đầu chi nhánh vận hành, người dùng phòng kinh doanh báo: \"mở kho tài liệu bằng tên thì báo không tồn tại, mà đồng nghiệp chỉ cho gõ thẳng địa chỉ số cũng không ăn thua.\" Hai triệu chứng nghe na ná — nhưng người khám giỏi ngửi thấy mùi lạ: nếu chỉ là MỘT bệnh, tại sao cả đường tên lẫn đường số cùng chết theo hai kiểu khác nhau? Có khi nào... đang có HAI bệnh chồng lên nhau?"
+          },
+          "visualId": "vis-hook-hai-benh-chong"
+        },
+        {
+          "type": "pretest",
+          "questions": [
+            {
+              "kind": "mcq",
+              "id": "m21-b4-pre-1",
+              "prompt": {
+                "vi": "Đoán thử: ping theo TÊN báo không phân giải được, ping theo SỐ cũng rớt. Suy luận nào chắc tay nhất?"
+              },
+              "choices": [
+                { "vi": "Có thể là hai bệnh ở hai tầng — kiểm tra tầng tên và tầng đường đi riêng nhau" },
+                { "vi": "Chắc chắn chỉ là bệnh DNS, vì triệu chứng đầu tiên nhắc tới cái tên" },
+                { "vi": "Chắc chắn chỉ là bệnh dây, vì đường số rớt nghĩa là phần cứng có vấn đề" }
+              ],
+              "answerIndex": 0,
+              "hintTopic": { "vi": "tách tên khỏi số là bài khám nhập môn của M11" },
+              "explain": {
+                "vi": "Tên chết vì tầng phân giải, số chết vì tầng đường đi — hai tầng ĐỘC LẬP, nên hai triệu chứng cùng lúc hoàn toàn có thể là hai bệnh chồng nhau. Vội gán tất cả cho một thủ phạm là sửa xong một bệnh rồi tưởng ca đã khỏi — cái bẫy của mọi ca liên tầng."
+              }
+            }
+          ],
+          "encouragement": {
+            "vi": "Nghi ngờ đúng chỗ chính là kỹ năng cuối cùng khóa này muốn trao — mạng doanh nghiệp thật hiếm khi lịch sự hỏng từng bệnh một."
+          }
+        },
+        {
+          "type": "teach",
+          "screens": [
+            {
+              "conceptId": "m21-kiem-chung",
+              "visualId": "vis-kiem-chung-tung-buoc",
+              "body": {
+                "vi": "Ca liên tầng là kỳ thi thật của thang khám từng tầng: mỗi tầng phải được khám ĐỘC LẬP và kết luận ĐỘC LẬP. Tầng tên: nslookup — bản ghi có không, trỏ về đâu. Tầng đường: ping bằng SỐ, để tầng tên không che mắt. Tầng 2: khung có qua nổi trunk không — nhật ký chặng và cấu hình hai đầu dây trả lời. Điều cấm kỵ duy nhất: DỪNG SỚM. Tìm ra một bệnh thật rồi vẫn phải khám nốt các tầng còn lại — vì \"đã tìm thấy MỘT thủ phạm\" và \"đã tìm thấy MỌI thủ phạm\" là hai mệnh đề khác nhau, và ca tổng duyệt này cố tình chứa nhiều hơn một."
+              },
+              "deepDive": {
+                "vi": "Vì sao bệnh chồng bệnh hay gặp ở mạng mới dựng? Vì các lỗi cấu hình sinh ra CÙNG một đợt thi công — người quên native VLAN cũng dễ là người gõ nhầm bản ghi DNS trong cùng buổi chiều. Mạng chạy lâu năm thì lỗi rơi rớt từng cái một; mạng mới bàn giao thì lỗi đến theo lô. Người nghiệm thu chi nhánh mới vì thế khám như thợ săn đếm đủ dấu chân: một dấu chưa chắc là một con."
+              }
+            }
+          ]
+        },
+        {
+          "type": "practice",
+          "fadingLevel": 2,
+          "exercises": [
+            {
+              "question": {
+                "kind": "clinic",
+                "id": "m21-b4-prac-ca",
+                "prompt": {
+                  "vi": "\"Phòng kinh doanh không mở được kho tài liệu kho.chi-nhanh.vn — gõ tên báo không tồn tại, gõ thẳng số 10.20.0.40 cũng không thông!\" Bạn ngồi ở PC-KinhDoanh. Khám cho ra TẤT CẢ các bệnh — ca này không hứa chỉ có một."
+                },
+                "spec": {
+                  "patient": {
+                    "topology": {
+                      "devices": [
+                        {
+                          "kind": "pc",
+                          "id": "m21a-kd",
+                          "hostname": "PC-KinhDoanh",
+                          "port": { "id": "eth0", "mac": "AA:BB:CC:21:0A:01" },
+                          "ipConfig": { "ip": "10.40.0.2", "prefix": 26 },
+                          "gateway": "10.40.0.1"
+                        },
+                        {
+                          "kind": "pc",
+                          "id": "m21a-kho",
+                          "hostname": "SRV-KhoTaiLieu",
+                          "port": { "id": "eth0", "mac": "AA:BB:CC:21:0A:09" },
+                          "ipConfig": { "ip": "10.20.0.40", "prefix": 24 },
+                          "gateway": "10.20.0.1"
+                        },
+                        {
+                          "kind": "pc",
+                          "id": "m21a-dns",
+                          "hostname": "SRV-DNS",
+                          "port": { "id": "eth0", "mac": "AA:BB:CC:21:0A:53" },
+                          "ipConfig": { "ip": "10.20.0.53", "prefix": 24 },
+                          "gateway": "10.20.0.1"
+                        },
+                        {
+                          "kind": "switch",
+                          "id": "m21a-sw1",
+                          "hostname": "SW-1",
+                          "ports": [
+                            { "id": "p1", "vlan": 10 },
+                            { "id": "p3", "vlan": 1, "mode": "trunk", "allowedVlans": [10, 20], "nativeVlan": 10 }
+                          ]
+                        },
+                        {
+                          "kind": "switch",
+                          "id": "m21a-sw2",
+                          "hostname": "SW-2",
+                          "ports": [
+                            { "id": "p1", "vlan": 10 },
+                            { "id": "p3", "vlan": 1, "mode": "trunk", "allowedVlans": [10, 20] }
+                          ]
+                        },
+                        {
+                          "kind": "router",
+                          "id": "m21a-rcn",
+                          "hostname": "R-ChiNhanh",
+                          "ports": [
+                            { "id": "g0", "mac": "AA:BB:CC:21:0A:11", "ipConfig": { "ip": "10.40.0.1", "prefix": 26 } },
+                            { "id": "g2", "mac": "AA:BB:CC:21:0A:13", "ipConfig": { "ip": "10.40.0.113", "prefix": 30 } }
+                          ],
+                          "staticRoutes": [],
+                          "ospf": {
+                            "processId": 1,
+                            "networks": [
+                              { "ip": "10.40.0.0", "wildcard": "0.0.0.63", "area": 0 },
+                              { "ip": "10.40.0.112", "wildcard": "0.0.0.3", "area": 0 }
+                            ]
+                          }
+                        },
+                        {
+                          "kind": "router",
+                          "id": "m21a-rhq",
+                          "hostname": "R-TruSo",
+                          "ports": [
+                            { "id": "g0", "mac": "AA:BB:CC:21:0A:21", "ipConfig": { "ip": "10.40.0.114", "prefix": 30 } },
+                            { "id": "g1", "mac": "AA:BB:CC:21:0A:22", "ipConfig": { "ip": "10.20.0.1", "prefix": 24 } }
+                          ],
+                          "staticRoutes": [],
+                          "ospf": {
+                            "processId": 1,
+                            "networks": [
+                              { "ip": "10.40.0.112", "wildcard": "0.0.0.3", "area": 0 },
+                              { "ip": "10.20.0.0", "wildcard": "0.0.0.255", "area": 0 }
+                            ]
+                          }
+                        },
+                        {
+                          "kind": "switch",
+                          "id": "m21a-swhq",
+                          "hostname": "SW-TruSo",
+                          "ports": [
+                            { "id": "p1", "vlan": 1 },
+                            { "id": "p2", "vlan": 1 },
+                            { "id": "p3", "vlan": 1 }
+                          ]
+                        }
+                      ],
+                      "links": [
+                        { "id": "e1", "a": { "deviceId": "m21a-kd", "portId": "eth0" }, "b": { "deviceId": "m21a-sw1", "portId": "p1" } },
+                        { "id": "e2", "a": { "deviceId": "m21a-sw1", "portId": "p3" }, "b": { "deviceId": "m21a-sw2", "portId": "p3" } },
+                        { "id": "e3", "a": { "deviceId": "m21a-sw2", "portId": "p1" }, "b": { "deviceId": "m21a-rcn", "portId": "g0" } },
+                        { "id": "e4", "a": { "deviceId": "m21a-rcn", "portId": "g2" }, "b": { "deviceId": "m21a-rhq", "portId": "g0" } },
+                        { "id": "e5", "a": { "deviceId": "m21a-rhq", "portId": "g1" }, "b": { "deviceId": "m21a-swhq", "portId": "p1" } },
+                        { "id": "e6", "a": { "deviceId": "m21a-swhq", "portId": "p2" }, "b": { "deviceId": "m21a-kho", "portId": "eth0" } },
+                        { "id": "e7", "a": { "deviceId": "m21a-swhq", "portId": "p3" }, "b": { "deviceId": "m21a-dns", "portId": "eth0" } }
+                      ]
+                    },
+                    "overlay": {
+                      "dns": {
+                        "serverIp": "10.20.0.53",
+                        "records": [
+                          { "name": "portal.chi-nhanh.vn", "ip": "10.20.0.41" }
+                        ]
+                      }
+                    },
+                    "seatId": "m21a-kd"
+                  },
+                  "symptom": { "kind": "ping-fails", "from": "m21a-kd", "target": "10.20.0.40" },
+                  "fix": { "kind": "choose-action" }
+                },
+                "diagnosis": {
+                  "choices": [
+                    { "vi": "HAI bệnh chồng nhau: trunk hai đầu lệch native VLAN, và DNS thiếu bản ghi kho tài liệu" },
+                    { "vi": "Một bệnh duy nhất: đường trunk giữa hai switch đang lệch native VLAN" },
+                    { "vi": "Một bệnh duy nhất: máy chủ DNS thiếu bản ghi tên của kho tài liệu" }
+                  ],
+                  "answerIndex": 0
+                },
+                "actions": {
+                  "choices": [
+                    { "vi": "Sửa CẢ HAI: khai native VLAN khớp hai đầu trunk, và thêm bản ghi kho.chi-nhanh.vn trỏ về 10.20.0.40" },
+                    { "vi": "Chỉ thêm bản ghi DNS — đường số sẽ tự thông khi cái tên phân giải được" },
+                    { "vi": "Chỉ sửa native VLAN — bản ghi DNS sẽ tự đồng bộ lại từ máy chủ trụ sở" }
+                  ],
+                  "answerIndex": 0
+                },
+                "hintTopic": { "vi": "khám tầng tên và tầng đường ĐỘC LẬP — đủ dấu chân mới đếm đủ con" },
+                "explain": {
+                  "vi": "Hai tầng, hai bằng chứng độc lập. Tầng tên: nslookup kho.chi-nhanh.vn → Non-existent domain — DNS thiếu bản ghi (portal có, kho thì không). Tầng đường: ping 10.20.0.40 bằng số vẫn rớt — tên không thể là thủ phạm của cú này; nhìn trunk giữa hai switch: SW-1 khai native 10, SW-2 để native 1 — khung kinh doanh đi trần qua dây và lạc xóm ở đầu kia. Sửa một trong hai chỉ khỏi nửa bệnh: phải khai lại native cho khớp VÀ thêm bản ghi. Ca liên tầng chấm người khám ĐẾM ĐỦ."
+                }
+              },
+              "hint": {
+                "vi": "Tách tên khỏi số như M11: nslookup nói gì về cái tên? ping bằng số nói gì về con đường? Nếu cả hai cùng bệnh thì mỗi tầng phải có một thủ phạm riêng — soi tiếp cấu hình trunk hai đầu."
+              },
+              "solution": {
+                "vi": "nslookup ra Non-existent domain → thiếu bản ghi (bệnh tầng tên). ping số vẫn rớt → bệnh tầng đường: trunk SW-1 native 10 nhưng SW-2 native 1 — lệch native, khung lạc xóm. Chọn chẩn đoán HAI bệnh và hành động sửa CẢ HAI. Dừng ở một bệnh là cái bẫy của ca — và của nghề."
+              }
+            }
+          ]
+        },
+        {
+          "type": "retrieval",
+          "questions": [
+            {
+              "question": {
+                "kind": "order",
+                "id": "m21-b4-ret-1",
+                "prompt": {
+                  "vi": "Không nhìn lại bài: xếp lại quy trình bốn bước đã theo bạn suốt module."
+                },
+                "items": [
+                  { "vi": "Đặt địa chỉ — cắt dải trên giấy" },
+                  { "vi": "Nối dây — dựng sơ đồ vật lý" },
+                  { "vi": "Cấu hình — trunk, định tuyến, luật" },
+                  { "vi": "Kiểm chứng — mỗi bước một bằng chứng" }
+                ],
+                "hintTopic": { "vi": "giấy → dây → lệnh → bằng chứng" }
+              },
+              "hint": { "vi": "Bắt đầu từ thứ sửa được bằng cục tẩy, kết thúc bằng thứ ký được biên bản." },
+              "solution": {
+                "vi": "Đặt địa chỉ → nối dây → cấu hình → kiểm chứng. Bạn vừa sống trọn quy trình này qua ba chặng nộp riêng — nó là thứ mang được sang mọi mạng thật."
+              }
+            }
+          ],
+          "selfExplain": {
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: vì sao tìm ra MỘT bệnh thật rồi vẫn chưa được phép dừng khám?"
+            },
+            "keywords": [
+              ["hai bệnh", "hai benh", "nhiều bệnh", "nhieu benh", "chồng nhau", "chong nhau", "theo lô", "theo lo"],
+              ["một thủ phạm", "mot thu pham", "mọi thủ phạm", "moi thu pham", "chưa chắc hết", "chua chac het"],
+              ["từng tầng", "tung tang", "độc lập", "doc lap", "khám nốt", "kham not", "các tầng còn lại", "cac tang con lai"],
+              ["sửa xong vẫn", "sua xong van", "nửa bệnh", "nua benh", "vẫn không thông", "van khong thong", "tưởng khỏi", "tuong khoi"]
+            ],
+            "exampleAnswer": {
+              "vi": "Vì tìm thấy một thủ phạm không chứng minh là đã thấy mọi thủ phạm — mạng mới thi công hay hỏng theo lô, hai lỗi sinh cùng một buổi chiều. Mỗi tầng phải được khám và kết luận độc lập; dừng ở bệnh đầu tiên thì sửa xong triệu chứng vẫn còn, người khám lại tưởng mình sửa sai trong khi thật ra chỉ sửa THIẾU."
+            }
+          }
+        },
+        {
+          "type": "summary",
+          "bullets": [
+            { "vi": "Ca liên tầng: khám từng tầng độc lập, kết luận độc lập — tên bằng nslookup, đường bằng ping số, tầng 2 bằng cấu hình trunk." },
+            { "vi": "Một dấu chân chưa chắc một con: tìm ra một bệnh vẫn phải khám nốt các tầng còn lại." },
+            { "vi": "Mạng mới bàn giao hỏng theo lô — người nghiệm thu giỏi đếm đủ trước khi ký." }
+          ],
+          "nextTeaser": {
+            "vi": "Bài thi cuối cùng của cả khóa đang đợi — tám câu rút từ mọi ngóc ngách trung cấp, kết bằng một ca liên tầng bạn chưa từng gặp. Đậu nó là chi nhánh chính thức bàn giao, và hành trình 21 module khép lại tròn một vòng."
+          }
+        }
+      ]
+    }
+  ],
+
+  "concepts": [
+    {
+      "id": "m21-quy-trinh",
+      "term": "Quy trình bốn bước triển khai",
+      "glossVi": "Đặt địa chỉ (trên giấy) → nối dây → cấu hình → kiểm chứng; luật chặn đi sau cùng, khi mạng đã thông và đã có bằng chứng",
+      "metaphor": {
+        "vi": "Như xây nhà: bản vẽ trước, móng và khung sau, điện nước tiếp, nghiệm thu cuối — không ai đi dây điện trước khi có bản vẽ, và không ai khóa cửa một căn nhà chưa xây xong."
+      },
+      "iconId": "icon-quy-trinh-4-buoc",
+      "flashcard": {
+        "front": { "vi": "Bốn bước của quy trình dựng mạng, và vì sao thứ tự đó?" },
+        "back": {
+          "vi": "Đặt địa chỉ → nối dây → cấu hình → kiểm chứng. Mỗi bước đứng trên kết quả bước trước, và lỗi bắt sớm ở đâu thì rẻ ở đó: bản cắt sai trên giấy sửa bằng tẩy, sai sau khi cấu hình ba chục thiết bị sửa bằng cả buổi. Luật chặn luôn đi sau cùng — thắt một mạng chưa thông là tự bịt mắt."
+        }
+      }
+    },
+    {
+      "id": "m21-kiem-chung",
+      "term": "Kiểm chứng từng tầng",
+      "glossVi": "Mỗi tầng xong phải có bằng chứng bằng lệnh trước khi leo tiếp: trunk sống → láng giềng Full → ping trọn đường; khám bệnh cũng từng tầng độc lập, không dừng ở thủ phạm đầu tiên",
+      "metaphor": {
+        "vi": "Như thợ leo giàn giáo thử từng tầng trước khi bước lên: sập ở đâu biết ngay ở đó — còn kẻ leo một mạch tới nóc, lúc rơi chẳng biết mình rơi từ tầng nào."
+      },
+      "iconId": "icon-kiem-chung",
+      "flashcard": {
+        "front": { "vi": "Chuỗi kiểm chứng ba bậc của một mạng hai site, và luật cấm của ca bệnh liên tầng?" },
+        "back": {
+          "vi": "show interfaces trunk (tầng 2 sống) → show ip ospf neighbor ra Full (tầng 3 quen nhau) → ping xuyên site (đường trọn vẹn). Luật cấm khi khám ca liên tầng: KHÔNG dừng ở thủ phạm đầu tiên — mỗi tầng khám độc lập, kết luận độc lập, vì mạng mới thi công hỏng theo lô."
+        }
+      }
+    }
+  ],
+
+  "masteryTest": [
+    {
+      "kind": "order",
+      "id": "m21-mt-1",
+      "prompt": {
+        "vi": "Xếp bốn bước của quy trình dựng mạng theo đúng thứ tự:"
+      },
+      "items": [
+        { "vi": "Đặt địa chỉ — cắt dải trên giấy" },
+        { "vi": "Nối dây — dựng sơ đồ vật lý" },
+        { "vi": "Cấu hình — trunk, định tuyến, luật" },
+        { "vi": "Kiểm chứng — bằng chứng bằng lệnh" }
+      ],
+      "hintTopic": { "vi": "thứ sửa bằng tẩy đứng đầu" },
+      "explain": {
+        "vi": "Đặt địa chỉ → nối dây → cấu hình → kiểm chứng. Mỗi bước đứng trên bước trước; bản cắt trên giấy là thứ mọi bước sau tra cứu nên nó đi đầu, còn bằng chứng nghiệm thu luôn chốt sổ."
+      }
+    },
+    {
+      "kind": "typed",
+      "id": "m21-mt-2",
+      "prompt": {
+        "vi": "Phòng 60 máy nhận dải cắt từ 10.50.0.0/24, cắt từ đầu dải. Dải của phòng đó là gì? (địa-chỉ/prefix)"
+      },
+      "accept": ["10.50.0.0/26", "10.50.0.0 /26", "10.50.0.0/ 26"],
+      "hintTopic": { "vi": "cỡ khối nhỏ nhất đủ 60 máy" },
+      "explain": {
+        "vi": "10.50.0.0/26 — khối /26 có 62 chỗ, là cỡ nhỏ nhất đủ 60 máy; /25 là phí đất, /27 thì thiếu. Cắt từ đầu dải nên bắt đầu tại .0."
+      }
+    },
+    {
+      "kind": "mcq",
+      "id": "m21-mt-3",
+      "prompt": {
+        "vi": "Vì sao VLSM cắt khối LỚN trước khối nhỏ?"
+      },
+      "choices": [
+        { "vi": "Khối to chỉ đặt vừa ở ranh giới thưa — cắt nhỏ trước là lấp mất chỗ, sinh kẽ hở" },
+        { "vi": "Vì phòng đông máy bao giờ cũng quan trọng hơn nên được ưu tiên cấp trước" },
+        { "vi": "Vì router chỉ chấp nhận các dải được khai theo thứ tự từ lớn tới nhỏ" }
+      ],
+      "answerIndex": 0,
+      "hintTopic": { "vi": "chuyện căn khối, không phải chuyện ưu tiên" },
+      "explain": {
+        "vi": "Là chuyện CĂN KHỐI: khối /26 chỉ đứng được ở ranh giới bội của 64 — cắt mấy khối nhỏ trước là các ranh giới đó bị lấp, khối to phải nhảy xa hơn và sinh kẽ hở phí đất. Router chẳng bắt thứ tự nào, và đây không phải chuyện phòng nào quan trọng."
+      }
+    },
+    {
+      "kind": "mcq",
+      "id": "m21-mt-4",
+      "prompt": {
+        "vi": "Hai switch nối nhau: một đầu đã khai trunk, đầu kia còn access. Hậu quả đúng như engine mô phỏng?"
+      },
+      "choices": [
+        { "vi": "Khung mang nhãn đâm vào cổng access thì bị bỏ — VLAN chết trên dây" },
+        { "vi": "Hai đầu tự đàm phán để cùng thành trunk sau vài giây bắt tay" },
+        { "vi": "Chỉ VLAN số chẵn qua được còn VLAN số lẻ bị chặn lại ở giữa dây" }
+      ],
+      "answerIndex": 0,
+      "hintTopic": { "vi": "cổng access không đọc nhãn" },
+      "explain": {
+        "vi": "Đầu trunk dán nhãn khung rồi gửi đi; đầu access không đọc nhãn nên bỏ khung — bệnh trunk-một-đầu. Mô hình này không có đàm phán DTP (đơn giản hóa đã khai), và chẵn lẻ thì không liên quan gì."
+      }
+    },
+    {
+      "kind": "typed",
+      "id": "m21-mt-5",
+      "prompt": {
+        "vi": "Lệnh kiểm chứng hai router OSPF đã đồng bộ trọn bản đồ với nhau?"
+      },
+      "accept": ["show ip ospf neighbor", "sh ip ospf neighbor", "show ip ospf neighbour"],
+      "hintTopic": { "vi": "bảng phải ra chữ Full" },
+      "explain": {
+        "vi": "show ip ospf neighbor — trạng thái Full nghĩa là hai bản đồ chồng khít (phòng cuối của tòa nhà làm quen M16). Chưa Full thì bảng còn nói lý-do-chưa-lên để lần tiếp."
+      }
+    },
+    {
+      "kind": "mcq",
+      "id": "m21-mt-6",
+      "prompt": {
+        "vi": "Hai router nối thẳng nhau, cùng bật OSPF mà láng giềng không lên. Cặp điều kiện nào PHẢI soi đầu tiên?"
+      },
+      "choices": [
+        { "vi": "Hai cổng đối diện cùng subnet chưa, và hai bên đã khai network phủ cổng đó chưa" },
+        { "vi": "Hai router cùng hãng sản xuất chưa, và số hiệu tiến trình OSPF có bằng nhau không" },
+        { "vi": "Dây nối có phải loại chéo không, và hai cổng có cùng tốc độ vật lý hay không" }
+      ],
+      "answerIndex": 0,
+      "hintTopic": { "vi": "hai điều kiện lên láng giềng của OSPF-lite" },
+      "explain": {
+        "vi": "Neighbor lên khi hai cổng CÙNG SUBNET và cả hai bên đã KHAI network phủ cổng — đúng hai điều kiện engine mô phỏng. Số hiệu tiến trình không cần khớp, hãng và loại dây là chuyện tầng khác."
+      }
+    },
+    {
+      "kind": "mcq",
+      "id": "m21-mt-7",
+      "prompt": {
+        "vi": "Luật \"chặn phòng khách tới máy chủ kế toán, vẫn cho ra Internet\" nên viết bằng gì và đặt ở đâu?"
+      },
+      "choices": [
+        { "vi": "ACL mở rộng, đặt gần nguồn — cổng router phía phòng khách, chiều vào" },
+        { "vi": "ACL chuẩn, đặt gần nguồn — vì luật đơn giản thì nên chặn từ sớm nhất" },
+        { "vi": "ACL mở rộng, đặt tại cổng ra Internet của trụ sở cho tiện quản lý chung" }
+      ],
+      "answerIndex": 0,
+      "hintTopic": { "vi": "biết đích thì được chặn sớm" },
+      "explain": {
+        "vi": "Phân biệt nguồn VÀ đích → mở rộng; mở rộng biết đủ để chặn đúng nên đặt gần nguồn (cổng phía khách, chiều in) — gói xấu chết tại cửa. Chuẩn mù đích sẽ chặn khách đi MỌI nơi, mất luôn Internet; còn đặt ở cổng Internet thì gói tới kế toán chẳng bao giờ đi qua đó."
+      }
+    },
+    {
+      "kind": "typed",
+      "id": "m21-mt-8",
+      "prompt": {
+        "vi": "Danh sách ACL chỉ có các dòng deny mà thiếu dòng permit cuối — mọi gói còn lại chết vì cái gì?"
+      },
+      "accept": [
+        "dòng cấm vô hình",
+        "dong cam vo hinh",
+        "implicit deny",
+        "cấm vô hình",
+        "cam vo hinh",
+        "deny ngầm",
+        "deny ngam",
+        "dòng deny vô hình",
+        "dong deny vo hinh"
+      ],
+      "hintTopic": { "vi": "dòng không in ra ở cuối mọi danh sách" },
+      "explain": {
+        "vi": "Dòng cấm vô hình (implicit deny) — cuối mọi danh sách, không in ra trong show access-lists. Áp danh sách lên cổng là đổi mặc định của cổng thành cấm-tất-cả; muốn giữ phần còn lại phải có permit ip any any."
+      }
+    },
+    {
+      "kind": "mcq",
+      "id": "m21-mt-9",
+      "prompt": {
+        "vi": "Vì sao đề nghiệm thu luật chặn luôn chấm CẶP mục tiêu thông-và-chặn?"
+      },
+      "choices": [
+        { "vi": "Vì thiếu vế nào cũng có cách giải sai: rút dây đạt vế chặn, mở toang đạt thông" },
+        { "vi": "Vì hai mục tiêu giúp bài thi trông dài hơn và có vẻ khó hơn với người học" },
+        { "vi": "Vì router yêu cầu số mục tiêu chẵn thì phần cứng mới xử lý được luật" }
+      ],
+      "answerIndex": 0,
+      "hintTopic": { "vi": "mỗi vế chặn một kiểu giải tủ" },
+      "explain": {
+        "vi": "Chỉ đo phải-chặn thì cấm sạch (hay rút dây) cũng đạt; chỉ đo phải-thông thì permit any any cũng đạt. Cặp mục tiêu ép luật đúng nghĩa: chặn đúng kẻ cần chặn, giữ nguyên đường của mọi người khác."
+      }
+    },
+    {
+      "kind": "typed",
+      "id": "m21-mt-10",
+      "prompt": {
+        "vi": "Ôn nhanh Phần E: relay ghi địa chỉ xóm đang xin DHCP vào ô nào của gói tin?"
+      },
+      "accept": ["giaddr", "ô giaddr", "o giaddr", "trường giaddr", "truong giaddr", "gateway address"],
+      "hintTopic": { "vi": "sáu chữ cái, ghép gateway và address" },
+      "explain": {
+        "vi": "Ô giaddr — nhờ nó máy DHCP một mình phục vụ được hàng chục xóm: nhìn giaddr là biết lời xin phát từ dải nào mà chọn đúng scope."
+      }
+    },
+    {
+      "kind": "mcq",
+      "id": "m21-mt-11",
+      "prompt": {
+        "vi": "Nhân viên mới về chi nhánh cần đủ quyền làm việc. Trong hệ AGDLP tử tế, người trực làm gì?"
+      },
+      "choices": [
+        { "vi": "Thêm vào nhóm vai Global của phòng — quyền tự chảy qua đường ống có sẵn" },
+        { "vi": "Nhét thẳng vào từng nhóm quyền Domain Local liên quan cho nhanh gọn" },
+        { "vi": "Cấp quyền đọc ghi trực tiếp lên từng thư mục mà người đó cần dùng" }
+      ],
+      "answerIndex": 0,
+      "hintTopic": { "vi": "một mắt xích ở khúc người-vai" },
+      "explain": {
+        "vi": "Một dòng Add vào nhóm vai Global — đường ống vai-cắm-vào-quyền đã nối sẵn từ trước. Hai cách còn lại đều là lối tắt chạy-được-ngay nhưng đắt ở ngày mai: không truy vết nổi, chuyển phòng không tự rút."
+      }
+    },
+    {
+      "kind": "mcq",
+      "id": "m21-mt-12",
+      "prompt": {
+        "vi": "Tuần đầu vận hành, đồ thị CPU của R-ChiNhanh chạy 55%. Người trực nên làm gì với con số đó?"
+      },
+      "choices": [
+        { "vi": "Ghi nhận nó vào baseline tuần đầu — có nếp rồi mới phán được cao hay thấp" },
+        { "vi": "Báo động ngay vì router mới dựng thì CPU phải luôn nằm dưới mức 10%" },
+        { "vi": "Bỏ qua vĩnh viễn vì chỉ số CPU không liên quan gì tới thiết bị mạng" }
+      ],
+      "answerIndex": 0,
+      "hintTopic": { "vi": "mạng mới chưa có nếp cũ để so" },
+      "explain": {
+        "vi": "Mạng mới dựng CHƯA có baseline — việc của tuần đầu là ghi nếp: 55% này chính là dữ liệu nền để mai kia phán 70% là bất thường hay chuyện thường. Không có chuẩn dưới-10% nào của ngành, và CPU router dĩ nhiên đáng theo dõi."
+      }
+    },
+    {
+      "kind": "cli",
+      "id": "m21-mt-cli",
+      "prompt": {
+        "vi": "Trụ sở vừa dựng thêm router R-Moi cho một mạng lab mới, nối thẳng vào R-TruSo. R-TruSo đã bật OSPF sẵn; R-Moi thì chưa biết gì. Bật OSPF trên R-Moi, khai đủ hai mạng của nó, kiểm chứng láng giềng ra Full — và mạng lab phải gọi được máy chủ kế toán."
+      },
+      "spec": {
+        "initial": {
+          "devices": [
+            {
+              "kind": "pc",
+              "id": "pc-lab",
+              "hostname": "PC-Lab",
+              "port": { "id": "eth0", "mac": "AA:BB:CC:21:03:01" },
+              "ipConfig": { "ip": "10.60.0.10", "prefix": 24 },
+              "gateway": "10.60.0.1"
+            },
+            {
+              "kind": "pc",
+              "id": "srv-kt2",
+              "hostname": "SRV-KeToan",
+              "port": { "id": "eth0", "mac": "AA:BB:CC:21:03:09" },
+              "ipConfig": { "ip": "10.20.0.9", "prefix": 24 },
+              "gateway": "10.20.0.1"
+            },
+            {
+              "kind": "switch",
+              "id": "sw-lab",
+              "hostname": "SW-Lab",
+              "ports": [
+                { "id": "p1", "vlan": 1 },
+                { "id": "p2", "vlan": 1 }
+              ]
+            },
+            {
+              "kind": "switch",
+              "id": "sw-kt2",
+              "hostname": "SW-KeToan",
+              "ports": [
+                { "id": "p1", "vlan": 1 },
+                { "id": "p2", "vlan": 1 }
+              ]
+            },
+            {
+              "kind": "router",
+              "id": "r-moi",
+              "hostname": "R-Moi",
+              "ports": [
+                { "id": "g0", "mac": "AA:BB:CC:21:03:11", "ipConfig": { "ip": "10.60.0.1", "prefix": 24 } },
+                { "id": "g1", "mac": "AA:BB:CC:21:03:12", "ipConfig": { "ip": "10.99.1.1", "prefix": 30 } }
+              ],
+              "staticRoutes": []
+            },
+            {
+              "kind": "router",
+              "id": "r-hq2",
+              "hostname": "R-TruSo",
+              "ports": [
+                { "id": "g0", "mac": "AA:BB:CC:21:03:21", "ipConfig": { "ip": "10.99.1.2", "prefix": 30 } },
+                { "id": "g1", "mac": "AA:BB:CC:21:03:22", "ipConfig": { "ip": "10.20.0.1", "prefix": 24 } }
+              ],
+              "staticRoutes": [],
+              "ospf": {
+                "processId": 1,
+                "networks": [
+                  { "ip": "10.99.1.0", "wildcard": "0.0.0.3", "area": 0 },
+                  { "ip": "10.20.0.0", "wildcard": "0.0.0.255", "area": 0 }
+                ]
+              }
+            }
+          ],
+          "links": [
+            { "id": "f1", "a": { "deviceId": "pc-lab", "portId": "eth0" }, "b": { "deviceId": "sw-lab", "portId": "p1" } },
+            { "id": "f2", "a": { "deviceId": "sw-lab", "portId": "p2" }, "b": { "deviceId": "r-moi", "portId": "g0" } },
+            { "id": "f3", "a": { "deviceId": "r-moi", "portId": "g1" }, "b": { "deviceId": "r-hq2", "portId": "g0" } },
+            { "id": "f4", "a": { "deviceId": "r-hq2", "portId": "g1" }, "b": { "deviceId": "sw-kt2", "portId": "p1" } },
+            { "id": "f5", "a": { "deviceId": "sw-kt2", "portId": "p2" }, "b": { "deviceId": "srv-kt2", "portId": "eth0" } }
+          ]
+        },
+        "deviceId": "r-moi",
+        "goals": [
+          { "kind": "viewed", "command": "show ip ospf neighbor", "deviceId": "r-moi" },
+          { "kind": "behavior", "goal": { "kind": "ping", "from": "pc-lab", "to": "srv-kt2", "expect": "reach" } }
+        ],
+        "solution": [
+          {
+            "deviceId": "r-moi",
+            "lines": [
+              "enable",
+              "configure terminal",
+              "router ospf 1",
+              "network 10.60.0.0 0.0.0.255 area 0",
+              "network 10.99.1.0 0.0.0.3 area 0",
+              "end",
+              "show ip ospf neighbor"
+            ]
+          }
+        ]
+      },
+      "hintTopic": { "vi": "router ospf 1 rồi hai câu network với wildcard đảo" },
+      "explain": {
+        "vi": "Trên R-Moi: router ospf 1 → network 10.60.0.0 0.0.0.255 area 0 → network 10.99.1.0 0.0.0.3 area 0 → end → show ip ospf neighbor ra Full. Hai bên cùng subnet WAN và cùng khai network là láng giềng lên; bảng định tuyến tự học và ping xuyên site tự thông."
+      }
+    },
+    {
+      "kind": "clinic",
+      "id": "m21-mt-ca",
+      "prompt": {
+        "vi": "\"Chi nhánh mới bàn giao được ba hôm: phòng kinh doanh không vào được máy chủ kế toán bằng tên ketoan.congty.vn — mà anh kỹ thuật thử gõ thẳng số cũng chịu chết!\" Bạn ngồi ở PC-KinhDoanh. Ca nghiệm thu cuối cùng của khóa: khám cho ĐỦ, đừng dừng ở dấu chân đầu tiên."
+      },
+      "spec": {
+        "patient": {
+          "topology": {
+            "devices": [
+              {
+                "kind": "pc",
+                "id": "m21b-kd",
+                "hostname": "PC-KinhDoanh",
+                "port": { "id": "eth0", "mac": "AA:BB:CC:21:0B:01" },
+                "ipConfig": { "ip": "10.40.0.2", "prefix": 26 },
+                "gateway": "10.40.0.1"
+              },
+              {
+                "kind": "pc",
+                "id": "m21b-kt",
+                "hostname": "SRV-KeToan",
+                "port": { "id": "eth0", "mac": "AA:BB:CC:21:0B:09" },
+                "ipConfig": { "ip": "10.20.0.9", "prefix": 24 },
+                "gateway": "10.20.0.1"
+              },
+              {
+                "kind": "pc",
+                "id": "m21b-dns",
+                "hostname": "SRV-DNS",
+                "port": { "id": "eth0", "mac": "AA:BB:CC:21:0B:53" },
+                "ipConfig": { "ip": "10.20.0.53", "prefix": 24 },
+                "gateway": "10.20.0.1"
+              },
+              {
+                "kind": "switch",
+                "id": "m21b-sw1",
+                "hostname": "SW-1",
+                "ports": [
+                  { "id": "p1", "vlan": 10 },
+                  { "id": "p3", "vlan": 1, "mode": "trunk", "allowedVlans": [10, 20], "nativeVlan": 10 }
+                ]
+              },
+              {
+                "kind": "switch",
+                "id": "m21b-sw2",
+                "hostname": "SW-2",
+                "ports": [
+                  { "id": "p1", "vlan": 10 },
+                  { "id": "p3", "vlan": 1, "mode": "trunk", "allowedVlans": [10, 20] }
+                ]
+              },
+              {
+                "kind": "router",
+                "id": "m21b-rcn",
+                "hostname": "R-ChiNhanh",
+                "ports": [
+                  { "id": "g0", "mac": "AA:BB:CC:21:0B:11", "ipConfig": { "ip": "10.40.0.1", "prefix": 26 } },
+                  { "id": "g2", "mac": "AA:BB:CC:21:0B:13", "ipConfig": { "ip": "10.40.0.113", "prefix": 30 } }
+                ],
+                "staticRoutes": [],
+                "ospf": {
+                  "processId": 1,
+                  "networks": [
+                    { "ip": "10.40.0.0", "wildcard": "0.0.0.63", "area": 0 },
+                    { "ip": "10.40.0.112", "wildcard": "0.0.0.3", "area": 0 }
+                  ]
+                }
+              },
+              {
+                "kind": "router",
+                "id": "m21b-rhq",
+                "hostname": "R-TruSo",
+                "ports": [
+                  { "id": "g0", "mac": "AA:BB:CC:21:0B:21", "ipConfig": { "ip": "10.40.0.114", "prefix": 30 } },
+                  { "id": "g1", "mac": "AA:BB:CC:21:0B:22", "ipConfig": { "ip": "10.20.0.1", "prefix": 24 } }
+                ],
+                "staticRoutes": [],
+                "ospf": {
+                  "processId": 1,
+                  "networks": [
+                    { "ip": "10.40.0.112", "wildcard": "0.0.0.3", "area": 0 },
+                    { "ip": "10.20.0.0", "wildcard": "0.0.0.255", "area": 0 }
+                  ]
+                }
+              },
+              {
+                "kind": "switch",
+                "id": "m21b-swhq",
+                "hostname": "SW-TruSo",
+                "ports": [
+                  { "id": "p1", "vlan": 1 },
+                  { "id": "p2", "vlan": 1 },
+                  { "id": "p3", "vlan": 1 }
+                ]
+              }
+            ],
+            "links": [
+              { "id": "g1", "a": { "deviceId": "m21b-kd", "portId": "eth0" }, "b": { "deviceId": "m21b-sw1", "portId": "p1" } },
+              { "id": "g2", "a": { "deviceId": "m21b-sw1", "portId": "p3" }, "b": { "deviceId": "m21b-sw2", "portId": "p3" } },
+              { "id": "g3", "a": { "deviceId": "m21b-sw2", "portId": "p1" }, "b": { "deviceId": "m21b-rcn", "portId": "g0" } },
+              { "id": "g4", "a": { "deviceId": "m21b-rcn", "portId": "g2" }, "b": { "deviceId": "m21b-rhq", "portId": "g0" } },
+              { "id": "g5", "a": { "deviceId": "m21b-rhq", "portId": "g1" }, "b": { "deviceId": "m21b-swhq", "portId": "p1" } },
+              { "id": "g6", "a": { "deviceId": "m21b-swhq", "portId": "p2" }, "b": { "deviceId": "m21b-kt", "portId": "eth0" } },
+              { "id": "g7", "a": { "deviceId": "m21b-swhq", "portId": "p3" }, "b": { "deviceId": "m21b-dns", "portId": "eth0" } }
+            ]
+          },
+          "overlay": {
+            "dns": {
+              "serverIp": "10.20.0.53",
+              "records": [
+                { "name": "ketoan.congty.vn", "ip": "10.20.0.99" },
+                { "name": "portal.congty.vn", "ip": "10.20.0.41" }
+              ]
+            }
+          },
+          "seatId": "m21b-kd"
+        },
+        "symptom": { "kind": "ping-fails", "from": "m21b-kd", "target": "10.20.0.9" },
+        "fix": { "kind": "choose-action" }
+      },
+      "diagnosis": {
+        "choices": [
+          { "vi": "HAI bệnh chồng nhau: trunk hai đầu lệch native VLAN, và bản ghi DNS trỏ máy kế toán về địa chỉ sai" },
+          { "vi": "Một bệnh duy nhất: bản ghi DNS của máy kế toán đang trỏ về một địa chỉ không tồn tại" },
+          { "vi": "Một bệnh duy nhất: đường trunk giữa hai switch chi nhánh đang lệch native VLAN" }
+        ],
+        "answerIndex": 0
+      },
+      "actions": {
+        "choices": [
+          { "vi": "Sửa CẢ HAI: khai native VLAN khớp hai đầu trunk, và sửa bản ghi ketoan.congty.vn về 10.20.0.9" },
+          { "vi": "Chỉ sửa bản ghi DNS — hết bệnh tên là đường số cũng tự thông theo" },
+          { "vi": "Chỉ khai lại native VLAN — DNS sẽ tự phát hiện địa chỉ đúng và cập nhật" }
+        ],
+        "answerIndex": 0
+      },
+      "hintTopic": { "vi": "tách tên khỏi số, rồi soi cấu hình trunk hai đầu" },
+      "explain": {
+        "vi": "Tầng tên: nslookup ketoan.congty.vn trả về 10.20.0.99 — bản ghi TRỎ SAI (máy thật là 10.20.0.9). Tầng đường: ping thẳng 10.20.0.9 vẫn rớt — soi trunk: SW-1 khai native 10, SW-2 để native 1, khung kinh doanh đi trần và lạc xóm ở đầu kia. Hai bệnh độc lập, sửa một chỉ khỏi nửa: phải khai native khớp VÀ sửa bản ghi. Đây là tổng ôn trá hình của cả trung cấp — người đếm đủ hai dấu chân mới qua."
+      }
+    }
+  ]
+}

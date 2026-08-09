@@ -322,6 +322,7 @@ describe('phiên drill', () => {
   it('ghi lịch sử + XP theo số bài đủ điều kiện + streak', () => {
     const s = () => useProgress.getState()
     s().recordDrillSession(
+      'subnet',
       [
         { correct: true, seconds: 12 },
         { correct: true, seconds: 20 },
@@ -331,7 +332,7 @@ describe('phiên drill', () => {
     )
     const st = s()
     expect(st.drillHistory).toHaveLength(1)
-    expect(st.drillHistory[0]).toMatchObject({ correct: 2, total: 3, date: todayIso() })
+    expect(st.drillHistory[0]).toMatchObject({ mode: 'subnet', correct: 2, total: 3, date: todayIso() })
     expect(st.xpTotal).toBe(6) // 2 × 3 XP
     expect(st.streak.current).toBe(1)
     expect(st.answerHistory).toHaveLength(3)

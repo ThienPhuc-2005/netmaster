@@ -4,11 +4,13 @@
 // nào xây hệ huy hiệu thật thì trình kế hoạch theo spec 2.4 trước.
 
 import { useRef } from 'react'
-import { Flame, Zap, Award, Snowflake, Layers, BookOpenCheck, Download, Upload } from 'lucide-react'
+import { Link } from 'react-router'
+import { Flame, Zap, Award, GraduationCap, Snowflake, Layers, BookOpenCheck, Download, Upload } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { useT } from '../../i18n'
 import { useProgress } from '../../store/progress'
 import { Button } from '../../components/Button'
+import { milestones } from '../graduation/milestones'
 
 /**
  * Cửa thoát hiểm cho dữ liệu (hội đồng 2026-08-07, ghế dữ liệu): toàn bộ
@@ -81,6 +83,8 @@ export function ProfilePage() {
   const xpTotal = useProgress((s) => s.xpTotal)
   const reviewCards = useProgress((s) => s.reviewCards)
   const completedLessons = useProgress((s) => s.completedLessons)
+  const passedModules = useProgress((s) => s.passedModules)
+  const reachedMilestones = milestones().filter((m) => passedModules.includes(m.moduleId))
   const fileRef = useRef<HTMLInputElement>(null)
 
   const onImportFile = (file: File | undefined) => {
@@ -127,6 +131,21 @@ export function ProfilePage() {
           />
         </div>
       </div>
+      {reachedMilestones.length > 0 && (
+        <div className="mt-6 flex flex-col gap-2 rounded-md border border-edge bg-panel px-5 py-4">
+          <h2 className="text-sm font-semibold text-ink">{t('grad.profileTitle')}</h2>
+          {reachedMilestones.map((m) => (
+            <Link
+              key={m.id}
+              to={`/tot-nghiep/${m.id}`}
+              className="inline-flex items-center gap-2 text-sm font-medium text-accent hover:underline"
+            >
+              <GraduationCap size={15} aria-hidden />
+              {t(m.id === 'nhap-mon' ? 'grad.titleNhapMon' : 'grad.titleTrungCap')}
+            </Link>
+          ))}
+        </div>
+      )}
       <div className="mt-6 flex items-start gap-3 rounded-md border border-edge bg-panel px-5 py-4 text-sm text-ink-muted">
         <Award size={18} aria-hidden className="mt-0.5 shrink-0" />
         <p>{t('profile.emptyBadges')}</p>

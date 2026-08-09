@@ -18,7 +18,14 @@ import {
   type LabSession,
 } from './session'
 import { findDevice, validateTopology, type Device } from './topology'
-import { MAC, flatNetwork, looseParts, routedNetwork, splitVlanFixed, splitVlanNetwork } from '../../../tests/fixtures/labFixture'
+import { MAC, flatNetwork, looseParts, routedNetwork, splitVlanFixed, splitVlanNetwork,
+  ONLY_TRUNK_ALLOWANCE,
+  ONLY_VLAN_ALLOWANCE,
+  trunkHealthy,
+  trunkMissing,
+  ONLY_STP_ALLOWANCE,
+  ringOfSwitches,
+} from '../../../tests/fixtures/labFixture'
 
 const newSwitch = (id: string): Device => ({
   kind: 'switch',
@@ -385,5 +392,96 @@ describe('MAC trong fixture giữ nguyên định danh', () => {
   it('các MAC mẫu là địa chỉ hợp lệ và không trùng nhau', () => {
     const macs = Object.values(MAC)
     expect(new Set(macs).size).toBe(macs.length)
+  })
+})
+
+describe('thao tác trunk — quyền và tính nhất quán dữ liệu (Module 14)', () => {
+  const trunkAction = (portId: string): LabAction => ({
+    kind: 'set-switch-port-mode',
+    deviceId: 'sw-1',
+    portId,
+    mode: 'trunk',
+  })
+
+  it('đề không xin quyền setTrunk thì không đổi được vai cổng', () => {
+    // Quyền phải xin TƯỜNG MINH: mọi đề lab viết trước Module 14 không
+    // khai setTrunk, và chúng phải giữ nguyên nghĩa cũ.
+    const session = startLab(trunkMissing(), ONLY_VLAN_ALLOWANCE)
+    expect(canApplyLabAction(session, trunkAction('p4'))).toBe('not-allowed')
+  })
+
+  it('có quyền thì đổi được access → trunk', () => {
+    const session = startLab(trunkMissing(), ONLY_TRUNK_ALLOWANCE)
+    expect(canApplyLabAction(session, trunkAction('p4'))).toBeNull()
+    const next = applyLabAction(session, trunkAction('p4'))
+    const sw = next.present.devices.find((d) => d.id === 'sw-1')
+    expect(sw?.kind === 'switch' && sw.ports.find((p) => p.id === 'p4')?.mode).toBe('trunk')
+  })
+
+  it('khai allowed/native cho cổng còn là ACCESS bị từ chối — đổi vai trước đã', () => {
+    const session = startLab(trunkMissing(), ONLY_TRUNK_ALLOWANCE)
+    expect(
+      canApplyLabAction(session, { kind: 'set-trunk-allowed', deviceId: 'sw-1', portId: 'p1', vlans: [10] }),
+    ).toBe('wrong-device-kind')
+  })
+
+  it('allowed rỗng bị từ chối: trunk câm là gõ nhầm, không phải ý đồ', () => {
+    const session = startLab(trunkHealthy(), ONLY_TRUNK_ALLOWANCE)
+    expect(
+      canApplyLabAction(session, { kind: 'set-trunk-allowed', deviceId: 'sw-1', portId: 'p4', vlans: [] }),
+    ).toBe('invalid-vlan')
+  })
+
+  it('về lại ACCESS thì DỌN sạch trường của trunk (không để dữ liệu tự mâu thuẫn)', () => {
+    const session = startLab(trunkHealthy(), ONLY_TRUNK_ALLOWANCE)
+    const next = applyLabAction(session, {
+      kind: 'set-switch-port-mode',
+      deviceId: 'sw-1',
+      portId: 'p4',
+      mode: 'access',
+    })
+    const sw = next.present.devices.find((d) => d.id === 'sw-1')
+    const port = sw?.kind === 'switch' ? sw.ports.find((p) => p.id === 'p4') : undefined
+    expect(port?.allowedVlans).toBeUndefined()
+    expect(port?.nativeVlan).toBeUndefined()
+    expect(validateTopology(next.present)).toEqual([])
+  })
+
+  it('mọi thao tác trunk đều UNDO được như mọi thao tác khác', () => {
+    const session = startLab(trunkMissing(), ONLY_TRUNK_ALLOWANCE)
+    const next = applyLabAction(session, trunkAction('p4'))
+    const back = undoLab(next)
+    const sw = back.present.devices.find((d) => d.id === 'sw-1')
+    expect(sw?.kind === 'switch' && sw.ports.find((p) => p.id === 'p4')?.mode).toBeUndefined()
+  })
+})
+
+describe('thao tác STP — quyền và phân loại thay đổi (Module 15)', () => {
+  it('đề không xin quyền setStp thì không bật được STP', () => {
+    const session = startLab(ringOfSwitches(false), ONLY_VLAN_ALLOWANCE)
+    expect(canApplyLabAction(session, { kind: 'set-stp', enabled: true })).toBe('not-allowed')
+  })
+
+  it('có quyền thì bật được, và bật là mạng vòng hết bão', () => {
+    const session = startLab(ringOfSwitches(false), ONLY_STP_ALLOWANCE)
+    const next = applyLabAction(session, { kind: 'set-stp', enabled: true })
+    expect(next.present.stpEnabled).toBe(true)
+  })
+
+  it('priority phải là bội của 4096 như thiết bị thật', () => {
+    const session = startLab(ringOfSwitches(true), ONLY_STP_ALLOWANCE)
+    expect(canApplyLabAction(session, { kind: 'set-bridge-priority', deviceId: 'sw-1', priority: 100 })).toBe(
+      'invalid-priority',
+    )
+    expect(canApplyLabAction(session, { kind: 'set-bridge-priority', deviceId: 'sw-1', priority: 8192 })).toBeNull()
+  })
+
+  it('classifyDiff gọi đúng tên nhóm thay đổi: trunk và stp là hai quyền RIÊNG', () => {
+    // Đề "sửa VLAN" không được ngầm cho phép dựng trunk hay bật STP —
+    // đó là hai bài học khác nhau, hai bộ quyền khác nhau.
+    expect(classifyDiff(ringOfSwitches(false), ringOfSwitches(true))).toEqual(['stp'])
+    expect(classifyDiff(trunkMissing(), trunkHealthy())).toEqual(['trunk'])
+    expect(allowanceViolations(ONLY_VLAN_ALLOWANCE, ['trunk', 'stp'])).toEqual(['trunk', 'stp'])
+    expect(allowanceViolations(ONLY_TRUNK_ALLOWANCE, ['trunk'])).toEqual([])
   })
 })

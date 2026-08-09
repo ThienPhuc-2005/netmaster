@@ -40,11 +40,36 @@ const PcDeviceSchema = z.object({
   gateway: ipSchema.nullable(),
 })
 
+const SwitchPortSchema = z
+  .object({
+    id: idSchema,
+    vlan: vlanSchema,
+    /** Thiếu = 'access' (mọi đề viết trước Module 14 giữ nguyên nghĩa). */
+    mode: z.enum(['access', 'trunk']).optional(),
+    /** Chỉ với trunk. Thiếu = cho mọi VLAN qua. */
+    allowedVlans: z.array(vlanSchema).min(1).optional(),
+    /** Chỉ với trunk. Thiếu = VLAN 1. */
+    nativeVlan: vlanSchema.optional(),
+    /** Cổng tắt bằng lệnh (CLI, Module 14-16). Thiếu = đang bật. */
+    shutdown: z.boolean().optional(),
+  })
+  .refine(
+    (port) => port.mode === 'trunk' || (port.allowedVlans === undefined && port.nativeVlan === undefined),
+    { message: 'Cổng access không được khai allowedVlans/nativeVlan — đổi mode sang trunk trước' },
+  )
+
 const SwitchDeviceSchema = z.object({
   kind: z.literal('switch'),
   id: idSchema,
   hostname: z.string().min(1),
-  ports: z.array(z.object({ id: idSchema, vlan: vlanSchema })).min(1),
+  ports: z.array(SwitchPortSchema).min(1),
+  /** VLAN đã khai bằng lệnh `vlan <n>` mà chưa cổng nào đứng tên. */
+  declaredVlans: z.array(vlanSchema).optional(),
+  /** STP (Module 15): bội của 4096, 0..61440 như chuẩn 802.1D. */
+  bridgePriority: z.number().int().min(0).max(61440).refine((n) => n % 4096 === 0, {
+    message: 'Bridge priority phải là bội của 4096',
+  }).optional(),
+  bridgeMac: macSchema.optional(),
 })
 
 const StaticRouteSchema = z.object({
@@ -53,12 +78,56 @@ const StaticRouteSchema = z.object({
   nextHop: ipSchema,
 })
 
+const AclAddressSchema = z.object({ ip: ipSchema, wildcard: ipSchema })
+
+const AclRuleSchema = z.object({
+  seq: z.number().int().min(1),
+  action: z.enum(['permit', 'deny']),
+  protocol: z.enum(['ip', 'icmp', 'tcp', 'udp']),
+  src: AclAddressSchema,
+  dst: AclAddressSchema,
+  /** Chỉ với tcp/udp; phòng lab không sinh lưu lượng đó nên nó để ĐỌC. */
+  dstPort: z.number().int().min(1).max(65535).optional(),
+})
+
+const AccessListSchema = z.object({
+  /** 1-99 là ACL chuẩn, 100-199 là ACL mở rộng (spec v2 mục 5.1). */
+  number: z.number().int().min(1).max(199),
+  rules: z.array(AclRuleSchema).min(1),
+})
+
 const RouterDeviceSchema = z.object({
   kind: z.literal('router'),
   id: idSchema,
   hostname: z.string().min(1),
-  ports: z.array(z.object({ id: idSchema, mac: macSchema, ipConfig: IpConfigSchema.nullable() })).min(1),
+  ports: z
+    .array(
+      z.object({
+        id: idSchema,
+        mac: macSchema,
+        ipConfig: IpConfigSchema.nullable(),
+        /** Cổng tắt bằng lệnh (CLI). Thiếu = đang bật. */
+        shutdown: z.boolean().optional(),
+        /** Số hiệu ACL áp lên cổng theo chiều vào / ra. Thiếu = không lọc. */
+        aclIn: z.number().int().min(1).max(199).optional(),
+        aclOut: z.number().int().min(1).max(199).optional(),
+      }),
+    )
+    .min(1),
   staticRoutes: z.array(StaticRouteSchema),
+  accessLists: z.array(AccessListSchema).optional(),
+  /** Tiến trình OSPF (Module 16). Thiếu = chưa bật; area chỉ có 0. */
+  ospf: z
+    .object({
+      processId: z.number().int().min(1).max(65535),
+      networks: z
+        // Phạm vi đóng băng chỉ có area 0, nhưng KIỂU vẫn là number: khai
+        // literal ở đây thì kiểu suy ra từ schema hẹp hơn kiểu viết tay ở
+        // topology.ts, và hai mô tả của cùng một dữ liệu lệch nhau.
+        .array(z.object({ ip: ipSchema, wildcard: ipSchema, area: z.number().int().min(0).max(0) }))
+        .min(1),
+    })
+    .optional(),
 })
 
 export const DeviceSchema = z.discriminatedUnion('kind', [PcDeviceSchema, SwitchDeviceSchema, RouterDeviceSchema])
@@ -68,6 +137,8 @@ const PortRefSchema = z.object({ deviceId: idSchema, portId: idSchema })
 export const TopologySchema = z.object({
   devices: z.array(DeviceSchema).min(1),
   links: z.array(z.object({ id: idSchema, a: PortRefSchema, b: PortRefSchema })),
+  /** Bật STP cho cả sơ đồ (Module 15). Thiếu = tắt. */
+  stpEnabled: z.boolean().optional(),
 })
 
 export const LabGoalSchema = z.discriminatedUnion('kind', [
@@ -104,6 +175,10 @@ export const LabAllowanceSchema = z.object({
   addLinks: z.boolean(),
   removeLinks: z.boolean(),
   setVlan: z.boolean(),
+  /** Đổi vai access <-> trunk (Module 14). Thiếu = không cho. */
+  setTrunk: z.boolean().optional(),
+  /** Bật/tắt STP, chỉnh bridge priority (Module 15). Thiếu = không cho. */
+  setStp: z.boolean().optional(),
   setIp: z.boolean(),
   setRoutes: z.boolean(),
   maxDevices: z.number().int().min(1).max(20),
@@ -124,6 +199,8 @@ function allowsAnything(allow: LabSpec['allow']): boolean {
     allow.addLinks ||
     allow.removeLinks ||
     allow.setVlan ||
+    allow.setTrunk === true ||
+    allow.setStp === true ||
     allow.setIp ||
     allow.setRoutes
   )

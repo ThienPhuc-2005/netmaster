@@ -272,15 +272,19 @@ function ModuleCard({ module, status }: { module: Module; status: 'locked' | 'op
 
       {module.vmLab !== undefined && status !== 'locked' && <VmLabChecklist vmLab={module.vmLab} />}
 
-      {module.drill === 'subnet' && status !== 'locked' && (
+      {module.drill !== undefined && status !== 'locked' && (
         <Link
-          to="/luyen-subnet"
+          to={module.drill === 'vlsm' ? '/luyen-vlsm' : '/luyen-subnet'}
           className="flex items-center gap-3 rounded-md border border-accent/30 bg-panel-hover px-4 py-3 transition-colors duration-(--dur) hover:border-accent"
         >
           <Timer size={17} aria-hidden className="text-accent" />
           <span className="flex-1">
-            <span className="block text-sm font-semibold text-ink">{t('learn.drillCardTitle')}</span>
-            <span className="block text-xs text-ink-muted">{t('learn.drillCardBody')}</span>
+            <span className="block text-sm font-semibold text-ink">
+              {t(module.drill === 'vlsm' ? 'learn.vlsmCardTitle' : 'learn.drillCardTitle')}
+            </span>
+            <span className="block text-xs text-ink-muted">
+              {t(module.drill === 'vlsm' ? 'learn.vlsmCardBody' : 'learn.drillCardBody')}
+            </span>
           </span>
           <span className="text-xs font-semibold text-accent">{t('learn.drillCardAction')} →</span>
         </Link>

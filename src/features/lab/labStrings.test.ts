@@ -26,6 +26,14 @@ const FAILURES: Record<PingFailure, true> = {
   'no-route': true,
   'hop-budget-exceeded': true,
   'broadcast-storm': true,
+  // Ba bệnh trunk của Module 14 (spec v2 Phần D).
+  'trunk-vlan-not-allowed': true,
+  'native-vlan-mismatch': true,
+  'tagged-frame-on-access': true,
+  // Cổng tắt bằng lệnh — CLI thiết bị (spec v2 mục 4.2).
+  'port-shutdown': true,
+  // Bộ lọc ACL trên cổng router (spec v2 mục 4.3).
+  'acl-denied': true,
 }
 
 const DIAGNOSES: Record<LabDiagnosis, true> = {
@@ -37,6 +45,9 @@ const DIAGNOSES: Record<LabDiagnosis, true> = {
   'vlan-mismatch-on-link': true,
   'same-subnet-different-vlan': true,
   'l2-loop': true,
+  'trunk-one-side-only': true,
+  'native-vlan-mismatch-on-trunk': true,
+  'port-shutdown': true,
 }
 
 const REJECTIONS: Record<LabRejection, true> = {
@@ -53,6 +64,7 @@ const REJECTIONS: Record<LabRejection, true> = {
   'invalid-vlan': true,
   'invalid-ip': true,
   'invalid-prefix': true,
+  'invalid-priority': true,
 }
 
 /** Mã lý do chặng → key i18n; phải khớp bảng REASON_KEY trong LabPanels. */

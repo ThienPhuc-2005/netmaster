@@ -15,7 +15,7 @@
 
 import { z } from 'zod'
 import { LabAllowanceSchema, LabGoalSchema, TopologySchema } from '../lab/labSchema'
-import { diagnose } from '../lab/gradeLab'
+import { diagnose, type LabDiagnosis } from '../lab/gradeLab'
 import { allowanceViolations, classifyDiff } from '../lab/session'
 import { findDevice } from '../lab/topology'
 import { validatePatient, type ClinicPatient } from './patient'
@@ -64,16 +64,29 @@ export const ClinicSymptomSchema = z.discriminatedUnion('kind', [
   z.object({ kind: z.literal('ping-flaps'), from: idSchema, target: ipSchema }),
 ])
 
-const DIAGNOSIS_VALUES = [
-  'device-isolated',
-  'missing-ip',
-  'missing-gateway',
-  'gateway-not-in-subnet',
-  'duplicate-ip',
-  'vlan-mismatch-on-link',
-  'same-subnet-different-vlan',
-  'l2-loop',
-] as const
+/**
+ * Mọi mã chẩn đoán mà `diagnose()` của phòng lab có thể trả ra.
+ *
+ * Khai kiểu `Record<LabDiagnosis, true>` chứ không phải mảng chuỗi rời:
+ * engine lab thêm một chẩn đoán mới (Module 14 thêm hai) mà quên khai ở
+ * đây là `tsc` đỏ ngay — thay vì lặng lẽ để nội dung phòng khám không
+ * khai được bệnh đó trong `mustClearDiagnoses`.
+ */
+const DIAGNOSIS_TABLE: Record<LabDiagnosis, true> = {
+  'device-isolated': true,
+  'missing-ip': true,
+  'missing-gateway': true,
+  'gateway-not-in-subnet': true,
+  'duplicate-ip': true,
+  'vlan-mismatch-on-link': true,
+  'same-subnet-different-vlan': true,
+  'l2-loop': true,
+  'trunk-one-side-only': true,
+  'native-vlan-mismatch-on-trunk': true,
+  'port-shutdown': true,
+}
+
+const DIAGNOSIS_VALUES = Object.keys(DIAGNOSIS_TABLE) as [LabDiagnosis, ...LabDiagnosis[]]
 
 export const ClinicFixSchema = z.discriminatedUnion('kind', [
   z.object({

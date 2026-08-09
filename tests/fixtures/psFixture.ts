@@ -1,7 +1,8 @@
-// Đề terminal PowerShell mẫu (spec Module 12) — phủ đúng 4 mảng nội dung
-// spec liệt kê: cmdlet mạng, tra cứu AD, tạo user hàng loạt, đọc log.
-// Đây là hình dạng dữ liệu module-12.json sẽ khai thật; dựng ở đây trước
-// để test engine bám vào đề THẬT chứ không đề bịa dễ dãi.
+// Đề terminal PowerShell mẫu — 4 mảng nội dung của Module 12 (cmdlet
+// mạng, tra cứu AD, tạo user hàng loạt, đọc log) + bài xếp nhóm AGDLP
+// của Module 19 (spec v2 mục 4.5). Đây là hình dạng dữ liệu các module
+// sẽ khai thật; dựng ở đây trước để test engine bám vào đề THẬT chứ
+// không đề bịa dễ dãi.
 
 import type { PsSpec } from '../../src/engine/ps/gradePs'
 import type { PsWorld } from '../../src/engine/ps/world'
@@ -86,4 +87,35 @@ export function specDocLog(): PsSpec {
   }
 }
 
-export const ALL_PS_SPECS = [specTestConnection, specTaoMotUser, specTaoHangLoat, specDocLog]
+/**
+ * Miền có sẵn bộ khung AGDLP (M19): nhóm Global gom NGƯỜI theo vai,
+ * nhóm DomainLocal gom NHÓM theo quyền. Người mới chuyển phòng chỉ cần
+ * vào đúng nhóm Global là quyền tự chảy tới — đó chính là bài học.
+ */
+export function worldAgdlp(): PsWorld {
+  const world = clone(WORLD_VAN_PHONG)
+  world.ad!.groups = [
+    { name: 'KeToan-GG', scope: 'Global', members: ['nvan'] },
+    { name: 'QuyenDocBaoCao-DL', scope: 'DomainLocal', members: ['KeToan-GG'] },
+  ]
+  return world
+}
+
+/**
+ * Bài xếp nhóm AGDLP: ttbinh chuyển sang kế toán, phải đọc được báo cáo.
+ * CẶP goal ép đúng nếp: vào nhóm Global (chứ không nhét thẳng vào
+ * DomainLocal) VÀ quyền phải thật sự chảy tới — goal DL tính cả nhóm
+ * lồng nhóm nên lời giải một dòng Add vào GG là đạt cả hai.
+ */
+export function specXepNhom(): PsSpec {
+  return {
+    world: worldAgdlp(),
+    goals: [
+      { kind: 'group-member', group: 'KeToan-GG', sam: 'ttbinh' },
+      { kind: 'group-member', group: 'QuyenDocBaoCao-DL', sam: 'ttbinh' },
+    ],
+    solution: ['Add-ADGroupMember KeToan-GG -Members ttbinh'],
+  }
+}
+
+export const ALL_PS_SPECS = [specTestConnection, specTaoMotUser, specTaoHangLoat, specDocLog, specXepNhom]

@@ -15,8 +15,12 @@ import {
   addressedPorts,
   findDevice,
   isPortUsed,
+  linkIsUp,
+  nativeVlanOf,
   peerOfPort,
+  portModeOf,
   sameSubnet,
+  switchPortOf,
   validateTopology,
   vlanOfPort,
   type Device,
@@ -38,6 +42,7 @@ import {
   type PingResult,
 } from './simulate'
 import type { LabAllowance } from './session'
+import { stpEnabled } from './stp'
 
 /**
  * Mục tiêu của một bài lab. Cố ý chỉ có 4 loại — đủ diễn đạt mọi ca của
@@ -81,6 +86,18 @@ export type LabDiagnosis =
   | 'vlan-mismatch-on-link'
   | 'same-subnet-different-vlan'
   | 'l2-loop'
+  /** Một đầu dây khai trunk, đầu kia còn là access — bệnh của Module 14. */
+  | 'trunk-one-side-only'
+  /** Hai đầu trunk khai native khác nhau: khung trần lặng lẽ đổi VLAN. */
+  | 'native-vlan-mismatch-on-trunk'
+  /**
+   * Có cổng đã cắm dây nhưng đang bị tắt bằng lệnh (`shutdown`).
+   *
+   * Nêu bất kể đề bài muốn gì: dây cắm vào một cổng đang tắt là chuyện
+   * bất thường ở mọi mạng. Ngày nào có bài dạy "tắt cổng để cách ly" thì
+   * mục tiêu của bài đó phải nói ra được điều ấy, và luật này tính lại.
+   */
+  | 'port-shutdown'
 
 export interface GoalOutcome {
   goal: LabGoal
@@ -107,7 +124,15 @@ function vlanOfEndpoint(topo: Topology, deviceId: DeviceId, portId: PortId): Vla
   return peer === null ? null : vlanOfPort(topo, peer)
 }
 
-/** Có chu trình trong đồ thị thiết bị không (union-find trên các sợi dây). */
+/**
+ * Có chu trình TẦNG 2 không (union-find trên các sợi dây).
+ *
+ * Chỉ đếm những sợi dây nằm trọn trong tầng 2: router CHẶN khung quảng
+ * bá, nên mỗi cổng router là một miền quảng bá riêng và một vòng đi qua
+ * router không bao giờ sinh ra bão. Bỏ luật này thì mạng nhiều router
+ * nối vòng của Module 16 — thứ cả module dựng lên để khen là đường dự
+ * phòng — lại bị chẩn đoán là bệnh vòng lặp.
+ */
 function hasCycle(topo: Topology): boolean {
   const parent = new Map<DeviceId, DeviceId>()
   const find = (id: DeviceId): DeviceId => {
@@ -117,8 +142,10 @@ function hasCycle(topo: Topology): boolean {
     parent.set(id, root)
     return root
   }
+  const isRouter = (id: DeviceId): boolean => findDevice(topo, id)?.kind === 'router'
   for (const device of topo.devices) parent.set(device.id, device.id)
   for (const link of topo.links) {
+    if (isRouter(link.a.deviceId) || isRouter(link.b.deviceId)) continue
     const rootA = find(link.a.deviceId)
     const rootB = find(link.b.deviceId)
     if (rootA === rootB) return true
@@ -168,14 +195,33 @@ export function diagnose(topo: Topology, goals: readonly LabGoal[] = []): LabDia
     }
   }
 
-  // Dây nối hai cổng switch khác VLAN — khung chết ở đó (không có trunk).
   for (const link of topo.links) {
-    const vlanA = vlanOfPort(topo, link.a)
-    const vlanB = vlanOfPort(topo, link.b)
-    if (vlanA !== null && vlanB !== null && vlanA !== vlanB) found.add('vlan-mismatch-on-link')
+    if (!linkIsUp(topo, link)) found.add('port-shutdown')
   }
 
-  if (hasCycle(topo)) found.add('l2-loop')
+  // Dây nối hai cổng switch: ba bệnh khác nhau, ba lời chẩn đoán khác nhau.
+  for (const link of topo.links) {
+    const portA = switchPortOf(topo, link.a)
+    const portB = switchPortOf(topo, link.b)
+    if (portA === null || portB === null) continue
+    const modeA = portModeOf(portA)
+    const modeB = portModeOf(portB)
+
+    // Hai đầu access khác VLAN — khung chết ở đó (bài học Module 4).
+    if (modeA === 'access' && modeB === 'access' && portA.vlan !== portB.vlan) {
+      found.add('vlan-mismatch-on-link')
+    }
+    // Mới khai trunk MỘT đầu: đầu kia vẫn nhét mọi khung vào một VLAN.
+    if (modeA !== modeB) found.add('trunk-one-side-only')
+    // Hai đầu trunk mà native lệch: bệnh im lặng nhất của trunk.
+    if (modeA === 'trunk' && modeB === 'trunk' && nativeVlanOf(portA) !== nativeVlanOf(portB)) {
+      found.add('native-vlan-mismatch-on-trunk')
+    }
+  }
+
+  // Vòng kín chỉ là BỆNH khi chưa có ai canh nó. Bật STP rồi thì vòng
+  // là đường DỰ PHÒNG — nêu nó ra lúc đó là dạy ngược bài Module 15.
+  if (hasCycle(topo) && !stpEnabled(topo)) found.add('l2-loop')
 
   // --- Nhóm 2: chỉ là bệnh khi cản đường một mục tiêu "phải thông" ---
 
@@ -231,25 +277,33 @@ function pathVisits(result: PingResult): Set<DeviceId> {
 }
 
 /**
- * Chấm bài. Mọi goal phải đạt (AND) thì bài mới xong.
+ * Chạy một bộ mục tiêu trên một sơ đồ và trả kết quả từng mục tiêu.
  *
  * Các goal ping chạy TUẦN TỰ trên cùng một trạng thái mạng, theo đúng
  * thứ tự khai báo trong đề: mạng thật cũng tích lũy bảng MAC và ARP như
  * vậy, và thứ tự cố định giữ cho kết quả chấm hoàn toàn tất định.
+ *
+ * Tách riêng khỏi `gradeLab` vì bộ chấm CLI (Module 14-17) cũng phải hỏi
+ * đúng câu hỏi này: cấu hình bằng lệnh xong thì mạng có làm được việc đề
+ * bài yêu cầu không. Hai bộ chấm dùng CHUNG một phép đo, không phải hai
+ * bản sao dễ trôi khỏi nhau.
  */
-export function gradeLab(spec: LabSpec, learner: Topology): LabEvaluation {
+export function runLabGoals(
+  learner: Topology,
+  goals: readonly LabGoal[],
+): { outcomes: GoalOutcome[]; runs: PingResult[] } {
   const structural = validateTopology(learner)
   if (structural.length > 0) {
     // Sơ đồ không thể tồn tại trong đời thật → lỗi của trình soạn thảo,
     // không phải lỗi người học. Ném để lộ bug thay vì chấm bừa.
-    throw new Error(`gradeLab: sơ đồ có lỗi cấu trúc (${structural.map((p) => p.code).join(', ')})`)
+    throw new Error(`runLabGoals: sơ đồ có lỗi cấu trúc (${structural.map((p) => p.code).join(', ')})`)
   }
 
   const state: NetState = emptyNetState()
   const runs: PingResult[] = []
   const outcomes: GoalOutcome[] = []
 
-  for (const goal of spec.goals) {
+  for (const goal of goals) {
     if (goal.kind === 'ping' || goal.kind === 'pathThrough') {
       const result = simulatePing(learner, { from: goal.from, to: goal.to }, state)
       // Tích lũy những gì mạng vừa học được cho các goal sau.
@@ -281,6 +335,12 @@ export function gradeLab(spec: LabSpec, learner: Topology): LabEvaluation {
     outcomes.push({ goal, met, failure: null })
   }
 
+  return { outcomes, runs }
+}
+
+/** Chấm bài lab. Mọi goal phải đạt (AND) thì bài mới xong. */
+export function gradeLab(spec: LabSpec, learner: Topology): LabEvaluation {
+  const { outcomes, runs } = runLabGoals(learner, spec.goals)
   return {
     passed: outcomes.every((o) => o.met),
     goals: outcomes,

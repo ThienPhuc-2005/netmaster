@@ -16,6 +16,7 @@ import type {
 import { vlanRepairLab } from './labFixture'
 import { CASE_SAI_GATEWAY, cloneClinicCase } from './clinicFixture'
 import { specTaoMotUser } from './psFixture'
+import { trunkByCli } from './cliFixture'
 import { clonePalace } from './palaceFixture'
 
 export interface MakeLessonOpts {
@@ -40,6 +41,11 @@ export interface MakeLessonOpts {
    * câu hỏi thứ bảy, cùng phép thử kiến trúc.
    */
   psPractice?: boolean
+  /**
+   * Bước Làm dùng một BÀI CLI THIẾT BỊ (spec v2 Phần D) — dạng câu hỏi
+   * thứ tám, cùng phép thử kiến trúc lần thứ năm.
+   */
+  cliPractice?: boolean
 }
 
 // ---------------------------------------------------------------
@@ -408,6 +414,28 @@ export function makeLesson(id: string, opts: MakeLessonOpts = {}): Lesson {
         },
         solution: {
           vi: 'New-ADUser -Name "Le Thi Mai" -SamAccountName ltmai -Path "OU=KeToan,DC=noibo,DC=vn" — rồi Get-ADUser -Identity ltmai để tự kiểm chứng.',
+        },
+      },
+    ]
+  }
+
+  if (opts.cliPractice === true) {
+    practice.exercises = [
+      {
+        question: {
+          kind: 'cli',
+          id: `${id}-prac-cli`,
+          prompt: {
+            vi: 'Hai tòa nhà, hai xóm, một sợi dây nối giữa. Vào console hai switch dựng trunk cho VLAN 10 và 20 cùng đi chung sợi dây đó.',
+          },
+          spec: trunkByCli(),
+          hintTopic: { vi: 'vai của cổng nối giữa hai switch' },
+        },
+        hint: {
+          vi: 'Cú pháp khuyết: interface p4 → switchport mode … → switchport trunk allowed vlan … Làm đủ ở CẢ HAI switch.',
+        },
+        solution: {
+          vi: 'Trên mỗi switch: enable → configure terminal → interface p4 → switchport mode trunk → switchport trunk allowed vlan 10,20 → switchport trunk native vlan 1.',
         },
       },
     ]
