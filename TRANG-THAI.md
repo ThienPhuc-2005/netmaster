@@ -962,8 +962,11 @@ Còn lại duy nhất:
     bằng cách TẮT HẲN server rồi tải lại**: app khởi động, mở được
     `/bai/m1-bai-1`, trang Học render đủ 21 module. Đã gỡ SW + xóa cache
     + xóa dữ liệu kiểm sau khi xong.
-  - **CẦN CHỦ DỰ ÁN**: bản trên GitHub Pages chỉ có PWA sau lần deploy
-    kế tiếp (luật: hỏi trước khi deploy — chưa deploy gì cả).
+  - **ĐÃ DEPLOY (08-10)**: chủ dự án ra lệnh, đẩy 8 commit lên `main`,
+    workflow xanh cả test/typecheck/build/deploy. Kiểm bản live
+    https://thienphuc-2005.github.io/netmaster/ : manifest và sw.js mang
+    đúng base `/netmaster/`, service worker đăng ký đúng scope và
+    activate, cache 85 file gồm đủ 21 chunk nội dung, console sạch.
 
 Cập nhật: 2026-08-10. File này chỉ để nắm nhanh tình hình khi mở lại dự
 án. Nguồn chân lý: `SPEC-APP-HOC-MANG.md` (M1-12) và
