@@ -661,6 +661,21 @@
     "notReachedBody": "Passing the final module test of the stage opens this screen — the map on the Learn page shows where you stand.",
     "profileTitle": "Graduation milestones reached"
   },
+  "weakDrill": {
+    "title": "Practice your shaky questions",
+    "backToProfile": "Back to profile",
+    "cardOf": "Question {current}/{total}",
+    "slipTag": "slipped {count} times before",
+    "correctAgain": "Straight out this time — that old slip is healing.",
+    "next": "Next question",
+    "openLesson": "Reopen the lesson that teaches this",
+    "doneTitle": "Practice session done",
+    "doneBody": "You got {correct}/{total} of your shaky questions right. For anything still wobbly, reopen the lesson — this is not about points, it is so the next encounter costs you no thinking.",
+    "noXpNote": "No XP and no change to your review schedule: you already solved these once.",
+    "again": "Run it again",
+    "emptyTitle": "Nothing to practice yet",
+    "emptyBody": "Questions you had to retry gather here on their own. An empty list means you are moving smoothly — keep learning."
+  },
   "profile": {
     "title": "Profile",
     "streak": "Day streak",
@@ -678,6 +693,8 @@
     "analysisHeadline": "You stumble most on {kind} — on {pct}% of those questions ({attempted} answered). Not a verdict on you: that type simply wants more reps.",
     "analysisNotEnough": "So far you have stumbled on {stumbled} of {attempted} answered questions — not enough to say what kind of slip it is. Come back after a few more lessons, when the numbers can tell the truth.",
     "analysisTotals": "Totals: {stumbled}/{attempted} questions stumbled on · {fails} incorrect attempts · {solutions} needed the solution.",
+    "analysisDrillAction": "Practice {count} shaky questions",
+    "analysisDrillNote": "No XP here — this is the practice room, not the arena.",
     "analysisByKind": "By question type",
     "analysisByModule": "By module",
     "analysisByTopic": "Topics that keep biting",

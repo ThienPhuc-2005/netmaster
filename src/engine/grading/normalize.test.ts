@@ -121,5 +121,16 @@ describe('typedAnswerMatches', () => {
       // đáp án nguyên chuỗi trùng khít thì nhận thẳng, chưa tới bước chứa-cụm
       expect(typedAnswerMatches('gói tin', ['gói tin'])).toBe(true)
     })
+
+    it('ĐÁP ÁN vốn là câu phủ định thì lá chắn không được chặn nhầm (lỗi thật 08-10)', () => {
+      // "Ai ra lệnh cho cổng dự phòng mở?" → đáp án đúng là "Không ai cả".
+      // Người học gõ đúng câu đó từng bị chính lá chắn phủ định đánh trượt.
+      expect(typedAnswerMatches('Không ai cả', ['không ai', 'stp'])).toBe(true)
+      expect(typedAnswerMatches('không ai ra lệnh hết', ['không ai'])).toBe(true)
+      // ...nhưng lá chắn vẫn gác đúng chỗ của nó: câu phủ định KHÔNG được
+      // khớp một đáp án khẳng định nằm cùng danh sách.
+      expect(typedAnswerMatches('không phải stp', ['không ai', 'stp'])).toBe(false)
+      expect(typedAnswerMatches('chưa chắc là stp', ['không ai', 'stp'])).toBe(false)
+    })
   })
 })

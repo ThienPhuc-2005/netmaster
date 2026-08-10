@@ -462,6 +462,34 @@ describe('bộ nội dung', () => {
     expect(m21.masteryTest.some((q) => q.kind === 'clinic')).toBe(true)
   })
 
+  it('LỜI GIẢI của app phải qua được chính BỘ CHẤM của app', () => {
+    // Lỗi thật chủ dự án báo 08-10: câu m4-b2-ret-1 in lời giải "Địa chỉ
+    // MAC của người GỬI", app bảo người học "tự gõ lại đáp án", họ gõ
+    // đúng câu đó và bị chấm là chưa đúng — accept list hẹp hơn chính
+    // lời giải. Đây là lớp lỗi tệ nhất của bộ chấm: người trả lời ĐÚNG
+    // HƠN đáp án mẫu (nói rõ MAC thay vì "địa chỉ") thì bị phạt.
+    //
+    // Phép đo chỉ áp cho lời giải mở đầu bằng một CỤM ĐÁP ÁN ngắn: dài
+    // hơn 9 chữ là lời giải kể chuyện, có chữ số là đáp án IP/port (dấu
+    // chấm trong 192.168.1.1 làm mọi phép cắt câu vô nghĩa), có dấu ngoặc
+    // kép là ký hiệu. Ba ca đó không phải thứ người học chép lại nguyên.
+    const rejected: string[] = []
+    for (const m of modules) {
+      for (const lesson of m.lessons) {
+        for (const e of [...lesson.steps[3].exercises, ...lesson.steps[4].questions]) {
+          const q = e.question
+          if (q.kind !== 'typed') continue
+          const clause = (e.solution.vi.split(/[;:]|—|\. /)[0] ?? '').trim().replace(/\.$/, '')
+          if (clause.split(' ').length > 9 || /\d/.test(clause) || clause.includes('"')) continue
+          if (!typedAnswerMatches(clause, q.accept)) {
+            rejected.push(`${m.id}/${q.id}: lời giải "${clause}" không nằm trong accept`)
+          }
+        }
+      }
+    }
+    expect(rejected).toEqual([])
+  })
+
   it('module nào cũng có THƯ CUỐI MODULE, đủ dài để nói được một chuyện', () => {
     // Thư là phần thưởng duy nhất của mastery gate (nguyên tắc 2 cấm cộng
     // XP ở bài thi) — module mới mà quên soạn thư thì người học đậu xong

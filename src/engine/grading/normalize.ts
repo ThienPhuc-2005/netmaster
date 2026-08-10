@@ -64,8 +64,21 @@ function tokenize(normalized: string): string[] {
  * phủ định ở BẤT KỲ đâu, ta tắt chế độ khớp-chứa và chỉ còn nhận khớp
  * nguyên chuỗi (chặt hơn "đứng ngay trước cụm" để bắt cả "không phải
  * LÀ dns" — thà bắt gõ lại còn hơn chấm đúng câu phủ định).
+ *
+ * MỘT NGOẠI LỆ (lỗi thật chủ dự án báo 08-10): có câu mà ĐÁP ÁN ĐÚNG
+ * vốn là một câu phủ định — "ai ra lệnh cho cổng dự phòng mở?" → "Không
+ * ai cả". Người học gõ "không ai cả" bị chính lá chắn này chặn, dù cụm
+ * "không ai" nằm ngay trong danh sách accept. Nên lá chắn xét theo TỪNG
+ * đáp án: nó chỉ tắt khớp-chứa cho những đáp án KHÔNG mang phủ định.
+ * Nhờ vậy "không phải stp" vẫn trượt accept "stp" (đúng như cũ), còn
+ * "không ai cả" thì khớp accept "không ai".
  */
 const NEGATIONS = ['không', 'chưa', 'sai']
+
+/** Chuỗi có mang từ phủ định nào không (so theo TỪ, không theo chuỗi con). */
+function hasNegation(tokens: readonly string[]): boolean {
+  return tokens.some((t) => NEGATIONS.some((n) => lenientEquals(t, n)))
+}
 
 /**
  * Liên từ liệt kê — "1 hay 99", "2 hoặc 3", "chữ o hay chữ c gì đó".
@@ -108,10 +121,13 @@ export function typedAnswerMatches(raw: string, accept: readonly string[]): bool
   if (accept.some((answer) => lenientEquals(norm, normalizeAnswer(answer)))) return true
 
   const tokens = tokenize(norm)
-  if (tokens.some((t) => NEGATIONS.some((n) => lenientEquals(t, n)))) return false
+  const learnerNegates = hasNegation(tokens)
   const hedged = isHedgedListing(norm, tokens)
   return accept.some((answer) => {
     const answerTokens = tokenize(normalizeAnswer(answer))
+    // Câu học viên có phủ định: chỉ còn cửa với đáp án CŨNG phủ định
+    // (xem ghi chú ở NEGATIONS) — đáp án khẳng định thì đóng khớp-chứa.
+    if (learnerNegates && !hasNegation(answerTokens)) return false
     if (hedged && answerTokens.length <= 2) return false
     return containsPhrase(tokens, answerTokens)
   })

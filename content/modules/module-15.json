@@ -1026,7 +1026,13 @@
                   "cổng nối tới máy tính",
                   "cong noi toi may tinh",
                   "cổng người dùng",
-                  "cong nguoi dung"
+                  "cong nguoi dung",
+                  "cổng nối tới máy con của người dùng",
+                  "cong noi toi may con cua nguoi dung",
+                  "cổng nối tới máy con",
+                  "cong noi toi may con",
+                  "cổng nối máy con của người dùng",
+                  "cong noi may con cua nguoi dung"
                 ]
               },
               "hint": { "vi": "Cổng nối XUỐNG thứ gì thì an toàn, còn nối NGANG thì nguy hiểm?" },

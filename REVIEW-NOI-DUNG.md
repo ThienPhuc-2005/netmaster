@@ -798,7 +798,7 @@ Phần A · 6 chặng · 6 bài · 7 khái niệm · drill: subnet
 
 **5 · Nhớ lại (retrieval):**
 - **Đề:** Không nhìn lại bài: trong IPv6, ký hiệu nào dùng để rút gọn chuỗi nhóm 0 liên tiếp (chỉ được dùng một lần)?
-  - **Dạng:** gõ tay · **Chấp nhận:** :: | hai dấu hai chấm
+  - **Dạng:** gõ tay · **Chấp nhận:** :: | hai dấu hai chấm | ký hiệu :: | ky hieu :: | dấu :: | dau ::
   - **Gợi ý (tầng 2):** Là hai ký tự giống nhau đứng liền, chính là thứ biến 2001:0db8:0000:...:0001 thành 2001:db8::1.
   - **Lời giải (tầng 3):** Ký hiệu "::" — thay cho chuỗi nhóm 0 liên tiếp, và chỉ được xuất hiện đúng một lần trong một địa chỉ.
 - **Tự giải thích:** Giải thích bằng lời của bạn: vì sao thế giới cần IPv6 trong khi đã có IPv4?
@@ -959,7 +959,7 @@ Phần B · 5 chặng · 5 bài · 6 khái niệm
 
 **5 · Nhớ lại (retrieval):**
 - **Đề:** Không nhìn lại bài: switch nhìn vào địa chỉ NÀO trong lá thư để học ra 'máy này đang ở cổng nào'?
-  - **Dạng:** gõ tay · **Chấp nhận:** địa chỉ nguồn | mac nguồn | địa chỉ người gửi | mac người gửi | địa chỉ gửi | nguồn
+  - **Dạng:** gõ tay · **Chấp nhận:** địa chỉ nguồn | mac nguồn | địa chỉ người gửi | mac người gửi | địa chỉ gửi | nguồn | địa chỉ mac của người gửi | dia chi mac cua nguoi gui | mac của người gửi | mac cua nguoi gui | địa chỉ mac của máy gửi | dia chi mac cua may gui | địa chỉ mac nguồn | dia chi mac nguon
   - **Gợi ý (tầng 2):** Nó không đoán từ nơi thư định đến, mà từ nơi thư vừa đi ra.
   - **Lời giải (tầng 3):** Địa chỉ MAC của người GỬI. Thư đi vào cổng nào thì máy gửi đang ở cổng đó — switch ghi cặp đó vào sổ.
 - **Tự giải thích:** Bằng lời của bạn: vì sao lá thư ĐẦU TIÊN gửi tới một máy thường bị switch phát ra mọi cổng, còn các lá sau thì không?
@@ -1544,7 +1544,7 @@ Phần B · 5 chặng · 8 bài · 11 khái niệm
   - **Gợi ý (tầng 2):** Ba chữ số, và nó KHÔNG phải 389 — 389 là cuốn sổ để ngoài.
   - **Lời giải (tầng 3):** Port 636 — LDAPS, tức LDAP có mã hóa.
 - **Đề:** Cặp phòng phát chìa khóa nhà cho người mới — DHCP — mang hai số nào?
-  - **Dạng:** gõ tay · **Chấp nhận:** 67 68 | 67, 68 | 67/68 | 68 67 | 67-68
+  - **Dạng:** gõ tay · **Chấp nhận:** 67 68 | 67, 68 | 67/68 | 68 67 | 67-68 | 67 và 68 | 67 va 68 | 68 và 67 | 68 va 67
   - **Chủ đề gợi ý (tầng 1):** cặp số liền nhau ở phòng cuối cùng
   - **Gợi ý (tầng 2):** Hai số liền nhau, đều bắt đầu bằng số 6.
   - **Lời giải (tầng 3):** 67 và 68 — một số cho bên phát địa chỉ, một số cho bên nhận.
@@ -4754,7 +4754,7 @@ Phần D · 5 chặng · 5 bài · 6 khái niệm
 
 **5 · Nhớ lại (retrieval):**
 - **Đề:** Không nhìn lại bài: PortFast chỉ được bật trên loại cổng nào?
-  - **Dạng:** gõ tay · **Chấp nhận:** cổng nối máy con | cong noi may con | cổng cắm máy | cong cam may | cổng access | cong access | cổng nối tới máy tính | cong noi toi may tinh | cổng người dùng | cong nguoi dung
+  - **Dạng:** gõ tay · **Chấp nhận:** cổng nối máy con | cong noi may con | cổng cắm máy | cong cam may | cổng access | cong access | cổng nối tới máy tính | cong noi toi may tinh | cổng người dùng | cong nguoi dung | cổng nối tới máy con của người dùng | cong noi toi may con cua nguoi dung | cổng nối tới máy con | cong noi toi may con | cổng nối máy con của người dùng | cong noi may con cua nguoi dung
   - **Gợi ý (tầng 2):** Cổng nối XUỐNG thứ gì thì an toàn, còn nối NGANG thì nguy hiểm?
   - **Lời giải (tầng 3):** Cổng nối tới máy con của người dùng. Cổng nối sang switch khác thì tuyệt đối không — đó là mời vòng lặp vào nhà.
 - **Tự giải thích:** Giải thích bằng lời của bạn: PortFast giải quyết chuyện gì, và vì sao nó nguy hiểm nếu đặt nhầm chỗ?

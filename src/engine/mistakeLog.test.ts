@@ -3,7 +3,15 @@
 import { describe, expect, it } from 'vitest'
 import { loadModules } from '../content'
 import { startLesson } from './lessonMachine'
-import { analyzeMistakes, MIN_SAMPLE, weakSpots, weeklyActivity, weekStartOf } from './mistakeLog'
+import {
+  analyzeMistakes,
+  MIN_SAMPLE,
+  weakSpotDrill,
+  weakSpots,
+  WEAK_DRILL_CAP,
+  weeklyActivity,
+  weekStartOf,
+} from './mistakeLog'
 import type { DrillResult } from './types'
 import type { LessonRuntime as Runtime } from './lessonMachine'
 
@@ -217,5 +225,74 @@ describe('phân tích chỗ hay sai', () => {
       expect(topic.topic).toBeDefined()
     }
     expect(analysis.byTopic.map((t) => t.fails)).toEqual([...analysis.byTopic.map((t) => t.fails)].sort((a, b) => b - a))
+  })
+})
+
+describe('phiên luyện lại chỗ vấp', () => {
+  /** Đánh dấu MỌI bài của một module là đã học, mỗi câu vấp `fails` lần. */
+  function runtimesFor(module: (typeof modules)[number], fails: (index: number) => number) {
+    const runtimes: Record<string, Runtime> = {}
+    let i = 0
+    for (const lesson of module.lessons) {
+      const base = startLesson(lesson)
+      const exercises = { ...base.exercises }
+      for (const id of Object.keys(exercises)) {
+        exercises[id] = { failCount: fails(i), solved: true, usedSolution: false }
+        i += 1
+      }
+      runtimes[lesson.id] = { ...base, exercises }
+    }
+    return runtimes
+  }
+
+  it('chưa vấp câu nào thì không có gì để luyện — không bịa đề', () => {
+    expect(weakSpotDrill(modules, runtimesFor(firstModule, () => 0))).toEqual([])
+  })
+
+  it('chỉ lấy câu ĐÃ GIẢI XONG mà từng vấp', () => {
+    const lesson = firstModule.lessons[0]!
+    const base = startLesson(lesson)
+    const ids = Object.keys(base.exercises)
+    const exercises = { ...base.exercises }
+    exercises[ids[0]!] = { failCount: 2, solved: true, usedSolution: false } // lấy
+    exercises[ids[1]!] = { failCount: 3, solved: false, usedSolution: false } // đang dở → bỏ
+    const drill = weakSpotDrill(modules, { [lesson.id]: { ...base, exercises } })
+    expect(drill.map((d) => d.question.id)).toEqual([ids[0]])
+  })
+
+  it('câu vấp NẶNG nhất của mỗi module luôn lọt vào trần', () => {
+    // Trần cắt SAU khi trộn: mỗi module góp câu nặng nhất của nó trước.
+    const runtimes = runtimesFor(firstModule, (i) => 20 - i)
+    const all = weakSpotDrill(modules, runtimes, 100)
+    const capped = weakSpotDrill(modules, runtimes, 3)
+    const heaviest = [...all].sort((a, b) => b.failCount - a.failCount).slice(0, 3).map((d) => d.question.id)
+    expect(capped.map((d) => d.question.id).sort()).toEqual(heaviest.sort())
+  })
+
+  it('trộn XEN KẼ module — ba câu liền nhau cùng module là luyện khối', () => {
+    const runtimes = { ...runtimesFor(modules[0]!, () => 2), ...runtimesFor(modules[1]!, () => 2) }
+    const drill = weakSpotDrill(modules, runtimes, 6)
+    const ids = drill.map((d) => d.moduleId)
+    expect(new Set(ids).size, 'phiên phải chạm cả hai module').toBe(2)
+    for (let i = 2; i < ids.length; i += 1) {
+      const three = ids.slice(i - 2, i + 1)
+      expect(new Set(three).size, `ba câu liền nhau cùng module tại vị trí ${i}`).toBeGreaterThan(1)
+    }
+  })
+
+  it('không vượt trần, và mỗi câu chỉ xuất hiện một lần', () => {
+    const runtimes = runtimesFor(firstModule, () => 1)
+    const drill = weakSpotDrill(modules, runtimes, WEAK_DRILL_CAP)
+    expect(drill.length).toBeLessThanOrEqual(WEAK_DRILL_CAP)
+    expect(new Set(drill.map((d) => d.question.id)).size).toBe(drill.length)
+  })
+
+  it('mỗi câu mang theo đường về bài gốc và lời giải để hiện sau khi trả lời', () => {
+    const drill = weakSpotDrill(modules, runtimesFor(firstModule, () => 2), 3)
+    for (const item of drill) {
+      expect(item.lessonId).toBeTruthy()
+      expect(item.moduleId).toBeTruthy()
+      expect(item.solution).toBeDefined()
+    }
   })
 })

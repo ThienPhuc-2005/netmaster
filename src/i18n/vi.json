@@ -661,6 +661,21 @@
     "notReachedBody": "Đậu bài thi của module cuối chặng là cửa vào màn tốt nghiệp — bản đồ trên trang Học đang chỉ chỗ bạn đứng.",
     "profileTitle": "Mốc tốt nghiệp đã đạt"
   },
+  "weakDrill": {
+    "title": "Luyện lại chỗ hay vấp",
+    "backToProfile": "Về trang Hồ sơ",
+    "cardOf": "Câu {current}/{total}",
+    "slipTag": "từng vấp {count} lần",
+    "correctAgain": "Lần này ra ngay — chỗ vấp cũ đang lành lại.",
+    "next": "Câu tiếp theo",
+    "openLesson": "Mở lại bài dạy phần này",
+    "doneTitle": "Xong phiên luyện lại",
+    "doneBody": "Bạn làm đúng {correct}/{total} câu từng vấp. Câu nào còn chưa chắc thì mở lại bài dạy — luyện lại không phải để lấy điểm, mà để lần sau gặp nó bạn không phải nghĩ lâu.",
+    "noXpNote": "Phiên này không cộng XP và không đổi lịch ôn: mấy câu này bạn đã giải xong một lần rồi.",
+    "again": "Luyện lại lượt nữa",
+    "emptyTitle": "Chưa có câu nào để luyện lại",
+    "emptyBody": "Những câu bạn phải thử nhiều lần sẽ tự gom về đây. Chưa có câu nào nghĩa là bạn đang đi khá trơn — cứ học tiếp đã."
+  },
   "profile": {
     "title": "Hồ sơ",
     "streak": "Chuỗi ngày học",
@@ -678,6 +693,8 @@
     "analysisHeadline": "Chỗ bạn vấp nhiều nhất là {kind} — vấp ở {pct}% số câu dạng này ({attempted} câu đã làm). Không phải bạn kém dạng đó, chỉ là nó đang cần thêm lượt luyện.",
     "analysisNotEnough": "Bạn mới vấp {stumbled} câu trên {attempted} câu đã làm — chưa đủ để nói chắc kiểu vấp nào. Học thêm ít bài nữa rồi quay lại đây, lúc đó con số mới nói thật.",
     "analysisTotals": "Tổng cộng: {stumbled}/{attempted} câu từng vấp · {fails} lần trả lời chưa đúng · {solutions} câu phải mở lời giải.",
+    "analysisDrillAction": "Luyện lại {count} câu hay vấp",
+    "analysisDrillNote": "Không cộng XP — đây là phòng tập, không phải sân thi.",
     "analysisByKind": "Theo dạng câu",
     "analysisByModule": "Theo module",
     "analysisByTopic": "Chủ đề cứ quay lại cắn",

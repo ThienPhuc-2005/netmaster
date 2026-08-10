@@ -692,7 +692,7 @@
                 "kind": "typed",
                 "id": "m3-b6-ret-1",
                 "prompt": { "vi": "Không nhìn lại bài: trong IPv6, ký hiệu nào dùng để rút gọn chuỗi nhóm 0 liên tiếp (chỉ được dùng một lần)?" },
-                "accept": ["::", "hai dấu hai chấm"]
+                "accept": ["::", "hai dấu hai chấm", "ký hiệu ::", "ky hieu ::", "dấu ::", "dau ::"]
               },
               "hint": { "vi": "Là hai ký tự giống nhau đứng liền, chính là thứ biến 2001:0db8:0000:...:0001 thành 2001:db8::1." },
               "solution": { "vi": "Ký hiệu \"::\" — thay cho chuỗi nhóm 0 liên tiếp, và chỉ được xuất hiện đúng một lần trong một địa chỉ." }

@@ -259,6 +259,15 @@ quan trước khi "sửa test cho xanh".
   M21 từng phạm, đã dời DNS về chi nhánh). Người học giỏi sẽ ping máy
   chủ DNS để kiểm — bằng chứng tự đá nhau là ca hỏng.
 
+- **Bộ chấm câu gõ tay có hai cái bẫy đã trả giá (08-10)**: (a) khớp-chứa
+  đòi cụm accept LIỀN NHAU, nên người trả lời RÕ HƠN đáp án mẫu ("địa chỉ
+  MAC của người gửi" vs accept "địa chỉ người gửi") bị chấm sai — accept
+  phải chứa cả cách nói đầy đủ; (b) lá chắn phủ định xét theo TỪNG đáp án,
+  không tắt khớp-chứa cho đáp án vốn là câu phủ định ("Không ai cả").
+  Test thường trực gác lớp lỗi này: `content.test.ts` bắt mọi câu gõ tay có
+  lời giải ngắn mà accept của chính nó từ chối. `accept[0]` là chữ hiện ở
+  dòng "Đáp án:" — để nó khớp với lời giải, đừng để hai câu khác nhau.
+
 ## 7. Nội dung & bài thi mastery
 
 - **`masteryTest` là POOL, không phải ĐỀ**: mỗi module >= 12 câu, mỗi
@@ -348,6 +357,12 @@ quan trước khi "sửa test cho xanh".
   `QuestionInput.draft.test.tsx` gác). Lab không lưu lịch sử undo,
   `restoreLab` giữ `initial` là đề bài; PS/CLI lưu cả nhật ký lệnh, "Làm
   lại từ đầu" xóa draft. Lưu bài dở KHÔNG XP/streak/answerHistory.
+- **Phiên luyện lại chỗ vấp (`weakSpotDrill` + `/luyen-lai`, khối 21.9)**:
+  KHÔNG XP / KHÔNG streak / KHÔNG đụng SM-2 và KHÔNG ghi lại runtime bài
+  gốc — câu ở đây đã giải xong một lần, cộng điểm là mở đường farm (test
+  khóa cả nhánh đúng lẫn sai). Thứ tự engine BẮT BUỘC: nặng trước → trộn
+  xen kẽ module → mới cắt trần; cắt trước khi trộn thì một module ăn trọn
+  trần (id "m1-" thắng tie-break) và phiên thành luyện khối.
 - **Phân tích chỗ hay sai (`analyzeMistakes`, khối 21.8)** cắt ba lát: dạng
   câu / module / chủ đề (`hintTopic`). Hai luật thống kê KHÔNG được nới:
   chia theo TỈ LỆ (số thô luôn trỏ về dạng câu đông nhất) và nhóm dưới

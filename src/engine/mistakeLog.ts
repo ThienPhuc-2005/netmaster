@@ -331,3 +331,101 @@ export function analyzeMistakes(
     toughestKind: kindRows.find((k) => k.ranked && k.stumbled > 0) ?? null,
   }
 }
+
+// ---------------------------------------------------------------
+// LUYỆN LẠI đúng chỗ vấp (khối 21.9)
+// ---------------------------------------------------------------
+//
+// Phân tích ở trên nói ra chỗ hổng, nhưng nói xong rồi để đấy thì mới
+// làm được nửa việc: người học phải tự mò về từng bài để gặp lại đúng
+// câu đã vấp. Phần dưới đây soạn thẳng một PHIÊN LUYỆN từ chính những
+// câu đó.
+//
+// BA LUẬT giữ cho nó không phá cơ chế học (nguyên tắc 5 + mastery gate):
+//  1. **KHÔNG XP, KHÔNG streak, KHÔNG đụng SM-2.** Câu ở đây đều đã giải
+//     xong một lần rồi — cộng điểm cho lượt làm lại là mở đường farm
+//     bằng cách cố tình vấp.
+//  2. **Không mở khóa gì.** Phiên chỉ lấy câu trong những bài người học
+//     ĐÃ HỌC XONG; nó không chạm tới bài chưa mở, không thay bài thi.
+//  3. **Trộn xen kẽ module** (interleaving, spec 2.2): ba câu liền nhau
+//     cùng một module thành ra luyện khối, mà chính kiểu luyện đó sinh
+//     ra ảo giác thành thạo.
+
+/** Một câu trong phiên luyện lại, kèm đường về bài gốc. */
+export interface WeakDrillItem {
+  moduleId: string
+  lessonId: string
+  question: Question
+  /** Lời giải của bài — hiện sau khi trả lời, đúng nếp màn đáp án. */
+  solution: Lesson['steps'][3]['exercises'][number]['solution']
+  failCount: number
+  usedSolution: boolean
+}
+
+/** Trần một phiên luyện lại — cùng cỡ phiên ôn, đủ dài mà không ngợp. */
+export const WEAK_DRILL_CAP = 10
+
+/**
+ * Soạn phiên luyện lại từ những câu đã vấp.
+ *
+ * Thứ tự ba bước có chủ đích: xếp NẶNG TRƯỚC → trộn xen kẽ module →
+ * mới cắt trần. Cắt trước khi trộn thì hỏng: mấy câu cùng mức vấp sẽ
+ * được phân xử bằng id, mà id thì bắt đầu bằng "m1-", "m2-"… nên trần
+ * 10 câu bị một module ăn trọn và phiên thành luyện khối. Trộn trước
+ * thì mỗi module góp câu nặng nhất của nó trước, ai còn dư mới góp tiếp.
+ */
+export function weakSpotDrill(
+  modules: readonly Module[],
+  lessonRuntimes: Readonly<Record<string, LessonRuntime>>,
+  cap = WEAK_DRILL_CAP,
+): WeakDrillItem[] {
+  const items: WeakDrillItem[] = []
+  for (const module of modules) {
+    for (const lesson of module.lessons) {
+      const runtime = lessonRuntimes[lesson.id]
+      if (runtime === undefined) continue
+      const exercises = [...lesson.steps[3].exercises, ...lesson.steps[4].questions]
+      for (const exercise of exercises) {
+        const attempt = runtime.exercises[exercise.question.id]
+        // Chỉ câu ĐÃ GIẢI XONG mà từng vấp: câu đang làm dở vẫn nằm
+        // trong bài, kéo nó ra đây là hỏi hai nơi cùng một câu.
+        if (attempt === undefined || !attempt.solved || attempt.failCount <= 0) continue
+        items.push({
+          moduleId: module.id,
+          lessonId: lesson.id,
+          question: exercise.question,
+          solution: exercise.solution,
+          failCount: attempt.failCount,
+          usedSolution: attempt.usedSolution,
+        })
+      }
+    }
+  }
+
+  const hardestFirst = [...items].sort(
+    (a, b) =>
+      b.failCount - a.failCount ||
+      Number(b.usedSolution) - Number(a.usedSolution) ||
+      (a.question.id < b.question.id ? -1 : a.question.id > b.question.id ? 1 : 0),
+  )
+  return interleaveModules(hardestFirst).slice(0, cap)
+}
+
+/** Xoay vòng theo module, giữ nguyên thứ tự bên trong mỗi module. */
+function interleaveModules(items: readonly WeakDrillItem[]): WeakDrillItem[] {
+  const queues = new Map<string, WeakDrillItem[]>()
+  for (const item of items) {
+    const queue = queues.get(item.moduleId)
+    if (queue === undefined) queues.set(item.moduleId, [item])
+    else queue.push(item)
+  }
+  const out: WeakDrillItem[] = []
+  const lists = [...queues.values()]
+  for (let round = 0; out.length < items.length; round += 1) {
+    for (const list of lists) {
+      const next = list[round]
+      if (next !== undefined) out.push(next)
+    }
+  }
+  return out
+}

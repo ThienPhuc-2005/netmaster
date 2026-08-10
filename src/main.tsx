@@ -34,6 +34,9 @@ const ClinicPage = lazy(() => import('./features/clinic/ClinicPage').then((mod) 
 const ProfilePage = lazy(() =>
   import('./features/profile/ProfilePage').then((mod) => ({ default: mod.ProfilePage })),
 )
+const WeakSpotDrillPage = lazy(() =>
+  import('./features/profile/WeakSpotDrill').then((mod) => ({ default: mod.WeakSpotDrillPage })),
+)
 const DesignPage = lazy(() => import('./features/design/DesignPage').then((mod) => ({ default: mod.DesignPage })))
 const GraduationPage = lazy(() =>
   import('./features/graduation/GraduationPage').then((mod) => ({ default: mod.GraduationPage })),
@@ -58,6 +61,7 @@ const router = createBrowserRouter(
         { path: 'luyen-vlsm', element: lazyRoute(<VlsmDrill />) },
         { path: 'phong-kham', element: lazyRoute(<ClinicPage />) },
         { path: 'ho-so', element: lazyRoute(<ProfilePage />) },
+        { path: 'luyen-lai', element: lazyRoute(<WeakSpotDrillPage />) },
         { path: 'tot-nghiep/:milestoneId', element: lazyRoute(<GraduationPage />) },
         { path: 'design', element: lazyRoute(<DesignPage />) },
       ],

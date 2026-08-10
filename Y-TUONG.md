@@ -95,6 +95,19 @@ Trạng thái: ☐ chờ duyệt · ✅ đã làm · ✗ đã bàn và bỏ (gi�
   Windows (`ClinicDeviceConsole`); hai ca liên tầng M21 dùng nó, nửa
   bệnh lớp 2 giờ KHÁM được thay vì đoán bằng loại trừ.
 
+## I. Ý sinh ra trong lúc làm cụm hồ sơ (08-10)
+
+- ✅ **I1. Luyện lại đúng chỗ vấp** — ĐÃ LÀM (khối 21.9): nút trong mục
+  phân tích mở phiên tối đa 10 câu gồm chính những câu từng vấp; không
+  XP, không đụng lịch ôn.
+- ☐ **I2. Chủ đề vấp đẩy thẻ ôn lên sớm** — chủ đề nào cứ quay lại cắn
+  thì thẻ khái niệm tương ứng được ưu tiên trong hàng đợi ôn.
+- ☐ **I3. So với chính mình tháng trước** — chụp lại bảng phân tích theo
+  tháng để thấy dạng câu từng yếu giờ đã lên.
+- ☐ **I4. Ảo giác quen mặt vào hồ sơ lỗi** — thẻ nào hay bị "chắc mà
+  không nhớ" (dữ liệu tự chấm A2) thì gom vào mục chỗ hay vấp; hiện dữ
+  liệu đó tan theo phiên.
+
 ## H. Ý sinh ra trong lúc làm Phần D-E (08-09)
 
 - ✅ **H1. Giấy chứng nhận tải được** — ĐÃ LÀM (khối 21.6): PNG

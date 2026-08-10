@@ -29,10 +29,11 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
 **HAI VIỆC ĐANG TREO, phiên mới cần biết:**
-1. **Khối 21.8 (phân tích chỗ hay sai) CHƯA COMMIT** — đã commit tới
-   `97ae87c` (khối 21.7, hộp ôn tập); khối 21.8 đang nằm ở working tree.
-   Commit là việc chủ dự án ra lệnh (luật: không tự commit); folder nằm
-   trong OneDrive nên chưa commit là chưa có bản sao lịch sử tử tế.
+1. **Khối 21.9 + 21.10 CHƯA COMMIT** — đã commit tới `de143b5` (khối
+   21.8); khối 21.9 (luyện lại chỗ vấp) và 21.10 (vá lỗi chấm) đang nằm
+   ở working tree. Commit là việc chủ dự án ra lệnh (luật: không tự
+   commit); folder nằm trong OneDrive nên chưa commit là chưa có bản sao
+   lịch sử tử tế.
 2. **Phiên nền đang sửa hình `Journey`** (5 hình vis-hanh-trinh-* tràn
    viewBox, task riêng của chủ dự án, worktree `.claude/worktrees/…`) —
    ĐỪNG đụng component Journey trong `ConceptVisual.tsx` cho tới khi
@@ -1085,6 +1086,64 @@ Còn lại duy nhất:
     mẫu — đúng luật thống kê; đổi sang hồ sơ 3 câu thì mục tự chuyển sang
     câu "chưa đủ để nói chắc". Mobile 375px không cuộn ngang, console
     sạch, dữ liệu kiểm đã xóa.
+
+- **Khối 21.9 XONG (08-10): LUYỆN LẠI ĐÚNG CHỖ VẤP** — phần HÀNH ĐỘNG
+  của mục phân tích vừa làm. Phân tích nói ra chỗ hổng rồi để đấy thì
+  mới xong nửa việc: người học vẫn phải tự mò về từng bài để gặp lại câu
+  đã vấp.
+  - `weakSpotDrill` (mistakeLog.ts) soạn thẳng một phiên tối đa 10 câu từ
+    chính những câu ĐÃ GIẢI XONG mà từng vấp. Route mới `/luyen-lai`,
+    cửa vào là nút ngay trong mục phân tích ở trang Hồ sơ.
+  - **Ba luật giữ nó không phá cơ chế học**: KHÔNG XP / KHÔNG streak /
+    KHÔNG đụng lịch SM-2 (câu ở đây đã giải xong một lần rồi — cộng điểm
+    cho lượt làm lại là mở đường farm bằng cách cố tình vấp); không mở
+    khóa gì (chỉ lấy câu trong bài đã học xong); trộn XEN KẼ module.
+  - **Thứ tự ba bước của engine là một quyết định, không phải tùy tiện**:
+    xếp nặng trước → trộn xen kẽ → MỚI cắt trần. Làm ngược (cắt rồi trộn)
+    thì mấy câu cùng mức vấp bị phân xử bằng id — mà id bắt đầu bằng
+    "m1-", "m2-" — nên trần 10 câu bị một module ăn trọn và phiên thành
+    luyện khối. Lỗi này lộ ra đúng lúc viết test, đã có test khóa.
+  - Nhịp một câu: tự trả lời → chấm ngay → đáp án kèm vì sao → câu kế,
+    và luôn có đường "Mở lại bài dạy phần này". Sai không bị phạt nhưng
+    cũng KHÔNG lặng lẽ bỏ qua — vẫn là một lượt retrieval.
+  - Màn này CỐ Ý không gọi một action ghi điểm nào của store; test khóa
+    cả hai nhánh (đúng và sai) rằng xpTotal, reviewCards, streak và
+    lessonRuntimes đứng nguyên.
+  - 1300/1300 test xanh (+11), typecheck sạch, build qua. Kiểm browser
+    thật với hồ sơ 12 bài: nút "Luyện lại 10 câu hay vấp" mở đúng phiên,
+    đi trọn 10 câu ra màn tổng kết "đúng 2/10", XP đứng nguyên 500 suốt
+    phiên. Mobile 375px không cuộn ngang, console sạch, dữ liệu kiểm đã
+    xóa.
+
+- **Khối 21.10 XONG (08-10): VÁ LỖI CHẤM SAI CÂU TRẢ LỜI ĐÚNG** — chủ
+  dự án báo lỗi thật khi đang học: bài m4-bai-2 bước Nhớ lại, gõ "địa
+  chỉ Mac của người gửi" — đúng y nguyên lời giải app in ra ngay bên
+  dưới — mà bị chấm là chưa đúng.
+  - **Bệnh 1 (nội dung)**: `containsPhrase` đòi cụm accept nằm LIỀN
+    NHAU. Accept có "địa chỉ người gửi" nhưng người học nói RÕ HƠN
+    ("địa chỉ MAC của người gửi") thì chữ "mac của" chen vào giữa và
+    cụm không còn liền — trả lời chính xác hơn đáp án mẫu thì bị phạt.
+  - **Bệnh 2 (bộ chấm)**: lá chắn phủ định tắt khớp-chứa khi câu có chữ
+    "không/chưa/sai". Nhưng có câu mà ĐÁP ÁN ĐÚNG vốn là câu phủ định
+    ("ai ra lệnh cho cổng dự phòng mở?" → "Không ai cả") — lá chắn
+    đánh trượt chính đáp án của mình. Đã sửa: lá chắn xét theo TỪNG đáp
+    án, chỉ tắt khớp-chứa với đáp án KHÔNG mang phủ định. "không phải
+    stp" vẫn trượt accept "stp" như cũ (test khóa cả hai chiều).
+  - **Quét cả bộ nội dung bằng một phép đo mới**: lời giải của app có qua
+    nổi bộ chấm của app không. Ra 4 câu thật (m4-b2-ret-1, m15-b4-ret-1,
+    m15-b5-ret-1, m5-b8-pra-2 "67 và 68") + m3-b6-ret-1 (ký hiệu ::).
+    Đã nới accept cho từng câu; **phép đo đó giờ là test thường trực**
+    trong `content.test.ts` — module mới mà soạn accept hẹp hơn lời giải
+    của chính nó là đỏ ngay.
+  - Đổi luôn accept[0] của m4-b2-ret-1 thành "Địa chỉ MAC của người
+    gửi": dòng "Đáp án:" lấy phần tử đầu, mà trước đó nó in "địa chỉ
+    nguồn" trong khi lời giải ngay dưới nói "Địa chỉ MAC của người GỬI"
+    — hai câu khác nhau cho cùng một chỗ.
+  - 1302/1302 test xanh (+2), typecheck sạch, build qua, content:review
+    render lại 21 module. Kiểm browser thật ĐÚNG ca chủ dự án gặp: gõ
+    "địa chỉ Mac của người gửi" → chấm ĐÚNG, khen retrieval, dòng Đáp án
+    giờ khớp lời giải; và ca "Không ai cả" ở m15-bai-4 cũng đúng. Dữ
+    liệu kiểm đã xóa.
 
 Cập nhật: 2026-08-10. File này chỉ để nắm nhanh tình hình khi mở lại dự
 án. Nguồn chân lý: `SPEC-APP-HOC-MANG.md` (M1-12) và

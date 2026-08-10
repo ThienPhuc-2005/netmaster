@@ -9,7 +9,7 @@
 
 import { Link } from 'react-router'
 import { useId } from 'react'
-import { AlertCircle, Brain, CalendarRange, ChartNoAxesColumn } from 'lucide-react'
+import { AlertCircle, Brain, CalendarRange, ChartNoAxesColumn, Target } from 'lucide-react'
 import { lt } from '../../engine/ltext'
 import type { MistakeAnalysis, MistakeBucket, WeakSpot, WeekActivity } from '../../engine/mistakeLog'
 import type { ModuleMemory } from '../../engine/freshness'
@@ -211,7 +211,16 @@ export function MemoryMap({ rows }: { rows: MemoryRow[] }) {
  * chữ chê, và chỗ nào chưa đủ dữ liệu thì NÓI THẲNG là chưa đủ thay vì
  * phán bừa cho có.
  */
-export function MistakeAnalysisCard({ analysis, moduleTitles }: { analysis: MistakeAnalysis; moduleTitles: Record<string, Module['title']> }) {
+export function MistakeAnalysisCard({
+  analysis,
+  moduleTitles,
+  drillSize,
+}: {
+  analysis: MistakeAnalysis
+  moduleTitles: Record<string, Module['title']>
+  /** Số câu phiên luyện lại sẽ hỏi — 0 thì không mời. */
+  drillSize: number
+}) {
   const t = useT()
   // Chưa vấp lần nào thì không dựng mục: một bản phân tích toàn số 0 chỉ
   // chiếm chỗ, và với người mới nó là lời khen rỗng.
@@ -249,6 +258,21 @@ export function MistakeAnalysisCard({ analysis, moduleTitles }: { analysis: Mist
           solutions: analysis.usedSolution,
         })}
       </p>
+
+      {/* Phân tích mà không có cửa đi tiếp thì mới xong nửa việc: nút này
+          soạn thẳng một phiên gặp lại đúng những câu đã vấp (KHÔNG XP). */}
+      {drillSize > 0 && (
+        <div className="flex flex-wrap items-center gap-3">
+          <Link
+            to="/luyen-lai"
+            className="inline-flex items-center gap-2 rounded-md border border-accent/40 px-4 py-2 text-sm font-semibold text-accent hover:bg-panel-hover"
+          >
+            <Target size={15} aria-hidden />
+            {t('profile.analysisDrillAction', { count: drillSize })}
+          </Link>
+          <span className="text-xs text-ink-muted">{t('profile.analysisDrillNote')}</span>
+        </div>
+      )}
 
       <BucketList title={t('profile.analysisByKind')} rows={kinds} label={(b) => t(`profile.kind.${b.key}`)} t={t} />
       <BucketList

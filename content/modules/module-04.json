@@ -297,7 +297,7 @@
                 "kind": "typed",
                 "id": "m4-b2-ret-1",
                 "prompt": { "vi": "Không nhìn lại bài: switch nhìn vào địa chỉ NÀO trong lá thư để học ra 'máy này đang ở cổng nào'?" },
-                "accept": ["địa chỉ nguồn", "mac nguồn", "địa chỉ người gửi", "mac người gửi", "địa chỉ gửi", "nguồn"]
+                "accept": ["Địa chỉ MAC của người gửi", "địa chỉ nguồn", "mac nguồn", "địa chỉ người gửi", "mac người gửi", "địa chỉ gửi", "nguồn", "dia chi mac cua nguoi gui", "mac của người gửi", "mac cua nguoi gui", "địa chỉ mac của máy gửi", "dia chi mac cua may gui", "địa chỉ mac nguồn", "dia chi mac nguon"]
               },
               "hint": { "vi": "Nó không đoán từ nơi thư định đến, mà từ nơi thư vừa đi ra." },
               "solution": {
