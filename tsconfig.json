@@ -9,8 +9,11 @@
     "strict": true,
     "noUncheckedIndexedAccess": true,
     "noEmit": true,
+    // MCP server chạy thẳng bằng Node (type stripping) nên import phải kèm
+    // đuôi .ts — an toàn vì dự án không bao giờ emit từ tsc.
+    "allowImportingTsExtensions": true,
     "skipLibCheck": true,
     "types": ["node"]
   },
-  "include": ["src", "tests"]
+  "include": ["src", "tests", "tools"]
 }

@@ -105,6 +105,11 @@ Trạng thái: ☐ chờ duyệt · ✅ đã làm · ✗ đã bàn và bỏ (gi�
   đọc lại ở trang Hồ sơ. Bắt lớp lỗi accept-hẹp bằng chính người học.
 - ✅ **I6. Khiếu nại được ở cả đề thi + sổ đi theo file sao lưu** — ĐÃ
   LÀM (khối 21.12).
+- ✅ **I7. MCP cho app** — ĐÃ LÀM (khối 21.13): Claude cắm thẳng vào bộ
+  chấm thật + nội dung + sổ khiếu nại, để nới đáp án lúc SOẠN BÀI thay vì
+  gọi mạng lúc chấm.
+- ☐ **I8. Dọn 89 câu gõ tay có dưới 3 cách nói** — tồn kho `narrow_accepts`
+  vừa chỉ ra; làm theo module một, chạy lại tool sau mỗi lượt.
 - ☐ **I2. Chủ đề vấp đẩy thẻ ôn lên sớm** — chủ đề nào cứ quay lại cắn
   thì thẻ khái niệm tương ứng được ưu tiên trong hàng đợi ôn.
 - ☐ **I3. So với chính mình tháng trước** — chụp lại bảng phân tích theo

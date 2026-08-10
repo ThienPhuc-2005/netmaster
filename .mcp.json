@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "netmaster": {
+      "command": "node",
+      "args": ["tools/mcp/server.mjs"]
+    }
+  }
+}

@@ -29,9 +29,8 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
 **HAI VIỆC ĐANG TREO, phiên mới cần biết:**
-1. **Khối 21.12 CHƯA COMMIT** — đã commit tới `8b3a946` (khối 21.11);
-   khối 21.12 (khiếu nại ở đề thi + sổ theo file sao lưu) đang ở working
-   tree. Commit là việc chủ dự án ra lệnh (luật: không tự commit).
+1. **Khối 21.13 CHƯA COMMIT** — đã commit tới `fd3ba9f` (khối 21.12);
+   khối 21.13 (MCP server) đang ở working tree.
 2. **Phiên nền đang sửa hình `Journey`** (5 hình vis-hanh-trinh-* tràn
    viewBox, task riêng của chủ dự án, worktree `.claude/worktrees/…`) —
    ĐỪNG đụng component Journey trong `ConceptVisual.tsx` cho tới khi
@@ -1200,6 +1199,44 @@ Còn lại duy nhất:
     đề thi cuối module"; bấm Xuất ra file thì nội dung file có đủ id câu
     và câu đã gõ. Mobile 375px không cuộn ngang, console sạch, dữ liệu
     kiểm đã xóa.
+
+- **Khối 21.13 XONG (08-10): MCP SERVER CHO APP** — chủ dự án đặt hàng
+  "chấm bài thông minh hơn: tạo MCP cho app hay nối app với Claude".
+  - **Quan ngại đã nêu một lần, rồi làm theo vế đầu**: nối app với Claude
+    lúc CHẤM BÀI là không làm được trong kiến trúc này — app là static
+    thuần trên Pages nên API key nhét vào bundle là công khai key; và gọi
+    mạng lúc chấm thì mất offline (vừa làm PWA ở khối 21.5) lẫn tính TẤT
+    ĐỊNH mà cổng 85% dựa vào. Chỗ đúng của mô hình ngôn ngữ ở đây là LÚC
+    SOẠN BÀI, không phải lúc người học bấm Kiểm tra.
+  - `tools/mcp/` — server MCP nói JSON-RPC qua stdio, **viết tay, không
+    thêm một dependency nào** (nếp icon PWA + earcon). `lib.ts` là phần
+    thuần test được, `server.mjs` chỉ lo giao thức. Node 24 chạy thẳng
+    TS nên server import đúng `normalize.ts` mà app đang dùng — không có
+    bản sao bộ chấm thứ hai để lệch nhau.
+  - **5 tool**: `grade_answer` (chấm thử bằng CHÍNH hàm app dùng — chặn
+    Claude khỏi việc đoán app sẽ chấm ra sao), `find_question`,
+    `narrow_accepts` (câu có nguy cơ chấm oan), `review_disputes` (đọc
+    sổ "mình nghĩ câu này đúng" từ file sao lưu của người học rồi chấm
+    lại bằng bộ chấm hôm nay), `accept_patch_line`.
+  - **Server CHỈ ĐỌC.** Không sửa nội dung, không sửa tiến độ, không gọi
+    mạng — `accept_patch_line` chỉ dựng sẵn dòng JSON để người soạn bài
+    tự dán. Một tool tự nới đáp án theo lời than của người học là con
+    đường ngắn nhất tới chỗ câu nào cũng đúng.
+  - **Nó kiếm cơm ngay lần chạy đầu**: `narrow_accepts` chỉ ra 3 câu mà
+    cổng chặn trong app KHÔNG thấy (test nội dung chỉ soi câu trong bài,
+    MCP soi cả pool đề thi). Soi tay thì cả 3 là BÁO ĐỘNG GIẢ — câu đề
+    thi mang lời GIẢNG/ẩn dụ chứ không mang cụm đáp án. Đã siết phép đo
+    (`solutionKind` phân biệt lời giải bài tập với lời giảng câu độc
+    lập) và có test khóa đúng ca đó. Còn lại **89 câu gõ tay có dưới 3
+    cách nói được chấp nhận** — đó là tồn kho nội dung thật, chờ duyệt.
+  - `.mcp.json` ở gốc repo khai server cho Claude Code (phải mở lại phiên
+    và duyệt server thì tool mới hiện).
+  - 1330/1330 test xanh (+17: 15 test ruột + 2 test BẮT TAY THẬT bằng
+    cách spawn server rồi nói JSON-RPC qua stdio), typecheck sạch (thêm
+    `tools` vào tsconfig), build qua. Chạy thật cả 5 tool trên nội dung
+    thật: ca chấm oan cũ ("địa chỉ Mac của người gửi") giờ báo đạt, còn
+    một khiếu nại chép lại nguyên chữ trong đề thì vẫn báo chưa đạt —
+    tool không đóng dấu bừa.
 
 Cập nhật: 2026-08-10. File này chỉ để nắm nhanh tình hình khi mở lại dự
 án. Nguồn chân lý: `SPEC-APP-HOC-MANG.md` (M1-12) và

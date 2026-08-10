@@ -558,6 +558,26 @@ chỉ bỏ điều kiện "học hết bài trước đã".
   Enter đốt oan một bậc thang gợi ý); nộp bằng nút "Kiểm tra". Ba tiêu
   chí hiện trạng thái bằng CHỮ (đạt/chưa đạt) cạnh ký hiệu, nếp CLI/lab.
 
+## 12. Công cụ soạn bài (tools/mcp)
+
+- **MCP server CHỈ ĐỌC** (`tools/mcp/`, khối 21.13): không sửa nội dung,
+  không sửa tiến độ, không gọi mạng. Muốn nới accept thì `accept_patch_line`
+  dựng dòng JSON, người soạn bài tự dán — tool tự sửa nội dung theo lời
+  than của người học là đường ngắn nhất tới chỗ câu nào cũng đúng.
+- **Không có bản sao bộ chấm thứ hai**: server import thẳng
+  `src/engine/grading/normalize.ts` (Node chạy TS bằng type stripping, nên
+  import PHẢI kèm đuôi `.ts` và tsconfig bật `allowImportingTsExtensions`).
+  Viết lại luật chấm trong tools/ là mở đường cho hai bộ chấm lệch nhau.
+- **Phân biệt `solution` với `explain`** khi đo accept-hẹp: lời giải bài
+  tập MỞ ĐẦU bằng cụm đáp án nên so với accept là có nghĩa; `explain` của
+  câu đứng độc lập mở đầu bằng câu giảng/ẩn dụ nên so là báo động giả (3
+  phát hiện rác ngay lần chạy đầu, có test khóa).
+- Giao thức viết tay: stdio + JSON-RPC 2.0 phân cách bằng DÒNG; notification
+  (không có `id`) TUYỆT ĐỐI không được trả lời. Có test spawn server thật.
+- **Vì sao không gọi Claude lúc chấm bài**: app là static thuần trên Pages
+  (key vào bundle = công khai key), phải chấm được khi mất mạng, và cổng
+  85% chỉ có nghĩa khi cùng câu trả lời luôn ra cùng kết quả.
+
 ## 12. Test người thật
 
 - Kịch bản ở `KICH-BAN-TEST.md`: mục 9 (Phần C — interleaving, tòa GPO
