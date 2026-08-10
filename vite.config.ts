@@ -1,6 +1,8 @@
 import { defineConfig, type Plugin } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
+// @ts-expect-error -- plugin thuần JS (cùng họ với scripts/*.mjs), không có .d.ts
+import { pwa } from './scripts/pwa-plugin.mjs'
 
 // GitHub Pages serves the app under /<repo-name>/. The deploy workflow
 // passes GHPAGES_BASE="/<repo-name>/" so the base always matches the
@@ -63,7 +65,7 @@ function preloadCriticalFonts(): Plugin {
 }
 
 export default defineConfig({
-  plugins: [react(), tailwindcss(), preloadCriticalFonts()],
+  plugins: [react(), tailwindcss(), preloadCriticalFonts(), pwa(base)],
   base,
   // Preview harness assigns a free port via PORT when 5173 is taken.
   server: {

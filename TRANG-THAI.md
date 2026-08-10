@@ -29,10 +29,10 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
 **HAI VIỆC ĐANG TREO, phiên mới cần biết:**
-1. **Khối 21.4 (đi thẳng bài sau) CHƯA COMMIT** — đã commit tới
-   `858d317` (khối 21.3); khối 21.4 đang nằm ở working tree. Commit là
-   việc chủ dự án ra lệnh (luật: không tự commit); folder nằm trong
-   OneDrive nên chưa commit là chưa có bản sao lịch sử tử tế.
+1. **Khối 21.5 (PWA) CHƯA COMMIT** — đã commit tới `243f7e3` (khối
+   21.4); khối 21.5 đang nằm ở working tree. Commit là việc chủ dự án ra
+   lệnh (luật: không tự commit); folder nằm trong OneDrive nên chưa
+   commit là chưa có bản sao lịch sử tử tế.
 2. **Phiên nền đang sửa hình `Journey`** (5 hình vis-hanh-trinh-* tràn
    viewBox, task riêng của chủ dự án, worktree `.claude/worktrees/…`) —
    ĐỪNG đụng component Journey trong `ConceptVisual.tsx` cho tới khi
@@ -929,6 +929,41 @@ Còn lại duy nhất:
     ngang, console sạch. Dữ liệu kiểm đã xóa.
   - **Lớp 3 (nhớ chỗ cuộn cũ) coi như không cần nữa**: sau lớp 1 và 2
     thì không còn đường nào rơi vào cảnh "về rồi phải tự tìm chỗ".
+
+- **Khối 21.5 XONG (08-10): CÀI ĐƯỢC NHƯ APP THẬT (PWA)** — ý F1 của
+  kho. Giờ thêm được vào màn hình chính điện thoại và **mở được khi mất
+  mạng** — đúng thứ các buổi test người thật cần (người test cài về máy
+  họ thay vì phải nhớ URL).
+  - **Icon tự vẽ, không thêm dependency**: `npm run icons` sinh 5 file
+    PNG (192/512 + maskable + apple-touch) từ chính hình phong bì của
+    favicon — rasterize bằng SDF + zlib có sẵn của Node. Kéo `sharp` về
+    để chạy một lần rồi nằm đó là không đáng (cùng nếp earcon tự tổng
+    hợp thay vì mang file âm).
+  - **Manifest + service worker SINH LÚC BUILD** (`scripts/pwa-plugin.mjs`,
+    cùng khuôn plugin preload font sẵn có): mọi đường dẫn phải theo BASE
+    động vì GitHub Pages phục vụ dưới `/<tên-repo>/` — đã kiểm cả hai
+    base, file tĩnh viết tay là link chết ngay lần deploy đầu.
+  - **Ý gốc trong kho nói SAI một chỗ, đã sửa hướng**: kho ghi "app vốn
+    đã offline được, chỉ thiếu tấm áo". Không phải — `AppGate` CHỜ
+    `primeModules()` kéo đủ **cả 21 chunk nội dung**, nên bản đầu tôi
+    làm (chỉ cache vỏ app) tắt server là **màn trắng**. Precache lại
+    thành hai mức: vỏ bắt buộc (`addAll`) + phần còn lại cố-gắng
+    (`allSettled`, ôm trọn 21 file nội dung).
+  - **Một bẫy nữa chỉ lộ khi thử thật**: `caches.match` mặc định phải
+    thoả `Vary`, mà máy chủ tĩnh hay gắn `Vary: Origin` — request của
+    trang và request lúc SW tự cache khác header nên TRƯỢT hết, rồi rơi
+    xuống `fetch` và chết vì mất mạng. Cache có đủ 85 file mà vẫn màn
+    trắng. Vá bằng `{ ignoreVary: true }`.
+  - Luật cache: HTML network-first (deploy mới thấy ngay), file có hash
+    cache-first (bất biến), **KHÔNG `skipWaiting`** — tráo asset dưới
+    chân phiên đang học là mời lỗi "không tải được chunk" giữa bài. SW
+    chỉ đăng ký ở bản PROD.
+  - 1226/1226 test xanh (+11), typecheck sạch, build qua. **Kiểm thật
+    bằng cách TẮT HẲN server rồi tải lại**: app khởi động, mở được
+    `/bai/m1-bai-1`, trang Học render đủ 21 module. Đã gỡ SW + xóa cache
+    + xóa dữ liệu kiểm sau khi xong.
+  - **CẦN CHỦ DỰ ÁN**: bản trên GitHub Pages chỉ có PWA sau lần deploy
+    kế tiếp (luật: hỏi trước khi deploy — chưa deploy gì cả).
 
 Cập nhật: 2026-08-10. File này chỉ để nắm nhanh tình hình khi mở lại dự
 án. Nguồn chân lý: `SPEC-APP-HOC-MANG.md` (M1-12) và

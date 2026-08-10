@@ -73,9 +73,11 @@ Trạng thái: ☐ chờ duyệt · ✅ đã làm · ✗ đã bàn và bỏ (gi�
 
 ## F. Kỹ thuật nền
 
-- ☐ **F1. Cài như app thật (PWA)** — manifest + service worker. App vốn
-  đã offline được, chỉ thiếu tấm áo để nằm trên màn hình chính điện
-  thoại.
+- ✅ **F1. Cài như app thật (PWA)** — ĐÃ LÀM (khối 21.5): manifest +
+  service worker sinh lúc build theo BASE động, icon tự vẽ (không thêm
+  dependency). Hoá ra app CHƯA offline được như ý gốc tưởng: AppGate
+  chờ nạp đủ 21 chunk nội dung nên mất mạng là màn trắng — giờ precache
+  hai mức, tắt server tải lại vẫn mở được bài học.
 - ✅ **F2. Cắt nhỏ gói nội dung** — ĐÃ LÀM (khối 20.2): glob non-eager,
   21 module = 21 chunk riêng, `primeModules()` nạp sau cổng AppGate; kèm
   dời zod khỏi PROD. Khởi động ~530KB → ~215KB gzip.

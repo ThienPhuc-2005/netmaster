@@ -449,6 +449,30 @@ chỉ bỏ điều kiện "học hết bài trước đã".
   /design là nơi duy nhất được cần). Kiểm bằng build: chunk chứa `_zod`
   không được nằm trong modulepreload của dist/index.html. Khởi động
   từ ~530KB gzip xuống ~215KB nhờ ba luật này.
+- **PWA (cài lên màn hình chính + chạy khi mất mạng)**: manifest và
+  service worker do `scripts/pwa-plugin.mjs` SINH LÚC BUILD, không có
+  file tĩnh nào để sửa tay — vì mọi đường dẫn phải theo BASE động
+  (GitHub Pages phục vụ dưới `/<tên-repo>/`). Icon sinh bằng
+  `npm run icons` (tự vẽ PNG, không thêm dependency); đổi logo thì chạy
+  lại rồi commit `public/*.png`.
+  - **Precache HAI MỨC**: vỏ app (`addAll`, thiếu là màn trắng) + phần
+    còn lại theo kiểu cố-gắng (`allSettled`). Phần cố-gắng PHẢI ôm trọn
+    21 chunk nội dung: `AppGate` chờ `primeModules()` kéo đủ cả 21, nên
+    thiếu một file là app không khởi động nổi khi mất mạng. Nạp lười của
+    khối 20.2 KHÔNG mâu thuẫn: nó lo đường nóng lúc vẽ màn đầu, SW cache
+    sau khi trang tải xong.
+  - **`caches.match` phải kèm `{ ignoreVary: true }`** — máy chủ tĩnh hay
+    gắn `Vary: Origin` (Vite preview có), request của trang và request
+    lúc SW tự cache khác header nên trượt, rồi rơi xuống `fetch` và chết
+    khi mất mạng. Đây đúng là lỗi từng làm bản đầu ra MÀN TRẮNG dù cache
+    có đủ 85 file. Kiểm bằng cách TẮT server rồi tải lại, không tin suông.
+  - **KHÔNG `skipWaiting`**: bản mới chỉ nắm quyền khi mọi tab đã đóng —
+    tráo asset dưới chân một phiên đang học là mời lỗi "không tải được
+    chunk" giữa bài. HTML đi network-first nên deploy mới vẫn thấy ngay;
+    file có hash đi cache-first vì chúng bất biến.
+  - SW chỉ đăng ký ở `import.meta.env.PROD`: dev server không phát
+    `sw.js`, mà một SW cũ còn sống ở localhost sẽ phục vụ asset ôi giữa
+    lúc đang sửa code.
 - i18n: vi.json + en.json cùng cấu trúc key, test parity khóa cả bộ
   `{placeholder}` từng key; lang lưu localStorage key `lang`;
   `<html lang>` theo nút VI/EN (`applyLang`); chuỗi EN có số viết dạng

@@ -104,3 +104,22 @@ host.__netmasterRoot.render(
     <Root />
   </StrictMode>,
 )
+
+/**
+ * Cài service worker để app nằm được trên màn hình chính và mở được khi
+ * mất mạng (kho ý tưởng F1).
+ *
+ * CHỈ ở bản build thật: dev server không phát `sw.js`, mà một service
+ * worker cũ còn sống ở localhost sẽ phục vụ asset ôi giữa lúc đang sửa
+ * code — kiểu lỗi tốn cả buổi để nhận ra.
+ *
+ * Đăng ký SAU `load` để không giành băng thông với lượt vẽ đầu tiên.
+ * `scope` bằng đúng BASE: trên GitHub Pages app nằm dưới /<tên-repo>/,
+ * lấy scope gốc là trình duyệt từ chối thẳng.
+ */
+if (import.meta.env.PROD && 'serviceWorker' in navigator) {
+  const base = import.meta.env.BASE_URL
+  window.addEventListener('load', () => {
+    void navigator.serviceWorker.register(`${base}sw.js`, { scope: base })
+  })
+}
