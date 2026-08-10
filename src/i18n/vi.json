@@ -130,6 +130,7 @@
     "actionResume": "Học tiếp",
     "actionNew": "Bắt đầu bài mới",
     "actionTest": "Vào thi",
+    "fading": "{count} thẻ đang mờ dần — chưa tới lượt ôn, nhưng mai kia sẽ tới. Trí nhớ nguội đúng lịch là chuyện bình thường.",
     "doneBody": "Hôm nay không còn thẻ đến hạn và bạn đã đi hết chặng đường hiện có. Nghỉ cũng là một phần của việc nhớ — mai quay lại nhé."
   },
   "test": {
@@ -227,7 +228,18 @@
     "relearnTag": "thẻ học lại",
     "comeback": "Thẻ này bạn từng quên {count} lần — lần này thử lại xem sao.",
     "moreDue": "Còn {count} thẻ nữa đang đến hạn hôm nay.",
-    "nextSession": "Ôn phiên tiếp"
+    "nextSession": "Ôn phiên tiếp",
+    "confidenceAsk": "Trước khi lật: bạn thấy mình chắc tới đâu?",
+    "showAnswerHint": "Thẻ này bạn vừa xem đáp án — lần này chỉ cần tự nhớ lại.",
+    "confidence": {
+      "sure": "Mình chắc",
+      "unsure": "Lơ mơ",
+      "blank": "Chịu"
+    },
+    "calibOver": "Thẻ vừa rồi bạn thấy chắc mà chưa nhớ ra được — đó là ảo giác quen mặt: đọc lại thấy quen nên tưởng đã nhớ. Cứ để nó quay lại, lần sau sẽ khác.",
+    "calibUnder": "Thẻ vừa rồi bạn bảo chịu mà vẫn nhớ ra — bạn đang đánh giá mình thấp hơn thực tế. Cứ thử nhớ trước khi kết luận là mình quên nhé.",
+    "calibDone": "Tự chấm khớp {aligned}/{total} thẻ — biết mình biết gì cũng là một kỹ năng, và nó luyện được.",
+    "calibDoneOver": "Có {count} thẻ bạn thấy chắc mà chưa nhớ ra: đó chính là chỗ đáng ôn nhất."
   },
   "drill": {
     "title": "Luyện chia subnet",
@@ -662,6 +674,11 @@
     "weakUsedSolution": "có mở lời giải",
     "weakGoLesson": "Xem lại bài",
     "weakGoLessonAria": "Xem lại bài {lesson}",
+    "memoryTitle": "Trí nhớ bạn đang giữ những gì",
+    "memoryIntro": "Thanh mờ dần theo lịch ôn của chính bạn: vừa ôn xong là đậm, tới ngày phải nhớ lại là nhạt hẳn. Nhạt không phải mất — nó là lời hẹn, và mỗi lần nhớ lại đúng lúc nhạt mới là lần nhớ ăn sâu nhất.",
+    "memoryCards": "{count} thẻ",
+    "memoryDue": "{count} đến hạn",
+    "memoryRowAria": "{module}: trí nhớ còn {pct} phần trăm, {cards} thẻ",
     "rhythmTitle": "Nếp học 8 tuần gần đây",
     "rhythmIntro": "Đây là baseline của chính bạn — thứ Module 20 dạy: biết nếp thường của mình thì mới nhận ra tuần nào khác thường. Cột thấp không phải lời chê, chỉ là một tuần bận.",
     "rhythmRow": "{lessons} bài · {drills} phiên luyện",

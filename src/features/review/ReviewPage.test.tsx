@@ -28,8 +28,18 @@ function seedTwoDueCards(): string[] {
   return concepts.map((c) => c.id)
 }
 
-function reveal() {
-  fireEvent.click(screen.getByRole('button', { name: /Hiện đáp án/ }))
+/**
+ * Lật thẻ. Ở lượt chấm ĐẦU, nút lật CHÍNH LÀ nút tự chấm độ chắc (kho ý
+ * tưởng A2) — mặc định chọn "Lơ mơ" để các test cũ đo đúng thứ chúng
+ * vốn đo; vòng học lại thì vẫn là nút "Hiện đáp án" như trước.
+ */
+function reveal(confidence: 'Mình chắc' | 'Lơ mơ' | 'Chịu' = 'Lơ mơ') {
+  const relearn = screen.queryByRole('button', { name: /Hiện đáp án/ })
+  if (relearn !== null) {
+    fireEvent.click(relearn)
+    return
+  }
+  fireEvent.click(screen.getByRole('button', { name: confidence }))
 }
 function answer(remembered: boolean) {
   fireEvent.click(screen.getByRole('button', { name: remembered ? /Mình nhớ/ : /Chưa nhớ ra/ }))
@@ -107,5 +117,77 @@ describe('relearning trong phiên ôn', () => {
     // lapses vẫn 1 — vòng học lại không chồng thêm hình phạt vào lịch
     // (forgottenCard tự khẳng định chỉ có ĐÚNG MỘT thẻ mang lapses 1).
     expect(forgottenCard().intervalIndex).toBe(0)
+  })
+})
+
+describe('tự chấm độ chắc trước khi lật (kho ý tưởng A2)', () => {
+  function renderReview() {
+    seedTwoDueCards()
+    render(
+      <MemoryRouter>
+        <ReviewPage />
+      </MemoryRouter>,
+    )
+  }
+
+  it('hỏi độ chắc TRƯỚC khi lật, và chính nút đó lật thẻ (không thêm cú bấm)', () => {
+    renderReview()
+    expect(screen.getByText(/bạn thấy mình chắc tới đâu/)).toBeDefined()
+    // Chưa lật thì chưa có nút tự chấm nhớ/quên.
+    expect(screen.queryByRole('button', { name: /Mình nhớ/ })).toBeNull()
+    fireEvent.click(screen.getByRole('button', { name: 'Mình chắc' }))
+    expect(screen.getByRole('button', { name: /Mình nhớ/ })).toBeDefined()
+  })
+
+  it('thấy chắc mà không nhớ ra → nói thẳng về ảo giác quen mặt', () => {
+    renderReview()
+    reveal('Mình chắc')
+    answer(false)
+    expect(screen.getByText(/ảo giác quen mặt/)).toBeDefined()
+  })
+
+  it('nói chịu mà vẫn nhớ ra → chỉ ra chuyện tự đánh giá thấp mình', () => {
+    renderReview()
+    reveal('Chịu')
+    answer(true)
+    expect(screen.getByText(/đánh giá mình thấp hơn thực tế/)).toBeDefined()
+  })
+
+  it('tự chấm khớp thì IM LẶNG — khen mỗi lượt đúng là nhiễu', () => {
+    renderReview()
+    reveal('Mình chắc')
+    answer(true)
+    expect(screen.queryByText(/ảo giác quen mặt/)).toBeNull()
+    expect(screen.queryByText(/đánh giá mình thấp hơn thực tế/)).toBeNull()
+  })
+
+  it('vòng học lại KHÔNG hỏi độ chắc nữa — lúc đó người học đã biết đáp án', () => {
+    renderReview()
+    reveal('Lơ mơ')
+    answer(false) // thẻ 1 quên → quay lại cuối phiên
+    reveal('Lơ mơ')
+    answer(true) // thẻ 2
+    expect(screen.getByText('thẻ học lại')).toBeDefined()
+    expect(screen.queryByRole('button', { name: 'Mình chắc' })).toBeNull()
+    expect(screen.getByRole('button', { name: /Hiện đáp án/ })).toBeDefined()
+  })
+
+  it('tự chấm KHÔNG cộng XP và không đụng lịch SM-2 — chỉ là phép đo của người học', () => {
+    renderReview()
+    reveal('Mình chắc')
+    answer(true)
+    const after = useProgress.getState()
+    const xpSure = after.xpTotal
+    const dueDates = after.reviewCards.map((c) => c.dueDate)
+
+    cleanup()
+    useProgress.setState({ ...INITIAL, streak: { ...INITIAL.streak } }, false)
+    renderReview()
+    reveal('Chịu')
+    answer(true)
+    const other = useProgress.getState()
+    // Cùng một kết quả "nhớ được", độ chắc khác nhau → store y hệt nhau.
+    expect(other.xpTotal).toBe(xpSure)
+    expect(other.reviewCards.map((c) => c.dueDate)).toEqual(dueDates)
   })
 })

@@ -29,10 +29,10 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
 **HAI VIỆC ĐANG TREO, phiên mới cần biết:**
-1. **Khối 21.6 (cụm phần thưởng D1+D2+H1+H2) CHƯA COMMIT** — đã commit
-   tới `720e6a4` (khối 21.5); khối 21.6 đang nằm ở working tree. Commit
-   là việc chủ dự án ra lệnh (luật: không tự commit); folder nằm trong
-   OneDrive nên chưa commit là chưa có bản sao lịch sử tử tế.
+1. **Khối 21.7 (hộp ôn tập A1+A2) CHƯA COMMIT** — đã commit tới `23d62dc`
+   (khối 21.6, cụm phần thưởng); khối 21.7 đang nằm ở working tree.
+   Commit là việc chủ dự án ra lệnh (luật: không tự commit); folder nằm
+   trong OneDrive nên chưa commit là chưa có bản sao lịch sử tử tế.
 2. **Phiên nền đang sửa hình `Journey`** (5 hình vis-hanh-trinh-* tràn
    viewBox, task riêng của chủ dự án, worktree `.claude/worktrees/…`) —
    ĐỪNG đụng component Journey trong `ConceptVisual.tsx` cho tới khi
@@ -1019,6 +1019,43 @@ Còn lại duy nhất:
     thì 14 dải chữ đều nằm trong khung (x 175-1023, y 96-783), không dải
     nào chồng nhau hay tràn viền. Mobile 375px không cuộn ngang, console
     sạch, dữ liệu kiểm đã xóa.
+
+- **Khối 21.7 XONG (08-10): HỘP ÔN TẬP BIẾT NÓI** — cụm A1 + A2 của kho.
+  Bốn ý trước lo lúc người học LÀM ĐÚNG và lúc VỀ ĐÍCH; lượt này lo bề
+  mặt họ quay lại mỗi ngày mà mấy khối gần đây không đụng tới.
+  - **A1 — độ tươi trí nhớ** (`src/engine/freshness.ts`, thuần TS): độ
+    tươi = PHẦN QUÃNG NGHỈ CÒN LẠI tới hạn, tính trên chính khoảng cách
+    SM-2 của thẻ. Khai thẳng trong file rằng đây KHÔNG phải đường quên
+    Ebbinghaus — app không đo được trí nhớ thật của ai, nó chỉ nói được
+    "so với lịch chính app đặt ra, thẻ này đã nguội bao nhiêu".
+  - **Chỗ ĐẶT con số mới là quyết định sư phạm**: không hiện trong lúc
+    ôn. "Trí nhớ còn 12%" đọc ngay trước khi lật là lời mời bỏ cuộc và
+    bẻ gãy đúng động tác nhớ lại mà hộp ôn sinh ra để tạo. Nó sống ở
+    trang Hồ sơ (bản đồ trí nhớ theo module, thanh mờ dần) và một dòng ở
+    thẻ Hôm nay ("N thẻ đang mờ dần") — dòng đó CỐ Ý không kèm nút ôn:
+    thẻ chưa tới hạn mà mời ôn sớm là phá chính giãn cách đang giữ nó.
+  - **A2 — tự chấm độ chắc trước khi lật**: ba nút Mình chắc / Lơ mơ /
+    Chịu CHÍNH LÀ nút lật thẻ, nên nhịp ôn 15 thẻ không dài thêm một cú
+    bấm nào. `engine/calibration.ts` đối chiếu lời tự chấm với kết quả
+    thật: thấy chắc mà không nhớ ra = ảo giác quen mặt (thứ đáng chỉ ra
+    nhất), nói chịu mà vẫn nhớ ra = tự đánh giá thấp mình.
+  - **"Lơ mơ" LUÔN tính là khớp** — người nói mình không chắc thì nhớ
+    được hay không cũng không mâu thuẫn với chính lời họ; phạt họ ở đây
+    là dạy người ta bớt thành thật. Có test khóa.
+  - Chỉ nói khi LỆCH (khớp thì im — khen mỗi lượt đúng là nhiễu), chỉ
+    hỏi ở lượt chấm ĐẦU (vòng học lại thì người học đã biết đáp án), và
+    dòng tổng kết cuối phiên chỉ hiện từ 3 lượt trở lên.
+  - **Không thêm một byte persist nào cho cả hai ý**: độ tươi suy từ
+    SM-2 sẵn có, sổ tự chấm sống trong phiên rồi tan. Không XP, không
+    đụng lịch SM-2 — có test khóa: cùng kết quả "nhớ được", chọn "Mình
+    chắc" hay "Chịu" thì store y hệt nhau.
+  - 1281/1281 test xanh (+24), typecheck sạch, build qua. Kiểm browser
+    thật: chọn "Mình chắc" rồi "Chưa nhớ ra" → thẻ kế tiếp hiện đúng câu
+    về ảo giác quen mặt; đi trọn phiên 3 thẻ ra dòng "Tự chấm khớp 2/3";
+    vòng học lại quay về nút "Hiện đáp án"; trang Học hiện "1 thẻ đang mờ
+    dần"; Hồ sơ vẽ bản đồ trí nhớ (Module 1 vừa ôn 100%, Module 2 còn
+    53%). Mobile 375px không cuộn ngang, console sạch, dữ liệu kiểm đã
+    xóa.
 
 Cập nhật: 2026-08-10. File này chỉ để nắm nhanh tình hình khi mở lại dự
 án. Nguồn chân lý: `SPEC-APP-HOC-MANG.md` (M1-12) và

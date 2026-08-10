@@ -130,6 +130,7 @@
     "actionResume": "Keep going",
     "actionNew": "Start the lesson",
     "actionTest": "Take the test",
+    "fading": "{count} cards are fading — not due yet, but they will be soon. Memory cooling on schedule is exactly how this works.",
     "doneBody": "Nothing is due today and you have reached the end of the road so far. Resting is part of remembering — see you tomorrow."
   },
   "test": {
@@ -227,7 +228,18 @@
     "relearnTag": "relearning",
     "comeback": "You have forgotten this one {count} times before — see how it goes today.",
     "moreDue": "Still due today: {count}.",
-    "nextSession": "Next session"
+    "nextSession": "Next session",
+    "confidenceAsk": "Before you flip it: how sure do you feel?",
+    "showAnswerHint": "You just saw the answer for this one — this time simply recall it.",
+    "confidence": {
+      "sure": "I'm sure",
+      "unsure": "Hazy",
+      "blank": "No idea"
+    },
+    "calibOver": "You felt sure about that one but could not recall it — that is the fluency illusion: rereading feels familiar, so it passes for knowing. Let it come back; next time will be different.",
+    "calibUnder": "You said no idea and still recalled it — you are rating yourself lower than you are. Try recalling before deciding you have forgotten.",
+    "calibDone": "Your self-rating matched on {aligned}/{total} cards — knowing what you know is a skill too, and it trains.",
+    "calibDoneOver": "On {count} cards you felt sure but could not recall: those are the ones most worth reviewing."
   },
   "drill": {
     "title": "Subnetting drill",
@@ -662,6 +674,11 @@
     "weakUsedSolution": "solution opened",
     "weakGoLesson": "Revisit lesson",
     "weakGoLessonAria": "Revisit lesson {lesson}",
+    "memoryTitle": "What your memory is holding",
+    "memoryIntro": "Each bar fades along your own review schedule: solid right after a review, pale by the day you must recall it. Pale is not lost — it is an appointment, and recalling something just as it fades is what makes it stick deepest.",
+    "memoryCards": "cards: {count}",
+    "memoryDue": "due: {count}",
+    "memoryRowAria": "{module}: memory at {pct} percent, {cards} cards",
     "rhythmTitle": "Your rhythm, last 8 weeks",
     "rhythmIntro": "This is your own baseline — the idea Module 20 teaches: you can only spot an unusual week once you know your usual one. A short bar is not a reproach, just a busy week.",
     "rhythmRow": "lessons: {lessons} · drills: {drills}",

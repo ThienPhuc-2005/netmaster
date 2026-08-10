@@ -9,10 +9,17 @@
 
 import { Link } from 'react-router'
 import { useId } from 'react'
-import { AlertCircle, CalendarRange } from 'lucide-react'
+import { AlertCircle, Brain, CalendarRange } from 'lucide-react'
 import { lt } from '../../engine/ltext'
 import type { WeakSpot, WeekActivity } from '../../engine/mistakeLog'
+import type { ModuleMemory } from '../../engine/freshness'
+import type { Module } from '../../engine/contentSchema'
 import { useT } from '../../i18n'
+
+/** Một hàng của bản đồ trí nhớ: module + độ tươi trung bình của thẻ. */
+export interface MemoryRow extends ModuleMemory {
+  title: Module['title']
+}
 
 /** dd/mm — cùng cách rút gọn với biểu đồ drill. */
 function shortDate(iso: string): string {
@@ -135,6 +142,62 @@ export function WeeklyRhythm({ weeks }: { weeks: WeekActivity[] }) {
           ))}
         </tbody>
       </table>
+    </section>
+  )
+}
+
+/**
+ * Bản đồ trí nhớ (kho ý tưởng A1) — mỗi module một thanh MỜ DẦN theo độ
+ * tươi trung bình của các thẻ thuộc module đó.
+ *
+ * Vì sao ở đây mà không ở phiên ôn: con số "trí nhớ còn 12%" đọc ngay
+ * trước lúc lật thẻ là lời mời bỏ cuộc, và nó bẻ gãy đúng động tác nhớ
+ * lại mà hộp ôn tập sinh ra để tạo. Ở trang Hồ sơ thì nó là tấm gương,
+ * không phải lời phán trước trận.
+ *
+ * Thanh KHÔNG bao giờ rỗng hẳn: một vạch mảnh còn lại để hàng nào cũng
+ * đọc được là "có thẻ ở đây" (cùng luật với tuần nghỉ của đồ thị nếp học).
+ */
+export function MemoryMap({ rows }: { rows: MemoryRow[] }) {
+  const t = useT()
+  if (rows.length === 0) return null
+
+  return (
+    <section aria-labelledby="memory-title" className="mt-6 flex flex-col gap-3 rounded-md border border-edge bg-panel px-5 py-4">
+      <div className="flex items-center gap-2">
+        <Brain size={17} aria-hidden className="shrink-0 text-accent" />
+        <h2 id="memory-title" className="text-sm font-semibold text-ink">
+          {t('profile.memoryTitle')}
+        </h2>
+      </div>
+      <p className="text-xs leading-relaxed text-ink-muted">{t('profile.memoryIntro')}</p>
+      <ul className="flex flex-col gap-2">
+        {rows.map((row) => {
+          const pct = Math.round(row.freshness * 100)
+          return (
+            <li key={row.moduleId} className="flex flex-wrap items-center gap-x-3 gap-y-1">
+              <span className="min-w-[9rem] flex-1 text-sm text-ink">{lt(row.title)}</span>
+              <span
+                className="h-2 w-32 shrink-0 rounded-full bg-panel-hover"
+                role="img"
+                aria-label={t('profile.memoryRowAria', { module: lt(row.title), pct, cards: row.cards })}
+              >
+                <span
+                  className="block h-full rounded-full bg-accent"
+                  style={{ width: `${Math.max(pct, 3)}%`, opacity: 0.35 + row.freshness * 0.65 }}
+                />
+              </span>
+              <span className="w-24 shrink-0 text-right font-mono text-xs text-ink-muted">
+                {row.due > 0 ? (
+                  <span className="text-warn">{t('profile.memoryDue', { count: row.due })}</span>
+                ) : (
+                  t('profile.memoryCards', { count: row.cards })
+                )}
+              </span>
+            </li>
+          )
+        })}
+      </ul>
     </section>
   )
 }

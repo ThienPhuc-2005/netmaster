@@ -350,6 +350,13 @@ quan trước khi "sửa test cho xanh".
   lại từ đầu" xóa draft. Lưu bài dở KHÔNG XP/streak/answerHistory.
 - **Phiên ôn có relearning**: thẻ quên requeue cuối phiên tới khi tự nhớ
   được; CHỈ lượt chấm đầu ghi SM-2 + XP (`ReviewPage.test.tsx` khóa).
+- **Độ tươi trí nhớ + tự chấm độ chắc (khối 21.7)**: `freshness.ts` tính
+  độ tươi = phần quãng nghỉ SM-2 còn lại (KHÔNG phải đường quên thật —
+  đã khai ở đầu file). Luật đặt chỗ: **không hiện độ tươi trong lúc ôn**
+  (đọc trước khi lật là lời mời bỏ cuộc) và **không mời ôn thẻ chưa tới
+  hạn** (phá chính giãn cách). `calibration.ts` đối chiếu lời tự chấm với
+  kết quả: "lơ mơ" luôn khớp, chỉ nói khi lệch, chỉ hỏi ở lượt chấm ĐẦU;
+  cả hai KHÔNG lưu trữ, KHÔNG XP, KHÔNG đụng lịch SM-2 (test khóa).
 - Điều hướng: mở app còn thẻ đến hạn → vào Ôn tập trước (gate ở
   main.tsx, quyết định trong effect SAU khi zustand rehydrate). AppGate
   chặn mọi route tới khi `onboardingDone` VÀ nội dung prime xong.

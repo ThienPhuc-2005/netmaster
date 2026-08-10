@@ -10,6 +10,7 @@ import { loadModules, lessonsInOrder } from '../../content'
 import { computeModuleStatuses } from '../../engine/masteryGate'
 import { moduleXpTotal } from '../../engine/xp'
 import { LESSON_STEP_COUNT, planToday, type TodayPlan } from '../../engine/todayPlan'
+import { fadingCards } from '../../engine/freshness'
 import type { Lesson, Module } from '../../engine/contentSchema'
 import { canChallengeModule, newLessonGate, todayIso, useProgress } from '../../store/progress'
 import { useT } from '../../i18n'
@@ -139,7 +140,7 @@ function StreakStoryBanner() {
  * Nó KHÔNG mở đường tắt nào: mọi đích đến đều là chỗ người học vốn đã
  * vào được (planToday chỉ đọc, không nới luật).
  */
-function TodayCard({ plan }: { plan: TodayPlan }) {
+function TodayCard({ plan, fading }: { plan: TodayPlan; fading: number }) {
   const t = useT()
 
   // Việc chính: mỗi focus một đích, một nhãn nút.
@@ -205,6 +206,12 @@ function TodayCard({ plan }: { plan: TodayPlan }) {
           ))}
         </ul>
       )}
+
+      {/* Thẻ ĐANG MỜ (kho ý tưởng A1): chưa tới hạn nên KHÔNG mời ôn sớm
+          — ôn sớm là phá chính giãn cách đang giữ trí nhớ. Đây là câu
+          nói thật về trí nhớ đang nguội dần, và là lý do quay lại mai
+          tử tế hơn nỗi sợ mất chuỗi ngày. */}
+      {fading > 0 && <p className="mt-2 text-xs text-ink-muted">{t('today.fading', { count: fading })}</p>}
 
       {/* Nợ quá trần: nói thật là bài MỚI đang khóa, ngay tại chỗ mời ôn —
           không để người học bấm vào bài mới rồi mới đâm vào cửa khóa. */}
@@ -494,6 +501,8 @@ export function LearnPage() {
     new Set(passedModules),
   )
   const plan = planToday({ modules, passedModules, completedLessons, lessonRuntimes, reviewCards, today })
+  // Thẻ đang mờ (kho A1) — chỉ để KỂ, không phải để mời ôn sớm.
+  const fading = fadingCards(reviewCards, today).length
   useScrollToModule(resolveTargetModule(modules, searchParams.get(FOCUS_PARAM)))
 
   if (modules.length === 0) {
@@ -511,7 +520,7 @@ export function LearnPage() {
 
       <StreakStoryBanner />
 
-      <TodayCard plan={plan} />
+      <TodayCard plan={plan} fading={fading} />
 
       <div className="flex flex-col gap-6">
         {modules.map((m) => (

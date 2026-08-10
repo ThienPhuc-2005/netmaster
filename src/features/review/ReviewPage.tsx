@@ -16,6 +16,13 @@ import { lt } from '../../engine/ltext'
 import { Link } from 'react-router'
 import { Eye, Layers, RotateCcw, ThumbsDown, ThumbsUp } from 'lucide-react'
 import { buildReviewSession, dueCards } from '../../engine/reviewQueue'
+import {
+  calibrationSummary,
+  calibrationVerdict,
+  type CalibrationRecord,
+  type CalibrationVerdict,
+  type Confidence,
+} from '../../engine/calibration'
 import { roomIdFromCardId } from '../../engine/palace'
 import { findConcept, findPalaceRoom } from '../../content'
 import { shouldReviewFirst, todayIso, useProgress } from '../../store/progress'
@@ -86,6 +93,12 @@ export function ReviewPage() {
   const [revealed, setRevealed] = useState(false)
   const [correctCount, setCorrectCount] = useState(0)
   const [finished, setFinished] = useState(false)
+  // Tự chấm độ chắc (kho ý tưởng A2): độ chắc của THẺ ĐANG MỞ, và sổ ghi
+  // cả phiên. Cả hai sống trong phiên, KHÔNG lưu xuống máy — đây là phép
+  // đo của người học về chính mình lúc này, không phải điểm số.
+  const [confidence, setConfidence] = useState<Confidence | null>(null)
+  const [calibration, setCalibration] = useState<CalibrationRecord[]>([])
+  const [lastVerdict, setLastVerdict] = useState<CalibrationVerdict | null>(null)
 
   // Người bị luật "mở app là ôn trước" đưa thẳng vào đây cần một lời
   // giải thích TẠI CHỖ — banner vì-sao nằm ở trang Học là nơi họ không
@@ -130,6 +143,7 @@ export function ReviewPage() {
     // Hết phiên nhưng CÒN thẻ đến hạn (phiên cắt trần 15) — không làm ngõ
     // cụt đẩy người học đi vòng Học↔Ôn tập: mời ôn phiên tiếp ngay tại chỗ.
     const stillDue = buildReviewSession(allCards, todayIso()).map((c) => c.conceptId)
+    const calibSummary = calibrationSummary(calibration)
     return (
       <>
         {heading}
@@ -138,6 +152,18 @@ export function ReviewPage() {
           <p className="text-sm text-ink-muted">
             {t('review.doneBody', { correct: correctCount, total: sessionConceptIds.length })}
           </p>
+          {/* Tổng kết tự chấm (A2): con số này KHÔNG phải điểm — nó đo
+              khả năng tự biết mình biết gì, và chỉ nói ra khi đủ vài
+              lượt để có nghĩa. */}
+          {calibSummary.accuracy !== null && calibSummary.total >= 3 && (
+            <p className="text-sm leading-relaxed text-ink-muted">
+              {t('review.calibDone', {
+                aligned: calibSummary.aligned,
+                total: calibSummary.total,
+              })}
+              {calibSummary.overconfident > 0 && ` ${t('review.calibDoneOver', { count: calibSummary.overconfident })}`}
+            </p>
+          )}
           {stillDue.length > 0 ? (
             <>
               <p className="text-sm text-ink-muted">{t('review.moreDue', { count: stillDue.length })}</p>
@@ -190,12 +216,19 @@ export function ReviewPage() {
       gradeReviewCard(cardId, remembered)
       setFirstGraded((s) => new Set(s).add(cardId))
       if (remembered) setCorrectCount((n) => n + 1)
+      // Đối chiếu lời tự chấm với chuyện vừa xảy ra — chỉ ở lượt ĐẦU,
+      // vì vòng học lại thì người học đã biết đáp án, độ chắc hết nghĩa.
+      if (confidence !== null) {
+        setCalibration((rows) => [...rows, { cardId, confidence, remembered }])
+        setLastVerdict(calibrationVerdict(confidence, remembered))
+      }
     }
     playEarcon(remembered ? 'correct' : 'incorrect')
     // Chưa nhớ (lần đầu hay lần học lại) → thẻ nối vào cuối hàng đợi.
     const nextQueue = remembered ? queue : [...queue, cardId]
     if (!remembered) setQueue(nextQueue)
     setRevealed(false)
+    setConfidence(null)
     if (index + 1 >= nextQueue.length) {
       completeReviewSession()
       playEarcon('lessonComplete')
@@ -230,11 +263,35 @@ export function ReviewPage() {
         </div>
 
         {!revealed ? (
-          <div className="flex justify-center">
-            <Button onClick={() => setRevealed(true)}>
-              <Eye size={15} aria-hidden />
-              {t('review.showAnswer')}
-            </Button>
+          /* Tự chấm độ chắc TRƯỚC KHI LẬT (kho ý tưởng A2). Ba nút này
+             CHÍNH LÀ nút lật thẻ — hỏi thêm một màn nữa là đổi một thói
+             quen tốt lấy một phiền phức. Ở vòng học lại thì bỏ qua: lúc
+             đó người học đã biết đáp án, hỏi độ chắc là hỏi vô nghĩa. */
+          <div className="flex flex-col items-center gap-3">
+            <p className="text-xs text-ink-muted">
+              {isRelearn ? t('review.showAnswerHint') : t('review.confidenceAsk')}
+            </p>
+            {isRelearn ? (
+              <Button onClick={() => setRevealed(true)}>
+                <Eye size={15} aria-hidden />
+                {t('review.showAnswer')}
+              </Button>
+            ) : (
+              <div className="flex flex-wrap justify-center gap-3">
+                {(['sure', 'unsure', 'blank'] as const).map((level) => (
+                  <Button
+                    key={level}
+                    variant={level === 'sure' ? 'primary' : 'ghost'}
+                    onClick={() => {
+                      setConfidence(level)
+                      setRevealed(true)
+                    }}
+                  >
+                    {t(`review.confidence.${level}`)}
+                  </Button>
+                ))}
+              </div>
+            )}
           </div>
         ) : (
           <div className="flex flex-col items-center gap-3">
@@ -251,6 +308,17 @@ export function ReviewPage() {
             <p className="text-xs text-ink-muted">{t('review.selfGradeHint')}</p>
           </div>
         )}
+
+        {/* Đối chiếu lượt VỪA RỒI — hiện ở thẻ kế tiếp, đúng lúc lời tự
+            chấm còn nóng. Chỉ nói khi có chuyện đáng nói (lệch hai
+            hướng); khớp thì im lặng, khen mỗi lượt đúng là nhiễu. */}
+        <div role="status">
+          {lastVerdict !== null && lastVerdict !== 'aligned' && !revealed && (
+            <p className="rounded-md border border-edge bg-panel px-4 py-3 text-sm leading-relaxed text-ink-muted">
+              {t(lastVerdict === 'overconfident' ? 'review.calibOver' : 'review.calibUnder')}
+            </p>
+          )}
+        </div>
       </div>
     </>
   )

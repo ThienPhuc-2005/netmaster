@@ -13,7 +13,8 @@ import { loadModules } from '../../content'
 import { weakSpots, weeklyActivity } from '../../engine/mistakeLog'
 import { Button } from '../../components/Button'
 import { milestones } from '../graduation/milestones'
-import { WeakSpotList, WeeklyRhythm } from './LearningInsights'
+import { MemoryMap, WeakSpotList, WeeklyRhythm } from './LearningInsights'
+import { memoryByModule } from '../../engine/freshness'
 
 /**
  * Cửa thoát hiểm cho dữ liệu (hội đồng 2026-08-07, ghế dữ liệu): toàn bộ
@@ -115,7 +116,13 @@ export function ProfilePage() {
 
   // Đọc lại chính mình: chỗ hay vấp + nếp học theo tuần. Cả hai suy TỪ
   // dữ liệu đã có, không thêm trường persist nào.
-  const spots = weakSpots(loadModules(), lessonRuntimes)
+  const modules = loadModules()
+  const spots = weakSpots(modules, lessonRuntimes)
+  // Bản đồ trí nhớ (kho A1): độ tươi theo module, chỉ đọc dữ liệu SM-2.
+  const memoryRows = memoryByModule(reviewCards, todayIso(), modules.map((m) => m.id)).map((row) => ({
+    ...row,
+    title: modules.find((m) => m.id === row.moduleId)?.title ?? { vi: row.moduleId },
+  }))
   const weeks = weeklyActivity(completedLessons, drillHistory, todayIso())
 
   const onImportFile = (file: File | undefined) => {
@@ -142,6 +149,7 @@ export function ProfilePage() {
       </div>
       <p className="mt-4 text-xs text-ink-muted">{t('profile.freezeNote')}</p>
 
+      <MemoryMap rows={memoryRows} />
       <WeakSpotList spots={spots} />
       <WeeklyRhythm weeks={weeks} />
 

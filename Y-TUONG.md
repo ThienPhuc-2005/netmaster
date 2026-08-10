@@ -10,12 +10,14 @@ Trạng thái: ☐ chờ duyệt · ✅ đã làm · ✗ đã bàn và bỏ (gi�
 
 ## A. Tâm lý học & trí nhớ
 
-- ☐ **A1. Thanh trí nhớ mờ dần** — mỗi thẻ ôn hiện "độ tươi" của trí
-  nhớ (suy từ dữ liệu SM-2 sẵn có). Mở app thấy "3 thẻ sắp quên hôm
-  nay" — lý do quay lại đúng khoa học hơn là sợ mất streak.
-- ☐ **A2. Tự chấm độ chắc trước khi lật thẻ** — hỏi "bạn chắc bao
-  nhiêu?" trước khi hiện đáp án, rồi so độ chắc với kết quả thật. Luyện
-  khả năng tự biết mình biết gì — kỹ năng lõi của người học giỏi.
+- ✅ **A1. Thanh trí nhớ mờ dần** — ĐÃ LÀM (khối 21.7): `engine/
+  freshness.ts` + bản đồ trí nhớ theo module ở trang Hồ sơ + dòng "N thẻ
+  đang mờ dần" ở thẻ Hôm nay. **Cố ý KHÔNG hiện độ tươi trong lúc ôn**:
+  "trí nhớ còn 12%" đọc trước khi lật là lời mời bỏ cuộc.
+- ✅ **A2. Tự chấm độ chắc trước khi lật thẻ** — ĐÃ LÀM (khối 21.7):
+  ba nút Mình chắc / Lơ mơ / Chịu CHÍNH LÀ nút lật thẻ (không thêm cú
+  bấm nào), rồi đối chiếu với kết quả. Chỉ nói khi LỆCH; "lơ mơ" luôn
+  tính là khớp — phạt người thành thật là dạy người ta bớt thành thật.
 - ✅ **A3. Hồ sơ lỗi cá nhân** — ĐÃ LÀM (khối 21.2): mục "Chỗ bạn hay
   vấp" ở trang Hồ sơ, 5 câu thử lại nhiều nhất kèm đường quay lại bài.
   **Nguồn không phải answerHistory như ý gốc đoán** — trường đó chỉ có
