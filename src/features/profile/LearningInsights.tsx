@@ -9,12 +9,19 @@
 
 import { Link } from 'react-router'
 import { useId } from 'react'
-import { AlertCircle, Brain, CalendarRange, ChartNoAxesColumn, Target } from 'lucide-react'
+import { AlertCircle, Brain, CalendarRange, ChartNoAxesColumn, MessageSquareWarning, Target } from 'lucide-react'
 import { lt } from '../../engine/ltext'
 import type { MistakeAnalysis, MistakeBucket, WeakSpot, WeekActivity } from '../../engine/mistakeLog'
 import type { ModuleMemory } from '../../engine/freshness'
-import type { Module } from '../../engine/contentSchema'
+import type { Module, Question } from '../../engine/contentSchema'
+import type { DisputedAnswer } from '../../store/progress'
 import { useT, type TFunc } from '../../i18n'
+
+/** Một dòng sổ góp ý, đã ghép với đề bài để đọc được. */
+export interface DisputedRow extends DisputedAnswer {
+  /** null khi nội dung đã đổi và không còn câu đó — vẫn hiện id. */
+  prompt: Question['prompt'] | null
+}
 
 /** Một hàng của bản đồ trí nhớ: module + độ tươi trung bình của thẻ. */
 export interface MemoryRow extends ModuleMemory {
@@ -344,5 +351,52 @@ function BucketList({
         ))}
       </ul>
     </div>
+  )
+}
+
+/**
+ * "Câu bạn cho là mình đúng" (khối 21.11) — đọc lại sổ góp ý đã ghi ở
+ * màn phản hồi. Hai vai, cả hai đều thật:
+ *
+ *  - với NGƯỜI HỌC: chứng cứ rằng lời họ nói không rơi vào hư không,
+ *    kèm đường quay lại chính bài đó để tự xem lại;
+ *  - với NGƯỜI SOẠN BÀI: nguyên văn câu người học gõ — thứ duy nhất
+ *    giúp soi ra danh sách đáp án đang hẹp hơn thực tế (lớp lỗi đã trả
+ *    giá ở khối 21.10). Trong buổi test người thật, đây là chỗ mở ra
+ *    xem đầu tiên.
+ */
+export function DisputedList({ rows, onClear }: { rows: DisputedRow[]; onClear: (questionId: string) => void }) {
+  const t = useT()
+  if (rows.length === 0) return null
+
+  return (
+    <section aria-labelledby="dispute-title" className="mt-6 flex flex-col gap-3 rounded-md border border-edge bg-panel px-5 py-4">
+      <div className="flex items-center gap-2">
+        <MessageSquareWarning size={17} aria-hidden className="shrink-0 text-accent" />
+        <h2 id="dispute-title" className="text-sm font-semibold text-ink">
+          {t('profile.disputeTitle')}
+        </h2>
+      </div>
+      <p className="text-xs leading-relaxed text-ink-muted">{t('profile.disputeIntro')}</p>
+      <ul className="flex flex-col gap-2">
+        {rows.map((row) => (
+          <li key={row.questionId} className="flex flex-col gap-1 rounded-md border border-edge bg-panel-hover px-4 py-3">
+            <p className="text-sm text-ink">{row.prompt === null ? row.questionId : lt(row.prompt)}</p>
+            <p className="font-mono text-xs text-ink-muted">{t('profile.disputeAnswer', { answer: row.answer })}</p>
+            <div className="flex flex-wrap items-center gap-3">
+              <Link to={`/bai/${row.lessonId}`} className="text-xs font-medium text-accent hover:underline">
+                {t('profile.disputeOpenLesson')}
+              </Link>
+              <button
+                onClick={() => onClear(row.questionId)}
+                className="text-xs font-medium text-ink-muted underline decoration-dotted underline-offset-4 hover:text-ink"
+              >
+                {t('profile.disputeClear')}
+              </button>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </section>
   )
 }

@@ -661,6 +661,10 @@
     "notReachedBody": "Passing the final module test of the stage opens this screen — the map on the Learn page shows where you stand.",
     "profileTitle": "Graduation milestones reached"
   },
+  "dispute": {
+    "action": "I think my answer is right",
+    "thanks": "Your exact wording has been saved for the author to re-check the answer list. This question still counts as unsolved — give it one more try."
+  },
   "weakDrill": {
     "title": "Practice your shaky questions",
     "backToProfile": "Back to profile",
@@ -712,6 +716,11 @@
       "ps": "PowerShell terminal",
       "cli": "Device console"
     },
+    "disputeTitle": "Answers you believe were right",
+    "disputeIntro": "The times you tapped \"I think my answer is right\". Your exact wording is kept so the author can re-check the accepted answers — an answer list that is too narrow is the question's fault, not yours.",
+    "disputeAnswer": "You typed: {answer}",
+    "disputeOpenLesson": "Reopen the lesson",
+    "disputeClear": "Remove this line",
     "memoryTitle": "What your memory is holding",
     "memoryIntro": "Each bar fades along your own review schedule: solid right after a review, pale by the day you must recall it. Pale is not lost — it is an appointment, and recalling something just as it fades is what makes it stick deepest.",
     "memoryCards": "cards: {count}",

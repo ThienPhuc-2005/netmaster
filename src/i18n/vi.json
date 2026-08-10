@@ -661,6 +661,10 @@
     "notReachedBody": "Đậu bài thi của module cuối chặng là cửa vào màn tốt nghiệp — bản đồ trên trang Học đang chỉ chỗ bạn đứng.",
     "profileTitle": "Mốc tốt nghiệp đã đạt"
   },
+  "dispute": {
+    "action": "Mình nghĩ câu này đúng",
+    "thanks": "Đã ghi lại nguyên văn câu bạn gõ để người soạn bài soi lại đáp án. Câu này vẫn chưa được tính là đúng — bạn cứ thử thêm một lần nữa nhé."
+  },
   "weakDrill": {
     "title": "Luyện lại chỗ hay vấp",
     "backToProfile": "Về trang Hồ sơ",
@@ -712,6 +716,11 @@
       "ps": "Terminal PowerShell",
       "cli": "Console thiết bị"
     },
+    "disputeTitle": "Câu bạn cho là mình đúng",
+    "disputeIntro": "Những lần bạn bấm \"Mình nghĩ câu này đúng\". App giữ nguyên văn câu bạn gõ để người soạn bài xem lại danh sách đáp án — đáp án soạn hẹp quá là lỗi của đề, không phải của bạn.",
+    "disputeAnswer": "Bạn đã gõ: {answer}",
+    "disputeOpenLesson": "Mở lại bài",
+    "disputeClear": "Bỏ dòng này",
     "memoryTitle": "Trí nhớ bạn đang giữ những gì",
     "memoryIntro": "Thanh mờ dần theo lịch ôn của chính bạn: vừa ôn xong là đậm, tới ngày phải nhớ lại là nhạt hẳn. Nhạt không phải mất — nó là lời hẹn, và mỗi lần nhớ lại đúng lúc nhạt mới là lần nhớ ăn sâu nhất.",
     "memoryCards": "{count} thẻ",

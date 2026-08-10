@@ -72,7 +72,7 @@ export const PRACTICE_DRAFT_CAP = 12
  * đối chiếu với nó để từ chối file đến từ bản app mới hơn (migrate chỉ
  * biết đi tới, không biết đi lùi).
  */
-export const PROGRESS_PERSIST_VERSION = 4
+export const PROGRESS_PERSIST_VERSION = 5
 
 /** Một dòng trong nhật ký terminal PowerShell (UI dựng lại y nguyên). */
 export interface PsTranscriptEntry {
@@ -130,6 +130,15 @@ export type PracticeDraft =
   | { kind: 'lab'; topology: Topology; layout: Record<string, { x: number; y: number }>; savedAt: ISODate }
   | { kind: 'ps'; state: PsRunState; entries: PsTranscriptEntry[]; savedAt: ISODate }
   | { kind: 'cli'; state: CliState; entries: CliTranscriptEntry[]; savedAt: ISODate }
+
+/** Một lần người học nói "câu này tôi nghĩ tôi đúng". */
+export interface DisputedAnswer {
+  lessonId: string
+  questionId: string
+  /** Nguyên văn câu người học gõ — thứ duy nhất giúp soi lại accept. */
+  answer: string
+  at: ISODate
+}
 
 /** Khóa bài dở — một câu hỏi trong một bài học là một mặt bàn riêng. */
 export function practiceDraftKey(lessonId: string, questionId: string): string {
@@ -198,6 +207,17 @@ export interface ProgressState {
    */
   vmLabDone: Record<string, ISODate>
   /**
+   * Sổ "mình nghĩ câu này đúng" (khối 21.11) — người học bấm khi tin câu
+   * trả lời của mình đúng mà app chấm là chưa. KHÔNG đổi kết quả chấm,
+   * KHÔNG mở câu, KHÔNG cộng gì: nó chỉ GHI LẠI nguyên văn câu họ gõ để
+   * người soạn bài soi lại danh sách đáp án.
+   *
+   * Vì sao đáng một trường persist: lớp lỗi "accept hẹp hơn lời giải"
+   * (khối 21.10) chỉ lộ ra khi có người bực đủ để đi nhắn. Nút này bắt
+   * nó ngay tại chỗ, bằng chính người học.
+   */
+  disputedAnswers: DisputedAnswer[]
+  /**
    * caseQuestionId -> ngày CHỮA KHỎI lần đầu ở tab Phòng khám (Phase 3
    * hạng mục 9 — phòng luyện song song). Chỉ lần đầu mỗi ca mới cộng
    * XP/streak; làm lại tự do không cộng (nguyên tắc 5, chặn farm).
@@ -258,6 +278,14 @@ export interface ProgressState {
    * 2.3) — mở lại đường vào bài mới và khởi động thời gian nguội.
    */
   markSupportShown: () => void
+
+  /**
+   * Ghi nhận "mình nghĩ câu này đúng". Trả về false khi câu đó đã ghi
+   * rồi — bấm hai lần không đẻ ra hai dòng.
+   */
+  reportDisputedAnswer: (lessonId: string, questionId: string, answer: string) => boolean
+  /** Xóa một dòng đã ghi (đọc lại thấy mình nhầm). */
+  clearDisputedAnswer: (questionId: string) => void
 
   /** Tick/bỏ tick một bước của checklist lab VMware. */
   toggleVmLabStep: (stepId: string) => void
@@ -382,6 +410,7 @@ export const useProgress = create<ProgressState>()(
         answerHistory: [],
         answerTotal: 0,
         supportShownAtTotal: null,
+        disputedAnswers: [],
         vmLabDone: {},
         clinicSolved: {},
         practiceDrafts: {},
@@ -582,6 +611,22 @@ export const useProgress = create<ProgressState>()(
           return { correct, firstSolve }
         },
 
+        reportDisputedAnswer: (lessonId, questionId, answer) => {
+          const trimmed = answer.trim()
+          // Câu rỗng không nói lên điều gì; đã ghi rồi thì thôi.
+          if (trimmed === '' || get().disputedAnswers.some((d) => d.questionId === questionId)) return false
+          set((s) => ({
+            // Trần 50 dòng, cũ rơi trước: đây là hộp thư góp ý chứ không
+            // phải nhật ký đời người — để nó phình vô hạn thì có ngày nó
+            // ăn hết chỗ của chính tiến độ học trong localStorage.
+            disputedAnswers: [...s.disputedAnswers, { lessonId, questionId, answer: trimmed, at: todayIso() }].slice(-50),
+          }))
+          return true
+        },
+
+        clearDisputedAnswer: (questionId) =>
+          set((s) => ({ disputedAnswers: s.disputedAnswers.filter((d) => d.questionId !== questionId) })),
+
         toggleVmLabStep: (stepId) =>
           set((s) => {
             const next = { ...s.vmLabDone }
@@ -739,7 +784,12 @@ export const useProgress = create<ProgressState>()(
             drillHistory: (state.drillHistory ?? []).map((d) => ({ ...d, mode: d.mode ?? 'subnet' })),
           }
         }
-        if (version <= 4) return state
+        // v4 → v5 (nút "mình nghĩ câu này đúng", 08-10): thêm sổ góp ý,
+        // rỗng — người học cũ chưa từng có nút nào để bấm.
+        if (version <= 4) {
+          state = { ...state, disputedAnswers: [] }
+        }
+        if (version <= 5) return state
         // Version lạ (mới hơn code — người dùng lùi bản app): giữ nguyên
         // và để shallow-merge với default đỡ phần thiếu, còn hơn vứt trắng.
         return persisted as ProgressState

@@ -13,7 +13,7 @@ import { loadModules } from '../../content'
 import { analyzeMistakes, weakSpotDrill, weakSpots, weeklyActivity } from '../../engine/mistakeLog'
 import { Button } from '../../components/Button'
 import { milestones } from '../graduation/milestones'
-import { MemoryMap, MistakeAnalysisCard, WeakSpotList, WeeklyRhythm } from './LearningInsights'
+import { DisputedList, MemoryMap, MistakeAnalysisCard, WeakSpotList, WeeklyRhythm } from './LearningInsights'
 import { memoryByModule } from '../../engine/freshness'
 
 /**
@@ -121,6 +121,19 @@ export function ProfilePage() {
   // Phân tích chỗ hay sai (khối 21.8): vấp theo KIỂU nào, không chỉ câu nào.
   const analysis = analyzeMistakes(modules, lessonRuntimes)
   const drillSize = weakSpotDrill(modules, lessonRuntimes).length
+  // Sổ "mình nghĩ câu này đúng": ghép với đề bài để đọc được (nội dung
+  // đổi sau khi ghi thì giữ nguyên dòng, chỉ mất phần đề).
+  const disputedAnswers = useProgress((s) => s.disputedAnswers)
+  const clearDisputed = useProgress((s) => s.clearDisputedAnswer)
+  const disputedRows = disputedAnswers.map((row) => ({
+    ...row,
+    prompt:
+      modules
+        .flatMap((m) => m.lessons)
+        .flatMap((l) => [...l.steps[3].exercises, ...l.steps[4].questions])
+        .map((e) => e.question)
+        .find((q) => q.id === row.questionId)?.prompt ?? null,
+  }))
   const moduleTitles = Object.fromEntries(modules.map((m) => [m.id, m.title]))
   // Bản đồ trí nhớ (kho A1): độ tươi theo module, chỉ đọc dữ liệu SM-2.
   const memoryRows = memoryByModule(reviewCards, todayIso(), modules.map((m) => m.id)).map((row) => ({
@@ -155,6 +168,7 @@ export function ProfilePage() {
 
       <MemoryMap rows={memoryRows} />
       <MistakeAnalysisCard analysis={analysis} moduleTitles={moduleTitles} drillSize={drillSize} />
+      <DisputedList rows={disputedRows} onClear={clearDisputed} />
       <WeakSpotList spots={spots} />
       <WeeklyRhythm weeks={weeks} />
 

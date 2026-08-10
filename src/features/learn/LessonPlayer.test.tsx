@@ -319,3 +319,48 @@ describe('màn tổng kết trỏ thẳng tới việc kế tiếp', () => {
     expect(screen.getByText('trang học')).toBeTruthy()
   })
 })
+
+describe('nút "mình nghĩ câu này đúng" (khối 21.11)', () => {
+  /** Tới câu gõ tay đầu tiên của bước Thử tay, bài 1 Module 1. */
+  function toFirstTypedQuestion() {
+    renderLesson('m1-bai-1')
+    fireEvent.click(screen.getByRole('button', { name: /Bắt đầu/ }))
+    fireEvent.click(screen.getByRole('button', { name: /Bị chia thành nhiều gói nhỏ/ }))
+    clickContinue()
+    clickContinue()
+  }
+
+  it('chỉ hiện SAU khi bị chấm là chưa đúng, không mời sẵn trước khi trả lời', () => {
+    toFirstTypedQuestion()
+    expect(screen.queryByRole('button', { name: /Mình nghĩ câu này đúng/ })).toBeNull()
+    typeAnswer('một câu chưa đúng')
+    expect(screen.getByRole('button', { name: /Mình nghĩ câu này đúng/ })).toBeTruthy()
+  })
+
+  it('bấm thì GHI LẠI nguyên văn câu vừa gõ, nhưng KHÔNG tính là đúng và không cộng gì', () => {
+    toFirstTypedQuestion()
+    typeAnswer('cái phong bì ấy')
+    const before = useProgress.getState()
+
+    fireEvent.click(screen.getByRole('button', { name: /Mình nghĩ câu này đúng/ }))
+
+    const after = useProgress.getState()
+    expect(after.disputedAnswers).toHaveLength(1)
+    expect(after.disputedAnswers[0]!.answer).toBe('cái phong bì ấy')
+    expect(after.disputedAnswers[0]!.lessonId).toBe('m1-bai-1')
+    // Câu VẪN chưa xong, XP vẫn vậy: nút này không phải cửa qua bài.
+    expect(after.xpTotal).toBe(before.xpTotal)
+    const runtime = after.lessonRuntimes['m1-bai-1']!
+    expect(Object.values(runtime.exercises).some((e) => e.solved)).toBe(false)
+    // ...và lời xác nhận phải nói thẳng điều đó ra.
+    expect(screen.getByText(/vẫn chưa được tính là đúng/)).toBeTruthy()
+  })
+
+  it('bấm hai lần không đẻ ra hai dòng', () => {
+    toFirstTypedQuestion()
+    typeAnswer('cái phong bì ấy')
+    fireEvent.click(screen.getByRole('button', { name: /Mình nghĩ câu này đúng/ }))
+    expect(useProgress.getState().reportDisputedAnswer('m1-bai-1', 'm1-b1-prac-1', 'lần nữa')).toBe(false)
+    expect(useProgress.getState().disputedAnswers).toHaveLength(1)
+  })
+})

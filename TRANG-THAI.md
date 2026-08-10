@@ -29,11 +29,9 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
 **HAI VIỆC ĐANG TREO, phiên mới cần biết:**
-1. **Khối 21.9 + 21.10 CHƯA COMMIT** — đã commit tới `de143b5` (khối
-   21.8); khối 21.9 (luyện lại chỗ vấp) và 21.10 (vá lỗi chấm) đang nằm
-   ở working tree. Commit là việc chủ dự án ra lệnh (luật: không tự
-   commit); folder nằm trong OneDrive nên chưa commit là chưa có bản sao
-   lịch sử tử tế.
+1. **Khối 21.11 CHƯA COMMIT** — đã commit tới `de460dc` (khối 21.9 +
+   21.10); khối 21.11 (nút "mình nghĩ câu này đúng") đang ở working
+   tree. Commit là việc chủ dự án ra lệnh (luật: không tự commit).
 2. **Phiên nền đang sửa hình `Journey`** (5 hình vis-hanh-trinh-* tràn
    viewBox, task riêng của chủ dự án, worktree `.claude/worktrees/…`) —
    ĐỪNG đụng component Journey trong `ConceptVisual.tsx` cho tới khi
@@ -1144,6 +1142,36 @@ Còn lại duy nhất:
     "địa chỉ Mac của người gửi" → chấm ĐÚNG, khen retrieval, dòng Đáp án
     giờ khớp lời giải; và ca "Không ai cả" ở m15-bai-4 cũng đúng. Dữ
     liệu kiểm đã xóa.
+
+- **Khối 21.11 XONG (08-10): NÚT "MÌNH NGHĨ CÂU NÀY ĐÚNG"** — chủ dự án
+  chọn ý này ngay sau lượt vá lỗi chấm. Lý do nó đáng làm: lớp lỗi
+  "accept hẹp hơn lời giải" (khối 21.10) chỉ lộ ra vì chủ dự án bực đủ
+  để đi nhắn. Người học thật sẽ im lặng và tự nghĩ mình dốt.
+  - Ở màn phản hồi khi bị chấm chưa đúng, câu GÕ TAY có thêm một dòng
+    chữ nhỏ "Mình nghĩ câu này đúng". Bấm là app ghi lại NGUYÊN VĂN câu
+    vừa gõ + id câu + ngày.
+  - **Chỉ câu gõ tay mới có nút** — đó là dạng duy nhất mà một danh sách
+    đáp án hẹp có thể đánh trượt người trả lời đúng; trắc nghiệm và xếp
+    thứ tự thì đáp án là chính nó, còn lab/CLI/PS chấm bằng hiệu ứng.
+  - **Nút KHÔNG mở câu, KHÔNG cộng gì, KHÔNG đổi kết quả chấm** — và lời
+    xác nhận nói thẳng ra điều đó ("câu này vẫn chưa được tính là đúng"),
+    nếu không nó thành cái nút bấm-là-qua. Test khóa: bấm xong runtime
+    vẫn chưa solved, XP đứng nguyên.
+  - Là chữ nhỏ gạch chân chứ không phải nút to: nó không được cạnh tranh
+    với việc đáng làm hơn là thử lại.
+  - **Trang Hồ sơ có mục "Câu bạn cho là mình đúng"** — hai vai: người
+    học thấy lời mình không rơi vào hư không (kèm đường mở lại bài), và
+    người soạn bài đọc được nguyên văn để soi accept. Trong buổi test
+    người thật, đây là chỗ mở ra xem đầu tiên.
+  - **Persist v4 → v5** kèm một bậc migrate thật + test: sổ góp ý mọc ra
+    rỗng, mọi thứ cũ giữ nguyên. Trần 50 dòng, cũ rơi trước — hộp thư
+    góp ý không được phình vô hạn rồi ăn chỗ của chính tiến độ học.
+  - 1306/1306 test xanh (+4), typecheck sạch, build qua. Kiểm browser
+    thật: gõ sai → nút hiện, bấm → localStorage ghi đúng một dòng
+    ("cái phong bì ấy"), XP vẫn 0, câu vẫn chưa xong; Hồ sơ hiện đúng
+    mục kèm đề bài và nguyên văn. **Kiểm cả migrate thật**: nạp hồ sơ
+    v4 có 420 XP/streak 5/1 thẻ → lên v5, không mất gì. Mobile 375px
+    không cuộn ngang, console sạch, dữ liệu kiểm đã xóa.
 
 Cập nhật: 2026-08-10. File này chỉ để nắm nhanh tình hình khi mở lại dự
 án. Nguồn chân lý: `SPEC-APP-HOC-MANG.md` (M1-12) và

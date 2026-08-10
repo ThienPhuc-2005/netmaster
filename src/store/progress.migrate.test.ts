@@ -95,6 +95,19 @@ describe('persist migrate: hợp đồng payload v1', () => {
     expect(s.drillHistory[0]).toMatchObject({ mode: 'subnet', correct: 8, total: 10, avgSeconds: 21.5 })
   })
 
+  it('v4 → v5 (nút "mình nghĩ câu này đúng"): sổ góp ý mọc ra rỗng, phần cũ nguyên vẹn', async () => {
+    const v4 = JSON.parse(JSON.stringify(v1Payload)) as { state: Record<string, unknown>; version: number }
+    v4.version = 4
+    v4.state['challengeUsed'] = { 'module-2': '2026-08-09' }
+    await rehydrateFrom(v4)
+    const s = useProgress.getState()
+    expect(s.disputedAnswers).toEqual([])
+    // Bậc mới chỉ thêm phần của mình rồi chuyền tiếp — không nuốt gì.
+    expect(s.challengeUsed).toEqual({ 'module-2': '2026-08-09' })
+    expect(s.xpTotal).toBe(32)
+    expect(s.reviewCards).toHaveLength(2)
+  })
+
   it('v3 → v4 (drill VLSM): phiên đã có mode thì migrate KHÔNG đụng vào', async () => {
     const v3 = JSON.parse(JSON.stringify(v1Payload)) as { state: Record<string, unknown>; version: number }
     v3.version = 3

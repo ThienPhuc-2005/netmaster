@@ -259,6 +259,12 @@ quan trước khi "sửa test cho xanh".
   M21 từng phạm, đã dời DNS về chi nhánh). Người học giỏi sẽ ping máy
   chủ DNS để kiểm — bằng chứng tự đá nhau là ca hỏng.
 
+- **Sổ "mình nghĩ câu này đúng" (`disputedAnswers`, persist v5)**: nút chỉ
+  hiện cho câu GÕ TAY đang bị chấm chưa đúng; ghi nguyên văn câu người học
+  gõ, KHÔNG mở câu / KHÔNG cộng XP / KHÔNG đổi chấm (test khóa), trần 50
+  dòng cũ-rơi-trước. Lời xác nhận BẮT BUỘC nói "vẫn chưa được tính là
+  đúng" — bỏ câu đó là biến nó thành nút bấm-là-qua. Đọc lại ở trang Hồ sơ.
+
 - **Bộ chấm câu gõ tay có hai cái bẫy đã trả giá (08-10)**: (a) khớp-chứa
   đòi cụm accept LIỀN NHAU, nên người trả lời RÕ HƠN đáp án mẫu ("địa chỉ
   MAC của người gửi" vs accept "địa chỉ người gửi") bị chấm sai — accept

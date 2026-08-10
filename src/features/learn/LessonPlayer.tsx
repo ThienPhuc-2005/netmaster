@@ -315,6 +315,33 @@ function SolvedReview({
   )
 }
 
+/**
+ * Nút báo "mình nghĩ câu này đúng" + lời xác nhận sau khi bấm.
+ *
+ * Cố ý là một dòng chữ nhỏ, KHÔNG phải nút to: nó không được cạnh tranh
+ * với việc đáng làm hơn (thử lại). Và lời xác nhận phải nói rõ hai điều
+ * — đã ghi lại, và câu vẫn chưa được tính đúng — nếu không thì nó thành
+ * một cái nút "bấm là qua".
+ */
+function DisputeButton({ alreadyReported, onReport }: { alreadyReported: boolean; onReport: () => boolean }) {
+  const t = useT()
+  const [justReported, setJustReported] = useState(false)
+  if (alreadyReported || justReported) {
+    return <p className="text-xs leading-relaxed text-ink-muted">{t('dispute.thanks')}</p>
+  }
+  return (
+    <button
+      onClick={() => {
+        onReport()
+        setJustReported(true)
+      }}
+      className="self-start text-xs font-medium text-ink-muted underline decoration-dotted underline-offset-4 hover:text-ink"
+    >
+      {t('dispute.action')}
+    </button>
+  )
+}
+
 function ExerciseRunner({
   lesson,
   runtime,
@@ -333,6 +360,12 @@ function ExerciseRunner({
   // Chế độ flow đọc sống theo cửa sổ 10 câu — mỗi câu trả lời có thể đổi
   // chế độ cho câu kế tiếp, đúng chữ "theo dõi" của spec.
   const mode = flowMode(useProgress((s) => s.answerHistory))
+  // Nguyên văn câu GÕ TAY vừa bị chấm là chưa đúng — nguyên liệu duy
+  // nhất của nút "mình nghĩ câu này đúng" (khối 21.11). Chỉ giữ trong
+  // phiên; bấm nút mới ghi xuống máy.
+  const [lastTyped, setLastTyped] = useState<string | null>(null)
+  const reportDisputed = useProgress((s) => s.reportDisputedAnswer)
+  const disputed = useProgress((s) => s.disputedAnswers)
   // Gắn feedback với đúng câu đang làm — sang câu khác là banner cũ biến mất.
   const [feedback, setFeedback] = useState<{ questionId: string; state: FeedbackState } | null>(null)
   // Câu vừa giải xong đang hiện màn đáp án — bấm Tiếp tục mới sang câu sau.
@@ -394,6 +427,7 @@ function ExerciseRunner({
         clearDraft(practiceDraftKey(lesson.id, current.question.id))
       } else {
         playEarcon('incorrect')
+        setLastTyped(resp.kind === 'typed' ? resp.text : null)
         setFeedback({
           questionId: current.question.id,
           state: {
@@ -417,6 +451,21 @@ function ExerciseRunner({
           onSubmit={handleSubmit}
         />
         <FeedbackRegion state={feedback !== null && feedback.questionId === current.question.id ? feedback.state : null} />
+        {/* "Mình nghĩ câu này đúng" (khối 21.11) — chỉ hiện cho câu GÕ
+            TAY đang bị chấm là chưa đúng, vì đó là dạng duy nhất mà một
+            danh sách đáp án hẹp có thể đánh trượt người trả lời đúng
+            (lớp lỗi của khối 21.10). Nút KHÔNG mở câu, KHÔNG đổi điểm:
+            nó chỉ ghi lại nguyên văn câu vừa gõ để người soạn bài soi
+            lại — nói thẳng điều đó ra, đừng để ai tưởng bấm là qua bài. */}
+        {feedback !== null &&
+          feedback.questionId === current.question.id &&
+          current.question.kind === 'typed' &&
+          lastTyped !== null && (
+            <DisputeButton
+              alreadyReported={disputed.some((d) => d.questionId === current.question.id)}
+              onReport={() => reportDisputed(lesson.id, current.question.id, lastTyped)}
+            />
+          )}
       </div>
     )
   } else {
