@@ -164,3 +164,36 @@ export function planToday(input: TodayPlanInput): TodayPlan {
 
   return { dueCount, newLessonBlocked, resume, nextNew, nextTest, focus, minutes: roundToFive(minutes) }
 }
+
+/** Việc kế tiếp NGAY SAU khi vừa học xong một bài. */
+export type NextStep =
+  | { kind: 'lesson'; lessonId: string }
+  | { kind: 'test'; moduleId: string }
+  /** Nợ ôn vượt trần — đi tiếp cũng đâm vào cửa khóa, phải trả nợ đã. */
+  | { kind: 'review' }
+  /** Hết việc (đã đi hết chặng đường hiện có). */
+  | { kind: 'none' }
+
+/**
+ * "Học xong bài này rồi thì đi đâu?" — câu hỏi KHÁC với câu của thẻ
+ * "Hôm nay", nên tách hàm riêng thay vì mượn `plan.focus`.
+ *
+ * Khác ở đúng một chỗ, và đó là chỗ có chủ đích: **còn thẻ đến hạn thì
+ * KHÔNG đẩy người học đi ôn**. Luật "ôn trước học sau" (spec 2.2) là
+ * luật của lúc MỞ APP — đã có cổng điều hướng ở main.tsx lo. Giữa
+ * phiên, người đang học trôi chảy mà bị bẻ ngang sang hộp ôn tập là phá
+ * đà chứ không dạy thêm được gì.
+ *
+ * Ngoại lệ duy nhất là nợ VƯỢT TRẦN: lúc đó `LessonPlayer` chặn cửa bài
+ * mới thật, nên mời "học bài tiếp theo" là mời người ta đâm vào tường.
+ *
+ * Truyền vào `plan` đã tính với bài vừa xong ĐÃ ĐÁNH DẤU hoàn thành —
+ * nếu không nó sẽ trỏ ngược về chính bài đang đứng.
+ */
+export function nextAfterLesson(plan: TodayPlan): NextStep {
+  if (plan.newLessonBlocked) return { kind: 'review' }
+  const lesson = plan.resume ?? plan.nextNew
+  if (lesson !== null) return { kind: 'lesson', lessonId: lesson.lessonId }
+  if (plan.nextTest !== null) return { kind: 'test', moduleId: plan.nextTest.moduleId }
+  return { kind: 'none' }
+}

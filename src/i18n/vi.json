@@ -152,6 +152,9 @@
     "summaryNewCardsLabel": "Vào Hộp ôn tập",
     "summaryNewCards": "{count} thẻ mới",
     "finishLesson": "Hoàn thành bài",
+    "nextLesson": "Học bài tiếp theo",
+    "nextTest": "Vào thi cuối module",
+    "nextReview": "Trả nợ ôn tập đã",
     "xpGained": "+{xp} XP",
     "backToLearn": "Về trang Học",
     "notFound": "Không tìm thấy bài học này."

@@ -152,6 +152,9 @@
     "summaryNewCardsLabel": "Into the review box",
     "summaryNewCards": "New cards: {count}",
     "finishLesson": "Finish lesson",
+    "nextLesson": "Next lesson",
+    "nextTest": "Take the module test",
+    "nextReview": "Clear the review backlog first",
     "xpGained": "+{xp} XP",
     "backToLearn": "Back to Learn",
     "notFound": "This lesson could not be found."

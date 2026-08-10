@@ -9,6 +9,7 @@ import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { RouterProvider, createMemoryRouter } from 'react-router'
 import { LessonPlayer } from './LessonPlayer'
 import { loadModules, lessonsInOrder } from '../../content'
+import { startLesson } from '../../engine/lessonMachine'
 import { useProgress, todayIso } from '../../store/progress'
 
 const INITIAL = useProgress.getInitialState()
@@ -102,7 +103,9 @@ describe('LessonPlayer — đi trọn bài đầu Module 1 (nội dung thật)',
     // Bước 6 — Tổng kết
     expect(screen.getByText('Hôm nay bạn học được')).toBeTruthy()
     expect(screen.getByText('+30 XP')).toBeTruthy()
-    fireEvent.click(screen.getByRole('button', { name: /Hoàn thành bài/ }))
+    // Nút chính giờ đi THẲNG bài sau; "Về trang Học" là nút phụ.
+    expect(screen.getByRole('button', { name: /Học bài tiếp theo/ })).toBeTruthy()
+    fireEvent.click(screen.getByRole('button', { name: /Về trang Học/ }))
 
     expect(screen.getByText('trang học')).toBeTruthy()
     const st = useProgress.getState()
@@ -198,5 +201,85 @@ describe('quay lại CHỈ-ĐỌC', () => {
     expect(stateAfter.xpTotal).toBe(xpBefore)
     expect(stateAfter.lessonRuntimes['m1-bai-1']).toEqual(runtimeBefore)
     expect(stateAfter.answerHistory).toEqual(stateBefore.answerHistory)
+  })
+})
+
+// ---------------------------------------------------------------
+// Cuối bài đi THẲNG việc kế tiếp (khối 21.4 — lớp 1)
+// ---------------------------------------------------------------
+
+describe('màn tổng kết trỏ thẳng tới việc kế tiếp', () => {
+  /** Đưa runtime của một bài tới màn tổng kết mà không phải bấm 6 bước. */
+  function atSummary(lessonId: string) {
+    const lesson = loadModules()
+      .flatMap((m) => m.lessons)
+      .find((l) => l.id === lessonId)!
+    const base = startLesson(lesson)
+    const exercises = Object.fromEntries(
+      Object.keys(base.exercises).map((id) => [id, { failCount: 0, solved: true, usedSolution: false }]),
+    )
+    useProgress.setState(
+      {
+        lessonRuntimes: {
+          [lessonId]: {
+            ...base,
+            exercises,
+            stepIndex: 5,
+            selfExplain: { attempts: 0, passed: true, done: true },
+          },
+        },
+      },
+      false,
+    )
+  }
+
+  it('còn bài trong module: nút chính vào THẲNG bài sau, không vòng qua trang Học', () => {
+    atSummary('m1-bai-1')
+    renderLesson('m1-bai-1')
+    fireEvent.click(screen.getByRole('button', { name: /Học bài tiếp theo/ }))
+    // Đã sang bài 2 (tựa bài 2 hiện ra), không thấy "trang học".
+    expect(screen.queryByText('trang học')).toBeNull()
+    expect(useProgress.getState().completedLessons['m1-bai-1'], 'vẫn phải ghi nhận xong bài').toBeTruthy()
+  })
+
+  it('bài CUỐI module: nút chính mời đi thi, không mời bài sau', () => {
+    const m1 = loadModules()[0]!
+    const ids = lessonsInOrder(m1).map((l) => l.id)
+    useProgress.setState(
+      { completedLessons: Object.fromEntries(ids.slice(0, -1).map((id) => [id, todayIso()])) },
+      false,
+    )
+    atSummary(ids.at(-1)!)
+    renderLesson(ids.at(-1)!)
+    expect(screen.getByRole('button', { name: /Vào thi cuối module/ })).toBeTruthy()
+    expect(screen.queryByRole('button', { name: /Học bài tiếp theo/ })).toBeNull()
+  })
+
+  it('nợ ôn VƯỢT TRẦN: mời trả nợ chứ không mời học tiếp (cửa bài mới đang khóa)', () => {
+    useProgress.setState(
+      {
+        reviewCards: Array.from({ length: 31 }, (_, i) => ({
+          conceptId: `c-${i}`,
+          moduleId: 'module-1',
+          intervalIndex: 0 as const,
+          dueDate: '2020-01-01',
+          lapses: 0,
+          createdOn: '2020-01-01',
+          lastReviewedOn: null,
+        })),
+      },
+      false,
+    )
+    atSummary('m1-bai-1')
+    renderLesson('m1-bai-1')
+    expect(screen.getByRole('button', { name: /Trả nợ ôn tập/ })).toBeTruthy()
+    expect(screen.queryByRole('button', { name: /Học bài tiếp theo/ })).toBeNull()
+  })
+
+  it('luôn còn lối về trang Học — nút chính không được nuốt mất đường lui', () => {
+    atSummary('m1-bai-1')
+    renderLesson('m1-bai-1')
+    fireEvent.click(screen.getByRole('button', { name: /Về trang Học/ }))
+    expect(screen.getByText('trang học')).toBeTruthy()
   })
 })

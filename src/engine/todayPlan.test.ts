@@ -6,7 +6,7 @@
 
 import { describe, expect, it } from 'vitest'
 import { loadModules } from '../content'
-import { planToday } from './todayPlan'
+import { nextAfterLesson, planToday } from './todayPlan'
 import { startLesson } from './lessonMachine'
 import { orderedLessonIds } from './contentPure'
 import type { ReviewCard } from './types'
@@ -140,5 +140,65 @@ describe('kế hoạch hôm nay', () => {
     expect(busy.minutes % 5, 'phải là bội của 5').toBe(0)
     // 12 thẻ (~4 phút) + một bài mới (12 phút) ≈ 16 → làm tròn 20.
     expect(busy.minutes).toBe(20)
+  })
+})
+
+describe('học xong một bài rồi thì đi đâu', () => {
+  const first = modules[0]!
+  const lessonIds = orderedLessonIds(first)
+
+  /** Kế hoạch tính NHƯ THỂ vừa học xong `throughIndex` bài đầu của module 1. */
+  const planAfter = (throughIndex: number, extra: Partial<typeof emptyInput> = {}) =>
+    planToday({
+      ...emptyInput,
+      completedLessons: Object.fromEntries(lessonIds.slice(0, throughIndex).map((id) => [id, TODAY])),
+      ...extra,
+    })
+
+  it('còn bài trong module thì trỏ thẳng BÀI KẾ TIẾP', () => {
+    expect(nextAfterLesson(planAfter(1))).toEqual({ kind: 'lesson', lessonId: lessonIds[1] })
+  })
+
+  it('vừa xong bài CUỐI của module thì trỏ sang bài THI', () => {
+    expect(nextAfterLesson(planAfter(lessonIds.length))).toEqual({ kind: 'test', moduleId: first.id })
+  })
+
+  it('còn thẻ đến hạn nhưng CHƯA quá trần: vẫn học tiếp, không bẻ ngang sang ôn', () => {
+    // "Ôn trước học sau" là luật của lúc MỞ APP (cổng ở main.tsx lo).
+    // Bẻ ngang người đang học trôi chảy là phá đà, không dạy thêm gì.
+    const plan = planAfter(1, { reviewCards: [card('c1', TODAY), card('c2', TODAY)] })
+    expect(plan.focus, 'thẻ "Hôm nay" thì vẫn ưu tiên ôn').toBe('review')
+    expect(nextAfterLesson(plan), 'nhưng cuối bài thì đi tiếp').toEqual({
+      kind: 'lesson',
+      lessonId: lessonIds[1],
+    })
+  })
+
+  it('nợ VƯỢT TRẦN thì phải đi ôn — mời học tiếp là mời đâm vào cửa khóa', () => {
+    const overdue = Array.from({ length: 31 }, (_, i) => card(`c-${i}`, '2026-08-01'))
+    expect(nextAfterLesson(planAfter(1, { reviewCards: overdue }))).toEqual({ kind: 'review' })
+  })
+
+  it('học hết sạch mọi module thì thôi, không bịa ra việc', () => {
+    const plan = planToday({
+      ...emptyInput,
+      completedLessons: Object.fromEntries(
+        modules.flatMap((m) => orderedLessonIds(m).map((id) => [id, TODAY])),
+      ),
+      passedModules: modules.map((m) => m.id),
+    })
+    expect(nextAfterLesson(plan)).toEqual({ kind: 'none' })
+  })
+
+  it('bài kế tiếp đang DỞ thì đi qua đường resume, vẫn đúng bài đó', () => {
+    // Bài mở tuần tự nên "bài dở" chỉ có thể là chính bài kế tiếp —
+    // planToday dừng ở bài chưa xong ĐẦU TIÊN. Điều đáng khóa là nó đi
+    // qua nhánh resume (mang theo số bước còn lại) chứ không coi bài
+    // đang dở như bài mới tinh.
+    const next = modules[0]!.lessons.find((l) => l.id === lessonIds[1])!
+    const plan = planAfter(1, { lessonRuntimes: { [next.id]: { ...startLesson(next), stepIndex: 3 } } })
+    expect(plan.resume?.lessonId, 'phải nhận ra đây là bài đang dở').toBe(next.id)
+    expect(plan.nextNew, 'không được đếm hai lần').toBeNull()
+    expect(nextAfterLesson(plan)).toEqual({ kind: 'lesson', lessonId: next.id })
   })
 })

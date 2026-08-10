@@ -10,7 +10,7 @@ import { useEffect, useRef, useState } from 'react'
 import { lt, maybeLt } from '../../engine/ltext'
 import { Link, useNavigate, useParams } from 'react-router'
 import { ArrowRight, BookOpenCheck, ChevronLeft, Sparkles } from 'lucide-react'
-import { findLesson, lessonsInOrder } from '../../content'
+import { findLesson, lessonsInOrder, loadModules } from '../../content'
 import { canAdvance, currentStepType, type LessonRuntime } from '../../engine/lessonMachine'
 import { XP_AMOUNTS } from '../../engine/xp'
 import type { Exercise, Lesson, Module } from '../../engine/contentSchema'
@@ -26,6 +26,7 @@ import { FeedbackBanner, FeedbackRegion, type FeedbackState } from '../../compon
 import { QuestionInput } from '../../components/QuestionInput'
 import { PalaceTour } from '../palace/PalaceTour'
 import { backToLearn } from './LearnPage'
+import { nextAfterLesson, planToday } from '../../engine/todayPlan'
 import { canDeriveOpen, deriveOpenQuestion, flowMode, needsSupport } from '../../engine/flow'
 import { FoundationReview } from './FoundationReview'
 
@@ -560,6 +561,8 @@ function SummaryView({ module, lesson, runtime }: StepProps) {
   const advanceLesson = useProgress((s) => s.advanceLesson)
   const completedLessons = useProgress((s) => s.completedLessons)
   const reviewCards = useProgress((s) => s.reviewCards)
+  const passedModules = useProgress((s) => s.passedModules)
+  const lessonRuntimes = useProgress((s) => s.lessonRuntimes)
   const summary = lesson.steps[5]
   const firstTime = completedLessons[lesson.id] === undefined
   const celebrated = useRef(false)
@@ -580,6 +583,27 @@ function SummaryView({ module, lesson, runtime }: StepProps) {
     ? newCardIdsForLesson(module, lesson, new Set(reviewCards.map((c) => c.conceptId))).length
     : 0
 
+  /**
+   * Việc kế tiếp, tính NHƯ THỂ bài này đã xong (vì bấm nút xong là nó
+   * xong thật) — không giả định thế thì kế hoạch trỏ ngược về chính bài
+   * đang đứng.
+   *
+   * Vì sao đi thẳng: vòng "xong bài → về trang Học → cuộn tìm → bấm" là
+   * bốn bước cho một việc đáng lẽ một bước. Màn tổng kết vẫn ở nguyên
+   * đây (cửa đóng của bài, peak-end — spec 2.1 bước 6), chỉ bỏ đoạn
+   * đường thừa phía sau nó.
+   */
+  const next = nextAfterLesson(
+    planToday({
+      modules: loadModules(),
+      passedModules,
+      completedLessons: { ...completedLessons, [lesson.id]: todayIso() },
+      lessonRuntimes,
+      reviewCards,
+      today: todayIso(),
+    }),
+  )
+
   // Hợp âm ăn mừng khi màn tổng kết hiện ra (peak-end) — một lần duy nhất.
   useEffect(() => {
     if (!celebrated.current && firstTime) {
@@ -588,7 +612,8 @@ function SummaryView({ module, lesson, runtime }: StepProps) {
     }
   }, [firstTime])
 
-  const finish = () => {
+  /** Ghi nhận bài đã xong. Tách khỏi chuyện ĐI ĐÂU — hai nút cùng dùng. */
+  const commit = () => {
     // Bài này có khép lại một chặng không? (fanfare "lên chặng" — spec 4.3)
     const stage = module.stages.find((st) => st.lessonIds.includes(lesson.id))
     const stageDoneAfter =
@@ -596,10 +621,26 @@ function SummaryView({ module, lesson, runtime }: StepProps) {
       stage.lessonIds.every((id) => id === lesson.id || completedLessons[id] !== undefined)
     if (!runtime.completed) advanceLesson(module, lesson)
     if (firstTime && stageDoneAfter) playEarcon('stageUp')
-    // Mang theo địa chỉ: trang Học dài 21 module, thả người học ở đầu
-    // trang là bắt họ cuộn đi tìm lại chỗ mình vừa đứng.
-    void navigate(backToLearn(module.id))
   }
+
+  const leaveTo = (path: string) => () => {
+    commit()
+    void navigate(path)
+  }
+
+  // Mang theo địa chỉ: trang Học dài 21 module, thả người học ở đầu
+  // trang là bắt họ cuộn đi tìm lại chỗ mình vừa đứng.
+  const goLearn = leaveTo(backToLearn(module.id))
+
+  /** Nút chính: đi thẳng tới việc kế tiếp; `null` khi hết việc. */
+  const nextAction =
+    next.kind === 'lesson'
+      ? { label: t('lesson.nextLesson'), go: leaveTo(`/bai/${next.lessonId}`) }
+      : next.kind === 'test'
+        ? { label: t('lesson.nextTest'), go: leaveTo(`/kiem-tra/${next.moduleId}`) }
+        : next.kind === 'review'
+          ? { label: t('lesson.nextReview'), go: leaveTo('/on-tap') }
+          : null
 
   // Ăn mừng THỊ GIÁC (spec 2.1 bước 6 đòi "animation ăn mừng ngắn" —
   // sai lệch chưa khai mà hội đồng bắt được): trước đây kênh duy nhất là
@@ -654,8 +695,23 @@ function SummaryView({ module, lesson, runtime }: StepProps) {
         <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-accent">{t('lesson.summaryNextLabel')}</p>
         <p className="text-ink-muted">{lt(summary.nextTeaser)}</p>
       </div>
-      <div>
-        <Button onClick={finish}>{t('lesson.finishLesson')}</Button>
+      {/* Nút chính đi THẲNG tới việc kế tiếp — hết bài này sang bài kia
+          không phải đi vòng qua trang Học rồi cuộn đi tìm. Hết việc thì
+          chỉ còn một nút "Hoàn thành bài" như cũ. */}
+      <div className="flex flex-wrap items-center gap-3">
+        {nextAction === null ? (
+          <Button onClick={goLearn}>{t('lesson.finishLesson')}</Button>
+        ) : (
+          <>
+            <Button onClick={nextAction.go}>
+              {nextAction.label}
+              <ArrowRight size={15} aria-hidden />
+            </Button>
+            <Button variant="ghost" onClick={goLearn}>
+              {t('lesson.backToLearn')}
+            </Button>
+          </>
+        )}
       </div>
     </div>
   )

@@ -29,10 +29,10 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
 **HAI VIỆC ĐANG TREO, phiên mới cần biết:**
-1. **Khối 21.3 (về đúng chỗ) CHƯA COMMIT** — đã commit tới `9fdc32f`
-   (khối 21.2); khối 21.3 đang nằm ở working tree. Commit là việc chủ dự
-   án ra lệnh (luật: không tự commit); folder nằm trong OneDrive nên
-   chưa commit là chưa có bản sao lịch sử tử tế.
+1. **Khối 21.4 (đi thẳng bài sau) CHƯA COMMIT** — đã commit tới
+   `858d317` (khối 21.3); khối 21.4 đang nằm ở working tree. Commit là
+   việc chủ dự án ra lệnh (luật: không tự commit); folder nằm trong
+   OneDrive nên chưa commit là chưa có bản sao lịch sử tử tế.
 2. **Phiên nền đang sửa hình `Journey`** (5 hình vis-hanh-trinh-* tràn
    viewBox, task riêng của chủ dự án, worktree `.claude/worktrees/…`) —
    ĐỪNG đụng component Journey trong `ConceptVisual.tsx` cho tới khi
@@ -906,6 +906,29 @@ Còn lại duy nhất:
     "Bắt đầu" của "Đọc biển số của tương lai", nằm giữa màn hình; nút
     "← Quay lại" trong bài và cửa bài thi cũng mang đúng địa chỉ; mobile
     375px không cuộn ngang; console sạch. Dữ liệu kiểm đã xóa.
+
+- **Khối 21.4 XONG (08-10): ĐI THẲNG BÀI SAU** — lớp 1 của đề xuất ba
+  lớp, làm nốt sau lớp 2. Vòng "xong bài → về trang Học → cuộn tìm →
+  bấm" giờ biến mất hẳn ở luồng chính.
+  - `nextAfterLesson(plan)` trong `todayPlan.ts` — hỏi cùng một bộ não
+    với thẻ "Hôm nay" nhưng là CÂU HỎI KHÁC ("xong bài này rồi thì đi
+    đâu"), nên tách hàm riêng. Khác đúng một chỗ có chủ đích: **còn thẻ
+    đến hạn thì KHÔNG bẻ ngang sang ôn** — luật ôn-trước-học-sau là luật
+    của lúc MỞ APP (cổng ở main.tsx lo), giữa phiên mà bẻ là phá đà.
+    Ngoại lệ duy nhất là nợ VƯỢT TRẦN, vì lúc đó cửa bài mới khóa thật.
+  - Màn tổng kết **giữ nguyên** (bullets + XP + hé lộ bài sau + hai con
+    số của khối 21.1) — cửa đóng của bài vẫn còn, chỉ bỏ đoạn đường thừa
+    phía sau. Nút chính đổi theo cảnh: "Học bài tiếp theo" / "Vào thi
+    cuối module" / "Trả nợ ôn tập đã"; hết việc thì về lại một nút
+    "Hoàn thành bài" như cũ. Luôn giữ nút phụ "Về trang Học".
+  - 1215/1215 test xanh (+10: 6 test engine cho `nextAfterLesson`, 4
+    test UI cho ba nhánh nút + lối lui), typecheck sạch, build qua. Kiểm
+    browser thật đủ ba nhánh: xong m3-bai-5 → vào thẳng m3-bai-6 (vẫn
+    ghi nhận xong bài + sinh thẻ); bài cuối module → "Vào thi cuối
+    module"; nợ 31 thẻ → "Trả nợ ôn tập đã". Mobile 375px không cuộn
+    ngang, console sạch. Dữ liệu kiểm đã xóa.
+  - **Lớp 3 (nhớ chỗ cuộn cũ) coi như không cần nữa**: sau lớp 1 và 2
+    thì không còn đường nào rơi vào cảnh "về rồi phải tự tìm chỗ".
 
 Cập nhật: 2026-08-10. File này chỉ để nắm nhanh tình hình khi mở lại dự
 án. Nguồn chân lý: `SPEC-APP-HOC-MANG.md` (M1-12) và

@@ -347,6 +347,16 @@ quan trước khi "sửa test cho xanh".
 - Điều hướng: mở app còn thẻ đến hạn → vào Ôn tập trước (gate ở
   main.tsx, quyết định trong effect SAU khi zustand rehydrate). AppGate
   chặn mọi route tới khi `onboardingDone` VÀ nội dung prime xong.
+- **Cuối bài đi THẲNG việc kế tiếp** (`nextAfterLesson`): màn tổng kết
+  giữ nguyên (cửa đóng của bài, peak-end — spec 2.1 bước 6), chỉ có nút
+  cuối đi thẳng bài sau / bài thi thay vì vòng qua trang Học. Câu hỏi
+  của nó KHÁC câu của thẻ "Hôm nay" nên là hàm riêng, khác đúng một
+  chỗ có chủ đích: **còn thẻ đến hạn thì KHÔNG bẻ ngang sang ôn** — luật
+  "ôn trước học sau" là luật của lúc MỞ APP (cổng ở main.tsx), giữa
+  phiên mà bẻ là phá đà. Ngoại lệ duy nhất: nợ VƯỢT TRẦN, vì lúc đó
+  `LessonPlayer` chặn cửa bài mới thật, mời học tiếp là mời đâm tường.
+  Tính `planToday` với bài vừa xong ĐÃ đánh dấu hoàn thành, không thì nó
+  trỏ ngược về chính bài đang đứng. Luôn giữ nút phụ "Về trang Học".
 - **Mọi cửa quay lại trang Học phải MANG THEO ĐỊA CHỈ** — dùng
   `backToLearn(moduleId)` (`/?tiep=…`), đừng viết `to="/"` trần: trang
   Học dài 21 module nên về đầu trang là bắt người học cuộn đi tìm lại
