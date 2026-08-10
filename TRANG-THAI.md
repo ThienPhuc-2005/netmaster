@@ -1,14 +1,14 @@
 # Trạng thái dự án — NetMaster (Phase 1-3 XONG; đang làm Phase 4: TRUNG CẤP)
 
-## ĐỌC 30 GIÂY: ĐANG ĐỨNG ĐÂU, LÀM GÌ TIẾP (cập nhật 2026-08-09)
+## ĐỌC 30 GIÂY: ĐANG ĐỨNG ĐÂU, LÀM GÌ TIẾP (cập nhật 2026-08-10)
 
 **App hiện có ĐỦ 21/21 MODULE NỘI DUNG + MÀN TỐT NGHIỆP** (M1-12 nhập
-môn, M13-17 Phần D, M18-21 Phần E), 1155 test xanh, typecheck sạch,
-build qua. **Cả hạng mục 20 cũng đã xong phần làm-được-bằng-máy (08-09):
-DoD đối chiếu, kịch bản test trung cấp, hội đồng D/E đã họp.** Việc kế
-tiếp là của CHỦ DỰ ÁN: duyệt đợt sửa theo biên bản
-`DANH-GIA-HOI-DONG-TRUNG-CAP.md` (đợt 1 = 3 câu dạy sai P0, sửa dưới
-một buổi) và tuyển người cho các buổi test người thật.
+môn, M13-17 Phần D, M18-21 Phần E), 1177 test xanh, typecheck sạch,
+build qua. **Toàn bộ biên bản hội đồng trung cấp đã XỬ XONG (08-10):
+15/15 việc mục 6 (khối 20.2, đã commit `1d04c0b`) + trọn LƯỢT DỌN 52
+phát hiện P2 mục 5 (khối 20.3, đang ở working tree chờ lệnh commit).**
+Việc kế tiếp là của CHỦ DỰ ÁN: ra lệnh commit khối 20.3, và tuyển người
+cho các buổi test người thật (hai dòng DoD còn treo đều cần NGƯỜI).
 
 **Toàn bộ ENGINE của Phần D đã xong.** Không còn engine nào phải viết cho
 M13-17: lab lớp 2 (trunk + STP), CLI thiết bị đủ **24/24 lệnh** của spec
@@ -29,26 +29,25 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
 **HAI VIỆC ĐANG TREO, phiên mới cần biết:**
-1. **Cây làm việc CHƯA COMMIT** — toàn bộ Phase 4-5 (M13-21, engine
-   lab/CLI/PS mở rộng, màn tốt nghiệp, tái cấu trúc CLAUDE.md/GHI-CHU/
-   Y-TUONG) đang nằm ở working tree. Commit là việc chủ dự án ra lệnh
-   (luật: không tự commit); folder nằm trong OneDrive nên chưa commit
-   là chưa có bản sao lịch sử tử tế — nên nhắc chủ dự án sớm.
+1. **Khối 20.3 (lượt dọn P2) CHƯA COMMIT** — các đợt trước đã commit tới
+   `1d04c0b`; lượt dọn 52 P2 (08-10) đang nằm ở working tree. Commit là
+   việc chủ dự án ra lệnh (luật: không tự commit); folder nằm trong
+   OneDrive nên chưa commit là chưa có bản sao lịch sử tử tế.
 2. **Phiên nền đang sửa hình `Journey`** (5 hình vis-hanh-trinh-* tràn
-   viewBox, task riêng của chủ dự án) — ĐỪNG đụng component Journey
-   trong `ConceptVisual.tsx` cho tới khi phiên đó nhập về.
+   viewBox, task riêng của chủ dự án, worktree `.claude/worktrees/…`) —
+   ĐỪNG đụng component Journey trong `ConceptVisual.tsx` cho tới khi
+   phiên đó nhập về. (Lượt dọn 20.3 có sửa 5 hình KHÁC trong
+   ConceptVisual — không chạm Journey.)
 
-**Hạng mục 20 KHÉP (08-09, khối 20.1 + 20.2):** DoD đối chiếu, kịch bản
-test trung cấp (`KICH-BAN-TEST.md` mục 12-13), hội đồng 15 ghế đã họp
-(biên bản `DANH-GIA-HOI-DONG-TRUNG-CAP.md`, trung bình 7.6/10) — và
-**chủ dự án đã duyệt trọn 4 đợt sửa của biên bản, cả 15 việc mục 6 đã
-SỬA XONG trong khối 20.2** (3 câu dạy sai P0, vá phép đo, capstone trung
-thực, nền móng hiệu năng + dữ liệu). Còn lại:
+**Hạng mục 20 KHÉP HẲN (08-09 → 08-10):** DoD đối chiếu, kịch bản test
+trung cấp (`KICH-BAN-TEST.md` mục 12-13), hội đồng 15 ghế đã họp (biên
+bản `DANH-GIA-HOI-DONG-TRUNG-CAP.md`, trung bình 7.6/10); **15/15 việc
+mục 6 sửa xong ở khối 20.2 (commit `1d04c0b`), và trọn 52 phát hiện P2
+mục 5 đã dọn ở khối 20.3 (08-10)** — biên bản không còn dòng nào treo.
+Còn lại duy nhất:
 - **Tuyển người test**: 2 dòng DoD còn CHƯA ĐẠT đều là buổi đo người
   thật (bài vẽ M1-2 của DoD v1; ba bài đo trung cấp của DoD v2 — kịch
   bản mục 12-13). App phần code sẵn sàng bàn giao.
-- Kho việc nhỏ còn lại: **52 phát hiện P2** của biên bản (mục 5 từng
-  ghế) — đáng gom thành một "lượt dọn" như nếp đợt ba cũ khi rảnh.
 
 **Cách làm một module nội dung** (đã chạy 4 lần liền, cứ theo đúng nếp):
 1. Viết `content/modules/module-XX.json` — 5 bài × 6 bước, concepts có
@@ -757,7 +756,66 @@ thực, nền móng hiệu năng + dữ liệu). Còn lại:
     không ✓ sống, goal native-match nói đúng lời hai đầu; VlsmDrill
     focus rơi đúng ô đầu; console browser sạch lỗi.
 
-Cập nhật: 2026-08-09. File này chỉ để nắm nhanh tình hình khi mở lại dự
+- **Khối 20.3 XONG (08-10): LƯỢT DỌN 52 PHÁT HIỆN P2** — mục 5 của biên
+  bản trung cấp sạch hẳn, biên bản không còn dòng nào treo.
+  - **Fidelity CLI (ghế 3):** câu Invalid input giờ in đúng khuôn HAI
+    DÒNG của IOS — dòng dấu `^` căn đúng cột dưới token hỏng (tính cả
+    dấu nhắc); THIẾU từ là Incomplete, THỪA từ là Invalid; `enable` gõ
+    thừa ở privileged thành no-op im lặng; `show` sai loại thiết bị đi
+    đường lỗi thật và KHÔNG nhiễm cờ `viewed`; bảng trunk đủ 4 mục và
+    đọc cùng VLAN database với `show vlan brief`; `show ip route` in
+    "Gateway of last resort is not set" đúng ngữ cảnh; neighbor in
+    `FULL/-`, mọi lệch còn lại khai ở docstring.
+  - **Engine (ghế 2/11/12):** OSPF lệch subnet mask là láng giềng DOWN;
+    hòa cost tie-break tất định theo next hop (khai rõ không ECMP);
+    `computeStp` + `ospfRoutesOf` cache WeakMap theo topology bất biến;
+    show.ts thôi tự chế toán bit, dùng ipv4.ts; goal `viewed` có biến
+    thể `requireOspfFull` — "kiểm chứng ra Full" phải chạy lệnh LÚC bảng
+    có Full mới được tính (2 đề M21 dùng); goal `found-line` có
+    `maxMatches` — lưới quét thô `Select-String o` không qua được hai
+    câu trụ M20 nữa; `Add-ADGroupMember -Members a, b` (phẩy + khoảng
+    trắng) hết lặng lẽ bỏ rơi thành viên; bộ chấm gõ tay chặn câu nước
+    đôi "1 hay 99" cho đáp án ngắn.
+  - **Phép đo (ghế 1/10/15):** `drawMasteryTest` đẩy câu trụ NẶNG nhất
+    về cuối đề (peak-end — ca liên tầng M21 luôn khép màn, M15 hết lệch
+    nếp); ~7 test mới khóa bất biến sư phạm trung cấp (pretest CLI M14,
+    bão-trước-dạy M15, bẫy AGDLP + fading 0→1→2 M19, drill vlsm M13,
+    log thi M20 ≥ 150 dòng, clinic trong pool M21); m15-mt-cli-1 nói
+    thật điều nó chấm + thêm câu đọc-bảng (ai làm root); câu giaddr M21
+    thành MCQ hiểu-vai-trò, M18 bỏ hint đánh vần.
+  - **Nội dung nói thật (ghế 2/4/6):** khai "dòng DOWN kèm lý do là app
+    nói thêm" ngay trong bài M16; established sửa thành "chỉ nhìn cờ
+    ACK/RST, không có trí nhớ"; DORA sửa "hai nhịp phát từ máy xin";
+    explain APIPA phân biệt theo lease; "số hiệu" ExStart tách khỏi số
+    tiến trình (Router ID); deepDive 20% dự phòng nối với luật chấm
+    khít của drill; cặp timestamp đảo trong sw-core.log đã xuôi.
+  - **UX + a11y (ghế 5/8/9):** phiên drill VLSM LƯU BÀI DỞ
+    (`vlsmDrillDraft` — seed + ô đã điền + đề đang đứng, nút "Làm tiếp
+    phiên đang dở"); Enter khi bảng còn ô trống là no-op (hết đốt oan
+    thang gợi ý); ba tiêu chí có chữ (đạt)/(chưa đạt); transcript cả BA
+    terminal focus được (tabIndex) — Firefox/Safari cuộn lại được lịch
+    sử; live region CLI báo cả chiều mục tiêu TỤT; dấu mốc rút dây lưu
+    deviceId, lời kể dịch lúc render; bài dở CLI có lưới đỡ
+    nội-dung-đã-đổi như lab; "Về sơ đồ ban đầu" của lab XÓA bài dở
+    (test khóa); bỏ chip VLAN cuối không âm thầm lật "cho tất cả";
+    SwitchTrunkEditor ghi nhận là hàng /design-only.
+  - **Hình (ghế 7):** khối /28 có nhãn; hình ARP mạo danh — nạn nhân có
+    tên, câu ".1 là tôi" nằm trên HAI mũi tên đến; hình DHCP failover
+    chia đôi khung either/or (hai kho rời ↔ một sổ chung); 5 chú thích
+    35-36 ký tự rút về ≤ 34; đồ thị SNMP có nhãn đại lượng "lỗi/phút".
+    (Không đụng hình Journey — phiên nền đang giữ.)
+  - **Store + i18n (ghế 13/14):** trần bài dở dọn theo LRU lần-chạm-cuối;
+    importBackup chặn version tương lai + spot-check trường quý + parse
+    thử settings; streak hết "1 days" (đơn vị vào label); "neighbour" →
+    "neighbor"; test gác 3 họ key động cli.cmd./ps.cmd./vlsm.issue.;
+    test seed VlsmDrill dùng ngày local (hết flaky 0h-7h VN).
+  - 1177/1177 test xanh (+22), typecheck sạch, build qua, content:review
+    render 21 module. Kiểm browser thật: 243 hình getBBox không tràn;
+    dấu ^ căn đúng cột dưới token hỏng trên /design; bảng trunk in đủ 4
+    mục; drill VLSM chặn Enter khi thiếu ô, lưu bài dở và "Làm tiếp
+    phiên đang dở" khôi phục đúng ô đã điền. Dữ liệu kiểm thử đã xóa.
+
+Cập nhật: 2026-08-10. File này chỉ để nắm nhanh tình hình khi mở lại dự
 án. Nguồn chân lý: `SPEC-APP-HOC-MANG.md` (M1-12) và
 `SPEC-TRUNG-CAP.md` (M13-21); luật làm việc ở `CLAUDE.md`; **bất biến
 kỹ thuật theo vùng ở `GHI-CHU-KY-THUAT.md` (sửa vùng nào đọc mục đó

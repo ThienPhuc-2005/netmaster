@@ -442,9 +442,13 @@ function SwitchTrunkEditor({
                           onClick={() => {
                             const base = allowed ?? []
                             const next = on ? base.filter((v) => v !== vlan) : [...base, vlan]
-                            // Bỏ hết là trunk câm — engine từ chối, nên ở
-                            // đây quay về "cho tất cả" cho đúng ý người bấm.
-                            onSetTrunkAllowed(port.id, next.length === 0 ? null : next)
+                            // Bỏ chip CUỐI của danh sách thì đứng yên: người
+                            // đang khoanh danh sách mà bấm bỏ nốt là muốn
+                            // CHẶN, âm thầm lật sang "cho tất cả" là cực trị
+                            // ngược ý (biên bản trung cấp). Muốn mở hết thì
+                            // chip "Tất cả" đứng ngay đầu hàng.
+                            if (next.length === 0) return
+                            onSetTrunkAllowed(port.id, next)
                           }}
                         />
                       )

@@ -22,6 +22,12 @@
 // cùng độ dài prefix, vì AD 1 nhỏ hơn AD 110 — đúng một khái niệm AD ở
 // mức spec đòi.
 //
+// HAI ĐƯỜNG CÙNG COST: giữ đúng MỘT đường, chọn tất định theo next hop
+// có địa chỉ NHỎ HƠN — KHÔNG mô phỏng ECMP (thiết bị thật cài cả hai
+// đường vào bảng). Đơn giản hóa cố ý: bảng một-đường đọc được bằng mắt
+// người mới, và tie-break tất định thì kết quả không đổi theo thứ tự
+// khai links trong JSON (biên bản trung cấp).
+//
 // Technical contract: mọi hàm THUẦN, tất định, không mutate đầu vào.
 
 import { networkAddress } from '../subnet/ipv4'
@@ -185,7 +191,12 @@ export function ospfNeighborsOf(topo: Topology, deviceId: DeviceId): OspfNeighbo
       out.push(down('no-ospf-process'))
       continue
     }
-    if (!sameSubnet(myPort.ipConfig.ip, theirPort.ipConfig.ip, myPort.ipConfig.prefix)) {
+    // Hello thật đòi cả network mask trùng nhau: 10.0.0.1/24 nối
+    // 10.0.0.2/30 mà lên FULL là dạy sai — lệch mask cũng là subnet-mismatch.
+    if (
+      !sameSubnet(myPort.ipConfig.ip, theirPort.ipConfig.ip, myPort.ipConfig.prefix) ||
+      myPort.ipConfig.prefix !== theirPort.ipConfig.prefix
+    ) {
       out.push(down('subnet-mismatch'))
       continue
     }
@@ -215,7 +226,25 @@ function fullNeighborsOf(topo: Topology, deviceId: DeviceId): OspfNeighbor[] {
  * định next hop, đúng như bảng thật. Subnet mà chính router này đã nối
  * trực tiếp thì không vào bảng OSPF — tuyến connected luôn thắng.
  */
+/**
+ * Cache bảng OSPF theo (topology, router): mỗi chặng router của MỖI lượt
+ * ping đều hỏi bảng này, mà topology BẤT BIẾN giữa các lệnh (mọi thay đổi
+ * tạo object mới) nên WeakMap tự đúng và tự dọn — không đổi hợp đồng
+ * thuần/tất định của engine (biên bản trung cấp, ghế Hiệu năng).
+ */
+const ospfRoutesCache = new WeakMap<Topology, Map<DeviceId, OspfRoute[]>>()
+
 export function ospfRoutesOf(topo: Topology, deviceId: DeviceId): OspfRoute[] {
+  const cached = ospfRoutesCache.get(topo)?.get(deviceId)
+  if (cached !== undefined) return cached
+  const routes = computeOspfRoutes(topo, deviceId)
+  const perTopo = ospfRoutesCache.get(topo) ?? new Map<DeviceId, OspfRoute[]>()
+  perTopo.set(deviceId, routes)
+  ospfRoutesCache.set(topo, perTopo)
+  return routes
+}
+
+function computeOspfRoutes(topo: Topology, deviceId: DeviceId): OspfRoute[] {
   const self = routerOf(topo, deviceId)
   if (self === null || ospfConfigOf(self) === null) return []
 
@@ -235,7 +264,7 @@ export function ospfRoutesOf(topo: Topology, deviceId: DeviceId): OspfRoute[] {
     for (const at of frontier) {
       const viaFirst = reach.get(at)
       for (const neighbor of fullNeighborsOf(topo, at)) {
-        if (neighbor.remoteId === deviceId || reach.has(neighbor.remoteId)) continue
+        if (neighbor.remoteId === deviceId) continue
         if (neighbor.remoteIp === null) continue
         // Chặng đầu tiên của đường đi: nếu đang đứng ở chính mình thì đây
         // LÀ chặng đầu; đi xa hơn thì giữ nguyên chặng đầu đã chọn.
@@ -243,6 +272,16 @@ export function ospfRoutesOf(topo: Topology, deviceId: DeviceId): OspfRoute[] {
           viaFirst === undefined
             ? { nextHopIp: neighbor.remoteIp, egressPortId: neighbor.localPortId, cost }
             : { ...viaFirst, cost }
+        const existing = reach.get(neighbor.remoteId)
+        if (existing !== undefined) {
+          // Hai đường CÙNG cost tới cùng router: tie-break tất định theo
+          // next hop nhỏ hơn (xem ghi chú ECMP đầu file) — không phụ
+          // thuộc thứ tự khai links trong JSON.
+          if (existing.cost === cost && compareIp(hop.nextHopIp, existing.nextHopIp) < 0) {
+            reach.set(neighbor.remoteId, hop)
+          }
+          continue
+        }
         reach.set(neighbor.remoteId, hop)
         next.push(neighbor.remoteId)
       }
@@ -260,8 +299,12 @@ export function ospfRoutesOf(topo: Topology, deviceId: DeviceId): OspfRoute[] {
       if (connected.has(key)) continue
       const existing = routes.find((r) => r.destination === subnet.destination && r.prefix === subnet.prefix)
       if (existing !== undefined) {
-        // Hai đường tới cùng một subnet: giữ đường rẻ hơn (cost nhỏ hơn).
-        if (hop.cost < existing.cost) {
+        // Hai đường tới cùng một subnet: giữ đường rẻ hơn; hòa cost thì
+        // tie-break theo next hop nhỏ hơn (ghi chú ECMP đầu file).
+        if (
+          hop.cost < existing.cost ||
+          (hop.cost === existing.cost && compareIp(hop.nextHopIp, existing.nextHopIp) < 0)
+        ) {
           existing.cost = hop.cost
           existing.nextHopIp = hop.nextHopIp
           existing.egressPortId = hop.egressPortId

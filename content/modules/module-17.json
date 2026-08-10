@@ -700,7 +700,7 @@
                 "vi": "Nhớ lại tường lửa stateful ở Module 7: nó GHI SỔ cuộc gọi bạn vừa mở, nên khi trang web trả lời, lời đáp được vào thẳng dù chẳng ai viết luật cho chiều về. ACL đánh số không có cuốn sổ đó. Nó xét từng gói một cách rời rạc, không nhớ gói nào vừa đi qua, nên chiều về phải tự bạn lo bằng một dòng luật khác. Hai họ không thay thế nhau: ACL là dao mổ thô đặt trên đường đi của router, tường lửa stateful là người gác nhớ mặt khách."
               },
               "deepDive": {
-                "vi": "Đó là lý do các dòng luật ngoài đời hay có chữ established ở vế tcp: nó nhận diện gói của một cuộc trò chuyện đã mở sẵn, tức là mượn tạm một chút trí nhớ mà không cần cả bộ máy stateful. Trong phạm vi của app này chỉ có ping, và ping thì gói đi lẫn lời đáp đều là icmp — nên nếu bạn chặn icmp một chiều thì hãy tự hỏi chiều còn lại đi qua cổng nào."
+                "vi": "Đó là lý do các dòng luật ngoài đời hay có chữ established ở vế tcp. Nhưng đừng tưởng nó có trí nhớ: established chỉ nhìn CỜ trên từng gói TCP (ACK hoặc RST bật — thứ chỉ xuất hiện sau khi cuộc gọi đã mở), một phép đoán không trạng thái, rẻ nhưng lừa được bằng gói ACK giả — khác hẳn cuốn sổ ghi từng cuộc gọi của tường lửa stateful. Trong phạm vi của app này chỉ có ping, và ping thì gói đi lẫn lời đáp đều là icmp — nên nếu bạn chặn icmp một chiều thì hãy tự hỏi chiều còn lại đi qua cổng nào."
               }
             }
           ]

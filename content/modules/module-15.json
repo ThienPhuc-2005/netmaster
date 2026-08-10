@@ -1405,7 +1405,7 @@
       "kind": "cli",
       "id": "m15-mt-cli-1",
       "prompt": {
-        "vi": "Vào console của Switch-3 và tra bảng spanning-tree để xem cây đang lấy switch nào làm gốc và cổng nào đang nằm im."
+        "vi": "Bạn vừa ngồi xuống Switch-3. Hãy chạy đúng lệnh tra trạng thái spanning-tree trên nó — bảng in ra sẽ tự nói ai làm gốc và cổng nào đang nằm im."
       },
       "spec": {
         "initial": {
@@ -1476,6 +1476,18 @@
       "hintTopic": { "vi": "lệnh xem trạng thái cây STP" },
       "explain": {
         "vi": "show spanning-tree. Bảng cho biết gốc cây là Switch-2 (priority 4096) và cổng p3 của Switch-3 đang mang vai Altn, trạng thái BLK."
+      }
+    },
+    {
+      "kind": "typed",
+      "id": "m15-mt-13",
+      "prompt": {
+        "vi": "Đọc bảng: ba switch nối tam giác, Switch-1 và Switch-3 giữ priority mặc định 32768, Switch-2 được đặt 4096. Switch nào làm root bridge?"
+      },
+      "accept": ["switch-2", "switch 2", "sw-2", "sw 2", "switch2", "con switch đặt 4096"],
+      "hintTopic": { "vi": "luật bầu gốc cây: con số priority nào thắng" },
+      "explain": {
+        "vi": "Switch-2 — priority NHỎ HƠN thắng (4096 < 32768). Tên máy hay địa chỉ MAC chỉ được đem ra phân định khi priority hòa nhau."
       }
     },
     {

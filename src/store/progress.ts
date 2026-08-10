@@ -68,6 +68,13 @@ export const DRILL_HISTORY_CAP = 100
  */
 export const PRACTICE_DRAFT_CAP = 12
 
+/**
+ * Version hiện tại của persist — nguồn chân lý DUY NHẤT, cửa nhập backup
+ * đối chiếu với nó để từ chối file đến từ bản app mới hơn (migrate chỉ
+ * biết đi tới, không biết đi lùi).
+ */
+export const PROGRESS_PERSIST_VERSION = 4
+
 /** Một dòng trong nhật ký terminal PowerShell (UI dựng lại y nguyên). */
 export interface PsTranscriptEntry {
   id: number
@@ -130,6 +137,24 @@ export function practiceDraftKey(lessonId: string, questionId: string): string {
   return `${lessonId}::${questionId}`
 }
 
+/**
+ * Phiên drill VLSM đang làm dở (biên bản trung cấp, ghế Tâm lý): 5 đề
+ * thiết kế là bề mặt drill NẶNG nhất — rời giữa chừng ở đề 4/5 mà mất
+ * trắng bảng đã điền là kiểu mất mát khiến người ta bỏ hẳn bài. Chỉ giữ
+ * MỘT phiên (drill không có hai phiên song song); `seed` đủ để dựng lại
+ * đúng bộ đề, phần còn lại là công sức: đề đang đứng, các ô đã điền, số
+ * lần sai và kết quả các đề đã qua. Cùng luật với practiceDrafts: lưu
+ * KHÔNG XP, xóa khi phiên xong.
+ */
+export interface VlsmDrillDraft {
+  seed: number
+  date: ISODate
+  index: number
+  rows: Record<string, { ip: string; prefix: string }>
+  failCount: number
+  outcomes: { correct: boolean; seconds: number }[]
+}
+
 export interface ProgressState {
   reviewCards: ReviewCard[]
   /** lessonId -> runtime đang học dở (persist để học tiếp giữa chừng). */
@@ -185,6 +210,8 @@ export interface ProgressState {
    * dùng để dọn khi vượt trần.
    */
   practiceDrafts: Record<string, PracticeDraft>
+  /** Phiên drill VLSM dở — null khi không có (xem VlsmDrillDraft). */
+  vlsmDrillDraft: VlsmDrillDraft | null
   drillHistory: DrillResult[]
   /** Ngày gần nhất hoàn thành phiên ôn — chốt luật "mở app là ôn trước". */
   lastReviewDate: ISODate | null
@@ -245,6 +272,12 @@ export interface ProgressState {
 
   /** Bỏ bài dở — người học đã nộp đúng, hoặc tự bấm làm lại từ đầu. */
   clearPracticeDraft: (key: string) => void
+
+  /** Ghi ảnh chụp phiên drill VLSM đang dở (cùng luật savePracticeDraft). */
+  saveVlsmDrillDraft: (draft: VlsmDrillDraft) => void
+
+  /** Bỏ phiên drill dở — phiên đã xong, hoặc bắt đầu phiên mới. */
+  clearVlsmDrillDraft: () => void
 
   /**
    * Nộp một lượt cho ca bệnh ở TAB PHÒNG KHÁM (không phải trong bài
@@ -353,6 +386,7 @@ export const useProgress = create<ProgressState>()(
         vmLabDone: {},
         clinicSolved: {},
         practiceDrafts: {},
+        vlsmDrillDraft: null,
         drillHistory: [],
         lastReviewDate: null,
         streakEvent: null,
@@ -567,10 +601,14 @@ export const useProgress = create<ProgressState>()(
 
         savePracticeDraft: (key, draft) =>
           set((s) => {
-            // Ghi đè bài dở cũ của CHÍNH câu đó thì giữ nguyên chỗ đứng
-            // trong hàng (không tự đẩy mình thành mới nhất) — dọn theo
-            // thứ tự bài được MỞ, đơn giản và đoán được.
-            const next: Record<string, PracticeDraft> = { ...s.practiceDrafts, [key]: draft }
+            // LRU theo LẦN CHẠM cuối: ghi đè là xóa rồi chèn lại về cuối
+            // hàng. Giữ-nguyên-chỗ-đứng (bản cũ) có cái bẫy ngược đời:
+            // bài mở từ tuần trước vừa được quay lại đầu tư thêm 20 phút
+            // vẫn là bài bị dọn ĐẦU TIÊN khi vượt trần — thứ tự dọn phải
+            // phản ánh công sức gần nhất (biên bản trung cấp, ghế dữ liệu).
+            const next: Record<string, PracticeDraft> = { ...s.practiceDrafts }
+            delete next[key]
+            next[key] = draft
             const keys = Object.keys(next)
             for (const old of keys.slice(0, Math.max(0, keys.length - PRACTICE_DRAFT_CAP))) {
               delete next[old]
@@ -585,6 +623,11 @@ export const useProgress = create<ProgressState>()(
             delete next[key]
             return { practiceDrafts: next }
           }),
+
+        saveVlsmDrillDraft: (draft) => set(() => ({ vlsmDrillDraft: draft })),
+
+        clearVlsmDrillDraft: () =>
+          set((s) => (s.vlsmDrillDraft === null ? {} : { vlsmDrillDraft: null })),
 
         recordMasteryAttempt: (module, results, orderedModuleIds) => {
           // Chốt chặn cuối của nguyên tắc 2: không tồn tại lượt thi hợp lệ
@@ -661,7 +704,7 @@ export const useProgress = create<ProgressState>()(
     },
     {
       name: 'netmaster-progress',
-      version: 4,
+      version: PROGRESS_PERSIST_VERSION,
       // Mặc định của zustand trỏ window.localStorage — không tồn tại trong
       // node/test. Trỏ thẳng global localStorage: browser dùng bản thật,
       // test dùng stub in-memory từ tests/setup.ts.

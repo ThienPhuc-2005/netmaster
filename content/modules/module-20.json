@@ -803,8 +803,8 @@
                         "2026-08-07 03:06:44 sw-core-01 WARNING fan 2 speed high",
                         "2026-08-07 03:09:49 sw-core-01 INFO mac learned AA:BB:CC:52:92:ED on port 15",
                         "2026-08-07 03:12:44 sw-core-01 ERROR link down on port 12",
-                        "2026-08-07 03:13:02 sw-core-01 INFO port 12 removed from vlan 30 forwarding set",
                         "2026-08-07 03:12:48 sw-core-01 WARNING broadcast ratio 13% on vlan 10",
+                        "2026-08-07 03:13:02 sw-core-01 INFO port 12 removed from vlan 30 forwarding set",
                         "2026-08-07 03:15:07 sw-core-01 WARNING ntp drift 50ms",
                         "2026-08-07 03:16:11 sw-core-01 INFO mac learned AA:BB:CC:19:E6:89 on port 13",
                         "2026-08-07 03:18:04 sw-core-01 DEBUG stp hello sent on vlan 10",
@@ -2074,7 +2074,8 @@
         "goals": [
           {
             "kind": "found-line",
-            "mustContain": "no free leases in scope 10.20.3.0"
+            "mustContain": "no free leases in scope 10.20.3.0",
+            "maxMatches": 10
           }
         ],
         "solution": [
@@ -2276,7 +2277,8 @@
         "goals": [
           {
             "kind": "found-line",
-            "mustContain": "link down on port 12"
+            "mustContain": "link down on port 12",
+            "maxMatches": 10
           }
         ],
         "solution": [

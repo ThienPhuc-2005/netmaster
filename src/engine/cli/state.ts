@@ -36,8 +36,13 @@ export type CliMode = 'user' | 'privileged' | 'config' | 'config-if' | 'config-r
  * có thể là chính hành động đã làm.
  */
 export interface CliFlags {
-  /** Những lệnh `show` đã chạy trót lọt, kèm thiết bị đã chạy trên đó. */
-  viewed: { command: string; deviceId: DeviceId }[]
+  /**
+   * Những lệnh `show` đã chạy trót lọt, kèm thiết bị đã chạy trên đó.
+   * Riêng `show ip ospf neighbor` ghi thêm `ospfFull`: lúc chạy lệnh bảng
+   * CÓ láng giềng Full hay chưa — đề "kiểm chứng ra Full" chấm bằng dấu
+   * vết này, vì bằng chứng rỗng không phải bằng chứng (biên bản trung cấp).
+   */
+  viewed: { command: string; deviceId: DeviceId; ospfFull?: boolean }[]
 }
 
 export function emptyCliFlags(): CliFlags {

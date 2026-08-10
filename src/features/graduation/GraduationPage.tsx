@@ -157,7 +157,8 @@ export function GraduationPage() {
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
           <Tile icon={BookOpenCheck} label={t('grad.statModules')} value={`${passedCount}/${modules.length}`} />
           <Tile icon={Zap} label={t('grad.statXp')} value={xpTotal} />
-          <Tile icon={Flame} label={t('grad.statStreak')} value={streak.current} unit={t('grad.statStreakUnit')} />
+          {/* Đơn vị nằm trong label — "1 days" phạm luật số trung tính của EN. */}
+          <Tile icon={Flame} label={t('grad.statStreak')} value={streak.current} />
           <Tile icon={Layers} label={t('grad.statCards')} value={reviewCards.length} />
           <Tile icon={BookOpenCheck} label={t('grad.statLessons')} value={Object.keys(completedLessons).length} />
           <Tile icon={Stethoscope} label={t('grad.statClinic')} value={Object.keys(clinicSolved).length} />

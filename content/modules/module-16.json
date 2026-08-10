@@ -508,7 +508,7 @@
                 "vi": "Cú pháp khuyết: show ip ospf … — phần còn thiếu là từ tiếng Anh chỉ hàng xóm."
               },
               "solution": {
-                "vi": "show ip ospf neighbor. Bảng in ra một dòng ở trạng thái DOWN kèm lý do no-ospf-process: đầu bên kia còn chưa bật tiến trình OSPF, nên tiếng chào của Router-HN bay sang mà chẳng ai đáp."
+                "vi": "show ip ospf neighbor. Bảng in ra một dòng ở trạng thái DOWN kèm lý do no-ospf-process: đầu bên kia còn chưa bật tiến trình OSPF, nên tiếng chào của Router-HN bay sang mà chẳng ai đáp. Một điều đáng biết trước khi sờ thiết bị thật: router thật KHÔNG in dòng DOWN kèm lý do — láng giềng chưa từng chào thì bảng chỉ rỗng; cột lý do là phần app nói thêm để bạn chẩn đoán được."
               }
             },
             {
@@ -628,7 +628,7 @@
                 "vi": "Sau khi thấy tên nhau, hai router chuyển sang việc nặng hơn: chép bản đồ mạng cho giống hệt nhau. Tấm bản đồ ấy là danh sách mọi đường nối mà cả vùng đang có, và chỉ khi hai bên giữ bản y hệt thì đường tính ra mới tin được. Hãy đi nốt tầng ba và tầng nóc của tòa nhà: bốn phòng còn lại kể lại quãng từ lúc chốt ai nói trước tới lúc hai bản đồ chồng khít lên nhau."
               },
               "deepDive": {
-                "vi": "Vì sao phải chốt ai nói trước ở bậc ExStart? Vì nếu hai bên cùng mở lời một lúc thì cuộc trao đổi loạn ngay từ câu đầu — router có số hiệu lớn hơn được cầm trịch, y như một cuộc họp phải có người điều khiển. Ở bậc Exchange, cái được trao là MỤC LỤC chứ chưa phải nội dung: mỗi bên gửi danh sách những trang mình đang giữ. Nhờ vậy tới bậc Loading, mỗi bên chỉ xin đúng phần mình đang hụt, thay vì chép lại cả tập từ đầu."
+                "vi": "Vì sao phải chốt ai nói trước ở bậc ExStart? Vì nếu hai bên cùng mở lời một lúc thì cuộc trao đổi loạn ngay từ câu đầu — hai bên so một mã định danh riêng của từng router (Router ID, suy từ địa chỉ các cổng), máy mang mã lớn hơn được cầm trịch, y như một cuộc họp phải có người điều khiển. Mã này KHÔNG phải số hiệu tiến trình bạn gõ trong lệnh router ospf — số đó chỉ có nghĩa nội bộ từng máy. Ở bậc Exchange, cái được trao là MỤC LỤC chứ chưa phải nội dung: mỗi bên gửi danh sách những trang mình đang giữ. Nhờ vậy tới bậc Loading, mỗi bên chỉ xin đúng phần mình đang hụt, thay vì chép lại cả tập từ đầu."
               }
             },
             {
@@ -1741,6 +1741,7 @@
         "vi": "Đi hai tầng dưới của tòa nhà làm quen từ trí nhớ: mỗi phòng là bậc nào, và ở bậc đó đang xảy ra chuyện gì?"
       },
       "rooms": ["m16-r-down", "m16-r-attempt", "m16-r-init", "m16-r-2way"],
+      "hintTopic": { "vi": "tòa nhà làm quen — đi lại hai tầng dưới từ tầng trệt" },
       "explain": {
         "vi": "Down (im lặng hoàn toàn) → Attempt (gọi riêng từng nhà, chỉ có ở mạng NBMA) → Init (mới nghe tiếng chào một chiều) → 2-Way (hai bên đã thấy tên nhau)."
       }
@@ -1752,6 +1753,7 @@
         "vi": "Đi hai tầng trên của tòa nhà làm quen từ trí nhớ: mỗi phòng là bậc nào, và hai router đang trao nhau cái gì?"
       },
       "rooms": ["m16-r-exstart", "m16-r-exchange", "m16-r-loading", "m16-r-full"],
+      "hintTopic": { "vi": "tòa nhà làm quen — đi lại hai tầng trên, quãng chép bản đồ" },
       "explain": {
         "vi": "ExStart (chốt ai nói trước) → Exchange (trao mục lục cho nhau) → Loading (xin nốt phần còn thiếu) → Full (hai bản đồ giống hệt nhau)."
       }

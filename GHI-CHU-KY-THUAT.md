@@ -98,6 +98,20 @@ quan trước khi "sửa test cho xanh".
   `no shutdown`) + phần đọc-hiểu, có khai đơn giản hóa trong "Đào sâu hơn".
 - Layout: dưới 768px menu 4 mục xuống THANH ĐÁY, canvas lab cuộn ngang
   trong khung riêng, vùng chạm cổng ≥ 24px.
+- **`SwitchTrunkEditor` (bảng vai cổng bấm chọn) là hàng /design-only**:
+  nội dung trung cấp dạy trunk 100% qua CLI nên không module nào bật
+  `allow.setTrunk` — bảng chỉ mount qua /design và fixture test. Đừng
+  tưởng nó đang phục vụ bài học; muốn đưa nó tới người học thì mở
+  setTrunk trong một câu lab (đề xuất trước).
+- **"Về sơ đồ ban đầu" XÓA bài dở** (onDraftChange nhận `null`, nếp
+  CLI/PS) — không được để effect lưu-bài-dở chụp lại sơ đồ nguyên sơ sau
+  reset (test khóa). Bỏ chip VLAN CUỐI của allowed list là NO-OP, không
+  âm thầm lật thành "cho tất cả" (muốn mở hết đã có chip "Tất cả").
+- **Topology là BẤT BIẾN giữa các lệnh — `computeStp` và `ospfRoutesOf`
+  cache theo object (WeakMap)**: mọi thay đổi phải tạo object mới. Test
+  mà mutate topology tại chỗ rồi hỏi lại engine là ăn cache cũ (hai test
+  STP từng dính); OSPF hòa cost tie-break theo nextHop nhỏ hơn, KHÔNG
+  ECMP (khai đầu ospf.ts); hai đầu lệch subnet mask là neighbor DOWN.
 
 ## 3. CLI thiết bị (engine/cli + features/cli)
 
@@ -131,6 +145,23 @@ quan trước khi "sửa test cho xanh".
   trong `StpState`) — dán Desg cho cổng hướng về gốc là dạy ngược bài 15
   (từng là P0). Goal `native-match` đo HAI ĐẦU KHỚP, không đóng đinh phía
   phải sửa — đề "chữa native lệch" cấm dùng goal `native-vlan` một phía.
+- **Khuôn lỗi hai dòng như IOS thật** (lượt dọn P2): INVALID_INPUT luôn
+  kèm dòng dấu `^` căn đúng cột dưới token hỏng (cột tính CẢ dấu nhắc —
+  transcript in `<dấu nhắc> <lệnh>`); THIẾU từ là `% Incomplete
+  command.`, THỪA từ là Invalid; `enable` gõ thừa ở privileged là no-op
+  im lặng; `show` sai LOẠI thiết bị đi đường error và KHÔNG ghi dấu
+  `viewed`. Bảng trunk đủ 4 mục và mục active đọc CÙNG VLAN database với
+  `show vlan brief`; `show ip route` in "Gateway of last resort is not
+  set", không in "% Network not in table"; neighbor in `FULL/-` (các
+  lệch còn lại khai ở docstring show.ts).
+- Goal `viewed` có biến thể `requireOspfFull` cho `show ip ospf
+  neighbor`: chỉ tính khi lệnh chạy LÚC bảng có láng giềng Full — "kiểm
+  chứng ra Full" mà tick từ lúc bảng rỗng là bằng chứng rỗng. M16 bài 2
+  (tra bảng DOWN) dùng viewed thường.
+- **Bài dở CLI có lưới đỡ nội-dung-đã-đổi** như lab: thiết bị của
+  spec.initial + goals phải nằm trọn trong draft, lệch là bỏ draft. Dấu
+  mốc rút dây chỉ lưu `deviceId`, lời kể dịch lúc RENDER (persist chuỗi
+  đã dịch là nhật ký lẫn tiếng khi đổi ngôn ngữ).
 
 ## 4. Terminal PowerShell (engine/ps + features/ps)
 
@@ -234,7 +265,9 @@ quan trước khi "sửa test cho xanh".
   lượt `drawMasteryTest` rút 8 rồi xáo. Ba thứ không được phá: (a) cỡ đề
   cố định 8 — `MASTERY_DRAW_COUNT` đổi là đổi nghĩa ngưỡng 85% (7/8);
   (b) câu TRỤ (lab/palace-walk/clinic/ps/cli) luôn vào đề — chúng LÀ kỹ
-  năng của module; (c) thi lại RÚT ĐỀ MỚI.
+  năng của module; (c) thi lại RÚT ĐỀ MỚI. Và (d — lượt dọn P2): câu KẾT
+  đề là câu trụ NẶNG nhất (clinic > cli > lab > ps > palace-walk) —
+  peak-end, ca tổng duyệt không được rơi vào câu số 1 (test khóa).
 - **Màn rớt KHÔNG in đáp án** (chỉ ý cần ôn — hintTopic); đáp án đầy đủ
   chỉ hiện khi ĐẬU. Câu + lựa chọn MCQ xáo mỗi lượt/mỗi lần render.
 - **Distractor không lộ đáp án bằng ĐỘ DÀI** (content.test khóa hai hàng
@@ -256,6 +289,13 @@ quan trước khi "sửa test cho xanh".
   hiệu biến mất ("dấu |" → "dau", "65,535" → hai số). Đáp án là KÝ HIỆU
   thì accept có cả biến thể đọc thành chữ + biến thể có dấu phân cách
   (content.test chạy 19 cách gõ thật qua `typedAnswerMatches`).
+  Câu NƯỚC ĐÔI bị chặn: đáp án ngắn (≤ 2 token) không được khớp-chứa khi
+  câu người học đang liệt kê nhiều ứng viên ngắn ("1 hay 99") — cùng nếp
+  từ phủ định.
+- Goal `found-line` của PS nhận `maxMatches`: lượt Select-String tìm ra
+  dòng đó phải đủ HẸP (quét thô `Select-String o` vớt cả file không được
+  tính) — hai câu trụ M20 dùng maxMatches 10; dấu vết per-lượt nằm ở
+  `PsFlags.foundRuns`.
 - App KHÔNG render markdown — backtick trong JSON là ký tự thật lên màn
   hình. `workedExample` KHÔNG mở đầu bằng "Ví dụ giải sẵn" (LessonPlayer
   tự thêm nhãn). Muốn xuống dòng trong nội dung: CHỈ ô "Đào sâu hơn" làm
@@ -311,6 +351,13 @@ quan trước khi "sửa test cho xanh".
   không được chỉ mở khóa: cửa sổ bị chặn giữ state RAM cũ từ lúc mount —
   mở khóa suông là action đầu tiên persist bản cũ đè lên tiến độ vừa học
   ở cửa sổ kia (đúng loại mất-dữ-liệu guard này sinh ra để chặn).
+- **Trần bài dở dọn theo LRU lần-chạm-cuối**: ghi đè là xóa-rồi-chèn-lại
+  về cuối hàng (test khóa). Giữ-nguyên-chỗ-đứng từng khiến bài vừa được
+  đầu tư thêm 20 phút vẫn là bài bị dọn đầu tiên.
+- `PROGRESS_PERSIST_VERSION` là nguồn chân lý version persist; cửa
+  `importBackup` đối chiếu để TỪ CHỐI file từ bản app mới hơn (migrate
+  chỉ đi tới), spot-check vài trường quý và parse thử settings trước khi
+  ghi — file hỏng tinh vi phải chết ở cửa, không crash rải rác sau reload.
 
 ## 9. Học vượt — "thi vượt" (ngoài spec, đã duyệt 08-08)
 
@@ -385,6 +432,13 @@ chỉ bỏ điều kiện "học hết bài trước đã".
 - Drill VLSM chấm THIẾT KẾ, không so lời giải mẫu: ba tiêu chí đúng / đủ
   / không phí đất — bỏ tiêu chí ba là "chia đều mỗi phòng một /26" cũng
   qua, đúng thói quen VLSM sinh ra để chữa. Đề tự sinh có seed tất định.
+- **Phiên VLSM dở lưu vào `vlsmDrillDraft`** (store, một ngăn duy nhất):
+  seed + đề đang đứng + ô đã điền + kết quả các đề đã qua; xóa khi phiên
+  xong. Seed dùng ngày LOCAL (`todayIso()`) — test cũng phải dùng nó,
+  `toISOString` là ngày UTC, lệch một ngày trong khung 0h-7h giờ VN.
+- **Enter giữa bảng còn ô trống là NO-OP** (8 ô chung một form, phản xạ
+  Enter đốt oan một bậc thang gợi ý); nộp bằng nút "Kiểm tra". Ba tiêu
+  chí hiện trạng thái bằng CHỮ (đạt/chưa đạt) cạnh ký hiệu, nếp CLI/lab.
 
 ## 12. Test người thật
 

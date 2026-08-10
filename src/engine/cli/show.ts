@@ -27,6 +27,7 @@ import {
 import { computeStp, isPortBlocked, isRootPort, stpEnabled, bridgePriorityOf } from '../lab/stp'
 import { aclRuleText } from '../lab/acl'
 import { ospfNeighborsOf, ospfRouterId, ospfRoutesOf } from '../lab/ospf'
+import { networkAddress, prefixToMask } from '../subnet/ipv4'
 import type { NetState } from '../lab/simulate'
 
 /** Đệm phải cho thẳng cột — bảng IOS đều là cột cố định. */
@@ -92,11 +93,24 @@ export function showInterfacesTrunk(topo: Topology, device: Device): string[] {
   const trunks = device.ports.filter((p) => portModeOf(p) === 'trunk')
   // Không có trunk nào thì IOS in bảng RỖNG chứ không báo lỗi — và chính
   // cái bảng rỗng đó là câu trả lời cho "sao VLAN không qua được?".
-  const vlansOnSwitch = [...new Set(device.ports.map((p) => p.vlan))].sort((a, b) => a - b)
-  const lines: string[] = ['', `${pad('Port', 12)}${pad('Mode', 13)}${pad('Encapsulation', 15)}${pad('Status', 12)}Native vlan`]
+  //
+  // "Active" = VLAN database của switch, CÙNG một tập với show vlan brief:
+  // VLAN có cổng access đứng tên + VLAN khai bằng `vlan <n>` + VLAN 1.
+  // Hai bảng phải cùng một câu trả lời về cùng một database — người học
+  // vừa gõ `vlan 30` mà bảng này không thấy 30 là hai bảng cãi nhau.
+  const activeVlans = [
+    ...new Set([
+      ...device.ports.filter((p) => portModeOf(p) !== 'trunk').map((p) => p.vlan),
+      ...(device.declaredVlans ?? []),
+      1,
+    ]),
+  ].sort((a, b) => a - b)
+  // Cột Status rộng 14: "not-trunking" dài đúng 12 ký tự, cột 12 là nó
+  // dính liền vào số native vlan phía sau.
+  const lines: string[] = ['', `${pad('Port', 12)}${pad('Mode', 13)}${pad('Encapsulation', 15)}${pad('Status', 14)}Native vlan`]
   for (const port of trunks) {
     lines.push(
-      `${pad(port.id, 12)}${pad('on', 13)}${pad('802.1q', 15)}${pad(linkUp(topo, device.id, port.id) ? 'trunking' : 'not-trunking', 12)}${nativeVlanOf(port)}`,
+      `${pad(port.id, 12)}${pad('on', 13)}${pad('802.1q', 15)}${pad(linkUp(topo, device.id, port.id) ? 'trunking' : 'not-trunking', 14)}${nativeVlanOf(port)}`,
     )
   }
   lines.push('', `${pad('Port', 12)}Vlans allowed on trunk`)
@@ -104,11 +118,16 @@ export function showInterfacesTrunk(topo: Topology, device: Device): string[] {
     const allowed = port.allowedVlans
     lines.push(`${pad(port.id, 12)}${allowed === undefined ? '1-4094' : allowed.join(',')}`)
   }
+  // Đủ 4 mục như bảng thật (mục 3 từng bị bỏ không khai — biên bản trung cấp).
+  lines.push('', `${pad('Port', 12)}Vlans allowed and active in management domain`)
+  for (const port of trunks) {
+    lines.push(`${pad(port.id, 12)}${activeVlans.filter((v) => trunkAllows(port, v)).join(',')}`)
+  }
   lines.push('', `${pad('Port', 12)}Vlans in spanning tree forwarding state and not pruned`)
   const stp = computeStp(topo)
   for (const port of trunks) {
     const blocked = isPortBlocked(stp, { deviceId: device.id, portId: port.id })
-    const carried = vlansOnSwitch.filter((v) => trunkAllows(port, v))
+    const carried = activeVlans.filter((v) => trunkAllows(port, v))
     lines.push(`${pad(port.id, 12)}${blocked ? 'none' : carried.join(',')}`)
   }
   return lines
@@ -177,14 +196,22 @@ export function showIpInterfaceBrief(topo: Topology, device: Device): string[] {
 
 export function showIpRoute(topo: Topology, device: Device): string[] {
   if (device.kind !== 'router') return ['% Invalid input detected at \'^\' marker.']
+  // Khối Codes rút gọn còn đúng ba mã mô hình này sinh ra (bảng thật liệt
+  // kê cả chục mã) — đơn giản hóa về CÁCH GHI, hành vi không đổi. Dòng
+  // "Gateway of last resort" in luôn cả khi có tuyến, đúng khuôn thật:
+  // phạm vi này không có default route nên nó luôn là "is not set". Bảng
+  // rỗng thì dừng ở đó — câu "% Network not in table" của IOS chỉ dành
+  // cho `show ip route <đích>` không khớp, dùng ở đây là dạy sai ngữ cảnh.
   const lines = [
     'Codes: C - connected, S - static, O - OSPF',
+    '',
+    'Gateway of last resort is not set',
     '',
   ]
   for (const port of device.ports) {
     if (port.ipConfig === null) continue
     const { ip, prefix } = port.ipConfig
-    lines.push(`C    ${networkOf(ip, prefix)}/${prefix} is directly connected, ${port.id}`)
+    lines.push(`C    ${networkAddress(ip, prefix)}/${prefix} is directly connected, ${port.id}`)
   }
   for (const route of device.staticRoutes) {
     lines.push(`S    ${route.destination}/${route.prefix} [1/0] via ${route.nextHop}`)
@@ -194,7 +221,6 @@ export function showIpRoute(topo: Topology, device: Device): string[] {
   for (const route of ospfRoutesOf(topo, device.id)) {
     lines.push(`O    ${route.destination}/${route.prefix} [110/${route.cost}] via ${route.nextHopIp}, ${route.egressPortId}`)
   }
-  if (lines.length === 2) lines.push('% Network not in table')
   return lines
 }
 
@@ -210,6 +236,15 @@ export function showIpRoute(topo: Topology, device: Device): string[] {
  * kèm LÝ DO ở cột cuối — thiết bị thật không in dòng đó, nhưng ở đây nó
  * là toàn bộ giá trị chẩn đoán, và app khai rõ chỗ mình nói nhiều hơn
  * thiết bị thay vì để người học mò trong bảng trống.
+ *
+ * Ba chỗ CÒN LẠI cũng lệch khuôn IOS, khai nốt cho đủ (biên bản trung cấp):
+ *   - Dòng đầu "Router ID <của mình>" là dòng tự chế — lệnh thật không in
+ *     Router ID của chính mình; giữ lại vì Router ID là khái niệm bài 3
+ *     Module 16 và không còn chỗ nào khác cho người học nhìn thấy nó.
+ *   - Thiếu cột Pri và Dead Time: sim không có timer, không bầu DR/BDR —
+ *     in một con số bịa còn tệ hơn thiếu cột.
+ *   - State in "FULL/-" (không bao giờ /DR hay /BDR) — trung thực với
+ *     việc sim không bầu DR, và đúng chữ IOS in trên mạng point-to-point.
  */
 export function showIpOspfNeighbor(topo: Topology, device: Device): string[] {
   if (device.kind !== 'router') return ['% Invalid input detected at \'^\' marker.']
@@ -220,21 +255,12 @@ export function showIpOspfNeighbor(topo: Topology, device: Device): string[] {
     `${pad('Neighbor ID', 17)}${pad('State', 12)}${pad('Address', 17)}Interface`,
   ]
   for (const neighbor of neighbors) {
-    const state = neighbor.state === 'full' ? 'FULL' : `DOWN (${neighbor.reason})`
+    const state = neighbor.state === 'full' ? 'FULL/-' : `DOWN (${neighbor.reason})`
     lines.push(
       `${pad(neighbor.remoteRouterId, 17)}${pad(state, 12)}${pad(neighbor.remoteIp ?? '-', 17)}${neighbor.localPortId}`,
     )
   }
   return lines
-}
-
-/** Địa chỉ mạng của một IP theo prefix — chỉ để in bảng tuyến. */
-function networkOf(ip: string, prefix: number): string {
-  const octets = ip.split('.').map(Number)
-  const value = ((octets[0]! << 24) | (octets[1]! << 16) | (octets[2]! << 8) | octets[3]!) >>> 0
-  const mask = prefix === 0 ? 0 : (0xffffffff << (32 - prefix)) >>> 0
-  const net = (value & mask) >>> 0
-  return [net >>> 24, (net >>> 16) & 255, (net >>> 8) & 255, net & 255].join('.')
 }
 
 // ---------------------------------------------------------------
@@ -345,7 +371,7 @@ export function showRunningConfig(topo: Topology, device: Device): string[] {
       lines.push(
         port.ipConfig === null
           ? ' no ip address'
-          : ` ip address ${port.ipConfig.ip} ${maskOf(port.ipConfig.prefix)}`,
+          : ` ip address ${port.ipConfig.ip} ${prefixToMask(port.ipConfig.prefix)}`,
       )
       if (port.aclIn !== undefined) lines.push(` ip access-group ${port.aclIn} in`)
       if (port.aclOut !== undefined) lines.push(` ip access-group ${port.aclOut} out`)
@@ -366,16 +392,10 @@ export function showRunningConfig(topo: Topology, device: Device): string[] {
       lines.push('!')
     }
     for (const route of (device as RouterDevice).staticRoutes) {
-      lines.push(`ip route ${route.destination} ${maskOf(route.prefix)} ${route.nextHop}`)
+      lines.push(`ip route ${route.destination} ${prefixToMask(route.prefix)} ${route.nextHop}`)
     }
     if (device.staticRoutes.length > 0) lines.push('!')
   }
   lines.push('end')
   return lines
-}
-
-/** Prefix → subnet mask dạng x.x.x.x, vì IOS ghi mask chứ không ghi /n. */
-export function maskOf(prefix: number): string {
-  const mask = prefix === 0 ? 0 : (0xffffffff << (32 - prefix)) >>> 0
-  return [mask >>> 24, (mask >>> 16) & 255, (mask >>> 8) & 255, mask & 255].join('.')
 }

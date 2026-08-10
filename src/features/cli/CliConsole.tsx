@@ -17,7 +17,7 @@
 // Không có undo: thiết bị thật cũng không có. "Làm lại từ đầu" trả nguyên
 // sơ đồ đề bài — an toàn để thử nghiệm.
 
-import { useEffect, useMemo, useRef, useState, type FormEvent, type KeyboardEvent as ReactKeyboardEvent } from 'react'
+import { memo, useEffect, useMemo, useRef, useState, type FormEvent, type KeyboardEvent as ReactKeyboardEvent } from 'react'
 import { RotateCcw, SquareChevronRight } from 'lucide-react'
 import { useT, type TFunc } from '../../i18n'
 import { Button } from '../../components/Button'
@@ -27,6 +27,7 @@ import {
   CLI_COMMANDS,
   cliHostname,
   cliPrompt,
+  devicesReferencedByCli,
   gradeCli,
   initialCliState,
   moveCliConsole,
@@ -136,6 +137,27 @@ function EntryBody({ entry }: { entry: CliTranscriptEntry }) {
   )
 }
 
+/**
+ * Một dòng nhật ký, bọc memo: gõ phím chỉ đổi state input của form, nhưng
+ * re-render cả cây — phiên capstone 60-80 lệnh kèm các khối <pre> nhiều
+ * dòng thì mỗi phím gõ dựng lại hàng trăm node (biên bản trung cấp, ghế
+ * Hiệu năng). Props bất biến theo entry nên memo cắt được đúng chỗ đó.
+ * Dấu mốc rút dây nhận lời kể đã dịch qua prop — entry chỉ giữ deviceId.
+ */
+const EntryRow = memo(function EntryRow({ entry, movedLabel }: { entry: CliTranscriptEntry; movedLabel: string | null }) {
+  if (entry.outcome.kind === 'moved') {
+    return <p className="mb-2 text-ink-muted">— {movedLabel} —</p>
+  }
+  return (
+    <div className="mb-2">
+      <p className="text-accent">
+        {entry.prompt} {entry.input}
+      </p>
+      <EntryBody entry={entry} />
+    </div>
+  )
+})
+
 /** Ảnh chụp phiên console để mở lại bài đang gõ dở (#20). */
 export interface CliDraftSnapshot {
   state: CliState
@@ -161,8 +183,19 @@ export interface CliConsoleProps {
 export function CliConsole({ question, onSubmit, initialDraft, onDraftChange, examMode }: CliConsoleProps) {
   const t = useT()
   const spec = question.spec
-  const [state, setState] = useState<CliState>(() => initialDraft?.state ?? initialCliState(spec.initial, spec.deviceId))
-  const [entries, setEntries] = useState<CliTranscriptEntry[]>(() => initialDraft?.entries ?? [])
+  // Lưới đỡ nội-dung-đã-đổi (cùng luật với phòng lab): question id còn
+  // nhưng sơ đồ đề đã đổi — thiết bị của spec/goals không có trong bài dở
+  // thì restore là ngồi trước sơ đồ CŨ với mục tiêu soi vào hư không.
+  // Lệch tập thiết bị bắt buộc → bỏ bài dở, mở bài sạch.
+  const draft = useMemo(() => {
+    if (initialDraft == null) return null
+    const have = new Set(initialDraft.state.topology.devices.map((d) => d.id))
+    const required = [...spec.initial.devices.map((d) => d.id), ...devicesReferencedByCli(spec.goals)]
+    return required.every((id) => have.has(id)) ? initialDraft : null
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- chỉ tính một lần lúc mount, như chính initialDraft
+  }, [])
+  const [state, setState] = useState<CliState>(() => draft?.state ?? initialCliState(spec.initial, spec.deviceId))
+  const [entries, setEntries] = useState<CliTranscriptEntry[]>(() => draft?.entries ?? [])
   const [input, setInput] = useState('')
   const [histCursor, setHistCursor] = useState<number | null>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
@@ -175,18 +208,23 @@ export function CliConsole({ question, onSubmit, initialDraft, onDraftChange, ex
     [state.topology],
   )
 
-  // Bảng mục tiêu "chấm sống" đổi ○→✓ trong im lặng với screen reader —
-  // live region sr-only thường trực announce từng mục tiêu vừa đạt.
+  // Bảng mục tiêu "chấm sống" đổi ✓/○ trong im lặng với screen reader —
+  // live region sr-only thường trực announce CẢ HAI CHIỀU: mục tiêu vừa
+  // đạt và mục tiêu vừa TỤT về chưa đạt (gõ shutdown làm port-up rơi ✓→○
+  // mà chỉ mắt thấy, tai không được kể, là bất công với người dùng trình
+  // đọc màn hình — biên bản trung cấp).
   const [goalAnnounce, setGoalAnnounce] = useState('')
   const prevMet = useRef<boolean[] | null>(null)
   useEffect(() => {
     if (examMode === true) return // bài thi không chấm sống thì cũng không announce
     const met = evaluation.goals.map((g) => g.met)
     if (prevMet.current !== null) {
-      const fresh = evaluation.goals.filter(({ met: m }, i) => m && prevMet.current![i] === false)
-      if (fresh.length > 0) {
+      const changed = evaluation.goals.filter(({ met: m }, i) => m !== prevMet.current![i])
+      if (changed.length > 0) {
         setGoalAnnounce(
-          fresh.map(({ goal }) => `${cliGoalText(t, state.topology, goal)} — ${t('lab.goalMet')}`).join('. '),
+          changed
+            .map(({ goal, met: m }) => `${cliGoalText(t, state.topology, goal)} — ${t(m ? 'lab.goalMet' : 'lab.goalUnmet')}`)
+            .join('. '),
         )
       }
     }
@@ -225,12 +263,10 @@ export function CliConsole({ question, onSubmit, initialDraft, onDraftChange, ex
     const next = moveCliConsole(state, deviceId)
     // Việc rút dây cũng vào NHẬT KÝ: đọc lại phiên mà không thấy chỗ
     // chuyển máy thì cả loạt lệnh phía sau trông như gõ nhầm thiết bị.
-    pushEntry(next, {
-      input: '',
-      lines: [],
-      outcome: { kind: 'moved', deviceId },
-      prompt: t('cli.movedTo', { device: cliHostname(next) }),
-    })
+    // Entry chỉ lưu deviceId (đã nằm trong outcome) — lời kể dịch lúc
+    // RENDER, không persist chuỗi đã dịch vào bài dở (đổi ngôn ngữ rồi mở
+    // lại là nhật ký lẫn tiếng — biên bản trung cấp).
+    pushEntry(next, { input: '', lines: [], outcome: { kind: 'moved', deviceId }, prompt: '' })
   }
 
   const reset = () => {
@@ -338,23 +374,24 @@ export function CliConsole({ question, onSubmit, initialDraft, onDraftChange, ex
           ref={scrollRef}
           role="log"
           aria-label={t('cli.terminalAria', { host: cliHostname(state) })}
+          // Vùng cuộn phải focus được bằng bàn phím: Firefox/Safari không tự
+          // cho scroller nhận focus như Chromium, thiếu tabIndex là người
+          // dùng bàn phím thuần không cuộn lại được output cũ (biên bản).
+          tabIndex={0}
           className="max-h-72 min-h-24 overflow-y-auto px-3 py-2 font-mono text-xs leading-relaxed"
         >
           {entries.length === 0 && <p className="text-ink-muted">{t('cli.terminalIntro')}</p>}
-          {entries.map((entry) =>
-            entry.outcome.kind === 'moved' ? (
-              <p key={entry.id} className="mb-2 text-ink-muted">
-                — {entry.prompt} —
-              </p>
-            ) : (
-              <div key={entry.id} className="mb-2">
-                <p className="text-accent">
-                  {entry.prompt} {entry.input}
-                </p>
-                <EntryBody entry={entry} />
-              </div>
-            ),
-          )}
+          {entries.map((entry) => (
+            <EntryRow
+              key={entry.id}
+              entry={entry}
+              movedLabel={
+                entry.outcome.kind === 'moved'
+                  ? t('cli.movedTo', { device: deviceName(state.topology, entry.outcome.deviceId) })
+                  : null
+              }
+            />
+          ))}
         </div>
         <form onSubmit={run} className="flex items-center gap-2 border-t border-edge px-3 py-1.5">
           <span aria-hidden className="font-mono text-xs text-accent">

@@ -101,7 +101,22 @@ function switchLinks(topo: Topology, switches: Map<DeviceId, SwitchDevice>): Swi
  * hướng về root (root port); trên mỗi sợi dây còn lại, đầu nào gần root
  * hơn thì phát, đầu kia nằm im.
  */
+/**
+ * Cache cây STP theo topology: mỗi lượt ping / mỗi bảng show đều hỏi cây,
+ * mà topology bất biến giữa các lệnh nên WeakMap tự đúng và tự dọn (cùng
+ * mẫu với cache bảng OSPF — biên bản trung cấp, ghế Hiệu năng).
+ */
+const stpCache = new WeakMap<Topology, StpState>()
+
 export function computeStp(topo: Topology): StpState {
+  const cached = stpCache.get(topo)
+  if (cached !== undefined) return cached
+  const state = computeStpUncached(topo)
+  stpCache.set(topo, state)
+  return state
+}
+
+function computeStpUncached(topo: Topology): StpState {
   if (!stpEnabled(topo)) return emptyStpState()
 
   const switches = new Map<DeviceId, SwitchDevice>()

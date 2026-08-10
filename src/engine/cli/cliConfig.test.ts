@@ -55,7 +55,7 @@ describe('luật chế độ giữ nguyên cho nhóm lệnh cấu hình', () => 
     const privileged = type(onSwitch1(), 'enable').state
     const { last } = type(privileged, 'switchport mode trunk')
     expect(last.outcome.kind).toBe('error')
-    expect(last.lines).toEqual([INVALID_INPUT])
+    expect(last.lines.at(-1)).toBe(INVALID_INPUT)
   })
 
   it('lệnh của chế độ config gõ trong config-if cũng bị từ chối', () => {
@@ -120,7 +120,7 @@ describe('trunk 802.1Q bằng lệnh', () => {
   it('VLAN ngoài dải 1..4094 bị từ chối', () => {
     const { last } = type(inConfigIf('p1'), 'switchport access vlan 5000')
     expect(last.outcome.kind).toBe('error')
-    expect(last.lines).toEqual([INVALID_INPUT])
+    expect(last.lines.at(-1)).toBe(INVALID_INPUT)
   })
 })
 
@@ -161,7 +161,7 @@ describe('router: địa chỉ cổng và tuyến tĩnh', () => {
   it('mask có bit không liền bị từ chối', () => {
     const { last } = type(onRouter(), 'enable', 'configure terminal', 'interface g1', 'ip address 10.9.0.1 255.0.255.0')
     expect(last.outcome.kind).toBe('error')
-    expect(last.lines).toEqual([INVALID_INPUT])
+    expect(last.lines.at(-1)).toBe(INVALID_INPUT)
   })
 
   it('ip address trên switch bị từ chối (switch ở đây trong suốt tầng 2)', () => {

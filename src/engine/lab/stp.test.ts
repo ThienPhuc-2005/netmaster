@@ -8,7 +8,6 @@ import { describe, expect, it } from 'vitest'
 import { DEFAULT_BRIDGE_PRIORITY, bridgePriorityOf, computeStp, isPortBlocked, stpEnabled } from './stp'
 import { pingSucceeded, simulatePing } from './simulate'
 import { diagnose, gradeLab } from './gradeLab'
-import type { SwitchDevice } from './topology'
 import { ringOfSwitches, stpLab } from '../../../tests/fixtures/labFixture'
 
 describe('bầu root bridge', () => {
@@ -27,18 +26,29 @@ describe('bầu root bridge', () => {
   })
 
   it('priority hòa thì phân định bằng MAC nền, rồi mới tới tên', () => {
-    const topo = ringOfSwitches(true)
-    const switches = topo.devices.filter((d): d is SwitchDevice => d.kind === 'switch')
-    for (const device of switches) device.bridgePriority = DEFAULT_BRIDGE_PRIORITY
+    // Topology là BẤT BIẾN (cây STP cache theo object) — mỗi biến thể
+    // phải là một object mới, không mutate rồi hỏi lại.
+    const tied = (macs: Record<string, string> | null) => {
+      const base = ringOfSwitches(true)
+      return {
+        ...base,
+        devices: base.devices.map((d) =>
+          d.kind === 'switch'
+            ? { ...d, bridgePriority: DEFAULT_BRIDGE_PRIORITY, ...(macs === null ? {} : { bridgeMac: macs[d.id] }) }
+            : d,
+        ),
+      }
+    }
 
     // Chưa khai MAC: hòa hết thì tên nhỏ nhất thắng.
-    expect(computeStp(topo).rootId).toBe('sw-1')
+    expect(computeStp(tied(null)).rootId).toBe('sw-1')
 
     // Khai MAC: sw-3 mang MAC nhỏ nhất nên nó lên làm root dù tên đứng cuối.
-    switches[0]!.bridgeMac = 'AA:BB:CC:DD:00:30'
-    switches[1]!.bridgeMac = 'AA:BB:CC:DD:00:20'
-    switches[2]!.bridgeMac = 'AA:BB:CC:DD:00:10'
-    expect(computeStp(topo).rootId).toBe('sw-3')
+    expect(
+      computeStp(
+        tied({ 'sw-1': 'AA:BB:CC:DD:00:30', 'sw-2': 'AA:BB:CC:DD:00:20', 'sw-3': 'AA:BB:CC:DD:00:10' }),
+      ).rootId,
+    ).toBe('sw-3')
   })
 
   it('priority mặc định là 32768 khi đề không khai', () => {
@@ -107,10 +117,11 @@ describe('màn diễn của Module 15', () => {
         !(l.b.deviceId === blockedBefore.deviceId && l.b.portId === blockedBefore.portId),
     )
     expect(victim, 'phải có một sợi vòng không dính đầu đang chặn').toBeDefined()
-    topo.links = topo.links.filter((l) => l.id !== victim!.id)
+    // Rút dây = topology MỚI (bất biến — cây STP cache theo object).
+    const cut = { ...topo, links: topo.links.filter((l) => l.id !== victim!.id) }
 
-    expect(computeStp(topo).blocked, 'hết vòng thì hết cổng phải nằm im').toEqual([])
-    expect(pingSucceeded(simulatePing(topo, { from: 'pc-a', to: 'pc-b' })), 'mạng phải vẫn thông').toBe(true)
+    expect(computeStp(cut).blocked, 'hết vòng thì hết cổng phải nằm im').toEqual([])
+    expect(pingSucceeded(simulatePing(cut, { from: 'pc-a', to: 'pc-b' })), 'mạng phải vẫn thông').toBe(true)
   })
 
   it('bật STP rồi thì vòng KHÔNG còn bị coi là bệnh', () => {

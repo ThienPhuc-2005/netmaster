@@ -54,7 +54,7 @@ export const CliGoalSchema = z.discriminatedUnion('kind', [
     nextHop: ipSchema,
   }),
   z.object({ kind: z.literal('vlan-exists'), deviceId: idSchema, vlan: vlanSchema }),
-  z.object({ kind: z.literal('viewed'), command: idSchema, deviceId: idSchema }),
+  z.object({ kind: z.literal('viewed'), command: idSchema, deviceId: idSchema, requireOspfFull: z.boolean().optional() }),
 ])
 
 const CliSolutionStepSchema = z.object({

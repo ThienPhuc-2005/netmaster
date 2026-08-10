@@ -347,6 +347,18 @@ describe('bài dở: rời đi giữa chừng rồi quay lại (hội đồng #2
     fireEvent.click(screen.getByRole('button', { name: /Về sơ đồ ban đầu/ }))
     expect(unfinished()).toHaveLength(1)
   })
+
+  it('"Về sơ đồ ban đầu" XÓA bài dở, không lưu một ảnh chụp nguyên sơ', () => {
+    // Nếp CLI/PS: reset là bài dở phải biến mất — lưu sơ đồ nguyên sơ là
+    // chiếm một suất trần và lần sau restore vô nghĩa (biên bản trung cấp).
+    const onDraftChange = vi.fn()
+    render(<NetworkLab spec={vlanRepairLab()} onDraftChange={onDraftChange} />)
+    setVlan('p2', 10)
+    fireEvent.click(screen.getByRole('button', { name: /Về sơ đồ ban đầu/ }))
+    // Lượt bắn CUỐI phải là null (xóa) — nghĩa là effect lưu-bài-dở không
+    // được đè thêm một ảnh chụp từ chính thay đổi do cú reset gây ra.
+    expect(onDraftChange.mock.calls.at(-1)![0]).toBeNull()
+  })
 })
 
 describe('bàn phím dời được thiết bị (hội đồng, ghế a11y)', () => {

@@ -136,8 +136,10 @@ export interface NetworkLabProps {
   /**
    * Mặt bàn vừa đổi — tầng gọi tự quyết lưu vào đâu. Chỉ bắn khi người
    * học ĐÃ làm gì đó: mở bài ra xem rồi đi chỗ khác không tạo bài dở.
+   * `null` khi bấm "Về sơ đồ ban đầu" — bài dở phải BIẾN MẤT, không phải
+   * bị thay bằng một ảnh chụp sơ đồ nguyên sơ (cùng hợp đồng với CLI/PS).
    */
-  onDraftChange?: (draft: LabDraftSnapshot) => void
+  onDraftChange?: (draft: LabDraftSnapshot | null) => void
   /**
    * Nộp bài. Có truyền thì hiện nút "Nộp bài" — tầng gọi tự quyết việc
    * chấm và đếm lượt sai; phòng lab chỉ trao lại sơ đồ hiện tại.
@@ -338,6 +340,11 @@ export function NetworkLab({
               setLayout(autoLayout(resetLab(session).present.devices))
               setArmedPort(null)
               setRefusal(null)
+              // Bài dở phải BIẾN MẤT (nếp CLI/PS): không xóa thì effect lưu
+              // ngay một ảnh chụp sơ đồ nguyên sơ — chiếm một suất trần và
+              // lần sau mở lại đi qua đường restore vô nghĩa (biên bản).
+              draftSaved.current = false
+              draftCallback.current?.(null)
             }}
           />
           {/* Lời từ chối: hổ phách + giọng tử tế, không bao giờ chữ "SAI" (spec 4.4). */}

@@ -72,8 +72,13 @@ export type CliGoal =
   | { kind: 'static-route'; deviceId: DeviceId; destination: Ipv4; prefix: number; nextHop: Ipv4 }
   /** VLAN phải có mặt trong VLAN database của switch (`show vlan brief` thấy). */
   | { kind: 'vlan-exists'; deviceId: DeviceId; vlan: VlanId }
-  /** Đã tra bảng này trên đúng thiết bị này. */
-  | { kind: 'viewed'; command: string; deviceId: DeviceId }
+  /**
+   * Đã tra bảng này trên đúng thiết bị này. `requireOspfFull` (chỉ có
+   * nghĩa với `show ip ospf neighbor`): lệnh phải được chạy TẠI thời điểm
+   * bảng có láng giềng Full — "kiểm chứng ra Full" mà tick xong từ lúc
+   * bảng còn rỗng là bằng chứng rỗng (biên bản trung cấp, ghế Capstone).
+   */
+  | { kind: 'viewed'; command: string; deviceId: DeviceId; requireOspfFull?: boolean }
 
 /**
  * Đề một bài CLI — phần kỹ thuật thuần; lời đề, gợi ý và lời giải bằng
@@ -181,7 +186,12 @@ function staticGoalMet(goal: Exclude<CliGoal, { kind: 'behavior' }>, state: CliS
       return (device.declaredVlans ?? []).includes(goal.vlan) || device.ports.some((p) => p.vlan === goal.vlan)
     }
     case 'viewed':
-      return state.flags.viewed.some((v) => v.command === goal.command && v.deviceId === goal.deviceId)
+      return state.flags.viewed.some(
+        (v) =>
+          v.command === goal.command &&
+          v.deviceId === goal.deviceId &&
+          (goal.requireOspfFull !== true || v.ospfFull === true),
+      )
   }
 }
 

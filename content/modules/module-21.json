@@ -525,7 +525,7 @@
                     { "kind": "port-mode", "deviceId": "sw-2", "portId": "p3", "mode": "trunk" },
                     { "kind": "trunk-carries", "deviceId": "sw-1", "portId": "p3", "vlans": [10, 20] },
                     { "kind": "trunk-carries", "deviceId": "sw-2", "portId": "p3", "vlans": [10, 20] },
-                    { "kind": "viewed", "command": "show ip ospf neighbor", "deviceId": "r-cn" },
+                    { "kind": "viewed", "command": "show ip ospf neighbor", "deviceId": "r-cn", "requireOspfFull": true },
                     { "kind": "behavior", "goal": { "kind": "ping", "from": "pc-kd", "to": "srv-kt", "expect": "reach" } },
                     { "kind": "behavior", "goal": { "kind": "ping", "from": "pc-kh", "to": "srv-web", "expect": "reach" } }
                   ],
@@ -1415,15 +1415,20 @@
       }
     },
     {
-      "kind": "typed",
+      "kind": "mcq",
       "id": "m21-mt-10",
       "prompt": {
-        "vi": "Ôn nhanh Phần E: relay ghi địa chỉ xóm đang xin DHCP vào ô nào của gói tin?"
+        "vi": "Ôn nhanh Phần E: máy chủ DHCP một mình phục vụ hàng chục xóm qua relay. Nó dựa vào đâu để chọn đúng scope cho mỗi lời xin?"
       },
-      "accept": ["giaddr", "ô giaddr", "o giaddr", "trường giaddr", "truong giaddr", "gateway address"],
-      "hintTopic": { "vi": "sáu chữ cái, ghép gateway và address" },
+      "choices": [
+        { "vi": "Ô giaddr — relay ghi địa chỉ xóm phát lời xin vào gói trước khi chuyển" },
+        { "vi": "Địa chỉ MAC của máy xin — máy chủ tra bảng MAC để đoán xem xóm nào phát" },
+        { "vi": "Cổng UDP nguồn của lời xin — relay gán mỗi xóm một cổng nguồn riêng biệt" }
+      ],
+      "answerIndex": 0,
+      "hintTopic": { "vi": "thứ bà mối ghi thêm vào gói trước khi chuyển — bài relay M18" },
       "explain": {
-        "vi": "Ô giaddr — nhờ nó máy DHCP một mình phục vụ được hàng chục xóm: nhìn giaddr là biết lời xin phát từ dải nào mà chọn đúng scope."
+        "vi": "Relay ghi địa chỉ của xóm gốc vào ô giaddr trước khi chuyển tiếp — máy chủ nhìn ô đó là biết lời xin phát từ dải nào mà chọn đúng scope. MAC không nói được máy đứng ở xóm nào, còn cổng UDP của DHCP là cố định (67/68), không mang thông tin xóm."
       }
     },
     {
@@ -1541,7 +1546,7 @@
         },
         "deviceId": "r-moi",
         "goals": [
-          { "kind": "viewed", "command": "show ip ospf neighbor", "deviceId": "r-moi" },
+          { "kind": "viewed", "command": "show ip ospf neighbor", "deviceId": "r-moi", "requireOspfFull": true },
           { "kind": "behavior", "goal": { "kind": "ping", "from": "pc-lab", "to": "srv-kt2", "expect": "reach" } }
         ],
         "solution": [

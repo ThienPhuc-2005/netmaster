@@ -695,8 +695,10 @@ Capstone có xương sống tốt (số liệu VLSM/wildcard/ACL đúng tuyệt 
 ## 6. Việc đề xuất theo thứ tự đáng làm
 
 **CẬP NHẬT 2026-08-09: chủ dự án đã duyệt trọn gói cả 4 đợt — toàn bộ
-15 việc dưới đây ĐÃ SỬA XONG trong khối 20.2 (xem TRANG-THAI.md).
-Còn treo duy nhất: 52 phát hiện P2 ở mục 5 — chờ một lượt dọn.**
+15 việc dưới đây ĐÃ SỬA XONG trong khối 20.2 (xem TRANG-THAI.md).**
+
+**CẬP NHẬT 2026-08-10: LƯỢT DỌN 52 PHÁT HIỆN P2 mục 5 ĐÃ XONG (khối
+20.3, xem TRANG-THAI.md) — biên bản này không còn dòng nào treo.**
 
 Hội đồng chỉ đánh giá — mọi việc dưới đây đụng nội dung/hành vi nhìn
 thấy được nên cần duyệt trước khi code (luật CLAUDE.md).
@@ -749,5 +751,5 @@ thấy được nên cần duyệt trước khi code (luật CLAUDE.md).
     focus khi xong phiên); vẽ lại phòng Exchange cho khác bóng dáng Full;
     nối `net` vào console (hoặc xóa tham số chết + sửa comment hứa suông).
 
-52 phát hiện P2 còn lại nằm trong mục ghế tương ứng (mục 5) — đáng gom
-thành các lượt dọn như nếp "đợt ba" của biên bản trước.
+52 phát hiện P2 nằm trong mục ghế tương ứng (mục 5) — **đã dọn trọn
+trong khối 20.3 (2026-08-10)**, nhật ký chi tiết ở TRANG-THAI.md.

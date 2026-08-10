@@ -77,6 +77,14 @@ export interface PsWorld {
 export interface PsFlags {
   testedConnections: { ip: string; port: number | null; succeeded: boolean }[]
   foundLines: string[]
+  /**
+   * Mỗi lượt Select-String là một mục: tổng số dòng khớp + các dòng đó.
+   * Goal `found-line` có `maxMatches` đọc ở đây để đo ĐỘ CHỌN LỌC của
+   * lưới: `Select-String o` vớt gần trọn file cũng "chứa dòng sự cố",
+   * nhưng đó là quét thô chứ không phải lọc (biên bản trung cấp, ghế Đo
+   * lường). Optional để bài dở cũ thiếu trường này vẫn mở được.
+   */
+  foundRuns?: { matches: number; lines: string[] }[]
 }
 
 /** Trạng thái một phiên terminal: thế giới hiện tại + dấu vết hành động. */

@@ -249,6 +249,9 @@ export function PsConsole({ question, onSubmit, initialDraft, onDraftChange, exa
           ref={scrollRef}
           role="log"
           aria-label={t('ps.terminalAria', { host: spec.world.hostname })}
+          // Firefox/Safari không tự cho vùng cuộn nhận focus — thiếu tabIndex
+          // là bàn phím thuần không cuộn lại được lịch sử (biên bản trung cấp).
+          tabIndex={0}
           className="max-h-72 min-h-24 overflow-y-auto px-3 py-2 font-mono text-xs leading-relaxed"
         >
           {entries.length === 0 && <p className="text-ink-muted">{t('ps.terminalIntro')}</p>}

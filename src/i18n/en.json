@@ -1,4 +1,4 @@
-{
+﻿{
   "app": {
     "name": "NetMaster",
     "tagline": "Computer networking from zero",
@@ -196,7 +196,8 @@
   },
   "vlsm": {
     "title": "VLSM design practice",
-    "intro": "5 fresh problems a day: one address range and a few departments, and you decide how to carve it up. There is no single right answer — any layout counts as long as it is correct, complete and wastes nothing.",
+    "resume": "Resume the session in progress",
+    "intro": "5 fresh problems a day: one address range and a few departments, and you decide how to carve it up. There is no single right answer — any layout counts as long as it is correct, complete and wastes nothing. The timer is only you racing yourself: design takes minutes, and taking your time is normal.",
     "brief": "You are given the range {base} and must split it between the {count} departments below. Fill in a network address and prefix for each one.",
     "deptName": "Department {n}",
     "colDept": "Department",
@@ -526,7 +527,7 @@
       "show ip route": "the routing table",
       "show spanning-tree": "who the root is and which port is sitting still",
       "show access-lists": "the access lists and how many packets matched each line",
-      "show ip ospf neighbor": "the OSPF neighbour table — who is adjacent, who is not, and why",
+      "show ip ospf neighbor": "the OSPF neighbor table — who is adjacent, who is not, and why",
       "show running-config": "the whole running configuration (needs enable first)",
       "vlan": "add a VLAN to the switch — vlan <number>",
       "switchport mode": "set the port role — switchport mode access | trunk",
@@ -555,8 +556,7 @@
     "statsTitle": "Numbers from the whole road",
     "statModules": "Modules passed",
     "statXp": "Total XP",
-    "statStreak": "Day streak",
-    "statStreakUnit": "days",
+    "statStreak": "Day streak (days)",
     "statCards": "Cards in review",
     "statLessons": "Lessons completed",
     "statClinic": "Clinic cases cured",
@@ -584,7 +584,8 @@
     "backupExport": "Export to file",
     "backupImport": "Import from file",
     "backupImportConfirm": "Importing will REPLACE all progress on this device with the file's progress. Continue?",
-    "backupImportBad": "That file is not a valid NetMaster backup — double-check you picked the right one."
+    "backupImportBad": "That file is not a valid NetMaster backup — double-check you picked the right one.",
+    "backupImportNewer": "This backup comes from a newer version of the app — update the app, then import again."
   },
   "design": {
     "title": "Design system",

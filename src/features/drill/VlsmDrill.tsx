@@ -13,7 +13,7 @@
 // Đề sinh DETERMINISTIC theo ngày (+ số phiên trong ngày), y như drill
 // subnet: mở lại giữa chừng vẫn gặp đúng bộ đề đó, không reroll né bài.
 
-import { useEffect, useMemo, useRef, useState, type FormEvent } from 'react'
+import { useEffect, useMemo, useRef, useState, type FormEvent, type KeyboardEvent as ReactKeyboardEvent } from 'react'
 import { Timer } from 'lucide-react'
 import {
   gradeVlsm,
@@ -66,6 +66,9 @@ export function VlsmDrill() {
   const t = useT()
   const drillHistory = useProgress((s) => s.drillHistory)
   const recordDrillSession = useProgress((s) => s.recordDrillSession)
+  const vlsmDrillDraft = useProgress((s) => s.vlsmDrillDraft)
+  const saveVlsmDrillDraft = useProgress((s) => s.saveVlsmDrillDraft)
+  const clearVlsmDrillDraft = useProgress((s) => s.clearVlsmDrillDraft)
 
   // Biểu đồ chỉ đọc phiên CÙNG LOẠI: trộn hai loại drill vào một đường
   // thì "giây/bài" nhảy dựng lên và người học tưởng mình đang tệ đi.
@@ -83,7 +86,11 @@ export function VlsmDrill() {
   const [elapsed, setElapsed] = useState(0)
   const outcomes = useRef<{ correct: boolean; seconds: number }[]>([])
   const problemStart = useRef(0)
+  const seedRef = useRef(0)
   const doneHeadingRef = useRef<HTMLHeadingElement>(null)
+
+  /** Phiên dở CÒN GIÁ TRỊ: cùng ngày — seed lưu kèm nên dựng lại đúng bộ đề. */
+  const resumable = vlsmDrillDraft !== null && vlsmDrillDraft.date === today
 
   useEffect(() => {
     if (phase !== 'running') return
@@ -97,21 +104,58 @@ export function VlsmDrill() {
   }, [phase])
 
   const start = () => {
-    const seed = Number(today.replaceAll('-', '')) + sessionsToday * 7_919 + 13
+    // Phiên dở của HÔM NAY thì làm tiếp từ đúng chỗ đứng dậy: 5 đề thiết
+    // kế là bề mặt drill nặng nhất, back nhầm ở đề 4/5 mà mất trắng bảng
+    // đã điền là kiểu mất mát khiến người ta bỏ hẳn bài (biên bản trung
+    // cấp). Đồng hồ của ĐỀ hiện tại chạy lại từ 0 — công điền bảng thì giữ.
+    const draft = resumable ? vlsmDrillDraft : null
+    const seed = draft?.seed ?? Number(today.replaceAll('-', '')) + sessionsToday * 7_919 + 13
+    seedRef.current = seed
     const session = generateVlsmSession(mulberry32(seed), SESSION_SIZE)
+    const index0 = Math.min(draft?.index ?? 0, session.length - 1)
     setProblems(session)
-    setRows(emptyRows(session[0]!))
-    outcomes.current = []
+    setRows(draft?.rows ?? emptyRows(session[index0]!))
+    outcomes.current = draft === null ? [] : [...draft.outcomes]
     problemStart.current = Date.now()
-    setIndex(0)
-    setFailCount(0)
+    setIndex(index0)
+    setFailCount(draft?.failCount ?? 0)
     setFeedback(null)
     setEvaluation(null)
     setElapsed(0)
     setPhase('running')
   }
 
+  // Lưu bài dở mỗi khi công sức đổi (ô điền, sang đề, thêm lần sai) —
+  // cùng luật practiceDrafts: KHÔNG XP, xóa khi phiên xong.
+  useEffect(() => {
+    if (phase !== 'running') return
+    saveVlsmDrillDraft({
+      seed: seedRef.current,
+      date: today,
+      index,
+      rows,
+      failCount,
+      outcomes: [...outcomes.current],
+    })
+  }, [phase, index, rows, failCount, saveVlsmDrillDraft, today])
+
   const problem = problems[index]
+
+  /**
+   * Enter giữa chừng KHÔNG nộp bài: bảng có tới 8 ô chung một form, phản
+   * xạ gõ Enter khi điền dở dòng 2 mà thành một lượt chấm với hàng loạt
+   * lỗi "bỏ trống" là đốt oan một bậc của thang gợi ý (biên bản trung
+   * cấp). Nút "Kiểm tra" vẫn nộp được bất cứ lúc nào — chỉ chặn phím.
+   */
+  const hasEmptyCell =
+    problem !== undefined &&
+    problem.needs.some((need) => {
+      const row = rows[need.id]
+      return row === undefined || row.ip.trim() === '' || row.prefix.trim() === ''
+    })
+  const blockEnterWhenIncomplete = (e: ReactKeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && hasEmptyCell) e.preventDefault()
+  }
 
   /**
    * Sửa MỘT ô của bảng. Cập nhật theo HÀM (`prev => …`) chứ không vá lên
@@ -138,6 +182,7 @@ export function VlsmDrill() {
       const next = problems[index + 1]
       if (next === undefined) {
         recordDrillSession('vlsm', outcomes.current, outcomes.current.filter((o) => o.correct).length)
+        clearVlsmDrillDraft()
         playEarcon('lessonComplete')
         setPhase('done')
         return
@@ -173,7 +218,9 @@ export function VlsmDrill() {
           <p className="max-w-lg text-sm leading-relaxed text-ink-muted">{t('vlsm.intro')}</p>
           {sessionsToday > 0 && <p className="text-sm font-medium text-ink">{t('drill.alreadyDoneToday')}</p>}
           <div>
-            <Button onClick={start}>{sessionsToday > 0 ? t('drill.oneMoreRound') : t('drill.start')}</Button>
+            <Button onClick={start}>
+              {resumable ? t('vlsm.resume') : sessionsToday > 0 ? t('drill.oneMoreRound') : t('drill.start')}
+            </Button>
           </div>
           <ProgressChart history={history} />
         </div>
@@ -258,6 +305,7 @@ export function VlsmDrill() {
                         <input
                           value={row.ip}
                           onChange={(e) => setCell(need.id, 'ip', e.target.value)}
+                          onKeyDown={blockEnterWhenIncomplete}
                           aria-label={t('vlsm.networkAria', { dept: name })}
                           placeholder="192.168.10.0"
                           // Nút "Bắt đầu" unmount khi phiên mở — không autoFocus
@@ -272,6 +320,7 @@ export function VlsmDrill() {
                         <input
                           value={row.prefix}
                           onChange={(e) => setCell(need.id, 'prefix', e.target.value)}
+                          onKeyDown={blockEnterWhenIncomplete}
                           aria-label={t('vlsm.prefixAria', { dept: name })}
                           placeholder="26"
                           inputMode="numeric"
@@ -305,7 +354,15 @@ export function VlsmDrill() {
               ).map(([key, met]) => (
                 <li key={key} className="flex items-start gap-2">
                   <span className={met ? 'text-ok' : 'text-ink-muted'}>{met ? '✓' : '○'}</span>
-                  <span className="text-ink">{t(`vlsm.criteria.${key}`)}</span>
+                  {/* Trạng thái phải thành CHỮ, không chỉ ký hiệu + màu —
+                      trình đọc màn hình đọc ✓/○ không ổn định (nếp bảng
+                      mục tiêu CLI/lab, biên bản trung cấp). */}
+                  <span className="text-ink">
+                    {t(`vlsm.criteria.${key}`)}{' '}
+                    <span className={met ? 'text-ok' : 'text-ink-muted'}>
+                      ({met ? t('lab.goalMet') : t('lab.goalUnmet')})
+                    </span>
+                  </span>
                 </li>
               ))}
             </ul>

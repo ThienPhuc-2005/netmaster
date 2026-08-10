@@ -101,6 +101,9 @@ export function ClinicTerminal({ patient }: { patient: ClinicPatient }) {
         ref={scrollRef}
         role="log"
         aria-label={t('clinic.terminalAria', { host })}
+        // Firefox/Safari không tự cho vùng cuộn nhận focus — thiếu tabIndex
+        // là bàn phím thuần không cuộn lại được lịch sử (biên bản trung cấp).
+        tabIndex={0}
         className="max-h-64 min-h-20 overflow-y-auto px-3 py-2 font-mono text-xs leading-relaxed"
       >
         {entries.length === 0 && <p className="text-ink-muted">{t('clinic.terminalIntro')}</p>}

@@ -47,7 +47,17 @@ describe('chế độ — dấu nhắc và luật đi vào đi ra', () => {
   it('vào cấu hình khi chưa enable là bị từ chối — luật chế độ có thật', () => {
     const { last } = type(onSwitch1(), 'configure terminal')
     expect(last.outcome.kind).toBe('error')
-    expect(last.lines).toEqual([INVALID_INPUT])
+    // Khuôn hai dòng như IOS thật: dòng dấu ^ rồi mới tới câu lỗi —
+    // trích "at '^' marker" mà không có dấu ^ nào là câu đố (biên bản).
+    expect(last.lines.at(-1)).toBe(INVALID_INPUT)
+    expect(last.lines[0]).toMatch(/^ *\^$/)
+  })
+
+  it('dấu ^ căn đúng cột: dưới token hỏng, tính cả dấu nhắc phía trước', () => {
+    // Transcript in "<dấu nhắc> <lệnh>" — "Switch-1>" dài 9, cộng 1 khoảng
+    // trắng: token đầu của lệnh nằm ở cột 10.
+    const { last } = type(onSwitch1(), 'configure terminal')
+    expect(last.lines[0]).toBe(`${' '.repeat('Switch-1>'.length + 1)}^`)
   })
 
   it('exit lùi ĐÚNG MỘT bậc, end nhảy thẳng về privileged', () => {
@@ -120,7 +130,11 @@ describe('show — đọc thẳng từ sơ đồ phòng lab', () => {
 
   it('show ip route trên SWITCH bị từ chối — switch không định tuyến', () => {
     const { last } = type(onSwitch1(), 'show ip route')
-    expect(last.lines).toEqual([INVALID_INPUT])
+    // Sai LOẠI thiết bị phải là outcome error thật (không phải 'ok' in
+    // lời từ chối) — và không được ghi dấu viewed cho lệnh máy đã chê.
+    expect(last.outcome.kind).toBe('error')
+    expect(last.lines.at(-1)).toBe(INVALID_INPUT)
+    expect(last.state.flags.viewed).toEqual([])
   })
 
   it('show ip interface brief kê trạng thái dây của từng cổng', () => {
@@ -170,7 +184,8 @@ describe('show — đọc thẳng từ sơ đồ phòng lab', () => {
 
   it('show running-config cần quyền: chế độ xem thì bị từ chối', () => {
     const { last } = type(onSwitch1(), 'show running-config')
-    expect(last.lines).toEqual([INVALID_INPUT])
+    expect(last.outcome.kind).toBe('error')
+    expect(last.lines.at(-1)).toBe(INVALID_INPUT)
   })
 
   it('show running-config dựng lại đúng cấu hình đang chạy', () => {

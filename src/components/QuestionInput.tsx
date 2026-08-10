@@ -218,7 +218,10 @@ export function QuestionInput({ question, onSubmit, disabled, draftKey, examMode
             onDraftChange={
               draftKey === undefined
                 ? undefined
-                : (draft) => saveDraft(draftKey, { kind: 'lab', ...draft, savedAt: todayIso() })
+                : (draft) =>
+                    draft === null
+                      ? clearDraft(draftKey)
+                      : saveDraft(draftKey, { kind: 'lab', ...draft, savedAt: todayIso() })
             }
             onSubmit={disabled === true ? undefined : (topology) => onSubmit({ kind: 'lab', topology })}
             examMode={examMode}

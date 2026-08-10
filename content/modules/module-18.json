@@ -106,7 +106,7 @@
               "conceptId": "m18-ranh-gioi-dora",
               "visualId": "vis-ranh-gioi-dora",
               "body": {
-                "vi": "Cuộc hỏi cưới DORA của Module 6 có một chi tiết hồi đó chưa thành vấn đề: hai nhịp đầu đi bằng QUẢNG BÁ, vì máy mới chưa có địa chỉ nên chỉ biết hét lên cho cả xóm nghe. Trong mạng nhà một xóm thì thế là đủ. Nhưng doanh nghiệp chia hàng chục xóm, mà quảng bá chết ở ranh giới router — nghĩa là máy DHCP đặt ở xóm máy chủ sẽ vĩnh viễn không nghe thấy tiếng hét từ tầng chín. Nếu không có gì thêm, mỗi xóm phải tự nuôi một máy DHCP riêng — mười tầng là mười máy phải trông nom."
+                "vi": "Cuộc hỏi cưới DORA của Module 6 có một chi tiết hồi đó chưa thành vấn đề: hai nhịp phát từ phía máy xin — DISCOVER và REQUEST — đi bằng QUẢNG BÁ, vì máy mới chưa có địa chỉ nên chỉ biết hét lên cho cả xóm nghe. Trong mạng nhà một xóm thì thế là đủ. Nhưng doanh nghiệp chia hàng chục xóm, mà quảng bá chết ở ranh giới router — nghĩa là máy DHCP đặt ở xóm máy chủ sẽ vĩnh viễn không nghe thấy tiếng hét từ tầng chín. Nếu không có gì thêm, mỗi xóm phải tự nuôi một máy DHCP riêng — mười tầng là mười máy phải trông nom."
               },
               "deepDive": {
                 "vi": "Vì sao không cho quảng bá qua router luôn cho tiện? Vì đó chính là thứ đã làm nên bão quảng bá của Module 15: quảng bá lan tới đâu, mọi máy ở đó phải dừng tay xử lý tới đó. Ranh giới router là cái phanh giữ cho một tiếng hét chỉ làm phiền một xóm — bỏ cái phanh đó đi để tiện cho DHCP là chữa một chỗ ngứa bằng cách tháo cả hàng rào."
@@ -1913,7 +1913,7 @@
         "gateway address"
       ],
       "hintTopic": {
-        "vi": "sáu chữ cái, ghép từ gateway và address"
+        "vi": "bài bà mối chuyển lời — cái ô relay ghi thêm vào gói trước khi gửi thư"
       },
       "explain": {
         "vi": "Ô giaddr (gateway address). Máy chủ đối chiếu giaddr với danh sách scope để biết cấp dải nào — thiếu nó thì mười xóm trông giống hệt nhau."
@@ -2470,7 +2470,7 @@
         "vi": "ipconfig của chính bạn — địa chỉ ấy ai cấp"
       },
       "explain": {
-        "vi": "ipconfig lộ địa chỉ 169.254.31.8, không gateway, không DNS — cả tầng xin DHCP mà không ai đáp nên đồng loạt tự bịa số. Dây trục mà đứt thì máy vẫn giữ địa chỉ 10.20.5.x cũ chứ không đổi sang 169.254; server quá tải thì tầng khác cũng phải kêu. Thủ phạm nằm ở phía cấp phát của TẦNG NĂM: scope cạn hoặc relay hỏng — sửa ở phòng máy chủ, không phải thay dây hay nâng server."
+        "vi": "ipconfig lộ địa chỉ 169.254.31.8, không gateway, không DNS — cả tầng xin DHCP mà không ai đáp nên đồng loạt tự bịa số. Dây trục đứt không giải thích được cảnh này: máy đang giữ lease còn hạn vẫn chạy số 10.20.5.x cũ (chỉ máy khởi động mới mới rơi về 169.254), và trục đứt thật thì các tầng khác cũng phải mất theo — ở đây chúng vẫn chạy bình thường; server quá tải thì tầng khác cũng phải kêu. Thủ phạm nằm ở phía cấp phát của TẦNG NĂM: scope cạn hoặc relay hỏng — sửa ở phòng máy chủ, không phải thay dây hay nâng server."
       }
     }
   ]

@@ -129,8 +129,23 @@ function parseStage(tokens: string[]): ParsedStage {
       const next = rest[i + 1]
       // Giá trị là token kế tiếp trừ khi nó lại là một -ThamSo khác.
       if (next !== undefined && !(next.startsWith('-') && !/^-\d/.test(next))) {
-        named[key] = next
+        let value = next
         i++
+        // PowerShell thật parse "-Members a, b" thành MỘT danh sách đủ hai
+        // phần tử — khoảng trắng quanh dấu phẩy không cắt mảng. Nuốt tiếp
+        // token khi danh sách còn dở (giá trị đang kết thúc bằng "," hoặc
+        // token kế mở đầu bằng ","): lặng lẽ bỏ rơi "b" rồi để người học
+        // ngồi nhìn goal đỏ không hiểu vì sao là bẫy không lời (biên bản
+        // hội đồng trung cấp, ghế Hệ thống).
+        for (;;) {
+          const peek = rest[i + 1]
+          if (peek === undefined) break
+          if (peek.startsWith('-') && !/^-\d/.test(peek)) break
+          if (!value.endsWith(',') && !peek.startsWith(',')) break
+          value += peek
+          i++
+        }
+        named[key] = value
       } else {
         named[key] = ''
       }
@@ -547,6 +562,7 @@ function runSelectString(state: PsRunState, stage: ParsedStage, piped: PsValue[]
   const flags: PsRunState['flags'] = {
     ...state.flags,
     foundLines: [...state.flags.foundLines, ...matches.map((m) => m.line)],
+    foundRuns: [...(state.flags.foundRuns ?? []), { matches: matches.length, lines: matches.map((m) => m.line) }],
   }
   return { values: matches.map((m) => m.line), lines, outcome: { kind: 'ok', command: 'Select-String', matches: matches.length }, world: state.world, flags }
 }

@@ -403,6 +403,65 @@ describe('bộ nội dung', () => {
     expect(inExam, 'đề thi chưa hỏi tới chỗ phân biệt hai họ').toBe(true)
   })
 
+  it('Module 13: bật drill VLSM — màn luyện thiết kế là một nửa phép đo của spec', () => {
+    expect(moduleById('module-13').drill).toBe('vlsm')
+  })
+
+  it('Module 14: bài 1 mở màn bằng câu CLI ở bước Đoán thử (mò lệnh show TRƯỚC khi giảng)', () => {
+    // Spec chỉ đích danh: người học bị thả vào Switch> và tự mò ra
+    // show vlan brief trước khi đọc một chữ lý thuyết trunk nào. Dời
+    // pretest xuống sau màn dạy là mất productive failure — phải đỏ ngay.
+    const m14 = moduleById('module-14')
+    expect(m14.lessons[0]!.steps[1].questions.some((q) => q.kind === 'cli')).toBe(true)
+  })
+
+  it('Module 15: bài 1 là productive failure — lab mạng vòng CHƯA bật STP ở bước Đoán thử', () => {
+    // "Productive failure trứ danh của module" (spec): người học bấm Gửi
+    // thử, tự xem cơn bão chạy vòng, rồi tìm ra nút bật STP. Sơ đồ mở màn
+    // mà bật STP sẵn (hoặc không cho bật) là bài giảng biến mất.
+    const m15 = moduleById('module-15')
+    const lab = m15.lessons[0]!.steps[1].questions.find((q) => q.kind === 'lab')
+    expect(lab, 'bài 1 Module 15 phải mở màn bằng một lab ở bước Đoán thử').toBeDefined()
+    if (lab?.kind !== 'lab') return
+    expect(lab.spec.initial.stpEnabled ?? false, 'sơ đồ mở màn phải CHƯA bật STP — cơn bão là bài giảng').toBe(false)
+    expect(lab.spec.allow.setStp, 'muốn hết bão phải BẬT STP được').toBe(true)
+  })
+
+  it('Module 19: bài 3 mở màn bằng câu PS ở bước Đoán thử (bẫy AGDLP tự vấp trước khi giảng)', () => {
+    const m19 = moduleById('module-19')
+    expect(m19.lessons[2]!.steps[1].questions.some((q) => q.kind === 'ps')).toBe(true)
+  })
+
+  it('Module 19: fading AGDLP leo đúng 0→1→2 dọc bài 3→5', () => {
+    // Fading dọc module 19 là 0,1,0,1,2 (hai bài đầu là mạch site/replication
+    // riêng) nên luật "không lùi" kiểu M12 không áp thô được — chuỗi AGDLP
+    // bài 3→5 mới là thứ phải khóa: xem mẫu → điền mắt xích → tự xếp.
+    const m19 = moduleById('module-19')
+    expect(m19.lessons.slice(2, 5).map((l) => l.steps[3].fadingLevel)).toEqual([0, 1, 2])
+  })
+
+  it('Module 20: bài thi đọc log THẬT độ dài thật (>= 150 dòng, có distractor)', () => {
+    // Spec M20: kỹ năng là lôi ĐÚNG dòng giữa đống rơm 150-200 dòng có
+    // cảnh báo giả. Log mastery mà teo lại còn vài chục dòng thì
+    // Select-String thành trang trí.
+    const m20 = moduleById('module-20')
+    const psExams = m20.masteryTest.filter((q) => q.kind === 'ps')
+    expect(psExams.length).toBeGreaterThan(0)
+    for (const q of psExams) {
+      if (q.kind !== 'ps') continue
+      const longest = Math.max(...Object.values(q.spec.world.files ?? {}).map((lines) => lines.length))
+      expect(longest, `${q.id}: log dài nhất chỉ ${longest} dòng`).toBeGreaterThanOrEqual(150)
+    }
+  })
+
+  it('Module 21: pool thi có ca bệnh liên tầng (clinic) làm câu trụ khép khóa', () => {
+    // Spec hứa "kết bằng ca bệnh liên tầng" — vị trí KẾT do drawMasteryTest
+    // lo (câu trụ nặng nhất về cuối, có test riêng); tầng dữ liệu chỉ cần
+    // bảo đảm ca đó TỒN TẠI trong pool.
+    const m21 = moduleById('module-21')
+    expect(m21.masteryTest.some((q) => q.kind === 'clinic')).toBe(true)
+  })
+
   it('mastery test là POOL đủ rộng: mỗi module >= 12 câu để rút ra đề 8 câu', () => {
     // Đề cố định thì lượt thi lại chỉ còn đo TRÍ NHỚ VỀ ĐỀ. Pool rộng
     // hơn cỡ đề mới có chỗ mà rút khác đi giữa hai lượt (ghế Đo lường).

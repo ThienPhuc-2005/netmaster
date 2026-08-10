@@ -28,8 +28,14 @@ export type PsGoal =
   | { kind: 'group-member'; group: string; sam: string }
   /** Đã chạy Test-NetConnection tới đích (đúng cổng nếu khai) và THÀNH CÔNG. */
   | { kind: 'tested-connection'; ip: string; port?: number }
-  /** Đã lôi ra được (Select-String) một dòng chứa cụm này. */
-  | { kind: 'found-line'; mustContain: string }
+  /**
+   * Đã lôi ra được (Select-String) một dòng chứa cụm này. `maxMatches`
+   * (nếu khai) đòi LƯỚI PHẢI ĐỦ HẸP: lượt Select-String tìm ra dòng đó
+   * chỉ được khớp tối đa chừng ấy dòng — quét thô kiểu `Select-String o`
+   * vớt cả file rồi "tình cờ" chứa dòng sự cố không được tính, vì kỹ
+   * năng được đo là LỌC giữa đống cảnh báo giả (spec M20).
+   */
+  | { kind: 'found-line'; mustContain: string; maxMatches?: number }
 
 /** Đề một bài terminal — phần kỹ thuật thuần; chuỗi hiển thị ở tầng câu hỏi. */
 export interface PsSpec {
@@ -75,7 +81,12 @@ function goalMet(goal: PsGoal, state: PsRunState): boolean {
       )
     case 'found-line': {
       const needle = goal.mustContain.toLowerCase()
-      return state.flags.foundLines.some((line) => line.toLowerCase().includes(needle))
+      if (goal.maxMatches === undefined) {
+        return state.flags.foundLines.some((line) => line.toLowerCase().includes(needle))
+      }
+      return (state.flags.foundRuns ?? []).some(
+        (run) => run.matches <= goal.maxMatches! && run.lines.some((line) => line.toLowerCase().includes(needle)),
+      )
     }
   }
 }

@@ -58,10 +58,29 @@ function shuffled<T>(items: readonly T[], rng: () => number): T[] {
 }
 
 /**
+ * Trọng lượng "kết màn" của một câu trụ: ca bệnh là màn tổng duyệt cảm
+ * xúc nhất, rồi tới các bề mặt làm-thật, cung điện nhẹ nhất; câu tính-tay
+ * cắm cờ `anchor: true` đứng cuối bảng — chỉ kết đề khi module không có
+ * câu làm-thật nào (đúng cảnh M13).
+ */
+const ANCHOR_CLOSING_RANK: Partial<Record<Question['kind'], number>> = {
+  clinic: 5,
+  cli: 4,
+  lab: 3,
+  ps: 2,
+  'palace-walk': 1,
+}
+
+/**
  * Rút một đề thi từ pool của module.
  *
  * Trả về câu đã XÁO THỨ TỰ luôn (thứ tự câu cũng phải đổi mỗi lượt —
  * luật cũ của màn thi, giờ gộp vào đây để nơi gọi chỉ còn một bước).
+ *
+ * Câu KẾT đề là câu trụ nặng nhất (peak-end): spec hứa "kết bằng ca bệnh
+ * liên tầng" cho M21 và nếp "câu chốt là câu làm-thật" cho các module có
+ * anchor — xáo mù để ca tổng duyệt rơi vào câu số 1 là phá nhịp lên đỉnh
+ * rồi khép màn (biên bản hội đồng trung cấp). Các câu còn lại vẫn xáo.
  *
  * Số câu trụ nhiều hơn cỡ đề là lỗi soạn nội dung, không phải cảnh chạy
  * thật — content.test chặn ở tầng dữ liệu. Nếu vẫn xảy ra thì giữ TRỌN
@@ -81,5 +100,20 @@ export function drawMasteryTest(
   const rest = pool.filter((q) => !isAnchorQuestion(q))
   const fill = Math.max(0, count - anchors.length)
 
-  return shuffled([...anchors, ...shuffled(rest, rng).slice(0, fill)], rng)
+  const drawn = shuffled([...anchors, ...shuffled(rest, rng).slice(0, fill)], rng)
+
+  // Đẩy câu trụ nặng nhất về cuối (ổn định: nhiều câu cùng hạng thì giữ
+  // câu đứng sau cùng sau lượt xáo — vẫn tất định theo rng).
+  let closing = -1
+  let bestRank = -1
+  drawn.forEach((question, index) => {
+    if (!isAnchorQuestion(question)) return
+    const rank = ANCHOR_CLOSING_RANK[question.kind] ?? 0
+    if (rank >= bestRank) {
+      bestRank = rank
+      closing = index
+    }
+  })
+  if (closing >= 0) drawn.push(...drawn.splice(closing, 1))
+  return drawn
 }

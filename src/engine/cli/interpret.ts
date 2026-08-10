@@ -32,7 +32,8 @@ import { maskToPrefix } from '../subnet/ipv4'
 import { applyTopologyChange } from '../lab/session'
 import { addAclRule, addOspfNetwork, applyAclToPort, declareVlan, setPortShutdown, startOspf } from './config'
 import { ACL_ANY, type AclAddress, type AclRule } from '../lab/acl'
-import { canShow, type CliState } from './state'
+import { canShow, cliPrompt, type CliState } from './state'
+import { ospfNeighborsOf } from '../lab/ospf'
 import {
   showAccessLists,
   showIpOspfNeighbor,
@@ -260,22 +261,46 @@ export function runCliLine(state: CliState, input: string): CliResult {
   const device = findDevice(state.topology, state.deviceId)
   if (device === null) return failed(state, 'device', ['% Device not found.'])
 
+  /**
+   * Từ chối bằng câu Invalid input kèm DÒNG DẤU ^ căn đúng cột dưới token
+   * hỏng. Transcript in "<dấu nhắc> <lệnh>" trên một dòng nên cột của ^
+   * phải cộng cả dấu nhắc. IOS thật in đúng khuôn hai dòng này — trích
+   * "at '^' marker" mà không có dấu ^ nào là câu đố chứ không phải
+   * fidelity (biên bản trung cấp). Nhánh không rõ token nào hỏng thì đặt
+   * ^ ở token đầu, như IOS vẫn làm khi mù mờ.
+   */
+  const invalid = (command: string, tokenIndex = 0): CliResult => {
+    const trimmed = input.trim()
+    const starts: number[] = []
+    const re = /\S+/g
+    for (let m = re.exec(trimmed); m !== null; m = re.exec(trimmed)) starts.push(m.index)
+    const at = starts[Math.min(tokenIndex, starts.length - 1)] ?? 0
+    return failed(state, command, [`${' '.repeat(cliPrompt(state).length + 1 + at)}^`, INVALID_INPUT])
+  }
+
+  /** Thiếu từ là Incomplete, THỪA từ là Invalid — IOS phân biệt hai loại. */
+  const incomplete = (command: string): CliResult => failed(state, command, ['% Incomplete command.'])
+
   // --- Chế độ: đi vào, đi ra ---
 
   if (matches(words, 'enable')) {
-    if (state.mode !== 'user') return failed(state, 'enable')
-    return ok({ ...state, mode: 'privileged' }, 'enable')
+    if (state.mode === 'user') return ok({ ...state, mode: 'privileged' }, 'enable')
+    // Đang privileged mà gõ thừa `enable`: IOS nhận IM LẶNG (no-op) —
+    // người mới gõ thừa suốt, mắng oan là dạy sai phản xạ đọc lỗi.
+    if (state.mode === 'privileged') return ok(state, 'enable')
+    return invalid('enable')
   }
 
   if (matches(words, 'configure terminal')) {
-    if (state.mode !== 'privileged') return failed(state, 'configure terminal')
+    if (state.mode !== 'privileged') return invalid('configure terminal')
     return ok({ ...state, mode: 'config' }, 'configure terminal', ['Enter configuration commands, one per line.  End with CNTL/Z.'])
   }
 
   if (startsWith(words, 'interface')) {
-    if (state.mode !== 'config') return failed(state, 'interface')
+    if (state.mode !== 'config') return invalid('interface')
     const portId = words[1]
-    if (portId === undefined) return failed(state, 'interface', ['% Incomplete command.'])
+    if (portId === undefined) return incomplete('interface')
+    if (words.length > 2) return invalid('interface', 2)
     // Cổng ma: nói thẳng bằng giọng máy, không im lặng cho qua rồi để
     // người học cấu hình vào hư không.
     if (!hasPort(device, portId)) return failed(state, 'interface', ['% Invalid interface.'])
@@ -295,7 +320,7 @@ export function runCliLine(state: CliState, input: string): CliResult {
     if (state.mode === 'config' || state.mode === 'config-if' || state.mode === 'config-router') {
       return ok({ ...state, mode: 'privileged', portId: null, ospfProcessId: null }, 'end')
     }
-    return failed(state, 'end')
+    return invalid('end')
   }
 
   // --- Xem ---
@@ -304,42 +329,58 @@ export function runCliLine(state: CliState, input: string): CliResult {
     if (!canShow(state.mode)) {
       // Trong config mode, IOS thật đòi `do show ...`. Phạm vi đóng băng
       // không có `do`, nên máy từ chối và người học học được luật chế độ.
-      return failed(state, 'show')
+      return invalid('show')
     }
     /** Tra bảng xong thì GHI DẤU: đó là nguyên liệu chấm của đề "chẩn đoán". */
-    const seen = (command: string, lines: string[]) =>
+    const seen = (command: string, lines: string[], extra?: { ospfFull: boolean }) =>
       ok(
-        { ...state, flags: { ...state.flags, viewed: [...state.flags.viewed, { command, deviceId: device.id }] } },
+        {
+          ...state,
+          flags: { ...state.flags, viewed: [...state.flags.viewed, { command, deviceId: device.id, ...extra }] },
+        },
         command,
         lines,
       )
+    /**
+     * `show` sai LOẠI thiết bị phải đi đường lỗi như mọi lỗi khác — outcome
+     * 'ok' + ghi dấu `viewed` cho một lệnh máy vừa từ chối là nhiễm cờ chấm
+     * và tô sai màu (biên bản trung cấp). Caret chỉ vào từ sau `show`.
+     */
+    const showOn = (kinds: readonly string[], command: string, lines: () => string[]) =>
+      kinds.includes(device.kind) ? seen(command, lines()) : invalid(command, 1)
 
-    if (matches(words, 'show vlan brief')) return seen('show vlan brief', showVlanBrief(state.topology, device))
+    if (matches(words, 'show vlan brief')) return showOn(['switch'], 'show vlan brief', () => showVlanBrief(state.topology, device))
     if (matches(words, 'show mac address-table')) {
-      return seen('show mac address-table', showMacTable(state.net, device))
+      return showOn(['switch'], 'show mac address-table', () => showMacTable(state.net, device))
     }
     if (matches(words, 'show interfaces trunk')) {
-      return seen('show interfaces trunk', showInterfacesTrunk(state.topology, device))
+      return showOn(['switch'], 'show interfaces trunk', () => showInterfacesTrunk(state.topology, device))
     }
     if (matches(words, 'show ip interface brief')) {
-      return seen('show ip interface brief', showIpInterfaceBrief(state.topology, device))
+      return showOn(['switch', 'router'], 'show ip interface brief', () => showIpInterfaceBrief(state.topology, device))
     }
     if (matches(words, 'show ip ospf neighbor')) {
-      return seen('show ip ospf neighbor', showIpOspfNeighbor(state.topology, device))
+      if (device.kind !== 'router') return invalid('show ip ospf neighbor', 1)
+      // Dấu vết ghi kèm chuyện bảng CÓ láng giềng Full hay chưa: đề "kiểm
+      // chứng ra Full trước khi nộp" chấm bằng goal viewed có điều kiện —
+      // chạy lệnh lúc bảng còn rỗng thì bằng chứng rỗng, không được tính
+      // (biên bản trung cấp, ghế Capstone).
+      const ospfFull = ospfNeighborsOf(state.topology, device.id).some((n) => n.state === 'full')
+      return seen('show ip ospf neighbor', showIpOspfNeighbor(state.topology, device), { ospfFull })
     }
-    if (matches(words, 'show ip route')) return seen('show ip route', showIpRoute(state.topology, device))
+    if (matches(words, 'show ip route')) return showOn(['router'], 'show ip route', () => showIpRoute(state.topology, device))
     if (matches(words, 'show spanning-tree')) {
-      return seen('show spanning-tree', showSpanningTree(state.topology, device))
+      return showOn(['switch'], 'show spanning-tree', () => showSpanningTree(state.topology, device))
     }
     if (matches(words, 'show access-lists')) {
-      return seen('show access-lists', showAccessLists(state.net, device))
+      return showOn(['router'], 'show access-lists', () => showAccessLists(state.net, device))
     }
     if (matches(words, 'show running-config')) {
       // Xem cấu hình đang chạy cần quyền — đúng như thiết bị thật.
-      if (state.mode !== 'privileged') return failed(state, 'show running-config')
+      if (state.mode !== 'privileged') return invalid('show running-config', 1)
       return seen('show running-config', showRunningConfig(state.topology, device))
     }
-    return failed(state, 'show')
+    return invalid('show', 1)
   }
 
   // --- Cấu hình: chế độ (config) và chế độ (config-if) ---
@@ -349,10 +390,12 @@ export function runCliLine(state: CliState, input: string): CliResult {
 
 
   if (startsWith(words, 'router ospf')) {
-    if (state.mode !== 'config' || device.kind !== 'router') return failed(state, 'router ospf')
+    if (state.mode !== 'config' || device.kind !== 'router') return invalid('router ospf')
+    if (words.length < 3) return incomplete('router ospf')
+    if (words.length > 3) return invalid('router ospf', 3)
     const processId = Number(words[2])
-    if (words.length !== 3 || !Number.isInteger(processId) || processId < 1 || processId > 65535) {
-      return failed(state, 'router ospf')
+    if (!Number.isInteger(processId) || processId < 1 || processId > 65535) {
+      return invalid('router ospf', 2)
     }
     return ok(
       {
@@ -368,41 +411,45 @@ export function runCliLine(state: CliState, input: string): CliResult {
   if (startsWith(words, 'network')) {
     // Câu `network` chỉ có nghĩa BÊN TRONG một tiến trình định tuyến —
     // gõ nó ở (config)# là máy từ chối, đúng luật chế độ.
-    if (state.mode !== 'config-router' || device.kind !== 'router') return failed(state, 'network')
+    if (state.mode !== 'config-router' || device.kind !== 'router') return invalid('network')
+    if (words.length < 5) return incomplete('network')
+    if (words.length > 5) return invalid('network', 5)
     const ip = words[1]
     const wildcard = words[2]
     const area = Number(words[4])
-    if (words.length !== 5 || words[3]?.toLowerCase() !== 'area') return failed(state, 'network', ['% Incomplete command.'])
-    if (ip === undefined || wildcard === undefined || !isValidIpv4(ip) || !isValidIpv4(wildcard)) {
-      return failed(state, 'network')
-    }
+    if (words[3]?.toLowerCase() !== 'area') return invalid('network', 3)
+    if (ip === undefined || !isValidIpv4(ip)) return invalid('network', 1)
+    if (wildcard === undefined || !isValidIpv4(wildcard)) return invalid('network', 2)
     // Phạm vi đóng băng: chỉ area 0 (spec v2 mục 5.1).
-    if (area !== 0) return failed(state, 'network')
+    if (area !== 0) return invalid('network', 4)
     return ok({ ...state, topology: addOspfNetwork(state.topology, device.id, { ip, wildcard, area }) }, 'network')
   }
 
   if (startsWith(words, 'vlan')) {
-    if (state.mode !== 'config' || device.kind !== 'switch') return failed(state, 'vlan')
+    if (state.mode !== 'config' || device.kind !== 'switch') return invalid('vlan')
+    if (words.length < 2) return incomplete('vlan')
+    if (words.length > 2) return invalid('vlan', 2)
     const vlan = vlanArg(words[1])
-    if (words.length !== 2 || vlan === null) return failed(state, 'vlan')
+    if (vlan === null) return invalid('vlan', 1)
     return ok({ ...state, topology: declareVlan(state.topology, device.id, vlan) }, 'vlan')
   }
 
   if (startsWith(words, 'access-list')) {
-    if (state.mode !== 'config' || device.kind !== 'router') return failed(state, 'access-list')
+    if (state.mode !== 'config' || device.kind !== 'router') return invalid('access-list')
+    if (words.length < 5) return incomplete('access-list')
     const rule = parseAclRule(words)
-    if (rule === null) return failed(state, 'access-list')
+    if (rule === null) return invalid('access-list', 1)
     return ok({ ...state, topology: addAclRule(state.topology, device.id, rule.number, rule.rule) }, 'access-list')
   }
 
   if (startsWith(words, 'ip access-group')) {
-    if (portId === null || device.kind !== 'router') return failed(state, 'ip access-group')
+    if (portId === null || device.kind !== 'router') return invalid('ip access-group')
+    if (words.length < 4) return incomplete('ip access-group')
+    if (words.length > 4) return invalid('ip access-group', 4)
     const number = Number(words[2])
     const direction = words[3]?.toLowerCase()
-    if (words.length !== 4 || !Number.isInteger(number) || number < 1 || number > 199) {
-      return failed(state, 'ip access-group')
-    }
-    if (direction !== 'in' && direction !== 'out') return failed(state, 'ip access-group')
+    if (!Number.isInteger(number) || number < 1 || number > 199) return invalid('ip access-group', 2)
+    if (direction !== 'in' && direction !== 'out') return invalid('ip access-group', 3)
     return ok(
       { ...state, topology: applyAclToPort(state.topology, device.id, portId, direction, number) },
       'ip access-group',
@@ -410,14 +457,15 @@ export function runCliLine(state: CliState, input: string): CliResult {
   }
 
   if (startsWith(words, 'ip route')) {
-    if (state.mode !== 'config' || device.kind !== 'router') return failed(state, 'ip route')
+    if (state.mode !== 'config' || device.kind !== 'router') return invalid('ip route')
+    if (words.length < 5) return incomplete('ip route')
+    if (words.length > 5) return invalid('ip route', 5)
     const destination = words[2]
     const prefix = maskArg(words[3])
     const nextHop = words[4]
-    if (words.length !== 5 || destination === undefined || nextHop === undefined) {
-      return failed(state, 'ip route', ['% Incomplete command.'])
-    }
-    if (prefix === null || !isValidIpv4(destination) || !isValidIpv4(nextHop)) return failed(state, 'ip route')
+    if (destination === undefined || !isValidIpv4(destination)) return invalid('ip route', 2)
+    if (prefix === null) return invalid('ip route', 3)
+    if (nextHop === undefined || !isValidIpv4(nextHop)) return invalid('ip route', 4)
     // Cùng một đích thì lệnh sau ĐÈ lệnh trước, đúng như thiết bị thật —
     // không đẻ ra hai dòng tuyến cãi nhau trong cùng một bảng.
     const routes = [
@@ -434,9 +482,9 @@ export function runCliLine(state: CliState, input: string): CliResult {
   }
 
   if (startsWith(words, 'switchport')) {
-    if (portId === null || device.kind !== 'switch') return failed(state, 'switchport')
+    if (portId === null || device.kind !== 'switch') return invalid('switchport')
     const port = device.ports.find((p) => p.id === portId)
-    if (port === undefined) return failed(state, 'switchport')
+    if (port === undefined) return invalid('switchport')
     const change = (action: Parameters<typeof applyTopologyChange>[1], command: string) =>
       ok({ ...state, topology: applyTopologyChange(state.topology, action) }, command)
 
@@ -446,14 +494,18 @@ export function runCliLine(state: CliState, input: string): CliResult {
     }
 
     if (startsWith(words, 'switchport access vlan')) {
+      if (words.length < 4) return incomplete('switchport access vlan')
+      if (words.length > 4) return invalid('switchport access vlan', 4)
       const vlan = vlanArg(words[3])
-      if (words.length !== 4 || vlan === null) return failed(state, 'switchport access vlan')
+      if (vlan === null) return invalid('switchport access vlan', 3)
       return change({ kind: 'set-switch-port-vlan', deviceId: device.id, portId, vlan }, 'switchport access vlan')
     }
 
     if (startsWith(words, 'switchport trunk allowed vlan')) {
+      if (words.length < 5) return incomplete('switchport trunk allowed vlan')
+      if (words.length > 5) return invalid('switchport trunk allowed vlan', 5)
       const list = vlanListArg(words[4])
-      if (words.length !== 5 || list === null) return failed(state, 'switchport trunk allowed vlan')
+      if (list === null) return invalid('switchport trunk allowed vlan', 4)
       if (portModeOf(port) !== 'trunk') return failed(state, 'switchport trunk allowed vlan', [ACCESS_MODE_REJECT])
       return change(
         { kind: 'set-trunk-allowed', deviceId: device.id, portId, vlans: list.vlans },
@@ -462,21 +514,25 @@ export function runCliLine(state: CliState, input: string): CliResult {
     }
 
     if (startsWith(words, 'switchport trunk native vlan')) {
+      if (words.length < 5) return incomplete('switchport trunk native vlan')
+      if (words.length > 5) return invalid('switchport trunk native vlan', 5)
       const vlan = vlanArg(words[4])
-      if (words.length !== 5 || vlan === null) return failed(state, 'switchport trunk native vlan')
+      if (vlan === null) return invalid('switchport trunk native vlan', 4)
       if (portModeOf(port) !== 'trunk') return failed(state, 'switchport trunk native vlan', [ACCESS_MODE_REJECT])
       return change({ kind: 'set-trunk-native', deviceId: device.id, portId, vlan }, 'switchport trunk native vlan')
     }
 
-    return failed(state, 'switchport')
+    return invalid('switchport', 1)
   }
 
   if (startsWith(words, 'ip address')) {
-    if (portId === null || device.kind !== 'router') return failed(state, 'ip address')
+    if (portId === null || device.kind !== 'router') return invalid('ip address')
+    if (words.length < 4) return incomplete('ip address')
+    if (words.length > 4) return invalid('ip address', 4)
     const ip = words[2]
     const prefix = maskArg(words[3])
-    if (words.length !== 4 || ip === undefined) return failed(state, 'ip address', ['% Incomplete command.'])
-    if (prefix === null || !isValidIpv4(ip)) return failed(state, 'ip address')
+    if (ip === undefined || !isValidIpv4(ip)) return invalid('ip address', 2)
+    if (prefix === null) return invalid('ip address', 3)
     return ok(
       {
         ...state,
@@ -492,7 +548,7 @@ export function runCliLine(state: CliState, input: string): CliResult {
   }
 
   if (matches(words, 'shutdown') || matches(words, 'no shutdown')) {
-    if (portId === null || device.kind === 'pc') return failed(state, 'shutdown')
+    if (portId === null || device.kind === 'pc') return invalid('shutdown')
     const down = words.length === 1
     return ok(
       { ...state, topology: setPortShutdown(state.topology, device.id, portId, down) },

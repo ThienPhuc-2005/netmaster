@@ -1,4 +1,4 @@
-{
+﻿{
   "app": {
     "name": "NetMaster",
     "tagline": "Học mạng máy tính từ số 0",
@@ -196,7 +196,8 @@
   },
   "vlsm": {
     "title": "Luyện thiết kế VLSM",
-    "intro": "5 đề mỗi ngày, tự sinh mới: một dải địa chỉ và mấy phòng ban, bạn tự quyết cắt thế nào. Bài này không có một đáp án duy nhất — cắt kiểu nào cũng được, miễn đúng, đủ và không phí đất.",
+    "resume": "Làm tiếp phiên đang dở",
+    "intro": "5 đề mỗi ngày, tự sinh mới: một dải địa chỉ và mấy phòng ban, bạn tự quyết cắt thế nào. Bài này không có một đáp án duy nhất — cắt kiểu nào cũng được, miễn đúng, đủ và không phí đất. Đồng hồ chỉ để bạn đua với chính mình — đề thiết kế tính bằng phút, làm lâu là chuyện bình thường.",
     "brief": "Bạn được giao dải {base} và phải chia cho {count} phòng ban dưới đây. Điền địa chỉ mạng và prefix cho từng phòng.",
     "deptName": "Phòng ban {n}",
     "colDept": "Phòng ban",
@@ -555,8 +556,7 @@
     "statsTitle": "Số liệu cả chặng đường",
     "statModules": "Module đã đậu",
     "statXp": "XP tích lũy",
-    "statStreak": "Chuỗi ngày học",
-    "statStreakUnit": "ngày",
+    "statStreak": "Chuỗi ngày học (ngày)",
     "statCards": "Thẻ đang ôn",
     "statLessons": "Bài học đã xong",
     "statClinic": "Ca bệnh đã chữa khỏi",
@@ -584,7 +584,8 @@
     "backupExport": "Xuất ra file",
     "backupImport": "Nhập từ file",
     "backupImportConfirm": "Nhập file này sẽ THAY TOÀN BỘ tiến độ đang có trên máy bằng tiến độ trong file. Tiếp tục chứ?",
-    "backupImportBad": "File này không phải bản sao lưu NetMaster hợp lệ — kiểm tra lại xem có chọn nhầm file không nhé."
+    "backupImportBad": "File này không phải bản sao lưu NetMaster hợp lệ — kiểm tra lại xem có chọn nhầm file không nhé.",
+    "backupImportNewer": "Bản sao lưu này đến từ phiên bản app mới hơn — cập nhật app rồi nhập lại nhé."
   },
   "design": {
     "title": "Design system",

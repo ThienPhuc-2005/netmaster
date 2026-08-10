@@ -82,4 +82,19 @@ describe('bài dở: lưu, mở lại, bỏ đi', () => {
     for (let i = 0; i < 20; i++) useProgress.getState().savePracticeDraft(key, labDraft())
     expect(Object.keys(useProgress.getState().practiceDrafts)).toHaveLength(1)
   })
+
+  it('quay lại làm tiếp bài cũ thì nó thành MỚI NHẤT — LRU theo lần chạm', () => {
+    // Bản cũ giữ-nguyên-chỗ-đứng có bẫy ngược đời: bài vừa được đầu tư
+    // thêm 20 phút vẫn là bài bị dọn đầu tiên (biên bản trung cấp).
+    useProgress.getState().savePracticeDraft('k-old', labDraft())
+    for (let i = 0; i < PRACTICE_DRAFT_CAP - 1; i++) {
+      useProgress.getState().savePracticeDraft(`k-${i}`, labDraft())
+    }
+    // Chạm lại bài cũ nhất rồi mở thêm một bài mới cho vượt trần:
+    useProgress.getState().savePracticeDraft('k-old', labDraft())
+    useProgress.getState().savePracticeDraft('k-new', labDraft())
+    const drafts = useProgress.getState().practiceDrafts
+    expect(drafts['k-old'], 'bài vừa chạm lại phải còn').toBeDefined()
+    expect(drafts['k-0'], 'bài lâu không chạm nhất mới là bài bị dọn').toBeUndefined()
+  })
 })

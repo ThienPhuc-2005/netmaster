@@ -67,6 +67,23 @@ function tokenize(normalized: string): string[] {
  */
 const NEGATIONS = ['không', 'chưa', 'sai']
 
+/**
+ * Liên từ liệt kê — "1 hay 99", "2 hoặc 3", "chữ o hay chữ c gì đó".
+ * Câu nước đôi kể ra NHIỀU ứng viên không phải là câu trả lời: với đáp án
+ * ngắn (≤ 2 token) luật khớp-chứa luôn tìm thấy ứng viên đúng trong câu
+ * liệt kê, nên gặp kiểu này thì tắt khớp-chứa — cùng nếp đã xử từ phủ
+ * định (biên bản hội đồng trung cấp, ghế Đo lường).
+ */
+const LIST_CONJUNCTIONS = ['hay', 'hoặc']
+
+/** Câu đang LIỆT KÊ nhiều ứng viên ngắn khác nhau (số / một chữ cái). */
+function isHedgedListing(rawNorm: string, tokens: readonly string[]): boolean {
+  const hasConjunction = tokens.some((t) => LIST_CONJUNCTIONS.some((c) => lenientEquals(t, c)))
+  if (!hasConjunction && !rawNorm.includes(',')) return false
+  const shortCandidates = new Set(tokens.filter((t) => /^\d+$/.test(t) || t.length === 1))
+  return shortCandidates.size >= 2
+}
+
 /** Cụm `phrase` xuất hiện trong `tokens` dưới dạng dãy TỪ NGUYÊN liên tiếp. */
 function containsPhrase(tokens: readonly string[], phraseTokens: readonly string[]): boolean {
   if (phraseTokens.length === 0) return false
@@ -82,7 +99,8 @@ function containsPhrase(tokens: readonly string[], phraseTokens: readonly string
  *   khớp "gói tin", nhưng "mật" KHÔNG khớp "mất"); hoặc
  * - CHỨA đáp án dưới dạng cụm từ nguyên vẹn ("là dns", "địa chỉ ip của
  *   máy") — trừ khi câu có từ phủ định (không/chưa/sai), khi đó chỉ còn
- *   nhận khớp nguyên chuỗi.
+ *   nhận khớp nguyên chuỗi; và trừ đáp án NGẮN (≤ 2 token) khi câu đang
+ *   liệt kê nước đôi ("1 hay 99" không phải là trả lời "1").
  * "portable" không bao giờ khớp "port": so theo TỪ, không theo chuỗi con.
  */
 export function typedAnswerMatches(raw: string, accept: readonly string[]): boolean {
@@ -91,5 +109,10 @@ export function typedAnswerMatches(raw: string, accept: readonly string[]): bool
 
   const tokens = tokenize(norm)
   if (tokens.some((t) => NEGATIONS.some((n) => lenientEquals(t, n)))) return false
-  return accept.some((answer) => containsPhrase(tokens, tokenize(normalizeAnswer(answer))))
+  const hedged = isHedgedListing(norm, tokens)
+  return accept.some((answer) => {
+    const answerTokens = tokenize(normalizeAnswer(answer))
+    if (hedged && answerTokens.length <= 2) return false
+    return containsPhrase(tokens, answerTokens)
+  })
 }

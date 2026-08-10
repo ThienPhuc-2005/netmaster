@@ -61,7 +61,7 @@
                 "vi": "Cỡ khối chỉ nhảy theo lũy thừa của 2: /28 là 16 địa chỉ, /27 là 32, /26 là 64, /25 là 128. Mỗi khối mất hai địa chỉ cho mạng và broadcast, nên số máy dùng được là 14, 30, 62, 126. Quy tắc chọn cỡ: lấy số máy của phòng, cộng 2, rồi tìm bậc thấp nhất còn chứa nổi. Phòng 50 máy cần 52 chỗ, /27 chỉ có 32 nên trượt, /26 có 64 nên vừa — chọn /26."
               },
               "deepDive": {
-                "vi": "Cộng 2 rồi mới so là cách nhẩm an toàn hơn so trực tiếp: phòng đúng 30 máy nhìn qua tưởng /27 (30 host) là khít, nhưng nếu ngày mai thêm một máy in mạng thì hết chỗ ngay. Người làm nghề thường cộng thêm khoảng 20% dự phòng trước khi chọn cỡ — dải địa chỉ riêng thì rẻ, còn đi chia lại cả mạng thì đắt."
+                "vi": "Cộng 2 rồi mới so là cách nhẩm an toàn hơn so trực tiếp: phòng đúng 30 máy nhìn qua tưởng /27 (30 host) là khít, nhưng nếu ngày mai thêm một máy in mạng thì hết chỗ ngay. Người làm nghề thường cộng thêm khoảng 20% dự phòng trước khi chọn cỡ — dải địa chỉ riêng thì rẻ, còn đi chia lại cả mạng thì đắt. Riêng trong bài luyện của app, đề cho thẳng số máy và bộ chấm đòi cỡ NHỎ NHẤT đủ dùng — dự phòng ngoài đời là chuyện thỏa thuận với chủ dải, còn ở đây kỹ năng được luyện là chọn cỡ khít."
               }
             }
           ]

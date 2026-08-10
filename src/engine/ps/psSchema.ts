@@ -62,7 +62,7 @@ export const PsGoalSchema = z.discriminatedUnion('kind', [
   z.object({ kind: z.literal('ad-user-count'), ou: idText, atLeast: z.number().int().min(1) }),
   z.object({ kind: z.literal('group-member'), group: idText, sam: idText }),
   z.object({ kind: z.literal('tested-connection'), ip: z.string().min(7), port: z.number().int().min(1).max(65535).optional() }),
-  z.object({ kind: z.literal('found-line'), mustContain: idText }),
+  z.object({ kind: z.literal('found-line'), mustContain: idText, maxMatches: z.number().int().min(1).optional() }),
 ])
 
 const PsSpecBaseSchema = z.object({

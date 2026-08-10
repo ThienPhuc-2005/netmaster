@@ -8,7 +8,7 @@ import { Link } from 'react-router'
 import { Flame, Zap, Award, GraduationCap, Snowflake, Layers, BookOpenCheck, Download, Upload } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { useT } from '../../i18n'
-import { useProgress } from '../../store/progress'
+import { PROGRESS_PERSIST_VERSION, useProgress } from '../../store/progress'
 import { Button } from '../../components/Button'
 import { milestones } from '../graduation/milestones'
 
@@ -36,14 +36,35 @@ function exportBackup(): void {
   URL.revokeObjectURL(a.href)
 }
 
-async function importBackup(file: File, confirmText: string, badText: string): Promise<void> {
+async function importBackup(file: File, confirmText: string, badText: string, newerText: string): Promise<void> {
   const parsed: unknown = JSON.parse(await file.text())
   const backup = parsed as { app?: string; data?: Record<string, string | null> }
   const progressRaw = backup.data?.['netmaster-progress']
-  // Validate tối thiểu: đúng file của app và key quý nhất parse ra state.
+  // Validate đủ chặt để file hỏng kiểu TINH VI bị chặn ngay ở cửa, thay
+  // vì qua êm rồi crash rải rác sau reload (biên bản trung cấp, ghế dữ
+  // liệu): đúng app, version nằm trong dải app này hiểu được, và vài
+  // trường quý đúng kiểu.
   if (backup.app !== 'netmaster' || typeof progressRaw !== 'string') throw new Error(badText)
   const progress = JSON.parse(progressRaw) as { state?: unknown; version?: unknown }
-  if (typeof progress.state !== 'object' || typeof progress.version !== 'number') throw new Error(badText)
+  const version = progress.version
+  if (typeof progress.state !== 'object' || progress.state === null) throw new Error(badText)
+  if (typeof version !== 'number' || !Number.isInteger(version) || version < 1) throw new Error(badText)
+  // Version tương lai: migrate chỉ biết đi TỚI, không biết đi lùi — nuốt
+  // vào là state bị đọc sai im lặng. Nói thẳng "cập nhật app đã".
+  if (version > PROGRESS_PERSIST_VERSION) throw new Error(newerText)
+  const state = progress.state as { reviewCards?: unknown; xpTotal?: unknown; passedModules?: unknown }
+  if (!Array.isArray(state.reviewCards) || typeof state.xpTotal !== 'number' || !Array.isArray(state.passedModules)) {
+    throw new Error(badText)
+  }
+  // Hai key phụ cũng phải lành: settings phải parse được, lang là chuỗi.
+  const settingsRaw = backup.data?.['netmaster-settings']
+  if (typeof settingsRaw === 'string') {
+    try {
+      JSON.parse(settingsRaw)
+    } catch {
+      throw new Error(badText)
+    }
+  }
   if (!window.confirm(confirmText)) return
   for (const key of BACKUP_KEYS) {
     const value = backup.data?.[key]
@@ -89,8 +110,13 @@ export function ProfilePage() {
 
   const onImportFile = (file: File | undefined) => {
     if (file === undefined) return
-    void importBackup(file, t('profile.backupImportConfirm'), t('profile.backupImportBad')).catch(() => {
-      window.alert(t('profile.backupImportBad'))
+    void importBackup(
+      file,
+      t('profile.backupImportConfirm'),
+      t('profile.backupImportBad'),
+      t('profile.backupImportNewer'),
+    ).catch((e: unknown) => {
+      window.alert(e instanceof Error && e.message !== '' ? e.message : t('profile.backupImportBad'))
     })
   }
 

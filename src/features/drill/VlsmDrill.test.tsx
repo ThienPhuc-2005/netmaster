@@ -13,7 +13,7 @@
 import { beforeEach, describe, expect, it } from 'vitest'
 import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { VlsmDrill } from './VlsmDrill'
-import { useProgress } from '../../store/progress'
+import { todayIso, useProgress } from '../../store/progress'
 import { generateVlsmSession, solveVlsm, type VlsmProblem } from '../../engine/subnet/vlsm'
 import { mulberry32 } from '../../engine/subnet/drill'
 import { smallestPrefixForHosts } from '../../engine/subnet/ipv4'
@@ -26,10 +26,11 @@ beforeEach(() => {
   useProgress.setState({ ...INITIAL, streak: { ...INITIAL.streak } }, false)
 })
 
-/** Đề đầu của phiên hôm nay — dựng lại đúng seed mà màn hình dùng. */
+/** Đề đầu của phiên hôm nay — dựng lại ĐÚNG seed mà màn hình dùng: ngày
+ *  LOCAL qua todayIso(), không phải ngày UTC (toISOString lệch một ngày
+ *  trong khung 0h-7h giờ VN → cả suite đỏ oan — biên bản trung cấp). */
 function firstProblem(): VlsmProblem {
-  const today = new Date().toISOString().slice(0, 10)
-  const seed = Number(today.replaceAll('-', '')) + 13
+  const seed = Number(todayIso().replaceAll('-', '')) + 13
   return generateVlsmSession(mulberry32(seed), 5)[0]!
 }
 
@@ -121,7 +122,7 @@ describe('lịch sử phiên', () => {
   it('phiên xong ghi ĐÚNG loại vlsm, không lẫn vào biểu đồ drill subnet', () => {
     startSession()
     const problems = generateVlsmSession(
-      mulberry32(Number(new Date().toISOString().slice(0, 10).replaceAll('-', '')) + 13),
+      mulberry32(Number(todayIso().replaceAll('-', '')) + 13),
       5,
     )
     for (const problem of problems) {

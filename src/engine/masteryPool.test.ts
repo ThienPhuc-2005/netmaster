@@ -59,6 +59,29 @@ describe('rút đề thi từ pool', () => {
   })
 })
 
+describe('câu KẾT đề là câu trụ nặng nhất (peak-end)', () => {
+  // Spec hứa "kết bằng ca bệnh liên tầng" cho M21 và nếp "câu chốt là câu
+  // làm-thật" cho các module có anchor — xáo mù để ca tổng duyệt rơi vào
+  // câu số 1 là phá nhịp lên-đỉnh-rồi-khép-màn (biên bản trung cấp).
+  it('module có câu trụ: đề nào cũng kết bằng một câu trụ', () => {
+    for (const m of loadModules()) {
+      if (!m.masteryTest.some(isAnchorQuestion)) continue
+      for (let seed = 1; seed <= 15; seed++) {
+        const closing = drawMasteryTest(m.masteryTest, { rng: seededRng(seed) }).at(-1)!
+        expect(isAnchorQuestion(closing), `${m.id}: đề rút seed ${seed} không kết bằng câu trụ`).toBe(true)
+      }
+    }
+  })
+
+  it('M21: ca bệnh liên tầng luôn là câu khép màn', () => {
+    const m21 = loadModules().find((m) => m.id === 'module-21')
+    expect(m21).toBeDefined()
+    for (let seed = 1; seed <= 15; seed++) {
+      expect(drawMasteryTest(m21!.masteryTest, { rng: seededRng(seed) }).at(-1)?.kind).toBe('clinic')
+    }
+  })
+})
+
 describe('câu TRỤ luôn có mặt trong mọi lượt thi', () => {
   // Lab (M4), cung điện (M5/M9), ca bệnh (M11), terminal (M12) LÀ kỹ năng
   // module đó dạy. Có lượt thi không hỏi tới chúng nghĩa là cổng mastery

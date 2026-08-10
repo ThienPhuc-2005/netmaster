@@ -2473,6 +2473,9 @@ function VlsmBlocks({ title }: { title?: string }) {
         <rect x="198" y="34" width="12" height="34" rx="3" {...stroke} strokeWidth={1.5} />
         <text x="142" y="55" textAnchor="middle" {...monoText}>/26</text>
         <text x="182" y="55" textAnchor="middle" {...monoText}>/27</text>
+        {/* Khối 12px quá hẹp để chứa chữ — nhãn đặt phía trên. Thiếu nó thì
+            4 nhu cầu chỉ ráp được 3 cặp, hụt đúng mắt xích cuối (biên bản). */}
+        <text x="204" y="28" textAnchor="middle" {...monoText}>/28</text>
       </g>
       <text x="110" y="86" textAnchor="middle" {...monoText}>
         100 · 50 · 25 · 10 máy
@@ -3144,7 +3147,7 @@ function OspfCost({ title }: { title?: string }) {
         </text>
       </g>
       <text x="110" y="114" textAnchor="middle" {...monoText}>
-        cộng cost dọc đường, nhỏ nhất thắng
+        cost cộng dồn — bé nhất thắng
       </text>
     </Frame>
   )
@@ -3280,7 +3283,7 @@ function RuleOrder({ title }: { title?: string }) {
         <path d="M190 60 l8 8 12 -16" {...stroke} strokeWidth={2} />
       </g>
       <text x="110" y="110" textAnchor="middle" {...monoText}>
-        khớp dòng 20 là dừng, không đọc tiếp
+        khớp dòng 20 là dừng ở đó
       </text>
     </Frame>
   )
@@ -3547,14 +3550,27 @@ function ArpSpoof({ title }: { title?: string }) {
           máy lạ
         </text>
       </g>
+      {/* Hộp nhận phải CÓ TÊN và câu ".1 là tôi" phải nằm TRÊN hai mũi tên
+          đến (hai lời tự xưng, một thật một giả) — để trong hộp nhận thì
+          đọc thành nạn nhân tự xưng, ngược vai đúng ở hình dạy giả danh
+          (biên bản trung cấp). */}
       <g className="text-accent">
         <rect x="128" y="44" width="76" height="34" rx="4" {...stroke} strokeWidth={1.8} />
-        <text x="166" y="65" textAnchor="middle" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
-          .1 là tôi
+        <text x="166" y="58" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          sổ ARP
+        </text>
+        <text x="166" y="70" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          nạn nhân
         </text>
       </g>
       <path d="M76 38 L124 54" {...stroke} strokeWidth={1.3} className="text-ink-muted" markerEnd="url(#cv-arrow)" />
       <path d="M76 90 L124 70" {...stroke} strokeWidth={1.6} className="text-warn" markerEnd="url(#cv-arrow)" />
+      <text x="100" y="32" textAnchor="middle" fontSize="8" className="text-ink-muted" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+        .1 là tôi
+      </text>
+      <text x="100" y="102" textAnchor="middle" fontSize="8" className="text-warn" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+        .1 là tôi
+      </text>
       <text x="110" y="122" textAnchor="middle" {...monoText}>
         ai đáp sau thì sổ ARP nghe theo
       </text>
@@ -3736,32 +3752,49 @@ function ApipaSelf({ title }: { title?: string }) {
   )
 }
 
-/** Failover: hai server, kho chia 80/20 hoặc chung một cuốn sổ. */
+/** Failover: HAI lựa chọn tách bạch — chia kho 80/20, HOẶC bắt cặp chung sổ. */
 function DhcpFailover({ title }: { title?: string }) {
   return (
     <Frame title={title}>
+      {/* Khung chia đôi như StatelessVsStateful: bài dạy either/or thì hình
+          không được vẽ gộp hai lựa chọn vào một hệ — nối cả A 80% lẫn B 20%
+          vào một cuốn sổ chung là xóa đúng ranh giới mà bệnh "hai sổ rời
+          cùng dải" (OverlapTrap) cần để hiểu (biên bản trung cấp). */}
+      <path d="M110 24 V94" {...stroke} strokeWidth={1} strokeDasharray="4 3" className="text-ink-muted" />
       <g className="text-accent">
-        <rect x="24" y="30" width="44" height="26" rx="3" {...stroke} strokeWidth={1.6} />
-        <text x="46" y="47" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+        <rect x="12" y="30" width="40" height="22" rx="3" {...stroke} strokeWidth={1.6} />
+        <text x="32" y="44" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
           A · 80%
         </text>
-      </g>
-      <g className="text-ink-muted">
-        <rect x="152" y="30" width="44" height="26" rx="3" {...stroke} strokeWidth={1.4} />
-        <text x="174" y="47" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+        <rect x="58" y="30" width="40" height="22" rx="3" {...stroke} strokeWidth={1.4} />
+        <text x="78" y="44" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
           B · 20%
+        </text>
+        <rect x="16" y="62" width="32" height="16" rx="2" {...stroke} strokeWidth={1.2} />
+        <rect x="62" y="62" width="32" height="16" rx="2" {...stroke} strokeWidth={1.2} />
+        <path d="M32 52 V62 M78 52 V62" {...stroke} strokeWidth={1.2} />
+        <text x="55" y="92" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          hai kho rời
         </text>
       </g>
       <g className="text-ok">
-        <rect x="76" y="66" width="68" height="22" rx="3" {...stroke} strokeWidth={1.5} />
-        <path d="M84 77 h52 M84 82 h36" {...stroke} strokeWidth={1} />
-        <path d="M68 43 L84 66 M152 43 L136 66" {...stroke} strokeWidth={1.3} />
-        <text x="110" y="62" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
-          một cuốn sổ chung
+        <rect x="120" y="30" width="36" height="22" rx="3" {...stroke} strokeWidth={1.5} />
+        <text x="138" y="44" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          A
+        </text>
+        <rect x="176" y="30" width="36" height="22" rx="3" {...stroke} strokeWidth={1.5} />
+        <text x="194" y="44" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          B
+        </text>
+        <rect x="140" y="62" width="48" height="18" rx="3" {...stroke} strokeWidth={1.5} />
+        <path d="M146 69 h36 M146 74 h24" {...stroke} strokeWidth={1} />
+        <path d="M138 52 L152 62 M194 52 L178 62" {...stroke} strokeWidth={1.3} />
+        <text x="164" y="92" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          một sổ chung
         </text>
       </g>
-      <text x="110" y="106" textAnchor="middle" {...monoText}>
-        chia kho, hoặc chung một cuốn sổ
+      <text x="110" y="108" textAnchor="middle" {...monoText}>
+        chia kho HOẶC bắt cặp chung sổ
       </text>
       <text x="110" y="122" textAnchor="middle" {...monoText}>
         hai người không cùng gả một cô
@@ -3793,7 +3826,7 @@ function OverlapTrap({ title }: { title?: string }) {
         </text>
       </g>
       <text x="110" y="122" textAnchor="middle" {...monoText}>
-        bệnh trùng IP do hạ tầng đẻ đều đặn
+        bệnh trùng IP do hạ tầng đẻ ra
       </text>
     </Frame>
   )
@@ -4122,7 +4155,7 @@ function GgVsDl({ title }: { title?: string }) {
         </text>
       </g>
       <text x="110" y="122" textAnchor="middle" {...monoText}>
-        vai cắm vào quyền — cấm chiều ngược
+        vai cắm vào quyền — cấm ngược
       </text>
     </Frame>
   )
@@ -4366,6 +4399,12 @@ function SnmpPolling({ title }: { title?: string }) {
       </g>
       <g className="text-ok">
         <path d="M26 104 l24 -6 l24 -3 l24 -8 l24 -4 l24 -10 l24 -3" {...stroke} strokeWidth={1.6} />
+        {/* Đường xu hướng phải có NHÃN ĐẠI LƯỢNG: "yếu dần" cạnh một đường
+            leo dốc chỉ đúng khi người xem biết nó đo lỗi tăng — không nhãn
+            thì đoán là "sức khỏe" và hình nói ngược lời (biên bản). */}
+        <text x="194" y="64" textAnchor="end" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          lỗi/phút
+        </text>
         <text x="110" y="118" textAnchor="middle" fontSize="8" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
           hỏi đều → thấy được sự yếu dần
         </text>
@@ -4429,7 +4468,7 @@ function BaselineBand({ title }: { title?: string }) {
         </text>
       </g>
       <text x="110" y="122" textAnchor="middle" {...monoText}>
-        bật khỏi nếp: hai phía đều là chuông
+        bật khỏi nếp: hai phía đều báo
       </text>
     </Frame>
   )
