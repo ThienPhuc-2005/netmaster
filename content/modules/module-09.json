@@ -154,7 +154,7 @@
                 "kind": "typed",
                 "id": "m9-b1-pra-2",
                 "prompt": { "vi": "Máy chủ giữ sổ cái của miền và xác thực mọi lượt đăng nhập gọi là gì? (viết tắt được)" },
-                "accept": ["domain controller", "dc"],
+                "accept": ["domain controller", "dc", "máy chủ điều khiển miền", "bộ điều khiển miền"],
                 "hintTopic": { "vi": "trưởng làng giữ sổ" }
               },
               "hint": { "vi": "Hai chữ cái viết tắt — chữ đầu là Domain." },
@@ -170,7 +170,7 @@
                 "kind": "typed",
                 "id": "m9-b1-ret-1",
                 "prompt": { "vi": "Không nhìn lại bài: sổ cái của miền được tra qua giao thức nào — phòng 389 của tòa nhà 15 phòng?" },
-                "accept": ["ldap"],
+                "accept": ["ldap", "lightweight directory access protocol"],
                 "hintTopic": { "vi": "sổ hộ khẩu ở tầng 5 cung điện" }
               },
               "hint": { "vi": "Bốn chữ cái, phòng 389 — cuốn sổ ghi ai làm gì, thuộc phòng ban nào." },
@@ -267,7 +267,7 @@
                 "kind": "typed",
                 "id": "m9-b2-pra-2",
                 "prompt": { "vi": "Điền chỗ trống: GROUP để cấp ___, còn OU để xếp chỗ và treo luật." },
-                "accept": ["quyền", "quyen", "permission"],
+                "accept": ["quyền", "quyen", "permission", "permissions"],
                 "hintTopic": { "vi": "thứ đi theo tấm thẻ câu lạc bộ" }
               },
               "hint": { "vi": "Thứ mà nhân viên mới cần đúng 37 cái." },
@@ -781,7 +781,7 @@
       "kind": "typed",
       "id": "m9-mt-2",
       "prompt": { "vi": "Máy chủ giữ sổ cái của miền và xác thực mọi lượt đăng nhập gọi là gì? (viết tắt được)" },
-      "accept": ["domain controller", "dc"],
+      "accept": ["domain controller", "dc", "máy chủ điều khiển miền", "bộ điều khiển miền"],
       "explain": { "vi": "Domain Controller — giữ sổ cái AD (tra qua LDAP 389) và gác cổng mọi lượt đăng nhập." }
     },
     {

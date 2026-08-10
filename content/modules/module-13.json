@@ -899,7 +899,7 @@
       "kind": "typed",
       "id": "m13-mt-9",
       "prompt": { "vi": "Một mạng /25 cấp được cho bao nhiêu máy?" },
-      "accept": ["126", "126 máy"],
+      "accept": ["126", "126 máy", "126 host"],
       "hintTopic": { "vi": "tổng địa chỉ của khối trừ đi hai" },
       "explain": { "vi": "/25 có 128 địa chỉ, trừ địa chỉ mạng và broadcast còn 126 chỗ." }
     },

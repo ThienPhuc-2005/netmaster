@@ -359,7 +359,8 @@
                 "accept": [
                   "mx",
                   "bản ghi mx",
-                  "ban ghi mx"
+                  "ban ghi mx",
+                  "mx record"
                 ],
                 "hintTopic": {
                   "vi": "loại bản ghi dành riêng cho thư điện tử"
@@ -599,7 +600,8 @@
                 },
                 "accept": [
                   "doh",
-                  "dns over https"
+                  "dns over https",
+                  "dns qua https"
                 ],
                 "hintTopic": {
                   "vi": "tên ghép của hai thứ bạn vừa học"
@@ -765,7 +767,9 @@
                   "vi": "Nhịp thứ ba của DHCP — nhịp máy mới chốt một máy chủ và nói to cho cả mạng nghe — tên là gì?"
                 },
                 "accept": [
-                  "request"
+                  "request",
+                  "dhcprequest",
+                  "yêu cầu"
                 ],
                 "hintTopic": {
                   "vi": "nhịp chốt lời trong chuyện hỏi cưới"
@@ -791,7 +795,8 @@
                   "vi": "Không nhìn lại bài: bốn nhịp của DHCP ghép lại thành từ gì?"
                 },
                 "accept": [
-                  "dora"
+                  "dora",
+                  "discover offer request ack"
                 ],
                 "hintTopic": {
                   "vi": "chữ đầu của bốn nhịp"
@@ -1255,7 +1260,8 @@
       },
       "accept": [
         "aaaa",
-        "quad a"
+        "quad a",
+        "aaaa record"
       ],
       "explain": {
         "vi": "AAAA — bản anh em của A, dành cho địa chỉ IPv6 dài gấp bốn lần."

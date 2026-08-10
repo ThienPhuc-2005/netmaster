@@ -108,8 +108,8 @@ Trạng thái: ☐ chờ duyệt · ✅ đã làm · ✗ đã bàn và bỏ (gi�
 - ✅ **I7. MCP cho app** — ĐÃ LÀM (khối 21.13): Claude cắm thẳng vào bộ
   chấm thật + nội dung + sổ khiếu nại, để nới đáp án lúc SOẠN BÀI thay vì
   gọi mạng lúc chấm.
-- ☐ **I8. Dọn 89 câu gõ tay có dưới 3 cách nói** — tồn kho `narrow_accepts`
-  vừa chỉ ra; làm theo module một, chạy lại tool sau mỗi lượt.
+- ✅ **I8. Dọn tồn kho accept-hẹp** — ĐÃ LÀM (khối 21.14): 89 → 0, kèm
+  cảnh báo ngay trên bản đọc duyệt cho câu dưới 3 cách nói.
 - ☐ **I2. Chủ đề vấp đẩy thẻ ôn lên sớm** — chủ đề nào cứ quay lại cắn
   thì thẻ khái niệm tương ứng được ưu tiên trong hàng đợi ôn.
 - ☐ **I3. So với chính mình tháng trước** — chụp lại bảng phân tích theo

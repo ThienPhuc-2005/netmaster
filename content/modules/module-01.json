@@ -69,7 +69,7 @@
                 "kind": "typed",
                 "id": "m1-b1-prac-1",
                 "prompt": { "vi": "Trong ẩn dụ bưu điện, phong bì thư tương ứng với thứ gì trong mạng?" },
-                "accept": ["gói tin", "packet"],
+                "accept": ["gói tin", "packet", "gói dữ liệu", "packets"],
                 "hintTopic": { "vi": "vai trò của phong bì khi gửi thư" }
               },
               "hint": { "vi": "Thứ đó \"bọc\" một phần dữ liệu lại và ghi thông tin chuyển phát bên ngoài." },
@@ -105,7 +105,7 @@
                 "kind": "typed",
                 "id": "m1-b1-ret-1",
                 "prompt": { "vi": "Không nhìn lại bài: đơn vị dữ liệu được chia nhỏ để gửi qua mạng gọi là gì?" },
-                "accept": ["gói tin", "packet"]
+                "accept": ["gói tin", "packet", "gói dữ liệu", "packets"]
               },
               "hint": { "vi": "Chính là \"phong bì\" trong câu chuyện bưu điện của mình." },
               "solution": { "vi": "Đó là gói tin (packet) — mỗi gói mang một phần dữ liệu kèm thông tin chuyển phát." }
@@ -390,7 +390,7 @@
                 "kind": "typed",
                 "id": "m1-b4-prac-1",
                 "prompt": { "vi": "Trong ẩn dụ bưu điện, bưu tá tương ứng với thiết bị nào trong mạng?" },
-                "accept": ["router", "bộ định tuyến"],
+                "accept": ["router", "bộ định tuyến", "thiết bị định tuyến", "routers"],
                 "hintTopic": { "vi": "ai đọc địa chỉ trên phong bì và chọn đường đi" }
               },
               "hint": { "vi": "Thiết bị này đọc địa chỉ IP đích rồi quyết định chặng kế tiếp." },
@@ -426,7 +426,7 @@
                 "kind": "typed",
                 "id": "m1-b4-ret-1",
                 "prompt": { "vi": "Không nhìn lại bài: thiết bị đọc địa chỉ IP đích và chọn chặng kế tiếp cho gói tin gọi là gì?" },
-                "accept": ["router", "bộ định tuyến"]
+                "accept": ["router", "bộ định tuyến", "thiết bị định tuyến", "routers"]
               },
               "hint": { "vi": "Chính là \"bưu tá\" trong câu chuyện gửi thư." },
               "solution": { "vi": "Đó là router (bộ định tuyến) — mỗi router đưa gói tin gần đích thêm một chặng." }
@@ -509,7 +509,7 @@
                 "kind": "typed",
                 "id": "m1-b5-prac-1",
                 "prompt": { "vi": "Bộ quy tắc chung mà hai máy phải cùng tuân theo để hiểu nhau gọi là gì?" },
-                "accept": ["giao thức", "protocol"],
+                "accept": ["giao thức", "protocol", "protocols"],
                 "hintTopic": { "vi": "quy ước chung khi hai bên trao đổi" }
               },
               "hint": { "vi": "Giống quy ước viết thư: cùng ngôn ngữ, cùng cách trình bày." },
@@ -527,7 +527,7 @@
                 "kind": "typed",
                 "id": "m1-b5-ret-1",
                 "prompt": { "vi": "Không nhìn lại bài: HTTP, TCP, IP được gọi chung là các…" },
-                "accept": ["giao thức", "protocol"]
+                "accept": ["giao thức", "protocol", "protocols"]
               },
               "hint": { "vi": "Là \"luật chơi chung\" giữa các máy." },
               "solution": { "vi": "Chúng là các giao thức — mỗi giao thức phụ trách một việc trên đường đi của dữ liệu." }
@@ -748,14 +748,14 @@
       "kind": "typed",
       "id": "m1-mt-2",
       "prompt": { "vi": "Một file 10MB rời máy bạn dưới dạng hàng nghìn mảnh nhỏ, mỗi mảnh tự mang địa chỉ. Mỗi mảnh như vậy gọi là gì?" },
-      "accept": ["gói tin", "packet"],
+      "accept": ["gói tin", "packet", "gói dữ liệu", "packets"],
       "explain": { "vi": "Gói tin (packet): dữ liệu được chia nhỏ, mỗi gói mang một phần nội dung kèm thông tin chuyển phát." }
     },
     {
       "kind": "typed",
       "id": "m1-mt-3",
       "prompt": { "vi": "Gói tin của bạn đang dừng ở một trạm giữa đường. Thiết bị tại trạm đọc địa chỉ đích rồi đẩy nó sang chặng kế tiếp — thiết bị đó gọi là gì?" },
-      "accept": ["router", "bộ định tuyến"],
+      "accept": ["router", "bộ định tuyến", "thiết bị định tuyến", "routers"],
       "explain": { "vi": "Router đọc địa chỉ IP đích trên gói tin rồi chuyển nó sang chặng kế tiếp gần đích hơn — như bưu tá đọc phong bì." }
     },
     {
@@ -781,7 +781,7 @@
       "kind": "typed",
       "id": "m1-mt-6",
       "prompt": { "vi": "Máy bạn gửi yêu cầu theo đúng khuôn HTTP, server đáp lại đúng khuôn ấy — hai bên hiểu nhau nhờ cùng tuân theo thứ gì?" },
-      "accept": ["giao thức", "protocol"],
+      "accept": ["giao thức", "protocol", "quy tắc chung", "protocols"],
       "explain": { "vi": "Giao thức là luật chơi chung: cùng quy ước đóng gói và diễn giải thì hai máy mới đọc hiểu dữ liệu của nhau." }
     },
     {

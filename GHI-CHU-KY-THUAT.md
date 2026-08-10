@@ -560,6 +560,17 @@ chỉ bỏ điều kiện "học hết bài trước đã".
 
 ## 12. Công cụ soạn bài (tools/mcp)
 
+- **Thước "đủ cách nói" (khối 21.14)** — dùng CHUNG giữa MCP và
+  `content:review`, sửa một nơi: (a) gộp biến thể chỉ khác DẤU trước khi
+  đếm (bộ chấm vốn nhân nhượng dấu — soạn thêm bản không dấu là đếm ảo);
+  (b) bỏ qua đáp án KÝ HIỆU (IP, port) và đáp án chỉ có MỘT CÁI TÊN (tên
+  lệnh, viết tắt + tên đầy đủ tiếng Anh) — ở đó cách nói thứ ba không tồn
+  tại. Ngưỡng hiện tại: 3 cách nói cho đáp án diễn đạt được bằng lời Việt.
+- **Nới accept phải nới ĐÚNG**: mỗi cách nói thêm phải là câu trả lời đúng
+  cho chính câu đó. Cụm quá NGẮN là bẫy — "chuyển mạch" trần nhận luôn
+  "chuyển mạch gói" (một kỹ thuật, không phải thiết bị). Thêm xong thì
+  chạy `grade_answer` với vài đáp án SAI để kiểm ngược.
+
 - **MCP server CHỈ ĐỌC** (`tools/mcp/`, khối 21.13): không sửa nội dung,
   không sửa tiến độ, không gọi mạng. Muốn nới accept thì `accept_patch_line`
   dựng dòng JSON, người soạn bài tự dán — tool tự sửa nội dung theo lời

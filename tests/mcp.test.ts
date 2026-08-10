@@ -14,6 +14,9 @@ import { fileURLToPath } from 'node:url'
 import { describe, expect, it } from 'vitest'
 import {
   acceptPatchLine,
+  distinctPhrasings,
+  hasProseForm,
+  isSymbolAnswer,
   findQuestions,
   gradeAnswers,
   indexModules,
@@ -36,7 +39,14 @@ function moduleFixture() {
   return {
     id: 'module-x',
     title: { vi: 'Module thử' },
-    masteryTest: [q('x-mt-1', 'typed', 'Câu đề thi?', ['alpha'], { explain: { vi: 'Ẩn dụ nào đó. Alpha là đáp án.' } })],
+    // Đáp án tiếng Việt nhiều chữ nhưng chỉ hai cách nói — đúng dạng mà
+    // thước đo phải kêu; `explain` mở đầu bằng ẩn dụ để kiểm luật
+    // "không đo trên lời giảng".
+    masteryTest: [
+      q('x-mt-1', 'typed', 'Câu đề thi?', ['bộ định tuyến', 'router'], {
+        explain: { vi: 'Ẩn dụ nào đó. Bộ định tuyến là đáp án.' },
+      }),
+    ],
     lessons: [
       {
         id: 'x-bai-1',
@@ -123,6 +133,26 @@ describe('đo câu có nguy cơ chấm oan', () => {
   it('lỗi CHẮC CHẮN xếp trước lỗi nghi ngờ', () => {
     const reasons = narrowAccepts(index, 3).map((f) => f.reason)
     expect(reasons.indexOf('solution-rejected')).toBeLessThan(reasons.indexOf('few-variants'))
+  })
+})
+
+describe('thước đo "đủ cách nói"', () => {
+  it('bản viết không dấu KHÔNG tính là một cách nói khác — bộ chấm vốn đã nhân nhượng dấu', () => {
+    expect(distinctPhrasings(['cổng access', 'cong access', 'switch'])).toHaveLength(2)
+  })
+
+  it('đáp án ký hiệu (IP, port, ::) không có "cách nói" nào để đòi', () => {
+    expect(isSymbolAnswer(['192.168.1.64', '192.168.1.64/26'])).toBe(true)
+    expect(isSymbolAnswer(['67 68', '67, 68'])).toBe(true)
+    expect(isSymbolAnswer(['gói tin'])).toBe(false)
+  })
+
+  it('tên đầy đủ tiếng Anh của một viết tắt KHÔNG phải cách nói thứ hai', () => {
+    // "address resolution protocol" là tên của ARP, không phải một lối
+    // diễn đạt khác — đòi cách thứ ba ở đây là đòi thứ không tồn tại.
+    expect(hasProseForm(['arp', 'address resolution protocol'])).toBe(false)
+    expect(hasProseForm(['ipconfig'])).toBe(false)
+    expect(hasProseForm(['router', 'bộ định tuyến'])).toBe(true)
   })
 })
 

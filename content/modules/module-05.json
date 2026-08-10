@@ -528,7 +528,8 @@
                   "vi": "Giao thức gửi kiểu \"thư bảo đảm\" — đánh số từng gói, thiếu là đòi gửi lại — tên là gì?"
                 },
                 "accept": [
-                  "tcp"
+                  "tcp",
+                  "transmission control protocol"
                 ],
                 "hintTopic": {
                   "vi": "giao thức lo chuyện đủ và đúng thứ tự"
@@ -651,7 +652,8 @@
                   "vi": "Giao thức chấp nhận mất gói để đổi lấy độ trễ thấp tên là gì?"
                 },
                 "accept": [
-                  "udp"
+                  "udp",
+                  "user datagram protocol"
                 ],
                 "hintTopic": {
                   "vi": "kiểu gửi không đòi báo nhận"
@@ -704,7 +706,8 @@
                   "vi": "Không nhìn lại bài: giao thức nào KHÔNG bắt tay, không đánh số, không gửi lại gói rớt?"
                 },
                 "accept": [
-                  "udp"
+                  "udp",
+                  "user datagram protocol"
                 ],
                 "hintTopic": {
                   "vi": "kiểu gửi thư thường"

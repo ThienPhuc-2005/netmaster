@@ -72,7 +72,7 @@
                 "kind": "typed",
                 "id": "m4-b1-prac-1",
                 "prompt": { "vi": "Thiết bị đóng vai bưu cục — nối nhiều máy trong CÙNG một mạng lại với nhau — gọi là gì?" },
-                "accept": ["switch", "bộ chuyển mạch"],
+                "accept": ["switch", "bộ chuyển mạch", "switches"],
                 "hintTopic": { "vi": "cái hộp nhiều cổng mà mọi máy trong phòng cắm dây vào" }
               },
               "hint": {
@@ -105,7 +105,7 @@
                 "kind": "typed",
                 "id": "m4-b1-ret-1",
                 "prompt": { "vi": "Không nhìn lại bài: tên thiết bị nối nhiều máy trong cùng một mạng là gì?" },
-                "accept": ["switch", "bộ chuyển mạch"]
+                "accept": ["switch", "bộ chuyển mạch", "switches"]
               },
               "hint": { "vi": "Hộp nhiều cổng, đóng vai bưu cục của làng." },
               "solution": { "vi": "Switch — mỗi máy một sợi dây, nó lo việc chuyển thư giữa các cổng." }
@@ -385,7 +385,7 @@
                 "kind": "typed",
                 "id": "m4-b3-prac-1",
                 "prompt": { "vi": "Giao thức đi hỏi 'ai đang giữ địa chỉ IP này?' để lấy về địa chỉ MAC tên là gì?" },
-                "accept": ["arp"],
+                "accept": ["arp", "address resolution protocol"],
                 "hintTopic": { "vi": "tiếng gọi giữa sân làng để tìm chủ của một địa chỉ" },
                 "nearMisses": [
                   {
@@ -836,7 +836,7 @@
                 "kind": "typed",
                 "id": "m4-b5-prac-1",
                 "prompt": { "vi": "Thiết bị nối HAI mạng khác dải địa chỉ với nhau và chuyển gói giữa chúng gọi là gì?" },
-                "accept": ["router", "bộ định tuyến"],
+                "accept": ["router", "bộ định tuyến", "thiết bị định tuyến", "routers"],
                 "hintTopic": { "vi": "cây cầu giữa hai dải địa chỉ khác nhau" },
                 "nearMisses": [
                   {
@@ -1052,7 +1052,7 @@
       "kind": "typed",
       "id": "m4-mt-4",
       "prompt": { "vi": "Máy biết địa chỉ IP của máy kia nhưng chưa biết địa chỉ MAC. Nó dùng giao thức nào để hỏi?" },
-      "accept": ["arp"],
+      "accept": ["arp", "address resolution protocol"],
       "explain": {
         "vi": "ARP — nó hỏi to cả mạng 'ai đang giữ địa chỉ IP này?' và đúng máy đó trả lời kèm MAC của mình."
       }
@@ -1077,7 +1077,7 @@
       "kind": "typed",
       "id": "m4-mt-6",
       "prompt": { "vi": "Thiết bị nối hai mạng khác dải địa chỉ và chuyển gói giữa chúng tên là gì?" },
-      "accept": ["router", "bộ định tuyến"],
+      "accept": ["router", "bộ định tuyến", "thiết bị định tuyến", "routers"],
       "explain": {
         "vi": "Router. Mỗi chân của nó nằm ở một mạng, và nó tra bảng định tuyến để biết đẩy gói sang chân nào."
       }

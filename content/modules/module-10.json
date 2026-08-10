@@ -432,7 +432,7 @@
                 "kind": "typed",
                 "id": "m10-b4-pra-2",
                 "prompt": { "vi": "Trong Zero Trust, biên giới mới của mạng là gì?" },
-                "accept": ["danh tính", "danh tinh", "identity"],
+                "accept": ["danh tính", "danh tinh", "identity", "danh tính người dùng"],
                 "hintTopic": { "vi": "câu hỏi đổi từ \"bạn đứng đâu\" sang…" }
               },
               "hint": { "vi": "Không còn là chỗ đứng hay tường lửa — mà là câu hỏi \"bạn LÀ AI\"." },
@@ -753,7 +753,7 @@
       "kind": "typed",
       "id": "m10-mt-7",
       "prompt": { "vi": "Trong Zero Trust, biên giới mới của mạng là gì?" },
-      "accept": ["danh tính", "danh tinh", "identity"],
+      "accept": ["danh tính", "danh tinh", "identity", "danh tính người dùng"],
       "explain": { "vi": "Danh tính — mọi quyết định cho/chặn dựa trên bạn là ai và máy có sạch không, thay vì bạn đứng trong hay ngoài tường lửa." }
     },
     {

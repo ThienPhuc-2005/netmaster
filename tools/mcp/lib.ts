@@ -17,7 +17,7 @@
 // Technical contract: thuần TS, không đọc mạng, không tự lấy giờ; mọi
 // đường dẫn và nội dung file bơm từ ngoài vào để test không cần ổ đĩa.
 
-import { typedAnswerMatches } from '../../src/engine/grading/normalize.ts'
+import { normalizeAnswer, stripDiacritics, typedAnswerMatches } from '../../src/engine/grading/normalize.ts'
 
 /** Một câu hỏi đã phẳng hóa, kèm chỗ nó nằm trong nội dung. */
 export interface IndexedQuestion {
@@ -156,6 +156,59 @@ export interface NarrowFinding {
   rejectedClause?: string
 }
 
+/**
+ * Số CÁCH NÓI thật sự khác nhau trong danh sách đáp án.
+ *
+ * Đếm số phần tử là đếm sai: bộ chấm vốn đã nhân nhượng dấu tiếng Việt
+ * (người gõ "goi tin" khớp "gói tin"), nên cặp ["cổng access", "cong
+ * access"] chỉ là MỘT cách nói viết hai kiểu — nó không mở thêm cửa nào
+ * cho người diễn đạt khác. Gộp lại rồi mới đếm thì con số mới nói thật.
+ */
+export function distinctPhrasings(accept: readonly string[]): string[] {
+  const seen = new Map<string, string>()
+  for (const a of accept) {
+    const key = stripDiacritics(normalizeAnswer(a))
+    if (!seen.has(key)) seen.set(key, a)
+  }
+  return [...seen.values()]
+}
+
+/**
+ * Đáp án có CÁCH NÓI BẰNG LỜI hay không.
+ *
+ * Chỉ câu nào diễn đạt được thành một cụm tiếng Việt nhiều chữ mới có
+ * chuyện "nói nhiều cách" — và chỉ chúng mới dính lớp lỗi accept-hẹp
+ * (người học nói rõ hơn hoặc nói khác đi thì trượt). Còn đáp án là TÊN
+ * MỘT THỨ duy nhất — tên lệnh (`ipconfig`), viết tắt (BPDU), một con số,
+ * một chuỗi cấu hình — thì ép soạn đủ ba cách nói chỉ đẻ ra rác, y như
+ * ép ba cách viết cho 192.168.1.64.
+ */
+export function hasProseForm(accept: readonly string[]): boolean {
+  return accept.some((a) => {
+    const norm = normalizeAnswer(a)
+    const words = norm.split(' ').filter((w) => /\p{L}{2}/u.test(w))
+    // Nhiều chữ CHƯA đủ: "address resolution protocol" cũng nhiều chữ,
+    // nhưng nó là tên đầy đủ của ARP chứ không phải một cách nói khác —
+    // đòi cách thứ ba ở đó là đòi thứ không tồn tại. Dấu tiếng Việt là
+    // ranh giới rẻ mà đúng gần hết. (Giới hạn đã biết: câu tiếng Việt
+    // viết không dấu hoàn toàn sẽ lọt lưới; trong bộ nội dung này mọi
+    // đáp án không dấu đều đi kèm bản có dấu.)
+    return words.length >= 2 && stripDiacritics(norm) !== norm
+  })
+}
+
+/**
+ * Đáp án là KÝ HIỆU chứ không phải lời: địa chỉ IP, số port, mặt nạ, "::".
+ *
+ * Những câu này không có "ba cách nói" nào cả — 192.168.1.64 chỉ có một
+ * cách viết đúng, và ép soạn thêm biến thể chỉ đẻ ra rác. Đo chúng bằng
+ * cùng một thước với câu chữ là tự tạo ra một danh sách việc giả.
+ */
+export function isSymbolAnswer(accept: readonly string[]): boolean {
+  if (accept.length === 0) return false
+  return accept.every((a) => !/\p{L}{3}/u.test(stripDiacritics(a)))
+}
+
 /** Mệnh đề đáp án mở đầu lời giải — thứ người học chép lại khi bị bảo "tự gõ lại". */
 export function solutionClause(solution: string): string {
   return (solution.split(/[;:]|—|\. /)[0] ?? '').trim().replace(/\.$/, '')
@@ -182,7 +235,11 @@ export function narrowAccepts(index: readonly IndexedQuestion[], minVariants = 3
         continue
       }
     }
-    if (q.accept.length < minVariants) findings.push({ ...base, reason: 'few-variants' })
+    // Câu đáp án ký hiệu (IP, port, mặt nạ) không đo bằng thước "cách nói".
+    if (isSymbolAnswer(q.accept)) continue
+    // Đáp án chỉ có một cái tên thì không có "cách nói thứ hai" để đòi.
+    if (!hasProseForm(q.accept)) continue
+    if (distinctPhrasings(q.accept).length < minVariants) findings.push({ ...base, reason: 'few-variants' })
   }
   return findings.sort((a, b) => (a.reason === b.reason ? 0 : a.reason === 'solution-rejected' ? -1 : 1))
 }

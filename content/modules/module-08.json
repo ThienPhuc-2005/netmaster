@@ -535,7 +535,7 @@
                 "kind": "typed",
                 "id": "m8-b5-pra-1",
                 "prompt": { "vi": "Cơ chế để máy IPv6 TỰ ghép địa chỉ từ lời rao của router tên là gì?" },
-                "accept": ["slaac"],
+                "accept": ["slaac", "stateless address autoconfiguration", "tự cấu hình địa chỉ không trạng thái"],
                 "hintTopic": { "vi": "năm chữ cái, mở đầu bằng chữ S của \"stateless\"" }
               },
               "hint": { "vi": "Viết tắt của Stateless Address Autoconfiguration — năm chữ cái." },
@@ -583,7 +583,7 @@
                 "kind": "typed",
                 "id": "m8-b5-ret-2",
                 "prompt": { "vi": "Vẫn từ trí nhớ, đổi sang hệ cũ: cơ chế cấp địa chỉ BỐN NHỊP có người giữ sổ của IPv4 tên là gì? (viết tắt)" },
-                "accept": ["dhcp", "dora"],
+                "accept": ["dhcp", "dora", "dynamic host configuration protocol"],
                 "hintTopic": { "vi": "cuộc hỏi cưới ở Module 6" }
               },
               "hint": { "vi": "Bốn nhịp Discover–Offer–Request–Ack là của giao thức nào?" },
@@ -787,14 +787,14 @@
       "kind": "typed",
       "id": "m8-mt-7",
       "prompt": { "vi": "Cơ chế cấp địa chỉ qua bốn nhịp Discover–Offer–Request–Ack là của giao thức nào? (viết tắt)" },
-      "accept": ["dhcp"],
+      "accept": ["dhcp", "dynamic host configuration protocol"],
       "explain": { "vi": "DHCP — cơ chế cấp phát CÓ SỔ của IPv4 (Module 6); bên IPv6 khi cần sổ sách người ta dùng DHCPv6." }
     },
     {
       "kind": "typed",
       "id": "m8-mt-8",
       "prompt": { "vi": "Cơ chế để máy IPv6 tự ghép địa chỉ từ lời rao prefix của router tên là gì?" },
-      "accept": ["slaac"],
+      "accept": ["slaac", "stateless address autoconfiguration", "tự cấu hình địa chỉ không trạng thái"],
       "explain": { "vi": "SLAAC — stateless: router rao tên khu phố, máy tự chọn số nhà, không ai giữ sổ." }
     },
     {

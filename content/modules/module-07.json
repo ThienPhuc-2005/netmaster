@@ -138,7 +138,9 @@
                 },
                 "accept": [
                   "nat",
-                  "network address translation"
+                  "network address translation",
+                  "biên dịch địa chỉ mạng",
+                  "chuyển đổi địa chỉ mạng"
                 ],
                 "hintTopic": {
                   "vi": "chuyện xảy ra với địa chỉ nguồn khi gói rời khỏi nhà"
@@ -206,7 +208,8 @@
                 },
                 "accept": [
                   "pat",
-                  "port address translation"
+                  "port address translation",
+                  "nat overload"
                 ],
                 "hintTopic": {
                   "vi": "chữ đầu là tên con số phân biệt các căn hộ"
@@ -1472,7 +1475,9 @@
       },
       "accept": [
         "nat",
-        "network address translation"
+        "network address translation",
+        "biên dịch địa chỉ mạng",
+        "chuyển đổi địa chỉ mạng"
       ],
       "explain": {
         "vi": "NAT — đổi địa chỉ nguồn ở cổng WAN, nhờ đó cả nhà dùng chung một địa chỉ công cộng."

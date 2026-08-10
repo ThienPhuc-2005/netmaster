@@ -895,7 +895,9 @@
                   "lọc trước đọc sau",
                   "loc truoc doc sau",
                   "lọc trước, đọc sau",
-                  "loc truoc, doc sau"
+                  "loc truoc, doc sau",
+                  "lọc rồi đọc",
+                  "lọc trước rồi đọc sau"
                 ],
                 "hintTopic": {
                   "vi": "hai động từ, mỗi động từ một trạng từ"

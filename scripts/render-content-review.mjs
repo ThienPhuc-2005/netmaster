@@ -7,8 +7,12 @@
 import { readFileSync, readdirSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
+// Luật "đủ cách nói" dùng CHUNG với MCP server (tools/mcp/lib.ts) —
+// viết lại ở đây là mở đường cho hai thước đo lệch nhau.
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')
+import { distinctPhrasings, hasProseForm, isSymbolAnswer } from '../tools/mcp/lib.ts'
+
 const modulesDir = join(root, 'content', 'modules')
 
 const vi = (ltext) => (ltext && typeof ltext.vi === 'string' ? ltext.vi : '')
@@ -162,11 +166,35 @@ function roomsOf(palace, roomIds) {
   })
 }
 
+/**
+ * Cảnh báo SOẠN BÀI: câu gõ tay chỉ nhận quá ít cách nói.
+ *
+ * Đây là lớp lỗi đã trả giá ở khối 21.10 — accept hẹp hơn cách nói tự
+ * nhiên thì người trả lời ĐÚNG bị chấm sai, mà người học thật sẽ im lặng
+ * tự nghĩ mình dốt. Bắt nó ngay trên bản đọc duyệt rẻ hơn nhiều so với
+ * đợi ai đó bực rồi đi báo.
+ *
+ * Cố ý KHÔNG cảnh báo với đáp án là ký hiệu (IP, port) hay chỉ có một
+ * cái tên (tên lệnh, viết tắt): ở đó "cách nói thứ ba" không tồn tại.
+ */
+function acceptWarning(q) {
+  if (q.kind !== 'typed') return null
+  if (isSymbolAnswer(q.accept) || !hasProseForm(q.accept)) return null
+  const distinct = distinctPhrasings(q.accept)
+  if (distinct.length >= MIN_PHRASINGS) return null
+  return `**CẢNH BÁO SOẠN BÀI:** chỉ ${distinct.length} cách nói được chấp nhận (nên có >= ${MIN_PHRASINGS}) — người diễn đạt khác đi sẽ bị chấm oan.`
+}
+
+/** Ngưỡng dùng chung với MCP `narrow_accepts`. */
+const MIN_PHRASINGS = 3
+
 export function renderQuestion(q, indent = '', palace = null) {
   const lines = []
   lines.push(`${indent}- **Đề:** ${vi(q.prompt)}`)
   if (q.kind === 'typed') {
     lines.push(`${indent}  - **Dạng:** gõ tay · **Chấp nhận:** ${q.accept.join(' | ')}`)
+    const warning = acceptWarning(q)
+    if (warning !== null) lines.push(`${indent}  - ${warning}`)
   } else if (q.kind === 'mcq') {
     const choices = q.choices.map((c, i) => (i === q.answerIndex ? `**${vi(c)}** ✓` : vi(c)))
     lines.push(`${indent}  - **Dạng:** trắc nghiệm · ${choices.join(' / ')}`)

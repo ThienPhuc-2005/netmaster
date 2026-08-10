@@ -1516,7 +1516,7 @@
       "kind": "typed",
       "id": "m15-mt-12",
       "prompt": { "vi": "Các switch trao đổi với nhau bằng loại khung nào để dựng và cập nhật cây STP? (viết tắt bốn chữ cái)" },
-      "accept": ["bpdu", "BPDU", "bridge protocol data unit"],
+      "accept": ["bpdu", "BPDU", "bridge protocol data unit", "khung bpdu"],
       "hintTopic": { "vi": "tiếng điểm danh giữa các switch" },
       "explain": {
         "vi": "BPDU — Bridge Protocol Data Unit, phát đều đặn vài giây một lần; im tiếng trên một hướng là cả nhóm biết có dây đứt."

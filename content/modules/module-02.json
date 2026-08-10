@@ -69,7 +69,7 @@
                 "kind": "typed",
                 "id": "m2-b1-prac-1",
                 "prompt": { "vi": "Bạn gõ vnexpress.net. Trước khi gửi được gói tin nào tới server của trang đó, máy bạn phải hỏi hệ thống nào để lấy địa chỉ IP?" },
-                "accept": ["dns", "domain name system"],
+                "accept": ["dns", "domain name system", "hệ thống tên miền", "máy chủ dns"],
                 "hintTopic": { "vi": "cuốn danh bạ đổi tên thành số" }
               },
               "hint": { "vi": "Hệ thống này nhận vào cái TÊN trang web và trả lại dãy SỐ — giống tổng đài 1080 tra hộ số điện thoại." },
@@ -105,7 +105,7 @@
                 "kind": "typed",
                 "id": "m2-b1-ret-1",
                 "prompt": { "vi": "Không nhìn lại bài: hệ thống \"danh bạ\" đổi tên miền thành địa chỉ IP gọi là gì?" },
-                "accept": ["dns", "domain name system"]
+                "accept": ["dns", "domain name system", "hệ thống tên miền", "máy chủ dns"]
               },
               "hint": { "vi": "Chính là \"tổng đài 1080\" của Internet trong bài mình vừa học." },
               "solution": { "vi": "Đó là DNS — đưa tên miền, nhận về địa chỉ IP. Mọi chuyến đi trên web đều mở màn bằng một câu hỏi gửi cho nó." }
@@ -319,7 +319,7 @@
                 "kind": "typed",
                 "id": "m2-b3-prac-1",
                 "prompt": { "vi": "Cỗ máy luôn bật, đứng chờ yêu cầu để phục vụ hàng triệu người cùng lúc — nơi các trang web thật sự \"sống\" — gọi là gì?" },
-                "accept": ["server", "máy chủ"],
+                "accept": ["server", "máy chủ", "servers", "máy phục vụ"],
                 "hintTopic": { "vi": "tòa nhà dịch vụ không bao giờ đóng cửa" }
               },
               "hint": { "vi": "Trái ngược với máy cá nhân \"lúc bật lúc tắt\" của bạn — máy này sinh ra để phục vụ, tên tiếng Anh nghĩa là \"người phục vụ\"." },
@@ -355,7 +355,7 @@
                 "kind": "typed",
                 "id": "m2-b3-ret-1",
                 "prompt": { "vi": "Không nhìn lại bài: google.com thật ra nằm trên loại máy nào — luôn bật, chuyên đứng chờ và phục vụ yêu cầu?" },
-                "accept": ["server", "máy chủ"]
+                "accept": ["server", "máy chủ", "servers", "máy phục vụ"]
               },
               "hint": { "vi": "Là \"tòa nhà dịch vụ\" không bao giờ tắt đèn trong câu chuyện của mình." },
               "solution": { "vi": "Đó là server (máy chủ) — điểm hẹn cuối của mọi gói tin bạn gửi đi khi mở một trang web." }
@@ -591,7 +591,7 @@
       "kind": "typed",
       "id": "m2-mt-1",
       "prompt": { "vi": "Hệ thống \"danh bạ của Internet\" — đưa tên miền, nhận về địa chỉ IP — gọi là gì?" },
-      "accept": ["dns", "domain name system"],
+      "accept": ["dns", "domain name system", "hệ thống tên miền", "máy chủ dns"],
       "explain": { "vi": "DNS đổi cái tên cho người (google.com) thành địa chỉ IP cho máy — như tổng đài 1080 tra hộ số điện thoại từ một cái tên." }
     },
     {
@@ -634,7 +634,7 @@
       "kind": "typed",
       "id": "m2-mt-5",
       "prompt": { "vi": "Loại máy luôn bật, chuyên đứng chờ yêu cầu và phục vụ hàng triệu người cùng lúc gọi là gì?" },
-      "accept": ["server", "máy chủ"],
+      "accept": ["server", "máy chủ", "servers", "máy phục vụ"],
       "explain": { "vi": "Server (máy chủ) — tòa nhà dịch vụ 24/7 của Internet: mọi trang web bạn mở đều đang \"sống\" trên những cỗ máy như vậy." }
     },
     {

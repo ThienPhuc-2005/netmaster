@@ -71,7 +71,7 @@
                 "kind": "typed",
                 "id": "m3-b1-prac-1",
                 "prompt": { "vi": "Ra quán cà phê, máy bạn nhận địa chỉ 172.20.5.9 thay cho 192.168.1.7 ở nhà — dãy vừa đổi đó là MAC hay IP?" },
-                "accept": ["ip", "địa chỉ ip"],
+                "accept": ["ip", "địa chỉ ip", "ipv4"],
                 "hintTopic": { "vi": "địa chỉ nào đổi theo mạng đang cắm vào" }
               },
               "hint": { "vi": "Áp câu hỏi thử của ví dụ: dãy này ĐỔI khi máy sang mạng khác — vậy nó là số khung hay biển số?" },
@@ -190,7 +190,7 @@
                 "kind": "typed",
                 "id": "m3-b2-prac-1",
                 "prompt": { "vi": "Địa chỉ IPv4 tổng cộng dài bao nhiêu bit? (trả lời một con số)" },
-                "accept": ["32", "32 bit"],
+                "accept": ["32", "32 bit", "32 bits"],
                 "hintTopic": { "vi": "4 octet, mỗi octet mấy bit" }
               },
               "hint": { "vi": "Mỗi octet là 8 bit, và địa chỉ có 4 octet — nhân lên nhé." },
@@ -224,7 +224,7 @@
                 "kind": "typed",
                 "id": "m3-b2-ret-1",
                 "prompt": { "vi": "Không nhìn lại bài: địa chỉ IPv4 gồm phần mạng và phần gì?" },
-                "accept": ["host", "phần host"]
+                "accept": ["host", "phần host", "host id", "phần host id"]
               },
               "hint": { "vi": "Phần mạng là khu phố — còn phần kia là \"số nhà\" của từng máy trong khu." },
               "solution": { "vi": "Phần host — số nhà của từng máy. Phần mạng chung cho cả khu phố, phần host phân biệt từng máy trong khu." }
@@ -658,7 +658,7 @@
                 "kind": "typed",
                 "id": "m3-b6-prac-1",
                 "prompt": { "vi": "Một địa chỉ IPv6 đầy đủ gồm mấy nhóm số hex? (trả lời một con số)" },
-                "accept": ["8", "8 nhóm"],
+                "accept": ["8", "8 nhóm", "tám"],
                 "hintTopic": { "vi": "số nhóm ngăn bằng dấu hai chấm" }
               },
               "hint": { "vi": "Đếm số nhóm trong 2001:0db8:0000:0000:0000:0000:0000:0001 — mỗi nhóm ngăn nhau bằng dấu \":\"." },

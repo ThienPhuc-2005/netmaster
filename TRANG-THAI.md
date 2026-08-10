@@ -29,8 +29,8 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
 **HAI VIỆC ĐANG TREO, phiên mới cần biết:**
-1. **Khối 21.13 CHƯA COMMIT** — đã commit tới `fd3ba9f` (khối 21.12);
-   khối 21.13 (MCP server) đang ở working tree.
+1. **Khối 21.14 CHƯA COMMIT** — đã commit tới `d5a3bee` (khối 21.13);
+   khối 21.14 (dọn accept-hẹp + cảnh báo lúc soạn) đang ở working tree.
 2. **Phiên nền đang sửa hình `Journey`** (5 hình vis-hanh-trinh-* tràn
    viewBox, task riêng của chủ dự án, worktree `.claude/worktrees/…`) —
    ĐỪNG đụng component Journey trong `ConceptVisual.tsx` cho tới khi
@@ -1237,6 +1237,39 @@ Còn lại duy nhất:
     thật: ca chấm oan cũ ("địa chỉ Mac của người gửi") giờ báo đạt, còn
     một khiếu nại chép lại nguyên chữ trong đề thì vẫn báo chưa đạt —
     tool không đóng dấu bừa.
+
+- **Khối 21.14 XONG (08-10): DỌN TỒN KHO ACCEPT-HẸP + CẢNH BÁO LÚC SOẠN**
+  — chủ dự án giao dọn 89 câu MCP vừa chỉ ra, chạy lại tool sau mỗi lượt,
+  và cho `content:review` kêu ngay lúc soạn bài.
+  - **Thước đo phải sửa TRƯỚC khi dọn**, vì con số 89 đang nói dối theo
+    hai hướng: (a) đếm số phần tử accept là đếm sai — bộ chấm vốn nhân
+    nhượng dấu nên cặp "cổng access"/"cong access" chỉ là MỘT cách nói
+    viết hai kiểu; (b) đáp án là KÝ HIỆU (192.168.1.64, cặp port 67/68)
+    hay chỉ có MỘT CÁI TÊN (tên lệnh `ipconfig`, viết tắt BPDU, tên đầy
+    đủ tiếng Anh của một viết tắt) thì không tồn tại "cách nói thứ ba" —
+    ép soạn thêm chỉ đẻ ra rác.
+  - Con số tụt theo từng lượt, có chạy lại tool sau mỗi lượt như yêu cầu:
+    **89 → 70** (sửa thước) **→ 51** (M1-3) **→ 43** (M4-6) **→ 34**
+    (M7-9) **→ 13** (phần còn lại) **→ 0** (siết nốt luật "cách nói bằng
+    lời TIẾNG VIỆT").
+  - **Nới đúng chỗ, không nới bừa**: cách nói thêm phải là câu trả lời
+    ĐÚNG cho chính câu đó — bổ sung số nhiều tiếng Anh (packets, routers,
+    protocols — bộ chấm so theo TỪ nên số nhiều vốn trượt), tên đầy đủ
+    (address resolution protocol), và từ đồng nghĩa tiếng Việt (gói dữ
+    liệu, thiết bị định tuyến, hệ thống tên miền, máy phục vụ).
+  - **Một biến thể tôi thêm hớ rồi tự gỡ**: "chuyển mạch" trần cho câu
+    hỏi TÊN THIẾT BỊ — nó nhận luôn "chuyển mạch gói", mà đó là một KỸ
+    THUẬT chứ không phải cái switch. Đã bỏ, và kiểm ngược lại bằng
+    `grade_answer`: "chuyển mạch gói", "đóng gói", "router", "offer"
+    đều vẫn TRƯỢT đúng như phải thế.
+  - `content:review` giờ in **CẢNH BÁO SOẠN BÀI** ngay dưới câu gõ tay
+    nào chỉ nhận dưới 3 cách nói. Luật dùng CHUNG một nguồn với MCP
+    (`tools/mcp/lib.ts`) — viết lại ở script là mở đường cho hai thước đo
+    lệch nhau. Bộ nội dung hiện in ra 0 cảnh báo (vừa dọn xong), nên có
+    `tests/contentReview.test.ts` dựng câu giả để chuông vẫn phải kêu.
+  - 1339/1339 test xanh (+9), typecheck sạch, build qua, content:review
+    render lại 21 module. Kiểm browser thật: gõ "gói dữ liệu" ở bài 1
+    Module 1 → chấm ĐÚNG. Dữ liệu kiểm đã xóa.
 
 Cập nhật: 2026-08-10. File này chỉ để nắm nhanh tình hình khi mở lại dự
 án. Nguồn chân lý: `SPEC-APP-HOC-MANG.md` (M1-12) và

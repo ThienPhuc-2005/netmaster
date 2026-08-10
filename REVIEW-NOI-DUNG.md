@@ -29,7 +29,7 @@ Phần A · 5 chặng · 6 bài · 6 khái niệm
 **4 · Thử tay (practice, fading 0):**
 - **Ví dụ giải sẵn:** Muốn gửi câu "chúc mừng sinh nhật" sang máy Mai, mình bọc từng phần câu chữ lại rồi ghi thông tin chuyển phát ra NGOÀI lớp bọc — như lời chúc nằm kín bên trong, còn địa chỉ ghi ngoài bì để ai cầm cũng biết chuyển đi đâu. Nội dung ở trong, thông tin dẫn đường ở ngoài.
 - **Đề:** Trong ẩn dụ bưu điện, phong bì thư tương ứng với thứ gì trong mạng?
-  - **Dạng:** gõ tay · **Chấp nhận:** gói tin | packet
+  - **Dạng:** gõ tay · **Chấp nhận:** gói tin | packet | gói dữ liệu | packets
   - **Chủ đề gợi ý (tầng 1):** vai trò của phong bì khi gửi thư
   - **Gợi ý (tầng 2):** Thứ đó "bọc" một phần dữ liệu lại và ghi thông tin chuyển phát bên ngoài.
   - **Lời giải (tầng 3):** Phong bì tương ứng với gói tin (packet): dữ liệu được bọc lại, bên ngoài ghi thông tin để mạng biết chuyển đi đâu.
@@ -41,7 +41,7 @@ Phần A · 5 chặng · 6 bài · 6 khái niệm
 
 **5 · Nhớ lại (retrieval):**
 - **Đề:** Không nhìn lại bài: đơn vị dữ liệu được chia nhỏ để gửi qua mạng gọi là gì?
-  - **Dạng:** gõ tay · **Chấp nhận:** gói tin | packet
+  - **Dạng:** gõ tay · **Chấp nhận:** gói tin | packet | gói dữ liệu | packets
   - **Gợi ý (tầng 2):** Chính là "phong bì" trong câu chuyện bưu điện của mình.
   - **Lời giải (tầng 3):** Đó là gói tin (packet) — mỗi gói mang một phần dữ liệu kèm thông tin chuyển phát.
 - **Tự giải thích:** Giải thích bằng lời của bạn: vì sao dữ liệu không đi "nguyên khối" qua mạng?
@@ -139,7 +139,7 @@ Phần A · 5 chặng · 6 bài · 6 khái niệm
 
 **4 · Thử tay (practice, fading 2):**
 - **Đề:** Trong ẩn dụ bưu điện, bưu tá tương ứng với thiết bị nào trong mạng?
-  - **Dạng:** gõ tay · **Chấp nhận:** router | bộ định tuyến
+  - **Dạng:** gõ tay · **Chấp nhận:** router | bộ định tuyến | thiết bị định tuyến | routers
   - **Chủ đề gợi ý (tầng 1):** ai đọc địa chỉ trên phong bì và chọn đường đi
   - **Gợi ý (tầng 2):** Thiết bị này đọc địa chỉ IP đích rồi quyết định chặng kế tiếp.
   - **Lời giải (tầng 3):** Bưu tá tương ứng với router: nó đọc địa chỉ IP đích trên gói tin và chuyển gói sang chặng gần đích hơn.
@@ -151,7 +151,7 @@ Phần A · 5 chặng · 6 bài · 6 khái niệm
 
 **5 · Nhớ lại (retrieval):**
 - **Đề:** Không nhìn lại bài: thiết bị đọc địa chỉ IP đích và chọn chặng kế tiếp cho gói tin gọi là gì?
-  - **Dạng:** gõ tay · **Chấp nhận:** router | bộ định tuyến
+  - **Dạng:** gõ tay · **Chấp nhận:** router | bộ định tuyến | thiết bị định tuyến | routers
   - **Gợi ý (tầng 2):** Chính là "bưu tá" trong câu chuyện gửi thư.
   - **Lời giải (tầng 3):** Đó là router (bộ định tuyến) — mỗi router đưa gói tin gần đích thêm một chặng.
 - **Tự giải thích:** Giải thích bằng lời của bạn: router làm gì khi nhận được một gói tin?
@@ -179,14 +179,14 @@ Phần A · 5 chặng · 6 bài · 6 khái niệm
 
 **4 · Thử tay (practice, fading 2):**
 - **Đề:** Bộ quy tắc chung mà hai máy phải cùng tuân theo để hiểu nhau gọi là gì?
-  - **Dạng:** gõ tay · **Chấp nhận:** giao thức | protocol
+  - **Dạng:** gõ tay · **Chấp nhận:** giao thức | protocol | protocols
   - **Chủ đề gợi ý (tầng 1):** quy ước chung khi hai bên trao đổi
   - **Gợi ý (tầng 2):** Giống quy ước viết thư: cùng ngôn ngữ, cùng cách trình bày.
   - **Lời giải (tầng 3):** Đó là giao thức (protocol): tập quy tắc thống nhất về cách đóng gói, gửi và diễn giải dữ liệu.
 
 **5 · Nhớ lại (retrieval):**
 - **Đề:** Không nhìn lại bài: HTTP, TCP, IP được gọi chung là các…
-  - **Dạng:** gõ tay · **Chấp nhận:** giao thức | protocol
+  - **Dạng:** gõ tay · **Chấp nhận:** giao thức | protocol | protocols
   - **Gợi ý (tầng 2):** Là "luật chơi chung" giữa các máy.
   - **Lời giải (tầng 3):** Chúng là các giao thức — mỗi giao thức phụ trách một việc trên đường đi của dữ liệu.
 - **Tự giải thích:** Giải thích bằng lời của bạn: vì sao hai máy phải dùng chung giao thức mới trao đổi được?
@@ -265,10 +265,10 @@ Phần A · 5 chặng · 6 bài · 6 khái niệm
   - **Dạng:** gõ tay · **Chấp nhận:** địa chỉ ip | ip | ip address | ipv4 | địa chỉ ipv4
   - **Vì sao:** Địa chỉ IP định danh máy bạn trên mạng — như địa chỉ nhà ghi ngoài phong bì để dữ liệu biết giao về đâu.
 - **Đề:** Một file 10MB rời máy bạn dưới dạng hàng nghìn mảnh nhỏ, mỗi mảnh tự mang địa chỉ. Mỗi mảnh như vậy gọi là gì?
-  - **Dạng:** gõ tay · **Chấp nhận:** gói tin | packet
+  - **Dạng:** gõ tay · **Chấp nhận:** gói tin | packet | gói dữ liệu | packets
   - **Vì sao:** Gói tin (packet): dữ liệu được chia nhỏ, mỗi gói mang một phần nội dung kèm thông tin chuyển phát.
 - **Đề:** Gói tin của bạn đang dừng ở một trạm giữa đường. Thiết bị tại trạm đọc địa chỉ đích rồi đẩy nó sang chặng kế tiếp — thiết bị đó gọi là gì?
-  - **Dạng:** gõ tay · **Chấp nhận:** router | bộ định tuyến
+  - **Dạng:** gõ tay · **Chấp nhận:** router | bộ định tuyến | thiết bị định tuyến | routers
   - **Vì sao:** Router đọc địa chỉ IP đích trên gói tin rồi chuyển nó sang chặng kế tiếp gần đích hơn — như bưu tá đọc phong bì.
 - **Đề:** Máy Mai mở 3 ứng dụng cùng lúc. Tấm ảnh về đến máy — con số nào đưa nó vào đúng ứng dụng chat thay vì trình duyệt?
   - **Dạng:** gõ tay · **Chấp nhận:** port | cổng | số port | số cổng
@@ -281,7 +281,7 @@ Phần A · 5 chặng · 6 bài · 6 khái niệm
     4. Máy bạn nhận đủ các gói và ráp lại thành tấm ảnh
   - **Vì sao:** Chiều nào cũng cùng một kịch bản: chia gói → rời máy gửi → qua từng router gần đích dần → máy nhận ráp lại.
 - **Đề:** Máy bạn gửi yêu cầu theo đúng khuôn HTTP, server đáp lại đúng khuôn ấy — hai bên hiểu nhau nhờ cùng tuân theo thứ gì?
-  - **Dạng:** gõ tay · **Chấp nhận:** giao thức | protocol
+  - **Dạng:** gõ tay · **Chấp nhận:** giao thức | protocol | quy tắc chung | protocols
   - **Vì sao:** Giao thức là luật chơi chung: cùng quy ước đóng gói và diễn giải thì hai máy mới đọc hiểu dữ liệu của nhau.
 - **Đề:** Một gói tin bị thất lạc giữa đường. Nhờ đâu máy gửi KHÔNG phải gửi lại toàn bộ dữ liệu?
   - **Dạng:** trắc nghiệm · **Vì dữ liệu đi thành nhiều gói, chỉ cần gửi lại gói bị mất** ✓ / Vì router dọc đường giữ bản sao, mất thì nó gửi lại giúp / Vì máy nhận đoán được phần thiếu từ các gói đã tới
@@ -333,7 +333,7 @@ Phần A · 4 chặng · 4 bài · 5 khái niệm
 **4 · Thử tay (practice, fading 0):**
 - **Ví dụ giải sẵn:** Bạn gõ youtube.com. Bước 1 — máy bạn hỏi DNS: "youtube.com nằm ở địa chỉ IP nào?". Bước 2 — DNS tra danh bạ, trả về một dãy số, ví dụ 142.250.199.78. Bước 3 — máy bạn ghi dãy số đó làm địa chỉ ĐÍCH lên các gói tin sắp gửi. Tên chỉ dùng để hỏi đường; lên đường thì đi bằng số.
 - **Đề:** Bạn gõ vnexpress.net. Trước khi gửi được gói tin nào tới server của trang đó, máy bạn phải hỏi hệ thống nào để lấy địa chỉ IP?
-  - **Dạng:** gõ tay · **Chấp nhận:** dns | domain name system
+  - **Dạng:** gõ tay · **Chấp nhận:** dns | domain name system | hệ thống tên miền | máy chủ dns
   - **Chủ đề gợi ý (tầng 1):** cuốn danh bạ đổi tên thành số
   - **Gợi ý (tầng 2):** Hệ thống này nhận vào cái TÊN trang web và trả lại dãy SỐ — giống tổng đài 1080 tra hộ số điện thoại.
   - **Lời giải (tầng 3):** Đó là DNS — danh bạ của Internet: máy bạn đưa tên vnexpress.net, DNS trả về địa chỉ IP của server, rồi máy mới đóng gói và lên đường.
@@ -345,7 +345,7 @@ Phần A · 4 chặng · 4 bài · 5 khái niệm
 
 **5 · Nhớ lại (retrieval):**
 - **Đề:** Không nhìn lại bài: hệ thống "danh bạ" đổi tên miền thành địa chỉ IP gọi là gì?
-  - **Dạng:** gõ tay · **Chấp nhận:** dns | domain name system
+  - **Dạng:** gõ tay · **Chấp nhận:** dns | domain name system | hệ thống tên miền | máy chủ dns
   - **Gợi ý (tầng 2):** Chính là "tổng đài 1080" của Internet trong bài mình vừa học.
   - **Lời giải (tầng 3):** Đó là DNS — đưa tên miền, nhận về địa chỉ IP. Mọi chuyến đi trên web đều mở màn bằng một câu hỏi gửi cho nó.
 - **Tự giải thích:** Giải thích bằng lời của bạn: vì sao máy bạn phải hỏi DNS trước, rồi mới kết nối được tới google.com?
@@ -413,7 +413,7 @@ Phần A · 4 chặng · 4 bài · 5 khái niệm
 
 **4 · Thử tay (practice, fading 2):**
 - **Đề:** Cỗ máy luôn bật, đứng chờ yêu cầu để phục vụ hàng triệu người cùng lúc — nơi các trang web thật sự "sống" — gọi là gì?
-  - **Dạng:** gõ tay · **Chấp nhận:** server | máy chủ
+  - **Dạng:** gõ tay · **Chấp nhận:** server | máy chủ | servers | máy phục vụ
   - **Chủ đề gợi ý (tầng 1):** tòa nhà dịch vụ không bao giờ đóng cửa
   - **Gợi ý (tầng 2):** Trái ngược với máy cá nhân "lúc bật lúc tắt" của bạn — máy này sinh ra để phục vụ, tên tiếng Anh nghĩa là "người phục vụ".
   - **Lời giải (tầng 3):** Đó là server (máy chủ): luôn bật, luôn lắng nghe, chuyên phục vụ yêu cầu từ máy khác — như tòa nhà dịch vụ mở cửa 24/7.
@@ -425,7 +425,7 @@ Phần A · 4 chặng · 4 bài · 5 khái niệm
 
 **5 · Nhớ lại (retrieval):**
 - **Đề:** Không nhìn lại bài: google.com thật ra nằm trên loại máy nào — luôn bật, chuyên đứng chờ và phục vụ yêu cầu?
-  - **Dạng:** gõ tay · **Chấp nhận:** server | máy chủ
+  - **Dạng:** gõ tay · **Chấp nhận:** server | máy chủ | servers | máy phục vụ
   - **Gợi ý (tầng 2):** Là "tòa nhà dịch vụ" không bao giờ tắt đèn trong câu chuyện của mình.
   - **Lời giải (tầng 3):** Đó là server (máy chủ) — điểm hẹn cuối của mọi gói tin bạn gửi đi khi mở một trang web.
 - **Tự giải thích:** Giải thích bằng lời của bạn: server khác chiếc laptop của bạn ở chỗ nào?
@@ -510,7 +510,7 @@ Phần A · 4 chặng · 4 bài · 5 khái niệm
 ### Bài kiểm tra module (pool 12 câu, mỗi lượt rút 8, cần ≥ 85%)
 
 - **Đề:** Hệ thống "danh bạ của Internet" — đưa tên miền, nhận về địa chỉ IP — gọi là gì?
-  - **Dạng:** gõ tay · **Chấp nhận:** dns | domain name system
+  - **Dạng:** gõ tay · **Chấp nhận:** dns | domain name system | hệ thống tên miền | máy chủ dns
   - **Vì sao:** DNS đổi cái tên cho người (google.com) thành địa chỉ IP cho máy — như tổng đài 1080 tra hộ số điện thoại từ một cái tên.
 - **Đề:** Bạn mang laptop sang nhà một người bạn — mạng Wi-Fi lạ hoắc, lần đầu kết nối. Gõ google.com, laptop vẫn tìm đúng server Google. Nhờ đâu?
   - **Dạng:** trắc nghiệm · Laptop nhớ sẵn đường đi từ hồi ở nhà nên cứ thế đi lại / **Mạng nào cũng hỏi DNS được, danh bạ vẫn trả đúng IP của Google** ✓ / Router nhà bạn ấy giữ sẵn bản sao trang Google cho khách
@@ -522,7 +522,7 @@ Phần A · 4 chặng · 4 bài · 5 khái niệm
   - **Dạng:** trắc nghiệm · Máy chủ DNS mà nhà mạng cấp cho bạn / Chiếc switch nối các máy trong nhà lại / **Chiếc router (cục phát Wi-Fi) nhà bạn** ✓
   - **Vì sao:** Router nhà bạn đứng ngay ranh giới: một chân trong mạng nhà, một chân nối ra Internet — nên nó chính là cánh cổng mặc định.
 - **Đề:** Loại máy luôn bật, chuyên đứng chờ yêu cầu và phục vụ hàng triệu người cùng lúc gọi là gì?
-  - **Dạng:** gõ tay · **Chấp nhận:** server | máy chủ
+  - **Dạng:** gõ tay · **Chấp nhận:** server | máy chủ | servers | máy phục vụ
   - **Vì sao:** Server (máy chủ) — tòa nhà dịch vụ 24/7 của Internet: mọi trang web bạn mở đều đang "sống" trên những cỗ máy như vậy.
 - **Đề:** Sáng nay bạn đọc báo: gõ vnexpress.net và bấm Enter. Sắp xếp 8 chặng của chuyến đi này theo đúng thứ tự.
   - **Dạng:** xếp thứ tự (thứ tự đúng):
@@ -584,7 +584,7 @@ Phần A · 6 chặng · 6 bài · 7 khái niệm · drill: subnet
 **4 · Thử tay (practice, fading 0):**
 - **Ví dụ giải sẵn:** Laptop của bạn xuất xưởng với số khung AA:BB:CC:11:22:33 — đó là MAC address, đi theo máy suốt đời. Sáng cắm Wi-Fi ở nhà, máy nhận "biển số" 192.168.1.7; chiều ra quán, biển số đổi thành 192.168.50.23 — nhưng số khung vẫn y nguyên. Muốn biết một địa chỉ thuộc loại nào, cứ hỏi: nó có đổi khi sang mạng khác không?
 - **Đề:** Ra quán cà phê, máy bạn nhận địa chỉ 172.20.5.9 thay cho 192.168.1.7 ở nhà — dãy vừa đổi đó là MAC hay IP?
-  - **Dạng:** gõ tay · **Chấp nhận:** ip | địa chỉ ip
+  - **Dạng:** gõ tay · **Chấp nhận:** ip | địa chỉ ip | ipv4
   - **Chủ đề gợi ý (tầng 1):** địa chỉ nào đổi theo mạng đang cắm vào
   - **Gợi ý (tầng 2):** Áp câu hỏi thử của ví dụ: dãy này ĐỔI khi máy sang mạng khác — vậy nó là số khung hay biển số?
   - **Lời giải (tầng 3):** Là địa chỉ IP: nó đổi theo mạng máy đang cắm vào — biển số theo nơi "đăng ký". Còn MAC (số khung) dập trên card thì vẫn y nguyên.
@@ -624,7 +624,7 @@ Phần A · 6 chặng · 6 bài · 7 khái niệm · drill: subnet
 
 **4 · Thử tay (practice, fading 1):**
 - **Đề:** Địa chỉ IPv4 tổng cộng dài bao nhiêu bit? (trả lời một con số)
-  - **Dạng:** gõ tay · **Chấp nhận:** 32 | 32 bit
+  - **Dạng:** gõ tay · **Chấp nhận:** 32 | 32 bit | 32 bits
   - **Chủ đề gợi ý (tầng 1):** 4 octet, mỗi octet mấy bit
   - **Gợi ý (tầng 2):** Mỗi octet là 8 bit, và địa chỉ có 4 octet — nhân lên nhé.
   - **Lời giải (tầng 3):** 32 bit — 4 octet × 8 bit. Chính vì chỉ có 32 bit nên cả thế giới chỉ có khoảng 4,3 tỷ địa chỉ IPv4.
@@ -636,7 +636,7 @@ Phần A · 6 chặng · 6 bài · 7 khái niệm · drill: subnet
 
 **5 · Nhớ lại (retrieval):**
 - **Đề:** Không nhìn lại bài: địa chỉ IPv4 gồm phần mạng và phần gì?
-  - **Dạng:** gõ tay · **Chấp nhận:** host | phần host
+  - **Dạng:** gõ tay · **Chấp nhận:** host | phần host | host id | phần host id
   - **Gợi ý (tầng 2):** Phần mạng là khu phố — còn phần kia là "số nhà" của từng máy trong khu.
   - **Lời giải (tầng 3):** Phần host — số nhà của từng máy. Phần mạng chung cho cả khu phố, phần host phân biệt từng máy trong khu.
 - **Tự giải thích:** Giải thích bằng lời của bạn: vì sao địa chỉ IP chia làm HAI PHẦN thay vì là một dãy số vô nghĩa?
@@ -786,7 +786,7 @@ Phần A · 6 chặng · 6 bài · 7 khái niệm · drill: subnet
 
 **4 · Thử tay (practice, fading 2):**
 - **Đề:** Một địa chỉ IPv6 đầy đủ gồm mấy nhóm số hex? (trả lời một con số)
-  - **Dạng:** gõ tay · **Chấp nhận:** 8 | 8 nhóm
+  - **Dạng:** gõ tay · **Chấp nhận:** 8 | 8 nhóm | tám
   - **Chủ đề gợi ý (tầng 1):** số nhóm ngăn bằng dấu hai chấm
   - **Gợi ý (tầng 2):** Đếm số nhóm trong 2001:0db8:0000:0000:0000:0000:0000:0001 — mỗi nhóm ngăn nhau bằng dấu ":".
   - **Lời giải (tầng 3):** 8 nhóm — địa chỉ IPv6 đầy đủ viết hex thành 8 nhóm ngăn bằng dấu ":"; 128 bit chia đều, mỗi nhóm 16 bit.
@@ -907,7 +907,7 @@ Phần B · 5 chặng · 5 bài · 6 khái niệm
 **4 · Thử tay (practice, fading 0):**
 - **Ví dụ giải sẵn:** Ví dụ đã giải: phòng có 4 máy. Mỗi máy cắm một sợi vào switch, tổng 4 sợi. Máy 1 gửi cho máy 3: thư đi vào switch qua cổng 1, switch nhìn địa chỉ đích rồi đẩy ra cổng 3. Máy 2 và máy 4 không nhận được gì cả — thư không đi lạc sang chỗ chúng.
 - **Đề:** Thiết bị đóng vai bưu cục — nối nhiều máy trong CÙNG một mạng lại với nhau — gọi là gì?
-  - **Dạng:** gõ tay · **Chấp nhận:** switch | bộ chuyển mạch
+  - **Dạng:** gõ tay · **Chấp nhận:** switch | bộ chuyển mạch | switches
   - **Chủ đề gợi ý (tầng 1):** cái hộp nhiều cổng mà mọi máy trong phòng cắm dây vào
   - **Gợi ý (tầng 2):** Nó là hộp có nhiều cổng, mỗi máy cắm một sợi. Tên tiếng Anh của nó cũng là từ mình vẫn dùng cho công tắc điện.
   - **Lời giải (tầng 3):** Đó là switch. Mỗi máy một sợi dây cắm vào một cổng, và switch lo phần chuyển thư giữa các cổng.
@@ -918,7 +918,7 @@ Phần B · 5 chặng · 5 bài · 6 khái niệm
 
 **5 · Nhớ lại (retrieval):**
 - **Đề:** Không nhìn lại bài: tên thiết bị nối nhiều máy trong cùng một mạng là gì?
-  - **Dạng:** gõ tay · **Chấp nhận:** switch | bộ chuyển mạch
+  - **Dạng:** gõ tay · **Chấp nhận:** switch | bộ chuyển mạch | switches
   - **Gợi ý (tầng 2):** Hộp nhiều cổng, đóng vai bưu cục của làng.
   - **Lời giải (tầng 3):** Switch — mỗi máy một sợi dây, nó lo việc chuyển thư giữa các cổng.
 - **Tự giải thích:** Giải thích bằng lời của bạn: vì sao dùng switch lại đỡ dây hơn nhiều so với nối thẳng từng cặp máy?
@@ -959,7 +959,7 @@ Phần B · 5 chặng · 5 bài · 6 khái niệm
 
 **5 · Nhớ lại (retrieval):**
 - **Đề:** Không nhìn lại bài: switch nhìn vào địa chỉ NÀO trong lá thư để học ra 'máy này đang ở cổng nào'?
-  - **Dạng:** gõ tay · **Chấp nhận:** địa chỉ nguồn | mac nguồn | địa chỉ người gửi | mac người gửi | địa chỉ gửi | nguồn | địa chỉ mac của người gửi | dia chi mac cua nguoi gui | mac của người gửi | mac cua nguoi gui | địa chỉ mac của máy gửi | dia chi mac cua may gui | địa chỉ mac nguồn | dia chi mac nguon
+  - **Dạng:** gõ tay · **Chấp nhận:** Địa chỉ MAC của người gửi | địa chỉ nguồn | mac nguồn | địa chỉ người gửi | mac người gửi | địa chỉ gửi | nguồn | dia chi mac cua nguoi gui | mac của người gửi | mac cua nguoi gui | địa chỉ mac của máy gửi | dia chi mac cua may gui | địa chỉ mac nguồn | dia chi mac nguon
   - **Gợi ý (tầng 2):** Nó không đoán từ nơi thư định đến, mà từ nơi thư vừa đi ra.
   - **Lời giải (tầng 3):** Địa chỉ MAC của người GỬI. Thư đi vào cổng nào thì máy gửi đang ở cổng đó — switch ghi cặp đó vào sổ.
 - **Tự giải thích:** Bằng lời của bạn: vì sao lá thư ĐẦU TIÊN gửi tới một máy thường bị switch phát ra mọi cổng, còn các lá sau thì không?
@@ -987,7 +987,7 @@ Phần B · 5 chặng · 5 bài · 6 khái niệm
 
 **4 · Thử tay (practice, fading 1):**
 - **Đề:** Giao thức đi hỏi 'ai đang giữ địa chỉ IP này?' để lấy về địa chỉ MAC tên là gì?
-  - **Dạng:** gõ tay · **Chấp nhận:** arp
+  - **Dạng:** gõ tay · **Chấp nhận:** arp | address resolution protocol
   - **Chủ đề gợi ý (tầng 1):** tiếng gọi giữa sân làng để tìm chủ của một địa chỉ
   - **Gợi ý (tầng 2):** Tên viết tắt gồm ba chữ cái, từ đầy đủ có nghĩa là 'phân giải địa chỉ'.
   - **Lời giải (tầng 3):** ARP. Nó hỏi to cả mạng 'ai giữ IP này?' và nhận về địa chỉ MAC của đúng máy đó.
@@ -1074,7 +1074,7 @@ Phần B · 5 chặng · 5 bài · 6 khái niệm
 
 **4 · Thử tay (practice, fading 2):**
 - **Đề:** Thiết bị nối HAI mạng khác dải địa chỉ với nhau và chuyển gói giữa chúng gọi là gì?
-  - **Dạng:** gõ tay · **Chấp nhận:** router | bộ định tuyến
+  - **Dạng:** gõ tay · **Chấp nhận:** router | bộ định tuyến | thiết bị định tuyến | routers
   - **Chủ đề gợi ý (tầng 1):** cây cầu giữa hai dải địa chỉ khác nhau
   - **Gợi ý (tầng 2):** Ở Module 1 mình từng gọi nó là bưu tá liên tỉnh; tên tiếng Anh của nó cũng là tên cục thiết bị phát wifi ở nhà bạn.
   - **Lời giải (tầng 3):** Router. Mỗi chân của nó nằm ở một mạng, và nó tra bảng định tuyến để biết đẩy gói sang chân nào.
@@ -1131,13 +1131,13 @@ Phần B · 5 chặng · 5 bài · 6 khái niệm
   - **Dạng:** trắc nghiệm · Bỏ lá thư đi / **Đẩy ra mọi cổng còn lại** ✓ / Giữ lại chờ tới khi biết đường
   - **Vì sao:** Đẩy ra mọi cổng còn lại. Cách này hơi phí nhưng bảo đảm thư tới nơi, và ngay sau đó switch học được đường nhờ thư trả lời.
 - **Đề:** Máy biết địa chỉ IP của máy kia nhưng chưa biết địa chỉ MAC. Nó dùng giao thức nào để hỏi?
-  - **Dạng:** gõ tay · **Chấp nhận:** arp
+  - **Dạng:** gõ tay · **Chấp nhận:** arp | address resolution protocol
   - **Vì sao:** ARP — nó hỏi to cả mạng 'ai đang giữ địa chỉ IP này?' và đúng máy đó trả lời kèm MAC của mình.
 - **Đề:** Hai máy cắm chung một switch, địa chỉ đều thuộc dải 192.168.1.x, dây cắm tốt. Chúng vẫn không ping được nhau. Nghi ngờ đầu tiên nên là gì?
   - **Dạng:** trắc nghiệm · **Hai cổng đang ở hai VLAN khác nhau** ✓ / Switch hỏng nên không chuyển được khung / Hai máy chưa cùng một workgroup Windows
   - **Vì sao:** VLAN khác nhau là nghi ngờ số một: mọi thứ nhìn đều đúng, nhưng switch coi hai số VLAN là hai mạng riêng nên tiếng gọi ARP không qua được.
 - **Đề:** Thiết bị nối hai mạng khác dải địa chỉ và chuyển gói giữa chúng tên là gì?
-  - **Dạng:** gõ tay · **Chấp nhận:** router | bộ định tuyến
+  - **Dạng:** gõ tay · **Chấp nhận:** router | bộ định tuyến | thiết bị định tuyến | routers
   - **Vì sao:** Router. Mỗi chân của nó nằm ở một mạng, và nó tra bảng định tuyến để biết đẩy gói sang chân nào.
 - **Đề:** Gói tin đi từ máy A qua hai router rồi tới máy B. Trên đường đi, thứ gì KHÔNG đổi?
   - **Dạng:** trắc nghiệm · Địa chỉ MAC nguồn / Địa chỉ MAC đích / **Địa chỉ IP nguồn và đích** ✓
@@ -1229,7 +1229,7 @@ Phần B · 5 chặng · 8 bài · 11 khái niệm
   - **Gợi ý (tầng 2):** Người gõ địa chỉ trang web là người mở lời — và cũng là người chốt câu cuối.
   - **Lời giải (tầng 3):** SYN → SYN-ACK → ACK. Máy bạn mở lời, máy chủ đáp bằng gói mang hai vai, máy bạn chốt lại.
 - **Đề:** Giao thức gửi kiểu "thư bảo đảm" — đánh số từng gói, thiếu là đòi gửi lại — tên là gì?
-  - **Dạng:** gõ tay · **Chấp nhận:** tcp
+  - **Dạng:** gõ tay · **Chấp nhận:** tcp | transmission control protocol
   - **Chủ đề gợi ý (tầng 1):** giao thức lo chuyện đủ và đúng thứ tự
   - **Gợi ý (tầng 2):** Ba chữ cái, và nó chính là chữ đầu trong cụm "TCP/IP" bạn hay thấy.
   - **Lời giải (tầng 3):** Đó là TCP — nó lo cho dữ liệu tới đủ và đúng thứ tự, còn IP lo chuyện tìm đường.
@@ -1258,7 +1258,7 @@ Phần B · 5 chặng · 8 bài · 11 khái niệm
 
 **4 · Thử tay (practice, fading 1):**
 - **Đề:** Giao thức chấp nhận mất gói để đổi lấy độ trễ thấp tên là gì?
-  - **Dạng:** gõ tay · **Chấp nhận:** udp
+  - **Dạng:** gõ tay · **Chấp nhận:** udp | user datagram protocol
   - **Chủ đề gợi ý (tầng 1):** kiểu gửi không đòi báo nhận
   - **Gợi ý (tầng 2):** Ba chữ cái, và nó là kẻ đối lập của TCP trong chuyện bảo đảm.
   - **Lời giải (tầng 3):** Đó là UDP — gửi xong là xong, không chờ báo nhận, không gửi lại.
@@ -1270,7 +1270,7 @@ Phần B · 5 chặng · 8 bài · 11 khái niệm
 
 **5 · Nhớ lại (retrieval):**
 - **Đề:** Không nhìn lại bài: giao thức nào KHÔNG bắt tay, không đánh số, không gửi lại gói rớt?
-  - **Dạng:** gõ tay · **Chấp nhận:** udp
+  - **Dạng:** gõ tay · **Chấp nhận:** udp | user datagram protocol
   - **Chủ đề gợi ý (tầng 1):** kiểu gửi thư thường
   - **Gợi ý (tầng 2):** Nó là lựa chọn của cuộc gọi video và trận game.
   - **Lời giải (tầng 3):** UDP — bỏ hết thủ tục để không có nhịp chờ nào.
@@ -1738,7 +1738,7 @@ Phần B · 5 chặng · 5 bài · 8 khái niệm
 
 **4 · Thử tay (practice, fading 1):**
 - **Đề:** Bạn muốn thư gửi tới công ty rơi đúng vào máy chủ thư của công ty. Phải khai bản ghi loại nào?
-  - **Dạng:** gõ tay · **Chấp nhận:** mx | bản ghi mx | ban ghi mx
+  - **Dạng:** gõ tay · **Chấp nhận:** mx | bản ghi mx | ban ghi mx | mx record
   - **Chủ đề gợi ý (tầng 1):** loại bản ghi dành riêng cho thư điện tử
   - **Gợi ý (tầng 2):** Hai chữ cái, và chữ M đứng cho "mail".
   - **Lời giải (tầng 3):** Bản ghi MX — nó chỉ ra máy chủ nhận thư cho tên miền đó.
@@ -1791,7 +1791,7 @@ Phần B · 5 chặng · 5 bài · 8 khái niệm
 
 **5 · Nhớ lại (retrieval):**
 - **Đề:** Không nhìn lại bài: kỹ thuật bọc câu hỏi DNS vào phong bì HTTPS tên là gì? (viết tắt cũng được)
-  - **Dạng:** gõ tay · **Chấp nhận:** doh | dns over https
+  - **Dạng:** gõ tay · **Chấp nhận:** doh | dns over https | dns qua https
   - **Chủ đề gợi ý (tầng 1):** tên ghép của hai thứ bạn vừa học
   - **Gợi ý (tầng 2):** Ghép tên giao thức tra tên miền với tên giao thức web có khóa.
   - **Lời giải (tầng 3):** DNS over HTTPS (DoH) — câu hỏi DNS đi trong HTTPS qua port 443.
@@ -1831,14 +1831,14 @@ Phần B · 5 chặng · 5 bài · 8 khái niệm
   - **Gợi ý (tầng 2):** Bốn chữ đầu ghép lại thành DORA, và thứ tự chữ cũng chính là thứ tự nhịp.
   - **Lời giải (tầng 3):** Discover → Offer → Request → Ack.
 - **Đề:** Nhịp thứ ba của DHCP — nhịp máy mới chốt một máy chủ và nói to cho cả mạng nghe — tên là gì?
-  - **Dạng:** gõ tay · **Chấp nhận:** request
+  - **Dạng:** gõ tay · **Chấp nhận:** request | dhcprequest | yêu cầu
   - **Chủ đề gợi ý (tầng 1):** nhịp chốt lời trong chuyện hỏi cưới
   - **Gợi ý (tầng 2):** Chữ R trong DORA.
   - **Lời giải (tầng 3):** Request — và nó cố tình nói to để những máy chủ không được chọn rút lời.
 
 **5 · Nhớ lại (retrieval):**
 - **Đề:** Không nhìn lại bài: bốn nhịp của DHCP ghép lại thành từ gì?
-  - **Dạng:** gõ tay · **Chấp nhận:** dora
+  - **Dạng:** gõ tay · **Chấp nhận:** dora | discover offer request ack
   - **Chủ đề gợi ý (tầng 1):** chữ đầu của bốn nhịp
   - **Gợi ý (tầng 2):** Bốn chữ cái: hỏi — đánh tiếng — chốt — gật.
   - **Lời giải (tầng 3):** DORA: Discover, Offer, Request, Ack.
@@ -1936,7 +1936,7 @@ Phần B · 5 chặng · 5 bài · 8 khái niệm
   - **Dạng:** trắc nghiệm · **MX** ✓ / A / CNAME
   - **Vì sao:** MX chỉ ra máy chủ nhận thư cho tên miền, nhờ đó web và hòm thư nằm hai nơi vẫn chạy.
 - **Đề:** Bản ghi trỏ tên miền tới một địa chỉ IPv6 tên là gì?
-  - **Dạng:** gõ tay · **Chấp nhận:** aaaa | quad a
+  - **Dạng:** gõ tay · **Chấp nhận:** aaaa | quad a | aaaa record
   - **Vì sao:** AAAA — bản anh em của A, dành cho địa chỉ IPv6 dài gấp bốn lần.
 - **Đề:** DNS over HTTPS gửi câu hỏi qua port nào, và giấu được điều gì?
   - **Dạng:** trắc nghiệm · **Port 443 — giấu tên miền bạn hỏi khỏi người ngồi giữa** ✓ / Port 53 — giấu nội dung trang web khỏi nhà mạng / Port 80 — giấu địa chỉ IP của bạn khỏi mọi trang web
@@ -1999,7 +1999,7 @@ Phần B · 5 chặng · 5 bài · 6 khái niệm
 **4 · Thử tay (practice, fading 0):**
 - **Ví dụ giải sẵn:** Máy tính 192.168.1.10 mở một trang web. (1) Gói đi ra mang địa chỉ nguồn 192.168.1.10 port 51344. (2) Router đổi nguồn thành 203.0.113.7 port 40001 và ghi cặp đó vào sổ. (3) Máy chủ trả lời về 203.0.113.7 port 40001. (4) Router tra sổ, đổi ngược lại và đưa gói lên đúng máy tính. Đọc kỹ bước 2 rồi thử tự gọi tên cuốn sổ ấy nhé.
 - **Đề:** Việc router đổi địa chỉ riêng thành địa chỉ công cộng khi gói tin đi ra gọi là gì? (viết tắt được)
-  - **Dạng:** gõ tay · **Chấp nhận:** nat | network address translation
+  - **Dạng:** gõ tay · **Chấp nhận:** nat | network address translation | biên dịch địa chỉ mạng | chuyển đổi địa chỉ mạng
   - **Chủ đề gợi ý (tầng 1):** chuyện xảy ra với địa chỉ nguồn khi gói rời khỏi nhà
   - **Gợi ý (tầng 2):** Ba chữ cái, chữ giữa là "address".
   - **Lời giải (tầng 3):** NAT — Network Address Translation, việc đổi địa chỉ riêng thành địa chỉ công cộng ở cổng WAN.
@@ -2011,7 +2011,7 @@ Phần B · 5 chặng · 5 bài · 6 khái niệm
 
 **5 · Nhớ lại (retrieval):**
 - **Đề:** Không nhìn lại bài: cách NAT dùng SỐ CỔNG để cả nhà chung một địa chỉ công cộng gọi là gì? (viết tắt được)
-  - **Dạng:** gõ tay · **Chấp nhận:** pat | port address translation
+  - **Dạng:** gõ tay · **Chấp nhận:** pat | port address translation | nat overload
   - **Chủ đề gợi ý (tầng 1):** chữ đầu là tên con số phân biệt các căn hộ
   - **Gợi ý (tầng 2):** Giống NAT nhưng chữ đầu đổi thành chữ đầu của "port".
   - **Lời giải (tầng 3):** PAT — Port Address Translation, phân biệt từng máy trong nhà bằng số port trên cùng một địa chỉ chung.
@@ -2219,7 +2219,7 @@ Phần B · 5 chặng · 5 bài · 6 khái niệm
 ### Bài kiểm tra module (pool 12 câu, mỗi lượt rút 8, cần ≥ 85%)
 
 - **Đề:** Việc router đổi địa chỉ riêng thành địa chỉ công cộng khi gói tin ra Internet gọi là gì? (viết tắt được)
-  - **Dạng:** gõ tay · **Chấp nhận:** nat | network address translation
+  - **Dạng:** gõ tay · **Chấp nhận:** nat | network address translation | biên dịch địa chỉ mạng | chuyển đổi địa chỉ mạng
   - **Vì sao:** NAT — đổi địa chỉ nguồn ở cổng WAN, nhờ đó cả nhà dùng chung một địa chỉ công cộng.
 - **Đề:** Nhờ đâu router biết gói tin trả về thuộc máy nào trong nhà?
   - **Dạng:** trắc nghiệm · **Tra bảng NAT/PAT ghi cặp địa chỉ và port lúc gói đi ra** ✓ / Dựa vào địa chỉ MAC của máy nhận ghi trong gói tin / Phát hỏi lại tất cả thiết bị trong nhà xem của ai
@@ -2469,7 +2469,7 @@ Phần C · 5 chặng · 5 bài · 10 khái niệm
 
 **4 · Thử tay (practice, fading 2):**
 - **Đề:** Cơ chế để máy IPv6 TỰ ghép địa chỉ từ lời rao của router tên là gì?
-  - **Dạng:** gõ tay · **Chấp nhận:** slaac
+  - **Dạng:** gõ tay · **Chấp nhận:** slaac | stateless address autoconfiguration | tự cấu hình địa chỉ không trạng thái
   - **Chủ đề gợi ý (tầng 1):** năm chữ cái, mở đầu bằng chữ S của "stateless"
   - **Gợi ý (tầng 2):** Viết tắt của Stateless Address Autoconfiguration — năm chữ cái.
   - **Lời giải (tầng 3):** SLAAC — Stateless (không ai giữ sổ) Address Autoconfiguration (máy tự cấu hình địa chỉ).
@@ -2490,7 +2490,7 @@ Phần C · 5 chặng · 5 bài · 10 khái niệm
   - **Gợi ý (tầng 2):** Bắt đầu từ thứ máy TỰ có sẵn (bài trước), rồi mới tới thứ phải nghe từ router.
   - **Lời giải (tầng 3):** fe80 trước (tự có), rồi nghe rao, ghép địa chỉ, kiểm trùng rồi dùng — không nhịp nào phải xin phép ai.
 - **Đề:** Vẫn từ trí nhớ, đổi sang hệ cũ: cơ chế cấp địa chỉ BỐN NHỊP có người giữ sổ của IPv4 tên là gì? (viết tắt)
-  - **Dạng:** gõ tay · **Chấp nhận:** dhcp | dora
+  - **Dạng:** gõ tay · **Chấp nhận:** dhcp | dora | dynamic host configuration protocol
   - **Chủ đề gợi ý (tầng 1):** cuộc hỏi cưới ở Module 6
   - **Gợi ý (tầng 2):** Bốn nhịp Discover–Offer–Request–Ack là của giao thức nào?
   - **Lời giải (tầng 3):** DHCP — cấp phát có sổ sách qua bốn nhịp DORA; đối trọng của SLAAC bên IPv6.
@@ -2558,10 +2558,10 @@ Phần C · 5 chặng · 5 bài · 10 khái niệm
   - **Dạng:** trắc nghiệm · **Không — đó đã là biển số công cộng thật, đi thẳng** ✓ / Có — gói tin nào ra Internet cũng phải qua NAT / Có — router đổi nó thành địa chỉ fe80 của mình
   - **Vì sao:** IPv6 đủ địa chỉ cho tất cả nên không cần NAT; việc chặn người lạ là của tường lửa — đừng nhầm hai vai.
 - **Đề:** Cơ chế cấp địa chỉ qua bốn nhịp Discover–Offer–Request–Ack là của giao thức nào? (viết tắt)
-  - **Dạng:** gõ tay · **Chấp nhận:** dhcp
+  - **Dạng:** gõ tay · **Chấp nhận:** dhcp | dynamic host configuration protocol
   - **Vì sao:** DHCP — cơ chế cấp phát CÓ SỔ của IPv4 (Module 6); bên IPv6 khi cần sổ sách người ta dùng DHCPv6.
 - **Đề:** Cơ chế để máy IPv6 tự ghép địa chỉ từ lời rao prefix của router tên là gì?
-  - **Dạng:** gõ tay · **Chấp nhận:** slaac
+  - **Dạng:** gõ tay · **Chấp nhận:** slaac | stateless address autoconfiguration | tự cấu hình địa chỉ không trạng thái
   - **Vì sao:** SLAAC — stateless: router rao tên khu phố, máy tự chọn số nhà, không ai giữ sổ.
 - **Đề:** Máy bạn đang mang đồng thời 192.168.1.10 và 2001:db8::5. Tình trạng này gọi là gì?
   - **Dạng:** trắc nghiệm · **Dual-stack — chạy song song hai hệ địa chỉ** ✓ / Double NAT — hai lớp đổi địa chỉ chồng lên nhau / Link-local — hai biệt danh chỉ dùng trong phòng
@@ -2632,14 +2632,14 @@ Song song với module này, hãy dựng một miền thật trên máy bạn �
   - **Gợi ý (tầng 2):** Khi bạn gõ mật khẩu, máy trước mặt không tự quyết — nó chạy đi hỏi ai đó.
   - **Lời giải (tầng 3):** Tài khoản của MIỀN: DC đối chiếu mật khẩu, nên một tài khoản dùng được ở mọi máy đã gia nhập miền.
 - **Đề:** Máy chủ giữ sổ cái của miền và xác thực mọi lượt đăng nhập gọi là gì? (viết tắt được)
-  - **Dạng:** gõ tay · **Chấp nhận:** domain controller | dc
+  - **Dạng:** gõ tay · **Chấp nhận:** domain controller | dc | máy chủ điều khiển miền | bộ điều khiển miền
   - **Chủ đề gợi ý (tầng 1):** trưởng làng giữ sổ
   - **Gợi ý (tầng 2):** Hai chữ cái viết tắt — chữ đầu là Domain.
   - **Lời giải (tầng 3):** Domain Controller (DC) — giữ sổ cái AD và gác cổng mọi lượt đăng nhập của miền.
 
 **5 · Nhớ lại (retrieval):**
 - **Đề:** Không nhìn lại bài: sổ cái của miền được tra qua giao thức nào — phòng 389 của tòa nhà 15 phòng?
-  - **Dạng:** gõ tay · **Chấp nhận:** ldap
+  - **Dạng:** gõ tay · **Chấp nhận:** ldap | lightweight directory access protocol
   - **Chủ đề gợi ý (tầng 1):** sổ hộ khẩu ở tầng 5 cung điện
   - **Gợi ý (tầng 2):** Bốn chữ cái, phòng 389 — cuốn sổ ghi ai làm gì, thuộc phòng ban nào.
   - **Lời giải (tầng 3):** LDAP — giao thức tra sổ cái; bản mã hóa là LDAPS ở phòng 636. Cung điện Module 5 giờ thành kiến thức đi làm.
@@ -2675,7 +2675,7 @@ Song song với module này, hãy dựng một miền thật trên máy bạn �
   - **Gợi ý (tầng 2):** Một thao tác duy nhất, và quyền không bao giờ sót — vì quyền chưa từng cấp cho cá nhân.
   - **Lời giải (tầng 3):** Thả vào group KeToan. Quyền đã cấp cho nhóm từ trước, thành viên mới tự mang đủ 37 quyền.
 - **Đề:** Điền chỗ trống: GROUP để cấp ___, còn OU để xếp chỗ và treo luật.
-  - **Dạng:** gõ tay · **Chấp nhận:** quyền | quyen | permission
+  - **Dạng:** gõ tay · **Chấp nhận:** quyền | quyen | permission | permissions
   - **Chủ đề gợi ý (tầng 1):** thứ đi theo tấm thẻ câu lạc bộ
   - **Gợi ý (tầng 2):** Thứ mà nhân viên mới cần đúng 37 cái.
   - **Lời giải (tầng 3):** QUYỀN — group là đơn vị cấp quyền; OU là đơn vị xếp chỗ và treo luật (GPO).
@@ -2874,7 +2874,7 @@ Song song với module này, hãy dựng một miền thật trên máy bạn �
   - **Dạng:** trắc nghiệm · **Chịu luật chung của miền, đăng nhập xác thực qua DC** ✓ / Máy được đặt vào cùng một workgroup với các máy khác / Máy được nối vào cùng switch với máy chủ công ty
   - **Vì sao:** Gia nhập miền là ký giao kèo vào làng: luật chung từ máy chủ, tài khoản là của làng, DC gác cổng đăng nhập.
 - **Đề:** Máy chủ giữ sổ cái của miền và xác thực mọi lượt đăng nhập gọi là gì? (viết tắt được)
-  - **Dạng:** gõ tay · **Chấp nhận:** domain controller | dc
+  - **Dạng:** gõ tay · **Chấp nhận:** domain controller | dc | máy chủ điều khiển miền | bộ điều khiển miền
   - **Vì sao:** Domain Controller — giữ sổ cái AD (tra qua LDAP 389) và gác cổng mọi lượt đăng nhập.
 - **Đề:** GROUP và OU khác nhau thế nào?
   - **Dạng:** trắc nghiệm · **Group để cấp quyền; OU để xếp chỗ và treo GPO** ✓ / Là một thứ với hai tên gọi khác nhau / OU để cấp quyền, còn group để xếp chỗ và treo GPO
@@ -3079,7 +3079,7 @@ Phần C · 5 chặng · 5 bài · 8 khái niệm
   - **Gợi ý (tầng 2):** Lâu đài chỉ kiểm MỘT lần ở cổng — mà hắn thì đã ở trong cổng rồi.
   - **Lời giải (tầng 3):** Di chuyển ngang tự do: vành đai chỉ kiểm ở cổng, bên trong tin nhau — đó chính là điểm chết khiến Zero Trust ra đời.
 - **Đề:** Trong Zero Trust, biên giới mới của mạng là gì?
-  - **Dạng:** gõ tay · **Chấp nhận:** danh tính | danh tinh | identity
+  - **Dạng:** gõ tay · **Chấp nhận:** danh tính | danh tinh | identity | danh tính người dùng
   - **Chủ đề gợi ý (tầng 1):** câu hỏi đổi từ "bạn đứng đâu" sang…
   - **Gợi ý (tầng 2):** Không còn là chỗ đứng hay tường lửa — mà là câu hỏi "bạn LÀ AI".
   - **Lời giải (tầng 3):** Danh tính (identity) — mọi quyết định cho/chặn xoay quanh bạn là ai và máy bạn có sạch không, không phải bạn đang đứng trong hay ngoài.
@@ -3194,7 +3194,7 @@ Phần C · 5 chặng · 5 bài · 8 khái niệm
   - **Dạng:** trắc nghiệm · **Kiểm một lần ở cổng, lọt vào là đi ngang tự do** ✓ / Tường lửa vành đai không lọc được lưu lượng mã hóa / Chỉ áp dụng được cho mạng dùng IPv4 đời cũ
   - **Vì sao:** Chữ "trong" chính là điểm chết: một email lừa hay một mật khẩu lộ biến kẻ tấn công thành "người nhà".
 - **Đề:** Trong Zero Trust, biên giới mới của mạng là gì?
-  - **Dạng:** gõ tay · **Chấp nhận:** danh tính | danh tinh | identity
+  - **Dạng:** gõ tay · **Chấp nhận:** danh tính | danh tinh | identity | danh tính người dùng
   - **Vì sao:** Danh tính — mọi quyết định cho/chặn dựa trên bạn là ai và máy có sạch không, thay vì bạn đứng trong hay ngoài tường lửa.
 - **Đề:** Entra ID hybrid nghĩa là gì?
   - **Dạng:** trắc nghiệm · **Đồng bộ sổ AD DS trong nhà với sổ Entra ID trên mây** ✓ / Thay Domain Controller trong nhà bằng máy chủ trên mây / Một loại VPN nối văn phòng với đám mây Microsoft
@@ -4218,7 +4218,7 @@ Phần D · 5 chặng · 5 bài · 6 khái niệm · drill: vlsm
   - **Chủ đề gợi ý (tầng 1):** trình tự làm một bài thiết kế dải địa chỉ
   - **Vì sao:** Biết nhu cầu trước, rồi mới quy ra cỡ khối, rồi mới sắp thứ tự, cuối cùng mới đặt bút cắt. Đảo hai bước cuối là nguồn gốc của cảnh hết chỗ giữa chừng.
 - **Đề:** Một mạng /25 cấp được cho bao nhiêu máy?
-  - **Dạng:** gõ tay · **Chấp nhận:** 126 | 126 máy
+  - **Dạng:** gõ tay · **Chấp nhận:** 126 | 126 máy | 126 host
   - **Chủ đề gợi ý (tầng 1):** tổng địa chỉ của khối trừ đi hai
   - **Vì sao:** /25 có 128 địa chỉ, trừ địa chỉ mạng và broadcast còn 126 chỗ.
 - **Đề:** Khối nào dưới đây không phải là một mạng hợp lệ?
@@ -4853,7 +4853,7 @@ Phần D · 5 chặng · 5 bài · 6 khái niệm
   - **Chủ đề gợi ý (tầng 1):** công dụng của quãng chờ mà PortFast bỏ đi
   - **Vì sao:** Quãng chờ sinh ra chính để phát hiện vòng lặp. Bỏ nó ở cổng nối switch là mở đường cho bão nổ ra trước khi cây kịp tính lại.
 - **Đề:** Các switch trao đổi với nhau bằng loại khung nào để dựng và cập nhật cây STP? (viết tắt bốn chữ cái)
-  - **Dạng:** gõ tay · **Chấp nhận:** bpdu | BPDU | bridge protocol data unit
+  - **Dạng:** gõ tay · **Chấp nhận:** bpdu | BPDU | bridge protocol data unit | khung bpdu
   - **Chủ đề gợi ý (tầng 1):** tiếng điểm danh giữa các switch
   - **Vì sao:** BPDU — Bridge Protocol Data Unit, phát đều đặn vài giây một lần; im tiếng trên một hướng là cả nhóm biết có dây đứt.
 
@@ -6496,7 +6496,7 @@ Phần E · 5 chặng · 5 bài · 8 khái niệm
 
 **5 · Nhớ lại (retrieval):**
 - **Đề:** Không nhìn lại bài: bốn chữ tóm gọn chiến thuật đọc log của nghề?
-  - **Dạng:** gõ tay · **Chấp nhận:** lọc trước đọc sau | loc truoc doc sau | lọc trước, đọc sau | loc truoc, doc sau
+  - **Dạng:** gõ tay · **Chấp nhận:** lọc trước đọc sau | loc truoc doc sau | lọc trước, đọc sau | loc truoc, doc sau | lọc rồi đọc | lọc trước rồi đọc sau
   - **Chủ đề gợi ý (tầng 1):** hai động từ, mỗi động từ một trạng từ
   - **Gợi ý (tầng 2):** Việc gì làm trước khi để mắt chạm vào từng chữ? Lọc… rồi mới…
   - **Lời giải (tầng 3):** Lọc trước, đọc sau. Nhát dao theo mức nặng, theo thời gian, theo thiết bị — file trăm dòng còn dăm dòng rồi mới đọc kỹ. Không ai có nghề đọc log như đọc truyện.
