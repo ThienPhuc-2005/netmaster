@@ -16,12 +16,14 @@ Trạng thái: ☐ chờ duyệt · ✅ đã làm · ✗ đã bàn và bỏ (gi�
 - ☐ **A2. Tự chấm độ chắc trước khi lật thẻ** — hỏi "bạn chắc bao
   nhiêu?" trước khi hiện đáp án, rồi so độ chắc với kết quả thật. Luyện
   khả năng tự biết mình biết gì — kỹ năng lõi của người học giỏi.
-- ☐ **A3. Hồ sơ lỗi cá nhân** — trang Hồ sơ liệt kê "5 câu bạn sai
-  nhiều nhất" + nút ôn riêng chúng. Sai lầm là dữ liệu quý nhất mà app
-  đang có sẵn (answerHistory) nhưng chưa dùng.
-- ☐ **A4. "Bạn của 3 tuần trước"** — khi ôn thẻ cũ: "lần đầu gặp câu
-  này bạn sai 2 lần, giờ thử xem". Cảm giác tiến bộ đo được giữ người
-  học lâu hơn điểm số.
+- ✅ **A3. Hồ sơ lỗi cá nhân** — ĐÃ LÀM (khối 21.2): mục "Chỗ bạn hay
+  vấp" ở trang Hồ sơ, 5 câu thử lại nhiều nhất kèm đường quay lại bài.
+  **Nguồn không phải answerHistory như ý gốc đoán** — trường đó chỉ có
+  {correct, at} và giữ 10 bản ghi cuối; nguồn thật là
+  `lessonRuntimes[].exercises[].failCount` (theo từng câu, giữ mãi).
+- ✅ **A4. "Bạn của 3 tuần trước"** — ĐÃ LÀM (khối 21.2): thẻ từng quên
+  thì phiên ôn nói trước khi lật ("thẻ này bạn từng quên 3 lần"), đọc
+  từ `lapses` của SM-2. Chỉ hiện ở lượt chấm đầu, không hé lộ nội dung.
 - ✅ **A5. Tổng kết phiên học** — ĐÃ LÀM (khối 21.1). Màn tổng kết bước 6
   vốn đã kể "vừa học gì" + XP + hé lộ bài sau; bổ sung nốt hai con số của
   cửa đóng: **tự giải được N/M bài** (không tính bài phải mở lời giải) và
@@ -104,9 +106,11 @@ Trạng thái: ☐ chờ duyệt · ✅ đã làm · ✗ đã bàn và bỏ (gi�
   nhà mình đang xây dở tầng nào.
 - ☐ **H5. Thẻ ôn điền-chữ-khuyết cho câu nhớ severity** — "Em Ăn ___
   Em Với ___ Iu Đi" thay vì chỉ hỏi xuôi, chống học vẹt mặt chữ.
-- ☐ **H6. Đồ thị "nếp học của bạn" ở Hồ sơ** — số câu đúng theo tuần,
-  cho người học tự trải nghiệm khái niệm baseline (M20) trên chính dữ
-  liệu của mình; hợp làm cùng B1.
+- ✅ **H6. Đồ thị "nếp học của bạn"** — ĐÃ LÀM (khối 21.2): 8 tuần gần
+  nhất ở trang Hồ sơ. Đếm **bài học xong + phiên luyện** chứ không phải
+  "số câu đúng" như ý gốc — store không giữ lịch sử câu trả lời theo
+  ngày. Tuần nghỉ vẫn có vạch, vì khoảng trống mới là thứ baseline dạy
+  người ta đọc.
 - ☐ **H7. Bài đọc-số-thật cho scope DHCP** — nâng ca scope cạn M18
   thành bài tự tính: cho bảng 200 suất/197 đã cấp/lease 8 ngày, hỏi
   rút lease còn bao nhiêu thì sống qua sáng thứ hai.

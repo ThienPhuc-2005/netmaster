@@ -29,10 +29,10 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
 **HAI VIỆC ĐANG TREO, phiên mới cần biết:**
-1. **Khối 21.1 (thẻ "Hôm nay") CHƯA COMMIT** — lượt dọn P2 đã commit
-   (`959e70c`); khối 21.1 đang nằm ở working tree. Commit là việc chủ dự
-   án ra lệnh (luật: không tự commit); folder nằm trong OneDrive nên
-   chưa commit là chưa có bản sao lịch sử tử tế.
+1. **Khối 21.2 (đọc lại chính mình) CHƯA COMMIT** — đã commit tới
+   `8ce36ba` (khối 21.1); khối 21.2 đang nằm ở working tree. Commit là
+   việc chủ dự án ra lệnh (luật: không tự commit); folder nằm trong
+   OneDrive nên chưa commit là chưa có bản sao lịch sử tử tế.
 2. **Phiên nền đang sửa hình `Journey`** (5 hình vis-hanh-trinh-* tràn
    viewBox, task riêng của chủ dự án, worktree `.claude/worktrees/…`) —
    ĐỪNG đụng component Journey trong `ConceptVisual.tsx` cho tới khi
@@ -848,6 +848,34 @@ Còn lại duy nhất:
     ôn xong còn gì) · nợ 35 thẻ (chỉ mời ôn, KHÔNG mời bài mới, kèm lời
     nói thật) · màn tổng kết ("2/3 bài", "1 thẻ mới"). Mobile 375px
     không cuộn ngang (375/375), console sạch. Dữ liệu kiểm đã xóa.
+
+- **Khối 21.2 XONG (08-10): ĐỌC LẠI CHÍNH MÌNH** — cụm A3 + H6 + A4 của
+  kho ý tưởng: dữ liệu người học tự tạo ra suốt mấy tháng, giờ cho họ
+  nhìn lại.
+  - **Tiền đề của ý gốc SAI, đã sửa hướng**: kho ghi "dùng answerHistory
+    đang có sẵn". Không dùng được — `AnswerRecord` chỉ có `{correct, at}`
+    (không biết câu nào) và bị cắt còn 10 bản ghi cuối, nó là CỬA SỔ cho
+    flow engine chứ không phải nhật ký. Nguồn thật hóa ra tốt hơn:
+    `lessonRuntimes[].exercises[].failCount` biết đích danh TỪNG CÂU và
+    giữ vĩnh viễn.
+  - `src/engine/mistakeLog.ts` (thuần TS, 10 test): `weakSpots` (chỗ hay
+    vấp, xếp vấp-nhiều-trước, hòa thì câu phải mở lời giải nặng hơn) và
+    `weeklyActivity` (nếp học 8 tuần). Mốc tuần đếm từ một thứ Hai đã
+    biết thay vì `Date.getDay()` — cả `dates.ts` cố ý tính bằng UTC.
+  - **Trang Hồ sơ thêm hai mục**: "Chỗ bạn hay vấp" (5 câu thử lại nhiều
+    nhất, kèm đường quay lại đúng bài — tựa bài đi vào aria-label để
+    trình đọc màn hình không nghe năm dòng giống hệt nhau) và đồ thị
+    "Nếp học 8 tuần gần đây" (kèm bảng sr-only, đúng nếp ProgressChart).
+    Tuần nghỉ vẫn có vạch mảnh: khoảng trống mới là thứ baseline dạy đọc.
+  - **Phiên ôn nói "thẻ này bạn từng quên N lần"** trước khi lật (đọc
+    `lapses` của SM-2), chỉ ở lượt chấm đầu, không hé lộ nội dung.
+  - Giọng giữ đúng luật 4.4: vấp là DỮ LIỆU, không phải lời chê — hổ
+    phách chứ không đỏ, và câu dẫn nói thẳng "không phải để chấm điểm".
+  - 1196/1196 test xanh (+10), typecheck sạch, build qua. Kiểm browser
+    thật: chỗ vấp xếp đúng 3→2→1 kèm nhãn "có mở lời giải"; đồ thị gộp
+    đúng tuần (28/07 · 04/08 · 10-12/08); phiên ôn hiện đúng câu "từng
+    quên 3 lần"; mobile 375px không cuộn ngang; console sạch. Dữ liệu
+    kiểm đã xóa.
 
 Cập nhật: 2026-08-10. File này chỉ để nắm nhanh tình hình khi mở lại dự
 án. Nguồn chân lý: `SPEC-APP-HOC-MANG.md` (M1-12) và

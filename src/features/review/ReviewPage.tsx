@@ -172,6 +172,18 @@ export function ReviewPage() {
   if (cardId === undefined || face === null) return null
   const isRelearn = firstGraded.has(cardId)
 
+  /**
+   * "Bạn của mấy tuần trước" (kho ý tưởng A4): thẻ từng quên mấy lần thì
+   * nói ra trước khi lật. Cảm giác tiến bộ đo được giữ người học lâu hơn
+   * điểm số — và con số này vốn đã nằm sẵn trong `lapses` của SM-2.
+   *
+   * Chỉ nói ở lượt chấm ĐẦU: trong vòng học lại của chính phiên này thì
+   * câu đó thành thừa. Và nó không hé lộ gì về nội dung nên không làm
+   * hỏng nhịp tự-nhớ-trước-khi-lật.
+   */
+  const lapses = allCards.find((c) => c.conceptId === cardId)?.lapses ?? 0
+  const showComeback = !isRelearn && lapses > 0
+
   const grade = (remembered: boolean) => {
     // Chỉ lượt chấm ĐẦU ghi SM-2 + XP; vòng học lại không đụng store.
     if (!isRelearn) {
@@ -201,6 +213,8 @@ export function ReviewPage() {
           {t('review.cardOf', { current: index + 1, total: queue.length })}
           {isRelearn && <span className="ml-2 font-semibold text-accent">{t('review.relearnTag')}</span>}
         </p>
+
+        {showComeback && <p className="text-xs text-ink-muted">{t('review.comeback', { count: lapses })}</p>}
 
         <div className="flex min-h-44 flex-col items-center justify-center gap-4 rounded-md border border-edge bg-panel px-6 py-8 text-center">
           <p className="font-mono text-xs font-semibold uppercase tracking-wide text-accent">{face.label}</p>

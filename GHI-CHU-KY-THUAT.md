@@ -357,6 +357,13 @@ quan trước khi "sửa test cho xanh".
   `newCardIdsForLesson` (reviewQueue): store gọi lúc tạo thẻ thật, màn
   tổng kết bài gọi để hứa trước con số. Chép luật sang UI là mở đường
   cho hai chỗ trôi lệch rồi con số trên màn hình thành lời hứa sai.
+- **`answerHistory` KHÔNG dùng để thống kê được**: `AnswerRecord` chỉ có
+  `{correct, at}` (không biết câu nào) và bị cắt còn 10 bản ghi cuối —
+  nó là CỬA SỔ cho flow engine, không phải nhật ký. Muốn thống kê theo
+  câu thì đọc `lessonRuntimes[].exercises[].failCount` (theo từng câu,
+  giữ vĩnh viễn); theo ngày thì đọc `completedLessons` + `drillHistory`.
+  Phiên ôn KHÔNG có lịch sử theo ngày (chỉ `lastReviewDate` lần cuối) —
+  đừng suy nó từ `lastReviewedOn` của thẻ, một phiên 15 thẻ sẽ hóa 15 việc.
 - **Nút "Dùng cửa sổ này" của SingleWindowGuard phải `location.reload()`**,
   không được chỉ mở khóa: cửa sổ bị chặn giữ state RAM cũ từ lúc mount —
   mở khóa suông là action đầu tiên persist bản cũ đè lên tiến độ vừa học

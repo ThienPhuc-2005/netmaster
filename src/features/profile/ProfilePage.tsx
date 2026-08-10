@@ -8,9 +8,12 @@ import { Link } from 'react-router'
 import { Flame, Zap, Award, GraduationCap, Snowflake, Layers, BookOpenCheck, Download, Upload } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { useT } from '../../i18n'
-import { PROGRESS_PERSIST_VERSION, useProgress } from '../../store/progress'
+import { PROGRESS_PERSIST_VERSION, todayIso, useProgress } from '../../store/progress'
+import { loadModules } from '../../content'
+import { weakSpots, weeklyActivity } from '../../engine/mistakeLog'
 import { Button } from '../../components/Button'
 import { milestones } from '../graduation/milestones'
+import { WeakSpotList, WeeklyRhythm } from './LearningInsights'
 
 /**
  * Cửa thoát hiểm cho dữ liệu (hội đồng 2026-08-07, ghế dữ liệu): toàn bộ
@@ -105,8 +108,15 @@ export function ProfilePage() {
   const reviewCards = useProgress((s) => s.reviewCards)
   const completedLessons = useProgress((s) => s.completedLessons)
   const passedModules = useProgress((s) => s.passedModules)
+  const lessonRuntimes = useProgress((s) => s.lessonRuntimes)
+  const drillHistory = useProgress((s) => s.drillHistory)
   const reachedMilestones = milestones().filter((m) => passedModules.includes(m.moduleId))
   const fileRef = useRef<HTMLInputElement>(null)
+
+  // Đọc lại chính mình: chỗ hay vấp + nếp học theo tuần. Cả hai suy TỪ
+  // dữ liệu đã có, không thêm trường persist nào.
+  const spots = weakSpots(loadModules(), lessonRuntimes)
+  const weeks = weeklyActivity(completedLessons, drillHistory, todayIso())
 
   const onImportFile = (file: File | undefined) => {
     if (file === undefined) return
@@ -131,6 +141,9 @@ export function ProfilePage() {
         <StatCard icon={Layers} label={t('profile.cardsTotal')} value={reviewCards.length} />
       </div>
       <p className="mt-4 text-xs text-ink-muted">{t('profile.freezeNote')}</p>
+
+      <WeakSpotList spots={spots} />
+      <WeeklyRhythm weeks={weeks} />
 
       <div className="mt-6 flex flex-col gap-3 rounded-md border border-edge bg-panel px-5 py-4">
         <h2 className="text-sm font-semibold text-ink">{t('profile.backupTitle')}</h2>
