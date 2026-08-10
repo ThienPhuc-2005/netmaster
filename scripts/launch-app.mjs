@@ -6,9 +6,10 @@
 
 import { createServer } from 'node:http'
 import { spawn, spawnSync } from 'node:child_process'
-import { createReadStream, existsSync, readdirSync, statSync, appendFileSync } from 'node:fs'
-import { extname, join, resolve, dirname } from 'node:path'
+import { existsSync, readdirSync, statSync, appendFileSync } from 'node:fs'
+import { join, resolve, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { createStaticHandler } from './staticHandler.mjs'
 
 const scriptDir = dirname(fileURLToPath(import.meta.url))
 const projectDir = resolve(scriptDir, '..')
@@ -67,39 +68,12 @@ if (needsBuild()) {
 }
 
 // --- 2. Máy chủ tĩnh cho SPA -------------------------------------------
+//
+// Ruột của bộ xử lý nằm ở `staticHandler.mjs`: file này chạy thẳng (build,
+// mở cổng, bung trình duyệt) nên không nạp vào test được, mà bộ xử lý lại
+// là bề mặt DUY NHẤT nhận dữ liệu từ ngoài tiến trình — nó phải test được.
 
-const MIME = {
-  '.html': 'text/html; charset=utf-8',
-  '.js': 'text/javascript; charset=utf-8',
-  '.css': 'text/css; charset=utf-8',
-  '.json': 'application/json; charset=utf-8',
-  '.svg': 'image/svg+xml',
-  '.woff2': 'font/woff2',
-  '.woff': 'font/woff',
-  '.png': 'image/png',
-  '.jpg': 'image/jpeg',
-  '.webmanifest': 'application/manifest+json',
-}
-
-const server = createServer((req, res) => {
-  res.setHeader('x-app', MARKER)
-  const url = new URL(req.url ?? '/', 'http://localhost')
-  const wanted = resolve(distDir, `.${decodeURIComponent(url.pathname)}`)
-
-  // Đường dẫn phải nằm trong dist (chặn ../../ đi ra ngoài).
-  const inside = wanted === distDir || wanted.startsWith(distDir + '\\') || wanted.startsWith(distDir + '/')
-  let file = inside && existsSync(wanted) && statSync(wanted).isFile() ? wanted : null
-
-  // Router của app là browser router: mọi đường không phải file tĩnh đều
-  // trả index.html để react-router tự định tuyến phía trình duyệt.
-  if (!file) file = join(distDir, 'index.html')
-
-  res.writeHead(200, {
-    'content-type': MIME[extname(file)] ?? 'application/octet-stream',
-    'cache-control': 'no-cache',
-  })
-  createReadStream(file).pipe(res)
-})
+const server = createServer(createStaticHandler({ distDir, marker: MARKER }))
 
 /** Kiểm tra cổng đang bận có phải máy chủ của chính app này không. */
 async function isOurServer(port) {

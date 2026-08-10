@@ -29,8 +29,8 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
 **HAI VIỆC ĐANG TREO, phiên mới cần biết:**
-1. **Khối 21.14 CHƯA COMMIT** — đã commit tới `d5a3bee` (khối 21.13);
-   khối 21.14 (dọn accept-hẹp + cảnh báo lúc soạn) đang ở working tree.
+1. **Khối 21.15 CHƯA COMMIT** — đã commit tới `f7aa036` (khối 21.14);
+   khối 21.15 (vá bảo mật launcher + báo cáo quét) đang ở working tree.
 2. **Phiên nền đang sửa hình `Journey`** (5 hình vis-hanh-trinh-* tràn
    viewBox, task riêng của chủ dự án, worktree `.claude/worktrees/…`) —
    ĐỪNG đụng component Journey trong `ConceptVisual.tsx` cho tới khi
@@ -1270,6 +1270,33 @@ Còn lại duy nhất:
   - 1339/1339 test xanh (+9), typecheck sạch, build qua, content:review
     render lại 21 module. Kiểm browser thật: gõ "gói dữ liệu" ở bài 1
     Module 1 → chấm ĐÚNG. Dữ liệu kiểm đã xóa.
+
+- **Khối 21.15 XONG (08-10): QUÉT BẢO MẬT + VÁ CHỖ DUY NHẤT NÓ TÌM RA.**
+  - Quét toàn repo ở revision `f7aa036`, mức medium: 12 vùng, 44 lượt
+    nghiên cứu, 42 nghi vấn thô → 25 nghi vấn riêng, hội đồng 3 người
+    chấm từng cái (75 lượt phiếu). **Giữ 2, cả hai LOW, và cả hai trỏ
+    đúng MỘT dòng**: `scripts/launch-app.mjs:87`. Báo cáo ở
+    `CLAUDE-SECURITY-20260810-141001/` (có .gitignore riêng).
+  - **Bệnh**: đường dẫn request đi thẳng vào `decodeURIComponent` không
+    lưới đỡ. `GET /%` làm nó ném `URIError` NGAY TRONG listener đồng bộ
+    của `http` — không ai bắt, Node thoát, máy chủ chết. Bất kỳ trang web
+    nào người học mở trong lúc app đang chạy đều bắn được request đó vào
+    localhost. Đã **chứng minh hai chiều bằng máy chủ thật**: mã cũ ném
+    URIError ra ngoài listener; mã mới trả 400 và vẫn phục vụ bình thường
+    sau 4 request hỏng liên tiếp.
+  - **Vá**: ruột bộ xử lý tách sang `scripts/staticHandler.mjs` (+ file
+    khai kiểu `.d.mts` theo nếp `render-content-review`). Lý do tách là để
+    TEST ĐƯỢC: `launch-app.mjs` chạy thẳng, nạp vào test là nó build và
+    bung trình duyệt thật. Bịt cả ba đường ném: escape hỏng → 400;
+    `statSync` TOCTOU → coi như không có file; `createReadStream` lỗi →
+    có handler `'error'`. Thêm lưới cuối bọc cả thân handler.
+  - **Cố ý KHÔNG thêm `process.on('uncaughtException')`** dù báo cáo có
+    gợi ý: cái đó nuốt mọi lỗi lập trình khác và biến chúng thành im lặng.
+    Bịt đúng ba chỗ có thể ném thì hơn một cái chăn trùm.
+  - Đổi hành vi nhỏ, khai ra: chưa build mà gọi vào thì giờ trả **404**
+    thay vì 200 với thân rỗng.
+  - 1346/1346 test xanh (+7, `tests/staticHandler.test.ts`), typecheck
+    sạch, build qua.
 
 Cập nhật: 2026-08-10. File này chỉ để nắm nhanh tình hình khi mở lại dự
 án. Nguồn chân lý: `SPEC-APP-HOC-MANG.md` (M1-12) và

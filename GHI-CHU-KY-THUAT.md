@@ -558,6 +558,25 @@ chỉ bỏ điều kiện "học hết bài trước đã".
   Enter đốt oan một bậc thang gợi ý); nộp bằng nút "Kiểm tra". Ba tiêu
   chí hiện trạng thái bằng CHỮ (đạt/chưa đạt) cạnh ký hiệu, nếp CLI/lab.
 
+## 12. Launcher trên máy (scripts/launch-app.mjs + staticHandler.mjs)
+
+- **Bộ xử lý HTTP là bề mặt DUY NHẤT của dự án nhận dữ liệu từ ngoài tiến
+  trình**: máy chủ nghe ở 127.0.0.1:4173-4183, nên bất kỳ trang web nào người
+  học mở cũng bắn được request vào (khác nguồn vẫn TỚI được handler, chỉ là
+  không đọc được phản hồi).
+- **LUẬT: một request hỏng không bao giờ được giết tiến trình.** Listener của
+  `http` chạy đồng bộ nên một cú ném là uncaught exception → Node thoát → máy
+  chủ chết giữa buổi học. Ba đường từng ném, giờ đều có lưới (khối 21.15):
+  `decodeURIComponent` gặp escape hỏng (`/%`), `statSync` gặp file vừa biến
+  mất (TOCTOU), và `createReadStream` mở file hỏng — stream không gắn handler
+  `'error'` là uncaught exception ở tick sau. `tests/staticHandler.test.ts` khóa.
+- **Ruột tách khỏi `launch-app.mjs` là có chủ đích**: file đó chạy thẳng (build,
+  mở cổng, bung trình duyệt) nên nạp vào test là nó chạy thật. Logic phục vụ
+  nằm ở `staticHandler.mjs` + `staticHandler.d.mts` (nếp `render-content-review`).
+- Đường leo ra ngoài `dist` vẫn bị chặn bằng phép so tiền tố; đường không phải
+  file tĩnh rơi về `index.html` (browser router). Chưa build thì trả **404**,
+  đừng trả 200 rỗng.
+
 ## 12. Công cụ soạn bài (tools/mcp)
 
 - **Thước "đủ cách nói" (khối 21.14)** — dùng CHUNG giữa MCP và
