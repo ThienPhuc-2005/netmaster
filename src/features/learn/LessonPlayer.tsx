@@ -25,6 +25,7 @@ import { EmptyState } from '../../components/EmptyState'
 import { FeedbackBanner, FeedbackRegion, type FeedbackState } from '../../components/FeedbackBanner'
 import { QuestionInput } from '../../components/QuestionInput'
 import { PalaceTour } from '../palace/PalaceTour'
+import { backToLearn } from './LearnPage'
 import { canDeriveOpen, deriveOpenQuestion, flowMode, needsSupport } from '../../engine/flow'
 import { FoundationReview } from './FoundationReview'
 
@@ -595,7 +596,9 @@ function SummaryView({ module, lesson, runtime }: StepProps) {
       stage.lessonIds.every((id) => id === lesson.id || completedLessons[id] !== undefined)
     if (!runtime.completed) advanceLesson(module, lesson)
     if (firstTime && stageDoneAfter) playEarcon('stageUp')
-    void navigate('/')
+    // Mang theo địa chỉ: trang Học dài 21 module, thả người học ở đầu
+    // trang là bắt họ cuộn đi tìm lại chỗ mình vừa đứng.
+    void navigate(backToLearn(module.id))
   }
 
   // Ăn mừng THỊ GIÁC (spec 2.1 bước 6 đòi "animation ăn mừng ngắn" —
@@ -761,7 +764,10 @@ export function LessonPlayer() {
     // mọi chi tiết tông-theo-Phần bên trong tự ăn màu Phần đang học.
     <div data-part={ref.module.part} className="flex flex-col gap-6">
       <div className="flex flex-col gap-3">
-        <Link to="/" className="flex items-center gap-1 text-xs font-medium text-ink-muted hover:text-ink">
+        <Link
+          to={backToLearn(ref.module.id)}
+          className="flex items-center gap-1 text-xs font-medium text-ink-muted hover:text-ink"
+        >
           <ChevronLeft size={14} aria-hidden />
           {t('lesson.backToLearn')}
         </Link>

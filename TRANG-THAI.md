@@ -29,10 +29,10 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
 **HAI VIỆC ĐANG TREO, phiên mới cần biết:**
-1. **Khối 21.2 (đọc lại chính mình) CHƯA COMMIT** — đã commit tới
-   `8ce36ba` (khối 21.1); khối 21.2 đang nằm ở working tree. Commit là
-   việc chủ dự án ra lệnh (luật: không tự commit); folder nằm trong
-   OneDrive nên chưa commit là chưa có bản sao lịch sử tử tế.
+1. **Khối 21.3 (về đúng chỗ) CHƯA COMMIT** — đã commit tới `9fdc32f`
+   (khối 21.2); khối 21.3 đang nằm ở working tree. Commit là việc chủ dự
+   án ra lệnh (luật: không tự commit); folder nằm trong OneDrive nên
+   chưa commit là chưa có bản sao lịch sử tử tế.
 2. **Phiên nền đang sửa hình `Journey`** (5 hình vis-hanh-trinh-* tràn
    viewBox, task riêng của chủ dự án, worktree `.claude/worktrees/…`) —
    ĐỪNG đụng component Journey trong `ConceptVisual.tsx` cho tới khi
@@ -876,6 +876,36 @@ Còn lại duy nhất:
     đúng tuần (28/07 · 04/08 · 10-12/08); phiên ôn hiện đúng câu "từng
     quên 3 lần"; mobile 375px không cuộn ngang; console sạch. Dữ liệu
     kiểm đã xóa.
+
+- **Khối 21.3 XONG (08-10): VỀ ĐÚNG CHỖ** — chủ dự án báo lỗi thật: học
+  xong một bài giữa Module 3 thì app đổ về đầu trang Học, phải cuộn lại
+  mới học tiếp được. Soi ra không phải lỗi lẻ mà là MỘT bệnh có 5 cửa
+  (xong bài · quay lại giữa bài · xong bài thi · xong phiên ôn · từ màn
+  tốt nghiệp) — trang Học giờ dài 21 module (21.656px) nên cửa nào cũng
+  đổ người ta xuống chân trang. Chủ dự án chọn làm **lớp 2** trong ba
+  lớp đã trình: cửa nào biết mình đến từ đâu thì mang theo địa chỉ.
+  - `backToLearn(moduleId)` → `/?tiep=…`, đường DUY NHẤT dựng link về;
+    trang Học nhận cả id module lẫn id bài (nơi gọi khỏi tra ngược).
+  - **Nhắm vào VIỆC KẾ TIẾP, không phải đầu card**: phát hiện khi kiểm
+    browser thật — card Module 3 có 12 bài, cao hơn màn hình, nên cuộn
+    tới đầu card thì bài kế VẪN nằm dưới mép dưới, tức là chưa chữa được
+    gì. Giờ nhắm vào phần tử `data-next-action` (nút bài kế / cửa thi),
+    cuộn nó vào GIỮA màn hình và dời focus vào đó — người dùng bàn phím
+    chỉ còn cách một phím Enter. Module hết việc thì mới lấy cả card.
+  - **Một bẫy trình duyệt đã ghi vào GHI-CHU**: `scrollIntoView` với
+    `behavior:'smooth'` IM LẶNG không làm gì trên khung cuộn lồng nhau
+    (`<main>`) trong Chromium — đo thật: `auto` nhảy đúng 1881px,
+    `smooth` đứng yên ở 0. Đã chuyển sang cuộn tức thì, cũng hợp hơn cho
+    quãng nhảy ~2000px.
+  - Hai cửa KHÔNG có bối cảnh module (xong phiên ôn, màn tốt nghiệp) giữ
+    nguyên về đầu trang — ở đó thẻ "Hôm nay" đã nói việc kế tiếp rồi.
+  - 1205/1205 test xanh (+9, `returnToPlace.test.tsx` khóa cả 5 cửa +
+    luật tabindex + neo đủ 21 module), typecheck sạch, build qua. Kiểm
+    browser thật đúng ca chủ dự án gặp: học xong "Nhẩm ranh giới bằng
+    magic number" (m3-bai-5) → về `/?tiep=module-3`, focus rơi đúng nút
+    "Bắt đầu" của "Đọc biển số của tương lai", nằm giữa màn hình; nút
+    "← Quay lại" trong bài và cửa bài thi cũng mang đúng địa chỉ; mobile
+    375px không cuộn ngang; console sạch. Dữ liệu kiểm đã xóa.
 
 Cập nhật: 2026-08-10. File này chỉ để nắm nhanh tình hình khi mở lại dự
 án. Nguồn chân lý: `SPEC-APP-HOC-MANG.md` (M1-12) và

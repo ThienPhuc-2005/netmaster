@@ -347,6 +347,20 @@ quan trước khi "sửa test cho xanh".
 - Điều hướng: mở app còn thẻ đến hạn → vào Ôn tập trước (gate ở
   main.tsx, quyết định trong effect SAU khi zustand rehydrate). AppGate
   chặn mọi route tới khi `onboardingDone` VÀ nội dung prime xong.
+- **Mọi cửa quay lại trang Học phải MANG THEO ĐỊA CHỈ** — dùng
+  `backToLearn(moduleId)` (`/?tiep=…`), đừng viết `to="/"` trần: trang
+  Học dài 21 module nên về đầu trang là bắt người học cuộn đi tìm lại
+  chỗ mình vừa đứng. Trang Học nhận cả id module lẫn id bài, rồi nhắm
+  vào phần tử mang `data-next-action` (nút bài kế / cửa thi) chứ KHÔNG
+  phải đầu card — card Module 3 cao hơn màn hình, đứng đầu card thì bài
+  kế vẫn nằm dưới mép. Không có việc kế tiếp thì mới lấy cả card.
+  Cuộn xong phải DỜI FOCUS vào đúng đó (WCAG 2.4.3). Có test khóa cả 5
+  cửa (`returnToPlace.test.tsx`).
+- **`scrollIntoView({behavior:'smooth'})` KHÔNG chạy trong app này**:
+  khung cuộn là `<main>` lồng bên trong, và Chromium im lặng bỏ qua
+  smooth trên khung lồng nhau (đo thật: `auto` nhảy đúng 1881px, `smooth`
+  đứng yên ở 0). Dùng cuộn tức thì — quãng nhảy ~2000px thì tức thì cũng
+  đỡ mất phương hướng hơn. `focus()` phải kèm `preventScroll: true`.
 - **Thẻ "Hôm nay" đầu trang Học** (`planToday` — engine thuần): nó chỉ
   TRỎ tới việc người học vốn đã vào được, KHÔNG nới luật nào — mastery
   gate, mở bài tuần tự và trần nợ ôn vẫn do engine cũ quyết. Thứ tự ưu

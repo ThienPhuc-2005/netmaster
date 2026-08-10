@@ -27,6 +27,7 @@ import { lt, maybeLt } from '../../engine/ltext'
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router'
 import { Award, ChevronLeft, GraduationCap, Lock } from 'lucide-react'
 import { findModule, lessonsInOrder } from '../../content'
+import { backToLearn } from './LearnPage'
 import { MASTERY_THRESHOLD_PCT, computeModuleStatuses } from '../../engine/masteryGate'
 import { gradeQuestion, type QuestionResponse } from '../../engine/grading/gradeQuestion'
 import { drawMasteryTest, masteryDrawCount } from '../../engine/masteryPool'
@@ -81,8 +82,9 @@ export function ModuleTestPage() {
   const navigate = useNavigate()
   const [phase, setPhase] = useState<Phase>({ kind: 'idle' })
 
+  // Đề không tồn tại thì chưa biết về đâu — chỉ ca này mới về đầu trang.
   const backLink = (
-    <Link to="/" className="text-sm font-medium text-accent hover:underline">
+    <Link to={module === null ? '/' : backToLearn(module.id)} className="text-sm font-medium text-accent hover:underline">
       {t('lesson.backToLearn')}
     </Link>
   )
@@ -149,7 +151,10 @@ export function ModuleTestPage() {
 
   const heading = (
     <div className="mb-6 flex flex-col gap-2">
-      <Link to="/" className="flex items-center gap-1 text-xs font-medium text-ink-muted hover:text-ink">
+      <Link
+        to={backToLearn(module.id)}
+        className="flex items-center gap-1 text-xs font-medium text-ink-muted hover:text-ink"
+      >
         <ChevronLeft size={14} aria-hidden />
         {t('lesson.backToLearn')}
       </Link>

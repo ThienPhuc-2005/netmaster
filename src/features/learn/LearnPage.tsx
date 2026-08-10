@@ -2,7 +2,8 @@
 // 15%) + bài học mở TUẦN TỰ. Mastery gate giữa các module áp qua
 // computeModuleStatuses — module sau khóa tới khi module trước đạt >= 85%.
 
-import { Link } from 'react-router'
+import { useEffect, useRef } from 'react'
+import { Link, useSearchParams } from 'react-router'
 import { lt } from '../../engine/ltext'
 import { BookOpen, Check, FastForward, GraduationCap, Lock, Play, RotateCcw, Server, Snowflake, Sunrise, Timer, X } from 'lucide-react'
 import { loadModules, lessonsInOrder } from '../../content'
@@ -17,6 +18,81 @@ import { ProgressBar } from '../../components/ProgressBar'
 import { StageMap, type StageItem } from '../../components/StageMap'
 
 type LessonState = 'done' | 'active' | 'locked'
+
+/**
+ * Tên tham số "đưa tôi về đúng chỗ" trên đường quay lại trang Học.
+ *
+ * Vì sao cần: trang này giờ dài 21 module, nên MỌI cửa quay về đều đổ
+ * người học xuống đầu trang rồi bắt tự cuộn đi tìm chỗ mình vừa đứng.
+ * Cửa nào biết mình đến từ đâu thì mang theo địa chỉ đó (nhận cả id
+ * module lẫn id bài — nơi gọi khỏi phải tra ngược nội dung).
+ */
+export const FOCUS_PARAM = 'tiep'
+
+/** Id phần tử của một card module — chỗ neo để cuộn tới. */
+export function moduleAnchorId(moduleId: string): string {
+  return `card-${moduleId}`
+}
+
+/**
+ * Dấu trên VIỆC KẾ TIẾP của một module (nút "Bắt đầu"/"Học tiếp" của bài
+ * đang mở, hoặc cửa "Thi cuối module" khi đã học hết bài).
+ *
+ * Cần dấu này vì cuộn tới đầu card là CHƯA ĐỦ: Module 3 có 12 bài, card
+ * cao hơn cả màn hình, nên đứng ở đầu card thì bài kế tiếp vẫn nằm dưới
+ * mép dưới — đúng cái phiền mà việc này sinh ra để chữa (đo trên browser
+ * thật). Nhắm thẳng vào việc kế tiếp thì cao bao nhiêu cũng trúng.
+ */
+const NEXT_ACTION_ATTR = 'data-next-action'
+
+/** Đường về trang Học có mang địa chỉ — mọi cửa quay lại đều đi qua đây. */
+export function backToLearn(moduleId: string): string {
+  return `/?${FOCUS_PARAM}=${encodeURIComponent(moduleId)}`
+}
+
+/** Tham số trỏ tới module nào (nhận id module hoặc id một bài của nó). */
+function resolveTargetModule(modules: readonly Module[], target: string | null): string | null {
+  if (target === null || target === '') return null
+  if (modules.some((m) => m.id === target)) return target
+  return modules.find((m) => m.lessons.some((l) => l.id === target))?.id ?? null
+}
+
+/**
+ * Đưa người học về ĐÚNG CHỖ họ vừa rời đi.
+ *
+ * Cuộn thôi chưa đủ: người dùng bàn phím và trình đọc màn hình không đi
+ * theo con mắt, nên phải DỜI FOCUS vào card đó (WCAG 2.4.3) — cùng kỷ
+ * luật đã áp cho màn tổng kết drill.
+ *
+ * Chỉ chạy MỘT LẦN cho mỗi địa chỉ: người học cuộn đi chỗ khác rồi mà
+ * app giật họ về là tệ hơn cả việc không cuộn.
+ */
+function useScrollToModule(moduleId: string | null): void {
+  const done = useRef<string | null>(null)
+  useEffect(() => {
+    if (moduleId === null || done.current === moduleId) return
+    const el = document.getElementById(moduleAnchorId(moduleId))
+    if (el === null) return
+    done.current = moduleId
+
+    // Nhắm vào VIỆC KẾ TIẾP nếu module còn việc; không thì lấy cả card
+    // (module đã đậu — lúc đó bản thân card là câu trả lời).
+    const action = el.querySelector<HTMLElement>(`[${NEXT_ACTION_ATTR}]`)
+    const target = action ?? el
+
+    // Cuộn TỨC THÌ, không `behavior: 'smooth'`. Hai lý do, cái đầu là
+    // quyết định: khung cuộn của app là <main> lồng bên trong, mà
+    // scrollIntoView smooth trên khung lồng nhau IM LẶNG KHÔNG LÀM GÌ
+    // trong Chromium (đo trên browser thật: auto nhảy đúng 1881px, smooth
+    // đứng yên ở 0). Cái thứ hai: quãng nhảy ở đây thường ~2000px, cuộn
+    // mượt chừng ấy vừa lâu vừa làm người ta mất phương hướng.
+    target.scrollIntoView({ block: action === null ? 'start' : 'center' })
+    // Focus SAU khi đã cuộn, preventScroll để nó không kéo lại lần nữa.
+    // Focus rơi đúng vào nút việc kế tiếp: người dùng bàn phím chỉ còn
+    // cách một phím Enter, không phải Tab mò qua cả trang.
+    target.focus({ preventScroll: true })
+  }, [moduleId])
+}
 
 /**
  * Kể chuyện streak (hội đồng 2026-08-07, ghế tâm lý): engine đã soạn sẵn
@@ -186,6 +262,8 @@ function LessonRow({
       {startable && (
         <Link
           to={`/bai/${lesson.id}`}
+          // Đây là VIỆC KẾ TIẾP của module — đường quay lại nhắm vào nó.
+          {...{ [NEXT_ACTION_ATTR]: '' }}
           className="rounded-md bg-accent px-3 py-1.5 text-xs font-semibold text-accent-contrast transition-colors duration-(--dur) hover:brightness-110"
         >
           {started ? t('learn.lessonContinue') : t('learn.lessonStart')}
@@ -292,8 +370,13 @@ function ModuleCard({ module, status }: { module: Module; status: 'locked' | 'op
     // (ink-muted@60% = 2.6:1 light) và lớp composite lọt ngoài lưới đo của
     // tokens.test — thể hiện khóa bằng icon Lock + border nhạt + nhãn là đủ.
     <section
+      // Neo để đường quay lại cuộn đúng card này vào tầm nhìn; tabIndex
+      // -1 cho nó nhận được focus theo lối lập trình mà KHÔNG chen vào
+      // thứ tự Tab thường (card không phải là thứ để tab qua).
+      id={moduleAnchorId(module.id)}
+      tabIndex={-1}
       data-part={module.part}
-      className={`flex flex-col gap-5 rounded-md border bg-panel p-5 ${status === 'locked' ? 'border-edge/60' : 'border-edge'}`}
+      className={`flex flex-col gap-5 rounded-md border bg-panel p-5 focus:outline-none ${status === 'locked' ? 'border-edge/60' : 'border-edge'}`}
     >
       <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
         <h2 className="min-w-[12rem] flex-1 text-base font-bold text-ink">{lt(module.title)}</h2>
@@ -343,6 +426,8 @@ function ModuleCard({ module, status }: { module: Module; status: 'locked' | 'op
       {firstUncompleted === undefined && status !== 'locked' && (
         <Link
           to={`/kiem-tra/${module.id}`}
+          // Học hết bài rồi thì THI là việc kế tiếp của module này.
+          {...(status === 'passed' ? {} : { [NEXT_ACTION_ATTR]: '' })}
           className="flex items-center gap-3 rounded-md border border-accent/30 bg-panel-hover px-4 py-3 transition-colors duration-(--dur) hover:border-accent"
         >
           <GraduationCap size={17} aria-hidden className="text-accent" />
@@ -401,12 +486,15 @@ export function LearnPage() {
   const completedLessons = useProgress((s) => s.completedLessons)
   const lessonRuntimes = useProgress((s) => s.lessonRuntimes)
 
+  const [searchParams] = useSearchParams()
+
   const today = todayIso()
   const statuses = computeModuleStatuses(
     modules.map((m) => m.id),
     new Set(passedModules),
   )
   const plan = planToday({ modules, passedModules, completedLessons, lessonRuntimes, reviewCards, today })
+  useScrollToModule(resolveTargetModule(modules, searchParams.get(FOCUS_PARAM)))
 
   if (modules.length === 0) {
     return (
