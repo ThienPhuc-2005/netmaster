@@ -21,9 +21,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: npm
@@ -43,14 +43,14 @@ jobs:
       # dùng chính index.html làm 404.html để react-router nhận route.
       - run: cp dist/index.html dist/404.html
 
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: dist
 
   deploy:
     needs: build
     runs-on: ubuntu-latest
-    # Hàng đợi Pages có hôm chậm quá 10 phút, mà deploy-pages@v4 KHÓA
+    # Hàng đợi Pages có hôm chậm quá 10 phút, mà deploy-pages@v5 KHÓA
     # CỨNG trần chờ ở 10 phút mỗi lượt (truyền timeout lớn hơn bị hạ về
     # 600000ms kèm warning). Hết 10 phút nó tự hủy deployment đang xếp
     # hàng lành lặn. Thuốc duy nhất phía mình: THỬ NHIỀU LƯỢT — 3 lượt ×
@@ -62,7 +62,7 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
         continue-on-error: true
         with:
           reporting_interval: 15000
@@ -72,7 +72,7 @@ jobs:
 
       - id: deployment_lan_2
         if: steps.deployment.outcome == 'failure'
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
         continue-on-error: true
         with:
           reporting_interval: 15000
@@ -83,6 +83,6 @@ jobs:
       # Lượt cuối KHÔNG continue-on-error: rớt nốt thì job đỏ thật.
       - id: deployment_lan_3
         if: steps.deployment.outcome == 'failure' && steps.deployment_lan_2.outcome == 'failure'
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
         with:
           reporting_interval: 15000

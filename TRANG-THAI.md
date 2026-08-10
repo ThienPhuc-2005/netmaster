@@ -29,8 +29,8 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
 **HAI VIỆC ĐANG TREO, phiên mới cần biết:**
-1. **Khối 21.15 CHƯA COMMIT** — đã commit tới `f7aa036` (khối 21.14);
-   khối 21.15 (vá bảo mật launcher + báo cáo quét) đang ở working tree.
+1. **Khối 21.16 (nâng action) CHƯA COMMIT** — đã commit và ĐÃ ĐẨY tới
+   `9b43a4d` (khối 21.15); bản nâng action đang ở working tree.
 2. **Phiên nền đang sửa hình `Journey`** (5 hình vis-hanh-trinh-* tràn
    viewBox, task riêng của chủ dự án, worktree `.claude/worktrees/…`) —
    ĐỪNG đụng component Journey trong `ConceptVisual.tsx` cho tới khi
@@ -1297,6 +1297,26 @@ Còn lại duy nhất:
     thay vì 200 với thân rỗng.
   - 1346/1346 test xanh (+7, `tests/staticHandler.test.ts`), typecheck
     sạch, build qua.
+
+- **Khối 21.16 (08-10): ĐÃ DEPLOY + NÂNG ACTION.**
+  - **Bản live giờ bằng `main`**: đẩy 9 commit (khối 21.6 → 21.15), workflow
+    xanh cả build lẫn deploy. Kiểm bản live thật bằng hai dấu vết CHỈ có ở
+    mã mới — gõ "gói dữ liệu" được chấm đúng (cách nói thêm ở khối 21.14)
+    và lời khen ra "Ra liền, không cần gợi ý" (khen theo hành vi, khối
+    21.6) — nên chắc chắn không phải cache cũ. Dữ liệu kiểm đã xóa.
+  - **Nâng 4 action lên bản chạy Node 24** (GitHub đã hết hạn Node 20 và
+    đang ép chạy tạm; tới lúc gỡ lớp tương thích là deploy đỏ): checkout
+    v4→v7, setup-node v4→v7, upload-pages-artifact v3→v5, deploy-pages
+    v4→v5.
+  - **Đã soi phá vỡ trước khi nâng, không nâng mù**: checkout v7 chặn
+    checkout fork PR cho `pull_request_target`/`workflow_run` (ta chỉ chạy
+    trên `push`); setup-node v6 giới hạn tự-cache còn npm (ta khai thẳng
+    `cache: npm`); upload-pages-artifact v5 vẫn giữ `path`; deploy-pages v5
+    vẫn còn `reporting_interval` VÀ vẫn khóa cứng trần chờ 10 phút — nên
+    mẹo 3 lượt thử trong workflow còn nguyên giá trị, đừng gỡ.
+  - Chỉ có MỘT cách kiểm thật lần nâng này: đẩy lên và xem workflow chạy.
+    Rủi ro có trần: test/typecheck/build vẫn gác trước bước deploy, nên
+    action hỏng thì run đỏ và bản live giữ nguyên bản đang chạy.
 
 Cập nhật: 2026-08-10. File này chỉ để nắm nhanh tình hình khi mở lại dự
 án. Nguồn chân lý: `SPEC-APP-HOC-MANG.md` (M1-12) và
