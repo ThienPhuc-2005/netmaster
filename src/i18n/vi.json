@@ -719,6 +719,7 @@
     "disputeTitle": "Câu bạn cho là mình đúng",
     "disputeIntro": "Những lần bạn bấm \"Mình nghĩ câu này đúng\". App giữ nguyên văn câu bạn gõ để người soạn bài xem lại danh sách đáp án — đáp án soạn hẹp quá là lỗi của đề, không phải của bạn.",
     "disputeAnswer": "Bạn đã gõ: {answer}",
+    "disputeFromTest": "Câu này ở đề thi cuối module",
     "disputeOpenLesson": "Mở lại bài",
     "disputeClear": "Bỏ dòng này",
     "memoryTitle": "Trí nhớ bạn đang giữ những gì",

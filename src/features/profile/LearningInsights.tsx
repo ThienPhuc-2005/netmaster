@@ -384,9 +384,15 @@ export function DisputedList({ rows, onClear }: { rows: DisputedRow[]; onClear: 
             <p className="text-sm text-ink">{row.prompt === null ? row.questionId : lt(row.prompt)}</p>
             <p className="font-mono text-xs text-ink-muted">{t('profile.disputeAnswer', { answer: row.answer })}</p>
             <div className="flex flex-wrap items-center gap-3">
-              <Link to={`/bai/${row.lessonId}`} className="text-xs font-medium text-accent hover:underline">
-                {t('profile.disputeOpenLesson')}
-              </Link>
+              {/* Câu của ĐỀ THI không thuộc bài học nào (lessonId trống) —
+                  nói ra là câu đề thi thay vì dựng một link chết. */}
+              {row.lessonId === '' ? (
+                <span className="text-xs text-ink-muted">{t('profile.disputeFromTest')}</span>
+              ) : (
+                <Link to={`/bai/${row.lessonId}`} className="text-xs font-medium text-accent hover:underline">
+                  {t('profile.disputeOpenLesson')}
+                </Link>
+              )}
               <button
                 onClick={() => onClear(row.questionId)}
                 className="text-xs font-medium text-ink-muted underline decoration-dotted underline-offset-4 hover:text-ink"

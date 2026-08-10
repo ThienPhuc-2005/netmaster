@@ -103,6 +103,8 @@ Trạng thái: ☐ chờ duyệt · ✅ đã làm · ✗ đã bàn và bỏ (gi�
 - ✅ **I5. Nút "mình nghĩ câu này đúng"** — ĐÃ LÀM (khối 21.11): ghi
   nguyên văn câu người học gõ khi họ tin mình đúng mà app chấm chưa;
   đọc lại ở trang Hồ sơ. Bắt lớp lỗi accept-hẹp bằng chính người học.
+- ✅ **I6. Khiếu nại được ở cả đề thi + sổ đi theo file sao lưu** — ĐÃ
+  LÀM (khối 21.12).
 - ☐ **I2. Chủ đề vấp đẩy thẻ ôn lên sớm** — chủ đề nào cứ quay lại cắn
   thì thẻ khái niệm tương ứng được ưu tiên trong hàng đợi ôn.
 - ☐ **I3. So với chính mình tháng trước** — chụp lại bảng phân tích theo

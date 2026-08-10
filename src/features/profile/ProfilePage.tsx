@@ -129,9 +129,13 @@ export function ProfilePage() {
     ...row,
     prompt:
       modules
-        .flatMap((m) => m.lessons)
-        .flatMap((l) => [...l.steps[3].exercises, ...l.steps[4].questions])
-        .map((e) => e.question)
+        .flatMap((m) => [
+          ...m.masteryTest,
+          ...m.lessons.flatMap((l) => [
+            ...l.steps[3].exercises.map((e) => e.question),
+            ...l.steps[4].questions.map((e) => e.question),
+          ]),
+        ])
         .find((q) => q.id === row.questionId)?.prompt ?? null,
   }))
   const moduleTitles = Object.fromEntries(modules.map((m) => [m.id, m.title]))

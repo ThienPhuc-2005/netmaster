@@ -632,6 +632,23 @@ Buổi capstone: bắt đầu …h — kết thúc …h
     "Xong 21 module, việc nào ở chỗ làm bạn dám nhận ngay?" — …
 ```
 
+### Đọc sổ "mình nghĩ câu này đúng" (bắt buộc, thêm 08-10)
+
+App có nút **"Mình nghĩ câu này đúng"** ở màn phản hồi của câu gõ tay
+(cả trong bài học lẫn màn kết quả bài thi). Người tham gia bấm là app ghi
+lại NGUYÊN VĂN câu họ đã gõ.
+
+- Cuối buổi, mở tab **Hồ sơ → "Câu bạn cho là mình đúng"** và đọc cùng
+  người tham gia: hỏi họ nghĩ câu mình sai ở đâu.
+- Xin họ bấm **Hồ sơ → Xuất ra file** rồi gửi lại file JSON đó — sổ góp
+  ý nằm trong chính file ấy (có test khóa), nên không cần chép tay.
+- Mỗi dòng trong sổ là một nghi vấn **đáp án soạn hẹp hơn cách nói tự
+  nhiên** — lớp lỗi đã trả giá ở khối 21.10. Xử như issue NỘI DUNG: nới
+  danh sách đáp án, đừng bảo người học gõ khác đi.
+- Người tham gia KHÔNG bấm nút lần nào cũng là dữ liệu: hỏi thẳng "có
+  lúc nào bạn thấy mình đúng mà app bảo sai không?" — nhiều người ngại
+  bấm hơn là ngại nói.
+
 ## 14. Sau buổi test
 
 - Mỗi mục RỚT hoặc ghi chú hiểu sai → mở issue nội dung: ghi rõ khái

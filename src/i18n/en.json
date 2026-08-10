@@ -719,6 +719,7 @@
     "disputeTitle": "Answers you believe were right",
     "disputeIntro": "The times you tapped \"I think my answer is right\". Your exact wording is kept so the author can re-check the accepted answers — an answer list that is too narrow is the question's fault, not yours.",
     "disputeAnswer": "You typed: {answer}",
+    "disputeFromTest": "This one came from a module test",
     "disputeOpenLesson": "Reopen the lesson",
     "disputeClear": "Remove this line",
     "memoryTitle": "What your memory is holding",

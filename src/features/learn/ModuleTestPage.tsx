@@ -41,6 +41,7 @@ import { Button } from '../../components/Button'
 import { EmptyState } from '../../components/EmptyState'
 import { QuestionInput } from '../../components/QuestionInput'
 import { AnswerReveal } from '../../components/AnswerReveal'
+import { DisputeButton } from '../../components/DisputeButton'
 
 // `challenge` phải đi THEO LƯỢT THI, không suy lại từ store: nộp xong là
 // lượt vượt bị tiêu, cờ suy từ store lật về false ngay giữa lúc màn kết
@@ -78,6 +79,11 @@ export function ModuleTestPage() {
   const masteryScores = useProgress((s) => s.masteryScores)
   const recordMasteryAttempt = useProgress((s) => s.recordMasteryAttempt)
   const recordChallengeAttempt = useProgress((s) => s.recordChallengeAttempt)
+  // Sổ "mình nghĩ câu này đúng" — câu của BÀI THI không thuộc bài học nào
+  // nên lessonId để trống; trang Hồ sơ hiểu chỗ trống đó là "câu đề thi"
+  // và không dựng link mở bài.
+  const reportDisputed = useProgress((s) => s.reportDisputedAnswer)
+  const disputed = useProgress((s) => s.disputedAnswers)
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
   const [phase, setPhase] = useState<Phase>({ kind: 'idle' })
@@ -322,6 +328,17 @@ export function ModuleTestPage() {
                       ? t('test.reviewHint', { topic: lt(q.hintTopic) })
                       : t('test.reviewHintGeneric')}
                   </p>
+                )}
+                {/* Khiếu nại được NGAY TẠI ĐÂY (khối 21.12): đề thi là chỗ
+                    một danh sách đáp án hẹp gây thiệt hại lớn nhất — nó ăn
+                    thẳng vào con số 85% của cổng mastery. Nút không đổi
+                    điểm lượt thi này (điểm đã chốt lúc nộp), nó chỉ ghi
+                    lại nguyên văn để người soạn bài soi lại. */}
+                {q.kind === 'typed' && response?.kind === 'typed' && (
+                  <DisputeButton
+                    alreadyReported={disputed.some((d) => d.questionId === q.id)}
+                    onReport={() => reportDisputed('', q.id, response.text)}
+                  />
                 )}
               </div>
             ))}

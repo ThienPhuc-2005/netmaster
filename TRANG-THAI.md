@@ -29,8 +29,8 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
 **HAI VIỆC ĐANG TREO, phiên mới cần biết:**
-1. **Khối 21.11 CHƯA COMMIT** — đã commit tới `de460dc` (khối 21.9 +
-   21.10); khối 21.11 (nút "mình nghĩ câu này đúng") đang ở working
+1. **Khối 21.12 CHƯA COMMIT** — đã commit tới `8b3a946` (khối 21.11);
+   khối 21.12 (khiếu nại ở đề thi + sổ theo file sao lưu) đang ở working
    tree. Commit là việc chủ dự án ra lệnh (luật: không tự commit).
 2. **Phiên nền đang sửa hình `Journey`** (5 hình vis-hanh-trinh-* tràn
    viewBox, task riêng của chủ dự án, worktree `.claude/worktrees/…`) —
@@ -1172,6 +1172,34 @@ Còn lại duy nhất:
     mục kèm đề bài và nguyên văn. **Kiểm cả migrate thật**: nạp hồ sơ
     v4 có 420 XP/streak 5/1 thẻ → lên v5, không mất gì. Mobile 375px
     không cuộn ngang, console sạch, dữ liệu kiểm đã xóa.
+
+- **Khối 21.12 XONG (08-10): KHIẾU NẠI ĐƯỢC Ở CẢ ĐỀ THI + SỔ ĐI THEO
+  FILE SAO LƯU** — hai ý nối tiếp khối 21.11, chủ dự án gọi làm luôn.
+  - Nút "Mình nghĩ câu này đúng" tách thành component dùng chung
+    (`components/DisputeButton.tsx`) và có mặt ở **màn kết quả bài thi**
+    cho mọi câu gõ tay trả lời sai. Đây mới là chỗ một danh sách đáp án
+    hẹp gây thiệt hại lớn nhất: nó ăn thẳng vào con số 85% của cổng
+    mastery. Nút KHÔNG đổi điểm lượt thi (điểm chốt lúc nộp) — test khóa
+    cả masteryScores lẫn passedModules đứng nguyên sau khi bấm.
+  - Câu đề thi không thuộc bài học nào nên `lessonId` để TRỐNG; trang Hồ
+    sơ hiểu chỗ trống đó là "câu đề thi cuối module" và không dựng link
+    chết. Phần tra đề bài mở rộng để soi cả pool thi.
+  - **File sao lưu vốn đã mang sổ góp ý** (nút xuất sao lưu trọn key
+    `netmaster-progress`) — nhưng chuyện đó chưa có gì gác. Giờ có test:
+    bấm Xuất ra file thì nội dung file phải chứa id câu + nguyên văn câu
+    người học gõ. Mất chỗ này là buổi test người thật mất sạch góp ý mà
+    không ai biết.
+  - `KICH-BAN-TEST.md` mục 13 thêm phần **"Đọc sổ mình-nghĩ-tôi-đúng"**:
+    cuối buổi mở Hồ sơ đọc cùng người tham gia, xin file JSON, và coi mỗi
+    dòng là một nghi vấn accept-hẹp (issue NỘI DUNG, không bảo người học
+    gõ khác đi). Không bấm lần nào cũng là dữ liệu — phải hỏi thẳng.
+  - 1313/1313 test xanh (+7), typecheck sạch, build qua. Kiểm browser
+    thật: thi Module 1 sai hết → 6 nút khiếu nại hiện đúng ở 6 câu gõ
+    tay, bấm một cái thì store ghi `lessonId: ""` + nguyên văn, điểm thi
+    vẫn 0 và chưa đậu module nào; Hồ sơ hiện đúng dòng kèm chữ "Câu này ở
+    đề thi cuối module"; bấm Xuất ra file thì nội dung file có đủ id câu
+    và câu đã gõ. Mobile 375px không cuộn ngang, console sạch, dữ liệu
+    kiểm đã xóa.
 
 Cập nhật: 2026-08-10. File này chỉ để nắm nhanh tình hình khi mở lại dự
 án. Nguồn chân lý: `SPEC-APP-HOC-MANG.md` (M1-12) và

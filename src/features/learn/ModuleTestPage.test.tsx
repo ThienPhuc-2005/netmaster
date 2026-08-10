@@ -300,3 +300,36 @@ describe('chế độ thi vượt (?vuot=1)', () => {
   })
 
 })
+
+describe('khiếu nại đáp án ngay ở màn kết quả thi (khối 21.12)', () => {
+  // Đề thi là chỗ một danh sách đáp án hẹp gây thiệt hại lớn nhất: nó ăn
+  // thẳng vào con số 85% của cổng mastery. Nhưng nút chỉ GHI LẠI — điểm
+  // lượt thi đã chốt lúc nộp và không được đổi.
+  it('câu gõ tay trả lời sai → có nút; bấm thì ghi nguyên văn, KHÔNG đổi điểm', () => {
+    const first = modules[0]!
+    openTestFor(first.id)
+    fireEvent.click(screen.getByRole('button', { name: 'Bắt đầu' }))
+    walkTest(first, 'fail')
+
+    const scoreBefore = useProgress.getState().masteryScores[first.id]
+    const buttons = screen.getAllByRole('button', { name: /Mình nghĩ câu này đúng/ })
+    expect(buttons.length, 'đề nào cũng có ít nhất một câu gõ tay').toBeGreaterThan(0)
+    fireEvent.click(buttons[0]!)
+
+    const after = useProgress.getState()
+    expect(after.disputedAnswers).toHaveLength(1)
+    expect(after.disputedAnswers[0]!.answer).toBe('trả lời sai có chủ đích')
+    // Câu đề thi không thuộc bài học nào — chỗ trống đó là dấu hiệu, không phải lỗi.
+    expect(after.disputedAnswers[0]!.lessonId).toBe('')
+    expect(after.masteryScores[first.id]).toBe(scoreBefore)
+    expect(after.passedModules).toEqual([])
+  })
+
+  it('không mời khiếu nại câu đã trả lời ĐÚNG', () => {
+    const first = modules[0]!
+    openTestFor(first.id)
+    fireEvent.click(screen.getByRole('button', { name: 'Bắt đầu' }))
+    walkTest(first, 'pass')
+    expect(screen.queryByRole('button', { name: /Mình nghĩ câu này đúng/ })).toBeNull()
+  })
+})
