@@ -8,8 +8,9 @@ import { BookOpen, Check, FastForward, GraduationCap, Lock, Play, RotateCcw, Ser
 import { loadModules, lessonsInOrder } from '../../content'
 import { computeModuleStatuses } from '../../engine/masteryGate'
 import { moduleXpTotal } from '../../engine/xp'
+import { LESSON_STEP_COUNT, planToday, type TodayPlan } from '../../engine/todayPlan'
 import type { Lesson, Module } from '../../engine/contentSchema'
-import { canChallengeModule, newLessonGate, shouldReviewFirst, todayIso, useProgress } from '../../store/progress'
+import { canChallengeModule, newLessonGate, todayIso, useProgress } from '../../store/progress'
 import { useT } from '../../i18n'
 import { EmptyState } from '../../components/EmptyState'
 import { ProgressBar } from '../../components/ProgressBar'
@@ -45,6 +46,105 @@ function StreakStoryBanner() {
         <X size={15} aria-hidden />
       </button>
     </div>
+  )
+}
+
+/**
+ * Thẻ "Hôm nay" (kho ý tưởng E1 + E2) — MỘT việc để bấm ngay khi mở app.
+ *
+ * Vì sao đứng đầu trang: app có 21 module, người học quay lại ngày thứ
+ * hai phải cuộn đi tìm module nào đang mở, bài nào dở, còn thẻ nào chưa
+ * ôn. Mỗi lần phải quyết định là một lần có thể bỏ cuộc.
+ *
+ * Thẻ này THAY LUÔN banner "nợ ôn" cũ: hai hộp cùng nói "vào ôn tập" đặt
+ * cạnh nhau là nhiễu. Trạng thái chặn-học-mới vẫn được kể nguyên vẹn,
+ * chỉ dời vào đây.
+ *
+ * Nó KHÔNG mở đường tắt nào: mọi đích đến đều là chỗ người học vốn đã
+ * vào được (planToday chỉ đọc, không nới luật).
+ */
+function TodayCard({ plan }: { plan: TodayPlan }) {
+  const t = useT()
+
+  // Việc chính: mỗi focus một đích, một nhãn nút.
+  const action = ((): { to: string; label: string } | null => {
+    switch (plan.focus) {
+      case 'review':
+        return { to: '/on-tap', label: t('today.actionReview') }
+      case 'resume':
+        return plan.resume === null ? null : { to: `/bai/${plan.resume.lessonId}`, label: t('today.actionResume') }
+      case 'new':
+        return plan.nextNew === null ? null : { to: `/bai/${plan.nextNew.lessonId}`, label: t('today.actionNew') }
+      case 'test':
+        return plan.nextTest === null ? null : { to: `/kiem-tra/${plan.nextTest.moduleId}`, label: t('today.actionTest') }
+      case 'done':
+        return null
+    }
+  })()
+
+  // Các dòng kể "hôm nay có gì" — thứ tự đúng thứ tự nên làm.
+  const lines: string[] = []
+  if (plan.dueCount > 0) lines.push(t('today.partCards', { count: plan.dueCount }))
+  if (plan.resume !== null) {
+    lines.push(
+      t('today.partResume', {
+        lesson: lt(plan.resume.lesson.missionTitle),
+        // Bước ĐANG đứng dễ hình dung hơn "còn mấy bước", và tránh luôn
+        // chuyện số ít/số nhiều của bản tiếng Anh.
+        step: LESSON_STEP_COUNT - plan.resume.stepsLeft + 1,
+        total: LESSON_STEP_COUNT,
+      }),
+    )
+  } else if (plan.nextTest !== null) {
+    lines.push(t('today.partTest', { module: lt(plan.nextTest.module.title) }))
+  } else if (plan.nextNew !== null && !plan.newLessonBlocked) {
+    lines.push(t('today.partNew', { lesson: lt(plan.nextNew.lesson.missionTitle) }))
+  }
+
+  return (
+    <section
+      aria-labelledby="today-title"
+      className="mb-6 rounded-md border border-accent/30 bg-panel px-5 py-4"
+    >
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+        <Sunrise size={18} aria-hidden className="shrink-0 text-accent" />
+        <h2 id="today-title" className="flex-1 text-sm font-bold uppercase tracking-wide text-ink">
+          {t('today.title')}
+        </h2>
+        {plan.focus !== 'done' && (
+          <span className="font-mono text-xs font-medium text-ink-muted">
+            {t('today.minutes', { minutes: plan.minutes })}
+          </span>
+        )}
+      </div>
+
+      {plan.focus === 'done' ? (
+        <p className="mt-2 text-sm text-ink-muted">{t('today.doneBody')}</p>
+      ) : (
+        <ul className="mt-2 flex flex-col gap-1">
+          {lines.map((line, i) => (
+            <li key={i} className="text-sm text-ink">
+              {line}
+            </li>
+          ))}
+        </ul>
+      )}
+
+      {/* Nợ quá trần: nói thật là bài MỚI đang khóa, ngay tại chỗ mời ôn —
+          không để người học bấm vào bài mới rồi mới đâm vào cửa khóa. */}
+      {plan.newLessonBlocked && (
+        <p className="mt-2 text-sm text-warn">{t('learn.overdueBlockBody', { count: plan.dueCount })}</p>
+      )}
+
+      {action !== null && (
+        <Link
+          to={action.to}
+          className="mt-3 inline-block rounded-md bg-accent px-4 py-2 text-sm font-semibold text-accent-contrast transition-colors duration-(--dur) hover:brightness-110"
+        >
+          {action.label}
+        </Link>
+      )}
+    </section>
   )
 }
 
@@ -298,15 +398,15 @@ export function LearnPage() {
   const modules = loadModules()
   const passedModules = useProgress((s) => s.passedModules)
   const reviewCards = useProgress((s) => s.reviewCards)
-  const lastReviewDate = useProgress((s) => s.lastReviewDate)
+  const completedLessons = useProgress((s) => s.completedLessons)
+  const lessonRuntimes = useProgress((s) => s.lessonRuntimes)
 
   const today = todayIso()
   const statuses = computeModuleStatuses(
     modules.map((m) => m.id),
     new Set(passedModules),
   )
-  const gate = newLessonGate(reviewCards, today)
-  const reviewPending = shouldReviewFirst(reviewCards, lastReviewDate, today)
+  const plan = planToday({ modules, passedModules, completedLessons, lessonRuntimes, reviewCards, today })
 
   if (modules.length === 0) {
     return (
@@ -323,18 +423,7 @@ export function LearnPage() {
 
       <StreakStoryBanner />
 
-      {(reviewPending || !gate.allowed) && (
-        <div className="mb-6 flex items-start gap-3 rounded-md border border-warn/40 bg-panel px-4 py-3 text-sm">
-          <BookOpen size={17} aria-hidden className="mt-0.5 shrink-0 text-warn" />
-          <div className="flex-1">
-            <p className="font-semibold text-ink">{t('learn.overdueBlockTitle')}</p>
-            {!gate.allowed && <p className="mt-0.5 text-ink-muted">{t('learn.overdueBlockBody', { count: gate.overdue })}</p>}
-          </div>
-          <Link to="/on-tap" className="shrink-0 text-sm font-semibold text-accent hover:underline">
-            {t('learn.goReview')}
-          </Link>
-        </div>
-      )}
+      <TodayCard plan={plan} />
 
       <div className="flex flex-col gap-6">
         {modules.map((m) => (

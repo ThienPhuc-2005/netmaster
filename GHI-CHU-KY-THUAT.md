@@ -347,6 +347,16 @@ quan trước khi "sửa test cho xanh".
 - Điều hướng: mở app còn thẻ đến hạn → vào Ôn tập trước (gate ở
   main.tsx, quyết định trong effect SAU khi zustand rehydrate). AppGate
   chặn mọi route tới khi `onboardingDone` VÀ nội dung prime xong.
+- **Thẻ "Hôm nay" đầu trang Học** (`planToday` — engine thuần): nó chỉ
+  TRỎ tới việc người học vốn đã vào được, KHÔNG nới luật nào — mastery
+  gate, mở bài tuần tự và trần nợ ôn vẫn do engine cũ quyết. Thứ tự ưu
+  tiên: ôn (còn thẻ đến hạn) → bài dở (Zeigarnik) → thi cuối module →
+  bài mới. Nợ quá trần thì KHÔNG mời bài mới, chỉ mời ôn kèm lời nói
+  thật. Thẻ này đã THAY banner nợ-ôn cũ; đừng dựng lại banner thứ hai.
+- **Luật "bài này sinh thẻ ôn nào" viết một lần** ở
+  `newCardIdsForLesson` (reviewQueue): store gọi lúc tạo thẻ thật, màn
+  tổng kết bài gọi để hứa trước con số. Chép luật sang UI là mở đường
+  cho hai chỗ trôi lệch rồi con số trên màn hình thành lời hứa sai.
 - **Nút "Dùng cửa sổ này" của SingleWindowGuard phải `location.reload()`**,
   không được chỉ mở khóa: cửa sổ bị chặn giữ state RAM cũ từ lúc mount —
   mở khóa suông là action đầu tiên persist bản cũ đè lên tiến độ vừa học

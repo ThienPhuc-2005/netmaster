@@ -29,10 +29,10 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
 **HAI VIỆC ĐANG TREO, phiên mới cần biết:**
-1. **Khối 20.3 (lượt dọn P2) CHƯA COMMIT** — các đợt trước đã commit tới
-   `1d04c0b`; lượt dọn 52 P2 (08-10) đang nằm ở working tree. Commit là
-   việc chủ dự án ra lệnh (luật: không tự commit); folder nằm trong
-   OneDrive nên chưa commit là chưa có bản sao lịch sử tử tế.
+1. **Khối 21.1 (thẻ "Hôm nay") CHƯA COMMIT** — lượt dọn P2 đã commit
+   (`959e70c`); khối 21.1 đang nằm ở working tree. Commit là việc chủ dự
+   án ra lệnh (luật: không tự commit); folder nằm trong OneDrive nên
+   chưa commit là chưa có bản sao lịch sử tử tế.
 2. **Phiên nền đang sửa hình `Journey`** (5 hình vis-hanh-trinh-* tràn
    viewBox, task riêng của chủ dự án, worktree `.claude/worktrees/…`) —
    ĐỪNG đụng component Journey trong `ConceptVisual.tsx` cho tới khi
@@ -814,6 +814,40 @@ Còn lại duy nhất:
     dấu ^ căn đúng cột dưới token hỏng trên /design; bảng trunk in đủ 4
     mục; drill VLSM chặn Enter khi thiếu ô, lưu bài dở và "Làm tiếp
     phiên đang dở" khôi phục đúng ô đã điền. Dữ liệu kiểm thử đã xóa.
+
+- **Khối 21.1 XONG (08-10): thẻ "HÔM NAY" — ý đầu tiên lấy từ kho.**
+  Biên bản hội đồng đã sạch nên lượt này mở `Y-TUONG.md`; chủ dự án giao
+  tự chọn, chọn cụm "vòng quay lại app" (E1 + E2 + A5) vì app đủ nội
+  dung rồi, mắt xích yếu nhất là khoảnh khắc MỞ APP.
+  - **Dọn kho trước**: 3 ý đang ghi "chờ duyệt" thực ra đã làm xong từ
+    các khối trước — E4 (sao lưu một cú bấm), F2 (cắt nhỏ gói nội dung),
+    G1 (phòng khám hai terminal). Đã kiểm chứng bằng code rồi đánh dấu ✅
+    kèm khối nào làm; kho giờ nói thật (còn 18 ý chờ).
+  - **`src/engine/todayPlan.ts`** (thuần TS, 9 test): suy MỘT kế hoạch từ
+    dữ liệu sẵn có. Thứ tự ưu tiên là ôn → bài dở → thi cuối module →
+    bài mới. Hai luật giữ cho nó không phá cơ chế học, đã khai đầu file:
+    (a) KHÔNG tạo đường tắt — chỉ trỏ tới việc người học vốn vào được,
+    mastery gate/mở bài tuần tự/trần nợ ôn vẫn do engine cũ quyết;
+    (b) ôn trước học sau, nợ quá trần thì không mời bài mới mà nói thật.
+  - **Thẻ "Hôm nay" đầu trang Học**: nói hôm nay có gì (thẻ đến hạn ·
+    bài dở kèm "bước 4/6" · bài mới · thi) + "≈ N phút" + MỘT nút. Nó
+    THAY luôn banner nợ-ôn cũ — hai hộp cùng nói "vào ôn tập" là nhiễu.
+    Bài dở thắng bài mới (Zeigarnik); mở bài ra xem rồi thoát ngay
+    (bước 0) không tính là dở.
+  - **A5 hóa ra đã làm 80%** (màn tổng kết bước 6 vốn có "học được gì" +
+    XP + hé lộ bài sau). Làm nốt hai vế còn thiếu của ý: **tự giải được
+    N/M bài** (bài phải mở lời giải không tính — cùng thước đo với drill)
+    và **N thẻ mới vào Hộp ôn tập**.
+  - **Luật sinh thẻ giờ viết MỘT LẦN**: `newCardIdsForLesson` ở
+    reviewQueue — store gọi lúc tạo thẻ thật, màn tổng kết gọi để hứa
+    trước. Kiểm browser xác nhận con số hứa khớp con số thật (hứa 1 thẻ
+    → tạo đúng 1 thẻ `goi-tin`).
+  - 1186/1186 test xanh (+9), typecheck sạch, build qua. Kiểm browser
+    thật đủ 5 trạng thái của thẻ: người học mới (trỏ bài 1) · bài dở
+    ("bước 4/6", ≈10 phút) · có 12 thẻ đến hạn (ôn đứng trước, vẫn nói
+    ôn xong còn gì) · nợ 35 thẻ (chỉ mời ôn, KHÔNG mời bài mới, kèm lời
+    nói thật) · màn tổng kết ("2/3 bài", "1 thẻ mới"). Mobile 375px
+    không cuộn ngang (375/375), console sạch. Dữ liệu kiểm đã xóa.
 
 Cập nhật: 2026-08-10. File này chỉ để nắm nhanh tình hình khi mở lại dự
 án. Nguồn chân lý: `SPEC-APP-HOC-MANG.md` (M1-12) và

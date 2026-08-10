@@ -71,6 +71,19 @@
     "vlsmCardTitle": "VLSM design practice",
     "vlsmCardBody": "5 range-carving problems a day — correct, complete, no waste."
   },
+  "today": {
+    "title": "Today",
+    "minutes": "≈ {minutes} min",
+    "partCards": "Review due: {count}",
+    "partResume": "Continue: {lesson} — step {step} of {total}",
+    "partNew": "New lesson: {lesson}",
+    "partTest": "Module test: {module}",
+    "actionReview": "Go to review",
+    "actionResume": "Keep going",
+    "actionNew": "Start the lesson",
+    "actionTest": "Take the test",
+    "doneBody": "Nothing is due today and you have reached the end of the road so far. Resting is part of remembering — see you tomorrow."
+  },
   "test": {
     "title": "Module test",
     "intro": "{count} questions, {threshold}% needed to unlock the next module. No hints mid-test — this is where the knowledge stands on its own. Missing is fine: retake as many times as you like.",
@@ -134,6 +147,10 @@
     "selfExplainPassed": "You explained it in your own words — that's how it really sticks!",
     "summaryTitle": "What you learned today",
     "summaryNextLabel": "Coming up next",
+    "summarySelfSolvedLabel": "Solved on your own",
+    "summarySelfSolved": "{solved}/{total}",
+    "summaryNewCardsLabel": "Into the review box",
+    "summaryNewCards": "New cards: {count}",
     "finishLesson": "Finish lesson",
     "xpGained": "+{xp} XP",
     "backToLearn": "Back to Learn",

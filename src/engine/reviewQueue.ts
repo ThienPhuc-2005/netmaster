@@ -16,7 +16,10 @@
 // mutates its inputs.
 
 import type { ISODate, ReviewCard } from './types'
+import type { Lesson, Module } from './contentSchema'
 import { isBefore, isOnOrBefore } from './dates'
+import { conceptIdsInLesson, palaceRoomsInLesson } from './contentPure'
+import { palaceCardId } from './palace/cards'
 
 /** Trần số thẻ mỗi phiên ôn (spec 2.2: "tối đa 15 thẻ/phiên"). */
 export const SESSION_CAP = 15
@@ -27,6 +30,32 @@ export const OVERDUE_BLOCK_THRESHOLD = 30
 /** Thẻ ĐẾN HẠN: dueDate <= hôm nay — thẻ đến hạn đúng hôm nay cũng phải ôn. */
 export function dueCards(cards: ReviewCard[], today: ISODate): ReviewCard[] {
   return cards.filter((c) => isOnOrBefore(c.dueDate, today))
+}
+
+/**
+ * Học xong bài này thì Hộp ôn tập nhận thêm những thẻ nào.
+ *
+ * Luật (spec 2.2) chỉ được viết MỘT LẦN ở đây vì hai nơi cùng cần nó:
+ * store lúc thật sự tạo thẻ, và màn tổng kết bài lúc hứa trước với
+ * người học "bài này cho bạn N thẻ mới". Chép luật sang UI là mở đường
+ * cho hai chỗ trôi lệch rồi con số trên màn hình thành lời hứa sai.
+ *
+ * Ba vế của luật: mỗi khái niệm được DẠY trong bài sinh đúng một thẻ;
+ * khái niệm meta khai `noFlashcard` không bao giờ vào hộp; khái niệm đã
+ * có thẻ (dạy lại ở bài khác) giữ nguyên lịch ôn cũ, không sinh thẻ
+ * trùng. Phòng cung điện đã đi xem cũng là một thẻ, mỗi phòng một thẻ.
+ */
+export function newCardIdsForLesson(
+  module: Pick<Module, 'concepts'>,
+  lesson: Lesson,
+  existingCardIds: ReadonlySet<string>,
+): string[] {
+  const skipFlashcard = new Set(module.concepts.filter((c) => c.noFlashcard === true).map((c) => c.id))
+  const concepts = conceptIdsInLesson(lesson).filter((id) => !existingCardIds.has(id) && !skipFlashcard.has(id))
+  const rooms = palaceRoomsInLesson(lesson)
+    .map(palaceCardId)
+    .filter((id) => !existingCardIds.has(id))
+  return [...concepts, ...rooms]
 }
 
 /**

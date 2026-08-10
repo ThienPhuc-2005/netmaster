@@ -22,9 +22,11 @@ Trạng thái: ☐ chờ duyệt · ✅ đã làm · ✗ đã bàn và bỏ (gi�
 - ☐ **A4. "Bạn của 3 tuần trước"** — khi ôn thẻ cũ: "lần đầu gặp câu
   này bạn sai 2 lần, giờ thử xem". Cảm giác tiến bộ đo được giữ người
   học lâu hơn điểm số.
-- ☐ **A5. Tổng kết phiên học** — học xong một phiên hiện màn 5 giây:
-  vừa học gì, đúng bao nhiêu, sinh mấy thẻ mới. Kết thúc có "cửa đóng"
-  đàng hoàng thay vì trôi tuột (hiệu ứng peak-end).
+- ✅ **A5. Tổng kết phiên học** — ĐÃ LÀM (khối 21.1). Màn tổng kết bước 6
+  vốn đã kể "vừa học gì" + XP + hé lộ bài sau; bổ sung nốt hai con số của
+  cửa đóng: **tự giải được N/M bài** (không tính bài phải mở lời giải) và
+  **N thẻ mới vào Hộp ôn tập** (đọc chung `newCardIdsForLesson` với store
+  nên con số hứa không lệch con số thật).
 - ☐ **A6. Nhắc nghỉ đúng lúc** — học liên tục ~25 phút thì nhắc nhẹ
   "não cần vài phút để đóng gói thứ vừa học". Tắt được trong cài đặt.
 
@@ -56,36 +58,34 @@ Trạng thái: ☐ chờ duyệt · ✅ đã làm · ✗ đã bàn và bỏ (gi�
 
 ## E. UX hành vi
 
-- ☐ **E1. Mở app vào thẳng chỗ dở** — card "Học tiếp bài X — còn 2
-  bước" ngay đầu trang Học. Giảm ma sát từ mở-app tới học-thật xuống
-  một cú bấm.
-- ☐ **E2. Kế hoạch hôm nay** — "hôm nay: 12 thẻ ôn + 1 bài mới ≈ 15
-  phút" — người học không phải quyết định gì, bấm là chạy (giảm tê liệt
-  lựa chọn).
+- ✅ **E1 + E2. Thẻ "Hôm nay"** — ĐÃ LÀM (khối 21.1): một thẻ đầu trang
+  Học nói hôm nay có gì (thẻ ôn đến hạn · bài đang dở kèm bước mấy/6 ·
+  bài mới · thi cuối module) kèm ước lượng "≈ N phút" và MỘT nút cho
+  việc đáng làm trước nhất. Engine `todayPlan.ts` thuần TS; thẻ này thay
+  luôn banner nợ-ôn cũ.
 - ☐ **E3. Bàn phím một tay cho desktop** — phím 1/2/3 chọn trắc nghiệm,
   Enter nộp, mũi tên đi cung điện. Tốc độ tạo dòng chảy.
-- ☐ **E4. Sao lưu một cú bấm** — nút xuất tiến độ ra file + nhập lại.
-  localStorage là thứ dễ bay nhất trần đời; người học mất 3 tuần tiến
-  độ là app mất luôn người học.
+- ✅ **E4. Sao lưu một cú bấm** — ĐÃ LÀM (hội đồng v1, ghế dữ liệu):
+  tab Hồ sơ có nút xuất/nhập file JSON 3 key localStorage; cửa nhập siết
+  thêm ở khối 20.3 (chặn file từ bản app mới hơn).
 
 ## F. Kỹ thuật nền
 
 - ☐ **F1. Cài như app thật (PWA)** — manifest + service worker. App vốn
   đã offline được, chỉ thiếu tấm áo để nằm trên màn hình chính điện
   thoại.
-- ☐ **F2. Cắt nhỏ gói nội dung** — bundle content đang ~800kB một cục
-  (build đang cảnh báo); tách theo module, vào bài nào tải bài đó → mở
-  app lần đầu nhanh hơn hẳn.
+- ✅ **F2. Cắt nhỏ gói nội dung** — ĐÃ LÀM (khối 20.2): glob non-eager,
+  21 module = 21 chunk riêng, `primeModules()` nạp sau cổng AppGate; kèm
+  dời zod khỏi PROD. Khởi động ~530KB → ~215KB gzip.
 - ☐ **F3. Ảnh chụp tiến độ tự động** — định kỳ tự lưu snapshot tiến độ
   (xoay vòng vài bản). Migrate lỡ hỏng còn đường lùi.
 
 ## G. Việc spec đã hứa nhưng chưa tới lượt
 
-- ☐ **G1. Phòng khám hai terminal** — spec v2 mục 4.2 đã hứa: ca bệnh
-  trung cấp khám bằng CẢ terminal Windows (máy con) lẫn console thiết
-  bị (switch/router) trên cùng một mạng sống. Đây là mảnh ghép để ca
-  bệnh M18-21 "thật" hẳn. (Capstone đã xong mà chưa cần tới — giờ nó
-  là nâng cấp chất lượng, không còn là điều kiện.)
+- ✅ **G1. Phòng khám hai terminal** — ĐÃ LÀM (khối 20.2): cờ
+  `deviceConsole: true` cấp console thiết bị CHỈ-ĐỌC cạnh terminal
+  Windows (`ClinicDeviceConsole`); hai ca liên tầng M21 dùng nó, nửa
+  bệnh lớp 2 giờ KHÁM được thay vì đoán bằng loại trừ.
 
 ## H. Ý sinh ra trong lúc làm Phần D-E (08-09)
 

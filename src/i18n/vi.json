@@ -71,6 +71,19 @@
     "vlsmCardTitle": "Luyện thiết kế VLSM",
     "vlsmCardBody": "5 đề chia dải cho các phòng ban mỗi ngày — đúng, đủ, không phí đất."
   },
+  "today": {
+    "title": "Hôm nay",
+    "minutes": "≈ {minutes} phút",
+    "partCards": "Ôn tập đến hạn: {count} thẻ",
+    "partResume": "Học tiếp: {lesson} — bước {step}/{total}",
+    "partNew": "Bài mới: {lesson}",
+    "partTest": "Thi cuối module: {module}",
+    "actionReview": "Vào ôn tập",
+    "actionResume": "Học tiếp",
+    "actionNew": "Bắt đầu bài mới",
+    "actionTest": "Vào thi",
+    "doneBody": "Hôm nay không còn thẻ đến hạn và bạn đã đi hết chặng đường hiện có. Nghỉ cũng là một phần của việc nhớ — mai quay lại nhé."
+  },
   "test": {
     "title": "Bài kiểm tra module",
     "intro": "{count} câu, cần đạt {threshold}% để mở module sau. Không có gợi ý giữa chừng — đây là lúc kiến thức tự đứng trên chân nó. Sai cũng không sao: thi lại bao nhiêu lần cũng được.",
@@ -134,6 +147,10 @@
     "selfExplainPassed": "Bạn tự giải thích được rồi — đó là cách nhớ chắc nhất!",
     "summaryTitle": "Hôm nay bạn học được",
     "summaryNextLabel": "Hé lộ bài sau",
+    "summarySelfSolvedLabel": "Tự giải được",
+    "summarySelfSolved": "{solved}/{total} bài",
+    "summaryNewCardsLabel": "Vào Hộp ôn tập",
+    "summaryNewCards": "{count} thẻ mới",
     "finishLesson": "Hoàn thành bài",
     "xpGained": "+{xp} XP",
     "backToLearn": "Về trang Học",

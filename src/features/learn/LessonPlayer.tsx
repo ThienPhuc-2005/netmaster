@@ -15,6 +15,7 @@ import { canAdvance, currentStepType, type LessonRuntime } from '../../engine/le
 import { XP_AMOUNTS } from '../../engine/xp'
 import type { Exercise, Lesson, Module } from '../../engine/contentSchema'
 import { SELF_EXPLAIN_ANSWER_KEY, newLessonGate, practiceDraftKey, todayIso, useProgress } from '../../store/progress'
+import { newCardIdsForLesson } from '../../engine/reviewQueue'
 import { AnswerReveal } from '../../components/AnswerReveal'
 import { useT } from '../../i18n'
 import { playEarcon } from '../../audio/earcons'
@@ -557,9 +558,26 @@ function SummaryView({ module, lesson, runtime }: StepProps) {
   const navigate = useNavigate()
   const advanceLesson = useProgress((s) => s.advanceLesson)
   const completedLessons = useProgress((s) => s.completedLessons)
+  const reviewCards = useProgress((s) => s.reviewCards)
   const summary = lesson.steps[5]
   const firstTime = completedLessons[lesson.id] === undefined
   const celebrated = useRef(false)
+
+  /**
+   * Hai con số của "cửa đóng" (kho ý tưởng A5): tự giải được mấy bài, và
+   * bài này bỏ vào Hộp ôn tập mấy thẻ mới.
+   *
+   * "Tự giải được" = giải xong mà KHÔNG phải mở lời giải — cùng thước đo
+   * với drill (correct = chưa lộ đáp án). Đếm cả bài tập lẫn câu nhớ lại.
+   *
+   * Số thẻ đọc từ `newCardIdsForLesson` — đúng hàm store dùng lúc thật sự
+   * tạo thẻ, nên con số hứa ở đây không bao giờ lệch con số thật.
+   */
+  const attempts = Object.values(runtime.exercises)
+  const selfSolved = attempts.filter((a) => a.solved && !a.usedSolution).length
+  const newCardCount = firstTime
+    ? newCardIdsForLesson(module, lesson, new Set(reviewCards.map((c) => c.conceptId))).length
+    : 0
 
   // Hợp âm ăn mừng khi màn tổng kết hiện ra (peak-end) — một lần duy nhất.
   useEffect(() => {
@@ -608,6 +626,27 @@ function SummaryView({ module, lesson, runtime }: StepProps) {
           </li>
         ))}
       </ul>
+      {/* Cửa đóng của phiên (A5): hai con số nói bạn vừa làm được gì và
+          mang về được gì — không có chúng thì màn tổng kết chỉ kể lại bài,
+          không kể lại CÔNG của người học. */}
+      {attempts.length > 0 && (
+        <dl className="flex flex-wrap gap-x-8 gap-y-2 rounded-md border border-edge bg-panel px-4 py-3 text-sm">
+          <div>
+            <dt className="text-xs text-ink-muted">{t('lesson.summarySelfSolvedLabel')}</dt>
+            <dd className="font-mono font-semibold text-ink">
+              {t('lesson.summarySelfSolved', { solved: selfSolved, total: attempts.length })}
+            </dd>
+          </div>
+          {newCardCount > 0 && (
+            <div>
+              <dt className="text-xs text-ink-muted">{t('lesson.summaryNewCardsLabel')}</dt>
+              <dd className="font-mono font-semibold text-ink">
+                {t('lesson.summaryNewCards', { count: newCardCount })}
+              </dd>
+            </div>
+          )}
+        </dl>
+      )}
       <div className="rounded-md border border-accent/30 bg-panel px-4 py-3 text-sm">
         <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-accent">{t('lesson.summaryNextLabel')}</p>
         <p className="text-ink-muted">{lt(summary.nextTeaser)}</p>

@@ -25,7 +25,6 @@ import {
   advance,
   answerPretest,
   canAdvance,
-  conceptsLearned,
   confirmSelfExplainRead,
   currentStepType,
   seeNextTeachScreen,
@@ -42,7 +41,7 @@ import type { CliOutcome, CliState } from '../engine/cli'
 import { matchKeywords, type KeywordMatchResult } from '../engine/grading/keywordMatch'
 import { createCard, reviewCard } from '../engine/sm2'
 import { computeModuleStatuses, evaluateModuleTest, type ModuleTestEvaluation } from '../engine/masteryGate'
-import { canStartNewLesson, dueCards, overdueCount } from '../engine/reviewQueue'
+import { canStartNewLesson, dueCards, newCardIdsForLesson, overdueCount } from '../engine/reviewQueue'
 import { initialStreak, recordQualifyingActivity } from '../engine/streak'
 import { pushAnswer } from '../engine/answerHistory'
 import { xpFor } from '../engine/xp'
@@ -505,23 +504,15 @@ export const useProgress = create<ProgressState>()(
           if (next.completed && firstCompletion) {
             const today = todayIso()
             set((s) => {
-              // Mỗi concept học xong sinh đúng MỘT thẻ vào Hộp ôn tập
-              // (spec 2.2); concept đã có thẻ (dạy lại ở bài khác) giữ
-              // nguyên lịch ôn; concept khai noFlashcard (khái niệm meta)
-              // không bao giờ vào hộp.
+              // Luật "bài này sinh thẻ nào" viết MỘT LẦN ở engine
+              // (newCardIdsForLesson) — màn tổng kết bài hứa trước con số
+              // này với người học, hai nơi phải đọc cùng một luật.
               const existing = new Set(s.reviewCards.map((c) => c.conceptId))
-              const skipFlashcard = new Set(module.concepts.filter((c) => c.noFlashcard === true).map((c) => c.id))
-              const fresh = conceptsLearned(lesson)
-                .filter((cid) => !existing.has(cid) && !skipFlashcard.has(cid))
-                .map((cid) => createCard(cid, module.id, today))
-              // Phòng cung điện đã đi xem cũng vào Hộp ôn tập, mỗi phòng
-              // một thẻ (spec Module 5: "Port cũng vào Spaced Repetition").
-              const freshRooms = palaceRoomsInLesson(lesson)
-                .map(palaceCardId)
-                .filter((cardId) => !existing.has(cardId))
-                .map((cardId) => createCard(cardId, module.id, today))
+              const fresh = newCardIdsForLesson(module, lesson, existing).map((id) =>
+                createCard(id, module.id, today),
+              )
               return {
-                reviewCards: [...s.reviewCards, ...fresh, ...freshRooms],
+                reviewCards: [...s.reviewCards, ...fresh],
                 completedLessons: { ...s.completedLessons, [lesson.id]: today },
               }
             })
