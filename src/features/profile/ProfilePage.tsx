@@ -10,10 +10,10 @@ import type { LucideIcon } from 'lucide-react'
 import { useT } from '../../i18n'
 import { PROGRESS_PERSIST_VERSION, todayIso, useProgress } from '../../store/progress'
 import { loadModules } from '../../content'
-import { weakSpots, weeklyActivity } from '../../engine/mistakeLog'
+import { analyzeMistakes, weakSpots, weeklyActivity } from '../../engine/mistakeLog'
 import { Button } from '../../components/Button'
 import { milestones } from '../graduation/milestones'
-import { MemoryMap, WeakSpotList, WeeklyRhythm } from './LearningInsights'
+import { MemoryMap, MistakeAnalysisCard, WeakSpotList, WeeklyRhythm } from './LearningInsights'
 import { memoryByModule } from '../../engine/freshness'
 
 /**
@@ -118,6 +118,9 @@ export function ProfilePage() {
   // dữ liệu đã có, không thêm trường persist nào.
   const modules = loadModules()
   const spots = weakSpots(modules, lessonRuntimes)
+  // Phân tích chỗ hay sai (khối 21.8): vấp theo KIỂU nào, không chỉ câu nào.
+  const analysis = analyzeMistakes(modules, lessonRuntimes)
+  const moduleTitles = Object.fromEntries(modules.map((m) => [m.id, m.title]))
   // Bản đồ trí nhớ (kho A1): độ tươi theo module, chỉ đọc dữ liệu SM-2.
   const memoryRows = memoryByModule(reviewCards, todayIso(), modules.map((m) => m.id)).map((row) => ({
     ...row,
@@ -150,6 +153,7 @@ export function ProfilePage() {
       <p className="mt-4 text-xs text-ink-muted">{t('profile.freezeNote')}</p>
 
       <MemoryMap rows={memoryRows} />
+      <MistakeAnalysisCard analysis={analysis} moduleTitles={moduleTitles} />
       <WeakSpotList spots={spots} />
       <WeeklyRhythm weeks={weeks} />
 

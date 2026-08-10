@@ -23,7 +23,7 @@
 // Technical contract: thuần TS, tất định, `today` bơm từ ngoài.
 
 import type { Lesson, Module, Question } from './contentSchema'
-import type { DrillResult, ISODate } from './types'
+import type { DrillResult, ExerciseAttempt, ISODate } from './types'
 import type { LessonRuntime } from './lessonMachine'
 import { addDays, diffDays, isBefore } from './dates'
 
@@ -160,4 +160,174 @@ export function weeklyActivity(
   for (const session of drillHistory) bump(session.date, 'drills')
 
   return [...buckets.values()]
+}
+
+// ---------------------------------------------------------------
+// PHÂN TÍCH chỗ hay sai (khối 21.8)
+// ---------------------------------------------------------------
+//
+// Danh sách 5 câu vấp nhiều nhất (weakSpots) trả lời câu "câu nào";
+// phần dưới đây trả lời câu KHÓ HƠN và đáng giá hơn: "vấp theo KIỂU
+// nào". Ba lát cắt, mỗi lát một câu hỏi khác nhau:
+//
+//   - theo DẠNG CÂU: kỹ năng nào đang yếu (gõ lệnh? nhớ lại bằng chữ?
+//     dựng mạng bằng tay?) — thứ mà nhìn từng câu lẻ không thấy;
+//   - theo MODULE: vùng kiến thức nào đang hổng;
+//   - theo CHỦ ĐỀ (`hintTopic` của câu hỏi): khái niệm cụ thể nào cứ
+//     quay lại cắn — đây là thứ gần nhất với "lỗ hổng" thật sự.
+//
+// HAI LUẬT THỐNG KÊ, vì nói sai còn tệ hơn không nói:
+//
+//  1. **Chia theo TỈ LỆ, không đếm số thô.** Câu gõ tay nhiều gấp mười
+//     câu CLI, nên đếm thô thì kết luận nào cũng là "bạn yếu câu gõ
+//     tay". Tỉ lệ = số câu CÓ VẤP / số câu đã làm của nhóm đó.
+//  2. **Nhóm chưa đủ mẫu thì KHÔNG kết luận.** Vấp 1 trong 1 câu CLI
+//     không phải "yếu CLI 100%". Dưới `MIN_SAMPLE` câu thì nhóm đó
+//     không được xếp hạng — nó vẫn hiện số liệu, chỉ không được dùng
+//     làm lời phán.
+
+/** Số câu tối thiểu của một nhóm trước khi được xếp hạng. */
+export const MIN_SAMPLE = 4
+
+export interface MistakeBucket {
+  /** Khóa ngữ nghĩa: mã dạng câu, hoặc moduleId. */
+  key: string
+  /** Số câu đã LÀM XONG thuộc nhóm này. */
+  attempted: number
+  /** Số câu từng vấp ít nhất một lần. */
+  stumbled: number
+  /** Tổng số lần trả lời chưa đúng. */
+  fails: number
+  /** Số câu phải mở tới lời giải. */
+  usedSolution: number
+  /** stumbled / attempted, 0..1. */
+  rate: number
+  /** Đủ mẫu để đem ra kết luận chưa. */
+  ranked: boolean
+}
+
+/**
+ * Một chủ đề hay vấp — `hintTopic` là chữ của nội dung, giữ nguyên LText.
+ *
+ * Khác `MistakeBucket` ở một chỗ phải nhớ: nhóm này CHỈ gom câu đã vấp,
+ * nên `attempted` ở đây là "số câu vấp thuộc chủ đề", `rate` luôn bằng 1
+ * và không mang thông tin gì. Đọc chủ đề bằng `fails`, đừng đọc bằng
+ * `rate` — mẫu số "tổng số câu của chủ đề" không tồn tại vì hintTopic là
+ * trường TÙY CHỌN, câu không khai thì không đếm vào đâu được.
+ */
+export interface MistakeTopic extends MistakeBucket {
+  topic: Question['hintTopic']
+}
+
+export interface MistakeAnalysis {
+  attempted: number
+  stumbled: number
+  fails: number
+  usedSolution: number
+  /** Theo dạng câu, tỉ lệ vấp cao trước; nhóm chưa đủ mẫu xếp sau. */
+  byKind: MistakeBucket[]
+  /** Theo module, cùng luật xếp. */
+  byModule: MistakeBucket[]
+  /** Theo chủ đề, vấp nhiều lần trước. */
+  byTopic: MistakeTopic[]
+  /** Dạng câu yếu nhất ĐỦ MẪU — null khi chưa đủ dữ liệu để nói. */
+  toughestKind: MistakeBucket | null
+}
+
+/** Cộng dồn một câu vào nhóm. */
+function bump(map: Map<string, MistakeBucket>, key: string, attempt: ExerciseAttempt): MistakeBucket {
+  let bucket = map.get(key)
+  if (bucket === undefined) {
+    bucket = { key, attempted: 0, stumbled: 0, fails: 0, usedSolution: 0, rate: 0, ranked: false }
+    map.set(key, bucket)
+  }
+  bucket.attempted += 1
+  if (attempt.failCount > 0) bucket.stumbled += 1
+  bucket.fails += attempt.failCount
+  if (attempt.usedSolution) bucket.usedSolution += 1
+  return bucket
+}
+
+/** Chốt tỉ lệ + cờ đủ mẫu, rồi xếp: vấp nhiều trước, chưa đủ mẫu xuống cuối. */
+function finish(map: Map<string, MistakeBucket>): MistakeBucket[] {
+  return [...map.values()]
+    .map((b) => ({ ...b, rate: b.attempted === 0 ? 0 : b.stumbled / b.attempted, ranked: b.attempted >= MIN_SAMPLE }))
+    .sort(
+      (a, b) =>
+        Number(b.ranked) - Number(a.ranked) ||
+        b.rate - a.rate ||
+        b.fails - a.fails ||
+        (a.key < b.key ? -1 : a.key > b.key ? 1 : 0),
+    )
+}
+
+/**
+ * Phân tích toàn bộ chỗ vấp của người học.
+ *
+ * Chỉ đếm câu ĐÃ LÀM XONG (`solved`): câu đang làm dở có failCount tạm
+ * thời, gộp vào là chấm điểm người ta giữa chừng một câu họ sắp giải
+ * được.
+ */
+export function analyzeMistakes(
+  modules: readonly Module[],
+  lessonRuntimes: Readonly<Record<string, LessonRuntime>>,
+): MistakeAnalysis {
+  const kinds = new Map<string, MistakeBucket>()
+  const byModule = new Map<string, MistakeBucket>()
+  const topics = new Map<string, MistakeTopic>()
+  let attempted = 0
+  let stumbled = 0
+  let fails = 0
+  let usedSolution = 0
+
+  for (const module of modules) {
+    for (const lesson of module.lessons) {
+      const runtime = lessonRuntimes[lesson.id]
+      if (runtime === undefined) continue
+      for (const question of questionsInLesson(lesson)) {
+        const attempt = runtime.exercises[question.id]
+        if (attempt === undefined || !attempt.solved) continue
+        attempted += 1
+        if (attempt.failCount > 0) stumbled += 1
+        fails += attempt.failCount
+        if (attempt.usedSolution) usedSolution += 1
+
+        bump(kinds, question.kind, attempt)
+        bump(byModule, module.id, attempt)
+
+        // Chủ đề chỉ có nghĩa khi câu ĐÃ VẤP — gom cả câu làm trơn tru
+        // vào đây thì danh sách "chủ đề hay vấp" toàn chủ đề đã vững.
+        const topic = question.hintTopic
+        if (topic !== undefined && attempt.failCount > 0) {
+          const key = topic.vi.trim().toLowerCase()
+          const existing = topics.get(key)
+          if (existing === undefined) {
+            const fresh = bump(new Map(), key, attempt)
+            topics.set(key, { ...fresh, topic })
+          } else {
+            existing.attempted += 1
+            existing.stumbled += 1
+            existing.fails += attempt.failCount
+            if (attempt.usedSolution) existing.usedSolution += 1
+          }
+        }
+      }
+    }
+  }
+
+  const kindRows = finish(kinds)
+  return {
+    attempted,
+    stumbled,
+    fails,
+    usedSolution,
+    byKind: kindRows,
+    byModule: finish(byModule),
+    byTopic: [...topics.values()]
+      .map((t) => ({ ...t, rate: 1, ranked: true }))
+      .sort((a, b) => b.fails - a.fails || (a.key < b.key ? -1 : 1)),
+    // Chỉ phán khi nhóm đủ mẫu VÀ thật sự có vấp — "yếu nhất" giữa toàn
+    // nhóm 0% là một lời phán rỗng.
+    toughestKind: kindRows.find((k) => k.ranked && k.stumbled > 0) ?? null,
+  }
 }

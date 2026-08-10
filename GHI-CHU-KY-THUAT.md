@@ -348,6 +348,13 @@ quan trước khi "sửa test cho xanh".
   `QuestionInput.draft.test.tsx` gác). Lab không lưu lịch sử undo,
   `restoreLab` giữ `initial` là đề bài; PS/CLI lưu cả nhật ký lệnh, "Làm
   lại từ đầu" xóa draft. Lưu bài dở KHÔNG XP/streak/answerHistory.
+- **Phân tích chỗ hay sai (`analyzeMistakes`, khối 21.8)** cắt ba lát: dạng
+  câu / module / chủ đề (`hintTopic`). Hai luật thống kê KHÔNG được nới:
+  chia theo TỈ LỆ (số thô luôn trỏ về dạng câu đông nhất) và nhóm dưới
+  `MIN_SAMPLE`(4) câu chỉ được hiện số, KHÔNG được dùng làm lời phán —
+  `toughestKind` trả null khi chưa đủ mẫu và UI phải nói thẳng là chưa đủ.
+  Chỉ đếm câu `solved`; nhóm chủ đề chỉ gom câu ĐÃ VẤP nên `rate` của nó
+  luôn bằng 1 và vô nghĩa — đọc chủ đề bằng `fails`.
 - **Phiên ôn có relearning**: thẻ quên requeue cuối phiên tới khi tự nhớ
   được; CHỈ lượt chấm đầu ghi SM-2 + XP (`ReviewPage.test.tsx` khóa).
 - **Độ tươi trí nhớ + tự chấm độ chắc (khối 21.7)**: `freshness.ts` tính

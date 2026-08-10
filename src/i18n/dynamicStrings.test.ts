@@ -19,6 +19,7 @@ import { CLI_COMMANDS } from '../engine/cli'
 import { PS_COMMANDS } from '../engine/ps'
 import type { VlsmIssue } from '../engine/subnet/vlsm'
 import { PRAISE_VARIANTS } from '../engine/praise'
+import { loadModules } from '../content'
 
 const VLSM_ISSUES: Record<VlsmIssue, true> = {
   missing: true,
@@ -69,6 +70,28 @@ describe('key i18n ghép động → chuỗi hiển thị', () => {
         for (let i = 0; i < count; i += 1) {
           if (!hasString(lang, `praise.${context}.${i}`)) missing.push(`${lang}: praise.${context}.${i}`)
         }
+      }
+    }
+    expect(missing).toEqual([])
+  })
+
+  it('mọi DẠNG CÂU đều có tên đọc được cho mục phân tích chỗ sai', () => {
+    // `profile.kind.<kind>` ghép động từ dạng câu trong nội dung thật.
+    // Thêm kind thứ 9 mà quên đặt tên là bảng phân tích in "cli"/"ps"
+    // trần vào mặt người học — họ không biết mấy chữ đó là gì.
+    const kinds = new Set(
+      loadModules().flatMap((m) => [
+        ...m.masteryTest.map((q) => q.kind),
+        ...m.lessons.flatMap((l) => [
+          ...l.steps[3].exercises.map((e) => e.question.kind),
+          ...l.steps[4].questions.map((e) => e.question.kind),
+        ]),
+      ]),
+    )
+    const missing: string[] = []
+    for (const lang of LANGS) {
+      for (const kind of kinds) {
+        if (!hasString(lang, `profile.kind.${kind}`)) missing.push(`${lang}: ${kind}`)
       }
     }
     expect(missing).toEqual([])

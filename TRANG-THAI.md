@@ -29,8 +29,8 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
 **HAI VIỆC ĐANG TREO, phiên mới cần biết:**
-1. **Khối 21.7 (hộp ôn tập A1+A2) CHƯA COMMIT** — đã commit tới `23d62dc`
-   (khối 21.6, cụm phần thưởng); khối 21.7 đang nằm ở working tree.
+1. **Khối 21.8 (phân tích chỗ hay sai) CHƯA COMMIT** — đã commit tới
+   `97ae87c` (khối 21.7, hộp ôn tập); khối 21.8 đang nằm ở working tree.
    Commit là việc chủ dự án ra lệnh (luật: không tự commit); folder nằm
    trong OneDrive nên chưa commit là chưa có bản sao lịch sử tử tế.
 2. **Phiên nền đang sửa hình `Journey`** (5 hình vis-hanh-trinh-* tràn
@@ -1056,6 +1056,35 @@ Còn lại duy nhất:
     dần"; Hồ sơ vẽ bản đồ trí nhớ (Module 1 vừa ôn 100%, Module 2 còn
     53%). Mobile 375px không cuộn ngang, console sạch, dữ liệu kiểm đã
     xóa.
+
+- **Khối 21.8 XONG (08-10): PHÂN TÍCH CHỖ HAY SAI** — chủ dự án đặt hàng.
+  Trang Hồ sơ vốn đã liệt kê 5 câu vấp nhiều nhất (khối 21.2), nhưng danh
+  sách đó chỉ trả lời "câu nào"; lượt này trả lời câu đắt hơn: **vấp theo
+  KIỂU nào**.
+  - `analyzeMistakes` trong `engine/mistakeLog.ts` cắt dữ liệu ba lát:
+    theo DẠNG CÂU (kỹ năng nào yếu — gõ lệnh? nhớ bằng chữ? dựng mạng
+    bằng tay?), theo MODULE (vùng kiến thức nào hổng), theo CHỦ ĐỀ
+    (`hintTopic` — khái niệm cụ thể cứ quay lại cắn).
+  - **Hai luật thống kê, vì nói sai còn tệ hơn không nói**: (a) chia theo
+    TỈ LỆ chứ không đếm số thô — câu gõ tay nhiều gấp mười câu CLI nên
+    đếm thô thì kết luận nào cũng là "bạn yếu câu gõ tay"; (b) nhóm dưới
+    4 câu KHÔNG được đem ra phán, chỉ hiện số kèm chữ "còn ít". Vấp 1
+    trên 1 câu CLI không phải "yếu CLI 100%".
+  - Dòng kết luận chỉ nói khi có nhóm đủ mẫu; chưa đủ thì NÓI THẲNG là
+    chưa đủ dữ liệu thay vì phán bừa cho có (có test khóa cả hai nhánh).
+  - Chỉ đếm câu ĐÃ LÀM XONG — câu đang dở có failCount tạm thời, gộp vào
+    là chấm điểm người ta giữa chừng một câu họ sắp giải được.
+  - Giọng giữ luật 4.4: vấp là dữ liệu, không phải lời chê — thanh hổ
+    phách, và câu kết luận nói rõ "không phải bạn kém dạng đó, chỉ là nó
+    đang cần thêm lượt luyện".
+  - `profile.kind.*` (8 tên dạng câu) vào `dynamicStrings.test` — thêm
+    kind thứ 9 mà quên đặt tên là bảng in "cli"/"ps" trần vào mặt người học.
+  - 1289/1289 test xanh (+8), typecheck sạch, build qua. Kiểm browser
+    thật với hồ sơ 15 bài: kết luận trỏ đúng "Câu gõ tay — vấp ở 42% (26
+    câu)", trong khi nhóm CLI 2/2 (100%) bị gạt khỏi lời phán vì chưa đủ
+    mẫu — đúng luật thống kê; đổi sang hồ sơ 3 câu thì mục tự chuyển sang
+    câu "chưa đủ để nói chắc". Mobile 375px không cuộn ngang, console
+    sạch, dữ liệu kiểm đã xóa.
 
 Cập nhật: 2026-08-10. File này chỉ để nắm nhanh tình hình khi mở lại dự
 án. Nguồn chân lý: `SPEC-APP-HOC-MANG.md` (M1-12) và

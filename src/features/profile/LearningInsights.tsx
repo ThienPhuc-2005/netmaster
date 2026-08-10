@@ -9,12 +9,12 @@
 
 import { Link } from 'react-router'
 import { useId } from 'react'
-import { AlertCircle, Brain, CalendarRange } from 'lucide-react'
+import { AlertCircle, Brain, CalendarRange, ChartNoAxesColumn } from 'lucide-react'
 import { lt } from '../../engine/ltext'
-import type { WeakSpot, WeekActivity } from '../../engine/mistakeLog'
+import type { MistakeAnalysis, MistakeBucket, WeakSpot, WeekActivity } from '../../engine/mistakeLog'
 import type { ModuleMemory } from '../../engine/freshness'
 import type { Module } from '../../engine/contentSchema'
-import { useT } from '../../i18n'
+import { useT, type TFunc } from '../../i18n'
 
 /** Một hàng của bản đồ trí nhớ: module + độ tươi trung bình của thẻ. */
 export interface MemoryRow extends ModuleMemory {
@@ -199,5 +199,126 @@ export function MemoryMap({ rows }: { rows: MemoryRow[] }) {
         })}
       </ul>
     </section>
+  )
+}
+
+/**
+ * PHÂN TÍCH chỗ hay sai (khối 21.8) — trả lời câu hỏi mà danh sách 5 câu
+ * bên dưới không trả lời được: vấp theo KIỂU nào.
+ *
+ * Ba lát cắt, và một dòng kết luận đứng đầu. Giọng giữ đúng luật 4.4:
+ * đây là bản đồ để quay lại, không phải bảng điểm — không màu đỏ, không
+ * chữ chê, và chỗ nào chưa đủ dữ liệu thì NÓI THẲNG là chưa đủ thay vì
+ * phán bừa cho có.
+ */
+export function MistakeAnalysisCard({ analysis, moduleTitles }: { analysis: MistakeAnalysis; moduleTitles: Record<string, Module['title']> }) {
+  const t = useT()
+  // Chưa vấp lần nào thì không dựng mục: một bản phân tích toàn số 0 chỉ
+  // chiếm chỗ, và với người mới nó là lời khen rỗng.
+  if (analysis.stumbled === 0) return null
+
+  const kinds = analysis.byKind.filter((k) => k.stumbled > 0)
+  const modules = analysis.byModule.filter((m) => m.stumbled > 0).slice(0, 5)
+  const topics = analysis.byTopic.slice(0, 5)
+
+  return (
+    <section aria-labelledby="analysis-title" className="mt-6 flex flex-col gap-4 rounded-md border border-edge bg-panel px-5 py-4">
+      <div className="flex items-center gap-2">
+        <ChartNoAxesColumn size={17} aria-hidden className="shrink-0 text-accent" />
+        <h2 id="analysis-title" className="text-sm font-semibold text-ink">
+          {t('profile.analysisTitle')}
+        </h2>
+      </div>
+
+      {/* Dòng kết luận: chỉ nói khi có nhóm ĐỦ MẪU, không thì nói thật
+          là chưa đủ dữ liệu (engine trả toughestKind = null). */}
+      <p className="text-sm leading-relaxed text-ink">
+        {analysis.toughestKind === null
+          ? t('profile.analysisNotEnough', { stumbled: analysis.stumbled, attempted: analysis.attempted })
+          : t('profile.analysisHeadline', {
+              kind: t(`profile.kind.${analysis.toughestKind.key}`),
+              pct: Math.round(analysis.toughestKind.rate * 100),
+              attempted: analysis.toughestKind.attempted,
+            })}
+      </p>
+      <p className="text-xs leading-relaxed text-ink-muted">
+        {t('profile.analysisTotals', {
+          stumbled: analysis.stumbled,
+          attempted: analysis.attempted,
+          fails: analysis.fails,
+          solutions: analysis.usedSolution,
+        })}
+      </p>
+
+      <BucketList title={t('profile.analysisByKind')} rows={kinds} label={(b) => t(`profile.kind.${b.key}`)} t={t} />
+      <BucketList
+        title={t('profile.analysisByModule')}
+        rows={modules}
+        label={(b) => lt(moduleTitles[b.key] ?? { vi: b.key })}
+        t={t}
+      />
+
+      {topics.length > 0 && (
+        <div className="flex flex-col gap-1">
+          <h3 className="text-xs font-semibold uppercase tracking-wide text-ink-muted">
+            {t('profile.analysisByTopic')}
+          </h3>
+          <ul className="flex flex-col gap-1">
+            {topics.map((topic) => (
+              <li key={topic.key} className="flex flex-wrap items-baseline gap-x-2 text-sm text-ink">
+                <span className="flex-1">{lt(topic.topic ?? { vi: topic.key })}</span>
+                <span className="font-mono text-xs text-warn">{t('profile.analysisTopicFails', { count: topic.fails })}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </section>
+  )
+}
+
+/** Một lát cắt: nhãn + thanh tỉ lệ vấp + số câu. Nhóm chưa đủ mẫu nói rõ. */
+function BucketList({
+  title,
+  rows,
+  label,
+  t,
+}: {
+  title: string
+  rows: MistakeBucket[]
+  label: (bucket: MistakeBucket) => string
+  t: TFunc
+}) {
+  if (rows.length === 0) return null
+  return (
+    <div className="flex flex-col gap-1">
+      <h3 className="text-xs font-semibold uppercase tracking-wide text-ink-muted">{title}</h3>
+      <ul className="flex flex-col gap-1">
+        {rows.map((row) => (
+          <li key={row.key} className="flex flex-wrap items-center gap-x-3 gap-y-1">
+            <span className="min-w-[8rem] flex-1 text-sm text-ink">{label(row)}</span>
+            <span
+              className="h-2 w-24 shrink-0 rounded-full bg-panel-hover"
+              role="img"
+              aria-label={t('profile.analysisRowAria', {
+                label: label(row),
+                stumbled: row.stumbled,
+                attempted: row.attempted,
+              })}
+            >
+              <span
+                className="block h-full rounded-full bg-warn"
+                style={{ width: `${Math.max(Math.round(row.rate * 100), 4)}%` }}
+              />
+            </span>
+            <span className="w-28 shrink-0 text-right font-mono text-xs text-ink-muted">
+              {row.ranked
+                ? t('profile.analysisRatio', { stumbled: row.stumbled, attempted: row.attempted })
+                : t('profile.analysisThin', { stumbled: row.stumbled, attempted: row.attempted })}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </div>
   )
 }
