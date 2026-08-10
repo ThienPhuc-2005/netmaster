@@ -18,6 +18,7 @@ import { playEarcon } from '../../audio/earcons'
 import { EmptyState } from '../../components/EmptyState'
 import { FeedbackBanner, FeedbackRegion, type FeedbackState } from '../../components/FeedbackBanner'
 import { XP_AMOUNTS } from '../../engine/xp'
+import { praiseKeyFor } from '../../engine/praise'
 import { ClinicRoom } from './ClinicRoom'
 import { clinicCaseEntries, clinicTabUnlocked, type ClinicCaseEntry } from './clinicCases'
 
@@ -29,6 +30,9 @@ function excerpt(text: string): string {
 function CaseView({ entry, onBack }: { entry: ClinicCaseEntry; onBack: () => void }) {
   const t = useT()
   const submitClinicCase = useProgress((s) => s.submitClinicCase)
+  // Số ca đã chữa khỏi chỉ dùng làm HẠT GIỐNG xoay câu khen — mỗi ca một
+  // lời khác nhau, không dính gì tới điểm.
+  const solvedCount = useProgress((s) => Object.keys(s.clinicSolved).length)
   const [feedback, setFeedback] = useState<FeedbackState | null>(null)
   const [fails, setFails] = useState(0)
   const [firstSolve, setFirstSolve] = useState(false)
@@ -38,7 +42,17 @@ function CaseView({ entry, onBack }: { entry: ClinicCaseEntry; onBack: () => voi
     if (result.correct) {
       playEarcon('correct')
       setFirstSolve(result.firstSolve)
-      setFeedback({ kind: 'correct' })
+      // Khen theo hành vi (kho D1): số lần chưa ra bệnh đếm ngay tại màn
+      // này (`fails`), và mở tới lời giải nghĩa là đã sai đủ 3 lần.
+      setFeedback({
+        kind: 'correct',
+        praise: t(
+          praiseKeyFor(
+            { failCount: fails, usedSolution: fails >= 3, step: 'practice', kind: 'clinic' },
+            solvedCount + fails,
+          ),
+        ),
+      })
       return
     }
     playEarcon('incorrect')

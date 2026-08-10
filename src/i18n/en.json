@@ -34,6 +34,54 @@
     "tier3Label": "Solution",
     "tier3Note": "Read the solution, then type the answer yourself — typing it is how it sticks."
   },
+  "praise": {
+    "after-solution": [
+      "You read the solution and then typed it out yourself — that second part is where memory forms.",
+      "You saw the answer and still came back to do it on your own. That is how a trade is learned.",
+      "You had to open the solution here, and you closed it again to do the work. Next time will be lighter."
+    ],
+    "self-corrected": [
+      "Wrong once, fixed by yourself, no answer key needed — the most valuable habit in this trade.",
+      "You tried again and found it. That stumble is exactly what makes it stick.",
+      "You neither gave up nor peeked. That is how someone who fixes real machines works."
+    ],
+    "hands-lab": [
+      "You rebuilt it on the diagram instead of just talking theory — networks listen to hands, not words.",
+      "You kept fixing until the packet got through: that is the job of someone on network duty.",
+      "Try, read the result, fix again. That loop is what this whole trade runs on."
+    ],
+    "hands-cli": [
+      "You checked the table with a command before concluding — the habit of someone good at this.",
+      "Right command, right column, right fix. That console is the one you meet on the job.",
+      "You let the device state its own condition instead of guessing on its behalf."
+    ],
+    "hands-ps": [
+      "You asked the system with a command instead of clicking around — this still works at three hundred machines.",
+      "One line does what ten minutes of clicking does. You picked the right road.",
+      "You verified with a command after the fix instead of trusting a vague \"should be done\"."
+    ],
+    "hands-palace": [
+      "You walked the room from memory, no notes. The images are doing the remembering for you.",
+      "Remembered as a route through a building, not as a list — that is the whole point of this palace.",
+      "The door was closed and you still described the room: it lives in you now."
+    ],
+    "hands-clinic": [
+      "You narrowed the fault down before touching anything. That is how a shift engineer works.",
+      "You read the signs first and concluded second — every case needs that order.",
+      "One case closed. Next time these symptoms show up, your hands will be faster than your head."
+    ],
+    "retrieval": [
+      "You recalled it with the lesson closed — that is knowing; recognising it on a reread is not.",
+      "No looking back at the page. Every time memory is pulled out, it comes back stronger.",
+      "You dug this one out of your own head, and the digging is what makes memory last."
+    ],
+    "first-try": [
+      "Right on the first try — this part is solid for you.",
+      "Straight out, no hints needed. Your foundation is holding.",
+      "Correct from the first attempt. Onwards.",
+      "Not a single stumble — what you just learned has stuck."
+    ]
+  },
   "progress": {
     "aria": "Module progress",
     "start": "Warming up"
@@ -93,6 +141,7 @@
     "passTitle": "{pct}% — the next module is unlocked!",
     "passTitleFinal": "{pct}% — you just finished the final module of the course!",
     "passTitleAgain": "{pct}% — still as solid as before.",
+    "letterTitle": "A note left for you",
     "failTitle": "{pct}% — so close.",
     "failBody": "You need {threshold}% to unlock the next module. Read through the ideas below, then retake — retakes are for learning, not punishment.",
     "failBodyFinal": "You need {threshold}% to close out the course. Read through the ideas below, then retake — retakes are for learning, not punishment.",
@@ -581,6 +630,17 @@
     "statCards": "Cards in review",
     "statLessons": "Lessons completed",
     "statClinic": "Clinic cases cured",
+    "statDays": "Finished in (days)",
+    "journeyLine": "From your first lesson on {from} to the last one on {to} — with {active} days when you actually sat down to study. The gaps in between are not holes: memory only holds when it is given distance.",
+    "certTitle": "Certificate",
+    "certBody": "Download a PNG that copies the numbers above — for your files, to send to someone, or just to keep. Nothing is sent anywhere: the image is drawn on your own machine.",
+    "certNameLabel": "Name printed on the certificate (optional)",
+    "certNamePlaceholder": "Your name",
+    "certDownload": "Download certificate (PNG)",
+    "certIntro": "has completed {passed}/{total} modules of this computer networking course, including hands-on work in the lab, the device console and the fault clinic.",
+    "certDaysLabel": "Days to finish",
+    "certFooter": "Issued {date} · NetMaster — learn computer networking",
+    "certError": "The image could not be produced right now. Try once more, or open this page in another browser.",
     "nextRoadNhapMon": "The intermediate road is open on the Learn page: VLSM, trunks, OSPF, ACLs — and a branch office waiting to be built by your own hands at the end.",
     "nextRoadTrungCap": "The course is complete, but the Review box opens every day — memory pays in installments, and those cards will keep visiting you.",
     "noXpNote": "This screen awards no XP — it is a mirror, not a reward. Your score lives in what stayed in your hands.",

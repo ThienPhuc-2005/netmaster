@@ -2,6 +2,7 @@
   "id": "module-3",
   "order": 3,
   "part": "A",
+  "letter": { "vi": "Ghi lại cho bạn của ca sáng. Hai tuần trước, một dãy như 192.168.1.10/24 chỉ là dãy số; giờ bạn nhìn ra ngay đâu là khu phố, đâu là số nhà, và cái /24 đang kẻ hàng rào ở chỗ nào. Bạn còn nhẩm được ranh giới bằng magic number mà không cần máy tính — thứ mà nhiều người làm nghề vài năm vẫn phải mở bảng tra. Từ đây, mọi bài chia mạng chỉ còn là bài toán bạn đã biết cách đặt bút." },
   "title": { "vi": "Địa chỉ — MAC, IP và Subnetting" },
   "drill": "subnet",
   "stages": [

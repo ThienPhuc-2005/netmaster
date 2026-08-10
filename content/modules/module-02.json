@@ -2,6 +2,7 @@
   "id": "module-2",
   "order": 2,
   "part": "A",
+  "letter": { "vi": "Vài dòng để lại cho ca sau. Trước module này, gõ google.com rồi thấy trang hiện ra là một phép màu; giờ bạn kể lại được từng nhịp: hỏi danh bạ, ra cổng làng, chuyền tay qua các trạm, rồi trang web quay về đúng cửa sổ vừa mở. Thứ bạn vừa có không phải là thuộc lòng bốn bước, mà là thói quen hỏi gói tin đang đứng ở đâu trước khi đoán. Người trực ca nào cũng sống bằng đúng câu hỏi đó." },
   "title": { "vi": "Đường đi của gói tin — Gõ google.com, chuyện gì xảy ra?" },
   "stages": [
     { "id": "m2-chang-1", "title": { "vi": "Hỏi đường trước đã" }, "lessonIds": ["m2-bai-1"] },

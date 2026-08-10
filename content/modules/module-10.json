@@ -2,6 +2,7 @@
   "id": "module-10",
   "order": 10,
   "part": "C",
+  "letter": { "vi": "Vài dòng cho ca sau. Trước module, cloud là một chữ trong quảng cáo; giờ bạn kẻ được một mạng riêng trên đó bằng đúng kỹ năng chia subnet học từ Phần A, đặt người gác sát từng máy, và đào hầm nối về văn phòng. Bạn còn hiểu vì sao người ta bỏ dần mô hình lâu đài với hào nước để đi kiểm từng cánh cửa một. Đám mây với nhà mình giờ là hai cách sắp xếp của cùng những khái niệm bạn đã nắm." },
   "title": { "vi": "Cloud Networking và Zero Trust" },
   "stages": [
     { "id": "m10-chang-1", "title": { "vi": "Thuê góc đám mây" }, "lessonIds": ["m10-bai-1"] },

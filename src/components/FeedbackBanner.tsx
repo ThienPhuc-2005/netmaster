@@ -11,7 +11,16 @@ import { useT } from '../i18n'
 import type { FeedbackTier } from '../engine/lessonMachine'
 
 export type FeedbackState =
-  | { kind: 'correct' }
+  | {
+      kind: 'correct'
+      /**
+       * Lời khen gắn với HÀNH VI vừa làm (engine/praise) — bề mặt nào đọc
+       * ra được hành vi thì truyền vào; thiếu thì rơi về câu khen chung.
+       * Khen việc bền hơn khen kết quả, nhưng chỉ khi câu khen nói đúng
+       * việc: chỗ không biết người học vừa làm gì thì im lặng tử tế hơn.
+       */
+      praise?: string
+    }
   | {
       kind: 'incorrect'
       tier: Exclude<FeedbackTier, 0>
@@ -47,9 +56,11 @@ export function FeedbackBanner({ state }: { state: FeedbackState }) {
 
   if (state.kind === 'correct') {
     return (
-      <div className="flex items-center gap-3 rounded-md border border-ok/40 bg-panel px-4 py-3 text-sm text-ok">
-        <CheckCircle2 size={18} aria-hidden />
-        <span className="font-semibold">{t('feedback.correct')}</span>
+      // Câu khen theo hành vi dài hơn "Chuẩn luôn!" một quãng nên khối này
+      // canh MÉP TRÊN: canh giữa thì icon trôi xuống giữa đoạn hai dòng.
+      <div className="flex items-start gap-3 rounded-md border border-ok/40 bg-panel px-4 py-3 text-sm leading-relaxed text-ok">
+        <CheckCircle2 size={18} aria-hidden className="mt-0.5 shrink-0" />
+        <span className="font-semibold">{state.praise ?? t('feedback.correct')}</span>
       </div>
     )
   }

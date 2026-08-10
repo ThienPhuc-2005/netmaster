@@ -2,6 +2,7 @@
   "id": "module-20",
   "order": 20,
   "part": "E",
+  "letter": { "vi": "Mấy dòng cho ca sáng. Trước module, log là đống chữ chỉ mở ra khi đã có chuyện; giờ bạn đọc một dòng nhật ký ra được bốn điều: khi nào, máy nào, nặng cỡ nào, chuyện gì. Bạn gom được ba chục cuốn sổ về một chỗ, biết đồng hồ lệch làm đảo ngược nhân quả ra sao, và vẽ được đường bình thường để nhìn ra điều bất thường. Thấy sự cố trước người dùng — đó là lằn ranh giữa trực ca và chữa cháy." },
   "title": {
     "vi": "Giám sát và nhật ký — Nhìn thấy sự cố trước người dùng"
   },

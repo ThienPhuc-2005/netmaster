@@ -29,10 +29,10 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
 **HAI VIỆC ĐANG TREO, phiên mới cần biết:**
-1. **Khối 21.5 (PWA) CHƯA COMMIT** — đã commit tới `243f7e3` (khối
-   21.4); khối 21.5 đang nằm ở working tree. Commit là việc chủ dự án ra
-   lệnh (luật: không tự commit); folder nằm trong OneDrive nên chưa
-   commit là chưa có bản sao lịch sử tử tế.
+1. **Khối 21.6 (cụm phần thưởng D1+D2+H1+H2) CHƯA COMMIT** — đã commit
+   tới `720e6a4` (khối 21.5); khối 21.6 đang nằm ở working tree. Commit
+   là việc chủ dự án ra lệnh (luật: không tự commit); folder nằm trong
+   OneDrive nên chưa commit là chưa có bản sao lịch sử tử tế.
 2. **Phiên nền đang sửa hình `Journey`** (5 hình vis-hanh-trinh-* tràn
    viewBox, task riêng của chủ dự án, worktree `.claude/worktrees/…`) —
    ĐỪNG đụng component Journey trong `ConceptVisual.tsx` cho tới khi
@@ -967,6 +967,58 @@ Còn lại duy nhất:
     https://thienphuc-2005.github.io/netmaster/ : manifest và sw.js mang
     đúng base `/netmaster/`, service worker đăng ký đúng scope và
     activate, cache 85 file gồm đủ 21 chunk nội dung, console sạch.
+
+- **Khối 21.6 XONG (08-10): CỤM PHẦN THƯỞNG** — bốn ý D1 + D2 + H1 + H2
+  của kho, làm một lượt vì chúng cùng trả lời một câu: người học nhận
+  được gì khi làm đúng, khi đậu module, và khi về đích.
+  - **D1 — khen đúng việc**: `src/engine/praise.ts` (thuần TS) đọc DẤU
+    VẾT của câu vừa xong (vấp mấy lần, có phải mở lời giải không, câu
+    dạng gì, đang ở bước nào) rồi chọn 1 trong **28 câu khen chia 9 ngữ
+    cảnh HÀNH VI**. Thứ tự ưu tiên có chủ đích: đọc lời giải rồi tự gõ
+    lại > sai rồi tự sửa > nếp tay chân từng nghề (lab/CLI/PS/cung
+    điện/phòng khám) > nhớ lại khi bài đã đóng > đúng ngay. Khen nếp khó
+    trước, vì "đúng ngay" nói về thứ người học VỐN ĐÃ BIẾT.
+  - Xoay câu khen bằng HẠT GIỐNG bơm từ ngoài (`answerTotal` của store,
+    số phòng đã đi của cung điện, số ca đã chữa) — engine giữ nguyên luật
+    không random, không đồng hồ, nên test đọc được kết quả.
+  - Ba bề mặt dùng chung một kho khen: bài học, cung điện, phòng khám.
+    `FeedbackState` thêm `praise?` tùy chọn — chỗ nào không đọc ra được
+    hành vi thì rơi về "Chuẩn luôn!" chứ không khen bừa.
+  - **D2 — thư cuối module**: `letter` là trường NỘI DUNG trong data
+    (`content/modules/*.json`), **21 lá thư riêng**, hiện ở màn ĐẬU bài
+    thi. Lý do nó đáng có: bài thi cố ý KHÔNG cộng XP (nguyên tắc 5), nên
+    trước lượt này người đậu chỉ nhận đúng một dòng chúc mừng. Giọng thư
+    là người trực ca đêm để lại lời nhắn cho ca sáng, mỗi lá kể đúng việc
+    module đó vừa cho họ làm được.
+  - `content.test` khóa ba luật của thư: module thật nào cũng phải có,
+    dài >= 220 ký tự và nằm trong khoảng 3-5 câu (chặn cả thư cụt lẫn thư
+    dài thành bài giảng thứ hai), và **không lá nào trùng lá nào**.
+    `content:review` in nguyên văn thư để người duyệt bắt được giọng sai.
+  - **H2 — về đích sau X ngày**: `src/engine/journey.ts` suy từ
+    `completedLessons`, không thêm một byte persist. In ra HAI con số chứ
+    không một: tổng số ngày (tính cả hai đầu) và **số ngày THẬT SỰ ngồi
+    học** — 75 ngày mà 5 ngày học là chuyện bình thường, nói ra để người
+    học khỏi tự trách quãng nghỉ (giãn cách vốn là bạn của trí nhớ).
+    Chưa xong bài nào thì im lặng, không in "0 ngày".
+  - **H1 — giấy chứng nhận tải được**: PNG 1200×850 vẽ thẳng bằng canvas,
+    không backend, không thêm thư viện. Tách hai tầng: `buildCertificate`
+    thuần (soạn nội dung, test được) và `drawCertificate` (đặt bút vẽ).
+    Hai quyết định về hình thức đã khai trong file: tờ giấy LUÔN nền sáng
+    kể cả khi app đang theme tối (thứ này để gửi và để in), và tên người
+    học là Ô NHẬP TẠI CHỖ **không lưu vào store** — thêm một trường
+    persist cho một việc dùng một lần là không đáng.
+  - 1257/1257 test xanh (+42), typecheck sạch, build qua, `content:review`
+    render lại 21 module.
+  - **Kiểm browser thật cả bốn**: (D1) cùng một câu, sai rồi tự sửa nhận
+    "Không bỏ giữa chừng, cũng không xem đáp án…", câu sau đúng ngay nhận
+    "Không vấp câu nào…" — hai lời khác nhau đúng như thiết kế; (D2) thi
+    thật Module 1 đạt 100% → màn đậu hiện đủ lá thư; (H2) mốc trung cấp
+    in "75" và dòng "từ 01/04/2026 tới 14/06/2026 — trong đó có 5 ngày
+    bạn thật sự ngồi xuống học"; (H1) bấm tải ra đúng file
+    `netmaster-trung-cap-2026-08-10.png`, 1200×850, 94KB — soi bằng pixel
+    thì 14 dải chữ đều nằm trong khung (x 175-1023, y 96-783), không dải
+    nào chồng nhau hay tràn viền. Mobile 375px không cuộn ngang, console
+    sạch, dữ liệu kiểm đã xóa.
 
 Cập nhật: 2026-08-10. File này chỉ để nắm nhanh tình hình khi mở lại dự
 án. Nguồn chân lý: `SPEC-APP-HOC-MANG.md` (M1-12) và

@@ -12,12 +12,16 @@
 // trong hình là UI-chrome nên đi qua i18n như mọi chữ của trang.
 
 import { Link, useParams } from 'react-router'
-import { BookOpenCheck, ChevronLeft, Flame, GraduationCap, Layers, Stethoscope, Zap } from 'lucide-react'
+import { useState } from 'react'
+import { BookOpenCheck, CalendarDays, ChevronLeft, Download, Flame, GraduationCap, Layers, Stethoscope, Zap } from 'lucide-react'
 import type { ComponentType } from 'react'
 import { useT } from '../../i18n'
+import { Button } from '../../components/Button'
 import { EmptyState } from '../../components/EmptyState'
 import { loadModules } from '../../content'
-import { useProgress } from '../../store/progress'
+import { journeySpan } from '../../engine/journey'
+import { todayIso, useProgress } from '../../store/progress'
+import { buildCertificate, downloadCertificate } from './certificate'
 import { milestones, type MilestoneId } from './milestones'
 
 const PART_TOKEN: Record<string, string> = {
@@ -26,6 +30,11 @@ const PART_TOKEN: Record<string, string> = {
   C: 'var(--part-c)',
   D: 'var(--part-d)',
   E: 'var(--part-e)',
+}
+
+/** Ngày ISO → cách người Việt lẫn người Anh đều đọc được trên giấy. */
+function dayMonthYear(iso: string): string {
+  return `${iso.slice(8, 10)}/${iso.slice(5, 7)}/${iso.slice(0, 4)}`
 }
 
 /** Bản đồ hành trình: mỗi hàng một Phần, ô tô đậm là module ĐÃ ĐẬU. */
@@ -103,6 +112,14 @@ export function GraduationPage() {
   const reviewCards = useProgress((s) => s.reviewCards)
   const completedLessons = useProgress((s) => s.completedLessons)
   const clinicSolved = useProgress((s) => s.clinicSolved)
+  // Tên in trên giấy chứng nhận: hỏi TẠI CHỖ, không lưu — app chưa bao
+  // giờ hỏi tên ai, và thêm một trường persist cho một việc dùng một lần
+  // là đổi hình dạng dữ liệu để đổi lấy một dòng chữ.
+  const [learnerName, setLearnerName] = useState('')
+  const [certError, setCertError] = useState(false)
+  // Ngày cấp đóng dấu MỘT LẦN lúc mở màn: bấm tải hai lần trong một phiên
+  // mà ra hai ngày khác nhau là chuyện chỉ có ở phần mềm.
+  const [issuedOn] = useState(todayIso)
 
   const milestone = milestones().find((m) => m.id === params.milestoneId)
   const reached = milestone !== undefined && passedModules.includes(milestone.moduleId)
@@ -128,6 +145,39 @@ export function GraduationPage() {
   const modules = loadModules()
   const passedSet = new Set(passedModules)
   const passedCount = modules.filter((m) => passedSet.has(m.id)).length
+  // "Về đích sau X ngày" (kho H2) — suy từ ngày hoàn thành các bài, không
+  // thêm dữ liệu lưu nào. Chưa xong bài nào thì không có chuyện để kể
+  // (chỉ xảy ra với hồ sơ đi cửa thi vượt suốt cả khóa).
+  const span = journeySpan(completedLessons)
+
+  const parts = [...new Set(modules.map((m) => m.part))]
+  const certificateRows = parts.map((part) => {
+    const items = modules.filter((m) => m.part === part)
+    return { part, total: items.length, passed: items.filter((m) => passedSet.has(m.id)).length }
+  })
+
+  const downloadCert = () => {
+    setCertError(false)
+    const spec = buildCertificate({
+      appName: t('app.name'),
+      title: t(id === 'nhap-mon' ? 'grad.titleNhapMon' : 'grad.titleTrungCap'),
+      learnerName,
+      intro: t('grad.certIntro', { passed: passedCount, total: modules.length }),
+      stats: [
+        { label: t('grad.statModules'), value: `${passedCount}/${modules.length}` },
+        { label: t('grad.statLessons'), value: String(Object.keys(completedLessons).length) },
+        ...(span !== null ? [{ label: t('grad.certDaysLabel'), value: String(span.days) }] : []),
+        { label: t('grad.statXp'), value: String(xpTotal) },
+      ],
+      rows: certificateRows,
+      footer: t('grad.certFooter', { date: dayMonthYear(issuedOn) }),
+      milestoneId: id,
+      issuedOn,
+    })
+    // Canvas không cấp được ngữ cảnh 2D là chuyện của trình duyệt, không
+    // phải lỗi người học — nói một dòng thay vì để nút bấm im lìm.
+    void downloadCertificate(spec).catch(() => setCertError(true))
+  }
 
   return (
     <div className="flex max-w-2xl flex-col gap-6">
@@ -162,6 +212,48 @@ export function GraduationPage() {
           <Tile icon={Layers} label={t('grad.statCards')} value={reviewCards.length} />
           <Tile icon={BookOpenCheck} label={t('grad.statLessons')} value={Object.keys(completedLessons).length} />
           <Tile icon={Stethoscope} label={t('grad.statClinic')} value={Object.keys(clinicSolved).length} />
+          {/* Về đích sau bao nhiêu ngày (kho H2): con số duy nhất ở đây
+              nói về ĐỜI SỐNG chứ không về khối lượng — nó gắn khóa học
+              vào một quãng thời gian có thật của người học. */}
+          {span !== null && <Tile icon={CalendarDays} label={t('grad.statDays')} value={span.days} />}
+        </div>
+        {span !== null && (
+          <p className="mt-3 text-sm leading-relaxed text-ink-muted">
+            {t('grad.journeyLine', {
+              from: dayMonthYear(span.firstDay),
+              to: dayMonthYear(span.lastDay),
+              active: span.activeDays,
+            })}
+          </p>
+        )}
+      </section>
+
+      {/* Giấy chứng nhận tải được (kho H1) — chép lại đúng những con số
+          trên, không sinh thêm điểm nào. Tên là ô nhập tại chỗ. */}
+      <section aria-labelledby="grad-cert" className="flex flex-col gap-3 rounded-md border border-edge bg-panel px-5 py-4">
+        <h2 id="grad-cert" className="text-sm font-semibold uppercase tracking-wide text-ink-muted">
+          {t('grad.certTitle')}
+        </h2>
+        <p className="text-sm leading-relaxed text-ink-muted">{t('grad.certBody')}</p>
+        <label className="flex flex-col gap-1 text-sm text-ink">
+          {t('grad.certNameLabel')}
+          <input
+            type="text"
+            value={learnerName}
+            onChange={(e) => setLearnerName(e.target.value)}
+            maxLength={40}
+            placeholder={t('grad.certNamePlaceholder')}
+            className="rounded-md border border-edge bg-surface px-3 py-2 text-sm text-ink placeholder:text-ink-muted focus:border-accent focus:outline-none"
+          />
+        </label>
+        <div>
+          <Button onClick={downloadCert}>
+            <Download size={15} aria-hidden />
+            {t('grad.certDownload')}
+          </Button>
+        </div>
+        <div role="status">
+          {certError && <p className="text-sm text-warn">{t('grad.certError')}</p>}
         </div>
       </section>
 

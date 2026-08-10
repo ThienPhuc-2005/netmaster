@@ -18,6 +18,7 @@ import { translate, type Lang } from '../i18n'
 import { CLI_COMMANDS } from '../engine/cli'
 import { PS_COMMANDS } from '../engine/ps'
 import type { VlsmIssue } from '../engine/subnet/vlsm'
+import { PRAISE_VARIANTS } from '../engine/praise'
 
 const VLSM_ISSUES: Record<VlsmIssue, true> = {
   missing: true,
@@ -53,6 +54,21 @@ describe('key i18n ghép động → chuỗi hiển thị', () => {
       for (const command of PS_COMMANDS) {
         if (command === 'Get-Help') continue
         if (!hasString(lang, `ps.cmd.${command}`)) missing.push(`${lang}: ${command}`)
+      }
+    }
+    expect(missing).toEqual([])
+  })
+
+  it('mọi câu khen theo hành vi đều có chữ ở cả hai ngôn ngữ', () => {
+    // `praise.<ngữ cảnh>.<số>` ghép động từ PRAISE_VARIANTS — thêm một
+    // ngữ cảnh mà quên soạn chữ là người học nhận nguyên cái key làm lời
+    // khen, đúng vào khoảnh khắc vừa làm đúng.
+    const missing: string[] = []
+    for (const lang of LANGS) {
+      for (const [context, count] of Object.entries(PRAISE_VARIANTS)) {
+        for (let i = 0; i < count; i += 1) {
+          if (!hasString(lang, `praise.${context}.${i}`)) missing.push(`${lang}: praise.${context}.${i}`)
+        }
       }
     }
     expect(missing).toEqual([])

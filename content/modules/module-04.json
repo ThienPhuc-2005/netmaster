@@ -2,6 +2,7 @@
   "id": "module-4",
   "order": 4,
   "part": "B",
+  "letter": { "vi": "Mấy dòng để lại cho ca sau. Lúc mở module, switch với router trong mắt bạn đều là cái hộp có đèn nháy; giờ bạn nói được cái nào nhớ mặt bằng địa chỉ MAC, cái nào bắc cầu giữa hai mạng, và vì sao dựng VLAN là dựng tường chứ không phải cắm thêm dây. Bạn cũng đã tự tay chia hai xóm trên cùng một switch rồi cho chúng nói chuyện lại được với nhau. Nghề này bắt đầu từ đúng chỗ đó: biết thiết bị nào chịu trách nhiệm gì." },
   "title": { "vi": "Switch, Router, VLAN — Thiết bị trong làng" },
   "stages": [
     { "id": "m4-chang-1", "title": { "vi": "Bưu cục của làng" }, "lessonIds": ["m4-bai-1"] },

@@ -2,6 +2,7 @@
   "id": "module-9",
   "order": 9,
   "part": "C",
+  "letter": { "vi": "Ca đêm để lại lời nhắn. Lúc mở module này, domain với bạn chỉ là chữ trong ô đăng nhập; giờ bạn thăng được một máy lên làm trưởng làng, xếp cư dân vào đúng ngăn, và treo bộ luật lên đúng tầng. Bạn leo được tòa nhà bốn tầng LSDOU từ trí nhớ và phân xử được lúc các tầng cãi nhau. Đây là xương sống của mọi hệ thống Windows trong doanh nghiệp — bạn vừa đứng lên được trên đó." },
   "title": { "vi": "Windows Server — AD DS và GPO" },
   "stages": [
     { "id": "m9-chang-1", "title": { "vi": "Làng có luật" }, "lessonIds": ["m9-bai-1"] },

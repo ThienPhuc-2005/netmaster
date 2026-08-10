@@ -25,7 +25,7 @@
 import { useState } from 'react'
 import { lt, maybeLt } from '../../engine/ltext'
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router'
-import { Award, ChevronLeft, GraduationCap, Lock } from 'lucide-react'
+import { Award, ChevronLeft, GraduationCap, Lock, Mail } from 'lucide-react'
 import { findModule, lessonsInOrder } from '../../content'
 import { backToLearn } from './LearnPage'
 import { MASTERY_THRESHOLD_PCT, computeModuleStatuses } from '../../engine/masteryGate'
@@ -259,7 +259,7 @@ export function ModuleTestPage() {
     <>
       {heading}
       <div className="flex max-w-xl flex-col gap-5">
-        {phase.passed ? (
+        {phase.passed && (
           <div className="flex items-start gap-3 rounded-md border border-ok/40 bg-panel px-5 py-4">
             <Award size={20} aria-hidden className="mt-0.5 shrink-0 text-ok" />
             <div className="flex flex-col gap-1">
@@ -277,7 +277,25 @@ export function ModuleTestPage() {
               )}
             </div>
           </div>
-        ) : (
+        )}
+
+        {/* THƯ CUỐI MODULE (kho ý tưởng D2): bài thi cố ý không cộng XP
+            (nguyên tắc 5), nên thứ duy nhất người học nhận lúc đậu là
+            đúng lá thư này — vài câu kể họ vừa làm được gì mà lúc mở
+            module còn chưa làm được. Nội dung nằm trong data của từng
+            module; module chưa soạn thư thì khối này vắng mặt, không có
+            khung rỗng. */}
+        {phase.passed && module.letter !== undefined && (
+          <div className="flex items-start gap-3 rounded-md border border-edge bg-panel px-5 py-4">
+            <Mail size={18} aria-hidden className="mt-0.5 shrink-0 text-accent" />
+            <div className="flex flex-col gap-1">
+              <p className="text-xs font-semibold uppercase tracking-wide text-ink-muted">{t('test.letterTitle')}</p>
+              <p className="text-sm leading-relaxed text-ink">{lt(module.letter)}</p>
+            </div>
+          </div>
+        )}
+
+        {!phase.passed && (
           <div className="flex flex-col gap-1 rounded-md border border-warn/40 bg-panel px-5 py-4">
             <p className="font-semibold text-warn">{t('test.failTitle', { pct: pctRounded })}</p>
             <p className="text-sm text-ink-muted">

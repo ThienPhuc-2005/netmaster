@@ -101,6 +101,27 @@ describe('màn tổng kết', () => {
     expect(screen.getByText(`${modules.length}/${modules.length}`)).toBeTruthy()
   })
 
+  it('nói được đi hết chặng đường mất bao nhiêu ngày (kho H2)', () => {
+    passUpTo(modules.at(-1)!.id)
+    useProgress.setState({
+      completedLessons: { a: '2026-03-01', b: '2026-03-02', c: '2026-04-10' },
+    })
+    renderAt('trung-cap')
+
+    // 01/03 → 10/04 tính cả hai đầu = 41 ngày, trong đó 3 ngày ngồi học.
+    expect(screen.getByText('Về đích sau (ngày)')).toBeTruthy()
+    expect(screen.getByText('41')).toBeTruthy()
+    expect(screen.getByText(/01\/03\/2026.*10\/04\/2026.*3 ngày/s)).toBeTruthy()
+  })
+
+  it('chưa xong bài nào thì im lặng về số ngày, không in "0 ngày"', () => {
+    // Hồ sơ đi cửa thi vượt suốt cả khóa: đậu hết mà không có ngày học
+    // nào — bịa ra một con số ở đây là nói dối trên chính tấm gương.
+    passUpTo(modules.at(-1)!.id)
+    renderAt('trung-cap')
+    expect(screen.queryByText('Về đích sau (ngày)')).toBeNull()
+  })
+
   it('KHÔNG cộng XP: render xong, mọi con số trong store y nguyên', () => {
     passUpTo(modules.at(-1)!.id)
     useProgress.setState({ xpTotal: 777 })

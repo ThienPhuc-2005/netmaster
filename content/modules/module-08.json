@@ -2,6 +2,7 @@
   "id": "module-8",
   "order": 8,
   "part": "C",
+  "letter": { "vi": "Mấy dòng để lại. Hai tuần trước, Wi-Fi yếu là chuyện của trời; giờ bạn biết góc nhà nào nên đi băng tần nào, tên thế hệ nào thật sự đem lại gì, và khóa cửa cho sóng nhà mình bằng cách nào cho tử tế. Bạn cũng đọc được biển số đời mới mà không vấp, kể cả cái địa chỉ dài ngoằng mở đầu bằng fe80. Hai hệ địa chỉ cùng sống trên một máy không còn làm bạn lẫn nữa — đó mới là điều đáng nói." },
   "title": { "vi": "Wi-Fi và IPv6 chuyên sâu" },
   "stages": [
     { "id": "m8-chang-1", "title": { "vi": "Sóng thay dây" }, "lessonIds": ["m8-bai-1"] },

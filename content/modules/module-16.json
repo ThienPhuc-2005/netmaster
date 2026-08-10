@@ -2,6 +2,7 @@
   "id": "module-16",
   "order": 16,
   "part": "D",
+  "letter": { "vi": "Ca đêm để lại mấy dòng. Trước module, mỗi đường đi mới là một dòng gõ tay và một chỗ để quên; giờ bạn để các router tự chào nhau, tự chép bản đồ và tự viết bảng đường. Bạn cắt cáp giữa chừng rồi xem chúng tìm lối khác mà không cần bạn động tay — đúng thứ tuyến tĩnh không bao giờ làm được. Bạn cũng biết nguồn nào thắng khi hai bên cùng chỉ về một đích, và vì sao lại thế." },
   "title": { "vi": "OSPF — Các router tự hỏi đường nhau" },
   "stages": [
     { "id": "m16-chang-1", "title": { "vi": "Khai đường bằng tay tới lúc gãy" }, "lessonIds": ["m16-bai-1"] },

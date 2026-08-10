@@ -462,6 +462,36 @@ describe('bộ nội dung', () => {
     expect(m21.masteryTest.some((q) => q.kind === 'clinic')).toBe(true)
   })
 
+  it('module nào cũng có THƯ CUỐI MODULE, đủ dài để nói được một chuyện', () => {
+    // Thư là phần thưởng duy nhất của mastery gate (nguyên tắc 2 cấm cộng
+    // XP ở bài thi) — module mới mà quên soạn thư thì người học đậu xong
+    // nhận đúng một dòng "chúc mừng". Schema để trường này tùy chọn cho
+    // fixture; nội dung THẬT thì bắt buộc, luật nằm ở đây.
+    const MIN_CHARS = 220
+    for (const m of modules) {
+      const letter = m.letter?.vi
+      expect(letter, `${m.id}: thiếu "letter" — thư cuối module`).toBeDefined()
+      expect(letter!.length, `${m.id}: thư chỉ ${letter!.length} ký tự, quá ngắn để kể được gì`).toBeGreaterThanOrEqual(
+        MIN_CHARS,
+      )
+      // 3-4 câu như ý gốc: đếm dấu kết câu, chặn cả thư một câu lê thê
+      // lẫn thư dài thành bài giảng thứ hai.
+      const sentences = letter!.split(/[.!?]\s/).filter((s) => s.trim() !== '').length
+      expect(sentences, `${m.id}: thư có ${sentences} câu, ngoài khoảng 3-5`).toBeGreaterThanOrEqual(3)
+      expect(sentences, `${m.id}: thư có ${sentences} câu, ngoài khoảng 3-5`).toBeLessThanOrEqual(5)
+    }
+  })
+
+  it('mỗi module một lá thư RIÊNG — không chép qua chép lại giữa các module', () => {
+    const seen = new Map<string, string>()
+    for (const m of modules) {
+      const letter = m.letter?.vi ?? ''
+      const first = seen.get(letter)
+      expect(first, `${m.id}: thư trùng nguyên văn với ${first ?? ''}`).toBeUndefined()
+      seen.set(letter, m.id)
+    }
+  })
+
   it('mastery test là POOL đủ rộng: mỗi module >= 12 câu để rút ra đề 8 câu', () => {
     // Đề cố định thì lượt thi lại chỉ còn đo TRÍ NHỚ VỀ ĐỀ. Pool rộng
     // hơn cỡ đề mới có chỗ mà rút khác đi giữa hai lượt (ghế Đo lường).

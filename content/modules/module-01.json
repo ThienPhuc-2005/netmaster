@@ -2,6 +2,7 @@
   "id": "module-1",
   "order": 1,
   "part": "A",
+  "letter": { "vi": "Ca đêm để lại vài dòng cho bạn. Lúc mở module này, gửi một tấm ảnh với bạn chỉ là bấm nút rồi chờ; giờ bạn biết tấm ảnh ấy bị cắt thành từng gói, mỗi gói mang địa chỉ nhà, số căn hộ và một bộ luật nói chuyện đã thỏa thuận trước. Từ hôm nay, nghe ai than mạng chậm là trong đầu bạn đã có sẵn một con đường để hỏi nó chậm ở chặng nào. Giữ lấy cái nhìn đó — mọi module sau chỉ là chi tiết của chính con đường này." },
   "title": { "vi": "Mạng là gì? — Câu chuyện bưu điện" },
   "stages": [
     { "id": "m1-chang-1", "title": { "vi": "Phong bì đầu tiên" }, "lessonIds": ["m1-bai-1"] },

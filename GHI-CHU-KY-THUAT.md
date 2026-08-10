@@ -268,6 +268,12 @@ quan trước khi "sửa test cho xanh".
   năng của module; (c) thi lại RÚT ĐỀ MỚI. Và (d — lượt dọn P2): câu KẾT
   đề là câu trụ NẶNG nhất (clinic > cli > lab > ps > palace-walk) —
   peak-end, ca tổng duyệt không được rơi vào câu số 1 (test khóa).
+- **`letter` — thư cuối module (khối 21.6)**: NỘI DUNG trong data, hiện ở
+  màn ĐẬU. Nó là thứ DUY NHẤT người học nhận khi đậu (bài thi cố ý không
+  cộng XP), nên module nội dung thật thiếu thư là `content.test` đỏ; luật
+  đi kèm: >= 220 ký tự, 3-5 câu, không lá nào trùng lá nào, và
+  `content:review` phải in nguyên văn. Giọng: người trực ca đêm nhắn cho
+  ca sáng, kể ĐÚNG việc module đó vừa cho họ làm được.
 - **Màn rớt KHÔNG in đáp án** (chỉ ý cần ôn — hintTopic); đáp án đầy đủ
   chỉ hiện khi ĐẬU. Câu + lựa chọn MCQ xáo mỗi lượt/mỗi lần render.
 - **Distractor không lộ đáp án bằng ĐỘ DÀI** (content.test khóa hai hàng
@@ -430,6 +436,18 @@ chỉ bỏ điều kiện "học hết bài trước đã".
 - `FeedbackBanner` 3 tầng, cấm chữ "SAI" trần trụi; phản hồi chấm bài
   render trong `FeedbackRegion` (live region thường trực), không mount
   banner kèm nội dung.
+- **Khen theo HÀNH VI (`engine/praise.ts`, khối 21.6)**: bề mặt nào đọc
+  ra được dấu vết (vấp mấy lần / có mở lời giải / dạng câu / bước nào)
+  thì truyền `praise` vào `FeedbackState`; chỗ không đọc ra thì để trống
+  và rơi về "Chuẩn luôn!" — khen bừa còn tệ hơn khen chung. Số câu khen
+  mỗi ngữ cảnh khai ở `PRAISE_VARIANTS`, `dynamicStrings.test` bắt buộc
+  đủ chữ cả vi lẫn en. Hạt giống xoay câu BƠM TỪ NGOÀI (engine không
+  random, không đọc đồng hồ).
+- **Giấy chứng nhận (`features/graduation/certificate.ts`)**: canvas
+  thuần, không thư viện; tách `buildCertificate` (thuần, test được) khỏi
+  `drawCertificate` (vẽ). Hai luật cố ý: tờ giấy LUÔN nền sáng dù app
+  đang theme tối (để in), và tên người học KHÔNG lưu store — ô nhập tại
+  chỗ, cắt/chặn 40 ký tự ngay ở tầng soạn nội dung.
 - Motion: app bọc `LazyMotion strict` — dùng `m.*`, KHÔNG `motion.*`;
   reduced-motion do `MotionConfig` + token `--dur` lo; animation CSS mới
   phải buộc thời lượng vào `--dur`.

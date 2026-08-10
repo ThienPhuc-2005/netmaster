@@ -51,12 +51,14 @@ Trạng thái: ☐ chờ duyệt · ✅ đã làm · ✗ đã bàn và bỏ (gi�
 
 ## D. Câu chữ
 
-- ☐ **D1. Khen đúng việc** — kho 20+ câu khen gắn với hành vi cụ thể
-  ("bạn tự tra bảng trước khi hỏi — thói quen của người giỏi nghề")
-  thay vì "Chính xác!" lặp mãi. Khen hành vi bền hơn khen kết quả.
-- ☐ **D2. Thư cuối module** — đậu module thì nhận một đoạn 3-4 câu kể
-  "bạn giờ làm được gì mà hai tuần trước chưa làm được", giọng người
-  trực ca đêm để thư lại cho ca sáng.
+- ✅ **D1. Khen đúng việc** — ĐÃ LÀM (khối 21.6): 28 câu khen chia 9
+  ngữ cảnh HÀNH VI (`src/engine/praise.ts`), xoay vòng tất định theo số
+  câu đã trả lời. Ưu tiên khen nếp khó trước: đọc lời giải rồi tự gõ
+  lại > sai rồi tự sửa > nếp tay chân của từng nghề (lab/CLI/PS/cung
+  điện/phòng khám) > nhớ lại > đúng ngay.
+- ✅ **D2. Thư cuối module** — ĐÃ LÀM (khối 21.6): trường `letter` trong
+  data của module, 21 lá thư riêng, hiện ở màn ĐẬU bài thi. Đây là thứ
+  DUY NHẤT người học nhận lúc đậu, vì bài thi cố ý không cộng XP.
 
 ## E. UX hành vi
 
@@ -93,12 +95,13 @@ Trạng thái: ☐ chờ duyệt · ✅ đã làm · ✗ đã bàn và bỏ (gi�
 
 ## H. Ý sinh ra trong lúc làm Phần D-E (08-09)
 
-- ☐ **H1. Giấy chứng nhận tải được** — màn tốt nghiệp thêm nút xuất
-  ảnh PNG từ chính bản đồ + số liệu (canvas, không backend): phần
-  thưởng xã hội đem khoe được mà không phá luật không-XP.
-- ☐ **H2. "Về đích sau X ngày"** — mốc tốt nghiệp in thêm số ngày từ
-  bài học đầu tới lúc đậu (min/max ngày trong completedLessons — data
-  có sẵn); con số thời gian làm câu chuyện cá nhân hơn điểm số.
+- ✅ **H1. Giấy chứng nhận tải được** — ĐÃ LÀM (khối 21.6): PNG
+  1200×850 vẽ bằng canvas, nền sáng cố định (để in), tên người học là ô
+  nhập tại chỗ KHÔNG lưu vào store.
+- ✅ **H2. "Về đích sau X ngày"** — ĐÃ LÀM (khối 21.6): thẻ số ngày +
+  một dòng kể từ ngày nào tới ngày nào. Có thêm con số ý gốc chưa nghĩ
+  tới: **số ngày THẬT SỰ ngồi học** — 75 ngày mà 19 ngày học là chuyện
+  bình thường, nói ra để người học khỏi tự trách quãng nghỉ.
 - ☐ **H3. Ca bệnh sửa lai** — cho ca liên tầng phần SỬA nửa tay nửa
   chọn: sửa mạng bằng phòng lab thật (vd native VLAN) + chọn hành động
   cho phần ngoài mô hình (vd bản ghi DNS). Cần mở cơ chế fix mới ở

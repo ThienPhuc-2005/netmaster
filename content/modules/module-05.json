@@ -2,6 +2,7 @@
   "id": "module-5",
   "order": 5,
   "part": "B",
+  "letter": { "vi": "Ca đêm ghi lại vài dòng. Trước module này, cái đuôi 443 sau tên miền chỉ là ký tự lạ; giờ bạn biết mỗi con số đó là một cánh cửa của cùng một ngôi nhà, và bạn đi lại được cả tòa nhà mười lăm phòng từ trí nhớ. Bạn còn phân biệt được lúc nào cần bắt tay ba nhịp cho chắc, lúc nào thà mất vài gói mà nhanh. Cách nhớ bằng tòa nhà ấy sẽ còn theo bạn sang những module khó hơn nhiều." },
   "title": {
     "vi": "TCP, UDP và Port — Cửa nào của ngôi nhà"
   },

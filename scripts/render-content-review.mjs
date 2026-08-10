@@ -298,6 +298,13 @@ function renderModule(mod) {
     out.push('')
   }
 
+  // Thư cuối module là chữ người học ĐỌC lúc đậu — bản duyệt phải in ra
+  // nguyên văn để người duyệt bắt được giọng sai hay lời hứa suông.
+  if (mod.letter) {
+    out.push('### Thư cuối module (hiện ở màn đậu bài thi)', '')
+    out.push(`> ${vi(mod.letter)}`, '')
+  }
+
   // Checklist lab VMware là nội dung người học nhìn thấy — bản duyệt
   // phải tả nó, không được nuốt im lặng (cùng luật với câu hỏi kind lạ).
   if (mod.vmLab) {

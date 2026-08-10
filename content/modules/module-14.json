@@ -2,6 +2,7 @@
   "id": "module-14",
   "order": 14,
   "part": "D",
+  "letter": { "vi": "Vài dòng cho bạn. Trước module này, bạn chưa từng ngồi trước dấu nhắc của một thiết bị thật; giờ bạn gõ được, đọc được bảng nó in ra, và sửa được cấu hình bằng chính tay mình. Bạn còn chữa được ca native VLAN lệch — ca kinh điển mà người mới hay ngồi nhìn nửa buổi vì mọi thứ trông vẫn như bình thường. Một sợi dây chở nhiều xóm không còn là phép màu, nó chỉ là cái nhãn dán trên khung." },
   "title": {
     "vi": "Trunk 802.1Q — Một sợi dây chở nhiều xóm"
   },

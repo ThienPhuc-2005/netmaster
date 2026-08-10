@@ -2,6 +2,7 @@
   "id": "module-6",
   "order": 6,
   "part": "B",
+  "letter": { "vi": "Vài dòng cho ca sáng. Lúc mở module, máy không vào được mạng với bạn là một cục lỗi duy nhất; giờ bạn tách được nó làm hai câu hỏi rạch ròi: máy có xin được địa chỉ không, và có ai dịch hộ cái tên miền không. Bạn nghe trọn được bốn nhịp hỏi cưới của DHCP và lần được ba tầng người biết đường của DNS. Hai cơ chế này hỏng là nửa số ca trực trên đời hỏng theo — bạn vừa cầm chìa khóa của cả hai." },
   "title": {
     "vi": "DNS và DHCP — Hỏi đường và thuê nhà"
   },

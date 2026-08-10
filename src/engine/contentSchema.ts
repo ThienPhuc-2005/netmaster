@@ -379,6 +379,20 @@ const ModuleBaseSchema = z.object({
    */
   masteryTest: z.array(QuestionSchema).min(5),
   /**
+   * THƯ CUỐI MODULE (kho ý tưởng D2) — đọc ở màn ĐẬU bài thi module.
+   * Vài câu kể "giờ bạn làm được gì mà lúc mở module này chưa làm được",
+   * viết bằng giọng người trực ca đêm để lại lời nhắn cho ca sáng.
+   *
+   * Là NỘI DUNG nên nằm trong data, không nằm trong code: mỗi module một
+   * lá thư riêng vì mỗi module cho người học một tay nghề khác nhau —
+   * sinh tự động từ tên bài chỉ ra một mẫu câu rỗng.
+   *
+   * Tùy chọn ở tầng schema (fixture test không cần thư), nhưng nội dung
+   * THẬT thì bắt buộc — luật đó ở `content.test.ts` cùng chỗ với luật
+   * pool >= 12 câu.
+   */
+  letter: LTextSchema.optional(),
+  /**
    * Chế độ drill hằng ngày của module: `subnet` là bài TÍNH LẠI của
    * Module 3, `vlsm` là bài THIẾT KẾ của Module 13 (spec v2 mục 4.4).
    */

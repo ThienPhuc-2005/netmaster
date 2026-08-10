@@ -2,6 +2,7 @@
   "id": "module-19",
   "order": 19,
   "part": "E",
+  "letter": { "vi": "Ca đêm để lại lời nhắn. Lúc mở module, một miền là một tòa nhà; giờ bạn xếp được nhiều tòa nhà vào cùng một miền và biết vì sao chi nhánh lại bị chỉ đường sai. Bạn nối được ống nước cho quyền chảy đúng nếp thay vì nhét thẳng người vào nhóm quyền — lối tắt mà ai cũng làm rồi ai cũng trả giá sau vài năm. Giao chìa khóa hẹp cho đúng người, đó là thứ phân biệt người quản trị với người bấm chuột." },
   "title": { "vi": "AD đa site và ủy quyền — Một miền, nhiều tòa nhà" },
   "stages": [
     { "id": "m19-chang-1", "title": { "vi": "Một miền, nhiều tòa nhà" }, "lessonIds": ["m19-bai-1"] },

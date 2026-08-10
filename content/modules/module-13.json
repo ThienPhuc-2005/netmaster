@@ -2,6 +2,7 @@
   "id": "module-13",
   "order": 13,
   "part": "D",
+  "letter": { "vi": "Ca đêm ghi lại. Lúc mở module, chia mạng với bạn là chia đều cho tiện; giờ bạn thấy ngay chia đều là cách nhanh nhất để một phòng chết đói còn ba phòng bỏ hoang đất. Bạn cắt được lớn trước nhỏ sau, đặt khối đúng vạch, và đọc được mặt nạ lộn ngược mà OSPF với ACL sắp bắt bạn dùng tới. Từ đây, một tờ yêu cầu bốn phòng chừng này máy là việc bạn ngồi xuống làm được, không phải việc phải đi hỏi ai." },
   "title": { "vi": "VLSM — Cắt đất cho đúng người" },
   "drill": "vlsm",
   "stages": [

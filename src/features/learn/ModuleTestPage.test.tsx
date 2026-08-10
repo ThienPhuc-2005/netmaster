@@ -104,6 +104,36 @@ describe('màn thi mastery: lời hứa phải khớp lộ trình thật', () =>
   })
 })
 
+describe('thư cuối module (kho ý tưởng D2)', () => {
+  // Bài thi cố ý KHÔNG cộng XP (nguyên tắc 5) nên lá thư là thứ duy nhất
+  // người học nhận lúc đậu — mất nó là màn đậu trở lại thành một dòng
+  // "chúc mừng" trơ trọi.
+  it('đậu thì đọc được thư của module vừa qua; rớt thì chưa', () => {
+    const first = modules[0]!
+    const letter = first.letter!.vi
+    openTestFor(first.id)
+    fireEvent.click(screen.getByRole('button', { name: 'Bắt đầu' }))
+
+    walkTest(first, 'fail')
+    expect(screen.queryByText(letter), 'rớt mà đã phát thư').toBeNull()
+
+    fireEvent.click(screen.getByRole('button', { name: 'Thi lại ngay' }))
+    walkTest(first, 'pass')
+    expect(screen.getByText('Lời nhắn để lại cho bạn')).toBeDefined()
+    expect(screen.getByText(letter)).toBeDefined()
+  })
+
+  it('thư KHÔNG cộng XP — đọc xong mọi con số trong store y nguyên', () => {
+    const first = modules[0]!
+    openTestFor(first.id)
+    const xpBefore = useProgress.getState().xpTotal
+    fireEvent.click(screen.getByRole('button', { name: 'Bắt đầu' }))
+    walkTest(first, 'pass')
+    expect(screen.getByText(first.letter!.vi)).toBeDefined()
+    expect(useProgress.getState().xpTotal).toBe(xpBefore)
+  })
+})
+
 describe('màn rớt không được rò đáp án (giá trị của con số 85%)', () => {
   // Luật đã duyệt sau phiên hội đồng 2026-08-07: rớt chỉ hiện Ý CẦN ÔN;
   // in nguyên văn đáp án rồi cho thi lại nguyên đề là biến gate thành bài

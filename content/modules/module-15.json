@@ -2,6 +2,7 @@
   "id": "module-15",
   "order": 15,
   "part": "D",
+  "letter": { "vi": "Ghi lại cho ca sáng. Lúc mở module, nối dư một sợi dây là chuyện vô hại; giờ bạn đã tự tay xem cơn bão quảng bá nhân lên và tự tay dập nó. Bạn tìm được gốc của cây, đọc đúng một cổng đang nằm im mà không tưởng nó hỏng, và chứng minh được đường dự phòng là có thật bằng cách rút phăng sợi dây chính. Từ nay, thấy một cổng không chớp đèn, câu hỏi đầu tiên của bạn sẽ là câu hỏi của người có nghề." },
   "title": { "vi": "STP — Người canh vòng lặp" },
   "stages": [
     { "id": "m15-chang-1", "title": { "vi": "Cơn bão trong ba giây" }, "lessonIds": ["m15-bai-1"] },

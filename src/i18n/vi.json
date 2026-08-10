@@ -34,6 +34,54 @@
     "tier3Label": "Lời giải",
     "tier3Note": "Đọc kỹ lời giải rồi tự gõ lại đáp án nhé — gõ ra là nhớ."
   },
+  "praise": {
+    "after-solution": [
+      "Bạn đọc lời giải rồi tự gõ lại — chính lúc gõ lại đó trí nhớ mới ghi.",
+      "Xem đáp án xong vẫn quay lại làm cho bằng được: đó là cách người ta học nghề thật.",
+      "Chỗ này bạn phải mở lời giải, và bạn đã đóng nó lại để tự làm. Lần sau gặp lại sẽ nhẹ hơn nhiều."
+    ],
+    "self-corrected": [
+      "Sai rồi tự sửa được, không cần ai đưa đáp án — thứ đáng giá nhất của nghề này.",
+      "Bạn thử lại và tự tìm ra. Lần vấp vừa rồi chính là thứ giữ cho bạn nhớ lâu.",
+      "Không bỏ giữa chừng, cũng không xem đáp án. Đúng nếp của người sửa được máy thật."
+    ],
+    "hands-lab": [
+      "Bạn tự tay dựng lại trên sơ đồ chứ không chỉ nói lý thuyết — mạng nghe tay, không nghe lời.",
+      "Sửa tới lúc gói tin đi thông: bạn vừa làm đúng việc một người trực mạng làm.",
+      "Thử, nhìn kết quả, sửa tiếp. Đó là vòng lặp mà cả nghề này sống bằng nó."
+    ],
+    "hands-cli": [
+      "Bạn tra bảng bằng lệnh trước khi kết luận — thói quen của người giỏi nghề.",
+      "Gõ đúng lệnh, đọc đúng cột, sửa đúng chỗ. Console vừa rồi y hệt console ngoài đời.",
+      "Bạn để thiết bị tự nói ra tình trạng của nó thay vì đoán hộ nó."
+    ],
+    "hands-ps": [
+      "Bạn hỏi hệ thống bằng lệnh thay vì mò trong cửa sổ — cách này còn dùng được khi có ba trăm máy.",
+      "Một dòng lệnh xong việc mà bấm chuột mất mười phút. Bạn vừa chọn đúng đường.",
+      "Sửa xong bạn kiểm chứng lại bằng lệnh, không tin vào câu 'chắc là xong rồi'."
+    ],
+    "hands-palace": [
+      "Bạn đi lại căn phòng từ trí nhớ, không lật sách. Hình ảnh đang nhớ giùm bạn.",
+      "Nhớ bằng đường đi trong đầu chứ không bằng danh sách — đó là cả điểm của cung điện này.",
+      "Cửa đã đóng mà bạn vẫn kể lại được căn phòng: nó nằm trong bạn rồi."
+    ],
+    "hands-clinic": [
+      "Bạn khoanh vùng bệnh trước rồi mới sửa, không sửa bừa. Đúng nếp người trực ca.",
+      "Đọc dấu hiệu rồi mới kết luận — ca nào cũng cần đúng thứ tự đó.",
+      "Một ca đã khỏi. Lần tới gặp lại triệu chứng này, tay bạn sẽ nhanh hơn đầu."
+    ],
+    "retrieval": [
+      "Bạn nhớ lại được khi bài đã đóng — đó mới là biết; đọc lại thấy quen thì chưa.",
+      "Không nhìn bài mà vẫn ra. Mỗi lần kéo được trí nhớ ra là một lần nó chắc thêm.",
+      "Câu này bạn tự moi từ trong đầu ra, và chính động tác moi đó làm nên trí nhớ bền."
+    ],
+    "first-try": [
+      "Đúng ngay lần đầu — chỗ này bạn nắm chắc rồi.",
+      "Ra liền, không cần gợi ý. Nền của bạn đang vững.",
+      "Chuẩn ngay từ lượt đầu. Đi tiếp thôi.",
+      "Không vấp câu nào — thứ vừa học đã dính lại."
+    ]
+  },
   "progress": {
     "aria": "Tiến độ module",
     "start": "Khởi động"
@@ -93,6 +141,7 @@
     "passTitle": "Đạt {pct}% — module tiếp theo đã mở!",
     "passTitleFinal": "Đạt {pct}% — bạn vừa học xong module cuối cùng của cả khóa!",
     "passTitleAgain": "Đạt {pct}% — vẫn chắc tay như lần trước.",
+    "letterTitle": "Lời nhắn để lại cho bạn",
     "failTitle": "Được {pct}% — gần lắm rồi.",
     "failBody": "Cần {threshold}% để mở module sau. Đọc lại những ý dưới đây rồi thi lại nhé — thi lại là để ôn, không phải để bị phạt.",
     "failBodyFinal": "Cần {threshold}% để khép lại cả khóa. Đọc lại những ý dưới đây rồi thi lại nhé — thi lại là để ôn, không phải để bị phạt.",
@@ -581,6 +630,17 @@
     "statCards": "Thẻ đang ôn",
     "statLessons": "Bài học đã xong",
     "statClinic": "Ca bệnh đã chữa khỏi",
+    "statDays": "Về đích sau (ngày)",
+    "journeyLine": "Từ bài học đầu tiên ngày {from} tới bài cuối ngày {to} — trong đó có {active} ngày bạn thật sự ngồi xuống học. Những ngày nghỉ giữa chừng không phải lỗ hổng: trí nhớ cần khoảng cách mới chịu bám.",
+    "certTitle": "Giấy chứng nhận",
+    "certBody": "Tải về một tấm ảnh PNG chép lại đúng những con số trên — để dán vào hồ sơ, gửi cho ai đó, hoặc chỉ để giữ. Không có gì được gửi đi đâu cả: ảnh vẽ ngay trên máy bạn.",
+    "certNameLabel": "Tên in trên giấy (để trống cũng được)",
+    "certNamePlaceholder": "Tên bạn",
+    "certDownload": "Tải giấy chứng nhận (PNG)",
+    "certIntro": "đã hoàn thành {passed}/{total} module của khóa học mạng máy tính, gồm phần thực hành trên phòng lab, console thiết bị và phòng khám sự cố.",
+    "certDaysLabel": "Ngày về đích",
+    "certFooter": "Cấp ngày {date} · NetMaster — app tự học mạng máy tính",
+    "certError": "Máy chưa xuất được ảnh lúc này. Thử lại một lần nữa, hoặc mở trang này trên trình duyệt khác nhé.",
     "nextRoadNhapMon": "Con đường trung cấp đã mở trên trang Học: VLSM, trunk, OSPF, ACL — và một chi nhánh đang đợi chính tay bạn dựng ở cuối đường.",
     "nextRoadTrungCap": "Khóa đã khép nhưng Hộp ôn tập vẫn mở cửa mỗi ngày — trí nhớ là thứ trả góp, và những tấm thẻ sẽ còn ghé thăm bạn dài dài.",
     "noXpNote": "Màn này không cộng XP — nó là tấm gương, không phải phần thưởng. Điểm của bạn nằm ở những gì đã đọng lại trong tay nghề.",

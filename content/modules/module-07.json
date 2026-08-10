@@ -2,6 +2,7 @@
   "id": "module-7",
   "order": 7,
   "part": "B",
+  "letter": { "vi": "Ghi lại cho bạn. Trước module này, mạng nhà bạn là một cái modem nhấp nháy; giờ bạn vẽ lại được cả nhà đang dùng chung một địa chỉ ra sao, người gác cửa lật sổ thế nào, và vì sao chơi game với bạn bè lại cần chừa sẵn một lối vào. Bạn còn gỡ được cái nhà mắc hai lớp cổng — ca kinh điển làm nhiều người loay hoay hàng tháng. Từ đây, mạng của chính bạn không còn là hộp đen nữa." },
   "title": {
     "vi": "NAT, Firewall và mạng nhà bạn"
   },

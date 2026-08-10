@@ -11,8 +11,13 @@ import { LessonPlayer } from './LessonPlayer'
 import { loadModules, lessonsInOrder } from '../../content'
 import { startLesson } from '../../engine/lessonMachine'
 import { useProgress, todayIso } from '../../store/progress'
+import { praiseKeyFor, type PraiseSignal } from '../../engine/praise'
+import { translate } from '../../i18n'
 
 const INITIAL = useProgress.getInitialState()
+
+/** Dấu vết của một câu gõ tay làm đúng ngay lần đầu ở bước Thử tay. */
+const FIRST_TRY: PraiseSignal = { failCount: 0, usedSolution: false, step: 'practice', kind: 'typed' }
 
 function renderLesson(lessonId: string) {
   const router = createMemoryRouter(
@@ -125,6 +130,37 @@ describe('LessonPlayer — đi trọn bài đầu Module 1 (nội dung thật)',
     renderLesson('m1-bai-2')
     expect(screen.getByText(/Học xong bài trước sẽ mở bài này/)).toBeTruthy()
     expect(useProgress.getState().lessonRuntimes['m1-bai-2']).toBeUndefined()
+  })
+})
+
+describe('khen đúng việc (kho ý tưởng D1)', () => {
+  // Lời khen phải đọc ra HÀNH VI, không phải chỉ đúng/sai: cùng một câu,
+  // người ra ngay và người sai rồi tự sửa xứng đáng nghe hai câu khác
+  // nhau. Test đi thật hai đường đó trên cùng một câu của bài đầu.
+  function toFirstPractice() {
+    renderLesson('m1-bai-1')
+    fireEvent.click(screen.getByRole('button', { name: /Bắt đầu/ }))
+    fireEvent.click(screen.getByRole('button', { name: /Bị chia thành nhiều gói nhỏ/ }))
+    clickContinue()
+    clickContinue()
+  }
+
+  it('đúng ngay lần đầu: khen chuyện nắm chắc', () => {
+    toFirstPractice()
+    typeAnswer('gói tin')
+    // Hạt giống xoay câu khen là số câu đã trả lời — đọc từ store chứ
+    // không đoán, để test không vỡ khi bài có thêm câu ở bước trước.
+    const seed = useProgress.getState().answerTotal
+    expect(screen.getByText(translate('vi', praiseKeyFor(FIRST_TRY, seed)))).toBeTruthy()
+  })
+
+  it('sai rồi tự sửa: khen chuyện TỰ SỬA, không khen "đúng ngay"', () => {
+    toFirstPractice()
+    typeAnswer('không biết')
+    typeAnswer('gói tin')
+    const seed = useProgress.getState().answerTotal
+    expect(screen.getByText(translate('vi', praiseKeyFor({ ...FIRST_TRY, failCount: 1 }, seed)))).toBeTruthy()
+    expect(screen.queryByText(translate('vi', praiseKeyFor(FIRST_TRY, seed)))).toBeNull()
   })
 })
 

@@ -23,6 +23,7 @@ import {
   type Palace,
   type RoomOutcome,
 } from '../../engine/palace'
+import { praiseKeyFor } from '../../engine/praise'
 import { Button } from '../../components/Button'
 import { FeedbackRegion, type FeedbackState } from '../../components/FeedbackBanner'
 import { useT } from '../../i18n'
@@ -59,7 +60,24 @@ export function PalaceWalk({ palace, roomIds, onComplete }: PalaceWalkProps) {
     setWalk(step.runtime)
 
     if (step.advanced) {
-      setFeedback({ kind: 'correct' })
+      // Khen theo hành vi (kho D1): phòng vừa khép đã ghi sẵn vấp mấy lần
+      // và có phải mở đáp án không. Hạt giống xoay câu khen là SỐ PHÒNG
+      // đã đi — trong một chuyến, hai phòng liền nhau không khen giống hệt.
+      const outcome = step.runtime.outcomes.at(-1)
+      setFeedback({
+        kind: 'correct',
+        praise: t(
+          praiseKeyFor(
+            {
+              failCount: outcome?.failCount ?? 0,
+              usedSolution: outcome?.usedSolution ?? false,
+              step: 'retrieval',
+              kind: 'palace-walk',
+            },
+            step.runtime.outcomes.length,
+          ),
+        ),
+      })
       setKeyText('')
       setNameText('')
       if (step.runtime.completed) onComplete?.(step.runtime.outcomes)

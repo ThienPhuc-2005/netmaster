@@ -2,6 +2,7 @@
   "id": "module-17",
   "order": 17,
   "part": "D",
+  "letter": { "vi": "Vài dòng cho ca sau. Lúc mở module, một danh sách luật chỉ là mấy dòng chữ; giờ bạn biết dòng đầu tiên khớp là dòng quyết định, và biết cái dòng cấm vô hình nằm ở cuối đã hạ bao nhiêu người trước bạn. Bạn gắn được luật vào đúng cửa đúng chiều, dựng lại được cổng switch vừa bị đánh sập, và vạch mặt được kẻ nhận vơ địa chỉ cổng ra. Chặn đúng người mà không chặn nhầm cả văn phòng — cả nghề nằm trong một câu đó." },
   "title": { "vi": "ACL và bảo mật lớp 2 — Luật chặn đúng người" },
   "stages": [
     { "id": "m17-chang-1", "title": { "vi": "Dòng cấm không ai nhìn thấy" }, "lessonIds": ["m17-bai-1"] },

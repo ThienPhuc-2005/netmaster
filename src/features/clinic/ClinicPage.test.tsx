@@ -17,8 +17,18 @@ import { clinicCaseEntries, clinicTabUnlocked } from './clinicCases'
 import { useProgress } from '../../store/progress'
 import { loadModules } from '../../content'
 import { XP_AMOUNTS } from '../../engine/xp'
+import { praiseKeyFor, type PraiseSignal } from '../../engine/praise'
+import { translate } from '../../i18n'
 
 const INITIAL = useProgress.getInitialState()
+
+/** Dấu vết của ca chữa khỏi ngay lần nộp đầu — nguồn của lời khen. */
+const CLINIC_FIRST_TRY: PraiseSignal = {
+  failCount: 0,
+  usedSolution: false,
+  step: 'practice',
+  kind: 'clinic',
+}
 
 /** Danh sách id module theo order — đậu 1..10 thì Module 11 mở. */
 const moduleIds = loadModules().map((m) => m.id)
@@ -95,7 +105,9 @@ describe('làm một ca chọn-hành-động từ đầu tới cuối', () => {
     openDnsCase()
     fireEvent.click(screen.getByRole('button', { name: 'Nộp bài' }))
 
-    expect(screen.getByText('Chuẩn luôn!')).toBeTruthy()
+    // Lời khen nói đúng NGHỀ vừa làm (kho D1) chứ không phải câu chung
+    // chung: chữa xong một ca thì được khen về nếp khám bệnh.
+    expect(screen.getByText(translate('vi', praiseKeyFor(CLINIC_FIRST_TRY, 0)))).toBeTruthy()
     expect(screen.getByText(/\+10 XP/)).toBeTruthy()
     const state = useProgress.getState()
     expect(state.xpTotal).toBe(XP_AMOUNTS.clinicCaseSolved)

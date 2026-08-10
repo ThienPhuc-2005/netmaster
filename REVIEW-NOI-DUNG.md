@@ -9,6 +9,10 @@ Phần A · 5 chặng · 6 bài · 6 khái niệm
 
 **Chặng:** Phong bì đầu tiên (m1-bai-1) → Địa chỉ và căn hộ (m1-bai-2, m1-bai-3) → Bưu tá lên đường (m1-bai-4) → Luật chơi chung (m1-bai-5) → Gửi trọn lá thư (m1-bai-6)
 
+### Thư cuối module (hiện ở màn đậu bài thi)
+
+> Ca đêm để lại vài dòng cho bạn. Lúc mở module này, gửi một tấm ảnh với bạn chỉ là bấm nút rồi chờ; giờ bạn biết tấm ảnh ấy bị cắt thành từng gói, mỗi gói mang địa chỉ nhà, số căn hộ và một bộ luật nói chuyện đã thỏa thuận trước. Từ hôm nay, nghe ai than mạng chậm là trong đầu bạn đã có sẵn một con đường để hỏi nó chậm ở chặng nào. Giữ lấy cái nhìn đó — mọi module sau chỉ là chi tiết của chính con đường này.
+
 ### Bài: Đóng gói tấm ảnh đầu tiên `m1-bai-1`
 
 **1 · Khởi động (hook):** Bạn gửi cho Mai — cô bạn ở thành phố khác — một tấm ảnh sinh nhật. Tấm ảnh không hề đi "nguyên tấm": nó bị xé nhỏ ra rồi ráp lại ở máy Mai. Vì sao phải phiền phức vậy?
@@ -309,6 +313,10 @@ Phần A · 4 chặng · 4 bài · 5 khái niệm
 
 **Chặng:** Hỏi đường trước đã (m2-bai-1) → Cánh cổng ra thế giới (m2-bai-2) → Băng qua thành phố (m2-bai-3) → Chuyến về và tấm bản đồ (m2-bai-4)
 
+### Thư cuối module (hiện ở màn đậu bài thi)
+
+> Vài dòng để lại cho ca sau. Trước module này, gõ google.com rồi thấy trang hiện ra là một phép màu; giờ bạn kể lại được từng nhịp: hỏi danh bạ, ra cổng làng, chuyền tay qua các trạm, rồi trang web quay về đúng cửa sổ vừa mở. Thứ bạn vừa có không phải là thuộc lòng bốn bước, mà là thói quen hỏi gói tin đang đứng ở đâu trước khi đoán. Người trực ca nào cũng sống bằng đúng câu hỏi đó.
+
 ### Bài: Tra danh bạ của Internet `m2-bai-1`
 
 **1 · Khởi động (hook):** Bạn gõ google.com và bấm Enter. Nhưng google.com không phải là một địa chỉ — nó chỉ là cái TÊN, như "quán phở chú Ba" chứ không phải số nhà. Vậy máy bạn gọi cho ai để xin "số nhà" thật của Google trước khi lên đường?
@@ -555,6 +563,10 @@ Phần A · 4 chặng · 4 bài · 5 khái niệm
 Phần A · 6 chặng · 6 bài · 7 khái niệm · drill: subnet
 
 **Chặng:** Số khung và biển số (m3-bai-1) → Đọc vị một địa chỉ IPv4 (m3-bai-2) → Nhà riêng, địa chỉ chung (m3-bai-3) → Kẻ ranh giới khu phố (m3-bai-4) → Nhẩm nhanh bằng magic number (m3-bai-5) → Biển số cho cả tương lai (m3-bai-6)
+
+### Thư cuối module (hiện ở màn đậu bài thi)
+
+> Ghi lại cho bạn của ca sáng. Hai tuần trước, một dãy như 192.168.1.10/24 chỉ là dãy số; giờ bạn nhìn ra ngay đâu là khu phố, đâu là số nhà, và cái /24 đang kẻ hàng rào ở chỗ nào. Bạn còn nhẩm được ranh giới bằng magic number mà không cần máy tính — thứ mà nhiều người làm nghề vài năm vẫn phải mở bảng tra. Từ đây, mọi bài chia mạng chỉ còn là bài toán bạn đã biết cách đặt bút.
 
 ### Bài: Phân biệt số khung và biển số `m3-bai-1`
 
@@ -875,6 +887,10 @@ Phần B · 5 chặng · 5 bài · 6 khái niệm
 
 **Chặng:** Bưu cục của làng (m4-bai-1) → Cuốn sổ nhớ mặt (m4-bai-2) → Hỏi tên trước khi trao (m4-bai-3) → Dựng tường chia xóm (m4-bai-4) → Bắc cầu qua tường (m4-bai-5)
 
+### Thư cuối module (hiện ở màn đậu bài thi)
+
+> Mấy dòng để lại cho ca sau. Lúc mở module, switch với router trong mắt bạn đều là cái hộp có đèn nháy; giờ bạn nói được cái nào nhớ mặt bằng địa chỉ MAC, cái nào bắc cầu giữa hai mạng, và vì sao dựng VLAN là dựng tường chứ không phải cắm thêm dây. Bạn cũng đã tự tay chia hai xóm trên cùng một switch rồi cho chúng nói chuyện lại được với nhau. Nghề này bắt đầu từ đúng chỗ đó: biết thiết bị nào chịu trách nhiệm gì.
+
 ### Bài: Gom cả phòng về một mối `m4-bai-1`
 
 **1 · Khởi động (hook):** Một phòng có 10 máy, máy nào cũng cần nói chuyện được với máy nào. Nếu kéo dây thẳng từng cặp thì hết 45 sợi. Người ta làm cách nào để chỉ cần 10 sợi?
@@ -1175,6 +1191,10 @@ Phần B · 5 chặng · 8 bài · 11 khái niệm
 - `m5-r-ldap` — tầng 5 phòng 1 · 389 · LDAP · hình `palace-registry-book` — Phòng 389 giữ sổ hộ khẩu của tòa nhà: ai làm gì, thuộc phòng ban nào.
 - `m5-r-ldaps` — tầng 5 phòng 2 · 636 · LDAPS · hình `palace-safe-book` — Phòng 636 cũng là cuốn sổ ấy, nhưng đặt trong két sắt và chỉ mở qua khe kính.
 - `m5-r-dhcp` — tầng 5 phòng 3 · 67/68 · DHCP · hình `palace-key-pair` — Phòng 67 phát chìa khóa nhà, phòng 68 nhận lại biên nhận — cặp phòng này chuyên lo cho người mới đến.
+
+### Thư cuối module (hiện ở màn đậu bài thi)
+
+> Ca đêm ghi lại vài dòng. Trước module này, cái đuôi 443 sau tên miền chỉ là ký tự lạ; giờ bạn biết mỗi con số đó là một cánh cửa của cùng một ngôi nhà, và bạn đi lại được cả tòa nhà mười lăm phòng từ trí nhớ. Bạn còn phân biệt được lúc nào cần bắt tay ba nhịp cho chắc, lúc nào thà mất vài gói mà nhanh. Cách nhớ bằng tòa nhà ấy sẽ còn theo bạn sang những module khó hơn nhiều.
 
 ### Bài: Bắt tay ba nhịp trước khi nói chuyện `m5-bai-1`
 
@@ -1648,6 +1668,10 @@ Phần B · 5 chặng · 5 bài · 8 khái niệm
 
 **Chặng:** Hỏi đường trước khi đi (m6-bai-1) → Trong cuốn sổ có gì (m6-bai-2) → Ai nghe được câu hỏi của bạn (m6-bai-3) → Chuyện hỏi cưới bốn nhịp (m6-bai-4) → Giấy thuê có hạn (m6-bai-5)
 
+### Thư cuối module (hiện ở màn đậu bài thi)
+
+> Vài dòng cho ca sáng. Lúc mở module, máy không vào được mạng với bạn là một cục lỗi duy nhất; giờ bạn tách được nó làm hai câu hỏi rạch ròi: máy có xin được địa chỉ không, và có ai dịch hộ cái tên miền không. Bạn nghe trọn được bốn nhịp hỏi cưới của DHCP và lần được ba tầng người biết đường của DNS. Hai cơ chế này hỏng là nửa số ca trực trên đời hỏng theo — bạn vừa cầm chìa khóa của cả hai.
+
 ### Bài: Lần theo ba tầng người biết đường `m6-bai-1`
 
 **1 · Khởi động (hook):** Không có một cuốn danh bạ khổng lồ nào chứa hết mọi tên miền trên đời — nếu có thì nó sập trong một giây. Vậy tại sao gõ tên nào máy bạn cũng tra ra được địa chỉ?
@@ -1953,6 +1977,10 @@ Phần B · 5 chặng · 5 bài · 6 khái niệm
 
 **Chặng:** Một số nhà cho cả chung cư (m7-bai-1) → Mở một cánh cửa vào nhà (m7-bai-2) → Người gác cửa nhớ mặt (m7-bai-3) → Sơ đồ nhà bạn (m7-bai-4) → Khi nhà có hai lớp cổng (m7-bai-5)
 
+### Thư cuối module (hiện ở màn đậu bài thi)
+
+> Ghi lại cho bạn. Trước module này, mạng nhà bạn là một cái modem nhấp nháy; giờ bạn vẽ lại được cả nhà đang dùng chung một địa chỉ ra sao, người gác cửa lật sổ thế nào, và vì sao chơi game với bạn bè lại cần chừa sẵn một lối vào. Bạn còn gỡ được cái nhà mắc hai lớp cổng — ca kinh điển làm nhiều người loay hoay hàng tháng. Từ đây, mạng của chính bạn không còn là hộp đen nữa.
+
 ### Bài: Tìm ra cả nhà đang dùng chung một địa chỉ `m7-bai-1`
 
 **1 · Khởi động (hook):** Nhà bạn có chục thiết bị, mỗi cái một địa chỉ riêng. Vậy mà tra "địa chỉ IP của tôi" trên máy tính và trên điện thoại lại ra CÙNG một con số. Con số đó của ai?
@@ -2241,6 +2269,10 @@ Phần B · 5 chặng · 5 bài · 6 khái niệm
 Phần C · 5 chặng · 5 bài · 10 khái niệm
 
 **Chặng:** Sóng thay dây (m8-bai-1) → Đọc tên thế hệ (m8-bai-2) → Khóa cửa cho sóng (m8-bai-3) → Biển số đời mới (m8-bai-4) → Máy tự lo liệu (m8-bai-5)
+
+### Thư cuối module (hiện ở màn đậu bài thi)
+
+> Mấy dòng để lại. Hai tuần trước, Wi-Fi yếu là chuyện của trời; giờ bạn biết góc nhà nào nên đi băng tần nào, tên thế hệ nào thật sự đem lại gì, và khóa cửa cho sóng nhà mình bằng cách nào cho tử tế. Bạn cũng đọc được biển số đời mới mà không vấp, kể cả cái địa chỉ dài ngoằng mở đầu bằng fe80. Hai hệ địa chỉ cùng sống trên một máy không còn làm bạn lẫn nữa — đó mới là điều đáng nói.
 
 ### Bài: Chọn đúng băng tần cho từng góc nhà `m8-bai-1`
 
@@ -2559,6 +2591,10 @@ Phần C · 5 chặng · 5 bài · 8 khái niệm
 - `m9-r-site` — tầng 2 phòng 1 · Site · cả văn phòng một chỗ · hình `gpo-office-floor` — Tầng hai Site: bảng tin của cả tòa văn phòng — máy nào ngồi trong tòa này đều phải đọc.
 - `m9-r-domain` — tầng 3 phòng 1 · Domain · toàn công ty · hình `gpo-company-flag` — Tầng ba Domain: lá cờ công ty treo giữa sảnh — luật chung cho mọi máy đã gia nhập miền.
 - `m9-r-ou` — tầng 4 phòng 1 · OU · từng phòng ban · hình `gpo-department-door` — Tầng nóc OU: cửa từng phòng ban có luật riêng — áp SAU CÙNG nên thắng hết các tầng dưới.
+
+### Thư cuối module (hiện ở màn đậu bài thi)
+
+> Ca đêm để lại lời nhắn. Lúc mở module này, domain với bạn chỉ là chữ trong ô đăng nhập; giờ bạn thăng được một máy lên làm trưởng làng, xếp cư dân vào đúng ngăn, và treo bộ luật lên đúng tầng. Bạn leo được tòa nhà bốn tầng LSDOU từ trí nhớ và phân xử được lúc các tầng cãi nhau. Đây là xương sống của mọi hệ thống Windows trong doanh nghiệp — bạn vừa đứng lên được trên đó.
 
 ### Checklist lab VMware: Lab thật: dựng làng AD trên VMware (8 bước, không XP)
 
@@ -2884,6 +2920,10 @@ Phần C · 5 chặng · 5 bài · 8 khái niệm
 
 **Chặng:** Thuê góc đám mây (m10-bai-1) → Gác sát từng máy (m10-bai-2) → Cầu và hầm (m10-bai-3) → Không tin ai mặc định (m10-bai-4) → Một danh tính hai thế giới (m10-bai-5)
 
+### Thư cuối module (hiện ở màn đậu bài thi)
+
+> Vài dòng cho ca sau. Trước module, cloud là một chữ trong quảng cáo; giờ bạn kẻ được một mạng riêng trên đó bằng đúng kỹ năng chia subnet học từ Phần A, đặt người gác sát từng máy, và đào hầm nối về văn phòng. Bạn còn hiểu vì sao người ta bỏ dần mô hình lâu đài với hào nước để đi kiểm từng cánh cửa một. Đám mây với nhà mình giờ là hai cách sắp xếp của cùng những khái niệm bạn đã nắm.
+
 ### Bài: Thuê một góc đám mây và kẻ mạng lên đó `m10-bai-1`
 
 **1 · Khởi động (hook):** Công ty bạn vừa "lên mây": không mua switch, không kéo một sợi dây nào, không có phòng máy chủ — vậy mà vẫn có một mạng riêng với các dải địa chỉ y như ở nhà. Mạng đó nằm ở đâu, và ai kẻ ra nó?
@@ -3181,6 +3221,10 @@ Phần C · 5 chặng · 5 bài · 8 khái niệm
 Phần C · 5 chặng · 5 bài · 6 khái niệm
 
 **Chặng:** Ca trực đầu tiên (m11-bai-1) → Lần theo đường đi (m11-bai-2) → Tên và số (m11-bai-3) → Bệnh chập chờn (m11-bai-4) → Manh mối tại chỗ (m11-bai-5)
+
+### Thư cuối module (hiện ở màn đậu bài thi)
+
+> Ghi lại cho ca sáng, ca này bạn trực chính. Trước module, gặp sự cố là thử đại vài thứ cho tới lúc may mắn; giờ bạn có thứ tự để hỏi và có bằng chứng để loại trừ trước khi đụng vào bất cứ thứ gì. Năm ca vừa rồi — máy không in được, trong nhà gọi được ra ngoài thì không, tên miền chết, hai máy giành một số nhà, bệnh nằm ngay trên máy — là năm dạng chiếm phần lớn ca trực thật. Sửa được máy là giỏi; khoanh đúng bệnh trước khi sửa mới là có nghề.
 
 ### Bài: Nhận ca trực: máy không in được `m11-bai-1`
 
@@ -3559,6 +3603,10 @@ Phần C · 5 chặng · 5 bài · 8 khái niệm
 
 **Chặng:** Ra lệnh cho máy (m12-bai-1) → Tham số và sổ tay (m12-bai-2) → Hỏi sổ hộ khẩu của miền (m12-bai-3) → Một lệnh cho cả danh sách (m12-bai-4) → Lôi manh mối ra khỏi log (m12-bai-5)
 
+### Thư cuối module (hiện ở màn đậu bài thi)
+
+> Mấy dòng để lại. Hai tuần trước, việc gì cũng phải mở cửa sổ và bấm chuột; giờ bạn hỏi được cả miền bằng một dòng lệnh, và biết bắt máy tự khai cú pháp khi mình quên. Bạn còn lôi được đúng dòng cần tìm ra khỏi đống log dài hàng nghìn dòng. Khác biệt giữa quản trị mười máy và ba trăm máy nằm gọn trong cái nếp bạn vừa tập được.
+
 ### Bài: Nói chuyện với máy bằng động từ và danh từ `m12-bai-1`
 
 **1 · Khởi động (hook):** Sếp nhắn: "Kiểm tra giúp xem máy chủ file còn mở port chia sẻ không". Bạn có thể bấm chuột mò mẫm mười phút — hoặc gõ một dòng và có câu trả lời sau một giây. Một dòng đó trông như thế nào?
@@ -3903,6 +3951,10 @@ Phần D · 5 chặng · 5 bài · 6 khái niệm · drill: vlsm
 
 **Chặng:** Chia đều là phí đất (m13-bai-1) → Cắt phòng to trước (m13-bai-2) → Đứng đúng ranh giới (m13-bai-3) → Mặt nạ lộn ngược (m13-bai-4) → Gom tuyến cho gọn bảng (m13-bai-5)
 
+### Thư cuối module (hiện ở màn đậu bài thi)
+
+> Ca đêm ghi lại. Lúc mở module, chia mạng với bạn là chia đều cho tiện; giờ bạn thấy ngay chia đều là cách nhanh nhất để một phòng chết đói còn ba phòng bỏ hoang đất. Bạn cắt được lớn trước nhỏ sau, đặt khối đúng vạch, và đọc được mặt nạ lộn ngược mà OSPF với ACL sắp bắt bạn dùng tới. Từ đây, một tờ yêu cầu bốn phòng chừng này máy là việc bạn ngồi xuống làm được, không phải việc phải đi hỏi ai.
+
 ### Bài: Cứu dải địa chỉ bị chia đều `m13-bai-1`
 
 **1 · Khởi động (hook):** Công ty có bốn phòng: kinh doanh 100 máy, kế toán 50, kỹ thuật 25, giám đốc 10. Người làm mạng trước bạn lấy dải 192.168.10.0/24 chia đều làm bốn phần, mỗi phòng một /26. Tuần đầu tiên, phòng kinh doanh đã kêu hết địa chỉ, còn phòng giám đốc bỏ không hơn năm mươi chỗ. Cùng một dải ấy, chia thế nào mới đủ?
@@ -4187,6 +4239,10 @@ Phần D · 5 chặng · 5 bài · 6 khái niệm · drill: vlsm
 Phần D · 5 chặng · 5 bài · 5 khái niệm
 
 **Chặng:** Hết cổng vì mỗi xóm một dây (m14-bai-1) → Dán nhãn xóm lên khung (m14-bai-2) → Xóm đi trần: native VLAN (m14-bai-3) → Danh sách khách được qua (m14-bai-4) → Một chân router cho nhiều xóm (m14-bai-5)
+
+### Thư cuối module (hiện ở màn đậu bài thi)
+
+> Vài dòng cho bạn. Trước module này, bạn chưa từng ngồi trước dấu nhắc của một thiết bị thật; giờ bạn gõ được, đọc được bảng nó in ra, và sửa được cấu hình bằng chính tay mình. Bạn còn chữa được ca native VLAN lệch — ca kinh điển mà người mới hay ngồi nhìn nửa buổi vì mọi thứ trông vẫn như bình thường. Một sợi dây chở nhiều xóm không còn là phép màu, nó chỉ là cái nhãn dán trên khung.
 
 ### Bài: Ngồi xuống trước console lần đầu `m14-bai-1`
 
@@ -4491,6 +4547,10 @@ Phần D · 5 chặng · 5 bài · 5 khái niệm
 Phần D · 5 chặng · 5 bài · 6 khái niệm
 
 **Chặng:** Cơn bão trong ba giây (m15-bai-1) → Bầu ra gốc cây (m15-bai-2) → Cổng nằm im không phải cổng hỏng (m15-bai-3) → Đứt dây chính, cây mọc lối khác (m15-bai-4) → Cổng cắm máy khỏi phải chờ (m15-bai-5)
+
+### Thư cuối module (hiện ở màn đậu bài thi)
+
+> Ghi lại cho ca sáng. Lúc mở module, nối dư một sợi dây là chuyện vô hại; giờ bạn đã tự tay xem cơn bão quảng bá nhân lên và tự tay dập nó. Bạn tìm được gốc của cây, đọc đúng một cổng đang nằm im mà không tưởng nó hỏng, và chứng minh được đường dự phòng là có thật bằng cách rút phăng sợi dây chính. Từ nay, thấy một cổng không chớp đèn, câu hỏi đầu tiên của bạn sẽ là câu hỏi của người có nghề.
 
 ### Bài: Dập cơn bão quảng bá `m15-bai-1`
 
@@ -4813,6 +4873,10 @@ Phần D · 5 chặng · 5 bài · 10 khái niệm
 - `m16-r-exchange` — tầng 3 phòng 2 · Exchange · trao mục lục cho nhau · hình `ospf-two-envelopes` — Sát vách là phòng Exchange: hai phong bì mục lục bay chéo qua nhau, mỗi bên khoe mình đang giữ những trang bản đồ mạng nào.
 - `m16-r-loading` — tầng 4 phòng 1 · Loading · xin nốt phần còn thiếu · hình `ospf-funnel` — Tầng nóc phòng Loading: một cái phễu lớn rót nốt những trang bản đồ còn thiếu vào kho, xin đúng phần mình đang hụt.
 - `m16-r-full` — tầng 4 phòng 2 · Full · hai bản đồ giống hệt nhau · hình `ospf-twin-maps` — Phòng cuối cùng, phòng Full: hai tấm bản đồ đặt chồng khít lên nhau, lệch nhau đúng không một nét — từ giây đó hai router nhìn mạng y hệt nhau.
+
+### Thư cuối module (hiện ở màn đậu bài thi)
+
+> Ca đêm để lại mấy dòng. Trước module, mỗi đường đi mới là một dòng gõ tay và một chỗ để quên; giờ bạn để các router tự chào nhau, tự chép bản đồ và tự viết bảng đường. Bạn cắt cáp giữa chừng rồi xem chúng tìm lối khác mà không cần bạn động tay — đúng thứ tuyến tĩnh không bao giờ làm được. Bạn cũng biết nguồn nào thắng khi hai bên cùng chỉ về một đích, và vì sao lại thế.
 
 ### Bài: Đếm số dòng phải gõ bằng tay `m16-bai-1`
 
@@ -5189,6 +5253,10 @@ Phần D · 5 chặng · 5 bài · 10 khái niệm
 Phần D · 5 chặng · 5 bài · 12 khái niệm
 
 **Chặng:** Dòng cấm không ai nhìn thấy (m17-bai-1) → Chặn cả xóm hay chặn đúng một cửa (m17-bai-2) → Đúng cửa, đúng chiều (m17-bai-3) → Khóa cổng switch lại (m17-bai-4) → Kẻ mạo danh trong xóm (m17-bai-5)
+
+### Thư cuối module (hiện ở màn đậu bài thi)
+
+> Vài dòng cho ca sau. Lúc mở module, một danh sách luật chỉ là mấy dòng chữ; giờ bạn biết dòng đầu tiên khớp là dòng quyết định, và biết cái dòng cấm vô hình nằm ở cuối đã hạ bao nhiêu người trước bạn. Bạn gắn được luật vào đúng cửa đúng chiều, dựng lại được cổng switch vừa bị đánh sập, và vạch mặt được kẻ nhận vơ địa chỉ cổng ra. Chặn đúng người mà không chặn nhầm cả văn phòng — cả nghề nằm trong một câu đó.
 
 ### Bài: Tìm ra dòng luật đang chặn cả sếp `m17-bai-1`
 
@@ -5584,6 +5652,10 @@ Phần E · 5 chặng · 5 bài · 10 khái niệm
 
 **Chặng:** Chuyển lời qua ranh giới xóm (m18-bai-1) → Sáng thứ hai câm lặng (m18-bai-2) → Hai người làm mối (m18-bai-3) → Một cái tên, hai câu trả lời (m18-bai-4) → Hỏi hộ và trí nhớ có hạn (m18-bai-5)
 
+### Thư cuối module (hiện ở màn đậu bài thi)
+
+> Ghi lại cho bạn. Trước module này, DHCP với DNS là hai dịch vụ cứ chạy là được; giờ bạn biết chúng ngã thì cả tầng câm lặng, và biết dựng người thứ hai đỡ việc mà không giẫm chân nhau. Bạn đưa được lời hỏi cưới vượt ranh giới xóm, giải nghĩa được cái tên có hai câu trả lời tùy người đứng ở đâu, và điều khiển được trí nhớ của cả hệ thống tên. Sáng thứ hai của một công ty sống hay chết là ở mấy thứ bạn vừa nắm.
+
 ### Bài: Đưa lời hỏi cưới vượt ranh giới xóm `m18-bai-1`
 
 **1 · Khởi động (hook):** Công ty có mười tầng, mỗi tầng một xóm mạng riêng, nhưng phòng máy chủ chỉ nuôi ĐÚNG MỘT máy DHCP. Mà bạn còn nhớ từ bài hỏi cưới: lời xin địa chỉ là một tiếng hét quảng bá, và tiếng hét thì không bao giờ lọt qua router. Vậy máy mới ở tầng chín cắm dây vào, ai nghe được nó — và bằng cách nào lời của nó tới được phòng máy chủ?
@@ -5934,6 +6006,10 @@ Phần E · 5 chặng · 5 bài · 8 khái niệm
 
 **Chặng:** Một miền, nhiều tòa nhà (m19-bai-1) → Hai cuốn sổ cái chép cho nhau (m19-bai-2) → Xếp quyền như nối ống nước (m19-bai-3) → Điền nốt mắt xích (m19-bai-4) → Giao chìa khóa hẹp (m19-bai-5)
 
+### Thư cuối module (hiện ở màn đậu bài thi)
+
+> Ca đêm để lại lời nhắn. Lúc mở module, một miền là một tòa nhà; giờ bạn xếp được nhiều tòa nhà vào cùng một miền và biết vì sao chi nhánh lại bị chỉ đường sai. Bạn nối được ống nước cho quyền chảy đúng nếp thay vì nhét thẳng người vào nhóm quyền — lối tắt mà ai cũng làm rồi ai cũng trả giá sau vài năm. Giao chìa khóa hẹp cho đúng người, đó là thứ phân biệt người quản trị với người bấm chuột.
+
 ### Bài: Tìm ra ai chỉ đường sai cho chi nhánh `m19-bai-1`
 
 **1 · Khởi động (hook):** Công ty mở chi nhánh Đà Nẵng, dựng hẳn một Domain Controller ngay tầng ba cho oách. Vậy mà sáng nào nhân viên trong đó cũng than đăng nhập chậm cả nửa phút. Soi kỹ mới tá hỏa: mọi máy Đà Nẵng đang vượt tám trăm cây số ra Hà Nội để hỏi một chuyện mà cái máy chủ ngay tầng trên trả lời được. Ai — hay đúng hơn, THIẾU cái gì — khiến chúng mù đường đến vậy?
@@ -6283,6 +6359,10 @@ Phần E · 5 chặng · 5 bài · 8 khái niệm
 
 **Chặng:** Đọc được một dòng nhật ký (m20-bai-1) → Gom nhật ký về một chỗ (m20-bai-2) → Mò kim trong đống rơm thật (m20-bai-3) → Hỏi thăm hay chờ chuông (m20-bai-4) → Biết bình thường mới thấy bất thường (m20-bai-5)
 
+### Thư cuối module (hiện ở màn đậu bài thi)
+
+> Mấy dòng cho ca sáng. Trước module, log là đống chữ chỉ mở ra khi đã có chuyện; giờ bạn đọc một dòng nhật ký ra được bốn điều: khi nào, máy nào, nặng cỡ nào, chuyện gì. Bạn gom được ba chục cuốn sổ về một chỗ, biết đồng hồ lệch làm đảo ngược nhân quả ra sao, và vẽ được đường bình thường để nhìn ra điều bất thường. Thấy sự cố trước người dùng — đó là lằn ranh giữa trực ca và chữa cháy.
+
 ### Bài: Đọc một dòng nhật ký như người có nghề `m20-bai-1`
 
 **1 · Khởi động (hook):** Hai giờ sáng, chiếc switch ở tầng hầm lặng lẽ ghi một dòng chữ vào sổ của nó. Không ai đọc. Sáu tiếng sau cả tòa nhà mất mạng, và người ta mất nửa ngày truy tìm nguyên nhân — trong khi câu trả lời đã nằm sẵn trong sổ từ hai giờ sáng, gắn kèm một con số từ 0 tới 7 nói rõ chuyện này nghiêm trọng cỡ nào. Con số đó đọc thế nào?
@@ -6627,6 +6707,10 @@ Phần E · 5 chặng · 5 bài · 8 khái niệm
 Phần E · 4 chặng · 4 bài · 2 khái niệm
 
 **Chặng:** Chặng 1: Cắt đất trên giấy (m21-bai-1) → Chặng 2: Nối dây, dạy đường (m21-bai-2) → Chặng 3: Luật chặn đúng người (m21-bai-3) → Tổng duyệt trước bàn giao (m21-bai-4)
+
+### Thư cuối module (hiện ở màn đậu bài thi)
+
+> Đây là lời nhắn cuối cùng ca đêm để lại cho bạn. Bạn vừa cắt dải địa chỉ, dựng trunk, cho các router tự hỏi đường nhau, viết luật bảo vệ máy chủ kế toán, rồi gỡ một ca bệnh hai tầng chồng nhau — không phải trên slide, mà trên một chi nhánh do chính tay bạn dựng từ mặt bàn trống. Hai mươi mốt module trước, bạn còn chưa biết một gói tin bắt đầu từ đâu. Ca sau là ca của bạn: từ đây bạn không còn là người học nghề, mà là người có nghề. Hộp ôn tập vẫn mở mỗi ngày, và tay nghề thì trả góp cả đời.
 
 ### Bài: Cắt dải địa chỉ cho chi nhánh mới `m21-bai-1`
 

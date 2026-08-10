@@ -16,6 +16,7 @@ import { XP_AMOUNTS } from '../../engine/xp'
 import type { Exercise, Lesson, Module } from '../../engine/contentSchema'
 import { SELF_EXPLAIN_ANSWER_KEY, newLessonGate, practiceDraftKey, todayIso, useProgress } from '../../store/progress'
 import { newCardIdsForLesson } from '../../engine/reviewQueue'
+import { praiseKeyFor } from '../../engine/praise'
 import { AnswerReveal } from '../../components/AnswerReveal'
 import { useT } from '../../i18n'
 import { playEarcon } from '../../audio/earcons'
@@ -318,10 +319,15 @@ function ExerciseRunner({
   lesson,
   runtime,
   exercises,
+  step,
   doneContent,
-}: StepProps & { exercises: Exercise[]; doneContent: React.ReactNode }) {
+}: StepProps & { exercises: Exercise[]; step: 'practice' | 'retrieval'; doneContent: React.ReactNode }) {
   const t = useT()
   const submitAnswer = useProgress((s) => s.submitExerciseAnswer)
+  // Hạt giống xoay câu khen (kho ý tưởng D1): số câu đã trả lời vốn đơn
+  // điệu tăng, nên hai câu liền nhau không nhận cùng một lời khen — mà
+  // vẫn tất định để test đọc được.
+  const answerTotal = useProgress((s) => s.answerTotal)
   const clearDraft = useProgress((s) => s.clearPracticeDraft)
   const answers = useProgress((s) => s.lessonAnswers[lesson.id])
   // Chế độ flow đọc sống theo cửa sổ 10 câu — mỗi câu trả lời có thể đổi
@@ -337,10 +343,25 @@ function ExerciseRunner({
 
   let main: React.ReactNode
   if (revealingEx !== undefined) {
-    // Vừa trả lời đúng: khen + đáp án chuẩn + vì sao (feedback tức thời)
+    // Vừa trả lời đúng: khen + đáp án chuẩn + vì sao (feedback tức thời).
+    // Lời khen đọc DẤU VẾT của chính câu vừa xong (vấp mấy lần, có phải
+    // mở lời giải không, câu dạng gì, đang ở bước nào) — khen hành vi,
+    // không khen kết quả.
+    const attempt = runtime.exercises[revealingEx.question.id]
+    const praise = t(
+      praiseKeyFor(
+        {
+          failCount: attempt?.failCount ?? 0,
+          usedSolution: attempt?.usedSolution ?? false,
+          step,
+          kind: revealingEx.question.kind,
+        },
+        answerTotal,
+      ),
+    )
     main = (
       <div className="flex flex-col gap-3">
-        <FeedbackBanner state={{ kind: 'correct' }} />
+        <FeedbackBanner state={{ kind: 'correct', praise }} />
         <AnswerReveal
           question={revealingEx.question}
           response={answers?.[revealingEx.question.id]}
@@ -434,6 +455,7 @@ function PracticeView({ module, lesson, runtime }: StepProps) {
         lesson={lesson}
         runtime={runtime}
         exercises={practice.exercises}
+        step="practice"
         doneContent={<ContinueButton module={module} lesson={lesson} runtime={runtime} />}
       />
     </div>
@@ -545,6 +567,7 @@ function RetrievalView({ module, lesson, runtime }: StepProps) {
         lesson={lesson}
         runtime={runtime}
         exercises={retrieval.questions}
+        step="retrieval"
         doneContent={selfExplainBlock}
       />
     </div>

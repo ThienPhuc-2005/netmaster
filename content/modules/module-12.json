@@ -2,6 +2,7 @@
   "id": "module-12",
   "order": 12,
   "part": "C",
+  "letter": { "vi": "Mấy dòng để lại. Hai tuần trước, việc gì cũng phải mở cửa sổ và bấm chuột; giờ bạn hỏi được cả miền bằng một dòng lệnh, và biết bắt máy tự khai cú pháp khi mình quên. Bạn còn lôi được đúng dòng cần tìm ra khỏi đống log dài hàng nghìn dòng. Khác biệt giữa quản trị mười máy và ba trăm máy nằm gọn trong cái nếp bạn vừa tập được." },
   "title": {
     "vi": "Tự động hóa — PowerShell cho người quản trị mạng"
   },
