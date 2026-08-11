@@ -193,6 +193,58 @@ function vanTayCuaView(view) {
 
 const NHAN_DAI = 11
 
+/**
+ * Tiền tố nói LOẠI thiết bị — hình khối đã nói rồi nên chữ khỏi nói lại.
+ *
+ * CHỈ nhận khi đứng trước dấu GẠCH, không nhận khi đứng trước khoảng trắng:
+ * "PC-KinhDoanh" thì "PC" đúng là cái thẻ loại, nhưng "Máy chủ trên
+ * Internet" thì "Máy" là một nửa của "máy chủ" — bỏ nó đi ra "chủ trên
+ * Internet", một câu không còn nghĩa gì (đã thử trên 80 tên thiết bị thật).
+ */
+const TIEN_TO = /^(PC|MAY|MÁY|SW|SWITCH|R|RT|ROUTER|SRV)-+/i
+
+/**
+ * Rút gọn nhãn cho vừa khung 220x130, theo ba khuôn ĐỌC ĐƯỢC TỪ DỮ LIỆU
+ * (80 tên thiết bị đang có trong nội dung, 30 cái dài quá 11 ký tự):
+ *
+ *   1. Bỏ đuôi trong ngoặc — "Máy A (kế toán)" -> "Máy A". Phần trong
+ *      ngoặc là chú thích, phần trước mới là cái gọi tên.
+ *   2. Bỏ tiền tố loại thiết bị — "PC-KinhDoanh" -> "KinhDoanh". Khối vẽ
+ *      đã có hình dáng riêng cho máy trạm / switch / router rồi.
+ *   3. Còn dài thì cắt ở dấu phân cách gần nhất — "MAY-TRUONG-PHONG" ->
+ *      "MAY-TRUONG". Cắt giữa chữ thì thà để nguyên.
+ *
+ * Sau mỗi bước kiểm TRÙNG trên cả bản vẽ: "PC-KinhDoanh" và "SW-KinhDoanh"
+ * mà cùng bỏ tiền tố là ra hai nhãn giống hệt nhau, lúc đó thà để nguyên
+ * tên dài còn hơn hai khối mang một tên. Bước nào gây trùng thì lùi lại.
+ *
+ * Đây là ĐIỂM KHỞI ĐẦU, không phải bản cuối: máy không biết "KyThuat" nên
+ * đọc là "kỹ thuật". Nên script in ra mọi chỗ nó đổi, và mọi chỗ nó bó tay.
+ */
+function rutGonNhan(nhanGoc) {
+  const buoc = [
+    (s) => s.replace(/\s*\([^)]*\)\s*$/, '').trim(),
+    (s) => s.replace(TIEN_TO, '').trim(),
+    (s) => {
+      if (s.length <= NHAN_DAI) return s
+      const cat = s.slice(0, NHAN_DAI + 1)
+      const i = Math.max(cat.lastIndexOf('-'), cat.lastIndexOf(' '))
+      return i >= 3 ? cat.slice(0, i) : s
+    },
+  ]
+
+  let hienTai = [...nhanGoc]
+  for (const ap of buoc) {
+    // Xét độ dài HIỆN TẠI, không xét độ dài gốc: "PC-A (tầng 1)" bỏ ngoặc
+    // xong đã còn "PC-A" là đủ ngắn rồi, chạy tiếp bước bỏ tiền tố thì ra
+    // mỗi chữ "A" — ngắn thật nhưng chẳng còn nói gì.
+    const thu = hienTai.map((s) => (s.length > NHAN_DAI ? ap(s) : s))
+    const trung = new Set(thu).size !== thu.length || thu.some((s) => s.length === 0)
+    if (!trung) hienTai = thu
+  }
+  return hienTai
+}
+
 function chuanBiChep(banVe) {
   const ban = JSON.parse(JSON.stringify(banVe))
   for (const v of ban.views) {
@@ -200,8 +252,19 @@ function chuanBiChep(banVe) {
   }
   const trung = ban.views.length === 2 && vanTayCuaView(ban.views[0]) === vanTayCuaView(ban.views[1])
   if (trung) ban.views = [ban.views[0]]
-  const nhanDai = ban.items.filter((it) => (it.description ?? it.name).length > NHAN_DAI)
-  return { ban, boViewTrung: trung, nhanDai: nhanDai.map((it) => it.description ?? it.name) }
+
+  // Chỉ đổi `description` (cái nhãn vẽ lên hình), KHÔNG đụng `name` — tên
+  // đầy đủ ở lại làm nguồn sự thật, và là thứ để đối chiếu về sau.
+  const goc = ban.items.map((it) => it.description ?? it.name)
+  const gon = rutGonNhan(goc)
+  const daDoi = []
+  const conDai = []
+  ban.items.forEach((it, i) => {
+    if (gon[i] !== goc[i]) daDoi.push([goc[i], gon[i]])
+    else if (goc[i].length > NHAN_DAI) conDai.push(goc[i])
+    it.description = gon[i]
+  })
+  return { ban, boViewTrung: trung, daDoi, conDai }
 }
 
 function chep(banVe, slug) {
@@ -211,13 +274,16 @@ function chep(banVe, slug) {
       `Đã có content/ban-ve/${slug}.json — script không ghi đè công kéo thả của bạn. Xóa file đó trước, hoặc đặt --ten khác.`,
     )
   }
-  const { ban, boViewTrung, nhanDai } = chuanBiChep(banVe)
-  ban.description = `${ban.description} ĐÃ CHÉP tự động: gỡ nét mục tiêu${boViewTrung ? ', bỏ view thứ hai vì trùng view đầu' : ''}.`
+  const { ban, boViewTrung, daDoi, conDai } = chuanBiChep(banVe)
+  ban.description = `${ban.description} ĐÃ CHÉP tự động: gỡ nét mục tiêu${boViewTrung ? ', bỏ view thứ hai vì trùng view đầu' : ''}${daDoi.length > 0 ? `, rút gọn ${daDoi.length} nhãn` : ''}. Tên đầy đủ vẫn nằm ở trường name.`
   writeFileSync(dich, `${JSON.stringify(ban, null, 2)}\n`, 'utf8')
   console.log(`  => chép sang content/ban-ve/${slug}.json (${ban.views.length} view)`)
   if (boViewTrung) console.log('     · bỏ view thứ hai: sau khi gỡ nét mục tiêu nó trùng khít view đầu')
-  for (const nhan of nhanDai) {
-    console.log(`     ! nhãn "${nhan}" dài ${nhan.length} ký tự — khung 220x130 không co chữ, nên rút gọn`)
+  // In ra TỪNG chỗ đã đổi: máy không biết "KyThuat" đọc là "kỹ thuật", nên
+  // người phải soi lại được cái nó vừa làm.
+  for (const [truoc, sau] of daDoi) console.log(`     · rút nhãn "${truoc}" -> "${sau}"`)
+  for (const nhan of conDai) {
+    console.log(`     ! nhãn "${nhan}" dài ${nhan.length} ký tự mà rút thì TRÙNG nhãn khác — sửa tay`)
   }
   console.log('     · mở trong xưởng vẽ kéo lại cho dễ đọc, rồi chạy npm run visuals:isometric')
 }

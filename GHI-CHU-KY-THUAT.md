@@ -672,8 +672,21 @@ chỉ bỏ điều kiện "học hết bài trước đã".
   - **`npm run ban-ve:tu-lab -- --chep <cauId> [--ten <slug>]` (khối
     21.30)**: chép thẳng bản vẽ của MỘT câu sang `content/ban-ve/`, làm hộ
     đúng ba việc từng phải làm tay ba lần liền — gỡ nét mục tiêu, bỏ view
-    thứ hai nếu sau khi gỡ nó trùng khít view đầu, và nhắc nhãn nào dài quá
-    11 ký tự. **Phải GỌI TÊN từng câu**, không có chế độ chép tất: 29 câu
+    thứ hai nếu sau khi gỡ nó trùng khít view đầu, và **rút gọn nhãn dài**.
+    Luật rút gọn đọc ra từ 80 tên thiết bị thật (44 nhãn dài, rút được 38):
+    bỏ đuôi trong ngoặc → bỏ tiền tố loại thiết bị → cắt ở dấu phân cách.
+    Ba chỗ bắt buộc phải nhớ:
+    - Tiền tố CHỈ bỏ khi đứng trước dấu GẠCH. "PC-KinhDoanh" thì "PC" đúng
+      là thẻ loại, nhưng "Máy chủ trên Internet" thì "Máy" là một nửa của
+      "máy chủ" — bỏ đi ra "chủ trên Internet", đã thử và thấy vô nghĩa.
+    - Mỗi bước xét độ dài HIỆN TẠI, không xét độ dài gốc: "PC-A (tầng 1)"
+      bỏ ngoặc xong đã còn "PC-A" là đủ, chạy tiếp bước bỏ tiền tố thì ra
+      mỗi chữ "A".
+    - Bước nào gây TRÙNG nhãn trong cùng bản vẽ thì lùi lại hết. Lab M21 có
+      "PC-KinhDoanh" và "SW-KinhDoanh" nên rút là trùng — script để nguyên
+      tên dài và in "sửa tay", thà dài còn hơn hai khối một tên.
+    Chỉ đổi `description`; `name` giữ tên đầy đủ làm nguồn sự thật. Script
+    in ra TỪNG chỗ đã đổi, vì máy không biết "KyThuat" đọc là "kỹ thuật". **Phải GỌI TÊN từng câu**, không có chế độ chép tất: 29 câu
     lab/ca bệnh chép hết là 29 hình nằm trong gói app mà không bài nào dùng
     — quyết định "bài này đáng có hình" là của người. **KHÔNG BAO GIỜ GHI
     ĐÈ**: file bên `content/ban-ve/` là công kéo thả của người. Gõ nhầm id
