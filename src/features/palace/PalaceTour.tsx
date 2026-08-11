@@ -11,6 +11,7 @@ import { lt } from '../../engine/ltext'
 import { ArrowRight } from 'lucide-react'
 import { currentTourRoom, seeNextRoom, startTour, type Palace } from '../../engine/palace'
 import { Button } from '../../components/Button'
+import { useShortcuts } from '../../components/shortcuts'
 import { useT } from '../../i18n'
 import { PalaceMap } from './PalaceMap'
 import { RoomGlyph } from './RoomGlyph'
@@ -27,9 +28,6 @@ export function PalaceTour({ palace, roomIds, onComplete }: PalaceTourProps) {
   const t = useT()
   const [tour, setTour] = useState(() => startTour(palace, roomIds))
   const room = currentTourRoom(tour, palace)
-  if (room === null) return null
-
-  const seen = tour.route.slice(0, tour.index + 1)
   const atLast = tour.index === tour.route.length - 1
 
   const goNext = () => {
@@ -40,6 +38,16 @@ export function PalaceTour({ palace, roomIds, onComplete }: PalaceTourProps) {
     }
     setTour(seeNextRoom(tour, palace))
   }
+
+  // Mũi tên đi cung điện (kho ý tưởng E3): đi xem là chuỗi một-phòng-một-
+  // màn, bấm chuột từng phòng làm gãy nhịp đi. CHỈ có chiều tới — tòa nhà
+  // đi tầng trệt lên nóc, trái sang phải, và thứ tự đó là một phần của cái
+  // được nhớ; cho lùi là mời đi lộn xộn. Hook phải đứng TRƯỚC cửa trả về
+  // sớm bên dưới (luật hook của React).
+  useShortcuts({ ArrowRight: goNext }, room !== null && !tour.completed)
+
+  if (room === null) return null
+  const seen = tour.route.slice(0, tour.index + 1)
 
   return (
     <div className="grid gap-4 md:grid-cols-[minmax(0,1fr)_minmax(200px,260px)]">
@@ -70,6 +78,16 @@ export function PalaceTour({ palace, roomIds, onComplete }: PalaceTourProps) {
             {atLast ? t('palace.tourDone') : t('palace.tourNext')}
             {!atLast && <ArrowRight size={15} aria-hidden />}
           </Button>
+          {/* Nói ra là có phím tắt — phím tắt không ai thấy là phím tắt
+              không ai dùng. Ẩn trên màn hẹp: ở đó không có bàn phím. */}
+          {!tour.completed && (
+            <span
+              aria-hidden
+              className="hidden items-center gap-1 text-xs text-ink-muted md:inline-flex"
+            >
+              <kbd className="rounded border border-edge px-1.5 py-0.5 font-mono text-[11px]">→</kbd>
+            </span>
+          )}
           {tour.completed && <span className="text-xs text-ink-muted">{t('palace.tourCompleted')}</span>}
         </div>
       </div>

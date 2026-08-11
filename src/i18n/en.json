@@ -19,8 +19,11 @@
     "reload": "Reload"
   },
   "settings": {
-    "themeToDark": "Switch to dark theme",
-    "themeToLight": "Switch to light theme",
+    "themeTo": {
+      "dark": "Switch to dark theme",
+      "light": "Switch to light theme",
+      "auto": "Follow the system theme"
+    },
     "soundOn": "Mute sounds",
     "soundOff": "Unmute sounds",
     "langSwitch": "Chuyển sang tiếng Việt",

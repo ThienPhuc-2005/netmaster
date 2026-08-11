@@ -19,8 +19,11 @@
     "reload": "Tải lại trang"
   },
   "settings": {
-    "themeToDark": "Chuyển nền tối",
-    "themeToLight": "Chuyển nền sáng",
+    "themeTo": {
+      "dark": "Chuyển nền tối",
+      "light": "Chuyển nền sáng",
+      "auto": "Chuyển nền theo hệ điều hành"
+    },
     "soundOn": "Tắt âm thanh",
     "soundOff": "Bật âm thanh",
     "langSwitch": "Switch to English",

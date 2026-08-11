@@ -45,8 +45,12 @@ Trạng thái: ☐ chờ duyệt · ✅ đã làm · ✗ đã bàn và bỏ (gi�
   contrast xuống dưới 4.5:1 — đổi một nguyên tắc sư phạm lấy một lỗi tiếp
   cận thì không đáng. Mobile giữ nguyên chữ ở thanh đáy (đường ra duy nhất
   trên màn hẹp), chỉ cất cụm cài đặt.
-- ☐ **B3. Theme "tự động"** — thêm lựa chọn theo giờ/hệ điều hành
-  (prefers-color-scheme) bên cạnh sáng/tối cố định.
+- ✅ **B3. Theme "tự động"** — ĐÃ LÀM (khối 21.18): nút nền thành BA nấc
+  tối → sáng → tự động. Chỉ theo hệ điều hành (`prefers-color-scheme`),
+  **KHÔNG theo giờ như ý gốc còn để ngỏ**: giờ máy không nói được người
+  học đang ngồi chỗ sáng hay tối, còn hệ điều hành thì đã hỏi họ rồi. Đổi
+  nền hệ điều hành giữa chừng thì app đổi ngay, không đợi mở lại. Mặc định
+  vẫn là TỐI (spec 4.1), 'auto' là thứ người học tự bật.
 
 ## C. Âm thanh
 
@@ -73,8 +77,12 @@ Trạng thái: ☐ chờ duyệt · ✅ đã làm · ✗ đã bàn và bỏ (gi�
   bài mới · thi cuối module) kèm ước lượng "≈ N phút" và MỘT nút cho
   việc đáng làm trước nhất. Engine `todayPlan.ts` thuần TS; thẻ này thay
   luôn banner nợ-ôn cũ.
-- ☐ **E3. Bàn phím một tay cho desktop** — phím 1/2/3 chọn trắc nghiệm,
-  Enter nộp, mũi tên đi cung điện. Tốc độ tạo dòng chảy.
+- ✅ **E3. Bàn phím một tay cho desktop** — ĐÃ LÀM (khối 21.18): phím số
+  chọn trắc nghiệm và xếp thứ tự (chọn theo VỊ TRÍ đang nhìn thấy, nộp lên
+  vẫn là chỉ số gốc), Enter nộp câu xếp thứ tự khi đã đủ, mũi tên phải đi
+  cung điện. Con số in kèm từng lựa chọn trên màn rộng — phím tắt không ai
+  thấy là phím tắt không ai dùng; màn hẹp thì ẩn hẳn. **Không có chiều
+  lùi trong cung điện**: thứ tự đi là một phần của cái được nhớ.
 - ✅ **E4. Sao lưu một cú bấm** — ĐÃ LÀM (hội đồng v1, ghế dữ liệu):
   tab Hồ sơ có nút xuất/nhập file JSON 3 key localStorage; cửa nhập siết
   thêm ở khối 20.3 (chặn file từ bản app mới hơn).

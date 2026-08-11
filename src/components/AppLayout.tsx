@@ -12,6 +12,7 @@ import {
   User,
   Sun,
   Moon,
+  MonitorCog,
   Volume2,
   VolumeX,
   Languages,
@@ -19,7 +20,7 @@ import {
 } from 'lucide-react'
 import { siFacebook, siTelegram } from 'simple-icons'
 import { useT } from '../i18n'
-import { useSettings, applyLang, applyTheme } from '../store/settings'
+import { useSettings, applyLang, applyTheme, nextThemePref, watchSystemTheme } from '../store/settings'
 import { useProgress } from '../store/progress'
 import { clinicTabUnlocked } from '../features/clinic/clinicCases'
 
@@ -74,18 +75,29 @@ export function AppLayout() {
   const focusMode = isFocusRoute(useLocation().pathname)
 
   useEffect(() => applyTheme(theme), [theme])
+  // Ở chế độ tự động, nền hệ điều hành đổi thì app đổi ngay tại chỗ.
+  useEffect(() => watchSystemTheme(theme, () => applyTheme(theme)), [theme])
   // <html lang> phải đi theo nút VI/EN, nếu không trình đọc màn hình đọc
   // giao diện EN bằng giọng Việt (WCAG 3.1.1).
   useEffect(() => applyLang(lang), [lang])
 
   const toggles = (
     <>
+      {/* Nút nền có BA nấc (kho ý tưởng B3): tối → sáng → tự động. Icon và
+          lời đọc đều nói về NẤC SAU — giữ đúng quy ước nút này vốn có, và
+          đó cũng là thứ người bấm muốn biết. */}
       <button
         onClick={toggleTheme}
-        aria-label={theme === 'dark' ? t('settings.themeToLight') : t('settings.themeToDark')}
+        aria-label={t(`settings.themeTo.${nextThemePref(theme)}`)}
         className="rounded-md p-2 text-ink-muted transition-colors duration-(--dur) hover:bg-panel-hover hover:text-ink"
       >
-        {theme === 'dark' ? <Sun size={16} aria-hidden /> : <Moon size={16} aria-hidden />}
+        {theme === 'dark' ? (
+          <Sun size={16} aria-hidden />
+        ) : theme === 'light' ? (
+          <MonitorCog size={16} aria-hidden />
+        ) : (
+          <Moon size={16} aria-hidden />
+        )}
       </button>
       <button
         onClick={toggleSound}
@@ -161,8 +173,15 @@ export function AppLayout() {
           ))}
         </nav>
 
+        {/* Chân thanh bên trên DESKTOP xếp HAI DÒNG, không phải một. Nhét cả
+            5 nút vào một dòng thì cụm cần 248px trong thanh bên 224px — icon
+            Telegram bị mép thanh bên cắt mất một nửa (đo trên browser thật).
+            Gọt vài pixel cho vừa chỉ là vá tạm: thêm một nút cài đặt, đổi
+            font, hay dịch nhãn dài hơn là vỡ lại y hệt. Hai dòng thì rộng
+            bao nhiêu cũng đủ. Mobile giữ nguyên một dòng — ở đó cụm liên hệ
+            vốn đã ẩn. */}
         {!focusMode && (
-          <div className="flex items-center justify-center gap-5 border-t border-edge py-2 md:justify-between md:px-4 md:py-3">
+          <div className="flex items-center justify-center gap-5 border-t border-edge py-2 md:flex-col md:gap-2 md:px-3 md:py-3">
             <div className="flex items-center gap-3">{toggles}</div>
             <div className="hidden items-center gap-3 md:flex">
               <BrandIcon

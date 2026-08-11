@@ -136,3 +136,31 @@ describe('đi lại từ trí nhớ: gợi ý là chỗ và hình, không phải
     expect(cell('r-https')?.getAttribute('data-state')).toBe('current')
   })
 })
+
+describe('PalaceTour — mũi tên đi cung điện (kho ý tưởng E3)', () => {
+  it('mũi tên phải đi sang phòng kế, tới phòng cuối thì khép chuyến', () => {
+    const onComplete = vi.fn()
+    render(<PalaceTour palace={PORT_PALACE} roomIds={FLOOR_1} onComplete={onComplete} />)
+    fireEvent.keyDown(window, { key: 'ArrowRight' })
+    expect(screen.getByText(new RegExp('Phòng 2/3'))).toBeDefined()
+    fireEvent.keyDown(window, { key: 'ArrowRight' })
+    expect(screen.getByText(new RegExp('Phòng 3/3'))).toBeDefined()
+    expect(onComplete).not.toHaveBeenCalled()
+    fireEvent.keyDown(window, { key: 'ArrowRight' })
+    expect(onComplete).toHaveBeenCalledTimes(1)
+  })
+
+  it('đi hết rồi thì mũi tên im — không gọi khép chuyến lần hai', () => {
+    const onComplete = vi.fn()
+    render(<PalaceTour palace={PORT_PALACE} roomIds={FLOOR_1} onComplete={onComplete} />)
+    for (let i = 0; i < 6; i++) fireEvent.keyDown(window, { key: 'ArrowRight' })
+    expect(onComplete).toHaveBeenCalledTimes(1)
+  })
+
+  it('KHÔNG có chiều lùi: tòa nhà đi một chiều, thứ tự là một phần của cái được nhớ', () => {
+    render(<PalaceTour palace={PORT_PALACE} roomIds={FLOOR_1} />)
+    fireEvent.keyDown(window, { key: 'ArrowRight' })
+    fireEvent.keyDown(window, { key: 'ArrowLeft' })
+    expect(screen.getByText(new RegExp('Phòng 2/3'))).toBeDefined()
+  })
+})

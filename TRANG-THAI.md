@@ -28,7 +28,28 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (19) M21 capstone + màn tốt nghiệp | XONG |
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
-**KHỐI MỚI NHẤT — 21.17 (08-11), đang ở working tree chờ lệnh commit:**
+**KHỐI MỚI NHẤT — 21.18 (08-11), đang ở working tree chờ lệnh commit:**
+hai ý nữa từ kho, chủ dự án gọi tên.
+- **B3 — nền tự động**: nút nền thành BA nấc tối → sáng → tự động. Nấc tự
+  động bám `prefers-color-scheme` của hệ điều hành và đổi NGAY khi hệ điều
+  hành đổi, không đợi mở lại app. Khác ý gốc một chỗ đã khai: bỏ vế "theo
+  giờ". Mặc định vẫn TỐI. Bất biến ở `GHI-CHU-KY-THUAT.md` mục 10.
+- **E3 — bàn phím một tay**: `components/shortcuts.ts` (dùng chung) + phím
+  số cho trắc nghiệm và xếp thứ tự + Enter nộp câu xếp thứ tự + mũi tên
+  phải đi cung điện. Con số in kèm lựa chọn trên màn rộng, ẩn trên màn hẹp.
+  Bất biến ở mục 10 và mục 5.
+- 1392 test xanh (+31 test mới của khối này), typecheck sạch, build qua.
+  Kiểm browser thật: ba nấc nút nền chạy đủ vòng kèm icon/lời đọc đúng nấc
+  sau; đặt hệ điều hành sáng + nấc tự động → app sáng, đặt tối → app tối;
+  phím "2" trên câu trắc nghiệm thật của M1 chọn đúng lựa chọn thứ hai và
+  chấm ngay; gõ "1"/"2" TRONG ô trả lời không kích hoạt gì; mũi tên phải đi
+  đúng 3 phòng cung điện M5, mũi tên trái không làm gì; 375px con số ẩn
+  hẳn, không cuộn ngang (375/375); console sạch. Dữ liệu seed đã xóa.
+  **Một việc kiểm KHÔNG làm được bằng máy**: trình duyệt trong khay không
+  phát sự kiện `change` của media query khi đổi nền hệ điều hành, nên
+  đường "đang mở app mà đổi nền hệ thống" chỉ có test đơn vị gác.
+
+**KHỐI TRƯỚC — 21.17 (08-11), đã commit `8c2d4be` và ĐÃ ĐẨY lên Pages:**
 hai ý từ kho `Y-TUONG.md` do chủ dự án gọi tên.
 - **B2 — chế độ tập trung**: vào `/bai/*` hoặc `/kiem-tra/*` thì khung app
   thu lại còn thanh biểu tượng (desktop 224 → 64px), cất tên app + cụm cài

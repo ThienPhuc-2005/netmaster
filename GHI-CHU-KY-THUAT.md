@@ -214,6 +214,10 @@ quan trước khi "sửa test cho xanh".
   dạy rồi phải có câu bắt nhớ lại; bài thi phủ HẾT phòng của tòa.
 - Thêm tòa mới chỉ phải thêm HÌNH: `parsePorts.test.ts` suy danh sách
   tòa từ `loadModules()`; `RoomGlyph` KHÔNG có hình dự phòng.
+- **Chuyến đi xem có mũi tên PHẢI, không có mũi tên trái** (khối 21.18):
+  lưới kín đi tầng trệt lên nóc, trái sang phải — thứ tự là một phần của
+  cái được nhớ, cho lùi là mời đi lộn xộn. Engine cũng không có bước lùi.
+  Hook phím tắt phải đứng TRƯỚC cửa trả về sớm `room === null`.
 - Ba tòa hiện có: Port 5×3 (M5), LSDOU 4×1 keyStyle text (M9), OSPF
   neighbor 4×2 keyStyle text (M16 — bậc Attempt PHẢI giữ ghi chú "chỉ có
   ở mạng NBMA"; content.test khóa thứ tự 8 bậc lẫn ghi chú).
@@ -547,6 +551,25 @@ chỉ bỏ điều kiện "học hết bài trước đã".
   `/design`); registry thiếu visualId là `ConceptVisual.test` đỏ. Bản đồ
   khóa học `vis-ban-do-khoa-hoc`: lưới 21 ô, 5 hàng A-E, ô chưa có nội
   dung để RỖNG — bản đồ nói thật cả phần dang dở.
+- **Nền có BA nấc (khối 21.18)**: `ThemePref = 'dark'|'light'|'auto'` là
+  thứ người học CHỌN, `Theme = 'dark'|'light'` là nền THẬT — hai kiểu tách
+  riêng để không chỗ nào lỡ ghi chữ 'auto' lên `<html data-theme>`.
+  `resolveTheme` quy 'auto' về nền thật; hỏi hệ điều hành mà không ai trả
+  lời được thì rơi về TỐI (mặc định spec 4.1), không phải sáng.
+  `watchSystemTheme` chỉ gắn listener khi đang ở 'auto' — hứa "tự động"
+  rồi bắt tải lại trang là hứa suông. Mặc định vẫn 'dark'. Persist settings
+  KHÔNG có version và không cần bump: 'auto' chỉ là giá trị mới của một
+  trường cũ, file cũ vẫn đọc đúng.
+- **Phím tắt một tay (`components/shortcuts.ts`, khối 21.18)**: hai luật an
+  toàn nằm TẬP TRUNG ở `useShortcuts`, đừng chép ra từng màn — (a) đang gõ
+  trong input/textarea/select/contenteditable thì mọi phím tắt tắt hết
+  (bấm "1" trong ô trả lời phải ra chữ "1"); (b) Enter/Space khi đang đứng
+  trên button/a/summary thì NHƯỜNG cho trình duyệt bấm phần tử đó, nếu
+  không một cú Enter chạy hai hành động. Phím số chọn theo VỊ TRÍ trên màn
+  hình, còn thứ nộp lên vẫn là CHỈ SỐ GỐC của nội dung (lựa chọn bị xáo mỗi
+  lượt render) — nhầm hai hệ đánh số này là chấm sai đúng người bấm nhanh.
+  Con số in kèm là `aria-hidden` nên tên nút vẫn là nội dung lựa chọn.
+  `useShortcuts` CỐ Ý không có mảng phụ thuộc (handlers dựng lại mỗi render).
 - **Chế độ tập trung (khối 21.17)**: `isFocusRoute` ở `AppLayout` bật cho
   ĐÚNG hai đường `/bai/*` và `/kiem-tra/*` — các trang khác là nơi người
   học đang CHỌN đi đâu, thu khung ở đó là làm khó đúng việc họ định làm.

@@ -13,6 +13,28 @@ import { Button } from './Button'
 import { PalaceWalk } from '../features/palace/PalaceWalk'
 import { findPalaceRoom } from '../content'
 import { todayIso, useProgress, type PracticeDraft } from '../store/progress'
+import { numberKeyHandlers, useShortcuts } from './shortcuts'
+
+/**
+ * Con số đứng trước một lựa chọn (kho ý tưởng E3). CHỈ hiện từ md trở lên:
+ * phím tắt không có nghĩa trên điện thoại, mà bày số ra đó thì mỗi câu
+ * trắc nghiệm tự nhiên có thêm một cột nhiễu.
+ *
+ * `aria-hidden` vì trình đọc màn hình vốn đã đánh số danh sách hộ; đọc
+ * "một, cổng 80" cho mọi lựa chọn chỉ làm câu hỏi dài gấp đôi. Nhờ vậy tên
+ * của nút vẫn đúng là nội dung lựa chọn.
+ */
+function KeyBadge({ position }: { position: number }) {
+  if (position >= 9) return null
+  return (
+    <span
+      aria-hidden
+      className="hidden h-5 w-5 shrink-0 items-center justify-center rounded border border-edge font-mono text-[11px] text-ink-muted md:inline-flex"
+    >
+      {position + 1}
+    </span>
+  )
+}
 
 // Ba bề mặt thực hành NẶNG (phòng lab + phòng khám + terminal PS kéo theo
 // cả engine mô phỏng) tải lười theo dạng câu — người học Phần A chưa gặp
@@ -89,16 +111,28 @@ function McqInput({ question, onSubmit, disabled }: QuestionInputProps & { quest
     }
     return idx
   }, [question.id]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Phím số chọn theo VỊ TRÍ TRÊN MÀN HÌNH, không theo chỉ số gốc — người
+  // học bấm cái họ đang nhìn thấy. Chỉ số gốc vẫn là thứ được nộp.
+  useShortcuts(
+    numberKeyHandlers(order.length, (position) => {
+      const originalIndex = order[position]
+      if (originalIndex !== undefined) onSubmit({ kind: 'mcq', choiceIndex: originalIndex })
+    }),
+    disabled !== true,
+  )
+
   return (
     <div className="flex flex-col gap-2">
-      {order.map((originalIndex) => (
+      {order.map((originalIndex, position) => (
         <button
           key={originalIndex}
           disabled={disabled}
           onClick={() => onSubmit({ kind: 'mcq', choiceIndex: originalIndex })}
-          className="rounded-md border border-edge bg-panel px-4 py-2.5 text-left text-sm text-ink transition-colors duration-(--dur) hover:border-accent hover:bg-panel-hover disabled:opacity-50"
+          className="flex items-center gap-3 rounded-md border border-edge bg-panel px-4 py-2.5 text-left text-sm text-ink transition-colors duration-(--dur) hover:border-accent hover:bg-panel-hover disabled:opacity-50"
         >
-          {maybeLt(question.choices[originalIndex])}
+          <KeyBadge position={position} />
+          <span>{maybeLt(question.choices[originalIndex])}</span>
         </button>
       ))}
     </div>
@@ -124,6 +158,7 @@ function OrderInput({ question, onSubmit, disabled }: QuestionInputProps & { que
   const listRef = useRef<HTMLDivElement>(null)
 
   const remaining = shuffled.filter((i) => !picked.includes(i))
+  const complete = picked.length === question.items.length
 
   const pick = (originalIndex: number) => {
     setPicked((p) => [...p, originalIndex])
@@ -132,18 +167,34 @@ function OrderInput({ question, onSubmit, disabled }: QuestionInputProps & { que
     })
   }
 
+  // Phím số chọn mục CÒN LẠI thứ mấy — danh sách co lại sau mỗi lần chọn
+  // nên số cũng dồn lên theo, và con số in trên nút luôn là con số đúng.
+  // Enter nộp khi đã xếp đủ; đứng trên nút thì Enter vẫn là bấm nút đó
+  // (luật của useShortcuts), không thì một cú Enter vừa chọn vừa nộp.
+  useShortcuts(
+    {
+      ...numberKeyHandlers(remaining.length, (position) => {
+        const originalIndex = remaining[position]
+        if (originalIndex !== undefined) pick(originalIndex)
+      }),
+      ...(complete ? { Enter: () => onSubmit({ kind: 'order', order: picked }) } : {}),
+    },
+    disabled !== true,
+  )
+
   return (
     <div className="flex flex-col gap-3">
       <p className="text-xs text-ink-muted">{t('lesson.orderHelp')}</p>
       <div ref={listRef} className="flex flex-col gap-2">
-        {remaining.map((originalIndex) => (
+        {remaining.map((originalIndex, position) => (
           <button
             key={originalIndex}
             disabled={disabled}
             onClick={() => pick(originalIndex)}
-            className="rounded-md border border-edge bg-panel px-4 py-2.5 text-left text-sm text-ink transition-colors duration-(--dur) hover:border-accent hover:bg-panel-hover disabled:opacity-50"
+            className="flex items-center gap-3 rounded-md border border-edge bg-panel px-4 py-2.5 text-left text-sm text-ink transition-colors duration-(--dur) hover:border-accent hover:bg-panel-hover disabled:opacity-50"
           >
-            {maybeLt(question.items[originalIndex])}
+            <KeyBadge position={position} />
+            <span>{maybeLt(question.items[originalIndex])}</span>
           </button>
         ))}
       </div>
@@ -160,10 +211,10 @@ function OrderInput({ question, onSubmit, disabled }: QuestionInputProps & { que
       )}
 
       <div className="flex gap-2">
-        <Button
-          disabled={disabled || picked.length !== question.items.length}
-          onClick={() => onSubmit({ kind: 'order', order: picked })}
-        >
+        <Button disabled={disabled || !complete} onClick={() => onSubmit({ kind: 'order', order: picked })}>
+          {/* Cùng biểu tượng với nút nộp của câu gõ tay: xếp đủ rồi thì
+              Enter nộp được, y như mọi ô nhập khác trong app. */}
+          {complete && <CornerDownLeft size={15} aria-hidden />}
           {t('lesson.check')}
         </Button>
         <Button variant="ghost" disabled={disabled || picked.length === 0} onClick={() => setPicked([])}>
