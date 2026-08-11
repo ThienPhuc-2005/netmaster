@@ -27,7 +27,9 @@
     "soundOn": "Tắt âm thanh",
     "soundOff": "Bật âm thanh",
     "langSwitch": "Switch to English",
-    "langBadge": "VI"
+    "langBadge": "VI",
+    "nhacNghiOn": "Tắt nhắc nghỉ",
+    "nhacNghiOff": "Bật nhắc nghỉ"
   },
   "feedback": {
     "correct": "Chuẩn luôn!",
@@ -766,5 +768,10 @@
   "contact": {
     "facebook": "Facebook của tác giả",
     "telegram": "Telegram của tác giả"
+  },
+  "nhacNghi": {
+    "title": "Nghỉ một chút nhé",
+    "body": "Bạn học liền {phut} phút rồi. Não cần vài phút yên để đóng gói thứ vừa học — đứng dậy đi một vòng, quay lại sẽ nhớ chắc hơn.",
+    "dong": "Đóng lời nhắc"
   }
 }

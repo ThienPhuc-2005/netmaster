@@ -31,8 +31,14 @@ Trạng thái: ☐ chờ duyệt · ✅ đã làm · ✗ đã bàn và bỏ (gi�
   cửa đóng: **tự giải được N/M bài** (không tính bài phải mở lời giải) và
   **N thẻ mới vào Hộp ôn tập** (đọc chung `newCardIdsForLesson` với store
   nên con số hứa không lệch con số thật).
-- ☐ **A6. Nhắc nghỉ đúng lúc** — học liên tục ~25 phút thì nhắc nhẹ
-  "não cần vài phút để đóng gói thứ vừa học". Tắt được trong cài đặt.
+- ✅ **A6. Nhắc nghỉ đúng lúc** — ĐÃ LÀM (khối 21.33): học liền 25 phút thì
+  một dòng nhắc nhẹ hiện ra, tắt được bằng nút ngay cạnh nút nền/âm thanh.
+  Ba luật làm nên "đúng lúc" mà ý gốc chưa nói: **nghỉ rồi thì không nhắc**
+  (rời máy quá 5 phút là quãng đếm lại từ đầu — quay lại mà bị giục nghỉ
+  thì lần sau không ai đọc nữa), **nhắc rồi thì im trọn một quãng nữa**, và
+  **đang thi thì không bao giờ nhắc**. Quãng học sống trong bộ nhớ, tải lại
+  trang là đếm lại: nhắc muộn không ai thiệt, nhắc oan là mất uy tín ngay
+  lần đầu.
 
 ## B. Màu sắc & thị giác
 

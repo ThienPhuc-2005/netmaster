@@ -3,12 +3,12 @@
 ## ĐỌC 30 GIÂY: ĐANG ĐỨNG ĐÂU, LÀM GÌ TIẾP (cập nhật 2026-08-11)
 
 **App hiện có ĐỦ 21/21 MODULE NỘI DUNG + MÀN TỐT NGHIỆP** (M1-12 nhập
-môn, M13-17 Phần D, M18-21 Phần E), 1537 test xanh, typecheck sạch,
+môn, M13-17 Phần D, M18-21 Phần E), 1556 test xanh, typecheck sạch,
 build qua. **Toàn bộ biên bản hội đồng trung cấp đã XỬ XONG (08-10):
 15/15 việc mục 6 (khối 20.2, commit `1d04c0b`) + trọn LƯỢT DỌN 52 phát
 hiện P2 mục 5 (khối 20.3).** Nội dung và engine không còn việc nào treo;
 các khối gần đây đều là ý lấy từ kho `Y-TUONG.md`.
-Việc kế tiếp là của CHỦ DỰ ÁN: ra lệnh commit khối 21.32, và tuyển người
+Việc kế tiếp là của CHỦ DỰ ÁN: ra lệnh commit khối 21.33, và tuyển người
 cho các buổi test người thật (hai dòng DoD còn treo đều cần NGƯỜI).
 
 **Toàn bộ ENGINE của Phần D đã xong.** Không còn engine nào phải viết cho
@@ -29,7 +29,20 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (19) M21 capstone + màn tốt nghiệp | XONG |
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
-**KHỐI MỚI NHẤT — 21.32 (08-11), đang ở working tree chờ lệnh commit:**
+**KHỐI MỚI NHẤT — 21.33 (08-11), đang ở working tree chờ lệnh commit:**
+**A6 — nhắc nghỉ đúng lúc** (ý đầu tiên lấy từ kho sau cả cụm hình vẽ).
+- Học liền 25 phút thì một dòng nhắc nhẹ hiện ở đầu khung app; tắt được
+  bằng nút ngay cạnh nút nền/âm thanh, lựa chọn có lưu lại.
+- Ba luật làm nên "đúng lúc" mà ý gốc chưa nói: **nghỉ rồi thì không nhắc**
+  (rời máy quá 5 phút là quãng đếm lại từ đầu), **nhắc rồi thì im trọn một
+  quãng nữa**, và **đang thi thì không bao giờ nhắc**.
+- Lõi thuần không tự lấy giờ nên test đo được mọi mốc mà không phải chờ
+  thật; 12 test cho lõi + 7 test cho vỏ UI.
+- 1556 test xanh (+19), typecheck sạch, build qua. Kiểm browser thật bằng
+  cách tua đồng hồ 26 phút: lời nhắc hiện đúng câu kèm số phút, bấm nút tắt
+  thì lời nhắc biến mất và nhãn nút lật sang "Bật nhắc nghỉ". Seed đã xóa.
+
+**KHỐI TRƯỚC — 21.32 (08-11), đã commit `408124c`:**
 lệnh chép tự sinh hình luôn — quy trình xưởng vẽ còn ĐÚNG MỘT lệnh.
 - `--chep` xong thì tự chạy `visuals:isometric`, không phải gõ tay nữa.
 - Chỉ chạy KHI CÓ chép: lần chạy thường vẫn chỉ dựng nháp, không đụng vào

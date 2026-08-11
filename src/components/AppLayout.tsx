@@ -16,6 +16,8 @@ import {
   Volume2,
   VolumeX,
   Languages,
+  AlarmClock,
+  AlarmClockOff,
   Lock,
 } from 'lucide-react'
 import { siFacebook, siTelegram } from 'simple-icons'
@@ -23,6 +25,7 @@ import { useT } from '../i18n'
 import { useSettings, applyLang, applyTheme, nextThemePref, watchSystemTheme } from '../store/settings'
 import { useProgress } from '../store/progress'
 import { clinicTabUnlocked } from '../features/clinic/clinicCases'
+import { NhacNghi } from './NhacNghi'
 
 const NAV = [
   { to: '/', key: 'nav.learn', icon: BookOpen, end: true, clinicGate: false },
@@ -67,7 +70,8 @@ export function AppLayout() {
   const t = useT()
   const theme = useSettings((s) => s.theme)
   const soundOn = useSettings((s) => s.soundOn)
-  const { toggleTheme, toggleSound, toggleLang } = useSettings.getState()
+  const nhacNghiBat = useSettings((s) => s.nhacNghi)
+  const { toggleTheme, toggleSound, toggleNhacNghi, toggleLang } = useSettings.getState()
   const passedModules = useProgress((s) => s.passedModules)
   const clinicOpen = clinicTabUnlocked(passedModules)
 
@@ -105,6 +109,16 @@ export function AppLayout() {
         className="rounded-md p-2 text-ink-muted transition-colors duration-(--dur) hover:bg-panel-hover hover:text-ink"
       >
         {soundOn ? <Volume2 size={16} aria-hidden /> : <VolumeX size={16} aria-hidden />}
+      </button>
+      {/* Nhắc nghỉ (A6) — tắt được, và nút tắt phải nằm ngay cạnh mấy nút
+          kia chứ không giấu trong trang cài đặt riêng: thứ chen ngang
+          người học thì phải tắt được ở đúng chỗ nó vừa chen. */}
+      <button
+        onClick={toggleNhacNghi}
+        aria-label={nhacNghiBat ? t('settings.nhacNghiOn') : t('settings.nhacNghiOff')}
+        className="rounded-md p-2 text-ink-muted transition-colors duration-(--dur) hover:bg-panel-hover hover:text-ink"
+      >
+        {nhacNghiBat ? <AlarmClock size={16} aria-hidden /> : <AlarmClockOff size={16} aria-hidden />}
       </button>
       <button
         onClick={toggleLang}
@@ -197,6 +211,7 @@ export function AppLayout() {
 
       <main className="flex-1 overflow-y-auto">
         <div className="mx-auto max-w-4xl px-4 py-6 md:px-8 md:py-8">
+          <NhacNghi />
           <Outlet />
         </div>
       </main>

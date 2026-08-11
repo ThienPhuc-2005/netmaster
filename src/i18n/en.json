@@ -27,7 +27,9 @@
     "soundOn": "Mute sounds",
     "soundOff": "Unmute sounds",
     "langSwitch": "Chuyển sang tiếng Việt",
-    "langBadge": "EN"
+    "langBadge": "EN",
+    "nhacNghiOn": "Turn off break reminders",
+    "nhacNghiOff": "Turn on break reminders"
   },
   "feedback": {
     "correct": "Nailed it!",
@@ -766,5 +768,10 @@
   "contact": {
     "facebook": "Author's Facebook",
     "telegram": "Author's Telegram"
+  },
+  "nhacNghi": {
+    "title": "Time for a short break",
+    "body": "You've studied {phut} minutes straight. Your brain needs a few quiet minutes to file what you just learned — walk around, then come back; it will stick better.",
+    "dong": "Dismiss reminder"
   }
 }

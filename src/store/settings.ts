@@ -45,9 +45,16 @@ export function resolveTheme(pref: ThemePref): Theme {
 interface SettingsState {
   theme: ThemePref
   soundOn: boolean
+  /**
+   * Nhắc nghỉ sau mỗi quãng học dài (kho ý tưởng A6). BẬT mặc định: lời
+   * nhắc chỉ có ích khi nó tới mà người học chưa nghĩ đến việc nghỉ, mà
+   * thứ phải tự đi bật thì gần như không ai bật.
+   */
+  nhacNghi: boolean
   lang: Lang
   toggleTheme: () => void
   toggleSound: () => void
+  toggleNhacNghi: () => void
   toggleLang: () => void
 }
 
@@ -68,9 +75,11 @@ export const useSettings = create<SettingsState>()(
       // 'auto' là lựa chọn người học tự bật.
       theme: 'dark',
       soundOn: true,
+      nhacNghi: true,
       lang: initialLang(),
       toggleTheme: () => set((s) => ({ theme: nextThemePref(s.theme) })),
       toggleSound: () => set((s) => ({ soundOn: !s.soundOn })),
+      toggleNhacNghi: () => set((s) => ({ nhacNghi: !s.nhacNghi })),
       toggleLang: () =>
         set((s) => {
           const lang: Lang = s.lang === 'vi' ? 'en' : 'vi'
@@ -81,7 +90,7 @@ export const useSettings = create<SettingsState>()(
     {
       name: 'netmaster-settings',
       // lang sống ở key 'lang' riêng — không persist đúp trong store.
-      partialize: (s) => ({ theme: s.theme, soundOn: s.soundOn }),
+      partialize: (s) => ({ theme: s.theme, soundOn: s.soundOn, nhacNghi: s.nhacNghi }),
       // Trỏ global localStorage (mặc định zustand cần window — vắng trong test).
       storage: createJSONStorage(() => localStorage),
     },

@@ -573,6 +573,27 @@ chỉ bỏ điều kiện "học hết bài trước đã".
   rồi bắt tải lại trang là hứa suông. Mặc định vẫn 'dark'. Persist settings
   KHÔNG có version và không cần bump: 'auto' chỉ là giá trị mới của một
   trường cũ, file cũ vẫn đọc đúng.
+- **Nhắc nghỉ (`engine/nhacNghi.ts` + `components/NhacNghi.tsx`, khối
+  21.33)**: học liền 25 phút thì một dòng nhắc nhẹ hiện ở đầu khung app,
+  tắt được bằng nút cạnh nút nền/âm thanh (`settings.nhacNghi`, mặc định
+  BẬT — thứ phải tự đi bật thì gần như không ai bật). Bốn luật:
+  - **Nghỉ rồi thì không nhắc**: rời máy quá 5 phút là quãng đếm lại từ
+    đầu và xóa dấu đã nhắc. Quay lại mà bị giục nghỉ thì lần sau không ai
+    đọc lời nhắc nữa.
+  - **Nhắc rồi thì im trọn một quãng nữa** — nhắc dồn là cách nhanh nhất
+    để người ta tắt tính năng.
+  - **Đang THI thì không bao giờ nhắc** (`duocPhepNhac`): chen ngang đúng
+    lúc người ta cần liền mạch nhất. Đây là luật của TẦNG UI, engine cố ý
+    không biết người học đang bận gì.
+  - **Không nhớ qua lần tải trang**: quãng học sống trong bộ nhớ. Nhắc
+    muộn một quãng thì không ai thiệt, còn nhắc oan ngay khi vừa mở app là
+    lời nhắc mất uy tín ngay lần đầu.
+  Engine không tự lấy giờ (luật `src/engine/`) — mọi hàm nhận `bayGio` từ
+  ngoài, nên test đo được mọi mốc mà không phải chờ thật. Banner mang
+  `role="status"` chứ không `alert`: nó là lời rủ, không phải cảnh báo.
+  Test UI phải bọc `act` quanh `vi.advanceTimersByTime` — lời nhắc bật từ
+  trong `setInterval`, thiếu `act` thì đồng hồ chạy đủ giờ mà màn hình
+  chưa vẽ lại.
 - **Phím tắt một tay (`components/shortcuts.ts`, khối 21.18)**: hai luật an
   toàn nằm TẬP TRUNG ở `useShortcuts`, đừng chép ra từng màn — (a) đang gõ
   trong input/textarea/select/contenteditable thì mọi phím tắt tắt hết
