@@ -201,9 +201,13 @@ Trạng thái: ☐ chờ duyệt · ✅ đã làm · ✗ đã bàn và bỏ (gi�
   "số câu đúng" như ý gốc — store không giữ lịch sử câu trả lời theo
   ngày. Tuần nghỉ vẫn có vạch, vì khoảng trống mới là thứ baseline dạy
   người ta đọc.
-- ☐ **H7. Bài đọc-số-thật cho scope DHCP** — nâng ca scope cạn M18
-  thành bài tự tính: cho bảng 200 suất/197 đã cấp/lease 8 ngày, hỏi
-  rút lease còn bao nhiêu thì sống qua sáng thứ hai.
+- ✅ **H7. Bài đọc-số-thật cho scope DHCP** — ĐÃ LÀM (khối 21.37): thêm bài
+  tập gõ tay thứ ba vào bước Thử tay của `m18-bai-2`, đúng bảng số ý gốc
+  nêu. Đáp án **tối đa 2 ngày**: máy rời mạng chiều thứ sáu thì lease 2 ngày
+  hết hạn chiều chủ nhật, kịp trả suất trước giờ làm; để 3 ngày là mãi chiều
+  thứ hai mới hết. Lời giải nói thêm cái GIÁ của việc rút lease (máy phải
+  xin gia hạn dày hơn) — rút lease không phải phép màu miễn phí.
+  Bài này là bài TÍNH đầu tiên của M18: hai bài cũ đều hỏi nhận biết.
 - ☐ **H8. `Get-ADUser -Properties MemberOf`** — một THAM SỐ (không
   phải lệnh mới) mở chiều tra ngược "người này thuộc nhóm nào" cho ca
   khám quyền M19; giá: sửa mốc 11 lệnh thành 11 lệnh + 1 tham số.

@@ -8,7 +8,7 @@ build qua. **Toàn bộ biên bản hội đồng trung cấp đã XỬ XONG (08
 15/15 việc mục 6 (khối 20.2, commit `1d04c0b`) + trọn LƯỢT DỌN 52 phát
 hiện P2 mục 5 (khối 20.3).** Nội dung và engine không còn việc nào treo;
 các khối gần đây đều là ý lấy từ kho `Y-TUONG.md`.
-Việc kế tiếp là của CHỦ DỰ ÁN: ra lệnh commit khối 21.36, và tuyển người
+Việc kế tiếp là của CHỦ DỰ ÁN: ra lệnh commit khối 21.37, và tuyển người
 cho các buổi test người thật (hai dòng DoD còn treo đều cần NGƯỜI).
 
 **Toàn bộ ENGINE của Phần D đã xong.** Không còn engine nào phải viết cho
@@ -29,7 +29,22 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (19) M21 capstone + màn tốt nghiệp | XONG |
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
-**KHỐI MỚI NHẤT — 21.36 (08-11), đang ở working tree chờ lệnh commit:**
+**KHỐI MỚI NHẤT — 21.37 (08-11), đang ở working tree chờ lệnh commit:**
+**Cụm 3 — nội dung: H7, bài đọc-số-thật cho scope DHCP.**
+- Thêm bài tập gõ tay thứ ba vào bước Thử tay của `m18-bai-2`, đúng bảng số
+  ý gốc nêu: 200 suất · 197 đã cấp · lease 8 ngày. Hỏi rút lease xuống tối
+  đa mấy ngày thì suất kịp trả về trước sáng thứ hai.
+- Đáp án **2 ngày**, và lời giải nói luôn cái GIÁ: rút lease thì máy phải
+  xin gia hạn dày hơn, nên đừng rút quá tay ở scope máy để bàn ngồi yên cả
+  tuần. Bài này là bài TÍNH đầu tiên của M18 — hai bài cũ đều hỏi nhận biết.
+- Đã thử bộ chấm THẬT với 15 cách gõ: nhận "2", "2 ngày", "48 giờ", "48h",
+  "hai ngày", "2ngay" (gõ liền — phải thêm vào sau khi thử mới thấy thiếu);
+  từ chối "3", "3 ngày", "8 ngày", "1 tuần".
+- 1581 test xanh, typecheck sạch, build qua, content:review render lại 21
+  module. Kiểm browser thật: đề bài hiện đủ, ô gõ và nút Kiểm tra dựng đúng.
+  Seed đã xóa.
+
+**KHỐI TRƯỚC — 21.36 (08-11), đã commit `39225f7`:**
 **Cụm 2 — hồ sơ & ôn tập, mới xong HAI trong bốn việc.**
 - **I2 — vấp đẩy thẻ ôn lên sớm.** Đường nối giữa "chỗ vấp" và "thẻ ôn" hóa
   ra là BÀI HỌC: chỗ vấp ghi theo CÂU, thẻ ôn khóa theo KHÁI NIỆM, không

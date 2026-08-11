@@ -5739,6 +5739,11 @@ Phần E · 5 chặng · 5 bài · 10 khái niệm
   - **Chủ đề gợi ý (tầng 1):** so số suất đã cho thuê với tổng số suất
   - **Gợi ý (tầng 2):** Không phải đợi chuông reo — là một con số phần trăm nhìn vào biết còn bao nhiêu suất trống.
   - **Lời giải (tầng 3):** Tỉ lệ cấp phát — số địa chỉ đã cho thuê trên tổng số suất của scope. Chạm ngưỡng 90% là lúc hành động (mở rộng dải, rút lease), chứ không đợi sáng thứ hai chuông reo dồn dập.
+- **Đề:** Scope tầng ba có 200 suất, chiều thứ sáu bảng theo dõi ghi 197 suất đã cấp. Lease đang để 8 ngày. Máy nhân viên rời mạng chiều thứ sáu, sáng thứ hai mới bật lại. Muốn những suất ấy được trả về TRƯỚC giờ làm sáng thứ hai, lease phải rút xuống tối đa mấy ngày?
+  - **Dạng:** gõ tay · **Chấp nhận:** 2 | 2 ngày | 2 ngay | hai ngày | hai ngay | toi da 2 ngay | tối đa 2 ngày | 48 giờ | 48 gio | 48h | 2 ngày trở xuống | 2 ngay tro xuong | 2ngay | 2ngày
+  - **Chủ đề gợi ý (tầng 1):** so thời hạn thuê với quãng máy vắng mặt
+  - **Gợi ý (tầng 2):** Suất chỉ được trả về khi HẾT hạn thuê, không phải khi máy tắt. Máy vắng mặt từ chiều thứ sáu tới sáng thứ hai — đếm xem quãng ấy dài bao nhiêu ngày trọn.
+  - **Lời giải (tầng 3):** Tối đa 2 ngày. Máy rời mạng chiều thứ sáu thì lease 2 ngày hết hạn chiều chủ nhật, kịp trả suất về kho trước giờ làm; để 3 ngày là mãi chiều thứ hai mới hết, sáng thứ hai vẫn còn nguyên 197 suất bị giữ và người đến sau vẫn nhận 169.254. Rút lease là cách rẻ nhất chữa scope cạn khi chưa mở rộng được dải — đổi lại máy phải xin gia hạn dày hơn, nên đừng rút quá tay ở scope máy để bàn ngồi yên cả tuần.
 
 **5 · Nhớ lại (retrieval):**
 - **Đề:** Không nhìn lại bài: máy xin địa chỉ mà không ai đáp sẽ tự bịa một địa chỉ bắt đầu bằng cặp số nào?
