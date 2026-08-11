@@ -74,10 +74,7 @@ function project(tile) {
 
 const round = (n) => Math.round(n * 10) / 10
 
-function buildScene(model) {
-  const view = model.views?.[0]
-  if (view === undefined) throw new Error('Bản vẽ không có view nào')
-
+function buildScene(model, view) {
   const itemById = new Map((model.items ?? []).map((it) => [it.id, it]))
   const nodes = view.items.map((vi) => {
     const item = itemById.get(vi.id)
@@ -348,10 +345,21 @@ const registry = []
 for (const file of files) {
   const slug = file.replace(/\.json$/, '')
   const model = JSON.parse(readFileSync(join(inputDir, file), 'utf8'))
-  const name = pascal(slug)
-  parts.push(sceneToJsx(buildScene(model), name))
-  registry.push(`  'vis-iso-${slug}': ${name},`)
-  console.log(`  ${file} -> vis-iso-${slug}`)
+  const views = model.views ?? []
+  if (views.length === 0) throw new Error(`${file}: bản vẽ không có view nào`)
+
+  // MỘT bản vẽ ra NHIỀU hình — FossFLOW cho phép nhiều view trên cùng một
+  // bộ nút, đúng khuôn "lúc hỏng / lúc đã sửa" của mọi bài chữa lỗi: vẽ bố
+  // cục một lần, view sau chỉ đổi vài sợi dây. View ĐẦU giữ nguyên id cũ
+  // `vis-iso-<tên-file>` (đừng đổi — nội dung đang trỏ vào đó), view sau
+  // nối thêm id của chính nó.
+  for (const [i, view] of views.entries()) {
+    const visualId = i === 0 ? `vis-iso-${slug}` : `vis-iso-${slug}-${view.id}`
+    const name = pascal(i === 0 ? slug : `${slug}-${view.id}`)
+    parts.push(sceneToJsx(buildScene(model, view), name))
+    registry.push(`  '${visualId}': ${name},`)
+    console.log(`  ${file}${views.length > 1 ? ` [${view.id}]` : ''} -> ${visualId}`)
+  }
 }
 
 const header = `// SINH TỰ ĐỘNG bởi scripts/isometric-tu-ban-ve.mjs — ĐỪNG SỬA TAY.

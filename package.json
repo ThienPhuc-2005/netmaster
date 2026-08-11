@@ -14,7 +14,8 @@
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit",
     "icons": "node scripts/make-icons.mjs",
-    "visuals:isometric": "node scripts/isometric-tu-ban-ve.mjs"
+    "visuals:isometric": "node scripts/isometric-tu-ban-ve.mjs",
+    "ban-ve:tu-lab": "node scripts/ban-ve-tu-lab.mjs"
   },
   "dependencies": {
     "@fontsource/be-vietnam-pro": "^5.3.0",

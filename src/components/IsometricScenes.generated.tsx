@@ -156,6 +156,82 @@ function HaiLoiBaMienM16() {
   )
 }
 
+function LabNoiDayM4() {
+  return (
+    <>
+      <g className="text-ink-muted">
+      </g>
+      <g className="text-ink">
+        <path d="M61.6 44 L61.6 49 L71 53.7 L71 48.7 Z" {...isoFace} />
+        <path d="M80.4 44 L80.4 49 L71 53.7 L71 48.7 Z" {...isoFace} />
+        <path d="M71 39.3 L80.4 44 L71 48.7 L61.6 44 Z" {...isoTop} />
+        <path d="M74.7 47.8 l0 3" {...isoDetail} />
+        <path d="M71 49.7 l0 3" {...isoDetail} />
+        <path d="M67.3 51.6 l0 3" {...isoDetail} />
+      </g>
+      <g className="text-ink">
+        <path d="M61.6 70 L61.6 78 L71 82.7 L71 74.7 Z" {...isoFace} />
+        <path d="M80.4 70 L80.4 78 L71 82.7 L71 74.7 Z" {...isoFace} />
+        <path d="M71 65.3 L80.4 70 L71 74.7 L61.6 70 Z" {...isoTop} />
+        <path d="M66 58.3 l10 0 l0 7 l-10 0 Z" {...isoDetail} />
+      </g>
+      <g className="text-ink">
+        <path d="M139.6 70 L139.6 78 L149 82.7 L149 74.7 Z" {...isoFace} />
+        <path d="M158.4 70 L158.4 78 L149 82.7 L149 74.7 Z" {...isoFace} />
+        <path d="M149 65.3 L158.4 70 L149 74.7 L139.6 70 Z" {...isoTop} />
+        <path d="M144 58.3 l10 0 l0 7 l-10 0 Z" {...isoDetail} />
+      </g>
+      <g className="text-ink">
+        <rect x="51.8" y="55.1" width="38.4" height="7.4" rx="1.5" {...isoPlate} />
+        <text x="71" y="60.7" textAnchor="middle" {...isoLabel}>Switch-1</text>
+        <rect x="58.3" y="84.1" width="25.5" height="7.4" rx="1.5" {...isoPlate} />
+        <text x="71" y="89.7" textAnchor="middle" {...isoLabel}>Máy A</text>
+        <rect x="136.3" y="84.1" width="25.5" height="7.4" rx="1.5" {...isoPlate} />
+        <text x="149" y="89.7" textAnchor="middle" {...isoLabel}>Máy B</text>
+      </g>
+    </>
+  )
+}
+
+function LabNoiDayM4LoiGiai() {
+  return (
+    <>
+      <g className="text-ink-muted">
+        <path d="M71 70 L71 44" {...isoStroke} />
+        <path d="M149 70 L71 44" {...isoStroke} />
+      </g>
+      <g className="text-ink">
+        <path d="M61.6 44 L61.6 49 L71 53.7 L71 48.7 Z" {...isoFace} />
+        <path d="M80.4 44 L80.4 49 L71 53.7 L71 48.7 Z" {...isoFace} />
+        <path d="M71 39.3 L80.4 44 L71 48.7 L61.6 44 Z" {...isoTop} />
+        <path d="M74.7 47.8 l0 3" {...isoDetail} />
+        <path d="M71 49.7 l0 3" {...isoDetail} />
+        <path d="M67.3 51.6 l0 3" {...isoDetail} />
+      </g>
+      <g className="text-ink">
+        <path d="M61.6 70 L61.6 78 L71 82.7 L71 74.7 Z" {...isoFace} />
+        <path d="M80.4 70 L80.4 78 L71 82.7 L71 74.7 Z" {...isoFace} />
+        <path d="M71 65.3 L80.4 70 L71 74.7 L61.6 70 Z" {...isoTop} />
+        <path d="M66 58.3 l10 0 l0 7 l-10 0 Z" {...isoDetail} />
+      </g>
+      <g className="text-ink">
+        <path d="M139.6 70 L139.6 78 L149 82.7 L149 74.7 Z" {...isoFace} />
+        <path d="M158.4 70 L158.4 78 L149 82.7 L149 74.7 Z" {...isoFace} />
+        <path d="M149 65.3 L158.4 70 L149 74.7 L139.6 70 Z" {...isoTop} />
+        <path d="M144 58.3 l10 0 l0 7 l-10 0 Z" {...isoDetail} />
+      </g>
+      <g className="text-ink">
+        <rect x="51.8" y="55.1" width="38.4" height="7.4" rx="1.5" {...isoPlate} />
+        <text x="71" y="60.7" textAnchor="middle" {...isoLabel}>Switch-1</text>
+        <rect x="58.3" y="84.1" width="25.5" height="7.4" rx="1.5" {...isoPlate} />
+        <text x="71" y="89.7" textAnchor="middle" {...isoLabel}>Máy A</text>
+        <rect x="136.3" y="84.1" width="25.5" height="7.4" rx="1.5" {...isoPlate} />
+        <text x="149" y="89.7" textAnchor="middle" {...isoLabel}>Máy B</text>
+      </g>
+    </>
+  )
+}
+
 function RouterMotChanM14() {
   return (
     <>
@@ -364,6 +440,8 @@ export const ISOMETRIC_SCENES: Record<string, () => React.ReactNode> = {
   'vis-iso-chi-nhanh-m21': ChiNhanhM21,
   'vis-iso-hai-loi-ba-mien-dut-m16': HaiLoiBaMienDutM16,
   'vis-iso-hai-loi-ba-mien-m16': HaiLoiBaMienM16,
+  'vis-iso-lab-noi-day-m4': LabNoiDayM4,
+  'vis-iso-lab-noi-day-m4-loi-giai': LabNoiDayM4LoiGiai,
   'vis-iso-router-mot-chan-m14': RouterMotChanM14,
   'vis-iso-vong-lap-stp-chan-m15': VongLapStpChanM15,
   'vis-iso-vong-lap-stp-dut-m15': VongLapStpDutM15,

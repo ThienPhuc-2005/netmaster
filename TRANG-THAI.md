@@ -3,12 +3,12 @@
 ## ĐỌC 30 GIÂY: ĐANG ĐỨNG ĐÂU, LÀM GÌ TIẾP (cập nhật 2026-08-11)
 
 **App hiện có ĐỦ 21/21 MODULE NỘI DUNG + MÀN TỐT NGHIỆP** (M1-12 nhập
-môn, M13-17 Phần D, M18-21 Phần E), 1482 test xanh, typecheck sạch,
+môn, M13-17 Phần D, M18-21 Phần E), 1497 test xanh, typecheck sạch,
 build qua. **Toàn bộ biên bản hội đồng trung cấp đã XỬ XONG (08-10):
 15/15 việc mục 6 (khối 20.2, commit `1d04c0b`) + trọn LƯỢT DỌN 52 phát
 hiện P2 mục 5 (khối 20.3).** Nội dung và engine không còn việc nào treo;
 các khối gần đây đều là ý lấy từ kho `Y-TUONG.md`.
-Việc kế tiếp là của CHỦ DỰ ÁN: ra lệnh commit khối 21.23, và tuyển người
+Việc kế tiếp là của CHỦ DỰ ÁN: ra lệnh commit khối 21.24, và tuyển người
 cho các buổi test người thật (hai dòng DoD còn treo đều cần NGƯỜI).
 
 **Toàn bộ ENGINE của Phần D đã xong.** Không còn engine nào phải viết cho
@@ -29,7 +29,23 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (19) M21 capstone + màn tốt nghiệp | XONG |
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
-**KHỐI MỚI NHẤT — 21.23 (08-11), đang ở working tree chờ lệnh commit:**
+**KHỐI MỚI NHẤT — 21.24 (08-11), đang ở working tree chờ lệnh commit:**
+chủ dự án duyệt 4 ý tận dụng xưởng vẽ. **LÀM XONG 2, DỪNG 2** — hai ý kia
+đụng quyết định đã có sẵn trong app, khai rõ ở dưới.
+- ✅ **Một bản vẽ ra nhiều hình**: view đầu giữ id cũ, view sau nối thêm id
+  của nó. Chứng minh bằng `lab-noi-day-m4` → cặp hình đề bài / lời giải.
+- ✅ **`npm run ban-ve:tu-lab`**: đọc spec lab + ca bệnh trong nội dung,
+  dựng 29 bản vẽ nháp vào `content/ban-ve-nhap/` (11 lab × 2 view, 18 ca
+  bệnh). Lab tự sinh ra hình, không phải đặt tọa độ bằng tay nữa.
+- ⛔ **Sơ đồ trong phòng khám lúc chẩn đoán — DỪNG.** `ClinicRoom.tsx` mở
+  đầu bằng bất biến KHÁM MÙ: không sơ đồ lúc khám, vì lộ sơ đồ sớm thì ca
+  "rút dây" tự giải bằng mắt. Tôi đã viết xong rồi gỡ ra.
+- ⛔ **Hình cung điện từng tầng cho M5 — DỪNG.** Màn Dạy bài cung điện
+  render `PalaceTour` thay cho `ConceptVisual` nên visualId đặt ở đó là cấu
+  hình chết; mà cung điện đã có `PalaceMap` sống, tô phòng đang đứng.
+- 1497 test xanh (+15), typecheck sạch, build qua, content:review render lại.
+
+**KHỐI TRƯỚC — 21.23 (08-11), đã commit `3d266db`:**
 vòng lặp STP cho M15 — vẽ thành BA NHỊP của cùng một phòng máy.
 - `vis-iso-vong-lap-stp-m15` → hook `m15-bai-1`: ba switch ba tầng nối
   thành vòng khép kín, sợi thứ ba ghi "sợi vừa cắm".

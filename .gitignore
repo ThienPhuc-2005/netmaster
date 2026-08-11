@@ -4,3 +4,7 @@ scripts/launch.log
 *.local
 Thumbs.db
 .DS_Store
+
+# Ban ve nhap do "npm run ban-ve:tu-lab" dung tu noi dung — sinh lai duoc
+# bat cu luc nao. Cai duoc GIU la ban da keo tay xong, nam o content/ban-ve/.
+content/ban-ve-nhap/

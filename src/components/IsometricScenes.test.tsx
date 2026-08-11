@@ -21,6 +21,7 @@ const files = readdirSync(BAN_VE_DIR).filter((f) => f.endsWith('.json'))
 interface BanVe {
   items: { id: string; name: string; description?: string }[]
   views: {
+    id: string
     items: { id: string }[]
     connectors?: { description?: string }[]
   }[]
@@ -39,16 +40,40 @@ describe('hình isometric sinh từ bản vẽ', () => {
     expect(hasVisual(`vis-iso-${file.replace(/\.json$/, '')}`)).toBe(true)
   })
 
-  it.each(files)('%s: số nhãn trên hình khớp bản vẽ (quên chạy lại script là đỏ)', (file) => {
-    const model = doc(file)
-    const view = model.views[0]!
-    const soNhanMongDoi =
-      view.items.length + (view.connectors ?? []).filter((c) => c.description !== undefined).length
+  /** Mọi view của một bản vẽ, kèm visualId của nó (view đầu giữ id gốc). */
+  function moiView(file: string): { visualId: string; view: BanVe['views'][number] }[] {
+    const slug = file.replace(/\.json$/, '')
+    return doc(file).views.map((view, i) => ({
+      visualId: i === 0 ? `vis-iso-${slug}` : `vis-iso-${slug}-${view.id}`,
+      view,
+    }))
+  }
 
-    const { container } = render(
-      <ConceptVisual visualId={`vis-iso-${file.replace(/\.json$/, '')}`} title="hình thử" />,
-    )
-    expect(container.querySelectorAll('text')).toHaveLength(soNhanMongDoi)
+  it.each(files)('%s: MỌI view đều thành một hình riêng', (file) => {
+    for (const { visualId } of moiView(file)) expect(hasVisual(visualId)).toBe(true)
+  })
+
+  it.each(files)('%s: số nhãn trên hình khớp bản vẽ (quên chạy lại script là đỏ)', (file) => {
+    for (const { visualId, view } of moiView(file)) {
+      const soNhanMongDoi =
+        view.items.length + (view.connectors ?? []).filter((c) => c.description !== undefined).length
+      const { container } = render(<ConceptVisual visualId={visualId} title="hình thử" />)
+      expect(container.querySelectorAll('text'), `${visualId} sai số nhãn`).toHaveLength(soNhanMongDoi)
+      cleanup()
+    }
+  })
+
+  it('bản vẽ nhiều view cho ra các hình KHÁC nhau (không phải bản sao)', () => {
+    const nhieuView = files.filter((f) => doc(f).views.length > 1)
+    expect(nhieuView.length, 'cần ít nhất một bản vẽ nhiều view để test này có nghĩa').toBeGreaterThan(0)
+    for (const file of nhieuView) {
+      const html = moiView(file).map(({ visualId }) => {
+        const out = render(<ConceptVisual visualId={visualId} title="x" />).container.innerHTML
+        cleanup()
+        return out
+      })
+      expect(new Set(html).size, `${file}: các view ra hình giống hệt nhau`).toBe(html.length)
+    }
   })
 
   it.each(files)('%s: nhãn nào cũng có đế lót (chữ không bị nét hình cắt qua)', (file) => {

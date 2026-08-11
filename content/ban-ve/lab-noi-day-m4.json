@@ -1,0 +1,120 @@
+{
+  "title": "Lab nối dây Module 4 (đề bài / lời giải)",
+  "description": "CHÉP TỪ BẢN NHÁP máy dựng (npm run ban-ve:tu-lab) rồi giữ nguyên bố cục máy đặt vì ba nút đã đủ thoáng. Hai view cho ra hai hình: de-bai (chưa có sợi dây nào) và loi-giai (đã nối). Đây là bằng chứng chạy được của cả hai việc: lab tự sinh ra bản vẽ, và một bản vẽ ra được cặp trước/sau.",
+  "icons": [],
+  "colors": [],
+  "items": [
+    {
+      "id": "pc-a",
+      "name": "Máy A",
+      "description": "Máy A",
+      "icon": "desktop"
+    },
+    {
+      "id": "pc-b",
+      "name": "Máy B",
+      "description": "Máy B",
+      "icon": "desktop"
+    },
+    {
+      "id": "sw-1",
+      "name": "Switch-1",
+      "description": "Switch-1",
+      "icon": "switch-module"
+    }
+  ],
+  "views": [
+    {
+      "id": "de-bai",
+      "name": "Đề bài",
+      "items": [
+        {
+          "id": "pc-a",
+          "tile": {
+            "x": 2,
+            "y": 2
+          }
+        },
+        {
+          "id": "pc-b",
+          "tile": {
+            "x": 5,
+            "y": -1
+          }
+        },
+        {
+          "id": "sw-1",
+          "tile": {
+            "x": 0,
+            "y": 0
+          }
+        }
+      ],
+      "connectors": []
+    },
+    {
+      "id": "loi-giai",
+      "name": "Lời giải",
+      "items": [
+        {
+          "id": "pc-a",
+          "tile": {
+            "x": 2,
+            "y": 2
+          }
+        },
+        {
+          "id": "pc-b",
+          "tile": {
+            "x": 5,
+            "y": -1
+          }
+        },
+        {
+          "id": "sw-1",
+          "tile": {
+            "x": 0,
+            "y": 0
+          }
+        }
+      ],
+      "connectors": [
+        {
+          "id": "day-1",
+          "anchors": [
+            {
+              "id": "w1-a",
+              "ref": {
+                "item": "pc-a"
+              }
+            },
+            {
+              "id": "w1-b",
+              "ref": {
+                "item": "sw-1"
+              }
+            }
+          ]
+        },
+        {
+          "id": "day-2",
+          "anchors": [
+            {
+              "id": "w2-a",
+              "ref": {
+                "item": "pc-b"
+              }
+            },
+            {
+              "id": "w2-b",
+              "ref": {
+                "item": "sw-1"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "fitToScreen": true
+}

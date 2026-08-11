@@ -664,6 +664,29 @@ chỉ bỏ điều kiện "học hết bài trước đã".
     có cổng nằm im → bài 4 cáp đứt): 0 sợi đứt, rồi 1, rồi 1 ở sợi KHÁC.
     `IsometricScenes.test` khóa cả hai vế — tọa độ nhãn ba nút phải y hệt
     nhau qua cả ba bản vẽ, và sợi nét đứt của bài 2 phải khác sợi của bài 4.
+  - **Một bản vẽ ra NHIỀU hình (khối 21.24)**: FossFLOW cho nhiều `view`
+    trên cùng bộ nút. View ĐẦU giữ id `vis-iso-<tên-file>` (đừng đổi — nội
+    dung đang trỏ vào), view sau thành `vis-iso-<tên-file>-<id-view>`. Dùng
+    cho cặp "lúc chưa nối / lúc đã nối": vẽ bố cục một lần, view sau chỉ
+    đổi vài sợi dây.
+  - **`npm run ban-ve:tu-lab` — chiều ngược (khối 21.24)**: đọc `spec` của
+    câu lab và ca bệnh trong nội dung rồi dựng sẵn bản vẽ vào
+    `content/ban-ve-nhap/`. Câu lab ra HAI view (đề bài + lời giải) vì spec
+    có sẵn `initial` và `solution`; ca bệnh ra một view vì `fix` chỉ tả mục
+    tiêu, không tả mạng sau khi sửa. **Ra thư mục NHÁP, không ra thẳng
+    `content/ban-ve/`**: bản máy đặt chỉ xếp theo LOẠI thiết bị (router
+    trên, máy trạm dưới), người phải kéo lại rồi mới chép sang — chép sang
+    xong thì file đó là của người, script không đụng nữa. Ghi thẳng là mỗi
+    lần chạy lại xóa sạch công kéo thả.
+  - **HAI CHỖ ĐÃ THỬ VÀ ĐÃ BỎ** (đừng đề xuất lại nếu không có lý do mới):
+    - *Sơ đồ trong phòng khám lúc chẩn đoán*: đụng bất biến KHÁM MÙ ghi ngay
+      đầu `ClinicRoom.tsx` — lộ sơ đồ sớm thì ca "rút dây" tự giải bằng mắt
+      và terminal thành đồ cảnh. Đo lại bằng dữ liệu cũng ra đúng thế: 2/18
+      ca có `fix.allow.addLinks`, tức bản đồ CHÍNH LÀ đáp án.
+    - *Hình cung điện từng tầng cho M5*: màn Dạy của bài cung điện render
+      `PalaceTour` THAY CHO `ConceptVisual`, nên `visualId` đặt ở đó là cấu
+      hình chết. Mà cung điện đã có `PalaceMap` — bản đồ SỐNG, tô phòng đang
+      đứng, đường đã đi, phòng đã mở; hình isometric tĩnh là bước lùi.
   - **Hình chỉ bày hiện trường, KHÔNG vẽ câu trả lời.** M15 bài 1 không vẽ
     gói tin chạy lòng vòng (hook hỏi "sợi dự phòng gây ra chuyện gì"), bài 2
     không đánh dấu switch nào là trung tâm (hook hỏi "ai thắng"), bài 4
