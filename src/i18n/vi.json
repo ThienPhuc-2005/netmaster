@@ -755,7 +755,10 @@
     "backupImport": "Nhập từ file",
     "backupImportConfirm": "Nhập file này sẽ THAY TOÀN BỘ tiến độ đang có trên máy bằng tiến độ trong file. Tiếp tục chứ?",
     "backupImportBad": "File này không phải bản sao lưu NetMaster hợp lệ — kiểm tra lại xem có chọn nhầm file không nhé.",
-    "backupImportNewer": "Bản sao lưu này đến từ phiên bản app mới hơn — cập nhật app rồi nhập lại nhé."
+    "backupImportNewer": "Bản sao lưu này đến từ phiên bản app mới hơn — cập nhật app rồi nhập lại nhé.",
+    "aoGiacTitle": "Thấy quen mà chưa thuộc",
+    "aoGiacIntro": "Những thẻ bạn tự thấy CHẮC rồi lại không nhớ ra. Đọc lại thấy quen không phải là nhớ — đây đúng là chỗ trí nhớ hay đánh lừa mình nhất.",
+    "aoGiacLan": "hụt {count} lần"
   },
   "design": {
     "title": "Design system",

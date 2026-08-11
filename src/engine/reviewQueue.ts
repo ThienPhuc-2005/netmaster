@@ -20,6 +20,7 @@ import type { Lesson, Module } from './contentSchema'
 import { isBefore, isOnOrBefore } from './dates'
 import { conceptIdsInLesson, palaceRoomsInLesson } from './contentPure'
 import { palaceCardId } from './palace/cards'
+import { conceptKey } from './mistakeLog'
 
 /** Trần số thẻ mỗi phiên ôn (spec 2.2: "tối đa 15 thẻ/phiên"). */
 export const SESSION_CAP = 15
@@ -103,21 +104,36 @@ export function canStartNewLesson(cards: ReviewCard[], today: ISODate): boolean 
  * Dựng phiên ôn hôm nay:
  * 1) chỉ lấy thẻ đến hạn;
  * 2) ưu tiên nợ lâu nhất — dueDate cũ nhất trước (thẻ càng trễ càng có
- *    nguy cơ quên hẳn, phải cứu trước); tie-break createdOn tăng dần,
- *    rồi moduleId, rồi conceptId — conceptId chỉ duy nhất TRONG một
- *    module nên cần moduleId trong chuỗi khóa để deterministic tuyệt đối;
- * 3) cắt còn `cap` thẻ (mặc định 15);
- * 4) trộn xen kẽ module — xem interleaveByModule.
+ *    nguy cơ quên hẳn, phải cứu trước);
+ * 3) CÙNG hạn thì thẻ của khái niệm hay vấp lên trước (kho ý tưởng I2);
+ * 4) tie-break createdOn tăng dần, rồi moduleId, rồi conceptId —
+ *    conceptId chỉ duy nhất TRONG một module nên cần moduleId trong
+ *    chuỗi khóa để deterministic tuyệt đối;
+ * 5) cắt còn `cap` thẻ (mặc định 15);
+ * 6) trộn xen kẽ module — xem interleaveByModule.
+ *
+ * VÌ SAO CHỖ VẤP CHỈ LÀ TIE-BREAK, không phải khóa chính: thẻ trễ hạn
+ * lâu là thẻ sắp quên hẳn, cứu nó luôn cấp bách hơn. Cho "hay vấp" vượt
+ * mặt "nợ 10 ngày" là đổi một thứ đang mất lấy một thứ mới hơi lung lay.
+ * Nhưng phần lớn thẻ trong một ngày CÙNG hạn, mà phiên chỉ lấy 15 thẻ —
+ * nên đứng ở vị trí tie-break là vừa đủ để quyết ai lọt vào phiên.
  *
  * ISODate strings compare correctly with localeCompare-free `<`/`>`,
  * but localeCompare gives us the -1/0/1 shape sort() wants directly.
  */
-export function buildReviewSession(cards: ReviewCard[], today: ISODate, cap = SESSION_CAP): ReviewCard[] {
+export function buildReviewSession(
+  cards: ReviewCard[],
+  today: ISODate,
+  cap = SESSION_CAP,
+  vapTheoKhaiNiem: Readonly<Record<string, number>> = {},
+): ReviewCard[] {
+  const vap = (c: ReviewCard) => vapTheoKhaiNiem[conceptKey(c.moduleId, c.conceptId)] ?? 0
   // dueCards returns a fresh array, so sorting in place is mutation-safe.
   const picked = dueCards(cards, today)
     .sort(
       (a, b) =>
         a.dueDate.localeCompare(b.dueDate) ||
+        vap(b) - vap(a) ||
         a.createdOn.localeCompare(b.createdOn) ||
         a.moduleId.localeCompare(b.moduleId) ||
         a.conceptId.localeCompare(b.conceptId),

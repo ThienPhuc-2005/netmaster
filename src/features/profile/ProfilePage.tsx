@@ -9,11 +9,12 @@ import { Flame, Zap, Award, GraduationCap, Snowflake, Layers, BookOpenCheck, Dow
 import type { LucideIcon } from 'lucide-react'
 import { useT } from '../../i18n'
 import { PROGRESS_PERSIST_VERSION, todayIso, useProgress } from '../../store/progress'
-import { loadModules } from '../../content'
-import { analyzeMistakes, weakSpotDrill, weakSpots, weeklyActivity } from '../../engine/mistakeLog'
+import { findConcept, findPalaceRoom, loadModules } from '../../content'
+import { analyzeMistakes, aoGiacHayGap, weakSpotDrill, weakSpots, weeklyActivity } from '../../engine/mistakeLog'
+import { roomIdFromCardId } from '../../engine/palace'
 import { Button } from '../../components/Button'
 import { milestones } from '../graduation/milestones'
-import { DisputedList, MemoryMap, MistakeAnalysisCard, WeakSpotList, WeeklyRhythm } from './LearningInsights'
+import { AoGiacList, DisputedList, MemoryMap, MistakeAnalysisCard, WeakSpotList, WeeklyRhythm } from './LearningInsights'
 import { memoryByModule } from '../../engine/freshness'
 
 /**
@@ -111,6 +112,7 @@ export function ProfilePage() {
   const passedModules = useProgress((s) => s.passedModules)
   const lessonRuntimes = useProgress((s) => s.lessonRuntimes)
   const drillHistory = useProgress((s) => s.drillHistory)
+  const aoGiacQuenMat = useProgress((s) => s.aoGiacQuenMat)
   const reachedMilestones = milestones().filter((m) => passedModules.includes(m.moduleId))
   const fileRef = useRef<HTMLInputElement>(null)
 
@@ -145,6 +147,18 @@ export function ProfilePage() {
     title: modules.find((m) => m.id === row.moduleId)?.title ?? { vi: row.moduleId },
   }))
   const weeks = weeklyActivity(completedLessons, drillHistory, todayIso())
+  // Ảo giác quen mặt (kho ý tưởng I4): tra cardId ra mặt trước đọc được.
+  // Thẻ cung điện có tiền tố riêng nên phải hỏi đúng hai nguồn — nội dung
+  // đổi mà thẻ cũ không còn thì để `null`, UI hiện tạm cardId chứ không
+  // giấu dòng đi (số lần hụt vẫn là chuyện thật đã xảy ra).
+  const aoGiacRows = aoGiacHayGap(aoGiacQuenMat).map((row) => {
+    const roomId = roomIdFromCardId(row.cardId)
+    const ten =
+      roomId === null
+        ? (findConcept(row.cardId)?.concept.term ?? null)
+        : (findPalaceRoom(roomId)?.room.name ?? null)
+    return { ...row, ten }
+  })
 
   const onImportFile = (file: File | undefined) => {
     if (file === undefined) return
@@ -174,6 +188,7 @@ export function ProfilePage() {
       <MistakeAnalysisCard analysis={analysis} moduleTitles={moduleTitles} drillSize={drillSize} />
       <DisputedList rows={disputedRows} onClear={clearDisputed} />
       <WeakSpotList spots={spots} />
+      <AoGiacList rows={aoGiacRows} />
       <WeeklyRhythm weeks={weeks} />
 
       <div className="mt-6 flex flex-col gap-3 rounded-md border border-edge bg-panel px-5 py-4">

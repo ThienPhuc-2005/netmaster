@@ -26,6 +26,7 @@ import type { Lesson, Module, Question } from './contentSchema'
 import type { DrillResult, ExerciseAttempt, ISODate } from './types'
 import type { LessonRuntime } from './lessonMachine'
 import { addDays, diffDays, isBefore } from './dates'
+import { conceptIdsInLesson } from './contentPure'
 
 /** Một chỗ người học vấp nhiều — kèm đường quay lại đúng bài đã dạy nó. */
 export interface WeakSpot {
@@ -91,6 +92,86 @@ export function weakSpots(
         (a.lessonId < b.lessonId ? -1 : a.lessonId > b.lessonId ? 1 : 0) ||
         (a.questionId < b.questionId ? -1 : a.questionId > b.questionId ? 1 : 0),
     )
+    .slice(0, limit)
+}
+
+/**
+ * Khóa của một thẻ ôn trong bảng vấp: conceptId chỉ duy nhất TRONG một
+ * module, nên phải kèm moduleId — cùng luật với khóa sắp xếp của hàng đợi.
+ */
+export function conceptKey(moduleId: string, conceptId: string): string {
+  return `${moduleId}::${conceptId}`
+}
+
+/**
+ * Vấp nhiều tới đâu, tính theo KHÁI NIỆM (kho ý tưởng I2).
+ *
+ * Đường nối giữa "chỗ vấp" và "thẻ ôn" là BÀI HỌC. Chỗ vấp ghi theo từng
+ * CÂU (`exercises[].failCount`), còn thẻ ôn khóa theo KHÁI NIỆM — hai hệ
+ * khác nhau, không map thẳng được. Nhưng câu nào cũng nằm trong một bài,
+ * và bài nào cũng khai rõ nó dạy những khái niệm gì (bước Dạy), nên vấp
+ * dồn ở bài nào thì mọi khái niệm bài đó dạy đều đáng ngờ.
+ *
+ * Cố ý KHÔNG dùng `byTopic` của `analyzeMistakes`: `hintTopic` là trường
+ * TÙY CHỌN của nội dung, câu không khai thì rơi ra ngoài — mà thẻ ôn thì
+ * bài nào cũng có. Lấy bài làm cầu nối thì không câu vấp nào bị bỏ sót.
+ *
+ * Chỉ đếm câu ĐÃ LÀM XONG, cùng luật với `analyzeMistakes`: câu đang làm
+ * dở có failCount tạm thời.
+ */
+export function conceptStumbles(
+  modules: readonly Module[],
+  lessonRuntimes: Readonly<Record<string, LessonRuntime>>,
+): Record<string, number> {
+  const out: Record<string, number> = {}
+  for (const module of modules) {
+    for (const lesson of module.lessons) {
+      const runtime = lessonRuntimes[lesson.id]
+      if (runtime === undefined) continue
+      let fails = 0
+      for (const question of questionsInLesson(lesson)) {
+        const attempt = runtime.exercises[question.id]
+        if (attempt === undefined || !attempt.solved) continue
+        fails += attempt.failCount
+      }
+      if (fails <= 0) continue
+      for (const conceptId of conceptIdsInLesson(lesson)) {
+        const key = conceptKey(module.id, conceptId)
+        out[key] = (out[key] ?? 0) + fails
+      }
+    }
+  }
+  return out
+}
+
+/** Một thẻ hay bị "chắc mà không nhớ". */
+export interface AoGiacRow {
+  cardId: string
+  lan: number
+}
+
+/**
+ * Ngưỡng để một thẻ được gọi là ảo giác quen mặt: phải hụt ÍT NHẤT hai
+ * lần. Một lần hụt là chuyện thường của trí nhớ; cái đáng chỉ ra là khi
+ * cùng một thẻ hụt đi hụt lại — lúc đó mới là người học đang nhầm "thấy
+ * quen" với "đã nhớ" ở đúng chỗ ấy.
+ */
+export const AO_GIAC_NGUONG = 2
+
+/**
+ * Những thẻ hay bị "chắc mà không nhớ" nhất (kho ý tưởng I4).
+ *
+ * Sắp theo số lần hụt giảm dần; hòa thì theo cardId để kết quả tất định.
+ */
+export function aoGiacHayGap(
+  dem: Readonly<Record<string, number>>,
+  nguong = AO_GIAC_NGUONG,
+  limit = 5,
+): AoGiacRow[] {
+  return Object.entries(dem)
+    .filter(([, lan]) => lan >= nguong)
+    .map(([cardId, lan]) => ({ cardId, lan }))
+    .sort((a, b) => b.lan - a.lan || (a.cardId < b.cardId ? -1 : a.cardId > b.cardId ? 1 : 0))
     .slice(0, limit)
 }
 

@@ -33,6 +33,57 @@ function shortDate(iso: string): string {
   return `${iso.slice(8, 10)}/${iso.slice(5, 7)}`
 }
 
+/** Một dòng "chắc mà không nhớ", đã tra ra tên đọc được. */
+export interface AoGiacHienThi {
+  cardId: string
+  lan: number
+  /** Mặt trước của thẻ; null khi nội dung đã đổi và không còn thẻ đó. */
+  ten: string | null
+}
+
+/**
+ * Ảo giác quen mặt (kho ý tưởng I4) — những thẻ người học thấy CHẮC mà
+ * rồi không nhớ ra, lặp đi lặp lại.
+ *
+ * Đặt cạnh "chỗ hay vấp" vì cùng một việc: nói ra chỗ đáng quay lại. Chỉ
+ * khác nguồn — chỗ hay vấp đọc số lần thử, còn mục này đọc khoảng lệch
+ * giữa lời tự chấm và chuyện đã xảy ra, thứ mà chính người học không tự
+ * thấy được nếu không ai ghi hộ.
+ */
+export function AoGiacList({ rows }: { rows: AoGiacHienThi[] }) {
+  const t = useT()
+  // Chưa đủ dữ liệu thì không dựng hộp rỗng — cùng luật với mục hay vấp.
+  if (rows.length === 0) return null
+
+  return (
+    <section
+      aria-labelledby="aogiac-title"
+      className="mt-6 flex flex-col gap-3 rounded-md border border-edge bg-panel px-5 py-4"
+    >
+      <div className="flex items-center gap-2">
+        <Brain size={17} aria-hidden className="shrink-0 text-warn" />
+        <h2 id="aogiac-title" className="text-sm font-semibold text-ink">
+          {t('profile.aoGiacTitle')}
+        </h2>
+      </div>
+      <p className="text-xs leading-relaxed text-ink-muted">{t('profile.aoGiacIntro')}</p>
+      <ol className="flex flex-col gap-2">
+        {rows.map((row) => (
+          <li
+            key={row.cardId}
+            className="flex flex-wrap items-center gap-x-3 gap-y-1 rounded-md border border-edge bg-panel-hover px-4 py-3"
+          >
+            <span className="min-w-[10rem] flex-1 text-sm text-ink">{row.ten ?? row.cardId}</span>
+            <span className="shrink-0 font-mono text-xs text-warn">
+              {t('profile.aoGiacLan', { count: row.lan })}
+            </span>
+          </li>
+        ))}
+      </ol>
+    </section>
+  )
+}
+
 export function WeakSpotList({ spots }: { spots: WeakSpot[] }) {
   const t = useT()
   // Chưa vấp chỗ nào thì KHÔNG dựng mục rỗng: một cái hộp trống nhắc

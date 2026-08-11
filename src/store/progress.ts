@@ -72,7 +72,7 @@ export const PRACTICE_DRAFT_CAP = 12
  * đối chiếu với nó để từ chối file đến từ bản app mới hơn (migrate chỉ
  * biết đi tới, không biết đi lùi).
  */
-export const PROGRESS_PERSIST_VERSION = 5
+export const PROGRESS_PERSIST_VERSION = 6
 
 /** Một dòng trong nhật ký terminal PowerShell (UI dựng lại y nguyên). */
 export interface PsTranscriptEntry {
@@ -218,6 +218,19 @@ export interface ProgressState {
    */
   disputedAnswers: DisputedAnswer[]
   /**
+   * Số lần người học nói "mình chắc" rồi lại không nhớ ra, theo từng thẻ
+   * (kho ý tưởng I4 — ảo giác quen mặt).
+   *
+   * Vì sao phải LƯU, trong khi phần tự chấm còn lại chỉ sống trong phiên:
+   * ảo giác quen mặt là thứ chỉ lộ ra khi NHÌN LẠI NHIỀU PHIÊN. Một lần
+   * hụt là chuyện thường; cùng một thẻ hụt bốn lần mới là dấu hiệu người
+   * học đang nhầm "thấy quen" với "đã nhớ" ở đúng chỗ ấy.
+   *
+   * Chỉ đếm nấc `overconfident`. Nói "chịu" rồi vẫn nhớ ra là chuyện tốt,
+   * không có gì để cảnh báo; "lơ mơ" thì luôn là khớp.
+   */
+  aoGiacQuenMat: Record<string, number>
+  /**
    * caseQuestionId -> ngày CHỮA KHỎI lần đầu ở tab Phòng khám (Phase 3
    * hạng mục 9 — phòng luyện song song). Chỉ lần đầu mỗi ca mới cộng
    * XP/streak; làm lại tự do không cộng (nguyên tắc 5, chặn farm).
@@ -286,6 +299,8 @@ export interface ProgressState {
   reportDisputedAnswer: (lessonId: string, questionId: string, answer: string) => boolean
   /** Xóa một dòng đã ghi (đọc lại thấy mình nhầm). */
   clearDisputedAnswer: (questionId: string) => void
+  /** Ghi thêm một lần "chắc mà không nhớ" cho một thẻ (kho ý tưởng I4). */
+  ghiAoGiacQuenMat: (cardId: string) => void
 
   /** Tick/bỏ tick một bước của checklist lab VMware. */
   toggleVmLabStep: (stepId: string) => void
@@ -411,6 +426,7 @@ export const useProgress = create<ProgressState>()(
         answerTotal: 0,
         supportShownAtTotal: null,
         disputedAnswers: [],
+        aoGiacQuenMat: {},
         vmLabDone: {},
         clinicSolved: {},
         practiceDrafts: {},
@@ -627,6 +643,9 @@ export const useProgress = create<ProgressState>()(
         clearDisputedAnswer: (questionId) =>
           set((s) => ({ disputedAnswers: s.disputedAnswers.filter((d) => d.questionId !== questionId) })),
 
+        ghiAoGiacQuenMat: (cardId) =>
+          set((s) => ({ aoGiacQuenMat: { ...s.aoGiacQuenMat, [cardId]: (s.aoGiacQuenMat[cardId] ?? 0) + 1 } })),
+
         toggleVmLabStep: (stepId) =>
           set((s) => {
             const next = { ...s.vmLabDone }
@@ -789,7 +808,14 @@ export const useProgress = create<ProgressState>()(
         if (version <= 4) {
           state = { ...state, disputedAnswers: [] }
         }
-        if (version <= 5) return state
+        // v5 → v6 (ảo giác quen mặt, 08-11): thêm sổ đếm số lần "chắc mà
+        // không nhớ" theo từng thẻ. Người học cũ chưa có bản ghi nào —
+        // dữ liệu tự chấm trước đây tan theo phiên, không dựng lại được,
+        // và đoán bừa một con số còn tệ hơn để trống.
+        if (version <= 5) {
+          state = { ...state, aoGiacQuenMat: {} }
+        }
+        if (version <= 6) return state
         // Version lạ (mới hơn code — người dùng lùi bản app): giữ nguyên
         // và để shallow-merge với default đỡ phần thiếu, còn hơn vứt trắng.
         return persisted as ProgressState

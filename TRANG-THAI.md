@@ -3,12 +3,12 @@
 ## ĐỌC 30 GIÂY: ĐANG ĐỨNG ĐÂU, LÀM GÌ TIẾP (cập nhật 2026-08-11)
 
 **App hiện có ĐỦ 21/21 MODULE NỘI DUNG + MÀN TỐT NGHIỆP** (M1-12 nhập
-môn, M13-17 Phần D, M18-21 Phần E), 1568 test xanh, typecheck sạch,
+môn, M13-17 Phần D, M18-21 Phần E), 1581 test xanh, typecheck sạch,
 build qua. **Toàn bộ biên bản hội đồng trung cấp đã XỬ XONG (08-10):
 15/15 việc mục 6 (khối 20.2, commit `1d04c0b`) + trọn LƯỢT DỌN 52 phát
 hiện P2 mục 5 (khối 20.3).** Nội dung và engine không còn việc nào treo;
 các khối gần đây đều là ý lấy từ kho `Y-TUONG.md`.
-Việc kế tiếp là của CHỦ DỰ ÁN: ra lệnh commit khối 21.35, và tuyển người
+Việc kế tiếp là của CHỦ DỰ ÁN: ra lệnh commit khối 21.36, và tuyển người
 cho các buổi test người thật (hai dòng DoD còn treo đều cần NGƯỜI).
 
 **Toàn bộ ENGINE của Phần D đã xong.** Không còn engine nào phải viết cho
@@ -29,7 +29,23 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (19) M21 capstone + màn tốt nghiệp | XONG |
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
-**KHỐI MỚI NHẤT — 21.35 (08-11), đang ở working tree chờ lệnh commit:**
+**KHỐI MỚI NHẤT — 21.36 (08-11), đang ở working tree chờ lệnh commit:**
+**Cụm 2 — hồ sơ & ôn tập, mới xong HAI trong bốn việc.**
+- **I2 — vấp đẩy thẻ ôn lên sớm.** Đường nối giữa "chỗ vấp" và "thẻ ôn" hóa
+  ra là BÀI HỌC: chỗ vấp ghi theo CÂU, thẻ ôn khóa theo KHÁI NIỆM, không
+  map thẳng được. Vấp chỉ là TIE-BREAK sau hạn ôn — thẻ nợ lâu vẫn đi
+  trước, vì nó mới là thẻ sắp quên hẳn.
+- **I4 — ảo giác quen mặt.** Mục "Thấy quen mà chưa thuộc" ở trang Hồ sơ.
+  Phải bump persist **v5 → v6** (dữ liệu tự chấm trước đây tan theo phiên);
+  chỉ lưu nấc "chắc mà không nhớ", ngưỡng 2 lần mới đem ra nói.
+- 1581 test xanh (+24), typecheck sạch, build qua. Kiểm browser thật: mục
+  mới hiện đúng thứ tự, thẻ dưới ngưỡng bị loại, tên thẻ tra ra đọc được,
+  thẻ đã bị xóa khỏi nội dung thì hiện tạm mã. Console sạch, seed đã xóa.
+- **CÒN LẠI của cụm 2**: I3 (so với chính mình tháng trước) và quãng học
+  dài nhất trong tuần — cả hai đều cần thêm dữ liệu chụp theo thời gian,
+  nên đi chung một khối với F3 (sao lưu tự động) thì rẻ hơn.
+
+**KHỐI TRƯỚC — 21.35 (08-11), đã commit `9efe191`:**
 **Cụm âm thanh** — chủ dự án duyệt hết kho ý tưởng, đây là cụm 1/4.
 - **C2 — âm xúc giác cho lab**: "tách" khi cắm xong một sợi dây, "vụt" khi
   gói tin rời máy. Tiếng tách CHỈ vang khi dây thật sự cắm vào (`dispatch`

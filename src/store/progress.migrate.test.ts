@@ -83,7 +83,22 @@ describe('persist migrate: hợp đồng payload v1', () => {
     expect(s.reviewCards).toHaveLength(2)
   })
 
-  it('v1 đi trọn chuỗi tới v4: các trường mới mọc ra rỗng, phiên drill cũ được đóng dấu', async () => {
+  it('v5 → v6 (ảo giác quen mặt): sổ đếm mọc ra rỗng, phần cũ nguyên vẹn', async () => {
+    const v5 = JSON.parse(JSON.stringify(v1Payload)) as { state: Record<string, unknown>; version: number }
+    v5.version = 5
+    v5.state['disputedAnswers'] = [
+      { lessonId: 'm1-bai-1', questionId: 'q1', answer: 'mình nghĩ đúng', at: '2026-08-10' },
+    ]
+    await rehydrateFrom(v5)
+    const s = useProgress.getState()
+    // Dữ liệu tự chấm trước đây tan theo phiên, không dựng lại được —
+    // để trống là đúng, đoán bừa một con số còn tệ hơn.
+    expect(s.aoGiacQuenMat).toEqual({})
+    expect(s.disputedAnswers).toHaveLength(1)
+    expect(s.xpTotal).toBe(32)
+  })
+
+  it('v1 đi trọn chuỗi tới v6: các trường mới mọc ra rỗng, phiên drill cũ được đóng dấu', async () => {
     await rehydrateFrom(v1Payload)
     const s = useProgress.getState()
     expect(s.challengeUsed).toEqual({})
@@ -93,6 +108,8 @@ describe('persist migrate: hợp đồng payload v1', () => {
     // khỏi biểu đồ tiến bộ người học đã xây cả tháng.
     expect(s.drillHistory).toHaveLength(1)
     expect(s.drillHistory[0]).toMatchObject({ mode: 'subnet', correct: 8, total: 10, avgSeconds: 21.5 })
+    expect(s.disputedAnswers).toEqual([])
+    expect(s.aoGiacQuenMat).toEqual({})
   })
 
   it('v4 → v5 (nút "mình nghĩ câu này đúng"): sổ góp ý mọc ra rỗng, phần cũ nguyên vẹn', async () => {

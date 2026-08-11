@@ -467,6 +467,25 @@ quan trước khi "sửa test cho xanh".
   chỉ đi tới), spot-check vài trường quý và parse thử settings trước khi
   ghi — file hỏng tinh vi phải chết ở cửa, không crash rải rác sau reload.
 
+- **Vấp đẩy thẻ ôn lên sớm (I2, khối 21.36)**: `conceptStumbles` quy chỗ
+  vấp về từng khái niệm QUA BÀI HỌC — chỗ vấp ghi theo CÂU, thẻ ôn khóa
+  theo KHÁI NIỆM, hai hệ không map thẳng; cầu nối là "bài này dạy khái
+  niệm gì". Không dùng `hintTopic` (tùy chọn, câu không khai thì rơi ra
+  ngoài, mà thẻ ôn thì bài nào cũng có).
+  **Nó chỉ là TIE-BREAK sau `dueDate`, đừng nâng lên khóa chính**: thẻ nợ
+  lâu là thẻ sắp quên hẳn, cứu nó cấp bách hơn thẻ mới hơi lung lay. Phần
+  lớn thẻ cùng một hạn mà phiên chỉ lấy 15, nên tie-break đã đủ quyết ai
+  lọt vào phiên — test khóa cả hai vế, kể cả vế "không vượt mặt thẻ nợ 5
+  ngày".
+- **Ảo giác quen mặt (I4, khối 21.36)**: `aoGiacQuenMat` là trường persist
+  MỚI (v5 → v6) đếm số lần "chắc mà không nhớ" theo từng thẻ. Phần tự chấm
+  còn lại vẫn tan theo phiên như cũ — chỉ nấc `overconfident` được lưu, vì
+  chỉ nó mới cần nhìn qua NHIỀU phiên mới thấy. Ngưỡng hiện 2 lần
+  (`AO_GIAC_NGUONG`): một lần hụt là chuyện thường, kết luận trên một mẫu
+  là chấm điểm vội. Thẻ cung điện có tiền tố riêng nên tra tên phải hỏi cả
+  `findConcept` lẫn `findPalaceRoom`; nội dung đổi mà thẻ không còn thì
+  hiện tạm cardId chứ KHÔNG giấu dòng — số lần hụt vẫn là chuyện đã xảy ra.
+
 ## 9. Học vượt — "thi vượt" (ngoài spec, đã duyệt 08-08)
 
 Giữ NGUYÊN cổng: cùng đề mastery, cùng ngưỡng 85%, cùng chuỗi mở khóa —

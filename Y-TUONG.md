@@ -152,13 +152,23 @@ Trạng thái: ☐ chờ duyệt · ✅ đã làm · ✗ đã bàn và bỏ (gi�
   gọi mạng lúc chấm.
 - ✅ **I8. Dọn tồn kho accept-hẹp** — ĐÃ LÀM (khối 21.14): 89 → 0, kèm
   cảnh báo ngay trên bản đọc duyệt cho câu dưới 3 cách nói.
-- ☐ **I2. Chủ đề vấp đẩy thẻ ôn lên sớm** — chủ đề nào cứ quay lại cắn
-  thì thẻ khái niệm tương ứng được ưu tiên trong hàng đợi ôn.
+- ✅ **I2. Chủ đề vấp đẩy thẻ ôn lên sớm** — ĐÃ LÀM (khối 21.36). Đường nối
+  giữa "chỗ vấp" và "thẻ ôn" hóa ra là BÀI HỌC, không phải chủ đề: chỗ vấp
+  ghi theo từng CÂU, thẻ ôn khóa theo KHÁI NIỆM, hai hệ không map thẳng —
+  nhưng câu nào cũng nằm trong một bài, và bài nào cũng khai nó dạy khái
+  niệm gì. Cố ý KHÔNG dùng `hintTopic` (trường tùy chọn, câu không khai thì
+  rơi ra ngoài). **Vấp chỉ là TIE-BREAK, không phải khóa chính**: thẻ trễ
+  hạn lâu là thẻ sắp quên hẳn, cho "hay vấp" chen lên trước nó là đổi thứ
+  đang mất lấy thứ mới hơi lung lay. Đứng ở tie-break là vừa đủ để quyết ai
+  lọt vào phiên 15 thẻ.
 - ☐ **I3. So với chính mình tháng trước** — chụp lại bảng phân tích theo
   tháng để thấy dạng câu từng yếu giờ đã lên.
-- ☐ **I4. Ảo giác quen mặt vào hồ sơ lỗi** — thẻ nào hay bị "chắc mà
-  không nhớ" (dữ liệu tự chấm A2) thì gom vào mục chỗ hay vấp; hiện dữ
-  liệu đó tan theo phiên.
+- ✅ **I4. Ảo giác quen mặt vào hồ sơ lỗi** — ĐÃ LÀM (khối 21.36): mục "Thấy
+  quen mà chưa thuộc" ở trang Hồ sơ. Phải bump persist v5 → v6 vì đúng như
+  ý gốc nói, dữ liệu tự chấm trước đây tan theo phiên. Chỉ lưu nấc
+  `overconfident` — nói "chịu" rồi vẫn nhớ ra là chuyện tốt, "lơ mơ" luôn
+  là khớp. **Ngưỡng 2 lần**: một lần hụt là chuyện thường của trí nhớ, đem
+  ra bảo người học "bạn đang tự lừa mình" là kết luận vội trên một mẫu.
 
 ## H. Ý sinh ra trong lúc làm Phần D-E (08-09)
 

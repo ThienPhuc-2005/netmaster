@@ -15,7 +15,8 @@ import { useMemo, useRef, useState } from 'react'
 import { lt } from '../../engine/ltext'
 import { Link } from 'react-router'
 import { Eye, Layers, RotateCcw, ThumbsDown, ThumbsUp } from 'lucide-react'
-import { buildReviewSession, dueCards, flashcardAskIndex, flashcardTurn } from '../../engine/reviewQueue'
+import { SESSION_CAP, buildReviewSession, dueCards, flashcardAskIndex, flashcardTurn } from '../../engine/reviewQueue'
+import { conceptStumbles } from '../../engine/mistakeLog'
 import {
   calibrationSummary,
   calibrationVerdict,
@@ -24,7 +25,7 @@ import {
   type Confidence,
 } from '../../engine/calibration'
 import { roomIdFromCardId } from '../../engine/palace'
-import { findConcept, findPalaceRoom } from '../../content'
+import { findConcept, findPalaceRoom, loadModules } from '../../content'
 import { shouldReviewFirst, todayIso, useProgress } from '../../store/progress'
 import { useT, type TFunc } from '../../i18n'
 import { RoomGlyph } from '../palace/RoomGlyph'
@@ -79,13 +80,22 @@ function cardFace(cardId: string, t: TFunc, turn: number): CardFace | null {
 export function ReviewPage() {
   const t = useT()
   const allCards = useProgress((s) => s.reviewCards)
+  const lessonRuntimes = useProgress((s) => s.lessonRuntimes)
   const lastReviewDate = useProgress((s) => s.lastReviewDate)
   const gradeReviewCard = useProgress((s) => s.gradeReviewCard)
   const completeReviewSession = useProgress((s) => s.completeReviewSession)
+  const ghiAoGiacQuenMat = useProgress((s) => s.ghiAoGiacQuenMat)
+
+  // Chỗ hay vấp, quy về từng khái niệm (kho ý tưởng I2) — cùng hạn thì
+  // thẻ của khái niệm hay cắn được lên trước.
+  const vapTheoKhaiNiem = useMemo(
+    () => conceptStumbles(loadModules(), lessonRuntimes),
+    [lessonRuntimes],
+  )
 
   // Phiên hôm nay: chốt danh sách conceptId một lần khi mở trang.
   const sessionConceptIds = useMemo(
-    () => buildReviewSession(allCards, todayIso()).map((c) => c.conceptId),
+    () => buildReviewSession(allCards, todayIso(), SESSION_CAP, vapTheoKhaiNiem).map((c) => c.conceptId),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   )
@@ -159,7 +169,7 @@ export function ReviewPage() {
   if (finished) {
     // Hết phiên nhưng CÒN thẻ đến hạn (phiên cắt trần 15) — không làm ngõ
     // cụt đẩy người học đi vòng Học↔Ôn tập: mời ôn phiên tiếp ngay tại chỗ.
-    const stillDue = buildReviewSession(allCards, todayIso()).map((c) => c.conceptId)
+    const stillDue = buildReviewSession(allCards, todayIso(), SESSION_CAP, vapTheoKhaiNiem).map((c) => c.conceptId)
     const calibSummary = calibrationSummary(calibration)
     return (
       <>
@@ -237,7 +247,11 @@ export function ReviewPage() {
       // vì vòng học lại thì người học đã biết đáp án, độ chắc hết nghĩa.
       if (confidence !== null) {
         setCalibration((rows) => [...rows, { cardId, confidence, remembered }])
-        setLastVerdict(calibrationVerdict(confidence, remembered))
+        const verdict = calibrationVerdict(confidence, remembered)
+        setLastVerdict(verdict)
+        // Ảo giác quen mặt là thứ chỉ lộ ra qua NHIỀU phiên, nên nấc này
+        // được ghi lại; phần tự chấm còn lại vẫn tan theo phiên như cũ.
+        if (verdict === 'overconfident') ghiAoGiacQuenMat(cardId)
       }
     }
     playEarcon(remembered ? 'correct' : 'incorrect')

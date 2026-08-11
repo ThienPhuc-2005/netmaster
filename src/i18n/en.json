@@ -755,7 +755,10 @@
     "backupImport": "Import from file",
     "backupImportConfirm": "Importing will REPLACE all progress on this device with the file's progress. Continue?",
     "backupImportBad": "That file is not a valid NetMaster backup — double-check you picked the right one.",
-    "backupImportNewer": "This backup comes from a newer version of the app — update the app, then import again."
+    "backupImportNewer": "This backup comes from a newer version of the app — update the app, then import again.",
+    "aoGiacTitle": "Familiar but not yet known",
+    "aoGiacIntro": "Cards you felt sure about and then could not recall. Recognising something on a reread is not the same as remembering it — this is exactly where memory fools you.",
+    "aoGiacLan": "missed {count} times"
   },
   "design": {
     "title": "Design system",
