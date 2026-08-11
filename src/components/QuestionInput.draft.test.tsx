@@ -25,6 +25,11 @@ const LAB_Q = QuestionSchema.parse({
 
 const KEY = practiceDraftKey('bai-thu', 'ui-draft-lab')
 
+// Trần thời gian của CẢ CÂU TEST phải rộng hơn quãng chờ chunk phòng lab
+// bên trong (5s), không thì câu test chết trước khi quãng chờ ấy kịp hết
+// hạn — máy bận là đỏ, mà đỏ vì hết giờ chứ không vì hỏng gì.
+const CHO_TOI_DA = 20_000
+
 /** Một thao tác thật trên mặt bàn: đổi VLAN cổng p2 của Switch-1. */
 async function changeVlan() {
   // Phòng lab nạp LƯỜI (lazy) — chờ rộng tay để lượt chạy cả bộ test,
@@ -47,13 +52,13 @@ describe('bài dở đi qua QuestionInput', () => {
     await changeVlan()
     const draft = useProgress.getState().practiceDrafts[KEY]
     expect(draft?.kind).toBe('lab')
-  })
+  }, CHO_TOI_DA)
 
   it('KHÔNG draftKey (bài thi): không một bài dở nào được ghi', async () => {
     render(<QuestionInput question={LAB_Q} onSubmit={() => {}} />)
     await changeVlan()
     expect(useProgress.getState().practiceDrafts).toEqual({})
-  })
+  }, CHO_TOI_DA)
 
   it('có bài dở sẵn thì mở thẳng vào sơ đồ đang lắp dở', async () => {
     render(<QuestionInput question={LAB_Q} draftKey={KEY} onSubmit={() => {}} />)
@@ -64,5 +69,5 @@ describe('bài dở đi qua QuestionInput', () => {
     render(<QuestionInput question={LAB_Q} draftKey={KEY} onSubmit={() => {}} />)
     await screen.findByRole('button', { name: /^Switch-1, / }, { timeout: 5000 })
     expect(screen.queryAllByText(/\(chưa xong\)/)).toHaveLength(0)
-  })
+  }, CHO_TOI_DA)
 })

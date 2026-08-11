@@ -16,6 +16,8 @@ import { Button } from '../../components/Button'
 import { milestones } from '../graduation/milestones'
 import { AoGiacList, DisputedList, MemoryMap, MistakeAnalysisCard, WeakSpotList, WeeklyRhythm } from './LearningInsights'
 import { memoryByModule } from '../../engine/freshness'
+import type { AnhChup, LyDoChup } from '../../engine/anhChup'
+import { docAnhChup, khoiPhuc } from '../../store/anhChup'
 
 /**
  * Cửa thoát hiểm cho dữ liệu (hội đồng 2026-08-07, ghế dữ liệu): toàn bộ
@@ -76,6 +78,69 @@ async function importBackup(file: File, confirmText: string, badText: string, ne
     if (typeof value === 'string') localStorage.setItem(key, value)
   }
   window.location.reload()
+}
+
+/** dd/mm HH:mm — cùng lối rút gọn ngày với biểu đồ ở trang này. */
+function gioNgan(luc: string): string {
+  const d = new Date(luc)
+  if (Number.isNaN(d.getTime())) return luc
+  const hai = (n: number) => String(n).padStart(2, '0')
+  return `${hai(d.getDate())}/${hai(d.getMonth() + 1)} ${hai(d.getHours())}:${hai(d.getMinutes())}`
+}
+
+/**
+ * Lý do chụp viết bằng tiếng người. Bảng TĨNH chứ không ghép key động:
+ * key ghép động lọt khỏi phép quét "key mồ côi" của test i18n.
+ */
+const LY_DO_KEY: Record<LyDoChup, string> = {
+  'dinh-ky': 'profile.anhChupLyDoNgay',
+  'truoc-nang-cap': 'profile.anhChupLyDoNangCap',
+  'truoc-khoi-phuc': 'profile.anhChupLyDoKhoiPhuc',
+}
+
+/**
+ * Ảnh chụp tiến độ tự động (kho ý tưởng F3) — đường lùi khi có gì đó
+ * ăn mất tiến độ mà không ai kịp bấm "Xuất ra file".
+ *
+ * Đặt ngay dưới cụm sao lưu vì cùng một nỗi lo, khác nhau ở chỗ ai phải
+ * nhớ: sao lưu đòi người học nhớ bấm, ảnh chụp thì app tự làm.
+ */
+function AnhChupList() {
+  const t = useT()
+  const danhSach = docAnhChup()
+
+  const lui = (anh: AnhChup) => {
+    if (!window.confirm(t('profile.anhChupConfirm', { luc: gioNgan(anh.luc) }))) return
+    khoiPhuc(anh, new Date())
+    // BẮT BUỘC tải lại: state trong RAM lúc này vẫn là bản vừa bị ghi đè,
+    // và hành động tiếp theo của người học sẽ persist nó đè ngược lại.
+    window.location.reload()
+  }
+
+  return (
+    <div className="mt-2 border-t border-edge pt-3">
+      <h3 className="text-sm font-semibold text-ink">{t('profile.anhChupTitle')}</h3>
+      <p className="mt-1 text-xs leading-relaxed text-ink-muted">{t('profile.anhChupBody')}</p>
+      {danhSach.length === 0 ? (
+        <p className="mt-2 text-xs text-ink-muted">{t('profile.anhChupEmpty')}</p>
+      ) : (
+        <ul className="mt-2 flex flex-col gap-2">
+          {danhSach.map((anh) => (
+            <li key={anh.luc} className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs">
+              <span className="font-mono text-ink">{gioNgan(anh.luc)}</span>
+              <span className="text-ink-muted">{t(LY_DO_KEY[anh.lyDo])}</span>
+              <button
+                onClick={() => lui(anh)}
+                className="rounded-md border border-edge px-2 py-1 font-medium text-ink transition-colors duration-(--dur) hover:bg-panel-hover"
+              >
+                {t('profile.anhChupRestore')}
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
 }
 
 function StatCard({
@@ -215,6 +280,7 @@ export function ProfilePage() {
             }}
           />
         </div>
+        <AnhChupList />
       </div>
       {reachedMilestones.length > 0 && (
         <div className="mt-6 flex flex-col gap-2 rounded-md border border-edge bg-panel px-5 py-4">

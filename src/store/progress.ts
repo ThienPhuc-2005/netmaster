@@ -46,6 +46,7 @@ import { initialStreak, recordQualifyingActivity } from '../engine/streak'
 import { pushAnswer } from '../engine/answerHistory'
 import { xpFor } from '../engine/xp'
 import { sessionStats } from '../engine/subnet/drill'
+import { chupDinhKy, chupTruocNangCap, PROGRESS_KEY } from './anhChup'
 
 /** "Hôm nay" theo đồng hồ máy người học — engine không tự đọc, store cấp. */
 export function todayIso(): ISODate {
@@ -758,8 +759,17 @@ export const useProgress = create<ProgressState>()(
       }
     },
     {
-      name: 'netmaster-progress',
+      name: PROGRESS_KEY,
       version: PROGRESS_PERSIST_VERSION,
+      /**
+       * Ảnh chụp ĐỊNH KỲ (kho ý tưởng F3) — chụp lúc mở app, mỗi ngày
+       * học một bản. Đặt ở đây vì đây là chỗ duy nhất biết "vừa đọc
+       * xong dữ liệu cũ lên", tức là lúc chuỗi trong localStorage còn
+       * đúng trạng thái trước buổi học hôm nay.
+       */
+      onRehydrateStorage: () => () => {
+        chupDinhKy(new Date())
+      },
       // Mặc định của zustand trỏ window.localStorage — không tồn tại trong
       // node/test. Trỏ thẳng global localStorage: browser dùng bản thật,
       // test dùng stub in-memory từ tests/setup.ts.
@@ -778,6 +788,12 @@ export const useProgress = create<ProgressState>()(
        * shape mà quên cửa này là test đỏ.
        */
       migrate: (persisted, version) => {
+        // CHỤP TRƯỚC KHI SỬA (kho ý tưởng F3). Bản chụp này là lý do cả
+        // tính năng ảnh chụp tồn tại: nếu chính bậc migrate dưới đây làm
+        // hỏng dữ liệu, mọi bản chụp SAU nó đều chép lại cái hỏng.
+        if (version !== PROGRESS_PERSIST_VERSION) {
+          chupTruocNangCap(JSON.stringify({ state: persisted, version }), version, new Date())
+        }
         // Biến đổi DẦN v(n) → v(n+1) → … → mới nhất: mỗi bậc một câu lệnh,
         // không nhánh nào nhảy cóc. Thêm version mới thì nối thêm một bậc
         // ở cuối chuỗi này.

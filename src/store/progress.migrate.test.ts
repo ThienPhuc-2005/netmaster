@@ -11,7 +11,8 @@
 // sẽ thấy test này đỏ trước khi người dùng thấy dữ liệu bay màu.
 
 import { beforeEach, describe, expect, it } from 'vitest'
-import { useProgress } from './progress'
+import { PROGRESS_PERSIST_VERSION, useProgress } from './progress'
+import { docAnhChup } from './anhChup'
 import v1Payload from '../../tests/fixtures/progressV1.json'
 
 const INITIAL = useProgress.getInitialState()
@@ -134,6 +135,26 @@ describe('persist migrate: hợp đồng payload v1', () => {
     ]
     await rehydrateFrom(v3)
     expect(useProgress.getState().drillHistory.map((d) => d.mode)).toEqual(['vlsm', 'subnet'])
+  })
+
+  it('cửa migrate CHỤP ẢNH dữ liệu cũ trước khi sửa (F3)', async () => {
+    // Đường lùi cho đúng cái tình huống file này canh: bậc migrate viết
+    // sai thì bản chụp v1 nguyên vẹn vẫn nằm đó, lùi về được.
+    await rehydrateFrom(v1Payload)
+    const anh = docAnhChup()
+    expect(anh).toHaveLength(1)
+    expect(anh[0]!.lyDo).toBe('truoc-nang-cap')
+    expect(anh[0]!.version).toBe(1)
+    const cu = JSON.parse(anh[0]!.duLieu) as { version: number; state: { xpTotal: number } }
+    expect(cu.version).toBe(1)
+    expect(cu.state.xpTotal).toBe(32)
+  })
+
+  it('rehydrate đúng version hiện tại thì KHÔNG chụp bản trước-nâng-cấp', async () => {
+    const hienTai = JSON.parse(JSON.stringify(v1Payload)) as { state: Record<string, unknown>; version: number }
+    hienTai.version = PROGRESS_PERSIST_VERSION
+    await rehydrateFrom(hienTai)
+    expect(docAnhChup().filter((a) => a.lyDo === 'truoc-nang-cap')).toEqual([])
   })
 
   it('v1 → v2 (học vượt): sổ lượt thi vượt mọc ra rỗng, phần còn lại nguyên', async () => {

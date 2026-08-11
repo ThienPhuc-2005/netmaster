@@ -21,6 +21,7 @@ import {
   chamMot,
   daNhac,
   denLucNhac,
+  HIEN_GIAY,
   HOC_LIEN_TUC_PHUT,
   soPhutDaHoc,
   TRANG_THAI_DAU,
@@ -74,6 +75,21 @@ export function NhacNghi() {
     const id = setInterval(soi, NHIP_MS)
     return () => clearInterval(id)
   }, [bat, pathname])
+
+  // TỰ LUI sau `HIEN_GIAY` giây — xem lý do ở engine. Đếm bằng thời gian
+  // TRANG ĐANG HIỆN, không phải thời gian trôi: người nghe lời rủ mà
+  // đứng dậy thật thì tab nằm ở nền, đếm tiếp là lời nhắc tan đúng lúc
+  // không ai nhìn — quay lại chỉ thấy màn hình y như chưa từng nhắc gì.
+  useEffect(() => {
+    if (!dangHien) return
+    let conLai = HIEN_GIAY
+    const id = setInterval(() => {
+      if (document.visibilityState === 'hidden') return
+      conLai -= 1
+      if (conLai <= 0) setDangHien(false)
+    }, 1_000)
+    return () => clearInterval(id)
+  }, [dangHien])
 
   if (!dangHien) return null
 

@@ -25,6 +25,9 @@ import { readFileSync, readdirSync, writeFileSync, mkdirSync, existsSync } from 
 import { fileURLToPath } from 'node:url'
 import { dirname, join } from 'node:path'
 import { execFileSync } from 'node:child_process'
+// Luật rút gọn nhãn ở file riêng để test import được — file này chạy ngay
+// khi import nên không đưa vào test được.
+import { NHAN_DAI, rutGonNhan } from './rut-gon-nhan.mjs'
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')
 const moduleDir = join(root, 'content', 'modules')
@@ -190,60 +193,6 @@ function vanTayCuaView(view) {
       .map((c) => [c.anchors[0].ref.item, c.anchors[c.anchors.length - 1].ref.item].sort().join('~'))
       .sort(),
   )
-}
-
-const NHAN_DAI = 11
-
-/**
- * Tiền tố nói LOẠI thiết bị — hình khối đã nói rồi nên chữ khỏi nói lại.
- *
- * CHỈ nhận khi đứng trước dấu GẠCH, không nhận khi đứng trước khoảng trắng:
- * "PC-KinhDoanh" thì "PC" đúng là cái thẻ loại, nhưng "Máy chủ trên
- * Internet" thì "Máy" là một nửa của "máy chủ" — bỏ nó đi ra "chủ trên
- * Internet", một câu không còn nghĩa gì (đã thử trên 80 tên thiết bị thật).
- */
-const TIEN_TO = /^(PC|MAY|MÁY|SW|SWITCH|R|RT|ROUTER|SRV)-+/i
-
-/**
- * Rút gọn nhãn cho vừa khung 220x130, theo ba khuôn ĐỌC ĐƯỢC TỪ DỮ LIỆU
- * (80 tên thiết bị đang có trong nội dung, 30 cái dài quá 11 ký tự):
- *
- *   1. Bỏ đuôi trong ngoặc — "Máy A (kế toán)" -> "Máy A". Phần trong
- *      ngoặc là chú thích, phần trước mới là cái gọi tên.
- *   2. Bỏ tiền tố loại thiết bị — "PC-KinhDoanh" -> "KinhDoanh". Khối vẽ
- *      đã có hình dáng riêng cho máy trạm / switch / router rồi.
- *   3. Còn dài thì cắt ở dấu phân cách gần nhất — "MAY-TRUONG-PHONG" ->
- *      "MAY-TRUONG". Cắt giữa chữ thì thà để nguyên.
- *
- * Sau mỗi bước kiểm TRÙNG trên cả bản vẽ: "PC-KinhDoanh" và "SW-KinhDoanh"
- * mà cùng bỏ tiền tố là ra hai nhãn giống hệt nhau, lúc đó thà để nguyên
- * tên dài còn hơn hai khối mang một tên. Bước nào gây trùng thì lùi lại.
- *
- * Đây là ĐIỂM KHỞI ĐẦU, không phải bản cuối: máy không biết "KyThuat" nên
- * đọc là "kỹ thuật". Nên script in ra mọi chỗ nó đổi, và mọi chỗ nó bó tay.
- */
-function rutGonNhan(nhanGoc) {
-  const buoc = [
-    (s) => s.replace(/\s*\([^)]*\)\s*$/, '').trim(),
-    (s) => s.replace(TIEN_TO, '').trim(),
-    (s) => {
-      if (s.length <= NHAN_DAI) return s
-      const cat = s.slice(0, NHAN_DAI + 1)
-      const i = Math.max(cat.lastIndexOf('-'), cat.lastIndexOf(' '))
-      return i >= 3 ? cat.slice(0, i) : s
-    },
-  ]
-
-  let hienTai = [...nhanGoc]
-  for (const ap of buoc) {
-    // Xét độ dài HIỆN TẠI, không xét độ dài gốc: "PC-A (tầng 1)" bỏ ngoặc
-    // xong đã còn "PC-A" là đủ ngắn rồi, chạy tiếp bước bỏ tiền tố thì ra
-    // mỗi chữ "A" — ngắn thật nhưng chẳng còn nói gì.
-    const thu = hienTai.map((s) => (s.length > NHAN_DAI ? ap(s) : s))
-    const trung = new Set(thu).size !== thu.length || thu.some((s) => s.length === 0)
-    if (!trung) hienTai = thu
-  }
-  return hienTai
 }
 
 function chuanBiChep(banVe) {

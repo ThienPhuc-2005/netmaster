@@ -3,12 +3,12 @@
 ## ĐỌC 30 GIÂY: ĐANG ĐỨNG ĐÂU, LÀM GÌ TIẾP (cập nhật 2026-08-11)
 
 **App hiện có ĐỦ 21/21 MODULE NỘI DUNG + MÀN TỐT NGHIỆP** (M1-12 nhập
-môn, M13-17 Phần D, M18-21 Phần E), 1581 test xanh, typecheck sạch,
+môn, M13-17 Phần D, M18-21 Phần E), 1626 test xanh, typecheck sạch,
 build qua. **Toàn bộ biên bản hội đồng trung cấp đã XỬ XONG (08-10):
 15/15 việc mục 6 (khối 20.2, commit `1d04c0b`) + trọn LƯỢT DỌN 52 phát
 hiện P2 mục 5 (khối 20.3).** Nội dung và engine không còn việc nào treo;
 các khối gần đây đều là ý lấy từ kho `Y-TUONG.md`.
-Việc kế tiếp là của CHỦ DỰ ÁN: ra lệnh commit khối 21.37, và tuyển người
+Việc kế tiếp là của CHỦ DỰ ÁN: ra lệnh commit khối 21.38, và tuyển người
 cho các buổi test người thật (hai dòng DoD còn treo đều cần NGƯỜI).
 
 **Toàn bộ ENGINE của Phần D đã xong.** Không còn engine nào phải viết cho
@@ -29,7 +29,42 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (19) M21 capstone + màn tốt nghiệp | XONG |
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
-**KHỐI MỚI NHẤT — 21.37 (08-11), đang ở working tree chờ lệnh commit:**
+**KHỐI MỚI NHẤT — 21.38 (08-11), đang ở working tree chờ lệnh commit:**
+**Cụm 4 — kỹ thuật nền, cụm cuối của lượt duyệt kho ý tưởng.**
+- **F3 — app tự cất bản tiến độ.** Mỗi ngày mở app lên học cất một bản,
+  và LUÔN cất một bản ngay trước khi cửa migrate viết đè. Giữ 3 bản; ở
+  trang Hồ sơ mỗi bản có nút "Lùi về bản này".
+  Ba luật đắt nhất, đều rút ra lúc làm: **bản trước-nâng-cấp không bao giờ
+  bị cắt khỏi trần** (ba ngày học liên tiếp là nó trôi mất, mà nếu chính
+  migrate làm hỏng thì mọi bản sau đều chép lại cái hỏng); **hết chỗ
+  localStorage thì bỏ bản chụp, không bao giờ để tiến độ thật chết theo**
+  (mỗi bản là một bản sao đầy đủ, mà cả app chỉ có ~5MB); và **lùi về một
+  bản thì cất bản đang có trước đã** — thao tác cứu dữ liệu cũng là thao
+  tác ghi đè.
+- **Lời nhắc nghỉ tự lui sau 45 giây.** Nó là lời rủ, không phải việc phải
+  làm; ngồi lì trên đầu trang cả buổi thì thành giấy dán tường hoặc thành
+  lời trách. Đếm bằng thời gian TRANG ĐANG HIỆN, không phải thời gian
+  trôi: người nghe rủ mà đứng dậy thật thì tab nằm ở nền, đếm tiếp là lời
+  nhắc tan đúng lúc không ai nhìn. Nút tắt vẫn còn.
+- **Lệnh chép bản vẽ rút được nhãn CamelCase**: "PC-KinhDoanh" → "PC-KD".
+  Đây là đường thoát cho cặp PC-/SW- cùng phòng ở lab M21 — bỏ tiền tố thì
+  hai nhãn trùng nhau nên phải lùi, rút ruột thì vẫn phân biệt được. Trên
+  57 nhãn thật: còn dài 6 → còn 2 (hai cái còn lại rút là trùng, script in
+  "sửa tay"). Luật tách ra `scripts/rut-gon-nhan.mjs` để test import được.
+- 1626 test xanh (+45), typecheck sạch, build qua. Kiểm browser thật: giả
+  máy đang ở persist v5 rồi mở app — bản chụp v5 hiện đúng ở Hồ sơ, bấm
+  lùi thì tiến độ quay về v5 và migrate chạy lại; **lần thử này lòi ra một
+  bản chụp trùng bị cất hai lần, đã siết luật trùng rồi thử lại**. Lời nhắc
+  nghỉ: tab ở nền thì đứng yên thật (browser pane báo `hidden`), ép sang
+  "đang hiện" thì đúng 5 giây sau là lui (tạm hạ mốc rồi khôi phục). Console
+  sạch, seed đã xóa.
+- **CÒN LẠI của lượt duyệt**: I3 (so với chính mình tháng trước) và quãng
+  học dài nhất trong tuần. Trước đây định cho hai ý này đi ké F3 cho rẻ —
+  **hóa ra không ké được**: ảnh chụp là 3 bản sao đầy đủ xoay vòng, không
+  phải chuỗi số theo tháng, đọc nó ra thống kê là đọc sai bản chất. Hai ý
+  đó vẫn cần sổ số liệu riêng của chúng.
+
+**KHỐI TRƯỚC — 21.37 (08-11), đã commit `6f864d4`:**
 **Cụm 3 — nội dung: H7, bài đọc-số-thật cho scope DHCP.**
 - Thêm bài tập gõ tay thứ ba vào bước Thử tay của `m18-bai-2`, đúng bảng số
   ý gốc nêu: 200 suất · 197 đã cấp · lease 8 ngày. Hỏi rút lease xuống tối
@@ -78,9 +113,9 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
   nấc chỉ-mốc chỉ tiếng đậu module kêu; máy giả lập bản cũ đang tắt âm mở
   lên vẫn tắt. Console sạch, seed đã xóa.
 
-**Ba cụm còn lại của lượt duyệt này (chưa làm):** cụm 2 hồ sơ & ôn tập
-(I2 · I4 · I3 · quãng học dài nhất tuần) · cụm 3 nội dung (H7) · cụm 4 kỹ
-thuật nền (F3 · lời nhắc tự ẩn · rút gọn nhãn CamelCase). Hai ý **H3** và
+**Lượt duyệt kho ý tưởng này đã đi hết 4 cụm** (âm thanh 21.35 · hồ sơ &
+ôn tập 21.36 · nội dung 21.37 · kỹ thuật nền 21.38), còn treo đúng hai ý
+của cụm 2: **I3** và **quãng học dài nhất trong tuần**. Hai ý **H3** và
 **H8** cần chủ dự án quyết vì đòi PHÁ MỐC đã đóng băng.
 
 **KHỐI TRƯỚC — 21.34 (08-11), đã commit `e43e7d9`:**

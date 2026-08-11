@@ -24,6 +24,19 @@ export const HOC_LIEN_TUC_PHUT = 25
 /** Rời máy bao lâu thì coi như đã nghỉ. */
 export const NGHI_PHUT = 5
 
+/**
+ * Lời nhắc nằm lại bao lâu rồi TỰ LUI (giây).
+ *
+ * Nó là lời rủ, không phải việc phải làm — mà một lời rủ ngồi lì trên
+ * đầu trang suốt buổi thì chỉ có hai kết cục: thành giấy dán tường
+ * (người học thôi đọc mọi thứ hiện ở chỗ đó), hoặc thành lời trách đeo
+ * theo từng câu trả lời tiếp theo. Ai định nghỉ thì 45 giây đủ để đọc
+ * và đứng dậy; ai định học tiếp thì đỡ phải bấm tắt.
+ *
+ * Nút tắt vẫn còn: tự lui là để khỏi PHẢI bấm, không phải để cấm bấm.
+ */
+export const HIEN_GIAY = 45
+
 const PHUT = 60_000
 
 export interface TrangThaiNhacNghi {

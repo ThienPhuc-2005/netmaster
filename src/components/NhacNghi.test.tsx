@@ -8,7 +8,7 @@ import { act, cleanup, render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router'
 import { NhacNghi, duocPhepNhac } from './NhacNghi'
 import { useSettings } from '../store/settings'
-import { HOC_LIEN_TUC_PHUT } from '../engine/nhacNghi'
+import { HIEN_GIAY, HOC_LIEN_TUC_PHUT } from '../engine/nhacNghi'
 
 afterEach(() => {
   cleanup()
@@ -81,6 +81,39 @@ describe('nhắc nghỉ — trên màn hình thật', () => {
     moTai('/bai/m1-bai-1')
     hocLien(HOC_LIEN_TUC_PHUT + 5)
     expect(screen.queryByRole('status')).toBeNull()
+  })
+
+  it('hiện xong thì TỰ LUI, khỏi bắt người học bấm tắt', () => {
+    vi.useFakeTimers()
+    moTai('/bai/m1-bai-1')
+    hocLien(HOC_LIEN_TUC_PHUT + 1)
+    expect(screen.queryByRole('status')).not.toBeNull()
+    act(() => {
+      vi.advanceTimersByTime(HIEN_GIAY * 1_000)
+    })
+    expect(screen.queryByRole('status')).toBeNull()
+  })
+
+  it('tab nằm ở NỀN thì đồng hồ tự-lui đứng yên — không tan lúc không ai nhìn', () => {
+    vi.useFakeTimers()
+    const tra = vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('hidden')
+    try {
+      moTai('/bai/m1-bai-1')
+      hocLien(HOC_LIEN_TUC_PHUT + 1)
+      act(() => {
+        vi.advanceTimersByTime(HIEN_GIAY * 3 * 1_000)
+      })
+      expect(screen.queryByRole('status')).not.toBeNull()
+
+      // Quay lại tab: từ lúc này mới bắt đầu trừ, và trừ đủ thì mới lui.
+      tra.mockReturnValue('visible')
+      act(() => {
+        vi.advanceTimersByTime(HIEN_GIAY * 1_000)
+      })
+      expect(screen.queryByRole('status')).toBeNull()
+    } finally {
+      tra.mockRestore()
+    }
   })
 
   it('lời nhắc là role="status", KHÔNG phải alert — nó là lời rủ, không cắt ngang', () => {

@@ -370,7 +370,7 @@ quan trước khi "sửa test cho xanh".
 
 - `src/store/progress.ts` là nơi DUY NHẤT nối engine + thời gian thật +
   localStorage. XP/streak chỉ từ retrieval/lab và CHỈ lần học đầu.
-- **Persist đang ở v4. Cửa migrate**: đổi shape state = bump version +
+- **Persist đang ở v6. Cửa migrate**: đổi shape state = bump version +
   nối một bậc `v(n) → v(n+1)` + cập nhật fixture
   `tests/fixtures/progressV1.json` (`progress.migrate.test.ts` là chuông
   báo). Thêm NHÁNH vào union (vd PracticeDraft thêm kind) thì KHÔNG bump.
@@ -485,6 +485,32 @@ quan trước khi "sửa test cho xanh".
   là chấm điểm vội. Thẻ cung điện có tiền tố riêng nên tra tên phải hỏi cả
   `findConcept` lẫn `findPalaceRoom`; nội dung đổi mà thẻ không còn thì
   hiện tạm cardId chứ KHÔNG giấu dòng — số lần hụt vẫn là chuyện đã xảy ra.
+
+- **Ảnh chụp tiến độ tự động (F3, khối 21.38)**: `engine/anhChup.ts` giữ
+  luật thuần (khi nào chụp, bỏ bản nào), `store/anhChup.ts` giữ phần đụng
+  localStorage. Ảnh nằm ở key RIÊNG `netmaster-anh-chup` — KHÔNG chui vào
+  state persist, nên thêm nó không phải bump version. Bốn điều đừng nới:
+  - **Bản `truoc-nang-cap` không bị cắt khỏi trần 3 bản.** Nó chụp trong
+    `migrate` trước khi bậc migrate đầu tiên chạy, và là bản DUY NHẤT còn
+    giữ hình dữ liệu cũ; nếu chính migrate làm hỏng thì mọi bản định kỳ
+    sau đó đều chép lại cái hỏng. Ba ngày học liên tiếp là nó trôi mất
+    nếu không có ngoại lệ này.
+  - **Ảnh chụp không bao giờ được làm hỏng việc lưu chính.** Mỗi bản là
+    một bản sao ĐẦY ĐỦ của tiến độ, mà cả app chỉ có ~5MB localStorage —
+    ghi không lọt thì bỏ bản cũ rồi thử lại, cùng lắm xóa sạch key ảnh.
+    Mọi lối vào của `store/anhChup.ts` đều nuốt lỗi, cố ý.
+  - **Chụp định kỳ là MỖI NGÀY, chụp lúc MỞ APP** (`onRehydrateStorage`):
+    ba bản cách nhau ba tiếng thì cả ba cùng chứa lỗi vừa xảy ra sáng nay.
+    Chụp lúc mở app nên bản chụp = "trước khi buổi học hôm nay chạm vào".
+  - **Đã có bản chứa đúng dữ liệu ấy thì không chụp nữa** — hai bản trùng
+    chiếm hai chỗ trong ba mà chỉ lùi về được một điểm (bắt được lúc thử
+    thật: lùi xong migrate chạy lại và định chụp thêm bản y hệt). Ngoại
+    lệ: `truoc-nang-cap` trùng với một bản ĐỊNH KỲ thì vẫn chụp, vì nó
+    mang thêm quyền không bị cắt.
+  Nút "Lùi về bản này" ở trang Hồ sơ tự chụp bản ĐANG CÓ trước khi ghi đè
+  (thao tác cứu dữ liệu cũng là thao tác ghi đè) và BẮT BUỘC `reload()`
+  ngay sau đó — state RAM lúc ấy vẫn là bản vừa bị đè, hành động kế tiếp
+  sẽ persist nó ngược lại (cùng lớp lỗi với SingleWindowGuard).
 
 ## 9. Học vượt — "thi vượt" (ngoài spec, đã duyệt 08-08)
 
@@ -607,6 +633,12 @@ chỉ bỏ điều kiện "học hết bài trước đã".
   - **Không nhớ qua lần tải trang**: quãng học sống trong bộ nhớ. Nhắc
     muộn một quãng thì không ai thiệt, còn nhắc oan ngay khi vừa mở app là
     lời nhắc mất uy tín ngay lần đầu.
+  - **Tự lui sau `HIEN_GIAY` (45s) — khối 21.38**, và đếm bằng thời gian
+    TRANG ĐANG HIỆN chứ không phải thời gian trôi (`document.visibility
+    State`). Người nghe lời rủ mà đứng dậy thật thì tab nằm ở nền: đếm
+    tiếp là lời nhắc tan đúng lúc không ai nhìn, quay lại chỉ thấy màn
+    hình y như chưa từng nhắc gì. Tự lui là để khỏi PHẢI bấm tắt, không
+    phải để bỏ nút tắt — nút vẫn còn.
   Engine không tự lấy giờ (luật `src/engine/`) — mọi hàm nhận `bayGio` từ
   ngoài, nên test đo được mọi mốc mà không phải chờ thật. Banner mang
   `role="status"` chứ không `alert`: nó là lời rủ, không phải cảnh báo.
@@ -714,17 +746,29 @@ chỉ bỏ điều kiện "học hết bài trước đã".
     đúng ba việc từng phải làm tay ba lần liền — gỡ nét mục tiêu, bỏ view
     thứ hai nếu sau khi gỡ nó trùng khít view đầu, và **rút gọn nhãn dài**.
     Luật rút gọn đọc ra từ 80 tên thiết bị thật (44 nhãn dài, rút được 38):
-    bỏ đuôi trong ngoặc → bỏ tiền tố loại thiết bị → cắt ở dấu phân cách.
-    Ba chỗ bắt buộc phải nhớ:
+    bỏ đuôi trong ngoặc → bỏ tiền tố loại thiết bị → **rút cụm chữ dính
+    liền thành chữ cái đầu** (khối 21.38) → cắt ở dấu phân cách. Luật này
+    ở `scripts/rut-gon-nhan.mjs` (kèm `.d.mts`) chứ không nằm trong
+    `ban-ve-tu-lab.mjs`: script kia CHẠY NGAY khi import nên không đưa vào
+    test được, mà luật thì đáng có test (`tests/rutGonNhan.test.ts`).
+    Bốn chỗ bắt buộc phải nhớ:
     - Tiền tố CHỈ bỏ khi đứng trước dấu GẠCH. "PC-KinhDoanh" thì "PC" đúng
       là thẻ loại, nhưng "Máy chủ trên Internet" thì "Máy" là một nửa của
       "máy chủ" — bỏ đi ra "chủ trên Internet", đã thử và thấy vô nghĩa.
     - Mỗi bước xét độ dài HIỆN TẠI, không xét độ dài gốc: "PC-A (tầng 1)"
       bỏ ngoặc xong đã còn "PC-A" là đủ, chạy tiếp bước bỏ tiền tố thì ra
       mỗi chữ "A".
-    - Bước nào gây TRÙNG nhãn trong cùng bản vẽ thì lùi lại hết. Lab M21 có
-      "PC-KinhDoanh" và "SW-KinhDoanh" nên rút là trùng — script để nguyên
-      tên dài và in "sửa tay", thà dài còn hơn hai khối một tên.
+    - Bước nào gây TRÙNG nhãn trong cùng bản vẽ thì lùi lại hết — thà dài
+      còn hơn hai khối mang một tên (nhãn dài chỉ làm hình chật, nhãn
+      trùng làm hình NÓI DỐI).
+    - **Cụm dính liền phải từ HAI tiếng trở lên mới rút**: "KinhDoanh" →
+      "KD" thì người đọc sơ đồ vẫn nhận ra phòng ban, còn "Internet" → "I"
+      là hết nghĩa. Cụm IN HOA HẾT ("MAY-TRUONG") không dính khuôn này vì
+      không có tiếng thường theo sau — đoán chỗ tách tiếng trong một cụm
+      toàn hoa là máy đoán mò. Bước này đứng TRƯỚC bước cắt vì nó giữ cả
+      hai đầu của cái tên, và nó chính là đường thoát cho cặp
+      "PC-KinhDoanh"/"SW-KinhDoanh" ở lab M21: bỏ tiền tố thì hai nhãn
+      trùng nên bước đó phải lùi, rút ruột thì ra "PC-KD" với "SW-KD".
     Chỉ đổi `description`; `name` giữ tên đầy đủ làm nguồn sự thật. Script
     in ra TỪNG chỗ đã đổi, vì máy không biết "KyThuat" đọc là "kỹ thuật".
     **Chép xong thì tự chạy luôn `isometric-tu-ban-ve.mjs`** (khối 21.32) —

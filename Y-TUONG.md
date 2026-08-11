@@ -127,8 +127,24 @@ Trạng thái: ☐ chờ duyệt · ✅ đã làm · ✗ đã bàn và bỏ (gi�
 - ✅ **F2. Cắt nhỏ gói nội dung** — ĐÃ LÀM (khối 20.2): glob non-eager,
   21 module = 21 chunk riêng, `primeModules()` nạp sau cổng AppGate; kèm
   dời zod khỏi PROD. Khởi động ~530KB → ~215KB gzip.
-- ☐ **F3. Ảnh chụp tiến độ tự động** — định kỳ tự lưu snapshot tiến độ
-  (xoay vòng vài bản). Migrate lỡ hỏng còn đường lùi.
+- ✅ **F3. Ảnh chụp tiến độ tự động** — ĐÃ LÀM (khối 21.38): mỗi ngày mở
+  app lên học cất một bản, và luôn cất một bản NGAY TRƯỚC khi cửa migrate
+  viết đè; giữ 3 bản, trang Hồ sơ có nút lùi về từng bản. Ba luật đắt nhất
+  không được nới: **bản trước-nâng-cấp không bị cắt khỏi trần** (nếu chính
+  migrate làm hỏng thì mọi bản sau đều chép lại cái hỏng), **hết chỗ
+  localStorage thì bỏ ảnh chụp chứ không để tiến độ thật chết theo**, và
+  **lùi về một bản thì cất bản đang có trước đã**. Ý gốc nói "định kỳ" —
+  chốt là MỖI NGÀY chứ không mỗi giờ: ba bản cách nhau ba tiếng thì cả ba
+  cùng chứa một lỗi vừa xảy ra sáng nay.
+- ✅ **F4. Lời nhắc nghỉ tự lui** — ĐÃ LÀM (khối 21.38): hiện 45 giây rồi
+  tự đi, nút tắt vẫn còn. Đếm bằng thời gian TRANG ĐANG HIỆN chứ không
+  phải thời gian trôi — người nghe rủ mà đứng dậy thật thì tab nằm ở nền,
+  đếm tiếp là lời nhắc tan đúng lúc không ai nhìn.
+- ✅ **F5. Rút gọn nhãn CamelCase cho bản vẽ** — ĐÃ LÀM (khối 21.38):
+  "PC-KinhDoanh" → "PC-KD". Bước này đứng TRƯỚC bước cắt vì nó giữ được cả
+  hai đầu của cái tên; nó cũng là đường thoát cho cặp PC-/SW- cùng phòng ở
+  lab M21 (bỏ tiền tố là hai nhãn trùng nhau). 57 nhãn thật: còn dài 6 →
+  còn 2, hai cái còn lại rút là trùng nên script in "sửa tay".
 
 ## G. Việc spec đã hứa nhưng chưa tới lượt
 
@@ -162,7 +178,10 @@ Trạng thái: ☐ chờ duyệt · ✅ đã làm · ✗ đã bàn và bỏ (gi�
   đang mất lấy thứ mới hơi lung lay. Đứng ở tie-break là vừa đủ để quyết ai
   lọt vào phiên 15 thẻ.
 - ☐ **I3. So với chính mình tháng trước** — chụp lại bảng phân tích theo
-  tháng để thấy dạng câu từng yếu giờ đã lên.
+  tháng để thấy dạng câu từng yếu giờ đã lên. **Không ké được F3**: ảnh
+  chụp tiến độ là 3 bản sao đầy đủ xoay vòng, không phải chuỗi số theo
+  tháng — đọc nó ra thống kê là đọc sai bản chất của nó. Ý này cần sổ số
+  liệu riêng.
 - ✅ **I4. Ảo giác quen mặt vào hồ sơ lỗi** — ĐÃ LÀM (khối 21.36): mục "Thấy
   quen mà chưa thuộc" ở trang Hồ sơ. Phải bump persist v5 → v6 vì đúng như
   ý gốc nói, dữ liệu tự chấm trước đây tan theo phiên. Chỉ lưu nấc

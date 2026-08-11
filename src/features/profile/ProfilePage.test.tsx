@@ -68,6 +68,72 @@ describe('sổ "mình nghĩ câu này đúng" ở trang Hồ sơ', () => {
   })
 })
 
+describe('bản tự lưu trên máy (F3)', () => {
+  const anh = (ngay: string, xp: number) => ({
+    luc: `${ngay}T09:12:00`,
+    ngay,
+    version: 6,
+    lyDo: 'dinh-ky' as const,
+    duLieu: JSON.stringify({ state: { xpTotal: xp }, version: 6 }),
+  })
+
+  it('chưa có bản nào thì nói thẳng là chưa có, không giấu mục đi', () => {
+    // Khác mục "hay vấp": ở đó rỗng là chưa đủ dữ liệu để nói gì, còn ở
+    // đây rỗng vẫn là một thông tin — người học cần biết máy có đang tự
+    // cất bản nào cho mình không.
+    renderProfile()
+    expect(screen.getByText('Bản tự lưu trên máy')).toBeTruthy()
+    expect(screen.getByText(/Chưa có bản nào/)).toBeTruthy()
+  })
+
+  it('hiện từng bản kèm giờ và lý do cất', () => {
+    localStorage.setItem(
+      'netmaster-anh-chup',
+      JSON.stringify({
+        danhSach: [
+          { ...anh('2026-08-11', 300), lyDo: 'truoc-nang-cap' },
+          anh('2026-08-10', 250),
+        ],
+      }),
+    )
+    renderProfile()
+    expect(screen.getByText('11/08 09:12')).toBeTruthy()
+    expect(screen.getByText('cất trước khi nâng cấp dữ liệu')).toBeTruthy()
+    expect(screen.getAllByRole('button', { name: 'Lùi về bản này' })).toHaveLength(2)
+  })
+
+  it('lùi về một bản thì ghi đè key tiến độ — và cất bản đang có trước đã', () => {
+    localStorage.setItem('netmaster-progress', JSON.stringify({ state: { xpTotal: 999 }, version: 6 }))
+    localStorage.setItem('netmaster-anh-chup', JSON.stringify({ danhSach: [anh('2026-08-10', 250)] }))
+    const confirmSpy = vi.spyOn(window, 'confirm').mockReturnValue(true)
+    try {
+      renderProfile()
+      fireEvent.click(screen.getByRole('button', { name: 'Lùi về bản này' }))
+      expect(localStorage.getItem('netmaster-progress')).toContain('"xpTotal":250')
+      const kho = JSON.parse(localStorage.getItem('netmaster-anh-chup')!) as {
+        danhSach: { lyDo: string; duLieu: string }[]
+      }
+      expect(kho.danhSach[0]!.lyDo).toBe('truoc-khoi-phuc')
+      expect(kho.danhSach[0]!.duLieu).toContain('"xpTotal":999')
+    } finally {
+      confirmSpy.mockRestore()
+    }
+  })
+
+  it('bấm nhầm rồi bỏ qua hộp xác nhận thì KHÔNG đụng gì', () => {
+    localStorage.setItem('netmaster-progress', JSON.stringify({ state: { xpTotal: 999 }, version: 6 }))
+    localStorage.setItem('netmaster-anh-chup', JSON.stringify({ danhSach: [anh('2026-08-10', 250)] }))
+    const confirmSpy = vi.spyOn(window, 'confirm').mockReturnValue(false)
+    try {
+      renderProfile()
+      fireEvent.click(screen.getByRole('button', { name: 'Lùi về bản này' }))
+      expect(localStorage.getItem('netmaster-progress')).toContain('"xpTotal":999')
+    } finally {
+      confirmSpy.mockRestore()
+    }
+  })
+})
+
 describe('file sao lưu mang theo sổ góp ý', () => {
   it('nút xuất file gói cả sổ góp ý — nếu không, buổi test người thật mất sạch góp ý', async () => {
     const disputed = [
