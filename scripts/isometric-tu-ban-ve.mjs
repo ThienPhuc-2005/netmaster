@@ -206,11 +206,21 @@ function canhBaoNhanDeNhau(nodes, links, fit) {
     const cy = (fit.ty(l.from.y) + fit.ty(l.to.y)) / 2 - 1
     rects.push({ text: l.label, x: cx - labelWidth(l.label) / 2, y: cy - 5.6, w: labelWidth(l.label), h: 7.4 })
   }
+  // Nới mỗi bên 2px trước khi so. Bề ngang nhãn ở đây là ƯỚC LƯỢNG (4,3
+  // px/ký tự), còn trình duyệt đo bằng font thật — hai hình STP của khối
+  // trước lọt lưới cảnh báo rồi vẫn đè nhau trên browser đúng vài pixel.
+  // Thà báo thừa một lần còn hơn để chữ chồng chữ trong bài học.
+  const BIEN = 2
   for (let i = 0; i < rects.length; i += 1) {
     for (let j = i + 1; j < rects.length; j += 1) {
       const a = rects[i]
       const b = rects[j]
-      const de = !(a.x + a.w < b.x || b.x + b.w < a.x || a.y + a.h < b.y || b.y + b.h < a.y)
+      const de = !(
+        a.x + a.w + BIEN < b.x ||
+        b.x + b.w + BIEN < a.x ||
+        a.y + a.h + BIEN < b.y ||
+        b.y + b.h + BIEN < a.y
+      )
       if (de) console.warn(`  ! nhãn "${a.text}" đè nhãn "${b.text}" — bỏ bớt một nhãn hoặc kéo nút ra xa`)
     }
   }

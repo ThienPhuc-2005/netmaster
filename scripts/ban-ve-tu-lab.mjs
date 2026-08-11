@@ -67,18 +67,58 @@ function xepThietBi(devices) {
   return tiles
 }
 
-function dungView(id, name, topology, tiles) {
+/**
+ * MỤC TIÊU của bài vẽ thành nét chấm.
+ *
+ * Bản nháp đầu chỉ có dây và thiết bị, nhìn vào không biết bài đòi gì —
+ * phải mở JSON đọc `goals`. Giờ mỗi mục tiêu thành một nét CHẤM nối hai
+ * đầu nó nói tới, kèm nhãn. Chấm chứ không đứt: nét đứt trong app này đã
+ * mang nghĩa "sợi dây không còn dẫn được", còn đây là một lời hứa chứ
+ * không phải một sợi dây.
+ *
+ * Cố ý CHỈ vẽ mục tiêu, KHÔNG vẽ những sợi còn thiếu (lấy solution trừ
+ * initial ra là biết ngay) — nói bài đòi gì thì được, chỉ luôn chỗ phải
+ * cắm dây là làm hộ bài.
+ */
+function mucTieuThanhDay(goals) {
+  const out = []
+  for (const [i, g] of (goals ?? []).entries()) {
+    if (g.kind === 'ping' && g.from !== undefined && g.to !== undefined) {
+      out.push({
+        id: `muc-tieu-${i + 1}`,
+        description: g.expect === 'reach' ? 'phải tới' : 'phải KHÔNG tới',
+        style: 'DOTTED',
+        anchors: [
+          { id: `mt${i}-a`, ref: { item: g.from } },
+          { id: `mt${i}-b`, ref: { item: g.to } },
+        ],
+      })
+    }
+    // Mục tiêu `pathThrough` CỐ Ý không vẽ. Đã thử: nối `from` với thiết bị
+    // phải-đi-qua thì sợi nét chấm ấy trông y như một sợi cáp thật (nó nằm
+    // đúng chỗ một sợi cáp sẽ nằm), còn nhãn thì rơi ngay cạnh nhãn của
+    // chính thiết bị đó — đo trên browser: "phải đi qua" đè "R Đà Nẵng" và
+    // đè "Switch-1". Một ràng buộc về ĐƯỜNG ĐI không vẽ được bằng một đoạn
+    // thẳng giữa hai đầu; để chữ trong đề bài nói là đủ.
+  }
+  return out
+}
+
+function dungView(id, name, topology, tiles, goals) {
   return {
     id,
     name,
     items: topology.devices.map((d) => ({ id: d.id, tile: tiles.get(d.id) })),
-    connectors: (topology.links ?? []).map((l, i) => ({
-      id: `day-${i + 1}`,
-      anchors: [
-        { id: `${l.id ?? i}-a`, ref: { item: l.a.deviceId } },
-        { id: `${l.id ?? i}-b`, ref: { item: l.b.deviceId } },
-      ],
-    })),
+    connectors: [
+      ...(topology.links ?? []).map((l, i) => ({
+        id: `day-${i + 1}`,
+        anchors: [
+          { id: `${l.id ?? i}-a`, ref: { item: l.a.deviceId } },
+          { id: `${l.id ?? i}-b`, ref: { item: l.b.deviceId } },
+        ],
+      })),
+      ...mucTieuThanhDay(goals),
+    ],
   }
 }
 
@@ -120,10 +160,13 @@ for (const file of files) {
     const giai = q.spec?.solution
     if (dau === undefined) continue
     const tiles = xepThietBi(giai?.devices ?? dau.devices)
-    const views = [dungView('de-bai', 'Đề bài', dau, tiles)]
-    if (giai !== undefined) views.push(dungView('loi-giai', 'Lời giải', giai, tiles))
+    // Mục tiêu chỉ vẽ ở view ĐỀ BÀI. View lời giải là lúc đã xong — treo
+    // thêm lời hứa lên đó chỉ làm rối cái hình vốn để ngắm thành quả.
+    const views = [dungView('de-bai', 'Đề bài', dau, tiles, q.spec?.goals)]
+    if (giai !== undefined) views.push(dungView('loi-giai', 'Lời giải', giai, tiles, undefined))
     const banVe = {
       title: `Lab ${q.id} (${mod.id})`,
+      nguon: { loai: 'lab', cauId: q.id, moduleId: mod.id },
       description: `Máy dựng từ spec của câu lab "${q.id}". Kéo lại cho dễ đọc rồi chép sang content/ban-ve/ — chép xong thì file bên đó là của bạn, chạy lại script này không đụng tới nữa.`,
       icons: [],
       colors: [],
@@ -146,11 +189,12 @@ for (const file of files) {
     const tiles = xepThietBi(topo.devices)
     const banVe = {
       title: `Ca bệnh ${q.id} (${mod.id})`,
+      nguon: { loai: 'clinic', cauId: q.id, moduleId: mod.id },
       description: `Máy dựng từ topology của ca bệnh "${q.id}" — hiện trạng lúc bệnh nhân vào phòng khám. Kéo lại cho dễ đọc rồi chép sang content/ban-ve/.`,
       icons: [],
       colors: [],
       items: gomThietBi([topo]),
-      views: [dungView('hien-trang', 'Hiện trạng', topo, tiles)],
+      views: [dungView('hien-trang', 'Hiện trạng', topo, tiles, undefined)],
       fitToScreen: true,
     }
     writeFileSync(join(outDir, `ca-benh-${q.id}.json`), `${JSON.stringify(banVe, null, 2)}\n`, 'utf8')

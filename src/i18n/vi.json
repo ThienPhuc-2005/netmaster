@@ -214,7 +214,8 @@
     "nextReview": "Trả nợ ôn tập đã",
     "xpGained": "+{xp} XP",
     "backToLearn": "Về trang Học",
-    "notFound": "Không tìm thấy bài học này."
+    "notFound": "Không tìm thấy bài học này.",
+    "summaryVisualAlt": "Sơ đồ mạng bạn vừa dựng xong"
   },
   "review": {
     "title": "Ôn tập",

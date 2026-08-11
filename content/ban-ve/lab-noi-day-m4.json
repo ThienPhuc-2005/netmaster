@@ -1,5 +1,10 @@
 {
   "title": "Lab nối dây Module 4 (đề bài / lời giải)",
+  "nguon": {
+    "loai": "lab",
+    "cauId": "m4-b2-prac-lab",
+    "moduleId": "module-4"
+  },
   "description": "CHÉP TỪ BẢN NHÁP máy dựng (npm run ban-ve:tu-lab) rồi giữ nguyên bố cục máy đặt vì ba nút đã đủ thoáng. Hai view cho ra hai hình: de-bai (chưa có sợi dây nào) và loi-giai (đã nối). Đây là bằng chứng chạy được của cả hai việc: lab tự sinh ra bản vẽ, và một bản vẽ ra được cặp trước/sau.",
   "icons": [],
   "colors": [],
@@ -50,7 +55,27 @@
           }
         }
       ],
-      "connectors": []
+      "connectors": [
+        {
+          "id": "muc-tieu-1",
+          "description": "phải tới",
+          "style": "DOTTED",
+          "anchors": [
+            {
+              "id": "mt0-a",
+              "ref": {
+                "item": "pc-a"
+              }
+            },
+            {
+              "id": "mt0-b",
+              "ref": {
+                "item": "pc-b"
+              }
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "loi-giai",

@@ -1,0 +1,304 @@
+{
+  "title": "Lab đường dự phòng M15 (đề bài / lời giải)",
+  "nguon": {
+    "loai": "lab",
+    "cauId": "m15-b4-prac-lab",
+    "moduleId": "module-15"
+  },
+  "description": "CHÉP TỪ BẢN NHÁP máy dựng (npm run ban-ve:tu-lab), rút gọn nhãn cho vừa khung 220x130. Giữ dấu nguồn để test phát hiện được lúc nội dung lab đổi mà hình quên đổi theo.",
+  "icons": [],
+  "colors": [],
+  "items": [
+    {
+      "id": "pc-a",
+      "name": "PC-A (tầng 1)",
+      "description": "PC tầng 1",
+      "icon": "desktop"
+    },
+    {
+      "id": "pc-b",
+      "name": "PC-B (tầng 3)",
+      "description": "PC tầng 3",
+      "icon": "desktop"
+    },
+    {
+      "id": "sw-1",
+      "name": "Switch-1",
+      "description": "switch 1",
+      "icon": "switch-module"
+    },
+    {
+      "id": "sw-2",
+      "name": "Switch-2",
+      "description": "switch 2",
+      "icon": "switch-module"
+    },
+    {
+      "id": "sw-3",
+      "name": "Switch-3",
+      "description": "switch 3",
+      "icon": "switch-module"
+    }
+  ],
+  "views": [
+    {
+      "id": "de-bai",
+      "name": "Đề bài",
+      "items": [
+        {
+          "id": "pc-a",
+          "tile": {
+            "x": 2,
+            "y": 2
+          }
+        },
+        {
+          "id": "pc-b",
+          "tile": {
+            "x": 5,
+            "y": -1
+          }
+        },
+        {
+          "id": "sw-1",
+          "tile": {
+            "x": -3,
+            "y": 3
+          }
+        },
+        {
+          "id": "sw-2",
+          "tile": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        {
+          "id": "sw-3",
+          "tile": {
+            "x": 3,
+            "y": -3
+          }
+        }
+      ],
+      "connectors": [
+        {
+          "id": "day-1",
+          "anchors": [
+            {
+              "id": "la-a",
+              "ref": {
+                "item": "pc-a"
+              }
+            },
+            {
+              "id": "la-b",
+              "ref": {
+                "item": "sw-1"
+              }
+            }
+          ]
+        },
+        {
+          "id": "day-2",
+          "anchors": [
+            {
+              "id": "lb-a",
+              "ref": {
+                "item": "pc-b"
+              }
+            },
+            {
+              "id": "lb-b",
+              "ref": {
+                "item": "sw-3"
+              }
+            }
+          ]
+        },
+        {
+          "id": "day-3",
+          "anchors": [
+            {
+              "id": "ring-12-a",
+              "ref": {
+                "item": "sw-1"
+              }
+            },
+            {
+              "id": "ring-12-b",
+              "ref": {
+                "item": "sw-2"
+              }
+            }
+          ]
+        },
+        {
+          "id": "day-4",
+          "anchors": [
+            {
+              "id": "ring-23-a",
+              "ref": {
+                "item": "sw-2"
+              }
+            },
+            {
+              "id": "ring-23-b",
+              "ref": {
+                "item": "sw-3"
+              }
+            }
+          ]
+        },
+        {
+          "id": "day-5",
+          "anchors": [
+            {
+              "id": "ring-31-a",
+              "ref": {
+                "item": "sw-3"
+              }
+            },
+            {
+              "id": "ring-31-b",
+              "ref": {
+                "item": "sw-1"
+              }
+            }
+          ]
+        },
+        {
+          "id": "muc-tieu-1",
+          "description": "phải tới",
+          "style": "DOTTED",
+          "anchors": [
+            {
+              "id": "mt0-a",
+              "ref": {
+                "item": "pc-a"
+              }
+            },
+            {
+              "id": "mt0-b",
+              "ref": {
+                "item": "pc-b"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "loi-giai",
+      "name": "Lời giải",
+      "items": [
+        {
+          "id": "pc-a",
+          "tile": {
+            "x": 2,
+            "y": 2
+          }
+        },
+        {
+          "id": "pc-b",
+          "tile": {
+            "x": 5,
+            "y": -1
+          }
+        },
+        {
+          "id": "sw-1",
+          "tile": {
+            "x": -3,
+            "y": 3
+          }
+        },
+        {
+          "id": "sw-2",
+          "tile": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        {
+          "id": "sw-3",
+          "tile": {
+            "x": 3,
+            "y": -3
+          }
+        }
+      ],
+      "connectors": [
+        {
+          "id": "day-1",
+          "anchors": [
+            {
+              "id": "la-a",
+              "ref": {
+                "item": "pc-a"
+              }
+            },
+            {
+              "id": "la-b",
+              "ref": {
+                "item": "sw-1"
+              }
+            }
+          ]
+        },
+        {
+          "id": "day-2",
+          "anchors": [
+            {
+              "id": "lb-a",
+              "ref": {
+                "item": "pc-b"
+              }
+            },
+            {
+              "id": "lb-b",
+              "ref": {
+                "item": "sw-3"
+              }
+            }
+          ]
+        },
+        {
+          "id": "day-3",
+          "anchors": [
+            {
+              "id": "ring-23-a",
+              "ref": {
+                "item": "sw-2"
+              }
+            },
+            {
+              "id": "ring-23-b",
+              "ref": {
+                "item": "sw-3"
+              }
+            }
+          ]
+        },
+        {
+          "id": "day-4",
+          "anchors": [
+            {
+              "id": "ring-31-a",
+              "ref": {
+                "item": "sw-3"
+              }
+            },
+            {
+              "id": "ring-31-b",
+              "ref": {
+                "item": "sw-1"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "fitToScreen": true
+}

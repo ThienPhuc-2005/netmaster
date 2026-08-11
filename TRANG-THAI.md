@@ -3,12 +3,12 @@
 ## ĐỌC 30 GIÂY: ĐANG ĐỨNG ĐÂU, LÀM GÌ TIẾP (cập nhật 2026-08-11)
 
 **App hiện có ĐỦ 21/21 MODULE NỘI DUNG + MÀN TỐT NGHIỆP** (M1-12 nhập
-môn, M13-17 Phần D, M18-21 Phần E), 1497 test xanh, typecheck sạch,
+môn, M13-17 Phần D, M18-21 Phần E), 1518 test xanh, typecheck sạch,
 build qua. **Toàn bộ biên bản hội đồng trung cấp đã XỬ XONG (08-10):
 15/15 việc mục 6 (khối 20.2, commit `1d04c0b`) + trọn LƯỢT DỌN 52 phát
 hiện P2 mục 5 (khối 20.3).** Nội dung và engine không còn việc nào treo;
 các khối gần đây đều là ý lấy từ kho `Y-TUONG.md`.
-Việc kế tiếp là của CHỦ DỰ ÁN: ra lệnh commit khối 21.24, và tuyển người
+Việc kế tiếp là của CHỦ DỰ ÁN: ra lệnh commit khối 21.25, và tuyển người
 cho các buổi test người thật (hai dòng DoD còn treo đều cần NGƯỜI).
 
 **Toàn bộ ENGINE của Phần D đã xong.** Không còn engine nào phải viết cho
@@ -29,7 +29,25 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (19) M21 capstone + màn tốt nghiệp | XONG |
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
-**KHỐI MỚI NHẤT — 21.24 (08-11), đang ở working tree chờ lệnh commit:**
+**KHỐI MỚI NHẤT — 21.25 (08-11), đang ở working tree chờ lệnh commit:**
+ba ý cuối của cụm xưởng vẽ, làm xong cả ba.
+- **Hình thành quả ở màn Tổng kết**: bước 6 nhận thêm `visualId` (tùy chọn).
+  `m15-bai-4` và `m16-bai-5` giờ kết bằng chính sơ đồ người học vừa dựng
+  xong trong lab, đứng trên ba gạch đầu dòng.
+- **Bản nháp tự nói mục tiêu**: `ban-ve:tu-lab` đọc `goals` của lab, vẽ mục
+  tiêu ping thành nét CHẤM kèm nhãn "phải tới". Cố ý không vẽ những sợi còn
+  thiếu — nói bài đòi gì thì được, chỉ chỗ cắm dây là làm hộ bài.
+- **Cổng canh hình trôi xa lab** (`BanVeTheoLab.test.ts`): bản vẽ mang dấu
+  `nguon` bị đối chiếu thiết bị + dây với chính câu lab trong nội dung. Đã
+  cố tình làm hỏng một bản vẽ để chắc nó đỏ thật, rồi trả lại.
+- Kèm hai chỗ sửa do đo browser: bỏ mục tiêu `pathThrough` (nhãn đè nhãn
+  thiết bị), và nới biên cảnh báo nhãn đè lên 2px vì ước lượng bề ngang chữ
+  trong script sát hơn font thật.
+- 1518 test xanh (+21), typecheck sạch, build qua, content:review render lại.
+  Kiểm browser: 13 hình isometric, **0 nhãn đè nhau, 0 hình tràn viewBox**;
+  màn Tổng kết `m15-bai-4` hiện đúng sơ đồ lời giải. Seed đã xóa.
+
+**KHỐI TRƯỚC — 21.24 (08-11), đã commit `a17278c`:**
 chủ dự án duyệt 4 ý tận dụng xưởng vẽ. **LÀM XONG 2, DỪNG 2** — hai ý kia
 đụng quyết định đã có sẵn trong app, khai rõ ở dưới.
 - ✅ **Một bản vẽ ra nhiều hình**: view đầu giữ id cũ, view sau nối thêm id

@@ -34,7 +34,7 @@
         },
         {
           "id": "t3-t1",
-          "description": "cổng nằm im",
+          "description": "nằm im",
           "style": "DASHED",
           "anchors": [
             { "id": "c1", "ref": { "item": "tang-3" } },

@@ -111,8 +111,8 @@ describe('hình isometric sinh từ bản vẽ', () => {
   // máy kế toán ở chi nhánh trong khi lời bài để nó ở trụ sở.
   const DA_GAN: [lessonId: string, moduleId: string, phaiCo: string[]][] = [
     ['m14-bai-5', 'module-14', ['router', 'switch', 'VLAN 10', 'VLAN 40']],
-    ['m15-bai-1', 'module-15', ['tầng 1', 'tầng 2', 'tầng 3', 'sợi vừa cắm']],
-    ['m15-bai-2', 'module-15', ['tầng 1', 'tầng 2', 'tầng 3', 'cổng nằm im']],
+    ['m15-bai-1', 'module-15', ['tầng 1', 'tầng 2', 'tầng 3', 'sợi mới']],
+    ['m15-bai-2', 'module-15', ['tầng 1', 'tầng 2', 'tầng 3', 'nằm im']],
     ['m15-bai-4', 'module-15', ['tầng 1', 'tầng 2', 'tầng 3', 'cáp đứt']],
     ['m16-bai-4', 'module-16', ['Hà Nội', 'Đà Nẵng', 'Sài Gòn', 'cáp thẳng']],
     ['m16-bai-5', 'module-16', ['Hà Nội', 'Đà Nẵng', 'Sài Gòn', 'cáp đứt']],

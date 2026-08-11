@@ -346,6 +346,15 @@ export const SummaryStepSchema = z.object({
   type: z.literal('summary'),
   bullets: z.tuple([LTextSchema, LTextSchema, LTextSchema]),
   nextTeaser: LTextSchema,
+  /**
+   * Hình THÀNH QUẢ ở màn tổng kết (khối 21.25) — tùy chọn.
+   *
+   * Dành cho bài kết bằng một cái người học vừa DỰNG ra (lab): ba gạch đầu
+   * dòng kể lại bằng chữ, còn hình cho họ nhìn thấy mạng mình vừa nối xong.
+   * Bài không dựng gì thì đừng gắn: một cái hình ở màn tổng kết mà không
+   * phải thành quả của chính họ thì chỉ là hình trang trí.
+   */
+  visualId: idSchema.optional(),
 })
 
 /**

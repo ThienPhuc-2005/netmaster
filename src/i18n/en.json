@@ -214,7 +214,8 @@
     "nextReview": "Clear the review backlog first",
     "xpGained": "+{xp} XP",
     "backToLearn": "Back to Learn",
-    "notFound": "This lesson could not be found."
+    "notFound": "This lesson could not be found.",
+    "summaryVisualAlt": "Diagram of the network you just built"
   },
   "review": {
     "title": "Review",

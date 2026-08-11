@@ -678,6 +678,26 @@ chỉ bỏ điều kiện "học hết bài trước đã".
     trên, máy trạm dưới), người phải kéo lại rồi mới chép sang — chép sang
     xong thì file đó là của người, script không đụng nữa. Ghi thẳng là mỗi
     lần chạy lại xóa sạch công kéo thả.
+  - **`summary.visualId` — hình THÀNH QUẢ ở màn tổng kết (khối 21.25)**:
+    tùy chọn, chỉ gắn cho bài kết bằng một cái người học vừa DỰNG ra (lab).
+    Bài không dựng gì mà treo hình vào đó thì chỉ là trang trí. Hiện có ở
+    `m15-bai-4` và `m16-bai-5`, cả hai trỏ vào view `loi-giai`.
+  - **Bản vẽ mang dấu `nguon` thì bị canh trôi** (`BanVeTheoLab.test.ts`):
+    so THIẾT BỊ và DÂY của hình với chính câu lab trong nội dung, không so
+    tọa độ (kéo thả là việc của người, dời một nút không phải là trôi). Đây
+    là nửa còn lại của việc "lab sinh ra bản vẽ" — nửa đầu dựng được hình,
+    nửa này giữ cho hình không lặng lẽ trôi xa lab. Đã thử làm hỏng một
+    bản vẽ để chắc test đỏ thật.
+  - **Mục tiêu của lab vẽ thành nét CHẤM** (`goals` kiểu `ping` → "phải
+    tới" / "phải KHÔNG tới"). Chấm chứ không đứt: nét đứt đã mang nghĩa
+    "dây không dẫn được". Chỉ vẽ mục tiêu, KHÔNG vẽ những sợi còn thiếu
+    (lấy solution trừ initial ra là biết) — nói bài đòi gì thì được, chỉ
+    luôn chỗ phải cắm dây là làm hộ bài. Mục tiêu `pathThrough` CỐ Ý không
+    vẽ: một ràng buộc về ĐƯỜNG ĐI không diễn đạt được bằng đoạn thẳng giữa
+    hai đầu, và nhãn của nó rơi trúng nhãn thiết bị (đo trên browser).
+  - **Cảnh báo nhãn đè nới biên 2px**: bề ngang nhãn trong script là ƯỚC
+    LƯỢNG, trình duyệt đo bằng font thật — hai hình STP lọt lưới rồi vẫn đè
+    nhau vài pixel trên browser. Thà báo thừa còn hơn để chữ chồng chữ.
   - **HAI CHỖ ĐÃ THỬ VÀ ĐÃ BỎ** (đừng đề xuất lại nếu không có lý do mới):
     - *Sơ đồ trong phòng khám lúc chẩn đoán*: đụng bất biến KHÁM MÙ ghi ngay
       đầu `ClinicRoom.tsx` — lộ sơ đồ sớm thì ca "rút dây" tự giải bằng mắt

@@ -34,7 +34,7 @@
         },
         {
           "id": "t3-t1",
-          "description": "sợi vừa cắm",
+          "description": "sợi mới",
           "anchors": [
             { "id": "c1", "ref": { "item": "tang-3" } },
             { "id": "c2", "ref": { "item": "tang-1" } }

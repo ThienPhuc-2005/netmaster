@@ -706,6 +706,12 @@ function SummaryView({ module, lesson, runtime }: StepProps) {
           </span>
         )}
       </div>
+      {/* Hình THÀNH QUẢ đứng TRÊN ba gạch đầu dòng: bài kết bằng một cái
+          vừa dựng ra thì cho nhìn cái đó trước, rồi mới đọc lời tổng kết.
+          Chỉ bài nào khai `visualId` mới có (schema nói rõ vì sao). */}
+      {summary.visualId !== undefined && (
+        <ConceptVisual visualId={summary.visualId} title={t('lesson.summaryVisualAlt')} />
+      )}
       <ul className="flex flex-col gap-3">
         {summary.bullets.map((b, i) => (
           <li
