@@ -1,0 +1,48 @@
+{
+  "title": "Vòng lặp sau khi ba switch tự thỏa thuận (M15 bài 2)",
+  "description": "Hook bài m15-bai-2. ĐÚNG ba nút và đúng chỗ đứng của vong-lap-stp-m15, chỉ khác một điều: sợi thứ ba chuyển nét đứt vì cổng đó đã nằm im. Hình CỐ Ý không đánh dấu switch nào là trung tâm — hook hỏi 'ai thắng', đánh dấu ra là trả lời hộ. Việc có một cổng nằm im thì chính lời hook đã nói, nên vẽ ra không lộ gì.",
+  "icons": [],
+  "colors": [],
+  "items": [
+    { "id": "tang-1", "name": "Switch tầng 1", "description": "tầng 1", "icon": "switch-module" },
+    { "id": "tang-2", "name": "Switch tầng 2", "description": "tầng 2", "icon": "switch-module" },
+    { "id": "tang-3", "name": "Switch tầng 3", "description": "tầng 3", "icon": "switch-module" }
+  ],
+  "views": [
+    {
+      "id": "view-chinh",
+      "name": "Một cổng nằm im",
+      "items": [
+        { "id": "tang-1", "tile": { "x": 3, "y": 3 } },
+        { "id": "tang-2", "tile": { "x": 2, "y": -4 } },
+        { "id": "tang-3", "tile": { "x": -4, "y": 2 } }
+      ],
+      "connectors": [
+        {
+          "id": "t1-t2",
+          "anchors": [
+            { "id": "a1", "ref": { "item": "tang-1" } },
+            { "id": "a2", "ref": { "item": "tang-2" } }
+          ]
+        },
+        {
+          "id": "t2-t3",
+          "anchors": [
+            { "id": "b1", "ref": { "item": "tang-2" } },
+            { "id": "b2", "ref": { "item": "tang-3" } }
+          ]
+        },
+        {
+          "id": "t3-t1",
+          "description": "cổng nằm im",
+          "style": "DASHED",
+          "anchors": [
+            { "id": "c1", "ref": { "item": "tang-3" } },
+            { "id": "c2", "ref": { "item": "tang-1" } }
+          ]
+        }
+      ]
+    }
+  ],
+  "fitToScreen": true
+}

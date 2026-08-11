@@ -660,6 +660,16 @@ chỉ bỏ điều kiện "học hết bài trước đã".
   - Hai bài liền nhau kể tiếp một câu chuyện thì **giữ nguyên bố cục, chỉ
     đổi đúng thứ vừa thay đổi** (`hai-loi-ba-mien-m16` và bản `-dut-`: cùng
     ba nút, cùng chỗ đứng, khác một sợi nét đứt) — mắt tự nhảy vào chỗ khác.
+    M15 đẩy nếp này lên BA nhịp trên cùng một vòng lặp (bài 1 bão → bài 2
+    có cổng nằm im → bài 4 cáp đứt): 0 sợi đứt, rồi 1, rồi 1 ở sợi KHÁC.
+    `IsometricScenes.test` khóa cả hai vế — tọa độ nhãn ba nút phải y hệt
+    nhau qua cả ba bản vẽ, và sợi nét đứt của bài 2 phải khác sợi của bài 4.
+  - **Hình chỉ bày hiện trường, KHÔNG vẽ câu trả lời.** M15 bài 1 không vẽ
+    gói tin chạy lòng vòng (hook hỏi "sợi dự phòng gây ra chuyện gì"), bài 2
+    không đánh dấu switch nào là trung tâm (hook hỏi "ai thắng"), bài 4
+    không tô sợi vừa được đánh thức (hook hỏi "lưu lượng đi lối nào"), M16
+    bài 4 không ghi con số cost nào. Vẽ ra là trả lời hộ, tức là phá bước
+    Khởi động — thứ mà không test nào bắt được, phải tự giữ.
   - `IsometricScenes.test.tsx` đối chiếu file sinh ra với bản vẽ nguồn nên
     **sửa bản vẽ mà quên chạy lại script là test đỏ**.
   - Chạy được xưởng vẽ phải vá hai chỗ của FossFLOW: `npm run build:lib`

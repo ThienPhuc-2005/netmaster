@@ -221,10 +221,151 @@ function RouterMotChanM14() {
   )
 }
 
+function VongLapStpChanM15() {
+  return (
+    <>
+      <g className="text-ink-muted">
+        <path d="M110 84.5 L188 32.5" {...isoStroke} />
+        <path d="M188 32.5 L32 32.5" {...isoStroke} />
+        <path d="M32 32.5 L110 84.5" {...isoStroke} strokeDasharray="4 3" />
+      </g>
+      <g className="text-ink">
+        <path d="M22.6 32.5 L22.6 37.5 L32 42.2 L32 37.2 Z" {...isoFace} />
+        <path d="M41.4 32.5 L41.4 37.5 L32 42.2 L32 37.2 Z" {...isoFace} />
+        <path d="M32 27.8 L41.4 32.5 L32 37.2 L22.6 32.5 Z" {...isoTop} />
+        <path d="M35.7 36.3 l0 3" {...isoDetail} />
+        <path d="M32 38.2 l0 3" {...isoDetail} />
+        <path d="M28.3 40.1 l0 3" {...isoDetail} />
+      </g>
+      <g className="text-ink">
+        <path d="M178.6 32.5 L178.6 37.5 L188 42.2 L188 37.2 Z" {...isoFace} />
+        <path d="M197.4 32.5 L197.4 37.5 L188 42.2 L188 37.2 Z" {...isoFace} />
+        <path d="M188 27.8 L197.4 32.5 L188 37.2 L178.6 32.5 Z" {...isoTop} />
+        <path d="M191.7 36.3 l0 3" {...isoDetail} />
+        <path d="M188 38.2 l0 3" {...isoDetail} />
+        <path d="M184.3 40.1 l0 3" {...isoDetail} />
+      </g>
+      <g className="text-ink">
+        <path d="M100.6 84.5 L100.6 89.5 L110 94.2 L110 89.2 Z" {...isoFace} />
+        <path d="M119.4 84.5 L119.4 89.5 L110 94.2 L110 89.2 Z" {...isoFace} />
+        <path d="M110 79.8 L119.4 84.5 L110 89.2 L100.6 84.5 Z" {...isoTop} />
+        <path d="M113.7 88.3 l0 3" {...isoDetail} />
+        <path d="M110 90.2 l0 3" {...isoDetail} />
+        <path d="M106.3 92.1 l0 3" {...isoDetail} />
+      </g>
+      <g className="text-ink">
+        <rect x="45.4" y="51.9" width="51.3" height="7.4" rx="1.5" {...isoPlate} />
+        <text x="71" y="57.5" textAnchor="middle" {...isoLabel}>cổng nằm im</text>
+        <rect x="17.1" y="43.6" width="29.8" height="7.4" rx="1.5" {...isoPlate} />
+        <text x="32" y="49.2" textAnchor="middle" {...isoLabel}>tầng 3</text>
+        <rect x="173.1" y="43.6" width="29.8" height="7.4" rx="1.5" {...isoPlate} />
+        <text x="188" y="49.2" textAnchor="middle" {...isoLabel}>tầng 2</text>
+        <rect x="95.1" y="95.6" width="29.8" height="7.4" rx="1.5" {...isoPlate} />
+        <text x="110" y="101.2" textAnchor="middle" {...isoLabel}>tầng 1</text>
+      </g>
+    </>
+  )
+}
+
+function VongLapStpDutM15() {
+  return (
+    <>
+      <g className="text-ink-muted">
+        <path d="M110 84.5 L188 32.5" {...isoStroke} strokeDasharray="4 3" />
+        <path d="M188 32.5 L32 32.5" {...isoStroke} />
+        <path d="M32 32.5 L110 84.5" {...isoStroke} />
+      </g>
+      <g className="text-ink">
+        <path d="M22.6 32.5 L22.6 37.5 L32 42.2 L32 37.2 Z" {...isoFace} />
+        <path d="M41.4 32.5 L41.4 37.5 L32 42.2 L32 37.2 Z" {...isoFace} />
+        <path d="M32 27.8 L41.4 32.5 L32 37.2 L22.6 32.5 Z" {...isoTop} />
+        <path d="M35.7 36.3 l0 3" {...isoDetail} />
+        <path d="M32 38.2 l0 3" {...isoDetail} />
+        <path d="M28.3 40.1 l0 3" {...isoDetail} />
+      </g>
+      <g className="text-ink">
+        <path d="M178.6 32.5 L178.6 37.5 L188 42.2 L188 37.2 Z" {...isoFace} />
+        <path d="M197.4 32.5 L197.4 37.5 L188 42.2 L188 37.2 Z" {...isoFace} />
+        <path d="M188 27.8 L197.4 32.5 L188 37.2 L178.6 32.5 Z" {...isoTop} />
+        <path d="M191.7 36.3 l0 3" {...isoDetail} />
+        <path d="M188 38.2 l0 3" {...isoDetail} />
+        <path d="M184.3 40.1 l0 3" {...isoDetail} />
+      </g>
+      <g className="text-ink">
+        <path d="M100.6 84.5 L100.6 89.5 L110 94.2 L110 89.2 Z" {...isoFace} />
+        <path d="M119.4 84.5 L119.4 89.5 L110 94.2 L110 89.2 Z" {...isoFace} />
+        <path d="M110 79.8 L119.4 84.5 L110 89.2 L100.6 84.5 Z" {...isoTop} />
+        <path d="M113.7 88.3 l0 3" {...isoDetail} />
+        <path d="M110 90.2 l0 3" {...isoDetail} />
+        <path d="M106.3 92.1 l0 3" {...isoDetail} />
+      </g>
+      <g className="text-ink">
+        <rect x="132" y="51.9" width="34.1" height="7.4" rx="1.5" {...isoPlate} />
+        <text x="149" y="57.5" textAnchor="middle" {...isoLabel}>cáp đứt</text>
+        <rect x="17.1" y="43.6" width="29.8" height="7.4" rx="1.5" {...isoPlate} />
+        <text x="32" y="49.2" textAnchor="middle" {...isoLabel}>tầng 3</text>
+        <rect x="173.1" y="43.6" width="29.8" height="7.4" rx="1.5" {...isoPlate} />
+        <text x="188" y="49.2" textAnchor="middle" {...isoLabel}>tầng 2</text>
+        <rect x="95.1" y="95.6" width="29.8" height="7.4" rx="1.5" {...isoPlate} />
+        <text x="110" y="101.2" textAnchor="middle" {...isoLabel}>tầng 1</text>
+      </g>
+    </>
+  )
+}
+
+function VongLapStpM15() {
+  return (
+    <>
+      <g className="text-ink-muted">
+        <path d="M110 84.5 L188 32.5" {...isoStroke} />
+        <path d="M188 32.5 L32 32.5" {...isoStroke} />
+        <path d="M32 32.5 L110 84.5" {...isoStroke} />
+      </g>
+      <g className="text-ink">
+        <path d="M22.6 32.5 L22.6 37.5 L32 42.2 L32 37.2 Z" {...isoFace} />
+        <path d="M41.4 32.5 L41.4 37.5 L32 42.2 L32 37.2 Z" {...isoFace} />
+        <path d="M32 27.8 L41.4 32.5 L32 37.2 L22.6 32.5 Z" {...isoTop} />
+        <path d="M35.7 36.3 l0 3" {...isoDetail} />
+        <path d="M32 38.2 l0 3" {...isoDetail} />
+        <path d="M28.3 40.1 l0 3" {...isoDetail} />
+      </g>
+      <g className="text-ink">
+        <path d="M178.6 32.5 L178.6 37.5 L188 42.2 L188 37.2 Z" {...isoFace} />
+        <path d="M197.4 32.5 L197.4 37.5 L188 42.2 L188 37.2 Z" {...isoFace} />
+        <path d="M188 27.8 L197.4 32.5 L188 37.2 L178.6 32.5 Z" {...isoTop} />
+        <path d="M191.7 36.3 l0 3" {...isoDetail} />
+        <path d="M188 38.2 l0 3" {...isoDetail} />
+        <path d="M184.3 40.1 l0 3" {...isoDetail} />
+      </g>
+      <g className="text-ink">
+        <path d="M100.6 84.5 L100.6 89.5 L110 94.2 L110 89.2 Z" {...isoFace} />
+        <path d="M119.4 84.5 L119.4 89.5 L110 94.2 L110 89.2 Z" {...isoFace} />
+        <path d="M110 79.8 L119.4 84.5 L110 89.2 L100.6 84.5 Z" {...isoTop} />
+        <path d="M113.7 88.3 l0 3" {...isoDetail} />
+        <path d="M110 90.2 l0 3" {...isoDetail} />
+        <path d="M106.3 92.1 l0 3" {...isoDetail} />
+      </g>
+      <g className="text-ink">
+        <rect x="45.4" y="51.9" width="51.3" height="7.4" rx="1.5" {...isoPlate} />
+        <text x="71" y="57.5" textAnchor="middle" {...isoLabel}>sợi vừa cắm</text>
+        <rect x="17.1" y="43.6" width="29.8" height="7.4" rx="1.5" {...isoPlate} />
+        <text x="32" y="49.2" textAnchor="middle" {...isoLabel}>tầng 3</text>
+        <rect x="173.1" y="43.6" width="29.8" height="7.4" rx="1.5" {...isoPlate} />
+        <text x="188" y="49.2" textAnchor="middle" {...isoLabel}>tầng 2</text>
+        <rect x="95.1" y="95.6" width="29.8" height="7.4" rx="1.5" {...isoPlate} />
+        <text x="110" y="101.2" textAnchor="middle" {...isoLabel}>tầng 1</text>
+      </g>
+    </>
+  )
+}
+
 /** visualId -> hình isometric sinh từ bản vẽ. ConceptVisual gộp map này vào REGISTRY. */
 export const ISOMETRIC_SCENES: Record<string, () => React.ReactNode> = {
   'vis-iso-chi-nhanh-m21': ChiNhanhM21,
   'vis-iso-hai-loi-ba-mien-dut-m16': HaiLoiBaMienDutM16,
   'vis-iso-hai-loi-ba-mien-m16': HaiLoiBaMienM16,
   'vis-iso-router-mot-chan-m14': RouterMotChanM14,
+  'vis-iso-vong-lap-stp-chan-m15': VongLapStpChanM15,
+  'vis-iso-vong-lap-stp-dut-m15': VongLapStpDutM15,
+  'vis-iso-vong-lap-stp-m15': VongLapStpM15,
 }

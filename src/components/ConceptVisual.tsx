@@ -4721,14 +4721,17 @@ const REGISTRY: Record<string, VisualComponent> = {
   'vis-hook-router-mot-chan': (p) => <IsoScene id="vis-iso-router-mot-chan-m14" {...p} />,
   // Module 15 — STP
   'vis-bao-quang-ba': BroadcastStorm,
-  'vis-hook-bao-quang-ba': BroadcastStorm,
+  // BA NHỊP CỦA CÙNG MỘT PHÒNG MÁY (bài 1 → 2 → 4): cùng ba switch, cùng
+  // chỗ đứng, chỉ đổi đúng sợi dây vừa thay đổi. Người học mở bài sau ra
+  // nhận ngay "vẫn cái vòng hôm qua" rồi mắt tự nhảy vào chỗ khác đi.
+  'vis-hook-bao-quang-ba': (p) => <IsoScene id="vis-iso-vong-lap-stp-m15" {...p} />,
   'vis-bpdu': BpduHello,
   'vis-root-bridge': RootBridgeElection,
-  'vis-hook-bau-root': RootBridgeElection,
+  'vis-hook-bau-root': (p) => <IsoScene id="vis-iso-vong-lap-stp-chan-m15" {...p} />,
   'vis-cong-chan': BlockedPort,
   'vis-hook-cong-nam-im': BlockedPort,
   'vis-hoi-tu-lai': StpReconverge,
-  'vis-hook-dut-day': StpReconverge,
+  'vis-hook-dut-day': (p) => <IsoScene id="vis-iso-vong-lap-stp-dut-m15" {...p} />,
   'vis-portfast': PortFast,
   'vis-hook-portfast': PortFast,
   // Module 16 — OSPF

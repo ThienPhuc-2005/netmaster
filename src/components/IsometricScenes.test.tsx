@@ -86,6 +86,9 @@ describe('hình isometric sinh từ bản vẽ', () => {
   // máy kế toán ở chi nhánh trong khi lời bài để nó ở trụ sở.
   const DA_GAN: [lessonId: string, moduleId: string, phaiCo: string[]][] = [
     ['m14-bai-5', 'module-14', ['router', 'switch', 'VLAN 10', 'VLAN 40']],
+    ['m15-bai-1', 'module-15', ['tầng 1', 'tầng 2', 'tầng 3', 'sợi vừa cắm']],
+    ['m15-bai-2', 'module-15', ['tầng 1', 'tầng 2', 'tầng 3', 'cổng nằm im']],
+    ['m15-bai-4', 'module-15', ['tầng 1', 'tầng 2', 'tầng 3', 'cáp đứt']],
     ['m16-bai-4', 'module-16', ['Hà Nội', 'Đà Nẵng', 'Sài Gòn', 'cáp thẳng']],
     ['m16-bai-5', 'module-16', ['Hà Nội', 'Đà Nẵng', 'Sài Gòn', 'cáp đứt']],
     ['m21-bai-2', 'module-21', ['máy chủ', 'switch 1', 'kinh doanh']],
@@ -111,6 +114,47 @@ describe('hình isometric sinh từ bản vẽ', () => {
       .lessons.find((l) => l.id === lessonId)!
     const { container } = render(<ConceptVisual visualId={lesson.steps[0].visualId!} title="hook" />)
     for (const chu of phaiCo) expect(container.textContent).toContain(chu)
+  })
+
+  // Ba nhịp của cùng một phòng máy (M15 bài 1 → 2 → 4). Giá trị sư phạm
+  // nằm ở chỗ BỐ CỤC KHÔNG ĐỔI: mở bài sau ra là nhận ngay "vẫn cái vòng
+  // hôm qua", mắt tự nhảy vào đúng sợi dây vừa khác đi. Ai kéo lại một nút
+  // trong một bản vẽ mà quên hai bản kia thì test này đỏ.
+  const BA_NHIP = [
+    'vis-iso-vong-lap-stp-m15',
+    'vis-iso-vong-lap-stp-chan-m15',
+    'vis-iso-vong-lap-stp-dut-m15',
+  ]
+
+  function choDungCuaNhan(visualId: string): string[] {
+    const { container } = render(<ConceptVisual visualId={visualId} title="x" />)
+    const out = [...container.querySelectorAll('text')]
+      .filter((t) => (t.textContent ?? '').startsWith('tầng'))
+      .map((t) => `${t.textContent}@${t.getAttribute('x')},${t.getAttribute('y')}`)
+      .sort()
+    cleanup()
+    return out
+  }
+
+  it('ba nhịp STP của M15 đứng đúng cùng một chỗ', () => {
+    const [mocA, ...conLai] = BA_NHIP.map(choDungCuaNhan)
+    expect(mocA).toHaveLength(3)
+    for (const khac of conLai) expect(khac).toEqual(mocA)
+  })
+
+  it('ba nhịp STP khác nhau ĐÚNG ở sợi dây: 0 đứt, rồi 1 đứt, rồi 1 đứt ở sợi KHÁC', () => {
+    const netDut = (visualId: string) => {
+      const { container } = render(<ConceptVisual visualId={visualId} title="x" />)
+      const ds = [...container.querySelectorAll('path[stroke-dasharray]')].map((p) => p.getAttribute('d'))
+      cleanup()
+      return ds
+    }
+    expect(netDut(BA_NHIP[0]!)).toHaveLength(0)
+    const chan = netDut(BA_NHIP[1]!)
+    const dut = netDut(BA_NHIP[2]!)
+    expect(chan).toHaveLength(1)
+    expect(dut).toHaveLength(1)
+    expect(dut[0]).not.toBe(chan[0])
   })
 
   it('sợi cáp đứt vẽ bằng NÉT ĐỨT, sợi còn sống vẽ nét liền', () => {

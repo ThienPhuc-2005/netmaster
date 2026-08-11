@@ -3,12 +3,12 @@
 ## ĐỌC 30 GIÂY: ĐANG ĐỨNG ĐÂU, LÀM GÌ TIẾP (cập nhật 2026-08-11)
 
 **App hiện có ĐỦ 21/21 MODULE NỘI DUNG + MÀN TỐT NGHIỆP** (M1-12 nhập
-môn, M13-17 Phần D, M18-21 Phần E), 1456 test xanh, typecheck sạch,
+môn, M13-17 Phần D, M18-21 Phần E), 1482 test xanh, typecheck sạch,
 build qua. **Toàn bộ biên bản hội đồng trung cấp đã XỬ XONG (08-10):
 15/15 việc mục 6 (khối 20.2, commit `1d04c0b`) + trọn LƯỢT DỌN 52 phát
 hiện P2 mục 5 (khối 20.3).** Nội dung và engine không còn việc nào treo;
 các khối gần đây đều là ý lấy từ kho `Y-TUONG.md`.
-Việc kế tiếp là của CHỦ DỰ ÁN: ra lệnh commit khối 21.22, và tuyển người
+Việc kế tiếp là của CHỦ DỰ ÁN: ra lệnh commit khối 21.23, và tuyển người
 cho các buổi test người thật (hai dòng DoD còn treo đều cần NGƯỜI).
 
 **Toàn bộ ENGINE của Phần D đã xong.** Không còn engine nào phải viết cho
@@ -29,7 +29,26 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (19) M21 capstone + màn tốt nghiệp | XONG |
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
-**KHỐI MỚI NHẤT — 21.22 (08-11), đang ở working tree chờ lệnh commit:**
+**KHỐI MỚI NHẤT — 21.23 (08-11), đang ở working tree chờ lệnh commit:**
+vòng lặp STP cho M15 — vẽ thành BA NHỊP của cùng một phòng máy.
+- `vis-iso-vong-lap-stp-m15` → hook `m15-bai-1`: ba switch ba tầng nối
+  thành vòng khép kín, sợi thứ ba ghi "sợi vừa cắm".
+- `vis-iso-vong-lap-stp-chan-m15` → hook `m15-bai-2`: cùng vòng đó, sợi
+  thứ ba chuyển nét đứt, ghi "cổng nằm im".
+- `vis-iso-vong-lap-stp-dut-m15` → hook `m15-bai-4`: cùng vòng đó, lần này
+  sợi tầng 1 - tầng 2 đứt, hai sợi kia nguyên.
+- **Không hình nào vẽ câu trả lời**: bài 1 không vẽ gói tin chạy lòng vòng,
+  bài 2 không đánh dấu ai là trung tâm, bài 4 không tô sợi vừa được đánh
+  thức — ba hook hỏi đúng ba điều đó.
+- Bài 3 (cổng nằm im) và bài 5 (portfast) CỐ Ý để nguyên hình cũ: hook của
+  chúng nói về một Ý, không tả hiện trường.
+- 1482 test xanh (+26), typecheck sạch, build qua (170,71KB gzip, +0,45KB).
+  Kiểm browser thật cả ba bài: bbox y hệt nhau (202,9 × 103,2) nên bố cục
+  đúng là không đổi, không tràn viewBox, không nhãn nào đè nhau, số sợi nét
+  đứt 0/1/1 và sợi đứt của bài 4 khác sợi của bài 2; 375px không cuộn ngang.
+  Dữ liệu seed đã xóa.
+
+**KHỐI TRƯỚC — 21.22 (08-11), đã commit `0c66492`:**
 ba sơ đồ topology nữa cho M14/M16, vẽ bằng đúng quy trình xưởng vẽ.
 - `vis-iso-router-mot-chan-m14` → hook `m14-bai-5`: bốn VLAN treo dưới một
   switch, router nối xuống bằng đúng một sợi.
