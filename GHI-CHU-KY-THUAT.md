@@ -686,7 +686,12 @@ chỉ bỏ điều kiện "học hết bài trước đã".
       "PC-KinhDoanh" và "SW-KinhDoanh" nên rút là trùng — script để nguyên
       tên dài và in "sửa tay", thà dài còn hơn hai khối một tên.
     Chỉ đổi `description`; `name` giữ tên đầy đủ làm nguồn sự thật. Script
-    in ra TỪNG chỗ đã đổi, vì máy không biết "KyThuat" đọc là "kỹ thuật". **Phải GỌI TÊN từng câu**, không có chế độ chép tất: 29 câu
+    in ra TỪNG chỗ đã đổi, vì máy không biết "KyThuat" đọc là "kỹ thuật".
+    **Chép xong thì tự chạy luôn `isometric-tu-ban-ve.mjs`** (khối 21.32) —
+    chép mà không sinh hình thì bản vẽ nằm trong `content/ban-ve/` nhưng
+    app chưa thấy gì, dễ tưởng lệnh chạy hỏng. Chỉ chạy KHI CÓ chép: lần
+    chạy thường chỉ dựng nháp, không có lý do đụng file hình đang yên. Bản
+    vẽ hỏng thì mã thoát khác 0, không im lặng báo thành công (đã thử). **Phải GỌI TÊN từng câu**, không có chế độ chép tất: 29 câu
     lab/ca bệnh chép hết là 29 hình nằm trong gói app mà không bài nào dùng
     — quyết định "bài này đáng có hình" là của người. **KHÔNG BAO GIỜ GHI
     ĐÈ**: file bên `content/ban-ve/` là công kéo thả của người. Gõ nhầm id

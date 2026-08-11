@@ -24,6 +24,7 @@
 import { readFileSync, readdirSync, writeFileSync, mkdirSync, existsSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { dirname, join } from 'node:path'
+import { execFileSync } from 'node:child_process'
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')
 const moduleDir = join(root, 'content', 'modules')
@@ -365,3 +366,14 @@ if (khongThay.length > 0) {
   throw new Error(`Không tìm thấy câu lab/ca bệnh nào tên: ${khongThay.join(', ')}`)
 }
 console.log(`Đã dựng ${soBanVe} bản vẽ nháp -> ${outDir.replace(root, '.')}`)
+
+// Chép xong thì sinh hình luôn — chép mà không sinh thì bản vẽ nằm trong
+// `content/ban-ve/` nhưng app chưa thấy hình nào, và người dễ tưởng lệnh
+// chạy hỏng. CHỈ chạy khi thật sự có chép: lần chạy thường chỉ dựng nháp,
+// không có lý do gì đụng vào file hình đang yên.
+if (daChep.size > 0) {
+  console.log('')
+  execFileSync(process.execPath, [join(root, 'scripts', 'isometric-tu-ban-ve.mjs')], {
+    stdio: 'inherit',
+  })
+}

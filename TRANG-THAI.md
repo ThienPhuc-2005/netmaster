@@ -8,7 +8,7 @@ build qua. **Toàn bộ biên bản hội đồng trung cấp đã XỬ XONG (08
 15/15 việc mục 6 (khối 20.2, commit `1d04c0b`) + trọn LƯỢT DỌN 52 phát
 hiện P2 mục 5 (khối 20.3).** Nội dung và engine không còn việc nào treo;
 các khối gần đây đều là ý lấy từ kho `Y-TUONG.md`.
-Việc kế tiếp là của CHỦ DỰ ÁN: ra lệnh commit khối 21.31, và tuyển người
+Việc kế tiếp là của CHỦ DỰ ÁN: ra lệnh commit khối 21.32, và tuyển người
 cho các buổi test người thật (hai dòng DoD còn treo đều cần NGƯỜI).
 
 **Toàn bộ ENGINE của Phần D đã xong.** Không còn engine nào phải viết cho
@@ -29,7 +29,17 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (19) M21 capstone + màn tốt nghiệp | XONG |
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
-**KHỐI MỚI NHẤT — 21.31 (08-11), đang ở working tree chờ lệnh commit:**
+**KHỐI MỚI NHẤT — 21.32 (08-11), đang ở working tree chờ lệnh commit:**
+lệnh chép tự sinh hình luôn — quy trình xưởng vẽ còn ĐÚNG MỘT lệnh.
+- `--chep` xong thì tự chạy `visuals:isometric`, không phải gõ tay nữa.
+- Chỉ chạy KHI CÓ chép: lần chạy thường vẫn chỉ dựng nháp, không đụng vào
+  file hình đang yên.
+- Bản vẽ hỏng thì mã thoát khác 0 — đã thử bằng cách cố tình làm hỏng một
+  bản vẽ rồi chạy lệnh gộp, nó đỏ đúng như mong đợi.
+- 1537 test xanh, typecheck sạch, build qua. Ba file thử đã xóa, file hình
+  sinh ra không đổi một dòng.
+
+**KHỐI TRƯỚC — 21.31 (08-11), đã commit `5cf589d`:**
 `--chep` tự rút gọn nhãn dài, không chỉ nhắc nữa.
 - Luật rút gọn ĐỌC RA TỪ DỮ LIỆU chứ không tự nghĩ: chạy thử trên 80 tên
   thiết bị thật trong nội dung — 44 nhãn dài quá 11 ký tự, rút được 38,
