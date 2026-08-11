@@ -108,3 +108,39 @@ describe('cấu trúc token', () => {
     expect(Object.keys(light).sort()).toEqual(Object.keys(dark).sort())
   })
 })
+
+// Vệt đường đi ấm dần (B1) không phải chữ nên không đo bằng 4.5:1. Hai
+// luật riêng của nó, đo trên chính tokens.css như mọi màu khác.
+const TRAIL = ['trail-1', 'trail-2', 'trail-3', 'trail-4', 'trail-5'] as const
+
+describe.each([
+  ['dark', dark, 'panel'],
+  ['light', light, 'panel'],
+] as const)('vệt đường đi — theme %s', (_name, theme, bg) => {
+  it('mọi nấc đạt >= 3:1 với nền panel (WCAG 1.4.11 vật thể đồ họa)', () => {
+    for (const name of TRAIL) {
+      const ratio = contrast(theme[name]!, theme[bg]!)
+      expect(ratio, `--${name} (${theme[name]}) trên ${bg} = ${ratio.toFixed(2)}:1`).toBeGreaterThanOrEqual(3)
+    }
+  })
+
+  it('ẤM DẦN đo được: nấc sau nổi hơn nấc trước trên cùng một nền', () => {
+    const ratios = TRAIL.map((name) => contrast(theme[name]!, theme[bg]!))
+    for (let i = 1; i < ratios.length; i += 1) {
+      expect(ratios[i]!, `nấc ${i + 1} phải nổi hơn nấc ${i}`).toBeGreaterThan(ratios[i - 1]!)
+    }
+  })
+
+  // Đỏ trong app này chỉ có một nghĩa: lỗi hệ thống. Dấu nhận biết của
+  // đỏ là lục ≈ lam (#f87171 có g = b); của nâu/cam là lam THẤP HẲN so
+  // với lục. Đo bằng chính chỗ đó, không đo bằng độ sáng — hai màu khác
+  // hẳn tông vẫn có thể trùng độ sáng.
+  it('không nấc nào lấn sang màu ĐỎ của lỗi hệ thống', () => {
+    for (const name of TRAIL) {
+      const hex = theme[name]!.replace('#', '')
+      const g = parseInt(hex.slice(2, 4), 16)
+      const b = parseInt(hex.slice(4, 6), 16)
+      expect(b, `--${name} (${theme[name]}) có lam ngang lục — đó là đỏ`).toBeLessThan(g * 0.75)
+    }
+  })
+})

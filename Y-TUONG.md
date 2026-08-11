@@ -36,8 +36,14 @@ Trạng thái: ☐ chờ duyệt · ✅ đã làm · ✗ đã bàn và bỏ (gi�
 
 ## B. Màu sắc & thị giác
 
-- ☐ **B1. Bản đồ ấm dần** — ô module đã đậu trên bản đồ khóa học chuyển
-  tông ấm dần; liếc một cái biết mình đi được bao xa, không cần đọc số.
+- ✅ **B1. Bản đồ ấm dần** — ĐÃ LÀM (khối 21.19): dải 21 ô ở đầu danh sách
+  chủ đề trang Học, ô đã đậu tô theo 5 nấc ấm dần. Nấc lấy theo VỊ TRÍ
+  trong khóa chứ không theo số ô đã đậu — lấy theo số đã đậu thì ai cũng
+  thấy vệt kết thúc bằng màu nóng nhất, kể cả người vừa đậu chủ đề 2. Ý
+  gốc nói "trên bản đồ khóa học", nhưng bản đồ 21 ô duy nhất biết tiến độ
+  lại nằm ở màn tốt nghiệp (mỗi khóa thấy một lần) — nên dựng dải riêng
+  đặt đúng trang người học mở hằng ngày. Cố ý KHÔNG bấm được: 21 ô thành
+  link là 21 chặng Tab chắn trước nội dung chính.
 - ✅ **B2. Chế độ tập trung** — ĐÃ LÀM (khối 21.17): vào bài học hoặc bài
   thi thì khung app THU LẠI còn thanh biểu tượng (desktop 224px → 64px),
   tên app + dòng tag + cụm cài đặt + hai icon liên hệ cất đi; bốn mục
@@ -143,9 +149,13 @@ Trạng thái: ☐ chờ duyệt · ✅ đã làm · ✗ đã bàn và bỏ (gi�
   chọn: sửa mạng bằng phòng lab thật (vd native VLAN) + chọn hành động
   cho phần ngoài mô hình (vd bản ghi DNS). Cần mở cơ chế fix mới ở
   engine phòng khám — đề xuất phá mốc khi làm.
-- ☐ **H4. Tiến độ công trường capstone** — đầu các bài M21 hiện dòng
-  "chặng 1 ✓ · chặng 2 đang làm · chặng 3 chờ" cho người học thấy tòa
-  nhà mình đang xây dở tầng nào.
+- ✅ **H4. Tiến độ công trường capstone** — ĐÃ LÀM (khối 21.19): dải chặng
+  gọn ngay trên tên bài M21, bật bằng cờ nội dung `stageProgress`. Chặng
+  ĐANG LÀM là chặng chứa bài đang mở (không phải bài dở dang đầu tiên như
+  bản đồ ở trang Học) — học lại bài cũ thì công trường chỉ đúng chỗ đang
+  đứng. Không có nấc "khóa": đã vào module rồi thì ổ khóa là lời dọa vô
+  nghĩa. Màn hẹp chỉ để lại tên chặng đang làm (bốn tên đầy đủ ăn 84px
+  ngay trên tên bài), tên các chặng kia chuyển sr-only chứ không xóa.
 - ✅ **H5. Thẻ ôn điền-chữ-khuyết cho câu nhớ severity** — ĐÃ LÀM (khối
   21.17): trường `alsoAsk` cho phép MỘT thẻ có nhiều cách hỏi cùng một
   mặt sau, xoay vòng theo bậc SM-2 + số lần quên (engine không random).

@@ -17,6 +17,7 @@ import { useT } from '../../i18n'
 import { EmptyState } from '../../components/EmptyState'
 import { ProgressBar } from '../../components/ProgressBar'
 import { StageMap, type StageItem } from '../../components/StageMap'
+import { CourseTrail } from '../../components/CourseTrail'
 
 type LessonState = 'done' | 'active' | 'locked'
 
@@ -521,6 +522,16 @@ export function LearnPage() {
       <StreakStoryBanner />
 
       <TodayCard plan={plan} fading={fading} />
+
+      {/* Bản đồ đường đi đứng NGAY TRÊN danh sách chủ đề, dưới thẻ Hôm
+          nay (B1): thẻ Hôm nay trả lời "làm gì bây giờ", dải này trả lời
+          "mình đang ở đâu trong cả khóa" — và nó là tiêu đề hình của
+          đúng danh sách nằm ngay dưới. */}
+      <CourseTrail
+        modules={modules}
+        passed={new Set(passedModules)}
+        currentId={modules.find((m) => statuses[m.id] === 'open')?.id ?? null}
+      />
 
       <div className="flex flex-col gap-6">
         {modules.map((m) => (

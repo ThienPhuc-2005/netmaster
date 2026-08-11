@@ -93,10 +93,14 @@
     "done": "Done",
     "active": "In progress",
     "locked": "Locked",
-    "aria": "Stage map"
+    "aria": "Stage map",
+    "current": "Under way",
+    "pending": "Not yet",
+    "strip": "Build site: the stage you are on"
   },
   "learn": {
     "title": "Learn",
+    "trailAria": "Course trail: {passed} of {total} topics passed",
     "emptyTitle": "No modules loaded yet",
     "emptyBody": "Part A modules will appear here. Each module follows your letter through the Internet's postal system.",
     "lessonStart": "Start",

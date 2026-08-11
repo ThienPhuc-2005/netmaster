@@ -429,6 +429,17 @@ const ModuleBaseSchema = z.object({
       steps: z.array(z.object({ id: idSchema, text: LTextSchema })).min(3),
     })
     .optional(),
+  /**
+   * Hiện DẢI CHẶNG ngay trong bài học (kho ý tưởng H4). Bật cho module
+   * mà các chặng là một CÔNG TRÌNH nối nhau — capstone M21 xây một hệ
+   * thống qua 3 chặng rồi tổng duyệt, nên đang ở giữa bài vẫn phải biết
+   * mình đứng ở tầng nào của tòa nhà.
+   *
+   * Cố ý KHÔNG bật đại trà: module thường lấy chặng để GOM bài cho đỡ
+   * ngợp, giữa bài mà treo thêm một thanh tiến độ nữa cạnh 6 bước là hai
+   * thước đo đánh nhau trên cùng một màn hình.
+   */
+  stageProgress: z.boolean().optional(),
 })
 
 // ---------------------------------------------------------------

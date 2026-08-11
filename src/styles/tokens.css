@@ -39,6 +39,19 @@
      của --ok vẫn phân biệt được, vì nó ngả vàng rõ rệt. */
   --part-e: #a3e635;
 
+  /* Vệt đường đi ẤM DẦN trên bản đồ khóa học (kho ý tưởng B1): 5 nấc từ
+     than nguội tới lửa. CHỈ dùng làm RUỘT của ô 12px trong CourseTrail —
+     không bao giờ làm nền chữ, nên không sinh cặp AA mới; luật của chúng
+     là 1.4.11 (vật thể đồ họa >= 3:1) và "ấm dần" phải ĐO ĐƯỢC: nấc sau
+     nổi hơn nấc trước trên cùng một nền (tokens.test khóa cả hai).
+     Cố ý đi lối nâu-cam-hổ phách chứ KHÔNG chạm đỏ: đỏ trong app này chỉ
+     có một nghĩa là lỗi hệ thống. */
+  --trail-1: #96603a;
+  --trail-2: #b06e2c;
+  --trail-3: #cd8024;
+  --trail-4: #e59a26;
+  --trail-5: #ffb93f;
+
   --font-ui: 'Be Vietnam Pro', 'Segoe UI', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', Consolas, monospace;
 
@@ -66,6 +79,14 @@
   --part-c: #c2410c;
   --part-d: #7e22ce;
   --part-e: #4d7c0f;
+  /* Nền sáng đảo chiều cách "ấm": trên giấy trắng, ấm hơn = ĐẬM và no
+     màu hơn, nên vệt chạy từ nâu đất nhạt tới than hồng. Nếu bê nguyên
+     dải của nền tối sang, nấc nóng nhất (vàng) biến mất trên trắng. */
+  --trail-1: #b07f4a;
+  --trail-2: #b06a2a;
+  --trail-3: #b3541a;
+  --trail-4: #ad3f10;
+  --trail-5: #a32d08;
 
   color-scheme: light;
 }

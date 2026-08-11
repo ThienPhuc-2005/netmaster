@@ -12,6 +12,7 @@ import { Link, useNavigate, useParams } from 'react-router'
 import { ArrowRight, BookOpenCheck, ChevronLeft, Sparkles } from 'lucide-react'
 import { findLesson, lessonsInOrder, loadModules } from '../../content'
 import { canAdvance, currentStepType, type LessonRuntime } from '../../engine/lessonMachine'
+import { stageProgress } from '../../engine/contentPure'
 import { XP_AMOUNTS } from '../../engine/xp'
 import type { Exercise, Lesson, Module } from '../../engine/contentSchema'
 import { SELF_EXPLAIN_ANSWER_KEY, newLessonGate, practiceDraftKey, todayIso, useProgress } from '../../store/progress'
@@ -26,6 +27,7 @@ import { EmptyState } from '../../components/EmptyState'
 import { FeedbackBanner, FeedbackRegion, type FeedbackState } from '../../components/FeedbackBanner'
 import { DisputeButton } from '../../components/DisputeButton'
 import { QuestionInput } from '../../components/QuestionInput'
+import { StageStrip } from '../../components/StageStrip'
 import { PalaceTour } from '../palace/PalaceTour'
 import { backToLearn } from './LearnPage'
 import { nextAfterLesson, planToday } from '../../engine/todayPlan'
@@ -873,6 +875,15 @@ export function LessonPlayer() {
           <ChevronLeft size={14} aria-hidden />
           {t('lesson.backToLearn')}
         </Link>
+        {/* Dải công trường ĐỨNG TRÊN tên bài (H4): bối cảnh trước, việc
+            hôm nay sau. Đọc từ dưới lên thì "chặng 2 đang làm" mới là
+            thứ giải nghĩa cho tên bài, không phải ngược lại. */}
+        {ref.module.stageProgress === true && (
+          <StageStrip
+            label={t('stage.strip')}
+            stages={stageProgress(ref.module, ref.lesson.id, (id) => completedLessons[id] !== undefined)}
+          />
+        )}
         <h1 className="text-xl font-bold text-ink">{lt(ref.lesson.missionTitle)}</h1>
         <StepIndicator stepIndex={runtime.stepIndex} />
       </div>

@@ -93,10 +93,14 @@
     "done": "Đã xong",
     "active": "Đang học",
     "locked": "Chưa mở",
-    "aria": "Bản đồ chặng học"
+    "aria": "Bản đồ chặng học",
+    "current": "Đang làm",
+    "pending": "Chưa tới",
+    "strip": "Công trường: bạn đang ở chặng nào"
   },
   "learn": {
     "title": "Học",
+    "trailAria": "Bản đồ đường đi: đã đậu {passed} trên {total} chủ đề",
     "emptyTitle": "Chưa có module nào được nạp",
     "emptyBody": "Danh sách module Phần A sẽ xuất hiện ở đây. Mỗi module là một chuyến đi theo lá thư của bạn qua hệ thống bưu điện của Internet.",
     "lessonStart": "Bắt đầu",

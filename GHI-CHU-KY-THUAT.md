@@ -293,6 +293,19 @@ quan trước khi "sửa test cho xanh".
   đi kèm: >= 220 ký tự, 3-5 câu, không lá nào trùng lá nào, và
   `content:review` phải in nguyên văn. Giọng: người trực ca đêm nhắn cho
   ca sáng, kể ĐÚNG việc module đó vừa cho họ làm được.
+- **`stageProgress: true` — dải công trường trong bài (khối 21.19)**: cờ
+  cấp MODULE, hiện tại CHỈ M21 bật. Nó bật dải chặng gọn (`StageStrip`)
+  ngay trên tên bài trong `LessonPlayer`. Đừng bật đại trà: module thường
+  lấy chặng để GOM bài, treo thêm một thước đo nữa cạnh thanh 6 bước là
+  hai thước đánh nhau trên cùng màn hình. Chỉ bật cho module mà các chặng
+  là một CÔNG TRÌNH nối nhau. Test `StageStrip.test` khóa "đúng một module
+  bật cờ" — mở thêm module thì sửa test cùng lúc, có chủ ý.
+- **Chặng ĐANG LÀM trong bài ≠ chặng đang làm ở trang Học**: `stageProgress`
+  (`contentPure.ts`) lấy chặng chứa BÀI ĐANG MỞ, còn `StageMap` ở trang Học
+  lấy chặng chứa bài dở dang đầu tiên. Học lại bài đã xong thì bản trong
+  bài phải chỉ đúng chỗ đang đứng, không nhảy về phía trước (test khóa).
+  Dải trong bài cũng KHÔNG có nấc "khóa" — người học đã ở trong module rồi,
+  ổ khóa ở đó là lời dọa vô nghĩa; ba nấc là done/current/pending.
 - **Màn rớt KHÔNG in đáp án** (chỉ ý cần ôn — hintTopic); đáp án đầy đủ
   chỉ hiện khi ĐẬU. Câu + lựa chọn MCQ xáo mỗi lượt/mỗi lần render.
 - **Distractor không lộ đáp án bằng ĐỘ DÀI** (content.test khóa hai hàng
@@ -579,6 +592,25 @@ chỉ bỏ điều kiện "học hết bài trước đã".
   chuyển `sr-only` chứ không bị xóa, kèm `title` cho chuột. Mobile chỉ cất
   cụm cài đặt — thanh đáy là đường ra duy nhất trên màn hẹp nên chữ ở lại.
   `AppLayout.test.tsx` khóa cả bốn điều.
+- **Vệt đường đi ấm dần (`CourseTrail` + `engine/trail.ts`, khối 21.19)**:
+  dải 21 ô ở đầu danh sách chủ đề trang Học, ô đã đậu tô theo 5 nấc
+  `--trail-1..5`. Bốn luật:
+  - **Nấc theo VỊ TRÍ trong khóa, không theo số ô đã đậu.** Lấy theo số đã
+    đậu thì ai cũng thấy vệt kết thúc bằng màu nóng nhất, kể cả người vừa
+    đậu chủ đề 2 — vệt hết nói thật.
+  - **Chia theo TỔNG, không theo khoảng-giữa-hai-đầu.** Cách kia làm nấc
+    nóng nhất rơi trúng ĐÚNG MỘT ô cuối (đo trên browser thật, khóa 21 ô),
+    tức bốn ô cuối trông y hệt nhau đúng lúc cần thấy mình sắp tới nơi.
+    Test khóa "không nấc nào dưới 3 ô".
+  - **Không bấm được**, mang `role="img"` + MỘT lời đọc cho cả dải. Biến 21
+    ô thành link là chèn 21 chặng Tab ngay trước nội dung chính, mà card
+    chủ đề nằm ngay bên dưới rồi.
+  - **Dải màu KHÔNG chạm đỏ** (đỏ trong app chỉ có nghĩa lỗi hệ thống) và
+    đảo chiều theo nền: nền tối chạy than → lửa (sáng dần), nền sáng chạy
+    nâu đất → than hồng (đậm dần) — bê nguyên dải nền tối sang giấy trắng
+    là nấc nóng nhất biến mất. `tokens.test` đo cả ba: >= 3:1 với panel
+    (1.4.11 vật thể đồ họa), "ấm dần" phải đo được (nấc sau nổi hơn nấc
+    trước), và lam < 0,75 × lục (dấu nhận biết không-phải-đỏ).
 - Icon dùng Lucide; cấm emoji làm icon. Âm: 4 earcon Web Audio tổng hợp,
   tắt được, không file âm.
 - Onboarding: bắn gói tin 60 giây đầu, animation theo path (2 chặng ×

@@ -1,13 +1,14 @@
 # Trạng thái dự án — NetMaster (Phase 1-3 XONG; đang làm Phase 4: TRUNG CẤP)
 
-## ĐỌC 30 GIÂY: ĐANG ĐỨNG ĐÂU, LÀM GÌ TIẾP (cập nhật 2026-08-10)
+## ĐỌC 30 GIÂY: ĐANG ĐỨNG ĐÂU, LÀM GÌ TIẾP (cập nhật 2026-08-11)
 
 **App hiện có ĐỦ 21/21 MODULE NỘI DUNG + MÀN TỐT NGHIỆP** (M1-12 nhập
-môn, M13-17 Phần D, M18-21 Phần E), 1177 test xanh, typecheck sạch,
+môn, M13-17 Phần D, M18-21 Phần E), 1422 test xanh, typecheck sạch,
 build qua. **Toàn bộ biên bản hội đồng trung cấp đã XỬ XONG (08-10):
-15/15 việc mục 6 (khối 20.2, đã commit `1d04c0b`) + trọn LƯỢT DỌN 52
-phát hiện P2 mục 5 (khối 20.3, đang ở working tree chờ lệnh commit).**
-Việc kế tiếp là của CHỦ DỰ ÁN: ra lệnh commit khối 20.3, và tuyển người
+15/15 việc mục 6 (khối 20.2, commit `1d04c0b`) + trọn LƯỢT DỌN 52 phát
+hiện P2 mục 5 (khối 20.3).** Nội dung và engine không còn việc nào treo;
+các khối gần đây đều là ý lấy từ kho `Y-TUONG.md`.
+Việc kế tiếp là của CHỦ DỰ ÁN: ra lệnh commit khối 21.19, và tuyển người
 cho các buổi test người thật (hai dòng DoD còn treo đều cần NGƯỜI).
 
 **Toàn bộ ENGINE của Phần D đã xong.** Không còn engine nào phải viết cho
@@ -28,7 +29,27 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (19) M21 capstone + màn tốt nghiệp | XONG |
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
-**KHỐI MỚI NHẤT — 21.18 (08-11), đang ở working tree chờ lệnh commit:**
+**KHỐI MỚI NHẤT — 21.19 (08-11), đang ở working tree chờ lệnh commit:**
+hai ý nữa từ kho, chủ dự án bảo "làm luôn mấy cái bạn khuyên".
+- **H4 — tiến độ công trường capstone**: đầu mỗi bài M21 có dải chặng gọn
+  "Chặng 1 ✓ · Chặng 2 đang làm · Chặng 3 chưa tới · Tổng duyệt", bật bằng
+  cờ nội dung `stageProgress` (chỉ M21 bật). Chặng đang làm bám BÀI ĐANG
+  MỞ nên học lại bài cũ vẫn chỉ đúng chỗ. Bất biến ở mục 7.
+- **B1 — bản đồ ấm dần**: dải 21 ô ở đầu danh sách chủ đề trang Học, ô đã
+  đậu tô theo 5 nấc ấm dần (`--trail-1..5`), ô đang học viền tông Phần.
+  Khác ý gốc một chỗ đã khai: ý nói "trên bản đồ khóa học", nhưng bản đồ
+  duy nhất biết tiến độ nằm ở màn tốt nghiệp (cả khóa thấy một lần) — nên
+  dựng dải riêng đặt đúng trang mở hằng ngày. Bất biến ở mục 10.
+- 1422 test xanh (+30 test mới của khối này), typecheck sạch, build qua,
+  content:review render lại 21 module. Kiểm browser thật: `/bai/m21-bai-2`
+  dải chặng đọc đúng bốn chặng với chặng 2 mang `aria-current="step"`,
+  `/bai/m1-bai-1` KHÔNG có dải; trang Học vệt 21 ô ấm dần trái sang phải,
+  ô M21 viền lục Phần E, nền tối chạy than → lửa và nền sáng chạy nâu đất
+  → than hồng đúng hai dải khác nhau; 375px dải chặng thu từ 84px xuống
+  16,5px còn một hàng và không cuộn ngang (375/375); console sạch. Dữ liệu
+  seed đã xóa.
+
+**KHỐI TRƯỚC — 21.18 (08-11), đã commit `ef5a3d2`:**
 hai ý nữa từ kho, chủ dự án gọi tên.
 - **B3 — nền tự động**: nút nền thành BA nấc tối → sáng → tự động. Nấc tự
   động bám `prefers-color-scheme` của hệ điều hành và đổi NGAY khi hệ điều

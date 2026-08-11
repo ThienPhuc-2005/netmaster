@@ -11,6 +11,7 @@
 // (test, DesignPage) import từ đâu cũng được; riêng file trên ĐƯỜNG NÓNG
 // phải import từ đây.
 
+import type { LText } from './ltext'
 import type { Lesson, Module } from './contentSchema'
 
 /** Các phòng cung điện được ĐI XEM trong một bài (từ bước Dạy). */
@@ -28,4 +29,38 @@ export function conceptIdsInLesson(lesson: Lesson): string[] {
 /** Thứ tự bài học chuẩn của module = duyệt các chặng theo thứ tự. */
 export function orderedLessonIds(mod: Pick<Module, 'stages'>): string[] {
   return mod.stages.flatMap((st) => st.lessonIds)
+}
+
+export type StageProgressState = 'done' | 'current' | 'pending'
+
+export interface StageProgressItem {
+  id: string
+  title: LText
+  state: StageProgressState
+}
+
+/**
+ * Dải chặng nhìn từ TRONG một bài học (kho ý tưởng H4).
+ *
+ * Khác `StageMap` ở trang Học một chỗ CỐT TỬ: chặng ĐANG LÀM là chặng
+ * chứa bài đang mở, không phải chặng chứa bài dở dang đầu tiên. Học lại
+ * một bài đã xong thì công trường phải chỉ về đúng chỗ người học đang
+ * đứng, chứ không nhảy về phía trước.
+ *
+ * Không có nấc "khóa": chặng phía sau chỉ là CHƯA TỚI. Ổ khóa ở đây là
+ * lời dọa vô nghĩa — người học đã ở trong module rồi.
+ */
+export function stageProgress(
+  mod: Pick<Module, 'stages'>,
+  currentLessonId: string,
+  isDone: (lessonId: string) => boolean,
+): StageProgressItem[] {
+  return mod.stages.map((st) => {
+    const state: StageProgressState = st.lessonIds.includes(currentLessonId)
+      ? 'current'
+      : st.lessonIds.every(isDone)
+        ? 'done'
+        : 'pending'
+    return { id: st.id, title: st.title, state }
+  })
 }

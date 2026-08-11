@@ -2,6 +2,7 @@
   "id": "module-21",
   "order": 21,
   "part": "E",
+  "stageProgress": true,
   "letter": { "vi": "Đây là lời nhắn cuối cùng ca đêm để lại cho bạn. Bạn vừa cắt dải địa chỉ, dựng trunk, cho các router tự hỏi đường nhau, viết luật bảo vệ máy chủ kế toán, rồi gỡ một ca bệnh hai tầng chồng nhau — không phải trên slide, mà trên một chi nhánh do chính tay bạn dựng từ mặt bàn trống. Hai mươi mốt module trước, bạn còn chưa biết một gói tin bắt đầu từ đâu. Ca sau là ca của bạn: từ đây bạn không còn là người học nghề, mà là người có nghề. Hộp ôn tập vẫn mở mỗi ngày, và tay nghề thì trả góp cả đời." },
   "title": { "vi": "Capstone — Dựng mạng chi nhánh" },
   "stages": [
