@@ -2912,34 +2912,6 @@ function BlockedPort({ title }: { title?: string }) {
   )
 }
 
-/** Hội tụ lại: dây chính đứt, cổng dự phòng mở ra. */
-function StpReconverge({ title }: { title?: string }) {
-  return (
-    <Frame title={title}>
-      <g className="text-ink-muted">
-        <rect x="16" y="46" width="30" height="22" rx="3" {...stroke} strokeWidth={1.2} />
-        <rect x="95" y="18" width="30" height="22" rx="3" {...stroke} strokeWidth={1.2} />
-        <rect x="174" y="46" width="30" height="22" rx="3" {...stroke} strokeWidth={1.2} />
-      </g>
-      <g className="text-warn">
-        <path d="M48 50 L93 32" {...stroke} strokeWidth={1.5} />
-        <path d="M64 34 l14 14 M78 34 l-14 14" {...stroke} strokeWidth={2} />
-      </g>
-      <g className="text-ink-muted">
-        <path d="M127 32 L172 50" {...stroke} strokeWidth={1.2} />
-      </g>
-      <g className="text-accent">
-        <path d="M50 62 H172" {...stroke} strokeWidth={2.5} markerEnd="url(#cv-arrow)" />
-        <text x="110" y="84" textAnchor="middle" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
-          cổng chặn tự mở
-        </text>
-      </g>
-      <text x="110" y="110" textAnchor="middle" {...monoText}>
-        không ai chạm vào thiết bị
-      </text>
-    </Frame>
-  )
-}
 
 /** PortFast: cổng máy con vào việc ngay, cổng nối switch thì không. */
 function PortFast({ title }: { title?: string }) {
@@ -3183,32 +3155,6 @@ function LearnedRouteTable({ title }: { title?: string }) {
   )
 }
 
-/** Đứt đường thẳng, OSPF chuyển sang lối vòng. */
-function OspfReroute({ title }: { title?: string }) {
-  return (
-    <Frame title={title}>
-      <g className="text-ink-muted">
-        <rect x="14" y="66" width="34" height="20" rx="3" {...stroke} strokeWidth={1.2} />
-        <rect x="93" y="18" width="34" height="20" rx="3" {...stroke} strokeWidth={1.2} />
-        <rect x="172" y="66" width="34" height="20" rx="3" {...stroke} strokeWidth={1.2} />
-      </g>
-      <g className="text-warn">
-        <path d="M50 80 H170" {...stroke} strokeWidth={1.5} />
-        <path d="M102 72 l16 16 M118 72 l-16 16" {...stroke} strokeWidth={2} />
-      </g>
-      <g className="text-accent">
-        <path d="M48 68 L91 36" {...stroke} strokeWidth={2.5} markerEnd="url(#cv-arrow)" />
-        <path d="M129 36 L172 68" {...stroke} strokeWidth={2.5} markerEnd="url(#cv-arrow)" />
-        <text x="110" y="58" textAnchor="middle" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
-          cost 2, đi vòng
-        </text>
-      </g>
-      <text x="110" y="110" textAnchor="middle" {...monoText}>
-        bảng tự viết lại, không ai gõ lệnh
-      </text>
-    </Frame>
-  )
-}
 
 /** Khoảng cách quản trị: số nhỏ hơn thì được tin hơn. */
 function AdminDistance({ title }: { title?: string }) {
@@ -4730,7 +4676,10 @@ const REGISTRY: Record<string, VisualComponent> = {
   'vis-hook-bau-root': (p) => <IsoScene id="vis-iso-vong-lap-stp-chan-m15" {...p} />,
   'vis-cong-chan': BlockedPort,
   'vis-hook-cong-nam-im': BlockedPort,
-  'vis-hoi-tu-lai': StpReconverge,
+  // Bài 4 dùng chung một mạng cho hook và màn Dạy, đúng khuôn vừa dựng cho
+  // M16 bài 5: hook thấy sợi đang gánh vừa đứt (không tô sợi nào, vì nó hỏi
+  // "lưu lượng đi lối nào"), màn Dạy thấy lối mới sáng lên.
+  'vis-hoi-tu-lai': (p) => <IsoScene id="vis-iso-vong-lap-stp-dut-m15-hoi-tu" {...p} />,
   'vis-hook-dut-day': (p) => <IsoScene id="vis-iso-vong-lap-stp-dut-m15" {...p} />,
   'vis-portfast': PortFast,
   'vis-hook-portfast': PortFast,

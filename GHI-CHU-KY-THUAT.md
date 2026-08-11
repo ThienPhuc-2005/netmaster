@@ -702,6 +702,13 @@ chỉ bỏ điều kiện "học hết bài trước đã".
     cứng ở một nền và lọt ra ngoài hệ token — test khóa "không mã màu cứng
     nào lọt vào", và đã đo trên browser: nền tối ra #38bdf8, nền sáng ra
     #0369a1, tức là đúng token chứ không phải màu chép tay.
+  - **Một bài, MỘT mạng — bài thứ hai (khối 21.27)**: `m15-bai-4` cũng gộp,
+    nhưng gộp NHẸ hơn M16: chỉ thêm view `hoi-tu` vào chính bản vẽ hook của
+    nó (`vong-lap-stp-dut-m15`), không dồn ba bản vẽ vòng lặp về một file.
+    Lý do giữ ba file: bộ ba nhịp bài 1→2→4 dựa vào chúng đứng riêng mà vẫn
+    cùng bố cục, gộp lại là phá mạch đó. Hai hình vẽ tay `StpReconverge` và
+    `OspfReroute` hết người dùng nên đã xóa (cái sau là code chết còn sót
+    từ khối 21.26).
   - **Một bài, MỘT mạng (khối 21.26)**: `m16-bai-5` giờ lấy cả ba hình từ
     bốn view của cùng một bản vẽ lab — hook thấy sợi vừa đứt, màn Dạy thấy
     lối vòng sáng lên, Tổng kết thấy trạng thái cuối. Trước đó hook là tam

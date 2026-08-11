@@ -1,21 +1,59 @@
 {
   "title": "Máy xúc cắt sợi tầng 1 - tầng 2 (M15 bài 4)",
-  "description": "Hook bài m15-bai-4. Vẫn ba nút ấy, vẫn chỗ đứng ấy — lần này sợi ĐANG GÁNH lưu lượng (tầng 1 - tầng 2) đứt. Hai sợi còn lại vẽ nét liền vì dây vẫn nguyên; hình KHÔNG đánh dấu sợi nào vừa được đánh thức, vì hook hỏi đúng câu đó ('lưu lượng đã đi lối nào'). Người học phải tự nhớ ở bài 2 sợi nào đang nằm im.",
+  "description": "Hook bài m15-bai-4 (view-chinh) và màn Dạy của chính bài đó (hoi-tu). ĐÚNG ba nút, đúng chỗ đứng của hai bản vẽ vòng lặp kia — bài 4 giờ có hook và màn Dạy trên cùng một mạng: hook thấy sợi đang gánh vừa đứt, màn Dạy thấy lối mới sáng lên. Hook CỐ Ý không tô sợi nào vì nó hỏi đúng câu lưu lượng đi lối nào.",
   "icons": [],
-  "colors": [],
+  "colors": [
+    {
+      "id": "nhan",
+      "value": "#38bdf8"
+    }
+  ],
   "items": [
-    { "id": "tang-1", "name": "Switch tầng 1", "description": "tầng 1", "icon": "switch-module" },
-    { "id": "tang-2", "name": "Switch tầng 2", "description": "tầng 2", "icon": "switch-module" },
-    { "id": "tang-3", "name": "Switch tầng 3", "description": "tầng 3", "icon": "switch-module" }
+    {
+      "id": "tang-1",
+      "name": "Switch tầng 1",
+      "description": "tầng 1",
+      "icon": "switch-module"
+    },
+    {
+      "id": "tang-2",
+      "name": "Switch tầng 2",
+      "description": "tầng 2",
+      "icon": "switch-module"
+    },
+    {
+      "id": "tang-3",
+      "name": "Switch tầng 3",
+      "description": "tầng 3",
+      "icon": "switch-module"
+    }
   ],
   "views": [
     {
       "id": "view-chinh",
       "name": "Cáp đứt giữa tầng 1 và tầng 2",
       "items": [
-        { "id": "tang-1", "tile": { "x": 3, "y": 3 } },
-        { "id": "tang-2", "tile": { "x": 2, "y": -4 } },
-        { "id": "tang-3", "tile": { "x": -4, "y": 2 } }
+        {
+          "id": "tang-1",
+          "tile": {
+            "x": 3,
+            "y": 3
+          }
+        },
+        {
+          "id": "tang-2",
+          "tile": {
+            "x": 2,
+            "y": -4
+          }
+        },
+        {
+          "id": "tang-3",
+          "tile": {
+            "x": -4,
+            "y": 2
+          }
+        }
       ],
       "connectors": [
         {
@@ -23,23 +61,138 @@
           "description": "cáp đứt",
           "style": "DASHED",
           "anchors": [
-            { "id": "a1", "ref": { "item": "tang-1" } },
-            { "id": "a2", "ref": { "item": "tang-2" } }
+            {
+              "id": "a1",
+              "ref": {
+                "item": "tang-1"
+              }
+            },
+            {
+              "id": "a2",
+              "ref": {
+                "item": "tang-2"
+              }
+            }
           ]
         },
         {
           "id": "t2-t3",
           "anchors": [
-            { "id": "b1", "ref": { "item": "tang-2" } },
-            { "id": "b2", "ref": { "item": "tang-3" } }
+            {
+              "id": "b1",
+              "ref": {
+                "item": "tang-2"
+              }
+            },
+            {
+              "id": "b2",
+              "ref": {
+                "item": "tang-3"
+              }
+            }
           ]
         },
         {
           "id": "t3-t1",
           "anchors": [
-            { "id": "c1", "ref": { "item": "tang-3" } },
-            { "id": "c2", "ref": { "item": "tang-1" } }
+            {
+              "id": "c1",
+              "ref": {
+                "item": "tang-3"
+              }
+            },
+            {
+              "id": "c2",
+              "ref": {
+                "item": "tang-1"
+              }
+            }
           ]
+        }
+      ]
+    },
+    {
+      "id": "hoi-tu",
+      "name": "Hội tụ lại, lối mới gánh",
+      "items": [
+        {
+          "id": "tang-1",
+          "tile": {
+            "x": 3,
+            "y": 3
+          }
+        },
+        {
+          "id": "tang-2",
+          "tile": {
+            "x": 2,
+            "y": -4
+          }
+        },
+        {
+          "id": "tang-3",
+          "tile": {
+            "x": -4,
+            "y": 2
+          }
+        }
+      ],
+      "connectors": [
+        {
+          "id": "t1-t2",
+          "description": "cáp đứt",
+          "style": "DASHED",
+          "anchors": [
+            {
+              "id": "a1",
+              "ref": {
+                "item": "tang-1"
+              }
+            },
+            {
+              "id": "a2",
+              "ref": {
+                "item": "tang-2"
+              }
+            }
+          ]
+        },
+        {
+          "id": "t2-t3",
+          "anchors": [
+            {
+              "id": "b1",
+              "ref": {
+                "item": "tang-2"
+              }
+            },
+            {
+              "id": "b2",
+              "ref": {
+                "item": "tang-3"
+              }
+            }
+          ],
+          "color": "nhan"
+        },
+        {
+          "id": "t3-t1",
+          "anchors": [
+            {
+              "id": "c1",
+              "ref": {
+                "item": "tang-3"
+              }
+            },
+            {
+              "id": "c2",
+              "ref": {
+                "item": "tang-1"
+              }
+            }
+          ],
+          "color": "nhan",
+          "description": "lối mới"
         }
       ]
     }

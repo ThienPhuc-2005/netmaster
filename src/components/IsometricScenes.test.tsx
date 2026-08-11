@@ -185,38 +185,68 @@ describe('hình isometric sinh từ bản vẽ', () => {
   // Sợi được tô màu trong xưởng vẽ thành sợi ăn MÀU NHẤN trong app. Đọc là
   // lời đánh dấu chứ không đọc là mã màu: bảng màu của xưởng vẽ không biết
   // gì về nền tối/sáng, bê nguyên hex vào là hình chết cứng ở một nền.
-  it('sợi được đánh dấu ăn màu nhấn, và KHÔNG có mã màu cứng nào lọt vào', () => {
-    const { container } = render(
-      <ConceptVisual visualId="vis-iso-lab-ospf-doi-lo-m16-duong-vong" title="x" />,
-    )
-    const sangLen = [...container.querySelectorAll('g.text-accent path')]
-    expect(sangLen, 'lối vòng qua Đà Nẵng phải sáng lên đúng hai chặng').toHaveLength(2)
-    expect(container.innerHTML).not.toMatch(/#[0-9a-fA-F]{3,6}\b/)
+  // Bài nào đã gộp về MỘT mạng: hook và màn Dạy vẽ từ cùng bộ thiết bị,
+  // trong đó chỉ màn Dạy được tô sáng lối đi. `soSoiSang` là số chặng phải
+  // sáng ở màn Dạy — đếm chặng chứ không đếm sợi cho dễ đọc: lối vòng qua
+  // Đà Nẵng là hai chặng, lối mới của M15 cũng hai chặng.
+  const MOT_MANG: [lessonId: string, moduleId: string, soSoiSang: number, nhanPhu: string[]][] = [
+    ['m15-bai-4', 'module-15', 2, ['cáp đứt', 'lối mới']],
+    ['m16-bai-5', 'module-16', 2, ['cáp đứt', 'lối vòng']],
+  ]
+
+  function nhanTren(visualId: string): string[] {
+    const { container } = render(<ConceptVisual visualId={visualId} title="x" />)
+    const out = [...container.querySelectorAll('text')].map((t) => t.textContent ?? '').sort()
+    cleanup()
+    return out
+  }
+
+  function soSoiSang(visualId: string): number {
+    const { container } = render(<ConceptVisual visualId={visualId} title="x" />)
+    const n = container.querySelectorAll('g.text-accent path').length
+    cleanup()
+    return n
+  }
+
+  it.each(MOT_MANG)('%s: hook và màn Dạy vẽ từ CÙNG bộ thiết bị', (lessonId, moduleId, _n, nhanPhu) => {
+    const bai = loadModules()
+      .find((m) => m.id === moduleId)!
+      .lessons.find((l) => l.id === lessonId)!
+    const boLoc = (xs: string[]) => xs.filter((x) => !nhanPhu.includes(x))
+    const hook = boLoc(nhanTren(bai.steps[0].visualId!))
+    const day = boLoc(nhanTren(bai.steps[2].screens[0]!.visualId))
+    expect(day).toEqual(hook)
   })
 
-  it('view khác của cùng bản vẽ KHÔNG sáng sợi nào — chỉ màn Dạy mới chỉ đường', () => {
-    for (const id of ['vis-iso-lab-ospf-doi-lo-m16', 'vis-iso-lab-ospf-doi-lo-m16-dut']) {
-      const { container } = render(<ConceptVisual visualId={id} title="x" />)
-      expect(container.querySelectorAll('g.text-accent path'), `${id} không được chỉ đường`).toHaveLength(0)
+  it.each(MOT_MANG)('%s: chỉ màn Dạy chỉ đường, hook KHÔNG sáng sợi nào', (lessonId, moduleId, n) => {
+    // Hook của cả hai bài đều hỏi đúng câu "lưu lượng đi lối nào" — tô
+    // đường ra ở đó là trả lời hộ và giết luôn bước Khởi động.
+    const bai = loadModules()
+      .find((m) => m.id === moduleId)!
+      .lessons.find((l) => l.id === lessonId)!
+    expect(soSoiSang(bai.steps[0].visualId!), 'hook không được chỉ đường').toBe(0)
+    expect(soSoiSang(bai.steps[2].screens[0]!.visualId), 'màn Dạy phải sáng đúng số chặng').toBe(n)
+  })
+
+  it('hình tô sáng KHÔNG chứa mã màu cứng — sáng bằng token nên đổi theo nền', () => {
+    for (const [lessonId, moduleId] of MOT_MANG) {
+      const bai = loadModules()
+        .find((m) => m.id === moduleId)!
+        .lessons.find((l) => l.id === lessonId)!
+      const { container } = render(
+        <ConceptVisual visualId={bai.steps[2].screens[0]!.visualId} title="x" />,
+      )
+      expect(container.innerHTML, `${lessonId} có mã màu chép tay`).not.toMatch(/#[0-9a-fA-F]{3,6}\b/)
       cleanup()
     }
   })
 
-  it('cả bài m16-bai-5 dùng chung MỘT mạng: hook, màn Dạy, Tổng kết cùng bộ thiết bị', () => {
+  it('m16-bai-5 khép trọn vòng: màn Tổng kết cũng cùng mạng đó', () => {
     const bai = loadModules()
       .find((m) => m.id === 'module-16')!
       .lessons.find((l) => l.id === 'm16-bai-5')!
-    const tenTren = (visualId: string) => {
-      const { container } = render(<ConceptVisual visualId={visualId} title="x" />)
-      const out = [...container.querySelectorAll('text')].map((t) => t.textContent).sort()
-      cleanup()
-      return out.filter((x) => x !== 'cáp đứt' && x !== 'lối vòng')
-    }
-    const hook = tenTren(bai.steps[0].visualId!)
-    const day = tenTren(bai.steps[2].screens[0]!.visualId)
-    const ketThuc = tenTren(bai.steps[5].visualId!)
-    expect(day).toEqual(hook)
-    expect(ketThuc).toEqual(hook)
+    const boLoc = (xs: string[]) => xs.filter((x) => x !== 'cáp đứt' && x !== 'lối vòng')
+    expect(boLoc(nhanTren(bai.steps[5].visualId!))).toEqual(boLoc(nhanTren(bai.steps[0].visualId!)))
   })
 
   it('sợi cáp đứt vẽ bằng NÉT ĐỨT, sợi còn sống vẽ nét liền', () => {
