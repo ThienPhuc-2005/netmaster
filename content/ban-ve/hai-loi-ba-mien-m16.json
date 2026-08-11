@@ -1,0 +1,48 @@
+{
+  "title": "Hai lối từ Hà Nội sang Sài Gòn (M16 bài 4)",
+  "description": "Hook bài m16-bai-4. Ba chi nhánh, hai lối đi: một sợi cáp thẳng và một đường vòng qua Đà Nẵng. Hình CỐ Ý không ghi con số cost nào — câu hỏi của hook chính là 'nó đo hai lối bằng thước gì', nói trước là hỏng bài. Dùng chung ba nút với bản vẽ hai-loi-ba-mien-dut-m16 để người học nhận ra đúng mạng cũ ở bài kế.",
+  "icons": [],
+  "colors": [],
+  "items": [
+    { "id": "ha-noi", "name": "Router chi nhánh Hà Nội", "description": "Hà Nội", "icon": "router" },
+    { "id": "da-nang", "name": "Router chi nhánh Đà Nẵng", "description": "Đà Nẵng", "icon": "router" },
+    { "id": "sai-gon", "name": "Router chi nhánh Sài Gòn", "description": "Sài Gòn", "icon": "router" }
+  ],
+  "views": [
+    {
+      "id": "view-chinh",
+      "name": "Hai lối",
+      "items": [
+        { "id": "ha-noi", "tile": { "x": -4, "y": 2 } },
+        { "id": "da-nang", "tile": { "x": 0, "y": -4 } },
+        { "id": "sai-gon", "tile": { "x": 4, "y": 2 } }
+      ],
+      "connectors": [
+        {
+          "id": "cap-thang",
+          "description": "cáp thẳng",
+          "anchors": [
+            { "id": "a1", "ref": { "item": "ha-noi" } },
+            { "id": "a2", "ref": { "item": "sai-gon" } }
+          ]
+        },
+        {
+          "id": "vong-hn-dn",
+          "anchors": [
+            { "id": "b1", "ref": { "item": "ha-noi" } },
+            { "id": "b2", "ref": { "item": "da-nang" } }
+          ]
+        },
+        {
+          "id": "vong-dn-sg",
+          "description": "đường vòng",
+          "anchors": [
+            { "id": "c1", "ref": { "item": "da-nang" } },
+            { "id": "c2", "ref": { "item": "sai-gon" } }
+          ]
+        }
+      ]
+    }
+  ],
+  "fitToScreen": true
+}

@@ -3,12 +3,12 @@
 ## ĐỌC 30 GIÂY: ĐANG ĐỨNG ĐÂU, LÀM GÌ TIẾP (cập nhật 2026-08-11)
 
 **App hiện có ĐỦ 21/21 MODULE NỘI DUNG + MÀN TỐT NGHIỆP** (M1-12 nhập
-môn, M13-17 Phần D, M18-21 Phần E), 1430 test xanh, typecheck sạch,
+môn, M13-17 Phần D, M18-21 Phần E), 1456 test xanh, typecheck sạch,
 build qua. **Toàn bộ biên bản hội đồng trung cấp đã XỬ XONG (08-10):
 15/15 việc mục 6 (khối 20.2, commit `1d04c0b`) + trọn LƯỢT DỌN 52 phát
 hiện P2 mục 5 (khối 20.3).** Nội dung và engine không còn việc nào treo;
 các khối gần đây đều là ý lấy từ kho `Y-TUONG.md`.
-Việc kế tiếp là của CHỦ DỰ ÁN: ra lệnh commit khối 21.20, và tuyển người
+Việc kế tiếp là của CHỦ DỰ ÁN: ra lệnh commit khối 21.22, và tuyển người
 cho các buổi test người thật (hai dòng DoD còn treo đều cần NGƯỜI).
 
 **Toàn bộ ENGINE của Phần D đã xong.** Không còn engine nào phải viết cho
@@ -29,7 +29,27 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (19) M21 capstone + màn tốt nghiệp | XONG |
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
-**KHỐI MỚI NHẤT — 21.20 (08-11), đang ở working tree chờ lệnh commit:**
+**KHỐI MỚI NHẤT — 21.22 (08-11), đang ở working tree chờ lệnh commit:**
+ba sơ đồ topology nữa cho M14/M16, vẽ bằng đúng quy trình xưởng vẽ.
+- `vis-iso-router-mot-chan-m14` → hook `m14-bai-5`: bốn VLAN treo dưới một
+  switch, router nối xuống bằng đúng một sợi.
+- `vis-iso-hai-loi-ba-mien-m16` → hook `m16-bai-4`: tam giác Hà Nội – Đà
+  Nẵng – Sài Gòn, cáp thẳng và đường vòng.
+- `vis-iso-hai-loi-ba-mien-dut-m16` → hook `m16-bai-5`: **cùng ba nút, cùng
+  chỗ đứng**, chỉ sợi cáp thẳng chuyển nét đứt — mắt tự nhảy vào chỗ đổi.
+- Bộ chuyển học thêm hai việc: hiểu `style` DASHED/DOTTED của FossFLOW, và
+  **cảnh báo khi hai nhãn đè nhau** (bắt đúng vụ "một chân" đè "router" mà
+  browser đo được).
+- Vì sao chọn bước Khởi động: quy ước alias `vis-hook-*` đang cho **101/108
+  bài** dùng lại chính hình của màn Dạy — có hình nhưng hook không kể gì
+  mới. Ba bài này hook đều tả một HIỆN TRƯỜNG nên sơ đồ thật hơn hẳn.
+- 1456 test xanh (+26), typecheck sạch, build qua (170,26KB gzip, +0,84KB
+  cho ba hình). Kiểm browser thật cả ba bài: không hình nào tràn viewBox,
+  không nhãn nào đè nhau, hai hình M16 có bbox y hệt nhau (đúng chủ ý),
+  bài 5 có đúng 1 nét đứt còn bài 4 có 0; 375px không cuộn ngang. Dữ liệu
+  seed đã xóa.
+
+**KHỐI TRƯỚC — 21.20 + 21.21 (08-11), đã commit `7e0201d` và `535ba6d`:**
 **thử "đường A"** — dùng app FossFLOW (thư mục `học mang 3D/`) làm XƯỞNG VẼ
 ngoài app thay vì gộp hai app làm một.
 - Kết quả: chạy trọn một vòng. Vẽ trong FossFLOW → xuất JSON → `npm run
@@ -48,7 +68,7 @@ ngoài app thay vì gộp hai app làm một.
   vẽ sai hiện trường.
 - 1430 test xanh (+8), typecheck sạch, build qua, content:review render lại.
 
-**KHỐI TRƯỚC — 21.19 (08-11), đã commit `ec53407`:**
+**KHỐI 21.19 (08-11), đã commit `ec53407`:**
 hai ý nữa từ kho, chủ dự án bảo "làm luôn mấy cái bạn khuyên".
 - **H4 — tiến độ công trường capstone**: đầu mỗi bài M21 có dải chặng gọn
   "Chặng 1 ✓ · Chặng 2 đang làm · Chặng 3 chưa tới · Tổng duyệt", bật bằng

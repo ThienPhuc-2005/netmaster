@@ -57,6 +57,9 @@ const SHAPES = [
 ]
 const DEFAULT_SHAPE = { depth: 7, face: 'plain' }
 
+/** Kiểu nét của FossFLOW -> nét đứt trong SVG. SOLID không cần gì. */
+const DASH = { DASHED: '4 3', DOTTED: '1 3' }
+
 function shapeFor(iconId) {
   return SHAPES.find((s) => s.match.test(iconId ?? '')) ?? DEFAULT_SHAPE
 }
@@ -115,7 +118,11 @@ function buildScene(model) {
     const from = nodeById.get(ids[0])
     const to = nodeById.get(ids[ids.length - 1])
     if (from === undefined || to === undefined) return []
-    return [{ from, to, label: c.description }]
+    // `style` là thuộc tính CÓ SẴN của FossFLOW (SOLID/DASHED/DOTTED) —
+    // dùng nó làm đường nói "sợi dây này không còn dẫn được", thay vì bịa
+    // ra quy ước riêng mà xưởng vẽ không hiểu. Người vẽ đổi kiểu nét ngay
+    // trong FossFLOW là hình trong app đổi theo.
+    return [{ from, to, label: c.description, style: c.style ?? 'SOLID' }]
   })
 
   // Co giãn cho vừa khung 220x130 — DÒ dần chứ không tính một phát.
@@ -178,7 +185,38 @@ function buildScene(model) {
   }
   if (fit === null) throw new Error('Không ép được bản vẽ vào khung 220x130 — bớt nút hoặc rút ngắn nhãn')
 
+  canhBaoNhanDeNhau(nodes, links, fit)
   return { nodes, links, scale: fit.scale, tx: fit.tx, ty: fit.ty }
+}
+
+/**
+ * Mách chỗ hai nhãn chồng lên nhau ở tọa độ CUỐI CÙNG.
+ *
+ * Nhãn dây nằm giữa hai đầu dây, mà giữa dây thì hay rơi trúng nhãn của
+ * chính cái nút ở đầu kia — đo trên browser thật: nhãn "một chân" đè lên
+ * nhãn "router". Script không tự dời nhãn (dời hộ là hình trong app khác
+ * hình trong xưởng vẽ), chỉ nói ra để người vẽ bỏ nhãn thừa hoặc kéo nút.
+ */
+function canhBaoNhanDeNhau(nodes, links, fit) {
+  const rects = []
+  for (const n of nodes) {
+    const cy = fit.ty(n.y) + (BOX_H / 2) * fit.scale + n.depth * fit.scale + 7
+    rects.push({ text: n.label, x: fit.tx(n.x) - labelWidth(n.label) / 2, y: cy - 5.6, w: labelWidth(n.label), h: 7.4 })
+  }
+  for (const l of links) {
+    if (l.label === undefined) continue
+    const cx = (fit.tx(l.from.x) + fit.tx(l.to.x)) / 2
+    const cy = (fit.ty(l.from.y) + fit.ty(l.to.y)) / 2 - 1
+    rects.push({ text: l.label, x: cx - labelWidth(l.label) / 2, y: cy - 5.6, w: labelWidth(l.label), h: 7.4 })
+  }
+  for (let i = 0; i < rects.length; i += 1) {
+    for (let j = i + 1; j < rects.length; j += 1) {
+      const a = rects[i]
+      const b = rects[j]
+      const de = !(a.x + a.w < b.x || b.x + b.w < a.x || a.y + a.h < b.y || b.y + b.h < a.y)
+      if (de) console.warn(`  ! nhãn "${a.text}" đè nhãn "${b.text}" — bỏ bớt một nhãn hoặc kéo nút ra xa`)
+    }
+  }
 }
 
 /** Bề ngang cái đế nhãn — dùng chung cho lúc DÒ khung và lúc SINH mã. */
@@ -223,7 +261,10 @@ function sceneToJsx(scene, name) {
     const y1 = ty(l.from.y)
     const x2 = tx(l.to.x)
     const y2 = ty(l.to.y)
-    lines.push(`        <path d="M${x1} ${y1} L${x2} ${y2}" {...isoStroke} />`)
+    const dash = DASH[l.style]
+    lines.push(
+      `        <path d="M${x1} ${y1} L${x2} ${y2}" {...isoStroke}${dash === undefined ? '' : ` strokeDasharray="${dash}"`} />`,
+    )
     if (l.label !== undefined) {
       labels.push(...labelJsx(round((x1 + x2) / 2), round((y1 + y2) / 2 - 1), l.label, 8))
     }

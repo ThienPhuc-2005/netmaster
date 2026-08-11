@@ -1,0 +1,66 @@
+{
+  "title": "Bốn xóm, một chân router (M14 bài 5)",
+  "description": "Hook bài m14-bai-5. Vẽ ĐÚNG cái ràng buộc lời hook nêu: bốn VLAN muốn gọi sang nhau, mà router chỉ còn một chân trống. Hình bày hiện trường chứ không giải bài — cách một sợi dây chở nổi bốn xóm là việc của màn Dạy.",
+  "icons": [],
+  "colors": [],
+  "items": [
+    { "id": "router", "name": "Router chỉ còn một chân trống", "description": "router", "icon": "router" },
+    { "id": "switch", "name": "Switch của công ty", "description": "switch", "icon": "switch-module" },
+    { "id": "vlan10", "name": "VLAN 10 kinh doanh", "description": "VLAN 10", "icon": "desktop" },
+    { "id": "vlan20", "name": "VLAN 20 kế toán", "description": "VLAN 20", "icon": "desktop" },
+    { "id": "vlan30", "name": "VLAN 30 kỹ thuật", "description": "VLAN 30", "icon": "desktop" },
+    { "id": "vlan40", "name": "VLAN 40 khách", "description": "VLAN 40", "icon": "desktop" }
+  ],
+  "views": [
+    {
+      "id": "view-chinh",
+      "name": "Router một chân",
+      "items": [
+        { "id": "router", "tile": { "x": -3, "y": -3 } },
+        { "id": "switch", "tile": { "x": -1, "y": -1 } },
+        { "id": "vlan10", "tile": { "x": -4, "y": 6 } },
+        { "id": "vlan20", "tile": { "x": 0, "y": 4 } },
+        { "id": "vlan30", "tile": { "x": 4, "y": 0 } },
+        { "id": "vlan40", "tile": { "x": 6, "y": -4 } }
+      ],
+      "connectors": [
+        {
+          "id": "mot-chan",
+          "anchors": [
+            { "id": "a1", "ref": { "item": "router" } },
+            { "id": "a2", "ref": { "item": "switch" } }
+          ]
+        },
+        {
+          "id": "sw-10",
+          "anchors": [
+            { "id": "b1", "ref": { "item": "switch" } },
+            { "id": "b2", "ref": { "item": "vlan10" } }
+          ]
+        },
+        {
+          "id": "sw-20",
+          "anchors": [
+            { "id": "c1", "ref": { "item": "switch" } },
+            { "id": "c2", "ref": { "item": "vlan20" } }
+          ]
+        },
+        {
+          "id": "sw-30",
+          "anchors": [
+            { "id": "d1", "ref": { "item": "switch" } },
+            { "id": "d2", "ref": { "item": "vlan30" } }
+          ]
+        },
+        {
+          "id": "sw-40",
+          "anchors": [
+            { "id": "e1", "ref": { "item": "switch" } },
+            { "id": "e2", "ref": { "item": "vlan40" } }
+          ]
+        }
+      ]
+    }
+  ],
+  "fitToScreen": true
+}

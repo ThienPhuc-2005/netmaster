@@ -80,23 +80,47 @@ describe('hình isometric sinh từ bản vẽ', () => {
     expect(svg.getAttribute('aria-label')).toBe('hình thử')
   })
 
-  it('hook chặng 2 của M21 dùng hình hiện trường, không dùng lại hình của màn Dạy', () => {
+  // Bài nào đã được gắn hình sơ đồ vào bước Khởi động, kèm vài chữ PHẢI có
+  // trên hình — chữ lấy thẳng từ lời hook, nên hình vẽ lệch hiện trường bài
+  // kể là đỏ. Đây đúng là lỗi đã mắc một lần: bản vẽ đầu cho m21-bai-2 đặt
+  // máy kế toán ở chi nhánh trong khi lời bài để nó ở trụ sở.
+  const DA_GAN: [lessonId: string, moduleId: string, phaiCo: string[]][] = [
+    ['m14-bai-5', 'module-14', ['router', 'switch', 'VLAN 10', 'VLAN 40']],
+    ['m16-bai-4', 'module-16', ['Hà Nội', 'Đà Nẵng', 'Sài Gòn', 'cáp thẳng']],
+    ['m16-bai-5', 'module-16', ['Hà Nội', 'Đà Nẵng', 'Sài Gòn', 'cáp đứt']],
+    ['m21-bai-2', 'module-21', ['máy chủ', 'switch 1', 'kinh doanh']],
+  ]
+
+  it.each(DA_GAN)('%s: hook có hình riêng, không dùng lại hình của màn Dạy', (lessonId, moduleId) => {
     // Hai màn của CÙNG một bài mà chung một hình thì hook mất việc: mở bài
     // ra đã thấy đúng cái hình lát nữa sẽ gặp lại.
-    const bai2 = loadModules()
-      .find((m) => m.id === 'module-21')!
-      .lessons.find((l) => l.id === 'm21-bai-2')!
-    const hookId = bai2.steps[0].visualId!
-    const teachId = bai2.steps[2].screens[0]!.visualId
-
-    const hook = render(<ConceptVisual visualId={hookId} title="hook" />).container.innerHTML
+    const lesson = loadModules()
+      .find((m) => m.id === moduleId)!
+      .lessons.find((l) => l.id === lessonId)!
+    const hook = render(<ConceptVisual visualId={lesson.steps[0].visualId!} title="hook" />).container.innerHTML
     cleanup()
-    const teach = render(<ConceptVisual visualId={teachId} title="teach" />).container.innerHTML
-
+    const teach = render(
+      <ConceptVisual visualId={lesson.steps[2].screens[0]!.visualId} title="teach" />,
+    ).container.innerHTML
     expect(hook).not.toBe(teach)
-    expect(hook).toContain('máy chủ')
-    expect(hook).toContain('switch 1')
-    expect(hook).toContain('kinh doanh')
+  })
+
+  it.each(DA_GAN)('%s: hình hook nói đúng hiện trường lời bài kể', (lessonId, moduleId, phaiCo) => {
+    const lesson = loadModules()
+      .find((m) => m.id === moduleId)!
+      .lessons.find((l) => l.id === lessonId)!
+    const { container } = render(<ConceptVisual visualId={lesson.steps[0].visualId!} title="hook" />)
+    for (const chu of phaiCo) expect(container.textContent).toContain(chu)
+  })
+
+  it('sợi cáp đứt vẽ bằng NÉT ĐỨT, sợi còn sống vẽ nét liền', () => {
+    const { container } = render(<ConceptVisual visualId="vis-hook-dut-duong-ospf" title="hook" />)
+    const dashed = [...container.querySelectorAll('path[stroke-dasharray]')]
+    expect(dashed).toHaveLength(1)
+    // Bài trước dùng ĐÚNG ba nút đó mà không có sợi nào đứt — khác biệt
+    // giữa hai hình phải nằm gọn ở một sợi dây.
+    const truoc = render(<ConceptVisual visualId="vis-hook-hai-duong" title="hook" />).container
+    expect(truoc.querySelectorAll('path[stroke-dasharray]')).toHaveLength(0)
   })
 
   it.each(files)('%s: không có màu cứng — hình đổi theo nền tối/sáng', (file) => {

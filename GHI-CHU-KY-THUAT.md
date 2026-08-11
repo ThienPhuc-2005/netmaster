@@ -642,6 +642,24 @@ chỉ bỏ điều kiện "học hết bài trước đã".
   - Bản vẽ phải kể ĐÚNG hiện trường lời bài: hình đầu tiên vẽ một switch và
     máy kế toán ở chi nhánh, trong khi hook `m21-bai-2` nói hai switch nối
     nhau và máy chủ ở TRỤ SỞ. Hình nói khác bài còn tệ hơn không có hình.
+    `IsometricScenes.test` khóa việc này bằng bảng `DA_GAN`: mỗi bài đã gắn
+    hình khai vài chữ PHẢI có trên hình, lấy thẳng từ lời hook.
+  - **Chỗ dùng đúng nhất là bước KHỞI ĐỘNG.** Quy ước alias `vis-hook-*`
+    hiện cho 101/108 bài dùng lại chính hình của màn Dạy — mọi bài đều có
+    hình, nhưng hook hiếm khi kể được gì mới. Bài nào mà hook tả một HIỆN
+    TRƯỜNG (bốn xóm một chân router, hai lối Hà Nội–Sài Gòn, sợi cáp đứt)
+    thì sơ đồ thật hơn hẳn; bài nào hook nói về một Ý thì để nguyên hình ẩn
+    dụ. Đừng thay đại trà.
+  - **Nét đứt đi qua `style` của FossFLOW** (SOLID/DASHED/DOTTED) chứ không
+    bịa quy ước riêng: người vẽ đổi kiểu nét ngay trong xưởng vẽ là hình
+    trong app đổi theo. Dùng cho "sợi dây này không còn dẫn được".
+  - **Nhãn dây hay đè nhãn nút** (nhãn dây nằm giữa dây, mà giữa dây thường
+    rơi trúng nút đầu kia): script cảnh báo chỗ đè ở tọa độ cuối, cách chữa
+    là bỏ bớt nhãn thừa chứ không phải dời nhãn — dời hộ là hình trong app
+    khác hình trong xưởng vẽ.
+  - Hai bài liền nhau kể tiếp một câu chuyện thì **giữ nguyên bố cục, chỉ
+    đổi đúng thứ vừa thay đổi** (`hai-loi-ba-mien-m16` và bản `-dut-`: cùng
+    ba nút, cùng chỗ đứng, khác một sợi nét đứt) — mắt tự nhảy vào chỗ khác.
   - `IsometricScenes.test.tsx` đối chiếu file sinh ra với bản vẽ nguồn nên
     **sửa bản vẽ mà quên chạy lại script là test đỏ**.
   - Chạy được xưởng vẽ phải vá hai chỗ của FossFLOW: `npm run build:lib`

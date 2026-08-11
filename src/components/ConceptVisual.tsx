@@ -4716,7 +4716,9 @@ const REGISTRY: Record<string, VisualComponent> = {
   'vis-allowed-list': AllowedVlanList,
   'vis-hook-danh-sach-khach': AllowedVlanList,
   'vis-router-mot-chan': RouterOnAStick,
-  'vis-hook-router-mot-chan': RouterOnAStick,
+  // Hook bày HIỆN TRƯỜNG (bốn xóm, một chân trống), màn Dạy giữ hình ẩn dụ
+  // giải cách làm — hai màn hai việc khác nhau thì đừng chung một hình.
+  'vis-hook-router-mot-chan': (p) => <IsoScene id="vis-iso-router-mot-chan-m14" {...p} />,
   // Module 15 — STP
   'vis-bao-quang-ba': BroadcastStorm,
   'vis-hook-bao-quang-ba': BroadcastStorm,
@@ -4740,10 +4742,12 @@ const REGISTRY: Record<string, VisualComponent> = {
   'vis-hook-chu-full': LsdbSync,
   'vis-network-area-0': NetworkAreaZero,
   'vis-cost-duong-re': OspfCost,
-  'vis-hook-hai-duong': OspfCost,
+  'vis-hook-hai-duong': (p) => <IsoScene id="vis-iso-hai-loi-ba-mien-m16" {...p} />,
   'vis-bang-tu-hoc': LearnedRouteTable,
   'vis-ospf-di-loi-vong': OspfReroute,
-  'vis-hook-dut-duong-ospf': OspfReroute,
+  // Cùng ba nút, cùng chỗ đứng với hook bài 4 — chỉ sợi cáp thẳng đổi sang
+  // nét đứt. Giữ nguyên bố cục để mắt tự nhảy vào đúng chỗ vừa thay đổi.
+  'vis-hook-dut-duong-ospf': (p) => <IsoScene id="vis-iso-hai-loi-ba-mien-dut-m16" {...p} />,
   'vis-ad-tinh-thang': AdminDistance,
   // Module 17 — ACL và bảo mật lớp 2
   'vis-acl-loc-tren-cong': AclGate,
