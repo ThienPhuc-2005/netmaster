@@ -1,0 +1,271 @@
+{
+  "title": "Lab mạng nhà mình M7 (đề bài / lời giải)",
+  "nguon": {
+    "loai": "lab",
+    "cauId": "m7-b4-pra-lab",
+    "moduleId": "module-7"
+  },
+  "description": "CHÉP TỪ BẢN NHÁP máy dựng (npm run ban-ve:tu-lab), rút gọn nhãn cho vừa khung 220x130 và đổi icon máy chủ ngoài Internet thành dạng máy chủ. View loi-giai gắn vào màn Tổng kết bài m7-bai-4: người học nhìn thấy đúng cái mạng mình vừa lắp.",
+  "icons": [],
+  "colors": [],
+  "items": [
+    {
+      "id": "m7-may-tinh",
+      "name": "Máy tính",
+      "description": "máy tính",
+      "icon": "desktop"
+    },
+    {
+      "id": "m7-dien-thoai",
+      "name": "Điện thoại",
+      "description": "điện thoại",
+      "icon": "desktop"
+    },
+    {
+      "id": "m7-switch-nha",
+      "name": "Switch trong nhà",
+      "description": "switch",
+      "icon": "switch-module"
+    },
+    {
+      "id": "m7-router-nha",
+      "name": "Router nhà",
+      "description": "router",
+      "icon": "router"
+    },
+    {
+      "id": "m7-modem",
+      "name": "Modem nhà mạng",
+      "description": "modem",
+      "icon": "router"
+    },
+    {
+      "id": "m7-may-chu",
+      "name": "Máy chủ trên Internet",
+      "description": "Internet",
+      "icon": "server"
+    }
+  ],
+  "views": [
+    {
+      "id": "de-bai",
+      "name": "Đề bài",
+      "items": [
+        {
+          "id": "m7-may-tinh",
+          "tile": {
+            "x": -1,
+            "y": 5
+          }
+        },
+        {
+          "id": "m7-dien-thoai",
+          "tile": {
+            "x": 2,
+            "y": 2
+          }
+        },
+        {
+          "id": "m7-switch-nha",
+          "tile": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        {
+          "id": "m7-router-nha",
+          "tile": {
+            "x": -2,
+            "y": -2
+          }
+        },
+        {
+          "id": "m7-modem",
+          "tile": {
+            "x": 1,
+            "y": -5
+          }
+        },
+        {
+          "id": "m7-may-chu",
+          "tile": {
+            "x": 5,
+            "y": -1
+          }
+        }
+      ],
+      "connectors": [
+        {
+          "id": "day-1",
+          "anchors": [
+            {
+              "id": "m7-w-wan-a",
+              "ref": {
+                "item": "m7-router-nha"
+              }
+            },
+            {
+              "id": "m7-w-wan-b",
+              "ref": {
+                "item": "m7-modem"
+              }
+            }
+          ]
+        },
+        {
+          "id": "day-2",
+          "anchors": [
+            {
+              "id": "m7-w-net-a",
+              "ref": {
+                "item": "m7-modem"
+              }
+            },
+            {
+              "id": "m7-w-net-b",
+              "ref": {
+                "item": "m7-may-chu"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "loi-giai",
+      "name": "Lời giải",
+      "items": [
+        {
+          "id": "m7-may-tinh",
+          "tile": {
+            "x": -1,
+            "y": 5
+          }
+        },
+        {
+          "id": "m7-dien-thoai",
+          "tile": {
+            "x": 2,
+            "y": 2
+          }
+        },
+        {
+          "id": "m7-switch-nha",
+          "tile": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        {
+          "id": "m7-router-nha",
+          "tile": {
+            "x": -2,
+            "y": -2
+          }
+        },
+        {
+          "id": "m7-modem",
+          "tile": {
+            "x": 1,
+            "y": -5
+          }
+        },
+        {
+          "id": "m7-may-chu",
+          "tile": {
+            "x": 5,
+            "y": -1
+          }
+        }
+      ],
+      "connectors": [
+        {
+          "id": "day-1",
+          "anchors": [
+            {
+              "id": "m7-w-wan-a",
+              "ref": {
+                "item": "m7-router-nha"
+              }
+            },
+            {
+              "id": "m7-w-wan-b",
+              "ref": {
+                "item": "m7-modem"
+              }
+            }
+          ]
+        },
+        {
+          "id": "day-2",
+          "anchors": [
+            {
+              "id": "m7-w-net-a",
+              "ref": {
+                "item": "m7-modem"
+              }
+            },
+            {
+              "id": "m7-w-net-b",
+              "ref": {
+                "item": "m7-may-chu"
+              }
+            }
+          ]
+        },
+        {
+          "id": "day-3",
+          "anchors": [
+            {
+              "id": "m7-w-pc-a",
+              "ref": {
+                "item": "m7-may-tinh"
+              }
+            },
+            {
+              "id": "m7-w-pc-b",
+              "ref": {
+                "item": "m7-switch-nha"
+              }
+            }
+          ]
+        },
+        {
+          "id": "day-4",
+          "anchors": [
+            {
+              "id": "m7-w-phone-a",
+              "ref": {
+                "item": "m7-dien-thoai"
+              }
+            },
+            {
+              "id": "m7-w-phone-b",
+              "ref": {
+                "item": "m7-switch-nha"
+              }
+            }
+          ]
+        },
+        {
+          "id": "day-5",
+          "anchors": [
+            {
+              "id": "m7-w-lan-a",
+              "ref": {
+                "item": "m7-switch-nha"
+              }
+            },
+            {
+              "id": "m7-w-lan-b",
+              "ref": {
+                "item": "m7-router-nha"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "fitToScreen": true
+}

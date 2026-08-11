@@ -3,12 +3,12 @@
 ## ĐỌC 30 GIÂY: ĐANG ĐỨNG ĐÂU, LÀM GÌ TIẾP (cập nhật 2026-08-11)
 
 **App hiện có ĐỦ 21/21 MODULE NỘI DUNG + MÀN TỐT NGHIỆP** (M1-12 nhập
-môn, M13-17 Phần D, M18-21 Phần E), 1517 test xanh, typecheck sạch,
+môn, M13-17 Phần D, M18-21 Phần E), 1528 test xanh, typecheck sạch,
 build qua. **Toàn bộ biên bản hội đồng trung cấp đã XỬ XONG (08-10):
 15/15 việc mục 6 (khối 20.2, commit `1d04c0b`) + trọn LƯỢT DỌN 52 phát
 hiện P2 mục 5 (khối 20.3).** Nội dung và engine không còn việc nào treo;
 các khối gần đây đều là ý lấy từ kho `Y-TUONG.md`.
-Việc kế tiếp là của CHỦ DỰ ÁN: ra lệnh commit khối 21.27, và tuyển người
+Việc kế tiếp là của CHỦ DỰ ÁN: ra lệnh commit khối 21.28, và tuyển người
 cho các buổi test người thật (hai dòng DoD còn treo đều cần NGƯỜI).
 
 **Toàn bộ ENGINE của Phần D đã xong.** Không còn engine nào phải viết cho
@@ -29,7 +29,22 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (19) M21 capstone + màn tốt nghiệp | XONG |
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
-**KHỐI MỚI NHẤT — 21.27 (08-11), đang ở working tree chờ lệnh commit:**
+**KHỐI MỚI NHẤT — 21.28 (08-11), đang ở working tree chờ lệnh commit:**
+hai lab còn lại chưa có hình: M4 và M7.
+- `m4-bai-2` (sổ nhớ mặt của switch) và `m7-bai-4` (lắp lại mạng nhà mình)
+  giờ kết bằng chính sơ đồ người học vừa nối xong trong lab. Bản vẽ M7 lấy
+  từ nháp máy dựng, rút gọn nhãn và đổi icon máy chủ ngoài Internet.
+- **Luật mới, do browser chỉ ra**: nét MỤC TIÊU ("phải tới") chỉ sống trong
+  bản nháp, không mang vào app — nó nối hai đầu xa nhau nên trên sơ đồ
+  nhiều nút bao giờ cũng cắt ngang giữa hình và nhãn rơi trúng thiết bị
+  đứng giữa. Đã gỡ khỏi cả ba bản vẽ đã chép sang, và có test khóa.
+- Thêm cổng chặn: hình ở màn Tổng kết bắt buộc là view lời giải của một
+  bản vẽ lab, không phải hình trang trí bất kỳ.
+- 1528 test xanh, typecheck sạch, build qua, content:review render lại.
+  Kiểm browser: 17 hình isometric, 0 nhãn đè nhau, 0 hình tràn viewBox.
+  Seed đã xóa.
+
+**KHỐI TRƯỚC — 21.27 (08-11), đã commit `036bc9f`:**
 màn Dạy M15 bài 4 có hình chỉ đường, theo đúng khuôn vừa dựng cho M16.
 - `vis-iso-vong-lap-stp-dut-m15-hoi-tu`: cùng vòng lặp ba tầng, cùng chỗ
   đứng, sợi tầng 1 - tầng 2 vẫn đứt, còn **lối mới qua tầng 3 sáng lên**

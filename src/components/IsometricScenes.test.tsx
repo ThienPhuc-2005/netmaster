@@ -241,6 +241,34 @@ describe('hình isometric sinh từ bản vẽ', () => {
     }
   })
 
+  it('nét MỤC TIÊU chỉ sống trong bản nháp, không bản vẽ nào trong app còn nó', () => {
+    // "phải tới" nối hai đầu xa nhau, nên trên sơ đồ nhiều nút nó luôn cắt
+    // ngang giữa hình và nhãn rơi trúng một thiết bị đứng giữa (đo trên
+    // browser với lab M7). Trong app thì đề bài đã nói mục tiêu bằng chữ
+    // rồi — nét ấy chỉ có việc ở `content/ban-ve-nhap/`, để người vẽ nhìn.
+    for (const file of files) {
+      for (const view of doc(file).views) {
+        const mucTieu = (view.connectors ?? []).filter((c) =>
+          String((c as { id?: string }).id ?? '').startsWith('muc-tieu'),
+        )
+        expect(mucTieu, `${file} [${view.id}] còn nét mục tiêu — gỡ trước khi dùng trong app`).toHaveLength(0)
+      }
+    }
+  })
+
+  it('màn Tổng kết nào có hình thì đó là THÀNH QUẢ sinh từ lab của chính bài', () => {
+    const coHinh = loadModules().flatMap((m) =>
+      m.lessons.filter((l) => l.steps[5].visualId !== undefined).map((l) => [m.id, l.id, l.steps[5].visualId!] as const),
+    )
+    expect(coHinh.length, 'phải có ít nhất một bài kết bằng hình thành quả').toBeGreaterThan(0)
+    for (const [, lessonId, visualId] of coHinh) {
+      expect(visualId, `${lessonId}: hình Tổng kết phải là view lời giải của một bản vẽ lab`).toMatch(
+        /^vis-iso-lab-.+-loi-giai$/,
+      )
+      expect(hasVisual(visualId), `${lessonId}: "${visualId}" chưa có hình`).toBe(true)
+    }
+  })
+
   it('m16-bai-5 khép trọn vòng: màn Tổng kết cũng cùng mạng đó', () => {
     const bai = loadModules()
       .find((m) => m.id === 'module-16')!

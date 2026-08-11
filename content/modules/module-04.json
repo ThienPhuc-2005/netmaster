@@ -326,7 +326,8 @@
           ],
           "nextTeaser": {
             "vi": "Có điều máy gửi lấy đâu ra địa chỉ MAC của máy nhận để ghi lên thư? Nó mới chỉ biết địa chỉ IP thôi. Bài sau: tiếng gọi giữa sân làng."
-          }
+          },
+          "visualId": "vis-iso-lab-noi-day-m4-loi-giai"
         }
       ]
     },

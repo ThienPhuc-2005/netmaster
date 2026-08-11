@@ -55,27 +55,7 @@
           }
         }
       ],
-      "connectors": [
-        {
-          "id": "muc-tieu-1",
-          "description": "phải tới",
-          "style": "DOTTED",
-          "anchors": [
-            {
-              "id": "mt0-a",
-              "ref": {
-                "item": "pc-a"
-              }
-            },
-            {
-              "id": "mt0-b",
-              "ref": {
-                "item": "pc-b"
-              }
-            }
-          ]
-        }
-      ]
+      "connectors": []
     },
     {
       "id": "loi-giai",

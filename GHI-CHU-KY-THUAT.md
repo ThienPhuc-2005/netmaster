@@ -688,6 +688,12 @@ chỉ bỏ điều kiện "học hết bài trước đã".
     là nửa còn lại của việc "lab sinh ra bản vẽ" — nửa đầu dựng được hình,
     nửa này giữ cho hình không lặng lẽ trôi xa lab. Đã thử làm hỏng một
     bản vẽ để chắc test đỏ thật.
+  - **Nét MỤC TIÊU chỉ sống trong bản nháp, KHÔNG mang vào app (khối
+    21.28)**: nó nối hai đầu xa nhau nên trên sơ đồ nhiều nút bao giờ cũng
+    cắt ngang giữa hình, nhãn rơi trúng thiết bị đứng giữa (đo trên browser
+    với lab M7: "phải tới" đè "switch"). Mà trong app thì đề bài đã nói mục
+    tiêu bằng chữ rồi. Chép bản nháp sang `content/ban-ve/` thì gỡ nét ấy
+    đi — `IsometricScenes.test` khóa luật này.
   - **Mục tiêu của lab vẽ thành nét CHẤM** (`goals` kiểu `ping` → "phải
     tới" / "phải KHÔNG tới"). Chấm chứ không đứt: nét đứt đã mang nghĩa
     "dây không dẫn được". Chỉ vẽ mục tiêu, KHÔNG vẽ những sợi còn thiếu
