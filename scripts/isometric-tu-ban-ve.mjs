@@ -416,4 +416,9 @@ ${registry.join('\n')}
 `
 
 writeFileSync(outFile, body, 'utf8')
-console.log(`Đã sinh ${files.length} hình -> ${outFile.replace(root, '.')}`)
+// Đếm HÌNH chứ không đếm file: một bản vẽ nhiều view ra nhiều hình, nên
+// hai con số lệch nhau (11 bản vẽ ra 18 hình) — in nhầm số file thì lần
+// sau nhìn log tưởng mất hình.
+console.log(
+  `Đã sinh ${registry.length} hình từ ${files.length} bản vẽ -> ${outFile.replace(root, '.')}`,
+)

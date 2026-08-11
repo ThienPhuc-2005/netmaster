@@ -669,6 +669,15 @@ chỉ bỏ điều kiện "học hết bài trước đã".
     dung đang trỏ vào), view sau thành `vis-iso-<tên-file>-<id-view>`. Dùng
     cho cặp "lúc chưa nối / lúc đã nối": vẽ bố cục một lần, view sau chỉ
     đổi vài sợi dây.
+  - **`npm run ban-ve:tu-lab -- --chep <cauId> [--ten <slug>]` (khối
+    21.30)**: chép thẳng bản vẽ của MỘT câu sang `content/ban-ve/`, làm hộ
+    đúng ba việc từng phải làm tay ba lần liền — gỡ nét mục tiêu, bỏ view
+    thứ hai nếu sau khi gỡ nó trùng khít view đầu, và nhắc nhãn nào dài quá
+    11 ký tự. **Phải GỌI TÊN từng câu**, không có chế độ chép tất: 29 câu
+    lab/ca bệnh chép hết là 29 hình nằm trong gói app mà không bài nào dùng
+    — quyết định "bài này đáng có hình" là của người. **KHÔNG BAO GIỜ GHI
+    ĐÈ**: file bên `content/ban-ve/` là công kéo thả của người. Gõ nhầm id
+    thì script ném lỗi chứ không im lặng chạy qua.
   - **`npm run ban-ve:tu-lab` — chiều ngược (khối 21.24)**: đọc `spec` của
     câu lab và ca bệnh trong nội dung rồi dựng sẵn bản vẽ vào
     `content/ban-ve-nhap/`. Câu lab ra HAI view (đề bài + lời giải) vì spec

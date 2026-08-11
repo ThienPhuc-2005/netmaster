@@ -28,6 +28,7 @@ import { dirname, join } from 'node:path'
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')
 const moduleDir = join(root, 'content', 'modules')
 const outDir = join(root, 'content', 'ban-ve-nhap')
+const banVeDir = join(root, 'content', 'ban-ve')
 
 /** Loại thiết bị của engine -> icon của FossFLOW (bộ isoflow nền). */
 const ICON = { pc: 'desktop', switch: 'switch-module', router: 'router' }
@@ -147,6 +148,84 @@ function timCau(node, kind, out = []) {
   return out
 }
 
+// ---------------------------------------------------------------
+// Chép thẳng sang content/ban-ve/ (tùy chọn)
+// ---------------------------------------------------------------
+
+/**
+ * `--chep <cauId> [--ten <slug>]` — chép luôn bản vẽ của MỘT câu sang
+ * `content/ban-ve/`, tức là đưa nó vào app.
+ *
+ * Vì sao phải GỌI TÊN từng câu chứ không chép tất: nội dung có 29 câu
+ * lab/ca bệnh, chép hết là 29 hình nằm trong gói app mà không bài nào dùng.
+ * Quyết định "bài này đáng có hình" là của người, không của script.
+ *
+ * Ba việc script làm hộ, đúng ba việc phải làm bằng tay ba lần liền:
+ *   1. Gỡ nét MỤC TIÊU — nó chỉ sống trong bản nháp (xem GHI-CHU mục 10).
+ *   2. Bỏ view thứ hai nếu sau khi gỡ nó trùng khít view đầu — lab đổi
+ *      ĐỊA CHỈ (không đổi dây) thì đề bài và lời giải là một bức tranh.
+ *   3. Nhắc rút gọn nhãn nào quá dài, vì khung 220x130 không co chữ.
+ *
+ * KHÔNG BAO GIỜ GHI ĐÈ: file bên `content/ban-ve/` là công kéo thả của
+ * người, đè lên là xóa mất mà không ai biết.
+ */
+function docThamSo(argv) {
+  const out = { chep: [], ten: null }
+  for (let i = 0; i < argv.length; i += 1) {
+    if (argv[i] === '--chep' && argv[i + 1] !== undefined) out.chep.push(argv[i + 1])
+    if (argv[i] === '--ten' && argv[i + 1] !== undefined) out.ten = argv[i + 1]
+  }
+  if (out.ten !== null && out.chep.length !== 1) {
+    throw new Error('--ten chỉ dùng được khi chép ĐÚNG MỘT câu')
+  }
+  return out
+}
+
+/** Dây của một view, bỏ nét mục tiêu, sắp xếp để so hai view với nhau. */
+function vanTayCuaView(view) {
+  return JSON.stringify(
+    (view.connectors ?? [])
+      .filter((c) => !String(c.id).startsWith('muc-tieu'))
+      .map((c) => [c.anchors[0].ref.item, c.anchors[c.anchors.length - 1].ref.item].sort().join('~'))
+      .sort(),
+  )
+}
+
+const NHAN_DAI = 11
+
+function chuanBiChep(banVe) {
+  const ban = JSON.parse(JSON.stringify(banVe))
+  for (const v of ban.views) {
+    v.connectors = (v.connectors ?? []).filter((c) => !String(c.id).startsWith('muc-tieu'))
+  }
+  const trung = ban.views.length === 2 && vanTayCuaView(ban.views[0]) === vanTayCuaView(ban.views[1])
+  if (trung) ban.views = [ban.views[0]]
+  const nhanDai = ban.items.filter((it) => (it.description ?? it.name).length > NHAN_DAI)
+  return { ban, boViewTrung: trung, nhanDai: nhanDai.map((it) => it.description ?? it.name) }
+}
+
+function chep(banVe, slug) {
+  const dich = join(banVeDir, `${slug}.json`)
+  if (existsSync(dich)) {
+    throw new Error(
+      `Đã có content/ban-ve/${slug}.json — script không ghi đè công kéo thả của bạn. Xóa file đó trước, hoặc đặt --ten khác.`,
+    )
+  }
+  const { ban, boViewTrung, nhanDai } = chuanBiChep(banVe)
+  ban.description = `${ban.description} ĐÃ CHÉP tự động: gỡ nét mục tiêu${boViewTrung ? ', bỏ view thứ hai vì trùng view đầu' : ''}.`
+  writeFileSync(dich, `${JSON.stringify(ban, null, 2)}\n`, 'utf8')
+  console.log(`  => chép sang content/ban-ve/${slug}.json (${ban.views.length} view)`)
+  if (boViewTrung) console.log('     · bỏ view thứ hai: sau khi gỡ nét mục tiêu nó trùng khít view đầu')
+  for (const nhan of nhanDai) {
+    console.log(`     ! nhãn "${nhan}" dài ${nhan.length} ký tự — khung 220x130 không co chữ, nên rút gọn`)
+  }
+  console.log('     · mở trong xưởng vẽ kéo lại cho dễ đọc, rồi chạy npm run visuals:isometric')
+}
+
+const thamSo = docThamSo(process.argv.slice(2))
+const canChep = new Set(thamSo.chep)
+const daChep = new Set()
+
 if (!existsSync(outDir)) mkdirSync(outDir, { recursive: true })
 
 const files = readdirSync(moduleDir).filter((f) => f.endsWith('.json')).sort()
@@ -177,6 +256,10 @@ for (const file of files) {
     writeFileSync(join(outDir, `lab-${q.id}.json`), `${JSON.stringify(banVe, null, 2)}\n`, 'utf8')
     console.log(`  ${file}: lab ${q.id} -> lab-${q.id}.json (${views.length} view)`)
     soBanVe += 1
+    if (canChep.has(q.id)) {
+      chep(banVe, thamSo.ten ?? `lab-${q.id}`)
+      daChep.add(q.id)
+    }
   }
 
   for (const q of timCau(mod, 'clinic')) {
@@ -200,8 +283,19 @@ for (const file of files) {
     writeFileSync(join(outDir, `ca-benh-${q.id}.json`), `${JSON.stringify(banVe, null, 2)}\n`, 'utf8')
     console.log(`  ${file}: ca bệnh ${q.id} -> ca-benh-${q.id}.json`)
     soBanVe += 1
+    if (canChep.has(q.id)) {
+      chep(banVe, thamSo.ten ?? `ca-benh-${q.id}`)
+      daChep.add(q.id)
+    }
   }
 }
 
 if (soBanVe === 0) throw new Error('Không dựng được bản vẽ nào — nội dung có câu lab/clinic nào không?')
+
+// Gõ nhầm id thì phải biết ngay, đừng để script chạy xong êm ru mà không
+// chép gì cả.
+const khongThay = [...canChep].filter((id) => !daChep.has(id))
+if (khongThay.length > 0) {
+  throw new Error(`Không tìm thấy câu lab/ca bệnh nào tên: ${khongThay.join(', ')}`)
+}
 console.log(`Đã dựng ${soBanVe} bản vẽ nháp -> ${outDir.replace(root, '.')}`)
