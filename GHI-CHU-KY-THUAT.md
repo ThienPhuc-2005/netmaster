@@ -808,8 +808,20 @@ chỉ bỏ điều kiện "học hết bài trước đã".
     — lỗi có sẵn của họ; build lại lib là mất, tạo lại là xong). Đường dẫn
     thật có dấu cách nên cấu hình khởi chạy đi qua junction
     `C:\Users\atlan\fossflow`.
-- Icon dùng Lucide; cấm emoji làm icon. Âm: 4 earcon Web Audio tổng hợp,
-  tắt được, không file âm.
+- Icon dùng Lucide; cấm emoji làm icon. Âm: **5 earcon** Web Audio tổng
+  hợp, tắt được, không file âm.
+- **Mỗi mốc một tiếng riêng (khối 21.34)**: `moduleComplete` (đậu module)
+  tách hẳn khỏi `stageUp` (xong một chặng). Trước đó hai mốc dùng chung
+  `stageUp`, nên mốc lớn nhất của app — cửa mastery 85% — nghe y hệt một
+  cột mốc giữa đường và tai không học được thang bậc nào. Tiếng đậu module
+  là cadence át → chủ, **dài nhất và trầm nhất** cả bộ (nốt C3 130,81Hz là
+  nốt duy nhất dưới 190Hz trong app): cái trầm ấy mới làm tai nghe ra chỗ
+  ĐÓNG LẠI thay vì chỗ đi tiếp. `earcons.test` khóa hai điều — không hai
+  earcon nào trùng bộ nốt, và tiếng đậu module phải dài nhất + trầm nhất.
+  Thêm mốc mới thì thêm earcon mới, đừng mượn tiếng có sẵn.
+- `TONES_FOR_TEST` mở bộ nốt ra CHỈ để test đọc: thiếu nó thì test chỉ
+  khẳng định được "gọi không ném lỗi", mà hai earcon giống hệt nhau vẫn
+  xanh — đúng thứ vừa phải đi sửa.
 - Onboarding: bắn gói tin 60 giây đầu, animation theo path (2 chặng ×
   280ms ease-out; reduced-motion → tới thẳng đích).
 

@@ -3,12 +3,12 @@
 ## ĐỌC 30 GIÂY: ĐANG ĐỨNG ĐÂU, LÀM GÌ TIẾP (cập nhật 2026-08-11)
 
 **App hiện có ĐỦ 21/21 MODULE NỘI DUNG + MÀN TỐT NGHIỆP** (M1-12 nhập
-môn, M13-17 Phần D, M18-21 Phần E), 1556 test xanh, typecheck sạch,
+môn, M13-17 Phần D, M18-21 Phần E), 1558 test xanh, typecheck sạch,
 build qua. **Toàn bộ biên bản hội đồng trung cấp đã XỬ XONG (08-10):
 15/15 việc mục 6 (khối 20.2, commit `1d04c0b`) + trọn LƯỢT DỌN 52 phát
 hiện P2 mục 5 (khối 20.3).** Nội dung và engine không còn việc nào treo;
 các khối gần đây đều là ý lấy từ kho `Y-TUONG.md`.
-Việc kế tiếp là của CHỦ DỰ ÁN: ra lệnh commit khối 21.33, và tuyển người
+Việc kế tiếp là của CHỦ DỰ ÁN: ra lệnh commit khối 21.34, và tuyển người
 cho các buổi test người thật (hai dòng DoD còn treo đều cần NGƯỜI).
 
 **Toàn bộ ENGINE của Phần D đã xong.** Không còn engine nào phải viết cho
@@ -29,7 +29,24 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (19) M21 capstone + màn tốt nghiệp | XONG |
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
-**KHỐI MỚI NHẤT — 21.33 (08-11), đang ở working tree chờ lệnh commit:**
+**KHỐI MỚI NHẤT — 21.34 (08-11), đang ở working tree chờ lệnh commit:**
+**C1 — giai điệu tiến độ.** Việc thật hóa ra không phải "thêm nhạc" mà là
+TÁCH hai mốc đang dùng chung một tiếng.
+- Trước khối này, **đậu cả một module** và **xong một chặng nhỏ** phát ra
+  đúng một tiếng (`stageUp`) — mốc lớn nhất của app (cửa mastery 85%) nghe
+  y hệt một cột mốc giữa đường. Ba nốt đi lên mà ý gốc muốn thì `stageUp`
+  vốn đã có sẵn.
+- Thêm earcon thứ 5 `moduleComplete`: cadence át → chủ, **dài nhất và trầm
+  nhất** cả bộ; nốt C3 là nốt duy nhất dưới 190Hz trong app, và chính cái
+  trầm ấy làm tai nghe ra chỗ đóng lại thay vì chỗ đi tiếp.
+- Mở `TONES_FOR_TEST` để test đọc được bộ nốt — trước đó test chỉ khẳng
+  định "gọi không ném lỗi", tức hai earcon trùng nhau vẫn xanh.
+- 1558 test xanh (+2), typecheck sạch, build qua. Kiểm browser thật: bấm
+  hai nút ở `/design`, chặn `createOscillator` để đếm — lên chặng ra 6 nốt
+  đúng bộ cũ, đậu module ra 8 nốt đúng cadence mới; console sạch. Đã thử
+  làm hai earcon trùng nhau để chắc cổng chặn đỏ thật, rồi khôi phục.
+
+**KHỐI TRƯỚC — 21.33 (08-11), đã commit `865b1e2`:**
 **A6 — nhắc nghỉ đúng lúc** (ý đầu tiên lấy từ kho sau cả cụm hình vẽ).
 - Học liền 25 phút thì một dòng nhắc nhẹ hiện ở đầu khung app; tắt được
   bằng nút ngay cạnh nút nền/âm thanh, lựa chọn có lưu lại.

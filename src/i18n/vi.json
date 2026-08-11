@@ -763,7 +763,8 @@
     "earconCorrect": "Đúng",
     "earconIncorrect": "Chưa đúng",
     "earconLessonComplete": "Xong bài",
-    "earconStageUp": "Lên chặng"
+    "earconStageUp": "Lên chặng",
+    "earconModuleComplete": "Đậu module"
   },
   "contact": {
     "facebook": "Facebook của tác giả",

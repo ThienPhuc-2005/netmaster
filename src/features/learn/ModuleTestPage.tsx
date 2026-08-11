@@ -224,7 +224,10 @@ export function ModuleTestPage() {
       const outcome = phase.challenge
         ? recordChallengeAttempt(module, results, orderedIds)
         : recordMasteryAttempt(module, results, orderedIds)
-      if (outcome.newlyPassed) playEarcon('stageUp')
+      // Đậu module là mốc LỚN NHẤT của app (cửa mastery 85%) — nó có
+      // tiếng riêng, không dùng chung với tiếng lên chặng nữa (kho ý
+      // tưởng C1). Thi lại mà đã đậu từ trước thì im: mốc chỉ vang một lần.
+      if (outcome.newlyPassed) playEarcon('moduleComplete')
       setPhase({
         kind: 'done',
         challenge: phase.challenge,

@@ -66,8 +66,13 @@ Trạng thái: ☐ chờ duyệt · ✅ đã làm · ✗ đã bàn và bỏ (gi�
 
 ## C. Âm thanh
 
-- ☐ **C1. Giai điệu tiến độ** — xong một chặng: 3 nốt đi lên; đậu
-  module: hợp âm kết. Cùng họ với 4 earcon hiện có, vẫn tắt một nút.
+- ✅ **C1. Giai điệu tiến độ** — ĐÃ LÀM (khối 21.34): thêm earcon thứ 5
+  `moduleComplete` — cadence át → chủ, dài nhất và trầm nhất trong cả bộ.
+  **Việc thật hóa ra không phải "thêm nhạc" mà là TÁCH hai mốc**: trước đó
+  đậu cả module và xong một chặng nhỏ phát ra ĐÚNG MỘT tiếng (`stageUp`),
+  nên mốc lớn nhất của app nghe y hệt một cột mốc giữa đường. Ba nốt đi lên
+  của ý gốc thì `stageUp` vốn đã có sẵn. Test khóa "không hai earcon nào
+  trùng bộ nốt" + "tiếng đậu module phải dài nhất và trầm nhất".
 - ☐ **C2. Âm xúc giác cho lab** — tiếng "tách" khi cắm dây, "vụt" nhẹ
   khi gói tin bay. Tay không chạm được thiết bị thì để tai chạm.
 

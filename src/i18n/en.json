@@ -763,7 +763,8 @@
     "earconCorrect": "Correct",
     "earconIncorrect": "Not yet",
     "earconLessonComplete": "Lesson done",
-    "earconStageUp": "Stage up"
+    "earconStageUp": "Stage up",
+    "earconModuleComplete": "Module passed"
   },
   "contact": {
     "facebook": "Author's Facebook",

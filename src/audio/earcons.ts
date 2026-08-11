@@ -1,14 +1,22 @@
-// 4 âm hiệu (earcon) của app — spec 4.3, tổng hợp bằng Web Audio API,
+// 5 âm hiệu (earcon) của app — spec 4.3, tổng hợp bằng Web Audio API,
 // không file âm thanh, tất cả tắt được qua settings:
 // - correct: "ting" ngắn, sáng.
 // - incorrect: 2 nốt trầm nhẹ — KHÔNG chói tai, không trừng phạt.
 // - lessonComplete: hợp âm rải đi lên ~1 giây (peak-end: kết bài phải đã).
 // - stageUp: fanfare ngắn đặc trưng riêng khi mở chặng mới.
+// - moduleComplete: hợp âm KẾT khi đậu cả module (kho ý tưởng C1).
 // Phần đọc-suy nghĩ im lặng hoàn toàn — không có âm nền nào khác.
+//
+// BỐN MỐC, BỐN TIẾNG KHÁC NHAU. Trước khối 21.34, đậu cả một module và
+// xong một chặng nhỏ phát ra ĐÚNG MỘT tiếng (`stageUp`) — mốc lớn nhất
+// của app nghe y hệt một cột mốc giữa đường, nên tai không học được thang
+// bậc nào. Giờ mốc lớn có tiếng riêng: một cadence thật (át → chủ), dài
+// hơn và trầm hơn mọi earcon khác, để nó nghe ra là một chỗ ĐÓNG LẠI chứ
+// không phải một chỗ đi tiếp.
 
 import { useSettings } from '../store/settings'
 
-export type EarconKind = 'correct' | 'incorrect' | 'lessonComplete' | 'stageUp'
+export type EarconKind = 'correct' | 'incorrect' | 'lessonComplete' | 'stageUp' | 'moduleComplete'
 
 // Lazily created on first user gesture; browsers block audio before that.
 let ctx: AudioContext | null = null
@@ -82,6 +90,20 @@ const EARCONS: Record<EarconKind, Tone[]> = {
     { freq: 659.25, at: 0.36, dur: 0.5, type: 'triangle', gain: 0.09 },
     { freq: 783.99, at: 0.36, dur: 0.5, type: 'triangle', gain: 0.09 },
   ],
+  // Cadence át → chủ (G-B-D rồi C-E-G-C), kèm một nốt C3 trầm làm chân
+  // đế. Đây là chỗ DUY NHẤT trong app có nốt dưới 190Hz: cái trầm ấy mới
+  // làm tai nghe ra "đóng lại" thay vì "đi tiếp". Gain từng nốt để thấp
+  // (0,06-0,07) vì bốn nốt chồng cùng lúc — tổng mới là thứ tai nghe.
+  moduleComplete: [
+    { freq: 196, at: 0, dur: 0.26, type: 'triangle', gain: 0.07 },
+    { freq: 246.94, at: 0, dur: 0.26, type: 'triangle', gain: 0.06 },
+    { freq: 293.66, at: 0, dur: 0.26, type: 'triangle', gain: 0.06 },
+    { freq: 130.81, at: 0.28, dur: 1.1, type: 'sine', gain: 0.09 },
+    { freq: 261.63, at: 0.28, dur: 1.0, type: 'triangle', gain: 0.07 },
+    { freq: 329.63, at: 0.28, dur: 1.0, type: 'triangle', gain: 0.06 },
+    { freq: 392, at: 0.28, dur: 1.0, type: 'triangle', gain: 0.06 },
+    { freq: 523.25, at: 0.34, dur: 0.95, type: 'triangle', gain: 0.07 },
+  ],
 }
 
 /**
@@ -99,3 +121,12 @@ export function playEarcon(kind: EarconKind): void {
     // Audio failures must never break the learning flow.
   }
 }
+
+/**
+ * Bộ nốt của từng earcon — MỞ RA CHỈ ĐỂ TEST ĐỌC.
+ *
+ * Không có nó thì test chỉ khẳng định được "gọi không ném lỗi", tức là
+ * hai earcon giống hệt nhau vẫn xanh. Mà thứ dễ hỏng nhất ở đây đúng là
+ * chuyện hai mốc lặng lẽ dùng chung một tiếng.
+ */
+export const TONES_FOR_TEST: Readonly<Record<EarconKind, readonly Tone[]>> = EARCONS
