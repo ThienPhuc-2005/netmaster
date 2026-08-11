@@ -5,9 +5,14 @@
     "cauId": "m16-b5-prac-lab",
     "moduleId": "module-16"
   },
-  "description": "CHÉP TỪ BẢN NHÁP máy dựng (npm run ban-ve:tu-lab), rút gọn nhãn cho vừa khung 220x130. Giữ dấu nguồn để test phát hiện được lúc nội dung lab đổi mà hình quên đổi theo.",
+  "description": "CHÉP TỪ BẢN NHÁP máy dựng, rút gọn nhãn. BỐN view trên CÙNG một mạng, để cả bài m16-bai-5 dùng chung một bức tranh: de-bai (lab), loi-giai (lab + màn Tổng kết), dut (hook — sợi thẳng vừa bị đào đứt), duong-vong (màn Dạy — tô sáng lối đi thay thế). Hai view sau do người thêm tay, script ban-ve:tu-lab không dựng ra chúng.",
   "icons": [],
-  "colors": [],
+  "colors": [
+    {
+      "id": "nhan",
+      "value": "#38bdf8"
+    }
+  ],
   "items": [
     {
       "id": "pc-a",
@@ -385,6 +390,346 @@
               }
             }
           ]
+        }
+      ]
+    },
+    {
+      "id": "dut",
+      "name": "Cáp thẳng vừa đứt",
+      "items": [
+        {
+          "id": "pc-a",
+          "tile": {
+            "x": 2,
+            "y": 2
+          }
+        },
+        {
+          "id": "pc-c",
+          "tile": {
+            "x": 5,
+            "y": -1
+          }
+        },
+        {
+          "id": "sw-1",
+          "tile": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        {
+          "id": "sw-3",
+          "tile": {
+            "x": 3,
+            "y": -3
+          }
+        },
+        {
+          "id": "r-1",
+          "tile": {
+            "x": -5,
+            "y": 1
+          }
+        },
+        {
+          "id": "r-2",
+          "tile": {
+            "x": -2,
+            "y": -2
+          }
+        },
+        {
+          "id": "r-3",
+          "tile": {
+            "x": 1,
+            "y": -5
+          }
+        }
+      ],
+      "connectors": [
+        {
+          "id": "day-1",
+          "anchors": [
+            {
+              "id": "l1-a",
+              "ref": {
+                "item": "pc-a"
+              }
+            },
+            {
+              "id": "l1-b",
+              "ref": {
+                "item": "sw-1"
+              }
+            }
+          ]
+        },
+        {
+          "id": "day-2",
+          "anchors": [
+            {
+              "id": "l2-a",
+              "ref": {
+                "item": "sw-1"
+              }
+            },
+            {
+              "id": "l2-b",
+              "ref": {
+                "item": "r-1"
+              }
+            }
+          ]
+        },
+        {
+          "id": "day-3",
+          "anchors": [
+            {
+              "id": "l3-a",
+              "ref": {
+                "item": "pc-c"
+              }
+            },
+            {
+              "id": "l3-b",
+              "ref": {
+                "item": "sw-3"
+              }
+            }
+          ]
+        },
+        {
+          "id": "day-4",
+          "anchors": [
+            {
+              "id": "l4-a",
+              "ref": {
+                "item": "sw-3"
+              }
+            },
+            {
+              "id": "l4-b",
+              "ref": {
+                "item": "r-3"
+              }
+            }
+          ]
+        },
+        {
+          "id": "day-5",
+          "anchors": [
+            {
+              "id": "wan-12-a",
+              "ref": {
+                "item": "r-1"
+              }
+            },
+            {
+              "id": "wan-12-b",
+              "ref": {
+                "item": "r-2"
+              }
+            }
+          ]
+        },
+        {
+          "id": "day-6",
+          "anchors": [
+            {
+              "id": "wan-23-a",
+              "ref": {
+                "item": "r-2"
+              }
+            },
+            {
+              "id": "wan-23-b",
+              "ref": {
+                "item": "r-3"
+              }
+            }
+          ]
+        },
+        {
+          "id": "day-7",
+          "anchors": [
+            {
+              "id": "wan-13-a",
+              "ref": {
+                "item": "r-1"
+              }
+            },
+            {
+              "id": "wan-13-b",
+              "ref": {
+                "item": "r-3"
+              }
+            }
+          ],
+          "style": "DASHED",
+          "description": "cáp đứt"
+        }
+      ]
+    },
+    {
+      "id": "duong-vong",
+      "name": "Lối vòng qua Đà Nẵng",
+      "items": [
+        {
+          "id": "pc-a",
+          "tile": {
+            "x": 2,
+            "y": 2
+          }
+        },
+        {
+          "id": "pc-c",
+          "tile": {
+            "x": 5,
+            "y": -1
+          }
+        },
+        {
+          "id": "sw-1",
+          "tile": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        {
+          "id": "sw-3",
+          "tile": {
+            "x": 3,
+            "y": -3
+          }
+        },
+        {
+          "id": "r-1",
+          "tile": {
+            "x": -5,
+            "y": 1
+          }
+        },
+        {
+          "id": "r-2",
+          "tile": {
+            "x": -2,
+            "y": -2
+          }
+        },
+        {
+          "id": "r-3",
+          "tile": {
+            "x": 1,
+            "y": -5
+          }
+        }
+      ],
+      "connectors": [
+        {
+          "id": "day-1",
+          "anchors": [
+            {
+              "id": "l1-a",
+              "ref": {
+                "item": "pc-a"
+              }
+            },
+            {
+              "id": "l1-b",
+              "ref": {
+                "item": "sw-1"
+              }
+            }
+          ]
+        },
+        {
+          "id": "day-2",
+          "anchors": [
+            {
+              "id": "l2-a",
+              "ref": {
+                "item": "sw-1"
+              }
+            },
+            {
+              "id": "l2-b",
+              "ref": {
+                "item": "r-1"
+              }
+            }
+          ]
+        },
+        {
+          "id": "day-3",
+          "anchors": [
+            {
+              "id": "l3-a",
+              "ref": {
+                "item": "pc-c"
+              }
+            },
+            {
+              "id": "l3-b",
+              "ref": {
+                "item": "sw-3"
+              }
+            }
+          ]
+        },
+        {
+          "id": "day-4",
+          "anchors": [
+            {
+              "id": "l4-a",
+              "ref": {
+                "item": "sw-3"
+              }
+            },
+            {
+              "id": "l4-b",
+              "ref": {
+                "item": "r-3"
+              }
+            }
+          ]
+        },
+        {
+          "id": "day-5",
+          "anchors": [
+            {
+              "id": "wan-12-a",
+              "ref": {
+                "item": "r-1"
+              }
+            },
+            {
+              "id": "wan-12-b",
+              "ref": {
+                "item": "r-2"
+              }
+            }
+          ],
+          "color": "nhan",
+          "description": "lối vòng"
+        },
+        {
+          "id": "day-6",
+          "anchors": [
+            {
+              "id": "wan-23-a",
+              "ref": {
+                "item": "r-2"
+              }
+            },
+            {
+              "id": "wan-23-b",
+              "ref": {
+                "item": "r-3"
+              }
+            }
+          ],
+          "color": "nhan"
         }
       ]
     }

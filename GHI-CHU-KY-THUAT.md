@@ -695,6 +695,23 @@ chỉ bỏ điều kiện "học hết bài trước đã".
     luôn chỗ phải cắm dây là làm hộ bài. Mục tiêu `pathThrough` CỐ Ý không
     vẽ: một ràng buộc về ĐƯỜNG ĐI không diễn đạt được bằng đoạn thẳng giữa
     hai đầu, và nhãn của nó rơi trúng nhãn thiết bị (đo trên browser).
+  - **`color` của FossFLOW đọc như LỜI ĐÁNH DẤU, không đọc như mã màu**
+    (khối 21.26): sợi nào được tô màu trong xưởng vẽ thì trong app thành
+    sợi ăn `--accent` và dày nét lên, nhãn của nó ăn màu theo. Bảng màu của
+    xưởng vẽ không biết gì về nền tối/sáng, bê nguyên hex vào là hình chết
+    cứng ở một nền và lọt ra ngoài hệ token — test khóa "không mã màu cứng
+    nào lọt vào", và đã đo trên browser: nền tối ra #38bdf8, nền sáng ra
+    #0369a1, tức là đúng token chứ không phải màu chép tay.
+  - **Một bài, MỘT mạng (khối 21.26)**: `m16-bai-5` giờ lấy cả ba hình từ
+    bốn view của cùng một bản vẽ lab — hook thấy sợi vừa đứt, màn Dạy thấy
+    lối vòng sáng lên, Tổng kết thấy trạng thái cuối. Trước đó hook là tam
+    giác ba router còn Tổng kết là sơ đồ lab bảy thiết bị: cùng một bài mà
+    hai bức tranh không liên quan. Test khóa "ba màn cùng bộ thiết bị".
+    **Cái giá đã trả**: mất mạch tam giác nối bài 4 sang bài 5, và bản vẽ
+    `hai-loi-ba-mien-dut-m16` thành thừa nên đã xóa.
+  - **Hook KHÔNG được sáng sợi nào** — view `dut` cố ý không tô đường vòng,
+    vì hook hỏi đúng câu "lưu lượng đã đi lối nào". Chỉ màn Dạy mới chỉ
+    đường. Test khóa cả hai vế.
   - **Cảnh báo nhãn đè nới biên 2px**: bề ngang nhãn trong script là ƯỚC
     LƯỢNG, trình duyệt đo bằng font thật — hai hình STP lọt lưới rồi vẫn đè
     nhau vài pixel trên browser. Thà báo thừa còn hơn để chữ chồng chữ.

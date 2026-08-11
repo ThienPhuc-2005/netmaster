@@ -119,7 +119,12 @@ function buildScene(model, view) {
     // dùng nó làm đường nói "sợi dây này không còn dẫn được", thay vì bịa
     // ra quy ước riêng mà xưởng vẽ không hiểu. Người vẽ đổi kiểu nét ngay
     // trong FossFLOW là hình trong app đổi theo.
-    return [{ from, to, label: c.description, style: c.style ?? 'SOLID' }]
+    // `color` của FossFLOW đọc như một lời ĐÁNH DẤU, không đọc như một mã
+    // màu. Bảng màu của xưởng vẽ không biết gì về nền tối/sáng của app,
+    // bê nguyên mã hex vào là hình chết cứng ở một nền và lọt ra ngoài hệ
+    // token. Nên ở đây chỉ lấy Ý ĐỊNH: sợi nào được tô màu trong xưởng vẽ
+    // thì trong app thành sợi ăn màu nhấn — "đường đang giảng".
+    return [{ from, to, label: c.description, style: c.style ?? 'SOLID', nhan: c.color !== undefined }]
   })
 
   // Co giãn cho vừa khung 220x130 — DÒ dần chứ không tính một phát.
@@ -241,12 +246,15 @@ function labelWidth(text) {
  * nút thì nét với chữ tranh chỗ là chuyện tất yếu — nên nhãn vẽ SAU CÙNG,
  * và mỗi nhãn kê một mảnh nền màu panel để nét chui xuống dưới.
  */
-function labelJsx(cx, cy, text, indent) {
+function labelJsx(cx, cy, text, indent, nhan = false) {
   const w = labelWidth(text)
   const pad = ' '.repeat(indent)
+  const chu = `${pad}<text x="${cx}" y="${cy}" textAnchor="middle" {...isoLabel}>${text}</text>`
   return [
     `${pad}<rect x="${round(cx - w / 2)}" y="${round(cy - 5.6)}" width="${w}" height="7.4" rx="1.5" {...isoPlate} />`,
-    `${pad}<text x="${cx}" y="${cy}" textAnchor="middle" {...isoLabel}>${text}</text>`,
+    // Nhãn của sợi được đánh dấu ăn màu nhấn theo sợi — nhãn xám cạnh một
+    // sợi đang sáng thì trông như nhãn của sợi bên cạnh.
+    nhan ? `${pad}<g className="text-accent">\n  ${chu}\n${pad}</g>` : chu,
   ]
 }
 
@@ -269,11 +277,17 @@ function sceneToJsx(scene, name) {
     const x2 = tx(l.to.x)
     const y2 = ty(l.to.y)
     const dash = DASH[l.style]
+    // Sợi được đánh dấu tự bọc một <g> riêng ăn màu nhấn và dày nét lên —
+    // đủ để mắt bám theo mà không cần chú giải màu.
+    const moG = l.nhan === true ? '        <g className="text-accent">\n  ' : '        '
+    const dongG = l.nhan === true ? '\n        </g>' : ''
     lines.push(
-      `        <path d="M${x1} ${y1} L${x2} ${y2}" {...isoStroke}${dash === undefined ? '' : ` strokeDasharray="${dash}"`} />`,
+      `${moG}      <path d="M${x1} ${y1} L${x2} ${y2}" {...isoStroke}${
+        dash === undefined ? '' : ` strokeDasharray="${dash}"`
+      }${l.nhan === true ? ' strokeWidth={2.2}' : ''} />${dongG}`,
     )
     if (l.label !== undefined) {
-      labels.push(...labelJsx(round((x1 + x2) / 2), round((y1 + y2) / 2 - 1), l.label, 8))
+      labels.push(...labelJsx(round((x1 + x2) / 2), round((y1 + y2) / 2 - 1), l.label, 8, l.nhan === true))
     }
   }
   lines.push('      </g>')

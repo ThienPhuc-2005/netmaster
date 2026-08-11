@@ -3,12 +3,12 @@
 ## ĐỌC 30 GIÂY: ĐANG ĐỨNG ĐÂU, LÀM GÌ TIẾP (cập nhật 2026-08-11)
 
 **App hiện có ĐỦ 21/21 MODULE NỘI DUNG + MÀN TỐT NGHIỆP** (M1-12 nhập
-môn, M13-17 Phần D, M18-21 Phần E), 1518 test xanh, typecheck sạch,
+môn, M13-17 Phần D, M18-21 Phần E), 1514 test xanh, typecheck sạch,
 build qua. **Toàn bộ biên bản hội đồng trung cấp đã XỬ XONG (08-10):
 15/15 việc mục 6 (khối 20.2, commit `1d04c0b`) + trọn LƯỢT DỌN 52 phát
 hiện P2 mục 5 (khối 20.3).** Nội dung và engine không còn việc nào treo;
 các khối gần đây đều là ý lấy từ kho `Y-TUONG.md`.
-Việc kế tiếp là của CHỦ DỰ ÁN: ra lệnh commit khối 21.25, và tuyển người
+Việc kế tiếp là của CHỦ DỰ ÁN: ra lệnh commit khối 21.26, và tuyển người
 cho các buổi test người thật (hai dòng DoD còn treo đều cần NGƯỜI).
 
 **Toàn bộ ENGINE của Phần D đã xong.** Không còn engine nào phải viết cho
@@ -29,7 +29,24 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (19) M21 capstone + màn tốt nghiệp | XONG |
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
-**KHỐI MỚI NHẤT — 21.25 (08-11), đang ở working tree chờ lệnh commit:**
+**KHỐI MỚI NHẤT — 21.26 (08-11), đang ở working tree chờ lệnh commit:**
+hai ý cuối của cụm xưởng vẽ.
+- **Tô sáng một sợi dây**: bộ chuyển đọc `color` của FossFLOW như một lời
+  ĐÁNH DẤU chứ không như mã màu — sợi được tô thành sợi ăn `--accent`, dày
+  nét lên, nhãn ăn màu theo. Đo trên browser: nền tối ra #38bdf8, nền sáng
+  ra #0369a1, tức đúng token chứ không phải màu chép tay.
+- **Cả bài m16-bai-5 dùng CHUNG một mạng**: bốn view của cùng bản vẽ lab —
+  hook (sợi vừa đứt) · màn Dạy (lối vòng qua Đà Nẵng sáng lên) · Tổng kết
+  (trạng thái cuối). Trước đó hook là tam giác ba router còn Tổng kết là sơ
+  đồ lab bảy thiết bị, cùng một bài mà hai bức tranh không liên quan.
+  **Hook cố ý KHÔNG sáng sợi nào** — nó hỏi đúng câu "lưu lượng đi lối nào".
+- Cái giá đã trả và khai rõ: mất mạch tam giác nối bài 4 sang bài 5; bản vẽ
+  `hai-loi-ba-mien-dut-m16` thành thừa nên đã xóa.
+- 1514 test xanh, typecheck sạch, build qua, content:review render lại.
+  Kiểm browser: 14 hình isometric, 0 nhãn đè nhau, 0 hình tràn viewBox; hook
+  m16-bai-5 hiện 7 thiết bị + 1 nét đứt + 0 sợi sáng. Seed đã xóa.
+
+**KHỐI TRƯỚC — 21.25 (08-11), đã commit `cb2fd80`:**
 ba ý cuối của cụm xưởng vẽ, làm xong cả ba.
 - **Hình thành quả ở màn Tổng kết**: bước 6 nhận thêm `visualId` (tùy chọn).
   `m15-bai-4` và `m16-bai-5` giờ kết bằng chính sơ đồ người học vừa dựng

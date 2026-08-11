@@ -21,10 +21,10 @@ function ChiNhanhM21() {
   return (
     <>
       <g className="text-ink-muted">
-        <path d="M25.4 57.7 L67.7 68.3" {...isoStroke} />
-        <path d="M67.7 68.3 L110 57.7" {...isoStroke} />
-        <path d="M110 57.7 L152.3 68.3" {...isoStroke} />
-        <path d="M152.3 68.3 L194.6 57.7" {...isoStroke} />
+              <path d="M25.4 57.7 L67.7 68.3" {...isoStroke} />
+              <path d="M67.7 68.3 L110 57.7" {...isoStroke} />
+              <path d="M110 57.7 L152.3 68.3" {...isoStroke} />
+              <path d="M152.3 68.3 L194.6 57.7" {...isoStroke} />
       </g>
       <g className="text-ink">
         <path d="M17.8 57.7 L17.8 66.6 L25.4 70.4 L25.4 61.5 Z" {...isoFace} />
@@ -78,52 +78,13 @@ function ChiNhanhM21() {
   )
 }
 
-function HaiLoiBaMienDutM16() {
-  return (
-    <>
-      <g className="text-ink-muted">
-        <path d="M45 39 L149 91" {...isoStroke} strokeDasharray="4 3" />
-        <path d="M45 39 L175 26" {...isoStroke} />
-        <path d="M175 26 L149 91" {...isoStroke} />
-      </g>
-      <g className="text-ink">
-        <path d="M165.6 26 L165.6 31 L175 35.7 L175 30.7 Z" {...isoFace} />
-        <path d="M184.4 26 L184.4 31 L175 35.7 L175 30.7 Z" {...isoFace} />
-        <path d="M175 21.3 L184.4 26 L175 30.7 L165.6 26 Z" {...isoTop} />
-      </g>
-      <g className="text-ink">
-        <path d="M35.6 39 L35.6 44 L45 48.7 L45 43.7 Z" {...isoFace} />
-        <path d="M54.4 39 L54.4 44 L45 48.7 L45 43.7 Z" {...isoFace} />
-        <path d="M45 34.3 L54.4 39 L45 43.7 L35.6 39 Z" {...isoTop} />
-      </g>
-      <g className="text-ink">
-        <path d="M139.6 91 L139.6 96 L149 100.7 L149 95.7 Z" {...isoFace} />
-        <path d="M158.4 91 L158.4 96 L149 100.7 L149 95.7 Z" {...isoFace} />
-        <path d="M149 86.3 L158.4 91 L149 95.7 L139.6 91 Z" {...isoTop} />
-      </g>
-      <g className="text-ink">
-        <rect x="80" y="58.4" width="34.1" height="7.4" rx="1.5" {...isoPlate} />
-        <text x="97" y="64" textAnchor="middle" {...isoLabel}>cáp đứt</text>
-        <rect x="136.4" y="51.9" width="51.3" height="7.4" rx="1.5" {...isoPlate} />
-        <text x="162" y="57.5" textAnchor="middle" {...isoLabel}>còn lối này</text>
-        <rect x="158" y="37.1" width="34.1" height="7.4" rx="1.5" {...isoPlate} />
-        <text x="175" y="42.7" textAnchor="middle" {...isoLabel}>Đà Nẵng</text>
-        <rect x="30.1" y="50.1" width="29.8" height="7.4" rx="1.5" {...isoPlate} />
-        <text x="45" y="55.7" textAnchor="middle" {...isoLabel}>Hà Nội</text>
-        <rect x="132" y="102.1" width="34.1" height="7.4" rx="1.5" {...isoPlate} />
-        <text x="149" y="107.7" textAnchor="middle" {...isoLabel}>Sài Gòn</text>
-      </g>
-    </>
-  )
-}
-
 function HaiLoiBaMienM16() {
   return (
     <>
       <g className="text-ink-muted">
-        <path d="M45 39 L149 91" {...isoStroke} />
-        <path d="M45 39 L175 26" {...isoStroke} />
-        <path d="M175 26 L149 91" {...isoStroke} />
+              <path d="M45 39 L149 91" {...isoStroke} />
+              <path d="M45 39 L175 26" {...isoStroke} />
+              <path d="M175 26 L149 91" {...isoStroke} />
       </g>
       <g className="text-ink">
         <path d="M165.6 26 L165.6 31 L175 35.7 L175 30.7 Z" {...isoFace} />
@@ -160,12 +121,12 @@ function LabDuongDuPhongM15() {
   return (
     <>
       <g className="text-ink-muted">
-        <path d="M110 70 L32 44" {...isoStroke} />
-        <path d="M188 70 L188 44" {...isoStroke} />
-        <path d="M32 44 L110 44" {...isoStroke} />
-        <path d="M110 44 L188 44" {...isoStroke} />
-        <path d="M188 44 L32 44" {...isoStroke} />
-        <path d="M110 70 L188 70" {...isoStroke} strokeDasharray="1 3" />
+              <path d="M110 70 L32 44" {...isoStroke} />
+              <path d="M188 70 L188 44" {...isoStroke} />
+              <path d="M32 44 L110 44" {...isoStroke} />
+              <path d="M110 44 L188 44" {...isoStroke} />
+              <path d="M188 44 L32 44" {...isoStroke} />
+              <path d="M110 70 L188 70" {...isoStroke} strokeDasharray="1 3" />
       </g>
       <g className="text-ink">
         <path d="M22.6 44 L22.6 49 L32 53.7 L32 48.7 Z" {...isoFace} />
@@ -225,10 +186,10 @@ function LabDuongDuPhongM15LoiGiai() {
   return (
     <>
       <g className="text-ink-muted">
-        <path d="M110 70 L32 44" {...isoStroke} />
-        <path d="M188 70 L188 44" {...isoStroke} />
-        <path d="M110 44 L188 44" {...isoStroke} />
-        <path d="M188 44 L32 44" {...isoStroke} />
+              <path d="M110 70 L32 44" {...isoStroke} />
+              <path d="M188 70 L188 44" {...isoStroke} />
+              <path d="M110 44 L188 44" {...isoStroke} />
+              <path d="M188 44 L32 44" {...isoStroke} />
       </g>
       <g className="text-ink">
         <path d="M22.6 44 L22.6 49 L32 53.7 L32 48.7 Z" {...isoFace} />
@@ -286,7 +247,7 @@ function LabNoiDayM4() {
   return (
     <>
       <g className="text-ink-muted">
-        <path d="M71 70 L149 70" {...isoStroke} strokeDasharray="1 3" />
+              <path d="M71 70 L149 70" {...isoStroke} strokeDasharray="1 3" />
       </g>
       <g className="text-ink">
         <path d="M61.6 44 L61.6 49 L71 53.7 L71 48.7 Z" {...isoFace} />
@@ -326,8 +287,8 @@ function LabNoiDayM4LoiGiai() {
   return (
     <>
       <g className="text-ink-muted">
-        <path d="M71 70 L71 44" {...isoStroke} />
-        <path d="M149 70 L71 44" {...isoStroke} />
+              <path d="M71 70 L71 44" {...isoStroke} />
+              <path d="M149 70 L71 44" {...isoStroke} />
       </g>
       <g className="text-ink">
         <path d="M61.6 44 L61.6 49 L71 53.7 L71 48.7 Z" {...isoFace} />
@@ -365,13 +326,13 @@ function LabOspfDoiLoM16() {
   return (
     <>
       <g className="text-ink-muted">
-        <path d="M110 83 L110 57" {...isoStroke} />
-        <path d="M110 57 L32 31" {...isoStroke} />
-        <path d="M188 83 L188 57" {...isoStroke} />
-        <path d="M188 57 L188 31" {...isoStroke} />
-        <path d="M32 31 L110 31" {...isoStroke} />
-        <path d="M110 31 L188 31" {...isoStroke} />
-        <path d="M32 31 L188 31" {...isoStroke} />
+              <path d="M110 83 L110 57" {...isoStroke} />
+              <path d="M110 57 L32 31" {...isoStroke} />
+              <path d="M188 83 L188 57" {...isoStroke} />
+              <path d="M188 57 L188 31" {...isoStroke} />
+              <path d="M32 31 L110 31" {...isoStroke} />
+              <path d="M110 31 L188 31" {...isoStroke} />
+              <path d="M32 31 L188 31" {...isoStroke} />
       </g>
       <g className="text-ink">
         <path d="M22.6 31 L22.6 36 L32 40.7 L32 35.7 Z" {...isoFace} />
@@ -440,12 +401,12 @@ function LabOspfDoiLoM16LoiGiai() {
   return (
     <>
       <g className="text-ink-muted">
-        <path d="M110 83 L110 57" {...isoStroke} />
-        <path d="M110 57 L32 31" {...isoStroke} />
-        <path d="M188 83 L188 57" {...isoStroke} />
-        <path d="M188 57 L188 31" {...isoStroke} />
-        <path d="M32 31 L110 31" {...isoStroke} />
-        <path d="M110 31 L188 31" {...isoStroke} />
+              <path d="M110 83 L110 57" {...isoStroke} />
+              <path d="M110 57 L32 31" {...isoStroke} />
+              <path d="M188 83 L188 57" {...isoStroke} />
+              <path d="M188 57 L188 31" {...isoStroke} />
+              <path d="M32 31 L110 31" {...isoStroke} />
+              <path d="M110 31 L188 31" {...isoStroke} />
       </g>
       <g className="text-ink">
         <path d="M22.6 31 L22.6 36 L32 40.7 L32 35.7 Z" {...isoFace} />
@@ -510,15 +471,174 @@ function LabOspfDoiLoM16LoiGiai() {
   )
 }
 
+function LabOspfDoiLoM16Dut() {
+  return (
+    <>
+      <g className="text-ink-muted">
+              <path d="M110 83 L110 57" {...isoStroke} />
+              <path d="M110 57 L32 31" {...isoStroke} />
+              <path d="M188 83 L188 57" {...isoStroke} />
+              <path d="M188 57 L188 31" {...isoStroke} />
+              <path d="M32 31 L110 31" {...isoStroke} />
+              <path d="M110 31 L188 31" {...isoStroke} />
+              <path d="M32 31 L188 31" {...isoStroke} strokeDasharray="4 3" />
+      </g>
+      <g className="text-ink">
+        <path d="M22.6 31 L22.6 36 L32 40.7 L32 35.7 Z" {...isoFace} />
+        <path d="M41.4 31 L41.4 36 L32 40.7 L32 35.7 Z" {...isoFace} />
+        <path d="M32 26.3 L41.4 31 L32 35.7 L22.6 31 Z" {...isoTop} />
+      </g>
+      <g className="text-ink">
+        <path d="M100.6 31 L100.6 36 L110 40.7 L110 35.7 Z" {...isoFace} />
+        <path d="M119.4 31 L119.4 36 L110 40.7 L110 35.7 Z" {...isoFace} />
+        <path d="M110 26.3 L119.4 31 L110 35.7 L100.6 31 Z" {...isoTop} />
+      </g>
+      <g className="text-ink">
+        <path d="M178.6 31 L178.6 36 L188 40.7 L188 35.7 Z" {...isoFace} />
+        <path d="M197.4 31 L197.4 36 L188 40.7 L188 35.7 Z" {...isoFace} />
+        <path d="M188 26.3 L197.4 31 L188 35.7 L178.6 31 Z" {...isoTop} />
+      </g>
+      <g className="text-ink">
+        <path d="M100.6 57 L100.6 62 L110 66.7 L110 61.7 Z" {...isoFace} />
+        <path d="M119.4 57 L119.4 62 L110 66.7 L110 61.7 Z" {...isoFace} />
+        <path d="M110 52.3 L119.4 57 L110 61.7 L100.6 57 Z" {...isoTop} />
+        <path d="M113.7 60.8 l0 3" {...isoDetail} />
+        <path d="M110 62.7 l0 3" {...isoDetail} />
+        <path d="M106.3 64.6 l0 3" {...isoDetail} />
+      </g>
+      <g className="text-ink">
+        <path d="M178.6 57 L178.6 62 L188 66.7 L188 61.7 Z" {...isoFace} />
+        <path d="M197.4 57 L197.4 62 L188 66.7 L188 61.7 Z" {...isoFace} />
+        <path d="M188 52.3 L197.4 57 L188 61.7 L178.6 57 Z" {...isoTop} />
+        <path d="M191.7 60.8 l0 3" {...isoDetail} />
+        <path d="M188 62.7 l0 3" {...isoDetail} />
+        <path d="M184.3 64.6 l0 3" {...isoDetail} />
+      </g>
+      <g className="text-ink">
+        <path d="M100.6 83 L100.6 91 L110 95.7 L110 87.7 Z" {...isoFace} />
+        <path d="M119.4 83 L119.4 91 L110 95.7 L110 87.7 Z" {...isoFace} />
+        <path d="M110 78.3 L119.4 83 L110 87.7 L100.6 83 Z" {...isoTop} />
+        <path d="M105 71.3 l10 0 l0 7 l-10 0 Z" {...isoDetail} />
+      </g>
+      <g className="text-ink">
+        <path d="M178.6 83 L178.6 91 L188 95.7 L188 87.7 Z" {...isoFace} />
+        <path d="M197.4 83 L197.4 91 L188 95.7 L188 87.7 Z" {...isoFace} />
+        <path d="M188 78.3 L197.4 83 L188 87.7 L178.6 83 Z" {...isoTop} />
+        <path d="M183 71.3 l10 0 l0 7 l-10 0 Z" {...isoDetail} />
+      </g>
+      <g className="text-ink">
+        <rect x="93" y="24.4" width="34.1" height="7.4" rx="1.5" {...isoPlate} />
+        <text x="110" y="30" textAnchor="middle" {...isoLabel}>cáp đứt</text>
+        <rect x="12.8" y="42.1" width="38.4" height="7.4" rx="1.5" {...isoPlate} />
+        <text x="32" y="47.7" textAnchor="middle" {...isoLabel}>R Hà Nội</text>
+        <rect x="88.7" y="42.1" width="42.7" height="7.4" rx="1.5" {...isoPlate} />
+        <text x="110" y="47.7" textAnchor="middle" {...isoLabel}>R Đà Nẵng</text>
+        <rect x="166.7" y="42.1" width="42.7" height="7.4" rx="1.5" {...isoPlate} />
+        <text x="188" y="47.7" textAnchor="middle" {...isoLabel}>R Sài Gòn</text>
+        <rect x="97.3" y="68.1" width="25.5" height="7.4" rx="1.5" {...isoPlate} />
+        <text x="110" y="73.7" textAnchor="middle" {...isoLabel}>sw HN</text>
+        <rect x="175.3" y="68.1" width="25.5" height="7.4" rx="1.5" {...isoPlate} />
+        <text x="188" y="73.7" textAnchor="middle" {...isoLabel}>sw SG</text>
+        <rect x="88.7" y="97.1" width="42.7" height="7.4" rx="1.5" {...isoPlate} />
+        <text x="110" y="102.7" textAnchor="middle" {...isoLabel}>PC Hà Nội</text>
+        <rect x="164.5" y="97.1" width="47" height="7.4" rx="1.5" {...isoPlate} />
+        <text x="188" y="102.7" textAnchor="middle" {...isoLabel}>PC Sài Gòn</text>
+      </g>
+    </>
+  )
+}
+
+function LabOspfDoiLoM16DuongVong() {
+  return (
+    <>
+      <g className="text-ink-muted">
+              <path d="M110 83 L110 57" {...isoStroke} />
+              <path d="M110 57 L32 31" {...isoStroke} />
+              <path d="M188 83 L188 57" {...isoStroke} />
+              <path d="M188 57 L188 31" {...isoStroke} />
+        <g className="text-accent">
+        <path d="M32 31 L110 31" {...isoStroke} strokeWidth={2.2} />
+        </g>
+        <g className="text-accent">
+        <path d="M110 31 L188 31" {...isoStroke} strokeWidth={2.2} />
+        </g>
+      </g>
+      <g className="text-ink">
+        <path d="M22.6 31 L22.6 36 L32 40.7 L32 35.7 Z" {...isoFace} />
+        <path d="M41.4 31 L41.4 36 L32 40.7 L32 35.7 Z" {...isoFace} />
+        <path d="M32 26.3 L41.4 31 L32 35.7 L22.6 31 Z" {...isoTop} />
+      </g>
+      <g className="text-ink">
+        <path d="M100.6 31 L100.6 36 L110 40.7 L110 35.7 Z" {...isoFace} />
+        <path d="M119.4 31 L119.4 36 L110 40.7 L110 35.7 Z" {...isoFace} />
+        <path d="M110 26.3 L119.4 31 L110 35.7 L100.6 31 Z" {...isoTop} />
+      </g>
+      <g className="text-ink">
+        <path d="M178.6 31 L178.6 36 L188 40.7 L188 35.7 Z" {...isoFace} />
+        <path d="M197.4 31 L197.4 36 L188 40.7 L188 35.7 Z" {...isoFace} />
+        <path d="M188 26.3 L197.4 31 L188 35.7 L178.6 31 Z" {...isoTop} />
+      </g>
+      <g className="text-ink">
+        <path d="M100.6 57 L100.6 62 L110 66.7 L110 61.7 Z" {...isoFace} />
+        <path d="M119.4 57 L119.4 62 L110 66.7 L110 61.7 Z" {...isoFace} />
+        <path d="M110 52.3 L119.4 57 L110 61.7 L100.6 57 Z" {...isoTop} />
+        <path d="M113.7 60.8 l0 3" {...isoDetail} />
+        <path d="M110 62.7 l0 3" {...isoDetail} />
+        <path d="M106.3 64.6 l0 3" {...isoDetail} />
+      </g>
+      <g className="text-ink">
+        <path d="M178.6 57 L178.6 62 L188 66.7 L188 61.7 Z" {...isoFace} />
+        <path d="M197.4 57 L197.4 62 L188 66.7 L188 61.7 Z" {...isoFace} />
+        <path d="M188 52.3 L197.4 57 L188 61.7 L178.6 57 Z" {...isoTop} />
+        <path d="M191.7 60.8 l0 3" {...isoDetail} />
+        <path d="M188 62.7 l0 3" {...isoDetail} />
+        <path d="M184.3 64.6 l0 3" {...isoDetail} />
+      </g>
+      <g className="text-ink">
+        <path d="M100.6 83 L100.6 91 L110 95.7 L110 87.7 Z" {...isoFace} />
+        <path d="M119.4 83 L119.4 91 L110 95.7 L110 87.7 Z" {...isoFace} />
+        <path d="M110 78.3 L119.4 83 L110 87.7 L100.6 83 Z" {...isoTop} />
+        <path d="M105 71.3 l10 0 l0 7 l-10 0 Z" {...isoDetail} />
+      </g>
+      <g className="text-ink">
+        <path d="M178.6 83 L178.6 91 L188 95.7 L188 87.7 Z" {...isoFace} />
+        <path d="M197.4 83 L197.4 91 L188 95.7 L188 87.7 Z" {...isoFace} />
+        <path d="M188 78.3 L197.4 83 L188 87.7 L178.6 83 Z" {...isoTop} />
+        <path d="M183 71.3 l10 0 l0 7 l-10 0 Z" {...isoDetail} />
+      </g>
+      <g className="text-ink">
+        <rect x="51.8" y="24.4" width="38.4" height="7.4" rx="1.5" {...isoPlate} />
+        <g className="text-accent">
+          <text x="71" y="30" textAnchor="middle" {...isoLabel}>lối vòng</text>
+        </g>
+        <rect x="12.8" y="42.1" width="38.4" height="7.4" rx="1.5" {...isoPlate} />
+        <text x="32" y="47.7" textAnchor="middle" {...isoLabel}>R Hà Nội</text>
+        <rect x="88.7" y="42.1" width="42.7" height="7.4" rx="1.5" {...isoPlate} />
+        <text x="110" y="47.7" textAnchor="middle" {...isoLabel}>R Đà Nẵng</text>
+        <rect x="166.7" y="42.1" width="42.7" height="7.4" rx="1.5" {...isoPlate} />
+        <text x="188" y="47.7" textAnchor="middle" {...isoLabel}>R Sài Gòn</text>
+        <rect x="97.3" y="68.1" width="25.5" height="7.4" rx="1.5" {...isoPlate} />
+        <text x="110" y="73.7" textAnchor="middle" {...isoLabel}>sw HN</text>
+        <rect x="175.3" y="68.1" width="25.5" height="7.4" rx="1.5" {...isoPlate} />
+        <text x="188" y="73.7" textAnchor="middle" {...isoLabel}>sw SG</text>
+        <rect x="88.7" y="97.1" width="42.7" height="7.4" rx="1.5" {...isoPlate} />
+        <text x="110" y="102.7" textAnchor="middle" {...isoLabel}>PC Hà Nội</text>
+        <rect x="164.5" y="97.1" width="47" height="7.4" rx="1.5" {...isoPlate} />
+        <text x="188" y="102.7" textAnchor="middle" {...isoLabel}>PC Sài Gòn</text>
+      </g>
+    </>
+  )
+}
+
 function RouterMotChanM14() {
   return (
     <>
       <g className="text-ink-muted">
-        <path d="M110 36.5 L110 54.8" {...isoStroke} />
-        <path d="M110 54.8 L18.6 73.1" {...isoStroke} />
-        <path d="M110 54.8 L73.4 82.2" {...isoStroke} />
-        <path d="M110 54.8 L146.6 82.2" {...isoStroke} />
-        <path d="M110 54.8 L201.4 73.1" {...isoStroke} />
+              <path d="M110 36.5 L110 54.8" {...isoStroke} />
+              <path d="M110 54.8 L18.6 73.1" {...isoStroke} />
+              <path d="M110 54.8 L73.4 82.2" {...isoStroke} />
+              <path d="M110 54.8 L146.6 82.2" {...isoStroke} />
+              <path d="M110 54.8 L201.4 73.1" {...isoStroke} />
       </g>
       <g className="text-ink">
         <path d="M103.4 36.5 L103.4 40 L110 43.3 L110 39.8 Z" {...isoFace} />
@@ -579,9 +699,9 @@ function VongLapStpChanM15() {
   return (
     <>
       <g className="text-ink-muted">
-        <path d="M110 84.5 L188 32.5" {...isoStroke} />
-        <path d="M188 32.5 L32 32.5" {...isoStroke} />
-        <path d="M32 32.5 L110 84.5" {...isoStroke} strokeDasharray="4 3" />
+              <path d="M110 84.5 L188 32.5" {...isoStroke} />
+              <path d="M188 32.5 L32 32.5" {...isoStroke} />
+              <path d="M32 32.5 L110 84.5" {...isoStroke} strokeDasharray="4 3" />
       </g>
       <g className="text-ink">
         <path d="M22.6 32.5 L22.6 37.5 L32 42.2 L32 37.2 Z" {...isoFace} />
@@ -625,9 +745,9 @@ function VongLapStpDutM15() {
   return (
     <>
       <g className="text-ink-muted">
-        <path d="M110 84.5 L188 32.5" {...isoStroke} strokeDasharray="4 3" />
-        <path d="M188 32.5 L32 32.5" {...isoStroke} />
-        <path d="M32 32.5 L110 84.5" {...isoStroke} />
+              <path d="M110 84.5 L188 32.5" {...isoStroke} strokeDasharray="4 3" />
+              <path d="M188 32.5 L32 32.5" {...isoStroke} />
+              <path d="M32 32.5 L110 84.5" {...isoStroke} />
       </g>
       <g className="text-ink">
         <path d="M22.6 32.5 L22.6 37.5 L32 42.2 L32 37.2 Z" {...isoFace} />
@@ -671,9 +791,9 @@ function VongLapStpM15() {
   return (
     <>
       <g className="text-ink-muted">
-        <path d="M110 84.5 L188 32.5" {...isoStroke} />
-        <path d="M188 32.5 L32 32.5" {...isoStroke} />
-        <path d="M32 32.5 L110 84.5" {...isoStroke} />
+              <path d="M110 84.5 L188 32.5" {...isoStroke} />
+              <path d="M188 32.5 L32 32.5" {...isoStroke} />
+              <path d="M32 32.5 L110 84.5" {...isoStroke} />
       </g>
       <g className="text-ink">
         <path d="M22.6 32.5 L22.6 37.5 L32 42.2 L32 37.2 Z" {...isoFace} />
@@ -716,7 +836,6 @@ function VongLapStpM15() {
 /** visualId -> hình isometric sinh từ bản vẽ. ConceptVisual gộp map này vào REGISTRY. */
 export const ISOMETRIC_SCENES: Record<string, () => React.ReactNode> = {
   'vis-iso-chi-nhanh-m21': ChiNhanhM21,
-  'vis-iso-hai-loi-ba-mien-dut-m16': HaiLoiBaMienDutM16,
   'vis-iso-hai-loi-ba-mien-m16': HaiLoiBaMienM16,
   'vis-iso-lab-duong-du-phong-m15': LabDuongDuPhongM15,
   'vis-iso-lab-duong-du-phong-m15-loi-giai': LabDuongDuPhongM15LoiGiai,
@@ -724,6 +843,8 @@ export const ISOMETRIC_SCENES: Record<string, () => React.ReactNode> = {
   'vis-iso-lab-noi-day-m4-loi-giai': LabNoiDayM4LoiGiai,
   'vis-iso-lab-ospf-doi-lo-m16': LabOspfDoiLoM16,
   'vis-iso-lab-ospf-doi-lo-m16-loi-giai': LabOspfDoiLoM16LoiGiai,
+  'vis-iso-lab-ospf-doi-lo-m16-dut': LabOspfDoiLoM16Dut,
+  'vis-iso-lab-ospf-doi-lo-m16-duong-vong': LabOspfDoiLoM16DuongVong,
   'vis-iso-router-mot-chan-m14': RouterMotChanM14,
   'vis-iso-vong-lap-stp-chan-m15': VongLapStpChanM15,
   'vis-iso-vong-lap-stp-dut-m15': VongLapStpDutM15,

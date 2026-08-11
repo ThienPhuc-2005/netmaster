@@ -4747,10 +4747,13 @@ const REGISTRY: Record<string, VisualComponent> = {
   'vis-cost-duong-re': OspfCost,
   'vis-hook-hai-duong': (p) => <IsoScene id="vis-iso-hai-loi-ba-mien-m16" {...p} />,
   'vis-bang-tu-hoc': LearnedRouteTable,
-  'vis-ospf-di-loi-vong': OspfReroute,
-  // Cùng ba nút, cùng chỗ đứng với hook bài 4 — chỉ sợi cáp thẳng đổi sang
-  // nét đứt. Giữ nguyên bố cục để mắt tự nhảy vào đúng chỗ vừa thay đổi.
-  'vis-hook-dut-duong-ospf': (p) => <IsoScene id="vis-iso-hai-loi-ba-mien-dut-m16" {...p} />,
+  // Cả bài m16-bai-5 dùng CHUNG một mạng — chính mạng của lab trong bài,
+  // bốn view của một bản vẽ: hook thấy sợi vừa đứt, màn Dạy thấy lối vòng
+  // sáng lên, màn Tổng kết thấy trạng thái cuối. Trước đó hook là tam giác
+  // ba router còn Tổng kết là sơ đồ lab bảy thiết bị — cùng một bài mà hai
+  // bức tranh không liên quan gì nhau.
+  'vis-ospf-di-loi-vong': (p) => <IsoScene id="vis-iso-lab-ospf-doi-lo-m16-duong-vong" {...p} />,
+  'vis-hook-dut-duong-ospf': (p) => <IsoScene id="vis-iso-lab-ospf-doi-lo-m16-dut" {...p} />,
   'vis-ad-tinh-thang': AdminDistance,
   // Module 17 — ACL và bảo mật lớp 2
   'vis-acl-loc-tren-cong': AclGate,
