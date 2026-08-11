@@ -10,10 +10,11 @@
 //     ra chứ không dựng một link chết.
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { cleanup, fireEvent, render, screen } from '@testing-library/react'
+import { cleanup, fireEvent, render, screen, within } from '@testing-library/react'
 import { MemoryRouter } from 'react-router'
 import { ProfilePage } from './ProfilePage'
 import { useProgress } from '../../store/progress'
+import { loadModules } from '../../content'
 
 const INITIAL = useProgress.getInitialState()
 
@@ -65,6 +66,90 @@ describe('sổ "mình nghĩ câu này đúng" ở trang Hồ sơ', () => {
   it('chưa khiếu nại lần nào thì KHÔNG dựng mục rỗng', () => {
     renderProfile()
     expect(screen.queryByText('Câu bạn cho là mình đúng')).toBeNull()
+  })
+})
+
+describe('so với chính mình tháng trước (I3)', () => {
+  /** Một mốc cũ đủ mẫu, cùng dạng câu với bảng phân tích dựng dưới đây. */
+  const mocCu = (thang: string, attempted: number, stumbled: number) => ({
+    thang,
+    ngay: `${thang}-01`,
+    theoDang: { typed: { attempted, stumbled } },
+  })
+
+  /**
+   * Dựng chỗ vấp THẬT trên nội dung thật: gom `tong` câu gõ tay (đi qua
+   * nhiều bài nếu một bài không đủ), đánh dấu tất cả đã giải xong —
+   * bảng phân tích chỉ đếm câu `solved` — và cho `soVap` câu trong đó
+   * mang dấu vấp. Trả về đúng số câu đã dựng.
+   */
+  function dungVap(soVap: number, tong = 8) {
+    const runtimes: Record<string, unknown> = {}
+    let daCo = 0
+    for (const lesson of loadModules().flatMap((m) => m.lessons)) {
+      if (daCo >= tong) break
+      const typed = [
+        ...lesson.steps[3].exercises.map((e) => e.question),
+        ...lesson.steps[4].questions.map((e) => e.question),
+      ].filter((q) => q.kind === 'typed')
+      if (typed.length === 0) continue
+      const exercises: Record<string, unknown> = {}
+      for (const q of typed) {
+        if (daCo >= tong) break
+        exercises[q.id] = { failCount: daCo < soVap ? 2 : 0, solved: true, usedSolution: false }
+        daCo += 1
+      }
+      runtimes[lesson.id] = {
+        lessonId: lesson.id,
+        stepIndex: 5,
+        teachScreenIndex: 0,
+        pretestAnswers: {},
+        exercises,
+        selfExplain: { attempts: 1, passed: true, done: true },
+        completed: true,
+      }
+    }
+    useProgress.setState({ lessonRuntimes: runtimes as never })
+    return daCo
+  }
+
+  it('chưa có mốc tháng nào khác thì nói thẳng là đang chờ, không bịa số', () => {
+    dungVap(1)
+    renderProfile()
+    expect(screen.getByText('So với chính mình tháng trước')).toBeTruthy()
+    expect(screen.getByText(/Sang tháng sau/)).toBeTruthy()
+  })
+
+  it('mở trang lần đầu trong tháng thì tự cất mốc', () => {
+    dungVap(1)
+    renderProfile()
+    expect(useProgress.getState().latCatThang).toHaveLength(1)
+  })
+
+  it('có mốc tháng trước thì so tỉ lệ và nói bạn đã lên', () => {
+    const tong = dungVap(1) // giờ vấp 1/8
+    useProgress.setState({ latCatThang: [mocCu('2026-01', tong, tong)] }) // hồi đó vấp 100%
+    renderProfile()
+    // Tìm trong ĐÚNG mục này: "Câu gõ tay" còn xuất hiện ở bảng phân
+    // tích ngay dưới, tìm cả trang thì đụng hai chỗ.
+    const muc = within(screen.getByRole('region', { name: 'So với chính mình tháng trước' }))
+    expect(muc.getByText('Câu gõ tay')).toBeTruthy()
+    expect(muc.getByText(`100% → ${Math.round((1 / tong) * 100)}%`)).toBeTruthy()
+    expect(muc.getByText('đã lên')).toBeTruthy()
+  })
+
+  it('vấp nhiều lên thì NÓI THẲNG, không giấu tin xấu', () => {
+    const tong = dungVap(3)
+    useProgress.setState({ latCatThang: [mocCu('2026-01', tong, 0)] }) // hồi đó không vấp câu nào
+    renderProfile()
+    expect(screen.getByText('còn nặng hơn')).toBeTruthy()
+  })
+
+  it('mốc cũ mẫu quá mỏng thì không phán một chữ nào', () => {
+    dungVap(1)
+    useProgress.setState({ latCatThang: [mocCu('2026-01', 2, 2)] })
+    renderProfile()
+    expect(screen.getByText('chưa đủ mẫu để nói')).toBeTruthy()
   })
 })
 

@@ -177,11 +177,16 @@ Trạng thái: ☐ chờ duyệt · ✅ đã làm · ✗ đã bàn và bỏ (gi�
   hạn lâu là thẻ sắp quên hẳn, cho "hay vấp" chen lên trước nó là đổi thứ
   đang mất lấy thứ mới hơi lung lay. Đứng ở tie-break là vừa đủ để quyết ai
   lọt vào phiên 15 thẻ.
-- ☐ **I3. So với chính mình tháng trước** — chụp lại bảng phân tích theo
-  tháng để thấy dạng câu từng yếu giờ đã lên. **Không ké được F3**: ảnh
-  chụp tiến độ là 3 bản sao đầy đủ xoay vòng, không phải chuỗi số theo
-  tháng — đọc nó ra thống kê là đọc sai bản chất của nó. Ý này cần sổ số
-  liệu riêng.
+- ✅ **I3. So với chính mình tháng trước** — ĐÃ LÀM (khối 21.39): mỗi
+  tháng, lần đầu mở trang Hồ sơ thì app cất một mốc nhỏ của bảng phân
+  tích; từ tháng sau, mục mới nói "Câu gõ tay 75% → 13% · đã lên". Đúng
+  như đã ghi lượt trước, **không ké được F3** — ảnh chụp tiến độ là 3 bản
+  sao đầy đủ xoay vòng, không phải chuỗi số theo tháng — nên ý này có sổ
+  số liệu riêng (`latCatThang`, persist v7).
+  Quyết định đắt nhất: **so TỈ LỆ tại hai thời điểm, không lấy HIỆU hai
+  mốc**. Học lại một bài đã xong thì bộ đếm vấp của bài đó bị dựng mới,
+  nên phép trừ ra số ÂM ngay lần đầu người học ôn lại bài cũ — bảng thống
+  kê ra số âm thì mất sạch niềm tin đúng lúc nó đang định khen họ.
 - ✅ **I4. Ảo giác quen mặt vào hồ sơ lỗi** — ĐÃ LÀM (khối 21.36): mục "Thấy
   quen mà chưa thuộc" ở trang Hồ sơ. Phải bump persist v5 → v6 vì đúng như
   ý gốc nói, dữ liệu tự chấm trước đây tan theo phiên. Chỉ lưu nấc

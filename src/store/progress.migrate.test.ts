@@ -99,7 +99,21 @@ describe('persist migrate: hợp đồng payload v1', () => {
     expect(s.xpTotal).toBe(32)
   })
 
-  it('v1 đi trọn chuỗi tới v6: các trường mới mọc ra rỗng, phiên drill cũ được đóng dấu', async () => {
+  it('v6 → v7 (so với tháng trước): sổ mốc mọc ra RỖNG, không bịa mốc quá khứ', async () => {
+    const v6 = JSON.parse(JSON.stringify(v1Payload)) as { state: Record<string, unknown>; version: number }
+    v6.version = 6
+    v6.state['aoGiacQuenMat'] = { 'goi-tin': 3 }
+    await rehydrateFrom(v6)
+    const s = useProgress.getState()
+    // Dựng ngược một mốc từ số liệu hôm nay rồi dán nhãn tháng trước thì
+    // người học sẽ đọc được "tháng trước y hệt tháng này" — một câu so
+    // sánh bịa. Rỗng, và so được từ tháng sau.
+    expect(s.latCatThang).toEqual([])
+    expect(s.aoGiacQuenMat).toEqual({ 'goi-tin': 3 })
+    expect(s.xpTotal).toBe(32)
+  })
+
+  it('v1 đi trọn chuỗi tới v7: các trường mới mọc ra rỗng, phiên drill cũ được đóng dấu', async () => {
     await rehydrateFrom(v1Payload)
     const s = useProgress.getState()
     expect(s.challengeUsed).toEqual({})
@@ -111,6 +125,7 @@ describe('persist migrate: hợp đồng payload v1', () => {
     expect(s.drillHistory[0]).toMatchObject({ mode: 'subnet', correct: 8, total: 10, avgSeconds: 21.5 })
     expect(s.disputedAnswers).toEqual([])
     expect(s.aoGiacQuenMat).toEqual({})
+    expect(s.latCatThang).toEqual([])
   })
 
   it('v4 → v5 (nút "mình nghĩ câu này đúng"): sổ góp ý mọc ra rỗng, phần cũ nguyên vẹn', async () => {

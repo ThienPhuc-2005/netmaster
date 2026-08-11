@@ -3,7 +3,7 @@
 // không trả được là violated expectancy — hội đồng, ghế tâm lý); khi
 // nào xây hệ huy hiệu thật thì trình kế hoạch theo spec 2.4 trước.
 
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { Link } from 'react-router'
 import { Flame, Zap, Award, GraduationCap, Snowflake, Layers, BookOpenCheck, Download, Upload } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
@@ -14,8 +14,9 @@ import { analyzeMistakes, aoGiacHayGap, weakSpotDrill, weakSpots, weeklyActivity
 import { roomIdFromCardId } from '../../engine/palace'
 import { Button } from '../../components/Button'
 import { milestones } from '../graduation/milestones'
-import { AoGiacList, DisputedList, MemoryMap, MistakeAnalysisCard, WeakSpotList, WeeklyRhythm } from './LearningInsights'
+import { AoGiacList, DisputedList, MemoryMap, MistakeAnalysisCard, SoSanhThangCard, WeakSpotList, WeeklyRhythm } from './LearningInsights'
 import { memoryByModule } from '../../engine/freshness'
+import { mocDeSo, soSanhDang, thangCua } from '../../engine/soSanhThang'
 import type { AnhChup, LyDoChup } from '../../engine/anhChup'
 import { docAnhChup, khoiPhuc } from '../../store/anhChup'
 
@@ -212,6 +213,19 @@ export function ProfilePage() {
     title: modules.find((m) => m.id === row.moduleId)?.title ?? { vi: row.moduleId },
   }))
   const weeks = weeklyActivity(completedLessons, drillHistory, todayIso())
+  // So với chính mình tháng trước (kho ý tưởng I3). Trang này là nơi DUY
+  // NHẤT đã có sẵn bảng phân tích trong tay, nên nó cũng là nơi cất mốc —
+  // store tự quyết định tháng này đã cất chưa, ở đây chỉ đưa số liệu sang.
+  const latCatThang = useProgress((s) => s.latCatThang)
+  const ghiLatCatThang = useProgress((s) => s.ghiLatCatThang)
+  useEffect(() => {
+    ghiLatCatThang(analysis)
+    // Chạy một lần mỗi lần mở trang: mốc là số liệu ĐẦU THÁNG, cất lại
+    // giữa chừng thì mốc trôi theo và không còn gì để so.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+  const mocThang = mocDeSo(latCatThang, thangCua(todayIso()))
+  const dongSoSanh = mocThang === null ? [] : soSanhDang(mocThang, analysis)
   // Ảo giác quen mặt (kho ý tưởng I4): tra cardId ra mặt trước đọc được.
   // Thẻ cung điện có tiền tố riêng nên phải hỏi đúng hai nguồn — nội dung
   // đổi mà thẻ cũ không còn thì để `null`, UI hiện tạm cardId chứ không
@@ -251,6 +265,7 @@ export function ProfilePage() {
 
       <MemoryMap rows={memoryRows} />
       <MistakeAnalysisCard analysis={analysis} moduleTitles={moduleTitles} drillSize={drillSize} />
+      <SoSanhThangCard moc={mocThang} rows={dongSoSanh} dangCho={latCatThang.length > 0} />
       <DisputedList rows={disputedRows} onClear={clearDisputed} />
       <WeakSpotList spots={spots} />
       <AoGiacList rows={aoGiacRows} />

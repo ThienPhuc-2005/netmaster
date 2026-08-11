@@ -1,14 +1,14 @@
 # Trạng thái dự án — NetMaster (Phase 1-3 XONG; đang làm Phase 4: TRUNG CẤP)
 
-## ĐỌC 30 GIÂY: ĐANG ĐỨNG ĐÂU, LÀM GÌ TIẾP (cập nhật 2026-08-11)
+## ĐỌC 30 GIÂY: ĐANG ĐỨNG ĐÂU, LÀM GÌ TIẾP (cập nhật 2026-08-12)
 
 **App hiện có ĐỦ 21/21 MODULE NỘI DUNG + MÀN TỐT NGHIỆP** (M1-12 nhập
-môn, M13-17 Phần D, M18-21 Phần E), 1626 test xanh, typecheck sạch,
+môn, M13-17 Phần D, M18-21 Phần E), 1651 test xanh, typecheck sạch,
 build qua. **Toàn bộ biên bản hội đồng trung cấp đã XỬ XONG (08-10):
 15/15 việc mục 6 (khối 20.2, commit `1d04c0b`) + trọn LƯỢT DỌN 52 phát
 hiện P2 mục 5 (khối 20.3).** Nội dung và engine không còn việc nào treo;
 các khối gần đây đều là ý lấy từ kho `Y-TUONG.md`.
-Việc kế tiếp là của CHỦ DỰ ÁN: ra lệnh commit khối 21.38, và tuyển người
+Việc kế tiếp là của CHỦ DỰ ÁN: ra lệnh commit khối 21.39, và tuyển người
 cho các buổi test người thật (hai dòng DoD còn treo đều cần NGƯỜI).
 
 **Toàn bộ ENGINE của Phần D đã xong.** Không còn engine nào phải viết cho
@@ -29,7 +29,34 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (19) M21 capstone + màn tốt nghiệp | XONG |
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
-**KHỐI MỚI NHẤT — 21.38 (08-11), đang ở working tree chờ lệnh commit:**
+**KHỐI MỚI NHẤT — 21.39 (08-12), đang ở working tree chờ lệnh commit:**
+**I3 — so với chính mình tháng trước.**
+- Mỗi tháng, lần đầu mở trang Hồ sơ, app cất một MỐC nhỏ của bảng phân
+  tích (tỉ lệ vấp theo từng dạng câu). Từ tháng sau, mục mới ở trang Hồ sơ
+  nói thẳng: "Câu gõ tay 75% → 13% · đã lên".
+- **Không lấy HIỆU hai mốc dù nghe hay hơn nhiều.** Học lại một bài đã
+  xong thì bộ đếm vấp của bài đó bị dựng mới, nên phép trừ sẽ ra SỐ ÂM
+  ngay lần đầu người học ôn lại bài cũ — một bảng thống kê ra số âm thì
+  mất sạch niềm tin, đúng lúc nó đang định khen họ. So tỉ lệ tại hai thời
+  điểm thì không bao giờ gặp chuyện đó.
+- Ba luật giữ cho nó không nói dối: **nói rõ đây là tỉ lệ tính dồn từ đầu
+  khóa** (nó nhích chậm, không nói thì người học đọc "45% → 43%" thành
+  "mình giậm chân"), **chưa đủ mẫu thì không phán một chữ** (cùng ngưỡng
+  4 câu với bảng phân tích), và **tin xấu vẫn hiện** — giấu chiều đi
+  xuống thì chiều đi lên cũng hết đáng tin.
+- Mốc của tháng hiện tại **đứng yên cả tháng**, không nhích theo mỗi lần
+  mở trang; trôi theo thì cuối tháng chẳng còn gì để so.
+- Persist bump **v6 → v7**. Bậc migrate cấp sổ RỖNG, cố ý không dựng
+  ngược một mốc từ số liệu hôm nay — dán nhãn "tháng trước" cho số của
+  hôm nay là một câu so sánh bịa.
+- 1651 test xanh (+25), typecheck sạch, build qua. Kiểm browser thật: seed
+  một người học có mốc tháng 7 → mục hiện "75% → 13% · đã lên"; vấp thêm
+  rồi mở lại trong cùng tháng thì mốc tháng 8 ĐỨNG YÊN còn dòng so sánh
+  cập nhật; đổi mốc cũ thành 0% thì hiện "còn nặng hơn" bằng hổ phách
+  (không phải đỏ); người học tháng đầu tiên thấy đúng câu chờ. Console
+  sạch, seed đã xóa.
+
+**KHỐI TRƯỚC — 21.38 (08-11), đã commit `6b0161b`:**
 **Cụm 4 — kỹ thuật nền, cụm cuối của lượt duyệt kho ý tưởng.**
 - **F3 — app tự cất bản tiến độ.** Mỗi ngày mở app lên học cất một bản,
   và LUÔN cất một bản ngay trước khi cửa migrate viết đè. Giữ 3 bản; ở
@@ -114,9 +141,10 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
   lên vẫn tắt. Console sạch, seed đã xóa.
 
 **Lượt duyệt kho ý tưởng này đã đi hết 4 cụm** (âm thanh 21.35 · hồ sơ &
-ôn tập 21.36 · nội dung 21.37 · kỹ thuật nền 21.38), còn treo đúng hai ý
-của cụm 2: **I3** và **quãng học dài nhất trong tuần**. Hai ý **H3** và
-**H8** cần chủ dự án quyết vì đòi PHÁ MỐC đã đóng băng.
+ôn tập 21.36 · nội dung 21.37 · kỹ thuật nền 21.38), rồi I3 làm nốt ở
+khối 21.39. Còn treo đúng MỘT ý của cụm 2: **quãng học dài nhất trong
+tuần**. Hai ý **H3** và **H8** cần chủ dự án quyết vì đòi PHÁ MỐC đã
+đóng băng.
 
 **KHỐI TRƯỚC — 21.34 (08-11), đã commit `e43e7d9`:**
 **C1 — giai điệu tiến độ.** Việc thật hóa ra không phải "thêm nhạc" mà là

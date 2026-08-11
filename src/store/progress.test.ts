@@ -338,3 +338,56 @@ describe('phiên drill', () => {
     expect(st.answerHistory).toHaveLength(3)
   })
 })
+
+describe('mốc bảng phân tích theo tháng (kho ý tưởng I3)', () => {
+  const phanTich = (attempted: number, stumbled: number) => ({
+    attempted,
+    stumbled,
+    fails: stumbled,
+    usedSolution: 0,
+    byKind: [
+      {
+        key: 'typed',
+        attempted,
+        stumbled,
+        fails: stumbled,
+        usedSolution: 0,
+        rate: attempted === 0 ? 0 : stumbled / attempted,
+        ranked: attempted >= 4,
+      },
+    ],
+    byModule: [],
+    byTopic: [],
+    toughestKind: null,
+  })
+
+  it('cất mốc lần đầu, và tháng này thì chỉ cất MỘT lần', () => {
+    const s = () => useProgress.getState()
+    s().ghiLatCatThang(phanTich(10, 6))
+    expect(s().latCatThang).toHaveLength(1)
+    expect(s().latCatThang[0]!.thang).toBe(todayIso().slice(0, 7))
+    expect(s().latCatThang[0]!.theoDang['typed']).toEqual({ attempted: 10, stumbled: 6 })
+
+    // Mở lại trang Hồ sơ trong cùng tháng: mốc phải ĐỨNG YÊN, không thì
+    // nó trôi theo hiện tại và cuối tháng không còn gì để so.
+    s().ghiLatCatThang(phanTich(20, 7))
+    expect(s().latCatThang).toHaveLength(1)
+    expect(s().latCatThang[0]!.theoDang['typed']).toEqual({ attempted: 10, stumbled: 6 })
+  })
+
+  it('chưa làm xong câu nào thì KHÔNG cất — mốc rỗng thành lời so sánh với hư không', () => {
+    const s = () => useProgress.getState()
+    s().ghiLatCatThang(phanTich(0, 0))
+    expect(s().latCatThang).toEqual([])
+  })
+
+  it('không có mốc mới thì KHÔNG ghi gì xuống localStorage', () => {
+    // Mở trang Hồ sơ là gọi hàm này; một `set` rỗng vẫn đánh thức persist
+    // và ghi đè nguyên khối tiến độ — không có việc thì đừng đụng ổ đĩa.
+    const s = () => useProgress.getState()
+    s().ghiLatCatThang(phanTich(10, 6))
+    localStorage.removeItem('netmaster-progress')
+    s().ghiLatCatThang(phanTich(30, 9))
+    expect(localStorage.getItem('netmaster-progress')).toBeNull()
+  })
+})

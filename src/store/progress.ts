@@ -47,6 +47,8 @@ import { pushAnswer } from '../engine/answerHistory'
 import { xpFor } from '../engine/xp'
 import { sessionStats } from '../engine/subnet/drill'
 import { chupDinhKy, chupTruocNangCap, PROGRESS_KEY } from './anhChup'
+import type { MistakeAnalysis } from '../engine/mistakeLog'
+import { latCatTuPhanTich, nenChupThang, themLatCat, thangCua, type LatCatThang } from '../engine/soSanhThang'
 
 /** "Hôm nay" theo đồng hồ máy người học — engine không tự đọc, store cấp. */
 export function todayIso(): ISODate {
@@ -73,7 +75,7 @@ export const PRACTICE_DRAFT_CAP = 12
  * đối chiếu với nó để từ chối file đến từ bản app mới hơn (migrate chỉ
  * biết đi tới, không biết đi lùi).
  */
-export const PROGRESS_PERSIST_VERSION = 6
+export const PROGRESS_PERSIST_VERSION = 7
 
 /** Một dòng trong nhật ký terminal PowerShell (UI dựng lại y nguyên). */
 export interface PsTranscriptEntry {
@@ -232,6 +234,16 @@ export interface ProgressState {
    */
   aoGiacQuenMat: Record<string, number>
   /**
+   * Mốc bảng phân tích của từng tháng, MỚI NHẤT ĐỨNG ĐẦU (kho ý tưởng
+   * I3). Mỗi mốc chỉ là vài con số theo dạng câu — không phải bản sao
+   * tiến độ, đừng nhầm nó với ảnh chụp `netmaster-anh-chup`.
+   *
+   * Vì sao phải LƯU: bảng phân tích chỉ biết hiện tại, mà câu người học
+   * thật sự hỏi là "mình có khá lên không". Không cất mốc thì câu đó
+   * không bao giờ trả lời được, dù dữ liệu đã đi qua ngay trước mắt.
+   */
+  latCatThang: LatCatThang[]
+  /**
    * caseQuestionId -> ngày CHỮA KHỎI lần đầu ở tab Phòng khám (Phase 3
    * hạng mục 9 — phòng luyện song song). Chỉ lần đầu mỗi ca mới cộng
    * XP/streak; làm lại tự do không cộng (nguyên tắc 5, chặn farm).
@@ -302,6 +314,12 @@ export interface ProgressState {
   clearDisputedAnswer: (questionId: string) => void
   /** Ghi thêm một lần "chắc mà không nhớ" cho một thẻ (kho ý tưởng I4). */
   ghiAoGiacQuenMat: (cardId: string) => void
+  /**
+   * Cất mốc bảng phân tích của tháng này nếu tháng này chưa có mốc (kho
+   * ý tưởng I3). Gọi từ trang Hồ sơ — nơi duy nhất đã có sẵn bảng phân
+   * tích trong tay; store cấp phần THỜI GIAN THẬT, engine giữ luật.
+   */
+  ghiLatCatThang: (analysis: MistakeAnalysis) => void
 
   /** Tick/bỏ tick một bước của checklist lab VMware. */
   toggleVmLabStep: (stepId: string) => void
@@ -428,6 +446,7 @@ export const useProgress = create<ProgressState>()(
         supportShownAtTotal: null,
         disputedAnswers: [],
         aoGiacQuenMat: {},
+        latCatThang: [],
         vmLabDone: {},
         clinicSolved: {},
         practiceDrafts: {},
@@ -647,6 +666,21 @@ export const useProgress = create<ProgressState>()(
         ghiAoGiacQuenMat: (cardId) =>
           set((s) => ({ aoGiacQuenMat: { ...s.aoGiacQuenMat, [cardId]: (s.aoGiacQuenMat[cardId] ?? 0) + 1 } })),
 
+        // Không dùng `set(s => …)` với nhánh trả về `{}`: mở trang Hồ sơ là
+        // gọi hàm này, mà một `set` rỗng vẫn đánh thức persist và ghi đè
+        // nguyên khối tiến độ xuống localStorage. Không có mốc mới thì
+        // KHÔNG được đụng vào ổ đĩa của người ta.
+        ghiLatCatThang: (analysis) => {
+          // Chưa làm xong câu nào thì chưa có gì để cất — một mốc rỗng
+          // sau này sẽ thành "tháng trước bạn vấp 0%", một lời so sánh
+          // với hư không.
+          if (analysis.attempted === 0) return
+          const homNay = todayIso()
+          const dang = get().latCatThang
+          if (!nenChupThang(dang, thangCua(homNay))) return
+          set({ latCatThang: themLatCat(dang, latCatTuPhanTich(analysis, homNay)) })
+        },
+
         toggleVmLabStep: (stepId) =>
           set((s) => {
             const next = { ...s.vmLabDone }
@@ -831,7 +865,15 @@ export const useProgress = create<ProgressState>()(
         if (version <= 5) {
           state = { ...state, aoGiacQuenMat: {} }
         }
-        if (version <= 6) return state
+        // v6 → v7 (so với chính mình tháng trước, 08-12): thêm sổ mốc
+        // bảng phân tích theo tháng, RỖNG. Không dựng ngược một mốc từ
+        // số liệu hôm nay rồi gắn nhãn tháng trước: người học sẽ thấy
+        // "tháng trước y hệt tháng này" — một câu so sánh bịa. Mốc đầu
+        // tiên cất ở lần mở trang Hồ sơ tới, và so được từ tháng sau.
+        if (version <= 6) {
+          state = { ...state, latCatThang: [] }
+        }
+        if (version <= 7) return state
         // Version lạ (mới hơn code — người dùng lùi bản app): giữ nguyên
         // và để shallow-merge với default đỡ phần thiếu, còn hơn vứt trắng.
         return persisted as ProgressState

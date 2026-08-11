@@ -370,7 +370,7 @@ quan trước khi "sửa test cho xanh".
 
 - `src/store/progress.ts` là nơi DUY NHẤT nối engine + thời gian thật +
   localStorage. XP/streak chỉ từ retrieval/lab và CHỈ lần học đầu.
-- **Persist đang ở v6. Cửa migrate**: đổi shape state = bump version +
+- **Persist đang ở v7. Cửa migrate**: đổi shape state = bump version +
   nối một bậc `v(n) → v(n+1)` + cập nhật fixture
   `tests/fixtures/progressV1.json` (`progress.migrate.test.ts` là chuông
   báo). Thêm NHÁNH vào union (vd PracticeDraft thêm kind) thì KHÔNG bump.
@@ -486,6 +486,27 @@ quan trước khi "sửa test cho xanh".
   `findConcept` lẫn `findPalaceRoom`; nội dung đổi mà thẻ không còn thì
   hiện tạm cardId chứ KHÔNG giấu dòng — số lần hụt vẫn là chuyện đã xảy ra.
 
+- **So với chính mình tháng trước (I3, khối 21.39)**: `latCatThang` là
+  trường persist MỚI (v6 → v7) giữ tối đa 12 mốc, mỗi mốc là tỉ lệ vấp
+  theo DẠNG CÂU tại thời điểm chụp. Luật ở `engine/soSanhThang.ts`.
+  Bốn chỗ đừng nới:
+  - **So TỈ LỆ tại hai thời điểm, KHÔNG lấy hiệu hai mốc.** Hiệu hai mốc
+    ("tháng này vấp thêm bao nhiêu") nghe hay hơn nhiều nhưng SAI: học
+    lại một bài đã xong thì `beginLesson` dựng runtime mới và `failCount`
+    về 0, nên phép trừ ra số ÂM ngay lần đầu người học ôn lại bài cũ.
+  - **Mốc của tháng hiện tại đứng yên cả tháng** (`nenChupThang` chỉ cất
+    khi tháng đổi): để nó nhích theo mỗi lần mở trang là cuối tháng không
+    còn gì để so.
+  - **Chỉ lát cắt theo DẠNG CÂU.** Theo module thì người học đi qua một
+    lần rồi thôi (so hai tháng là so hai vùng kiến thức khác nhau); theo
+    chủ đề thì `hintTopic` là trường tùy chọn nên mẫu số không tồn tại.
+  - **`ghiLatCatThang` KHÔNG được gọi `set` khi không có mốc mới** — mở
+    trang Hồ sơ là gọi nó, mà một `set` rỗng vẫn đánh thức persist và ghi
+    đè nguyên khối tiến độ xuống localStorage (test khóa).
+  UI nói rõ đây là tỉ lệ TÍNH DỒN từ đầu khóa (nó nhích chậm — không nói
+  thì "45% → 43%" bị đọc thành "mình giậm chân"), giữ ngưỡng `MIN_SAMPLE`
+  của bảng phân tích, và vẫn hiện chiều đi XUỐNG bằng hổ phách: giấu tin
+  xấu thì tin tốt cũng hết đáng tin.
 - **Ảnh chụp tiến độ tự động (F3, khối 21.38)**: `engine/anhChup.ts` giữ
   luật thuần (khi nào chụp, bỏ bản nào), `store/anhChup.ts` giữ phần đụng
   localStorage. Ảnh nằm ở key RIÊNG `netmaster-anh-chup` — KHÔNG chui vào

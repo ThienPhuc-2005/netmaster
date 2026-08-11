@@ -9,10 +9,11 @@
 
 import { Link } from 'react-router'
 import { useId } from 'react'
-import { AlertCircle, Brain, CalendarRange, ChartNoAxesColumn, MessageSquareWarning, Target } from 'lucide-react'
+import { AlertCircle, Brain, CalendarRange, ChartNoAxesColumn, MessageSquareWarning, Target, TrendingUp } from 'lucide-react'
 import { lt } from '../../engine/ltext'
 import type { MistakeAnalysis, MistakeBucket, WeakSpot, WeekActivity } from '../../engine/mistakeLog'
 import type { ModuleMemory } from '../../engine/freshness'
+import type { DongSoSanh, LatCatThang } from '../../engine/soSanhThang'
 import type { Module, Question } from '../../engine/contentSchema'
 import type { DisputedAnswer } from '../../store/progress'
 import { useT, type TFunc } from '../../i18n'
@@ -251,6 +252,100 @@ export function MemoryMap({ rows }: { rows: MemoryRow[] }) {
                 ) : (
                   t('profile.memoryCards', { count: row.cards })
                 )}
+              </span>
+            </li>
+          )
+        })}
+      </ul>
+    </section>
+  )
+}
+
+/** Ba chữ phán cho một dòng so sánh — tra bảng TĨNH, không ghép key động. */
+const HUONG_KEY: Record<DongSoSanh['huong'], string> = {
+  tien: 'profile.thangTien',
+  ngang: 'profile.thangNgang',
+  lui: 'profile.thangLui',
+}
+
+const HUONG_MAU: Record<DongSoSanh['huong'], string> = {
+  tien: 'text-ok',
+  ngang: 'text-ink-muted',
+  lui: 'text-warn',
+}
+
+/**
+ * "So với chính mình tháng trước" (kho ý tưởng I3).
+ *
+ * Bảng phân tích ngay dưới chỉ biết HIỆN TẠI. Mục này là chiều thứ hai:
+ * cùng những dạng câu ấy, hồi đầu tháng trước bạn vấp bao nhiêu phần.
+ *
+ * Ba luật giữ cho nó không nói dối:
+ * - **Nói rõ đây là trung bình cộng dồn từ đầu khóa** — nó nhích chậm,
+ *   không biết điều đó thì người học đọc "45% → 43%" thành "tháng này
+ *   mình gần như giậm chân", trong khi có thể tháng này họ làm rất tốt.
+ * - **Chưa đủ mẫu thì không phán một chữ nào**, y hệt bảng phân tích.
+ * - **Tin xấu vẫn hiện** (hổ phách, không phải đỏ — luật 4.4): giấu
+ *   chiều đi xuống thì chiều đi lên cũng hết đáng tin.
+ */
+export function SoSanhThangCard({
+  moc,
+  rows,
+  dangCho,
+}: {
+  /** Mốc đem ra so; null = chưa có tháng nào khác để so. */
+  moc: LatCatThang | null
+  rows: DongSoSanh[]
+  /** Đã cất mốc tháng này rồi nhưng chưa có gì để so — nói một câu chờ. */
+  dangCho: boolean
+}) {
+  const t = useT()
+  if (moc === null || rows.length === 0) {
+    if (!dangCho) return null
+    return (
+      <section className="mt-6 rounded-md border border-edge bg-panel px-5 py-4">
+        <div className="flex items-center gap-2">
+          <TrendingUp size={17} aria-hidden className="shrink-0 text-accent" />
+          <h2 className="text-sm font-semibold text-ink">{t('profile.thangTitle')}</h2>
+        </div>
+        <p className="mt-2 text-xs leading-relaxed text-ink-muted">{t('profile.thangCho')}</p>
+      </section>
+    )
+  }
+
+  return (
+    <section
+      aria-labelledby="thang-title"
+      className="mt-6 flex flex-col gap-3 rounded-md border border-edge bg-panel px-5 py-4"
+    >
+      <div className="flex items-center gap-2">
+        <TrendingUp size={17} aria-hidden className="shrink-0 text-accent" />
+        <h2 id="thang-title" className="text-sm font-semibold text-ink">
+          {t('profile.thangTitle')}
+        </h2>
+      </div>
+      <p className="text-xs leading-relaxed text-ink-muted">{t('profile.thangIntro', { ngay: shortDate(moc.ngay) })}</p>
+      <ul className="flex flex-col gap-1">
+        {rows.map((row) => {
+          const truoc = Math.round(row.rateTruoc * 100)
+          const nay = Math.round(row.rateNay * 100)
+          return (
+            <li key={row.key} className="flex flex-wrap items-center gap-x-3 gap-y-1">
+              <span className="min-w-[8rem] flex-1 text-sm text-ink">{t(`profile.kind.${row.key}`)}</span>
+              <span
+                className="shrink-0 font-mono text-xs text-ink-muted"
+                role="img"
+                aria-label={t('profile.thangRowAria', {
+                  kind: t(`profile.kind.${row.key}`),
+                  truoc,
+                  nay,
+                  attempted: row.attemptedNay,
+                })}
+              >
+                {t('profile.thangDong', { truoc, nay })}
+              </span>
+              <span className={`w-32 shrink-0 text-right text-xs font-medium ${row.duMau ? HUONG_MAU[row.huong] : 'text-ink-muted'}`}>
+                {row.duMau ? t(HUONG_KEY[row.huong]) : t('profile.thangThin')}
               </span>
             </li>
           )
