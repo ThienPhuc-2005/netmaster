@@ -117,6 +117,84 @@ function HaiLoiBaMienM16() {
   )
 }
 
+function LabBaPhongM21() {
+  return (
+    <>
+      <g className="text-ink-muted">
+              <path d="M32 83 L32 57" {...isoStroke} />
+              <path d="M32 57 L110 31" {...isoStroke} />
+              <path d="M110 83 L110 57" {...isoStroke} />
+              <path d="M110 57 L110 31" {...isoStroke} />
+              <path d="M188 83 L188 57" {...isoStroke} />
+              <path d="M188 57 L110 31" {...isoStroke} />
+      </g>
+      <g className="text-ink">
+        <path d="M100.6 31 L100.6 36 L110 40.7 L110 35.7 Z" {...isoFace} />
+        <path d="M119.4 31 L119.4 36 L110 40.7 L110 35.7 Z" {...isoFace} />
+        <path d="M110 26.3 L119.4 31 L110 35.7 L100.6 31 Z" {...isoTop} />
+      </g>
+      <g className="text-ink">
+        <path d="M22.6 57 L22.6 62 L32 66.7 L32 61.7 Z" {...isoFace} />
+        <path d="M41.4 57 L41.4 62 L32 66.7 L32 61.7 Z" {...isoFace} />
+        <path d="M32 52.3 L41.4 57 L32 61.7 L22.6 57 Z" {...isoTop} />
+        <path d="M35.7 60.8 l0 3" {...isoDetail} />
+        <path d="M32 62.7 l0 3" {...isoDetail} />
+        <path d="M28.3 64.6 l0 3" {...isoDetail} />
+      </g>
+      <g className="text-ink">
+        <path d="M100.6 57 L100.6 62 L110 66.7 L110 61.7 Z" {...isoFace} />
+        <path d="M119.4 57 L119.4 62 L110 66.7 L110 61.7 Z" {...isoFace} />
+        <path d="M110 52.3 L119.4 57 L110 61.7 L100.6 57 Z" {...isoTop} />
+        <path d="M113.7 60.8 l0 3" {...isoDetail} />
+        <path d="M110 62.7 l0 3" {...isoDetail} />
+        <path d="M106.3 64.6 l0 3" {...isoDetail} />
+      </g>
+      <g className="text-ink">
+        <path d="M178.6 57 L178.6 62 L188 66.7 L188 61.7 Z" {...isoFace} />
+        <path d="M197.4 57 L197.4 62 L188 66.7 L188 61.7 Z" {...isoFace} />
+        <path d="M188 52.3 L197.4 57 L188 61.7 L178.6 57 Z" {...isoTop} />
+        <path d="M191.7 60.8 l0 3" {...isoDetail} />
+        <path d="M188 62.7 l0 3" {...isoDetail} />
+        <path d="M184.3 64.6 l0 3" {...isoDetail} />
+      </g>
+      <g className="text-ink">
+        <path d="M22.6 83 L22.6 91 L32 95.7 L32 87.7 Z" {...isoFace} />
+        <path d="M41.4 83 L41.4 91 L32 95.7 L32 87.7 Z" {...isoFace} />
+        <path d="M32 78.3 L41.4 83 L32 87.7 L22.6 83 Z" {...isoTop} />
+        <path d="M27 71.3 l10 0 l0 7 l-10 0 Z" {...isoDetail} />
+      </g>
+      <g className="text-ink">
+        <path d="M100.6 83 L100.6 91 L110 95.7 L110 87.7 Z" {...isoFace} />
+        <path d="M119.4 83 L119.4 91 L110 95.7 L110 87.7 Z" {...isoFace} />
+        <path d="M110 78.3 L119.4 83 L110 87.7 L100.6 83 Z" {...isoTop} />
+        <path d="M105 71.3 l10 0 l0 7 l-10 0 Z" {...isoDetail} />
+      </g>
+      <g className="text-ink">
+        <path d="M178.6 83 L178.6 91 L188 95.7 L188 87.7 Z" {...isoFace} />
+        <path d="M197.4 83 L197.4 91 L188 95.7 L188 87.7 Z" {...isoFace} />
+        <path d="M188 78.3 L197.4 83 L188 87.7 L178.6 83 Z" {...isoTop} />
+        <path d="M183 71.3 l10 0 l0 7 l-10 0 Z" {...isoDetail} />
+      </g>
+      <g className="text-ink">
+        <rect x="95.1" y="42.1" width="29.8" height="7.4" rx="1.5" {...isoPlate} />
+        <text x="110" y="47.7" textAnchor="middle" {...isoLabel}>router</text>
+        <rect x="19.3" y="68.1" width="25.5" height="7.4" rx="1.5" {...isoPlate} />
+        <text x="32" y="73.7" textAnchor="middle" {...isoLabel}>sw KD</text>
+        <rect x="97.3" y="68.1" width="25.5" height="7.4" rx="1.5" {...isoPlate} />
+        <text x="110" y="73.7" textAnchor="middle" {...isoLabel}>sw KT</text>
+        <rect x="175.3" y="68.1" width="25.5" height="7.4" rx="1.5" {...isoPlate} />
+        <text x="188" y="73.7" textAnchor="middle" {...isoLabel}>sw PK</text>
+        <rect x="8.5" y="97.1" width="47" height="7.4" rx="1.5" {...isoPlate} />
+        <text x="32" y="102.7" textAnchor="middle" {...isoLabel}>kinh doanh</text>
+        <rect x="90.8" y="97.1" width="38.4" height="7.4" rx="1.5" {...isoPlate} />
+        <text x="110" y="102.7" textAnchor="middle" {...isoLabel}>kỹ thuật</text>
+        <rect x="162.4" y="97.1" width="51.3" height="7.4" rx="1.5" {...isoPlate} />
+        <text x="188" y="102.7" textAnchor="middle" {...isoLabel}>phòng khách</text>
+      </g>
+    </>
+  )
+}
+
 function LabDuongDuPhongM15() {
   return (
     <>
@@ -1012,6 +1090,7 @@ function VongLapStpM15() {
 export const ISOMETRIC_SCENES: Record<string, () => React.ReactNode> = {
   'vis-iso-chi-nhanh-m21': ChiNhanhM21,
   'vis-iso-hai-loi-ba-mien-m16': HaiLoiBaMienM16,
+  'vis-iso-lab-ba-phong-m21': LabBaPhongM21,
   'vis-iso-lab-duong-du-phong-m15': LabDuongDuPhongM15,
   'vis-iso-lab-duong-du-phong-m15-loi-giai': LabDuongDuPhongM15LoiGiai,
   'vis-iso-lab-mang-nha-m7': LabMangNhaM7,

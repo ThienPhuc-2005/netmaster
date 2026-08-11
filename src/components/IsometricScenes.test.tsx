@@ -262,9 +262,10 @@ describe('hình isometric sinh từ bản vẽ', () => {
     )
     expect(coHinh.length, 'phải có ít nhất một bài kết bằng hình thành quả').toBeGreaterThan(0)
     for (const [, lessonId, visualId] of coHinh) {
-      expect(visualId, `${lessonId}: hình Tổng kết phải là view lời giải của một bản vẽ lab`).toMatch(
-        /^vis-iso-lab-.+-loi-giai$/,
-      )
+      // Luật là "hình sinh từ LAB của chính bài", không phải "phải có đuôi
+      // -loi-giai": lab chặng 1 của M21 là bài cắt địa chỉ, dây không đổi
+      // giữa đề bài và lời giải nên bản vẽ chỉ có một view.
+      expect(visualId, `${lessonId}: hình Tổng kết phải sinh từ bản vẽ lab`).toMatch(/^vis-iso-lab-/)
       expect(hasVisual(visualId), `${lessonId}: "${visualId}" chưa có hình`).toBe(true)
     }
   })

@@ -3,12 +3,12 @@
 ## ĐỌC 30 GIÂY: ĐANG ĐỨNG ĐÂU, LÀM GÌ TIẾP (cập nhật 2026-08-11)
 
 **App hiện có ĐỦ 21/21 MODULE NỘI DUNG + MÀN TỐT NGHIỆP** (M1-12 nhập
-môn, M13-17 Phần D, M18-21 Phần E), 1528 test xanh, typecheck sạch,
+môn, M13-17 Phần D, M18-21 Phần E), 1537 test xanh, typecheck sạch,
 build qua. **Toàn bộ biên bản hội đồng trung cấp đã XỬ XONG (08-10):
 15/15 việc mục 6 (khối 20.2, commit `1d04c0b`) + trọn LƯỢT DỌN 52 phát
 hiện P2 mục 5 (khối 20.3).** Nội dung và engine không còn việc nào treo;
 các khối gần đây đều là ý lấy từ kho `Y-TUONG.md`.
-Việc kế tiếp là của CHỦ DỰ ÁN: ra lệnh commit khối 21.28, và tuyển người
+Việc kế tiếp là của CHỦ DỰ ÁN: ra lệnh commit khối 21.29, và tuyển người
 cho các buổi test người thật (hai dòng DoD còn treo đều cần NGƯỜI).
 
 **Toàn bộ ENGINE của Phần D đã xong.** Không còn engine nào phải viết cho
@@ -29,7 +29,22 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (19) M21 capstone + màn tốt nghiệp | XONG |
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
-**KHỐI MỚI NHẤT — 21.28 (08-11), đang ở working tree chờ lệnh commit:**
+**KHỐI MỚI NHẤT — 21.29 (08-11), đang ở working tree chờ lệnh commit:**
+hình kết cho M21 chặng 1 — chỗ cuối cùng của mạch "bài kết bằng thành quả".
+- `m21-bai-1` giờ kết bằng sơ đồ ba phòng của chi nhánh: router trên, ba
+  switch giữa, ba máy dưới. **Bảy nút mà vẫn thoáng**, vì bố cục là cây ba
+  nhánh đều và nhãn ngắn — trần 5-6 nút hóa ra là trần của NHÃN, không phải
+  của nút.
+- Bản vẽ này chỉ có MỘT view, khác bốn lab kia: lab chặng 1 là bài cắt địa
+  chỉ nên đề bài và lời giải cùng một bộ dây; gỡ nét mục tiêu xong hai view
+  trùng khít, giữ cả hai chỉ là hai bản sao. Cổng chặn màn Tổng kết vì thế
+  đổi từ "phải có đuôi -loi-giai" sang "phải sinh từ bản vẽ lab của bài".
+- **Năm bài có lab thì cả năm đã có hình kết** (M4, M7, M15, M16, M21).
+- 1537 test xanh, typecheck sạch, build qua, content:review render lại.
+  Kiểm browser: 18 hình isometric, 0 nhãn đè nhau, 0 hình tràn viewBox.
+  Seed đã xóa.
+
+**KHỐI TRƯỚC — 21.28 (08-11), đã commit `a926904`:**
 hai lab còn lại chưa có hình: M4 và M7.
 - `m4-bai-2` (sổ nhớ mặt của switch) và `m7-bai-4` (lắp lại mạng nhà mình)
   giờ kết bằng chính sơ đồ người học vừa nối xong trong lab. Bản vẽ M7 lấy

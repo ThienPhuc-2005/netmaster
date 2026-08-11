@@ -1,0 +1,217 @@
+{
+  "title": "Lab ba phòng của chi nhánh M21 (chặng 1)",
+  "nguon": {
+    "loai": "lab",
+    "cauId": "m21-b1-prac-lab",
+    "moduleId": "module-21"
+  },
+  "description": "CHÉP TỪ BẢN NHÁP máy dựng, rút gọn nhãn. Giữ ĐÚNG MỘT view: lab chặng 1 là bài CẮT ĐỊA CHỈ, dây không đổi giữa đề bài và lời giải — bỏ nét mục tiêu đi thì hai view trùng khít, giữ cả hai chỉ là hai bản sao. Gắn vào màn Tổng kết m21-bai-1.",
+  "icons": [],
+  "colors": [],
+  "items": [
+    {
+      "id": "pc-kd",
+      "name": "PC-KinhDoanh",
+      "description": "kinh doanh",
+      "icon": "desktop"
+    },
+    {
+      "id": "pc-kt",
+      "name": "PC-KyThuat",
+      "description": "kỹ thuật",
+      "icon": "desktop"
+    },
+    {
+      "id": "pc-kh",
+      "name": "PC-PhongKhach",
+      "description": "phòng khách",
+      "icon": "desktop"
+    },
+    {
+      "id": "sw-kd",
+      "name": "SW-KinhDoanh",
+      "description": "sw KD",
+      "icon": "switch-module"
+    },
+    {
+      "id": "sw-kt",
+      "name": "SW-KyThuat",
+      "description": "sw KT",
+      "icon": "switch-module"
+    },
+    {
+      "id": "sw-kh",
+      "name": "SW-PhongKhach",
+      "description": "sw PK",
+      "icon": "switch-module"
+    },
+    {
+      "id": "r-cn",
+      "name": "R-ChiNhanh",
+      "description": "router",
+      "icon": "router"
+    }
+  ],
+  "views": [
+    {
+      "id": "de-bai",
+      "name": "Đề bài",
+      "items": [
+        {
+          "id": "pc-kd",
+          "tile": {
+            "x": -1,
+            "y": 5
+          }
+        },
+        {
+          "id": "pc-kt",
+          "tile": {
+            "x": 2,
+            "y": 2
+          }
+        },
+        {
+          "id": "pc-kh",
+          "tile": {
+            "x": 5,
+            "y": -1
+          }
+        },
+        {
+          "id": "sw-kd",
+          "tile": {
+            "x": -3,
+            "y": 3
+          }
+        },
+        {
+          "id": "sw-kt",
+          "tile": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        {
+          "id": "sw-kh",
+          "tile": {
+            "x": 3,
+            "y": -3
+          }
+        },
+        {
+          "id": "r-cn",
+          "tile": {
+            "x": -2,
+            "y": -2
+          }
+        }
+      ],
+      "connectors": [
+        {
+          "id": "day-1",
+          "anchors": [
+            {
+              "id": "w1-a",
+              "ref": {
+                "item": "pc-kd"
+              }
+            },
+            {
+              "id": "w1-b",
+              "ref": {
+                "item": "sw-kd"
+              }
+            }
+          ]
+        },
+        {
+          "id": "day-2",
+          "anchors": [
+            {
+              "id": "w2-a",
+              "ref": {
+                "item": "sw-kd"
+              }
+            },
+            {
+              "id": "w2-b",
+              "ref": {
+                "item": "r-cn"
+              }
+            }
+          ]
+        },
+        {
+          "id": "day-3",
+          "anchors": [
+            {
+              "id": "w3-a",
+              "ref": {
+                "item": "pc-kt"
+              }
+            },
+            {
+              "id": "w3-b",
+              "ref": {
+                "item": "sw-kt"
+              }
+            }
+          ]
+        },
+        {
+          "id": "day-4",
+          "anchors": [
+            {
+              "id": "w4-a",
+              "ref": {
+                "item": "sw-kt"
+              }
+            },
+            {
+              "id": "w4-b",
+              "ref": {
+                "item": "r-cn"
+              }
+            }
+          ]
+        },
+        {
+          "id": "day-5",
+          "anchors": [
+            {
+              "id": "w5-a",
+              "ref": {
+                "item": "pc-kh"
+              }
+            },
+            {
+              "id": "w5-b",
+              "ref": {
+                "item": "sw-kh"
+              }
+            }
+          ]
+        },
+        {
+          "id": "day-6",
+          "anchors": [
+            {
+              "id": "w6-a",
+              "ref": {
+                "item": "sw-kh"
+              }
+            },
+            {
+              "id": "w6-b",
+              "ref": {
+                "item": "r-cn"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "fitToScreen": true
+}

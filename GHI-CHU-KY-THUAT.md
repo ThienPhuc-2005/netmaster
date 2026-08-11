@@ -678,6 +678,15 @@ chỉ bỏ điều kiện "học hết bài trước đã".
     trên, máy trạm dưới), người phải kéo lại rồi mới chép sang — chép sang
     xong thì file đó là của người, script không đụng nữa. Ghi thẳng là mỗi
     lần chạy lại xóa sạch công kéo thả.
+  - **Lab đổi DÂY thì bản vẽ hai view, lab đổi ĐỊA CHỈ thì một view** (khối
+    21.29): lab chặng 1 của M21 là bài cắt dải địa chỉ — `initial` và
+    `solution` có cùng bộ dây, nên sau khi gỡ nét mục tiêu thì hai view
+    trùng khít và giữ cả hai chỉ là hai bản sao (test "nhiều view phải ra
+    hình khác nhau" bắt đúng chỗ này). Luật của hình Tổng kết vì thế là
+    "sinh từ bản vẽ LAB của chính bài", không phải "phải có đuôi -loi-giai".
+  - **Trần 5-6 nút là trần của NHÃN, không phải của nút**: bản vẽ M21 ba
+    phòng có 7 nút mà vẫn thoáng, vì bố cục là cây ba nhánh đều và nhãn
+    ngắn ("sw KD"). Đông nút mà nhãn dài mới là chỗ vỡ.
   - **`summary.visualId` — hình THÀNH QUẢ ở màn tổng kết (khối 21.25)**:
     tùy chọn, chỉ gắn cho bài kết bằng một cái người học vừa DỰNG ra (lab).
     Bài không dựng gì mà treo hình vào đó thì chỉ là trang trí. Hiện có ở
