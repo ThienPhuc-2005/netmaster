@@ -11,6 +11,7 @@ import { join } from 'node:path'
 import { afterEach, describe, expect, it } from 'vitest'
 import { cleanup, render } from '@testing-library/react'
 import { ConceptVisual, hasVisual } from './ConceptVisual'
+import { loadModules } from '../content'
 
 afterEach(cleanup)
 
@@ -77,6 +78,25 @@ describe('hình isometric sinh từ bản vẽ', () => {
     const svg = container.querySelector('svg')!
     expect(svg.getAttribute('viewBox')).toBe('0 0 220 130')
     expect(svg.getAttribute('aria-label')).toBe('hình thử')
+  })
+
+  it('hook chặng 2 của M21 dùng hình hiện trường, không dùng lại hình của màn Dạy', () => {
+    // Hai màn của CÙNG một bài mà chung một hình thì hook mất việc: mở bài
+    // ra đã thấy đúng cái hình lát nữa sẽ gặp lại.
+    const bai2 = loadModules()
+      .find((m) => m.id === 'module-21')!
+      .lessons.find((l) => l.id === 'm21-bai-2')!
+    const hookId = bai2.steps[0].visualId!
+    const teachId = bai2.steps[2].screens[0]!.visualId
+
+    const hook = render(<ConceptVisual visualId={hookId} title="hook" />).container.innerHTML
+    cleanup()
+    const teach = render(<ConceptVisual visualId={teachId} title="teach" />).container.innerHTML
+
+    expect(hook).not.toBe(teach)
+    expect(hook).toContain('máy chủ')
+    expect(hook).toContain('switch 1')
+    expect(hook).toContain('kinh doanh')
   })
 
   it.each(files)('%s: không có màu cứng — hình đổi theo nền tối/sáng', (file) => {

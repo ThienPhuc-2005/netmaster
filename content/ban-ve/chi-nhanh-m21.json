@@ -1,63 +1,54 @@
 {
-  "title": "Chi nhánh mới nối về trụ sở (M21 chặng 2)",
+  "title": "Đường đi câm của máy kinh doanh (M21 chặng 2)",
+  "description": "Hook bài m21-bai-2. Vẽ ĐÚNG hiện trường lời bài kể: dây đã nối đủ, đèn WAN đã sáng — cái hỏng nằm trong cấu hình chứ không nằm ở sợi dây nào, nên hình KHÔNG được vẽ chỗ đứt. Năm nút là trần dễ đọc của khung 220x130.",
   "icons": [],
   "colors": [],
   "items": [
-    { "id": "tru-so", "name": "Trụ sở", "description": "trụ sở", "icon": "office" },
-    { "id": "may-chu-ke-toan", "name": "Máy chủ kế toán", "description": "máy chủ", "icon": "server" },
+    { "id": "may-chu-ke-toan", "name": "Máy chủ kế toán ở trụ sở", "description": "máy chủ", "icon": "server" },
     { "id": "router-cn", "name": "Router chi nhánh", "description": "router", "icon": "router" },
-    { "id": "switch-cn", "name": "Switch chi nhánh", "description": "switch", "icon": "switch-module" },
-    { "id": "pc-kinh-doanh", "name": "Máy kinh doanh", "description": "kinh doanh", "icon": "desktop" },
-    { "id": "pc-ke-toan", "name": "Máy kế toán", "description": "kế toán", "icon": "desktop" }
+    { "id": "switch-1", "name": "Switch tầng dưới", "description": "switch 1", "icon": "switch-module" },
+    { "id": "switch-2", "name": "Switch tầng trên", "description": "switch 2", "icon": "switch-module" },
+    { "id": "pc-kinh-doanh", "name": "Máy kinh doanh", "description": "kinh doanh", "icon": "desktop" }
   ],
   "views": [
     {
       "id": "view-chinh",
-      "name": "Chi nhánh",
+      "name": "Đường đi câm",
       "items": [
-        { "id": "tru-so", "tile": { "x": -4, "y": 0 } },
-        { "id": "may-chu-ke-toan", "tile": { "x": -6, "y": 0 } },
-        { "id": "router-cn", "tile": { "x": 0, "y": 0 } },
-        { "id": "switch-cn", "tile": { "x": 2, "y": 0 } },
-        { "id": "pc-kinh-doanh", "tile": { "x": 4, "y": -2 } },
-        { "id": "pc-ke-toan", "tile": { "x": 4, "y": 2 } }
+        { "id": "may-chu-ke-toan", "tile": { "x": -5, "y": 3 } },
+        { "id": "router-cn", "tile": { "x": -2, "y": 2 } },
+        { "id": "switch-1", "tile": { "x": -1, "y": -1 } },
+        { "id": "switch-2", "tile": { "x": 2, "y": -2 } },
+        { "id": "pc-kinh-doanh", "tile": { "x": 3, "y": -5 } }
       ],
       "connectors": [
         {
           "id": "wan",
           "description": "WAN",
           "anchors": [
-            { "id": "a1", "ref": { "item": "tru-so" } },
+            { "id": "a1", "ref": { "item": "may-chu-ke-toan" } },
             { "id": "a2", "ref": { "item": "router-cn" } }
           ]
         },
         {
-          "id": "tru-so-may-chu",
+          "id": "router-sw1",
           "anchors": [
-            { "id": "b1", "ref": { "item": "tru-so" } },
-            { "id": "b2", "ref": { "item": "may-chu-ke-toan" } }
+            { "id": "b1", "ref": { "item": "router-cn" } },
+            { "id": "b2", "ref": { "item": "switch-1" } }
           ]
         },
         {
-          "id": "trunk",
-          "description": "trunk",
+          "id": "sw1-sw2",
           "anchors": [
-            { "id": "c1", "ref": { "item": "router-cn" } },
-            { "id": "c2", "ref": { "item": "switch-cn" } }
+            { "id": "c1", "ref": { "item": "switch-1" } },
+            { "id": "c2", "ref": { "item": "switch-2" } }
           ]
         },
         {
-          "id": "access-kd",
+          "id": "sw2-pc",
           "anchors": [
-            { "id": "d1", "ref": { "item": "switch-cn" } },
+            { "id": "d1", "ref": { "item": "switch-2" } },
             { "id": "d2", "ref": { "item": "pc-kinh-doanh" } }
-          ]
-        },
-        {
-          "id": "access-kt",
-          "anchors": [
-            { "id": "e1", "ref": { "item": "switch-cn" } },
-            { "id": "e2", "ref": { "item": "pc-ke-toan" } }
           ]
         }
       ]

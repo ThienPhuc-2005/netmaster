@@ -4534,6 +4534,21 @@ function VerifyLadder({ title }: { title?: string }) {
   )
 }
 
+/**
+ * Hình isometric sinh từ bản vẽ FossFLOW (`content/ban-ve/*.json`, script
+ * `npm run visuals:isometric`). File sinh ra chỉ trả về RUỘT hình, nên bọc
+ * Frame ở đây — nhờ vậy hình máy sinh và hình vẽ tay dùng chung một cái
+ * khung, một cách đặt nhãn aria, một kiểu viền.
+ *
+ * Bản vẽ đổi id thì đây đỏ ngay ở test, không im lặng rơi về hình chung:
+ * `IsometricScenes.test` đối chiếu file sinh ra với chính bản vẽ nguồn.
+ */
+function IsoScene({ id, title }: { id: string; title?: string }) {
+  const Scene = ISOMETRIC_SCENES[id]
+  if (Scene === undefined) return <GenericMail title={title} />
+  return <Frame title={title}>{Scene()}</Frame>
+}
+
 const REGISTRY: Record<string, VisualComponent> = {
   // Module 1 — bưu điện
   'vis-phong-bi-thu': EnvelopePackets,
@@ -4796,16 +4811,21 @@ const REGISTRY: Record<string, VisualComponent> = {
   'vis-quy-trinh-4-buoc': FourStepProcess,
   'vis-hook-thung-thiet-bi': FourStepProcess,
   'vis-kiem-chung-tung-buoc': VerifyLadder,
-  'vis-hook-oc-dao': VerifyLadder,
+  // Hook chặng 2 lấy hình HIỆN TRƯỜNG (sinh từ bản vẽ, xem cuối REGISTRY)
+  // thay cho cái thang kiểm chứng. Lý do: bản cũ cho hook và màn Dạy của
+  // CÙNG bài dùng chung một hình, tức là mở bài ra thấy đúng cái hình lát
+  // nữa sẽ gặp lại — hook mất việc. Lời hook tả một hiện trường cụ thể
+  // (máy chủ ở trụ sở, WAN đã sáng, hai switch nối nhau) mà trước giờ
+  // người học phải tự dựng trong đầu; giờ nó nằm sẵn trước mắt.
+  'vis-hook-oc-dao': (p) => <IsoScene id="vis-iso-chi-nhanh-m21" {...p} />,
   'vis-hook-yeu-cau-sep': FourStepProcess,
   'vis-hook-hai-benh-chong': VerifyLadder,
-  // Hình isometric sinh từ bản vẽ FossFLOW (content/ban-ve/*.json). Chúng
-  // chỉ trả về RUỘT hình nên bọc Frame ở đây — nhờ vậy hình máy sinh và
-  // hình vẽ tay dùng chung một cái khung, một cách đặt nhãn aria.
+  // Mỗi bản vẽ tự có một visualId `vis-iso-<tên-file>` để duyệt được trên
+  // /design mà không cần nội dung nào trỏ tới nó.
   ...Object.fromEntries(
-    Object.entries(ISOMETRIC_SCENES).map(([id, Scene]) => [
+    Object.keys(ISOMETRIC_SCENES).map((id) => [
       id,
-      ({ title }: { title?: string }) => <Frame title={title}>{Scene()}</Frame>,
+      ({ title }: { title?: string }) => <IsoScene id={id} title={title} />,
     ]),
   ),
 }

@@ -118,22 +118,74 @@ function buildScene(model) {
     return [{ from, to, label: c.description }]
   })
 
-  // Co giãn cho vừa khung: lấy hộp bao của mọi khối (kèm chỗ cho nhãn dưới
-  // chân) rồi ép vào 220x130. Không đoán hệ số — hình nào cũng vừa khít.
+  // Co giãn cho vừa khung 220x130 — DÒ dần chứ không tính một phát.
+  //
+  // Lý do phải dò: khối thì co theo `scale`, còn NHÃN thì không (cỡ chữ 7
+  // cố định để còn đọc được). Bản đầu chỉ đo hộp bao của khối rồi chia,
+  // thế là cái đế nhãn "kinh doanh" ở nút ngoài cùng thò ra tận x=226 —
+  // tràn viewBox, đúng thứ luật hình cấm. Hai đơn vị không cùng co giãn
+  // thì không có công thức đóng; hạ dần 3% rồi đo lại là xong, và bao giờ
+  // cũng dừng vì nhãn có bề ngang hữu hạn.
   const LABEL_H = 8
-  const xs = nodes.flatMap((n) => [n.x - BOX_W / 2, n.x + BOX_W / 2])
-  const ys = nodes.flatMap((n) => [n.y - BOX_H / 2 - (n.face === 'screen' ? 8 : 0), n.y + BOX_H / 2 + n.depth + LABEL_H])
-  const minX = Math.min(...xs)
-  const maxX = Math.max(...xs)
-  const minY = Math.min(...ys)
-  const maxY = Math.max(...ys)
-  const scale = Math.min((VIEW_W - PAD * 2) / (maxX - minX), (VIEW_H - PAD * 2) / (maxY - minY), 1)
-  const offX = (VIEW_W - (maxX - minX) * scale) / 2 - minX * scale
-  const offY = (VIEW_H - (maxY - minY) * scale) / 2 - minY * scale
-  const tx = (v) => round(v * scale + offX)
-  const ty = (v) => round(v * scale + offY)
+  const boxXs = nodes.flatMap((n) => [n.x - BOX_W / 2, n.x + BOX_W / 2])
+  const boxYs = nodes.flatMap((n) => [
+    n.y - BOX_H / 2 - (n.face === 'screen' ? 8 : 0),
+    n.y + BOX_H / 2 + n.depth + LABEL_H,
+  ])
+  const minX = Math.min(...boxXs)
+  const maxX = Math.max(...boxXs)
+  const minY = Math.min(...boxYs)
+  const maxY = Math.max(...boxYs)
 
-  return { nodes, links, scale, tx, ty }
+  let scale = Math.min((VIEW_W - PAD * 2) / (maxX - minX), (VIEW_H - PAD * 2) / (maxY - minY), 1)
+  let fit = null
+  for (let i = 0; i < 40; i += 1) {
+    const offX = (VIEW_W - (maxX - minX) * scale) / 2 - minX * scale
+    const offY = (VIEW_H - (maxY - minY) * scale) / 2 - minY * scale
+    const tx = (v) => v * scale + offX
+    const ty = (v) => v * scale + offY
+
+    // Mọi thứ SẼ được vẽ, đo ở tọa độ cuối cùng: khối, nhãn nút, nhãn dây.
+    const xs = []
+    const ys = []
+    for (const n of nodes) {
+      const cx = tx(n.x)
+      const cy = ty(n.y)
+      const depth = n.depth * scale
+      xs.push(cx - (BOX_W / 2) * scale, cx + (BOX_W / 2) * scale)
+      ys.push(cy - (BOX_H / 2) * scale - (n.face === 'screen' ? 7 : 0), cy + (BOX_H / 2) * scale + depth)
+      const ly = cy + (BOX_H / 2) * scale + depth + 7
+      const lw = labelWidth(n.label)
+      xs.push(cx - lw / 2, cx + lw / 2)
+      ys.push(ly - 5.6, ly + 1.8)
+    }
+    for (const l of links) {
+      if (l.label === undefined) continue
+      const cx = (tx(l.from.x) + tx(l.to.x)) / 2
+      const cy = (ty(l.from.y) + ty(l.to.y)) / 2 - 1
+      const lw = labelWidth(l.label)
+      xs.push(cx - lw / 2, cx + lw / 2)
+      ys.push(cy - 5.6, cy + 1.8)
+    }
+
+    const lo = { x: Math.min(...xs), y: Math.min(...ys) }
+    const hi = { x: Math.max(...xs), y: Math.max(...ys) }
+    if (lo.x >= 0 && lo.y >= 0 && hi.x <= VIEW_W && hi.y <= VIEW_H) {
+      fit = { scale, tx: (v) => round(tx(v)), ty: (v) => round(ty(v)) }
+      break
+    }
+    scale *= 0.97
+  }
+  if (fit === null) throw new Error('Không ép được bản vẽ vào khung 220x130 — bớt nút hoặc rút ngắn nhãn')
+
+  return { nodes, links, scale: fit.scale, tx: fit.tx, ty: fit.ty }
+}
+
+/** Bề ngang cái đế nhãn — dùng chung cho lúc DÒ khung và lúc SINH mã. */
+function labelWidth(text) {
+  // 4,3 px/ký tự ở cỡ chữ 7 của font mono — đo trên browser thật, không
+  // đoán: hệ số 3,7 của bản đầu làm đế hụt so với chữ "kinh doanh".
+  return round(text.length * 4.3 + 4)
 }
 
 /**
@@ -145,9 +197,7 @@ function buildScene(model) {
  * và mỗi nhãn kê một mảnh nền màu panel để nét chui xuống dưới.
  */
 function labelJsx(cx, cy, text, indent) {
-  // 4,3 px/ký tự ở cỡ chữ 7 của font mono — đo trên browser thật, không
-  // đoán: hệ số 3,7 của bản đầu làm đế hụt so với chữ "kinh doanh".
-  const w = round(text.length * 4.3 + 4)
+  const w = labelWidth(text)
   const pad = ' '.repeat(indent)
   return [
     `${pad}<rect x="${round(cx - w / 2)}" y="${round(cy - 5.6)}" width="${w}" height="7.4" rx="1.5" {...isoPlate} />`,

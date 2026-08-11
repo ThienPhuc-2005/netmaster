@@ -21,69 +21,58 @@ function ChiNhanhM21() {
   return (
     <>
       <g className="text-ink-muted">
-        <path d="M58 31 L110 57" {...isoStroke} />
-        <path d="M58 31 L32 18" {...isoStroke} />
-        <path d="M110 57 L136 70" {...isoStroke} />
-        <path d="M136 70 L188 70" {...isoStroke} />
-        <path d="M136 70 L136 96" {...isoStroke} />
+        <path d="M25.4 57.7 L67.7 68.3" {...isoStroke} />
+        <path d="M67.7 68.3 L110 57.7" {...isoStroke} />
+        <path d="M110 57.7 L152.3 68.3" {...isoStroke} />
+        <path d="M152.3 68.3 L194.6 57.7" {...isoStroke} />
       </g>
       <g className="text-ink">
-        <path d="M22.6 18 L22.6 29 L32 33.7 L32 22.7 Z" {...isoFace} />
-        <path d="M41.4 18 L41.4 29 L32 33.7 L32 22.7 Z" {...isoFace} />
-        <path d="M32 13.3 L41.4 18 L32 22.7 L22.6 18 Z" {...isoTop} />
-        <path d="M24.6 22.7 L30 25.3" {...isoDetail} />
-        <path d="M24.6 26.3 L30 29" {...isoDetail} />
+        <path d="M17.8 57.7 L17.8 66.6 L25.4 70.4 L25.4 61.5 Z" {...isoFace} />
+        <path d="M33 57.7 L33 66.6 L25.4 70.4 L25.4 61.5 Z" {...isoFace} />
+        <path d="M25.4 53.9 L33 57.7 L25.4 61.5 L17.8 57.7 Z" {...isoTop} />
+        <path d="M19.8 61.7 L23.4 63.5" {...isoDetail} />
+        <path d="M19.8 64.6 L23.4 66.4" {...isoDetail} />
       </g>
       <g className="text-ink">
-        <path d="M48.6 31 L48.6 46 L58 50.7 L58 35.7 Z" {...isoFace} />
-        <path d="M67.4 31 L67.4 46 L58 50.7 L58 35.7 Z" {...isoFace} />
-        <path d="M58 26.3 L67.4 31 L58 35.7 L48.6 31 Z" {...isoTop} />
-        <path d="M50.6 35.8 L56 38.4" {...isoDetail} />
-        <path d="M50.6 39.5 L56 42.2" {...isoDetail} />
-        <path d="M50.6 43.3 L56 45.9" {...isoDetail} />
+        <path d="M102.4 57.7 L102.4 61.8 L110 65.6 L110 61.5 Z" {...isoFace} />
+        <path d="M117.6 57.7 L117.6 61.8 L110 65.6 L110 61.5 Z" {...isoFace} />
+        <path d="M110 53.9 L117.6 57.7 L110 61.5 L102.4 57.7 Z" {...isoTop} />
+        <path d="M113 61 l0 2.1" {...isoDetail} />
+        <path d="M110 62.5 l0 2.1" {...isoDetail} />
+        <path d="M107 64 l0 2.1" {...isoDetail} />
       </g>
       <g className="text-ink">
-        <path d="M100.6 57 L100.6 62 L110 66.7 L110 61.7 Z" {...isoFace} />
-        <path d="M119.4 57 L119.4 62 L110 66.7 L110 61.7 Z" {...isoFace} />
-        <path d="M110 52.3 L119.4 57 L110 61.7 L100.6 57 Z" {...isoTop} />
+        <path d="M187 57.7 L187 64.2 L194.6 68 L194.6 61.5 Z" {...isoFace} />
+        <path d="M202.2 57.7 L202.2 64.2 L194.6 68 L194.6 61.5 Z" {...isoFace} />
+        <path d="M194.6 53.9 L202.2 57.7 L194.6 61.5 L187 57.7 Z" {...isoTop} />
+        <path d="M189.6 46.9 l10 0 l0 7 l-10 0 Z" {...isoDetail} />
       </g>
       <g className="text-ink">
-        <path d="M126.6 70 L126.6 75 L136 79.7 L136 74.7 Z" {...isoFace} />
-        <path d="M145.4 70 L145.4 75 L136 79.7 L136 74.7 Z" {...isoFace} />
-        <path d="M136 65.3 L145.4 70 L136 74.7 L126.6 70 Z" {...isoTop} />
-        <path d="M139.7 73.8 l0 3" {...isoDetail} />
-        <path d="M136 75.7 l0 3" {...isoDetail} />
-        <path d="M132.3 77.6 l0 3" {...isoDetail} />
+        <path d="M60.1 68.3 L60.1 72.4 L67.7 76.2 L67.7 72.1 Z" {...isoFace} />
+        <path d="M75.3 68.3 L75.3 72.4 L67.7 76.2 L67.7 72.1 Z" {...isoFace} />
+        <path d="M67.7 64.5 L75.3 68.3 L67.7 72.1 L60.1 68.3 Z" {...isoTop} />
       </g>
       <g className="text-ink">
-        <path d="M178.6 70 L178.6 78 L188 82.7 L188 74.7 Z" {...isoFace} />
-        <path d="M197.4 70 L197.4 78 L188 82.7 L188 74.7 Z" {...isoFace} />
-        <path d="M188 65.3 L197.4 70 L188 74.7 L178.6 70 Z" {...isoTop} />
-        <path d="M183 58.3 l10 0 l0 7 l-10 0 Z" {...isoDetail} />
+        <path d="M144.7 68.3 L144.7 72.4 L152.3 76.2 L152.3 72.1 Z" {...isoFace} />
+        <path d="M159.9 68.3 L159.9 72.4 L152.3 76.2 L152.3 72.1 Z" {...isoFace} />
+        <path d="M152.3 64.5 L159.9 68.3 L152.3 72.1 L144.7 68.3 Z" {...isoTop} />
+        <path d="M155.3 71.6 l0 2.1" {...isoDetail} />
+        <path d="M152.3 73.1 l0 2.1" {...isoDetail} />
+        <path d="M149.3 74.6 l0 2.1" {...isoDetail} />
       </g>
       <g className="text-ink">
-        <path d="M126.6 96 L126.6 104 L136 108.7 L136 100.7 Z" {...isoFace} />
-        <path d="M145.4 96 L145.4 104 L136 108.7 L136 100.7 Z" {...isoFace} />
-        <path d="M136 91.3 L145.4 96 L136 100.7 L126.6 96 Z" {...isoTop} />
-        <path d="M131 84.3 l10 0 l0 7 l-10 0 Z" {...isoDetail} />
-      </g>
-      <g className="text-ink">
-        <rect x="75.6" y="37.4" width="16.9" height="7.4" rx="1.5" {...isoPlate} />
-        <text x="84" y="43" textAnchor="middle" {...isoLabel}>WAN</text>
-        <rect x="110.3" y="56.9" width="25.5" height="7.4" rx="1.5" {...isoPlate} />
-        <text x="123" y="62.5" textAnchor="middle" {...isoLabel}>trunk</text>
-        <rect x="15" y="35.1" width="34.1" height="7.4" rx="1.5" {...isoPlate} />
-        <text x="32" y="40.7" textAnchor="middle" {...isoLabel}>máy chủ</text>
-        <rect x="43.1" y="52.1" width="29.8" height="7.4" rx="1.5" {...isoPlate} />
-        <text x="58" y="57.7" textAnchor="middle" {...isoLabel}>trụ sở</text>
-        <rect x="95.1" y="68.1" width="29.8" height="7.4" rx="1.5" {...isoPlate} />
-        <text x="110" y="73.7" textAnchor="middle" {...isoLabel}>router</text>
-        <rect x="121.1" y="81.1" width="29.8" height="7.4" rx="1.5" {...isoPlate} />
-        <text x="136" y="86.7" textAnchor="middle" {...isoLabel}>switch</text>
-        <rect x="164.5" y="84.1" width="47" height="7.4" rx="1.5" {...isoPlate} />
-        <text x="188" y="89.7" textAnchor="middle" {...isoLabel}>kinh doanh</text>
-        <rect x="119" y="110.1" width="34.1" height="7.4" rx="1.5" {...isoPlate} />
-        <text x="136" y="115.7" textAnchor="middle" {...isoLabel}>kế toán</text>
+        <rect x="38.2" y="56.4" width="16.9" height="7.4" rx="1.5" {...isoPlate} />
+        <text x="46.6" y="62" textAnchor="middle" {...isoLabel}>WAN</text>
+        <rect x="8.3" y="71.8" width="34.1" height="7.4" rx="1.5" {...isoPlate} />
+        <text x="25.4" y="77.4" textAnchor="middle" {...isoLabel}>máy chủ</text>
+        <rect x="90.8" y="67" width="38.4" height="7.4" rx="1.5" {...isoPlate} />
+        <text x="110" y="72.6" textAnchor="middle" {...isoLabel}>switch 1</text>
+        <rect x="171.1" y="69.4" width="47" height="7.4" rx="1.5" {...isoPlate} />
+        <text x="194.6" y="75" textAnchor="middle" {...isoLabel}>kinh doanh</text>
+        <rect x="52.8" y="77.6" width="29.8" height="7.4" rx="1.5" {...isoPlate} />
+        <text x="67.7" y="83.2" textAnchor="middle" {...isoLabel}>router</text>
+        <rect x="133.1" y="77.6" width="38.4" height="7.4" rx="1.5" {...isoPlate} />
+        <text x="152.3" y="83.2" textAnchor="middle" {...isoLabel}>switch 2</text>
       </g>
     </>
   )

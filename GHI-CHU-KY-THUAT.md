@@ -631,8 +631,17 @@ chỉ bỏ điều kiện "học hết bài trước đã".
   - **Nhãn vẽ sau cùng, mỗi nhãn một đế lót màu panel**: bản đầu để nhãn
     xen giữa các khối, đo trên browser thật thì cả 8 nhãn đều bị nét cắt
     ngang chữ.
-  - **Trần thực tế ~6 nút** trong khung 220×130, và phải giãn ≥2 ô. Đông
+  - **Trần thực tế 5-6 nút** trong khung 220×130, và phải giãn ≥2 ô. Đông
     hơn thì chữ 7px chen nhau — lúc đó chia thành hai hình, đừng nhồi.
+  - **Khung co giãn phải DÒ, không tính một phát**: khối co theo hệ số, còn
+    NHÃN thì không (cỡ chữ 7 cố định để còn đọc được). Bản đầu chỉ đo hộp
+    bao của khối rồi chia, thế là đế nhãn ở nút ngoài cùng thò ra x=226 —
+    tràn viewBox, đúng thứ luật hình cấm, và test đơn vị KHÔNG bắt được
+    (chỉ đo `getBBox` trên browser thật mới thấy). Giờ script hạ dần 3%
+    rồi đo lại toàn bộ ở tọa độ cuối, ép được mới sinh mã.
+  - Bản vẽ phải kể ĐÚNG hiện trường lời bài: hình đầu tiên vẽ một switch và
+    máy kế toán ở chi nhánh, trong khi hook `m21-bai-2` nói hai switch nối
+    nhau và máy chủ ở TRỤ SỞ. Hình nói khác bài còn tệ hơn không có hình.
   - `IsometricScenes.test.tsx` đối chiếu file sinh ra với bản vẽ nguồn nên
     **sửa bản vẽ mà quên chạy lại script là test đỏ**.
   - Chạy được xưởng vẽ phải vá hai chỗ của FossFLOW: `npm run build:lib`

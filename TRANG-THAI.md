@@ -3,7 +3,7 @@
 ## ĐỌC 30 GIÂY: ĐANG ĐỨNG ĐÂU, LÀM GÌ TIẾP (cập nhật 2026-08-11)
 
 **App hiện có ĐỦ 21/21 MODULE NỘI DUNG + MÀN TỐT NGHIỆP** (M1-12 nhập
-môn, M13-17 Phần D, M18-21 Phần E), 1429 test xanh, typecheck sạch,
+môn, M13-17 Phần D, M18-21 Phần E), 1430 test xanh, typecheck sạch,
 build qua. **Toàn bộ biên bản hội đồng trung cấp đã XỬ XONG (08-10):
 15/15 việc mục 6 (khối 20.2, commit `1d04c0b`) + trọn LƯỢT DỌN 52 phát
 hiện P2 mục 5 (khối 20.3).** Nội dung và engine không còn việc nào treo;
@@ -41,9 +41,12 @@ ngoài app thay vì gộp hai app làm một.
   vẽ nhỏ hơn ô lưới; nhãn phải có đế lót.
 - **Trần thực tế ~6 nút** một hình. Hình thử `vis-iso-chi-nhanh-m21` (sơ đồ
   chi nhánh M21) đã chạm trần: giãn ≥2 ô mới đọc thoải mái.
-- Hình mới CHƯA nối vào bài nào — nó chỉ nằm ở `/design` chờ chủ dự án duyệt
-  bằng mắt rồi mới quyết có đưa vào nội dung hay không.
-- 1429 test xanh (+7), typecheck sạch, build qua.
+- **Đã NỐI vào bài (lệnh chủ dự án)**: hook chặng 2 (`vis-hook-oc-dao`) giờ
+  dùng hình hiện trường này thay cho cái thang kiểm chứng — trước đó hook và
+  màn Dạy của CÙNG bài dùng chung một hình, tức hook mất việc. Bản vẽ đã vẽ
+  lại cho ĐÚNG lời bài (hai switch nối nhau, máy chủ ở trụ sở), vì bản đầu
+  vẽ sai hiện trường.
+- 1430 test xanh (+8), typecheck sạch, build qua, content:review render lại.
 
 **KHỐI TRƯỚC — 21.19 (08-11), đã commit `ec53407`:**
 hai ý nữa từ kho, chủ dự án bảo "làm luôn mấy cái bạn khuyên".
