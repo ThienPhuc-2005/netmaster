@@ -1,0 +1,67 @@
+{
+  "title": "Chi nhánh mới nối về trụ sở (M21 chặng 2)",
+  "icons": [],
+  "colors": [],
+  "items": [
+    { "id": "tru-so", "name": "Trụ sở", "description": "trụ sở", "icon": "office" },
+    { "id": "may-chu-ke-toan", "name": "Máy chủ kế toán", "description": "máy chủ", "icon": "server" },
+    { "id": "router-cn", "name": "Router chi nhánh", "description": "router", "icon": "router" },
+    { "id": "switch-cn", "name": "Switch chi nhánh", "description": "switch", "icon": "switch-module" },
+    { "id": "pc-kinh-doanh", "name": "Máy kinh doanh", "description": "kinh doanh", "icon": "desktop" },
+    { "id": "pc-ke-toan", "name": "Máy kế toán", "description": "kế toán", "icon": "desktop" }
+  ],
+  "views": [
+    {
+      "id": "view-chinh",
+      "name": "Chi nhánh",
+      "items": [
+        { "id": "tru-so", "tile": { "x": -4, "y": 0 } },
+        { "id": "may-chu-ke-toan", "tile": { "x": -6, "y": 0 } },
+        { "id": "router-cn", "tile": { "x": 0, "y": 0 } },
+        { "id": "switch-cn", "tile": { "x": 2, "y": 0 } },
+        { "id": "pc-kinh-doanh", "tile": { "x": 4, "y": -2 } },
+        { "id": "pc-ke-toan", "tile": { "x": 4, "y": 2 } }
+      ],
+      "connectors": [
+        {
+          "id": "wan",
+          "description": "WAN",
+          "anchors": [
+            { "id": "a1", "ref": { "item": "tru-so" } },
+            { "id": "a2", "ref": { "item": "router-cn" } }
+          ]
+        },
+        {
+          "id": "tru-so-may-chu",
+          "anchors": [
+            { "id": "b1", "ref": { "item": "tru-so" } },
+            { "id": "b2", "ref": { "item": "may-chu-ke-toan" } }
+          ]
+        },
+        {
+          "id": "trunk",
+          "description": "trunk",
+          "anchors": [
+            { "id": "c1", "ref": { "item": "router-cn" } },
+            { "id": "c2", "ref": { "item": "switch-cn" } }
+          ]
+        },
+        {
+          "id": "access-kd",
+          "anchors": [
+            { "id": "d1", "ref": { "item": "switch-cn" } },
+            { "id": "d2", "ref": { "item": "pc-kinh-doanh" } }
+          ]
+        },
+        {
+          "id": "access-kt",
+          "anchors": [
+            { "id": "e1", "ref": { "item": "switch-cn" } },
+            { "id": "e2", "ref": { "item": "pc-ke-toan" } }
+          ]
+        }
+      ]
+    }
+  ],
+  "fitToScreen": true
+}

@@ -14,6 +14,18 @@
       "runtimeArgs": ["run", "preview", "--", "--port", "4173"],
       "port": 4173,
       "autoPort": true
+    },
+    {
+      "name": "xuong-ve-isometric",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "C:/Users/atlan/fossflow",
+        "run",
+        "dev"
+      ],
+      "port": 3000,
+      "autoPort": true
     }
   ]
 }

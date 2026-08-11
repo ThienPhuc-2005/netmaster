@@ -15,6 +15,7 @@
 import type { ReactNode } from 'react'
 import { m } from 'motion/react'
 import { loadModules } from '../content'
+import { ISOMETRIC_SCENES } from './IsometricScenes.generated'
 
 function Frame({ children, title }: { children: ReactNode; title?: string }) {
   return (
@@ -4798,6 +4799,15 @@ const REGISTRY: Record<string, VisualComponent> = {
   'vis-hook-oc-dao': VerifyLadder,
   'vis-hook-yeu-cau-sep': FourStepProcess,
   'vis-hook-hai-benh-chong': VerifyLadder,
+  // Hình isometric sinh từ bản vẽ FossFLOW (content/ban-ve/*.json). Chúng
+  // chỉ trả về RUỘT hình nên bọc Frame ở đây — nhờ vậy hình máy sinh và
+  // hình vẽ tay dùng chung một cái khung, một cách đặt nhãn aria.
+  ...Object.fromEntries(
+    Object.entries(ISOMETRIC_SCENES).map(([id, Scene]) => [
+      id,
+      ({ title }: { title?: string }) => <Frame title={title}>{Scene()}</Frame>,
+    ]),
+  ),
 }
 
 /**

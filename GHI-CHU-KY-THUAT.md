@@ -611,6 +611,36 @@ chỉ bỏ điều kiện "học hết bài trước đã".
     là nấc nóng nhất biến mất. `tokens.test` đo cả ba: >= 3:1 với panel
     (1.4.11 vật thể đồ họa), "ấm dần" phải đo được (nấc sau nổi hơn nấc
     trước), và lam < 0,75 × lục (dấu nhận biết không-phải-đỏ).
+- **Xưởng vẽ isometric (khối 21.20, thử nghiệm)**: sơ đồ nhiều nút vẽ bằng
+  FossFLOW (app ngoài, ở `học mang 3D/`), app chỉ nhận BỐ CỤC.
+  - Vòng làm việc: mở xưởng vẽ (`preview_start` cấu hình `xuong-ve-isometric`,
+    hoặc `npm --prefix C:/Users/atlan/fossflow run dev`) → vẽ → **Export
+    File** ra JSON → bỏ vào `content/ban-ve/` → `npm run visuals:isometric`
+    → `src/components/IsometricScenes.generated.tsx` (ĐỪNG SỬA TAY) →
+    visualId `vis-iso-<tên-file>` tự có mặt trong REGISTRY và trên `/design`.
+  - **KHÔNG dùng ảnh PNG của FossFLOW** (nút "Download as PNG" là đường
+    xuất ảnh DUY NHẤT nó có): bitmap không đổi theo nền tối/sáng, không ăn
+    token màu, và đứng cạnh hơn trăm hình vẽ tay thì lạc lõng. Script chỉ
+    đọc ba thứ từ JSON — nút ở ô lưới nào, tên gì, nối với ai — rồi vẽ lại
+    bằng nét `currentColor`; icon của FossFLOW bỏ hết, hình dáng suy từ
+    LOẠI thiết bị (`SHAPES` trong script).
+  - **Khối vẽ nhỏ hơn ô lưới (0,72)**: khung tự co giãn cho vừa 220×130,
+    nên kéo bản vẽ chặt lại KHÔNG làm hình thưa ra — chỉ làm khối to lên
+    và dính vào nhau. Script cảnh báo chỗ chật chứ KHÔNG tự dàn lại nút:
+    máy dàn hộ thì mở bản vẽ ra lại thấy khác hình trong app.
+  - **Nhãn vẽ sau cùng, mỗi nhãn một đế lót màu panel**: bản đầu để nhãn
+    xen giữa các khối, đo trên browser thật thì cả 8 nhãn đều bị nét cắt
+    ngang chữ.
+  - **Trần thực tế ~6 nút** trong khung 220×130, và phải giãn ≥2 ô. Đông
+    hơn thì chữ 7px chen nhau — lúc đó chia thành hai hình, đừng nhồi.
+  - `IsometricScenes.test.tsx` đối chiếu file sinh ra với bản vẽ nguồn nên
+    **sửa bản vẽ mà quên chạy lại script là test đỏ**.
+  - Chạy được xưởng vẽ phải vá hai chỗ của FossFLOW: `npm run build:lib`
+    trước (app cần `fossflow/dist`), và tạo tay `packages/fossflow-lib/
+    dist/styles.css` rỗng (app import file này nhưng lib không hề sinh ra
+    — lỗi có sẵn của họ; build lại lib là mất, tạo lại là xong). Đường dẫn
+    thật có dấu cách nên cấu hình khởi chạy đi qua junction
+    `C:\Users\atlan\fossflow`.
 - Icon dùng Lucide; cấm emoji làm icon. Âm: 4 earcon Web Audio tổng hợp,
   tắt được, không file âm.
 - Onboarding: bắn gói tin 60 giây đầu, animation theo path (2 chặng ×
