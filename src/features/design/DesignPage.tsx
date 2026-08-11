@@ -70,6 +70,9 @@ const EARCON_KEYS: { kind: EarconKind; labelKey: string }[] = [
   { kind: 'lessonComplete', labelKey: 'design.earconLessonComplete' },
   { kind: 'stageUp', labelKey: 'design.earconStageUp' },
   { kind: 'moduleComplete', labelKey: 'design.earconModuleComplete' },
+  { kind: 'graduation', labelKey: 'design.earconGraduation' },
+  { kind: 'wireClick', labelKey: 'design.earconWireClick' },
+  { kind: 'packetFly', labelKey: 'design.earconPacketFly' },
 ]
 
 // Đề lab trưng bày: chính là ca của spec Module 4 — hai máy cùng dải địa

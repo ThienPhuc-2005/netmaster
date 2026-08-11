@@ -29,7 +29,12 @@
     "langSwitch": "Chuyển sang tiếng Việt",
     "langBadge": "EN",
     "nhacNghiOn": "Turn off break reminders",
-    "nhacNghiOff": "Turn on break reminders"
+    "nhacNghiOff": "Turn on break reminders",
+    "mucAm": {
+      "day-du": "Sound: everything",
+      "chi-moc": "Sound: milestones only",
+      "tat": "Sound: off"
+    }
   },
   "feedback": {
     "correct": "Nailed it!",
@@ -764,7 +769,10 @@
     "earconIncorrect": "Not yet",
     "earconLessonComplete": "Lesson done",
     "earconStageUp": "Stage up",
-    "earconModuleComplete": "Module passed"
+    "earconModuleComplete": "Module passed",
+    "earconGraduation": "Graduation",
+    "earconWireClick": "Cable click",
+    "earconPacketFly": "Packet flies"
   },
   "contact": {
     "facebook": "Author's Facebook",

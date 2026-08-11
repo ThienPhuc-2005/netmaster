@@ -73,8 +73,21 @@ Trạng thái: ☐ chờ duyệt · ✅ đã làm · ✗ đã bàn và bỏ (gi�
   nên mốc lớn nhất của app nghe y hệt một cột mốc giữa đường. Ba nốt đi lên
   của ý gốc thì `stageUp` vốn đã có sẵn. Test khóa "không hai earcon nào
   trùng bộ nốt" + "tiếng đậu module phải dài nhất và trầm nhất".
-- ☐ **C2. Âm xúc giác cho lab** — tiếng "tách" khi cắm dây, "vụt" nhẹ
-  khi gói tin bay. Tay không chạm được thiết bị thì để tai chạm.
+- ✅ **C2. Âm xúc giác cho lab** — ĐÃ LÀM (khối 21.35): "tách" khi cắm xong
+  một sợi dây, "vụt" khi gói tin rời máy. Hai chỗ phải cẩn thận: tiếng tách
+  CHỈ vang khi sợi dây thật sự cắm vào (kêu rồi mới hiện lời từ chối là nói
+  dối bằng âm thanh — `dispatch` phải trả về có-áp-được-không), và tiếng
+  vụt cần `Tone.glideTo` mới có: một cú lướt liền mạch mới nghe ra chuyển
+  động, ba nốt rời chỉ nghe ra ba nốt rời. Cả hai đều dưới 60-160ms và rất
+  khẽ vì chúng vang mấy chục lần một buổi.
+  Kèm theo: **âm thanh thành BA nấc** (đầy đủ / chỉ tiếng mốc / tắt). Có
+  nấc giữa vì tiếng thao tác và tiếng mốc khác hẳn tần suất — chỉ có
+  tắt-hết thì người thấy ồn sẽ tắt luôn những tiếng đáng nghe nhất. Máy
+  cài bản cũ (`soundOn`) tự chuyển sang nấc tương ứng, người đang tắt âm
+  không bị bật lại.
+- ✅ **Tiếng cho màn tốt nghiệp** (ý sinh trong lúc làm C1) — ĐÃ LÀM (khối
+  21.35): mốc duy nhất lớn hơn đậu module, dùng cùng cadence nhưng bung
+  rộng thêm một quãng tám và ngân gần gấp đôi.
 
 ## D. Câu chữ
 

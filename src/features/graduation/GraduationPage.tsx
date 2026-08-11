@@ -12,7 +12,8 @@
 // trong hình là UI-chrome nên đi qua i18n như mọi chữ của trang.
 
 import { Link, useParams } from 'react-router'
-import { useState } from 'react'
+import { playEarcon } from '../../audio/earcons'
+import { useEffect, useState } from 'react'
 import { BookOpenCheck, CalendarDays, ChevronLeft, Download, Flame, GraduationCap, Layers, Stethoscope, Zap } from 'lucide-react'
 import type { ComponentType } from 'react'
 import { useT } from '../../i18n'
@@ -123,6 +124,14 @@ export function GraduationPage() {
 
   const milestone = milestones().find((m) => m.id === params.milestoneId)
   const reached = milestone !== undefined && passedModules.includes(milestone.moduleId)
+
+  // Mốc lớn nhất của app xứng đáng có tiếng. Vang lúc MỞ MÀN chứ không
+  // lúc đậu bài thi cuối: đây mới là chỗ người học ngồi lại đọc, còn màn
+  // thi đã có tiếng đậu module của nó rồi. Trang này vẫn không ghi gì vào
+  // store — phát một âm không phải là ghi.
+  useEffect(() => {
+    if (reached) playEarcon('graduation')
+  }, [reached])
 
   // Gõ URL trực tiếp không vượt được cổng — cùng bất biến với bài học và
   // bài thi: màn tổng kết của một mốc chưa chạm là lời hứa suông.

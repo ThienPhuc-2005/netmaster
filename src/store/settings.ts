@@ -19,6 +19,24 @@ export type Theme = 'dark' | 'light'
  */
 export type ThemePref = Theme | 'auto'
 
+/**
+ * Ba nấc âm thanh (kho ý tưởng C1 nối dài, khối 21.35).
+ *
+ * Có nấc giữa vì hai họ earcon có tần suất khác hẳn nhau: tiếng đúng/sai
+ * và tiếng thao tác trong lab vang mấy chục lần một buổi, còn tiếng MỐC
+ * (xong bài, lên chặng, đậu module, tốt nghiệp) cả buổi mới một lần. Chỉ
+ * có tắt-hết thì người thấy ồn sẽ tắt luôn cả những tiếng đáng nghe nhất.
+ */
+export type MucAm = 'day-du' | 'chi-moc' | 'tat'
+
+const MUC_AM_CYCLE: readonly MucAm[] = ['day-du', 'chi-moc', 'tat']
+
+/** Bấm nút một cái thì sang nấc nào — đầy đủ → chỉ mốc → tắt → đầy đủ. */
+export function nextMucAm(muc: MucAm): MucAm {
+  const i = MUC_AM_CYCLE.indexOf(muc)
+  return MUC_AM_CYCLE[(i + 1) % MUC_AM_CYCLE.length] ?? 'day-du'
+}
+
 const THEME_CYCLE: readonly ThemePref[] = ['dark', 'light', 'auto']
 
 /** Bấm nút một cái thì sang lựa chọn nào — tối → sáng → tự động → tối. */
@@ -44,7 +62,7 @@ export function resolveTheme(pref: ThemePref): Theme {
 
 interface SettingsState {
   theme: ThemePref
-  soundOn: boolean
+  mucAm: MucAm
   /**
    * Nhắc nghỉ sau mỗi quãng học dài (kho ý tưởng A6). BẬT mặc định: lời
    * nhắc chỉ có ích khi nó tới mà người học chưa nghĩ đến việc nghỉ, mà
@@ -74,11 +92,11 @@ export const useSettings = create<SettingsState>()(
       // 'auto' làm mặc định: spec chốt nền tối là bộ mặt của app, còn
       // 'auto' là lựa chọn người học tự bật.
       theme: 'dark',
-      soundOn: true,
+      mucAm: 'day-du',
       nhacNghi: true,
       lang: initialLang(),
       toggleTheme: () => set((s) => ({ theme: nextThemePref(s.theme) })),
-      toggleSound: () => set((s) => ({ soundOn: !s.soundOn })),
+      toggleSound: () => set((s) => ({ mucAm: nextMucAm(s.mucAm) })),
       toggleNhacNghi: () => set((s) => ({ nhacNghi: !s.nhacNghi })),
       toggleLang: () =>
         set((s) => {
@@ -90,7 +108,19 @@ export const useSettings = create<SettingsState>()(
     {
       name: 'netmaster-settings',
       // lang sống ở key 'lang' riêng — không persist đúp trong store.
-      partialize: (s) => ({ theme: s.theme, soundOn: s.soundOn, nhacNghi: s.nhacNghi }),
+      partialize: (s) => ({ theme: s.theme, mucAm: s.mucAm, nhacNghi: s.nhacNghi }),
+      /**
+       * Máy đã cài bản cũ giữ `soundOn: true|false`, không có `mucAm`.
+       * Persist của store này KHÔNG có version (quy ước cũ), nên chuyển
+       * đổi làm ngay ở đây: bật → đầy đủ, tắt → tắt. Thiếu bước này thì
+       * người đang tắt âm mở app lên là âm tự bật lại.
+       */
+      merge: (luuTru, hienTai) => {
+        const cu = luuTru as Partial<SettingsState> & { soundOn?: boolean }
+        const mucAm: MucAm =
+          cu?.mucAm ?? (cu?.soundOn === false ? 'tat' : cu?.soundOn === true ? 'day-du' : hienTai.mucAm)
+        return { ...hienTai, ...cu, mucAm }
+      },
       // Trỏ global localStorage (mặc định zustand cần window — vắng trong test).
       storage: createJSONStorage(() => localStorage),
     },

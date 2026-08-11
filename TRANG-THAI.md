@@ -3,12 +3,12 @@
 ## ĐỌC 30 GIÂY: ĐANG ĐỨNG ĐÂU, LÀM GÌ TIẾP (cập nhật 2026-08-11)
 
 **App hiện có ĐỦ 21/21 MODULE NỘI DUNG + MÀN TỐT NGHIỆP** (M1-12 nhập
-môn, M13-17 Phần D, M18-21 Phần E), 1558 test xanh, typecheck sạch,
+môn, M13-17 Phần D, M18-21 Phần E), 1568 test xanh, typecheck sạch,
 build qua. **Toàn bộ biên bản hội đồng trung cấp đã XỬ XONG (08-10):
 15/15 việc mục 6 (khối 20.2, commit `1d04c0b`) + trọn LƯỢT DỌN 52 phát
 hiện P2 mục 5 (khối 20.3).** Nội dung và engine không còn việc nào treo;
 các khối gần đây đều là ý lấy từ kho `Y-TUONG.md`.
-Việc kế tiếp là của CHỦ DỰ ÁN: ra lệnh commit khối 21.34, và tuyển người
+Việc kế tiếp là của CHỦ DỰ ÁN: ra lệnh commit khối 21.35, và tuyển người
 cho các buổi test người thật (hai dòng DoD còn treo đều cần NGƯỜI).
 
 **Toàn bộ ENGINE của Phần D đã xong.** Không còn engine nào phải viết cho
@@ -29,7 +29,30 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (19) M21 capstone + màn tốt nghiệp | XONG |
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
-**KHỐI MỚI NHẤT — 21.34 (08-11), đang ở working tree chờ lệnh commit:**
+**KHỐI MỚI NHẤT — 21.35 (08-11), đang ở working tree chờ lệnh commit:**
+**Cụm âm thanh** — chủ dự án duyệt hết kho ý tưởng, đây là cụm 1/4.
+- **C2 — âm xúc giác cho lab**: "tách" khi cắm xong một sợi dây, "vụt" khi
+  gói tin rời máy. Tiếng tách CHỈ vang khi dây thật sự cắm vào (`dispatch`
+  giờ trả về có-áp-được-không) — kêu rồi mới hiện lời từ chối là nói dối
+  bằng âm thanh. Tiếng vụt cần trường mới `Tone.glideTo`.
+- **Tiếng cho màn tốt nghiệp**: mốc duy nhất lớn hơn đậu module.
+- **Âm thanh thành BA nấc**: đầy đủ / chỉ tiếng mốc / tắt. Có nấc giữa vì
+  tiếng thao tác vang mấy chục lần một buổi còn tiếng mốc cả buổi một lần;
+  chỉ có tắt-hết thì người thấy ồn sẽ tắt luôn thứ đáng nghe nhất.
+- **Máy cài bản cũ không bị bật lại âm**: `soundOn` cũ tự quy sang nấc
+  tương ứng trong `merge` (persist settings không có version). Bốn đường
+  chuyển đổi đều có test.
+- 1568 test xanh (+10), typecheck sạch, build qua. Kiểm browser thật: chặn
+  `createOscillator` để đếm nốt — nấc tắt im hết, nấc đầy đủ ra 2/8/2 nốt,
+  nấc chỉ-mốc chỉ tiếng đậu module kêu; máy giả lập bản cũ đang tắt âm mở
+  lên vẫn tắt. Console sạch, seed đã xóa.
+
+**Ba cụm còn lại của lượt duyệt này (chưa làm):** cụm 2 hồ sơ & ôn tập
+(I2 · I4 · I3 · quãng học dài nhất tuần) · cụm 3 nội dung (H7) · cụm 4 kỹ
+thuật nền (F3 · lời nhắc tự ẩn · rút gọn nhãn CamelCase). Hai ý **H3** và
+**H8** cần chủ dự án quyết vì đòi PHÁ MỐC đã đóng băng.
+
+**KHỐI TRƯỚC — 21.34 (08-11), đã commit `e43e7d9`:**
 **C1 — giai điệu tiến độ.** Việc thật hóa ra không phải "thêm nhạc" mà là
 TÁCH hai mốc đang dùng chung một tiếng.
 - Trước khối này, **đậu cả một module** và **xong một chặng nhỏ** phát ra

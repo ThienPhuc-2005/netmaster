@@ -14,6 +14,7 @@ import {
   Moon,
   MonitorCog,
   Volume2,
+  Volume1,
   VolumeX,
   Languages,
   AlarmClock,
@@ -22,7 +23,7 @@ import {
 } from 'lucide-react'
 import { siFacebook, siTelegram } from 'simple-icons'
 import { useT } from '../i18n'
-import { useSettings, applyLang, applyTheme, nextThemePref, watchSystemTheme } from '../store/settings'
+import { useSettings, applyLang, applyTheme, nextMucAm, nextThemePref, watchSystemTheme } from '../store/settings'
 import { useProgress } from '../store/progress'
 import { clinicTabUnlocked } from '../features/clinic/clinicCases'
 import { NhacNghi } from './NhacNghi'
@@ -69,7 +70,7 @@ function BrandIcon({ path, title, href }: { path: string; title: string; href: s
 export function AppLayout() {
   const t = useT()
   const theme = useSettings((s) => s.theme)
-  const soundOn = useSettings((s) => s.soundOn)
+  const mucAm = useSettings((s) => s.mucAm)
   const nhacNghiBat = useSettings((s) => s.nhacNghi)
   const { toggleTheme, toggleSound, toggleNhacNghi, toggleLang } = useSettings.getState()
   const passedModules = useProgress((s) => s.passedModules)
@@ -105,10 +106,16 @@ export function AppLayout() {
       </button>
       <button
         onClick={toggleSound}
-        aria-label={soundOn ? t('settings.soundOn') : t('settings.soundOff')}
+        aria-label={t(`settings.mucAm.${nextMucAm(mucAm)}`)}
         className="rounded-md p-2 text-ink-muted transition-colors duration-(--dur) hover:bg-panel-hover hover:text-ink"
       >
-        {soundOn ? <Volume2 size={16} aria-hidden /> : <VolumeX size={16} aria-hidden />}
+        {mucAm === 'day-du' ? (
+          <Volume2 size={16} aria-hidden />
+        ) : mucAm === 'chi-moc' ? (
+          <Volume1 size={16} aria-hidden />
+        ) : (
+          <VolumeX size={16} aria-hidden />
+        )}
       </button>
       {/* Nhắc nghỉ (A6) — tắt được, và nút tắt phải nằm ngay cạnh mấy nút
           kia chứ không giấu trong trang cài đặt riêng: thứ chen ngang

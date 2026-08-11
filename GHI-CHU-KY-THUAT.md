@@ -808,8 +808,31 @@ chỉ bỏ điều kiện "học hết bài trước đã".
     — lỗi có sẵn của họ; build lại lib là mất, tạo lại là xong). Đường dẫn
     thật có dấu cách nên cấu hình khởi chạy đi qua junction
     `C:\Users\atlan\fossflow`.
-- Icon dùng Lucide; cấm emoji làm icon. Âm: **5 earcon** Web Audio tổng
-  hợp, tắt được, không file âm.
+- Icon dùng Lucide; cấm emoji làm icon. Âm: **8 earcon** Web Audio tổng
+  hợp, không file âm, **tắt được theo BA NẤC**.
+- **Ba nấc âm (khối 21.35)**: `mucAm = 'day-du' | 'chi-moc' | 'tat'`, nút
+  cùng nếp ba nấc với nút nền. Có nấc giữa vì hai họ earcon khác hẳn tần
+  suất: tiếng THAO TÁC (đúng/sai, cắm dây, gói tin bay) vang mấy chục lần
+  một buổi, tiếng MỐC (xong bài, lên chặng, đậu module, tốt nghiệp) cả buổi
+  một lần. Chỉ có tắt-hết thì người thấy ồn sẽ tắt luôn tiếng đáng nghe
+  nhất. Phân loại nằm ở `TIENG_MOC` + `duocVang`, test khóa đúng bốn tiếng
+  mốc và "tiếng vang mỗi thao tác phải dưới 0,2 giây".
+- **Đổi `soundOn` → `mucAm` phải có bước chuyển đổi**: persist của settings
+  KHÔNG có version (quy ước cũ), nên việc quy đổi làm trong `merge` —
+  `soundOn:false` → `tat`, `true` → `day-du`. Thiếu bước ấy thì người đang
+  tắt âm mở app lên là âm tự bật lại. Bốn đường (tắt/bật/đã có mucAm/máy
+  trắng) đều có test.
+- **`Tone.glideTo` (khối 21.35)**: lướt cao độ trong suốt `dur`. Có vì
+  tiếng "vụt" của gói tin cần một cú lướt liền mạch — ba nốt rời chỉ nghe
+  ra ba nốt rời. Earcon cũ không khai trường này nên giữ nguyên hành vi.
+- **Tiếng "tách" chỉ vang khi sợi dây THẬT SỰ cắm vào**: `dispatch` của
+  `NetworkLab` trả về có-áp-được-không, và tiếng chỉ phát khi `true`. Kêu
+  lên rồi mới hiện lời từ chối là nói dối bằng âm thanh.
+- **Thang bậc mốc đo được**: tốt nghiệp dài hơn đậu module, đậu module dài
+  hơn mọi tiếng còn lại; và CHỈ hai tiếng đóng-lại ấy có nốt trầm NGÂN DÀI
+  (dưới 150Hz, ngân ≥ 1 giây). Đo cả cao độ lẫn độ ngân chứ không chỉ cao
+  độ: "tách" của lab cũng có nốt 180Hz nhưng chỉ 45ms — đó là cú gõ, không
+  phải chân đế.
 - **Mỗi mốc một tiếng riêng (khối 21.34)**: `moduleComplete` (đậu module)
   tách hẳn khỏi `stageUp` (xong một chặng). Trước đó hai mốc dùng chung
   `stageUp`, nên mốc lớn nhất của app — cửa mastery 85% — nghe y hệt một

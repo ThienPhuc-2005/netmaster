@@ -29,7 +29,12 @@
     "langSwitch": "Switch to English",
     "langBadge": "VI",
     "nhacNghiOn": "Tắt nhắc nghỉ",
-    "nhacNghiOff": "Bật nhắc nghỉ"
+    "nhacNghiOff": "Bật nhắc nghỉ",
+    "mucAm": {
+      "day-du": "Âm: đầy đủ",
+      "chi-moc": "Âm: chỉ tiếng mốc",
+      "tat": "Âm: đã tắt"
+    }
   },
   "feedback": {
     "correct": "Chuẩn luôn!",
@@ -764,7 +769,10 @@
     "earconIncorrect": "Chưa đúng",
     "earconLessonComplete": "Xong bài",
     "earconStageUp": "Lên chặng",
-    "earconModuleComplete": "Đậu module"
+    "earconModuleComplete": "Đậu module",
+    "earconGraduation": "Tốt nghiệp",
+    "earconWireClick": "Cắm dây",
+    "earconPacketFly": "Gói tin bay"
   },
   "contact": {
     "facebook": "Facebook của tác giả",

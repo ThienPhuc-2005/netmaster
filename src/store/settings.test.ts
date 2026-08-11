@@ -9,7 +9,7 @@
 //   3. Vòng bấm nút đúng ba nấc và quay lại đầu.
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { applyTheme, nextThemePref, resolveTheme, systemTheme, watchSystemTheme } from './settings'
+import { applyTheme, nextMucAm, nextThemePref, resolveTheme, systemTheme, watchSystemTheme } from './settings'
 
 /** Giả lập câu trả lời của hệ điều hành cho prefers-color-scheme. */
 function stubSystem(prefersLight: boolean) {
@@ -107,5 +107,49 @@ describe('watchSystemTheme', () => {
     const stop = watchSystemTheme('auto', () => {})
     stop()
     expect(sys.listenerCount()).toBe(0)
+  })
+})
+
+describe('nextMucAm — vòng ba nấc âm', () => {
+  it('đầy đủ → chỉ mốc → tắt → đầy đủ', () => {
+    expect(nextMucAm('day-du')).toBe('chi-moc')
+    expect(nextMucAm('chi-moc')).toBe('tat')
+    expect(nextMucAm('tat')).toBe('day-du')
+  })
+})
+
+// Máy đã cài bản cũ giữ `soundOn: true|false` và KHÔNG có `mucAm`. Persist
+// của store này không có version, nên chuyển đổi làm trong `merge`. Thiếu
+// bước ấy thì người đang tắt âm mở app lên là âm tự bật lại — cách nhanh
+// nhất để mất lòng tin vào nút cài đặt.
+describe('đọc cài đặt của bản cũ (soundOn → mucAm)', () => {
+  async function napLai(luuTru: string | null) {
+    localStorage.clear()
+    if (luuTru !== null) localStorage.setItem('netmaster-settings', luuTru)
+    vi.resetModules()
+    const mod = await import('./settings')
+    await new Promise((r) => setTimeout(r, 0))
+    return mod.useSettings.getState()
+  }
+
+  it('bản cũ đang TẮT âm thì vẫn tắt', async () => {
+    const s = await napLai(JSON.stringify({ state: { theme: 'light', soundOn: false }, version: 0 }))
+    expect(s.mucAm).toBe('tat')
+    expect(s.theme).toBe('light')
+  })
+
+  it('bản cũ đang BẬT âm thì thành nấc đầy đủ', async () => {
+    const s = await napLai(JSON.stringify({ state: { soundOn: true }, version: 0 }))
+    expect(s.mucAm).toBe('day-du')
+  })
+
+  it('đã có mucAm thì giữ nguyên, không bị soundOn cũ đè', async () => {
+    const s = await napLai(JSON.stringify({ state: { mucAm: 'chi-moc', soundOn: true }, version: 0 }))
+    expect(s.mucAm).toBe('chi-moc')
+  })
+
+  it('máy chưa từng lưu gì thì mặc định nghe đầy đủ', async () => {
+    const s = await napLai(null)
+    expect(s.mucAm).toBe('day-du')
   })
 })

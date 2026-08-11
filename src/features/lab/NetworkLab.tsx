@@ -15,6 +15,7 @@
 // hỏng. Xóa thiết bị vẫn giữ lại vị trí cũ, nên undo trả nó về đúng chỗ.
 
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { playEarcon } from '../../audio/earcons'
 import { AlertCircle } from 'lucide-react'
 import { Button } from '../../components/Button'
 import { useT } from '../../i18n'
@@ -253,14 +254,17 @@ export function NetworkLab({
   }, [phase, hops])
 
   /** Mọi thay đổi mạng đi qua đây: hỏi engine trước, từ chối thì nói tử tế. */
-  const dispatch = (action: LabAction) => {
+  // Trả về CÓ ÁP ĐƯỢC KHÔNG: tiếng "tách" chỉ được vang khi sợi dây thật
+  // sự cắm vào. Kêu lên rồi mới hiện lời từ chối là nói dối bằng âm thanh.
+  const dispatch = (action: LabAction): boolean => {
     const rejection = canApplyLabAction(session, action)
     if (rejection !== null) {
       setRefusal(rejection)
-      return
+      return false
     }
     setRefusal(null)
     setSession(applyLabAction(session, action))
+    return true
   }
 
   const selected = selectedId === null ? null : findDevice(topology, selectedId)
@@ -277,10 +281,11 @@ export function NetworkLab({
       setArmedPort(null)
       return
     }
-    dispatch({
+    const noiDuoc = dispatch({
       kind: 'add-link',
       link: { id: `w-${armedPort.deviceId}-${armedPort.portId}-${ref.deviceId}-${ref.portId}`, a: armedPort, b: ref },
     })
+    if (noiDuoc) playEarcon('wireClick')
     setArmedPort(null)
   }
 
@@ -296,6 +301,7 @@ export function NetworkLab({
     const result = simulatePing(topology, { from: pair.from, to: pair.to })
     setRun(result)
     setRefusal(null)
+    playEarcon('packetFly')
     flight.start()
   }
 
