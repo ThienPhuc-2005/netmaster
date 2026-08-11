@@ -8,6 +8,7 @@
 
 import { describe, expect, it } from 'vitest'
 import { typedAnswerMatches } from '../engine/grading/normalize'
+import { lt } from '../engine/ltext'
 import { MASTERY_DRAW_COUNT, isAnchorQuestion } from '../engine/masteryPool'
 import { findConcept, findLesson, loadModules } from './index'
 
@@ -451,6 +452,23 @@ describe('bộ nội dung', () => {
       if (q.kind !== 'ps') continue
       const longest = Math.max(...Object.values(q.spec.world.files ?? {}).map((lines) => lines.length))
       expect(longest, `${q.id}: log dài nhất chỉ ${longest} dòng`).toBeGreaterThanOrEqual(150)
+    }
+  })
+
+  it('Module 20: thẻ 8 mức severity hỏi được cả kiểu điền chỗ khuyết, không chỉ hỏi xuôi', () => {
+    // Danh sách 8 mức học bằng câu nhớ là chỗ dễ học vẹt MẶT CHỮ nhất
+    // trong cả app: hỏi mãi một kiểu thì người học nhận ra hình dạng câu
+    // hỏi rồi đọc trôi mặt sau mà chẳng nhớ mức nào là mức nào. Thẻ này
+    // BẮT BUỘC có cách hỏi thứ hai, và một trong số đó phải là chỗ khuyết.
+    const severity = moduleById('module-20').concepts.find((c) => c.id === 'm20-severity')
+    expect(severity?.flashcard?.alsoAsk?.length ?? 0).toBeGreaterThanOrEqual(1)
+    const asks = (severity?.flashcard?.alsoAsk ?? []).map((a) => lt(a))
+    expect(asks.some((a) => a.includes('___')), 'không cách hỏi nào có chỗ khuyết').toBe(true)
+    // Mặt sau phải TRẢ LỜI được mọi cách hỏi: cách hỏi ngược đòi gọi tên
+    // mức theo SỐ, nên mặt sau phải đánh số chứ không chỉ liệt kê.
+    const back = lt(severity!.flashcard!.back)
+    for (const n of ['0 Emergency', '2 Critical', '5 Notice', '7 Debug']) {
+      expect(back, `mặt sau thiếu "${n}"`).toContain(n)
     }
   })
 

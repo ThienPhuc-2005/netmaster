@@ -4,7 +4,7 @@
 // (Phase 3 hạng mục 9 — quyết định đã chốt: mở khi Module 11 mở).
 
 import { useEffect } from 'react'
-import { NavLink, Outlet } from 'react-router'
+import { NavLink, Outlet, useLocation } from 'react-router'
 import {
   BookOpen,
   Layers,
@@ -29,6 +29,22 @@ const NAV = [
   { to: '/phong-kham', key: 'nav.clinic', icon: Stethoscope, end: false, clinicGate: true },
   { to: '/ho-so', key: 'nav.profile', icon: User, end: false, clinicGate: false },
 ] as const
+
+/**
+ * Chế độ tập trung (kho ý tưởng B2): đang trong BÀI HỌC hay BÀI THI thì
+ * khung app tự lùi lại — nguyên tắc "một màn hình một khái niệm" áp cho
+ * cả cái khung, không riêng phần nội dung.
+ *
+ * Chỉ hai loại màn này, và có lý do: chúng là hai chỗ DUY NHẤT người học
+ * đang giữ một chuỗi suy nghĩ dài. Trang Học, Ôn tập, Phòng khám, Hồ sơ
+ * là nơi người ta đang CHỌN đi đâu — làm mờ menu ở đó là làm khó đúng
+ * việc người ta định làm.
+ *
+ * Hàm thuần, tách ra để test được mà không phải dựng cả router.
+ */
+export function isFocusRoute(pathname: string): boolean {
+  return /^\/(bai|kiem-tra)\//.test(pathname)
+}
 
 function BrandIcon({ path, title, href }: { path: string; title: string; href: string }) {
   return (
@@ -55,6 +71,7 @@ export function AppLayout() {
   const clinicOpen = clinicTabUnlocked(passedModules)
 
   const lang = useSettings((s) => s.lang)
+  const focusMode = isFocusRoute(useLocation().pathname)
 
   useEffect(() => applyTheme(theme), [theme])
   // <html lang> phải đi theo nút VI/EN, nếu không trình đọc màn hình đọc
@@ -93,10 +110,24 @@ export function AppLayout() {
   // cho phần học — không đủ để thao tác phòng lab (spec Module 4).
   // `flex-col-reverse` đặt thanh điều hướng xuống dưới trên mobile mà vẫn
   // giữ nguyên thứ tự DOM: trình đọc màn hình gặp nội dung chính trước.
+  // Chế độ tập trung THU KHUNG LẠI, không làm mờ: hạ độ đục của chữ menu
+  // là hạ luôn contrast xuống dưới 4.5:1 — đổi một nguyên tắc sư phạm lấy
+  // một lỗi tiếp cận thì không đáng. Thứ bị cất đi là thứ KHÔNG PHẢI đường
+  // ra: tên app, dòng tag, cụm cài đặt, hai icon liên hệ. Bốn mục menu ở
+  // lại nguyên độ tương phản (desktop còn biểu tượng + tooltip, tên vẫn
+  // đọc được bằng trình đọc màn hình; mobile giữ nguyên cả chữ vì thanh
+  // đáy là đường ra duy nhất trên màn hẹp).
   return (
     <div className="flex h-full flex-col-reverse md:flex-row">
-      <aside className="flex shrink-0 flex-col border-t border-edge bg-panel md:w-56 md:border-r md:border-t-0">
-        <div className="hidden border-b border-edge px-5 py-4 md:block">
+      <aside
+        data-focus-mode={focusMode ? 'on' : undefined}
+        className={
+          'flex shrink-0 flex-col border-t border-edge bg-panel md:border-r md:border-t-0 ' +
+          'transition-[width] duration-(--dur) ease-(--ease) ' +
+          (focusMode ? 'md:w-16' : 'md:w-56')
+        }
+      >
+        <div className={'border-b border-edge px-5 py-4 ' + (focusMode ? 'hidden' : 'hidden md:block')}>
           <span className="font-mono text-lg font-bold text-accent">{t('app.name')}</span>
           <p className="mt-0.5 text-xs text-ink-muted">{t('app.tagline')}</p>
         </div>
@@ -107,9 +138,14 @@ export function AppLayout() {
               key={to}
               to={to}
               end={end}
+              // Thanh biểu tượng vẫn phải nói được mình là gì: `title` cho
+              // chuột, chữ `sr-only` cho trình đọc màn hình — tên nút KHÔNG
+              // được biến mất khỏi cây trợ năng chỉ vì màn hình hẹp lại.
+              title={focusMode ? t(key) : undefined}
               className={({ isActive }) =>
                 'flex flex-1 flex-col items-center gap-1 px-2 py-2 text-xs font-medium ' +
-                'md:flex-none md:flex-row md:gap-3 md:rounded-md md:px-3 md:text-sm ' +
+                'md:flex-none md:flex-row md:gap-3 md:rounded-md md:text-sm ' +
+                (focusMode ? 'md:justify-center md:px-2 md:py-2.5 ' : 'md:px-3 ') +
                 'transition-colors duration-(--dur) ease-(--ease) ' +
                 (isActive
                   ? 'text-accent md:bg-panel-hover'
@@ -117,7 +153,7 @@ export function AppLayout() {
               }
             >
               <Icon size={17} aria-hidden />
-              <span className="md:flex-1">{t(key)}</span>
+              <span className={focusMode ? 'md:sr-only' : 'md:flex-1'}>{t(key)}</span>
               {clinicGate && !clinicOpen && (
                 <Lock size={13} aria-label={t('nav.clinicLocked')} className="text-ink-muted" />
               )}
@@ -125,17 +161,19 @@ export function AppLayout() {
           ))}
         </nav>
 
-        <div className="flex items-center justify-center gap-5 border-t border-edge py-2 md:justify-between md:px-4 md:py-3">
-          <div className="flex items-center gap-3">{toggles}</div>
-          <div className="hidden items-center gap-3 md:flex">
-            <BrandIcon
-              path={siFacebook.path}
-              title={t('contact.facebook')}
-              href="https://www.facebook.com/thien.phuc.450676/"
-            />
-            <BrandIcon path={siTelegram.path} title={t('contact.telegram')} href="https://t.me/Benedetta24k" />
+        {!focusMode && (
+          <div className="flex items-center justify-center gap-5 border-t border-edge py-2 md:justify-between md:px-4 md:py-3">
+            <div className="flex items-center gap-3">{toggles}</div>
+            <div className="hidden items-center gap-3 md:flex">
+              <BrandIcon
+                path={siFacebook.path}
+                title={t('contact.facebook')}
+                href="https://www.facebook.com/thien.phuc.450676/"
+              />
+              <BrandIcon path={siTelegram.path} title={t('contact.telegram')} href="https://t.me/Benedetta24k" />
+            </div>
           </div>
-        </div>
+        )}
       </aside>
 
       <main className="flex-1 overflow-y-auto">

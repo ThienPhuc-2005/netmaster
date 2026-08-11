@@ -6,6 +6,8 @@ import {
   buildReviewSession,
   canStartNewLesson,
   dueCards,
+  flashcardAskIndex,
+  flashcardTurn,
   interleaveByModule,
   overdueCount,
 } from './reviewQueue'
@@ -255,5 +257,33 @@ describe('interleaveByModule', () => {
     const second = interleaveByModule(cards)
     expect(ids(first)).toEqual(ids(second))
     expect(ids(cards)).toEqual(before)
+  })
+})
+
+describe('xoay cách hỏi của thẻ (kho ý tưởng H5)', () => {
+  it('thẻ MỚI gặp cách hỏi xuôi trước — hỏi chỗ khuyết khi chưa biết nguyên câu là đánh đố', () => {
+    expect(flashcardAskIndex(flashcardTurn(card({ conceptId: 'x' })), 3)).toBe(0)
+  })
+
+  it('mỗi lượt ôn đẩy sang cách hỏi kế tiếp, hết vòng thì quay lại đầu', () => {
+    const turns = [0, 1, 2, 3, 4].map((intervalIndex) =>
+      flashcardTurn(card({ conceptId: 'x', intervalIndex: intervalIndex as ReviewCard['intervalIndex'] })),
+    )
+    expect(turns.map((t) => flashcardAskIndex(t, 3))).toEqual([0, 1, 2, 0, 1])
+  })
+
+  it('quên thẻ cũng đổi cách hỏi — nhớ lại đúng CÙNG một câu hỏi vừa trượt là nhớ mặt chữ', () => {
+    const forgotten = card({ conceptId: 'x', intervalIndex: 0, lapses: 1 })
+    expect(flashcardAskIndex(flashcardTurn(forgotten), 3)).toBe(1)
+  })
+
+  it('thẻ chỉ có một cách hỏi (đại đa số) thì luôn là cách đó', () => {
+    for (const intervalIndex of [0, 1, 2, 3, 4] as const) {
+      expect(flashcardAskIndex(flashcardTurn(card({ conceptId: 'x', intervalIndex })), 1)).toBe(0)
+    }
+  })
+
+  it('không tìm thấy thẻ trong hộp thì rơi về cách hỏi xuôi, không vỡ màn', () => {
+    expect(flashcardAskIndex(flashcardTurn(null), 3)).toBe(0)
   })
 })

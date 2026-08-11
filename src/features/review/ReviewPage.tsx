@@ -11,11 +11,11 @@
 // SM-2 và XP — lượt học lại là chuyện nội bộ của phiên, không đụng lịch
 // (luật reset 1 ngày của spec giữ nguyên), không cộng gì.
 
-import { useMemo, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import { lt } from '../../engine/ltext'
 import { Link } from 'react-router'
 import { Eye, Layers, RotateCcw, ThumbsDown, ThumbsUp } from 'lucide-react'
-import { buildReviewSession, dueCards } from '../../engine/reviewQueue'
+import { buildReviewSession, dueCards, flashcardAskIndex, flashcardTurn } from '../../engine/reviewQueue'
 import {
   calibrationSummary,
   calibrationVerdict,
@@ -47,7 +47,7 @@ interface CardFace {
  * nơi duy nhất phân biệt chúng — SM-2, hàng đợi và luật "mở app là ôn
  * trước" không cần biết gì về chuyện đó.
  */
-function cardFace(cardId: string, t: TFunc): CardFace | null {
+function cardFace(cardId: string, t: TFunc, turn: number): CardFace | null {
   const roomId = roomIdFromCardId(cardId)
   if (roomId !== null) {
     const ref = findPalaceRoom(roomId)
@@ -64,9 +64,14 @@ function cardFace(cardId: string, t: TFunc): CardFace | null {
   // flashcard optional ở schema (concept noFlashcard) — nhưng thẻ ôn chỉ
   // được store sinh cho concept CÓ flashcard, nên nhánh này là phòng thủ.
   if (ref === null || ref.concept.flashcard === undefined) return null
+  // Thẻ khai nhiều cách hỏi (H5) thì lượt này lấy đúng một cách; mặt sau
+  // không đổi — mọi cách hỏi phải trả lời được bằng chính nó (luật soạn
+  // bài ở contentSchema).
+  const { front, alsoAsk } = ref.concept.flashcard
+  const asks = [front, ...(alsoAsk ?? [])]
   return {
     label: ref.concept.term,
-    front: lt(ref.concept.flashcard.front),
+    front: lt(asks[flashcardAskIndex(turn, asks.length)] ?? front),
     back: lt(ref.concept.flashcard.back),
   }
 }
@@ -99,6 +104,18 @@ export function ReviewPage() {
   const [confidence, setConfidence] = useState<Confidence | null>(null)
   const [calibration, setCalibration] = useState<CalibrationRecord[]>([])
   const [lastVerdict, setLastVerdict] = useState<CalibrationVerdict | null>(null)
+  // Cách hỏi của thẻ (H5) suy từ trạng thái SM-2, mà trạng thái đó đổi
+  // NGAY khi chấm — nên phải chốt một lần rồi giữ suốt trang: thẻ trả lời
+  // "chưa nhớ" quay lại cuối phiên mà đổi luôn câu hỏi thì vòng học lại
+  // hóa ra là học một thứ khác.
+  const turns = useRef(new Map<string, number>())
+  const turnOf = (id: string): number => {
+    const cached = turns.current.get(id)
+    if (cached !== undefined) return cached
+    const turn = flashcardTurn(allCards.find((c) => c.conceptId === id) ?? null)
+    turns.current.set(id, turn)
+    return turn
+  }
 
   // Người bị luật "mở app là ôn trước" đưa thẳng vào đây cần một lời
   // giải thích TẠI CHỖ — banner vì-sao nằm ở trang Học là nơi họ không
@@ -192,7 +209,7 @@ export function ReviewPage() {
   }
 
   const cardId = queue[index]
-  const face = cardId === undefined ? null : cardFace(cardId, t)
+  const face = cardId === undefined ? null : cardFace(cardId, t, turnOf(cardId))
   // Thẻ mồ côi (nội dung đổi sau khi người học đã có thẻ) — bỏ qua thay
   // vì dựng nửa vời một mặt thẻ trống.
   if (cardId === undefined || face === null) return null

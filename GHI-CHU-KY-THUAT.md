@@ -378,6 +378,15 @@ quan trước khi "sửa test cho xanh".
   luôn bằng 1 và vô nghĩa — đọc chủ đề bằng `fails`.
 - **Phiên ôn có relearning**: thẻ quên requeue cuối phiên tới khi tự nhớ
   được; CHỈ lượt chấm đầu ghi SM-2 + XP (`ReviewPage.test.tsx` khóa).
+- **Một thẻ, nhiều cách hỏi (`alsoAsk`, khối 21.17)**: mặt trước xoay
+  vòng theo `flashcardTurn` = `intervalIndex + lapses`, KHÔNG random (luật
+  vùng engine) — thẻ mới luôn gặp cách hỏi xuôi trước, vì hỏi chỗ khuyết
+  khi chưa biết nguyên câu là đánh đố. Mặt sau KHÔNG đổi theo cách hỏi:
+  mọi cách hỏi phải trả lời được trọn vẹn bằng chính nó, nếu không thì đó
+  là hai thẻ. `ReviewPage` CHỐT cách hỏi một lần rồi giữ suốt trang (chấm
+  bài đổi ngay trạng thái SM-2 — đọc lại lúc render thì thẻ quay lại ở
+  vòng học lại sẽ hỏi một câu khác, hóa ra học một thứ khác). Không bump
+  persist: đây là trường NỘI DUNG, không phải trường của thẻ trong hộp.
 - **Độ tươi trí nhớ + tự chấm độ chắc (khối 21.7)**: `freshness.ts` tính
   độ tươi = phần quãng nghỉ SM-2 còn lại (KHÔNG phải đường quên thật —
   đã khai ở đầu file). Luật đặt chỗ: **không hiện độ tươi trong lúc ôn**
@@ -538,6 +547,15 @@ chỉ bỏ điều kiện "học hết bài trước đã".
   `/design`); registry thiếu visualId là `ConceptVisual.test` đỏ. Bản đồ
   khóa học `vis-ban-do-khoa-hoc`: lưới 21 ô, 5 hàng A-E, ô chưa có nội
   dung để RỖNG — bản đồ nói thật cả phần dang dở.
+- **Chế độ tập trung (khối 21.17)**: `isFocusRoute` ở `AppLayout` bật cho
+  ĐÚNG hai đường `/bai/*` và `/kiem-tra/*` — các trang khác là nơi người
+  học đang CHỌN đi đâu, thu khung ở đó là làm khó đúng việc họ định làm.
+  Cách thu là CẤT thứ không phải đường ra (tên app, cụm cài đặt, icon liên
+  hệ) + hạ sidebar desktop xuống thanh biểu tượng 64px, **không phải làm
+  mờ**: hạ opacity chữ menu là hạ contrast xuống dưới 4.5:1. Tên bốn mục
+  chuyển `sr-only` chứ không bị xóa, kèm `title` cho chuột. Mobile chỉ cất
+  cụm cài đặt — thanh đáy là đường ra duy nhất trên màn hẹp nên chữ ở lại.
+  `AppLayout.test.tsx` khóa cả bốn điều.
 - Icon dùng Lucide; cấm emoji làm icon. Âm: 4 earcon Web Audio tổng hợp,
   tắt được, không file âm.
 - Onboarding: bắn gói tin 60 giây đầu, animation theo path (2 chặng ×

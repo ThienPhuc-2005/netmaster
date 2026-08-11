@@ -191,3 +191,44 @@ describe('tự chấm độ chắc trước khi lật (kho ý tưởng A2)', () 
     expect(other.reviewCards.map((c) => c.dueDate)).toEqual(dueDates)
   })
 })
+
+describe('xoay cách hỏi trên thẻ (kho ý tưởng H5)', () => {
+  /** Đặt thẻ severity của Module 20 vào hộp ở đúng một mốc SM-2. */
+  function seedSeverityCard(intervalIndex: 0 | 1 | 2 | 3 | 4) {
+    const yesterday = addDays(todayIso(), -1)
+    useProgress.setState({
+      reviewCards: [{ ...createCard('m20-severity', 'module-20', yesterday), intervalIndex }],
+    })
+    render(
+      <MemoryRouter>
+        <ReviewPage />
+      </MemoryRouter>,
+    )
+  }
+
+  it('thẻ mới: hỏi xuôi', () => {
+    seedSeverityCard(0)
+    expect(screen.getByText(/Đọc 8 mức syslog/)).toBeDefined()
+  })
+
+  it('sau một lượt nhớ được: cùng thẻ đó hỏi bằng chỗ khuyết', () => {
+    seedSeverityCard(1)
+    expect(screen.getByText(/Em Ăn ___ Em Với ___ Iu Đi/)).toBeDefined()
+    // Mặt sau KHÔNG đổi theo cách hỏi — nó phải trả lời được cả hai.
+    reveal()
+    expect(screen.getByText(/0 Emergency, 1 Alert, 2 Critical/)).toBeDefined()
+  })
+
+  it('thẻ quên rồi quay lại trong phiên vẫn giữ NGUYÊN câu hỏi vừa trượt', () => {
+    // Chấm "chưa nhớ" đẩy lapses lên 1, tức là đổi mốc xoay. Nếu đọc mốc
+    // đó lúc render thì vòng học lại sẽ hỏi một câu khác — người học tưởng
+    // mình đang học lại thẻ này, thực ra đang gặp thẻ khác.
+    seedSeverityCard(1)
+    const asked = /Em Ăn ___ Em Với ___ Iu Đi/
+    expect(screen.getByText(asked)).toBeDefined()
+    reveal()
+    answer(false)
+    expect(screen.getByText('thẻ học lại')).toBeDefined()
+    expect(screen.getByText(asked)).toBeDefined()
+  })
+})

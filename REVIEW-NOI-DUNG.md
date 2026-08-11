@@ -6603,7 +6603,9 @@ Phần E · 5 chặng · 5 bài · 8 khái niệm
   - Thẻ ôn: *Một dòng log syslog trả lời bốn câu hỏi nào, theo thứ tự?* → KHI NÀO (dấu thời gian) — MÁY NÀO (tên thiết bị) — NẶNG CỠ NÀO (mức severity 0-7) — CHUYỆN GÌ (nội dung). Sự cố là chuỗi dòng nối theo thời gian, nên dấu thời gian đứng đầu và các máy phải chung giờ.
 - **8 mức severity của syslog** `m20-severity` — 0 Emergency, 1 Alert, 2 Critical, 3 Error, 4 Warning, 5 Notice, 6 Informational, 7 Debug — số càng nhỏ càng nặng
   - Ẩn dụ: Như còi báo động của tòa nhà: số hồi còi càng ít càng khẩn — một hồi dài là cháy thật, còn bảy tiếng bíp lặt vặt chỉ là thợ đang dò mạch.
-  - Thẻ ôn: *Đọc 8 mức syslog từ 0 tới 7 (có câu nhớ), và ranh giới nào đáng nhớ nhất?* → Emergency, Alert, Critical, Error, Warning, Notice, Informational, Debug — Em Ăn Cơm Em Với Người Iu Đi. Số càng nhỏ càng nặng. Ranh giới 3/4: từ Error trở xuống là CÓ CHUYỆN THẬT, Warning trở lên là đáng để mắt nhưng chưa chắc sự cố.
+  - Thẻ ôn: *Đọc 8 mức syslog từ 0 tới 7 (có câu nhớ), và ranh giới nào đáng nhớ nhất?* → 0 Emergency, 1 Alert, 2 Critical, 3 Error, 4 Warning, 5 Notice, 6 Informational, 7 Debug — Em Ăn Cơm Em Với Người Iu Đi. Số càng nhỏ càng nặng. Ranh giới 3/4: từ Error trở xuống là CÓ CHUYỆN THẬT, Warning trở lên là đáng để mắt nhưng chưa chắc sự cố.
+    - Hỏi cách khác: *Điền hai chữ khuyết rồi đọc đủ 8 mức kèm số: Em Ăn ___ Em Với ___ Iu Đi.*
+    - Hỏi cách khác: *Mức 2 và mức 5 tên là gì, và ranh giới nào tách chuyện thật khỏi chuyện đáng để mắt?*
 - **Log tập trung** `m20-log-tap-trung` — Một máy chủ nhận bản sao nhật ký của mọi thiết bị ngay khi từng dòng được ghi — sổ có bản rời tàu, mọi câu chuyện nằm cạnh nhau
   - Ẩn dụ: Như hộp đen máy bay đặt ở đài kiểm soát thay vì chỉ trên máy bay: tàu gặp nạn thì băng ghi âm đã kịp về nơi an toàn từng câu một.
   - Thẻ ôn: *Ba lý do khiến log tập trung thành chuẩn của nghề?* → Một: thiết bị chết không mang theo sổ — bản sao đã rời tàu từng dòng. Hai: sự cố liên quan nhiều máy thì mọi câu chuyện nằm cạnh nhau, khỏi mở ba chục thiết bị. Ba: kẻ đột nhập xóa vết trên máy nạn nhân không với tay được tới bản sao.

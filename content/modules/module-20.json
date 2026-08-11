@@ -1468,8 +1468,16 @@
           "vi": "Đọc 8 mức syslog từ 0 tới 7 (có câu nhớ), và ranh giới nào đáng nhớ nhất?"
         },
         "back": {
-          "vi": "Emergency, Alert, Critical, Error, Warning, Notice, Informational, Debug — Em Ăn Cơm Em Với Người Iu Đi. Số càng nhỏ càng nặng. Ranh giới 3/4: từ Error trở xuống là CÓ CHUYỆN THẬT, Warning trở lên là đáng để mắt nhưng chưa chắc sự cố."
-        }
+          "vi": "0 Emergency, 1 Alert, 2 Critical, 3 Error, 4 Warning, 5 Notice, 6 Informational, 7 Debug — Em Ăn Cơm Em Với Người Iu Đi. Số càng nhỏ càng nặng. Ranh giới 3/4: từ Error trở xuống là CÓ CHUYỆN THẬT, Warning trở lên là đáng để mắt nhưng chưa chắc sự cố."
+        },
+        "alsoAsk": [
+          {
+            "vi": "Điền hai chữ khuyết rồi đọc đủ 8 mức kèm số: Em Ăn ___ Em Với ___ Iu Đi."
+          },
+          {
+            "vi": "Mức 2 và mức 5 tên là gì, và ranh giới nào tách chuyện thật khỏi chuyện đáng để mắt?"
+          }
+        ]
       }
     },
     {

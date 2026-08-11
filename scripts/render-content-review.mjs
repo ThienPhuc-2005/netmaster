@@ -356,8 +356,13 @@ function renderModule(mod) {
   for (const c of mod.concepts) {
     out.push(`- **${c.term}** \`${c.id}\` — ${c.glossVi}`)
     out.push(`  - Ẩn dụ: ${vi(c.metaphor)}`)
-    if (c.flashcard) out.push(`  - Thẻ ôn: *${vi(c.flashcard.front)}* → ${vi(c.flashcard.back)}`)
-    else out.push('  - Thẻ ôn: *(khái niệm meta — noFlashcard, không vào hộp ôn)*')
+    if (c.flashcard) {
+      out.push(`  - Thẻ ôn: *${vi(c.flashcard.front)}* → ${vi(c.flashcard.back)}`)
+      // Cách hỏi xoay vòng (H5) là nội dung người học NHÌN THẤY — bản
+      // duyệt nuốt im lặng nó thì người duyệt không kiểm được lời hứa
+      // "mọi cách hỏi trả lời được bằng đúng mặt sau trên kia".
+      for (const ask of c.flashcard.alsoAsk ?? []) out.push(`    - Hỏi cách khác: *${vi(ask)}*`)
+    } else out.push('  - Thẻ ôn: *(khái niệm meta — noFlashcard, không vào hộp ôn)*')
   }
   out.push('')
 

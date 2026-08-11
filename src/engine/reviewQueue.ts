@@ -59,6 +59,29 @@ export function newCardIdsForLesson(
 }
 
 /**
+ * Cách hỏi của LƯỢT NÀY cho một thẻ (kho ý tưởng H5).
+ *
+ * Thẻ khai `alsoAsk` thì mặt trước xoay vòng qua [front, ...alsoAsk] —
+ * lý do sư phạm nằm ở docstring của `alsoAsk` trong contentSchema: hỏi
+ * mãi một kiểu là luyện phản xạ đọc trôi, không phải luyện nhớ lại.
+ *
+ * Xoay theo `intervalIndex + lapses` chứ không phải ngẫu nhiên, vì ba lẽ:
+ * engine không được random (luật vùng engine), thẻ MỚI phải gặp cách hỏi
+ * xuôi trước (turn 0) — cách hỏi khuyết chỉ có nghĩa sau khi đã biết
+ * nguyên câu, và mỗi lượt ôn (đúng hay quên) đều đẩy con số này đi một
+ * bước nên cách hỏi tự đổi theo đường học của từng người.
+ */
+export function flashcardTurn(card: Pick<ReviewCard, 'intervalIndex' | 'lapses'> | null): number {
+  return card === null ? 0 : card.intervalIndex + card.lapses
+}
+
+/** Cách hỏi thứ mấy trong [front, ...alsoAsk] — xem `flashcardTurn`. */
+export function flashcardAskIndex(turn: number, askCount: number): number {
+  if (askCount <= 1) return 0
+  return turn % askCount
+}
+
+/**
  * Thẻ QUÁ HẠN: dueDate < hôm nay — đúng nghĩa đen "quá hạn" trong spec.
  * Thẻ đến hạn HÔM NAY chưa phải nợ: người học còn nguyên hôm nay để ôn,
  * chưa có lý do gì để khóa bài mới.

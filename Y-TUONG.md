@@ -38,9 +38,13 @@ Trạng thái: ☐ chờ duyệt · ✅ đã làm · ✗ đã bàn và bỏ (gi�
 
 - ☐ **B1. Bản đồ ấm dần** — ô module đã đậu trên bản đồ khóa học chuyển
   tông ấm dần; liếc một cái biết mình đi được bao xa, không cần đọc số.
-- ☐ **B2. Chế độ tập trung** — vào bài học thì nav, streak, mọi thứ
-  ngoài lề tự mờ/ẩn. "Một màn hình một khái niệm" triệt để tới cả khung
-  app.
+- ✅ **B2. Chế độ tập trung** — ĐÃ LÀM (khối 21.17): vào bài học hoặc bài
+  thi thì khung app THU LẠI còn thanh biểu tượng (desktop 224px → 64px),
+  tên app + dòng tag + cụm cài đặt + hai icon liên hệ cất đi; bốn mục
+  menu ở lại. **Cố ý KHÔNG làm mờ như ý gốc**: hạ độ đục chữ menu là hạ
+  contrast xuống dưới 4.5:1 — đổi một nguyên tắc sư phạm lấy một lỗi tiếp
+  cận thì không đáng. Mobile giữ nguyên chữ ở thanh đáy (đường ra duy nhất
+  trên màn hẹp), chỉ cất cụm cài đặt.
 - ☐ **B3. Theme "tự động"** — thêm lựa chọn theo giờ/hệ điều hành
   (prefers-color-scheme) bên cạnh sáng/tối cố định.
 
@@ -134,8 +138,12 @@ Trạng thái: ☐ chờ duyệt · ✅ đã làm · ✗ đã bàn và bỏ (gi�
 - ☐ **H4. Tiến độ công trường capstone** — đầu các bài M21 hiện dòng
   "chặng 1 ✓ · chặng 2 đang làm · chặng 3 chờ" cho người học thấy tòa
   nhà mình đang xây dở tầng nào.
-- ☐ **H5. Thẻ ôn điền-chữ-khuyết cho câu nhớ severity** — "Em Ăn ___
-  Em Với ___ Iu Đi" thay vì chỉ hỏi xuôi, chống học vẹt mặt chữ.
+- ✅ **H5. Thẻ ôn điền-chữ-khuyết cho câu nhớ severity** — ĐÃ LÀM (khối
+  21.17): trường `alsoAsk` cho phép MỘT thẻ có nhiều cách hỏi cùng một
+  mặt sau, xoay vòng theo bậc SM-2 + số lần quên (engine không random).
+  Thẻ severity M20 có 3 cách hỏi: xuôi → điền chỗ khuyết → hỏi ngược
+  theo số mức. Mặt sau đánh số lại 0-7 để cách hỏi nào cũng trả lời được
+  bằng đúng nó.
 - ✅ **H6. Đồ thị "nếp học của bạn"** — ĐÃ LÀM (khối 21.2): 8 tuần gần
   nhất ở trang Hồ sơ. Đếm **bài học xong + phiên luyện** chứ không phải
   "số câu đúng" như ý gốc — store không giữ lịch sử câu trả lời theo

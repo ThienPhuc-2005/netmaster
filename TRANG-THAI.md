@@ -28,10 +28,27 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (19) M21 capstone + màn tốt nghiệp | XONG |
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
-**HAI VIỆC ĐANG TREO, phiên mới cần biết:**
-1. **Khối 21.16 (nâng action) CHƯA COMMIT** — đã commit và ĐÃ ĐẨY tới
-   `9b43a4d` (khối 21.15); bản nâng action đang ở working tree.
-2. **Phiên nền đang sửa hình `Journey`** (5 hình vis-hanh-trinh-* tràn
+**KHỐI MỚI NHẤT — 21.17 (08-11), đang ở working tree chờ lệnh commit:**
+hai ý từ kho `Y-TUONG.md` do chủ dự án gọi tên.
+- **B2 — chế độ tập trung**: vào `/bai/*` hoặc `/kiem-tra/*` thì khung app
+  thu lại còn thanh biểu tượng (desktop 224 → 64px), cất tên app + cụm cài
+  đặt + icon liên hệ; bốn mục menu ở lại nguyên độ tương phản. Làm KHÁC ý
+  gốc một chỗ và đã khai: ý gốc nói "làm mờ", nhưng hạ độ đục chữ menu là
+  hạ contrast dưới 4.5:1 nên đổi sang THU KHUNG. Bất biến ghi ở
+  `GHI-CHU-KY-THUAT.md` mục 10.
+- **H5 — một thẻ nhiều cách hỏi**: trường nội dung `alsoAsk` + hai hàm
+  thuần `flashcardTurn`/`flashcardAskIndex`; thẻ 8 mức severity của M20 giờ
+  xoay ba cách hỏi (xuôi → điền chỗ khuyết → hỏi ngược theo số). Bất biến ở
+  mục 8. Mặt sau thẻ đó đánh số lại 0-7 cho mọi cách hỏi trả lời được.
+- 1361 test xanh (+15 test mới của khối này), typecheck sạch, build qua, content:review
+  render lại 21 module. Kiểm browser thật: `/bai/m1-bai-1` sidebar 64px và
+  bốn mục vẫn gọi được tên, về `/` thì khung 224px hồi đủ cụm cài đặt;
+  375px thanh đáy giữ chữ, ô bấm 94×70, không cuộn ngang (375/375); thẻ
+  severity ở bậc 1 hiện đúng câu khuyết, bậc 2 hiện câu hỏi ngược, mặt sau
+  cùng một bản. Dữ liệu seed dùng để kiểm đã xóa.
+
+**MỘT VIỆC ĐANG TREO, phiên mới cần biết:**
+1. **Phiên nền đang sửa hình `Journey`** (5 hình vis-hanh-trinh-* tràn
    viewBox, task riêng của chủ dự án, worktree `.claude/worktrees/…`) —
    ĐỪNG đụng component Journey trong `ConceptVisual.tsx` cho tới khi
    phiên đó nhập về. (Lượt dọn 20.3 có sửa 5 hình KHÁC trong

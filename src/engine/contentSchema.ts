@@ -237,6 +237,20 @@ export const ConceptSchema = z.object({
     .object({
       front: LTextSchema,
       back: LTextSchema,
+      /**
+       * Cách hỏi KHÁC cho cùng một mặt sau (kho ý tưởng H5).
+       *
+       * Thẻ chỉ hỏi xuôi một kiểu thì sau vài lượt người học nhớ MẶT CHỮ
+       * của câu hỏi rồi đọc thuộc lòng mặt sau — nhất là với danh sách
+       * học bằng câu nhớ. Xoay cách hỏi (điền chỗ khuyết, hỏi ngược một
+       * mắt xích) buộc phải lấy lại đúng thứ đó từ trí nhớ chứ không phải
+       * lấy lại cái phản xạ đọc trôi.
+       *
+       * LUẬT SOẠN BÀI: mọi cách hỏi ở đây phải trả lời được TRỌN VẸN bằng
+       * đúng `back` bên trên — mặt sau không đổi theo cách hỏi, nếu không
+       * thì đây là hai thẻ chứ không phải một.
+       */
+      alsoAsk: z.array(LTextSchema).min(1).max(3).optional(),
     })
     .optional(),
   /**
