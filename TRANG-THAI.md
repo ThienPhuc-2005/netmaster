@@ -8,7 +8,7 @@ build qua. **Toàn bộ biên bản hội đồng trung cấp đã XỬ XONG (08
 15/15 việc mục 6 (khối 20.2, commit `1d04c0b`) + trọn LƯỢT DỌN 52 phát
 hiện P2 mục 5 (khối 20.3).** Nội dung và engine không còn việc nào treo;
 các khối gần đây đều là ý lấy từ kho `Y-TUONG.md`.
-Khối 21.50 và 21.51 đã commit và đẩy lên GitHub; không còn việc nào chờ lệnh. **Cả 17 phát
+Việc kế tiếp là của CHỦ DỰ ÁN: ra lệnh commit khối 21.52. **Cả 17 phát
 hiện của BA lượt rà soát (mục J 8 ý + mục K 6 ý + mục L 3 ý) đã xử xong
 hết; kho ý tưởng SẠCH.** Việc duy nhất còn treo là tuyển người cho các
 buổi test người thật (hai dòng DoD).
@@ -31,7 +31,30 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (19) M21 capstone + màn tốt nghiệp | XONG |
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
-**KHỐI MỚI NHẤT — 21.51 (08-12), đã commit `f5990df`:**
+**KHỐI MỚI NHẤT — 21.52 (08-12), đang ở working tree chờ lệnh commit:**
+**Nút "luyện lại đúng mấy thứ hay quên" (ý sinh từ khối trước).**
+- **Mục "Thứ bạn hay quên" giờ có đường HÀNH ĐỘNG.** Trước đó nó chỉ kể
+  ra; giờ có nút mở thẳng một phiên luyện quanh đúng những thứ ấy, khỏi
+  phải mở lại từng bài.
+- **Đề lấy từ đâu, nói thẳng ra**: thẻ ôn chỉ giữ mặt trước/mặt sau, không
+  kèm câu hỏi để luyện — nên đề lấy từ bài tập của chính BÀI đã dạy khái
+  niệm đó. Đây là xấp xỉ có chủ ý: một bài dạy vài khái niệm nên phiên có
+  thể chạm cả khái niệm hàng xóm. Chấp nhận được vì chúng cùng một mạch
+  giải thích, đúng thứ cần gặp lại khi một mảnh trong đó không bám.
+- **Dùng lại nguyên màn luyện đã có, chỉ thêm nguồn thứ hai.** Nhịp luyện,
+  cách chấm, luật không-XP giống hệt phiên "chỗ hay vấp" — dựng màn thứ
+  hai chỉ để đổi một dòng soạn đề là nhân đôi chỗ phải sửa về sau.
+- **Nhãn trên mỗi câu phải nói đúng con số của nó**: phiên này ghi "từng
+  quên N lần", không mượn nhãn "từng vấp N lần" của phiên kia — hai con số
+  đo hai chuyện khác nhau.
+- 1808 test xanh (+12), typecheck sạch, build qua. Kiểm browser thật:
+  gieo 3 thẻ quên 4/3/2 lần → phiên ra 6 câu, câu 1 của chủ đề 1, câu 3
+  của chủ đề 3 (trộn xen kẽ đúng), nhãn ghi "từng quên 4 lần". **Đo trước
+  và sau khi trả lời một câu: XP, chuỗi ngày và cả ba thẻ (hạn ôn, bậc,
+  số lần quên) y nguyên từng chữ** — phiên này không đụng gì thật. Màn
+  đóng phiên hiện đúng số câu làm được. Seed đã xóa.
+
+**KHỐI TRƯỚC — 21.51 (08-12), đã commit `f5990df`:**
 **Chủ dự án báo một lỗi và hỏi một thiếu sót — xử cả hai.**
 - **LỖI: sơ đồ lab trong BÀI THI bị bóp méo.** Màn thi bó cả cột câu hỏi
   vào 512px cho dễ đọc, nhưng bó luôn cả sơ đồ lab — mà mặt bàn lab cần

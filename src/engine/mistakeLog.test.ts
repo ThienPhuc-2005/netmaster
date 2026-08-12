@@ -2,10 +2,12 @@
 
 import { describe, expect, it } from 'vitest'
 import { loadModules } from '../content'
+import { conceptIdsInLesson } from './contentPure'
 import { startLesson } from './lessonMachine'
 import {
   analyzeMistakes,
   MIN_SAMPLE,
+  luyenThuHayQuen,
   theHayQuen,
   weakSpotDrill,
   weakSpots,
@@ -336,5 +338,72 @@ describe('theHayQuen — thứ quên đi quên lại (chủ dự án hỏi 08-12
 
   it('hộp rỗng thì rỗng, không ném', () => {
     expect(theHayQuen([])).toEqual([])
+  })
+})
+
+describe('luyenThuHayQuen — phiên luyện lại thứ hay quên (khối 21.52)', () => {
+  const modules = loadModules()
+
+  /** Một khái niệm THẬT trong nội dung, kèm bài dạy nó (bài có bài tập). */
+  function khaiNiemThat(moduleIndex: number) {
+    const module = modules[moduleIndex]!
+    for (const lesson of module.lessons) {
+      if (lesson.steps[3].exercises.length === 0) continue
+      const ids = conceptIdsInLesson(lesson)
+      if (ids.length > 0) return { moduleId: module.id, conceptId: ids[0]!, lesson }
+    }
+    throw new Error(`module ${module.id} không có bài nào vừa dạy khái niệm vừa có bài tập`)
+  }
+
+  const the = (conceptId: string, moduleId: string, lapses: number) => ({
+    conceptId,
+    moduleId,
+    intervalIndex: 1 as const,
+    dueDate: '2026-08-20',
+    lapses,
+    createdOn: '2026-06-01',
+    lastReviewedOn: null,
+  })
+
+  it('lấy đề từ đúng BÀI đã dạy thứ bị quên', () => {
+    const a = khaiNiemThat(0)
+    const items = luyenThuHayQuen(modules, [the(a.conceptId, a.moduleId, 3)])
+    expect(items.length).toBeGreaterThan(0)
+    expect(items.every((i) => i.lessonId === a.lesson.id)).toBe(true)
+  })
+
+  it('mang theo SỐ LẦN QUÊN, và không giả vờ là số lần vấp', () => {
+    // Hai con số đo hai chuyện khác nhau; màn luyện đọc `quen` để chọn
+    // đúng nhãn "từng quên N lần" thay vì "từng vấp N lần".
+    const a = khaiNiemThat(0)
+    const items = luyenThuHayQuen(modules, [the(a.conceptId, a.moduleId, 3)])
+    expect(items[0]!.quen).toBe(3)
+    expect(items[0]!.failCount).toBe(0)
+  })
+
+  it('thứ chỉ quên MỘT lần không kéo được đề nào về', () => {
+    const a = khaiNiemThat(0)
+    expect(luyenThuHayQuen(modules, [the(a.conceptId, a.moduleId, 1)])).toEqual([])
+  })
+
+  it('thẻ trỏ khái niệm KHÔNG còn trong nội dung thì bỏ qua, không ném', () => {
+    // Cùng lớp chuyện với thẻ mồ côi (K1): nội dung đổi id là thẻ cũ mất chỗ tra.
+    expect(luyenThuHayQuen(modules, [the('khong-ton-tai', 'module-1', 5)])).toEqual([])
+  })
+
+  it('trộn xen kẽ module — luyện khối sinh ảo giác thành thạo', () => {
+    const a = khaiNiemThat(0)
+    const b = khaiNiemThat(1)
+    const items = luyenThuHayQuen(modules, [the(a.conceptId, a.moduleId, 5), the(b.conceptId, b.moduleId, 4)])
+    expect(items[0]!.moduleId).toBe(a.moduleId)
+    expect(items[1]!.moduleId, 'câu thứ hai phải sang module khác').toBe(b.moduleId)
+  })
+
+  it('không vượt trần một phiên', () => {
+    const cards = [0, 1, 2].map((i) => {
+      const k = khaiNiemThat(i)
+      return the(k.conceptId, k.moduleId, 5)
+    })
+    expect(luyenThuHayQuen(modules, cards).length).toBeLessThanOrEqual(WEAK_DRILL_CAP)
   })
 })

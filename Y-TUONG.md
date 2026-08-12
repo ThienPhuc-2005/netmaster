@@ -495,3 +495,14 @@ mất dữ liệu, vừa mất mạng. Cả ba phát hiện đều đã CHỮA t
   quên đó), và **mục này hiện CẢ KHI TRỐNG**, khác mọi mục cùng trang.
   Các mục kia tự ẩn khi chưa có dữ liệu, và chính vì thế người đi tìm
   không thấy nó ở đâu rồi tưởng app không có — đúng chuyện đã xảy ra.
+- ✅ **M3. Nút "luyện lại đúng mấy thứ hay quên"** (ý sinh khi làm M2) —
+  ĐÃ LÀM (khối 21.52): mục "Thứ bạn hay quên" có nút mở thẳng một phiên
+  luyện quanh đúng những thứ ấy, dùng lại nguyên màn luyện của "chỗ hay
+  vấp" với nguồn đề thứ hai.
+  Ba điều rút ra: **thẻ ôn không mang theo câu hỏi để luyện** — nó chỉ có
+  mặt trước/mặt sau, nên đề phải lấy từ bài tập của BÀI đã dạy khái niệm
+  đó, và đó là xấp xỉ cần khai chứ không nên giấu (một bài dạy vài khái
+  niệm nên phiên chạm cả hàng xóm); **một màn hai nguồn tốt hơn hai màn**
+  vì nhịp luyện và luật không-XP giống hệt nhau; và **nhãn phải theo đúng
+  con số của nguồn** — "từng quên N lần" chứ không mượn "từng vấp N lần",
+  hai con số đo hai chuyện khác nhau.

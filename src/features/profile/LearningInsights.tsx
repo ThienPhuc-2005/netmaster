@@ -638,7 +638,19 @@ export function HayQuenList({ rows }: { rows: HayQuenHienThi[] }) {
       {rows.length === 0 ? (
         <p className="text-xs text-ink-muted">{t('profile.hayQuenEmpty')}</p>
       ) : (
-        <ol className="flex flex-col gap-2">
+        <>
+          {/* Đường HÀNH ĐỘNG của mục này (khối 21.52). Danh sách nói ra
+              chỗ chưa bám; nút này cho gặp lại đúng chúng ngay, khỏi phải
+              mở từng bài. Cùng luật với phiên luyện chỗ vấp: không XP,
+              không đụng lịch ôn — nên mời ở đây không nới luật nào. */}
+          <Link
+            to="/luyen-lai?nguon=hay-quen"
+            className="inline-flex w-fit items-center gap-2 rounded-md border border-edge px-4 py-2 text-sm font-semibold text-ink transition-colors duration-(--dur) hover:bg-panel-hover"
+          >
+            <RotateCcw size={15} aria-hidden />
+            {t('profile.hayQuenLuyen')}
+          </Link>
+          <ol className="flex flex-col gap-2">
           {rows.map((row) => (
             <li
               key={row.cardId}
@@ -660,8 +672,9 @@ export function HayQuenList({ rows }: { rows: HayQuenHienThi[] }) {
                 </Link>
               )}
             </li>
-          ))}
-        </ol>
+            ))}
+          </ol>
+        </>
       )}
     </section>
   )

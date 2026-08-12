@@ -15,12 +15,12 @@
 // lượt retrieval chứ không phải màn đọc lại.
 
 import { useMemo, useState } from 'react'
-import { Link } from 'react-router'
+import { Link, useSearchParams } from 'react-router'
 import { ChevronLeft, RotateCcw, Target } from 'lucide-react'
 import { lt, maybeLt } from '../../engine/ltext'
 import { loadModules } from '../../content'
 import { gradeQuestion, type QuestionResponse } from '../../engine/grading/gradeQuestion'
-import { weakSpotDrill } from '../../engine/mistakeLog'
+import { luyenThuHayQuen, weakSpotDrill } from '../../engine/mistakeLog'
 import { useProgress } from '../../store/progress'
 import { useT } from '../../i18n'
 import { playEarcon } from '../../audio/earcons'
@@ -33,10 +33,21 @@ import { QuestionInput } from '../../components/QuestionInput'
 export function WeakSpotDrillPage() {
   const t = useT()
   const lessonRuntimes = useProgress((s) => s.lessonRuntimes)
+  const reviewCards = useProgress((s) => s.reviewCards)
+  const [searchParams] = useSearchParams()
+  // HAI NGUỒN, MỘT MÀN (khối 21.52). Nhịp luyện, cách chấm, luật không-XP
+  // đều giống hệt nhau — khác đúng chỗ lấy đề, nên dựng màn thứ hai chỉ
+  // để đổi một dòng soạn đề là nhân đôi chỗ phải sửa về sau.
+  const hayQuen = searchParams.get('nguon') === 'hay-quen'
 
   // Đề chốt MỘT LẦN lúc mở trang: trả lời xong một câu mà đề tự xáo lại
   // giữa chừng thì người học không biết mình đang ở đâu trong phiên.
-  const items = useMemo(() => weakSpotDrill(loadModules(), lessonRuntimes), [])
+  const items = useMemo(
+    () =>
+      hayQuen ? luyenThuHayQuen(loadModules(), reviewCards) : weakSpotDrill(loadModules(), lessonRuntimes),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [hayQuen],
+  )
   const [index, setIndex] = useState(0)
   const [result, setResult] = useState<{ correct: boolean; response: QuestionResponse } | null>(null)
   const [rightCount, setRightCount] = useState(0)
@@ -48,7 +59,14 @@ export function WeakSpotDrillPage() {
   )
 
   if (items.length === 0) {
-    return <EmptyState icon={Target} title={t('weakDrill.emptyTitle')} body={t('weakDrill.emptyBody')} action={backLink} />
+    return (
+      <EmptyState
+        icon={Target}
+        title={t(hayQuen ? 'weakDrill.quenEmptyTitle' : 'weakDrill.emptyTitle')}
+        body={t(hayQuen ? 'weakDrill.quenEmptyBody' : 'weakDrill.emptyBody')}
+        action={backLink}
+      />
+    )
   }
 
   const heading = (
@@ -57,7 +75,7 @@ export function WeakSpotDrillPage() {
         <ChevronLeft size={14} aria-hidden />
         {t('weakDrill.backToProfile')}
       </Link>
-      <h1 className="text-xl font-bold text-ink">{t('weakDrill.title')}</h1>
+      <h1 className="text-xl font-bold text-ink">{t(hayQuen ? 'weakDrill.quenTitle' : 'weakDrill.title')}</h1>
     </div>
   )
 
@@ -68,7 +86,10 @@ export function WeakSpotDrillPage() {
         <div className="mx-auto flex max-w-md flex-col items-center gap-4 py-16 text-center">
           <h2 className="text-lg font-semibold text-ink">{t('weakDrill.doneTitle')}</h2>
           <p className="text-sm leading-relaxed text-ink-muted">
-            {t('weakDrill.doneBody', { correct: rightCount, total: items.length })}
+            {t(hayQuen ? 'weakDrill.quenDoneBody' : 'weakDrill.doneBody', {
+              correct: rightCount,
+              total: items.length,
+            })}
           </p>
           <p className="text-xs leading-relaxed text-ink-muted">{t('weakDrill.noXpNote')}</p>
           <div className="flex flex-wrap justify-center gap-3">
@@ -104,7 +125,13 @@ export function WeakSpotDrillPage() {
       <div className="mx-auto flex max-w-lg flex-col gap-4">
         <p className="text-xs font-medium text-ink-muted">
           {t('weakDrill.cardOf', { current: index + 1, total: items.length })}
-          <span className="ml-2 text-warn">{t('weakDrill.slipTag', { count: item.failCount })}</span>
+          {/* Hai con số đo hai chuyện khác nhau — dùng nhầm nhãn là nói sai
+              với người học: vấp là lúc đang học, quên là đã học xong rồi. */}
+          <span className="ml-2 text-warn">
+            {item.quen === undefined
+              ? t('weakDrill.slipTag', { count: item.failCount })
+              : t('weakDrill.quenTag', { count: item.quen })}
+          </span>
         </p>
 
         <p className="font-medium text-ink">{lt(item.question.prompt)}</p>

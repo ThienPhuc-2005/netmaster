@@ -10,6 +10,7 @@ import { MemoryRouter } from 'react-router'
 import { WeakSpotDrillPage } from './WeakSpotDrill'
 import { loadModules } from '../../content'
 import { startLesson } from '../../engine/lessonMachine'
+import { conceptIdsInLesson } from '../../engine/contentPure'
 import { useProgress } from '../../store/progress'
 
 const INITIAL = useProgress.getInitialState()
@@ -105,5 +106,73 @@ describe('luyện lại chỗ hay vấp', () => {
     expect(screen.getByText('Xong phiên luyện lại')).toBeTruthy()
     expect(screen.getByText(/không cộng XP và không đổi lịch ôn/)).toBeTruthy()
     expect(useProgress.getState().xpTotal).toBe(0)
+  })
+})
+
+// NGUỒN THỨ HAI của cùng màn này (khối 21.52): luyện lại THỨ HAY QUÊN.
+// Cùng nhịp, cùng cách chấm, cùng luật không-XP — khác đúng chỗ lấy đề,
+// nên phải khoá được rằng hai nguồn không lẫn vào nhau.
+describe('luyện lại thứ hay quên (?nguon=hay-quen)', () => {
+  /** Một khái niệm THẬT của bài đầu + thẻ ôn đã quên `lapses` lần. */
+  function seedQuen(lapses: number) {
+    const conceptId = conceptIdsInLesson(firstLesson)[0]!
+    useProgress.setState({
+      reviewCards: [
+        {
+          conceptId,
+          moduleId: modules[0]!.id,
+          intervalIndex: 1,
+          dueDate: '2026-08-20',
+          lapses,
+          createdOn: '2026-06-01',
+          lastReviewedOn: null,
+        },
+      ],
+    })
+    return conceptId
+  }
+
+  function renderQuen() {
+    render(
+      <MemoryRouter initialEntries={['/luyen-lai?nguon=hay-quen']}>
+        <WeakSpotDrillPage />
+      </MemoryRouter>,
+    )
+  }
+
+  it('mở đúng phiên "hay quên", nhãn nói QUÊN chứ không nói vấp', () => {
+    seedQuen(4)
+    renderQuen()
+    expect(screen.getByRole('heading', { name: 'Luyện lại thứ hay quên' })).toBeTruthy()
+    expect(screen.getByText('từng quên 4 lần')).toBeTruthy()
+    expect(screen.queryByText(/từng vấp/), 'dùng nhầm nhãn là nói sai với người học').toBeNull()
+  })
+
+  it('quên MỘT lần thì chưa tới lượt — nói rõ chưa có gì để luyện', () => {
+    seedQuen(1)
+    renderQuen()
+    expect(screen.getByText('Chưa có thứ nào để luyện lại')).toBeTruthy()
+  })
+
+  it('KHÔNG cộng XP và KHÔNG đụng lịch ôn — cùng luật với phiên chỗ vấp', () => {
+    seedQuen(3)
+    renderQuen()
+    const truoc = JSON.stringify(useProgress.getState().reviewCards)
+    const xpTruoc = useProgress.getState().xpTotal
+
+    const o = screen.queryByPlaceholderText('Gõ câu trả lời của bạn…')
+    if (o !== null) {
+      fireEvent.change(o, { target: { value: 'trả lời gì đó' } })
+      fireEvent.click(screen.getByRole('button', { name: /Kiểm tra/ }))
+    }
+
+    expect(useProgress.getState().xpTotal).toBe(xpTruoc)
+    expect(JSON.stringify(useProgress.getState().reviewCards), 'phiên luyện đã đẩy lịch ôn').toBe(truoc)
+  })
+
+  it('KHÔNG có cờ nguồn thì vẫn là phiên chỗ vấp như cũ', () => {
+    seedQuen(4)
+    renderDrill()
+    expect(screen.getByText('Chưa có câu nào để luyện lại')).toBeTruthy()
   })
 })

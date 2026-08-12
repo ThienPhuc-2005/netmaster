@@ -471,6 +471,21 @@ describe('thứ bạn hay quên', () => {
     expect(within(muc).queryAllByRole('listitem')).toHaveLength(0)
   })
 
+  it('có thứ để luyện thì mục đưa luôn đường LUYỆN LẠI đúng mấy thứ đó', () => {
+    useProgress.setState({ reviewCards: [the('goi-tin', 'module-1', 3)] })
+    renderProfile()
+    const muc = screen.getByRole('region', { name: /Thứ bạn hay quên/ })
+    const nut = within(muc).getByRole('link', { name: /Luyện lại đúng mấy thứ này/ })
+    expect(nut.getAttribute('href')).toBe('/luyen-lai?nguon=hay-quen')
+  })
+
+  it('chưa có gì thì KHÔNG mời luyện — phiên rỗng là lời mời hụt', () => {
+    useProgress.setState({ reviewCards: [] })
+    renderProfile()
+    const muc = screen.getByRole('region', { name: /Thứ bạn hay quên/ })
+    expect(within(muc).queryByRole('link', { name: /Luyện lại/ })).toBeNull()
+  })
+
   // Đây chính là lỗi người dùng gặp: các mục khác cùng trang TỰ ẨN khi
   // chưa có dữ liệu, nên người đi tìm "chỗ xem câu hay quên" không thấy
   // nó ở đâu và tưởng app không có tính năng này.

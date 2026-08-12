@@ -26,7 +26,8 @@ import type { Lesson, Module, Question } from './contentSchema'
 import type { DrillResult, ExerciseAttempt, ISODate, ReviewCard } from './types'
 import type { LessonRuntime } from './lessonMachine'
 import { addDays, diffDays, isBefore } from './dates'
-import { conceptIdsInLesson } from './contentPure'
+import { conceptIdsInLesson, palaceRoomsInLesson } from './contentPure'
+import { roomIdFromCardId } from './palace/cards'
 
 /** Một chỗ người học vấp nhiều — kèm đường quay lại đúng bài đã dạy nó. */
 export interface WeakSpot {
@@ -441,6 +442,13 @@ export interface WeakDrillItem {
   solution: Lesson['steps'][3]['exercises'][number]['solution']
   failCount: number
   usedSolution: boolean
+  /**
+   * Số lần QUÊN của thẻ đã kéo câu này vào phiên — chỉ có ở phiên luyện
+   * "thứ hay quên". Có trường này thì nhãn trên câu nói "từng quên N
+   * lần" thay vì "từng vấp N lần": hai con số đo hai chuyện khác nhau,
+   * dùng nhầm nhãn là nói sai với người học.
+   */
+  quen?: number
 }
 
 /** Trần một phiên luyện lại — cùng cỡ phiên ôn, đủ dài mà không ngợp. */
@@ -560,4 +568,73 @@ export function theHayQuen(cards: readonly ReviewCard[], limit = 5): TheHayQuen[
     )
     .slice(0, limit)
     .map((c) => ({ cardId: c.conceptId, moduleId: c.moduleId, soLanQuen: c.lapses }))
+}
+
+/**
+ * Soạn phiên luyện lại từ NHỮNG THỨ HAY QUÊN (ý sinh khi làm mục "thứ
+ * bạn hay quên", khối 21.52).
+ *
+ * Anh em với `weakSpotDrill` ngay trên, khác đúng NGUỒN — và cái khác đó
+ * là cả lý do nó tồn tại: `weakSpotDrill` lấy câu người học từng thử sai
+ * LÚC ĐANG HỌC, còn hàm này lấy bài đã dạy những thứ họ học xong rồi vẫn
+ * quên. Vấp là kiến thức chưa vào; quên là đã vào mà không bám.
+ *
+ * ĐỀ LẤY TỪ ĐÂU: thẻ ôn chỉ giữ mặt trước/mặt sau, không kèm câu hỏi để
+ * luyện — nên đề lấy từ bài tập của chính BÀI đã dạy khái niệm ấy. Đó là
+ * xấp xỉ có chủ ý và cần nói rõ: một bài dạy vài khái niệm, nên phiên có
+ * thể chạm cả những khái niệm hàng xóm. Chấp nhận được, vì chúng cùng
+ * một bài và cùng một mạch giải thích — đúng thứ cần gặp lại khi một
+ * mảnh trong đó không bám.
+ *
+ * BA LUẬT của `weakSpotDrill` giữ nguyên: không XP, không đụng lịch ôn,
+ * và không mở khóa gì (thẻ ôn chỉ sinh ra sau khi học xong bài, nên bài
+ * nguồn luôn là bài đã học).
+ */
+export function luyenThuHayQuen(
+  modules: readonly Module[],
+  cards: readonly ReviewCard[],
+  cap: number = WEAK_DRILL_CAP,
+): WeakDrillItem[] {
+  const items: WeakDrillItem[] = []
+  // Không cắt trần ở đây — cắt sau khi trộn, đúng lý do đã ghi ở
+  // `weakSpotDrill`: cắt trước khi trộn là để một module ăn trọn trần.
+  for (const { cardId, soLanQuen } of theHayQuen(cards, cards.length)) {
+    const found = baiDayThe(modules, cardId)
+    if (found === null) continue // nội dung đã đổi, không còn bài nào dạy nó
+    for (const exercise of found.lesson.steps[3].exercises) {
+      items.push({
+        moduleId: found.module.id,
+        lessonId: found.lesson.id,
+        question: exercise.question,
+        solution: exercise.solution,
+        failCount: 0,
+        usedSolution: false,
+        quen: soLanQuen,
+      })
+    }
+  }
+  return interleaveModules(items).slice(0, cap)
+}
+
+/**
+ * Bài đã dạy thứ nằm trên một thẻ — nhận cả conceptId thường lẫn thẻ
+ * cung điện (`palace:<roomId>`, mặt trước là một PHÒNG chứ không phải
+ * một khái niệm). Bản thuần của `baiDayKhaiNiem` bên tầng nội dung:
+ * engine không được tự đọc kho nội dung nên nhận `modules` từ ngoài.
+ */
+function baiDayThe(
+  modules: readonly Module[],
+  cardId: string,
+): { module: Module; lesson: Lesson } | null {
+  const roomId = roomIdFromCardId(cardId)
+  for (const module of modules) {
+    for (const lesson of module.lessons) {
+      const trung =
+        roomId === null
+          ? conceptIdsInLesson(lesson).includes(cardId)
+          : palaceRoomsInLesson(lesson).includes(roomId)
+      if (trung) return { module, lesson }
+    }
+  }
+  return null
 }
