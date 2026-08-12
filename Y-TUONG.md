@@ -154,6 +154,24 @@ Trạng thái: ☐ chờ duyệt · ✅ đã làm · ✗ đã bàn và bỏ (gi�
   hai đầu của cái tên; nó cũng là đường thoát cho cặp PC-/SW- cùng phòng ở
   lab M21 (bỏ tiền tố là hai nhãn trùng nhau). 57 nhãn thật: còn dài 6 →
   còn 2, hai cái còn lại rút là trùng nên script in "sửa tay".
+- ✅ **F7. Mở app bằng phần nội dung ĐÃ VỀ** (ý sinh trong lúc làm L1) —
+  ĐÃ LÀM (khối 21.49): bỏ `Promise.all` ôm trọn 21 gói, kéo từng gói rời
+  nhau rồi lấy **khúc đầu liền mạch**. Đây là cách gỡ TẬN GỐC L1: lưới đỡ
+  của khối trước chỉ đỡ cho người rơi, còn đây là bỏ hẳn cái hố — người
+  đứng ở module 2 không còn phải chờ gói của module 21.
+  Ba điều rút ra, cái thứ nhất suýt thành lỗi mất dữ liệu:
+  **dọn thẻ mồ côi phải hỏi `noiDungDayDu()` trước** — hàm đó XOÁ HẲN thẻ
+  khỏi hộp, chạy nó trên khúc nội dung cụt là đọc "gói chưa tải về" thành
+  "khái niệm đã bị bỏ" rồi xoá sạch lịch ôn của nửa khóa sau, chỉ vì một
+  lần rớt mạng.
+  **Phải CẮT tại chỗ đứt, không được giữ gói nằm sau nó**: chuỗi mở khóa
+  đọc một DÃY và mở theo từng cặp liền kề, nên dãy [1,2,3,5,6] bị đọc
+  thành "5 đứng ngay sau 3" — đậu module 3 là module 5 mở ra, tức thủng
+  cổng mastery. Cắt đi không lấy mất của người học thứ gì, vì chính cổng
+  mastery vốn đã chặn không cho học tới đó.
+  **"Module cuối khóa" cũng phải hỏi `noiDungDayDu()`**: `at(-1)` của một
+  khúc cụt là cuối KHÚC, không phải cuối khóa — thiếu điều kiện này thì
+  người mất mạng giữa chừng bị app chúc mừng "khép lại cả khóa học".
 
 ## G. Việc spec đã hứa nhưng chưa tới lượt
 

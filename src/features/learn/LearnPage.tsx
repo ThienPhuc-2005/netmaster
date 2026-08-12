@@ -2,11 +2,11 @@
 // 15%) + bài học mở TUẦN TỰ. Mastery gate giữa các module áp qua
 // computeModuleStatuses — module sau khóa tới khi module trước đạt >= 85%.
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link, useSearchParams } from 'react-router'
 import { lt } from '../../engine/ltext'
-import { BookOpen, Check, FastForward, GraduationCap, Lock, Play, RotateCcw, Server, Snowflake, Sunrise, Timer, X } from 'lucide-react'
-import { loadModules, lessonsInOrder } from '../../content'
+import { BookOpen, Check, CloudOff, FastForward, GraduationCap, Lock, Play, RotateCcw, Server, Snowflake, Sunrise, Timer, X } from 'lucide-react'
+import { loadModules, lessonsInOrder, primeModules, soModuleThieu } from '../../content'
 import { computeModuleStatuses } from '../../engine/masteryGate'
 import { moduleXpTotal } from '../../engine/xp'
 import { LESSON_STEP_COUNT, planToday, type TodayPlan } from '../../engine/todayPlan'
@@ -15,6 +15,7 @@ import { soNgayVang, VANG_LAU_NGAY } from '../../engine/streak'
 import type { Lesson, Module } from '../../engine/contentSchema'
 import { canChallengeModule, newLessonGate, todayIso, useProgress } from '../../store/progress'
 import { useT } from '../../i18n'
+import { Button } from '../../components/Button'
 import { EmptyState } from '../../components/EmptyState'
 import { ProgressBar } from '../../components/ProgressBar'
 import { StageMap, type StageItem } from '../../components/StageMap'
@@ -534,6 +535,57 @@ function ModuleCard({ module, status }: { module: Module; status: 'locked' | 'op
   )
 }
 
+/**
+ * Một dòng nói ra phần nội dung CHƯA VỀ (khối 21.49).
+ *
+ * App giờ mở bằng khúc đầu đã tải được, nên danh sách chủ đề bên dưới có
+ * thể ngắn hơn khóa học thật. Im lặng về chuyện đó là để người học tự kết
+ * luận "khóa này chỉ có 12 chủ đề" — nên nói thẳng, kèm chỗ tựa: tới hết
+ * chủ đề cuối đang có thì mới cần tới phần còn thiếu.
+ *
+ * Đặt NGAY TRÊN bản đồ đường đi vì nó giải thích đúng cái dải đó: dải chỉ
+ * còn 12 ô chứ không phải 21.
+ */
+function ThieuNoiDungNote({ modules }: { modules: readonly Module[] }) {
+  const t = useT()
+  const [trangThai, setTrangThai] = useState<'cho' | 'dang-keo' | 'hut'>('cho')
+  const thieu = soModuleThieu()
+  if (thieu <= 0) return null
+
+  const keoNot = () => {
+    setTrangThai('dang-keo')
+    primeModules().then(
+      () => {
+        // Về thêm được gói nào thì TẢI LẠI TRANG, không tự vẽ lại: mọi
+        // màn đọc `loadModules()` lúc render, mà chuỗi mở khóa và bộ dọn
+        // thẻ mồ côi đều nằm ở cổng vào app — cho nó chạy lại một lượt
+        // sạch sẽ đáng hơn là vá từng chỗ.
+        if (soModuleThieu() < thieu) window.location.reload()
+        else setTrangThai('hut')
+      },
+      () => setTrangThai('hut'),
+    )
+  }
+
+  return (
+    <div className="mt-6 flex flex-col gap-2 rounded-md border border-edge bg-panel px-5 py-4">
+      <div className="flex items-center gap-2">
+        <CloudOff size={16} aria-hidden className="shrink-0 text-ink-muted" />
+        <h2 className="text-sm font-semibold text-ink">{t('learn.thieuTitle', { count: thieu })}</h2>
+      </div>
+      <p className="text-xs leading-relaxed text-ink-muted">
+        {t('learn.thieuBody', { ten: lt(modules[modules.length - 1]!.title) })}
+      </p>
+      <div className="flex flex-wrap items-center gap-3">
+        <Button variant="ghost" onClick={keoNot} disabled={trangThai === 'dang-keo'}>
+          {t(trangThai === 'dang-keo' ? 'learn.thieuDangKeo' : 'learn.thieuRetry')}
+        </Button>
+        {trangThai === 'hut' && <p className="text-xs text-warn">{t('learn.thieuVanChua')}</p>}
+      </div>
+    </div>
+  )
+}
+
 export function LearnPage() {
   const t = useT()
   const modules = loadModules()
@@ -576,6 +628,11 @@ export function LearnPage() {
         ngayVang={soNgayVang(streak, today)}
         phongKhamMo={clinicTabUnlocked(passedModules)}
       />
+
+      {/* Nói ra phần nội dung chưa về TRƯỚC bản đồ, vì nó giải thích đúng
+          cái dải ngay dưới: dải ngắn đi là do mạng, không phải do khóa
+          học chỉ có ngần ấy chủ đề. */}
+      <ThieuNoiDungNote modules={modules} />
 
       {/* Bản đồ đường đi đứng NGAY TRÊN danh sách chủ đề, dưới thẻ Hôm
           nay (B1): thẻ Hôm nay trả lời "làm gì bây giờ", dải này trả lời

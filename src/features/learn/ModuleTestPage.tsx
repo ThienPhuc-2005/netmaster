@@ -32,7 +32,7 @@ import { MASTERY_THRESHOLD_PCT, computeModuleStatuses, ganNguong } from '../../e
 import { gradeQuestion, type QuestionResponse } from '../../engine/grading/gradeQuestion'
 import { drawMasteryTest, masteryDrawCount } from '../../engine/masteryPool'
 import type { Question } from '../../engine/contentSchema'
-import { loadModules } from '../../content'
+import { loadModules, noiDungDayDu } from '../../content'
 import { canChallengeModule, useProgress } from '../../store/progress'
 import { milestoneOfModule } from '../graduation/milestones'
 import { useT } from '../../i18n'
@@ -108,7 +108,13 @@ export function ModuleTestPage() {
   // module không tồn tại đúng vào lúc người học vừa kết thúc cả khóa là
   // lời nói dối, và nó rơi trúng khoảnh khắc peak-end (spec 2.1 bước 6).
   // Suy từ dữ liệu, không đếm cứng số module.
-  const isFinalModule = allModules.at(-1)?.id === module.id
+  //
+  // `noiDungDayDu()` là điều kiện BẮT BUỘC (khối 21.49): nội dung giờ về
+  // được tới đâu học tới đó, nên `at(-1)` của một khúc cụt là module cuối
+  // của KHÚC, không phải của khóa. Thiếu điều kiện này thì người mất mạng
+  // giữa chừng học xong module 12 sẽ được app chúc mừng "khép lại cả khóa
+  // học" — đúng kiểu nói dối mà cả file test này sinh ra để chặn.
+  const isFinalModule = noiDungDayDu() && allModules.at(-1)?.id === module.id
   // Mốc tốt nghiệp (nếu module này là cửa của một mốc) — nút hiện ở màn ĐẬU.
   const gradMilestone = milestoneOfModule(module.id)
 

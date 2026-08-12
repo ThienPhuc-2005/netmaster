@@ -687,10 +687,29 @@ quan trước khi "sửa test cho xanh".
   `dinh-ky` · `truoc-nang-cap` · `truoc-khoi-phuc` · `truoc-nhap`; thêm
   lý do mới nhớ khai đủ ba chỗ (`LyDoChup`, `laAnhChup`, `LY_DO_KEY`) —
   thiếu `laAnhChup` là bản chụp bị lọc mất im lặng lúc đọc lại.
+- **VỀ ĐƯỢC TỚI ĐÂU HỌC TỚI ĐÓ** (khối 21.49). `primeModules()` kéo từng
+  gói RỜI NHAU (`allSettled`) rồi lấy **khúc đầu liền mạch** (order 1, 2,
+  3… không đứt); gói nằm sau chỗ đứt coi như chưa về. Ba luật đi kèm,
+  luật đầu là chống MẤT DỮ LIỆU:
+  - **Dọn thẻ mồ côi CHỈ chạy khi `noiDungDayDu()`.** Hàm đó xoá hẳn thẻ
+    khỏi hộp; chạy trên khúc cụt là xoá sạch lịch ôn của nửa khóa sau vì
+    một lần rớt mạng. Thiếu thì thà để thẻ nằm đó, lượt sau dọn.
+  - **Không được giữ gói nằm SAU chỗ đứt.** `computeModuleStatuses` mở
+    khóa theo từng cặp liền kề, nên dãy [1,2,3,5,6] bị đọc thành "5 đứng
+    ngay sau 3" — đậu module 3 là module 5 mở ra, THỦNG cổng mastery.
+    Cắt đi không thiệt gì cho người học: cổng mastery vốn đã chặn không
+    cho học tới đó.
+  - **"Module cuối khóa" cũng phải hỏi `noiDungDayDu()`** — `at(-1)` của
+    khúc cụt là cuối KHÚC, không phải cuối khóa.
+  Cả ba đều có test khoá (`content/napThieu.test.ts`,
+  `app/gatesThieuNoiDung.test.tsx`,
+  `features/learn/ModuleTestPageThieuNoiDung.test.tsx`).
+  Gọi lại `primeModules()` chính là lượt KÉO LẠI phần còn thiếu.
 - **`AppGate` PHẢI bắt nhánh `primeModules()` kéo hụt** (phát hiện L1,
-  khối 21.48). Cổng chờ đủ 21 gói nội dung rồi mới mở khung app, nên
-  promise hụt mà không ai bắt thì cổng đứng vĩnh viễn ở `return null` —
-  MÀN TRẮNG câm, tải lại vẫn trắng (họ J1/K1). Ba điều không được nới:
+  khối 21.48). Giờ hàm đó chỉ còn ném khi ngay cả module ĐẦU cũng không
+  về được; nhưng promise hụt mà không ai bắt thì cổng đứng vĩnh viễn ở
+  `return null` — MÀN TRẮNG câm, tải lại vẫn trắng (họ J1/K1). Ba điều
+  không được nới:
   màn hụt phải NÓI RA thay vì trả `null`; nút Thử lại gọi `primeModules()`
   một lượt mới chứ không `reload()` (mất mạng thì tải lại còn phải trông
   vào service worker dựng lại vỏ app); và màn đó KHÔNG được mời sang Hồ

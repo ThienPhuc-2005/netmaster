@@ -19,7 +19,7 @@ import { AppLayout } from '../components/AppLayout'
 import { ManThieuNoiDung } from '../components/ManThieuNoiDung'
 import { OnboardingPage } from '../features/onboarding/OnboardingPage'
 import { LearnPage } from '../features/learn/LearnPage'
-import { loadModules, primeModules } from '../content'
+import { loadModules, noiDungDayDu, primeModules } from '../content'
 import { cardIdsHopLe } from '../engine/reviewQueue'
 import { shouldReviewFirst, todayIso, useProgress } from '../store/progress'
 
@@ -104,7 +104,13 @@ export function AppGate() {
         // học, và nội dung hiện tại dựng được mặt thẻ nào. Thẻ nội dung
         // không còn mà để lại thì nó vẫn tính vào nợ quá hạn, vẫn kéo
         // người học vào phiên ôn — mà phiên ôn không dựng nổi mặt nó.
-        useProgress.getState().donTheMoCoi(cardIdsHopLe(loadModules()))
+        //
+        // CHỈ KHI NỘI DUNG VỀ ĐỦ (khối 21.49). Hàm này XOÁ HẲN thẻ khỏi
+        // hộp; chạy nó trên khúc nội dung cụt là đọc "gói chưa tải về"
+        // thành "khái niệm đã bị bỏ" rồi xoá sạch lịch ôn của nửa khóa
+        // sau — mất dữ liệu thật, chỉ vì một lần rớt mạng. Thiếu thì thà
+        // để thẻ nằm đó: lượt mở app sau, nội dung về đủ là dọn được.
+        if (noiDungDayDu()) useProgress.getState().donTheMoCoi(cardIdsHopLe(loadModules()))
         setNoiDung('xong')
       },
       // KÉO HỤT (phát hiện L1): mạng rớt giữa chừng, hoặc service worker

@@ -8,7 +8,7 @@ build qua. **Toàn bộ biên bản hội đồng trung cấp đã XỬ XONG (08
 15/15 việc mục 6 (khối 20.2, commit `1d04c0b`) + trọn LƯỢT DỌN 52 phát
 hiện P2 mục 5 (khối 20.3).** Nội dung và engine không còn việc nào treo;
 các khối gần đây đều là ý lấy từ kho `Y-TUONG.md`.
-Khối 21.48 đã commit; không còn việc nào chờ lệnh. **Cả 17 phát
+Việc kế tiếp là của CHỦ DỰ ÁN: ra lệnh commit khối 21.49. **Cả 17 phát
 hiện của BA lượt rà soát (mục J 8 ý + mục K 6 ý + mục L 3 ý) đã xử xong
 hết; kho ý tưởng SẠCH.** Việc duy nhất còn treo là tuyển người cho các
 buổi test người thật (hai dòng DoD).
@@ -31,7 +31,34 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (19) M21 capstone + màn tốt nghiệp | XONG |
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
-**KHỐI MỚI NHẤT — 21.48 (08-12), đã commit `746f8d4`:**
+**KHỐI MỚI NHẤT — 21.49 (08-12), đang ở working tree chờ lệnh commit:**
+**Mở app bằng phần nội dung ĐÃ VỀ — gỡ tận gốc L1 (ý F7 của kho ý tưởng).**
+Khối trước đặt lưới đỡ cho người rơi; khối này bỏ hẳn cái hố.
+- **App không còn đòi đủ 21 gói mới chịu mở.** Trước đây một cú `Promise
+  .all` ôm trọn 21 file nội dung: rớt một file là hỏng cả lượt, mà app
+  thì chờ đúng lượt đó mới mở cửa — người đứng ở chủ đề 2 phải chờ gói
+  của chủ đề 21 về đủ. Giờ kéo từng gói rời nhau, về được tới đâu học
+  tới đó; trang Học nói thẳng "còn N chủ đề chưa tải về máy" kèm nút tải
+  nốt, và nói rõ học tới đâu thì mới cần tới phần còn thiếu.
+- **Ba lưới an toàn phải dựng cùng lúc, không phải chuyện phụ.** Nặng
+  nhất: bộ dọn thẻ ôn mồ côi XOÁ HẲN thẻ, nên chạy nó khi nội dung chưa
+  đủ là đọc "gói chưa tải về" thành "khái niệm đã bị bỏ" rồi xoá sạch
+  lịch ôn của nửa khóa sau — mất dữ liệu thật vì một lần rớt mạng. Thứ
+  hai: gói nằm SAU chỗ đứt phải bỏ đi, vì chuỗi mở khóa đọc dãy theo
+  từng cặp liền kề nên [1,2,3,5,6] bị hiểu thành "5 đứng ngay sau 3" —
+  đậu chủ đề 3 là chủ đề 5 mở ra, tức thủng cổng mastery. Thứ ba: không
+  được gọi tên "chủ đề cuối khóa" khi nội dung chưa đủ, không thì người
+  mất mạng giữa chừng bị chúc mừng "khép lại cả khóa học".
+- 1781 test xanh (+12), typecheck sạch, build qua. Kiểm browser thật:
+  dựng cảnh mạng đứt sau gói thứ 12 → app MỞ RA bình thường với 12 chủ
+  đề, thẻ Hôm nay vẫn mời học bài đầu, dòng cảnh báo ghi đúng "còn 9 chủ
+  đề" và gọi đúng tên chủ đề cuối đang có; bấm "Tải nốt phần còn lại" khi
+  mạng đã về → 9 gói thiếu về hết, app tự tải lại thành đủ 21; khi mạng
+  vẫn yếu → hiện "vẫn chưa tải được", không hứa hão. Gieo 2 thẻ ôn của
+  chủ đề 20 (chủ đề chưa tải về) rồi mở app: **cả 2 thẻ còn nguyên** —
+  đúng chỗ mà thiếu lưới an toàn là mất sạch. Seed đã xóa.
+
+**KHỐI TRƯỚC — 21.48 (08-12), đã commit `746f8d4`:**
 **Lượt rà soát thứ ba: BA MÀN HIẾM GẶP — tìm và chữa gọn trong cùng khối.**
 Hai lượt trước đi theo NGƯỜI (đường xuôi mục J, đường ngược mục K); lượt
 này đi theo MÀN, vào ba chỗ chưa lượt nào bước qua — và cả ba đều rơi
