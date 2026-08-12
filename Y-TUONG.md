@@ -591,3 +591,36 @@ Kết quả: 3 phát hiện, cả ba đã chữa trong cùng khối 21.59.
   vẫn làm trọn được ở bảng cấu hình bên dưới" — câu đó chỉ đúng SAU khi
   đã chọn được thiết bị. Giờ bảng tự liệt kê thiết bị, chọn ngay tại chỗ.
 
+## P. Rà soát BÀN PHÍM + TRÌNH ĐỌC MÀN HÌNH (08-12)
+
+Lượt rà soát thứ năm, đi bằng phím Tab và bằng cây trợ năng thay vì bằng
+mắt. Kết quả: 2 phát hiện (đã chữa ở khối 21.60) — và nhiều thứ HOÁ RA
+ĐÃ ĐÚNG SẴN, ghi lại để lượt sau khỏi soi lại: cổng trong phòng lab đều
+là nút thật có nhãn mô tả ("PC-A · eth0 — nối tới Switch-1"), phản hồi
+chấm bài nằm trong vùng `role="status"`, tiêu đề không nhảy bậc, mọi
+nút/link đều có tên đọc được, và CSS có sẵn luật `:focus-visible` toàn
+cục.
+
+- ✅ **P1. 18 link trên trang Học đọc y hệt nhau** — ĐÃ CHỮA (khối 21.60).
+  Đo thật: 18 cửa "Mình biết phần này rồi — thi vượt luôn", 4 nút "Bắt
+  đầu", 3 link "Xem lại", tất cả không mang tên chủ đề hay tên bài. Người
+  dùng trình đọc màn hình gọi danh sách link ra thì nghe 18 lần cùng một
+  câu. **App đã tự đặt ra luật này từ trước** ở mục "chỗ hay vấp" ("tựa
+  bài đi vào tên đọc được") — chỉ là chưa áp cho chính trang được mở
+  nhiều nhất.
+- ✅ **P2. Đổi trang thì focus rơi về `<body>`** — ĐÃ CHỮA (khối 21.60).
+  Bấm "Bắt đầu bài mới" → sang trang bài học mà `activeElement` là body:
+  trình đọc màn hình không đọc một chữ nào về trang vừa mở, người dùng
+  bàn phím phải Tab lại từ đầu qua 8 nút khung. App đã áp đúng luật này ở
+  CHIỀU NGƯỢC từ lâu (quay về trang Học thì focus nhảy vào đúng thẻ) —
+  chỉ thiếu ở chiều đi.
+  Điều tinh nhất khi chữa: chỉ nhận focus KHI CHƯA AI NHẬN. Effect của
+  con chạy trước effect của cha, nên không có vế đó thì khung app cướp
+  mất focus mà trang con vừa nhắm — tức là chữa lỗi này bằng cách phá một
+  hành vi đã chạy tốt.
+
+**Một báo động giả, ghi lại để khỏi lặp**: phép đo đầu tiên báo "không
+nút nào có viền focus". Sai — gọi `.focus()` bằng script KHÔNG kích hoạt
+`:focus-visible` trong Chromium, nên đo kiểu đó luôn ra kết quả rỗng. Luật
+CSS vẫn ở đó và vẫn chạy.
+

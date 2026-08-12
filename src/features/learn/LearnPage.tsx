@@ -317,6 +317,7 @@ function LessonRow({
       {state === 'done' && (
         <Link
           to={`/bai/${lesson.id}`}
+          aria-label={t('learn.lessonReplayAria', { lesson: lt(lesson.missionTitle) })}
           className={`flex items-center gap-1 text-xs font-medium text-ink-muted hover:text-ink ${LOP_CHAM_DUOC}`}
         >
           <RotateCcw size={12} aria-hidden />
@@ -328,6 +329,9 @@ function LessonRow({
           to={`/bai/${lesson.id}`}
           // Đây là VIỆC KẾ TIẾP của module — đường quay lại nhắm vào nó.
           {...{ [NEXT_ACTION_ATTR]: '' }}
+          aria-label={t(started ? 'learn.lessonContinueAria' : 'learn.lessonStartAria', {
+            lesson: lt(lesson.missionTitle),
+          })}
           className="rounded-md bg-accent px-3 py-1.5 text-xs font-semibold text-accent-contrast transition-colors duration-(--dur) hover:brightness-110"
         >
           {started ? t('learn.lessonContinue') : t('learn.lessonStart')}
@@ -470,7 +474,11 @@ function ModuleCard({ module, status }: { module: Module; status: 'locked' | 'op
         {canChallenge && (
           <Link
             to={`/kiem-tra/${module.id}?vuot=1`}
-            aria-label={t('learn.challenge')}
+            // TÊN MODULE phải nằm trong nhãn đọc được (phát hiện P1):
+            // trang này có tới 18 chip giống hệt nhau, nghe bằng trình
+            // đọc màn hình là 18 lần cùng một câu, không biết câu nào
+            // thuộc chủ đề nào. Cùng luật đã áp cho mục "chỗ hay vấp".
+            aria-label={t('learn.challengeAria', { module: lt(module.title) })}
             title={t('learn.challenge')}
             className="flex shrink-0 items-center gap-1.5 rounded-md border border-accent bg-panel-hover px-3 py-1.5 text-xs font-semibold text-accent transition-colors duration-(--dur) hover:bg-accent hover:text-accent-contrast"
           >

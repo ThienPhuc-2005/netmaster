@@ -55,7 +55,12 @@ describe('J4 — mỗi thẻ chỉ một cửa thi vượt', () => {
     const cua = [...the(dauTien.id).querySelectorAll('a')].find((a) =>
       (a.getAttribute('href') ?? '').includes('vuot=1'),
     )!
-    expect(cua.getAttribute('aria-label')).toBe('Mình biết phần này rồi — thi vượt luôn')
+    const nhan = cua.getAttribute('aria-label') ?? ''
+    expect(nhan, 'nhãn chỉ có hai chữ "Học vượt" là không nói được gì').toContain('mình biết phần này rồi')
+    // Và TÊN CHỦ ĐỀ phải nằm trong đó (P1, khối 21.60): trang này có tới
+    // 18 cửa vượt, nhãn giống hệt nhau thì người dùng trình đọc màn hình
+    // nghe 18 lần một câu mà không biết câu nào thuộc chủ đề nào.
+    expect(nhan, 'thiếu tên chủ đề thì 18 cửa vượt đọc y hệt nhau').toContain(dauTien.title.vi)
   })
 
   it('module ĐÃ ĐẬU thì không mời vượt nữa', () => {

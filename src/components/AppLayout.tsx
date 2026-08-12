@@ -3,7 +3,7 @@
 // Phòng khám gắn khóa tới khi module chứa ca bệnh mở theo mastery gate
 // (Phase 3 hạng mục 9 — quyết định đã chốt: mở khi Module 11 mở).
 
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { NavLink, Outlet, useLocation } from 'react-router'
 import {
   BookOpen,
@@ -67,7 +67,42 @@ function BrandIcon({ path, title, href }: { path: string; title: string; href: s
   )
 }
 
+/**
+ * ĐỔI TRANG THÌ FOCUS PHẢI ĐI THEO (phát hiện P2, lượt rà soát bàn phím).
+ *
+ * Trong app một trang, bấm một link rồi link đó biến mất khỏi DOM là focus
+ * rơi về `<body>`. Đo thật: từ trang Học bấm "Bắt đầu bài mới" → sang
+ * `/bai/m4-bai-2` mà `document.activeElement` là body. Hậu quả kép: trình
+ * đọc màn hình không đọc một chữ nào về trang vừa mở, và người dùng bàn
+ * phím phải Tab lại từ đầu qua 8 nút khung mới chạm được nội dung.
+ *
+ * App đã áp đúng luật này ở CHIỀU NGƯỢC từ lâu (quay về trang Học thì
+ * focus nhảy vào đúng thẻ module — `useScrollToModule`), chỉ thiếu ở
+ * chiều đi.
+ *
+ * HAI ĐIỀU KIỆN, cái thứ hai quan trọng hơn:
+ *   1. Bỏ qua lần dựng ĐẦU TIÊN — mở app lên mà bị giật focus là vô cớ.
+ *   2. CHỈ nhận focus khi chưa ai nhận (`activeElement` là body). Không có
+ *      vế này thì nó cướp focus của `useScrollToModule`: effect của con
+ *      chạy trước effect của cha, nên cha sẽ ghi đè lên chỗ con vừa nhắm.
+ */
+function useFocusKhiDoiTrang(o: React.RefObject<HTMLElement | null>): void {
+  const { pathname } = useLocation()
+  const lanDau = useRef(true)
+  useEffect(() => {
+    if (lanDau.current) {
+      lanDau.current = false
+      return
+    }
+    const dang = document.activeElement
+    if (dang !== null && dang !== document.body) return
+    o.current?.focus({ preventScroll: true })
+  }, [pathname, o])
+}
+
 export function AppLayout() {
+  const oMain = useRef<HTMLElement>(null)
+  useFocusKhiDoiTrang(oMain)
   const t = useT()
   const theme = useSettings((s) => s.theme)
   const mucAm = useSettings((s) => s.mucAm)
@@ -216,7 +251,11 @@ export function AppLayout() {
         )}
       </aside>
 
-      <main className="flex-1 overflow-y-auto">
+      {/* `tabIndex={-1}` để đổi trang xong FOCUS đứng được ở đây — xem
+          `useFocusKhiDoiTrang` ngay trên. `focus:outline-none` vì đây là
+          focus do máy dời, không phải người dùng tự Tab tới; vẽ viền
+          quanh cả trang chỉ làm người ta hoang mang. */}
+      <main ref={oMain} tabIndex={-1} className="flex-1 overflow-y-auto focus:outline-none">
         <div className="mx-auto max-w-4xl px-4 py-6 md:px-8 md:py-8">
           <NhacNghi />
           <Outlet />

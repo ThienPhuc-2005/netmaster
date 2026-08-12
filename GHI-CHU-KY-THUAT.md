@@ -421,6 +421,16 @@ quan trước khi "sửa test cho xanh".
   người học đếm ra mâu thuẫn ngay trong một buổi: Hồ sơ kể 3 món, thẻ Hôm
   nay kể 5. Vì sao là 2 chứ không phải 1: quên một lần là chuyện thường
   của trí nhớ — cả cơ chế ôn ngắt quãng dựng lên là để đón đúng cú quên đó.
+- **Nút LẶP phải mang TÊN RIÊNG trong nhãn đọc được** (P1, khối 21.60).
+  Trang Học từng có 18 cửa thi vượt đọc y hệt nhau. Cứ chỗ nào một nút
+  xuất hiện một-lần-mỗi-module hoặc một-lần-mỗi-bài thì `aria-label` phải
+  nhét tên module/bài vào. Có test quét: `features/learn/tenDocDuoc.test.tsx`
+  bắt mọi cặp nút trùng tên trên trang Học.
+- **Đổi trang thì `AppLayout` dời focus vào `<main>` — nhưng CHỈ khi chưa
+  ai nhận** (P2, khối 21.60). Effect của component con chạy TRƯỚC effect
+  của cha, nên bỏ điều kiện `activeElement === body` là cha ghi đè lên chỗ
+  con vừa nhắm (`useScrollToModule` của trang Học). Cũng bỏ qua lần dựng
+  đầu tiên: mở app lên mà bị giật focus là vô cớ.
 - **Nút chỉ-là-chữ phải mang `LOP_CHAM_DUOC`** (phát hiện O1, khối 21.59).
   `text-xs` cao đúng 16px — dưới sàn 24px của WCAG 2.5.8. Lớp này nới vùng
   chạm bằng padding rồi kéo lại bằng margin âm nên KHÔNG đổi bố cục. Chỗ

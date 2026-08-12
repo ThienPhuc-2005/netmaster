@@ -10,7 +10,7 @@
 //   4. Cụm cài đặt và hai icon liên hệ là thứ được cất đi.
 
 import { afterEach, describe, expect, it } from 'vitest'
-import { cleanup, render, screen } from '@testing-library/react'
+import { act, cleanup, render, screen } from '@testing-library/react'
 import { RouterProvider, createMemoryRouter } from 'react-router'
 import { AppLayout, isFocusRoute } from './AppLayout'
 
@@ -80,5 +80,62 @@ describe('AppLayout — chế độ tập trung', () => {
     for (const name of ['Học', 'Ôn tập', 'Phòng khám', 'Hồ sơ']) {
       expect(screen.getByRole('link', { name: new RegExp(name) }), name).toBeTruthy()
     }
+  })
+})
+
+// ĐỔI TRANG THÌ FOCUS PHẢI ĐI THEO (phát hiện P2, lượt rà soát bàn phím).
+//
+// Đo thật trước khi sửa: từ trang Học bấm "Bắt đầu bài mới" → sang
+// /bai/... mà `document.activeElement` là <body>. Trình đọc màn hình
+// không đọc chữ nào về trang vừa mở, còn người dùng bàn phím phải Tab
+// lại từ đầu qua 8 nút khung mới chạm được nội dung.
+describe('focus khi đổi trang', () => {
+  function routerTuPath(path: string) {
+    return createMemoryRouter(
+      [
+        {
+          path: '/',
+          element: <AppLayout />,
+          children: [
+            { index: true, element: <p>trang học</p> },
+            { path: 'bai/:lessonId', element: <p>màn bài học</p> },
+          ],
+        },
+      ],
+      { initialEntries: [path] },
+    )
+  }
+
+  it('mở app lần đầu thì KHÔNG giật focus — chưa ai đổi trang cả', () => {
+    render(<RouterProvider router={routerTuPath('/')} />)
+    expect(document.activeElement, 'giật focus ngay lúc mở app là vô cớ').toBe(document.body)
+  })
+
+  it('đi sang trang khác thì focus rời <body>, đứng vào vùng nội dung', async () => {
+    const router = routerTuPath('/')
+    render(<RouterProvider router={router} />)
+    await act(async () => {
+      await router.navigate('/bai/m1-bai-1')
+    })
+    expect(document.activeElement).not.toBe(document.body)
+    expect(document.activeElement?.tagName.toLowerCase()).toBe('main')
+  })
+
+  it('nếu trang MỚI đã tự nhận focus thì KHÔNG cướp lại', async () => {
+    // Luật này giữ cho `useScrollToModule` còn sống: quay về trang Học có
+    // `?tiep=` thì focus phải nằm ở đúng thẻ module, không phải ở <main>.
+    const router = routerTuPath('/')
+    render(<RouterProvider router={router} />)
+    await act(async () => {
+      await router.navigate('/bai/m1-bai-1')
+    })
+    const nut = document.createElement('button')
+    document.body.appendChild(nut)
+    nut.focus()
+    await act(async () => {
+      await router.navigate('/')
+    })
+    expect(document.activeElement, 'cha cướp mất focus mà con vừa nhắm').toBe(nut)
+    nut.remove()
   })
 })

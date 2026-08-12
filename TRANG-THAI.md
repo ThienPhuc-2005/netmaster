@@ -8,7 +8,7 @@ build qua. **Toàn bộ biên bản hội đồng trung cấp đã XỬ XONG (08
 15/15 việc mục 6 (khối 20.2, commit `1d04c0b`) + trọn LƯỢT DỌN 52 phát
 hiện P2 mục 5 (khối 20.3).** Nội dung và engine không còn việc nào treo;
 các khối gần đây đều là ý lấy từ kho `Y-TUONG.md`.
-Khối 21.59 đã commit và đẩy lên GitHub. **Kho ý tưởng SẠCH — không còn ý nào chờ duyệt.** **Kho ý tưởng còn 2 ý chờ duyệt (N3, N5).** **Kho ý tưởng còn 4 ý chờ duyệt (N1, N2, N3, N5).** **Kho ý tưởng còn 5 ý chờ duyệt (mục N).** **Cả 17 phát
+Việc kế tiếp là của CHỦ DỰ ÁN: ra lệnh commit khối 21.60. **Kho ý tưởng SẠCH — không còn ý nào chờ duyệt.** **Kho ý tưởng còn 2 ý chờ duyệt (N3, N5).** **Kho ý tưởng còn 4 ý chờ duyệt (N1, N2, N3, N5).** **Kho ý tưởng còn 5 ý chờ duyệt (mục N).** **Cả 17 phát
 hiện của BA lượt rà soát (mục J 8 ý + mục K 6 ý + mục L 3 ý) đã xử xong
 hết; kho ý tưởng SẠCH.** Việc duy nhất còn treo là tuyển người cho các
 buổi test người thật (hai dòng DoD).
@@ -31,7 +31,28 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (19) M21 capstone + màn tốt nghiệp | XONG |
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
-**KHỐI MỚI NHẤT — 21.59 (08-12), đã commit `5e7209d`:**
+**KHỐI MỚI NHẤT — 21.60 (08-12), đang ở working tree chờ lệnh commit:**
+**Lượt rà soát thứ năm: BÀN PHÍM + TRÌNH ĐỌC MÀN HÌNH — 2 phát hiện, chữa cả hai.**
+- **P1 — 18 link trên trang Học đọc y hệt nhau.** 18 cửa "Mình biết phần
+  này rồi — thi vượt luôn", 4 nút "Bắt đầu", 3 link "Xem lại", không cái
+  nào mang tên chủ đề hay tên bài. Người dùng trình đọc màn hình gọi danh
+  sách link ra thì nghe 18 lần cùng một câu, không biết câu nào thuộc đâu.
+  Đáng nói: **app đã tự đặt ra luật này từ trước** ở mục "chỗ hay vấp" —
+  chỉ là chưa áp cho chính trang được mở nhiều nhất.
+- **P2 — đổi trang thì focus rơi về khoảng không.** Bấm vào bài học xong,
+  con trỏ bàn phím rơi về `<body>`: trình đọc màn hình không đọc chữ nào
+  về trang vừa mở, người dùng bàn phím phải Tab lại từ đầu qua 8 nút
+  khung. App đã áp đúng luật này ở chiều ngược từ lâu, chỉ thiếu chiều đi.
+  Chỗ tinh nhất khi chữa: **chỉ nhận focus khi chưa ai nhận** — không có
+  vế đó thì khung app cướp mất focus mà trang con vừa nhắm, tức chữa lỗi
+  này bằng cách phá một hành vi đang chạy tốt.
+- **Nhiều thứ hoá ra đã đúng sẵn**, ghi lại để lượt sau khỏi soi lại: cổng
+  trong phòng lab đều là nút thật có nhãn mô tả rõ, phản hồi chấm bài nằm
+  trong vùng thông báo sống, tiêu đề không nhảy bậc, mọi nút đều có tên
+  đọc được, CSS có luật viền focus toàn cục.
+- 1855 test xanh (+6), typecheck sạch, build qua.
+
+**KHỐI TRƯỚC — 21.59 (08-12), đã commit `5e7209d`:**
 **Lượt rà soát thứ tư: đi bằng ĐIỆN THOẠI 375px — tìm và chữa gọn 3 lỗi.**
 - **O1 — nút chữ 16px, mà cái bên cạnh nó là nút XOÁ.** "Mở lại bài",
   "Bỏ dòng này", "Xem lại" đều cao 16px, dưới mức tối thiểu 24px. Cái
