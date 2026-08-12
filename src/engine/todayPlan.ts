@@ -29,6 +29,7 @@ import type { LessonRuntime } from './lessonMachine'
 import { orderedLessonIds } from './contentPure'
 import { computeModuleStatuses } from './masteryGate'
 import { canStartNewLesson, dueCards } from './reviewQueue'
+import { NGUONG_HAY_QUEN } from './mistakeLog'
 
 /** Số bước của một bài (pipeline 6 bước — `stepIndex` chạy 0..5). */
 export const LESSON_STEP_COUNT = 6
@@ -66,6 +67,20 @@ export type TodayFocus = 'review' | 'resume' | 'new' | 'test' | 'done'
 export interface TodayPlan {
   /** Thẻ đến hạn hôm nay (gồm cả thẻ quá hạn từ hôm trước). */
   dueCount: number
+  /**
+   * Trong số thẻ đến hạn hôm nay, mấy thẻ là thứ người học QUÊN ĐI QUÊN
+   * LẠI (từ hai lần trở lên — cùng ngưỡng với mục "thứ bạn hay quên").
+   *
+   * Vì sao đáng nói ra ngay ở thẻ Hôm nay: nó đổi cách đọc con số bên
+   * cạnh. "8 thẻ đến hạn" mà ba trong đó là món cứng đầu thì buổi ôn hôm
+   * nay nặng hơn một buổi 8 thẻ thường — biết trước là chuẩn bị được tâm
+   * thế, thay vì đang ôn mới ngã ngửa.
+   *
+   * Cố ý KHÔNG dùng để dọa: đây đúng là thời điểm ĐÁNG GẶP nhất của mấy
+   * món ấy (ôn ngắt quãng bắt đúng lúc sắp quên thì mới bám), nên câu chữ
+   * ở tầng UI phải nói ra cái lợi đó chứ không kể tội người học.
+   */
+  dueHayQuen: number
   /** Nợ ôn vượt trần → bài MỚI bị khóa (spec 2.2). Bài dở vẫn học tiếp được. */
   newLessonBlocked: boolean
   /** Bài đang học dở — đã đi được ít nhất một bước. */
@@ -104,7 +119,9 @@ function roundToFive(minutes: number): number {
 export function planToday(input: TodayPlanInput): TodayPlan {
   const { modules, passedModules, completedLessons, lessonRuntimes, reviewCards, today } = input
 
-  const dueCount = dueCards([...reviewCards], today).length
+  const denHan = dueCards([...reviewCards], today)
+  const dueCount = denHan.length
+  const dueHayQuen = denHan.filter((c) => c.lapses >= NGUONG_HAY_QUEN).length
   const newLessonBlocked = !canStartNewLesson([...reviewCards], today)
   const statuses = computeModuleStatuses(
     modules.map((m) => m.id),
@@ -162,7 +179,16 @@ export function planToday(input: TodayPlanInput): TodayPlan {
   else if (nextTest !== null) minutes += ESTIMATE.minutesPerTest
   else if (nextNew !== null && !newLessonBlocked) minutes += ESTIMATE.minutesPerLesson
 
-  return { dueCount, newLessonBlocked, resume, nextNew, nextTest, focus, minutes: roundToFive(minutes) }
+  return {
+    dueCount,
+    dueHayQuen,
+    newLessonBlocked,
+    resume,
+    nextNew,
+    nextTest,
+    focus,
+    minutes: roundToFive(minutes),
+  }
 }
 
 /** Việc kế tiếp NGAY SAU khi vừa học xong một bài. */

@@ -394,6 +394,13 @@ quan trước khi "sửa test cho xanh".
   REVIEW-NOI-DUNG.md (bản đọc duyệt — KHÔNG phải nguồn chân lý).
 - Quy trình viết một module mới: mục "Cách làm một module nội dung" ở
   đầu `TRANG-THAI.md`.
+- **Ngưỡng "hay quên" là MỘT con số dùng chung** (`NGUONG_HAY_QUEN` trong
+  `engine/mistakeLog.ts`, hiện là 2). Ba chỗ đọc nó: mục "Thứ bạn hay
+  quên" ở Hồ sơ, phiên luyện `?nguon=hay-quen`, và dòng đếm món cứng đầu
+  ở thẻ Hôm nay (`dueHayQuen`). Sửa ngưỡng ở một chỗ mà quên chỗ khác thì
+  người học đếm ra mâu thuẫn ngay trong một buổi: Hồ sơ kể 3 món, thẻ Hôm
+  nay kể 5. Vì sao là 2 chứ không phải 1: quên một lần là chuyện thường
+  của trí nhớ — cả cơ chế ôn ngắt quãng dựng lên là để đón đúng cú quên đó.
 - **Bề rộng cột câu hỏi đi theo DẠNG CÂU, không đặt cứng** (khối 21.51).
   `DANG_CAN_BE_RONG` trong `components/QuestionInput.tsx` là nguồn chân
   lý: lab · palace-walk · clinic · ps · cli vẽ NGANG nên phải được cả

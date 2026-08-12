@@ -150,6 +150,7 @@
     "title": "Today",
     "minutes": "≈ {minutes} min",
     "partCards": "Review due: {count}",
+    "partCardsQuen": "Review due: {count} — {quen} of them are ones you keep forgetting, and now is exactly when meeting them again makes them stick.",
     "partResume": "Continue: {lesson} — step {step} of {total}",
     "partNew": "New lesson: {lesson}",
     "partTest": "Module test: {module}",

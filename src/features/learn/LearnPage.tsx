@@ -176,7 +176,18 @@ function TodayCard({
 
   // Các dòng kể "hôm nay có gì" — thứ tự đúng thứ tự nên làm.
   const lines: string[] = []
-  if (plan.dueCount > 0) lines.push(t('today.partCards', { count: plan.dueCount }))
+  // Có món CỨNG ĐẦU đến hạn thì nói ra ngay ở đây (khối 21.53): ba món
+  // từng quên vài lần làm buổi ôn hôm nay nặng khác hẳn một buổi cùng số
+  // thẻ. Giọng là CƠ HỘI chứ không phải lời cảnh cáo — đây đúng là lúc
+  // đáng gặp lại chúng nhất, và app vừa mới nói với họ điều đó ở trang Hồ
+  // sơ, nên hai chỗ phải cùng một giọng.
+  if (plan.dueCount > 0) {
+    lines.push(
+      plan.dueHayQuen > 0
+        ? t('today.partCardsQuen', { count: plan.dueCount, quen: plan.dueHayQuen })
+        : t('today.partCards', { count: plan.dueCount }),
+    )
+  }
   if (plan.resume !== null) {
     lines.push(
       t('today.partResume', {

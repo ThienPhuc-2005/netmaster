@@ -506,3 +506,38 @@ mất dữ liệu, vừa mất mạng. Cả ba phát hiện đều đã CHỮA t
   vì nhịp luyện và luật không-XP giống hệt nhau; và **nhãn phải theo đúng
   con số của nguồn** — "từng quên N lần" chứ không mượn "từng vấp N lần",
   hai con số đo hai chuyện khác nhau.
+- ✅ **M4. Thẻ Hôm nay biết món cứng đầu đến hạn** (ý sinh khi làm M3) —
+  ĐÃ LÀM (khối 21.53): dòng "ôn tập đến hạn" nói thêm mấy thẻ trong đó là
+  thứ hay quên. Nó đổi cách đọc con số bên cạnh — 8 thẻ mà ba món cứng
+  đầu thì buổi ôn nặng khác hẳn 8 thẻ thường.
+  **Giọng là CƠ HỘI, không phải cảnh cáo**: đây đúng là lúc đáng gặp lại
+  chúng nhất (ôn ngắt quãng bắt đúng lúc sắp quên mới bám), nên câu chữ
+  nói ra cái lợi chứ không kể tội. Dùng CHUNG ngưỡng 2 lần với mục "thứ
+  bạn hay quên" — hai chỗ lệch nhau thì người học đếm được sự mâu thuẫn.
+
+## N. Ý còn chờ duyệt (08-12)
+
+Sinh ra trong lúc làm khối 21.49-21.53, chưa ý nào được gọi tên.
+
+- ☐ **N1. Nút "tải nốt nội dung" nên nói đang tải tới đâu.** Hiện chỉ có
+  "Đang tải…" im lặng; với mạng yếu thì vài chục giây câm khó phân biệt
+  với treo. Hiện "đã về 15/21" thì đỡ hơn nhiều.
+- ☐ **N2. Tự thử tải lại khi mạng vừa có lại.** Trình duyệt có báo sự kiện
+  online; bắt người học nhớ bấm là bắt họ làm việc của máy.
+- ☐ **N3. Test quét mã nguồn tìm chỗ đọc "toàn bộ khóa học" mà quên tự
+  kiểm.** Khối 21.50 lộ ra một luật chung: hễ thêm chỗ nào suy từ cả lộ
+  trình (`loadModules().at(-1)`, `.length` làm tổng số) thì chỗ đó phải
+  hỏi `noiDungDayDu()` trước. Một test quét sẽ bắt được người sau quên.
+- ☐ **N4. Trang `/design` bày trọn 8 dạng câu ở CẢ HAI khung** (bài học và
+  bài thi). Lỗi sơ đồ lab méo (M1) sống lâu được đúng vì cùng một câu
+  hiển thị khác nhau ở hai nơi mà không chỗ nào bày cạnh nhau để so.
+- ☐ **N5. Ưu tiên câu trúng đích trong phiên "luyện thứ hay quên".** Hiện
+  lấy trọn bài tập của bài nguồn; nếu sau này nội dung gắn thẻ khái niệm
+  cho từng câu thì lọc được đúng câu dạy khái niệm bị quên.
+- ☐ **N6. Sau phiên luyện mà VẪN sai đúng thứ đó thì app hỏi thẳng "chỗ
+  này giải thích chưa lọt?"** và ghi vào một cuốn sổ riêng — không trộn
+  với sổ "mình nghĩ câu này đúng" (sổ đó là khiếu nại CHẤM, còn đây là
+  góp ý về CÁCH DẠY). Đây là vòng khép kín cho đúng thứ chủ dự án muốn:
+  họ thấy chỗ khó rồi bảo người soạn dạy lại. Cái giá: thêm một trường
+  persist → bump version + một bậc migrate + fixture.
+

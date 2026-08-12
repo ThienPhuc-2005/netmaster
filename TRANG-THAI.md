@@ -8,7 +8,7 @@ build qua. **Toàn bộ biên bản hội đồng trung cấp đã XỬ XONG (08
 15/15 việc mục 6 (khối 20.2, commit `1d04c0b`) + trọn LƯỢT DỌN 52 phát
 hiện P2 mục 5 (khối 20.3).** Nội dung và engine không còn việc nào treo;
 các khối gần đây đều là ý lấy từ kho `Y-TUONG.md`.
-Khối 21.52 đã commit và đẩy lên GitHub; không còn việc nào chờ lệnh. **Cả 17 phát
+Việc kế tiếp là của CHỦ DỰ ÁN: ra lệnh commit khối 21.53. **Cả 17 phát
 hiện của BA lượt rà soát (mục J 8 ý + mục K 6 ý + mục L 3 ý) đã xử xong
 hết; kho ý tưởng SẠCH.** Việc duy nhất còn treo là tuyển người cho các
 buổi test người thật (hai dòng DoD).
@@ -31,7 +31,30 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (19) M21 capstone + màn tốt nghiệp | XONG |
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
-**KHỐI MỚI NHẤT — 21.52 (08-12), đã commit `09958f9`:**
+**KHỐI MỚI NHẤT — 21.53 (08-12), đang ở working tree chờ lệnh commit:**
+**Thẻ Hôm nay biết món cứng đầu (ý M4) + dọn hai việc treo.**
+- **Thẻ Hôm nay nói ra món hay quên đến hạn.** Dòng "ôn tập đến hạn: 8
+  thẻ" giờ nói thêm mấy thẻ trong đó là thứ bạn quên đi quên lại. Nó đổi
+  cách đọc con số bên cạnh: 8 thẻ mà ba món cứng đầu thì buổi ôn nặng
+  khác hẳn 8 thẻ thường, biết trước là chuẩn bị được tâm thế.
+- **Giọng là cơ hội, không phải cảnh cáo.** Đây đúng là lúc đáng gặp lại
+  chúng nhất — ôn ngắt quãng bắt trúng lúc sắp quên thì mới bám — nên câu
+  chữ nói cái lợi chứ không kể tội. Dùng CHUNG ngưỡng 2 lần với mục "thứ
+  bạn hay quên" ở Hồ sơ; hai chỗ lệch nhau là người học đếm ra mâu thuẫn.
+- **Đóng một cờ tự treo lượt trước**: câu tổng kết cuối phiên luyện (đã
+  viết lại cho hết lặp ý) giờ đã xem tận mắt trên browser — dựng phiên
+  đúng một câu để đi tới màn đóng cho nhanh.
+- **Cất 6 ý còn treo vào kho** (`Y-TUONG.md` mục N) thay vì để chúng nằm
+  trong báo cáo cũ rồi mất: nút tải nốt nói tiến độ · tự tải lại khi mạng
+  về · test quét chỗ đọc "toàn bộ khóa học" mà quên tự kiểm · trang
+  `/design` bày 8 dạng câu ở cả hai khung · lọc câu trúng đích hơn cho
+  phiên luyện · app hỏi "chỗ này giải thích chưa lọt?" khi vẫn sai.
+- 1812 test xanh (+4), typecheck sạch, build qua. Kiểm browser thật: gieo
+  4 thẻ đến hạn trong đó 3 món quên 2-4 lần → thẻ Hôm nay ghi "Ôn tập đến
+  hạn: 4 thẻ — trong đó 3 món bạn hay quên…"; gieo lại 2 thẻ chưa quên
+  lần nào → về đúng dòng cũ, không thêm chữ nào. Seed đã xóa.
+
+**KHỐI TRƯỚC — 21.52 (08-12), đã commit `09958f9`:**
 **Nút "luyện lại đúng mấy thứ hay quên" (ý sinh từ khối trước).**
 - **Mục "Thứ bạn hay quên" giờ có đường HÀNH ĐỘNG.** Trước đó nó chỉ kể
   ra; giờ có nút mở thẳng một phiên luyện quanh đúng những thứ ấy, khỏi

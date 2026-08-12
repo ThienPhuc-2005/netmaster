@@ -7,6 +7,7 @@
 import { describe, expect, it } from 'vitest'
 import { loadModules } from '../content'
 import { nextAfterLesson, planToday } from './todayPlan'
+import { NGUONG_HAY_QUEN } from './mistakeLog'
 import { startLesson } from './lessonMachine'
 import { orderedLessonIds } from './contentPure'
 import type { ReviewCard } from './types'
@@ -200,5 +201,41 @@ describe('học xong một bài rồi thì đi đâu', () => {
     expect(plan.resume?.lessonId, 'phải nhận ra đây là bài đang dở').toBe(next.id)
     expect(plan.nextNew, 'không được đếm hai lần').toBeNull()
     expect(nextAfterLesson(plan)).toEqual({ kind: 'lesson', lessonId: next.id })
+  })
+})
+
+describe('món CỨNG ĐẦU đến hạn hôm nay (khối 21.53)', () => {
+  /** Thẻ đến hạn hôm nay, đã quên `lapses` lần. */
+  const theQuen = (id: string, lapses: number): ReviewCard => ({ ...card(id, TODAY), lapses })
+
+  it('không thẻ nào quên tới hai lần thì đếm bằng 0 — không dựng chuyện', () => {
+    const plan = planToday({ ...emptyInput, reviewCards: [theQuen('a', 0), theQuen('b', 1)] })
+    expect(plan.dueCount).toBe(2)
+    expect(plan.dueHayQuen).toBe(0)
+  })
+
+  it('đếm đúng số món quên từ hai lần trở lên trong đám ĐẾN HẠN', () => {
+    const plan = planToday({
+      ...emptyInput,
+      reviewCards: [theQuen('a', 3), theQuen('b', 2), theQuen('c', 1), theQuen('d', 0)],
+    })
+    expect(plan.dueCount).toBe(4)
+    expect(plan.dueHayQuen).toBe(2)
+  })
+
+  it('món cứng đầu CHƯA đến hạn thì không tính — thẻ Hôm nay chỉ kể việc hôm nay', () => {
+    const plan = planToday({
+      ...emptyInput,
+      reviewCards: [{ ...card('mai-moi-den-han', '2026-12-31'), lapses: 9 }],
+    })
+    expect(plan.dueCount).toBe(0)
+    expect(plan.dueHayQuen).toBe(0)
+  })
+
+  it('cùng ngưỡng với mục "thứ bạn hay quên" — hai chỗ không được lệch nhau', () => {
+    const ngay = planToday({ ...emptyInput, reviewCards: [theQuen('a', NGUONG_HAY_QUEN)] })
+    const duoi = planToday({ ...emptyInput, reviewCards: [theQuen('a', NGUONG_HAY_QUEN - 1)] })
+    expect(ngay.dueHayQuen).toBe(1)
+    expect(duoi.dueHayQuen).toBe(0)
   })
 })

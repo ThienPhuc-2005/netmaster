@@ -150,6 +150,7 @@
     "title": "Hôm nay",
     "minutes": "≈ {minutes} phút",
     "partCards": "Ôn tập đến hạn: {count} thẻ",
+    "partCardsQuen": "Ôn tập đến hạn: {count} thẻ — trong đó {quen} món bạn hay quên, và đây đúng là lúc gặp lại để chúng bám.",
     "partResume": "Học tiếp: {lesson} — bước {step}/{total}",
     "partNew": "Bài mới: {lesson}",
     "partTest": "Thi cuối module: {module}",
