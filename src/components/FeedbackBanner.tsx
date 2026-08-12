@@ -6,6 +6,7 @@
 // Mã tầng đến từ engine (feedbackTier); chữ hiển thị đến từ i18n +
 // nội dung bài học — component này chỉ ghép hai thứ đó lại.
 
+import { useEffect, useRef } from 'react'
 import { CheckCircle2, Lightbulb, BookOpenCheck, HelpCircle } from 'lucide-react'
 import { useT } from '../i18n'
 import type { FeedbackTier } from '../engine/lessonMachine'
@@ -48,7 +49,40 @@ export type FeedbackState =
  * FeedbackBanner không role.
  */
 export function FeedbackRegion({ state }: { state: FeedbackState | null }) {
-  return <div role="status">{state !== null && <FeedbackBanner state={state} />}</div>
+  const vung = useRef<HTMLDivElement>(null)
+
+  // ĐƯA PHẢN HỒI VÀO TẦM MẮT (phát hiện J2, lượt rà soát 08-12).
+  //
+  // Ở bài nặng — phòng lab, terminal PowerShell/CLI, ca phòng khám — khối
+  // phản hồi nằm dưới cùng một trang cao gấp rưỡi màn hình. Đo thật lúc
+  // rà soát: phản hồi ở 649–872px trong khi màn cao 694px. Người học bấm
+  // "Nộp bài" xong nhìn màn hình y hệt lúc chưa bấm, tưởng nút hỏng.
+  //
+  // Ba luật, mỗi luật một lý do:
+  //   1. CHỈ cuộn khi phản hồi thật sự nằm ngoài tầm mắt — giật màn hình
+  //      khi nó đang hiện sẵn là làm phiền không lý do (câu ngắn: trắc
+  //      nghiệm, gõ tay… vốn đã thấy phản hồi ngay).
+  //   2. Cuộn TỨC THÌ, không mượt: khung cuộn của app là <main> lồng bên
+  //      trong, Chromium lặng lẽ bỏ qua `smooth` ở khung lồng (đã đo, xem
+  //      GHI-CHU mục 8).
+  //   3. Cuộn xong DỜI FOCUS vào vùng phản hồi (WCAG 2.4.3, cùng luật với
+  //      mọi cửa quay lại trang Học) — bàn phím và trình đọc màn hình
+  //      phải đứng ngay chỗ nội dung vừa hiện, không phải đầu trang.
+  useEffect(() => {
+    if (state === null) return
+    const el = vung.current
+    if (el === null) return
+    const r = el.getBoundingClientRect()
+    const ngoaiTamMat = r.bottom > window.innerHeight || r.top < 0
+    if (ngoaiTamMat) el.scrollIntoView({ block: 'nearest' })
+    el.focus({ preventScroll: true })
+  }, [state])
+
+  return (
+    <div role="status" ref={vung} tabIndex={-1} className="scroll-mt-4 focus:outline-none">
+      {state !== null && <FeedbackBanner state={state} />}
+    </div>
+  )
 }
 
 export function FeedbackBanner({ state }: { state: FeedbackState }) {

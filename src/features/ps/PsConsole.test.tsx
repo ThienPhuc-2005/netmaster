@@ -123,3 +123,21 @@ describe('bài dở: rời terminal giữa chừng rồi quay lại (hội đồ
     expect(onDraftChange.mock.calls.at(-1)![0]).toBeNull()
   })
 })
+
+// Hàng nhập lệnh trên MÀN HẸP (phát hiện J3, khối 21.44): đo lúc rà soát
+// thấy ô gõ chỉ còn 186/375px vì dấu nhắc và nút "Chạy" ăn hết hàng —
+// đây là bề mặt gõ nhiều nhất của app mà lại hẹp nhất trên màn nhỏ nhất.
+describe('hàng nhập lệnh nhường chỗ cho ô gõ trên màn hẹp', () => {
+  it('hàng có thể xuống dòng, và ô gõ giữ phần lớn hàng đầu', () => {
+    render(<PsConsole question={PS_Q} onSubmit={() => {}} />)
+    const o = screen.getByRole('textbox', { name: 'Ô gõ lệnh PowerShell' })
+    const hang = o.closest('form')!
+    // Không khẳng định pixel (jsdom không layout) — khẳng định đúng LUẬT
+    // bố cục: hàng được phép xuống dòng và ô gõ chiếm phần lớn hàng đầu,
+    // nút Chạy dạt xuống thay vì bóp ô gõ lại.
+    expect(hang.className).toContain('flex-wrap')
+    expect(o.className).toContain('basis-[65%]')
+    expect(o.className).toContain('sm:basis-auto')
+    expect(screen.getByRole('button', { name: 'Chạy' }).className).toContain('ml-auto')
+  })
+})

@@ -3,15 +3,15 @@
 ## ĐỌC 30 GIÂY: ĐANG ĐỨNG ĐÂU, LÀM GÌ TIẾP (cập nhật 2026-08-12)
 
 **App hiện có ĐỦ 21/21 MODULE NỘI DUNG + MÀN TỐT NGHIỆP** (M1-12 nhập
-môn, M13-17 Phần D, M18-21 Phần E), 1713 test xanh, typecheck sạch,
+môn, M13-17 Phần D, M18-21 Phần E), 1718 test xanh, typecheck sạch,
 build qua. **Toàn bộ biên bản hội đồng trung cấp đã XỬ XONG (08-10):
 15/15 việc mục 6 (khối 20.2, commit `1d04c0b`) + trọn LƯỢT DỌN 52 phát
 hiện P2 mục 5 (khối 20.3).** Nội dung và engine không còn việc nào treo;
 các khối gần đây đều là ý lấy từ kho `Y-TUONG.md`.
-Việc kế tiếp là của CHỦ DỰ ÁN: ra lệnh commit khối 21.43, chọn phát hiện
-kế tiếp của lượt rà soát trải nghiệm (mục J của kho ý tưởng — J1 đã
-chữa), và tuyển người cho các buổi test người thật (hai dòng DoD còn
-treo đều cần NGƯỜI).
+Việc kế tiếp là của CHỦ DỰ ÁN: ra lệnh commit khối 21.44, chọn phát hiện
+kế tiếp của lượt rà soát trải nghiệm (mục J — J1/J2/J3 đã chữa, còn 5 ý
+NHỎ), và tuyển người cho các buổi test người thật (hai dòng DoD còn treo
+đều cần NGƯỜI).
 
 **Toàn bộ ENGINE của Phần D đã xong.** Không còn engine nào phải viết cho
 M13-17: lab lớp 2 (trunk + STP), CLI thiết bị đủ **24/24 lệnh** của spec
@@ -31,7 +31,25 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (19) M21 capstone + màn tốt nghiệp | XONG |
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
-**KHỐI MỚI NHẤT — 21.43 (08-12), đang ở working tree chờ lệnh commit:**
+**KHỐI MỚI NHẤT — 21.44 (08-12), đang ở working tree chờ lệnh commit:**
+**J2 + J3 — hai chỗ tay người học chạm hằng ngày.**
+- **J2 — nộp bài xong là THẤY phản hồi.** Vùng phản hồi tự cuộn tới và
+  dời focus vào chính nó. Ba luật: chỉ cuộn khi nó thật sự ngoài tầm mắt
+  (đang hiện sẵn mà giật màn hình là làm phiền vô cớ), cuộn tức thì
+  (cuộn mượt chết trong khung lồng của app — bài học cũ), và dời focus
+  để bàn phím lẫn trình đọc màn hình đứng ngay chỗ vừa hiện.
+- **J3 — ô gõ lệnh rộng ra trên điện thoại.** Hàng nhập cho xuống dòng,
+  nút "Chạy" rớt xuống hàng dưới, ô gõ giữ phần lớn hàng đầu. Sửa ở CẢ
+  BỐN terminal (PowerShell, phòng khám, console thiết bị, CLI) vì chúng
+  là một khuôn — sửa lẻ một chỗ là ba chỗ kia lặng lẽ khác đi.
+- 1718 test xanh (+5), typecheck sạch, build qua. **Đo lại đúng hai chỗ
+  đã đo lúc rà soát**: phản hồi từ 649–872px (dưới mép màn 694px) nay về
+  594–640px, nằm trọn trong tầm mắt và focus đứng đúng vùng vừa hiện —
+  nộp lần hai lần ba (gợi ý dài ra) vẫn trong tầm mắt; ô gõ lệnh trên màn
+  375px từ 186px lên 259px (thấy ~39 chữ thay vì ~28), nút Chạy xuống
+  hàng dưới. Seed đã xóa.
+
+**KHỐI TRƯỚC — 21.43 (08-12), đã commit `b283d9c`:**
 **J1 — bịt lỗ hổng duy nhất khiến người học mất trắng mà không tự cứu được.**
 - Bệnh: hộp ôn tập là thứ app đọc ĐẦU TIÊN mỗi lần mở, nên một thẻ ôn
   méo (thiếu trường, ngày sai khuôn) làm sập ngay cửa vào → màn lỗi thay
@@ -67,7 +85,7 @@ bằng mắt người trên browser thật** và ghi lại thứ người học 
 6 bước có terminal PowerShell (kể cả thang gợi ý 3 tầng) → cửa thi →
 màn tốt nghiệp → Hồ sơ → phòng khám → drill, trên cả nền tối lẫn sáng
 và màn hẹp 375px.
-**Kết quả: 8 phát hiện (J1 đã chữa ở khối 21.43), ghi vào mục J của `Y-TUONG.md`** — 1 NẶNG
+**Kết quả: 8 phát hiện (J1 chữa ở khối 21.43; J2+J3 ở khối 21.44), ghi vào mục J của `Y-TUONG.md`** — 1 NẶNG
 (J1: thẻ ôn hỏng làm app kẹt vòng lặp chết, không tới được Hồ sơ để lùi
 về ảnh chụp), 2 TRUNG BÌNH (J2: nộp bài xong phản hồi nằm dưới mép màn
 hình và app không cuộn tới; J3: ô gõ lệnh chỉ rộng 186/375px trên điện

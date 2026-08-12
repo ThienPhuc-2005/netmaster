@@ -283,13 +283,21 @@ CHẠM vào.
   hỏng thay vì ném; (b) màn lỗi giữ một đường tới Hồ sơ / một nút "lùi
   về bản tự lưu"; (c) cửa nhập backup kiểm hình dạng từng THẺ, không chỉ
   đếm mảng.
-- ☐ **J2. Nộp bài xong không thấy phản hồi** (TRUNG BÌNH). Ở bài nặng
+- ✅ **J2. Nộp bài xong không thấy phản hồi** — ĐÃ CHỮA (khối 21.44):
+  vùng phản hồi tự cuộn tới và dời focus vào chính nó mỗi lần nộp, chỉ
+  cuộn khi nó thật sự ngoài tầm mắt. Đo lại trên browser: trước 649–872px
+  (dưới mép màn 694px), nay 594–640px và focus đứng đúng vùng vừa hiện;
+  nộp lần hai lần ba (gợi ý dài ra) vẫn nằm trọn trong tầm mắt.
+  Ghi chú cũ: Ở bài nặng
   (PowerShell/lab/CLI/phòng khám) khung phản hồi nằm DƯỚI mép màn hình
   — đo thật: khung ở 649–872px trong khi màn cao 694px. App không cuộn
   tới và không dời focus, nên bấm "Nộp bài" xong màn hình trông y hệt
   lúc chưa bấm. Dự án đã có luật "cuộn xong phải dời focus" cho các cửa
   quay lại trang Học — chưa áp cho chỗ này.
-- ☐ **J3. Ô gõ lệnh chỉ rộng 186/375px trên điện thoại** (TRUNG BÌNH,
+- ✅ **J3. Ô gõ lệnh chỉ rộng 186/375px trên điện thoại** — ĐÃ CHỮA (khối
+  21.44): hàng nhập cho phép xuống dòng, nút "Chạy" rớt xuống hàng dưới,
+  ô gõ rộng 259px (thấy ~39 chữ thay vì ~28). Sửa ở cả BỐN terminal vì
+  chúng là một khuôn. Ghi chú cũ: (TRUNG BÌNH,
   màn hẹp). Dấu nhắc `PS C:\>` và nút "Chạy" ăn hết chiều ngang, đến
   placeholder cũng bị cắt giữa chừng. Đây là bề mặt GÕ NHIỀU NHẤT của
   app mà lại hẹp nhất trên màn nhỏ nhất; lệnh thật dài gấp ba lần ô.

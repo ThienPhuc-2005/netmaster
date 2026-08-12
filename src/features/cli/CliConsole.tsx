@@ -393,7 +393,7 @@ export function CliConsole({ question, onSubmit, initialDraft, onDraftChange, ex
             />
           ))}
         </div>
-        <form onSubmit={run} className="flex items-center gap-2 border-t border-edge px-3 py-1.5">
+        <form onSubmit={run} className="flex flex-wrap items-center gap-2 border-t border-edge px-3 py-1.5">
           <span aria-hidden className="font-mono text-xs text-accent">
             {prompt}
           </span>
@@ -408,9 +408,9 @@ export function CliConsole({ question, onSubmit, initialDraft, onDraftChange, ex
             aria-label={t('cli.terminalInputAria', { host: cliHostname(state) })}
             autoComplete="off"
             spellCheck={false}
-            className="min-w-0 flex-1 bg-transparent py-1 font-mono text-xs text-ink placeholder:text-ink-muted focus:outline-none"
+            className="min-w-0 flex-1 basis-[65%] bg-transparent py-1 font-mono text-xs text-ink placeholder:text-ink-muted focus:outline-none sm:basis-auto"
           />
-          <Button type="submit" variant="ghost" disabled={input.trim() === ''} className="px-3 py-1 text-xs">
+          <Button type="submit" variant="ghost" disabled={input.trim() === ''} className="ml-auto px-3 py-1 text-xs sm:ml-0">
             {t('cli.terminalRun')}
           </Button>
         </form>

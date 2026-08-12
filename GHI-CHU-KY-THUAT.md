@@ -402,6 +402,20 @@ quan trước khi "sửa test cho xanh".
 
 - `src/store/progress.ts` là nơi DUY NHẤT nối engine + thời gian thật +
   localStorage. XP/streak chỉ từ retrieval/lab và CHỈ lần học đầu.
+- **PHẢN HỒI PHẢI VÀO TẦM MẮT SAU KHI NỘP (J2, khối 21.44)** —
+  `FeedbackRegion` tự cuộn tới và DỜI FOCUS vào chính nó mỗi lần `state`
+  đổi. Ba luật, đừng gỡ: chỉ cuộn khi khối thật sự NGOÀI tầm mắt (giật
+  màn hình lúc nó đang hiện là làm phiền vô cớ); cuộn TỨC THÌ vì
+  `smooth` chết trong khung `<main>` lồng; và dời focus (WCAG 2.4.3,
+  cùng luật với mọi cửa quay lại trang Học). Bệnh gốc: ở bài lab/PS/CLI/
+  phòng khám, khối phản hồi nằm ở 649–872px trong khi màn cao 694px —
+  bấm "Nộp bài" xong màn hình y hệt lúc chưa bấm.
+- **Hàng nhập của 4 terminal `flex-wrap`, ô gõ `basis-[65%] sm:basis-auto`
+  (J3, khối 21.44)**: trên màn 375px, dấu nhắc + nút "Chạy" từng bóp ô gõ
+  còn 186px trên bề mặt GÕ NHIỀU NHẤT của app. Nay nút rớt xuống hàng
+  dưới (`ml-auto sm:ml-0`) và ô gõ rộng 259px. Sửa ở CẢ BỐN (PsConsole,
+  ClinicTerminal, ClinicDeviceConsole, CliConsole) — chúng là một khuôn,
+  sửa lẻ một chỗ là ba chỗ kia lặng lẽ khác đi.
 - **THẺ ÔN HỎNG KHÔNG ĐƯỢC LÀM SẬP CỬA VÀO APP (J1, khối 21.43)** — bất
   biến đắt nhất của vùng này, vì nó là lỗi DUY NHẤT từng khiến người học
   mất trắng tiến độ mà không có đường tự cứu:

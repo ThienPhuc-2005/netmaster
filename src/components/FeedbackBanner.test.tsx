@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { afterEach, describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import { cleanup, render } from '@testing-library/react'
 import { FeedbackBanner, FeedbackRegion, type FeedbackState } from './FeedbackBanner'
 
@@ -74,5 +74,79 @@ describe('FeedbackBanner', () => {
     expect(region.textContent).toBe('')
     rerender(<FeedbackRegion state={{ kind: 'incorrect', tier: 1 }} />)
     expect(getByRole('status').textContent).toContain('Gần rồi')
+  })
+})
+
+// ---------------------------------------------------------------
+// Phản hồi phải VÀO TẦM MẮT sau khi nộp (phát hiện J2, khối 21.44)
+// ---------------------------------------------------------------
+//
+// Ở bài nặng (lab, terminal, phòng khám) khối phản hồi nằm dưới mép màn
+// hình: bấm "Nộp bài" xong màn hình trông y hệt lúc chưa bấm. Đo thật
+// lúc rà soát: phản hồi ở 649–872px trong khi màn cao 694px.
+
+describe('FeedbackRegion — đưa phản hồi vào tầm mắt', () => {
+  /** Giả bộ khối phản hồi đang nằm ở khoảng dọc này so với màn hình. */
+  function datVungPhanHoi(top: number, bottom: number) {
+    const goc = Element.prototype.getBoundingClientRect
+    Element.prototype.getBoundingClientRect = function () {
+      if ((this as HTMLElement).getAttribute?.('role') === 'status') {
+        return { top, bottom, left: 0, right: 0, width: 300, height: bottom - top, x: 0, y: top, toJSON: () => ({}) } as DOMRect
+      }
+      return goc.call(this)
+    }
+    return () => {
+      Element.prototype.getBoundingClientRect = goc
+    }
+  }
+
+  it('phản hồi nằm DƯỚI mép màn thì cuộn tới — và cuộn tức thì, không mượt', () => {
+    const traLai = datVungPhanHoi(649, 872) // đúng số đo lúc rà soát
+    const cuon = vi.fn()
+    Element.prototype.scrollIntoView = cuon
+    try {
+      const { rerender } = render(<FeedbackRegion state={null} />)
+      expect(cuon).not.toHaveBeenCalled()
+      rerender(<FeedbackRegion state={{ kind: 'incorrect', tier: 1 }} />)
+      expect(cuon).toHaveBeenCalledTimes(1)
+      expect(cuon.mock.calls[0]![0]).toEqual({ block: 'nearest' })
+    } finally {
+      traLai()
+    }
+  })
+
+  it('phản hồi ĐANG hiện sẵn thì KHÔNG giật màn hình', () => {
+    const traLai = datVungPhanHoi(120, 260)
+    const cuon = vi.fn()
+    Element.prototype.scrollIntoView = cuon
+    try {
+      const { rerender } = render(<FeedbackRegion state={null} />)
+      rerender(<FeedbackRegion state={{ kind: 'correct' }} />)
+      expect(cuon).not.toHaveBeenCalled()
+    } finally {
+      traLai()
+    }
+  })
+
+  it('dời FOCUS vào vùng phản hồi — bàn phím đứng ngay chỗ vừa hiện', () => {
+    Element.prototype.scrollIntoView = vi.fn()
+    const { rerender, container } = render(<FeedbackRegion state={null} />)
+    rerender(<FeedbackRegion state={{ kind: 'incorrect', tier: 2, hint: HINT }} />)
+    expect(document.activeElement).toBe(container.querySelector('[role="status"]'))
+  })
+
+  it('mỗi lần nộp tiếp theo lại đưa vào tầm mắt lần nữa (tầng gợi ý vừa dài ra)', () => {
+    const traLai = datVungPhanHoi(700, 900)
+    const cuon = vi.fn()
+    Element.prototype.scrollIntoView = cuon
+    try {
+      const { rerender } = render(<FeedbackRegion state={null} />)
+      rerender(<FeedbackRegion state={{ kind: 'incorrect', tier: 1 }} />)
+      rerender(<FeedbackRegion state={{ kind: 'incorrect', tier: 2, hint: HINT }} />)
+      rerender(<FeedbackRegion state={{ kind: 'incorrect', tier: 3, hint: HINT, solution: SOLUTION }} />)
+      expect(cuon).toHaveBeenCalledTimes(3)
+    } finally {
+      traLai()
+    }
   })
 })
