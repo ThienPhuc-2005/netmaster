@@ -415,7 +415,15 @@ function ModuleCard({ module, status }: { module: Module; status: 'locked' | 'op
         )}
       </div>
 
-      <ProgressBar earnedXp={moduleXp[module.id] ?? 0} totalXp={moduleXpTotal(module)} />
+      {/* Thanh tiến độ CHỈ hiện ở module đang mở (phát hiện J5+J6, khối
+          21.45). Nó đo XP kiếm được, nên ở hai đầu kia nó nói dối:
+          module còn KHÓA hiện "15%" (mốc khởi đầu) mà người học chưa mở
+          bài nào — chín thẻ khóa liên tiếp là chín lần cùng một con số
+          rỗng; còn module ĐÃ ĐẬU bằng thi vượt thì không có XP nào (thi
+          không cộng XP) nên thanh gần rỗng đứng cạnh huy hiệu "Đã đạt ·
+          89%", hai con số cãi nhau trên cùng một thẻ. Ở module đã đậu,
+          chính huy hiệu mới là câu trả lời. */}
+      {status === 'open' && <ProgressBar earnedXp={moduleXp[module.id] ?? 0} totalXp={moduleXpTotal(module)} />}
       <StageMap stages={stages} />
 
       <ol className="flex flex-col gap-2">
@@ -446,22 +454,13 @@ function ModuleCard({ module, status }: { module: Module; status: 'locked' | 'op
         </Link>
       )}
 
-      {/* Lời mời thứ hai, đặt ở CUỐI card — cùng đích với chip trên đầu
-          nhưng nói trọn câu ("Mình biết phần này rồi…"): chip ngắn lo
-          phần nhìn-là-thấy, hàng này lo phần hiểu-nó-là-gì, và nó rơi
-          đúng chỗ người vừa đọc hết danh sách bài mới quyết định. Không
-          phải nút skip: bấm vào là đi thi thật, đề y hệt, ngưỡng 85%
-          y hệt. */}
-      {canChallenge && (
-        <Link
-          to={`/kiem-tra/${module.id}?vuot=1`}
-          className="flex items-center gap-3 rounded-md border border-edge px-4 py-3 text-ink-muted transition-colors duration-(--dur) hover:border-accent hover:text-ink"
-        >
-          <FastForward size={16} aria-hidden />
-          <span className="flex-1 text-sm font-medium">{t('learn.challenge')}</span>
-          <span className="text-xs font-semibold">→</span>
-        </Link>
-      )}
+      {/* CỬA VƯỢT CHỈ CÓ MỘT (phát hiện J4, khối 21.45). Trước đây card
+          có hai lối vào cùng trỏ một đường: chip trên đầu và một hàng
+          trọn câu ở cuối. Hai cửa giống hệt nhau trên cùng một thẻ,
+          nhân với 21 thẻ, là 21 lần bắt người học đọc lại một lựa chọn
+          họ vừa bỏ qua. Giữ chip trên đầu vì ý "mình biết phần này rồi"
+          nảy ra lúc đọc TÊN module, không phải sau khi đọc hết danh
+          sách bài; câu đầy đủ vẫn còn nguyên trong aria-label/title. */}
 
       {module.vmLab !== undefined && status !== 'locked' && <VmLabChecklist vmLab={module.vmLab} />}
 

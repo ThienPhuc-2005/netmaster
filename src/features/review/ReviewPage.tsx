@@ -14,7 +14,7 @@
 import { useMemo, useRef, useState } from 'react'
 import { lt } from '../../engine/ltext'
 import { Link } from 'react-router'
-import { Eye, Layers, RotateCcw, ThumbsDown, ThumbsUp } from 'lucide-react'
+import { BookOpen, Eye, Layers, RotateCcw, ThumbsDown, ThumbsUp } from 'lucide-react'
 import { SESSION_CAP, buildReviewSession, dueCards, flashcardAskIndex, flashcardTurn } from '../../engine/reviewQueue'
 import { conceptStumbles } from '../../engine/mistakeLog'
 import {
@@ -136,7 +136,10 @@ export function ReviewPage() {
       <h1 className="text-xl font-bold">{t('review.title')}</h1>
       {teleported && !finished && sessionConceptIds.length > 0 && (
         <p className="text-sm text-ink-muted">
-          {t('review.whyHere', { count: dueCards(allCards, todayIso()).length })}
+          {t('review.whyHere', { count: queue.length })}
+          {dueCards(allCards, todayIso()).length > queue.length && (
+            <> {t('review.whyHereMore', { con: dueCards(allCards, todayIso()).length - queue.length })}</>
+          )}
         </p>
       )}
     </div>
@@ -209,7 +212,17 @@ export function ReviewPage() {
               </Button>
             </>
           ) : (
-            <Link to="/" className="text-sm font-semibold text-accent hover:underline">
+            // Việc kế tiếp của màn ĐÓNG phải là một NÚT, không phải một
+            // dòng chữ (phát hiện J8, khối 21.45): mọi màn đóng khác của
+            // app — xong bài, đậu module, xong ca bệnh — đều đưa một nút
+            // đặc, riêng chỗ này để người học tự nhận ra một chữ màu
+            // nhấn. Đây là màn peak-end của phiên ôn, chỗ đáng chỉ đường
+            // rõ nhất trong ngày.
+            <Link
+              to="/"
+              className="inline-flex items-center gap-2 rounded-md bg-accent px-4 py-2 text-sm font-semibold text-accent-contrast transition-[filter] duration-(--dur) hover:brightness-110"
+            >
+              <BookOpen size={15} aria-hidden />
               {t('review.goLearn')}
             </Link>
           )}

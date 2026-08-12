@@ -65,16 +65,21 @@ export function FeedbackRegion({ state }: { state: FeedbackState | null }) {
   //   2. Cuộn TỨC THÌ, không mượt: khung cuộn của app là <main> lồng bên
   //      trong, Chromium lặng lẽ bỏ qua `smooth` ở khung lồng (đã đo, xem
   //      GHI-CHU mục 8).
-  //   3. Cuộn xong DỜI FOCUS vào vùng phản hồi (WCAG 2.4.3, cùng luật với
-  //      mọi cửa quay lại trang Học) — bàn phím và trình đọc màn hình
-  //      phải đứng ngay chỗ nội dung vừa hiện, không phải đầu trang.
+  //   3. CUỘN RỒI THÌ MỚI dời focus (WCAG 2.4.3, cùng luật với mọi cửa
+  //      quay lại trang Học) — và chỉ khi ấy. Phản hồi đang nằm sẵn
+  //      trong tầm mắt mà vẫn giật focus ra khỏi ô người học vừa gõ là
+  //      cướp chỗ đứng của họ: ở bảng VLSM (bốn dòng, mỗi dòng hai ô)
+  //      người ta thường sửa tiếp đúng ô vừa nộp. Vùng này là live
+  //      region, nên khi nó đã hiện sẵn thì trình đọc màn hình vẫn đọc
+  //      mà không cần ai dời con trỏ đi đâu cả.
   useEffect(() => {
     if (state === null) return
     const el = vung.current
     if (el === null) return
     const r = el.getBoundingClientRect()
     const ngoaiTamMat = r.bottom > window.innerHeight || r.top < 0
-    if (ngoaiTamMat) el.scrollIntoView({ block: 'nearest' })
+    if (!ngoaiTamMat) return
+    el.scrollIntoView({ block: 'nearest' })
     el.focus({ preventScroll: true })
   }, [state])
 

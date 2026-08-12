@@ -402,14 +402,28 @@ quan trước khi "sửa test cho xanh".
 
 - `src/store/progress.ts` là nơi DUY NHẤT nối engine + thời gian thật +
   localStorage. XP/streak chỉ từ retrieval/lab và CHỈ lần học đầu.
-- **PHẢN HỒI PHẢI VÀO TẦM MẮT SAU KHI NỘP (J2, khối 21.44)** —
-  `FeedbackRegion` tự cuộn tới và DỜI FOCUS vào chính nó mỗi lần `state`
-  đổi. Ba luật, đừng gỡ: chỉ cuộn khi khối thật sự NGOÀI tầm mắt (giật
-  màn hình lúc nó đang hiện là làm phiền vô cớ); cuộn TỨC THÌ vì
-  `smooth` chết trong khung `<main>` lồng; và dời focus (WCAG 2.4.3,
-  cùng luật với mọi cửa quay lại trang Học). Bệnh gốc: ở bài lab/PS/CLI/
-  phòng khám, khối phản hồi nằm ở 649–872px trong khi màn cao 694px —
-  bấm "Nộp bài" xong màn hình y hệt lúc chưa bấm.
+- **PHẢN HỒI PHẢI VÀO TẦM MẮT SAU KHI NỘP (J2, khối 21.44 + 21.45)** —
+  `FeedbackRegion` tự cuộn tới mỗi lần `state` đổi. Ba luật, đừng gỡ:
+  chỉ cuộn khi khối thật sự NGOÀI tầm mắt (giật màn hình lúc nó đang
+  hiện là làm phiền vô cớ); cuộn TỨC THÌ vì `smooth` chết trong khung
+  `<main>` lồng; và **CUỘN RỒI MỚI dời focus** (WCAG 2.4.3) — dời focus
+  cả khi không phải cuộn là cướp ô người học vừa gõ (bảng VLSM bốn dòng
+  tám ô là chỗ lộ rõ nhất), và đo được là nó làm một test nặng chậm 2.5
+  lần. Vùng này là live region nên khi đã hiện sẵn, trình đọc màn hình
+  vẫn đọc mà không cần ai dời con trỏ. Bệnh gốc: ở bài lab/PS/CLI/phòng
+  khám, khối phản hồi nằm ở 649–872px trong khi màn cao 694px — bấm
+  "Nộp bài" xong màn hình y hệt lúc chưa bấm.
+- **Thẻ module: một cửa vượt, và thanh tiến độ chỉ ở module ĐANG MỞ
+  (J4-J6, khối 21.45)** — thanh đo XP, nên module khóa ("15%" là mốc
+  khởi đầu, chưa mở bài nào) và module đậu bằng THI VƯỢT (không cộng XP
+  nên thanh gần rỗng cạnh huy hiệu "Đã đạt · 89%") đều bị nó nói dối hộ.
+  Cửa vượt giữ CHIP trên đầu thẻ: ý "mình biết phần này rồi" nảy ra lúc
+  đọc tên module, không phải sau khi đọc hết danh sách bài.
+- **Hai con số của phiên ôn phải KHỚP (J7, khối 21.45)**: tiêu đề đếm
+  theo PHIÊN (`queue.length`, tăng khi có thẻ học lại) chứ không đếm thẻ
+  còn đến hạn (tụt dần) — hai phép đếm khác nhau đứng cạnh nhau đọc như
+  app tự mâu thuẫn. Nợ vượt trần 15 thẻ thì nói thêm một câu về phần để
+  dành phiên sau: khớp nhau mà vẫn không giấu nợ.
 - **Hàng nhập của 4 terminal `flex-wrap`, ô gõ `basis-[65%] sm:basis-auto`
   (J3, khối 21.44)**: trên màn 375px, dấu nhắc + nút "Chạy" từng bóp ô gõ
   còn 186px trên bề mặt GÕ NHIỀU NHẤT của app. Nay nút rớt xuống hàng

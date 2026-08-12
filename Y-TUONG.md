@@ -301,19 +301,30 @@ CHẠM vào.
   màn hẹp). Dấu nhắc `PS C:\>` và nút "Chạy" ăn hết chiều ngang, đến
   placeholder cũng bị cắt giữa chừng. Đây là bề mặt GÕ NHIỀU NHẤT của
   app mà lại hẹp nhất trên màn nhỏ nhất; lệnh thật dài gấp ba lần ô.
-- ☐ **J4. Hai cửa "thi vượt" giống hệt nhau trên cùng một thẻ module**
+- ✅ **J4. Hai cửa "thi vượt" giống hệt nhau trên cùng một thẻ module** —
+  ĐÃ DỌN (khối 21.45): giữ chip trên đầu thẻ (ý "mình biết phần này rồi"
+  nảy ra lúc đọc TÊN module, không phải sau khi đọc hết danh sách bài),
+  bỏ hàng trùng ở cuối; câu đầy đủ vẫn còn trong aria-label. Ghi chú cũ:
   (NHỎ): nút góc trên phải và dòng cuối thẻ trỏ cùng một đường
   (`/kiem-tra/<module>?vuot=1`), nhân với 21 thẻ.
-- ☐ **J5. Module còn KHÓA vẫn hiện "Tiến độ module 15%"** (NHỎ): mốc
+- ✅ **J5 + J6. Thanh tiến độ nói dối ở hai đầu** — ĐÃ DỌN (khối 21.45)
+  bằng MỘT luật: thanh chỉ hiện ở module ĐANG MỞ. Module khóa không có gì
+  để đo; module đã đậu thì huy hiệu "Đã đạt · N%" mới là câu trả lời (đậu
+  bằng thi vượt không cộng XP nên thanh gần rỗng cãi nhau với huy hiệu).
+  Ghi chú cũ: (NHỎ): mốc
   khởi đầu 15% sinh ra cho module ĐANG học; ở 9 thẻ khóa liên tiếp nó
   thành 9 lần cùng một con số không mang tin gì.
-- ☐ **J6. Module đậu bằng THI VƯỢT hiện "Đã đạt 89%" cạnh thanh tiến độ
-  gần rỗng** (NHỎ): thi vượt không cộng XP mà thanh lại đo XP, nên hai
-  con số trên cùng một thẻ cãi nhau. Cần quyết: thanh đo XP hay đo
-  đường đã đi?
-- ☐ **J7. Hai con số của phiên ôn cãi nhau** (NHỎ): tiêu đề "Bạn có 6
+- ✅ **J6** — dọn CHUNG với J5 ở khối 21.45 (xem ngay trên). Câu hỏi "thanh
+  đo XP hay đo đường đã đi" trả lời được mà không phải đổi phép đo: thanh
+  vẫn đo XP, chỉ thôi xuất hiện ở nơi XP không nói lên điều gì.
+- ✅ **J7. Hai con số của phiên ôn cãi nhau** — ĐÃ DỌN (khối 21.45): tiêu
+  đề nói con số CỦA PHIÊN (khớp bộ đếm, cùng tăng khi có thẻ học lại), và
+  khi nợ vượt trần 15 thẻ thì nói thêm một câu về phần để dành phiên sau
+  — khớp nhau mà không giấu nợ. Ghi chú cũ: (NHỎ): tiêu đề "Bạn có 6
   thẻ đến hạn" trong khi bộ đếm ngay dưới ghi "Thẻ 2/8" (8 = có thẻ học
   lại). Cả hai đều đúng nhưng đọc cùng lúc thì như app tự mâu thuẫn.
-- ☐ **J8. Màn cuối phiên ôn: việc kế tiếp là một DÒNG CHỮ** (NHỎ) —
+- ✅ **J8. Màn cuối phiên ôn: việc kế tiếp là một DÒNG CHỮ** — ĐÃ DỌN
+  (khối 21.45): "Sang học bài mới" thành nút đặc màu nhấn như mọi màn
+  đóng khác. Ghi chú cũ: (NHỎ) —
   "Sang học bài mới" chỉ là link màu nhấn, trong khi mọi màn đóng khác
   của app đều đưa một nút đặc. Đây là màn peak-end của phiên ôn.

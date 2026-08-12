@@ -128,11 +128,34 @@ describe('FeedbackRegion — đưa phản hồi vào tầm mắt', () => {
     }
   })
 
-  it('dời FOCUS vào vùng phản hồi — bàn phím đứng ngay chỗ vừa hiện', () => {
+  it('cuộn xong thì DỜI FOCUS — bàn phím đứng ngay chỗ vừa hiện', () => {
+    const traLai = datVungPhanHoi(700, 900)
     Element.prototype.scrollIntoView = vi.fn()
-    const { rerender, container } = render(<FeedbackRegion state={null} />)
-    rerender(<FeedbackRegion state={{ kind: 'incorrect', tier: 2, hint: HINT }} />)
-    expect(document.activeElement).toBe(container.querySelector('[role="status"]'))
+    try {
+      const { rerender, container } = render(<FeedbackRegion state={null} />)
+      rerender(<FeedbackRegion state={{ kind: 'incorrect', tier: 2, hint: HINT }} />)
+      expect(document.activeElement).toBe(container.querySelector('[role="status"]'))
+    } finally {
+      traLai()
+    }
+  })
+
+  it('phản hồi đã hiện sẵn thì KHÔNG cướp chỗ đứng của người đang gõ', () => {
+    // Bảng VLSM: bốn dòng, mỗi dòng hai ô — nộp xong người ta thường sửa
+    // tiếp đúng ô vừa gõ. Vùng này là live region nên vẫn được đọc lên.
+    const traLai = datVungPhanHoi(120, 260)
+    Element.prototype.scrollIntoView = vi.fn()
+    const o = document.createElement('input')
+    document.body.appendChild(o)
+    o.focus()
+    try {
+      const { rerender } = render(<FeedbackRegion state={null} />)
+      rerender(<FeedbackRegion state={{ kind: 'incorrect', tier: 1 }} />)
+      expect(document.activeElement).toBe(o)
+    } finally {
+      o.remove()
+      traLai()
+    }
   })
 
   it('mỗi lần nộp tiếp theo lại đưa vào tầm mắt lần nữa (tầng gợi ý vừa dài ra)', () => {

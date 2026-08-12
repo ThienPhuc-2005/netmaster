@@ -3,15 +3,15 @@
 ## ĐỌC 30 GIÂY: ĐANG ĐỨNG ĐÂU, LÀM GÌ TIẾP (cập nhật 2026-08-12)
 
 **App hiện có ĐỦ 21/21 MODULE NỘI DUNG + MÀN TỐT NGHIỆP** (M1-12 nhập
-môn, M13-17 Phần D, M18-21 Phần E), 1718 test xanh, typecheck sạch,
+môn, M13-17 Phần D, M18-21 Phần E), 1729 test xanh, typecheck sạch,
 build qua. **Toàn bộ biên bản hội đồng trung cấp đã XỬ XONG (08-10):
 15/15 việc mục 6 (khối 20.2, commit `1d04c0b`) + trọn LƯỢT DỌN 52 phát
 hiện P2 mục 5 (khối 20.3).** Nội dung và engine không còn việc nào treo;
 các khối gần đây đều là ý lấy từ kho `Y-TUONG.md`.
-Việc kế tiếp là của CHỦ DỰ ÁN: ra lệnh commit khối 21.44, chọn phát hiện
-kế tiếp của lượt rà soát trải nghiệm (mục J — J1/J2/J3 đã chữa, còn 5 ý
-NHỎ), và tuyển người cho các buổi test người thật (hai dòng DoD còn treo
-đều cần NGƯỜI).
+Việc kế tiếp là của CHỦ DỰ ÁN: ra lệnh commit khối 21.45. **Kho ý tưởng
+giờ SẠCH — cả 8 phát hiện của lượt rà soát trải nghiệm đã xử xong.** Việc
+duy nhất còn treo là tuyển người cho các buổi test người thật (hai dòng
+DoD còn treo đều cần NGƯỜI).
 
 **Toàn bộ ENGINE của Phần D đã xong.** Không còn engine nào phải viết cho
 M13-17: lab lớp 2 (trunk + STP), CLI thiết bị đủ **24/24 lệnh** của spec
@@ -31,7 +31,34 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (19) M21 capstone + màn tốt nghiệp | XONG |
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
-**KHỐI MỚI NHẤT — 21.44 (08-12), đang ở working tree chờ lệnh commit:**
+**KHỐI MỚI NHẤT — 21.45 (08-12), đang ở working tree chờ lệnh commit:**
+**Dọn nốt 5 ý NHỎ của lượt rà soát — mục J giờ SẠCH.**
+- **J4 — mỗi thẻ module chỉ còn MỘT cửa thi vượt.** Trước đây có hai lối
+  vào cùng trỏ một đường (chip trên đầu + hàng trọn câu ở cuối), nhân 21
+  thẻ. Giữ chip trên đầu vì ý "mình biết phần này rồi" nảy ra lúc đọc TÊN
+  module; câu đầy đủ vẫn còn nguyên cho trình đọc màn hình.
+- **J5 + J6 — thanh tiến độ chỉ hiện ở module ĐANG MỞ.** Nó đo XP, nên ở
+  hai đầu kia nó nói dối: module còn khóa hiện "15%" (mốc khởi đầu) dù
+  chưa mở bài nào; module đậu bằng THI VƯỢT thì XP bằng 0 nên thanh gần
+  rỗng đứng cạnh huy hiệu "Đã đạt · 89%". Ở module đã đậu, huy hiệu mới
+  là câu trả lời.
+- **J7 — hai con số của phiên ôn thôi cãi nhau.** Tiêu đề nói con số CỦA
+  PHIÊN (khớp bộ đếm, cùng tăng khi có thẻ học lại); nợ vượt trần 15 thẻ
+  thì nói thêm một câu về phần để dành phiên sau — khớp mà không giấu nợ.
+- **J8 — màn đóng phiên ôn đưa một NÚT**, không để việc kế tiếp làm một
+  dòng chữ màu nhấn.
+- **Siết lại chính J2 vừa làm hôm qua**: đo được test nặng chậm 2.5 lần,
+  soi ra là do dời focus cả khi phản hồi VỐN ĐÃ nằm trong tầm mắt. Giờ
+  chỉ dời focus khi thật sự phải cuộn — phản hồi đang hiện sẵn mà giật
+  focus ra khỏi ô người học vừa gõ là cướp chỗ đứng của họ (bảng VLSM
+  bốn dòng tám ô là chỗ thấy rõ nhất). Chi phí về đúng mức cũ.
+- 1729 test xanh (+11), typecheck sạch, build qua. Kiểm browser thật:
+  thẻ đã đậu 0 cửa vượt · thẻ chưa đậu đúng 1 · thẻ khóa và thẻ đã đậu
+  không còn thanh tiến độ, thẻ đang mở vẫn có; phiên ôn hiện "Phiên hôm
+  nay 2 thẻ · Thẻ 1/2", trả lời sai một thẻ thì CẢ HAI thành 3; màn đóng
+  phiên có nút đặc nền màu nhấn. Seed đã xóa.
+
+**KHỐI TRƯỚC — 21.44 (08-12), đã commit `649953c`:**
 **J2 + J3 — hai chỗ tay người học chạm hằng ngày.**
 - **J2 — nộp bài xong là THẤY phản hồi.** Vùng phản hồi tự cuộn tới và
   dời focus vào chính nó. Ba luật: chỉ cuộn khi nó thật sự ngoài tầm mắt
@@ -85,7 +112,8 @@ bằng mắt người trên browser thật** và ghi lại thứ người học 
 6 bước có terminal PowerShell (kể cả thang gợi ý 3 tầng) → cửa thi →
 màn tốt nghiệp → Hồ sơ → phòng khám → drill, trên cả nền tối lẫn sáng
 và màn hẹp 375px.
-**Kết quả: 8 phát hiện (J1 chữa ở khối 21.43; J2+J3 ở khối 21.44), ghi vào mục J của `Y-TUONG.md`** — 1 NẶNG
+**Kết quả: 8 phát hiện, XỬ XONG CẢ 8 (J1 ở khối 21.43 · J2+J3 ở 21.44 ·
+J4-J8 ở 21.45), ghi ở mục J của `Y-TUONG.md`** — 1 NẶNG
 (J1: thẻ ôn hỏng làm app kẹt vòng lặp chết, không tới được Hồ sơ để lùi
 về ảnh chụp), 2 TRUNG BÌNH (J2: nộp bài xong phản hồi nằm dưới mép màn
 hình và app không cuộn tới; J3: ô gõ lệnh chỉ rộng 186/375px trên điện

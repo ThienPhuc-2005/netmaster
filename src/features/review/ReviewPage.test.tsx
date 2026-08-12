@@ -232,3 +232,74 @@ describe('xoay cách hỏi trên thẻ (kho ý tưởng H5)', () => {
     expect(screen.getByText(asked)).toBeDefined()
   })
 })
+
+// ---------------------------------------------------------------
+// Hai con số của phiên phải KHỚP nhau (J7) + màn đóng có NÚT (J8)
+// ---------------------------------------------------------------
+//
+// Lượt rà soát 08-12 bắt được: tiêu đề đếm thẻ CÒN đến hạn (tụt dần theo
+// từng câu trả lời) trong khi bộ đếm ngay dưới đếm thẻ TRONG PHIÊN (tăng
+// khi có thẻ học lại) — người học đọc cùng lúc thấy app tự mâu thuẫn.
+
+describe('J7 — tiêu đề và bộ đếm nói cùng một con số', () => {
+  function moPhien() {
+    render(
+      <MemoryRouter>
+        <ReviewPage />
+      </MemoryRouter>,
+    )
+  }
+
+  it('vào phiên: tiêu đề nói đúng số thẻ của phiên, khớp bộ đếm', () => {
+    seedTwoDueCards()
+    moPhien()
+    expect(screen.getByText(/Phiên hôm nay 2 thẻ/)).toBeTruthy()
+    expect(screen.getByText('Thẻ 1/2')).toBeTruthy()
+  })
+
+  it('thẻ học lại làm phiên dài ra thì CẢ HAI cùng dài ra', () => {
+    seedTwoDueCards()
+    moPhien()
+    reveal()
+    answer(false) // quên → thẻ nối vào cuối phiên
+    expect(screen.getByText('Thẻ 2/3')).toBeTruthy()
+    expect(screen.getByText(/Phiên hôm nay 3 thẻ/)).toBeTruthy()
+  })
+
+  it('nợ vượt trần phiên thì nói thêm phần để dành, không giấu', () => {
+    // 17 thẻ đến hạn: phiên lấy 15, còn 2 thẻ để phiên sau.
+    const m1 = loadModules()[0]!
+    const yesterday = addDays(todayIso(), -1)
+    const concepts = loadModules()
+      .flatMap((m) => m.concepts.filter((c) => c.flashcard !== undefined).map((c) => ({ c, m })))
+      .slice(0, 17)
+    expect(concepts).toHaveLength(17)
+    useProgress.setState({
+      reviewCards: concepts.map(({ c, m }) => createCard(c.id, m.id, yesterday)),
+    })
+    expect(m1).toBeDefined()
+    moPhien()
+    expect(screen.getByText(/Phiên hôm nay 15 thẻ/)).toBeTruthy()
+    expect(screen.getByText(/Còn 2 thẻ nữa cũng đến hạn/)).toBeTruthy()
+  })
+})
+
+describe('J8 — màn đóng phiên đưa một NÚT, không phải một dòng chữ', () => {
+  it('ôn hết thẻ xong: "Sang học bài mới" là nút đặc màu nhấn', () => {
+    seedTwoDueCards()
+    render(
+      <MemoryRouter>
+        <ReviewPage />
+      </MemoryRouter>,
+    )
+    for (let i = 0; i < 2; i += 1) {
+      reveal()
+      answer(true)
+    }
+    const cua = screen.getByRole('link', { name: /Sang học bài mới/ })
+    // Nút đặc = nền màu nhấn + chữ nghịch màu, cùng lối với mọi màn đóng
+    // khác của app; link chữ trơn thì không có hai thứ này.
+    expect(cua.className).toContain('bg-accent')
+    expect(cua.className).toContain('text-accent-contrast')
+  })
+})
