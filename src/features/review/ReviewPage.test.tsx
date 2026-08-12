@@ -303,3 +303,45 @@ describe('J8 — màn đóng phiên đưa một NÚT, không phải một dòng 
     expect(cua.className).toContain('text-accent-contrast')
   })
 })
+
+// Thẻ mồ côi lọt vào hộp (nội dung đổi giữa chừng) — phiên ôn PHẢI bỏ
+// qua, không được trả về màn trắng (phát hiện K1, khối 21.46).
+describe('K1 — phiên ôn không bao giờ ra màn trắng vì thẻ mồ côi', () => {
+  function seedLanhVaMoCoi() {
+    const m1 = loadModules()[0]!
+    const concept = m1.concepts.find((c) => c.flashcard !== undefined)!
+    const yesterday = addDays(todayIso(), -1)
+    useProgress.setState({
+      reviewCards: [
+        createCard('khai-niem-da-bi-xoa', m1.id, yesterday),
+        createCard(concept.id, m1.id, yesterday),
+      ],
+    })
+    return concept.id
+  }
+
+  it('vẫn dựng được phiên, chỉ gồm thẻ còn nội dung', () => {
+    seedLanhVaMoCoi()
+    render(
+      <MemoryRouter>
+        <ReviewPage />
+      </MemoryRouter>,
+    )
+    expect(screen.getByText('Thẻ 1/1')).toBeTruthy()
+    expect(screen.getByRole('button', { name: 'Mình chắc' })).toBeTruthy()
+  })
+
+  it('hộp TOÀN thẻ mồ côi: nói tử tế là hôm nay không có gì để ôn, không để trang trắng', () => {
+    const m1 = loadModules()[0]!
+    useProgress.setState({
+      reviewCards: [createCard('da-xoa-1', m1.id, addDays(todayIso(), -1))],
+    })
+    const { container } = render(
+      <MemoryRouter>
+        <ReviewPage />
+      </MemoryRouter>,
+    )
+    expect(container.textContent?.trim().length).toBeGreaterThan(0)
+    expect(screen.getByText('Hôm nay không có thẻ đến hạn')).toBeTruthy()
+  })
+})

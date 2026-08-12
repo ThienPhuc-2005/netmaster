@@ -10,8 +10,12 @@ import {
   flashcardTurn,
   interleaveByModule,
   overdueCount,
+  cardIdsHopLe,
+  locTheConNoiDung,
   theLanh,
+  theMoCoi,
 } from './reviewQueue'
+import { loadModules } from '../content'
 
 const TODAY = '2026-08-04'
 
@@ -352,5 +356,42 @@ describe('thẻ hỏng nằm lẫn trong hộp', () => {
   it('cả hộp toàn thẻ hỏng: phiên rỗng, app vẫn đứng', () => {
     expect(buildReviewSession([hong, hong] as ReviewCard[], TODAY)).toEqual([])
     expect(dueCards([hong] as ReviewCard[], TODAY)).toEqual([])
+  })
+})
+
+// ---------------------------------------------------------------
+// Thẻ MỒ CÔI: hộp ôn sống lâu hơn nội dung (phát hiện K1, khối 21.46)
+// ---------------------------------------------------------------
+//
+// Một lần cập nhật nội dung đổi id khái niệm là thẻ cũ trong hộp không
+// còn tra ra mặt thẻ. Trước khối này, thẻ như thế vẫn tính vào nợ, vẫn
+// được xếp vào phiên ôn — và phiên ôn thì đứng chết ở đó.
+
+describe('thẻ mồ côi — nội dung đổi dưới chân người học', () => {
+  const hopLe = new Set(['a', 'b'])
+  const hop = [card({ conceptId: 'a' }), card({ conceptId: 'mo-coi' }), card({ conceptId: 'b' })]
+
+  it('chỉ ra ĐÚNG thẻ không còn nội dung', () => {
+    expect(theMoCoi(hop, hopLe).map((c) => c.conceptId)).toEqual(['mo-coi'])
+  })
+
+  it('lọc giữ lại thẻ còn dựng được mặt', () => {
+    expect(locTheConNoiDung(hop, hopLe).map((c) => c.conceptId)).toEqual(['a', 'b'])
+  })
+
+  it('hộp toàn thẻ lành thì không bỏ gì', () => {
+    expect(theMoCoi([card({ conceptId: 'a' })], hopLe)).toEqual([])
+  })
+
+  it('cardIdsHopLe gom khái niệm có flashcard + phòng cung điện, bỏ khái niệm không thẻ', () => {
+    const ids = cardIdsHopLe(loadModules())
+    const mods = loadModules()
+    const coFlashcard = mods.flatMap((m) => m.concepts.filter((c) => c.flashcard !== undefined))
+    const khongFlashcard = mods.flatMap((m) => m.concepts.filter((c) => c.flashcard === undefined))
+    expect(coFlashcard.length).toBeGreaterThan(0)
+    for (const c of coFlashcard.slice(0, 20)) expect(ids.has(c.id), c.id).toBe(true)
+    for (const c of khongFlashcard.slice(0, 5)) expect(ids.has(c.id), c.id).toBe(false)
+    // Thẻ phòng cung điện mang tiền tố riêng — phải nằm trong danh sách.
+    expect([...ids].some((id) => id.startsWith('palace:'))).toBe(true)
   })
 })

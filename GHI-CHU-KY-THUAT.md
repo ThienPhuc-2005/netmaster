@@ -430,6 +430,32 @@ quan trước khi "sửa test cho xanh".
   dưới (`ml-auto sm:ml-0`) và ô gõ rộng 259px. Sửa ở CẢ BỐN (PsConsole,
   ClinicTerminal, ClinicDeviceConsole, CliConsole) — chúng là một khuôn,
   sửa lẻ một chỗ là ba chỗ kia lặng lẽ khác đi.
+- **THẺ MỒ CÔI: HỘP ÔN SỐNG LÂU HƠN NỘI DUNG (K1, khối 21.46)** — thẻ
+  còn trong hộp mà nội dung hiện tại không dựng nổi mặt (khái niệm đổi
+  id, bỏ `flashcard`, phòng cung điện rời khỏi bài). Khác J1 ở chỗ thẻ
+  ĐÚNG HÌNH DẠNG, chỉ mất chỗ tra — nên `theLanh` không bắt được.
+  - **Dọn khỏi HỘP, không chỉ khỏi phiên**: thẻ mồ côi vẫn tính vào nợ
+    quá hạn, mà cổng khóa bài mới đọc đúng con số đó — để lại là người
+    học nợ vĩnh viễn một món không ai trả được. `donTheMoCoi` chạy ở
+    `AppGate` ngay sau khi nội dung nạp xong (chỗ DUY NHẤT biết cả hộp
+    lẫn nội dung), kêu một dòng `console.warn` như lối J1.
+  - **Phiên ôn vẫn lọc lần nữa** (`cardFace(...) !== null`): nội dung là
+    dữ liệu, mất mặt thẻ còn có đường khác. Trước khối này, `ReviewPage`
+    gặp thẻ mồ côi thì `return null` — chú thích ghi "bỏ qua" nhưng thực
+    tế là MÀN TRẮNG và phiên đứng chết tại đó, tải lại vẫn trắng.
+  - Tính lượt hỏi trong bộ lọc phải dùng `flashcardTurn` TẠI CHỖ, không
+    gọi `turnOf` (khai bên dưới, có đệm riêng) — gọi lên trên là chạm
+    biến chưa khởi tạo.
+- **Hai câu hỏi của người VỪA QUAY LẠI (K2 + K3, khối 21.46)**:
+  - `freezesAvailable(streak, today)` — số đóng băng của HÔM NAY. Quỹ
+    hồi theo tháng nhưng chỉ hồi khi có hoạt động, nên ai vắng qua tháng
+    sẽ thấy con số của tháng cũ (thường là 0) ngay dưới dòng "mỗi tháng
+    bạn có 2 lượt". Hàm này THUẦN và chỉ để ĐỌC: đọc hồ sơ mà tự hồi quỹ
+    là để việc XEM đổi tiến độ, phá nguyên tắc 5.
+  - `soNgayVang` + `VANG_LAU_NGAY` (14) — thẻ Hôm nay nói ra khoảng vắng
+    trước khi giao việc. `null` cho người chưa học buổi nào (chào "lâu
+    rồi không gặp" người mới tinh là chào nhầm), và ngưỡng 14 ngày vì
+    dưới mốc đó quỹ đóng băng còn lo được, nói ra chỉ thành lời trách.
 - **THẺ ÔN HỎNG KHÔNG ĐƯỢC LÀM SẬP CỬA VÀO APP (J1, khối 21.43)** — bất
   biến đắt nhất của vùng này, vì nó là lỗi DUY NHẤT từng khiến người học
   mất trắng tiến độ mà không có đường tự cứu:

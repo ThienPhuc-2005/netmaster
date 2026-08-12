@@ -18,7 +18,8 @@ import { Navigate } from 'react-router'
 import { AppLayout } from '../components/AppLayout'
 import { OnboardingPage } from '../features/onboarding/OnboardingPage'
 import { LearnPage } from '../features/learn/LearnPage'
-import { primeModules } from '../content'
+import { loadModules, primeModules } from '../content'
+import { cardIdsHopLe } from '../engine/reviewQueue'
 import { shouldReviewFirst, todayIso, useProgress } from '../store/progress'
 
 // Kéo nội dung NGAY khi bundle chạy — song song với hydrate store, không
@@ -78,7 +79,14 @@ export function AppGate() {
   useEffect(() => {
     let alive = true
     void contentReady.then(() => {
-      if (alive) setReady(true)
+      if (!alive) return
+      // DỌN THẺ MỒ CÔI ngay khi nội dung đã nạp (phát hiện K1, khối
+      // 21.46). Đây là chỗ DUY NHẤT biết đủ hai vế: hộp ôn tập của người
+      // học, và nội dung hiện tại dựng được mặt thẻ nào. Thẻ nội dung
+      // không còn mà để lại thì nó vẫn tính vào nợ quá hạn, vẫn kéo
+      // người học vào phiên ôn — mà phiên ôn không dựng nổi mặt nó.
+      useProgress.getState().donTheMoCoi(cardIdsHopLe(loadModules()))
+      setReady(true)
     })
     return () => {
       alive = false

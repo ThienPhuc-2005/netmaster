@@ -148,6 +148,7 @@
     "actionResume": "Keep going",
     "actionNew": "Start the lesson",
     "actionTest": "Take the test",
+    "quayLai": "Good to see you again — your last session was {ngay} days ago. A gap is not a hole: we start again from the review box, gently.",
     "fading": "{count} cards are fading — not due yet, but they will be soon. Memory cooling on schedule is exactly how this works.",
     "doneBody": "Nothing is due today and you have reached the end of the road so far. Resting is part of remembering — see you tomorrow."
   },

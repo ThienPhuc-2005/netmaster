@@ -17,6 +17,7 @@ import { milestones } from '../graduation/milestones'
 import { AoGiacList, DisputedList, MemoryMap, MistakeAnalysisCard, SoSanhThangCard, WeakSpotList, WeeklyRhythm } from './LearningInsights'
 import { memoryByModule } from '../../engine/freshness'
 import { theLanh } from '../../engine/reviewQueue'
+import { freezesAvailable } from '../../engine/streak'
 import { mocDeSo, soSanhDang, thangCua } from '../../engine/soSanhThang'
 import { daiNhatTuan, daiNhatTuanTruoc } from '../../engine/quangHoc'
 import type { AnhChup, LyDoChup } from '../../engine/anhChup'
@@ -269,7 +270,9 @@ export function ProfilePage() {
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <StatCard icon={Flame} label={t('profile.streak')} value={streak.current} unit={t('profile.streakUnit')} />
         <StatCard icon={Zap} label={t('profile.xp')} value={xpTotal} />
-        <StatCard icon={Snowflake} label={t('profile.freezes')} value={streak.freezesLeft} />
+        {/* Con số của HÔM NAY, không phải của tháng đã ghi trong state — xem
+            `freezesAvailable` (phát hiện K2). */}
+        <StatCard icon={Snowflake} label={t('profile.freezes')} value={freezesAvailable(streak, todayIso())} />
         <StatCard icon={BookOpenCheck} label={t('profile.lessonsDone')} value={Object.keys(completedLessons).length} />
         <StatCard icon={Layers} label={t('profile.cardsTotal')} value={reviewCards.length} />
       </div>

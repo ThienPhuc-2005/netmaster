@@ -41,7 +41,14 @@ import type { CliOutcome, CliState } from '../engine/cli'
 import { matchKeywords, type KeywordMatchResult } from '../engine/grading/keywordMatch'
 import { createCard, reviewCard } from '../engine/sm2'
 import { computeModuleStatuses, evaluateModuleTest, type ModuleTestEvaluation } from '../engine/masteryGate'
-import { canStartNewLesson, dueCards, locTheLanh, newCardIdsForLesson, overdueCount } from '../engine/reviewQueue'
+import {
+  canStartNewLesson,
+  dueCards,
+  locTheConNoiDung,
+  locTheLanh,
+  newCardIdsForLesson,
+  overdueCount,
+} from '../engine/reviewQueue'
 import { initialStreak, recordQualifyingActivity } from '../engine/streak'
 import { pushAnswer } from '../engine/answerHistory'
 import { xpFor } from '../engine/xp'
@@ -334,6 +341,12 @@ export interface ProgressState {
    * `NhacNghi`; chỉ ngày nào lập kỷ lục mới thì store mới ghi.
    */
   ghiQuangHoc: (phut: number) => void
+  /**
+   * Dọn thẻ MỒ CÔI khỏi hộp ôn tập — thẻ mà nội dung hiện tại không còn
+   * dựng được mặt (phát hiện K1). Gọi MỘT LẦN ở cổng vào app, sau khi
+   * nội dung đã nạp xong; trả về số thẻ đã bỏ để tầng gọi kể lại nếu cần.
+   */
+  donTheMoCoi: (idHopLe: ReadonlySet<string>) => number
 
   /** Tick/bỏ tick một bước của checklist lab VMware. */
   toggleVmLabStep: (stepId: string) => void
@@ -689,6 +702,24 @@ export const useProgress = create<ProgressState>()(
         // suốt buổi học, nên KHÔNG có kỷ lục mới thì không được `set` —
         // một `set` rỗng vẫn đánh thức persist và ghi cả khối tiến độ
         // xuống ổ đĩa hai lần mỗi phút.
+        /**
+         * Thẻ mồ côi phải BỎ HẲN khỏi hộp, không chỉ bỏ khỏi phiên: nó
+         * vẫn tính vào nợ quá hạn (cổng khóa bài mới đọc con số đó), nên
+         * để lại là người học nợ vĩnh viễn một món không ai trả được.
+         *
+         * Không `set` khi không có gì để dọn — hàm này chạy mỗi lần mở
+         * app (xem `ghiQuangHoc` để biết vì sao `set` rỗng là tốn thật).
+         */
+        donTheMoCoi: (idHopLe) => {
+          const dang = get().reviewCards
+          const con = locTheConNoiDung(dang, idHopLe)
+          if (con.length === dang.length) return 0
+          const bo = dang.length - con.length
+          console.warn(`NetMaster: bỏ ${bo} thẻ ôn không còn nội dung để dựng mặt thẻ`)
+          set({ reviewCards: con })
+          return bo
+        },
+
         ghiQuangHoc: (phut) => {
           const dang = get().quangHoc
           const sau = ghiQuang(dang, todayIso(), phut)

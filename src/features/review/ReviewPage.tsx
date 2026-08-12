@@ -94,8 +94,22 @@ export function ReviewPage() {
   )
 
   // Phiên hôm nay: chốt danh sách conceptId một lần khi mở trang.
+  //
+  // LỌC THẺ KHÔNG DỰNG ĐƯỢC MẶT (phát hiện K1, khối 21.46). Cổng vào app
+  // đã dọn thẻ mồ côi khỏi hộp, nhưng lớp lọc ở đây vẫn phải có: nội
+  // dung là dữ liệu, và một thẻ có thể mất mặt vì lý do khác (khái niệm
+  // bỏ `flashcard`, phòng cung điện rời khỏi bài). Trước đây gặp thẻ như
+  // thế thì trang trả về `null` — nghĩa là MÀN TRẮNG, phiên đứng chết
+  // tại đó và tải lại vẫn trắng.
   const sessionConceptIds = useMemo(
-    () => buildReviewSession(allCards, todayIso(), SESSION_CAP, vapTheoKhaiNiem).map((c) => c.conceptId),
+    () =>
+      buildReviewSession(allCards, todayIso(), SESSION_CAP, vapTheoKhaiNiem)
+        .map((c) => c.conceptId)
+        // Tính lượt hỏi TẠI CHỖ chứ không qua `turnOf`: hàm đó khai bên
+        // dưới và có bộ nhớ đệm riêng, gọi lên trên là chạm biến chưa
+        // khởi tạo (test bắt ngay). Ở đây chỉ cần biết "có dựng được mặt
+        // thẻ không", nên một phép tính thuần là đủ.
+        .filter((id) => cardFace(id, t, flashcardTurn(allCards.find((c) => c.conceptId === id) ?? null)) !== null),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   )

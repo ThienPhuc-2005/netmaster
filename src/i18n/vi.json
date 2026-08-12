@@ -148,6 +148,7 @@
     "actionResume": "Học tiếp",
     "actionNew": "Bắt đầu bài mới",
     "actionTest": "Vào thi",
+    "quayLai": "Lâu rồi không gặp — buổi học gần nhất của bạn cách đây {ngay} ngày. Khoảng trống không phải lỗ hổng: mình bắt đầu lại từ hộp ôn tập, nhẹ thôi.",
     "fading": "{count} thẻ đang mờ dần — chưa tới lượt ôn, nhưng mai kia sẽ tới. Trí nhớ nguội đúng lịch là chuyện bình thường.",
     "doneBody": "Hôm nay không còn thẻ đến hạn và bạn đã đi hết chặng đường hiện có. Nghỉ cũng là một phần của việc nhớ — mai quay lại nhé."
   },

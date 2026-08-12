@@ -1,6 +1,13 @@
 import { describe, expect, it } from 'vitest'
 import type { StreakState } from './types'
-import { FREEZES_PER_MONTH, initialStreak, recordQualifyingActivity } from './streak'
+import {
+  FREEZES_PER_MONTH,
+  freezesAvailable,
+  initialStreak,
+  recordQualifyingActivity,
+  soNgayVang,
+  VANG_LAU_NGAY,
+} from './streak'
 
 describe('initialStreak', () => {
   it('khởi tạo: chuỗi 0, chưa có ngày hoạt động, đủ 2 lượt đóng băng của tháng', () => {
@@ -134,5 +141,52 @@ describe('recordQualifyingActivity', () => {
     // Nhánh cùng-ngày cũng phải trả object mới, không trả lại tham chiếu cũ.
     const same = recordQualifyingActivity(s, '2026-07-15', 'retrieval')
     expect(same.state).not.toBe(s)
+  })
+})
+
+// ---------------------------------------------------------------
+// Hai câu hỏi mà người VỪA QUAY LẠI cần trả lời đúng (K2 + K3)
+// ---------------------------------------------------------------
+
+describe('freezesAvailable — số lượt CỦA HÔM NAY, không phải của tháng đã ghi', () => {
+  it('cùng tháng thì lấy đúng số còn lại trong state', () => {
+    const s = { current: 3, lastActiveDate: '2026-08-02', freezesLeft: 1, freezeMonth: '2026-08' }
+    expect(freezesAvailable(s, '2026-08-12')).toBe(1)
+  })
+
+  it('sang tháng mới thì đủ quỹ, dù state còn ghi 0 của tháng cũ', () => {
+    // Đúng ca người vắng ba tháng: mở Hồ sơ ra thấy "0 lượt" ngay dưới
+    // dòng "mỗi tháng bạn có 2 lượt" — hai dòng cạnh nhau nói ngược nhau.
+    const s = { current: 0, lastActiveDate: '2026-05-10', freezesLeft: 0, freezeMonth: '2026-05' }
+    expect(freezesAvailable(s, '2026-08-12')).toBe(FREEZES_PER_MONTH)
+  })
+
+  it('chỉ ĐỌC — không đụng vào state (đọc hồ sơ không được ghi tiến độ)', () => {
+    const s = { current: 0, lastActiveDate: '2026-05-10', freezesLeft: 0, freezeMonth: '2026-05' }
+    const truoc = JSON.stringify(s)
+    freezesAvailable(s, '2026-08-12')
+    expect(JSON.stringify(s)).toBe(truoc)
+  })
+})
+
+describe('soNgayVang — app nhận ra người vắng lâu', () => {
+  it('đếm đúng số ngày từ buổi học gần nhất', () => {
+    const s = { current: 0, lastActiveDate: '2026-05-10', freezesLeft: 0, freezeMonth: '2026-05' }
+    expect(soNgayVang(s, '2026-08-12')).toBe(94)
+  })
+
+  it('học hôm nay rồi thì không còn là người vắng mặt', () => {
+    const s = { current: 4, lastActiveDate: '2026-08-12', freezesLeft: 2, freezeMonth: '2026-08' }
+    expect(soNgayVang(s, '2026-08-12')).toBe(0)
+  })
+
+  it('người MỚI TINH trả về null — chào "lâu rồi không gặp" là chào nhầm', () => {
+    expect(soNgayVang(initialStreak('2026-08-12'), '2026-08-12')).toBeNull()
+  })
+
+  it('ngưỡng nói ra là 14 ngày: nghỉ một tuần thì im, nghỉ nửa tháng thì nói', () => {
+    const s = (last: string) => ({ current: 1, lastActiveDate: last, freezesLeft: 2, freezeMonth: '2026-08' })
+    expect(soNgayVang(s('2026-08-05'), '2026-08-12')! >= VANG_LAU_NGAY).toBe(false)
+    expect(soNgayVang(s('2026-07-25'), '2026-08-12')! >= VANG_LAU_NGAY).toBe(true)
   })
 })

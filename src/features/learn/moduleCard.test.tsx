@@ -16,7 +16,8 @@ import { cleanup, render, screen, within } from '@testing-library/react'
 import { RouterProvider, createMemoryRouter } from 'react-router'
 import { LearnPage, moduleAnchorId } from './LearnPage'
 import { loadModules } from '../../content'
-import { useProgress } from '../../store/progress'
+import { todayIso, useProgress } from '../../store/progress'
+import { addDays } from '../../engine/dates'
 
 const INITIAL = useProgress.getInitialState()
 const modules = loadModules()
@@ -87,5 +88,34 @@ describe('J5 + J6 — thanh tiến độ chỉ nói khi nó có gì để nói',
     moTrangHoc()
     expect(thanh(dauTien.id)).toBeNull()
     expect(within(the(dauTien.id)).getByText(/Đã đạt · 89%/)).toBeTruthy()
+  })
+})
+
+// Người vắng lâu quay lại (phát hiện K3, khối 21.46): app phải NÓI RA
+// khoảng vắng trước khi giao việc — im lặng giả vờ như không có gì xảy
+// ra là thứ khiến người ta đóng app lần nữa. Giọng là ĐÓN, không TRÁCH.
+describe('K3 — thẻ Hôm nay chào người vắng lâu', () => {
+  function vangTu(ngay: string) {
+    useProgress.setState({
+      streak: { current: 0, lastActiveDate: ngay, freezesLeft: 0, freezeMonth: ngay.slice(0, 7) },
+    })
+  }
+
+  it('vắng ba tháng: nói đúng số ngày, và nói khoảng trống không phải lỗi', () => {
+    vangTu(addDays(todayIso(), -94))
+    moTrangHoc()
+    expect(screen.getByText(/cách đây 94 ngày/)).toBeTruthy()
+    expect(screen.getByText(/Khoảng trống không phải lỗ hổng/)).toBeTruthy()
+  })
+
+  it('nghỉ một tuần thì IM — dưới ngưỡng thì nói ra chỉ thành lời trách', () => {
+    vangTu(addDays(todayIso(), -7))
+    moTrangHoc()
+    expect(screen.queryByText(/Lâu rồi không gặp/)).toBeNull()
+  })
+
+  it('người MỚI TINH không bị chào nhầm là người vắng mặt', () => {
+    moTrangHoc() // streak mặc định: chưa học buổi nào
+    expect(screen.queryByText(/Lâu rồi không gặp/)).toBeNull()
   })
 })

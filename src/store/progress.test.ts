@@ -423,3 +423,31 @@ describe('kỷ lục quãng ngồi liền (cụm hồ sơ)', () => {
     expect(useProgress.getState().quangHoc).toEqual({})
   })
 })
+
+describe('dọn thẻ mồ côi khỏi hộp ôn (K1, khối 21.46)', () => {
+  const the = (id: string) => createCard(id, MODULE.id, todayIso())
+
+  it('bỏ đúng thẻ không còn nội dung, giữ nguyên thẻ lành', () => {
+    useProgress.setState({ reviewCards: [the('goi-tin'), the('da-bi-xoa'), the('dia-chi-ip')] })
+    const bo = useProgress.getState().donTheMoCoi(new Set(['goi-tin', 'dia-chi-ip']))
+    expect(bo).toBe(1)
+    expect(useProgress.getState().reviewCards.map((c) => c.conceptId)).toEqual(['goi-tin', 'dia-chi-ip'])
+  })
+
+  it('thẻ mồ côi phải bỏ khỏi HỘP chứ không chỉ khỏi phiên — nó tính vào nợ', () => {
+    // Nợ quá trần thì cổng khóa bài mới; để lại thẻ không ai ôn được là
+    // bắt người học nợ vĩnh viễn một món không trả nổi.
+    const nhieu = Array.from({ length: 31 }, (_, i) => createCard(`ma-${i}`, MODULE.id, addDays(todayIso(), -5)))
+    useProgress.setState({ reviewCards: nhieu })
+    expect(newLessonGate(useProgress.getState().reviewCards, todayIso()).allowed).toBe(false)
+    useProgress.getState().donTheMoCoi(new Set())
+    expect(newLessonGate(useProgress.getState().reviewCards, todayIso()).allowed).toBe(true)
+  })
+
+  it('không có gì để dọn thì KHÔNG ghi xuống localStorage', () => {
+    useProgress.setState({ reviewCards: [the('goi-tin')] })
+    localStorage.removeItem('netmaster-progress')
+    expect(useProgress.getState().donTheMoCoi(new Set(['goi-tin']))).toBe(0)
+    expect(localStorage.getItem('netmaster-progress')).toBeNull()
+  })
+})

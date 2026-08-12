@@ -11,6 +11,7 @@ import { computeModuleStatuses } from '../../engine/masteryGate'
 import { moduleXpTotal } from '../../engine/xp'
 import { LESSON_STEP_COUNT, planToday, type TodayPlan } from '../../engine/todayPlan'
 import { fadingCards } from '../../engine/freshness'
+import { soNgayVang, VANG_LAU_NGAY } from '../../engine/streak'
 import type { Lesson, Module } from '../../engine/contentSchema'
 import { canChallengeModule, newLessonGate, todayIso, useProgress } from '../../store/progress'
 import { useT } from '../../i18n'
@@ -141,7 +142,7 @@ function StreakStoryBanner() {
  * Nó KHÔNG mở đường tắt nào: mọi đích đến đều là chỗ người học vốn đã
  * vào được (planToday chỉ đọc, không nới luật).
  */
-function TodayCard({ plan, fading }: { plan: TodayPlan; fading: number }) {
+function TodayCard({ plan, fading, ngayVang }: { plan: TodayPlan; fading: number; ngayVang: number | null }) {
   const t = useT()
 
   // Việc chính: mỗi focus một đích, một nhãn nút.
@@ -195,6 +196,14 @@ function TodayCard({ plan, fading }: { plan: TodayPlan; fading: number }) {
           </span>
         )}
       </div>
+
+      {/* Người vắng lâu quay lại (phát hiện K3): nói ra khoảng vắng
+          trước khi giao việc. Im lặng giả vờ như không có gì xảy ra là
+          thứ khiến người ta đóng app lần nữa — mà giọng phải là đón,
+          không phải trách: khoảng trống không bao giờ là lỗi của họ. */}
+      {ngayVang !== null && ngayVang >= VANG_LAU_NGAY && (
+        <p className="mt-2 text-sm text-ink">{t('today.quayLai', { ngay: ngayVang })}</p>
+      )}
 
       {plan.focus === 'done' ? (
         <p className="mt-2 text-sm text-ink-muted">{t('today.doneBody')}</p>
@@ -492,6 +501,7 @@ export function LearnPage() {
   const reviewCards = useProgress((s) => s.reviewCards)
   const completedLessons = useProgress((s) => s.completedLessons)
   const lessonRuntimes = useProgress((s) => s.lessonRuntimes)
+  const streak = useProgress((s) => s.streak)
 
   const [searchParams] = useSearchParams()
 
@@ -520,7 +530,7 @@ export function LearnPage() {
 
       <StreakStoryBanner />
 
-      <TodayCard plan={plan} fading={fading} />
+      <TodayCard plan={plan} fading={fading} ngayVang={soNgayVang(streak, today)} />
 
       {/* Bản đồ đường đi đứng NGAY TRÊN danh sách chủ đề, dưới thẻ Hôm
           nay (B1): thẻ Hôm nay trả lời "làm gì bây giờ", dải này trả lời

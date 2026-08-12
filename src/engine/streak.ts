@@ -18,6 +18,48 @@ export const FREEZES_PER_MONTH = 2
  */
 export type QualifyingSource = XpSource
 
+/**
+ * Số lượt đóng băng NGƯỜI HỌC THẬT SỰ CÓ vào hôm nay (phát hiện K2,
+ * khối 21.46).
+ *
+ * `state.freezesLeft` là con số của THÁNG ĐÃ GHI (`freezeMonth`) —
+ * `recordQualifyingActivity` chỉ hồi quỹ khi người học làm được việc gì
+ * đó. Nghĩa là ai vắng mặt qua tháng sẽ mở Hồ sơ ra và thấy con số của
+ * tháng cũ, thường là 0, ngay dưới dòng "mỗi tháng bạn có 2 lượt".
+ * Người vừa quay lại sau kỳ nghỉ dài là đúng người cần biết mình còn
+ * lưới đỡ nào nhất, mà lại là người bị nói sai.
+ *
+ * Hàm này THUẦN và chỉ để ĐỌC: đọc hồ sơ không được phép ghi state (một
+ * lần mở Hồ sơ mà tự hồi quỹ là XP/streak đổi vì việc xem, phá nguyên
+ * tắc 5). Đường ghi vẫn nằm nguyên trong `recordQualifyingActivity`.
+ */
+export function freezesAvailable(state: StreakState, today: ISODate): number {
+  return monthOf(today) === state.freezeMonth ? state.freezesLeft : FREEZES_PER_MONTH
+}
+
+/**
+ * Vắng bao nhiêu ngày rồi (phát hiện K3, khối 21.46).
+ *
+ * `null` khi chưa từng học buổi nào — người mới tinh không phải là người
+ * "vắng mặt", và chào họ bằng câu "lâu rồi không gặp" là chào nhầm.
+ */
+export function soNgayVang(state: StreakState, today: ISODate): number | null {
+  const last = state.lastActiveDate
+  if (last === null) return null
+  const gap = diffDays(last, today)
+  return gap > 0 ? gap : 0
+}
+
+/**
+ * Vắng bao lâu thì app nên NÓI RA một câu.
+ *
+ * 14 ngày: dưới mốc này thì quỹ đóng băng và nhịp ôn tự lo được, nói ra
+ * chỉ thành lời trách. Trên mốc này thì lịch ôn đã lệch hẳn, hộp thẻ
+ * chất đống, và im lặng giả vờ như không có gì xảy ra mới là thứ khiến
+ * người ta đóng app lần nữa.
+ */
+export const VANG_LAU_NGAY = 14
+
 export function initialStreak(today: ISODate): StreakState {
   return {
     current: 0,

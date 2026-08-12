@@ -3,16 +3,16 @@
 ## ĐỌC 30 GIÂY: ĐANG ĐỨNG ĐÂU, LÀM GÌ TIẾP (cập nhật 2026-08-12)
 
 **App hiện có ĐỦ 21/21 MODULE NỘI DUNG + MÀN TỐT NGHIỆP** (M1-12 nhập
-môn, M13-17 Phần D, M18-21 Phần E), 1729 test xanh, typecheck sạch,
+môn, M13-17 Phần D, M18-21 Phần E), 1748 test xanh, typecheck sạch,
 build qua. **Toàn bộ biên bản hội đồng trung cấp đã XỬ XONG (08-10):
 15/15 việc mục 6 (khối 20.2, commit `1d04c0b`) + trọn LƯỢT DỌN 52 phát
 hiện P2 mục 5 (khối 20.3).** Nội dung và engine không còn việc nào treo;
 các khối gần đây đều là ý lấy từ kho `Y-TUONG.md`.
-Việc kế tiếp là của CHỦ DỰ ÁN: chọn phát hiện của LƯỢT RÀ SOÁT ĐƯỜNG
-NGƯỢC (mục K của kho ý tưởng, 6 ý) đáng sửa trước — đề nghị **K1**, vòng
-kẹt câm thứ hai của app; và tuyển người cho các buổi test người thật
-(hai dòng DoD còn treo đều cần NGƯỜI). Tám ý của lượt rà soát xuôi (mục
-J) đã xử xong hết.
+Việc kế tiếp là của CHỦ DỰ ÁN: ra lệnh commit khối 21.46, và chọn có sửa
+nốt ba ý NHỎ còn lại của lượt rà soát ngược không (mục K: K4 đồ thị nếp
+học tự ẩn · K5 bản đồ chặng nói CHƯA MỞ trên module đã đậu · K6 người
+tốt nghiệp hết việc). Tám ý của lượt rà soát xuôi (mục J) đã xử xong
+hết. Vẫn treo: tuyển người cho các buổi test người thật.
 
 **Toàn bộ ENGINE của Phần D đã xong.** Không còn engine nào phải viết cho
 M13-17: lab lớp 2 (trunk + STP), CLI thiết bị đủ **24/24 lệnh** của spec
@@ -32,12 +32,36 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (19) M21 capstone + màn tốt nghiệp | XONG |
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
+**KHỐI MỚI NHẤT — 21.46 (08-12), đang ở working tree chờ lệnh commit:**
+**K1 + K2 + K3 — đón người quay lại sau kỳ nghỉ dài.**
+- **K1 — bịt vòng kẹt câm thứ hai.** Thẻ ôn trỏ khái niệm nội dung không
+  còn (chuyện xảy ra mỗi lần cập nhật nội dung đổi id) làm phiên ôn ra
+  màn TRẮNG và đứng chết tại đó. Chữa ba lớp: **dọn thẻ mồ côi khỏi
+  HỘP** ngay khi nội dung nạp xong — phải bỏ hẳn chứ không chỉ bỏ khỏi
+  phiên, vì nó tính vào nợ quá hạn mà cổng khóa bài mới đọc đúng con số
+  đó; **phiên ôn lọc thêm lần nữa**; và **hộp toàn thẻ mồ côi thì nói tử
+  tế** "hôm nay không có thẻ đến hạn" thay vì trang trắng.
+- **K2 — số đóng băng là con số của HÔM NAY.** Quỹ hồi theo tháng nhưng
+  chỉ hồi khi có hoạt động, nên người vắng qua tháng mở Hồ sơ ra thấy "0
+  lượt" ngay dưới dòng "mỗi tháng bạn có 2 lượt". Thêm một hàm thuần-đọc;
+  cố ý KHÔNG hồi quỹ lúc đọc — để việc XEM đổi tiến độ là phá nguyên tắc 5.
+- **K3 — app chào người vắng lâu.** Vắng từ 14 ngày trở lên thì thẻ Hôm
+  nay nói ra số ngày thật, đặt TRƯỚC danh sách việc vì nó đổi cách đọc
+  mọi dòng bên dưới. Giọng là đón chứ không trách ("khoảng trống không
+  phải lỗ hổng"), và người mới tinh không bị chào nhầm.
+- 1748 test xanh (+19), typecheck sạch, build qua. **Dựng lại đúng cảnh
+  đã kẹt lúc rà soát**: hộp 40 thẻ (một nửa mồ côi) → app tự dọn còn 20,
+  phiên ôn chạy trọn 15 thẻ không một lần màn trắng, xong phiên mời ôn
+  tiếp 5 thẻ còn lại; Hồ sơ hiện "2 lượt đóng băng" thay vì 0; thẻ Hôm
+  nay chào "cách đây 94 ngày". Seed đã xóa.
+
 **LƯỢT RÀ SOÁT ĐƯỜNG NGƯỢC (08-12) — không sửa code.** Lượt trước đi
 đường xuôi (người mới → giữa khóa); lượt này đi ngược: người bỏ học BA
 THÁNG quay lại (nợ 40 thẻ, chuỗi đứt, hết đóng băng), người có NỘI DUNG
 ĐỔI dưới chân trong lúc vắng mặt, và người đã đi hết khóa quay lại xem
 còn gì để làm.
-**Kết quả: 6 phát hiện, ghi vào mục K của `Y-TUONG.md`.** Nặng nhất là
+**Kết quả: 6 phát hiện, ghi vào mục K của `Y-TUONG.md`; K1+K2+K3 đã chữa
+ở khối 21.46.** Nặng nhất là
 **K1 — thẻ ôn trỏ khái niệm không còn thì phiên ôn ra MÀN TRỐNG và kẹt
 câm**: nợ > 30 nên bài mới bị khóa, màn chặn chỉ có nút "Vào ôn tập", mà
 ôn tập thì trắng — không sập app như J1, nhưng cũng không đi được đâu và

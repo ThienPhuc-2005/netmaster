@@ -336,8 +336,11 @@ Lượt rà soát trước đi đường xuôi (người mới → giữa khóa)
 đóng băng), người có nội dung ĐỔI dưới chân trong lúc vắng mặt, và người
 đã đi hết khóa quay lại xem còn gì để làm.
 
-- ☐ **K1. Thẻ ôn trỏ khái niệm KHÔNG CÒN → phiên ôn ra MÀN TRỐNG, kẹt
-  câm** (NẶNG — nặng ngang J1, và dễ xảy ra hơn nhiều). Nội dung cập nhật
+- ✅ **K1. Thẻ ôn trỏ khái niệm KHÔNG CÒN → phiên ôn ra MÀN TRỐNG, kẹt
+  câm** — ĐÃ CHỮA (khối 21.46) đủ ba lớp: dọn thẻ mồ côi khỏi HỘP ngay
+  khi nội dung nạp xong (nó tính vào nợ nên phải bỏ hẳn, không chỉ bỏ
+  khỏi phiên) · phiên ôn lọc thêm lần nữa · hộp toàn thẻ mồ côi thì nói
+  tử tế "hôm nay không có thẻ đến hạn" thay vì trang trắng. Ghi chú cũ: (NẶNG — nặng ngang J1, và dễ xảy ra hơn nhiều). Nội dung cập nhật
   mà một khái niệm đổi id hoặc bị bỏ là thẻ cũ trong hộp thành mồ côi.
   `ReviewPage` gặp thẻ mồ côi thì `return null` — chú thích trong code
   ghi "bỏ qua", nhưng code KHÔNG bỏ qua: nó không dựng gì cả, phiên đứng
@@ -350,13 +353,20 @@ Lượt rà soát trước đi đường xuôi (người mới → giữa khóa)
   UI có nội dung trong tay); (b) dọn thẻ mồ côi khỏi hộp sau khi nội
   dung prime xong, kêu một dòng `console.warn` như lối J1; (c) nếu vẫn
   còn thẻ không dựng được thì hiện một câu tử tế thay vì trang trắng.
-- ☐ **K2. Số "đóng băng còn lại" ở Hồ sơ là con số của THÁNG CŨ** (TRUNG
+- ✅ **K2. Số "đóng băng còn lại" ở Hồ sơ là con số của THÁNG CŨ** — ĐÃ
+  CHỮA (khối 21.46): thêm `freezesAvailable` thuần-đọc, Hồ sơ hiện số
+  của HÔM NAY. Cố ý KHÔNG hồi quỹ lúc đọc: để việc XEM đổi tiến độ là
+  phá nguyên tắc 5. Ghi chú cũ: (TRUNG
   BÌNH). Quỹ đóng băng nạp lại theo tháng, nhưng chỉ nạp khi người học
   LÀM được việc gì đó. Người vắng ba tháng mở Hồ sơ ra thấy "0 lượt" —
   đúng lúc họ cần biết mình còn lưới đỡ nào nhất. Chưa kể ngay dưới có
   câu "mỗi tháng bạn có 2 lượt đóng băng tự động", nên hai dòng cạnh
   nhau nói ngược nhau.
-- ☐ **K3. App không nhận ra người vừa vắng mặt lâu** (TRUNG BÌNH). Quay
+- ✅ **K3. App không nhận ra người vừa vắng mặt lâu** — ĐÃ CHỮA (khối
+  21.46): vắng từ 14 ngày trở lên thì thẻ Hôm nay chào một câu có SỐ
+  NGÀY thật, đặt TRƯỚC danh sách việc vì nó đổi cách đọc mọi dòng bên
+  dưới. Giọng là đón chứ không trách, và người mới tinh không bị chào
+  nhầm. Ghi chú cũ: (TRUNG BÌNH). Quay
   lại sau 94 ngày, câu đầu tiên đọc được vẫn là "não sắp quên đúng lịch
   rồi" — đúng với người nghỉ hai ngày, nhẹ hều với người nghỉ ba tháng.
   Không một chỗ nào trong app nói "lâu rồi không gặp" hay hạ kỳ vọng

@@ -68,6 +68,44 @@ export function locTheLanh(cards: readonly unknown[]): ReviewCard[] {
 }
 
 /**
+ * MỌI khóa thẻ mà nội dung HIỆN TẠI dựng được mặt thẻ (phát hiện K1,
+ * khối 21.46): khái niệm có flashcard + mọi phòng cung điện được dạy.
+ *
+ * Vì sao cần: hộp ôn tập sống lâu hơn nội dung. Một lần cập nhật đổi id
+ * khái niệm (chuyện thường của dự án này) là thẻ cũ thành MỒ CÔI — tra
+ * không ra mặt trước lẫn mặt sau. Thẻ mồ côi vẫn tính vào nợ, vẫn kéo
+ * người học vào phiên ôn, mà không ai ôn được nó: đó là vòng kẹt câm.
+ */
+export function cardIdsHopLe(modules: readonly Module[]): Set<string> {
+  const ids = new Set<string>()
+  for (const module of modules) {
+    for (const c of module.concepts) {
+      if (c.flashcard !== undefined) ids.add(c.id)
+    }
+    for (const lesson of module.lessons) {
+      for (const room of palaceRoomsInLesson(lesson)) ids.add(palaceCardId(room))
+    }
+  }
+  return ids
+}
+
+/**
+ * Thẻ MỒ CÔI: còn trong hộp nhưng nội dung không còn chỗ nào dựng được
+ * mặt thẻ. Trả ra danh sách để tầng gọi vừa dọn vừa kể được số lượng.
+ */
+export function theMoCoi(cards: readonly ReviewCard[], idHopLe: ReadonlySet<string>): ReviewCard[] {
+  return locTheLanh(cards).filter((c) => !idHopLe.has(c.conceptId))
+}
+
+/** Giữ lại thẻ còn dựng được mặt — dùng cho cả hộp lẫn phiên ôn. */
+export function locTheConNoiDung(
+  cards: readonly ReviewCard[],
+  idHopLe: ReadonlySet<string>,
+): ReviewCard[] {
+  return locTheLanh(cards).filter((c) => idHopLe.has(c.conceptId))
+}
+
+/**
  * Thẻ ĐẾN HẠN: dueDate <= hôm nay — thẻ đến hạn đúng hôm nay cũng phải ôn.
  *
  * Lọc thẻ méo ngay tại đây (không phải chỉ ở phiên ôn): `isOnOrBefore`
