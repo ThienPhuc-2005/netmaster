@@ -687,8 +687,17 @@ function moduleCrossChecks(mod: ModuleBase, ctx: z.RefinementCtx): void {
       if (q.spec.fix.kind === 'choose-action' && q.actions === undefined) {
         issue([where], `Câu "${q.id}": ca chọn-hành-động phải khai "actions" — không có thì người học hết đường sửa`)
       }
+      if (q.spec.fix.kind === 'edit-and-act' && q.actions === undefined) {
+        issue(
+          [where],
+          `Câu "${q.id}": ca liên tầng phải khai "actions" — nửa bệnh ngoài mô hình mạng không có đường xử lý`,
+        )
+      }
       if (q.spec.fix.kind === 'edit-network' && q.actions !== undefined) {
-        issue([where], `Câu "${q.id}": ca sửa-sơ-đồ không dùng "actions" — hai đường sửa cùng lúc làm người học lạc`)
+        issue(
+          [where],
+          `Câu "${q.id}": ca sửa-sơ-đồ không dùng "actions" — muốn có cả hai nửa thì khai fix.kind là "edit-and-act"`,
+        )
       }
       if (q.actions !== undefined && q.actions.answerIndex >= q.actions.choices.length) {
         issue([where], `Câu "${q.id}": actions.answerIndex ${q.actions.answerIndex} vượt quá số lựa chọn (${q.actions.choices.length})`)

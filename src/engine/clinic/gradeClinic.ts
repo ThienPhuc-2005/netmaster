@@ -16,6 +16,15 @@
 //      - 'choose-action': bệnh ngoài mô hình mạng (DNS chết, GPO chặn ở
 //        máy chủ miền) → sửa thật nằm ngoài tầm tay sơ đồ, người học
 //        chọn HÀNH ĐỘNG đúng — cũng chấm ở tầng câu hỏi.
+//      - 'edit-and-act': ca LIÊN TẦNG có HAI nửa bệnh — một nửa nằm trong
+//        sơ đồ (native VLAN lệch trên trunk), một nửa nằm ngoài (bản ghi
+//        DNS trỏ sai). Người học phải sửa nửa trong bằng tay VÀ chọn hành
+//        động cho nửa ngoài; thiếu nửa nào cũng là chưa xong.
+//
+// Vì sao kiểu thứ ba đáng có, chứ không ghép tạm hai ca rời: ngoài đời
+// một sự cố hiếm khi nằm gọn một tầng, và cái khó thật là NHẬN RA còn
+// một nửa nữa sau khi đã sửa xong nửa dễ thấy. Hai ca rời thì mỗi ca tự
+// nói "chỉ có một bệnh thôi" — mất đúng bài học đắt nhất.
 //
 // Technical contract: thuần, tất định, không mutate.
 
@@ -26,18 +35,35 @@ import type { PingFailure } from '../lab/simulate'
 import { ipOwners, type ClinicPatient, type ClinicSymptom } from './patient'
 import { initialTerminalState, runCommand } from './terminal'
 
+/**
+ * Nửa sửa nằm TRONG mô hình mạng — dùng chung cho mọi ca có động vào sơ đồ.
+ */
+export interface ClinicNetworkFix {
+  allow: LabAllowance
+  goals: LabGoal[]
+  /** Chẩn đoán tĩnh phải biến mất sau khi sửa (xem ghi chú đầu file). */
+  mustClearDiagnoses?: LabDiagnosis[]
+  /** Lời giải tham chiếu — tầng-3 của phản hồi + chốt kiểm nội dung. */
+  solution: Topology
+}
+
 /** Cách sửa của một ca. */
 export type ClinicFix =
-  | {
-      kind: 'edit-network'
-      allow: LabAllowance
-      goals: LabGoal[]
-      /** Chẩn đoán tĩnh phải biến mất sau khi sửa (xem ghi chú đầu file). */
-      mustClearDiagnoses?: LabDiagnosis[]
-      /** Lời giải tham chiếu — tầng-3 của phản hồi + chốt kiểm nội dung. */
-      solution: Topology
-    }
+  | ({ kind: 'edit-network' } & ClinicNetworkFix)
+  | ({ kind: 'edit-and-act' } & ClinicNetworkFix)
   | { kind: 'choose-action' }
+
+/**
+ * Nửa-mạng của cách sửa, `null` khi ca này không đụng vào sơ đồ.
+ *
+ * Mọi chỗ cần goals/allow/solution phải hỏi qua đây thay vì so
+ * `kind === 'edit-network'`: thêm kiểu ca thứ tư mà quên một chỗ so tay
+ * là ca đó lặng lẽ mất phần sửa mạng, và nó KHÔNG đỏ test ở chỗ mình
+ * vừa sửa.
+ */
+export function phanMang(fix: ClinicFix): ClinicNetworkFix | null {
+  return fix.kind === 'choose-action' ? null : fix
+}
 
 /** Đề một ca bệnh — phần kỹ thuật thuần, chuỗi hiển thị ở tầng câu hỏi. */
 export interface ClinicCaseSpec {
@@ -115,15 +141,16 @@ export interface ClinicFixEvaluation {
  * mỗi lớp bắt một kiểu "sửa giả vờ" khác nhau.
  */
 export function gradeClinicFix(spec: ClinicCaseSpec, edited: Topology): ClinicFixEvaluation {
-  if (spec.fix.kind !== 'edit-network') {
+  const mang = phanMang(spec.fix)
+  if (mang === null) {
     throw new Error('gradeClinicFix: ca này sửa bằng chọn hành động, không phải sửa sơ đồ')
   }
   const lab = gradeLab(
-    { initial: spec.patient.topology, goals: spec.fix.goals, allow: spec.fix.allow, solution: spec.fix.solution },
+    { initial: spec.patient.topology, goals: mang.goals, allow: mang.allow, solution: mang.solution },
     edited,
   )
-  const must = spec.fix.mustClearDiagnoses ?? []
-  const after = diagnose(edited, spec.fix.goals)
+  const must = mang.mustClearDiagnoses ?? []
+  const after = diagnose(edited, mang.goals)
   const remainingDiagnoses = must.filter((d) => after.includes(d))
   const symptom = checkSymptom(spec, edited)
   const symptomCleared = !symptom.sick

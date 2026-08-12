@@ -257,6 +257,26 @@ quan trước khi "sửa test cho xanh".
   microcopy `clinic.deviceReadOnly` — sửa mạng là việc của pha sửa.
   Schema bắt sơ đồ phải có switch/router mới được khai cờ. Console soi
   topology SỐNG của ClinicRoom (pha sửa đổi sơ đồ là show thấy ngay).
+- **Ca LIÊN TẦNG `fix.kind: 'edit-and-act'` (H3, khối 21.41)** — cách sửa
+  THỨ BA của phòng khám (mốc "2 cách sửa" đã phá, chủ dự án duyệt 08-12):
+  nửa bệnh trong sơ đồ sửa BẰNG TAY ở phòng lab, nửa ngoài mô hình chọn
+  HÀNH ĐỘNG; chấm ba phần, thiếu phần nào cũng là chưa xong.
+  - **Mọi chỗ cần goals/allow/solution phải hỏi `phanMang(fix)`**, đừng so
+    `kind === 'edit-network'`: so tay thì thêm kiểu ca là ca mới lặng lẽ
+    mất nửa sửa mạng — và nó KHÔNG đỏ test ở chỗ vừa sửa. Đã đi qua
+    `phanMang`: gradeClinicFix, clinicSchema, ClinicRoom.
+  - **Cổng chất lượng của ca sửa-sơ-đồ áp y nguyên cho nửa mạng** (lời
+    giải phải chữa được ca của chính nó, trạng thái đầu chưa đạt sẵn,
+    allowance đủ, mustClearDiagnoses là bệnh thật) — test khóa từng vế.
+  - **Triệu chứng khai trong `symptom` phải là nửa MẠNG.** Schema đòi lời
+    giải làm triệu chứng hết, mà nửa ngoài mô hình thì mô phỏng không với
+    tới — khai triệu chứng theo nửa DNS là ca không bao giờ parse được.
+    Nửa ngoài để người học tự thấy bằng bằng chứng khác (nslookup).
+  - **Triệu chứng xanh KHÔNG có nghĩa là xong**: UI phải nói thêm câu
+    `clinic.symptomHalfOnly` cạnh chỗ báo hết triệu chứng, không thì màu
+    xanh thành lời hứa sai ngay giữa ca dạy "đếm đủ dấu chân".
+  - Cross-check nội dung: `edit-and-act` BẮT BUỘC có `actions`;
+    `edit-network` vẫn CẤM `actions` (muốn hai nửa thì khai đúng kiểu).
 - **Bằng chứng của ca phải HỢP VẬT LÝ**: nslookup chỉ được trả lời khi
   đường tới DNS server đi được (terminal không kiểm reachability — nên
   đặt DNS server CÙNG segment với ghế ngồi khi đường xa đang đứt; hai ca

@@ -12,7 +12,7 @@ import {
 } from '../../../tests/fixtures/clinicFixture'
 import { validatePatient } from './patient'
 import { initialTerminalState, runCommand, type TerminalState } from './terminal'
-import { checkSymptom, gradeClinicFix, smellsOf } from './gradeClinic'
+import { checkSymptom, gradeClinicFix, phanMang, smellsOf } from './gradeClinic'
 import { parseClinicCase } from './clinicSchema'
 import type { ClinicCaseSpec } from './gradeClinic'
 
@@ -245,5 +245,49 @@ describe('clinicSchema — chốt chặn nội dung', () => {
       fix: { ...CASE_RUT_DAY.fix, mustClearDiagnoses: ['duplicate-ip' as const] },
     }
     expect(() => parseClinicCase(bogus)).toThrow(/không hề có bệnh/)
+  })
+})
+
+// ---------------------------------------------------------------
+// Ca LIÊN TẦNG 'edit-and-act' (kho ý tưởng H3)
+// ---------------------------------------------------------------
+//
+// Kiểu ca thứ ba: một nửa bệnh nằm trong sơ đồ (sửa bằng tay), một nửa
+// nằm ngoài (chọn hành động). Bất biến file này canh: **mọi cổng chất
+// lượng của ca sửa-sơ-đồ phải áp y nguyên cho nửa mạng của ca liên tầng**
+// — bỏ sót là ca liên tầng thành cửa sau đưa đề ẩu vào app.
+
+describe('ca liên tầng — nửa mạng vẫn qua đủ cổng cũ', () => {
+  /** Đúng ca rút dây, chỉ đổi nhãn kiểu sửa sang 'edit-and-act'. */
+  const CASE_HAI_NUA: ClinicCaseSpec = (() => {
+    if (CASE_RUT_DAY.fix.kind !== 'edit-network') throw new Error('fixture đổi kiểu fix?')
+    return { ...CASE_RUT_DAY, fix: { ...CASE_RUT_DAY.fix, kind: 'edit-and-act' as const } }
+  })()
+
+  it('phanMang trả nửa mạng cho cả hai kiểu ca có sửa sơ đồ, null cho ca chọn-hành-động', () => {
+    expect(phanMang(CASE_RUT_DAY.fix)).not.toBeNull()
+    expect(phanMang(CASE_HAI_NUA.fix)).not.toBeNull()
+    expect(phanMang({ kind: 'choose-action' })).toBeNull()
+  })
+
+  it('chấm nửa mạng y hệt ca sửa-sơ-đồ: lời giải qua, trạng thái đầu rớt', () => {
+    if (CASE_HAI_NUA.fix.kind !== 'edit-and-act') throw new Error('sai kiểu fix')
+    expect(gradeClinicFix(CASE_HAI_NUA, CASE_HAI_NUA.fix.solution).passed).toBe(true)
+    expect(gradeClinicFix(CASE_HAI_NUA, CASE_HAI_NUA.patient.topology).passed).toBe(false)
+  })
+
+  it('schema vẫn bắt lời giải không chữa được ca của chính nó', () => {
+    // Nếu cổng này bỏ sót kiểu ca mới thì đề ẩu lọt vào app mà không ai biết.
+    const broken = { ...CASE_HAI_NUA, fix: { ...CASE_HAI_NUA.fix, solution: CASE_HAI_NUA.patient.topology } }
+    expect(() => parseClinicCase(broken)).toThrow(/không chữa được/)
+  })
+
+  it('schema vẫn bắt mustClearDiagnoses khai khống', () => {
+    const bogus = { ...CASE_HAI_NUA, fix: { ...CASE_HAI_NUA.fix, mustClearDiagnoses: ['duplicate-ip' as const] } }
+    expect(() => parseClinicCase(bogus)).toThrow(/không hề có bệnh/)
+  })
+
+  it('ca liên tầng hợp lệ thì parse trót lọt', () => {
+    expect(() => parseClinicCase(CASE_HAI_NUA)).not.toThrow()
   })
 })

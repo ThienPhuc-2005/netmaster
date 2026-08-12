@@ -212,10 +212,19 @@ Trạng thái: ☐ chờ duyệt · ✅ đã làm · ✗ đã bàn và bỏ (gi�
   một dòng kể từ ngày nào tới ngày nào. Có thêm con số ý gốc chưa nghĩ
   tới: **số ngày THẬT SỰ ngồi học** — 75 ngày mà 19 ngày học là chuyện
   bình thường, nói ra để người học khỏi tự trách quãng nghỉ.
-- ☐ **H3. Ca bệnh sửa lai** — cho ca liên tầng phần SỬA nửa tay nửa
-  chọn: sửa mạng bằng phòng lab thật (vd native VLAN) + chọn hành động
-  cho phần ngoài mô hình (vd bản ghi DNS). Cần mở cơ chế fix mới ở
-  engine phòng khám — đề xuất phá mốc khi làm.
+- ✅ **H3. Ca bệnh sửa lai** — ĐÃ LÀM (khối 21.41, chủ dự án duyệt phá
+  mốc "2 cách sửa" của phòng khám): kiểu ca thứ ba `edit-and-act` — nửa
+  bệnh trong sơ đồ tự tay sửa ở phòng lab, nửa ngoài mô hình chọn hành
+  động, chấm ba phần. Ca thật là `m21-b4-prac-ca` của capstone: mở
+  allowed list trunk cho VLAN 10 bằng tay + nhờ quản trị DNS thêm bản ghi
+  còn thiếu.
+  Ba điều rút ra khi làm: **cái giá của mốc bị phá trả bằng một hàm chung**
+  (`phanMang()` — chỗ nào cần "nửa mạng" thì hỏi nó, nhờ vậy mọi cổng chất
+  lượng cũ tự động áp cho ca mới); **triệu chứng khai trong ca phải là nửa
+  MẠNG** (schema đòi lời giải làm triệu chứng hết, mà nửa ngoài mô hình
+  thì mô phỏng không với tới); và **triệu chứng xanh phải kèm câu "mới là
+  nửa mạng thôi"** — không thì màu xanh thành lời hứa sai ngay giữa ca dạy
+  "đếm đủ dấu chân mới đếm đủ con".
 - ✅ **H4. Tiến độ công trường capstone** — ĐÃ LÀM (khối 21.19): dải chặng
   gọn ngay trên tên bài M21, bật bằng cờ nội dung `stageProgress`. Chặng
   ĐANG LÀM là chặng chứa bài đang mở (không phải bài dở dang đầu tiên như

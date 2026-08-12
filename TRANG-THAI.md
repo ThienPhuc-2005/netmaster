@@ -3,12 +3,12 @@
 ## ĐỌC 30 GIÂY: ĐANG ĐỨNG ĐÂU, LÀM GÌ TIẾP (cập nhật 2026-08-12)
 
 **App hiện có ĐỦ 21/21 MODULE NỘI DUNG + MÀN TỐT NGHIỆP** (M1-12 nhập
-môn, M13-17 Phần D, M18-21 Phần E), 1672 test xanh, typecheck sạch,
+môn, M13-17 Phần D, M18-21 Phần E), 1684 test xanh, typecheck sạch,
 build qua. **Toàn bộ biên bản hội đồng trung cấp đã XỬ XONG (08-10):
 15/15 việc mục 6 (khối 20.2, commit `1d04c0b`) + trọn LƯỢT DỌN 52 phát
 hiện P2 mục 5 (khối 20.3).** Nội dung và engine không còn việc nào treo;
 các khối gần đây đều là ý lấy từ kho `Y-TUONG.md`.
-Việc kế tiếp là của CHỦ DỰ ÁN: ra lệnh commit khối 21.40, và tuyển người
+Việc kế tiếp là của CHỦ DỰ ÁN: ra lệnh commit khối 21.41, và tuyển người
 cho các buổi test người thật (hai dòng DoD còn treo đều cần NGƯỜI).
 
 **Toàn bộ ENGINE của Phần D đã xong.** Không còn engine nào phải viết cho
@@ -29,7 +29,34 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (19) M21 capstone + màn tốt nghiệp | XONG |
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
-**KHỐI MỚI NHẤT — 21.40 (08-12), đang ở working tree chờ lệnh commit:**
+**KHỐI MỚI NHẤT — 21.41 (08-12), đang ở working tree chờ lệnh commit:**
+**H3 — ca bệnh sửa "nửa tay nửa chọn"** (chủ dự án duyệt phá mốc).
+- Phòng khám có **cách sửa thứ BA**: ca liên tầng, nửa bệnh nằm trong sơ
+  đồ thì tự tay sửa ở phòng lab, nửa nằm ngoài mô hình mạng thì chọn hành
+  động. Chấm ba phần — gọi đúng tên bệnh, sửa xong sơ đồ, chọn đúng việc
+  phải nhờ người khác làm; thiếu phần nào cũng là chưa xong ca.
+- **Mốc đã phá**: phòng khám từ 2 cách sửa lên 3. Cái giá: mọi chỗ đang
+  rẽ nhánh theo kiểu sửa phải học thêm một nhánh. Trả giá bằng một hàm
+  chung `phanMang()` — chỗ nào cần "nửa mạng" thì hỏi nó, không so tay
+  từng kiểu; nhờ vậy toàn bộ cổng chất lượng cũ (lời giải phải chữa được
+  ca của chính nó, trạng thái đầu chưa đạt sẵn…) tự động áp cho ca mới.
+- **Ca thật: `m21-b4-prac-ca` của capstone được nâng cấp.** Trước đây cả
+  hai nửa đều CHỌN từ danh sách; giờ nửa trunk phải tự mở allowed list
+  cho VLAN 10 đi qua ở cả hai switch, còn bản ghi DNS thiếu thì phải nhờ
+  người quản trị vùng tên — kéo dây hay sửa VLAN không đẻ ra được một
+  bản ghi DNS.
+- **Triệu chứng xanh KHÔNG có nghĩa là xong**: sửa xong nửa mạng thì app
+  nói thêm "Mới là nửa mạng thôi — nửa ngoài sơ đồ vẫn đang chờ bạn".
+  Thiếu câu đó thì màu xanh thành lời hứa sai ngay giữa ca dạy "đếm đủ
+  dấu chân mới đếm đủ con".
+- 1684 test xanh (+12), typecheck sạch, build qua, content:review render
+  lại 21 module (bản đọc duyệt giờ in cả hai nửa). Kiểm browser thật: mở
+  ca 13 ở tab Phòng khám, chốt chẩn đoán, tự tay mở allowed list hai
+  switch → triệu chứng hết + câu nhắc nửa còn lại hiện đúng; nộp kèm hành
+  động SAI thì app từ chối, nộp kèm hành động đúng thì ca ghi nhận chữa
+  khỏi và cộng đúng 10 XP. Console sạch, seed đã xóa.
+
+**KHỐI TRƯỚC — 21.40 (08-12), đã commit `5636c5b`:**
 **Quãng ngồi liền dài nhất trong tuần — ý CUỐI CÙNG của lượt duyệt kho.**
 - Một dòng trong thẻ "Nếp học 8 tuần": "Tuần này bạn ngồi liền lâu nhất 34
   phút. Tuần trước là 52 phút." Đồ thị đo BỀ RỘNG (tuần nào làm mấy việc),
@@ -165,8 +192,9 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 **Lượt duyệt kho ý tưởng này đã đi hết 4 cụm** (âm thanh 21.35 · hồ sơ &
 ôn tập 21.36 · nội dung 21.37 · kỹ thuật nền 21.38), rồi I3 làm nốt ở
 khối 21.39 và quãng ngồi liền ở khối 21.40 — **kho ý tưởng giờ không còn
-ý nào chờ duyệt**. Chỉ còn hai ý **H3** và **H8** cần chủ dự án quyết vì
-chúng đòi PHÁ MỐC đã đóng băng.
+ý nào chờ duyệt**. **H3** đã làm ở khối 21.41 (phá mốc "2 cách sửa" của
+phòng khám, chủ dự án duyệt 08-12). Chỉ còn **H8** chờ quyết, vì nó cũng
+đòi phá một mốc đã đóng băng (11 cmdlet PowerShell).
 
 **KHỐI TRƯỚC — 21.34 (08-11), đã commit `e43e7d9`:**
 **C1 — giai điệu tiến độ.** Việc thật hóa ra không phải "thêm nhạc" mà là

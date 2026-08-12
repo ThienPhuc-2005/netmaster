@@ -219,19 +219,24 @@ export function renderQuestion(q, indent = '', palace = null) {
     lines.push(`${indent}    - **Triệu chứng:** ${describeSymptom(q.spec.symptom, q.spec.patient.topology)}`)
     const diag = q.diagnosis.choices.map((c, i) => (i === q.diagnosis.answerIndex ? `**${vi(c)}** ✓` : vi(c)))
     lines.push(`${indent}    - **Chẩn đoán (chọn 1):** ${diag.join(' · ')}`)
-    if (q.spec.fix.kind === 'edit-network') {
-      lines.push(`${indent}    - **Sửa:** trực tiếp trên sơ đồ — mục tiêu:`)
+    // Ca liên tầng có CẢ HAI nửa, nên bản đọc duyệt phải in cả hai —
+    // in thiếu một nửa là người duyệt nội dung không thấy nửa còn lại.
+    if (q.spec.fix.kind !== 'choose-action') {
+      const nhan = q.spec.fix.kind === 'edit-and-act' ? 'Sửa (nửa trong sơ đồ)' : 'Sửa'
+      lines.push(`${indent}    - **${nhan}:** trực tiếp trên sơ đồ — mục tiêu:`)
       for (const goal of q.spec.fix.goals) lines.push(`${indent}      - ${describeGoal(goal)}`)
       if (q.spec.fix.mustClearDiagnoses) {
         lines.push(`${indent}      - phải hết sạch: ${q.spec.fix.mustClearDiagnoses.join(', ')}`)
       }
       lines.push(`${indent}    - **Được phép:** ${describeAllowance(q.spec.fix.allow)}`)
       lines.push(`${indent}    - **Lời giải mẫu:** ${describeTopology(q.spec.fix.solution)}`)
-    } else {
+    }
+    if (q.spec.fix.kind !== 'edit-network') {
       const acts = (q.actions?.choices ?? []).map((c, i) =>
         i === q.actions.answerIndex ? `**${vi(c)}** ✓` : vi(c),
       )
-      lines.push(`${indent}    - **Sửa:** chọn hành động — ${acts.join(' · ')}`)
+      const nhan = q.spec.fix.kind === 'edit-and-act' ? 'Sửa (nửa ngoài sơ đồ)' : 'Sửa'
+      lines.push(`${indent}    - **${nhan}:** chọn hành động — ${acts.join(' · ')}`)
     }
   } else if (q.kind === 'ps') {
     lines.push(`${indent}  - **Dạng:** terminal PowerShell (gõ lệnh đạt mục tiêu)`)

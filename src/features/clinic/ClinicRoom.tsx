@@ -23,7 +23,7 @@ import { useT } from '../../i18n'
 import { Button } from '../../components/Button'
 import type { ClinicQuestion, LText } from '../../engine/contentSchema'
 import type { QuestionResponse } from '../../engine/grading/gradeQuestion'
-import { checkSymptom, type ClinicPatient } from '../../engine/clinic'
+import { checkSymptom, phanMang, type ClinicPatient } from '../../engine/clinic'
 import { findDevice, type LabSpec, type Topology } from '../../engine/lab'
 import { NetworkLab } from '../lab/NetworkLab'
 import { ClinicTerminal } from './ClinicTerminal'
@@ -78,13 +78,17 @@ export function ClinicRoom({ question, onSubmit }: ClinicRoomProps) {
 
   const patient: ClinicPatient = useMemo(() => ({ ...spec.patient, topology }), [spec, topology])
 
-  const labSpec: LabSpec | null = useMemo(
-    () =>
-      spec.fix.kind === 'edit-network'
-        ? { initial: spec.patient.topology, goals: spec.fix.goals, allow: spec.fix.allow, solution: spec.fix.solution }
-        : null,
-    [spec],
-  )
+  // Hỏi qua `phanMang` chứ không so `kind === 'edit-network'`: ca liên
+  // tầng cũng có nửa sửa sơ đồ, so tay là nó mất phòng lab.
+  const labSpec: LabSpec | null = useMemo(() => {
+    const mang = phanMang(spec.fix)
+    return mang === null
+      ? null
+      : { initial: spec.patient.topology, goals: mang.goals, allow: mang.allow, solution: mang.solution }
+  }, [spec])
+
+  /** Ca này còn đòi chọn hành động cho nửa bệnh ngoài mô hình mạng không. */
+  const canChonHanhDong = spec.fix.kind !== 'edit-network'
 
   const handleTopologyChange = useCallback((next: Topology) => {
     setTopology(next)
@@ -105,11 +109,14 @@ export function ClinicRoom({ question, onSubmit }: ClinicRoomProps) {
       return
     }
     if (actionIndex === null) return
+    if (spec.fix.kind === 'edit-and-act') {
+      onSubmit({ kind: 'clinic', diagnosisIndex, fix: { kind: 'edit-and-act', topology, actionIndex } })
+      return
+    }
     onSubmit({ kind: 'clinic', diagnosisIndex, fix: { kind: 'choose-action', actionIndex } })
   }
 
-  const submitReady =
-    diagnosisIndex !== null && (spec.fix.kind === 'edit-network' || actionIndex !== null)
+  const submitReady = diagnosisIndex !== null && (!canChonHanhDong || actionIndex !== null)
 
   const submitRow = onSubmit !== undefined && (
     <div className="flex flex-wrap items-center gap-3 rounded-md border border-edge bg-panel px-4 py-3">
@@ -181,32 +188,48 @@ export function ClinicRoom({ question, onSubmit }: ClinicRoomProps) {
         </div>
       )}
 
-      {fixOpened &&
-        (spec.fix.kind === 'edit-network' ? (
-          <div className="space-y-3">
-            <p className="text-sm text-ink-muted">{t('clinic.fixIntroEdit')}</p>
-            {labSpec !== null && (
+      {/* Pha sửa dựng theo TỪNG NỬA, không rẽ nhánh một-hoặc-hai: ca liên
+          tầng có cả hai nửa, và người học phải thấy chúng đứng cạnh nhau
+          để hiểu là chưa xong khi mới làm một bên. */}
+      {fixOpened && (
+        <div className="space-y-3">
+          <p className="text-sm text-ink-muted">
+            {spec.fix.kind === 'edit-and-act'
+              ? t('clinic.fixIntroBoth')
+              : labSpec !== null
+                ? t('clinic.fixIntroEdit')
+                : t('clinic.fixIntroAction')}
+          </p>
+
+          {labSpec !== null && (
+            <>
               <NetworkLab spec={labSpec} hideDiagnosis onTopologyChange={handleTopologyChange} />
-            )}
-            <div className="flex flex-wrap items-center gap-3 rounded-md border border-edge bg-panel px-4 py-3">
-              <Button variant="ghost" onClick={recheckSymptom}>
-                {t('clinic.symptomRecheck')}
-              </Button>
-              {symptom !== 'unknown' && (
-                <span
-                  role="status"
-                  className={`text-sm font-medium ${symptom === 'sick' ? 'text-warn' : 'text-ok'}`}
-                >
-                  {symptom === 'sick' ? t('clinic.symptomStillSick') : t('clinic.symptomCleared')}
-                </span>
+              <div className="flex flex-wrap items-center gap-3 rounded-md border border-edge bg-panel px-4 py-3">
+                <Button variant="ghost" onClick={recheckSymptom}>
+                  {t('clinic.symptomRecheck')}
+                </Button>
+                {symptom !== 'unknown' && (
+                  <span
+                    role="status"
+                    className={`text-sm font-medium ${symptom === 'sick' ? 'text-warn' : 'text-ok'}`}
+                  >
+                    {symptom === 'sick' ? t('clinic.symptomStillSick') : t('clinic.symptomCleared')}
+                  </span>
+                )}
+                {/* Ca liên tầng: triệu chứng xanh MỚI CHỈ nói nửa mạng đã
+                    thông. Không nói câu này thì màu xanh thành lời hứa sai. */}
+                {spec.fix.kind === 'edit-and-act' && symptom === 'cleared' && (
+                  <span className="text-xs text-ink-muted">{t('clinic.symptomHalfOnly')}</span>
+                )}
+              </div>
+            </>
+          )}
+
+          {canChonHanhDong && (
+            <div className="flex flex-col gap-2 rounded-md border border-edge bg-panel p-4">
+              {spec.fix.kind === 'edit-and-act' && (
+                <p className="text-sm font-semibold text-ink">{t('clinic.actionTitleOutside')}</p>
               )}
-            </div>
-            {submitRow}
-          </div>
-        ) : (
-          <div className="space-y-3">
-            <p className="text-sm text-ink-muted">{t('clinic.fixIntroAction')}</p>
-            <div className="flex flex-col gap-2">
               {(question.actions?.choices ?? []).map((choice, i) => (
                 <ChoiceButton
                   key={i}
@@ -216,9 +239,11 @@ export function ClinicRoom({ question, onSubmit }: ClinicRoomProps) {
                 />
               ))}
             </div>
-            {submitRow}
-          </div>
-        ))}
+          )}
+
+          {submitRow}
+        </div>
+      )}
     </div>
   )
 }

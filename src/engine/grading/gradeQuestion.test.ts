@@ -9,6 +9,7 @@ import {
   vlanRepairLab,
 } from '../../../tests/fixtures/labFixture'
 import { CASE_GPO_CHAN, CASE_SAI_GATEWAY } from '../../../tests/fixtures/clinicFixture'
+import type { ClinicCaseSpec } from '../clinic'
 import { specDocLog } from '../../../tests/fixtures/psFixture'
 import { initialPsState, runPsScript } from '../ps'
 
@@ -212,6 +213,69 @@ describe('câu clinic — chấm HAI PHẦN: chẩn đoán VÀ sửa', () => {
     ).toBe(false)
     expect(
       gradeQuestion(actionQ, { kind: 'clinic', diagnosisIndex: 0, fix: { kind: 'choose-action', actionIndex: 0 } }),
+    ).toBe(false)
+  })
+
+  // Ca liên tầng dựng từ chính ca sai-gateway: nửa mạng y hệt (nên mọi
+  // khẳng định về nó vẫn đúng), thêm nửa ngoài mô hình phải chọn.
+  const bothSpec: ClinicCaseSpec = {
+    ...CASE_SAI_GATEWAY,
+    fix:
+      CASE_SAI_GATEWAY.fix.kind === 'edit-network'
+        ? { ...CASE_SAI_GATEWAY.fix, kind: 'edit-and-act' }
+        : CASE_SAI_GATEWAY.fix,
+  }
+
+  const bothQ: Question = {
+    kind: 'clinic',
+    id: 'q-clinic-both',
+    prompt: { vi: 'Ping bằng số không thông, mà gõ tên cũng không ra.' },
+    spec: bothSpec,
+    diagnosis: {
+      choices: [{ vi: 'Đứt dây' }, { vi: 'Sai gateway VÀ thiếu bản ghi DNS' }],
+      answerIndex: 1,
+    },
+    actions: {
+      choices: [{ vi: 'Nhờ quản trị DNS thêm bản ghi còn thiếu' }, { vi: 'Khởi động lại máy' }],
+      answerIndex: 0,
+    },
+  }
+
+  it('ca liên tầng: đủ BA phần mới tính đúng', () => {
+    expect(
+      gradeQuestion(bothQ, {
+        kind: 'clinic',
+        diagnosisIndex: 1,
+        fix: { kind: 'edit-and-act', topology: cured, actionIndex: 0 },
+      }),
+    ).toBe(true)
+  })
+
+  it('ca liên tầng: sửa xong nửa mạng mà bỏ quên nửa ngoài sơ đồ → chưa xong', () => {
+    // Đây là bài học đắt nhất của ca liên tầng: dừng ở nửa dễ thấy thì
+    // ngoài đời người dùng vẫn kêu.
+    expect(
+      gradeQuestion(bothQ, {
+        kind: 'clinic',
+        diagnosisIndex: 1,
+        fix: { kind: 'edit-and-act', topology: cured, actionIndex: 1 },
+      }),
+    ).toBe(false)
+    // Và ngược lại: chọn đúng hành động mà sơ đồ chưa sửa cũng chưa xong.
+    expect(
+      gradeQuestion(bothQ, {
+        kind: 'clinic',
+        diagnosisIndex: 1,
+        fix: { kind: 'edit-and-act', topology: sick, actionIndex: 0 },
+      }),
+    ).toBe(false)
+    // Gọi sai tên bệnh thì hai nửa kia có đúng cũng không cứu được.
+    expect(
+      gradeQuestion(bothQ, {
+        kind: 'clinic',
+        diagnosisIndex: 0,
+        fix: { kind: 'edit-and-act', topology: cured, actionIndex: 0 },
+      }),
     ).toBe(false)
   })
 

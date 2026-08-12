@@ -19,7 +19,7 @@ import { diagnose, type LabDiagnosis } from '../lab/gradeLab'
 import { allowanceViolations, classifyDiff } from '../lab/session'
 import { findDevice } from '../lab/topology'
 import { validatePatient, type ClinicPatient } from './patient'
-import { checkSymptom, gradeClinicFix, type ClinicCaseSpec } from './gradeClinic'
+import { checkSymptom, gradeClinicFix, phanMang, type ClinicCaseSpec } from './gradeClinic'
 
 const idSchema = z.string().min(1)
 const ipSchema = z.string().min(7)
@@ -88,14 +88,19 @@ const DIAGNOSIS_TABLE: Record<LabDiagnosis, true> = {
 
 const DIAGNOSIS_VALUES = Object.keys(DIAGNOSIS_TABLE) as [LabDiagnosis, ...LabDiagnosis[]]
 
+/** Nửa-mạng của cách sửa — khai một lần, hai kiểu ca dùng chung. */
+const networkFixShape = {
+  allow: LabAllowanceSchema,
+  goals: z.array(LabGoalSchema).min(1),
+  mustClearDiagnoses: z.array(z.enum(DIAGNOSIS_VALUES)).min(1).optional(),
+  solution: TopologySchema,
+}
+
 export const ClinicFixSchema = z.discriminatedUnion('kind', [
-  z.object({
-    kind: z.literal('edit-network'),
-    allow: LabAllowanceSchema,
-    goals: z.array(LabGoalSchema).min(1),
-    mustClearDiagnoses: z.array(z.enum(DIAGNOSIS_VALUES)).min(1).optional(),
-    solution: TopologySchema,
-  }),
+  z.object({ kind: z.literal('edit-network'), ...networkFixShape }),
+  // Ca liên tầng: sửa sơ đồ XONG rồi vẫn phải chọn hành động cho nửa
+  // bệnh nằm ngoài mô hình mạng (xem ghi chú đầu gradeClinic).
+  z.object({ kind: z.literal('edit-and-act'), ...networkFixShape }),
   z.object({ kind: z.literal('choose-action') }),
 ])
 
@@ -145,16 +150,20 @@ function clinicCrossChecks(spec: ClinicCaseSpec, ctx: z.RefinementCtx): void {
     issue('Bệnh nhân không ốm: chạy triệu chứng trên trạng thái đầu vẫn thành công — đề bài nói dối', ['symptom'])
   }
 
-  if (spec.fix.kind === 'edit-network') {
+  // Mọi ca có ĐỘNG VÀO SƠ ĐỒ đều phải qua các phép kiểm dưới đây — hỏi
+  // qua `phanMang` chứ không so `kind === 'edit-network'`, không thì ca
+  // liên tầng lọt lưới toàn bộ cổng chất lượng của phòng khám.
+  const mang = phanMang(spec.fix)
+  if (mang !== null) {
     // Lời giải chỉ được dùng thao tác mà đề cho phép.
-    const violations = allowanceViolations(spec.fix.allow, classifyDiff(patient.topology, spec.fix.solution))
+    const violations = allowanceViolations(mang.allow, classifyDiff(patient.topology, mang.solution))
     if (violations.length > 0) {
       issue(`Lời giải cần thao tác đề không cho phép: ${violations.join(', ')}`, ['fix', 'allow'])
     }
 
     // mustClearDiagnoses phải là bệnh THẬT đang có trên sơ đồ đầu.
-    const initialDiagnoses = diagnose(patient.topology, spec.fix.goals)
-    for (const d of spec.fix.mustClearDiagnoses ?? []) {
+    const initialDiagnoses = diagnose(patient.topology, mang.goals)
+    for (const d of mang.mustClearDiagnoses ?? []) {
       if (!initialDiagnoses.includes(d)) {
         issue(`mustClearDiagnoses khai "${d}" nhưng sơ đồ đầu không hề có bệnh đó`, ['fix'])
       }
@@ -162,7 +171,7 @@ function clinicCrossChecks(spec: ClinicCaseSpec, ctx: z.RefinementCtx): void {
 
     let solutionEval
     try {
-      solutionEval = gradeClinicFix(spec, spec.fix.solution)
+      solutionEval = gradeClinicFix(spec, mang.solution)
     } catch (error) {
       issue(`Không chấm được lời giải: ${(error as Error).message}`, ['fix', 'solution'])
       return

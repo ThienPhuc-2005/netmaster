@@ -538,6 +538,20 @@ describe('câu clinic — cross-check hai phần chẩn đoán/sửa', () => {
     expect(issueText(expectFail(mod))).toMatch(/phải khai "actions"/)
   })
 
+  it('ca LIÊN TẦNG mà thiếu actions thì fail — nửa bệnh ngoài sơ đồ hết đường xử lý', () => {
+    const mod = moduleWithClinic()
+    clinicQuestionOf(mod).spec.fix.kind = 'edit-and-act'
+    expect(issueText(expectFail(mod))).toMatch(/ca liên tầng phải khai "actions"/)
+  })
+
+  it('ca LIÊN TẦNG khai đủ hai nửa thì parse thành công', () => {
+    const mod = moduleWithClinic()
+    const q = clinicQuestionOf(mod)
+    q.spec.fix.kind = 'edit-and-act'
+    q.actions = { choices: [{ vi: 'Nhờ quản trị DNS thêm bản ghi' }, { vi: 'Khởi động lại máy' }], answerIndex: 0 }
+    expect(ModuleSchema.safeParse(mod).success).toBe(true)
+  })
+
   it('actions.answerIndex vượt số lựa chọn thì fail', () => {
     const mod = moduleWithClinic()
     const q = clinicQuestionOf(mod)

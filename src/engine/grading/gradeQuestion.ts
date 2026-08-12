@@ -57,6 +57,8 @@ export type QuestionResponse =
 export type ClinicFixResponse =
   | { kind: 'edit-network'; topology: Topology }
   | { kind: 'choose-action'; actionIndex: number }
+  /** Ca liên tầng: nửa bệnh trong sơ đồ sửa bằng tay, nửa ngoài chọn hành động. */
+  | { kind: 'edit-and-act'; topology: Topology; actionIndex: number }
 
 /** Kind lệch nhau là bug ở tầng UI (nộp nhầm loại), không phải người học sai. */
 function kindMismatch(q: Question, r: QuestionResponse): Error {
@@ -120,13 +122,25 @@ export function gradeQuestion(q: Question, r: QuestionResponse): boolean {
         // sạch + triệu chứng gốc hết) — không phải gradeLab trần.
         return diagnosisRight && isClinicFixSolved(q.spec, r.fix.topology)
       }
-      if (r.fix.kind !== 'choose-action') throw kindMismatch(q, r)
       const actions = q.actions
       if (actions === undefined) {
-        // Schema đã ép actions có mặt với ca choose-action — tới được đây
-        // là nội dung lọt lưới parse, không phải người học sai.
+        // Schema đã ép actions có mặt với ca chọn-hành-động và ca liên
+        // tầng — tới được đây là nội dung lọt lưới parse, không phải
+        // người học sai.
         throw new Error(`gradeQuestion: câu clinic "${q.id}" thiếu actions — nội dung chưa qua parseModule`)
       }
+      if (q.spec.fix.kind === 'edit-and-act') {
+        if (r.fix.kind !== 'edit-and-act') throw kindMismatch(q, r)
+        // Ca liên tầng: BA phần phải cùng đúng. Sửa xong nửa mạng mà bỏ
+        // quên nửa ngoài mô hình thì ngoài đời máy vẫn chưa dùng được —
+        // cho qua ở đây là dạy người học dừng lại ở nửa dễ thấy.
+        return (
+          diagnosisRight &&
+          isClinicFixSolved(q.spec, r.fix.topology) &&
+          r.fix.actionIndex === actions.answerIndex
+        )
+      }
+      if (r.fix.kind !== 'choose-action') throw kindMismatch(q, r)
       return diagnosisRight && r.fix.actionIndex === actions.answerIndex
     }
     case 'ps':

@@ -148,3 +148,51 @@ describe('nộp bài — một lượt gói cả hai phần', () => {
     expect(screen.queryByRole('button', { name: 'Nộp bài' })).toBeNull()
   })
 })
+
+// Ca LIÊN TẦNG (kho ý tưởng H3): pha sửa phải bày CẢ HAI nửa cạnh nhau —
+// người học thấy sơ đồ để tự tay sửa nửa trong, và thấy danh sách hành
+// động cho nửa nằm ngoài tầm với của sơ đồ.
+const BOTH_Q = QuestionSchema.parse({
+  kind: 'clinic',
+  id: 'ui-clinic-both',
+  prompt: { vi: 'Máy in lúc được lúc không, mà gõ tên máy in cũng không ra.' },
+  spec: { ...CASE_TRUNG_IP, fix: { ...CASE_TRUNG_IP.fix, kind: 'edit-and-act' } },
+  diagnosis: {
+    choices: [{ vi: 'Đứt dây tới máy in' }, { vi: 'Hai thiết bị giành nhau một IP, và DNS thiếu bản ghi' }],
+    answerIndex: 1,
+  },
+  actions: {
+    choices: [{ vi: 'Nhờ quản trị DNS thêm bản ghi còn thiếu' }, { vi: 'Khởi động lại máy in' }],
+    answerIndex: 0,
+  },
+}) as ClinicQuestion
+
+describe('ca liên tầng — nửa sửa tay, nửa chọn hành động', () => {
+  it('pha sửa bày CẢ phòng lab LẪN danh sách hành động', () => {
+    render(<ClinicRoom question={BOTH_Q} onSubmit={() => {}} />)
+    lockDiagnosis(/giành nhau một IP/)
+    expect(screen.getByText('Mục tiêu của bài')).toBeTruthy()
+    expect(screen.getByText('Nửa nằm ngoài sơ đồ: bạn xử lý thế nào?')).toBeTruthy()
+    expect(screen.getByText(/HAI nửa bệnh/)).toBeTruthy()
+  })
+
+  it('sửa xong sơ đồ mà chưa chọn hành động thì CHƯA nộp được', () => {
+    // Đúng bài học của ca liên tầng: dừng ở nửa dễ thấy là chưa xong.
+    render(<ClinicRoom question={BOTH_Q} onSubmit={() => {}} />)
+    lockDiagnosis(/giành nhau một IP/)
+    expect((screen.getByRole('button', { name: 'Nộp bài' }) as HTMLButtonElement).disabled).toBe(true)
+  })
+
+  it('nộp trao lên trọn BA phần: chẩn đoán, sơ đồ, hành động', () => {
+    const onSubmit = vi.fn()
+    render(<ClinicRoom question={BOTH_Q} onSubmit={onSubmit} />)
+    lockDiagnosis(/giành nhau một IP/)
+    fireEvent.click(screen.getByRole('button', { name: /Nhờ quản trị DNS/ }))
+    fireEvent.click(screen.getByRole('button', { name: 'Nộp bài' }))
+    expect(onSubmit).toHaveBeenCalledWith({
+      kind: 'clinic',
+      diagnosisIndex: 1,
+      fix: { kind: 'edit-and-act', topology: CASE_TRUNG_IP.patient.topology, actionIndex: 0 },
+    })
+  })
+})
