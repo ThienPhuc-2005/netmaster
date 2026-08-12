@@ -524,8 +524,13 @@ Sinh ra trong lúc làm khối 21.49-21.53, chưa ý nào được gọi tên.
   với treo. Hiện "đã về 15/21" thì đỡ hơn nhiều.
 - ✅ **N2. Tự thử tải lại khi mạng vừa có lại** — ĐÃ LÀM (khối 21.56). Điều đắt nhất khi làm: **người bấm thì tải lại luôn, máy tự làm thì phải hỏi** — máy tự tải lại trang là giật trang khỏi tay người đang đọc dở. Ngoại lệ: màn mất mạng thì tự thử lại thẳng, ở đó không có gì để giật. Ghi chú ý gốc: Trình duyệt có báo sự kiện
   online; bắt người học nhớ bấm là bắt họ làm việc của máy.
-- ☐ **N3. Test quét mã nguồn tìm chỗ đọc "toàn bộ khóa học" mà quên tự
-  kiểm.** Khối 21.50 lộ ra một luật chung: hễ thêm chỗ nào suy từ cả lộ
+- ✅ **N3. Test quét mã nguồn tìm chỗ đọc "toàn bộ khóa học" mà quên tự
+  kiểm** — ĐÃ LÀM (khối 21.57), và nó tìm ra một lỗi thật ngay lượt đầu:
+  dải đường đi lấy số chủ đề đã tải làm tổng nên nói "đã đậu 3 trên 12".
+  Bài học khi làm: **bản đầu của phép quét tự vô hiệu hóa** — nó tha cả
+  file chỉ vì chữ `tongSoModule` xuất hiện trong CHÚ THÍCH, nên thử lại
+  đúng cái lỗi nó vừa tìm ra thì vẫn xanh. Phải bỏ comment trước khi soi.
+  Ghi chú ý gốc: Khối 21.50 lộ ra một luật chung: hễ thêm chỗ nào suy từ cả lộ
   trình (`loadModules().at(-1)`, `.length` làm tổng số) thì chỗ đó phải
   hỏi `noiDungDayDu()` trước. Một test quét sẽ bắt được người sau quên.
 - ✅ **N4. Trang `/design` bày trọn 8 dạng câu ở CẢ HAI khung** — ĐÃ LÀM

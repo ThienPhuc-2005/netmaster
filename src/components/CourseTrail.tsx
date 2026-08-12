@@ -17,6 +17,7 @@
 //    trong bài: bản đồ nói thật cả phần dang dở.
 
 import { useT } from '../i18n'
+import { tongSoModule } from '../content'
 import type { Module } from '../engine/contentSchema'
 import { trailVar } from '../engine/trail'
 
@@ -40,7 +41,12 @@ export function CourseTrail({
   const t = useT()
   if (modules.length === 0) return null
 
-  const total = modules.length
+  // TỔNG là số chủ đề của CẢ KHÓA, không phải số đã tải về (phát hiện của
+  // chính phép quét N3, khối 21.57). `modules` ở đây là khúc đã về được —
+  // lấy độ dài của nó làm tổng thì người mất mạng đọc "đã đậu 3 trên 12",
+  // tức app lặng lẽ thu nhỏ khóa học lại cho vừa cái mạng của họ.
+  // `tongSoModule()` biết con số thật ngay cả khi chưa tải gói nào.
+  const total = tongSoModule()
   const passedCount = modules.filter((m) => passed.has(m.id)).length
 
   return (

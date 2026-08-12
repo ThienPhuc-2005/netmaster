@@ -8,7 +8,7 @@ build qua. **Toàn bộ biên bản hội đồng trung cấp đã XỬ XONG (08
 15/15 việc mục 6 (khối 20.2, commit `1d04c0b`) + trọn LƯỢT DỌN 52 phát
 hiện P2 mục 5 (khối 20.3).** Nội dung và engine không còn việc nào treo;
 các khối gần đây đều là ý lấy từ kho `Y-TUONG.md`.
-Khối 21.56 đã commit và đẩy lên GitHub. **Kho ý tưởng còn 2 ý chờ duyệt (N3, N5).** **Kho ý tưởng còn 4 ý chờ duyệt (N1, N2, N3, N5).** **Kho ý tưởng còn 5 ý chờ duyệt (mục N).** **Cả 17 phát
+Việc kế tiếp là của CHỦ DỰ ÁN: ra lệnh commit khối 21.57. **Kho ý tưởng còn 1 ý chờ duyệt (N5).** **Kho ý tưởng còn 2 ý chờ duyệt (N3, N5).** **Kho ý tưởng còn 4 ý chờ duyệt (N1, N2, N3, N5).** **Kho ý tưởng còn 5 ý chờ duyệt (mục N).** **Cả 17 phát
 hiện của BA lượt rà soát (mục J 8 ý + mục K 6 ý + mục L 3 ý) đã xử xong
 hết; kho ý tưởng SẠCH.** Việc duy nhất còn treo là tuyển người cho các
 buổi test người thật (hai dòng DoD).
@@ -31,7 +31,25 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (19) M21 capstone + màn tốt nghiệp | XONG |
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
-**KHỐI MỚI NHẤT — 21.56 (08-12), đã commit `94f9dc4`:**
+**KHỐI MỚI NHẤT — 21.57 (08-12), đang ở working tree chờ lệnh commit:**
+**Ý N3 — phép quét mã nguồn, và nó tìm ra một lỗi thật ngay lượt đầu.**
+- **Lỗi bắt được: dải đường đi thu nhỏ cả khóa học.** Nó lấy số chủ đề ĐÃ
+  TẢI VỀ làm tổng, nên người mất mạng nghe trình đọc màn hình đọc "đã đậu
+  3 trên 12" thay vì trên 21 — app lặng lẽ co khóa học lại cho vừa cái
+  mạng của họ. Giờ tổng lấy từ nguồn biết số thật kể cả khi chưa tải gói
+  nào.
+- **Vì sao phải là test quét chữ** (thứ vốn không đẹp): lớp lỗi này không
+  có hình dạng chung để một test hành vi bắt được — nó nằm rải rác ở bất
+  cứ file nào lỡ viết "lấy phần tử cuối" hay "lấy độ dài làm tổng". Ba
+  lần đã dính: module cuối khóa ở màn thi, mốc tốt nghiệp, và dải đường
+  đi. Test này là cái CHUÔNG, không phải cái khóa — có khai giới hạn đó
+  ngay trong file.
+- **Miễn trừ phải kèm LÝ DO** và test tự kiểm rằng file được miễn còn tồn
+  tại, lý do không được để trống. Miễn trừ là một quyết định, không phải
+  cách né.
+- 1840 test xanh (+3), typecheck sạch, build qua.
+
+**KHỐI TRƯỚC — 21.56 (08-12), đã commit `94f9dc4`:**
 **Ý N1 + N2 — nút tải nốt nội dung thôi câm, và mạng về thì app tự lo.**
 - **N1: đếm được tiến độ.** Trước đó bấm xong chỉ có "Đang tải…" đứng im;
   với mạng yếu, vài chục giây im lặng khó phân biệt với treo. Giờ tầng nạp

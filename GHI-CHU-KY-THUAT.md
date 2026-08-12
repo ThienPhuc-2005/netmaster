@@ -753,6 +753,13 @@ quan trước khi "sửa test cho xanh".
   `app/gatesThieuNoiDung.test.tsx`,
   `features/learn/ModuleTestPageThieuNoiDung.test.tsx`).
   Gọi lại `primeModules()` chính là lượt KÉO LẠI phần còn thiếu.
+- **Có một PHÉP QUÉT MÃ NGUỒN canh lớp lỗi "coi khúc đã tải là cả khóa"**
+  (`content/quetCaKhoaHoc.test.ts`, khối 21.57). Đỏ thì chọn một trong ba:
+  hỏi `noiDungDayDu()` trước, lấy tổng từ `tongSoModule()`, hoặc khai miễn
+  trừ KÈM LÝ DO. Nó quét bằng biểu thức chữ nên là cái chuông chứ không
+  phải cái khóa — và nhớ rằng nó BỎ COMMENT trước khi soi: bản đầu tha cả
+  file vì chữ `tongSoModule` nằm trong chú thích, tức tự vô hiệu hóa bằng
+  chính lời giải thích của người viết.
 - **NGƯỜI bấm thì tải lại luôn; MÁY tự làm thì phải HỎI** (khối 21.56).
   Áp cho `NutTaiNotNoiDung`: lượt kéo do người bấm mà được thêm gói thì
   `reload()` ngay (họ đang đứng chờ kết quả); lượt kéo do sự kiện `online`
