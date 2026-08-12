@@ -534,8 +534,11 @@ Sinh ra trong lúc làm khối 21.49-21.53, chưa ý nào được gọi tên.
 - ☐ **N5. Ưu tiên câu trúng đích trong phiên "luyện thứ hay quên".** Hiện
   lấy trọn bài tập của bài nguồn; nếu sau này nội dung gắn thẻ khái niệm
   cho từng câu thì lọc được đúng câu dạy khái niệm bị quên.
-- ☐ **N6. Sau phiên luyện mà VẪN sai đúng thứ đó thì app hỏi thẳng "chỗ
-  này giải thích chưa lọt?"** và ghi vào một cuốn sổ riêng — không trộn
+- ✅ **N6. Sau phiên luyện mà VẪN sai đúng thứ đó thì app hỏi thẳng "chỗ
+  này giải thích chưa lọt?"** — ĐÃ LÀM (khối 21.54, persist v8 → v9). Hỏi
+  đúng lúc vừa trả lời chưa đúng trong phiên luyện; sổ RIÊNG, không trộn
+  với sổ khiếu nại chấm; đọc lại ở trang Hồ sơ và đi theo file sao lưu.
+  Ghi chú ý gốc: và ghi vào một cuốn sổ riêng — không trộn
   với sổ "mình nghĩ câu này đúng" (sổ đó là khiếu nại CHẤM, còn đây là
   góp ý về CÁCH DẠY). Đây là vòng khép kín cho đúng thứ chủ dự án muốn:
   họ thấy chỗ khó rồi bảo người soạn dạy lại. Cái giá: thêm một trường

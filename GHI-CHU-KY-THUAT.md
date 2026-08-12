@@ -394,6 +394,15 @@ quan trước khi "sửa test cho xanh".
   REVIEW-NOI-DUNG.md (bản đọc duyệt — KHÔNG phải nguồn chân lý).
 - Quy trình viết một module mới: mục "Cách làm một module nội dung" ở
   đầu `TRANG-THAI.md`.
+- **HAI sổ góp ý, đừng gộp** (khối 21.54): `disputedAnswers` là khiếu nại
+  về CHẤM ("tôi trả lời đúng mà máy bảo chưa" — sửa bằng cách nới danh
+  sách accept), `giaiThichChuaLot` là góp ý về CÁCH DẠY ("tôi chịu, lời
+  giảng chưa vào" — sửa bằng cách viết lại bài). Gộp lại là người soạn bài
+  mở ra một đống lẫn lộn không biết phải sửa đường nào. Sổ thứ hai cố ý
+  KHÔNG ghi nguyên văn câu trả lời: ở đó người học không đòi mình đúng,
+  nên câu họ gõ không nói lên điều gì. Cả hai cùng trần 50 dòng và cùng
+  nằm trong key `netmaster-progress` nên tự đi theo file sao lưu — bất
+  biến này có test riêng, buổi test người thật phụ thuộc vào nó.
 - **Ngưỡng "hay quên" là MỘT con số dùng chung** (`NGUONG_HAY_QUEN` trong
   `engine/mistakeLog.ts`, hiện là 2). Ba chỗ đọc nó: mục "Thứ bạn hay
   quên" ở Hồ sơ, phiên luyện `?nguon=hay-quen`, và dòng đếm món cứng đầu

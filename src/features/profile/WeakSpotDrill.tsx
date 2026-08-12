@@ -16,7 +16,7 @@
 
 import { useMemo, useState } from 'react'
 import { Link, useSearchParams } from 'react-router'
-import { ChevronLeft, RotateCcw, Target } from 'lucide-react'
+import { ChevronLeft, MessageSquareWarning, RotateCcw, Target } from 'lucide-react'
 import { lt, maybeLt } from '../../engine/ltext'
 import { loadModules } from '../../content'
 import { gradeQuestion, type QuestionResponse } from '../../engine/grading/gradeQuestion'
@@ -34,6 +34,8 @@ export function WeakSpotDrillPage() {
   const t = useT()
   const lessonRuntimes = useProgress((s) => s.lessonRuntimes)
   const reviewCards = useProgress((s) => s.reviewCards)
+  const ghiChuaLot = useProgress((s) => s.ghiChuaLot)
+  const daKhaiChuaLot = useProgress((s) => s.giaiThichChuaLot)
   const [searchParams] = useSearchParams()
   // HAI NGUỒN, MỘT MÀN (khối 21.52). Nhịp luyện, cách chấm, luật không-XP
   // đều giống hệt nhau — khác đúng chỗ lấy đề, nên dựng màn thứ hai chỉ
@@ -111,6 +113,7 @@ export function WeakSpotDrillPage() {
   }
 
   const item = items[index]!
+  const daBaoChuaLot = daKhaiChuaLot.some((d) => d.questionId === item.question.id)
 
   const submit = (response: QuestionResponse) => {
     const correct = gradeQuestion(item.question, response)
@@ -151,6 +154,37 @@ export function WeakSpotDrillPage() {
               }
             />
             <AnswerReveal question={item.question} response={result.response} explanation={lt(item.solution)} />
+
+            {/* "CHỖ NÀY GIẢI THÍCH CHƯA LỌT" (ý N6) — chỉ mời khi vừa trả
+                lời CHƯA ĐÚNG, và chỉ ở phiên luyện lại.
+                Vì sao đúng chỗ này: câu trong phiên đều thuộc bài người
+                học ĐÃ HỌC XONG. Sai lại ở đây không còn là "chưa học tới",
+                nó là tín hiệu lời giảng chưa vào — và đây là lúc duy nhất
+                người học vừa đọc lại lời giải xong nên biết rõ nó lọt hay
+                không. Hỏi lúc khác là hỏi lúc họ đã quên mất cảm giác ấy.
+                Đây KHÔNG phải nút khiếu nại chấm ("mình nghĩ câu này
+                đúng"): ở đây người học không đòi mình đúng. */}
+            {!result.correct && (
+              <div className="flex flex-wrap items-center gap-2 rounded-md border border-edge bg-panel px-4 py-3">
+                {daBaoChuaLot ? (
+                  <p className="text-xs text-ink-muted">{t('weakDrill.chuaLotDaGhi')}</p>
+                ) : (
+                  <>
+                    <p className="text-xs text-ink-muted">{t('weakDrill.chuaLotHoi')}</p>
+                    <Button
+                      variant="ghost"
+                      onClick={() => {
+                        ghiChuaLot(item.lessonId, item.question.id)
+                      }}
+                    >
+                      <MessageSquareWarning size={14} aria-hidden />
+                      {t('weakDrill.chuaLotNut')}
+                    </Button>
+                  </>
+                )}
+              </div>
+            )}
+
             <div className="flex flex-wrap items-center gap-3">
               <Button
                 onClick={() => {

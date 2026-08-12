@@ -14,7 +14,7 @@ import { analyzeMistakes, aoGiacHayGap, theHayQuen, weakSpotDrill, weakSpots, we
 import { roomIdFromCardId } from '../../engine/palace'
 import { Button } from '../../components/Button'
 import { milestones } from '../graduation/milestones'
-import { AoGiacList, DisputedList, HayQuenList, MemoryMap, MistakeAnalysisCard, SoSanhThangCard, WeakSpotList, WeeklyRhythm } from './LearningInsights'
+import { AoGiacList, ChuaLotList, DisputedList, HayQuenList, MemoryMap, MistakeAnalysisCard, SoSanhThangCard, WeakSpotList, WeeklyRhythm } from './LearningInsights'
 import { memoryByModule } from '../../engine/freshness'
 import { theLanh } from '../../engine/reviewQueue'
 import { freezesAvailable } from '../../engine/streak'
@@ -223,6 +223,23 @@ export function ProfilePage() {
         .find((q) => q.id === row.questionId)?.prompt ?? null,
   }))
   const moduleTitles = Object.fromEntries(modules.map((m) => [m.id, m.title]))
+  // Sổ "giải thích chưa lọt" (ý N6) — cùng lối ghép với đề bài như sổ
+  // khiếu nại chấm ngay trên, nhưng là MỘT MỤC KHÁC: kia nói về cách
+  // chấm, đây nói về cách dạy.
+  const giaiThichChuaLot = useProgress((s) => s.giaiThichChuaLot)
+  const boChuaLot = useProgress((s) => s.boChuaLot)
+  const chuaLotRows = giaiThichChuaLot.map((row) => ({
+    ...row,
+    prompt:
+      modules
+        .flatMap((m) =>
+          m.lessons.flatMap((l) => [
+            ...l.steps[3].exercises.map((e) => e.question),
+            ...l.steps[4].questions.map((e) => e.question),
+          ]),
+        )
+        .find((q) => q.id === row.questionId)?.prompt ?? null,
+  }))
   // Bản đồ trí nhớ (kho A1): độ tươi theo module, chỉ đọc dữ liệu SM-2.
   const memoryRows = memoryByModule(reviewCards, todayIso(), modules.map((m) => m.id)).map((row) => ({
     ...row,
@@ -311,6 +328,7 @@ export function ProfilePage() {
       <MistakeAnalysisCard analysis={analysis} moduleTitles={moduleTitles} drillSize={drillSize} />
       <SoSanhThangCard moc={mocThang} rows={dongSoSanh} dangCho={latCatThang.length > 0} />
       <DisputedList rows={disputedRows} onClear={clearDisputed} />
+      <ChuaLotList rows={chuaLotRows} onClear={boChuaLot} />
       <WeakSpotList spots={spots} />
       <AoGiacList rows={aoGiacRows} />
       <WeeklyRhythm

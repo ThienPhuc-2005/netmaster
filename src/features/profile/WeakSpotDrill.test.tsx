@@ -176,3 +176,75 @@ describe('luyện lại thứ hay quên (?nguon=hay-quen)', () => {
     expect(screen.getByText('Chưa có câu nào để luyện lại')).toBeTruthy()
   })
 })
+
+// "CHỖ NÀY GIẢI THÍCH CHƯA LỌT" (ý N6) — kênh DUY NHẤT người học nói
+// được về CHẤT LƯỢNG BÀI GIẢNG. Mọi con số khác của app đo họ làm được
+// tới đâu; không con số nào tách được "chưa học đủ" khỏi "đã học mà lời
+// giảng không vào".
+describe('nút "giải thích chưa lọt"', () => {
+  it('trả lời CHƯA ĐÚNG thì mới mời — đúng lúc vừa đọc lại lời giải xong', () => {
+    const typed = seedOneStumble()
+    renderDrill()
+    fireEvent.change(screen.getByPlaceholderText('Gõ câu trả lời của bạn…'), {
+      target: { value: 'trả lời sai có chủ đích' },
+    })
+    fireEvent.click(screen.getByRole('button', { name: /Kiểm tra/ }))
+    expect(screen.getByRole('button', { name: /Chỗ này giải thích chưa lọt/ })).toBeTruthy()
+    expect(typed.question.id).toBeTruthy()
+  })
+
+  it('trả lời ĐÚNG thì KHÔNG mời — lời giảng vừa vào thì hỏi làm gì', () => {
+    const typed = seedOneStumble()
+    if (typed.question.kind !== 'typed') throw new Error('cần một câu gõ tay')
+    renderDrill()
+    fireEvent.change(screen.getByPlaceholderText('Gõ câu trả lời của bạn…'), {
+      target: { value: typed.question.accept[0]! },
+    })
+    fireEvent.click(screen.getByRole('button', { name: /Kiểm tra/ }))
+    expect(screen.queryByRole('button', { name: /Chỗ này giải thích chưa lọt/ })).toBeNull()
+  })
+
+  it('bấm thì ghi vào sổ RIÊNG, không lẫn vào sổ khiếu nại chấm', () => {
+    const typed = seedOneStumble()
+    renderDrill()
+    fireEvent.change(screen.getByPlaceholderText('Gõ câu trả lời của bạn…'), {
+      target: { value: 'trả lời sai có chủ đích' },
+    })
+    fireEvent.click(screen.getByRole('button', { name: /Kiểm tra/ }))
+    fireEvent.click(screen.getByRole('button', { name: /Chỗ này giải thích chưa lọt/ }))
+
+    const s = useProgress.getState()
+    expect(s.giaiThichChuaLot).toHaveLength(1)
+    expect(s.giaiThichChuaLot[0]).toMatchObject({ questionId: typed.question.id, lessonId: firstLesson.id })
+    // Hai sổ đo hai chuyện khác nhau: kia là "máy chấm sai", đây là
+    // "lời giảng chưa vào". Trộn lại là người soạn bài không biết nên
+    // nới đáp án hay viết lại bài.
+    expect(s.disputedAnswers, 'ghi nhầm sang sổ khiếu nại chấm').toEqual([])
+  })
+
+  it('ghi rồi thì đổi thành lời xác nhận, không mời bấm lần nữa', () => {
+    seedOneStumble()
+    renderDrill()
+    fireEvent.change(screen.getByPlaceholderText('Gõ câu trả lời của bạn…'), {
+      target: { value: 'trả lời sai có chủ đích' },
+    })
+    fireEvent.click(screen.getByRole('button', { name: /Kiểm tra/ }))
+    fireEvent.click(screen.getByRole('button', { name: /Chỗ này giải thích chưa lọt/ }))
+
+    expect(screen.getByText(/Đã ghi lại/)).toBeTruthy()
+    expect(screen.queryByRole('button', { name: /Chỗ này giải thích chưa lọt/ })).toBeNull()
+    expect(useProgress.getState().giaiThichChuaLot, 'bấm hai lần không nhân đôi tiếng nói').toHaveLength(1)
+  })
+
+  it('KHÔNG cộng XP — nói ra một góp ý không phải là kiếm điểm', () => {
+    seedOneStumble()
+    renderDrill()
+    const xpTruoc = useProgress.getState().xpTotal
+    fireEvent.change(screen.getByPlaceholderText('Gõ câu trả lời của bạn…'), {
+      target: { value: 'trả lời sai có chủ đích' },
+    })
+    fireEvent.click(screen.getByRole('button', { name: /Kiểm tra/ }))
+    fireEvent.click(screen.getByRole('button', { name: /Chỗ này giải thích chưa lọt/ }))
+    expect(useProgress.getState().xpTotal).toBe(xpTruoc)
+  })
+})

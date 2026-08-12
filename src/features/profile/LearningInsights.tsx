@@ -9,7 +9,7 @@
 
 import { Link } from 'react-router'
 import { useId } from 'react'
-import { AlertCircle, Brain, CalendarRange, ChartNoAxesColumn, MessageSquareWarning, RotateCcw, Target, TrendingUp } from 'lucide-react'
+import { AlertCircle, Brain, CalendarRange, ChartNoAxesColumn, Lightbulb, MessageSquareWarning, RotateCcw, Target, TrendingUp } from 'lucide-react'
 import { lt } from '../../engine/ltext'
 import type { MistakeAnalysis, MistakeBucket, WeakSpot, WeekActivity } from '../../engine/mistakeLog'
 import type { ModuleMemory } from '../../engine/freshness'
@@ -676,6 +676,66 @@ export function HayQuenList({ rows }: { rows: HayQuenHienThi[] }) {
           </ol>
         </>
       )}
+    </section>
+  )
+}
+
+/** Một dòng "giải thích chưa lọt", đã ghép với đề bài để đọc được. */
+export interface ChuaLotRow {
+  lessonId: string
+  questionId: string
+  at: string
+  /** null khi nội dung đã đổi và không còn câu đó — vẫn hiện id. */
+  prompt: Question['prompt'] | null
+}
+
+/**
+ * "Chỗ giải thích chưa lọt" (ý N6) — lời NGƯỜI HỌC TỰ NÓI về bài giảng.
+ *
+ * Đặt riêng, KHÔNG gộp vào sổ "câu bạn cho là mình đúng" ngay trên, dù
+ * hai mục trông giống nhau: sổ kia là khiếu nại về CHẤM (danh sách đáp án
+ * hẹp quá), mục này là góp ý về CÁCH DẠY (lời giảng không vào). Gộp lại
+ * là người soạn bài mở ra một đống lẫn lộn, không biết nên nới đáp án hay
+ * viết lại bài.
+ *
+ * Mục này là thứ duy nhất trong cả app đo được CHẤT LƯỢNG LỜI GIẢNG:
+ * mọi con số khác đo việc người học làm được tới đâu, không con số nào
+ * tách được "chưa học đủ" khỏi "đã học mà giảng không lọt".
+ */
+export function ChuaLotList({ rows, onClear }: { rows: ChuaLotRow[]; onClear: (questionId: string) => void }) {
+  const t = useT()
+  if (rows.length === 0) return null
+
+  return (
+    <section
+      aria-labelledby="chualot-title"
+      className="mt-6 flex flex-col gap-3 rounded-md border border-edge bg-panel px-5 py-4"
+    >
+      <div className="flex items-center gap-2">
+        <Lightbulb size={17} aria-hidden className="shrink-0 text-accent" />
+        <h2 id="chualot-title" className="text-sm font-semibold text-ink">
+          {t('profile.chuaLotTitle')}
+        </h2>
+      </div>
+      <p className="text-xs leading-relaxed text-ink-muted">{t('profile.chuaLotIntro')}</p>
+      <ul className="flex flex-col gap-2">
+        {rows.map((row) => (
+          <li key={row.questionId} className="flex flex-col gap-1 rounded-md border border-edge bg-panel-hover px-4 py-3">
+            <p className="text-sm text-ink">{row.prompt === null ? row.questionId : lt(row.prompt)}</p>
+            <div className="flex flex-wrap items-center gap-3">
+              <Link to={`/bai/${row.lessonId}`} className="text-xs font-medium text-accent hover:underline">
+                {t('profile.chuaLotOpenLesson')}
+              </Link>
+              <button
+                onClick={() => onClear(row.questionId)}
+                className="text-xs font-medium text-ink-muted underline decoration-dotted underline-offset-4 hover:text-ink"
+              >
+                {t('profile.chuaLotClear')}
+              </button>
+            </div>
+          </li>
+        ))}
+      </ul>
     </section>
   )
 }

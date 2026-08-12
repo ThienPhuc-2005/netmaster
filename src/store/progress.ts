@@ -83,7 +83,7 @@ export const PRACTICE_DRAFT_CAP = 12
  * đối chiếu với nó để từ chối file đến từ bản app mới hơn (migrate chỉ
  * biết đi tới, không biết đi lùi).
  */
-export const PROGRESS_PERSIST_VERSION = 8
+export const PROGRESS_PERSIST_VERSION = 9
 
 /** Một dòng trong nhật ký terminal PowerShell (UI dựng lại y nguyên). */
 export interface PsTranscriptEntry {
@@ -148,6 +148,24 @@ export interface DisputedAnswer {
   questionId: string
   /** Nguyên văn câu người học gõ — thứ duy nhất giúp soi lại accept. */
   answer: string
+  at: ISODate
+}
+
+/**
+ * Một lần người học nói "chỗ này giải thích chưa lọt" (ý N6).
+ *
+ * KHÁC HẲN `DisputedAnswer` ngay trên, và cố ý KHÔNG trộn vào đó: sổ kia
+ * là khiếu nại về CHẤM ("tôi trả lời đúng mà máy bảo chưa"), còn sổ này
+ * là góp ý về CÁCH DẠY ("tôi chịu, lời giảng chưa vào"). Trộn hai thứ là
+ * người soạn bài mở ra một đống lẫn lộn không biết nên sửa danh sách đáp
+ * án hay viết lại bài giảng.
+ *
+ * KHÔNG ghi nguyên văn câu trả lời: ở đây người học không đòi mình đúng,
+ * nên câu họ gõ không nói lên điều gì — thứ đáng ghi là CHỖ NÀO.
+ */
+export interface ChuaLotGiaiThich {
+  lessonId: string
+  questionId: string
   at: ISODate
 }
 
@@ -228,6 +246,16 @@ export interface ProgressState {
    * nó ngay tại chỗ, bằng chính người học.
    */
   disputedAnswers: DisputedAnswer[]
+  /**
+   * Những chỗ người học tự khai là "giải thích chưa lọt" (ý N6).
+   *
+   * Vì sao đáng một trường persist riêng: đây là kênh DUY NHẤT người học
+   * nói được về CHẤT LƯỢNG BÀI GIẢNG. Mọi con số khác của app đo việc họ
+   * làm được tới đâu; không con số nào phân biệt được "chưa học đủ" với
+   * "đã học mà lời giảng không vào". Chỉ chính họ biết, và chỉ nói được
+   * nếu app hỏi đúng lúc — ngay sau khi vừa sai lại đúng thứ mình đã học.
+   */
+  giaiThichChuaLot: ChuaLotGiaiThich[]
   /**
    * Số lần người học nói "mình chắc" rồi lại không nhớ ra, theo từng thẻ
    * (kho ý tưởng I4 — ảo giác quen mặt).
@@ -328,6 +356,13 @@ export interface ProgressState {
   reportDisputedAnswer: (lessonId: string, questionId: string, answer: string) => boolean
   /** Xóa một dòng đã ghi (đọc lại thấy mình nhầm). */
   clearDisputedAnswer: (questionId: string) => void
+  /**
+   * Ghi "chỗ này giải thích chưa lọt" (ý N6). Trả về `false` khi chỗ đó
+   * đã có trong sổ — bấm hai lần không làm tiếng nói to gấp đôi.
+   */
+  ghiChuaLot: (lessonId: string, questionId: string) => boolean
+  /** Bỏ một dòng khỏi sổ "giải thích chưa lọt". */
+  boChuaLot: (questionId: string) => void
   /** Ghi thêm một lần "chắc mà không nhớ" cho một thẻ (kho ý tưởng I4). */
   ghiAoGiacQuenMat: (cardId: string) => void
   /**
@@ -472,6 +507,7 @@ export const useProgress = create<ProgressState>()(
         answerTotal: 0,
         supportShownAtTotal: null,
         disputedAnswers: [],
+        giaiThichChuaLot: [],
         aoGiacQuenMat: {},
         latCatThang: [],
         quangHoc: {},
@@ -690,6 +726,19 @@ export const useProgress = create<ProgressState>()(
 
         clearDisputedAnswer: (questionId) =>
           set((s) => ({ disputedAnswers: s.disputedAnswers.filter((d) => d.questionId !== questionId) })),
+
+        ghiChuaLot: (lessonId, questionId) => {
+          if (get().giaiThichChuaLot.some((d) => d.questionId === questionId)) return false
+          set((s) => ({
+            // Cùng trần 50 dòng với sổ góp ý bên trên và cùng lý do: đây
+            // là hộp thư cho người soạn bài, không phải nhật ký đời người.
+            giaiThichChuaLot: [...s.giaiThichChuaLot, { lessonId, questionId, at: todayIso() }].slice(-50),
+          }))
+          return true
+        },
+
+        boChuaLot: (questionId) =>
+          set((s) => ({ giaiThichChuaLot: s.giaiThichChuaLot.filter((d) => d.questionId !== questionId) })),
 
         ghiAoGiacQuenMat: (cardId) =>
           set((s) => ({ aoGiacQuenMat: { ...s.aoGiacQuenMat, [cardId]: (s.aoGiacQuenMat[cardId] ?? 0) + 1 } })),
@@ -959,7 +1008,15 @@ export const useProgress = create<ProgressState>()(
         if (version <= 7) {
           state = { ...state, quangHoc: {} }
         }
-        if (version <= 8) return state
+        // v8 → v9 (sổ "giải thích chưa lọt", ý N6): thêm sổ RỖNG. Không
+        // dựng ngược từ chỗ hay vấp hay số lần quên: cả hai đo việc người
+        // học làm được tới đâu, còn sổ này ghi lời họ TỰ NÓI về bài giảng.
+        // Đoán hộ lời của người ta rồi đem cho người soạn bài đọc là bịa
+        // ra một tiếng nói chưa ai cất lên.
+        if (version <= 8) {
+          state = { ...state, giaiThichChuaLot: [] }
+        }
+        if (version <= 9) return state
         // Version lạ (mới hơn code — người dùng lùi bản app): giữ nguyên
         // và để shallow-merge với default đỡ phần thiếu, còn hơn vứt trắng.
         return persisted as ProgressState

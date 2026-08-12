@@ -8,7 +8,7 @@ build qua. **Toàn bộ biên bản hội đồng trung cấp đã XỬ XONG (08
 15/15 việc mục 6 (khối 20.2, commit `1d04c0b`) + trọn LƯỢT DỌN 52 phát
 hiện P2 mục 5 (khối 20.3).** Nội dung và engine không còn việc nào treo;
 các khối gần đây đều là ý lấy từ kho `Y-TUONG.md`.
-Khối 21.53 đã commit và đẩy lên GitHub. **Kho ý tưởng có 6 ý chờ duyệt (mục N).** **Cả 17 phát
+Việc kế tiếp là của CHỦ DỰ ÁN: ra lệnh commit khối 21.54. **Kho ý tưởng còn 5 ý chờ duyệt (mục N).** **Cả 17 phát
 hiện của BA lượt rà soát (mục J 8 ý + mục K 6 ý + mục L 3 ý) đã xử xong
 hết; kho ý tưởng SẠCH.** Việc duy nhất còn treo là tuyển người cho các
 buổi test người thật (hai dòng DoD).
@@ -31,7 +31,35 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (19) M21 capstone + màn tốt nghiệp | XONG |
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
-**KHỐI MỚI NHẤT — 21.53 (08-12), đã commit `6c1e538`:**
+**KHỐI MỚI NHẤT — 21.54 (08-12), đang ở working tree chờ lệnh commit:**
+**Ý N6 — app hỏi thẳng "chỗ này giải thích chưa lọt?" (persist v8 → v9).**
+- **Vòng khép kín cho đúng thứ chủ dự án muốn**: người học thấy chỗ khó,
+  nói ra được, người soạn bài đọc được và biết viết lại chỗ nào.
+- **Hỏi ĐÚNG LÚC**: chỉ khi vừa trả lời CHƯA ĐÚNG trong phiên luyện lại.
+  Câu trong phiên đều thuộc bài người học ĐÃ HỌC XONG, nên sai lại ở đây
+  không còn là "chưa học tới" — nó là tín hiệu lời giảng chưa vào. Và đây
+  là lúc duy nhất họ vừa đọc lại lời giải xong nên biết rõ nó lọt hay
+  không; hỏi lúc khác là hỏi khi cảm giác ấy đã nguội.
+- **Sổ RIÊNG, cố ý không trộn** với sổ "mình nghĩ câu này đúng": sổ kia là
+  khiếu nại về CHẤM (đáp án hẹp quá), sổ này là góp ý về CÁCH DẠY. Trộn
+  lại là người soạn bài mở ra một đống lẫn lộn, không biết nên nới đáp án
+  hay viết lại bài.
+- **Vì sao đáng một trường persist**: đây là kênh DUY NHẤT đo được chất
+  lượng lời giảng. Mọi con số khác của app đo người học làm được tới đâu;
+  không con số nào tách được "chưa học đủ" khỏi "đã học mà giảng không
+  vào" — chỉ chính họ biết.
+- Bậc migrate v8 → v9 cho sổ RỖNG, **không dựng ngược từ chỗ hay vấp hay
+  số lần quên**: hai thứ đó đo việc làm được, còn sổ này ghi lời người học
+  tự nói. Đoán hộ rồi đem cho người soạn bài đọc là bịa ra một tiếng nói
+  chưa ai cất lên.
+- 1823 test xanh (+11), typecheck sạch, build qua. Kiểm browser thật đi
+  trọn vòng: gieo hồ sơ **bản cũ v8** → mở app, dữ liệu tự nâng lên v9,
+  XP giữ nguyên 120, sổ mới rỗng; trả lời sai một câu → nút hiện ra, bấm
+  → ghi đúng sổ mới (`m1-bai-2` / `m1-b2-prac-1`), **sổ khiếu nại chấm
+  vẫn rỗng**, XP không đổi, nút đổi thành lời xác nhận; mở Hồ sơ → mục
+  mới hiện đề bài kèm đường mở lại bài và nút bỏ dòng. Seed đã xóa.
+
+**KHỐI TRƯỚC — 21.53 (08-12), đã commit `6c1e538`:**
 **Thẻ Hôm nay biết món cứng đầu (ý M4) + dọn hai việc treo.**
 - **Thẻ Hôm nay nói ra món hay quên đến hạn.** Dòng "ôn tập đến hạn: 8
   thẻ" giờ nói thêm mấy thẻ trong đó là thứ bạn quên đi quên lại. Nó đổi

@@ -289,6 +289,30 @@ describe('file sao lưu mang theo sổ góp ý', () => {
       URL.revokeObjectURL = originalRevoke
     }
   })
+
+  it('file xuất gói cả sổ "giải thích chưa lọt" — cùng lý do với sổ góp ý', async () => {
+    // Buổi test người thật chỉ gửi về ĐÚNG MỘT file JSON. Sổ này là kênh
+    // duy nhất người test nói được "chỗ nào giảng chưa vào"; nằm ngoài
+    // file là người soạn bài không bao giờ đọc được, tính năng coi như
+    // không tồn tại.
+    const chuaLot = [{ lessonId: 'm4-bai-2', questionId: 'm4-b2-prac-3', at: '2026-08-12' }]
+    localStorage.setItem('netmaster-progress', JSON.stringify({ state: { giaiThichChuaLot: chuaLot }, version: 9 }))
+
+    const originalCreate = URL.createObjectURL
+    const originalRevoke = URL.revokeObjectURL
+    const createObjectURL = vi.fn((_blob: Blob) => 'blob:test')
+    URL.createObjectURL = createObjectURL as unknown as typeof URL.createObjectURL
+    URL.revokeObjectURL = vi.fn() as unknown as typeof URL.revokeObjectURL
+    try {
+      renderProfile()
+      fireEvent.click(screen.getByRole('button', { name: 'Xuất ra file' }))
+      const blob = createObjectURL.mock.calls[0]![0]
+      expect(await blob.text()).toContain('m4-b2-prac-3')
+    } finally {
+      URL.createObjectURL = originalCreate
+      URL.revokeObjectURL = originalRevoke
+    }
+  })
 })
 
 describe('cửa nhập file sao lưu kiểm TỪNG THẺ (J1, khối 21.43)', () => {
@@ -494,5 +518,42 @@ describe('thứ bạn hay quên', () => {
     renderProfile()
     const muc = screen.getByRole('region', { name: /Thứ bạn hay quên/ })
     expect(within(muc).getByText(/Chưa có thứ nào bạn quên tới hai lần/)).toBeTruthy()
+  })
+})
+
+describe('sổ "giải thích chưa lọt" ở trang Hồ sơ (ý N6)', () => {
+  const dong = (questionId: string, lessonId = 'm1-bai-1') => ({ lessonId, questionId, at: '2026-08-12' })
+
+  it('hiện đề bài đọc được + đường mở lại bài + nút bỏ dòng', () => {
+    useProgress.setState({ giaiThichChuaLot: [dong('m1-b1-prac-1')] })
+    renderProfile()
+    const muc = screen.getByRole('region', { name: /Chỗ bạn thấy giải thích chưa lọt/ })
+    expect(within(muc).getByRole('link', { name: /Mở lại bài/ }).getAttribute('href')).toBe('/bai/m1-bai-1')
+    expect(within(muc).getByRole('button', { name: /Bỏ dòng này/ })).toBeTruthy()
+  })
+
+  it('KHÔNG trộn với sổ khiếu nại chấm — hai mục riêng, hai câu chuyện riêng', () => {
+    useProgress.setState({
+      giaiThichChuaLot: [dong('m1-b1-prac-1')],
+      disputedAnswers: [{ lessonId: 'm1-bai-1', questionId: 'm1-b1-prac-2', answer: 'cái phong bì', at: '2026-08-10' }],
+    })
+    renderProfile()
+    const chuaLot = screen.getByRole('region', { name: /Chỗ bạn thấy giải thích chưa lọt/ })
+    // Câu của sổ kia không được lọt sang mục này.
+    expect(within(chuaLot).queryByText(/Bạn đã gõ/)).toBeNull()
+    expect(screen.getByText('Câu bạn cho là mình đúng'), 'sổ khiếu nại chấm phải còn nguyên').toBeTruthy()
+  })
+
+  it('bỏ một dòng thì nó biến mất khỏi store', () => {
+    useProgress.setState({ giaiThichChuaLot: [dong('m1-b1-prac-1')] })
+    renderProfile()
+    const muc = screen.getByRole('region', { name: /Chỗ bạn thấy giải thích chưa lọt/ })
+    fireEvent.click(within(muc).getByRole('button', { name: /Bỏ dòng này/ }))
+    expect(useProgress.getState().giaiThichChuaLot).toEqual([])
+  })
+
+  it('chưa khai lần nào thì KHÔNG dựng mục rỗng', () => {
+    renderProfile()
+    expect(screen.queryByText('Chỗ bạn thấy giải thích chưa lọt')).toBeNull()
   })
 })
