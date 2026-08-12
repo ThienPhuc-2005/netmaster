@@ -861,7 +861,8 @@
               },
               "solution": {
                 "vi": "Đó là dải port nổi tiếng (well-known): mỗi số đã có chủ theo quy ước chung, ví dụ 443 của HTTPS."
-              }
+              },
+              "conceptId": "m5-cong-noi-tieng"
             },
             {
               "question": {
@@ -891,7 +892,8 @@
               },
               "solution": {
                 "vi": "Ba tab dùng ba port tạm thời khác nhau ở phía máy bạn; máy chủ vẫn ở nguyên port 443."
-              }
+              },
+              "conceptId": "m5-cong-tam-thoi"
             }
           ]
         },
@@ -1067,7 +1069,8 @@
               },
               "solution": {
                 "vi": "Cả ba lo chuyện mở một trang web: 53 tra tên ra địa chỉ, rồi 80 hoặc 443 tải trang về."
-              }
+              },
+              "conceptId": "m5-cong-web"
             },
             {
               "question": {
@@ -1088,7 +1091,8 @@
               },
               "solution": {
                 "vi": "Port 443 — HTTPS, phiên bản có khóa của web."
-              }
+              },
+              "conceptId": "m5-cong-web"
             }
           ]
         },

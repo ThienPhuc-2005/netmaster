@@ -371,7 +371,8 @@
               },
               "solution": {
                 "vi": "Bản ghi MX — nó chỉ ra máy chủ nhận thư cho tên miền đó."
-              }
+              },
+              "conceptId": "m6-ban-ghi-cname-mx"
             },
             {
               "question": {
@@ -401,7 +402,8 @@
               },
               "solution": {
                 "vi": "CNAME — biệt danh trỏ về một tên khác, rồi tên đó mới có bản ghi A thật."
-              }
+              },
+              "conceptId": "m6-ban-ghi-cname-mx"
             }
           ]
         },
@@ -757,7 +759,8 @@
               },
               "solution": {
                 "vi": "Discover → Offer → Request → Ack."
-              }
+              },
+              "conceptId": "m6-dora"
             },
             {
               "question": {
@@ -780,7 +783,8 @@
               },
               "solution": {
                 "vi": "Request — và nó cố tình nói to để những máy chủ không được chọn rút lời."
-              }
+              },
+              "conceptId": "m6-dora"
             }
           ]
         },

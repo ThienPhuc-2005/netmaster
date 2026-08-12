@@ -455,7 +455,8 @@
               "hint": { "vi": "Nó là bạn đồng hành của request — thư hỏi đi thì thư này quay về." },
               "solution": {
                 "vi": "Đó là response (phản hồi): server đóng trang web vào các gói tin và gửi ngược về, hoàn tất cặp request/response của lượt web."
-              }
+              },
+              "conceptId": "request-response"
             },
             {
               "question": {

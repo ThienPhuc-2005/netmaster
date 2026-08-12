@@ -403,6 +403,17 @@ quan trước khi "sửa test cho xanh".
   nên câu họ gõ không nói lên điều gì. Cả hai cùng trần 50 dòng và cùng
   nằm trong key `netmaster-progress` nên tự đi theo file sao lưu — bất
   biến này có test riêng, buổi test người thật phụ thuộc vào nó.
+- **`conceptId` trên CÂU TẬP là tùy chọn, và bỏ trống là hợp lệ** (ý N5,
+  khối 21.58). Khai thì `validateModules` ép phải trỏ vào khái niệm chính
+  bài đó dạy. Đừng "dọn cho đủ" 100%: nhiều câu cố ý bắc cầu hai khái niệm
+  và gán bừa một bên là nói sai về chính câu đó — phiên luyện lùi về lấy
+  cả bài, đó là hành vi ĐÚNG chứ không phải thiếu sót.
+- **Sửa file nội dung bằng script thì ĐỪNG `JSON.stringify` ghi đè cả
+  file** (đã dính hai lần trong khối 21.58): nó viết lại theo khuôn khác,
+  đẻ ra hàng nghìn dòng diff che mất vài chục thay đổi thật. Chèn đúng chỗ
+  bằng thao tác chuỗi, và **ghi bằng xuống dòng kiểu Unix** (`
+`) cho
+  khớp dạng git đang giữ — không thì mỗi dòng đều thành "đã đổi".
 - **Ngưỡng "hay quên" là MỘT con số dùng chung** (`NGUONG_HAY_QUEN` trong
   `engine/mistakeLog.ts`, hiện là 2). Ba chỗ đọc nó: mục "Thứ bạn hay
   quên" ở Hồ sơ, phiên luyện `?nguon=hay-quen`, và dòng đếm món cứng đầu

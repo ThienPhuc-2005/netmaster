@@ -548,7 +548,8 @@
               },
               "solution": {
                 "vi": "Bệnh nằm ở phía máy đích: MAY-CHAM-CONG bị tuột dây nên không nghe được tiếng gọi ARP. Trong pha sửa, nối cổng eth0 của nó vào cổng trống p3 của switch — ping lại là có Reply. So với ca trước: General failure là dây MÌNH, còn unreachable với mạng-mình-vẫn-sống là dây ĐÍCH."
-              }
+              },
+              "conceptId": "m11-kham-theo-tang"
             },
             {
               "question": {
@@ -573,7 +574,8 @@
               },
               "solution": {
                 "vi": "Ở phía máy đích: mạng của bạn sống (ping máy khác vẫn Reply), nhưng máy đích không đáp lời gọi ARP — thường là nó tuột dây, tắt nguồn, hoặc tự chặn."
-              }
+              },
+              "conceptId": "m11-ipconfig-ping"
             }
           ]
         },

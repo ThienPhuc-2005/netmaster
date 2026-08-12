@@ -162,7 +162,8 @@
               },
               "solution": {
                 "vi": "Thiếu lời khai subnet-thuộc-site. Máy nhìn IP để tra site — dải chưa gắn site thì máy mù vị trí và hỏi vu vơ. Dựng DC tại chỗ mới là một nửa việc; ba dòng khai báo kia là nửa còn lại."
-              }
+              },
+              "conceptId": "m19-subnet-site"
             },
             {
               "question": {
@@ -192,7 +193,8 @@
               },
               "solution": {
                 "vi": "OU theo tổ chức (kế toán, nhân sự — dù ngồi đâu), site theo địa lý (Hà Nội, Đà Nẵng — dù phòng nào). Hai trục vuông góc: tài khoản vào OU, máy đứng trong site — AD cần cả hai."
-              }
+              },
+              "conceptId": "m19-site"
             }
           ]
         },
@@ -399,7 +401,8 @@
               },
               "solution": {
                 "vi": "Đối chiếu lịch chép và đợi hết một chuyến. Ghi đè lần nữa hay khởi động lại DC đều là sửa loạn trong khe trễ — thứ tự nhiên sẽ tự lành lại còn bị tay người khuấy thành bệnh thật."
-              }
+              },
+              "conceptId": "m19-do-tre"
             },
             {
               "question": {
@@ -429,7 +432,8 @@
               },
               "solution": {
                 "vi": "Vì đường WAN giữa site vừa chậm vừa đắt — nên thay đổi được gom, nén và gửi theo chuyến. Hai site vẫn chung một miền, và chẳng có luật một-lần-mỗi-giờ nào: lịch chép là thứ người vận hành tự đặt theo túi tiền đường truyền."
-              }
+              },
+              "conceptId": "m19-do-tre"
             }
           ]
         },
@@ -692,7 +696,8 @@
               },
               "solution": {
                 "vi": "ObjectClass group. Nhóm quyền chứa các nhóm vai — thấy một dãy user nằm thẳng trong đó là dấu vết lối tắt chồng chất, mỗi tên là một câu hỏi không ai còn trả lời được."
-              }
+              },
+              "conceptId": "m19-agdlp"
             },
             {
               "question": {
@@ -720,7 +725,8 @@
               },
               "solution": {
                 "vi": "Nhóm Domain Local — nhóm quyền đứng cạnh tài nguyên. Người vào nhóm vai (Global), vai cắm vào quyền (Domain Local), quyền gắn vào tài nguyên: ba khúc nối của một đường ống."
-              }
+              },
+              "conceptId": "m19-gg-dl"
             }
           ]
         },

@@ -155,7 +155,8 @@
               },
               "solution": {
                 "vi": "Số 3. Em Ăn Cơm Em Với Người Iu Đi — Emergency 0, Alert 1, Critical 2, Error 3. Ranh giới có-chuyện-thật nằm ngay tại đây: từ 3 trở xuống là lỗi thật."
-              }
+              },
+              "conceptId": "m20-severity"
             },
             {
               "question": {
@@ -185,7 +186,8 @@
               },
               "solution": {
                 "vi": "Các mức 4-7 (Warning trở lên về phía nhẹ) bị ẩn. Ngưỡng lọc là công cụ sống còn của ca đêm: giữ lại 0-3 để một dòng Error biết nói không bị trận lụt Warning vô hại nhấn chìm."
-              }
+              },
+              "conceptId": "m20-severity"
             }
           ]
         },
@@ -447,7 +449,8 @@
               },
               "solution": {
                 "vi": "Get-Content tap-trung.log | Select-String ERROR — lọc theo mức có-chuyện-thật là dòng sự cố nổi lên ngay: sw-tang-3 báo link flapping on port 7 (cổng chập chờn), khớp hẳn với lời than của người dùng. Lọc theo tên máy sw-tang-3 cũng tới đích — nhiều đường đúng, miễn là ĐỪNG đọc tuần tự từ dòng một."
-              }
+              },
+              "conceptId": "m20-log-tap-trung"
             },
             {
               "question": {
@@ -477,7 +480,8 @@
               },
               "solution": {
                 "vi": "Chỉ khi hai máy chung nguồn giờ. Đồng hồ router mà chậm 6 phút thì sự thật đảo ngược — bão nổ trước, tuyến rơi là hậu quả. Dấu thời gian chỉ đáng tin bằng cái đồng hồ đẻ ra nó; khuôn log giống nhau chẳng cứu được điều đó."
-              }
+              },
+              "conceptId": "m20-gio-lech"
             }
           ]
         },
@@ -1082,7 +1086,8 @@
               },
               "solution": {
                 "vi": "Polling. Xu hướng chỉ hiện ra từ chuỗi số đo đều — trap chỉ reo khi có biến cố rời rạc (và sắp-nghẽn chưa phải biến cố), log ghi chuyện xảy ra chứ không ghi nhịp tim từng phút. Đây chính là cái polling nhìn thấy mà trap mù."
-              }
+              },
+              "conceptId": "m20-snmp-polling"
             },
             {
               "question": {
@@ -1108,7 +1113,8 @@
               },
               "solution": {
                 "vi": "Trap — thiết bị tự gửi gói báo động về hệ giám sát ngay khi có biến, không đợi lượt polling. Tức thì là cái quý của nó; không vẽ được xu hướng là cái nó thiếu — nên nghề dùng cả hai."
-              }
+              },
+              "conceptId": "m20-snmp-trap"
             }
           ]
         },

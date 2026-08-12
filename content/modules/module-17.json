@@ -312,7 +312,8 @@
               },
               "solution": {
                 "vi": "Nó vẫn đi được. Gói của .66 khớp ngay dòng permit ip any any ở trên, router quyết định xong và dừng — dòng cấm phía dưới không bao giờ được hỏi tới. Trong ACL không có chuyện cấm mạnh hơn cho phép; chỉ có trên mạnh hơn dưới."
-              }
+              },
+              "conceptId": "m17-thu-tu-dong"
             }
           ]
         },
@@ -542,7 +543,8 @@
               },
               "solution": {
                 "vi": "Gõ lần lượt: enable, configure terminal, access-list 101 deny icmp host 192.168.1.66 host 192.168.2.50, access-list 101 permit ip any any, interface g0, ip access-group 101 in, end. Dòng cấm hẹp đứng trước nên nó ăn đúng gói của máy khách gửi tới máy chủ; dòng permit đứng sau giữ đường cho tất cả những gì còn lại, kể cả máy khách đi nơi khác."
-              }
+              },
+              "conceptId": "m17-acl-mo-rong"
             },
             {
               "question": {
@@ -572,7 +574,8 @@
               },
               "solution": {
                 "vi": "Từ 100 tới 199 — dải của danh sách mở rộng. Dải 1 tới 99 là danh sách chuẩn, chỉ soi được nguồn nên không tách được đích này với đích kia."
-              }
+              },
+              "conceptId": "m17-acl-mo-rong"
             }
           ]
         },
@@ -852,7 +855,8 @@
               },
               "solution": {
                 "vi": "Chiều về phải được cho phép tường minh. Tường lửa stateful nhớ cuộc gọi bạn vừa mở nên lời đáp tự được vào; ACL đánh số xét từng gói rời rạc, không có trí nhớ, nên nếu bạn chặn nhầm chiều về thì cuộc trò chuyện đứt dù chiều đi vẫn thông."
-              }
+              },
+              "conceptId": "m17-acl-vs-stateful"
             }
           ]
         },
@@ -1069,7 +1073,8 @@
               },
               "solution": {
                 "vi": "Gõ show ip interface brief, đọc thấy cổng p2 ghi administratively down. Rồi enable, configure terminal, interface p2, no shutdown, end. Cổng sống lại và máy phòng khách gọi được máy chủ. Nhớ rằng dựng cổng dậy chỉ là nửa việc — nửa còn lại là tìm xem ai đã cắm thiết bị lạ vào đó."
-              }
+              },
+              "conceptId": "m17-port-security"
             },
             {
               "question": {
@@ -1099,7 +1104,8 @@
               },
               "solution": {
                 "vi": "Cổng đang bị tắt bằng lệnh — do người trực gõ shutdown, hoặc do một cơ chế như port security đánh sập. Khác hẳn dòng chỉ ghi down: đó là cổng đang bật nhưng không thấy tín hiệu ở đầu kia, tức là đi tìm sợi dây."
-              }
+              },
+              "conceptId": "m17-port-security"
             }
           ]
         },
@@ -1400,7 +1406,8 @@
               },
               "solution": {
                 "vi": "Có hai thiết bị cùng nhận là chủ của địa chỉ đó. MAC không đổi theo tải, và sổ ARP chỉ ghi lại điều nó nghe được. Còn chuyện do gõ nhầm hay do mạo danh thì phải đi tìm tiếp — nhưng bằng chứng một địa chỉ hai chủ thì đã chắc rồi."
-              }
+              },
+              "conceptId": "m17-arp-spoofing"
             },
             {
               "question": {
@@ -1426,7 +1433,8 @@
               },
               "solution": {
                 "vi": "Native VLAN. Đặt nó thành một VLAN không ai dùng để khung của người dùng luôn mang nhãn, thế là cú bóc nhãn đầu tiên chẳng còn giúp gì cho kẻ tấn công. Kèm theo: khai tường minh cổng nối máy con là access."
-              }
+              },
+              "conceptId": "m17-vlan-hopping"
             }
           ]
         },

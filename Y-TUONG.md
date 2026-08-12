@@ -541,7 +541,16 @@ Sinh ra trong lúc làm khối 21.49-21.53, chưa ý nào được gọi tên.
   × 2 khung. Ghi chú ý gốc: (bài học và
   bài thi). Lỗi sơ đồ lab méo (M1) sống lâu được đúng vì cùng một câu
   hiển thị khác nhau ở hai nơi mà không chỗ nào bày cạnh nhau để so.
-- ☐ **N5. Ưu tiên câu trúng đích trong phiên "luyện thứ hay quên".** Hiện
+- ✅ **N5. Ưu tiên câu trúng đích trong phiên "luyện thứ hay quên"** — ĐÃ
+  LÀM (khối 21.58): thêm trường `conceptId` tùy chọn cho câu tập, gắn 77
+  thẻ, engine ưu tiên câu trúng khái niệm bị quên.
+  **Đo trước khi làm mới thấy tầm ăn thua thật**: trung bình 1,87 câu/bài
+  nên chỉ 43/108 bài là lọc đổi được gì. Vẫn đáng làm, nhưng không phải
+  cuộc cách mạng như tên ý nghe.
+  Hai điều rút ra: **bỏ trống là một lựa chọn hợp lệ** (9 câu bắc cầu hai
+  khái niệm, gán bừa là nói sai về chính câu đó), và **cổng chất lượng
+  phải chặn thẻ trỏ ra ngoài bài** — thẻ sai còn tệ hơn không khai.
+  Ghi chú ý gốc: Hiện
   lấy trọn bài tập của bài nguồn; nếu sau này nội dung gắn thẻ khái niệm
   cho từng câu thì lọc được đúng câu dạy khái niệm bị quên.
 - ✅ **N6. Sau phiên luyện mà VẪN sai đúng thứ đó thì app hỏi thẳng "chỗ

@@ -147,7 +147,8 @@
                 "hintTopic": { "vi": "ai là người đối chiếu mật khẩu" }
               },
               "hint": { "vi": "Khi bạn gõ mật khẩu, máy trước mặt không tự quyết — nó chạy đi hỏi ai đó." },
-              "solution": { "vi": "Tài khoản của MIỀN: DC đối chiếu mật khẩu, nên một tài khoản dùng được ở mọi máy đã gia nhập miền." }
+              "solution": { "vi": "Tài khoản của MIỀN: DC đối chiếu mật khẩu, nên một tài khoản dùng được ở mọi máy đã gia nhập miền." },
+              "conceptId": "m9-domain"
             },
             {
               "question": {
@@ -158,7 +159,8 @@
                 "hintTopic": { "vi": "trưởng làng giữ sổ" }
               },
               "hint": { "vi": "Hai chữ cái viết tắt — chữ đầu là Domain." },
-              "solution": { "vi": "Domain Controller (DC) — giữ sổ cái AD và gác cổng mọi lượt đăng nhập của miền." }
+              "solution": { "vi": "Domain Controller (DC) — giữ sổ cái AD và gác cổng mọi lượt đăng nhập của miền." },
+              "conceptId": "m9-dc"
             }
           ]
         },
@@ -260,7 +262,8 @@
                 "hintTopic": { "vi": "tấm thẻ câu lạc bộ" }
               },
               "hint": { "vi": "Một thao tác duy nhất, và quyền không bao giờ sót — vì quyền chưa từng cấp cho cá nhân." },
-              "solution": { "vi": "Thả vào group KeToan. Quyền đã cấp cho nhóm từ trước, thành viên mới tự mang đủ 37 quyền." }
+              "solution": { "vi": "Thả vào group KeToan. Quyền đã cấp cho nhóm từ trước, thành viên mới tự mang đủ 37 quyền." },
+              "conceptId": "m9-user-group"
             },
             {
               "question": {
@@ -605,7 +608,8 @@
                 "hintTopic": { "vi": "phạm vi treo quyết định ai phải theo" }
               },
               "hint": { "vi": "Tự dựng lời giải từ hai bài trước: luật viết ở đâu, và khoanh vùng bằng cái gì?" },
-              "solution": { "vi": "Tạo GPO cấm USB, treo vào OU KeToan — luật tự áp cho đúng phòng đó, các OU khác không dính." }
+              "solution": { "vi": "Tạo GPO cấm USB, treo vào OU KeToan — luật tự áp cho đúng phòng đó, các OU khác không dính." },
+              "conceptId": "m9-ke-thua"
             },
             {
               "question": {
@@ -616,7 +620,8 @@
                 "hintTopic": { "vi": "câu thần chú giục việc" }
               },
               "hint": { "vi": "Lệnh bắt đầu bằng gp, kết thúc bằng update — thêm /force cho dứt khoát." },
-              "solution": { "vi": "gpupdate /force — bắt máy tải và áp toàn bộ luật ngay, không chờ chu kỳ làm mới." }
+              "solution": { "vi": "gpupdate /force — bắt máy tải và áp toàn bộ luật ngay, không chờ chu kỳ làm mới." },
+              "conceptId": "m9-gpresult"
             }
           ]
         },

@@ -89,7 +89,8 @@
               },
               "solution": {
                 "vi": "Là /27: nó có 32 địa chỉ, trừ địa chỉ mạng và broadcast còn đúng 30 chỗ cho 30 máy. Lấy /26 thì chạy được nhưng bỏ phí 32 địa chỉ; lấy /28 thì thiếu hẳn 16 chỗ."
-              }
+              },
+              "conceptId": "co-khoi-vua-du"
             },
             {
               "question": {
@@ -111,7 +112,8 @@
               },
               "solution": {
                 "vi": "Vì cắt đều là cắt theo cái lô, không theo người ở: 62 chỗ không chứa nổi 100 máy, còn phòng 10 máy ôm 62 chỗ thì bỏ hoang 52. Một dải /24 cắt được nhiều hơn hai mạng con, và mỗi mạng con hoàn toàn được mang mask riêng — đó chính là VLSM."
-              }
+              },
+              "conceptId": "vlsm"
             }
           ]
         },

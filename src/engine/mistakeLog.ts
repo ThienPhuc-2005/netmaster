@@ -601,7 +601,13 @@ export function luyenThuHayQuen(
   for (const { cardId, soLanQuen } of theHayQuen(cards, cards.length)) {
     const found = baiDayThe(modules, cardId)
     if (found === null) continue // nội dung đã đổi, không còn bài nào dạy nó
-    for (const exercise of found.lesson.steps[3].exercises) {
+    // TRÚNG ĐÍCH TRƯỚC (ý N5): câu nào khai đúng khái niệm bị quên thì chỉ
+    // lấy những câu ấy. Không câu nào trong bài khai thì lùi về lấy CẢ BÀI
+    // như cũ — thà luyện rộng hơn một chút còn hơn phiên rỗng, và phần lớn
+    // bài chỉ có 2 câu nên "rộng hơn" ở đây là rộng thêm đúng một câu.
+    const trungDich = found.lesson.steps[3].exercises.filter((e) => e.conceptId === cardId)
+    const deBai = trungDich.length > 0 ? trungDich : found.lesson.steps[3].exercises
+    for (const exercise of deBai) {
       items.push({
         moduleId: found.module.id,
         lessonId: found.lesson.id,

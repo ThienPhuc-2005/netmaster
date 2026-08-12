@@ -76,7 +76,8 @@
                 "hintTopic": { "vi": "bức tường ngăn xóm của Module 4" }
               },
               "hint": { "vi": "Thứ gì ở Module 4 tạo ra một vùng mạng cô lập trên hạ tầng dùng chung?" },
-              "solution": { "vi": "VLAN + subnet: cùng là vùng cô lập có dải địa chỉ riêng — VPC chỉ đổi cách dựng ranh giới từ thiết bị sang khai báo." }
+              "solution": { "vi": "VLAN + subnet: cùng là vùng cô lập có dải địa chỉ riêng — VPC chỉ đổi cách dựng ranh giới từ thiết bị sang khai báo." },
+              "conceptId": "m10-vpc"
             },
             {
               "question": {
@@ -87,7 +88,8 @@
                 "hintTopic": { "vi": "ba chữ cái, chữ giữa là private" }
               },
               "hint": { "vi": "Virtual Private Cloud — bên Azure gọi là VNet." },
-              "solution": { "vi": "VPC (Azure: VNet) — mạng riêng ảo trong data center của nhà cung cấp, chia subnet y như mạng nhà." }
+              "solution": { "vi": "VPC (Azure: VNet) — mạng riêng ảo trong data center của nhà cung cấp, chia subnet y như mạng nhà." },
+              "conceptId": "m10-vpc"
             }
           ]
         },
@@ -296,7 +298,8 @@
                 "hintTopic": { "vi": "đường hầm nối gì với gì" }
               },
               "hint": { "vi": "Cả một MẠNG cần nối, và người dùng phải vô cảm — đó là dấu hiệu của kiểu nào?" },
-              "solution": { "vi": "Site-to-site: cầu mạng-nối-mạng dựng một lần, mọi máy trong chi nhánh tự nhiên thấy VPC, không ai phải cài gì." }
+              "solution": { "vi": "Site-to-site: cầu mạng-nối-mạng dựng một lần, mọi máy trong chi nhánh tự nhiên thấy VPC, không ai phải cài gì." },
+              "conceptId": "m10-vpn-s2s"
             },
             {
               "question": {
@@ -307,7 +310,8 @@
                 "hintTopic": { "vi": "phần mềm cài trên laptop" }
               },
               "hint": { "vi": "Chữ tiếng Anh chỉ máy của người dùng cuối." },
-              "solution": { "vi": "Client VPN — laptop tự đào hầm riêng về mạng công ty, bật khi cần." }
+              "solution": { "vi": "Client VPN — laptop tự đào hầm riêng về mạng công ty, bật khi cần." },
+              "conceptId": "m10-vpn-client"
             }
           ]
         },
@@ -425,7 +429,8 @@
                 "hintTopic": { "vi": "vành đai kiểm ở đâu, và sau đó thì sao" }
               },
               "hint": { "vi": "Lâu đài chỉ kiểm MỘT lần ở cổng — mà hắn thì đã ở trong cổng rồi." },
-              "solution": { "vi": "Di chuyển ngang tự do: vành đai chỉ kiểm ở cổng, bên trong tin nhau — đó chính là điểm chết khiến Zero Trust ra đời." }
+              "solution": { "vi": "Di chuyển ngang tự do: vành đai chỉ kiểm ở cổng, bên trong tin nhau — đó chính là điểm chết khiến Zero Trust ra đời." },
+              "conceptId": "m10-perimeter"
             },
             {
               "question": {
@@ -436,7 +441,8 @@
                 "hintTopic": { "vi": "câu hỏi đổi từ \"bạn đứng đâu\" sang…" }
               },
               "hint": { "vi": "Không còn là chỗ đứng hay tường lửa — mà là câu hỏi \"bạn LÀ AI\"." },
-              "solution": { "vi": "Danh tính (identity) — mọi quyết định cho/chặn xoay quanh bạn là ai và máy bạn có sạch không, không phải bạn đang đứng trong hay ngoài." }
+              "solution": { "vi": "Danh tính (identity) — mọi quyết định cho/chặn xoay quanh bạn là ai và máy bạn có sạch không, không phải bạn đang đứng trong hay ngoài." },
+              "conceptId": "m10-zero-trust"
             }
           ]
         },

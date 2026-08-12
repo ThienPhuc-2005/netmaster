@@ -313,6 +313,19 @@ export const ExerciseSchema = z.object({
   question: QuestionSchema,
   hint: LTextSchema,
   solution: LTextSchema,
+  /**
+   * Câu này luyện KHÁI NIỆM nào của bài (ý N5) — TÙY CHỌN.
+   *
+   * Dùng cho phiên "luyện lại thứ hay quên": quên khái niệm nào thì gặp
+   * lại đúng câu về nó, thay vì gặp cả bài. Bỏ trống là hợp lệ và không
+   * phải thiếu sót — nhiều câu cố ý BẮC CẦU hai khái niệm ("GROUP để cấp
+   * ___, OU để xếp chỗ"), gán bừa một bên là nói sai về chính câu đó.
+   * Câu không khai thì phiên luyện lùi về lấy cả bài, đúng như trước.
+   *
+   * `validateModules` ép: khai thì phải khai đúng một khái niệm CHÍNH BÀI
+   * NÀY dạy — thẻ trỏ ra ngoài bài là dạy sai chỗ, tệ hơn không khai.
+   */
+  conceptId: idSchema.optional(),
 })
 
 /** Bước 4 — Làm (productive failure + worked example fading). */
@@ -462,7 +475,9 @@ type LessonT = z.infer<typeof LessonSchema>
 // Ba hàm thuần dời sang contentPure.ts (đường nóng PROD không được kéo
 // tháp zod này) — re-export để chỗ đã sẵn cần zod import đâu cũng được.
 export { conceptIdsInLesson, orderedLessonIds, palaceRoomsInLesson } from './contentPure'
-import { orderedLessonIds } from './contentPure'
+// Re-export ở trên KHÔNG tạo ràng buộc trong file này — muốn gọi thì vẫn
+// phải import riêng (validateModules dùng `conceptIdsInLesson`).
+import { conceptIdsInLesson, orderedLessonIds } from './contentPure'
 
 /**
  * Gom mọi câu hỏi trong module (pretest, practice, retrieval, mastery
@@ -822,6 +837,19 @@ export function validateModules(modules: readonly Module[]): void {
     }
     // Bước checklist VMware duy nhất toàn cục: store lưu tick theo stepId.
     for (const step of mod.vmLab?.steps ?? []) claim(vmStepIds, step.id, mod.id, 'Bước lab VMware')
+    // Thẻ khái niệm của câu tập (ý N5) phải trỏ vào khái niệm CHÍNH BÀI
+    // ĐÓ dạy. Thẻ trỏ ra ngoài bài thì phiên "luyện thứ hay quên" lôi câu
+    // này ra cho một khái niệm nó không hề luyện — dạy sai chỗ, tệ hơn là
+    // không khai gì.
+    for (const l of mod.lessons) {
+      const dayTrongBai = new Set(conceptIdsInLesson(l))
+      for (const ex of l.steps[3].exercises) {
+        if (ex.conceptId === undefined || dayTrongBai.has(ex.conceptId)) continue
+        problems.push(
+          `Câu "${ex.question.id}" gắn thẻ khái niệm "${ex.conceptId}" mà bài "${l.id}" không dạy khái niệm đó`,
+        )
+      }
+    }
   }
   if (problems.length > 0) {
     throw new Error(`Nội dung liên-module không hợp lệ:\n${problems.map((p) => `- ${p}`).join('\n')}`)

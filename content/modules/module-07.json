@@ -162,7 +162,8 @@
               },
               "solution": {
                 "vi": "NAT — Network Address Translation, việc đổi địa chỉ riêng thành địa chỉ công cộng ở cổng WAN."
-              }
+              },
+              "conceptId": "m7-nat"
             },
             {
               "question": {
@@ -192,7 +193,8 @@
               },
               "solution": {
                 "vi": "Tra bảng NAT/PAT: mỗi dòng ghi cặp \"địa chỉ riêng + port riêng ↔ địa chỉ chung + port chung\"."
-              }
+              },
+              "conceptId": "m7-pat"
             }
           ]
         },

@@ -433,7 +433,8 @@
               },
               "solution": {
                 "vi": "show spanning-tree. Bảng in ra dòng Root bridge: Switch-2 — vì Switch-2 mang priority 4096, nhỏ hơn 32768 của hai switch còn lại nên nó thắng cuộc bầu."
-              }
+              },
+              "conceptId": "root-bridge"
             },
             {
               "question": {
@@ -455,7 +456,8 @@
               },
               "solution": {
                 "vi": "Switch có MAC nhỏ nhất thắng — và MAC nhỏ thường thuộc thiết bị cũ nhất, thường cũng là cái yếu nhất. Vị trí trong sơ đồ không được tính tới, còn hòa priority thì cây vẫn dựng được vì luôn còn MAC để phân định."
-              }
+              },
+              "conceptId": "root-bridge"
             }
           ]
         },

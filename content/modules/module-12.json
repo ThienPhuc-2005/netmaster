@@ -232,7 +232,8 @@
               },
               "solution": {
                 "vi": "Test-NetConnection 192.168.20.80 -Port 443 (hoặc thay IP bằng web.noibo.vn). Nhìn dòng TcpTestSucceeded : True là chốt được: port 443 đang mở."
-              }
+              },
+              "conceptId": "m12-cmdlet-mang"
             },
             {
               "question": {
@@ -258,7 +259,8 @@
               },
               "solution": {
                 "vi": "Động từ - Danh từ (verb-noun): Get-NetIPAddress là lấy-địa chỉ IP, New-ADUser là tạo mới-người dùng AD. Biết muốn làm gì với cái gì là đoán được tên lệnh."
-              }
+              },
+              "conceptId": "m12-cmdlet"
             }
           ]
         },
@@ -494,7 +496,8 @@
               },
               "solution": {
                 "vi": "Get-Help New-ADUser. Khối SYNTAX in ra sẽ cho thấy -Name và -SamAccountName là bắt buộc, còn -Path và -Enabled nằm trong ngoặc vuông nên tùy chọn."
-              }
+              },
+              "conceptId": "m12-get-help"
             }
           ]
         },
@@ -713,7 +716,8 @@
               },
               "solution": {
                 "vi": "New-ADUser -Name \"Le Thi Mai\" -SamAccountName ltmai -Path \"OU=KeToan,DC=noibo,DC=vn\". Terminal im lặng là dấu hiệu tốt; gõ thêm Get-ADUser -Identity ltmai sẽ thấy dòng DistinguishedName ghi rõ chị Mai đang nằm trong ngăn KeToan."
-              }
+              },
+              "conceptId": "m12-tao-user"
             },
             {
               "question": {

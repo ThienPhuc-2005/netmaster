@@ -165,7 +165,8 @@
               },
               "solution": {
                 "vi": "Hét trong xóm → relay nghe và ghi giaddr → thư đích danh vượt router → máy chủ đọc giaddr chọn dải → OFFER quay về qua relay. Mấu chốt là hai chặng giữa: đổi tiếng hét thành thư, và ghi rõ xóm nào đang hỏi."
-              }
+              },
+              "conceptId": "m18-relay"
             },
             {
               "question": {
@@ -195,7 +196,8 @@
               },
               "solution": {
                 "vi": "Nhờ ô giaddr. Relay ghi địa chỉ xóm mình vào đó trước khi chuyển lời, nên máy chủ chỉ cần đối chiếu giaddr với danh sách scope là chọn đúng dải. Không có giaddr thì mười xóm trông giống hệt nhau."
-              }
+              },
+              "conceptId": "m18-relay"
             }
           ]
         },
@@ -618,7 +620,8 @@
               },
               "solution": {
                 "vi": "Được. Hai máy cùng nằm trong dải 169.254.0.0/16 và cùng xóm nên gọi nhau không cần gateway. Cái chúng mất là đường RA KHỎI xóm — vì gateway và DNS đều trống. APIPA là phao cứu sinh trong xóm, không phải mạng thật."
-              }
+              },
+              "conceptId": "m18-apipa"
             },
             {
               "question": {
@@ -650,7 +653,8 @@
               },
               "solution": {
                 "vi": "Tỉ lệ cấp phát — số địa chỉ đã cho thuê trên tổng số suất của scope. Chạm ngưỡng 90% là lúc hành động (mở rộng dải, rút lease), chứ không đợi sáng thứ hai chuông reo dồn dập."
-              }
+              },
+              "conceptId": "m18-scope"
             },
             {
               "question": {
@@ -684,7 +688,8 @@
               },
               "solution": {
                 "vi": "Tối đa 2 ngày. Máy rời mạng chiều thứ sáu thì lease 2 ngày hết hạn chiều chủ nhật, kịp trả suất về kho trước giờ làm; để 3 ngày là mãi chiều thứ hai mới hết, sáng thứ hai vẫn còn nguyên 197 suất bị giữ và người đến sau vẫn nhận 169.254. Rút lease là cách rẻ nhất chữa scope cạn khi chưa mở rộng được dải — đổi lại máy phải xin gia hạn dày hơn, nên đừng rút quá tay ở scope máy để bàn ngồi yên cả tuần."
-              }
+              },
+              "conceptId": "m18-scope"
             }
           ]
         },
@@ -890,7 +895,8 @@
               },
               "solution": {
                 "vi": "Chia kho tách bạch hoặc chung sổ failover. Bê nguyên cấu hình là hai cuốn sổ rời cùng phát một dải — máy nào cũng tưởng số còn trống, và bệnh trùng IP được hạ tầng sản xuất đều đặn. Phát theo giờ cũng chung một lỗi: hai sổ vẫn chẳng biết gì về nhau."
-              }
+              },
+              "conceptId": "m18-failover"
             },
             {
               "question": {
@@ -920,7 +926,8 @@
               },
               "solution": {
                 "vi": "Hai máy DHCP cùng phát một dải. Lỗi con người thì lẻ tẻ và dính một máy; lỗi lặp có hệ thống với nạn nhân ngẫu nhiên là chữ ký của hạ tầng cấp phát đôi. Switch thì không gán địa chỉ IP cho ai bao giờ — nó sống ở tầng 2."
-              }
+              },
+              "conceptId": "m18-trung-dai"
             }
           ]
         },
@@ -1627,7 +1634,8 @@
               },
               "solution": {
                 "vi": "Thiếu conditional forwarder. Ping số thông chứng tỏ đường VPN ổn — tuyến tĩnh không thiếu; còn tên nội bộ của đối tác thì Internet không biết nên đưa lên DNS công cộng là vô ích. Phải có luật hỏi đúng nhà: tên doitac.vn chuyển thẳng tới DNS của đối tác."
-              }
+              },
+              "conceptId": "m18-cond-forwarder"
             }
           ]
         },

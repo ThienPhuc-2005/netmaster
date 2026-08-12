@@ -7,6 +7,7 @@
 // "có thêm module". Chỉ nội dung SAI mới được làm đỏ.
 
 import { describe, expect, it } from 'vitest'
+import { conceptIdsInLesson } from '../engine/contentPure'
 import { typedAnswerMatches } from '../engine/grading/normalize'
 import { lt } from '../engine/ltext'
 import { MASTERY_DRAW_COUNT, isAnchorQuestion } from '../engine/masteryPool'
@@ -746,5 +747,41 @@ describe('bộ nội dung', () => {
         }
       }
     }
+  })
+})
+
+// Thẻ khái niệm của câu tập (ý N5, khối 21.58) — phần TÙY CHỌN nhưng khai
+// sai còn tệ hơn không khai: phiên "luyện thứ hay quên" sẽ lôi câu này ra
+// cho một khái niệm nó không hề luyện.
+describe('thẻ khái niệm trên câu tập', () => {
+  const modules = loadModules()
+
+  it('thẻ nào cũng trỏ vào khái niệm CHÍNH BÀI ĐÓ dạy', () => {
+    const pham: string[] = []
+    for (const m of modules) {
+      for (const l of m.lessons) {
+        const day = new Set(conceptIdsInLesson(l))
+        for (const e of l.steps[3].exercises) {
+          if (e.conceptId !== undefined && !day.has(e.conceptId)) {
+            pham.push(`${e.question.id} → ${e.conceptId} (bài ${l.id} không dạy)`)
+          }
+        }
+      }
+    }
+    expect(pham).toEqual([])
+  })
+
+  it('có thật sự gắn thẻ, không phải tính năng rỗng dữ liệu', () => {
+    const daGan = modules.flatMap((m) =>
+      m.lessons.flatMap((l) => l.steps[3].exercises.filter((e) => e.conceptId !== undefined)),
+    )
+    expect(daGan.length, 'gắn thẻ mà không câu nào có thẻ thì luật lọc chỉ là code chết').toBeGreaterThan(50)
+  })
+
+  it('bỏ trống vẫn HỢP LỆ — câu bắc cầu hai khái niệm không được gán bừa', () => {
+    const chuaGan = modules.flatMap((m) =>
+      m.lessons.flatMap((l) => l.steps[3].exercises.filter((e) => e.conceptId === undefined)),
+    )
+    expect(chuaGan.length, 'không còn câu nào bỏ trống nghĩa là đã gán bừa cả câu bắc cầu').toBeGreaterThan(0)
   })
 })

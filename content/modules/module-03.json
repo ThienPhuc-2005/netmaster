@@ -438,7 +438,8 @@
                 "hintTopic": { "vi": "số bit 1 mà con số sau dấu gạch chéo mô tả" }
               },
               "hint": { "vi": "16 bit = đúng 2 octet đầu toàn bit 1, tức hai ô 255; hai ô còn lại là 0." },
-              "solution": { "vi": "/16 ↔ 255.255.0.0 — 16 bit đầu là phần mạng, tức 2 octet đầu \"đầy\" 255, hai octet sau thuộc phần host." }
+              "solution": { "vi": "/16 ↔ 255.255.0.0 — 16 bit đầu là phần mạng, tức 2 octet đầu \"đầy\" 255, hai octet sau thuộc phần host." },
+              "conceptId": "cidr"
             },
             {
               "question": {
@@ -449,7 +450,8 @@
                 "hintTopic": { "vi": "octet nào của mask mang giá trị 255" }
               },
               "hint": { "vi": "Đếm xem trong mask có bao nhiêu ô mang giá trị 255 — mỗi ô 255 \"khóa\" một octet vào phần mạng." },
-              "solution": { "vi": "3 octet đầu — ba ô 255 của mask đánh dấu ba octet đầu là khu phố, octet cuối là số nhà." }
+              "solution": { "vi": "3 octet đầu — ba ô 255 của mask đánh dấu ba octet đầu là khu phố, octet cuối là số nhà." },
+              "conceptId": "subnet-mask"
             }
           ]
         },

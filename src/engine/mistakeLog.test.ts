@@ -407,3 +407,56 @@ describe('luyenThuHayQuen — phiên luyện lại thứ hay quên (khối 21.52
     expect(luyenThuHayQuen(modules, cards).length).toBeLessThanOrEqual(WEAK_DRILL_CAP)
   })
 })
+
+describe('luyenThuHayQuen ưu tiên câu TRÚNG ĐÍCH (ý N5, khối 21.58)', () => {
+  const modules = loadModules()
+
+  /** Một bài có ít nhất một câu đã khai thẻ khái niệm. */
+  function baiCoThe() {
+    for (const m of modules) {
+      for (const l of m.lessons) {
+        const co = l.steps[3].exercises.find((e) => e.conceptId !== undefined)
+        if (co !== undefined && l.steps[3].exercises.length > 1) {
+          return { moduleId: m.id, lesson: l, conceptId: co.conceptId! }
+        }
+      }
+    }
+    throw new Error('nội dung phải có ít nhất một bài nhiều câu mà có câu khai thẻ')
+  }
+
+  const the = (conceptId: string, moduleId: string) => ({
+    conceptId,
+    moduleId,
+    intervalIndex: 1 as const,
+    dueDate: '2026-08-20',
+    lapses: 3,
+    createdOn: '2026-06-01',
+    lastReviewedOn: null,
+  })
+
+  it('quên khái niệm nào thì chỉ lấy câu khai ĐÚNG khái niệm đó', () => {
+    const { moduleId, lesson, conceptId } = baiCoThe()
+    const items = luyenThuHayQuen(modules, [the(conceptId, moduleId)])
+    expect(items.length).toBeGreaterThan(0)
+    const idTrungDich = lesson.steps[3].exercises
+      .filter((e) => e.conceptId === conceptId)
+      .map((e) => e.question.id)
+    expect(items.map((i) => i.question.id).sort()).toEqual(idTrungDich.sort())
+  })
+
+  it('bài KHÔNG câu nào khai thẻ thì lùi về lấy cả bài — thà rộng còn hơn rỗng', () => {
+    // Dựng một bài giả không có thẻ nào: lấy bài thật rồi bóc hết conceptId.
+    const { moduleId, lesson, conceptId } = baiCoThe()
+    const boThe = {
+      ...lesson,
+      steps: lesson.steps.map((s, i) =>
+        i === 3 ? { ...s, exercises: (s as typeof lesson.steps[3]).exercises.map((e) => ({ ...e, conceptId: undefined })) } : s,
+      ),
+    } as typeof lesson
+    const gia = modules.map((m) =>
+      m.id === moduleId ? { ...m, lessons: m.lessons.map((l) => (l.id === lesson.id ? boThe : l)) } : m,
+    )
+    const items = luyenThuHayQuen(gia, [the(conceptId, moduleId)])
+    expect(items.length).toBe(lesson.steps[3].exercises.length)
+  })
+})

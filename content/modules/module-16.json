@@ -275,7 +275,8 @@
               },
               "solution": {
                 "vi": "Bốn. Router nối trực tiếp mạng của mình nên chỉ còn bốn mạng của người khác phải chỉ đường — và cả nhóm năm router gộp lại là hai mươi dòng phải gõ đúng."
-              }
+              },
+              "conceptId": "m16-gioi-han-tinh"
             },
             {
               "question": {
@@ -297,7 +298,8 @@
               },
               "solution": {
                 "vi": "Nó vẫn đẩy gói tin vào lối cũ. Tuyến tĩnh là lời của con người, và chỉ con người sửa được — router chẳng tự dò lối vòng, cũng chẳng tự xóa dòng bạn đã gõ."
-              }
+              },
+              "conceptId": "m16-gioi-han-tinh"
             }
           ]
         },
@@ -532,7 +534,8 @@
               },
               "solution": {
                 "vi": "Init. Nghe được tiếng chào nhưng tên mình còn vắng trong đó nghĩa là bên kia chưa nghe thấy mình — tiếng chào mới đi được một chiều. Có tên mình trong đó thì mới lên 2-Way."
-              }
+              },
+              "conceptId": "m16-lam-quen"
             }
           ]
         },
@@ -770,7 +773,8 @@
               },
               "solution": {
                 "vi": "Wildcard mask, tức mặt nạ đảo. Với 0.0.0.255 thì ba nhóm số đầu phải khớp, nhóm cuối tùy ý — nên câu network 192.168.2.0 0.0.0.255 tóm đúng mọi cổng thuộc mạng 192.168.2.0/24."
-              }
+              },
+              "conceptId": "m16-area-0"
             }
           ]
         },
@@ -1005,7 +1009,8 @@
               },
               "solution": {
                 "vi": "show ip route. Dòng cần tìm là O 192.168.3.0/24 [110/1] via 10.0.13.3, g2 — chữ O nghĩa là học từ OSPF, số 110 là mức tin cậy của OSPF, cost 1 vì đi thẳng một chặng qua cổng g2, chứ không vòng qua Đà Nẵng cho tốn hai chặng."
-              }
+              },
+              "conceptId": "m16-bang-tu-hoc"
             },
             {
               "question": {
@@ -1022,7 +1027,8 @@
               },
               "solution": {
                 "vi": "Chữ O. Trong cùng bảng đó, chữ C là mạng nối trực tiếp và chữ S là tuyến tĩnh bạn gõ tay."
-              }
+              },
+              "conceptId": "m16-bang-tu-hoc"
             }
           ]
         },

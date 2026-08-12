@@ -76,7 +76,8 @@
                 "hintTopic": { "vi": "đánh đổi giữa đi xa và chạy nhanh" }
               },
               "hint": { "vi": "Camera cần sóng TỚI nơi trước đã — tốc độ chỉ là chuyện tính sau." },
-              "solution": { "vi": "2.4 GHz: tần số thấp vang xa, xuyên tường tốt nhất — đúng việc cho thiết bị ở xa router." }
+              "solution": { "vi": "2.4 GHz: tần số thấp vang xa, xuyên tường tốt nhất — đúng việc cho thiết bị ở xa router." },
+              "conceptId": "m8-bang-tan"
             },
             {
               "question": {
@@ -87,7 +88,8 @@
                 "hintTopic": { "vi": "đứng gần thì nhược điểm nào biến mất" }
               },
               "hint": { "vi": "Đứng gần thì nhược điểm của băng tần cao biến mất, chỉ còn lại ưu điểm." },
-              "solution": { "vi": "Tần số cao (5 hoặc 6 GHz): chở được nhiều dữ liệu; ngồi gần nên không sợ sóng đuối sức." }
+              "solution": { "vi": "Tần số cao (5 hoặc 6 GHz): chở được nhiều dữ liệu; ngồi gần nên không sợ sóng đuối sức." },
+              "conceptId": "m8-bang-tan"
             }
           ]
         },
@@ -189,7 +191,8 @@
                 "hintTopic": { "vi": "chuyến xe buýt nhiều ghế" }
               },
               "hint": { "vi": "Nghĩ về chuyến xe chia được nhiều ghế cho nhiều khách trong một lượt chạy." },
-              "solution": { "vi": "Wi-Fi 6 chia một lượt phát cho nhiều thiết bị cùng lúc — nhà đông thiết bị hưởng lợi rõ nhất." }
+              "solution": { "vi": "Wi-Fi 6 chia một lượt phát cho nhiều thiết bị cùng lúc — nhà đông thiết bị hưởng lợi rõ nhất." },
+              "conceptId": "m8-chuan-wifi"
             },
             {
               "question": {
@@ -200,7 +203,8 @@
                 "hintTopic": { "vi": "chữ E mở thêm một làn đường" }
               },
               "hint": { "vi": "Chính là băng tần mới toanh, vắng nhất trong bài trước." },
-              "solution": { "vi": "Băng 6 GHz — Wi-Fi 6E = Wi-Fi 6 cộng quyền vào làn 6 GHz còn vắng." }
+              "solution": { "vi": "Băng 6 GHz — Wi-Fi 6E = Wi-Fi 6 cộng quyền vào làn 6 GHz còn vắng." },
+              "conceptId": "m8-wifi-6e-7"
             }
           ]
         },
@@ -302,7 +306,8 @@
                 "hintTopic": { "vi": "thứ kẻ xấu chỉ cần thu đúng một lần" }
               },
               "hint": { "vi": "Kẻ tấn công không đoán trên router — hắn đoán ở nhà hắn, trên thứ đã thu được." },
-              "solution": { "vi": "Thu lại cú bắt tay lúc thiết bị vào mạng rồi dò mật khẩu offline — router không hề biết nên không thể chặn." }
+              "solution": { "vi": "Thu lại cú bắt tay lúc thiết bị vào mạng rồi dò mật khẩu offline — router không hề biết nên không thể chặn." },
+              "conceptId": "m8-wpa2"
             },
             {
               "question": {
@@ -313,7 +318,8 @@
                 "hintTopic": { "vi": "đời kế tiếp của WPA2" }
               },
               "hint": { "vi": "Tăng con số sau chữ WPA lên một." },
-              "solution": { "vi": "WPA3 — bắt tay kiểu mới chặn được kiểu dò offline; router và thiết bị đời mới đều hỗ trợ." }
+              "solution": { "vi": "WPA3 — bắt tay kiểu mới chặn được kiểu dò offline; router và thiết bị đời mới đều hỗ trợ." },
+              "conceptId": "m8-wpa3"
             }
           ]
         },
@@ -415,7 +421,8 @@
                 "hintTopic": { "vi": "cụm mở đầu của biệt danh trong phòng" }
               },
               "hint": { "vi": "Biệt danh trong phòng luôn mở đầu bằng fe80." },
-              "solution": { "vi": "fe80::1 là link-local. Còn 192.168.1.10 là IPv4 riêng (Module 3), và 2001:db8::5 là IPv6 công cộng." }
+              "solution": { "vi": "fe80::1 là link-local. Còn 192.168.1.10 là IPv4 riêng (Module 3), và 2001:db8::5 là IPv6 công cộng." },
+              "conceptId": "m8-link-local"
             },
             {
               "question": {
@@ -539,7 +546,8 @@
                 "hintTopic": { "vi": "năm chữ cái, mở đầu bằng chữ S của \"stateless\"" }
               },
               "hint": { "vi": "Viết tắt của Stateless Address Autoconfiguration — năm chữ cái." },
-              "solution": { "vi": "SLAAC — Stateless (không ai giữ sổ) Address Autoconfiguration (máy tự cấu hình địa chỉ)." }
+              "solution": { "vi": "SLAAC — Stateless (không ai giữ sổ) Address Autoconfiguration (máy tự cấu hình địa chỉ)." },
+              "conceptId": "m8-slaac"
             },
             {
               "question": {
@@ -555,7 +563,8 @@
                 "hintTopic": { "vi": "bên nào có người giữ sổ" }
               },
               "hint": { "vi": "Nhớ tờ giấy thuê có thời hạn ở Module 6 — ai đang giữ tờ đó?" },
-              "solution": { "vi": "DHCP là cơ chế CÓ SỔ SÁCH: máy chủ nhớ từng hợp đồng thuê. SLAAC vô sổ — máy tự ghép, mạng nhẹ việc nhưng không ai quản danh sách." }
+              "solution": { "vi": "DHCP là cơ chế CÓ SỔ SÁCH: máy chủ nhớ từng hợp đồng thuê. SLAAC vô sổ — máy tự ghép, mạng nhẹ việc nhưng không ai quản danh sách." },
+              "conceptId": "m8-slaac"
             }
           ]
         },
