@@ -8,7 +8,7 @@ build qua. **Toàn bộ biên bản hội đồng trung cấp đã XỬ XONG (08
 15/15 việc mục 6 (khối 20.2, commit `1d04c0b`) + trọn LƯỢT DỌN 52 phát
 hiện P2 mục 5 (khối 20.3).** Nội dung và engine không còn việc nào treo;
 các khối gần đây đều là ý lấy từ kho `Y-TUONG.md`.
-Việc kế tiếp là của CHỦ DỰ ÁN: ra lệnh commit khối 21.60. **Kho ý tưởng SẠCH — không còn ý nào chờ duyệt.** **Kho ý tưởng còn 2 ý chờ duyệt (N3, N5).** **Kho ý tưởng còn 4 ý chờ duyệt (N1, N2, N3, N5).** **Kho ý tưởng còn 5 ý chờ duyệt (mục N).** **Cả 17 phát
+Khối 21.60 đã commit và đẩy lên GitHub. **Kho ý tưởng SẠCH — không còn ý nào chờ duyệt.** **Kho ý tưởng còn 2 ý chờ duyệt (N3, N5).** **Kho ý tưởng còn 4 ý chờ duyệt (N1, N2, N3, N5).** **Kho ý tưởng còn 5 ý chờ duyệt (mục N).** **Cả 17 phát
 hiện của BA lượt rà soát (mục J 8 ý + mục K 6 ý + mục L 3 ý) đã xử xong
 hết; kho ý tưởng SẠCH.** Việc duy nhất còn treo là tuyển người cho các
 buổi test người thật (hai dòng DoD).
@@ -31,7 +31,7 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (19) M21 capstone + màn tốt nghiệp | XONG |
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
-**KHỐI MỚI NHẤT — 21.60 (08-12), đang ở working tree chờ lệnh commit:**
+**KHỐI MỚI NHẤT — 21.60 (08-12), đã commit `f137cf8`:**
 **Lượt rà soát thứ năm: BÀN PHÍM + TRÌNH ĐỌC MÀN HÌNH — 2 phát hiện, chữa cả hai.**
 - **P1 — 18 link trên trang Học đọc y hệt nhau.** 18 cửa "Mình biết phần
   này rồi — thi vượt luôn", 4 nút "Bắt đầu", 3 link "Xem lại", không cái
