@@ -8,7 +8,7 @@ build qua. **Toàn bộ biên bản hội đồng trung cấp đã XỬ XONG (08
 15/15 việc mục 6 (khối 20.2, commit `1d04c0b`) + trọn LƯỢT DỌN 52 phát
 hiện P2 mục 5 (khối 20.3).** Nội dung và engine không còn việc nào treo;
 các khối gần đây đều là ý lấy từ kho `Y-TUONG.md`.
-Việc kế tiếp là của CHỦ DỰ ÁN: ra lệnh commit khối 21.58. **Kho ý tưởng SẠCH — không còn ý nào chờ duyệt.** **Kho ý tưởng còn 2 ý chờ duyệt (N3, N5).** **Kho ý tưởng còn 4 ý chờ duyệt (N1, N2, N3, N5).** **Kho ý tưởng còn 5 ý chờ duyệt (mục N).** **Cả 17 phát
+Khối 21.58 đã commit và đẩy lên GitHub. **Kho ý tưởng SẠCH — không còn ý nào chờ duyệt.** **Kho ý tưởng còn 2 ý chờ duyệt (N3, N5).** **Kho ý tưởng còn 4 ý chờ duyệt (N1, N2, N3, N5).** **Kho ý tưởng còn 5 ý chờ duyệt (mục N).** **Cả 17 phát
 hiện của BA lượt rà soát (mục J 8 ý + mục K 6 ý + mục L 3 ý) đã xử xong
 hết; kho ý tưởng SẠCH.** Việc duy nhất còn treo là tuyển người cho các
 buổi test người thật (hai dòng DoD).
@@ -31,7 +31,7 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (19) M21 capstone + màn tốt nghiệp | XONG |
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
-**KHỐI MỚI NHẤT — 21.58 (08-12), đang ở working tree chờ lệnh commit:**
+**KHỐI MỚI NHẤT — 21.58 (08-12), đã commit `2375042`:**
 **Ý N5 — phiên "luyện thứ hay quên" bắn trúng đích. KHO Ý TƯỞNG SẠCH.**
 - **Đo trước khi làm, và con số đáng ghi lại**: 108 bài / 202 câu tập, tức
   trung bình 1,87 câu mỗi bài. Chỉ **43 bài (87 câu)** có ≥2 câu VÀ ≥2 khái
