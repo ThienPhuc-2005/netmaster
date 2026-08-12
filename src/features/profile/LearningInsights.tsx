@@ -14,6 +14,7 @@ import { lt } from '../../engine/ltext'
 import type { MistakeAnalysis, MistakeBucket, WeakSpot, WeekActivity } from '../../engine/mistakeLog'
 import type { ModuleMemory } from '../../engine/freshness'
 import type { DongSoSanh, LatCatThang } from '../../engine/soSanhThang'
+import { QUANG_DAI_PHUT, type QuangTuan } from '../../engine/quangHoc'
 import type { Module, Question } from '../../engine/contentSchema'
 import type { DisputedAnswer } from '../../store/progress'
 import { useT, type TFunc } from '../../i18n'
@@ -134,7 +135,40 @@ const PAD_X = 6
 const PAD_TOP = 16
 const BASE = H - 18
 
-export function WeeklyRhythm({ weeks }: { weeks: WeekActivity[] }) {
+/**
+ * Quãng ngồi liền dài nhất trong tuần — một dòng đặt trong thẻ nếp học.
+ *
+ * GIỌNG là phần khó nhất ở đây, và nó phải nhất quán với lời nhắc nghỉ:
+ * app vừa rủ người ta nghỉ sau 25 phút thì không thể quay lại vỗ tay vì
+ * họ ngồi liền 90 phút. Nên đây là DỮ LIỆU chứ không phải thành tích —
+ * không "kỷ lục mới!", không huy hiệu, và quãng vượt ngưỡng thì nói
+ * thẳng cái giá của nó thay vì khen.
+ *
+ * Đặt cạnh đồ thị 8 tuần vì cùng một câu hỏi: nếp học của mình ra sao.
+ * Đồ thị đo BỀ RỘNG (tuần nào làm được mấy việc), dòng này đo BỀ SÂU của
+ * một lần ngồi — hai mặt của cùng một thói quen.
+ */
+function QuangNgoiLien({ tuanNay, tuanTruoc }: { tuanNay: QuangTuan; tuanTruoc: QuangTuan }) {
+  const t = useT()
+  if (tuanNay.phut === 0) return null
+  return (
+    <p className="text-xs leading-relaxed text-ink-muted">
+      <span className="font-medium text-ink">{t('profile.quangTitle', { phut: tuanNay.phut })}</span>{' '}
+      {tuanTruoc.phut > 0 && t('profile.quangTuanTruoc', { phut: tuanTruoc.phut })}
+      {tuanNay.phut >= QUANG_DAI_PHUT && <span className="text-warn"> {t('profile.quangDai')}</span>}
+    </p>
+  )
+}
+
+export function WeeklyRhythm({
+  weeks,
+  quangTuanNay,
+  quangTuanTruoc,
+}: {
+  weeks: WeekActivity[]
+  quangTuanNay: QuangTuan
+  quangTuanTruoc: QuangTuan
+}) {
   const t = useT()
   const titleId = useId()
   const busiest = Math.max(...weeks.map((w) => w.total), 0)
@@ -157,6 +191,7 @@ export function WeeklyRhythm({ weeks }: { weeks: WeekActivity[] }) {
         </h2>
       </div>
       <p className="text-xs leading-relaxed text-ink-muted">{t('profile.rhythmIntro')}</p>
+      <QuangNgoiLien tuanNay={quangTuanNay} tuanTruoc={quangTuanTruoc} />
 
       <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-labelledby={titleId} className="w-full">
         <title id={titleId}>{t('profile.rhythmTitle')}</title>

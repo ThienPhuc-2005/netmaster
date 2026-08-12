@@ -13,7 +13,8 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { cleanup, fireEvent, render, screen, within } from '@testing-library/react'
 import { MemoryRouter } from 'react-router'
 import { ProfilePage } from './ProfilePage'
-import { useProgress } from '../../store/progress'
+import { todayIso, useProgress } from '../../store/progress'
+import { addDays } from '../../engine/dates'
 import { loadModules } from '../../content'
 
 const INITIAL = useProgress.getInitialState()
@@ -150,6 +151,46 @@ describe('so với chính mình tháng trước (I3)', () => {
     useProgress.setState({ latCatThang: [mocCu('2026-01', 2, 2)] })
     renderProfile()
     expect(screen.getByText('chưa đủ mẫu để nói')).toBeTruthy()
+  })
+})
+
+describe('quãng ngồi liền dài nhất trong tuần', () => {
+  /** Thẻ nếp học chỉ dựng khi có việc đã làm — cấp cho nó một tuần có bài. */
+  function coNepHoc() {
+    useProgress.setState({ completedLessons: { 'm1-bai-1': todayIso() } })
+  }
+
+  it('có kỷ lục thì nói ra kèm chỗ tựa là tuần trước', () => {
+    coNepHoc()
+    useProgress.setState({
+      quangHoc: { [todayIso()]: 34, [addDays(todayIso(), -7)]: 52 },
+    })
+    renderProfile()
+    expect(screen.getByText(/ngồi liền lâu nhất 34 phút/)).toBeTruthy()
+    expect(screen.getByText(/Tuần trước là 52 phút/)).toBeTruthy()
+  })
+
+  it('quãng dài quá thì nói thẳng cái giá, KHÔNG khen', () => {
+    // App vừa rủ người ta nghỉ sau 25 phút thì không thể quay lại vỗ tay
+    // vì họ ngồi liền 90 phút.
+    coNepHoc()
+    useProgress.setState({ quangHoc: { [todayIso()]: 90 } })
+    renderProfile()
+    expect(screen.getByText(/đè lên phần trước/)).toBeTruthy()
+  })
+
+  it('quãng vừa phải thì KHÔNG kèm lời nhắc nào', () => {
+    coNepHoc()
+    useProgress.setState({ quangHoc: { [todayIso()]: 28 } })
+    renderProfile()
+    expect(screen.queryByText(/đè lên phần trước/)).toBeNull()
+  })
+
+  it('tuần này chưa ngồi buổi nào thì không dựng dòng rỗng', () => {
+    coNepHoc()
+    useProgress.setState({ quangHoc: { [addDays(todayIso(), -7)]: 41 } })
+    renderProfile()
+    expect(screen.queryByText(/ngồi liền lâu nhất/)).toBeNull()
   })
 })
 

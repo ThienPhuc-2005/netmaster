@@ -731,6 +731,9 @@
       "ps": "Terminal PowerShell",
       "cli": "Console thiết bị"
     },
+    "quangTitle": "Tuần này bạn ngồi liền lâu nhất {phut} phút.",
+    "quangTuanTruoc": "Tuần trước là {phut} phút.",
+    "quangDai": "Quãng dài thế thì phần học sau bắt đầu đè lên phần trước — ngồi 25-30 phút rồi đứng dậy vài phút là nhịp dễ nhớ hơn.",
     "thangTitle": "So với chính mình tháng trước",
     "thangIntro": "Cùng những dạng câu ấy, so với mốc app cất ngày {ngay}. Đây là tỉ lệ vấp TÍNH DỒN từ đầu khóa nên nó nhích chậm — nhích được một chút đã là một quãng dài.",
     "thangCho": "App vừa cất mốc số liệu của tháng này. Sang tháng sau, chỗ này sẽ nói dạng câu nào bạn đã lên.",

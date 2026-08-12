@@ -76,6 +76,23 @@ export function soPhutDaHoc(state: TrangThaiNhacNghi, bayGio: number): number {
 }
 
 /**
+ * Quãng đo tới LẦN CHẠM CUỐI, không tính tới bây giờ.
+ *
+ * Dùng khi GHI LẠI kỷ lục quãng ngồi liền (`engine/quangHoc.ts`): để tab
+ * mở rồi đi ăn cơm thì `bayGio - batDau` cứ phình ra, và người học quay
+ * lại thấy "tuần này bạn ngồi liền 180 phút" — một kỷ lục chưa từng xảy
+ * ra. Đo tới lần chạm cuối thì bỏ đi bao lâu con số cũng đứng yên.
+ *
+ * Lời nhắc nghỉ thì vẫn dùng `soPhutDaHoc` (tính tới bây giờ): ở đó việc
+ * cần biết là "đã ngồi bao lâu rồi", và người vắng mặt thì có nhắc cũng
+ * không ai đọc — luật "nghỉ rồi thì không nhắc" lo phần đó.
+ */
+export function soPhutDenChamCuoi(state: TrangThaiNhacNghi): number {
+  if (state.batDau === null || state.chamCuoi === null) return 0
+  return Math.max(0, Math.floor((state.chamCuoi - state.batDau) / PHUT))
+}
+
+/**
  * Đã đến lúc nói chưa?
  *
  * Cố ý KHÔNG tự xét chuyện người học đang bận gì — chỗ nào không nên

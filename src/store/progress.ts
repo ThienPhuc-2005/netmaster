@@ -49,6 +49,7 @@ import { sessionStats } from '../engine/subnet/drill'
 import { chupDinhKy, chupTruocNangCap, PROGRESS_KEY } from './anhChup'
 import type { MistakeAnalysis } from '../engine/mistakeLog'
 import { latCatTuPhanTich, nenChupThang, themLatCat, thangCua, type LatCatThang } from '../engine/soSanhThang'
+import { ghiQuang, type SoQuangHoc } from '../engine/quangHoc'
 
 /** "Hôm nay" theo đồng hồ máy người học — engine không tự đọc, store cấp. */
 export function todayIso(): ISODate {
@@ -75,7 +76,7 @@ export const PRACTICE_DRAFT_CAP = 12
  * đối chiếu với nó để từ chối file đến từ bản app mới hơn (migrate chỉ
  * biết đi tới, không biết đi lùi).
  */
-export const PROGRESS_PERSIST_VERSION = 7
+export const PROGRESS_PERSIST_VERSION = 8
 
 /** Một dòng trong nhật ký terminal PowerShell (UI dựng lại y nguyên). */
 export interface PsTranscriptEntry {
@@ -244,6 +245,14 @@ export interface ProgressState {
    */
   latCatThang: LatCatThang[]
   /**
+   * ngày -> quãng ngồi học liền DÀI NHẤT ngày đó, tính bằng phút.
+   *
+   * `nhacNghi` đã đo quãng này để biết lúc nào nên rủ nghỉ, nhưng nó tan
+   * theo lần tải trang; đây là chỗ giữ lại kỷ lục để trang Hồ sơ đọc
+   * được nếp ngồi của người học theo tuần.
+   */
+  quangHoc: SoQuangHoc
+  /**
    * caseQuestionId -> ngày CHỮA KHỎI lần đầu ở tab Phòng khám (Phase 3
    * hạng mục 9 — phòng luyện song song). Chỉ lần đầu mỗi ca mới cộng
    * XP/streak; làm lại tự do không cộng (nguyên tắc 5, chặn farm).
@@ -320,6 +329,11 @@ export interface ProgressState {
    * tích trong tay; store cấp phần THỜI GIAN THẬT, engine giữ luật.
    */
   ghiLatCatThang: (analysis: MistakeAnalysis) => void
+  /**
+   * Báo quãng ngồi học liền hiện tại (phút). Gọi mỗi nhịp đồng hồ của
+   * `NhacNghi`; chỉ ngày nào lập kỷ lục mới thì store mới ghi.
+   */
+  ghiQuangHoc: (phut: number) => void
 
   /** Tick/bỏ tick một bước của checklist lab VMware. */
   toggleVmLabStep: (stepId: string) => void
@@ -447,6 +461,7 @@ export const useProgress = create<ProgressState>()(
         disputedAnswers: [],
         aoGiacQuenMat: {},
         latCatThang: [],
+        quangHoc: {},
         vmLabDone: {},
         clinicSolved: {},
         practiceDrafts: {},
@@ -670,6 +685,16 @@ export const useProgress = create<ProgressState>()(
         // gọi hàm này, mà một `set` rỗng vẫn đánh thức persist và ghi đè
         // nguyên khối tiến độ xuống localStorage. Không có mốc mới thì
         // KHÔNG được đụng vào ổ đĩa của người ta.
+        // Cùng luật với `ghiLatCatThang`: hàm này được gọi mỗi 30 giây
+        // suốt buổi học, nên KHÔNG có kỷ lục mới thì không được `set` —
+        // một `set` rỗng vẫn đánh thức persist và ghi cả khối tiến độ
+        // xuống ổ đĩa hai lần mỗi phút.
+        ghiQuangHoc: (phut) => {
+          const dang = get().quangHoc
+          const sau = ghiQuang(dang, todayIso(), phut)
+          if (sau !== dang) set({ quangHoc: sau })
+        },
+
         ghiLatCatThang: (analysis) => {
           // Chưa làm xong câu nào thì chưa có gì để cất — một mốc rỗng
           // sau này sẽ thành "tháng trước bạn vấp 0%", một lời so sánh
@@ -873,7 +898,15 @@ export const useProgress = create<ProgressState>()(
         if (version <= 6) {
           state = { ...state, latCatThang: [] }
         }
-        if (version <= 7) return state
+        // v7 → v8 (quãng ngồi liền dài nhất trong tuần, 08-12): thêm sổ
+        // kỷ lục theo ngày, RỖNG. Quãng ngồi trước đây chỉ sống trong bộ
+        // nhớ một lần tải trang, không có gì để dựng lại — và suy nó từ
+        // `completedLessons` (mỗi bài một ngày) là bịa ra một con số
+        // người học chưa từng ngồi.
+        if (version <= 7) {
+          state = { ...state, quangHoc: {} }
+        }
+        if (version <= 8) return state
         // Version lạ (mới hơn code — người dùng lùi bản app): giữ nguyên
         // và để shallow-merge với default đỡ phần thiếu, còn hơn vứt trắng.
         return persisted as ProgressState

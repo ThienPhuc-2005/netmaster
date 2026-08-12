@@ -391,3 +391,35 @@ describe('mốc bảng phân tích theo tháng (kho ý tưởng I3)', () => {
     expect(localStorage.getItem('netmaster-progress')).toBeNull()
   })
 })
+
+describe('kỷ lục quãng ngồi liền (cụm hồ sơ)', () => {
+  it('ghi quãng của hôm nay, và chỉ ghi khi DÀI HƠN kỷ lục trong ngày', () => {
+    const s = () => useProgress.getState()
+    s().ghiQuangHoc(31)
+    expect(s().quangHoc[todayIso()]).toBe(31)
+
+    // Ngồi xuống lần thứ hai trong ngày, quãng ngắn hơn: kỷ lục phải ĐỨNG
+    // YÊN, không thì con số của một ngày tụt xuống mỗi buổi chiều.
+    s().ghiQuangHoc(8)
+    expect(s().quangHoc[todayIso()]).toBe(31)
+
+    s().ghiQuangHoc(44)
+    expect(s().quangHoc[todayIso()]).toBe(44)
+  })
+
+  it('không có kỷ lục mới thì KHÔNG ghi gì xuống localStorage', () => {
+    // Hàm này chạy mỗi 30 giây suốt buổi học — một `set` rỗng vẫn đánh
+    // thức persist và ghi cả khối tiến độ xuống ổ đĩa hai lần mỗi phút.
+    const s = () => useProgress.getState()
+    s().ghiQuangHoc(20)
+    localStorage.removeItem('netmaster-progress')
+    s().ghiQuangHoc(20)
+    s().ghiQuangHoc(3)
+    expect(localStorage.getItem('netmaster-progress')).toBeNull()
+  })
+
+  it('quãng 0 phút (vừa mở app) không tạo bản ghi nào', () => {
+    useProgress.getState().ghiQuangHoc(0)
+    expect(useProgress.getState().quangHoc).toEqual({})
+  })
+})

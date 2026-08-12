@@ -17,6 +17,7 @@ import { useLocation } from 'react-router'
 import { Coffee, X } from 'lucide-react'
 import { useT } from '../i18n'
 import { useSettings } from '../store/settings'
+import { useProgress } from '../store/progress'
 import {
   chamMot,
   daNhac,
@@ -24,6 +25,7 @@ import {
   HIEN_GIAY,
   HOC_LIEN_TUC_PHUT,
   soPhutDaHoc,
+  soPhutDenChamCuoi,
   TRANG_THAI_DAU,
   type TrangThaiNhacNghi,
 } from '../engine/nhacNghi'
@@ -43,12 +45,17 @@ export function NhacNghi() {
   const trangThai = useRef<TrangThaiNhacNghi>(TRANG_THAI_DAU)
   const [dangHien, setDangHien] = useState(false)
   const [soPhut, setSoPhut] = useState(HOC_LIEN_TUC_PHUT)
+  const ghiQuangHoc = useProgress((s) => s.ghiQuangHoc)
 
   // Nghe cử động. Dùng sự kiện ở tầng document với `capture` để bắt được
   // cả thao tác trong các ô nhập của phòng lab/terminal — chúng nuốt sự
   // kiện nổi bọt, mà gõ lệnh trong terminal thì đúng là đang học.
+  //
+  // KHÔNG gác theo cài đặt `nhacNghi`: quãng ngồi liền còn là số liệu của
+  // trang Hồ sơ ("tuần này ngồi liền lâu nhất N phút"). Tắt lời nhắc là
+  // tắt LỜI NHẮC, không phải tắt cái đồng hồ — người tắt nhắc vẫn có
+  // quyền đọc nếp ngồi của mình.
   useEffect(() => {
-    if (!bat) return
     const cham = () => {
       trangThai.current = chamMot(trangThai.current, Date.now())
     }
@@ -58,15 +65,16 @@ export function NhacNghi() {
     return () => {
       for (const ten of loai) document.removeEventListener(ten, cham, true)
     }
-  }, [bat, pathname])
+  }, [pathname])
 
   useEffect(() => {
-    if (!bat) {
-      setDangHien(false)
-      return
-    }
+    if (!bat) setDangHien(false)
     const soi = () => {
       const bayGio = Date.now()
+      // Ghi kỷ lục trước, và ghi bằng quãng tính tới LẦN CHẠM CUỐI — xem
+      // `soPhutDenChamCuoi`. Store tự bỏ qua khi chưa phá kỷ lục trong ngày.
+      ghiQuangHoc(soPhutDenChamCuoi(trangThai.current))
+      if (!bat) return
       if (!denLucNhac(trangThai.current, bayGio) || !duocPhepNhac(pathname)) return
       setSoPhut(soPhutDaHoc(trangThai.current, bayGio))
       trangThai.current = daNhac(trangThai.current, bayGio)
@@ -74,7 +82,7 @@ export function NhacNghi() {
     }
     const id = setInterval(soi, NHIP_MS)
     return () => clearInterval(id)
-  }, [bat, pathname])
+  }, [bat, pathname, ghiQuangHoc])
 
   // TỰ LUI sau `HIEN_GIAY` giây — xem lý do ở engine. Đếm bằng thời gian
   // TRANG ĐANG HIỆN, không phải thời gian trôi: người nghe lời rủ mà

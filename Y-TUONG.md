@@ -140,6 +140,15 @@ Trạng thái: ☐ chờ duyệt · ✅ đã làm · ✗ đã bàn và bỏ (gi�
   tự đi, nút tắt vẫn còn. Đếm bằng thời gian TRANG ĐANG HIỆN chứ không
   phải thời gian trôi — người nghe rủ mà đứng dậy thật thì tab nằm ở nền,
   đếm tiếp là lời nhắc tan đúng lúc không ai nhìn.
+- ✅ **F6. Quãng ngồi liền dài nhất trong tuần** — ĐÃ LÀM (khối 21.40):
+  một dòng trong thẻ nếp học, "tuần này 34 phút · tuần trước 52 phút".
+  Đồ thị 8 tuần đo bề RỘNG, dòng này đo bề SÂU của một lần ngồi.
+  Phần khó là GIỌNG chứ không phải phép đo: app vừa rủ người ta nghỉ sau
+  25 phút thì không thể quay lại vỗ tay vì họ ngồi liền 90 phút — nên nó
+  là dữ liệu, không phải thành tích, và quá 50 phút thì nói thẳng cái giá.
+  Hai luật kỹ thuật: **đo tới lần chạm cuối** (bỏ đi mà để tab mở thì kỷ
+  lục không phình) và **tắt lời nhắc nghỉ vẫn đo** (tắt lời nhắc không
+  phải tắt cái đồng hồ).
 - ✅ **F5. Rút gọn nhãn CamelCase cho bản vẽ** — ĐÃ LÀM (khối 21.38):
   "PC-KinhDoanh" → "PC-KD". Bước này đứng TRƯỚC bước cắt vì nó giữ được cả
   hai đầu của cái tên; nó cũng là đường thoát cho cặp PC-/SW- cùng phòng ở

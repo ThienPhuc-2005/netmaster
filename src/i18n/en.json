@@ -731,6 +731,9 @@
       "ps": "PowerShell terminal",
       "cli": "Device console"
     },
+    "quangTitle": "Your longest unbroken sitting this week: {phut} minutes.",
+    "quangTuanTruoc": "Last week it was {phut} minutes.",
+    "quangDai": "At that length, what you learn later starts writing over what came before — 25-30 minutes then a few minutes up on your feet sticks better.",
     "thangTitle": "Compared with yourself last month",
     "thangIntro": "The same question types, measured against the mark the app kept on {ngay}. This is your stumble rate counted from the start of the course, so it moves slowly — a small move is a long way.",
     "thangCho": "The app has just kept this month's mark. From next month, this is where you'll see which question types you've improved on.",

@@ -3,12 +3,12 @@
 ## ĐỌC 30 GIÂY: ĐANG ĐỨNG ĐÂU, LÀM GÌ TIẾP (cập nhật 2026-08-12)
 
 **App hiện có ĐỦ 21/21 MODULE NỘI DUNG + MÀN TỐT NGHIỆP** (M1-12 nhập
-môn, M13-17 Phần D, M18-21 Phần E), 1651 test xanh, typecheck sạch,
+môn, M13-17 Phần D, M18-21 Phần E), 1672 test xanh, typecheck sạch,
 build qua. **Toàn bộ biên bản hội đồng trung cấp đã XỬ XONG (08-10):
 15/15 việc mục 6 (khối 20.2, commit `1d04c0b`) + trọn LƯỢT DỌN 52 phát
 hiện P2 mục 5 (khối 20.3).** Nội dung và engine không còn việc nào treo;
 các khối gần đây đều là ý lấy từ kho `Y-TUONG.md`.
-Việc kế tiếp là của CHỦ DỰ ÁN: ra lệnh commit khối 21.39, và tuyển người
+Việc kế tiếp là của CHỦ DỰ ÁN: ra lệnh commit khối 21.40, và tuyển người
 cho các buổi test người thật (hai dòng DoD còn treo đều cần NGƯỜI).
 
 **Toàn bộ ENGINE của Phần D đã xong.** Không còn engine nào phải viết cho
@@ -29,7 +29,29 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (19) M21 capstone + màn tốt nghiệp | XONG |
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
-**KHỐI MỚI NHẤT — 21.39 (08-12), đang ở working tree chờ lệnh commit:**
+**KHỐI MỚI NHẤT — 21.40 (08-12), đang ở working tree chờ lệnh commit:**
+**Quãng ngồi liền dài nhất trong tuần — ý CUỐI CÙNG của lượt duyệt kho.**
+- Một dòng trong thẻ "Nếp học 8 tuần": "Tuần này bạn ngồi liền lâu nhất 34
+  phút. Tuần trước là 52 phút." Đồ thị đo BỀ RỘNG (tuần nào làm mấy việc),
+  dòng này đo BỀ SÂU của một lần ngồi.
+- **Giọng là phần khó nhất, không phải phép đo.** App vừa rủ người ta nghỉ
+  sau 25 phút thì không thể quay lại vỗ tay vì họ ngồi liền 90 phút — nên
+  đây là DỮ LIỆU, không phải thành tích: không "kỷ lục mới!", không huy
+  hiệu, và quá 50 phút thì nói thẳng cái giá bằng màu hổ phách.
+- **Bỏ đi mà để tab mở thì kỷ lục KHÔNG phình.** Quãng đo tới LẦN CHẠM
+  CUỐI chứ không tới bây giờ; đo tới bây giờ thì đi ăn cơm về là thấy
+  "tuần này bạn ngồi liền 180 phút" — một kỷ lục chưa từng xảy ra.
+- **Tắt lời nhắc nghỉ vẫn đo.** Tắt lời nhắc là tắt LỜI NHẮC, không phải
+  tắt cái đồng hồ — người tắt nhắc vẫn có quyền đọc nếp ngồi của mình.
+- Persist bump **v7 → v8**; bậc migrate cấp sổ RỖNG, không suy ngược từ
+  ngày học xong bài (mỗi bài một ngày) vì như thế là bịa ra một con số
+  người học chưa từng ngồi.
+- 1672 test xanh (+21), typecheck sạch, build qua. Kiểm browser thật: gõ
+  phím thật 99 giây → app tự ghi kỷ lục 1 phút vào tiến độ; ngừng gõ 69
+  giây nữa thì con số ĐỨNG YÊN; seed 90 phút thì câu nói-thẳng-cái-giá
+  hiện đúng bằng hổ phách. Console sạch, seed đã xóa.
+
+**KHỐI TRƯỚC — 21.39 (08-12), đã commit `4d8acdf`:**
 **I3 — so với chính mình tháng trước.**
 - Mỗi tháng, lần đầu mở trang Hồ sơ, app cất một MỐC nhỏ của bảng phân
   tích (tỉ lệ vấp theo từng dạng câu). Từ tháng sau, mục mới ở trang Hồ sơ
@@ -142,9 +164,9 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 
 **Lượt duyệt kho ý tưởng này đã đi hết 4 cụm** (âm thanh 21.35 · hồ sơ &
 ôn tập 21.36 · nội dung 21.37 · kỹ thuật nền 21.38), rồi I3 làm nốt ở
-khối 21.39. Còn treo đúng MỘT ý của cụm 2: **quãng học dài nhất trong
-tuần**. Hai ý **H3** và **H8** cần chủ dự án quyết vì đòi PHÁ MỐC đã
-đóng băng.
+khối 21.39 và quãng ngồi liền ở khối 21.40 — **kho ý tưởng giờ không còn
+ý nào chờ duyệt**. Chỉ còn hai ý **H3** và **H8** cần chủ dự án quyết vì
+chúng đòi PHÁ MỐC đã đóng băng.
 
 **KHỐI TRƯỚC — 21.34 (08-11), đã commit `e43e7d9`:**
 **C1 — giai điệu tiến độ.** Việc thật hóa ra không phải "thêm nhạc" mà là

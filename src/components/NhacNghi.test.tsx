@@ -8,6 +8,7 @@ import { act, cleanup, render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router'
 import { NhacNghi, duocPhepNhac } from './NhacNghi'
 import { useSettings } from '../store/settings'
+import { todayIso, useProgress } from '../store/progress'
 import { HIEN_GIAY, HOC_LIEN_TUC_PHUT } from '../engine/nhacNghi'
 
 afterEach(() => {
@@ -37,6 +38,20 @@ function hocLien(phut: number) {
   act(() => {
     vi.advanceTimersByTime(phut * PHUT)
   })
+}
+
+/**
+ * Ngồi GÕ liên tục `phut` phút: cứ mỗi phút lại chạm một cái, như người
+ * đang thật sự làm bài. Khác `hocLien` (để đồng hồ chạy mà không ai
+ * chạm) — đúng cái khác biệt mà kỷ lục quãng ngồi phải phân biệt được.
+ */
+function goTay(phut: number) {
+  for (let i = 0; i < phut; i += 1) {
+    act(() => {
+      vi.advanceTimersByTime(PHUT)
+      document.dispatchEvent(new KeyboardEvent('keydown', { key: 'a' }))
+    })
+  }
 }
 
 describe('nhắc nghỉ — chỗ được nói và chỗ phải im', () => {
@@ -114,6 +129,31 @@ describe('nhắc nghỉ — trên màn hình thật', () => {
     } finally {
       tra.mockRestore()
     }
+  })
+
+  it('KỶ LỤC quãng ngồi liền vẫn được ghi khi lời nhắc đã TẮT', () => {
+    // Tắt lời nhắc là tắt LỜI NHẮC, không phải tắt cái đồng hồ: trang Hồ
+    // sơ vẫn phải đọc được nếp ngồi của người đã tắt nhắc.
+    useSettings.setState({ nhacNghi: false })
+    useProgress.setState({ quangHoc: {} })
+    vi.useFakeTimers()
+    moTai('/bai/m1-bai-1')
+    goTay(40)
+    hocLien(1) // nhịp đồng hồ kế tiếp mới chép được cú chạm cuối vào sổ
+    expect(screen.queryByRole('status')).toBeNull()
+    expect(useProgress.getState().quangHoc[todayIso()]).toBe(40)
+  })
+
+  it('bỏ đi mà để tab mở thì kỷ lục KHÔNG phình theo', () => {
+    // Quãng đo tới lần CHẠM CUỐI. Đo tới bây giờ thì để máy đó đi ăn cơm
+    // là quay lại thấy "tuần này bạn ngồi liền 180 phút" — một kỷ lục
+    // chưa từng xảy ra.
+    useProgress.setState({ quangHoc: {} })
+    vi.useFakeTimers()
+    moTai('/bai/m1-bai-1')
+    goTay(12)
+    hocLien(180) // đứng dậy đi, không chạm gì nữa
+    expect(useProgress.getState().quangHoc[todayIso()]).toBe(12)
   })
 
   it('lời nhắc là role="status", KHÔNG phải alert — nó là lời rủ, không cắt ngang', () => {

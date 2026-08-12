@@ -370,7 +370,7 @@ quan trước khi "sửa test cho xanh".
 
 - `src/store/progress.ts` là nơi DUY NHẤT nối engine + thời gian thật +
   localStorage. XP/streak chỉ từ retrieval/lab và CHỈ lần học đầu.
-- **Persist đang ở v7. Cửa migrate**: đổi shape state = bump version +
+- **Persist đang ở v8. Cửa migrate**: đổi shape state = bump version +
   nối một bậc `v(n) → v(n+1)` + cập nhật fixture
   `tests/fixtures/progressV1.json` (`progress.migrate.test.ts` là chuông
   báo). Thêm NHÁNH vào union (vd PracticeDraft thêm kind) thì KHÔNG bump.
@@ -486,6 +486,23 @@ quan trước khi "sửa test cho xanh".
   `findConcept` lẫn `findPalaceRoom`; nội dung đổi mà thẻ không còn thì
   hiện tạm cardId chứ KHÔNG giấu dòng — số lần hụt vẫn là chuyện đã xảy ra.
 
+- **Quãng ngồi liền dài nhất trong tuần (khối 21.40)**: `quangHoc` là
+  trường persist MỚI (v7 → v8), ngày -> số phút của quãng dài nhất ngày
+  đó, giữ 70 ngày. Luật ở `engine/quangHoc.ts`, đo ở `NhacNghi`.
+  - **Ghi bằng `soPhutDenChamCuoi`, KHÔNG bằng `soPhutDaHoc`.** Quãng
+    tính tới lần CHẠM CUỐI thì để tab mở rồi đi ăn cơm con số vẫn đứng
+    yên; tính tới bây giờ thì quay lại thấy "tuần này bạn ngồi liền 180
+    phút" — một kỷ lục chưa từng xảy ra (test khóa).
+  - **Bộ đo KHÔNG gác theo cài đặt `nhacNghi`**: tắt lời nhắc là tắt LỜI
+    NHẮC, không phải tắt cái đồng hồ. Chỉ phần HIỆN banner mới gác.
+  - **Chỉ ghi khi phá kỷ lục trong ngày** — quãng đang chạy được báo lại
+    mỗi 30 giây, ghi đè vô điều kiện thì con số một ngày TỤT xuống mỗi
+    lần người học ngồi xuống lần thứ hai; và `set` rỗng vẫn đánh thức
+    persist nên không có kỷ lục mới thì không được đụng ổ đĩa.
+  - **Giọng: dữ liệu, không phải thành tích.** App vừa rủ nghỉ sau 25
+    phút thì không được vỗ tay vì người ta ngồi liền 90 phút — không huy
+    hiệu, không "kỷ lục mới!", và quá `QUANG_DAI_PHUT` (50) thì nói thẳng
+    cái giá bằng hổ phách.
 - **So với chính mình tháng trước (I3, khối 21.39)**: `latCatThang` là
   trường persist MỚI (v6 → v7) giữ tối đa 12 mốc, mỗi mốc là tỉ lệ vấp
   theo DẠNG CÂU tại thời điểm chụp. Luật ở `engine/soSanhThang.ts`.

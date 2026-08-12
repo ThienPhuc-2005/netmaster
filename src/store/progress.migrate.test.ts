@@ -113,7 +113,21 @@ describe('persist migrate: hợp đồng payload v1', () => {
     expect(s.xpTotal).toBe(32)
   })
 
-  it('v1 đi trọn chuỗi tới v7: các trường mới mọc ra rỗng, phiên drill cũ được đóng dấu', async () => {
+  it('v7 → v8 (quãng ngồi liền): sổ kỷ lục mọc ra RỖNG, không suy ngược từ ngày học', async () => {
+    const v7 = JSON.parse(JSON.stringify(v1Payload)) as { state: Record<string, unknown>; version: number }
+    v7.version = 7
+    v7.state['latCatThang'] = [{ thang: '2026-07', ngay: '2026-07-01', theoDang: {} }]
+    await rehydrateFrom(v7)
+    const s = useProgress.getState()
+    // Quãng ngồi trước đây chỉ sống trong bộ nhớ một lần tải trang. Suy nó
+    // từ `completedLessons` (mỗi bài một ngày) là bịa ra một con số người
+    // học chưa từng ngồi.
+    expect(s.quangHoc).toEqual({})
+    expect(s.latCatThang).toHaveLength(1)
+    expect(s.xpTotal).toBe(32)
+  })
+
+  it('v1 đi trọn chuỗi tới v8: các trường mới mọc ra rỗng, phiên drill cũ được đóng dấu', async () => {
     await rehydrateFrom(v1Payload)
     const s = useProgress.getState()
     expect(s.challengeUsed).toEqual({})
@@ -126,6 +140,7 @@ describe('persist migrate: hợp đồng payload v1', () => {
     expect(s.disputedAnswers).toEqual([])
     expect(s.aoGiacQuenMat).toEqual({})
     expect(s.latCatThang).toEqual([])
+    expect(s.quangHoc).toEqual({})
   })
 
   it('v4 → v5 (nút "mình nghĩ câu này đúng"): sổ góp ý mọc ra rỗng, phần cũ nguyên vẹn', async () => {

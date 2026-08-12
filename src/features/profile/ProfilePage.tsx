@@ -17,6 +17,7 @@ import { milestones } from '../graduation/milestones'
 import { AoGiacList, DisputedList, MemoryMap, MistakeAnalysisCard, SoSanhThangCard, WeakSpotList, WeeklyRhythm } from './LearningInsights'
 import { memoryByModule } from '../../engine/freshness'
 import { mocDeSo, soSanhDang, thangCua } from '../../engine/soSanhThang'
+import { daiNhatTuan, daiNhatTuanTruoc } from '../../engine/quangHoc'
 import type { AnhChup, LyDoChup } from '../../engine/anhChup'
 import { docAnhChup, khoiPhuc } from '../../store/anhChup'
 
@@ -213,6 +214,11 @@ export function ProfilePage() {
     title: modules.find((m) => m.id === row.moduleId)?.title ?? { vi: row.moduleId },
   }))
   const weeks = weeklyActivity(completedLessons, drillHistory, todayIso())
+  // Quãng ngồi liền dài nhất tuần này — bề SÂU của một lần ngồi, đi kèm
+  // đồ thị 8 tuần vốn chỉ đo bề rộng.
+  const quangHoc = useProgress((s) => s.quangHoc)
+  const quangTuanNay = daiNhatTuan(quangHoc, todayIso())
+  const quangTuanTruoc = daiNhatTuanTruoc(quangHoc, todayIso())
   // So với chính mình tháng trước (kho ý tưởng I3). Trang này là nơi DUY
   // NHẤT đã có sẵn bảng phân tích trong tay, nên nó cũng là nơi cất mốc —
   // store tự quyết định tháng này đã cất chưa, ở đây chỉ đưa số liệu sang.
@@ -269,7 +275,7 @@ export function ProfilePage() {
       <DisputedList rows={disputedRows} onClear={clearDisputed} />
       <WeakSpotList spots={spots} />
       <AoGiacList rows={aoGiacRows} />
-      <WeeklyRhythm weeks={weeks} />
+      <WeeklyRhythm weeks={weeks} quangTuanNay={quangTuanNay} quangTuanTruoc={quangTuanTruoc} />
 
       <div className="mt-6 flex flex-col gap-3 rounded-md border border-edge bg-panel px-5 py-4">
         <h2 className="text-sm font-semibold text-ink">{t('profile.backupTitle')}</h2>
