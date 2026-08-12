@@ -8,7 +8,7 @@ build qua. **Toàn bộ biên bản hội đồng trung cấp đã XỬ XONG (08
 15/15 việc mục 6 (khối 20.2, commit `1d04c0b`) + trọn LƯỢT DỌN 52 phát
 hiện P2 mục 5 (khối 20.3).** Nội dung và engine không còn việc nào treo;
 các khối gần đây đều là ý lấy từ kho `Y-TUONG.md`.
-Việc kế tiếp là của CHỦ DỰ ÁN: ra lệnh commit khối 21.53. **Cả 17 phát
+Khối 21.53 đã commit và đẩy lên GitHub. **Kho ý tưởng có 6 ý chờ duyệt (mục N).** **Cả 17 phát
 hiện của BA lượt rà soát (mục J 8 ý + mục K 6 ý + mục L 3 ý) đã xử xong
 hết; kho ý tưởng SẠCH.** Việc duy nhất còn treo là tuyển người cho các
 buổi test người thật (hai dòng DoD).
@@ -31,7 +31,7 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (19) M21 capstone + màn tốt nghiệp | XONG |
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
-**KHỐI MỚI NHẤT — 21.53 (08-12), đang ở working tree chờ lệnh commit:**
+**KHỐI MỚI NHẤT — 21.53 (08-12), đã commit `6c1e538`:**
 **Thẻ Hôm nay biết món cứng đầu (ý M4) + dọn hai việc treo.**
 - **Thẻ Hôm nay nói ra món hay quên đến hạn.** Dòng "ôn tập đến hạn: 8
   thẻ" giờ nói thêm mấy thẻ trong đó là thứ bạn quên đi quên lại. Nó đổi
