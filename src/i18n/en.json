@@ -104,6 +104,7 @@
     "done": "Done",
     "active": "In progress",
     "locked": "Locked",
+    "open": "Not studied",
     "aria": "Stage map",
     "current": "Under way",
     "pending": "Not yet",
@@ -150,6 +151,8 @@
     "actionTest": "Take the test",
     "quayLai": "Good to see you again — your last session was {ngay} days ago. A gap is not a hole: we start again from the review box, gently.",
     "fading": "{count} cards are fading — not due yet, but they will be soon. Memory cooling on schedule is exactly how this works.",
+    "conCoTheLuyen": "Out of lessons does not mean out of work — two practice grounds stay open, and neither is graded:",
+    "luyenSubnet": "Subnetting drill",
     "doneBody": "Nothing is due today and you have reached the end of the road so far. Resting is part of remembering — see you tomorrow."
   },
   "test": {
@@ -764,6 +767,7 @@
     "memoryDue": "due: {count}",
     "memoryRowAria": "{module}: memory at {pct} percent, {cards} cards",
     "rhythmTitle": "Your rhythm, last 8 weeks",
+    "rhythmNghiHet": "No sessions in the last eight weeks — that is fine, a broken rhythm can be picked back up. One short session gives this week its first bar.",
     "rhythmIntro": "This is your own baseline — the idea Module 20 teaches: you can only spot an unusual week once you know your usual one. A short bar is not a reproach, just a busy week.",
     "rhythmRow": "lessons: {lessons} · drills: {drills}",
     "freezes": "Freezes left",

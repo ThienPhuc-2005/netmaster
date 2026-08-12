@@ -352,3 +352,36 @@ describe('cửa nhập file sao lưu kiểm TỪNG THẺ (J1, khối 21.43)', ()
     }
   })
 })
+
+describe('K4 — đồ thị nếp học không trốn đúng lúc đáng nói nhất', () => {
+  it('người ĐÃ TỪNG HỌC mà tám tuần đều trống: vẫn hiện, kèm câu nói thật', () => {
+    // Tám cột trống CHÍNH LÀ câu chuyện của người vừa nghỉ dài.
+    useProgress.setState({ completedLessons: { 'm1-bai-1': '2026-05-08' } })
+    renderProfile()
+    expect(screen.getByRole('region', { name: 'Nếp học 8 tuần gần đây' })).toBeTruthy()
+    expect(screen.getByText(/chưa ngồi học buổi nào/)).toBeTruthy()
+  })
+
+  it('người MỚI TINH thì vẫn ẩn — tám cột 0 chưa kể được gì', () => {
+    renderProfile()
+    expect(screen.queryByRole('region', { name: 'Nếp học 8 tuần gần đây' })).toBeNull()
+  })
+
+  it('có hoạt động trong 8 tuần thì đọc câu baseline như cũ', () => {
+    useProgress.setState({ completedLessons: { 'm1-bai-1': todayIso() } })
+    renderProfile()
+    expect(screen.getByText(/baseline của chính bạn/)).toBeTruthy()
+    expect(screen.queryByText(/chưa ngồi học buổi nào/)).toBeNull()
+  })
+})
+
+describe('K2 — số đóng băng là con số của HÔM NAY', () => {
+  it('state còn ghi 0 của tháng cũ thì Hồ sơ vẫn hiện đủ quỹ tháng này', () => {
+    useProgress.setState({
+      streak: { current: 0, lastActiveDate: '2026-05-10', freezesLeft: 0, freezeMonth: '2026-05' },
+    })
+    renderProfile()
+    const the = screen.getByText('Đóng băng còn lại').closest('div')?.parentElement
+    expect(the?.textContent).toContain('2')
+  })
+})

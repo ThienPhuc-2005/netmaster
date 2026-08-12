@@ -13,7 +13,14 @@ import { useT } from '../i18n'
 
 const PART_ACCENT = 'var(--part-accent, var(--accent))'
 
-export type StageState = 'done' | 'active' | 'locked'
+/**
+ * Bốn trạng thái, và 'open' là trạng thái mới của khối 21.47 (phát hiện
+ * K5): CHƯA HỌC NHƯNG KHÔNG KHÓA. Nó tồn tại vì module đậu bằng THI VƯỢT
+ * có đủ chặng chưa học, mà gắn ổ khóa lên đó là nói dối hai lần — vừa
+ * sai (không có gì khóa cả), vừa cãi nhau với huy hiệu "Đã đạt" ngay
+ * phía trên cùng thẻ.
+ */
+export type StageState = 'done' | 'active' | 'open' | 'locked'
 
 export interface StageItem {
   id: string
@@ -39,6 +46,14 @@ function StageDot({ state }: { state: StageState }) {
       </span>
     )
   }
+  if (state === 'open') {
+    // Không ổ khóa: chặng này mở, chỉ là chưa ai đi qua.
+    return (
+      <span className="flex size-8 items-center justify-center rounded-full border border-edge bg-panel">
+        <span className="size-2 rounded-full bg-edge" />
+      </span>
+    )
+  }
   return (
     <span className="flex size-8 items-center justify-center rounded-full border border-edge bg-panel text-ink-muted">
       <Lock size={13} aria-hidden />
@@ -61,7 +76,7 @@ export function StageMap({ stages }: { stages: StageItem[] }) {
             <span
               aria-hidden
               className={`h-0.5 flex-1 ${i === 0 ? 'invisible' : ''} ${
-                stage.state === 'locked' ? 'bg-edge' : 'bg-accent'
+                stage.state === 'done' || stage.state === 'active' ? 'bg-accent' : 'bg-edge'
               }`}
             />
             <StageDot state={stage.state} />
@@ -74,7 +89,7 @@ export function StageMap({ stages }: { stages: StageItem[] }) {
           </div>
           <div className="flex flex-col items-center gap-0.5 px-1 text-center">
             <span
-              className={`text-xs font-medium ${stage.state === 'locked' ? 'text-ink-muted' : 'text-ink'}`}
+              className={`text-xs font-medium ${stage.state === 'locked' || stage.state === 'open' ? 'text-ink-muted' : 'text-ink'}`}
             >
               {stage.title}
             </span>

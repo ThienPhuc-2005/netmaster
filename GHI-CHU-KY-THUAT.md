@@ -446,6 +446,13 @@ quan trước khi "sửa test cho xanh".
   - Tính lượt hỏi trong bộ lọc phải dùng `flashcardTurn` TẠI CHỖ, không
     gọi `turnOf` (khai bên dưới, có đệm riêng) — gọi lên trên là chạm
     biến chưa khởi tạo.
+- **Bốn chỗ thẻ/hồ sơ từng nói ngược sự thật của người quay lại (K4-K6,
+  khối 21.47)**: đồ thị nếp học chỉ ẩn với người CHƯA TỪNG học (người đã
+  từng học mà tám tuần trống thì tám cột trống chính là câu chuyện);
+  `StageState` có nhánh thứ tư `'open'` = chưa học nhưng KHÔNG khóa, dành
+  cho module đã đậu (đậu bằng thi vượt thì chặng nào cũng chưa đi mà
+  chẳng chặng nào bị khóa); thẻ Hôm nay ở trạng thái `done` chỉ đường
+  sang phòng khám + drill, và chỉ mời khi phòng khám ĐÃ MỞ.
 - **Hai câu hỏi của người VỪA QUAY LẠI (K2 + K3, khối 21.46)**:
   - `freezesAvailable(streak, today)` — số đóng băng của HÔM NAY. Quỹ
     hồi theo tháng nhưng chỉ hồi khi có hoạt động, nên ai vắng qua tháng

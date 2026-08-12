@@ -19,6 +19,7 @@ import { EmptyState } from '../../components/EmptyState'
 import { ProgressBar } from '../../components/ProgressBar'
 import { StageMap, type StageItem } from '../../components/StageMap'
 import { CourseTrail } from '../../components/CourseTrail'
+import { clinicTabUnlocked } from '../clinic/clinicCases'
 
 type LessonState = 'done' | 'active' | 'locked'
 
@@ -142,7 +143,18 @@ function StreakStoryBanner() {
  * Nó KHÔNG mở đường tắt nào: mọi đích đến đều là chỗ người học vốn đã
  * vào được (planToday chỉ đọc, không nới luật).
  */
-function TodayCard({ plan, fading, ngayVang }: { plan: TodayPlan; fading: number; ngayVang: number | null }) {
+function TodayCard({
+  plan,
+  fading,
+  ngayVang,
+  phongKhamMo,
+}: {
+  plan: TodayPlan
+  fading: number
+  ngayVang: number | null
+  /** Phòng khám đã mở chưa — hết việc mới mời, và chỉ mời chỗ vào được. */
+  phongKhamMo: boolean
+}) {
   const t = useT()
 
   // Việc chính: mỗi focus một đích, một nhãn nút.
@@ -206,7 +218,26 @@ function TodayCard({ plan, fading, ngayVang }: { plan: TodayPlan; fading: number
       )}
 
       {plan.focus === 'done' ? (
-        <p className="mt-2 text-sm text-ink-muted">{t('today.doneBody')}</p>
+        <>
+          <p className="mt-2 text-sm text-ink-muted">{t('today.doneBody')}</p>
+          {/* Người đã đi hết chặng đường: "mai quay lại nhé" là ngõ cụt
+              MỖI NGÀY nếu app không nói ra hai sân chơi vẫn đang mở
+              (phát hiện K6, khối 21.47). Chúng KHÔNG cộng XP và không
+              đụng lịch ôn, nên mời ở đây không phá luật nào — chỉ là
+              nói ra thứ vốn đã có mà thẻ này chưa từng nhắc. */}
+          {phongKhamMo && (
+            <p className="mt-2 text-sm text-ink">
+              {t('today.conCoTheLuyen')}{' '}
+              <Link to="/phong-kham" className="font-semibold text-accent hover:underline">
+                {t('nav.clinic')}
+              </Link>
+              {' · '}
+              <Link to="/luyen-subnet" className="font-semibold text-accent hover:underline">
+                {t('today.luyenSubnet')}
+              </Link>
+            </p>
+          )}
+        </>
       ) : (
         <ul className="mt-2 flex flex-col gap-1">
           {lines.map((line, i) => (
@@ -378,7 +409,16 @@ function ModuleCard({ module, status }: { module: Module; status: 'locked' | 'op
     return {
       id: st.id,
       title: lt(st.title),
-      state: done ? 'done' : hasActive && status !== 'locked' ? 'active' : 'locked',
+      // Module ĐÃ ĐẬU (thường là đậu bằng thi vượt) có chặng chưa học,
+      // nhưng không chặng nào bị khóa — gắn ổ khóa lên đó là cãi nhau
+      // với huy hiệu "Đã đạt" ngay phía trên (phát hiện K5, khối 21.47).
+      state: done
+        ? 'done'
+        : hasActive && status !== 'locked'
+          ? 'active'
+          : status === 'passed'
+            ? 'open'
+            : 'locked',
     }
   })
 
@@ -530,7 +570,12 @@ export function LearnPage() {
 
       <StreakStoryBanner />
 
-      <TodayCard plan={plan} fading={fading} ngayVang={soNgayVang(streak, today)} />
+      <TodayCard
+        plan={plan}
+        fading={fading}
+        ngayVang={soNgayVang(streak, today)}
+        phongKhamMo={clinicTabUnlocked(passedModules)}
+      />
 
       {/* Bản đồ đường đi đứng NGAY TRÊN danh sách chủ đề, dưới thẻ Hôm
           nay (B1): thẻ Hôm nay trả lời "làm gì bây giờ", dải này trả lời

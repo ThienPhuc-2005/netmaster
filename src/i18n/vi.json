@@ -104,6 +104,7 @@
     "done": "Đã xong",
     "active": "Đang học",
     "locked": "Chưa mở",
+    "open": "Chưa học",
     "aria": "Bản đồ chặng học",
     "current": "Đang làm",
     "pending": "Chưa tới",
@@ -150,6 +151,8 @@
     "actionTest": "Vào thi",
     "quayLai": "Lâu rồi không gặp — buổi học gần nhất của bạn cách đây {ngay} ngày. Khoảng trống không phải lỗ hổng: mình bắt đầu lại từ hộp ôn tập, nhẹ thôi.",
     "fading": "{count} thẻ đang mờ dần — chưa tới lượt ôn, nhưng mai kia sẽ tới. Trí nhớ nguội đúng lịch là chuyện bình thường.",
+    "conCoTheLuyen": "Hết bài không có nghĩa là hết việc — hai sân luyện vẫn mở, và cả hai đều không tính điểm:",
+    "luyenSubnet": "Luyện chia subnet",
     "doneBody": "Hôm nay không còn thẻ đến hạn và bạn đã đi hết chặng đường hiện có. Nghỉ cũng là một phần của việc nhớ — mai quay lại nhé."
   },
   "test": {
@@ -764,6 +767,7 @@
     "memoryDue": "{count} đến hạn",
     "memoryRowAria": "{module}: trí nhớ còn {pct} phần trăm, {cards} thẻ",
     "rhythmTitle": "Nếp học 8 tuần gần đây",
+    "rhythmNghiHet": "Tám tuần gần đây bạn chưa ngồi học buổi nào — không sao, nếp học đứt rồi nối lại được. Cột đầu tiên của tuần này chỉ cần một buổi ngắn là mọc lên.",
     "rhythmIntro": "Đây là baseline của chính bạn — thứ Module 20 dạy: biết nếp thường của mình thì mới nhận ra tuần nào khác thường. Cột thấp không phải lời chê, chỉ là một tuần bận.",
     "rhythmRow": "{lessons} bài · {drills} phiên luyện",
     "freezes": "Đóng băng còn lại",

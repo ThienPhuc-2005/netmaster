@@ -3,16 +3,15 @@
 ## ĐỌC 30 GIÂY: ĐANG ĐỨNG ĐÂU, LÀM GÌ TIẾP (cập nhật 2026-08-12)
 
 **App hiện có ĐỦ 21/21 MODULE NỘI DUNG + MÀN TỐT NGHIỆP** (M1-12 nhập
-môn, M13-17 Phần D, M18-21 Phần E), 1748 test xanh, typecheck sạch,
+môn, M13-17 Phần D, M18-21 Phần E), 1756 test xanh, typecheck sạch,
 build qua. **Toàn bộ biên bản hội đồng trung cấp đã XỬ XONG (08-10):
 15/15 việc mục 6 (khối 20.2, commit `1d04c0b`) + trọn LƯỢT DỌN 52 phát
 hiện P2 mục 5 (khối 20.3).** Nội dung và engine không còn việc nào treo;
 các khối gần đây đều là ý lấy từ kho `Y-TUONG.md`.
-Việc kế tiếp là của CHỦ DỰ ÁN: ra lệnh commit khối 21.46, và chọn có sửa
-nốt ba ý NHỎ còn lại của lượt rà soát ngược không (mục K: K4 đồ thị nếp
-học tự ẩn · K5 bản đồ chặng nói CHƯA MỞ trên module đã đậu · K6 người
-tốt nghiệp hết việc). Tám ý của lượt rà soát xuôi (mục J) đã xử xong
-hết. Vẫn treo: tuyển người cho các buổi test người thật.
+Việc kế tiếp là của CHỦ DỰ ÁN: ra lệnh commit khối 21.47. **Cả 14 phát
+hiện của hai lượt rà soát (mục J 8 ý + mục K 6 ý) đã xử xong hết; kho ý
+tưởng SẠCH.** Việc duy nhất còn treo là tuyển người cho các buổi test
+người thật (hai dòng DoD).
 
 **Toàn bộ ENGINE của Phần D đã xong.** Không còn engine nào phải viết cho
 M13-17: lab lớp 2 (trunk + STP), CLI thiết bị đủ **24/24 lệnh** của spec
@@ -32,7 +31,28 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (19) M21 capstone + màn tốt nghiệp | XONG |
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
-**KHỐI MỚI NHẤT — 21.46 (08-12), đang ở working tree chờ lệnh commit:**
+**KHỐI MỚI NHẤT — 21.47 (08-12), đang ở working tree chờ lệnh commit:**
+**Dọn nốt 3 ý NHỎ của lượt rà soát ngược — mục K giờ SẠCH.**
+- **K4 — đồ thị nếp học thôi trốn đúng lúc đáng nói nhất.** Người ĐÃ
+  TỪNG học mà tám tuần đều trống thì đồ thị vẫn hiện, kèm câu nói thật
+  "tám tuần gần đây bạn chưa ngồi buổi nào — nếp học đứt rồi nối lại
+  được". Người mới tinh vẫn ẩn như cũ: ở đó tám cột 0 chưa kể được gì.
+- **K5 — chặng của module đã đậu không còn mang ổ khóa.** Thêm trạng
+  thái chặng thứ tư "chưa học": module đậu bằng thi vượt có chặng chưa
+  đi, nhưng không chặng nào bị khóa — gắn ổ khóa lên đó là cãi nhau với
+  huy hiệu "Đã đạt" ngay phía trên. Module còn khóa vẫn ghi "chưa mở",
+  vì ở đó ổ khóa nói đúng.
+- **K6 — người đã đi hết khóa không còn rơi vào ngõ cụt.** Hết bài và
+  hết thẻ ôn thì thẻ Hôm nay chỉ đường sang phòng khám và drill — hai
+  sân vốn đã mở mà thẻ này chưa từng nhắc. Cả hai không cộng XP, không
+  đụng lịch ôn, nên mời ở đây không nới luật nào.
+- 1756 test xanh (+8), typecheck sạch, build qua. Kiểm browser thật với
+  người "đi hết khóa + nghỉ 3 tháng": thẻ Hôm nay chào 94 ngày rồi chỉ
+  sang hai sân luyện; thẻ module ghi "CHƯA HỌC" thay cho "CHƯA MỞ"; Hồ
+  sơ hiện 2 lượt đóng băng và đồ thị nếp học nói đúng câu tám-tuần-trống.
+  Seed đã xóa.
+
+**KHỐI TRƯỚC — 21.46 (08-12), đã commit `34252df`:**
 **K1 + K2 + K3 — đón người quay lại sau kỳ nghỉ dài.**
 - **K1 — bịt vòng kẹt câm thứ hai.** Thẻ ôn trỏ khái niệm nội dung không
   còn (chuyện xảy ra mỗi lần cập nhật nội dung đổi id) làm phiên ôn ra

@@ -284,7 +284,12 @@ export function ProfilePage() {
       <DisputedList rows={disputedRows} onClear={clearDisputed} />
       <WeakSpotList spots={spots} />
       <AoGiacList rows={aoGiacRows} />
-      <WeeklyRhythm weeks={weeks} quangTuanNay={quangTuanNay} quangTuanTruoc={quangTuanTruoc} />
+      <WeeklyRhythm
+        weeks={weeks}
+        quangTuanNay={quangTuanNay}
+        quangTuanTruoc={quangTuanTruoc}
+        daTungHoc={Object.keys(completedLessons).length > 0 || drillHistory.length > 0}
+      />
 
       <div className="mt-6 flex flex-col gap-3 rounded-md border border-edge bg-panel px-5 py-4">
         <h2 className="text-sm font-semibold text-ink">{t('profile.backupTitle')}</h2>

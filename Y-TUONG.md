@@ -371,16 +371,24 @@ Lượt rà soát trước đi đường xuôi (người mới → giữa khóa)
   rồi" — đúng với người nghỉ hai ngày, nhẹ hều với người nghỉ ba tháng.
   Không một chỗ nào trong app nói "lâu rồi không gặp" hay hạ kỳ vọng
   xuống. Cả `streak` về 0 cũng im lặng: không lời nào giải thích.
-- ☐ **K4. Đồ thị nếp học BIẾN MẤT đúng lúc nó đáng nói nhất** (NHỎ). Mọi
+- ✅ **K4. Đồ thị nếp học BIẾN MẤT đúng lúc nó đáng nói nhất** — ĐÃ DỌN
+  (khối 21.47): người ĐÃ TỪNG học mà tám tuần đều trống thì đồ thị vẫn
+  hiện, kèm câu nói thật "tám tuần gần đây bạn chưa ngồi buổi nào". Người
+  mới tinh vẫn ẩn như cũ. Ghi chú cũ: (NHỎ). Mọi
   hoạt động nằm ngoài 8 tuần → cả 8 cột bằng 0 → component tự ẩn ("chưa
   kể được câu chuyện nào"). Nhưng với người vừa quay lại, tám cột trống
   CHÍNH LÀ câu chuyện: bạn đã nghỉ tám tuần. Luật "tuần nghỉ vẫn có
   vạch" nên nới tới cả trường hợp mọi tuần đều nghỉ.
-- ☐ **K5. Module đậu bằng thi vượt: bản đồ chặng nói "CHƯA MỞ" ở mọi
-  chặng** (NHỎ) — ngay dưới huy hiệu "Đã đạt · 92%". Cùng họ với J6 vừa
+- ✅ **K5. Module đậu bằng thi vượt: bản đồ chặng nói "CHƯA MỞ"** — ĐÃ DỌN
+  (khối 21.47): thêm trạng thái chặng thứ tư "chưa học" (không ổ khóa) cho
+  module ĐÃ ĐẬU — ở đó không có gì bị khóa cả. Module còn khóa thì vẫn là
+  "chưa mở", vì ở đó ổ khóa nói đúng. Ghi chú cũ: (NHỎ) — ngay dưới huy hiệu "Đã đạt · 92%". Cùng họ với J6 vừa
   dọn: thẻ nói hai điều ngược nhau vì hai nguồn khác nhau (đậu đọc từ
   masteryScores, chặng đọc từ completedLessons).
-- ☐ **K6. Người đã đi hết khóa không còn việc gì để làm** (NHỎ). Hết thẻ
+- ✅ **K6. Người đã đi hết khóa không còn việc gì để làm** — ĐÃ DỌN (khối
+  21.47): hết bài và hết thẻ ôn thì thẻ Hôm nay chỉ đường sang phòng khám
+  và drill — hai sân vốn đã mở mà thẻ này chưa từng nhắc. Cả hai không
+  cộng XP, không đụng lịch ôn, nên mời ở đây không nới luật nào. Ghi chú cũ: (NHỎ). Hết thẻ
   đến hạn là thẻ Hôm nay nói "mai quay lại nhé" — với người còn bài để
   học thì đúng, với người đã tốt nghiệp thì đó là ngõ cụt mỗi ngày.
   Phòng khám (13 ca luyện tự do) và hai drill vẫn mở, nhưng thẻ Hôm nay

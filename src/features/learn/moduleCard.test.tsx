@@ -119,3 +119,40 @@ describe('K3 — thẻ Hôm nay chào người vắng lâu', () => {
     expect(screen.queryByText(/Lâu rồi không gặp/)).toBeNull()
   })
 })
+
+// K5 + K6 (khối 21.47) — hai chỗ thẻ nói ngược với sự thật của người
+// đã đậu / đã đi hết đường.
+describe('K5 — module đậu bằng thi vượt: chặng chưa học KHÔNG mang ổ khóa', () => {
+  it('đậu mà chưa học bài nào: chặng ghi "Chưa học", không phải "Chưa mở"', () => {
+    // Đúng ca thi vượt: masteryScores có điểm, completedLessons trống.
+    useProgress.setState({ passedModules: [dauTien.id], masteryScores: { [dauTien.id]: 92 } })
+    moTrangHoc()
+    const card = within(the(dauTien.id))
+    expect(card.getAllByText('Chưa học').length).toBeGreaterThan(0)
+    expect(card.queryByText('Chưa mở')).toBeNull()
+  })
+
+  it('module còn KHÓA thì vẫn là "Chưa mở" — ở đó ổ khóa nói đúng', () => {
+    moTrangHoc()
+    expect(within(the(thuHai.id)).getAllByText('Chưa mở').length).toBeGreaterThan(0)
+  })
+})
+
+describe('K6 — hết bài rồi thì thẻ Hôm nay chỉ đường sang sân luyện', () => {
+  it('đã đậu hết và không còn thẻ ôn: mời phòng khám + drill', () => {
+    useProgress.setState({
+      passedModules: modules.map((m) => m.id),
+      masteryScores: Object.fromEntries(modules.map((m) => [m.id, 92])),
+      reviewCards: [],
+    })
+    moTrangHoc()
+    expect(screen.getByText(/Hết bài không có nghĩa là hết việc/)).toBeTruthy()
+    expect(screen.getByRole('link', { name: 'Phòng khám' })).toBeTruthy()
+    expect(screen.getByRole('link', { name: 'Luyện chia subnet' })).toBeTruthy()
+  })
+
+  it('người còn bài để học thì KHÔNG bị mời — họ đã có việc rồi', () => {
+    moTrangHoc()
+    expect(screen.queryByText(/Hết bài không có nghĩa là hết việc/)).toBeNull()
+  })
+})

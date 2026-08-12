@@ -164,17 +164,22 @@ export function WeeklyRhythm({
   weeks,
   quangTuanNay,
   quangTuanTruoc,
+  daTungHoc,
 }: {
   weeks: WeekActivity[]
   quangTuanNay: QuangTuan
   quangTuanTruoc: QuangTuan
+  /** Đã từng học buổi nào chưa — dù là từ rất lâu rồi. */
+  daTungHoc: boolean
 }) {
   const t = useT()
   const titleId = useId()
   const busiest = Math.max(...weeks.map((w) => w.total), 0)
-  // Chưa có tuần nào làm được việc gì thì đồ thị chỉ là tám cột 0 — chưa
-  // kể được câu chuyện nào, đợi có dữ liệu đã.
-  if (busiest === 0) return null
+  // Người MỚI TINH: tám cột 0 chưa kể được câu chuyện nào, đợi có dữ
+  // liệu đã. Nhưng người ĐÃ TỪNG HỌC mà tám tuần đều trống thì tám cột
+  // trống CHÍNH LÀ câu chuyện — "bạn đã nghỉ tám tuần" (phát hiện K4,
+  // khối 21.47). Ẩn đúng lúc đó là giấu điều duy nhất đáng nói.
+  if (busiest === 0 && !daTungHoc) return null
 
   const max = Math.max(busiest, 1)
   const innerW = W - PAD_X * 2
@@ -190,7 +195,9 @@ export function WeeklyRhythm({
           {t('profile.rhythmTitle')}
         </h2>
       </div>
-      <p className="text-xs leading-relaxed text-ink-muted">{t('profile.rhythmIntro')}</p>
+      <p className="text-xs leading-relaxed text-ink-muted">
+        {busiest === 0 ? t('profile.rhythmNghiHet') : t('profile.rhythmIntro')}
+      </p>
       <QuangNgoiLien tuanNay={quangTuanNay} tuanTruoc={quangTuanTruoc} />
 
       <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-labelledby={titleId} className="w-full">
