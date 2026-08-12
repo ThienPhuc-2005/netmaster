@@ -753,6 +753,14 @@ quan trước khi "sửa test cho xanh".
   `app/gatesThieuNoiDung.test.tsx`,
   `features/learn/ModuleTestPageThieuNoiDung.test.tsx`).
   Gọi lại `primeModules()` chính là lượt KÉO LẠI phần còn thiếu.
+- **NGƯỜI bấm thì tải lại luôn; MÁY tự làm thì phải HỎI** (khối 21.56).
+  Áp cho `NutTaiNotNoiDung`: lượt kéo do người bấm mà được thêm gói thì
+  `reload()` ngay (họ đang đứng chờ kết quả); lượt kéo do sự kiện `online`
+  thì chỉ báo "đã tải nốt" kèm nút để họ tự chọn lúc — tự tải lại là giật
+  trang khỏi tay người đang đọc dở. Ngoại lệ CÓ LÝ DO: `ManThieuNoiDung`
+  (app chưa mở được) tự thử lại thẳng, ở đó không có gì để giật khỏi tay
+  ai. Sự kiện `online` KHÔNG hứa mạng thật sự thông, nên nhánh hụt phải
+  luôn còn đó.
 - **`AppGate` PHẢI bắt nhánh `primeModules()` kéo hụt** (phát hiện L1,
   khối 21.48). Giờ hàm đó chỉ còn ném khi ngay cả module ĐẦU cũng không
   về được; nhưng promise hụt mà không ai bắt thì cổng đứng vĩnh viễn ở

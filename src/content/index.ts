@@ -69,21 +69,30 @@ export function khucDauLienMach(mods: readonly Module[]): Module[] {
   return giu
 }
 
-/** Kéo những file CHƯA về. Hỏng file nào bỏ file đó, không kéo cả lượt xuống. */
-async function keoPhanConThieu(): Promise<void> {
+/**
+ * Kéo những file CHƯA về. Hỏng file nào bỏ file đó, không kéo cả lượt xuống.
+ *
+ * Ghi vào `daVe` NGAY KHI TỪNG FILE về, không đợi cả lượt xong: nhờ vậy
+ * `soDaVe()` là con số sống, và nút "tải nốt" đếm được tiến độ thật thay
+ * vì đứng im ở chữ "Đang tải…" (ý N1). Với mạng yếu, vài chục giây im
+ * lặng khó phân biệt với treo.
+ */
+async function keoPhanConThieu(bao?: () => void): Promise<void> {
   const conThieu = Object.entries(LAZY_MODULES).filter(([khoa]) => !daVe.has(khoa))
   if (conThieu.length === 0) return
   const parse =
     import.meta.env.PROD
       ? null
       : (await import('../engine/contentSchema')).parseModule
-  const ket = await Promise.allSettled(
+  await Promise.allSettled(
     conThieu.map(async ([khoa, load]) => {
       const raw = await load()
-      return [khoa, parse === null ? (raw as Module) : parse(raw)] as const
+      // Parse TRƯỚC khi ghi vào kho: file méo mà đã đếm vào rồi thì con
+      // số tiến độ nói dối, và khúc đầu liền mạch bên dưới đọc phải rác.
+      daVe.set(khoa, parse === null ? (raw as Module) : parse(raw))
+      bao?.()
     }),
   )
-  for (const r of ket) if (r.status === 'fulfilled') daVe.set(r.value[0], r.value[1])
 }
 
 /**
@@ -105,9 +114,9 @@ async function keoPhanConThieu(): Promise<void> {
  * này trên đúng dữ liệu này trước khi build) — người dùng cuối không trả
  * CPU main thread cho việc kiểm tra dành cho dev.
  */
-export async function primeModules(): Promise<Module[]> {
+export async function primeModules(bao?: () => void): Promise<Module[]> {
   if (cache !== null && cache.length === TONG_SO_MODULE) return cache
-  await keoPhanConThieu()
+  await keoPhanConThieu(bao)
   const khuc = khucDauLienMach([...daVe.values()])
   // Ngay cả module ĐẦU cũng không về được thì app không có gì để mở —
   // đây là ca duy nhất còn ném, và `AppGate` dựng màn "chưa tải được".
@@ -123,6 +132,17 @@ export async function primeModules(): Promise<Module[]> {
   }
   cache = khuc
   return cache
+}
+
+/**
+ * Bao nhiêu gói đã VỀ TỚI MÁY — con số SỐNG, nhích lên trong lúc đang kéo.
+ *
+ * Khác `tongSoModule() - soModuleThieu()`: cái đó đọc kho đã chốt, mà kho
+ * chỉ được đặt lại khi cả lượt kéo xong. Hàm này đọc thẳng `daVe` nên nút
+ * "tải nốt" đếm được từng gói một.
+ */
+export function soDaVe(): number {
+  return daVe.size
 }
 
 /** Số module bản build này có — kể cả những gói chưa tải về. */

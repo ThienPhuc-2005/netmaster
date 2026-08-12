@@ -8,7 +8,7 @@ build qua. **Toàn bộ biên bản hội đồng trung cấp đã XỬ XONG (08
 15/15 việc mục 6 (khối 20.2, commit `1d04c0b`) + trọn LƯỢT DỌN 52 phát
 hiện P2 mục 5 (khối 20.3).** Nội dung và engine không còn việc nào treo;
 các khối gần đây đều là ý lấy từ kho `Y-TUONG.md`.
-Khối 21.55 đã commit và đẩy lên GitHub. **Kho ý tưởng còn 4 ý chờ duyệt (N1, N2, N3, N5).** **Kho ý tưởng còn 5 ý chờ duyệt (mục N).** **Cả 17 phát
+Việc kế tiếp là của CHỦ DỰ ÁN: ra lệnh commit khối 21.56. **Kho ý tưởng còn 2 ý chờ duyệt (N3, N5).** **Kho ý tưởng còn 4 ý chờ duyệt (N1, N2, N3, N5).** **Kho ý tưởng còn 5 ý chờ duyệt (mục N).** **Cả 17 phát
 hiện của BA lượt rà soát (mục J 8 ý + mục K 6 ý + mục L 3 ý) đã xử xong
 hết; kho ý tưởng SẠCH.** Việc duy nhất còn treo là tuyển người cho các
 buổi test người thật (hai dòng DoD).
@@ -31,7 +31,28 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (19) M21 capstone + màn tốt nghiệp | XONG |
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
-**KHỐI MỚI NHẤT — 21.55 (08-12), đã commit `f5c9eac`:**
+**KHỐI MỚI NHẤT — 21.56 (08-12), đang ở working tree chờ lệnh commit:**
+**Ý N1 + N2 — nút tải nốt nội dung thôi câm, và mạng về thì app tự lo.**
+- **N1: đếm được tiến độ.** Trước đó bấm xong chỉ có "Đang tải…" đứng im;
+  với mạng yếu, vài chục giây im lặng khó phân biệt với treo. Giờ tầng nạp
+  ghi từng gói vào kho NGAY KHI nó về, nên nút hiện "Đang tải… 12/21" và
+  con số nhích lên thật.
+- **N2: mạng về thì tự thử lại.** Bắt người học nhớ bấm là bắt họ làm việc
+  của máy.
+- **Luật quan trọng nhất của khối này: NGƯỜI bấm thì tải lại luôn; MÁY tự
+  làm thì phải HỎI.** Người bấm là họ đang đứng chờ kết quả. Còn máy tự
+  kéo xong mà tự tải lại trang là giật trang khỏi tay người đang đọc dở —
+  nên lượt tự động chỉ dừng ở câu "mạng về rồi, đã tải nốt" kèm nút "Dùng
+  ngay" để họ tự chọn lúc.
+  Ngoại lệ có lý do: ở MÀN MẤT MẠNG (app chưa mở được) thì tự thử lại
+  thẳng, vì ở đó chẳng có gì để giật khỏi tay ai.
+- 1837 test xanh (+8), typecheck sạch, build qua. Kiểm browser thật: dựng
+  cảnh đứt sau gói 12 → phát sự kiện mạng về → app tự kéo, **không tự tải
+  lại trang**, hiện đúng "Mạng về rồi… · Dùng ngay"; dựng lượt kéo chậm
+  rồi hụt → nút hiện "Đang tải… 12/21" và khoá lại trong lúc kéo, xong thì
+  nói thật "vẫn chưa tải được". Seed đã xóa.
+
+**KHỐI TRƯỚC — 21.55 (08-12), đã commit `f5c9eac`:**
 **Ý N4 — một câu, hai khung: chặn lớp lỗi đã làm méo sơ đồ lab.**
 - **Rút luật bề rộng thành MỘT hàm chung** (`lopKhungCauHoi`) cho cả trang
   bài học lẫn màn thi. Trước đó hai trang tự gõ bề rộng riêng, và đó chính

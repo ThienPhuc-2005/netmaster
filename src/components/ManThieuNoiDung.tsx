@@ -19,11 +19,23 @@
 // ở đây là đường thử lại, và một câu nói rõ tiến độ vẫn còn nguyên: cái
 // hụt là bài học chưa tải về, không phải công sức đã học.
 
+import { useEffect, useRef } from 'react'
 import { WifiOff } from 'lucide-react'
 import { useT } from '../i18n'
 
 export function ManThieuNoiDung({ thuLai }: { thuLai: () => void }) {
   const t = useT()
+  // MẠNG VỀ THÌ TỰ THỬ LẠI (ý N2). Ở màn này tự làm là thuần lợi, KHÁC
+  // với nút trong trang Học: chỗ đó người học đang đọc dở nên máy phải
+  // hỏi trước khi tải lại trang, còn ở đây app chưa mở được, chẳng có gì
+  // để giật khỏi tay ai. Bấm "Thử lại" hộ họ là đúng việc của máy.
+  const thuLaiRef = useRef(thuLai)
+  thuLaiRef.current = thuLai
+  useEffect(() => {
+    const khiOnline = () => thuLaiRef.current()
+    window.addEventListener('online', khiOnline)
+    return () => window.removeEventListener('online', khiOnline)
+  }, [])
   return (
     <div className="flex min-h-screen items-center justify-center bg-bg p-6">
       <div className="flex max-w-md flex-col gap-4 rounded-md border border-warn/40 bg-panel px-6 py-5">

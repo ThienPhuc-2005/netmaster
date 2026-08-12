@@ -519,10 +519,10 @@ mất dữ liệu, vừa mất mạng. Cả ba phát hiện đều đã CHỮA t
 
 Sinh ra trong lúc làm khối 21.49-21.53, chưa ý nào được gọi tên.
 
-- ☐ **N1. Nút "tải nốt nội dung" nên nói đang tải tới đâu.** Hiện chỉ có
+- ✅ **N1. Nút "tải nốt nội dung" nên nói đang tải tới đâu** — ĐÃ LÀM (khối 21.56): tầng nạp ghi từng gói vào kho ngay khi nó về, nút hiện "Đang tải… 12/21". Ghi chú ý gốc: Hiện chỉ có
   "Đang tải…" im lặng; với mạng yếu thì vài chục giây câm khó phân biệt
   với treo. Hiện "đã về 15/21" thì đỡ hơn nhiều.
-- ☐ **N2. Tự thử tải lại khi mạng vừa có lại.** Trình duyệt có báo sự kiện
+- ✅ **N2. Tự thử tải lại khi mạng vừa có lại** — ĐÃ LÀM (khối 21.56). Điều đắt nhất khi làm: **người bấm thì tải lại luôn, máy tự làm thì phải hỏi** — máy tự tải lại trang là giật trang khỏi tay người đang đọc dở. Ngoại lệ: màn mất mạng thì tự thử lại thẳng, ở đó không có gì để giật. Ghi chú ý gốc: Trình duyệt có báo sự kiện
   online; bắt người học nhớ bấm là bắt họ làm việc của máy.
 - ☐ **N3. Test quét mã nguồn tìm chỗ đọc "toàn bộ khóa học" mà quên tự
   kiểm.** Khối 21.50 lộ ra một luật chung: hễ thêm chỗ nào suy từ cả lộ
