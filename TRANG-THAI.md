@@ -8,7 +8,7 @@ build qua. **Toàn bộ biên bản hội đồng trung cấp đã XỬ XONG (08
 15/15 việc mục 6 (khối 20.2, commit `1d04c0b`) + trọn LƯỢT DỌN 52 phát
 hiện P2 mục 5 (khối 20.3).** Nội dung và engine không còn việc nào treo;
 các khối gần đây đều là ý lấy từ kho `Y-TUONG.md`.
-Khối 21.49 đã commit và đẩy lên GitHub; không còn việc nào chờ lệnh. **Cả 17 phát
+Việc kế tiếp là của CHỦ DỰ ÁN: ra lệnh commit khối 21.50. **Cả 17 phát
 hiện của BA lượt rà soát (mục J 8 ý + mục K 6 ý + mục L 3 ý) đã xử xong
 hết; kho ý tưởng SẠCH.** Việc duy nhất còn treo là tuyển người cho các
 buổi test người thật (hai dòng DoD).
@@ -31,7 +31,33 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (19) M21 capstone + màn tốt nghiệp | XONG |
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
-**KHỐI MỚI NHẤT — 21.49 (08-12), đã commit `96d2a27`:**
+**KHỐI MỚI NHẤT — 21.50 (08-12), đang ở working tree chờ lệnh commit:**
+**Màn tốt nghiệp tự kiểm trước khi nói về cả khóa (ý F8).**
+Khối trước cho app mở bằng phần nội dung đã về; khối này bịt nốt chỗ
+CUỐI CÙNG còn đo bằng toàn bộ lộ trình mà khối trước chưa với tới.
+- **Hai đường rò, cùng một gốc.** Mốc tốt nghiệp cũng suy bằng câu hỏi
+  "chủ đề nào là chủ đề cuối", nên với nội dung cụt thì (1) **mốc bịa ra**
+  — người mới tải 3 chủ đề đầu rồi đậu chủ đề 3 là chạm ngay mốc "tốt
+  nghiệp nhập môn"; và (2) **giấy chứng nhận in sai** — tờ ảnh tải về được
+  sẽ ghi "3/3 chủ đề" thay vì "3/21". Giấy đã nằm trong máy người ta thì
+  gỡ lại không được nữa, nên đây là chỗ sai đắt nhất trong cả app.
+- **Chữa ở hai tầng.** Không đủ nội dung thì không có mốc nào, nên mọi
+  cửa vào màn tốt nghiệp (màn thi, trang Hồ sơ) tự đóng; ai gõ thẳng
+  đường dẫn thì màn nói rõ "chưa soát được cả chặng đường" kèm nút tải
+  nốt.
+- **Điều đắt nhất khi làm: chưa đủ thì KHÔNG đoán về phía nào cả.** Không
+  chúc mừng đã đành, nhưng cũng không được rơi vào màn "mốc này chưa mở"
+  có sẵn — người đã tốt nghiệp thật mà hôm nay mạng yếu sẽ đọc đúng câu
+  phủ nhận công sức của họ.
+- 1786 test xanh (+5), typecheck sạch, build qua. Kiểm browser thật với
+  người ĐÃ đậu 12 chủ đề đầu trong lúc mạng đứt sau gói thứ 12: mở thẳng
+  đường dẫn tốt nghiệp → hiện "chưa soát được cả chặng đường · còn 9 chủ
+  đề", không có nút cấp giấy; bấm tải nốt lúc mạng vẫn yếu → nói thật
+  "vẫn chưa tải được". Cho mạng về rồi mở lại: màn tốt nghiệp thật nguyên
+  vẹn, "12/21 chủ đề", bản đồ đủ 5 Phần A-E, giấy chứng nhận trở lại.
+  Seed đã xóa.
+
+**KHỐI TRƯỚC — 21.49 (08-12), đã commit `96d2a27`:**
 **Mở app bằng phần nội dung ĐÃ VỀ — gỡ tận gốc L1 (ý F7 của kho ý tưởng).**
 Khối trước đặt lưới đỡ cho người rơi; khối này bỏ hẳn cái hố.
 - **App không còn đòi đủ 21 gói mới chịu mở.** Trước đây một cú `Promise

@@ -172,6 +172,22 @@ Trạng thái: ☐ chờ duyệt · ✅ đã làm · ✗ đã bàn và bỏ (gi�
   **"Module cuối khóa" cũng phải hỏi `noiDungDayDu()`**: `at(-1)` của một
   khúc cụt là cuối KHÚC, không phải cuối khóa — thiếu điều kiện này thì
   người mất mạng giữa chừng bị app chúc mừng "khép lại cả khóa học".
+- ✅ **F8. Màn tốt nghiệp tự kiểm trước khi nói về cả khóa** (ý sinh trong
+  lúc làm F7) — ĐÃ LÀM (khối 21.50): đây là chỗ CUỐI CÙNG còn đo bằng
+  toàn bộ lộ trình mà F7 chưa với tới. Hai đường rò, cùng một gốc "module
+  cuối của khúc cụt bị đọc thành module cuối khóa":
+  **mốc tốt nghiệp bịa ra** — người mới tải 3 chủ đề đầu rồi đậu chủ đề 3
+  là chạm ngay mốc "tốt nghiệp nhập môn"; và **giấy chứng nhận in sai** —
+  tờ PNG tải về được sẽ ghi "3/3 module" thay vì "3/21", mà giấy đã nằm
+  trong máy người ta thì gỡ lại không được nữa.
+  Chữa: `milestones()` trả RỖNG khi nội dung chưa đủ (mọi cửa vào màn tốt
+  nghiệp tự đóng theo), còn ai gõ thẳng URL thì màn nói rõ "chưa soát được
+  cả chặng đường" kèm nút tải nốt.
+  Điều đắt nhất khi làm: **chưa đủ nội dung thì KHÔNG được đoán về phía
+  nào cả**. Không chúc mừng đã đành, nhưng cũng không được rơi vào màn
+  "mốc này chưa mở" có sẵn — người đã tốt nghiệp thật mà hôm nay mạng yếu
+  sẽ đọc đúng câu phủ nhận công sức của họ. Màn này chỉ nói cái đang thật:
+  chưa kiểm được.
 
 ## G. Việc spec đã hứa nhưng chưa tới lượt
 

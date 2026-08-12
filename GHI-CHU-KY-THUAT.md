@@ -700,7 +700,16 @@ quan trước khi "sửa test cho xanh".
     Cắt đi không thiệt gì cho người học: cổng mastery vốn đã chặn không
     cho học tới đó.
   - **"Module cuối khóa" cũng phải hỏi `noiDungDayDu()`** — `at(-1)` của
-    khúc cụt là cuối KHÚC, không phải cuối khóa.
+    khúc cụt là cuối KHÚC, không phải cuối khóa. Áp cho CẢ HAI chỗ suy ra
+    "cuối": `isFinalModule` ở màn thi, và `milestones()` của màn tốt
+    nghiệp (khối 21.50 — hàm này trả RỖNG khi thiếu, nên mọi cửa vào màn
+    tốt nghiệp tự đóng; giấy chứng nhận in "N/M module" nên soát thiếu là
+    in sai lên thứ người học giữ lại vĩnh viễn).
+  - **Màn nào từ chối phục vụ vì thiếu nội dung thì KHÔNG được đoán về
+    phía nào cả.** Màn tốt nghiệp không chúc mừng đã đành, nhưng cũng
+    không được rơi vào màn "mốc này chưa mở" có sẵn — người đã tốt nghiệp
+    thật mà hôm nay mạng yếu sẽ đọc đúng câu phủ nhận công sức của họ.
+    Nói cái đang thật: chưa kiểm được, và đây là đường tải nốt.
   Cả ba đều có test khoá (`content/napThieu.test.ts`,
   `app/gatesThieuNoiDung.test.tsx`,
   `features/learn/ModuleTestPageThieuNoiDung.test.tsx`).

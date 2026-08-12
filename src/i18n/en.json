@@ -698,6 +698,8 @@
     "backToLearn": "Back to Learn",
     "notReachedTitle": "This milestone is not open yet",
     "notReachedBody": "Passing the final module test of the stage opens this screen — the map on the Learn page shows where you stand.",
+    "chuaSoatDuocTitle": "Can't check the whole journey yet",
+    "chuaSoatDuocBody": "This screen recounts the entire course and issues your certificate, but {count} topics haven't downloaded yet — checking a partial course would print a wrong number onto a document you keep for good. Download the rest and come back; nothing is lost.",
     "profileTitle": "Graduation milestones reached"
   },
   "dispute": {

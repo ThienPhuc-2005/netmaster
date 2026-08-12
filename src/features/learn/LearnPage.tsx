@@ -2,11 +2,11 @@
 // 15%) + bài học mở TUẦN TỰ. Mastery gate giữa các module áp qua
 // computeModuleStatuses — module sau khóa tới khi module trước đạt >= 85%.
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { Link, useSearchParams } from 'react-router'
 import { lt } from '../../engine/ltext'
 import { BookOpen, Check, CloudOff, FastForward, GraduationCap, Lock, Play, RotateCcw, Server, Snowflake, Sunrise, Timer, X } from 'lucide-react'
-import { loadModules, lessonsInOrder, primeModules, soModuleThieu } from '../../content'
+import { loadModules, lessonsInOrder, soModuleThieu } from '../../content'
 import { computeModuleStatuses } from '../../engine/masteryGate'
 import { moduleXpTotal } from '../../engine/xp'
 import { LESSON_STEP_COUNT, planToday, type TodayPlan } from '../../engine/todayPlan'
@@ -15,7 +15,7 @@ import { soNgayVang, VANG_LAU_NGAY } from '../../engine/streak'
 import type { Lesson, Module } from '../../engine/contentSchema'
 import { canChallengeModule, newLessonGate, todayIso, useProgress } from '../../store/progress'
 import { useT } from '../../i18n'
-import { Button } from '../../components/Button'
+import { NutTaiNotNoiDung } from '../../components/NutTaiNotNoiDung'
 import { EmptyState } from '../../components/EmptyState'
 import { ProgressBar } from '../../components/ProgressBar'
 import { StageMap, type StageItem } from '../../components/StageMap'
@@ -548,24 +548,8 @@ function ModuleCard({ module, status }: { module: Module; status: 'locked' | 'op
  */
 function ThieuNoiDungNote({ modules }: { modules: readonly Module[] }) {
   const t = useT()
-  const [trangThai, setTrangThai] = useState<'cho' | 'dang-keo' | 'hut'>('cho')
   const thieu = soModuleThieu()
   if (thieu <= 0) return null
-
-  const keoNot = () => {
-    setTrangThai('dang-keo')
-    primeModules().then(
-      () => {
-        // Về thêm được gói nào thì TẢI LẠI TRANG, không tự vẽ lại: mọi
-        // màn đọc `loadModules()` lúc render, mà chuỗi mở khóa và bộ dọn
-        // thẻ mồ côi đều nằm ở cổng vào app — cho nó chạy lại một lượt
-        // sạch sẽ đáng hơn là vá từng chỗ.
-        if (soModuleThieu() < thieu) window.location.reload()
-        else setTrangThai('hut')
-      },
-      () => setTrangThai('hut'),
-    )
-  }
 
   return (
     <div className="mt-6 flex flex-col gap-2 rounded-md border border-edge bg-panel px-5 py-4">
@@ -576,12 +560,7 @@ function ThieuNoiDungNote({ modules }: { modules: readonly Module[] }) {
       <p className="text-xs leading-relaxed text-ink-muted">
         {t('learn.thieuBody', { ten: lt(modules[modules.length - 1]!.title) })}
       </p>
-      <div className="flex flex-wrap items-center gap-3">
-        <Button variant="ghost" onClick={keoNot} disabled={trangThai === 'dang-keo'}>
-          {t(trangThai === 'dang-keo' ? 'learn.thieuDangKeo' : 'learn.thieuRetry')}
-        </Button>
-        {trangThai === 'hut' && <p className="text-xs text-warn">{t('learn.thieuVanChua')}</p>}
-      </div>
+      <NutTaiNotNoiDung />
     </div>
   )
 }

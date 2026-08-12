@@ -698,6 +698,8 @@
     "backToLearn": "Về trang Học",
     "notReachedTitle": "Mốc này chưa mở",
     "notReachedBody": "Đậu bài thi của module cuối chặng là cửa vào màn tốt nghiệp — bản đồ trên trang Học đang chỉ chỗ bạn đứng.",
+    "chuaSoatDuocTitle": "Chưa soát được cả chặng đường",
+    "chuaSoatDuocBody": "Màn này kể lại TOÀN BỘ khóa học và cấp giấy chứng nhận, mà máy còn {count} chủ đề chưa tải về — soát thiếu rồi in ra một con số sai thì tờ giấy đó theo bạn mãi. Tải nốt phần còn lại rồi quay lại đây nhé; không có gì mất đi cả.",
     "profileTitle": "Mốc tốt nghiệp đã đạt"
   },
   "dispute": {

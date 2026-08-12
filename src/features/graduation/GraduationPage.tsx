@@ -14,12 +14,13 @@
 import { Link, useParams } from 'react-router'
 import { playEarcon } from '../../audio/earcons'
 import { useEffect, useState } from 'react'
-import { BookOpenCheck, CalendarDays, ChevronLeft, Download, Flame, GraduationCap, Layers, Stethoscope, Zap } from 'lucide-react'
+import { BookOpenCheck, CalendarDays, ChevronLeft, CloudOff, Download, Flame, GraduationCap, Layers, Stethoscope, Zap } from 'lucide-react'
 import type { ComponentType } from 'react'
 import { useT } from '../../i18n'
 import { Button } from '../../components/Button'
 import { EmptyState } from '../../components/EmptyState'
-import { loadModules } from '../../content'
+import { NutTaiNotNoiDung } from '../../components/NutTaiNotNoiDung'
+import { loadModules, noiDungDayDu, soModuleThieu } from '../../content'
 import { journeySpan } from '../../engine/journey'
 import { todayIso, useProgress } from '../../store/progress'
 import { buildCertificate, downloadCertificate } from './certificate'
@@ -132,6 +133,28 @@ export function GraduationPage() {
   useEffect(() => {
     if (reached) playEarcon('graduation')
   }, [reached])
+
+  // TỰ KIỂM TRƯỚC KHI NÓI VỀ CẢ KHÓA (khối 21.50). Đây là màn duy nhất
+  // còn lại đo bằng TOÀN BỘ lộ trình: bản đồ hành trình vẽ từng ô theo
+  // Phần, con số "N/M module" đi thẳng vào giấy chứng nhận tải về được.
+  // Từ khối 21.49 app mở được bằng khúc đầu đã tải, nên `loadModules()`
+  // có thể đang cụt — vẽ bản đồ 12 ô rồi gọi nó là cả hành trình, hay
+  // cấp giấy ghi "12/12 module", là in một điều sai lên thứ người học
+  // giữ lại và đem đi khoe. Gỡ lại không được nữa.
+  //
+  // Nên chưa soát đủ thì màn này KHÔNG đoán theo hướng nào cả: không
+  // chúc mừng, mà cũng không nói "bạn chưa đạt" (người đã tốt nghiệp
+  // thật đang ngồi kia). Nó nói đúng thứ đang xảy ra: chưa kiểm được.
+  if (!noiDungDayDu()) {
+    return (
+      <EmptyState
+        icon={CloudOff}
+        title={t('grad.chuaSoatDuocTitle')}
+        body={t('grad.chuaSoatDuocBody', { count: soModuleThieu() })}
+        action={<NutTaiNotNoiDung />}
+      />
+    )
+  }
 
   // Gõ URL trực tiếp không vượt được cổng — cùng bất biến với bài học và
   // bài thi: màn tổng kết của một mốc chưa chạm là lời hứa suông.

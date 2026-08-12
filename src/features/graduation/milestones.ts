@@ -5,7 +5,7 @@
 // nới thêm module thì mốc tự dời theo, đúng nếp isFinalModule của màn
 // thi. Thuần TS — trang tốt nghiệp và các nút dẫn vào cùng đọc một nguồn.
 
-import { loadModules } from '../../content'
+import { loadModules, noiDungDayDu } from '../../content'
 
 export type MilestoneId = 'nhap-mon' | 'trung-cap'
 
@@ -15,8 +15,22 @@ export interface Milestone {
   moduleId: string
 }
 
-/** Các mốc đang có trong lộ trình, theo thứ tự đường đời người học. */
+/**
+ * Các mốc đang có trong lộ trình, theo thứ tự đường đời người học.
+ *
+ * RỖNG khi nội dung chưa về đủ (khối 21.50). Hai mốc ở đây đều suy bằng
+ * cách hỏi "module nào là module CUỐI" — mà từ khối 21.49 app mở được
+ * bằng khúc đầu đã tải, nên "cuối" của một khúc cụt là cuối KHÚC. Người
+ * mới tải về 3 chủ đề đầu (Phần A) mà đậu chủ đề 3 sẽ chạm ngay một mốc
+ * "tốt nghiệp nhập môn" hoàn toàn bịa ra — kèm nút mở màn tốt nghiệp và
+ * một tờ giấy chứng nhận tải về được, in "3/3 module". Giấy in sai thì
+ * gỡ không được nữa: nó đã nằm trong máy người ta.
+ *
+ * Không có mốc nào thì mọi cửa dẫn tới màn tốt nghiệp tự đóng (màn thi,
+ * trang Hồ sơ), còn ai gõ thẳng URL thì `GraduationPage` nói rõ vì sao.
+ */
 export function milestones(): Milestone[] {
+  if (!noiDungDayDu()) return []
   const modules = loadModules()
   const lastIntro = [...modules].reverse().find((m) => m.part === 'A' || m.part === 'B' || m.part === 'C')
   const lastAll = modules.at(-1)
