@@ -8,10 +8,11 @@ build qua. **Toàn bộ biên bản hội đồng trung cấp đã XỬ XONG (08
 15/15 việc mục 6 (khối 20.2, commit `1d04c0b`) + trọn LƯỢT DỌN 52 phát
 hiện P2 mục 5 (khối 20.3).** Nội dung và engine không còn việc nào treo;
 các khối gần đây đều là ý lấy từ kho `Y-TUONG.md`.
-Việc kế tiếp là của CHỦ DỰ ÁN: ra lệnh commit khối 21.45. **Kho ý tưởng
-giờ SẠCH — cả 8 phát hiện của lượt rà soát trải nghiệm đã xử xong.** Việc
-duy nhất còn treo là tuyển người cho các buổi test người thật (hai dòng
-DoD còn treo đều cần NGƯỜI).
+Việc kế tiếp là của CHỦ DỰ ÁN: chọn phát hiện của LƯỢT RÀ SOÁT ĐƯỜNG
+NGƯỢC (mục K của kho ý tưởng, 6 ý) đáng sửa trước — đề nghị **K1**, vòng
+kẹt câm thứ hai của app; và tuyển người cho các buổi test người thật
+(hai dòng DoD còn treo đều cần NGƯỜI). Tám ý của lượt rà soát xuôi (mục
+J) đã xử xong hết.
 
 **Toàn bộ ENGINE của Phần D đã xong.** Không còn engine nào phải viết cho
 M13-17: lab lớp 2 (trunk + STP), CLI thiết bị đủ **24/24 lệnh** của spec
@@ -31,7 +32,20 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (19) M21 capstone + màn tốt nghiệp | XONG |
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
-**KHỐI MỚI NHẤT — 21.45 (08-12), đang ở working tree chờ lệnh commit:**
+**LƯỢT RÀ SOÁT ĐƯỜNG NGƯỢC (08-12) — không sửa code.** Lượt trước đi
+đường xuôi (người mới → giữa khóa); lượt này đi ngược: người bỏ học BA
+THÁNG quay lại (nợ 40 thẻ, chuỗi đứt, hết đóng băng), người có NỘI DUNG
+ĐỔI dưới chân trong lúc vắng mặt, và người đã đi hết khóa quay lại xem
+còn gì để làm.
+**Kết quả: 6 phát hiện, ghi vào mục K của `Y-TUONG.md`.** Nặng nhất là
+**K1 — thẻ ôn trỏ khái niệm không còn thì phiên ôn ra MÀN TRỐNG và kẹt
+câm**: nợ > 30 nên bài mới bị khóa, màn chặn chỉ có nút "Vào ôn tập", mà
+ôn tập thì trắng — không sập app như J1, nhưng cũng không đi được đâu và
+không một chữ nào nói vì sao. Nguyên nhân đời thường: một lần cập nhật
+nội dung đổi id khái niệm. Còn lại: 2 TRUNG BÌNH (số đóng băng là con số
+tháng cũ · app không nhận ra người vắng lâu) và 3 NHỎ.
+
+**KHỐI TRƯỚC — 21.45 (08-12), đã commit `2472b90`:**
 **Dọn nốt 5 ý NHỎ của lượt rà soát — mục J giờ SẠCH.**
 - **J4 — mỗi thẻ module chỉ còn MỘT cửa thi vượt.** Trước đây có hai lối
   vào cùng trỏ một đường (chip trên đầu + hàng trọn câu ở cuối), nhân 21

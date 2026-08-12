@@ -328,3 +328,50 @@ CHẠM vào.
   đóng khác. Ghi chú cũ: (NHỎ) —
   "Sang học bài mới" chỉ là link màu nhấn, trong khi mọi màn đóng khác
   của app đều đưa một nút đặc. Đây là màn peak-end của phiên ôn.
+
+## K. Rà soát ĐƯỜNG NGƯỢC — người quay lại sau khi nghỉ dài (08-12)
+
+Lượt rà soát trước đi đường xuôi (người mới → giữa khóa). Lượt này đi
+đường ngược: người bỏ học ba tháng quay lại (nợ 40 thẻ, chuỗi đứt, hết
+đóng băng), người có nội dung ĐỔI dưới chân trong lúc vắng mặt, và người
+đã đi hết khóa quay lại xem còn gì để làm.
+
+- ☐ **K1. Thẻ ôn trỏ khái niệm KHÔNG CÒN → phiên ôn ra MÀN TRỐNG, kẹt
+  câm** (NẶNG — nặng ngang J1, và dễ xảy ra hơn nhiều). Nội dung cập nhật
+  mà một khái niệm đổi id hoặc bị bỏ là thẻ cũ trong hộp thành mồ côi.
+  `ReviewPage` gặp thẻ mồ côi thì `return null` — chú thích trong code
+  ghi "bỏ qua", nhưng code KHÔNG bỏ qua: nó không dựng gì cả, phiên đứng
+  yên tại đúng thẻ đó. Đo thật: mở /on-tap ra trang trắng (chỉ còn 4
+  tab), tải lại vẫn trắng.
+  **Vòng kẹt kín**: nợ > 30 thẻ nên bài mới bị khóa, màn chặn chỉ có một
+  nút "Vào ôn tập", mà ôn tập thì trắng. Người học không sập app (khác
+  J1) nhưng cũng không đi được đâu — và không có một chữ nào nói vì sao.
+  Ba lớp chữa gợi ý: (a) dựng phiên thì LỌC thẻ không tra ra mặt (tầng
+  UI có nội dung trong tay); (b) dọn thẻ mồ côi khỏi hộp sau khi nội
+  dung prime xong, kêu một dòng `console.warn` như lối J1; (c) nếu vẫn
+  còn thẻ không dựng được thì hiện một câu tử tế thay vì trang trắng.
+- ☐ **K2. Số "đóng băng còn lại" ở Hồ sơ là con số của THÁNG CŨ** (TRUNG
+  BÌNH). Quỹ đóng băng nạp lại theo tháng, nhưng chỉ nạp khi người học
+  LÀM được việc gì đó. Người vắng ba tháng mở Hồ sơ ra thấy "0 lượt" —
+  đúng lúc họ cần biết mình còn lưới đỡ nào nhất. Chưa kể ngay dưới có
+  câu "mỗi tháng bạn có 2 lượt đóng băng tự động", nên hai dòng cạnh
+  nhau nói ngược nhau.
+- ☐ **K3. App không nhận ra người vừa vắng mặt lâu** (TRUNG BÌNH). Quay
+  lại sau 94 ngày, câu đầu tiên đọc được vẫn là "não sắp quên đúng lịch
+  rồi" — đúng với người nghỉ hai ngày, nhẹ hều với người nghỉ ba tháng.
+  Không một chỗ nào trong app nói "lâu rồi không gặp" hay hạ kỳ vọng
+  xuống. Cả `streak` về 0 cũng im lặng: không lời nào giải thích.
+- ☐ **K4. Đồ thị nếp học BIẾN MẤT đúng lúc nó đáng nói nhất** (NHỎ). Mọi
+  hoạt động nằm ngoài 8 tuần → cả 8 cột bằng 0 → component tự ẩn ("chưa
+  kể được câu chuyện nào"). Nhưng với người vừa quay lại, tám cột trống
+  CHÍNH LÀ câu chuyện: bạn đã nghỉ tám tuần. Luật "tuần nghỉ vẫn có
+  vạch" nên nới tới cả trường hợp mọi tuần đều nghỉ.
+- ☐ **K5. Module đậu bằng thi vượt: bản đồ chặng nói "CHƯA MỞ" ở mọi
+  chặng** (NHỎ) — ngay dưới huy hiệu "Đã đạt · 92%". Cùng họ với J6 vừa
+  dọn: thẻ nói hai điều ngược nhau vì hai nguồn khác nhau (đậu đọc từ
+  masteryScores, chặng đọc từ completedLessons).
+- ☐ **K6. Người đã đi hết khóa không còn việc gì để làm** (NHỎ). Hết thẻ
+  đến hạn là thẻ Hôm nay nói "mai quay lại nhé" — với người còn bài để
+  học thì đúng, với người đã tốt nghiệp thì đó là ngõ cụt mỗi ngày.
+  Phòng khám (13 ca luyện tự do) và hai drill vẫn mở, nhưng thẻ Hôm nay
+  không hề nhắc tới chúng.
