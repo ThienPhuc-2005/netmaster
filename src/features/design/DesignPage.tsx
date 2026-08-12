@@ -9,10 +9,11 @@
 // hai dictionary để phục vụ đúng một người. Luật "cấm hardcode text
 // trong component" vẫn nguyên giá trị cho mọi màn hình khác.
 
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { lt } from '../../engine/ltext'
 import { useT } from '../../i18n'
 import { Button } from '../../components/Button'
+import { DANG_CAN_BE_RONG, lopKhungCauHoi, type KhungCauHoi } from '../../components/QuestionInput'
 import { FeedbackBanner } from '../../components/FeedbackBanner'
 import { ProgressBar } from '../../components/ProgressBar'
 import { StageMap } from '../../components/StageMap'
@@ -24,7 +25,7 @@ import { parseLabSpec } from '../../engine/lab/labSchema'
 import { ClinicRoom } from '../clinic/ClinicRoom'
 import { PsConsole } from '../ps/PsConsole'
 import { CliConsole } from '../cli/CliConsole'
-import { QuestionSchema, type CliQuestion, type ClinicQuestion, type PsQuestion } from '../../engine/contentSchema'
+import { QuestionSchema, type CliQuestion, type ClinicQuestion, type PsQuestion, type Question } from '../../engine/contentSchema'
 import { gradeQuestion } from '../../engine/grading/gradeQuestion'
 import { CASE_SAI_GATEWAY } from '../../../tests/fixtures/clinicFixture'
 import { specTaoHangLoat } from '../../../tests/fixtures/psFixture'
@@ -373,6 +374,71 @@ function PalaceShowcase() {
   )
 }
 
+/**
+ * MỘT CÂU, HAI KHUNG (ý N4) — bày cạnh nhau bề rộng mà mỗi dạng câu nhận
+ * được ở BÀI HỌC so với ở BÀI THI.
+ *
+ * Vì sao mục này đáng có: lỗi sơ đồ lab méo (khối 21.51) sống được lâu
+ * đúng vì cùng một câu hiển thị khác nhau ở hai nơi mà không màn nào bày
+ * chúng cạnh nhau. Mục này gọi CHÍNH `lopKhungCauHoi` mà hai trang thật
+ * đang gọi, nên nó không thể trôi khỏi thực tế: sửa luật ở đó là chỗ này
+ * đổi theo, còn gõ tay lại chuỗi lớp ở đây thì mục này chỉ là trang trí.
+ *
+ * Cố ý KHÔNG dựng widget sống cho cả 8 dạng: 16 sơ đồ/terminal cùng một
+ * trang là nặng vô ích, mà thứ cần soi ở đây là BỀ RỘNG chứ không phải
+ * hành vi. Mỗi ô là một khung thật, có thước đo bề ngang ngay trong đó.
+ */
+const MOI_DANG_CAU: Question['kind'][] = ['typed', 'mcq', 'order', 'lab', 'palace-walk', 'clinic', 'ps', 'cli']
+
+function KhungMau({ kind, khung }: { kind: Question['kind']; khung: KhungCauHoi }) {
+  const oRef = useRef<HTMLDivElement>(null)
+  const [rong, setRong] = useState<number | null>(null)
+  useEffect(() => {
+    const do1 = () => setRong(oRef.current === null ? null : Math.round(oRef.current.getBoundingClientRect().width))
+    do1()
+    window.addEventListener('resize', do1)
+    return () => window.removeEventListener('resize', do1)
+  }, [])
+  return (
+    <div className="flex flex-col gap-1">
+      <span className="font-mono text-[11px] text-ink-muted">
+        {khung === 'bai-hoc' ? 'bài học' : 'bài thi'} · {rong === null ? '…' : `${rong}px`}
+      </span>
+      {/* Lớp bọc BLOCK bắt buộc — nó dựng lại đúng ngữ cảnh của hai trang
+          thật. Thiếu nó thì khung `mx-auto` nằm thẳng trong một cột flex
+          và CO LẠI theo nội dung: thước đo ra 65px thay vì 512px, tức là
+          mục này sẽ nói dối về đúng con số nó sinh ra để soi. (Đã đo được
+          đúng cú đó lúc dựng mục này.) */}
+      <div className="w-full">
+        <div className={lopKhungCauHoi(kind, khung)} ref={oRef}>
+          <div className="rounded-md border border-dashed border-accent/50 bg-panel px-3 py-2 text-xs text-ink-muted">
+            {DANG_CAN_BE_RONG.has(kind) ? 'cần cả mặt bàn' : 'cột chữ'}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function MotCauHaiKhung() {
+  return (
+    <div className="flex flex-col gap-4">
+      <p className="text-xs leading-relaxed text-ink-muted">
+        Mỗi hàng là một dạng câu, hai ô là hai khung THẬT nó sẽ nằm trong. Ô
+        &ldquo;cần cả mặt bàn&rdquo; mà hẹp hơn 560px ở bài thi là sơ đồ sắp tràn —
+        đúng lỗi đã xảy ra ở câu lab của bài thi Module 4.
+      </p>
+      {MOI_DANG_CAU.map((kind) => (
+        <div key={kind} className="flex flex-col gap-2 rounded-md border border-edge p-3">
+          <span className="font-mono text-xs font-semibold text-ink">{kind}</span>
+          <KhungMau kind={kind} khung="bai-hoc" />
+          <KhungMau kind={kind} khung="bai-thi" />
+        </div>
+      ))}
+    </div>
+  )
+}
+
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section className="flex flex-col gap-4">
@@ -446,6 +512,10 @@ export function DesignPage() {
         <div className="rounded-md border border-edge bg-panel p-5">
           <StageMap stages={SAMPLE_STAGES} />
         </div>
+      </Section>
+
+      <Section title="Một câu, hai khung — bề rộng ở bài học so với bài thi">
+        <MotCauHaiKhung />
       </Section>
 
       <Section title={t('lab.title')}>

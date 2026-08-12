@@ -245,6 +245,32 @@ export const DANG_CAN_BE_RONG: ReadonlySet<Question['kind']> = new Set([
   'cli',
 ])
 
+/** Hai khung THẬT mà một câu hỏi có thể xuất hiện trong đó. */
+export type KhungCauHoi = 'bai-hoc' | 'bai-thi'
+
+/**
+ * Lớp CSS của khung bọc một câu hỏi — NGUỒN CHÂN LÝ DUY NHẤT cho bề rộng.
+ *
+ * Vì sao phải là một hàm chung chứ không phải chuỗi lớp gõ ở từng trang
+ * (ý N4): cùng một câu lab từng đẹp trong bài học mà VỠ khi đi thi, vì hai
+ * trang tự quyết bề rộng riêng và không ai đặt chúng cạnh nhau để so. Lỗi
+ * ấy sống tới lúc chủ dự án tự vấp phải. Giờ hai trang gọi chung hàm này,
+ * nên muốn chúng lệch nhau thì phải sửa đúng chỗ này — và chỗ này có test
+ * đi qua cả 8 dạng câu ở cả hai khung.
+ *
+ * KHÁC BIỆT CÓ CHỦ Ý giữa hai khung, viết ra để khỏi ai "dọn" nhầm:
+ * - `bai-hoc` KHÔNG chặn bề rộng dạng nào. Trang bài học còn có bước dạy,
+ *   phản hồi, gợi ý ở quanh; cột chữ đã được chính khung app (max-w-4xl)
+ *   giữ ở mức đọc được.
+ * - `bai-thi` bó câu CHỮ vào `max-w-lg` cho dễ đọc — màn thi trống trơn,
+ *   không có gì khác giữ nhịp mắt. Nhưng dạng cần mặt bàn thì phải được
+ *   nguyên bề ngang, nếu không sơ đồ tràn ra ngoài.
+ */
+export function lopKhungCauHoi(kind: Question['kind'], khung: KhungCauHoi): string {
+  if (khung === 'bai-hoc') return 'flex flex-col gap-4'
+  return `mx-auto flex flex-col gap-4 ${DANG_CAN_BE_RONG.has(kind) ? 'w-full' : 'max-w-lg'}`
+}
+
 export function QuestionInput({ question, onSubmit, disabled, draftKey, examMode }: QuestionInputProps) {
   // Bài dở đọc/ghi ở đúng MỘT chỗ này — hai bề mặt nặng vẫn là component
   // thuần (nhận ảnh chụp qua prop), nên test và trang /design không phải

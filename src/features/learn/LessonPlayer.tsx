@@ -26,7 +26,7 @@ import { ConceptVisual } from '../../components/ConceptVisual'
 import { EmptyState } from '../../components/EmptyState'
 import { FeedbackBanner, FeedbackRegion, type FeedbackState } from '../../components/FeedbackBanner'
 import { DisputeButton } from '../../components/DisputeButton'
-import { QuestionInput } from '../../components/QuestionInput'
+import { lopKhungCauHoi, QuestionInput } from '../../components/QuestionInput'
 import { StageStrip } from '../../components/StageStrip'
 import { PalaceTour } from '../palace/PalaceTour'
 import { backToLearn } from './LearnPage'
@@ -418,7 +418,9 @@ function ExerciseRunner({
       }
     }
     main = (
-      <div className="flex flex-col gap-4" key={current.question.id}>
+      // Khung của câu hỏi lấy từ hàm chung với màn thi (ý N4) — hai nơi
+      // tự quyết bề rộng riêng chính là chỗ lỗi sơ đồ lab méo trốn được.
+      <div className={lopKhungCauHoi(current.question.kind, 'bai-hoc')} key={current.question.id}>
         <p className="font-medium text-ink">{lt(current.question.prompt)}</p>
         {asOpen && <p className="text-xs text-ink-muted">{t('flow.harderNote')}</p>}
         <QuestionInput

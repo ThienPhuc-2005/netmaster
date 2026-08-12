@@ -39,7 +39,7 @@ import { useT } from '../../i18n'
 import { playEarcon } from '../../audio/earcons'
 import { Button } from '../../components/Button'
 import { EmptyState } from '../../components/EmptyState'
-import { DANG_CAN_BE_RONG, QuestionInput } from '../../components/QuestionInput'
+import { lopKhungCauHoi, QuestionInput } from '../../components/QuestionInput'
 import { AnswerReveal } from '../../components/AnswerReveal'
 import { DisputeButton } from '../../components/DisputeButton'
 
@@ -256,7 +256,7 @@ export function ModuleTestPage() {
             1280px chỉ nhìn thấy MỘT máy. Bài học vốn đã để nguyên bề
             ngang cho những dạng này; màn thi trước giờ thì không, nên
             cùng một câu lab đẹp trong bài lại vỡ khi đi thi. */}
-        <div className={`mx-auto flex flex-col gap-4 ${DANG_CAN_BE_RONG.has(question.kind) ? 'w-full' : 'max-w-lg'}`}>
+        <div className={lopKhungCauHoi(question.kind, 'bai-thi')}>
           <p className="text-xs font-medium text-ink-muted">
             {t('test.questionOf', { current: phase.index + 1, total: phase.questions.length })}
           </p>

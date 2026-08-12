@@ -528,7 +528,12 @@ Sinh ra trong lúc làm khối 21.49-21.53, chưa ý nào được gọi tên.
   kiểm.** Khối 21.50 lộ ra một luật chung: hễ thêm chỗ nào suy từ cả lộ
   trình (`loadModules().at(-1)`, `.length` làm tổng số) thì chỗ đó phải
   hỏi `noiDungDayDu()` trước. Một test quét sẽ bắt được người sau quên.
-- ☐ **N4. Trang `/design` bày trọn 8 dạng câu ở CẢ HAI khung** (bài học và
+- ✅ **N4. Trang `/design` bày trọn 8 dạng câu ở CẢ HAI khung** — ĐÃ LÀM
+  (khối 21.55). Việc thật hóa ra KHÔNG phải dựng trang bày, mà là **rút
+  luật bề rộng thành một hàm chung cho hai trang thật** rồi mới bày nó:
+  một trang `/design` tự gõ lại chuỗi lớp thì nó trôi khỏi thực tế lúc nào
+  không hay, và chứng minh được đúng con số không. Kèm test đi qua 8 dạng
+  × 2 khung. Ghi chú ý gốc: (bài học và
   bài thi). Lỗi sơ đồ lab méo (M1) sống lâu được đúng vì cùng một câu
   hiển thị khác nhau ở hai nơi mà không chỗ nào bày cạnh nhau để so.
 - ☐ **N5. Ưu tiên câu trúng đích trong phiên "luyện thứ hay quên".** Hiện

@@ -8,7 +8,7 @@ build qua. **Toàn bộ biên bản hội đồng trung cấp đã XỬ XONG (08
 15/15 việc mục 6 (khối 20.2, commit `1d04c0b`) + trọn LƯỢT DỌN 52 phát
 hiện P2 mục 5 (khối 20.3).** Nội dung và engine không còn việc nào treo;
 các khối gần đây đều là ý lấy từ kho `Y-TUONG.md`.
-Khối 21.54 đã commit và đẩy lên GitHub. **Kho ý tưởng còn 5 ý chờ duyệt (mục N).** **Cả 17 phát
+Việc kế tiếp là của CHỦ DỰ ÁN: ra lệnh commit khối 21.55. **Kho ý tưởng còn 4 ý chờ duyệt (N1, N2, N3, N5).** **Kho ý tưởng còn 5 ý chờ duyệt (mục N).** **Cả 17 phát
 hiện của BA lượt rà soát (mục J 8 ý + mục K 6 ý + mục L 3 ý) đã xử xong
 hết; kho ý tưởng SẠCH.** Việc duy nhất còn treo là tuyển người cho các
 buổi test người thật (hai dòng DoD).
@@ -31,7 +31,29 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (19) M21 capstone + màn tốt nghiệp | XONG |
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
-**KHỐI MỚI NHẤT — 21.54 (08-12), đã commit `2730d36`:**
+**KHỐI MỚI NHẤT — 21.55 (08-12), đang ở working tree chờ lệnh commit:**
+**Ý N4 — một câu, hai khung: chặn lớp lỗi đã làm méo sơ đồ lab.**
+- **Rút luật bề rộng thành MỘT hàm chung** (`lopKhungCauHoi`) cho cả trang
+  bài học lẫn màn thi. Trước đó hai trang tự gõ bề rộng riêng, và đó chính
+  là chỗ lỗi "sơ đồ lab đẹp trong bài học mà vỡ khi đi thi" trốn được cho
+  tới lúc chủ dự án tự vấp phải. Giờ muốn hai nơi lệch nhau thì phải sửa
+  đúng một chỗ — và chỗ đó có test canh.
+- **Test đi qua ĐỦ 8 dạng câu × CẢ HAI khung**, kèm một phép kiểm khớp
+  danh sách với kiểu của schema: thêm dạng câu thứ 9 mà quên khai bề rộng
+  là không biên dịch được, chứ không phải chờ ai đó đi thi rồi mới thấy.
+- **Trang `/design` có mục "Một câu, hai khung"** — mỗi dạng câu hai ô,
+  kèm thước đo bề ngang thật. Nó gọi CHÍNH cái hàm hai trang thật đang
+  gọi, nên không trôi khỏi thực tế được; gõ tay lại chuỗi lớp ở đó thì mục
+  này chỉ còn là trang trí.
+- 1829 test xanh (+6), typecheck sạch, build qua. Kiểm browser thật: mục
+  mới đo ra bài học 806px cho mọi dạng; bài thi 512px cho ba dạng chữ và
+  806px cho năm dạng cần mặt bàn — đúng luật, không tràn ngang.
+  **Chính mục này bắt được một cái bẫy ngay lúc dựng**: ô "bài thi" ban
+  đầu đo ra 65px vì khung mẫu nằm trong cột flex nên `mx-auto` co lại —
+  tức là mục sinh ra để soi bề rộng suýt nói dối về bề rộng. Đã bọc lại
+  đúng ngữ cảnh của hai trang thật. Seed đã xóa.
+
+**KHỐI TRƯỚC — 21.54 (08-12), đã commit `2730d36`:**
 **Ý N6 — app hỏi thẳng "chỗ này giải thích chưa lọt?" (persist v8 → v9).**
 - **Vòng khép kín cho đúng thứ chủ dự án muốn**: người học thấy chỗ khó,
   nói ra được, người soạn bài đọc được và biết viết lại chỗ nào.

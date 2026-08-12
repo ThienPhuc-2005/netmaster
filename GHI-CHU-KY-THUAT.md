@@ -410,6 +410,13 @@ quan trước khi "sửa test cho xanh".
   người học đếm ra mâu thuẫn ngay trong một buổi: Hồ sơ kể 3 món, thẻ Hôm
   nay kể 5. Vì sao là 2 chứ không phải 1: quên một lần là chuyện thường
   của trí nhớ — cả cơ chế ôn ngắt quãng dựng lên là để đón đúng cú quên đó.
+- **Bề rộng khung câu hỏi: gọi `lopKhungCauHoi(kind, khung)`, ĐỪNG gõ tay**
+  (khối 21.55). Một hàm cho cả bài học lẫn màn thi, cạnh `DANG_CAN_BE_RONG`
+  trong `components/QuestionInput.tsx`; trang `/design` mục "Một câu, hai
+  khung" cũng gọi đúng hàm đó nên nó soi được thực tế chứ không trang trí.
+  Test `components/khungCauHoi.test.ts` đi qua 8 dạng × 2 khung và khớp
+  danh sách với kiểu schema — thêm dạng thứ 9 mà quên khai là không biên
+  dịch được.
 - **Bề rộng cột câu hỏi đi theo DẠNG CÂU, không đặt cứng** (khối 21.51).
   `DANG_CAN_BE_RONG` trong `components/QuestionInput.tsx` là nguồn chân
   lý: lab · palace-walk · clinic · ps · cli vẽ NGANG nên phải được cả
