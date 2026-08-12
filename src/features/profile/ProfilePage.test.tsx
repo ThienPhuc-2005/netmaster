@@ -16,6 +16,7 @@ import { ProfilePage } from './ProfilePage'
 import { todayIso, useProgress } from '../../store/progress'
 import { addDays } from '../../engine/dates'
 import { loadModules } from '../../content'
+import { docAnhChup } from '../../store/anhChup'
 
 const INITIAL = useProgress.getInitialState()
 
@@ -346,6 +347,55 @@ describe('cửa nhập file sao lưu kiểm TỪNG THẺ (J1, khối 21.43)', ()
       await nhap(fileSaoLuu([theLanh]))
       expect(alert).not.toHaveBeenCalled()
       expect(localStorage.getItem('netmaster-progress')).toContain('"xpTotal":120')
+    } finally {
+      alert.mockRestore()
+      confirm.mockRestore()
+    }
+  })
+
+  // L2 (lượt rà soát màn hiếm gặp): nhập file cũng là một thao tác GHI ĐÈ
+  // trọn tiến độ, y như nút "Lùi về bản này" nằm ngay dưới nó — mà chỉ
+  // nút kia có lưới đỡ. Chọn nhầm file là mất sạch bằng chính thao tác đi
+  // cứu dữ liệu.
+  it('nhập file thì CẤT BẢN ĐANG CÓ trước khi ghi đè', async () => {
+    const alert = vi.spyOn(window, 'alert').mockImplementation(() => {})
+    const confirm = vi.spyOn(window, 'confirm').mockReturnValue(true)
+    localStorage.setItem('netmaster-progress', JSON.stringify({ state: { xpTotal: 777 }, version: 8 }))
+    try {
+      await nhap(fileSaoLuu([theLanh]))
+      expect(localStorage.getItem('netmaster-progress')).toContain('"xpTotal":120')
+      const banCat = docAnhChup()
+      const truocNhap = banCat.find((a) => a.lyDo === 'truoc-nhap')
+      expect(truocNhap, 'nhập xong mà không có bản lùi nào').toBeDefined()
+      expect(truocNhap?.duLieu).toContain('"xpTotal":777')
+    } finally {
+      alert.mockRestore()
+      confirm.mockRestore()
+    }
+  })
+
+  it('file bị TỪ CHỐI thì không cất bản thừa — chưa ghi đè gì thì chưa cần lùi', async () => {
+    const { createdOn: _bo, ...meo } = theLanh
+    const alert = vi.spyOn(window, 'alert').mockImplementation(() => {})
+    const confirm = vi.spyOn(window, 'confirm').mockReturnValue(true)
+    localStorage.setItem('netmaster-progress', JSON.stringify({ state: { xpTotal: 777 }, version: 8 }))
+    try {
+      await nhap(fileSaoLuu([theLanh, meo]))
+      expect(docAnhChup().some((a) => a.lyDo === 'truoc-nhap')).toBe(false)
+    } finally {
+      alert.mockRestore()
+      confirm.mockRestore()
+    }
+  })
+
+  it('bỏ qua hộp xác nhận thì cũng không cất bản nào', async () => {
+    const alert = vi.spyOn(window, 'alert').mockImplementation(() => {})
+    const confirm = vi.spyOn(window, 'confirm').mockReturnValue(false)
+    localStorage.setItem('netmaster-progress', JSON.stringify({ state: { xpTotal: 777 }, version: 8 }))
+    try {
+      await nhap(fileSaoLuu([theLanh]))
+      expect(localStorage.getItem('netmaster-progress')).toContain('"xpTotal":777')
+      expect(docAnhChup().some((a) => a.lyDo === 'truoc-nhap')).toBe(false)
     } finally {
       alert.mockRestore()
       confirm.mockRestore()

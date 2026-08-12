@@ -21,7 +21,7 @@ import { freezesAvailable } from '../../engine/streak'
 import { mocDeSo, soSanhDang, thangCua } from '../../engine/soSanhThang'
 import { daiNhatTuan, daiNhatTuanTruoc } from '../../engine/quangHoc'
 import type { AnhChup, LyDoChup } from '../../engine/anhChup'
-import { docAnhChup, khoiPhuc } from '../../store/anhChup'
+import { chupTruocGhiDe, docAnhChup, khoiPhuc } from '../../store/anhChup'
 
 /**
  * Cửa thoát hiểm cho dữ liệu (hội đồng 2026-08-07, ghế dữ liệu): toàn bộ
@@ -82,6 +82,13 @@ async function importBackup(file: File, confirmText: string, badText: string, ne
     }
   }
   if (!window.confirm(confirmText)) return
+  // CẤT BẢN ĐANG CÓ TRƯỚC KHI GHI ĐÈ (phát hiện L2). Nút "Lùi về bản này"
+  // nằm ngay dưới khung này vốn đã làm đúng việc ấy và còn hứa hẳn ra
+  // trong lời xác nhận; cửa nhập file thì không, dù nó mới là cửa dễ chọn
+  // nhầm — file cũ ba tháng trước và file hôm qua trông y hệt nhau trong
+  // hộp thoại chọn file. Nuốt nhầm một bản cũ mà không có đường lùi là
+  // đúng kiểu mất mát tệ nhất: mất bằng chính thao tác đi cứu dữ liệu.
+  chupTruocGhiDe('truoc-nhap', new Date())
   for (const key of BACKUP_KEYS) {
     const value = backup.data?.[key]
     if (typeof value === 'string') localStorage.setItem(key, value)
@@ -105,6 +112,7 @@ const LY_DO_KEY: Record<LyDoChup, string> = {
   'dinh-ky': 'profile.anhChupLyDoNgay',
   'truoc-nang-cap': 'profile.anhChupLyDoNangCap',
   'truoc-khoi-phuc': 'profile.anhChupLyDoKhoiPhuc',
+  'truoc-nhap': 'profile.anhChupLyDoNhap',
 }
 
 /**

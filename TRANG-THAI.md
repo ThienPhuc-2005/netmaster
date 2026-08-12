@@ -8,10 +8,10 @@ build qua. **Toàn bộ biên bản hội đồng trung cấp đã XỬ XONG (08
 15/15 việc mục 6 (khối 20.2, commit `1d04c0b`) + trọn LƯỢT DỌN 52 phát
 hiện P2 mục 5 (khối 20.3).** Nội dung và engine không còn việc nào treo;
 các khối gần đây đều là ý lấy từ kho `Y-TUONG.md`.
-Việc kế tiếp là của CHỦ DỰ ÁN: ra lệnh commit khối 21.47. **Cả 14 phát
-hiện của hai lượt rà soát (mục J 8 ý + mục K 6 ý) đã xử xong hết; kho ý
-tưởng SẠCH.** Việc duy nhất còn treo là tuyển người cho các buổi test
-người thật (hai dòng DoD).
+Việc kế tiếp là của CHỦ DỰ ÁN: ra lệnh commit khối 21.48. **Cả 17 phát
+hiện của BA lượt rà soát (mục J 8 ý + mục K 6 ý + mục L 3 ý) đã xử xong
+hết; kho ý tưởng SẠCH.** Việc duy nhất còn treo là tuyển người cho các
+buổi test người thật (hai dòng DoD).
 
 **Toàn bộ ENGINE của Phần D đã xong.** Không còn engine nào phải viết cho
 M13-17: lab lớp 2 (trunk + STP), CLI thiết bị đủ **24/24 lệnh** của spec
@@ -31,7 +31,40 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (19) M21 capstone + màn tốt nghiệp | XONG |
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
-**KHỐI MỚI NHẤT — 21.47 (08-12), đang ở working tree chờ lệnh commit:**
+**KHỐI MỚI NHẤT — 21.48 (08-12), đang ở working tree chờ lệnh commit:**
+**Lượt rà soát thứ ba: BA MÀN HIẾM GẶP — tìm và chữa gọn trong cùng khối.**
+Hai lượt trước đi theo NGƯỜI (đường xuôi mục J, đường ngược mục K); lượt
+này đi theo MÀN, vào ba chỗ chưa lượt nào bước qua — và cả ba đều rơi
+đúng lúc người học yếu thế nhất.
+- **L1 — mất mạng thì app thôi đứng câm ở màn trắng.** Cổng vào app chờ
+  kéo đủ 21 gói nội dung, nhưng chưa ai bắt nhánh KÉO HỤT: người học nhìn
+  một trang trắng trơn, tải lại vẫn trắng, không một chữ nói vì sao. Giờ
+  có màn riêng nói thật ("tiến độ của bạn vẫn nằm nguyên trong máy") kèm
+  nút Thử lại kéo lại tại chỗ, không phải tải lại trang. Đây không phải
+  cảnh hiếm như tưởng: chính service worker cache phần nội dung theo kiểu
+  CỐ GẮNG trong khi cổng vào lại ĐÒI ĐỦ — cài app lúc mạng chập chờn là
+  đủ dựng ra cảnh này.
+- **L2 — nhập file sao lưu giờ cũng có lưới đỡ.** Trong cùng một khung ở
+  trang Hồ sơ có hai nút cùng ghi đè sạch tiến độ; nút "Lùi về bản này"
+  cất bản đang có trước rồi mới ghi, nút "Nhập từ file" thì không — dù nó
+  mới là nút dễ chọn nhầm hơn (file ba tháng trước và file hôm qua trông
+  y hệt nhau lúc chọn). Mất bằng chính thao tác đi cứu dữ liệu là kiểu
+  mất tệ nhất.
+- **L3 — màn trượt bài thi thôi khen sai người.** Đo thật: sai cả 8 câu
+  mà app vẫn ghi "Được 0% — gần lắm rồi". Giờ hụt sát ngưỡng mới được nói
+  là gần; còn cách một quãng thì app nói thẳng và nút đặc trỏ VỀ BÀI HỌC
+  thay vì mời thi lại ngay (cửa thi lại vẫn còn, chỉ lùi hàng hai). Kèm
+  dọn bức tường câu lặp: lời dặn chung trước in dưới từng câu sai, 8 câu
+  sai thành 6 dòng y hệt nhau che mất mấy dòng thật sự có tin.
+- 1769 test xanh (+13), typecheck sạch, build qua. Kiểm browser thật cả
+  ba màn: dựng cú kéo nội dung hụt → đọc được màn mới thay vì trang trắng
+  (console chỉ còn một dòng cảnh báo có chủ đích, hết "Uncaught (in
+  promise)"), màn hẹp 375px không tràn ngang; nhập một file sao lưu thật
+  → xuất hiện bản "cất trước lần nhập file" lùi về được; thi vượt sai gần
+  hết → "Được 25% — còn một quãng nữa" với nút đặc là "Về học lại module
+  này". Seed đã xóa.
+
+**KHỐI TRƯỚC — 21.47 (08-12), đã commit `5d54376`:**
 **Dọn nốt 3 ý NHỎ của lượt rà soát ngược — mục K giờ SẠCH.**
 - **K4 — đồ thị nếp học thôi trốn đúng lúc đáng nói nhất.** Người ĐÃ
   TỪNG học mà tám tuần đều trống thì đồ thị vẫn hiện, kèm câu nói thật

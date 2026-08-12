@@ -5,6 +5,7 @@ import {
   applyTestResult,
   computeModuleStatuses,
   evaluateModuleTest,
+  ganNguong,
 } from './masteryGate'
 
 /** Build a results array with `correct` trues followed by `wrong` falses. */
@@ -163,5 +164,28 @@ describe('computeModuleStatuses', () => {
       m2: 'passed',
       m3: 'open',
     })
+  })
+})
+
+describe('ganNguong — chọn giọng cho màn trượt (L3)', () => {
+  it('0% KHÔNG phải là "gần lắm rồi"', () => {
+    // Đúng cảnh đo được trên browser trước khi sửa: sai cả 8 câu mà màn
+    // trượt vẫn khen "gần lắm rồi".
+    expect(ganNguong(0)).toBe(false)
+  })
+
+  it('hụt một hai câu trên đề 8 câu thì tính là gần', () => {
+    expect(ganNguong(75), '6/8 câu — hụt hai câu').toBe(true)
+    expect(ganNguong(62.5), '5/8 câu — hụt ba câu, chuyện khác hẳn').toBe(false)
+  })
+
+  it('đúng mép khoảng gần vẫn tính là gần', () => {
+    expect(ganNguong(MASTERY_THRESHOLD_PCT - 15)).toBe(true)
+    expect(ganNguong(MASTERY_THRESHOLD_PCT - 15.1)).toBe(false)
+  })
+
+  it('điểm đã đậu đương nhiên nằm trong khoảng gần (hàm không tự phán đậu/trượt)', () => {
+    expect(ganNguong(MASTERY_THRESHOLD_PCT)).toBe(true)
+    expect(ganNguong(100)).toBe(true)
   })
 })

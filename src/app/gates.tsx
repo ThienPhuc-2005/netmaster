@@ -16,6 +16,7 @@
 import { useEffect, useState } from 'react'
 import { Navigate } from 'react-router'
 import { AppLayout } from '../components/AppLayout'
+import { ManThieuNoiDung } from '../components/ManThieuNoiDung'
 import { OnboardingPage } from '../features/onboarding/OnboardingPage'
 import { LearnPage } from '../features/learn/LearnPage'
 import { loadModules, primeModules } from '../content'
@@ -28,6 +29,16 @@ import { shouldReviewFirst, todayIso, useProgress } from '../store/progress'
 // (Onboarding KHÔNG chờ nội dung: aha 60 giây đứng trước mọi thứ, và màn
 // đó không đọc module nào.)
 const contentReady = primeModules()
+// Nhận cú hụt NGAY TẠI ĐÂY một lần nữa, dù `AppGate` mới là chỗ dựng màn:
+// promise này bắn từ lúc bundle chạy, nên nó có thể hụt TRƯỚC khi React
+// kịp mount và gắn tay bắt. Không có dòng này thì trình duyệt ghi một
+// "Uncaught (in promise)" đỏ vào console — tiếng ồn vô nghĩa ngay giữa
+// chỗ người đi sửa lỗi cần đọc. `.catch` trả về promise KHÁC nên
+// `contentReady` vẫn nguyên vẹn cho bên dưới dùng.
+contentReady.catch(() => undefined)
+
+/** Ba trạng thái của kho nội dung, nhìn từ cổng vào app. */
+type TrangThaiNoiDung = 'dang-keo' | 'xong' | 'hut'
 
 // Luật "mỗi ngày mở app, việc ĐẦU TIÊN là ôn thẻ đến hạn" (spec 2.2) chỉ
 // áp cho lần điều hướng ĐẦU của phiên; sau đó người học đi lại tự do
@@ -75,29 +86,58 @@ export function AppGate() {
     if (hydrated) return
     return useProgress.persist.onFinishHydration(() => setHydrated(true))
   }, [hydrated])
-  const [ready, setReady] = useState(false)
+  const [noiDung, setNoiDung] = useState<TrangThaiNoiDung>('dang-keo')
+  // Đếm số lần bấm "Thử lại" — đổi số là effect chạy lại và gọi
+  // `primeModules()` một lượt mới.
+  const [lanThu, setLanThu] = useState(0)
   useEffect(() => {
     let alive = true
-    void contentReady.then(() => {
-      if (!alive) return
-      // DỌN THẺ MỒ CÔI ngay khi nội dung đã nạp (phát hiện K1, khối
-      // 21.46). Đây là chỗ DUY NHẤT biết đủ hai vế: hộp ôn tập của người
-      // học, và nội dung hiện tại dựng được mặt thẻ nào. Thẻ nội dung
-      // không còn mà để lại thì nó vẫn tính vào nợ quá hạn, vẫn kéo
-      // người học vào phiên ôn — mà phiên ôn không dựng nổi mặt nó.
-      useProgress.getState().donTheMoCoi(cardIdsHopLe(loadModules()))
-      setReady(true)
-    })
+    // Lượt đầu dùng promise đã bắn từ lúc bundle chạy (đừng kéo lại thứ
+    // đang trên đường về); lượt thử lại mới gọi hàm lần nữa — kho vẫn
+    // rỗng nên nó kéo thật, không có cache nào chắn.
+    const cho = lanThu === 0 ? contentReady : primeModules()
+    cho.then(
+      () => {
+        if (!alive) return
+        // DỌN THẺ MỒ CÔI ngay khi nội dung đã nạp (phát hiện K1, khối
+        // 21.46). Đây là chỗ DUY NHẤT biết đủ hai vế: hộp ôn tập của người
+        // học, và nội dung hiện tại dựng được mặt thẻ nào. Thẻ nội dung
+        // không còn mà để lại thì nó vẫn tính vào nợ quá hạn, vẫn kéo
+        // người học vào phiên ôn — mà phiên ôn không dựng nổi mặt nó.
+        useProgress.getState().donTheMoCoi(cardIdsHopLe(loadModules()))
+        setNoiDung('xong')
+      },
+      // KÉO HỤT (phát hiện L1): mạng rớt giữa chừng, hoặc service worker
+      // cài lúc mạng chập chờn nên cache thiếu một file nội dung. Trước
+      // đây nhánh này không tồn tại — promise reject rơi vào hư không và
+      // cổng đứng mãi ở `return null`, tức MÀN TRẮNG câm. Giờ nói ra và
+      // đưa đường thử lại.
+      (loi: unknown) => {
+        if (!alive) return
+        console.warn('[netmaster] chưa kéo được nội dung bài học', loi)
+        setNoiDung('hut')
+      },
+    )
     return () => {
       alive = false
     }
-  }, [])
+  }, [lanThu])
   const onboardingDone = useProgress((s) => s.onboardingDone)
 
   if (!hydrated) return null
   // Onboarding mở được ngay cả khi nội dung còn đang kéo (màn đó tự đủ);
   // nội dung thường xong từ lâu trước khi người mới bấm hết onboarding.
   if (!onboardingDone) return <OnboardingPage />
-  if (!ready) return null
+  if (noiDung === 'hut') {
+    return (
+      <ManThieuNoiDung
+        thuLai={() => {
+          setNoiDung('dang-keo')
+          setLanThu((n) => n + 1)
+        }}
+      />
+    )
+  }
+  if (noiDung !== 'xong') return null
   return <AppLayout />
 }

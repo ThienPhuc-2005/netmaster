@@ -32,8 +32,14 @@ export const SO_BAN_GIU = 3
  * `truoc-khoi-phuc` là bản chụp ngay trước lúc người học tự bấm lùi về
  * một bản cũ: chính thao tác cứu dữ liệu cũng ghi đè dữ liệu, nên bấm
  * nhầm dòng phải còn đường quay lại chỗ vừa đứng.
+ *
+ * `truoc-nhap` là cùng lý do đó ở CÁNH CỬA BÊN CẠNH (phát hiện L2): nhập
+ * một file sao lưu cũng ghi đè sạch tiến độ đang có. Hai nút nằm cách
+ * nhau vài dòng trong cùng một khung ở trang Hồ sơ, mà trước đây chỉ nút
+ * "lùi về bản này" có lưới đỡ — nút "nhập từ file" thì không, dù nó mới
+ * là nút dễ chọn nhầm file hơn.
  */
-export type LyDoChup = 'dinh-ky' | 'truoc-nang-cap' | 'truoc-khoi-phuc'
+export type LyDoChup = 'dinh-ky' | 'truoc-nang-cap' | 'truoc-khoi-phuc' | 'truoc-nhap'
 
 export interface AnhChup {
   /** Thời điểm chụp (ISO datetime) — dùng để hiện cho người đọc. */

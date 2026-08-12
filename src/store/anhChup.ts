@@ -30,7 +30,10 @@ function laAnhChup(x: unknown): x is AnhChup {
     typeof a['ngay'] === 'string' &&
     typeof a['version'] === 'number' &&
     typeof a['duLieu'] === 'string' &&
-    (a['lyDo'] === 'dinh-ky' || a['lyDo'] === 'truoc-nang-cap' || a['lyDo'] === 'truoc-khoi-phuc')
+    (a['lyDo'] === 'dinh-ky' ||
+      a['lyDo'] === 'truoc-nang-cap' ||
+      a['lyDo'] === 'truoc-khoi-phuc' ||
+      a['lyDo'] === 'truoc-nhap')
   )
 }
 
@@ -145,6 +148,29 @@ export function chupDinhKy(bayGio: Date): void {
 export function chupTruocNangCap(duLieu: string, version: number, bayGio: Date): void {
   try {
     chup(duLieu, version, 'truoc-nang-cap', bayGio)
+  } catch {
+    /* xem ghi chú đầu file */
+  }
+}
+
+/**
+ * Cất bản ĐANG CÓ lại trước khi một thao tác nào đó ghi đè lên nó.
+ *
+ * Tách ra thành cửa riêng vì có HAI thao tác ghi đè trọn tiến độ, không
+ * phải một: lùi về ảnh chụp (`khoiPhuc` bên dưới) và nhập file sao lưu ở
+ * trang Hồ sơ. Cái thứ hai trước đây không gọi ai cả — chọn nhầm file là
+ * mất sạch, không đường lùi (phát hiện L2).
+ *
+ * Nuốt lỗi theo luật đầu file: không chụp được thì vẫn phải cho thao tác
+ * kia chạy tiếp — đó mới là việc người học đang đòi.
+ */
+export function chupTruocGhiDe(lyDo: LyDoChup, bayGio: Date): void {
+  try {
+    const hienTai = localStorage.getItem(PROGRESS_KEY)
+    if (hienTai === null) return // chưa có gì để mất
+    const version = docVersion(hienTai)
+    if (version === null) return // chuỗi hỏng: chụp lại cái hỏng chỉ tốn chỗ
+    chup(hienTai, version, lyDo, bayGio)
   } catch {
     /* xem ghi chú đầu file */
   }

@@ -397,6 +397,19 @@ quan trước khi "sửa test cho xanh".
 - Màn thi mastery: `ModuleTestPage` suy `isFinalModule` từ
   `loadModules().at(-1)` (module cuối đổi bộ chuỗi `test.*Final`) — thêm
   module mới thì "module cuối" tự dời, không sửa test.
+- **Màn TRƯỢT nói hai giọng theo khoảng cách tới ngưỡng** (phát hiện L3,
+  khối 21.48), chia bằng `ganNguong()` trong `engine/masteryGate.ts`
+  (ngưỡng 85% trừ 15 điểm = bề rộng một hai câu trên đề 8 câu). Hụt sát
+  thì giữ "gần lắm rồi" + nút đặc là Thi lại; còn cách một quãng thì đổi
+  câu và ĐẢO VAI hai nút — nút đặc trỏ về bài học, Thi lại lùi xuống
+  `ghost`. Đừng gộp lại thành một giọng cho gọn: bản cũ khen "Được 0% —
+  gần lắm rồi" (đo thật trên browser), và an ủi bằng câu không đúng sự
+  thật thì lần sau người học không tin câu nào nữa. Cửa thi lại KHÔNG
+  được bỏ ở nhánh nào — "thi lại là để ôn, không phải để bị phạt".
+- Danh sách "ý cần ôn" ở màn trượt: lời dặn chung (`test.reviewHintGeneric`)
+  in ĐÚNG MỘT LẦN ở đầu danh sách, dòng theo từng câu chỉ hiện khi câu đó
+  khai `hintTopic`. Phần lớn câu không khai, nên in dưới từng câu là 6
+  dòng y hệt nhau che mất hai dòng thật sự có tin.
 
 ## 8. Store, persist & điều hướng
 
@@ -666,6 +679,28 @@ quan trước khi "sửa test cho xanh".
   (thao tác cứu dữ liệu cũng là thao tác ghi đè) và BẮT BUỘC `reload()`
   ngay sau đó — state RAM lúc ấy vẫn là bản vừa bị đè, hành động kế tiếp
   sẽ persist nó ngược lại (cùng lớp lỗi với SingleWindowGuard).
+- **MỌI cửa ghi đè trọn tiến độ đều phải đi qua `chupTruocGhiDe()`** (phát
+  hiện L2, khối 21.48). Hiện có HAI cửa, không phải một: nút lùi ảnh chụp
+  và cửa NHẬP FILE sao lưu — cửa thứ hai trước đây ghi đè trắng trợn,
+  chọn nhầm file là mất sạch không đường lùi. Thêm cửa thứ ba sau này
+  (đồng bộ backend chẳng hạn) thì luật này áp luôn. Lý do chụp có bốn:
+  `dinh-ky` · `truoc-nang-cap` · `truoc-khoi-phuc` · `truoc-nhap`; thêm
+  lý do mới nhớ khai đủ ba chỗ (`LyDoChup`, `laAnhChup`, `LY_DO_KEY`) —
+  thiếu `laAnhChup` là bản chụp bị lọc mất im lặng lúc đọc lại.
+- **`AppGate` PHẢI bắt nhánh `primeModules()` kéo hụt** (phát hiện L1,
+  khối 21.48). Cổng chờ đủ 21 gói nội dung rồi mới mở khung app, nên
+  promise hụt mà không ai bắt thì cổng đứng vĩnh viễn ở `return null` —
+  MÀN TRẮNG câm, tải lại vẫn trắng (họ J1/K1). Ba điều không được nới:
+  màn hụt phải NÓI RA thay vì trả `null`; nút Thử lại gọi `primeModules()`
+  một lượt mới chứ không `reload()` (mất mạng thì tải lại còn phải trông
+  vào service worker dựng lại vỏ app); và màn đó KHÔNG được mời sang Hồ
+  sơ như màn lỗi hệ thống — mọi trang đều gọi `loadModules()` đồng bộ,
+  mời sang đó là mời thẳng vào một màn lỗi khác. Kèm `contentReady.catch()`
+  ở tầng module: promise bắn từ lúc bundle chạy nên có thể hụt TRƯỚC khi
+  React kịp mount, thiếu dòng đó là console ăn một "Uncaught (in promise)".
+  Gốc rễ đáng nhớ: `scripts/pwa-plugin.mjs` cache nội dung theo kiểu CỐ
+  GẮNG (`allSettled`) trong khi cổng lại ĐÒI ĐỦ — hai bên không cùng một
+  lời hứa, nên nhánh hụt là chuyện được phép xảy ra chứ không phải lỗi.
 
 ## 9. Học vượt — "thi vượt" (ngoài spec, đã duyệt 08-08)
 

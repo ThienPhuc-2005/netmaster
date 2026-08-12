@@ -9,6 +9,31 @@ import type { ModuleProgress, ModuleStatus } from './types'
 /** Ngưỡng đạt bài kiểm tra module (%) — nguyên tắc 2, spec 2.1/mục 1. */
 export const MASTERY_THRESHOLD_PCT = 85
 
+/**
+ * Hụt trong khoảng này thì coi là GẦN NGƯỠNG (điểm %).
+ *
+ * 15 điểm là bề rộng của một hai câu trên đề 8 câu (mỗi câu 12.5%): hụt
+ * một hai câu là gần thật, từ ba câu trở lên là chuyện khác hẳn.
+ */
+export const KHOANG_GAN_NGUONG_PCT = 15
+
+/**
+ * Lượt thi trượt này là "gần lắm rồi" hay "còn một quãng nữa"?
+ *
+ * Vì sao cần phân biệt (phát hiện L3, lượt rà soát màn hiếm gặp 08-12):
+ * màn trượt trước đây nói ĐÚNG MỘT CÂU cho mọi điểm số — "Được {pct}% —
+ * gần lắm rồi". Người được 0% cũng đọc đúng câu ấy. Đo thật trên browser:
+ * trượt 0/8 câu và app vẫn khen "gần lắm rồi". An ủi bằng một câu không
+ * đúng sự thật thì lần sau người học không tin câu nào nữa — cùng họ với
+ * J5/J6 (thanh tiến độ nói dối ở hai đầu).
+ *
+ * Hàm này KHÔNG quyết định đậu/trượt (việc đó của `evaluateModuleTest`),
+ * nó chỉ chọn giọng cho màn kết quả.
+ */
+export function ganNguong(pct: number): boolean {
+  return pct >= MASTERY_THRESHOLD_PCT - KHOANG_GAN_NGUONG_PCT
+}
+
 export interface ModuleTestEvaluation {
   correctCount: number
   total: number

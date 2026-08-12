@@ -56,19 +56,23 @@ type TestModule = (typeof modules)[number]
  * đang hiện từ nội dung trên màn — không đi theo chỉ số mảng, và số bước
  * là cỡ ĐỀ (masteryDrawCount) chứ không phải cỡ pool.
  */
-function walkTest(module: TestModule, mode: 'pass' | 'fail') {
+function walkTest(module: TestModule, mode: 'pass' | 'fail' | ((step: number) => 'pass' | 'fail')) {
   for (let step = 0; step < masteryDrawCount(module.masteryTest); step++) {
+    // Cho phép chấm ĐIỂM GIỮA: màn trượt nói hai giọng khác nhau tùy còn
+    // cách ngưỡng bao xa (L3), nên test phải dựng được lượt sai vài câu
+    // chứ không chỉ sai hết hoặc đúng hết.
+    const m = typeof mode === 'function' ? mode(step) : mode
     const input = screen.queryByPlaceholderText('Gõ câu trả lời của bạn…')
     if (input !== null) {
       const q = module.masteryTest.find((x) => x.kind === 'typed' && screen.queryByText(x.prompt.vi) !== null)
-      const text = mode === 'pass' && q !== undefined && q.kind === 'typed' ? q.accept[0]! : 'trả lời sai có chủ đích'
+      const text = m === 'pass' && q !== undefined && q.kind === 'typed' ? q.accept[0]! : 'trả lời sai có chủ đích'
       fireEvent.change(input, { target: { value: text } })
       fireEvent.click(screen.getByRole('button', { name: /Kiểm tra/ }))
       continue
     }
     const orderQ = module.masteryTest.find((x) => x.kind === 'order' && screen.queryByText(x.prompt.vi) !== null)
     if (orderQ !== undefined && orderQ.kind === 'order') {
-      const items = mode === 'pass' ? orderQ.items : [...orderQ.items].reverse()
+      const items = m === 'pass' ? orderQ.items : [...orderQ.items].reverse()
       for (const item of items) fireEvent.click(screen.getByRole('button', { name: item.vi }))
       fireEvent.click(screen.getByRole('button', { name: /Kiểm tra/ }))
       continue
@@ -76,7 +80,7 @@ function walkTest(module: TestModule, mode: 'pass' | 'fail') {
     const mcq = module.masteryTest.find((x) => x.kind === 'mcq' && screen.queryByText(x.prompt.vi) !== null)
     expect(mcq, `bước ${step}: không nhận ra dạng câu đang hiện`).toBeDefined()
     if (mcq !== undefined && mcq.kind === 'mcq') {
-      const choice = mode === 'pass' ? mcq.choices[mcq.answerIndex]! : mcq.choices.find((_, i) => i !== mcq.answerIndex)!
+      const choice = m === 'pass' ? mcq.choices[mcq.answerIndex]! : mcq.choices.find((_, i) => i !== mcq.answerIndex)!
       fireEvent.click(screen.getByRole('button', { name: choice.vi }))
     }
   }
@@ -148,7 +152,9 @@ describe('màn rớt không được rò đáp án (giá trị của con số 85
     // Trả lời từng câu một cách CHẮC CHẮN SAI, bất kể thứ tự đã xáo.
     walkTest(first, 'fail')
     // Đã rớt: có tiêu đề ý cần ôn + lời hẹn "đáp án hiện khi đậu"...
-    expect(screen.getByText(/gần lắm rồi/)).toBeDefined()
+    // Sai HẾT thì giọng là "còn một quãng nữa" — câu "gần lắm rồi" chỉ
+    // dành cho người thật sự gần (phát hiện L3).
+    expect(screen.getByText(/còn một quãng nữa/)).toBeDefined()
     expect(screen.getAllByText(/đáp án đầy đủ sẽ hiện khi bạn đậu/).length).toBeGreaterThan(0)
     // ...và KHÔNG một đáp án typed nào bị in nguyên văn ra màn hình.
     for (const answer of typedAnswers) {
@@ -331,5 +337,58 @@ describe('khiếu nại đáp án ngay ở màn kết quả thi (khối 21.12)',
     fireEvent.click(screen.getByRole('button', { name: 'Bắt đầu' }))
     walkTest(first, 'pass')
     expect(screen.queryByRole('button', { name: /Mình nghĩ câu này đúng/ })).toBeNull()
+  })
+})
+
+// L3 (lượt rà soát màn hiếm gặp 08-12) — MÀN TRƯỢT.
+//
+// Đo thật trên browser trước khi sửa: thi vượt module 2, sai cả 8 câu,
+// màn kết quả ghi "Được 0% — gần lắm rồi." rồi mời "Thi lại ngay" bằng
+// nút đặc — trong khi 8 dòng ngay phía trên đều bảo "mở lại bài dạy phần
+// này". App vừa an ủi bằng một câu không đúng, vừa mời làm đúng thứ
+// không nên làm.
+describe('màn trượt nói đúng khoảng cách tới ngưỡng (L3)', () => {
+  /** Số câu sai ÍT NHẤT để trượt — hụt chừng này là "gần lắm rồi". */
+  function saiVuaDuTruot(module: TestModule): number {
+    const n = masteryDrawCount(module.masteryTest)
+    for (let k = 1; k <= n; k++) if (((n - k) * 100) / n < 85) return k
+    return n
+  }
+
+  it('hụt sát ngưỡng: giữ nguyên giọng "gần lắm rồi" và nút Thi lại đứng đầu', () => {
+    const first = modules[0]!
+    const sai = saiVuaDuTruot(first)
+    openTestFor(first.id)
+    fireEvent.click(screen.getByRole('button', { name: 'Bắt đầu' }))
+    walkTest(first, (step) => (step < sai ? 'fail' : 'pass'))
+
+    expect(screen.getByText(/gần lắm rồi/), 'hụt sát ngưỡng mà không được nói là gần').toBeDefined()
+    expect(screen.getByRole('button', { name: 'Thi lại ngay' })).toBeDefined()
+    // Ở gần thì đi tiếp bằng thi lại — không đẩy người ta về học lại cả module.
+    expect(screen.queryByRole('button', { name: 'Về học lại module này' })).toBeNull()
+  })
+
+  it('còn cách một quãng: KHÔNG khen "gần lắm rồi", và nút đặc trỏ về bài học', () => {
+    const first = modules[0]!
+    openTestFor(first.id)
+    fireEvent.click(screen.getByRole('button', { name: 'Bắt đầu' }))
+    walkTest(first, 'fail')
+
+    expect(screen.queryByText(/gần lắm rồi/), 'được 0% mà app vẫn khen gần lắm rồi').toBeNull()
+    expect(screen.getByText(/còn một quãng nữa/)).toBeDefined()
+    // Cửa thi lại KHÔNG bị lấy đi, chỉ lùi về hàng hai.
+    expect(screen.getByRole('button', { name: 'Về học lại module này' })).toBeDefined()
+    expect(screen.getByRole('button', { name: 'Thi lại ngay' })).toBeDefined()
+  })
+
+  it('lời dặn chung chỉ nói MỘT LẦN, không lặp dưới từng câu sai', () => {
+    const first = modules[0]!
+    openTestFor(first.id)
+    fireEvent.click(screen.getByRole('button', { name: 'Bắt đầu' }))
+    walkTest(first, 'fail')
+
+    // Trước đây câu này in dưới mỗi câu không khai hintTopic — sai 8 câu
+    // thì thành 6 dòng y hệt nhau, che mất mấy dòng thật sự có tin.
+    expect(screen.getAllByText(/đáp án đầy đủ sẽ hiện khi bạn đậu/)).toHaveLength(1)
   })
 })

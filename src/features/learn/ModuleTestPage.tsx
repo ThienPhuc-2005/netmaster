@@ -28,7 +28,7 @@ import { Link, useNavigate, useParams, useSearchParams } from 'react-router'
 import { Award, ChevronLeft, GraduationCap, Lock, Mail } from 'lucide-react'
 import { findModule, lessonsInOrder } from '../../content'
 import { backToLearn } from './LearnPage'
-import { MASTERY_THRESHOLD_PCT, computeModuleStatuses } from '../../engine/masteryGate'
+import { MASTERY_THRESHOLD_PCT, computeModuleStatuses, ganNguong } from '../../engine/masteryGate'
 import { gradeQuestion, type QuestionResponse } from '../../engine/grading/gradeQuestion'
 import { drawMasteryTest, masteryDrawCount } from '../../engine/masteryPool'
 import type { Question } from '../../engine/contentSchema'
@@ -263,6 +263,9 @@ export function ModuleTestPage() {
     .map((q, i) => ({ q, response: phase.responses[i], correct: phase.results[i] === true }))
     .filter((x) => !x.correct)
   const pctRounded = Math.round(phase.pct)
+  // Trượt mà còn cách ngưỡng một quãng — đổi cả giọng lẫn việc được mời
+  // làm tiếp. So bằng `phase.pct` chưa làm tròn, đúng lối `evaluateModuleTest`.
+  const conXa = !phase.passed && !ganNguong(phase.pct)
 
   return (
     <>
@@ -304,13 +307,24 @@ export function ModuleTestPage() {
           </div>
         )}
 
+        {/* GIỌNG THEO KHOẢNG CÁCH TỚI NGƯỠNG (phát hiện L3). Trước đây màn
+            này nói đúng một câu "gần lắm rồi" cho mọi điểm số — đo thật
+            trên browser: trượt 0/8 câu vẫn đọc được câu ấy. Người ở xa
+            ngưỡng cần một câu đúng sự thật hơn, và cần được chỉ về phía
+            bài học chứ không phải về phía nút thi lại. */}
         {!phase.passed && (
           <div className="flex flex-col gap-1 rounded-md border border-warn/40 bg-panel px-5 py-4">
-            <p className="font-semibold text-warn">{t('test.failTitle', { pct: pctRounded })}</p>
+            <p className="font-semibold text-warn">
+              {t(conXa ? 'test.failTitleFar' : 'test.failTitle', { pct: pctRounded })}
+            </p>
             <p className="text-sm text-ink-muted">
               {phase.challenge
                 ? t('test.challengeFailBody', { threshold: MASTERY_THRESHOLD_PCT })
-                : t(isFinalModule ? 'test.failBodyFinal' : 'test.failBody', { threshold: MASTERY_THRESHOLD_PCT })}
+                : conXa
+                  ? t(isFinalModule ? 'test.failBodyFarFinal' : 'test.failBodyFar', {
+                      threshold: MASTERY_THRESHOLD_PCT,
+                    })
+                  : t(isFinalModule ? 'test.failBodyFinal' : 'test.failBody', { threshold: MASTERY_THRESHOLD_PCT })}
             </p>
           </div>
         )}
@@ -318,6 +332,11 @@ export function ModuleTestPage() {
         {wrong.length > 0 && (
           <div className="flex flex-col gap-3">
             <h2 className="text-sm font-semibold uppercase tracking-wide text-ink-muted">{t('test.reviewTitle')}</h2>
+            {/* Lời dặn chung nói MỘT LẦN ở đây (phát hiện L3). Trước đây nó
+                đứng dưới TỪNG câu, mà phần lớn câu không khai `hintTopic`
+                — đo thật: 8 câu sai thì 6 dòng y hệt nhau. Câu lặp sáu lần
+                thành nhiễu che mất hai dòng thật sự có tin. */}
+            {!phase.passed && <p className="text-sm leading-relaxed text-ink-muted">{t('test.reviewHintGeneric')}</p>}
             {wrong.map(({ q, response }) => (
               <div key={q.id} className="flex flex-col gap-2">
                 <p className="text-sm font-medium text-ink">{lt(q.prompt)}</p>
@@ -326,11 +345,13 @@ export function ModuleTestPage() {
                   <AnswerReveal question={q} response={response} explanation={maybeLt(q.explain)} />
                 ) : (
                   // Chưa đậu: chỉ Ý CẦN ÔN — trỏ hướng, không đưa đáp án.
-                  <p className="rounded-md border border-edge bg-panel px-4 py-3 text-sm leading-relaxed text-ink-muted">
-                    {q.hintTopic !== undefined
-                      ? t('test.reviewHint', { topic: lt(q.hintTopic) })
-                      : t('test.reviewHintGeneric')}
-                  </p>
+                  // Câu nào không khai chủ đề thì thôi: lời dặn chung ở trên
+                  // đã nói hộ, in lại lần nữa chỉ tốn chỗ.
+                  q.hintTopic !== undefined && (
+                    <p className="rounded-md border border-edge bg-panel px-4 py-3 text-sm leading-relaxed text-ink-muted">
+                      {t('test.reviewHint', { topic: lt(q.hintTopic) })}
+                    </p>
+                  )
                 )}
                 {/* Khiếu nại được NGAY TẠI ĐÂY (khối 21.12): đề thi là chỗ
                     một danh sách đáp án hẹp gây thiệt hại lớn nhất — nó ăn
@@ -368,11 +389,22 @@ export function ModuleTestPage() {
               {t('test.challengeNext', { module: lt(nextModule.title) })}
             </Button>
           )}
+          {/* Còn cách ngưỡng một quãng thì việc đáng làm tiếp là ĐI HỌC,
+              không phải thi lại ngay — nên nút đặc trỏ về bài học (phát
+              hiện L3). Trước đây nút đặc luôn là "Thi lại ngay", trong khi
+              mọi dòng ngay phía trên đều bảo "mở lại bài dạy phần này":
+              chữ nói một đằng, nút mời một nẻo. Cửa thi lại KHÔNG bị lấy
+              đi — nó chỉ lùi về hàng hai, vì "thi lại là để ôn, không
+              phải để bị phạt" vẫn nguyên giá trị. */}
+          {conXa && (
+            <Button onClick={() => void navigate(backToLearn(module.id))}>{t('test.failBackToLessons')}</Button>
+          )}
           {/* Rớt thì thi lại được, kể cả lượt VƯỢT — và thi lại GIỮ NGUYÊN
               chế độ của lượt vừa rồi: vượt hụt mà nhảy sang đường mastery
               thường là ghi điểm cho module chưa học xong bài nào. */}
           {!phase.passed && (
             <Button
+              variant={conXa ? 'ghost' : 'primary'}
               onClick={() =>
                 setPhase({
                   kind: 'running',
@@ -389,7 +421,9 @@ export function ModuleTestPage() {
               {t('test.retake')}
             </Button>
           )}
-          {backLink}
+          {/* Nút "Về học lại" ở trên đã là chính đường này rồi — để thêm
+              link nữa là hai cửa giống hệt nhau trên cùng một màn (họ J4). */}
+          {!conXa && backLink}
         </div>
       </div>
     </>

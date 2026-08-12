@@ -385,6 +385,8 @@ Lượt rà soát trước đi đường xuôi (người mới → giữa khóa)
   "chưa mở", vì ở đó ổ khóa nói đúng. Ghi chú cũ: (NHỎ) — ngay dưới huy hiệu "Đã đạt · 92%". Cùng họ với J6 vừa
   dọn: thẻ nói hai điều ngược nhau vì hai nguồn khác nhau (đậu đọc từ
   masteryScores, chặng đọc từ completedLessons).
+- ✅ **L-mở-đầu** — xem mục L ngay dưới: lượt rà soát thứ ba đi vào ba màn
+  HIẾM GẶP mà hai lượt trước không bước qua.
 - ✅ **K6. Người đã đi hết khóa không còn việc gì để làm** — ĐÃ DỌN (khối
   21.47): hết bài và hết thẻ ôn thì thẻ Hôm nay chỉ đường sang phòng khám
   và drill — hai sân vốn đã mở mà thẻ này chưa từng nhắc. Cả hai không
@@ -393,3 +395,44 @@ Lượt rà soát trước đi đường xuôi (người mới → giữa khóa)
   học thì đúng, với người đã tốt nghiệp thì đó là ngõ cụt mỗi ngày.
   Phòng khám (13 ca luyện tự do) và hai drill vẫn mở, nhưng thẻ Hôm nay
   không hề nhắc tới chúng.
+
+## L. Rà soát BA MÀN HIẾM GẶP (08-12)
+
+Hai lượt trước đi theo NGƯỜI: đường xuôi (mục J) rồi đường ngược (mục K).
+Lượt này đi theo MÀN — ba màn hiếm tới mức chưa lượt nào bước vào, mà cả
+ba đều rơi đúng lúc người học đang yếu thế nhất: vừa trượt bài thi, vừa
+mất dữ liệu, vừa mất mạng. Cả ba phát hiện đều đã CHỮA trong cùng khối
+21.48.
+
+- ✅ **L1. Nội dung kéo hụt → app đứng ở MÀN TRẮNG câm, vĩnh viễn** (NẶNG)
+  — ĐÃ CHỮA (khối 21.48). `AppGate` chờ `primeModules()` kéo đủ 21 chunk
+  rồi mới mở khung app, nhưng KHÔNG ai bắt nhánh promise hụt: cổng đứng
+  nguyên ở `return null`, tải lại vẫn trắng, không một chữ nào nói vì sao.
+  Cùng họ J1/K1 — app không sập, nhưng cũng không đi được đâu.
+  Chuyện đời thường chứ không hiếm như tưởng: chính
+  `scripts/pwa-plugin.mjs` cache phần nội dung theo kiểu CỐ GẮNG
+  (`Promise.allSettled`, hỏng file nào bỏ file đó) trong khi `AppGate`
+  lại ĐÒI đủ — cài PWA lúc mạng chập chờn là đủ dựng ra cảnh này.
+  Chữa: màn riêng nói thật + nút Thử lại gọi `primeModules()` một lượt
+  mới (không tải lại trang — mất mạng thì tải lại còn phải trông vào
+  service worker dựng lại vỏ app). Màn này cố ý KHÔNG mời sang Hồ sơ như
+  màn lỗi hệ thống: mọi trang đều gọi `loadModules()` đồng bộ, mời sang
+  đó là mời thẳng vào một màn lỗi khác.
+- ✅ **L2. Nhập file sao lưu ghi đè sạch tiến độ mà KHÔNG cất bản đang
+  có** (TRUNG BÌNH-NẶNG) — ĐÃ CHỮA (khối 21.48). Trong cùng một khung ở
+  trang Hồ sơ có hai nút cùng ghi đè trọn tiến độ; nút "Lùi về bản này"
+  cất bản hiện tại trước và còn hứa hẳn ra trong lời xác nhận, nút "Nhập
+  từ file" thì không làm gì cả — dù nó mới là nút dễ chọn nhầm hơn (file
+  ba tháng trước và file hôm qua trông y hệt nhau trong hộp thoại chọn
+  file). Mất bằng chính thao tác đi cứu dữ liệu là kiểu mất tệ nhất.
+  Chữa: thêm lý do chụp thứ tư `truoc-nhap` + hàm chung `chupTruocGhiDe`,
+  và lời xác nhận nói ra lưới đỡ đó.
+- ✅ **L3. Màn TRƯỢT bài thi nói một giọng cho mọi điểm số** (TRUNG BÌNH)
+  — ĐÃ CHỮA (khối 21.48). Đo thật trên browser: thi vượt module 2, sai cả
+  8 câu, màn kết quả ghi **"Được 0% — gần lắm rồi."** An ủi bằng một câu
+  không đúng sự thật thì lần sau người học không tin câu nào nữa (họ
+  J5/J6 — thanh tiến độ nói dối ở hai đầu). Kèm hai vết cùng màn: nút đặc
+  luôn là "Thi lại ngay" trong khi mọi dòng phía trên đều bảo "mở lại bài
+  dạy phần này" (chữ nói một đằng, nút mời một nẻo), và lời dặn chung in
+  lại dưới TỪNG câu sai — 8 câu sai thì 6 dòng y hệt nhau, che mất mấy
+  dòng thật sự có tin.
