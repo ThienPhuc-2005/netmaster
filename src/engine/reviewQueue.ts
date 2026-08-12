@@ -28,9 +28,54 @@ export const SESSION_CAP = 15
 /** Ngưỡng khóa học mới (spec 2.2: "không cho học mới khi còn > 30 thẻ quá hạn"). */
 export const OVERDUE_BLOCK_THRESHOLD = 30
 
-/** Thẻ ĐẾN HẠN: dueDate <= hôm nay — thẻ đến hạn đúng hôm nay cũng phải ôn. */
-export function dueCards(cards: ReviewCard[], today: ISODate): ReviewCard[] {
-  return cards.filter((c) => isOnOrBefore(c.dueDate, today))
+const NGAY_ISO = /^\d{4}-\d{2}-\d{2}$/
+
+/**
+ * Thẻ này có ĐỌC ĐƯỢC không (phát hiện J1, khối 21.43).
+ *
+ * Vì sao một hàm canh cổng lại đáng có: hộp ôn tập là thứ app ĐỌC ĐẦU
+ * TIÊN mỗi lần mở (luật "ôn trước học sau"), nên một thẻ méo — thiếu
+ * `createdOn`, `dueDate` không phải ngày — không chỉ làm hỏng phiên ôn
+ * mà làm SẬP CẢ APP ngay ở cửa vào: người học rơi vào vòng lặp mở app →
+ * sập → tải lại → sập, không tới nổi trang Hồ sơ để lùi về bản tự lưu.
+ * Đó là lỗi duy nhất trong app khiến người ta mất trắng tiến độ mà
+ * không có đường tự cứu.
+ *
+ * Nên luật ở đây là: **thẻ không đọc được thì bỏ qua, không ném**. Bỏ
+ * qua một thẻ là mất một thẻ; ném là mất cả hộp lẫn đường vào app.
+ */
+export function theLanh(card: unknown): card is ReviewCard {
+  if (card === null || typeof card !== 'object') return false
+  const c = card as Record<string, unknown>
+  return (
+    typeof c['conceptId'] === 'string' &&
+    c['conceptId'] !== '' &&
+    typeof c['moduleId'] === 'string' &&
+    typeof c['intervalIndex'] === 'number' &&
+    Number.isInteger(c['intervalIndex']) &&
+    typeof c['lapses'] === 'number' &&
+    typeof c['dueDate'] === 'string' &&
+    NGAY_ISO.test(c['dueDate']) &&
+    typeof c['createdOn'] === 'string' &&
+    NGAY_ISO.test(c['createdOn']) &&
+    (c['lastReviewedOn'] === null || (typeof c['lastReviewedOn'] === 'string' && NGAY_ISO.test(c['lastReviewedOn'])))
+  )
+}
+
+/** Lọc lấy những thẻ đọc được — cửa duy nhất mọi nơi nên đi qua. */
+export function locTheLanh(cards: readonly unknown[]): ReviewCard[] {
+  return cards.filter(theLanh)
+}
+
+/**
+ * Thẻ ĐẾN HẠN: dueDate <= hôm nay — thẻ đến hạn đúng hôm nay cũng phải ôn.
+ *
+ * Lọc thẻ méo ngay tại đây (không phải chỉ ở phiên ôn): `isOnOrBefore`
+ * NÉM khi gặp ngày không đúng khuôn, mà hàm này được gọi từ cổng điều
+ * hướng lúc mở app — chỗ không được phép ném.
+ */
+export function dueCards(cards: readonly ReviewCard[], today: ISODate): ReviewCard[] {
+  return locTheLanh(cards).filter((c) => isOnOrBefore(c.dueDate, today))
 }
 
 /**
@@ -87,8 +132,10 @@ export function flashcardAskIndex(turn: number, askCount: number): number {
  * Thẻ đến hạn HÔM NAY chưa phải nợ: người học còn nguyên hôm nay để ôn,
  * chưa có lý do gì để khóa bài mới.
  */
-export function overdueCount(cards: ReviewCard[], today: ISODate): number {
-  return cards.reduce((n, c) => (isBefore(c.dueDate, today) ? n + 1 : n), 0)
+export function overdueCount(cards: readonly ReviewCard[], today: ISODate): number {
+  // Lọc như `dueCards`, và vì cùng một lý do: hàm này chạy ở cổng khóa
+  // bài mới, một cú ném ở đây là chặn đường vào bài học.
+  return locTheLanh(cards).reduce((n, c) => (isBefore(c.dueDate, today) ? n + 1 : n), 0)
 }
 
 /**

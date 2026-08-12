@@ -10,6 +10,7 @@ import {
   flashcardTurn,
   interleaveByModule,
   overdueCount,
+  theLanh,
 } from './reviewQueue'
 
 const TODAY = '2026-08-04'
@@ -285,5 +286,71 @@ describe('xoay cách hỏi của thẻ (kho ý tưởng H5)', () => {
 
   it('không tìm thấy thẻ trong hộp thì rơi về cách hỏi xuôi, không vỡ màn', () => {
     expect(flashcardAskIndex(flashcardTurn(null), 3)).toBe(0)
+  })
+})
+
+// ---------------------------------------------------------------
+// Thẻ HỎNG không được làm sập cửa vào app (phát hiện J1, khối 21.43)
+// ---------------------------------------------------------------
+//
+// Hộp ôn tập là thứ app đọc ĐẦU TIÊN mỗi lần mở (luật "ôn trước học
+// sau"). Trước khối này, một thẻ méo làm cả app sập ngay ở cửa và người
+// học rơi vào vòng lặp mở-sập-tải lại, không tới nổi trang Hồ sơ để lùi
+// về bản tự lưu. Bất biến từ nay: **bỏ qua thẻ hỏng, không bao giờ ném.**
+
+describe('theLanh — thẻ nào đọc được', () => {
+  const lanh = card({ conceptId: 'goi-tin' })
+
+  it('thẻ đủ trường thì lành', () => {
+    expect(theLanh(lanh)).toBe(true)
+  })
+
+  it('thiếu createdOn — đúng ca đã làm sập app thật', () => {
+    const { createdOn: _bo, ...thieu } = lanh
+    expect(theLanh(thieu)).toBe(false)
+  })
+
+  it('ngày sai khuôn thì không lành (isBefore sẽ ném nếu lọt)', () => {
+    expect(theLanh({ ...lanh, dueDate: '12/08/2026' })).toBe(false)
+    expect(theLanh({ ...lanh, createdOn: 'hôm qua' })).toBe(false)
+    expect(theLanh({ ...lanh, lastReviewedOn: 'x' })).toBe(false)
+  })
+
+  it('lastReviewedOn null vẫn lành — thẻ chưa ôn lần nào là chuyện thường', () => {
+    expect(theLanh({ ...lanh, lastReviewedOn: null })).toBe(true)
+  })
+
+  it('thiếu id, sai kiểu số, hoặc không phải object đều không lành', () => {
+    expect(theLanh({ ...lanh, conceptId: '' })).toBe(false)
+    expect(theLanh({ ...lanh, intervalIndex: '2' })).toBe(false)
+    expect(theLanh({ ...lanh, lapses: null })).toBe(false)
+    expect(theLanh(null)).toBe(false)
+    expect(theLanh('thẻ')).toBe(false)
+  })
+})
+
+describe('thẻ hỏng nằm lẫn trong hộp', () => {
+  const hong = { conceptId: 'hong', moduleId: 'm1', intervalIndex: 0, dueDate: '2026-08-01', lapses: 0 }
+  const hopLan = [card({ conceptId: 'a' }), hong, card({ conceptId: 'b' })] as ReviewCard[]
+
+  it('dueCards bỏ qua thẻ hỏng thay vì ném', () => {
+    expect(() => dueCards(hopLan, TODAY)).not.toThrow()
+    expect(dueCards(hopLan, TODAY).map((c) => c.conceptId)).toEqual(['a', 'b'])
+  })
+
+  it('overdueCount và cổng khóa bài mới cũng không ném', () => {
+    expect(() => overdueCount(hopLan, TODAY)).not.toThrow()
+    expect(overdueCount(hopLan, TODAY)).toBe(2)
+    expect(canStartNewLesson(hopLan, TODAY)).toBe(true)
+  })
+
+  it('phiên ôn vẫn dựng được, chỉ thiếu đúng thẻ hỏng', () => {
+    expect(() => buildReviewSession(hopLan, TODAY)).not.toThrow()
+    expect(buildReviewSession(hopLan, TODAY).map((c) => c.conceptId).sort()).toEqual(['a', 'b'])
+  })
+
+  it('cả hộp toàn thẻ hỏng: phiên rỗng, app vẫn đứng', () => {
+    expect(buildReviewSession([hong, hong] as ReviewCard[], TODAY)).toEqual([])
+    expect(dueCards([hong] as ReviewCard[], TODAY)).toEqual([])
   })
 })

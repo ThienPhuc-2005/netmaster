@@ -16,7 +16,11 @@
   "error": {
     "title": "Something went wrong",
     "body": "Your progress is safe on this device. Reloading usually fixes it; if it keeps happening, screenshot this and send it to the app author.",
-    "reload": "Reload"
+    "reload": "Reload",
+    "openProfile": "Open the Profile page",
+    "rollbackNote": "Still broken after reloading? Roll back to the copy the app kept for you. Anything learned after that point is lost, but you get back into the app right away — and the older progress is untouched.",
+    "rollback": "Roll back to {luc}",
+    "rollbackConfirm": "Roll progress back to the copy kept at {luc}? The current state is copied first, so a slip can still be undone."
   },
   "settings": {
     "themeTo": {

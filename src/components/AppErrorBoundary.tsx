@@ -8,7 +8,8 @@
 // tiết lỗi kỹ thuật in nguyên văn cho người có nghề đọc.
 
 import { Component, type ErrorInfo, type ReactNode } from 'react'
-import { translate, type Lang } from '../i18n'
+import type { Lang } from '../i18n'
+import { ManLoiTheoLang } from './ManLoi'
 
 interface Props {
   lang: Lang
@@ -34,25 +35,8 @@ export class AppErrorBoundary extends Component<Props, State> {
 
   override render(): ReactNode {
     if (this.state.error === null) return this.props.children
-    const t = (key: string) => translate(this.props.lang, key)
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-bg p-6">
-        <div className="flex max-w-md flex-col gap-4 rounded-md border border-danger/40 bg-panel px-6 py-5">
-          <h1 className="text-lg font-bold text-danger">{t('error.title')}</h1>
-          <p className="text-sm leading-relaxed text-ink-muted">{t('error.body')}</p>
-          <pre className="overflow-x-auto rounded-md bg-bg px-3 py-2 font-mono text-xs text-ink-muted">
-            {this.state.error.message}
-          </pre>
-          <div>
-            <button
-              onClick={() => window.location.reload()}
-              className="rounded-md bg-accent px-4 py-2 text-sm font-semibold text-accent-contrast hover:brightness-110"
-            >
-              {t('error.reload')}
-            </button>
-          </div>
-        </div>
-      </div>
-    )
+    // Màn lỗi (kèm hai đường thoát) dùng chung với errorElement của
+    // router — xem ghi chú đầu ManLoi.tsx.
+    return <ManLoiTheoLang message={this.state.error.message} lang={this.props.lang} />
   }
 }

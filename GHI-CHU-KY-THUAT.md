@@ -402,6 +402,30 @@ quan trước khi "sửa test cho xanh".
 
 - `src/store/progress.ts` là nơi DUY NHẤT nối engine + thời gian thật +
   localStorage. XP/streak chỉ từ retrieval/lab và CHỈ lần học đầu.
+- **THẺ ÔN HỎNG KHÔNG ĐƯỢC LÀM SẬP CỬA VÀO APP (J1, khối 21.43)** — bất
+  biến đắt nhất của vùng này, vì nó là lỗi DUY NHẤT từng khiến người học
+  mất trắng tiến độ mà không có đường tự cứu:
+  - Hộp ôn tập là thứ app đọc ĐẦU TIÊN mỗi lần mở (luật "ôn trước học
+    sau"), nên một thẻ méo (thiếu `createdOn`, `dueDate` không đúng
+    khuôn) làm sập NGAY cửa vào → màn lỗi thay cả khung app → "Tải lại"
+    quay lại đúng chỗ sập → không tới nổi Hồ sơ để lùi về bản tự lưu.
+  - Ba lớp chặn, đừng gỡ lớp nào: (1) `merge` của persist LỌC thẻ hỏng
+    trước khi vào state (chạy mọi lần rehydrate, khác `migrate`);
+    (2) `dueCards`/`overdueCount`/`buildReviewSession` tự lọc lần nữa —
+    state còn được `setState` từ UI/test; (3) cửa nhập backup kiểm TỪNG
+    thẻ bằng chính `theLanh`, không chỉ "có phải mảng không".
+  - Luật giọng: **bỏ qua thẻ hỏng, KHÔNG BAO GIỜ ném**. Bỏ một thẻ là
+    mất một thẻ; ném là mất cả hộp lẫn đường vào app. Có `console.warn`
+    kèm số thẻ bị bỏ để người cần hỗ trợ chụp lại được.
+- **Màn lỗi phải MANG THEO ĐƯỜNG THOÁT** (`components/ManLoi.tsx`, dùng
+  chung cho `AppErrorBoundary` và `errorElement` của router): nút mở
+  thẳng trang Hồ sơ bằng điều hướng CỨNG (router có thể là thứ đang
+  hỏng) + nút lùi thẳng về bản tự lưu gần nhất (chỉ đụng localStorage,
+  không cần engine nào chạy được). **Router bắt lỗi route TRƯỚC
+  AppErrorBoundary** — thiếu `errorElement` là người học rơi vào màn lỗi
+  mặc định của react-router, mất cả 4 tab. Lời máy nói đi qua
+  `loiThanhChu`: router ném `{status, statusText}` chứ không phải
+  `Error`, `String()` thẳng ra "[object Object]".
 - **Persist đang ở v8. Cửa migrate**: đổi shape state = bump version +
   nối một bậc `v(n) → v(n+1)` + cập nhật fixture
   `tests/fixtures/progressV1.json` (`progress.migrate.test.ts` là chuông

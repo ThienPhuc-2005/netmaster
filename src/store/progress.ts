@@ -41,7 +41,7 @@ import type { CliOutcome, CliState } from '../engine/cli'
 import { matchKeywords, type KeywordMatchResult } from '../engine/grading/keywordMatch'
 import { createCard, reviewCard } from '../engine/sm2'
 import { computeModuleStatuses, evaluateModuleTest, type ModuleTestEvaluation } from '../engine/masteryGate'
-import { canStartNewLesson, dueCards, newCardIdsForLesson, overdueCount } from '../engine/reviewQueue'
+import { canStartNewLesson, dueCards, locTheLanh, newCardIdsForLesson, overdueCount } from '../engine/reviewQueue'
 import { initialStreak, recordQualifyingActivity } from '../engine/streak'
 import { pushAnswer } from '../engine/answerHistory'
 import { xpFor } from '../engine/xp'
@@ -833,6 +833,28 @@ export const useProgress = create<ProgressState>()(
       // node/test. Trỏ thẳng global localStorage: browser dùng bản thật,
       // test dùng stub in-memory từ tests/setup.ts.
       storage: createJSONStorage(() => localStorage),
+      /**
+       * CỬA LỌC THẺ HỎNG (phát hiện J1, khối 21.43).
+       *
+       * `merge` chạy ở MỌI lần rehydrate (khác `migrate` chỉ chạy khi
+       * đổi version), nên đây là chỗ duy nhất chặn được một thẻ méo
+       * trước khi nó lọt vào state và làm sập app ngay cửa vào — hộp ôn
+       * tập là thứ app đọc đầu tiên mỗi lần mở.
+       *
+       * Bỏ thẻ hỏng là mất một thẻ; giữ nó là mất cả đường vào app (kèm
+       * cả đường tới nút lùi-về-bản-tự-lưu ở trang Hồ sơ). Kêu một dòng
+       * `console.warn` để người cần hỗ trợ còn chụp lại được.
+       */
+      merge: (persisted, current) => {
+        const goc = persisted as Partial<ProgressState> | null
+        const tron = { ...current, ...(goc ?? {}) } as ProgressState
+        const raw = Array.isArray(goc?.reviewCards) ? goc.reviewCards : []
+        const lanh = locTheLanh(raw)
+        if (lanh.length !== raw.length) {
+          console.warn(`NetMaster: bỏ qua ${raw.length - lanh.length} thẻ ôn không đọc được`)
+        }
+        return { ...tron, reviewCards: lanh }
+      },
       /**
        * CỬA MIGRATE — toàn bộ công sức người học (XP, streak, thẻ SM-2,
        * module đã đậu) nằm sau cánh cửa này. Zustand persist khi version

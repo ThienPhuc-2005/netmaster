@@ -198,3 +198,35 @@ describe('persist migrate: hợp đồng payload v1', () => {
     expect(s.masteryScores['module-1']).toBeCloseTo(71.4, 5)
   })
 })
+
+describe('thẻ hỏng bị chặn ngay ở cửa persist (J1, khối 21.43)', () => {
+  it('rehydrate hộp có thẻ méo: thẻ lành ở lại, thẻ méo bị bỏ, KHÔNG ném', async () => {
+    const payload = JSON.parse(JSON.stringify(v1Payload)) as {
+      state: Record<string, unknown>
+      version: number
+    }
+    const lanh = (payload.state['reviewCards'] as unknown[])[0]
+    const meo: Record<string, unknown> = { ...(lanh as Record<string, unknown>), conceptId: 'meo' }
+    delete meo['createdOn'] // đúng ca đã làm sập app thật
+    payload.state['reviewCards'] = [lanh, meo]
+
+    await expect(rehydrateFrom(payload)).resolves.toBeUndefined()
+    const s = useProgress.getState()
+    expect(s.reviewCards.map((c) => c.conceptId)).toEqual(['goi-tin'])
+    // Phần còn lại của tiến độ KHÔNG bị đụng tới — bỏ một thẻ, không bỏ buổi học.
+    expect(s.xpTotal).toBe(32)
+    expect(s.completedLessons['m1-bai-1']).toBe('2026-07-20')
+    expect(s.masteryScores['module-1']).toBeCloseTo(71.4, 5)
+  })
+
+  it('hộp toàn thẻ méo thì thành hộp rỗng, app vẫn vào được', async () => {
+    const payload = JSON.parse(JSON.stringify(v1Payload)) as {
+      state: Record<string, unknown>
+      version: number
+    }
+    payload.state['reviewCards'] = [{ conceptId: 'x' }, 'không phải thẻ', null]
+    await expect(rehydrateFrom(payload)).resolves.toBeUndefined()
+    expect(useProgress.getState().reviewCards).toEqual([])
+    expect(useProgress.getState().xpTotal).toBe(32)
+  })
+})

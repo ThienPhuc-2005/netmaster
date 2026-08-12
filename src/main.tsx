@@ -1,6 +1,6 @@
 import { StrictMode, Suspense, lazy } from 'react'
 import { createRoot } from 'react-dom/client'
-import { createBrowserRouter, RouterProvider } from 'react-router'
+import { createBrowserRouter, RouterProvider, useRouteError } from 'react-router'
 import { LazyMotion, MotionConfig, domAnimation } from 'motion/react'
 
 // Font tự host — không CDN: Be Vietnam Pro (thiết kế cho tiếng Việt)
@@ -13,6 +13,7 @@ import '@fontsource/jetbrains-mono/700.css'
 import './styles/app.css'
 
 import { AppErrorBoundary } from './components/AppErrorBoundary'
+import { ManLoiRoute } from './components/ManLoi'
 import { SingleWindowGuard } from './components/SingleWindowGuard'
 import { useSettings } from './store/settings'
 import { LessonPlayer } from './features/learn/LessonPlayer'
@@ -47,11 +48,21 @@ function lazyRoute(element: React.ReactNode) {
   return <Suspense fallback={null}>{element}</Suspense>
 }
 
+/** Vỏ nhỏ đọc lỗi từ router rồi giao cho màn lỗi dùng chung. */
+function RouteErrorScreen() {
+  return <ManLoiRoute error={useRouteError()} />
+}
+
 const router = createBrowserRouter(
   [
     {
       path: '/',
       element: <AppGate />,
+      // Lỗi khi render một route bị ROUTER bắt trước AppErrorBoundary —
+      // không khai chỗ này thì người học thấy màn lỗi mặc định của
+      // react-router: mất cả 4 tab, và không còn đường nào tới trang Hồ
+      // sơ để lùi về bản tự lưu (phát hiện J1, khối 21.43).
+      errorElement: <RouteErrorScreen />,
       children: [
         { index: true, element: <LearnIndexGate /> },
         { path: 'bai/:lessonId', element: <LessonPlayer /> },

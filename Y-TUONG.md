@@ -258,3 +258,54 @@ Trạng thái: ☐ chờ duyệt · ✅ đã làm · ✗ đã bàn và bỏ (gi�
   học: muốn biết quyền chảy tới đâu vẫn phải đi tiếp một nhịp, in hộ cả
   chuỗi lồng nhau là làm hộ bài); và **phải khai trong Get-Help** — tham
   số không có trong help là tham số không ai biết mà gõ.
+
+## J. Rà soát TRẢI NGHIỆM trên browser thật (08-12)
+
+Một lượt đi bộ qua app bằng mắt người: người học mới tinh (onboarding →
+trang Học), người học giữa khóa (12/21 module, 7 thẻ đến hạn), phiên ôn
+trọn vẹn, một bài học đủ 6 bước có terminal PowerShell, cửa thi, màn tốt
+nghiệp, trang Hồ sơ, phòng khám, drill — trên cả nền tối/sáng và màn
+hẹp 375px. Không soi NỘI DUNG (hội đồng đã soi), chỉ soi thứ người học
+CHẠM vào.
+
+- ✅ **J1. Thẻ ôn hỏng = app kẹt vòng lặp chết, không đường thoát** — ĐÃ
+  CHỮA (khối 21.43), làm đủ cả ba lớp: phiên ôn (và mọi chỗ đọc thẻ) BỎ
+  QUA thẻ hỏng thay vì ném; màn lỗi mang theo hai đường thoát (mở thẳng
+  Hồ sơ + lùi thẳng về bản tự lưu) và được khai làm `errorElement` của
+  router — chỗ trước đây nuốt cả 4 tab; cửa nhập backup kiểm TỪNG thẻ.
+  Ghi chú cũ giữ lại để nhớ vì sao:
+  (NẶNG). Một thẻ thiếu trường (`createdOn`) làm `buildReviewSession`
+  ném lỗi. Vì luật "mở app là ôn trước", app tự vào Ôn tập → sập → màn
+  lỗi thay CẢ khung app (mất luôn 4 tab) → bấm "Tải lại" là quay đúng
+  vào vòng đó. Người học không cách nào tới được trang Hồ sơ, nên **ảnh
+  chụp tự động (F3) lẫn nút xuất/nhập file đều vô dụng đúng lúc cần
+  nhất**. Ba lớp chữa, làm được từng lớp một: (a) phiên ôn BỎ QUA thẻ
+  hỏng thay vì ném; (b) màn lỗi giữ một đường tới Hồ sơ / một nút "lùi
+  về bản tự lưu"; (c) cửa nhập backup kiểm hình dạng từng THẺ, không chỉ
+  đếm mảng.
+- ☐ **J2. Nộp bài xong không thấy phản hồi** (TRUNG BÌNH). Ở bài nặng
+  (PowerShell/lab/CLI/phòng khám) khung phản hồi nằm DƯỚI mép màn hình
+  — đo thật: khung ở 649–872px trong khi màn cao 694px. App không cuộn
+  tới và không dời focus, nên bấm "Nộp bài" xong màn hình trông y hệt
+  lúc chưa bấm. Dự án đã có luật "cuộn xong phải dời focus" cho các cửa
+  quay lại trang Học — chưa áp cho chỗ này.
+- ☐ **J3. Ô gõ lệnh chỉ rộng 186/375px trên điện thoại** (TRUNG BÌNH,
+  màn hẹp). Dấu nhắc `PS C:\>` và nút "Chạy" ăn hết chiều ngang, đến
+  placeholder cũng bị cắt giữa chừng. Đây là bề mặt GÕ NHIỀU NHẤT của
+  app mà lại hẹp nhất trên màn nhỏ nhất; lệnh thật dài gấp ba lần ô.
+- ☐ **J4. Hai cửa "thi vượt" giống hệt nhau trên cùng một thẻ module**
+  (NHỎ): nút góc trên phải và dòng cuối thẻ trỏ cùng một đường
+  (`/kiem-tra/<module>?vuot=1`), nhân với 21 thẻ.
+- ☐ **J5. Module còn KHÓA vẫn hiện "Tiến độ module 15%"** (NHỎ): mốc
+  khởi đầu 15% sinh ra cho module ĐANG học; ở 9 thẻ khóa liên tiếp nó
+  thành 9 lần cùng một con số không mang tin gì.
+- ☐ **J6. Module đậu bằng THI VƯỢT hiện "Đã đạt 89%" cạnh thanh tiến độ
+  gần rỗng** (NHỎ): thi vượt không cộng XP mà thanh lại đo XP, nên hai
+  con số trên cùng một thẻ cãi nhau. Cần quyết: thanh đo XP hay đo
+  đường đã đi?
+- ☐ **J7. Hai con số của phiên ôn cãi nhau** (NHỎ): tiêu đề "Bạn có 6
+  thẻ đến hạn" trong khi bộ đếm ngay dưới ghi "Thẻ 2/8" (8 = có thẻ học
+  lại). Cả hai đều đúng nhưng đọc cùng lúc thì như app tự mâu thuẫn.
+- ☐ **J8. Màn cuối phiên ôn: việc kế tiếp là một DÒNG CHỮ** (NHỎ) —
+  "Sang học bài mới" chỉ là link màu nhấn, trong khi mọi màn đóng khác
+  của app đều đưa một nút đặc. Đây là màn peak-end của phiên ôn.

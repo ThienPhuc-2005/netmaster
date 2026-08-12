@@ -3,13 +3,15 @@
 ## ĐỌC 30 GIÂY: ĐANG ĐỨNG ĐÂU, LÀM GÌ TIẾP (cập nhật 2026-08-12)
 
 **App hiện có ĐỦ 21/21 MODULE NỘI DUNG + MÀN TỐT NGHIỆP** (M1-12 nhập
-môn, M13-17 Phần D, M18-21 Phần E), 1692 test xanh, typecheck sạch,
+môn, M13-17 Phần D, M18-21 Phần E), 1713 test xanh, typecheck sạch,
 build qua. **Toàn bộ biên bản hội đồng trung cấp đã XỬ XONG (08-10):
 15/15 việc mục 6 (khối 20.2, commit `1d04c0b`) + trọn LƯỢT DỌN 52 phát
 hiện P2 mục 5 (khối 20.3).** Nội dung và engine không còn việc nào treo;
 các khối gần đây đều là ý lấy từ kho `Y-TUONG.md`.
-Việc kế tiếp là của CHỦ DỰ ÁN: ra lệnh commit khối 21.42, và tuyển người
-cho các buổi test người thật (hai dòng DoD còn treo đều cần NGƯỜI).
+Việc kế tiếp là của CHỦ DỰ ÁN: ra lệnh commit khối 21.43, chọn phát hiện
+kế tiếp của lượt rà soát trải nghiệm (mục J của kho ý tưởng — J1 đã
+chữa), và tuyển người cho các buổi test người thật (hai dòng DoD còn
+treo đều cần NGƯỜI).
 
 **Toàn bộ ENGINE của Phần D đã xong.** Không còn engine nào phải viết cho
 M13-17: lab lớp 2 (trunk + STP), CLI thiết bị đủ **24/24 lệnh** của spec
@@ -29,7 +31,49 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (19) M21 capstone + màn tốt nghiệp | XONG |
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
-**KHỐI MỚI NHẤT — 21.42 (08-12), đang ở working tree chờ lệnh commit:**
+**KHỐI MỚI NHẤT — 21.43 (08-12), đang ở working tree chờ lệnh commit:**
+**J1 — bịt lỗ hổng duy nhất khiến người học mất trắng mà không tự cứu được.**
+- Bệnh: hộp ôn tập là thứ app đọc ĐẦU TIÊN mỗi lần mở, nên một thẻ ôn
+  méo (thiếu trường, ngày sai khuôn) làm sập ngay cửa vào → màn lỗi thay
+  cả khung app → bấm "Tải lại" là quay đúng chỗ vừa sập. Tiến độ vẫn nằm
+  nguyên trong máy mà không cách nào chạm tới — kể cả ảnh chụp tự động
+  vừa làm ở khối 21.38.
+- **Lớp 1 — bỏ qua thẻ hỏng, không bao giờ ném.** Cửa `merge` của persist
+  lọc thẻ méo trước khi nó vào state (chạy MỌI lần mở app, khác migrate);
+  các hàm đọc thẻ tự lọc lần nữa vì state còn được đặt từ UI. Bỏ một thẻ
+  là mất một thẻ; ném là mất cả đường vào app.
+- **Lớp 2 — màn lỗi mang theo đường thoát.** Hai nút mới: mở thẳng trang
+  Hồ sơ (điều hướng cứng, không qua router đang hỏng) và **lùi thẳng về
+  bản tự lưu gần nhất ngay tại màn lỗi** (chỉ đụng localStorage, không
+  cần engine nào chạy được). Và khai nó làm `errorElement` của router —
+  hóa ra **router bắt lỗi TRƯỚC lưới đỡ của app**, nên trước giờ người
+  học vẫn thấy màn lỗi mặc định của react-router, mất cả 4 tab.
+- **Lớp 3 — cửa nhập file sao lưu kiểm TỪNG thẻ**, không chỉ "có phải
+  mảng không": chặn ở cửa thì người học còn nguyên tiến độ cũ để thử lại
+  bằng file khác, thay vì nhập xong mở app lên gặp màn lỗi.
+- Vá thêm một chỗ lộ ra lúc thử: dòng lỗi in "[object Object]" vì router
+  ném `{status, statusText}` chứ không phải `Error` — nay in "404 Not
+  Found — …", đúng thứ người cần hỗ trợ chụp lại gửi đi.
+- 1713 test xanh (+21), typecheck sạch, build qua. Kiểm browser thật:
+  dựng lại ĐÚNG dữ liệu đã làm sập app lúc rà soát → giờ app mở bình
+  thường vào trang Học, console kêu đúng một dòng "bỏ qua 1 thẻ ôn không
+  đọc được"; ép router ném lỗi → thấy màn lỗi mới với đủ ba nút, bấm "Mở
+  trang Hồ sơ" là tới đúng nơi có nút lùi. Seed đã xóa.
+
+**LƯỢT RÀ SOÁT TRẢI NGHIỆM (08-12) — không sửa code, chỉ ĐI BỘ qua app
+bằng mắt người trên browser thật** và ghi lại thứ người học chạm phải.
+Đi hết: onboarding của người mới tinh → trang Học ở ba trạng thái thẻ
+(đậu / đang học / còn khóa) → trọn một phiên ôn 8 thẻ → một bài học đủ
+6 bước có terminal PowerShell (kể cả thang gợi ý 3 tầng) → cửa thi →
+màn tốt nghiệp → Hồ sơ → phòng khám → drill, trên cả nền tối lẫn sáng
+và màn hẹp 375px.
+**Kết quả: 8 phát hiện (J1 đã chữa ở khối 21.43), ghi vào mục J của `Y-TUONG.md`** — 1 NẶNG
+(J1: thẻ ôn hỏng làm app kẹt vòng lặp chết, không tới được Hồ sơ để lùi
+về ảnh chụp), 2 TRUNG BÌNH (J2: nộp bài xong phản hồi nằm dưới mép màn
+hình và app không cuộn tới; J3: ô gõ lệnh chỉ rộng 186/375px trên điện
+thoại), 5 NHỎ. Chưa sửa gì — chờ chủ dự án gọi tên.
+
+**KHỐI MỚI NHẤT — 21.42 (08-12), đã commit `954d7a8`:**
 **H8 — chiều tra ngược `Get-ADUser -Properties MemberOf`.**
 - Trước khối này, người trực chỉ hỏi được từ phía NHÓM ("nhóm này có
   ai" — `Get-ADGroupMember`). Giờ hỏi được từ phía NGƯỜI: "anh này đang

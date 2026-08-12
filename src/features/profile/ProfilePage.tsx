@@ -16,6 +16,7 @@ import { Button } from '../../components/Button'
 import { milestones } from '../graduation/milestones'
 import { AoGiacList, DisputedList, MemoryMap, MistakeAnalysisCard, SoSanhThangCard, WeakSpotList, WeeklyRhythm } from './LearningInsights'
 import { memoryByModule } from '../../engine/freshness'
+import { theLanh } from '../../engine/reviewQueue'
 import { mocDeSo, soSanhDang, thangCua } from '../../engine/soSanhThang'
 import { daiNhatTuan, daiNhatTuanTruoc } from '../../engine/quangHoc'
 import type { AnhChup, LyDoChup } from '../../engine/anhChup'
@@ -65,6 +66,11 @@ async function importBackup(file: File, confirmText: string, badText: string, ne
   if (!Array.isArray(state.reviewCards) || typeof state.xpTotal !== 'number' || !Array.isArray(state.passedModules)) {
     throw new Error(badText)
   }
+  // Kiểm TỪNG THẺ, không chỉ "có phải mảng không" (phát hiện J1, khối
+  // 21.43): hộp ôn tập là thứ app đọc đầu tiên mỗi lần mở, nên một thẻ
+  // méo lọt qua đây là người học nhập file xong mở app lên gặp màn lỗi.
+  // Chặn ở cửa thì họ còn nguyên tiến độ cũ để thử lại bằng file khác.
+  if (!state.reviewCards.every((c) => theLanh(c))) throw new Error(badText)
   // Hai key phụ cũng phải lành: settings phải parse được, lang là chuỗi.
   const settingsRaw = backup.data?.['netmaster-settings']
   if (typeof settingsRaw === 'string') {

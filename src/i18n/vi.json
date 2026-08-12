@@ -16,7 +16,11 @@
   "error": {
     "title": "App gặp lỗi ngoài dự kiến",
     "body": "Tiến độ học của bạn vẫn an toàn trong máy. Tải lại trang là thường xong; nếu lỗi lặp lại, chụp màn hình này gửi cho người làm app nhé.",
-    "reload": "Tải lại trang"
+    "reload": "Tải lại trang",
+    "openProfile": "Mở trang Hồ sơ",
+    "rollbackNote": "Tải lại vẫn hỏng? Lùi về bản app tự cất gần nhất. Những gì học được sau mốc đó sẽ mất, nhưng bạn vào lại app được ngay — và tiến độ trước mốc vẫn còn nguyên.",
+    "rollback": "Lùi về bản {luc}",
+    "rollbackConfirm": "Lùi tiến độ về bản app tự cất lúc {luc}? Bản đang có được cất lại trước khi ghi đè, nên lỡ tay vẫn quay lại được."
   },
   "settings": {
     "themeTo": {

@@ -289,3 +289,66 @@ describe('file sao lưu mang theo sổ góp ý', () => {
     }
   })
 })
+
+describe('cửa nhập file sao lưu kiểm TỪNG THẺ (J1, khối 21.43)', () => {
+  /** Dựng một File JSON như người học chọn từ máy. */
+  function fileSaoLuu(reviewCards: unknown[]): File {
+    const progress = JSON.stringify({
+      state: { reviewCards, xpTotal: 120, passedModules: ['module-1'] },
+      version: 8,
+    })
+    return new File(
+      [JSON.stringify({ app: 'netmaster', data: { 'netmaster-progress': progress } })],
+      'tien-do.json',
+      { type: 'application/json' },
+    )
+  }
+
+  const theLanh = {
+    conceptId: 'goi-tin',
+    moduleId: 'module-1',
+    intervalIndex: 1,
+    dueDate: '2026-08-12',
+    lapses: 0,
+    createdOn: '2026-07-20',
+    lastReviewedOn: null,
+  }
+
+  async function nhap(file: File) {
+    renderProfile()
+    const o = document.querySelector('input[type="file"]') as HTMLInputElement
+    Object.defineProperty(o, 'files', { value: [file] })
+    fireEvent.change(o)
+    // importBackup là async (đọc file) — nhường một nhịp cho nó chạy xong.
+    await new Promise((r) => setTimeout(r, 20))
+  }
+
+  it('file có thẻ MÉO bị từ chối, tiến độ đang có không bị đụng', async () => {
+    const { createdOn: _bo, ...meo } = theLanh
+    const alert = vi.spyOn(window, 'alert').mockImplementation(() => {})
+    const confirm = vi.spyOn(window, 'confirm').mockReturnValue(true)
+    localStorage.setItem('netmaster-progress', JSON.stringify({ state: { xpTotal: 777 }, version: 8 }))
+    try {
+      await nhap(fileSaoLuu([theLanh, meo]))
+      expect(alert).toHaveBeenCalled()
+      // Chặn ở cửa: tiến độ cũ còn nguyên để thử lại bằng file khác.
+      expect(localStorage.getItem('netmaster-progress')).toContain('"xpTotal":777')
+    } finally {
+      alert.mockRestore()
+      confirm.mockRestore()
+    }
+  })
+
+  it('file lành thì vẫn nhập được như cũ', async () => {
+    const alert = vi.spyOn(window, 'alert').mockImplementation(() => {})
+    const confirm = vi.spyOn(window, 'confirm').mockReturnValue(true)
+    try {
+      await nhap(fileSaoLuu([theLanh]))
+      expect(alert).not.toHaveBeenCalled()
+      expect(localStorage.getItem('netmaster-progress')).toContain('"xpTotal":120')
+    } finally {
+      alert.mockRestore()
+      confirm.mockRestore()
+    }
+  })
+})
