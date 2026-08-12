@@ -8,7 +8,7 @@ build qua. **Toàn bộ biên bản hội đồng trung cấp đã XỬ XONG (08
 15/15 việc mục 6 (khối 20.2, commit `1d04c0b`) + trọn LƯỢT DỌN 52 phát
 hiện P2 mục 5 (khối 20.3).** Nội dung và engine không còn việc nào treo;
 các khối gần đây đều là ý lấy từ kho `Y-TUONG.md`.
-Việc kế tiếp là của CHỦ DỰ ÁN: ra lệnh commit khối 21.50 + 21.51. **Cả 17 phát
+Khối 21.50 và 21.51 đã commit và đẩy lên GitHub; không còn việc nào chờ lệnh. **Cả 17 phát
 hiện của BA lượt rà soát (mục J 8 ý + mục K 6 ý + mục L 3 ý) đã xử xong
 hết; kho ý tưởng SẠCH.** Việc duy nhất còn treo là tuyển người cho các
 buổi test người thật (hai dòng DoD).
@@ -31,7 +31,7 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (19) M21 capstone + màn tốt nghiệp | XONG |
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
-**KHỐI MỚI NHẤT — 21.51 (08-12), đang ở working tree chờ lệnh commit:**
+**KHỐI MỚI NHẤT — 21.51 (08-12), đã commit `f5990df`:**
 **Chủ dự án báo một lỗi và hỏi một thiếu sót — xử cả hai.**
 - **LỖI: sơ đồ lab trong BÀI THI bị bóp méo.** Màn thi bó cả cột câu hỏi
   vào 512px cho dễ đọc, nhưng bó luôn cả sơ đồ lab — mà mặt bàn lab cần
@@ -65,7 +65,7 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
   trỏ đúng bài dạy từng khái niệm; hộp rỗng thì hiện câu báo trống. Seed
   đã xóa.
 
-**KHỐI TRƯỚC — 21.50 (08-12), đang ở working tree chờ lệnh commit:**
+**KHỐI TRƯỚC — 21.50 (08-12), đã commit `d34fcf7`:**
 **Màn tốt nghiệp tự kiểm trước khi nói về cả khóa (ý F8).**
 Khối trước cho app mở bằng phần nội dung đã về; khối này bịt nốt chỗ
 CUỐI CÙNG còn đo bằng toàn bộ lộ trình mà khối trước chưa với tới.
