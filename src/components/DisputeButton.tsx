@@ -5,6 +5,7 @@
 // nói tự nhiên thì người trả lời ĐÚNG bị chấm là sai, và người học thật
 // sẽ im lặng tự nghĩ mình dốt thay vì đi báo (khối 21.10).
 
+import { LOP_CHAM_DUOC } from './lopChamDuoc'
 import { useState } from 'react'
 import { useT } from '../i18n'
 
@@ -28,7 +29,7 @@ export function DisputeButton({ alreadyReported, onReport }: { alreadyReported: 
         onReport()
         setJustReported(true)
       }}
-      className="self-start text-xs font-medium text-ink-muted underline decoration-dotted underline-offset-4 hover:text-ink"
+      className={`self-start text-xs font-medium text-ink-muted underline decoration-dotted underline-offset-4 hover:text-ink ${LOP_CHAM_DUOC}`}
     >
       {t('dispute.action')}
     </button>

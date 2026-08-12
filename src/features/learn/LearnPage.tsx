@@ -15,6 +15,7 @@ import { soNgayVang, VANG_LAU_NGAY } from '../../engine/streak'
 import type { Lesson, Module } from '../../engine/contentSchema'
 import { canChallengeModule, newLessonGate, todayIso, useProgress } from '../../store/progress'
 import { useT } from '../../i18n'
+import { LOP_CHAM_DUOC } from '../../components/lopChamDuoc'
 import { NutTaiNotNoiDung } from '../../components/NutTaiNotNoiDung'
 import { EmptyState } from '../../components/EmptyState'
 import { ProgressBar } from '../../components/ProgressBar'
@@ -314,7 +315,10 @@ function LessonRow({
       </span>
 
       {state === 'done' && (
-        <Link to={`/bai/${lesson.id}`} className="flex items-center gap-1 text-xs font-medium text-ink-muted hover:text-ink">
+        <Link
+          to={`/bai/${lesson.id}`}
+          className={`flex items-center gap-1 text-xs font-medium text-ink-muted hover:text-ink ${LOP_CHAM_DUOC}`}
+        >
           <RotateCcw size={12} aria-hidden />
           {t('learn.lessonReplay')}
         </Link>

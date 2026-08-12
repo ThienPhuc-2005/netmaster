@@ -382,7 +382,7 @@
     "wiresCount": "đã nối {count} dây",
     "deviceRemove": "Bỏ thiết bị này",
     "panelTitle": "Cấu hình",
-    "panelPick": "Chọn một thiết bị trên sơ đồ để xem và sửa cấu hình của nó.",
+    "panelPick": "Chọn một thiết bị — bấm ngay dưới đây, hoặc chạm vào nó trên sơ đồ.",
     "portsTitle": "Cổng",
     "portFree": "chưa nối",
     "portTo": "nối tới {target}",

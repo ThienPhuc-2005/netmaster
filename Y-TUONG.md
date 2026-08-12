@@ -563,3 +563,31 @@ Sinh ra trong lúc làm khối 21.49-21.53, chưa ý nào được gọi tên.
   họ thấy chỗ khó rồi bảo người soạn dạy lại. Cái giá: thêm một trường
   persist → bump version + một bậc migrate + fixture.
 
+## O. Rà soát MÀN HẸP — đi bằng điện thoại 375px (08-12)
+
+Ba lượt trước đi theo NGƯỜI (đường xuôi J, đường ngược K) và theo MÀN
+HIẾM (L), đều trên màn rộng. Lượt này đi bằng điện thoại, vì mọi bề mặt
+NẶNG của app (sơ đồ lab, bốn terminal, cung điện, bảng VLSM, trang Hồ sơ
+vừa dài thêm ba mục) đều dồn về đó mà chưa ai đi trọn.
+Kết quả: 3 phát hiện, cả ba đã chữa trong cùng khối 21.59.
+
+- ✅ **O1. Nút chỉ-là-chữ chỉ cao 16px, và một cái trong đó XOÁ dữ liệu** —
+  ĐÃ CHỮA. Đo thật: "Mở lại bài" 56×16, "Bỏ dòng này" 73×16, "Xem lại"
+  56×16 — dưới mức tối thiểu 24px của WCAG 2.5.8. Cái đáng sợ không phải
+  khó bấm: ở trang Hồ sơ hai nút ấy nằm CẠNH NHAU trong một dòng, một cái
+  mở bài còn một cái xoá dòng, nên bấm trượt là mất dữ liệu.
+  Chữa bằng một lớp dùng chung: nới vùng chạm bằng padding rồi kéo lại
+  bằng margin âm — chữ đứng nguyên chỗ, chỉ vùng nhắm to ra, không xô
+  lệch một pixel bố cục nào.
+- ✅ **O2. Bảng VLSM: cuộn sang phải là mất tên phòng** — ĐÃ CHỮA. Bảng
+  rộng 480px trong khung 343px, nên cuộn tới ô Prefix thì cột "Phòng ban
+  1" trôi khỏi màn (đo được: right = −7). Đang điền số cho một phòng mà
+  không thấy phòng nào — trong khi cả bài VLSM là khớp cỡ với ĐÚNG phòng.
+  Cột đầu giờ dính lại ở mép trái.
+- ✅ **O3. Trên điện thoại chỉ cấu hình được thiết bị bằng cách chạm vào
+  sơ đồ rộng hơn màn hình** — ĐÃ CHỮA. Bảng Cấu hình chỉ nói "chọn một
+  thiết bị trên sơ đồ" rồi để trống, mà dưới 768px sơ đồ rộng 575px trong
+  màn 375px. Nặng hơn: **sổ kỹ thuật đang tự trấn an** rằng "mọi thao tác
+  vẫn làm trọn được ở bảng cấu hình bên dưới" — câu đó chỉ đúng SAU khi
+  đã chọn được thiết bị. Giờ bảng tự liệt kê thiết bị, chọn ngay tại chỗ.
+

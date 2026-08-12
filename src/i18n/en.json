@@ -382,7 +382,7 @@
     "wiresCount": "cables connected: {count}",
     "deviceRemove": "Remove this device",
     "panelTitle": "Configuration",
-    "panelPick": "Pick a device on the diagram to see and edit its settings.",
+    "panelPick": "Pick a device — tap one below, or tap it on the diagram.",
     "portsTitle": "Ports",
     "portFree": "not connected",
     "portTo": "connected to {target}",

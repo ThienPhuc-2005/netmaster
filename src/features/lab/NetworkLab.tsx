@@ -383,6 +383,7 @@ export function NetworkLab({
           <ConfigPanel
             topology={topology}
             device={selected}
+            onPickDevice={(id) => setSelectedId(id)}
             armedPort={armedPort}
             canSetVlan={spec.allow.setVlan}
             canSetTrunk={spec.allow.setTrunk === true}

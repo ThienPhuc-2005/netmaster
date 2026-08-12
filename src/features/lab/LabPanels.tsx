@@ -168,6 +168,8 @@ export interface ConfigPanelProps {
   onSetPcIp: (ip: string, prefix: number, gateway: string) => void
   onSetRouterIp: (portId: string, ip: string, prefix: number) => void
   onRemoveDevice: () => void
+  /** Chọn thiết bị NGAY TRONG bảng này, không cần chạm vào sơ đồ (O3). */
+  onPickDevice: (deviceId: string) => void
 }
 
 export function ConfigPanel(props: ConfigPanelProps) {
@@ -179,6 +181,26 @@ export function ConfigPanel(props: ConfigPanelProps) {
       <section className="rounded-md border border-edge bg-panel p-4">
         <h3 className="mb-2 text-sm font-semibold text-ink">{t('lab.panelTitle')}</h3>
         <p className="text-sm text-ink-muted">{t('lab.panelPick')}</p>
+        {/* DANH SÁCH THIẾT BỊ NGAY TẠI ĐÂY (phát hiện O3, màn hẹp). Trước
+            đây bảng này chỉ nói "chọn một thiết bị trên sơ đồ" rồi để
+            trống — mà dưới 768px sơ đồ rộng hơn màn hình và phải cuộn
+            ngang mới chạm tới máy nằm bên phải. Ghi chú kỹ thuật vẫn tự
+            trấn an rằng "mọi thao tác làm trọn được ở bảng cấu hình bên
+            dưới"; câu đó chỉ đúng SAU khi đã chọn được thiết bị. Giờ chọn
+            được từ đây thì lời trấn an ấy mới thành thật. */}
+        <ul className="mt-3 flex flex-wrap gap-2">
+          {topology.devices.map((d) => (
+            <li key={d.id}>
+              <button
+                type="button"
+                onClick={() => props.onPickDevice(d.id)}
+                className="rounded-md border border-edge px-3 py-1.5 text-xs font-medium text-ink transition-colors duration-(--dur) hover:bg-panel-hover focus-visible:outline-2 focus-visible:outline-accent"
+              >
+                {d.hostname}
+              </button>
+            </li>
+          ))}
+        </ul>
       </section>
     )
   }

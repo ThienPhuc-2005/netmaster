@@ -81,9 +81,22 @@ describe('mặt bàn', () => {
 describe('sửa VLAN — lời giải của bài', () => {
   it('chọn thiết bị mới hiện bảng cấu hình của nó', () => {
     render(<NetworkLab spec={vlanRepairLab()} />)
-    expect(screen.getByText(/Chọn một thiết bị trên sơ đồ/)).toBeTruthy()
+    expect(screen.getByText(/Chọn một thiết bị/)).toBeTruthy()
     fireEvent.click(deviceButton('Switch-1'))
     expect(vlanGroup('p1')).toBeTruthy()
+  })
+
+  // Phát hiện O3 (lượt rà soát màn hẹp): dưới 768px sơ đồ rộng hơn màn
+  // hình và phải cuộn ngang mới chạm tới thiết bị bên phải — mà bảng cấu
+  // hình khi đó chỉ nói "chọn một thiết bị" rồi để trống. Giờ chọn được
+  // NGAY TRONG BẢNG, không cần đụng vào sơ đồ.
+  it('chọn được thiết bị NGAY TRONG bảng cấu hình, không cần chạm sơ đồ', () => {
+    render(<NetworkLab spec={vlanRepairLab()} />)
+    const bang = screen.getByText(/Chọn một thiết bị/).closest('section')!
+    const trongBang = within(bang).getAllByRole('button', { name: 'Switch-1' })
+    expect(trongBang.length, 'bảng cấu hình phải tự liệt kê thiết bị').toBeGreaterThan(0)
+    fireEvent.click(trongBang[0]!)
+    expect(vlanGroup('p1'), 'bấm trong bảng mà không mở được cấu hình').toBeTruthy()
   })
 
   it('đổi VLAN thì mục tiêu chuyển sang xong', () => {

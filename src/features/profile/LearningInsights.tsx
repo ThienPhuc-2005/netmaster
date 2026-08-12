@@ -17,6 +17,7 @@ import type { DongSoSanh, LatCatThang } from '../../engine/soSanhThang'
 import { QUANG_DAI_PHUT, type QuangTuan } from '../../engine/quangHoc'
 import type { Module, Question } from '../../engine/contentSchema'
 import type { DisputedAnswer } from '../../store/progress'
+import { LOP_CHAM_DUOC } from '../../components/lopChamDuoc'
 import { useT, type TFunc } from '../../i18n'
 
 /** Một dòng sổ góp ý, đã ghép với đề bài để đọc được. */
@@ -115,7 +116,7 @@ export function WeakSpotList({ spots }: { spots: WeakSpot[] }) {
             </span>
             <Link
               to={`/bai/${spot.lessonId}`}
-              className="shrink-0 text-xs font-semibold text-accent hover:underline"
+              className={`shrink-0 text-xs font-semibold text-accent hover:underline ${LOP_CHAM_DUOC}`}
               // Tựa bài đi vào tên đọc được: "Xem lại bài" đứng một mình
               // thì trình đọc màn hình nghe năm dòng giống hệt nhau.
               aria-label={t('profile.weakGoLessonAria', { lesson: lt(spot.lessonTitle) })}
@@ -577,13 +578,13 @@ export function DisputedList({ rows, onClear }: { rows: DisputedRow[]; onClear: 
               {row.lessonId === '' ? (
                 <span className="text-xs text-ink-muted">{t('profile.disputeFromTest')}</span>
               ) : (
-                <Link to={`/bai/${row.lessonId}`} className="text-xs font-medium text-accent hover:underline">
+                <Link to={`/bai/${row.lessonId}`} className={`text-xs font-medium text-accent hover:underline ${LOP_CHAM_DUOC}`}>
                   {t('profile.disputeOpenLesson')}
                 </Link>
               )}
               <button
                 onClick={() => onClear(row.questionId)}
-                className="text-xs font-medium text-ink-muted underline decoration-dotted underline-offset-4 hover:text-ink"
+                className={`text-xs font-medium text-ink-muted underline decoration-dotted underline-offset-4 hover:text-ink ${LOP_CHAM_DUOC}`}
               >
                 {t('profile.disputeClear')}
               </button>
@@ -666,7 +667,7 @@ export function HayQuenList({ rows }: { rows: HayQuenHienThi[] }) {
               {row.lessonId !== null && (
                 <Link
                   to={`/bai/${row.lessonId}`}
-                  className="shrink-0 text-xs font-medium text-accent hover:underline"
+                  className={`shrink-0 text-xs font-medium text-accent hover:underline ${LOP_CHAM_DUOC}`}
                 >
                   {t('profile.hayQuenMoBai')}
                 </Link>
@@ -723,12 +724,12 @@ export function ChuaLotList({ rows, onClear }: { rows: ChuaLotRow[]; onClear: (q
           <li key={row.questionId} className="flex flex-col gap-1 rounded-md border border-edge bg-panel-hover px-4 py-3">
             <p className="text-sm text-ink">{row.prompt === null ? row.questionId : lt(row.prompt)}</p>
             <div className="flex flex-wrap items-center gap-3">
-              <Link to={`/bai/${row.lessonId}`} className="text-xs font-medium text-accent hover:underline">
+              <Link to={`/bai/${row.lessonId}`} className={`text-xs font-medium text-accent hover:underline ${LOP_CHAM_DUOC}`}>
                 {t('profile.chuaLotOpenLesson')}
               </Link>
               <button
                 onClick={() => onClear(row.questionId)}
-                className="text-xs font-medium text-ink-muted underline decoration-dotted underline-offset-4 hover:text-ink"
+                className={`text-xs font-medium text-ink-muted underline decoration-dotted underline-offset-4 hover:text-ink ${LOP_CHAM_DUOC}`}
               >
                 {t('profile.chuaLotClear')}
               </button>

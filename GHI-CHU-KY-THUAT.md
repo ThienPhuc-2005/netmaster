@@ -421,6 +421,16 @@ quan trước khi "sửa test cho xanh".
   người học đếm ra mâu thuẫn ngay trong một buổi: Hồ sơ kể 3 món, thẻ Hôm
   nay kể 5. Vì sao là 2 chứ không phải 1: quên một lần là chuyện thường
   của trí nhớ — cả cơ chế ôn ngắt quãng dựng lên là để đón đúng cú quên đó.
+- **Nút chỉ-là-chữ phải mang `LOP_CHAM_DUOC`** (phát hiện O1, khối 21.59).
+  `text-xs` cao đúng 16px — dưới sàn 24px của WCAG 2.5.8. Lớp này nới vùng
+  chạm bằng padding rồi kéo lại bằng margin âm nên KHÔNG đổi bố cục. Chỗ
+  đau nhất đã đo: trang Hồ sơ có "Mở lại bài" và "Bỏ dòng này" cạnh nhau,
+  một cái xoá dữ liệu — bấm trượt không phải mất một cú bấm mà là mất dữ
+  liệu. Thêm file có nút chữ thì khai vào `lopChamDuoc.test.ts`.
+- **Bảng cuộn ngang phải GHIM CỘT NHẬN DIỆN** (phát hiện O2, khối 21.59).
+  Bảng VLSM rộng 480px trong khung 343px của điện thoại: không ghim thì
+  cuộn tới ô Prefix là tên phòng trôi khỏi màn, người học điền số cho một
+  phòng họ không còn thấy. `sticky left-0` + nền đặc.
 - **Bề rộng khung câu hỏi: gọi `lopKhungCauHoi(kind, khung)`, ĐỪNG gõ tay**
   (khối 21.55). Một hàm cho cả bài học lẫn màn thi, cạnh `DANG_CAN_BE_RONG`
   trong `components/QuestionInput.tsx`; trang `/design` mục "Một câu, hai

@@ -279,7 +279,14 @@ export function VlsmDrill() {
             <table className="w-full min-w-[30rem] border-collapse text-sm">
               <thead>
                 <tr className="text-left text-xs uppercase tracking-wide text-ink-muted">
-                  <th scope="col" className="py-1 pr-3 font-semibold">
+                  {/* Cột TÊN PHÒNG dính lại khi bảng cuộn ngang (phát hiện
+                      O2, màn hẹp). Bảng rộng 480px trong khung 343px của
+                      điện thoại, nên cuộn sang phải để gõ ô Prefix là tên
+                      phòng trôi khỏi màn — đang điền số cho một phòng mà
+                      không thấy phòng nào, trong khi cả bài VLSM là khớp
+                      cỡ với ĐÚNG phòng. Nền đặc để chữ cột sau không lộ
+                      ra dưới nó lúc trượt qua. */}
+                  <th scope="col" className="sticky left-0 z-10 bg-bg py-1 pr-3 font-semibold">
                     {t('vlsm.colDept')}
                   </th>
                   <th scope="col" className="py-1 pr-3 font-semibold">
@@ -299,7 +306,7 @@ export function VlsmDrill() {
                   const name = deptName(t, i)
                   return (
                     <tr key={need.id} className="border-t border-edge">
-                      <td className="py-2 pr-3 text-ink">{name}</td>
+                      <td className="sticky left-0 z-10 bg-bg py-2 pr-3 text-ink">{name}</td>
                       <td className="py-2 pr-3 font-mono text-ink">{need.hosts}</td>
                       <td className="py-2 pr-3">
                         <input
