@@ -8,7 +8,7 @@ build qua. **Toàn bộ biên bản hội đồng trung cấp đã XỬ XONG (08
 15/15 việc mục 6 (khối 20.2, commit `1d04c0b`) + trọn LƯỢT DỌN 52 phát
 hiện P2 mục 5 (khối 20.3).** Nội dung và engine không còn việc nào treo;
 các khối gần đây đều là ý lấy từ kho `Y-TUONG.md`.
-Việc kế tiếp là của CHỦ DỰ ÁN: ra lệnh commit khối 21.50. **Cả 17 phát
+Việc kế tiếp là của CHỦ DỰ ÁN: ra lệnh commit khối 21.50 + 21.51. **Cả 17 phát
 hiện của BA lượt rà soát (mục J 8 ý + mục K 6 ý + mục L 3 ý) đã xử xong
 hết; kho ý tưởng SẠCH.** Việc duy nhất còn treo là tuyển người cho các
 buổi test người thật (hai dòng DoD).
@@ -31,7 +31,41 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (19) M21 capstone + màn tốt nghiệp | XONG |
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
-**KHỐI MỚI NHẤT — 21.50 (08-12), đang ở working tree chờ lệnh commit:**
+**KHỐI MỚI NHẤT — 21.51 (08-12), đang ở working tree chờ lệnh commit:**
+**Chủ dự án báo một lỗi và hỏi một thiếu sót — xử cả hai.**
+- **LỖI: sơ đồ lab trong BÀI THI bị bóp méo.** Màn thi bó cả cột câu hỏi
+  vào 512px cho dễ đọc, nhưng bó luôn cả sơ đồ lab — mà mặt bàn lab cần
+  tối thiểu 560px. Hậu quả trên màn 1280px: chỉ nhìn thấy MỘT trong bốn
+  thiết bị, phải cuộn ngang đi tìm ba cái còn lại. Cùng câu lab đó trong
+  bài học thì bình thường, vì bài học không bó cột. Giờ bề rộng theo DẠNG
+  CÂU: câu chữ giữ cột hẹp, còn lab/terminal/cung điện/phòng khám được cả
+  mặt bàn.
+- **Nhân đó sửa luôn một chỗ hụt sẵn từ trước ở CẢ bài học**: hai cột của
+  phòng lab chia 2fr/1fr với sàn 280px, ra đúng 536px cho mặt bàn — hụt
+  24px so với mức tối thiểu, nên sơ đồ LÚC NÀO cũng phải cuộn ngang trên
+  desktop dù cuộn ngang vốn chỉ định dành cho màn dưới 768px. Đổi thành
+  3fr/1fr + sàn 256px là vừa khít 560px.
+- **THIẾU SÓT: chưa có chỗ xem "những câu hay quên".** App có "chỗ bạn
+  hay vấp" nhưng đó là chuyện khác hẳn: vấp đếm số lần thử sai LÚC ĐANG
+  HỌC BÀI, tức kiến thức chưa vào. Thứ chủ dự án hỏi là cái đã học xong,
+  tưởng nhớ rồi, để vài ngày lại quên — con số đó (`lapses`) có sẵn từ
+  ngày đầu nhưng suốt tới nay chỉ dùng để nói một câu giữa phiên ôn, chưa
+  bao giờ được kể thành danh sách. Giờ trang Hồ sơ có mục **"Thứ bạn hay
+  quên"**, đặt gần đầu trang, mỗi dòng gồm tên khái niệm + chủ đề + số
+  lần quên + đường mở lại đúng bài đã dạy nó.
+- **Mục này hiện CẢ KHI TRỐNG** — khác mọi mục cùng trang. Các mục kia tự
+  ẩn khi chưa có dữ liệu, và chính vì thế người đi tìm không thấy nó ở
+  đâu rồi tưởng app không có. Hộp trống nói rõ "chưa có gì" vẫn trả lời
+  được câu hỏi "app có chỗ này không"; hộp vắng mặt thì không.
+- 1796 test xanh (+10), typecheck sạch, build qua. Kiểm browser thật:
+  câu lab 8/8 bài thi module 4 giờ hiện đủ bốn thiết bị, mặt bàn 560px,
+  KHÔNG còn chỗ nào phải cuộn ngang (trước: cột 512px, mặt bàn 270px,
+  thấy đúng một thiết bị); trang Hồ sơ gieo 4 thẻ quên 4/3/2/1 lần → hiện
+  đúng 3 dòng theo thứ tự giảm dần, bỏ thẻ quên 1 lần, ba đường mở bài
+  trỏ đúng bài dạy từng khái niệm; hộp rỗng thì hiện câu báo trống. Seed
+  đã xóa.
+
+**KHỐI TRƯỚC — 21.50 (08-12), đang ở working tree chờ lệnh commit:**
 **Màn tốt nghiệp tự kiểm trước khi nói về cả khóa (ý F8).**
 Khối trước cho app mở bằng phần nội dung đã về; khối này bịt nốt chỗ
 CUỐI CÙNG còn đo bằng toàn bộ lộ trình mà khối trước chưa với tới.

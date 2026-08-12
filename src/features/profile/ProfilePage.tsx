@@ -9,12 +9,12 @@ import { Flame, Zap, Award, GraduationCap, Snowflake, Layers, BookOpenCheck, Dow
 import type { LucideIcon } from 'lucide-react'
 import { useT } from '../../i18n'
 import { PROGRESS_PERSIST_VERSION, todayIso, useProgress } from '../../store/progress'
-import { findConcept, findPalaceRoom, loadModules } from '../../content'
-import { analyzeMistakes, aoGiacHayGap, weakSpotDrill, weakSpots, weeklyActivity } from '../../engine/mistakeLog'
+import { baiDayKhaiNiem, findConcept, findPalaceRoom, loadModules } from '../../content'
+import { analyzeMistakes, aoGiacHayGap, theHayQuen, weakSpotDrill, weakSpots, weeklyActivity } from '../../engine/mistakeLog'
 import { roomIdFromCardId } from '../../engine/palace'
 import { Button } from '../../components/Button'
 import { milestones } from '../graduation/milestones'
-import { AoGiacList, DisputedList, MemoryMap, MistakeAnalysisCard, SoSanhThangCard, WeakSpotList, WeeklyRhythm } from './LearningInsights'
+import { AoGiacList, DisputedList, HayQuenList, MemoryMap, MistakeAnalysisCard, SoSanhThangCard, WeakSpotList, WeeklyRhythm } from './LearningInsights'
 import { memoryByModule } from '../../engine/freshness'
 import { theLanh } from '../../engine/reviewQueue'
 import { freezesAvailable } from '../../engine/streak'
@@ -259,6 +259,23 @@ export function ProfilePage() {
         : (findPalaceRoom(roomId)?.room.name ?? null)
     return { ...row, ten }
   })
+  // "Thứ bạn hay quên" — cùng lối tra cardId ra tên đọc được như trên,
+  // thêm đường mở lại BÀI đã dạy nó: người học hỏi mục này chính là để
+  // biết nên quay lại học lại chỗ nào.
+  const hayQuenRows = theHayQuen(reviewCards).map((row) => {
+    const roomId = roomIdFromCardId(row.cardId)
+    const ten =
+      roomId === null
+        ? (findConcept(row.cardId)?.concept.term ?? null)
+        : (findPalaceRoom(roomId)?.room.name ?? null)
+    const bai = baiDayKhaiNiem(row.cardId)
+    return {
+      ...row,
+      ten,
+      lessonId: bai?.lesson.id ?? null,
+      moduleTitle: bai?.module.title ?? modules.find((m) => m.id === row.moduleId)?.title ?? null,
+    }
+  })
 
   const onImportFile = (file: File | undefined) => {
     if (file === undefined) return
@@ -287,6 +304,10 @@ export function ProfilePage() {
       <p className="mt-4 text-xs text-ink-muted">{t('profile.freezeNote')}</p>
 
       <MemoryMap rows={memoryRows} />
+      {/* Đặt NGAY SAU bản đồ trí nhớ, tức gần đầu trang: đây là mục người
+          học chủ động đi tìm ("cho tôi xem những câu hay quên"), nên nó
+          không được nằm lẫn ở cuối trang. */}
+      <HayQuenList rows={hayQuenRows} />
       <MistakeAnalysisCard analysis={analysis} moduleTitles={moduleTitles} drillSize={drillSize} />
       <SoSanhThangCard moc={mocThang} rows={dongSoSanh} dangCho={latCatThang.length > 0} />
       <DisputedList rows={disputedRows} onClear={clearDisputed} />

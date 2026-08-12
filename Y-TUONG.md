@@ -470,3 +470,28 @@ mất dữ liệu, vừa mất mạng. Cả ba phát hiện đều đã CHỮA t
   dạy phần này" (chữ nói một đằng, nút mời một nẻo), và lời dặn chung in
   lại dưới TỪNG câu sai — 8 câu sai thì 6 dòng y hệt nhau, che mất mấy
   dòng thật sự có tin.
+
+## M. Chủ dự án dùng thật rồi báo về (08-12)
+
+- ✅ **M1. Sơ đồ lab trong bài thi bị bóp còn 270px** — ĐÃ CHỮA (khối
+  21.51). Màn thi bó mọi dạng câu vào cột chữ 512px, kể cả sơ đồ lab vốn
+  cần tối thiểu 560px: trên màn 1280px chỉ thấy 1 trong 4 thiết bị. Điều
+  làm nó trốn được lâu: **cùng câu lab ấy trong BÀI HỌC thì bình thường**
+  (bài học không bó cột), nên lỗi chỉ lộ ra khi đi thi thật.
+  Nhân đó lộ thêm một chỗ hụt sẵn ở CẢ hai nơi: hai cột phòng lab chia
+  2fr/1fr + sàn 280px ra đúng 536px — hụt 24px, tức sơ đồ lúc nào cũng
+  phải cuộn ngang trên desktop dù cuộn ngang chỉ định dành cho màn dưới
+  768px.
+- ✅ **M2. Chỗ xem "những câu hay quên"** — ĐÃ LÀM (khối 21.51): mục
+  "Thứ bạn hay quên" ở trang Hồ sơ, đọc `lapses` của SM-2.
+  **Không trùng với "chỗ hay vấp" đã có**: vấp đếm số lần thử sai LÚC
+  ĐANG HỌC BÀI (kiến thức chưa vào), còn cái này đếm số lần đã học xong,
+  tưởng nhớ rồi, để vài ngày lại quên. Thứ hai mới là thứ đáng đem đi dạy
+  lại theo cách khác — nó nói rằng cách dạy hiện tại CÓ VÀO nhưng KHÔNG
+  BÁM. Con số ấy có sẵn từ ngày đầu mà suốt tới nay chỉ dùng để nói một
+  câu giữa phiên ôn.
+  Hai quyết định đáng nhớ: **ngưỡng 2 lần** (quên một lần là chuyện
+  thường của trí nhớ — cả cơ chế ôn ngắt quãng dựng lên là để đón đúng cú
+  quên đó), và **mục này hiện CẢ KHI TRỐNG**, khác mọi mục cùng trang.
+  Các mục kia tự ẩn khi chưa có dữ liệu, và chính vì thế người đi tìm
+  không thấy nó ở đâu rồi tưởng app không có — đúng chuyện đã xảy ra.

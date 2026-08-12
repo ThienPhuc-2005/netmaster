@@ -39,7 +39,7 @@ import { useT } from '../../i18n'
 import { playEarcon } from '../../audio/earcons'
 import { Button } from '../../components/Button'
 import { EmptyState } from '../../components/EmptyState'
-import { QuestionInput } from '../../components/QuestionInput'
+import { DANG_CAN_BE_RONG, QuestionInput } from '../../components/QuestionInput'
 import { AnswerReveal } from '../../components/AnswerReveal'
 import { DisputeButton } from '../../components/DisputeButton'
 
@@ -249,11 +249,18 @@ export function ModuleTestPage() {
     return (
       <>
         {heading}
-        <div className="mx-auto flex max-w-lg flex-col gap-4">
+        {/* Bề rộng theo DẠNG CÂU. Câu chữ giữ cột hẹp cho dễ đọc, nhưng
+            bó cả sơ đồ lab / terminal / cung điện vào 512px thì chúng
+            tràn ra ngoài và người học phải cuộn ngang đi tìm thiết bị —
+            đúng lỗi chủ dự án gặp ở câu 8/8 bài thi module 4, trên màn
+            1280px chỉ nhìn thấy MỘT máy. Bài học vốn đã để nguyên bề
+            ngang cho những dạng này; màn thi trước giờ thì không, nên
+            cùng một câu lab đẹp trong bài lại vỡ khi đi thi. */}
+        <div className={`mx-auto flex flex-col gap-4 ${DANG_CAN_BE_RONG.has(question.kind) ? 'w-full' : 'max-w-lg'}`}>
           <p className="text-xs font-medium text-ink-muted">
             {t('test.questionOf', { current: phase.index + 1, total: phase.questions.length })}
           </p>
-          <p className="font-medium text-ink" key={question.id}>
+          <p className="max-w-2xl font-medium text-ink" key={question.id}>
             {lt(question.prompt)}
           </p>
           {/* examMode: bài thi không chấm sống, không gọi tên bệnh — giữ đúng lời

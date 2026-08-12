@@ -435,3 +435,49 @@ describe('K2 — số đóng băng là con số của HÔM NAY', () => {
     expect(the?.textContent).toContain('2')
   })
 })
+
+// "Thứ bạn hay quên" (chủ dự án hỏi 08-12: "sao nó vẫn chưa có cái chỗ
+// xem những câu hay quên").
+//
+// App đã có "chỗ hay vấp" nhưng đó là chuyện KHÁC: vấp đếm số lần thử
+// sai lúc đang học bài, còn mục này đọc `lapses` của SM-2 — số lần đã
+// học xong rồi vẫn quên. `lapses` có sẵn từ ngày đầu mà chưa bao giờ
+// được kể lại thành danh sách.
+describe('thứ bạn hay quên', () => {
+  const the = (id: string, moduleId: string, lapses: number) => ({
+    conceptId: id,
+    moduleId,
+    intervalIndex: 1 as const,
+    dueDate: todayIso(),
+    lapses,
+    createdOn: '2026-06-01',
+    lastReviewedOn: null,
+  })
+
+  it('hiện thứ quên từ 2 lần, kèm số lần và đường mở lại bài', () => {
+    useProgress.setState({ reviewCards: [the('goi-tin', 'module-1', 4)] })
+    renderProfile()
+    const muc = screen.getByRole('region', { name: /Thứ bạn hay quên/ })
+    expect(within(muc).getByText(/quên 4 lần/)).toBeTruthy()
+    expect(within(muc).getByRole('link', { name: /Mở lại bài/ }).getAttribute('href')).toMatch(/^\/bai\//)
+  })
+
+  it('quên MỘT lần thì không kể tên — chuyện thường của trí nhớ', () => {
+    useProgress.setState({ reviewCards: [the('goi-tin', 'module-1', 1)] })
+    renderProfile()
+    const muc = screen.getByRole('region', { name: /Thứ bạn hay quên/ })
+    // Soi DANH SÁCH chứ không dò chữ: câu báo trống cũng chứa cụm "quên
+    // tới hai lần", nên dò chữ thì test tự bắt trúng chính nó.
+    expect(within(muc).queryAllByRole('listitem')).toHaveLength(0)
+  })
+
+  // Đây chính là lỗi người dùng gặp: các mục khác cùng trang TỰ ẨN khi
+  // chưa có dữ liệu, nên người đi tìm "chỗ xem câu hay quên" không thấy
+  // nó ở đâu và tưởng app không có tính năng này.
+  it('CHƯA có gì để kể thì mục vẫn hiện, kèm câu nói rõ vì sao trống', () => {
+    useProgress.setState({ reviewCards: [] })
+    renderProfile()
+    const muc = screen.getByRole('region', { name: /Thứ bạn hay quên/ })
+    expect(within(muc).getByText(/Chưa có thứ nào bạn quên tới hai lần/)).toBeTruthy()
+  })
+})

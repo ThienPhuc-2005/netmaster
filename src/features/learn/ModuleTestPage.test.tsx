@@ -14,6 +14,7 @@ import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { RouterProvider, createMemoryRouter } from 'react-router'
 import { ModuleTestPage } from './ModuleTestPage'
+import { DANG_CAN_BE_RONG } from '../../components/QuestionInput'
 import { loadModules, lessonsInOrder } from '../../content'
 import { masteryDrawCount } from '../../engine/masteryPool'
 import { useProgress, todayIso } from '../../store/progress'
@@ -390,5 +391,41 @@ describe('màn trượt nói đúng khoảng cách tới ngưỡng (L3)', () => 
     // Trước đây câu này in dưới mỗi câu không khai hintTopic — sai 8 câu
     // thì thành 6 dòng y hệt nhau, che mất mấy dòng thật sự có tin.
     expect(screen.getAllByText(/đáp án đầy đủ sẽ hiện khi bạn đậu/)).toHaveLength(1)
+  })
+})
+
+// Bề rộng cột câu hỏi trong bài thi (lỗi chủ dự án gặp 08-12).
+//
+// Câu lab ở bài thi module 4 bị bó vào cột chữ 512px: sơ đồ có bề rộng
+// tối thiểu 560px nên tràn ra ngoài, và trên màn 1280px người học chỉ
+// nhìn thấy MỘT thiết bị, phải cuộn ngang đi tìm ba cái còn lại. Cùng
+// câu lab ấy trong BÀI HỌC thì bình thường — bài học không bó cột.
+describe('bài thi: dạng câu nặng phải được cả mặt bàn', () => {
+  /** Cột bọc câu hỏi — chỗ đặt luật bề rộng. */
+  function cotCauHoi(): HTMLElement {
+    const nhan = screen.getByText(/^Câu \d+\/\d+$/)
+    return nhan.parentElement!
+  }
+
+  it('câu CHỮ vẫn giữ cột hẹp cho dễ đọc', () => {
+    // module-1 mở đầu bằng câu chữ; đề rút ra dạng nào cũng không phải lab.
+    const first = modules[0]!
+    openTestFor(first.id)
+    fireEvent.click(screen.getByRole('button', { name: 'Bắt đầu' }))
+    expect(cotCauHoi().className).toContain('max-w-lg')
+  })
+
+  // Nhánh CÂU NẶNG không đi bộ tới được một cách tất định (đề rút mỗi
+  // lượt một khác, và câu lab không "trả lời" bằng bàn phím như câu chữ),
+  // nên khoá ở chính cái luật — cộng với phép đo trên browser thật: mặt
+  // bàn 560px, không còn chỗ nào phải cuộn ngang (trước khi sửa: cột 512px,
+  // mặt bàn bị ép còn 270px, nhìn thấy đúng một thiết bị trên bốn).
+  it('luật bề rộng kể đủ các dạng cần mặt bàn, và không kéo nhầm câu chữ vào', () => {
+    for (const dang of ['lab', 'palace-walk', 'clinic', 'ps', 'cli'] as const) {
+      expect(DANG_CAN_BE_RONG.has(dang), `${dang} vẽ ngang mà không được cấp bề rộng`).toBe(true)
+    }
+    for (const dang of ['typed', 'mcq', 'order'] as const) {
+      expect(DANG_CAN_BE_RONG.has(dang), `${dang} là câu chữ, nới rộng ra là hại bề đọc`).toBe(false)
+    }
   })
 })

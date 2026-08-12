@@ -9,7 +9,7 @@
 
 import { Link } from 'react-router'
 import { useId } from 'react'
-import { AlertCircle, Brain, CalendarRange, ChartNoAxesColumn, MessageSquareWarning, Target, TrendingUp } from 'lucide-react'
+import { AlertCircle, Brain, CalendarRange, ChartNoAxesColumn, MessageSquareWarning, RotateCcw, Target, TrendingUp } from 'lucide-react'
 import { lt } from '../../engine/ltext'
 import type { MistakeAnalysis, MistakeBucket, WeakSpot, WeekActivity } from '../../engine/mistakeLog'
 import type { ModuleMemory } from '../../engine/freshness'
@@ -591,6 +591,78 @@ export function DisputedList({ rows, onClear }: { rows: DisputedRow[]; onClear: 
           </li>
         ))}
       </ul>
+    </section>
+  )
+}
+
+/** Một dòng "hay quên", đã tra ra tên đọc được và đường về bài dạy nó. */
+export interface HayQuenHienThi {
+  cardId: string
+  soLanQuen: number
+  /** Mặt trước của thẻ; null khi nội dung đã đổi và không còn thẻ đó. */
+  ten: string | null
+  /** Bài đã dạy thứ này; null thì dòng vẫn hiện, chỉ không có đường mở. */
+  lessonId: string | null
+  moduleTitle: Module['title'] | null
+}
+
+/**
+ * "Thứ bạn hay quên" — đọc `lapses` của hộp ôn tập (chủ dự án hỏi 08-12).
+ *
+ * Khác "chỗ hay vấp" ngay bên trên, và khác ở chỗ quan trọng: chỗ hay vấp
+ * đếm số lần thử sai LÚC ĐANG HỌC (kiến thức chưa vào), còn mục này đếm
+ * số lần đã học xong, tưởng nhớ rồi, để vài ngày lại quên. Thứ hai mới là
+ * thứ đáng đem đi dạy lại theo cách khác — nó nói rằng cách dạy hiện tại
+ * CÓ VÀO nhưng KHÔNG BÁM.
+ *
+ * KHÁC MỌI MỤC CÙNG TRANG: mục này hiện CẢ KHI TRỐNG. Các mục kia tự ẩn
+ * để khỏi dựng hộp rỗng, nhưng chính vì thế mà người học đi tìm "chỗ xem
+ * những câu hay quên" không thấy nó ở đâu và tưởng app không có — đúng
+ * chuyện đã xảy ra. Một hộp trống nói rõ "chưa có gì" vẫn trả lời được
+ * câu hỏi "app có chỗ này không"; một hộp vắng mặt thì không.
+ */
+export function HayQuenList({ rows }: { rows: HayQuenHienThi[] }) {
+  const t = useT()
+  return (
+    <section
+      aria-labelledby="hayquen-title"
+      className="mt-6 flex flex-col gap-3 rounded-md border border-edge bg-panel px-5 py-4"
+    >
+      <div className="flex items-center gap-2">
+        <RotateCcw size={17} aria-hidden className="shrink-0 text-warn" />
+        <h2 id="hayquen-title" className="text-sm font-semibold text-ink">
+          {t('profile.hayQuenTitle')}
+        </h2>
+      </div>
+      <p className="text-xs leading-relaxed text-ink-muted">{t('profile.hayQuenIntro')}</p>
+      {rows.length === 0 ? (
+        <p className="text-xs text-ink-muted">{t('profile.hayQuenEmpty')}</p>
+      ) : (
+        <ol className="flex flex-col gap-2">
+          {rows.map((row) => (
+            <li
+              key={row.cardId}
+              className="flex flex-wrap items-center gap-x-3 gap-y-1 rounded-md border border-edge bg-panel-hover px-4 py-3"
+            >
+              <span className="min-w-[10rem] flex-1 text-sm text-ink">{row.ten ?? row.cardId}</span>
+              {row.moduleTitle !== null && (
+                <span className="shrink-0 text-xs text-ink-muted">{lt(row.moduleTitle)}</span>
+              )}
+              <span className="shrink-0 font-mono text-xs text-warn">
+                {t('profile.hayQuenLan', { count: row.soLanQuen })}
+              </span>
+              {row.lessonId !== null && (
+                <Link
+                  to={`/bai/${row.lessonId}`}
+                  className="shrink-0 text-xs font-medium text-accent hover:underline"
+                >
+                  {t('profile.hayQuenMoBai')}
+                </Link>
+              )}
+            </li>
+          ))}
+        </ol>
+      )}
     </section>
   )
 }

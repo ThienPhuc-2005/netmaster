@@ -6,6 +6,7 @@ import { startLesson } from './lessonMachine'
 import {
   analyzeMistakes,
   MIN_SAMPLE,
+  theHayQuen,
   weakSpotDrill,
   weakSpots,
   WEAK_DRILL_CAP,
@@ -294,5 +295,46 @@ describe('phiên luyện lại chỗ vấp', () => {
       expect(item.moduleId).toBeTruthy()
       expect(item.solution).toBeDefined()
     }
+  })
+})
+
+describe('theHayQuen — thứ quên đi quên lại (chủ dự án hỏi 08-12)', () => {
+  const the = (id: string, lapses: number, dueDate = '2026-08-20') => ({
+    conceptId: id,
+    moduleId: 'module-1',
+    intervalIndex: 1 as const,
+    dueDate,
+    lapses,
+    createdOn: '2026-06-01',
+    lastReviewedOn: null,
+  })
+
+  it('quên MỘT lần thì chưa vào danh sách — đó là chuyện thường của trí nhớ', () => {
+    // Cả cơ chế ôn ngắt quãng dựng lên là để đón đúng cú quên đầu tiên;
+    // gọi nó là "hay quên" vừa sai vừa làm danh sách dài tới mức bỏ đọc.
+    expect(theHayQuen([the('a', 1)])).toEqual([])
+    expect(theHayQuen([the('a', 0)])).toEqual([])
+  })
+
+  it('từ hai lần trở lên thì vào, quên nhiều đứng trước', () => {
+    const ds = theHayQuen([the('it', 2), the('nhieu', 5), the('vua', 3)])
+    expect(ds.map((r) => r.cardId)).toEqual(['nhieu', 'vua', 'it'])
+    expect(ds[0]!.soLanQuen).toBe(5)
+  })
+
+  it('cùng số lần quên thì thẻ ĐẾN HẠN SỚM HƠN đứng trước', () => {
+    // Quên bằng nhau thì cái lâu chưa ôn đáng lo hơn.
+    const ds = theHayQuen([the('sau', 3, '2026-09-01'), the('truoc', 3, '2026-08-01')])
+    expect(ds.map((r) => r.cardId)).toEqual(['truoc', 'sau'])
+  })
+
+  it('cắt theo trần và tất định (chạy lại ra đúng một thứ tự)', () => {
+    const cards = [the('a', 9), the('b', 8), the('c', 7), the('d', 6), the('e', 5), the('f', 4)]
+    expect(theHayQuen(cards).length).toBe(5)
+    expect(theHayQuen(cards)).toEqual(theHayQuen([...cards].reverse()))
+  })
+
+  it('hộp rỗng thì rỗng, không ném', () => {
+    expect(theHayQuen([])).toEqual([])
   })
 })

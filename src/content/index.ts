@@ -21,7 +21,8 @@
 //     trước khi làm (dọn thẻ mồ côi · gọi tên "module cuối khóa").
 //   - Gọi lại `primeModules()` là một lượt KÉO LẠI phần còn thiếu.
 
-import { orderedLessonIds } from '../engine/contentPure'
+import { conceptIdsInLesson, orderedLessonIds, palaceRoomsInLesson } from '../engine/contentPure'
+import { roomIdFromCardId } from '../engine/palace/cards'
 import type { Lesson, Module } from '../engine/contentSchema'
 
 // Vite/vitest gom mọi module JSON lúc build — thêm file là tự vào app.
@@ -178,6 +179,33 @@ export function findLesson(lessonId: string): LessonRef | null {
 export interface ConceptRef {
   module: Module
   concept: Module['concepts'][number]
+}
+
+/**
+ * Bài học đã DẠY thứ nằm trên một thẻ ôn — tra ngược từ mặt thẻ về bài.
+ *
+ * Cần cho mục "thứ bạn hay quên" ở trang Hồ sơ: biết mình hay quên cái gì
+ * mà không có đường quay lại bài dạy nó thì danh sách chỉ để ngắm.
+ *
+ * Nhận cả hai loại mặt thẻ: conceptId thường, và thẻ cung điện mang tiền
+ * tố `palace:` (mặt trước là một PHÒNG, không phải một khái niệm).
+ *
+ * Trả `null` khi nội dung đã đổi và không bài nào còn dạy thứ đó — tầng
+ * UI vẫn hiện dòng, chỉ bỏ đường mở bài: số lần quên là chuyện thật đã
+ * xảy ra, không vì nội dung đổi mà xoá đi.
+ */
+export function baiDayKhaiNiem(cardId: string): LessonRef | null {
+  const roomId = roomIdFromCardId(cardId)
+  for (const module of loadModules()) {
+    for (const lesson of module.lessons) {
+      if (roomId === null) {
+        if (conceptIdsInLesson(lesson).includes(cardId)) return { module, lesson }
+      } else if (palaceRoomsInLesson(lesson).includes(roomId)) {
+        return { module, lesson }
+      }
+    }
+  }
+  return null
 }
 
 /** Tra concept theo id — phiên ôn thẻ chỉ giữ conceptId, nội dung tra ở đây. */

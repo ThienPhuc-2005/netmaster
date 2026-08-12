@@ -23,7 +23,7 @@
 // Technical contract: thuần TS, tất định, `today` bơm từ ngoài.
 
 import type { Lesson, Module, Question } from './contentSchema'
-import type { DrillResult, ExerciseAttempt, ISODate } from './types'
+import type { DrillResult, ExerciseAttempt, ISODate, ReviewCard } from './types'
 import type { LessonRuntime } from './lessonMachine'
 import { addDays, diffDays, isBefore } from './dates'
 import { conceptIdsInLesson } from './contentPure'
@@ -509,4 +509,55 @@ function interleaveModules(items: readonly WeakDrillItem[]): WeakDrillItem[] {
     }
   }
   return out
+}
+
+/**
+ * Ngưỡng "hay quên": quên từ chừng này lần trở lên mới vào danh sách.
+ *
+ * Hai là con số của I4 (ảo giác quen mặt) và ở đây cũng đúng vì cùng một
+ * lẽ: quên MỘT lần là chuyện thường của trí nhớ — cả cơ chế ôn ngắt quãng
+ * dựng lên là để đón đúng cú quên đó. Đưa nó vào danh sách "bạn hay quên"
+ * là gọi tên nhầm một chuyện bình thường, và làm danh sách dài tới mức
+ * không ai đọc.
+ */
+export const NGUONG_HAY_QUEN = 2
+
+/** Một thứ người học quên đi quên lại — đọc từ `lapses` của SM-2. */
+export interface TheHayQuen {
+  /** conceptId, hoặc `palace:<roomId>` với thẻ cung điện. */
+  cardId: string
+  moduleId: string
+  soLanQuen: number
+}
+
+/**
+ * Những thứ quên đi quên lại nhiều nhất trong hộp ôn tập.
+ *
+ * VÌ SAO CẦN, dù app đã có "chỗ hay vấp" (chủ dự án hỏi 08-12): hai thứ
+ * đo hai chuyện khác hẳn nhau. "Chỗ hay vấp" đọc `failCount` — số lần
+ * thử sai LÚC ĐANG HỌC BÀI, tức lúc kiến thức còn chưa vào. Cái này đọc
+ * `lapses` — số lần đã học xong, tưởng nhớ rồi, để vài ngày lại quên
+ * mất. Thứ hai mới là thứ đáng đem ra dạy lại theo cách khác, vì nó nói
+ * rằng cách dạy hiện tại có vào nhưng KHÔNG BÁM.
+ *
+ * `lapses` vốn đã có sẵn từ ngày đầu (SM-2 tăng nó mỗi lần trả lời sai)
+ * nhưng suốt từ đó tới nay chỉ dùng để nói MỘT câu giữa phiên ôn và để
+ * xếp thứ tự thẻ — chưa bao giờ được kể lại thành một danh sách.
+ *
+ * Xếp: quên nhiều lên trước; bằng nhau thì thẻ TRỄ HƠN lên trước (cùng
+ * số lần quên thì cái lâu chưa ôn đáng lo hơn); bằng nữa thì theo id cho
+ * tất định.
+ */
+export function theHayQuen(cards: readonly ReviewCard[], limit = 5): TheHayQuen[] {
+  return cards
+    .filter((c) => c.lapses >= NGUONG_HAY_QUEN)
+    .slice()
+    .sort(
+      (a, b) =>
+        b.lapses - a.lapses ||
+        (a.dueDate < b.dueDate ? -1 : a.dueDate > b.dueDate ? 1 : 0) ||
+        (a.conceptId < b.conceptId ? -1 : a.conceptId > b.conceptId ? 1 : 0),
+    )
+    .slice(0, limit)
+    .map((c) => ({ cardId: c.conceptId, moduleId: c.moduleId, soLanQuen: c.lapses }))
 }

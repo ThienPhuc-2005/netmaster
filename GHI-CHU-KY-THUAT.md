@@ -394,6 +394,22 @@ quan trước khi "sửa test cho xanh".
   REVIEW-NOI-DUNG.md (bản đọc duyệt — KHÔNG phải nguồn chân lý).
 - Quy trình viết một module mới: mục "Cách làm một module nội dung" ở
   đầu `TRANG-THAI.md`.
+- **Bề rộng cột câu hỏi đi theo DẠNG CÂU, không đặt cứng** (khối 21.51).
+  `DANG_CAN_BE_RONG` trong `components/QuestionInput.tsx` là nguồn chân
+  lý: lab · palace-walk · clinic · ps · cli vẽ NGANG nên phải được cả
+  mặt bàn; typed · mcq · order giữ `max-w-lg` cho bề đọc. Thêm dạng nặng
+  mới thì khai vào đó. Lỗi đã xảy ra: màn thi bó mọi dạng vào 512px, mà
+  `LabCanvas` có `min-w-[560px]` (WCAG 2.5.8 — hẹp hơn thì hai vùng chạm
+  cổng dính nhau), nên câu lab trong bài thi ép mặt bàn còn 270px và
+  người học chỉ thấy 1 trong 4 thiết bị. Cùng câu ấy trong BÀI HỌC thì
+  bình thường vì `LessonPlayer` không bó cột — chênh lệch giữa hai nơi
+  chính là chỗ lỗi trốn được lâu.
+- **Hai cột của phòng lab: `3fr/1fr` + sàn phải 256px, đừng đổi bừa.**
+  Khung nội dung `max-w-4xl` trừ padding còn 832px, trừ khe 16px còn
+  816px. Với 2fr/1fr + sàn 280px thì mặt bàn chỉ được 536px — hụt 24px so
+  với `min-w-[560px]`, nên sơ đồ LÚC NÀO cũng phải cuộn ngang trên
+  desktop. Ba con số này (832 · 560 · 256) khớp nhau vừa khít, đổi một
+  cái là cuộn ngang quay lại.
 - Màn thi mastery: `ModuleTestPage` suy `isFinalModule` từ
   `loadModules().at(-1)` (module cuối đổi bộ chuỗi `test.*Final`) — thêm
   module mới thì "module cuối" tự dời, không sửa test.

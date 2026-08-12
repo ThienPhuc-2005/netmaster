@@ -309,7 +309,18 @@ export function NetworkLab({
 
   return (
     <div className="space-y-4">
-      <div className="grid gap-4 lg:grid-cols-[minmax(0,2fr)_minmax(280px,1fr)]">
+      {/* 3fr/1fr chứ không phải 2fr/1fr, và cột phải sàn 256px chứ không
+          phải 280px — hai con số này cốt để MẶT BÀN ĐỦ RỘNG ở đúng bề
+          ngang thật của app.
+          Khung nội dung là max-w-4xl, trừ padding còn 832px; trừ tiếp
+          khe 16px là 816px chia cho hai cột. Với 2fr/1fr + sàn 280px thì
+          cột trái được 536px — HỤT 24px so với bề rộng tối thiểu 560px
+          của mặt bàn (LabCanvas, min ấy có lý do WCAG 2.5.8: hẹp hơn thì
+          hai vùng chạm cổng dính vào nhau). Hụt 24px nghĩa là sơ đồ lúc
+          nào cũng phải cuộn ngang trên desktop — mà cuộn ngang vốn chỉ
+          định dành cho màn dưới 768px. Với 3fr/1fr + sàn 256px: cột phải
+          256px, cột trái đúng 560px, vừa khít. */}
+      <div className="grid gap-4 lg:grid-cols-[minmax(0,3fr)_minmax(256px,1fr)]">
         <div className="space-y-3">
           <LabCanvas
             topology={topology}

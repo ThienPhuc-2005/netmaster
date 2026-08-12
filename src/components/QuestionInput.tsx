@@ -226,6 +226,25 @@ function OrderInput({ question, onSubmit, disabled }: QuestionInputProps & { que
   )
 }
 
+/**
+ * Dạng câu cần CẢ MẶT BÀN, không vừa một cột chữ.
+ *
+ * Sơ đồ lab, hai terminal, cung điện và phòng khám đều vẽ ngang: bó
+ * chúng vào bề rộng dễ đọc của văn bản là đẩy nội dung ra ngoài rồi bắt
+ * người học cuộn ngang để tìm thiết bị. Cuộn ngang canvas chỉ được phép
+ * dưới 768px (màn điện thoại) — trên desktop nó là lỗi.
+ *
+ * Đặt cạnh chính bộ render các dạng câu: thêm một dạng nặng mới thì luật
+ * bề rộng nằm ngay đây, không phải đi tìm ở từng trang gọi.
+ */
+export const DANG_CAN_BE_RONG: ReadonlySet<Question['kind']> = new Set([
+  'lab',
+  'palace-walk',
+  'clinic',
+  'ps',
+  'cli',
+])
+
 export function QuestionInput({ question, onSubmit, disabled, draftKey, examMode }: QuestionInputProps) {
   // Bài dở đọc/ghi ở đúng MỘT chỗ này — hai bề mặt nặng vẫn là component
   // thuần (nhận ảnh chụp qua prop), nên test và trang /design không phải
