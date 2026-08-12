@@ -64,8 +64,8 @@ const SYNTAX: Record<string, string[]> = {
   'get-netipaddress': ['Get-NetIPAddress'],
   'test-netconnection': ['Test-NetConnection [-ComputerName] <String> [-Port <Int32>]'],
   'get-aduser': [
-    'Get-ADUser [-Identity] <String>',
-    'Get-ADUser -Filter * [-SearchBase <String>]',
+    'Get-ADUser [-Identity] <String> [-Properties MemberOf]',
+    'Get-ADUser -Filter * [-SearchBase <String>] [-Properties MemberOf]',
   ],
   'new-aduser': [
     'New-ADUser [-Name] <String> -SamAccountName <String> [-Path <String>] [-Enabled <Boolean>]',
@@ -236,14 +236,27 @@ function runTestNetConnection(state: PsRunState, stage: ParsedStage): StageOutpu
   return { values: [], lines, outcome: { kind: 'ok', command: 'Test-NetConnection' }, world: state.world, flags }
 }
 
-function formatAdUser(world: PsWorld, user: AdUser): string[] {
-  const domainDn = world.ad!.domain.split('.').map((p) => `DC=${p}`).join(',')
-  return [
+/**
+ * In hồ sơ một user. `memberOf` bật thì thêm đúng MỘT dòng nữa — xem
+ * `runGetAdUser` để biết vì sao dòng đó chỉ kể nhóm TRỰC TIẾP.
+ */
+function formatAdUser(world: PsWorld, user: AdUser, memberOf = false): string[] {
+  const dn = domainDn(world)
+  const lines = [
     `Name              : ${user.name}`,
     `SamAccountName    : ${user.sam}`,
-    `DistinguishedName : CN=${user.name},OU=${user.ou},${domainDn}`,
+    `DistinguishedName : CN=${user.name},OU=${user.ou},${dn}`,
     `Enabled           : ${user.enabled ? 'True' : 'False'}`,
   ]
+  if (memberOf) {
+    const groups = adGroups(world).filter((g) =>
+      g.members.some((m) => m.toLowerCase() === user.sam.toLowerCase()),
+    )
+    // Định dạng {a, b} của PowerShell thật; rỗng thì in {} chứ không giấu
+    // dòng — "không thuộc nhóm nào" cũng là một câu trả lời.
+    lines.push(`MemberOf          : {${groups.map((g) => `CN=${g.name},CN=Users,${dn}`).join(', ')}}`)
+  }
+  return lines
 }
 
 /** Rút tên OU từ chuỗi DN kiểu "OU=KeToan,DC=noibo,DC=vn". */
@@ -252,17 +265,49 @@ function ouFromDn(dn: string): string | null {
   return part === undefined ? null : part.slice(3)
 }
 
+/**
+ * `-Properties MemberOf` (kho ý tưởng H8) — chiều TRA NGƯỢC: đứng ở phía
+ * NGƯỜI hỏi "anh này đang thuộc nhóm nào", thay vì đứng ở phía nhóm hỏi
+ * "nhóm này có ai" (`Get-ADGroupMember`). Ngoài đời người trực dùng cả
+ * hai chiều, và chiều tra ngược mới là chiều dùng khi cầm trong tay một
+ * lời than của MỘT người cụ thể.
+ *
+ * Mốc 11 cmdlet KHÔNG bị phá: đây là một THAM SỐ của cmdlet đã có, không
+ * phải cmdlet thứ 12 (chủ dự án duyệt 08-12).
+ *
+ * CHỈ kể nhóm TRỰC TIẾP, cố ý — `memberOf` của AD thật cũng vậy. Đây là
+ * bài học chứ không phải thiếu sót: chị Lan nằm trong NhanSu-GG, mà
+ * NhanSu-GG nằm trong QuyenSuaHoSo-DL, thì dòng này chỉ hiện NhanSu-GG.
+ * Muốn thấy trọn đường ống quyền thì phải đi tiếp một nhịp nữa — đúng
+ * cái nhịp mà nếp AGDLP dạy. In hộ cả chuỗi lồng nhau là làm hộ bài.
+ */
+function memberOfWanted(stage: ParsedStage): boolean {
+  const properties = stage.named['properties']
+  if (properties === undefined) return false
+  if (properties.trim().toLowerCase() !== 'memberof') {
+    err(`Get-ADUser : Only '-Properties MemberOf' is supported on this machine.`)
+  }
+  return true
+}
+
 function runGetAdUser(state: PsRunState, stage: ParsedStage): StageOutput {
   const world = state.world
   if (world.ad === null) err('Get-ADUser : Unable to contact the server. This computer is not joined to a domain.')
 
   const identity = stage.named['identity'] ?? stage.positional[0]
   const filter = stage.named['filter']
+  const memberOf = memberOfWanted(stage)
 
   if (identity !== undefined && identity !== '') {
     const user = findAdUser(world, identity)
     if (user === null) err(`Get-ADUser : Cannot find an object with identity: '${identity}'.`)
-    return { values: [], lines: formatAdUser(world, user!), outcome: { kind: 'ok', command: 'Get-ADUser' }, world, flags: state.flags }
+    return {
+      values: [],
+      lines: formatAdUser(world, user!, memberOf),
+      outcome: { kind: 'ok', command: 'Get-ADUser' },
+      world,
+      flags: state.flags,
+    }
   }
 
   if (filter === undefined) {
@@ -279,7 +324,9 @@ function runGetAdUser(state: PsRunState, stage: ParsedStage): StageOutput {
     if (ou === null) err(`Get-ADUser : Directory object not found: '${searchBase}'.`)
     users = users.filter((u) => u.ou.toLowerCase() === ou!.toLowerCase())
   }
-  const lines = users.flatMap((u, i) => (i === 0 ? formatAdUser(world, u) : ['', ...formatAdUser(world, u)]))
+  const lines = users.flatMap((u, i) =>
+    i === 0 ? formatAdUser(world, u, memberOf) : ['', ...formatAdUser(world, u, memberOf)],
+  )
   return { values: [], lines, outcome: { kind: 'ok', command: 'Get-ADUser' }, world, flags: state.flags }
 }
 

@@ -51,7 +51,8 @@ Code làm suy yếu 1 trong 5 điều trên = phá cơ chế học, dù chạy �
 - **CÁI GÌ app làm** (tính năng, cơ chế học, nội dung): mặc định theo
   spec. Muốn khác → ĐỀ XUẤT bằng tiếng người: "spec đang A, tôi muốn B,
   vì C" — chủ dự án gật một chữ là làm luôn, không nghi lễ giấy tờ.
-- **Các mốc đóng băng** (24 lệnh CLI, 11 cmdlet PS, phạm vi sim…) KHÔNG
+- **Các mốc đóng băng** (24 lệnh CLI, 11 cmdlet PS + 1 tham số, phạm vi
+  sim…) KHÔNG
   phải cấm vĩnh viễn — chúng chỉ chặn scope creep VÔ THỨC. Thấy đáng mở
   thì đề xuất phá mốc bất cứ lúc nào, kèm cái giá phải trả.
 - **LÀM BẰNG CÁCH NÀO** (thư viện, cấu trúc file, đặt tên, tối ưu): tự

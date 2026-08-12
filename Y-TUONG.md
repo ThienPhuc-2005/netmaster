@@ -250,6 +250,11 @@ Trạng thái: ☐ chờ duyệt · ✅ đã làm · ✗ đã bàn và bỏ (gi�
   thứ hai mới hết. Lời giải nói thêm cái GIÁ của việc rút lease (máy phải
   xin gia hạn dày hơn) — rút lease không phải phép màu miễn phí.
   Bài này là bài TÍNH đầu tiên của M18: hai bài cũ đều hỏi nhận biết.
-- ☐ **H8. `Get-ADUser -Properties MemberOf`** — một THAM SỐ (không
-  phải lệnh mới) mở chiều tra ngược "người này thuộc nhóm nào" cho ca
-  khám quyền M19; giá: sửa mốc 11 lệnh thành 11 lệnh + 1 tham số.
+- ✅ **H8. `Get-ADUser -Properties MemberOf`** — ĐÃ LÀM (khối 21.42): mở
+  chiều tra ngược từ phía NGƯỜI ("anh này thuộc nhóm nào"), bổ cho
+  `Get-ADGroupMember` vốn chỉ hỏi được từ phía nhóm. Đúng như ý gốc nói,
+  mốc đọc lại thành **11 cmdlet + 1 tham số** chứ không phá mốc.
+  Hai điều rút ra: **chỉ kể nhóm TRỰC TIẾP** (như AD thật — và đó là bài
+  học: muốn biết quyền chảy tới đâu vẫn phải đi tiếp một nhịp, in hộ cả
+  chuỗi lồng nhau là làm hộ bài); và **phải khai trong Get-Help** — tham
+  số không có trong help là tham số không ai biết mà gõ.

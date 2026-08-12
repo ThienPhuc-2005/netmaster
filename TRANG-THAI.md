@@ -3,12 +3,12 @@
 ## ĐỌC 30 GIÂY: ĐANG ĐỨNG ĐÂU, LÀM GÌ TIẾP (cập nhật 2026-08-12)
 
 **App hiện có ĐỦ 21/21 MODULE NỘI DUNG + MÀN TỐT NGHIỆP** (M1-12 nhập
-môn, M13-17 Phần D, M18-21 Phần E), 1684 test xanh, typecheck sạch,
+môn, M13-17 Phần D, M18-21 Phần E), 1692 test xanh, typecheck sạch,
 build qua. **Toàn bộ biên bản hội đồng trung cấp đã XỬ XONG (08-10):
 15/15 việc mục 6 (khối 20.2, commit `1d04c0b`) + trọn LƯỢT DỌN 52 phát
 hiện P2 mục 5 (khối 20.3).** Nội dung và engine không còn việc nào treo;
 các khối gần đây đều là ý lấy từ kho `Y-TUONG.md`.
-Việc kế tiếp là của CHỦ DỰ ÁN: ra lệnh commit khối 21.41, và tuyển người
+Việc kế tiếp là của CHỦ DỰ ÁN: ra lệnh commit khối 21.42, và tuyển người
 cho các buổi test người thật (hai dòng DoD còn treo đều cần NGƯỜI).
 
 **Toàn bộ ENGINE của Phần D đã xong.** Không còn engine nào phải viết cho
@@ -29,7 +29,32 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (19) M21 capstone + màn tốt nghiệp | XONG |
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
-**KHỐI MỚI NHẤT — 21.41 (08-12), đang ở working tree chờ lệnh commit:**
+**KHỐI MỚI NHẤT — 21.42 (08-12), đang ở working tree chờ lệnh commit:**
+**H8 — chiều tra ngược `Get-ADUser -Properties MemberOf`.**
+- Trước khối này, người trực chỉ hỏi được từ phía NHÓM ("nhóm này có
+  ai" — `Get-ADGroupMember`). Giờ hỏi được từ phía NGƯỜI: "anh này đang
+  thuộc nhóm nào" — đúng chiều dùng khi trong tay bạn là lời than của
+  MỘT người cụ thể, tức là hầu hết các buổi trực.
+- **Mốc 11 cmdlet KHÔNG bị phá**: đây là một THAM SỐ của lệnh đã có, nên
+  mốc đọc lại thành "11 cmdlet **+ 1 tham số**" (đã sửa ở cả `CLAUDE.md`
+  và `GHI-CHU-KY-THUAT.md`).
+- **Chỉ kể nhóm TRỰC TIẾP**, y như AD thật — và đây là BÀI HỌC chứ không
+  phải thiếu sót: thấy `NhanSu-GG` rồi vẫn phải đi tiếp một nhịp mới biết
+  quyền chảy tới đâu, đúng cái nhịp nếp AGDLP dạy. In hộ cả chuỗi lồng
+  nhau là làm hộ bài.
+- Hai chỗ nhỏ mà thiếu thì tính năng coi như không tồn tại: **Get-Help
+  khai luôn tham số** (không ai gõ thứ mình không biết là có), và
+  **`-Properties` giá trị khác thì báo lỗi thẳng** thay vì im lặng bỏ qua.
+- Nội dung M19 bài 4 nói ra chiều mới ở mục đào-sâu và ở lời giải tầng 3:
+  tra được từ CẢ HAI đầu, và ngoài đời bạn thường cầm cái tên người trước.
+- 1692 test xanh (+8), typecheck sạch, build qua, content:review render
+  lại. Kiểm browser thật trong đúng bài M19: gõ tra ngược TRƯỚC khi thêm
+  nhóm ra `MemberOf : {}`, thêm nhóm xong gõ lại ra
+  `{CN=NhanSu-GG,CN=Users,DC=congty,DC=vn}` và KHÔNG kèm nhóm quyền lồng
+  ngoài; `-Properties *` bị từ chối bằng dòng hổ phách; Get-Help in đúng
+  hai dòng cú pháp mới. Console sạch, seed đã xóa.
+
+**KHỐI TRƯỚC — 21.41 (08-12), đã commit `b4f5c2a`:**
 **H3 — ca bệnh sửa "nửa tay nửa chọn"** (chủ dự án duyệt phá mốc).
 - Phòng khám có **cách sửa thứ BA**: ca liên tầng, nửa bệnh nằm trong sơ
   đồ thì tự tay sửa ở phòng lab, nửa nằm ngoài mô hình mạng thì chọn hành
@@ -193,8 +218,8 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 ôn tập 21.36 · nội dung 21.37 · kỹ thuật nền 21.38), rồi I3 làm nốt ở
 khối 21.39 và quãng ngồi liền ở khối 21.40 — **kho ý tưởng giờ không còn
 ý nào chờ duyệt**. **H3** đã làm ở khối 21.41 (phá mốc "2 cách sửa" của
-phòng khám, chủ dự án duyệt 08-12). Chỉ còn **H8** chờ quyết, vì nó cũng
-đòi phá một mốc đã đóng băng (11 cmdlet PowerShell).
+phòng khám) và **H8** ở khối 21.42 (mốc 11 cmdlet giữ nguyên, chỉ thêm
+một tham số) — **kho ý tưởng giờ SẠCH, không còn ý nào chờ.**
 
 **KHỐI TRƯỚC — 21.34 (08-11), đã commit `e43e7d9`:**
 **C1 — giai điệu tiến độ.** Việc thật hóa ra không phải "thêm nhạc" mà là

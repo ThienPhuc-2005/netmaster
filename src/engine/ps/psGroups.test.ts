@@ -160,3 +160,62 @@ describe('kiểm cấu trúc thế giới có nhóm', () => {
     expect(runPsLine(initialPsState(world), 'Get-ADGroup -Filter *').lines).toEqual([])
   })
 })
+
+// ---------------------------------------------------------------
+// Get-ADUser -Properties MemberOf (kho ý tưởng H8)
+// ---------------------------------------------------------------
+//
+// Chiều TRA NGƯỢC: đứng ở phía NGƯỜI hỏi "anh này thuộc nhóm nào", thay
+// vì đứng ở phía nhóm hỏi "nhóm này có ai". Bất biến quan trọng nhất ở
+// đây là nó CHỈ kể nhóm trực tiếp — in hộ cả chuỗi lồng nhau là làm hộ
+// đúng cái nhịp mà nếp AGDLP dạy người học phải tự đi.
+
+describe('Get-ADUser -Properties MemberOf', () => {
+  it('kể đúng nhóm người đó đang đứng trong, theo dạng {DN} của PowerShell', () => {
+    const text = lastOf('Get-ADUser -Identity nvan -Properties MemberOf').lines.join('\n')
+    expect(text).toContain('SamAccountName    : nvan')
+    expect(text).toContain('MemberOf          : {CN=KeToan-GG,CN=Users,DC=noibo,DC=vn}')
+  })
+
+  it('CHỈ nhóm trực tiếp — không in hộ nhóm lồng nhóm', () => {
+    // nvan ở trong KeToan-GG, mà KeToan-GG nằm trong QuyenDocBaoCao-DL.
+    // Quyền CÓ chảy tới (isMemberOfGroup thấy), nhưng memberOf của AD
+    // thật chỉ kể một nhịp — muốn thấy trọn ống thì phải đi tiếp.
+    const text = lastOf('Get-ADUser -Identity nvan -Properties MemberOf').lines.join('\n')
+    expect(text).not.toContain('QuyenDocBaoCao-DL')
+    expect(isMemberOfGroup(worldAgdlp(), 'QuyenDocBaoCao-DL', 'nvan')).toBe(true)
+  })
+
+  it('người chưa thuộc nhóm nào vẫn có dòng MemberOf, để rỗng', () => {
+    const text = lastOf('Get-ADUser -Identity ttbinh -Properties MemberOf').lines.join('\n')
+    expect(text).toContain('MemberOf          : {}')
+  })
+
+  it('thấy ngay hiệu quả của Add-ADGroupMember vừa gõ', () => {
+    const { results } = run(
+      'Add-ADGroupMember KeToan-GG -Members ttbinh',
+      'Get-ADUser -Identity ttbinh -Properties MemberOf',
+    )
+    expect(results.at(-1)!.lines.join('\n')).toContain('CN=KeToan-GG')
+  })
+
+  it('không khai -Properties thì hồ sơ vẫn y như cũ (không đẻ thêm dòng)', () => {
+    const text = lastOf('Get-ADUser -Identity nvan').lines.join('\n')
+    expect(text).not.toContain('MemberOf')
+  })
+
+  it('-Properties thứ khác nằm ngoài phạm vi — máy nói thẳng, không im lặng bỏ qua', () => {
+    const out = lastOf('Get-ADUser -Identity nvan -Properties *')
+    expect(out.outcome.kind).toBe('error')
+    expect(out.lines.join('\n')).toContain("Only '-Properties MemberOf' is supported")
+  })
+
+  it('đi kèm -Filter * thì mọi người trong danh sách đều có dòng MemberOf', () => {
+    const text = lastOf('Get-ADUser -Filter * -Properties MemberOf').lines.join('\n')
+    expect(text.match(/MemberOf/g)?.length).toBeGreaterThan(1)
+  })
+
+  it('Get-Help Get-ADUser khai luôn tham số này — không có trong help là không ai biết mà gõ', () => {
+    expect(lastOf('Get-Help Get-ADUser').lines.join('\n')).toContain('-Properties MemberOf')
+  })
+})

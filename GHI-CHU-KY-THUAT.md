@@ -165,12 +165,24 @@ quan trước khi "sửa test cho xanh".
 
 ## 4. Terminal PowerShell (engine/ps + features/ps)
 
-- Phạm vi đóng băng — MỐC 2, **11 cmdlet**: 8 gốc (Get-Help,
+- Phạm vi đóng băng — MỐC 2, **11 cmdlet + 1 tham số**: 8 gốc (Get-Help,
   Get-NetIPAddress, Test-NetConnection, Get-ADUser, New-ADUser,
   Import-Csv, Get-Content, Select-String) + 3 nhóm cho AGDLP M19
   (Get-ADGroup, Get-ADGroupMember, Add-ADGroupMember). Pipeline MỘT
   tầng; KHÔNG scriptblock/biến/vòng lặp — quá một dấu ống là lỗi có chủ
   đích, đừng "tiện tay" mở ngữ pháp.
+- **`Get-ADUser -Properties MemberOf` (H8, khối 21.42)** — tham số DUY
+  NHẤT được mở ngoài 11 cmdlet (chủ dự án duyệt 08-12): chiều TRA NGƯỢC
+  từ phía NGƯỜI ("anh này thuộc nhóm nào") bổ cho `Get-ADGroupMember`
+  vốn hỏi từ phía nhóm. Ba luật:
+  - **CHỈ nhóm TRỰC TIẾP** — `memberOf` của AD thật cũng vậy, và đây là
+    BÀI HỌC: thấy `NhanSu-GG` rồi vẫn phải đi tiếp một nhịp mới biết
+    quyền chảy tới đâu. In hộ cả chuỗi lồng nhau là làm hộ đúng cái nhịp
+    nếp AGDLP dạy (khác `isMemberOfGroup` của goal — cái đó ĐI hết chuỗi).
+  - **`-Properties` giá trị khác thì báo lỗi thẳng**, cùng lối với
+    `-Filter *`: im lặng bỏ qua một tham số người học gõ là dạy sai.
+  - **Người không thuộc nhóm nào vẫn có dòng `MemberOf : {}`** — "không
+    thuộc nhóm nào" cũng là một câu trả lời, giấu dòng là bắt đoán.
 - Nhóm AD: `ad.groups` TÙY CHỌN (thiếu = không nhóm — thế giới M12 giữ
   nguyên nghĩa); scope chỉ Global | DomainLocal. Hai luật thật giữ
   nguyên vì chúng LÀ bài học AGDLP: Global không chứa được DomainLocal,
