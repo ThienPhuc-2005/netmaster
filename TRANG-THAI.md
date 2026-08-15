@@ -31,7 +31,7 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (19) M21 capstone + màn tốt nghiệp | XONG |
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
-**KHỐI MỚI NHẤT — 21.65 (08-15), chưa commit: GỌI TÊN CÁI THANG (việc C, lỗ hổng Q1).**
+**KHỐI MỚI NHẤT — 21.65 (08-15), đã commit `aa3c37a`: GỌI TÊN CÁI THANG (việc C, lỗ hổng Q1).**
 - Thêm bài `m4-bai-6` "Gọi tên cái thang" thành **chặng 6** của Module 4 (module
   đang có 5 chặng, trần là 6 — vừa đủ chỗ). Hai khái niệm mới: **Mô hình phân
   tầng** và **Frame (khung)**, mỗi cái một hình vẽ mới và một thẻ ôn.
