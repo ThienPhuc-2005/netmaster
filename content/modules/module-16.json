@@ -321,7 +321,13 @@
                   "mạng nối trực tiếp",
                   "mang noi truc tiep",
                   "mạng của chính router đó",
-                  "mang cua chinh router do"
+                  "mang cua chinh router do",
+                  "của chính nó",
+                  "cua chinh no",
+                  "của chính router đó",
+                  "cua chinh router do",
+                  "của mình",
+                  "cua minh"
                 ]
               },
               "hint": { "vi": "Đó chính là chỗ khác nhau với tuyến tĩnh: tĩnh thì kể về mạng của người khác." },
@@ -765,7 +771,7 @@
                 "prompt": {
                   "vi": "Trong câu network của OSPF, dải địa chỉ được viết bằng loại mặt nạ đảo tên là gì?"
                 },
-                "accept": ["wildcard", "wildcard mask", "mặt nạ đảo", "mat na dao", "mặt nạ ngược", "mat na nguoc"],
+                "accept": ["wildcard", "wildcard mask", "mặt nạ đảo", "mat na dao", "mặt nạ ngược", "mat na nguoc", "mặt nạ lộn ngược", "mat na lon nguoc"],
                 "hintTopic": { "vi": "loại mặt nạ đã học ở Module 13" }
               },
               "hint": {
@@ -1615,7 +1621,13 @@
         "mạng nối trực tiếp",
         "mang noi truc tiep",
         "mạng của chính router đó",
-        "mang cua chinh router do"
+        "mang cua chinh router do",
+        "của chính nó",
+        "cua chinh no",
+        "của chính router đó",
+        "cua chinh router do",
+        "của mình",
+        "cua minh"
       ],
       "hintTopic": { "vi": "chỗ khác nhau căn bản với tuyến tĩnh" },
       "explain": {
@@ -1625,7 +1637,7 @@
     {
       "kind": "mcq",
       "id": "m16-mt-3",
-      "prompt": { "vi": "Hai router đã nối dây và cùng bật OSPF, nhưng bảng láng giềng vẫn trống. Nguyên nhân nào khớp nhất?" },
+      "prompt": { "vi": "Trên một router thật: hai router đã nối dây và cùng bật OSPF, nhưng bảng láng giềng vẫn trống. Nguyên nhân nào khớp nhất?" },
       "choices": [
         { "vi": "Một bên còn thiếu câu network phủ cổng đó, hoặc hai cổng khác subnet" },
         { "vi": "Hai router mang số hiệu tiến trình OSPF khác nhau nên chúng bỏ qua nhau" },
@@ -1681,7 +1693,7 @@
       "kind": "typed",
       "id": "m16-mt-7",
       "prompt": { "vi": "Câu network của OSPF viết dải địa chỉ bằng loại mặt nạ đảo tên là gì?" },
-      "accept": ["wildcard", "wildcard mask", "mặt nạ đảo", "mat na dao", "mặt nạ ngược", "mat na nguoc"],
+      "accept": ["wildcard", "wildcard mask", "mặt nạ đảo", "mat na dao", "mặt nạ ngược", "mat na nguoc", "mặt nạ lộn ngược", "mat na lon nguoc"],
       "hintTopic": { "vi": "loại mặt nạ đã học ở Module 13" },
       "explain": {
         "vi": "Wildcard mask. Với 0.0.0.255 thì ba nhóm số đầu phải khớp còn nhóm cuối tùy ý, nên nó tóm gọn mọi cổng thuộc một mạng /24."

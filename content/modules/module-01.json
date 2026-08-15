@@ -172,7 +172,7 @@
               "conceptId": "dia-chi-ip",
               "visualId": "vis-dia-chi-nha",
               "body": {
-                "vi": "Mỗi máy trên mạng có một địa chỉ IP, như mỗi ngôi nhà có một địa chỉ đường. Bưu tá không cần biết trong thư viết gì — chỉ cần địa chỉ ngoài phong bì là đúng, thư sẽ về đúng cửa."
+                "vi": "Mỗi máy trên mạng có một địa chỉ IP, như mỗi ngôi nhà có một địa chỉ đường. Bưu tá không cần biết trong thư viết gì — chỉ cần địa chỉ ngoài phong bì là đúng, thư sẽ về đúng cửa. Cũng vì thế, hai nhà trong cùng một xóm không được ghi trùng số nhà: trong một mạng, mỗi máy giữ một địa chỉ IP riêng."
               },
               "deepDive": {
                 "vi": "IPv4 là dạng địa chỉ phổ biến nhất hiện nay: 4 con số 0-255 ngăn bởi dấu chấm, ví dụ 192.168.1.10. Module 3 mình sẽ mổ xẻ từng con số này."
@@ -227,7 +227,7 @@
         {
           "type": "summary",
           "bullets": [
-            { "vi": "Mỗi máy trên mạng mang một địa chỉ IP — như địa chỉ nhà của nó." },
+            { "vi": "Mỗi máy trên mạng mang một địa chỉ IP riêng — như địa chỉ nhà của nó, cả xóm không nhà nào trùng số." },
             { "vi": "Địa chỉ nằm ngoài \"phong bì\" (header) để mạng đọc mà không cần mở nội dung." },
             { "vi": "Nhờ địa chỉ IP, gói tin tìm đúng một máy giữa hàng tỷ máy." }
           ],
@@ -593,10 +593,10 @@
               "conceptId": "hanh-trinh-goi-tin",
               "visualId": "vis-hanh-trinh-tong-quan",
               "body": {
-                "vi": "Ghép cả câu chuyện lại: máy bạn CHIA ảnh vào các gói tin và ghi địa chỉ IP của Mai — các gói rời nhà, được các ROUTER chuyền tay nhau, mỗi trạm một chặng gần hơn — đến máy Mai, PORT đưa chúng vào đúng ứng dụng — và nhờ cùng GIAO THỨC, máy Mai ráp lại thành đúng tấm ảnh."
+                "vi": "Ghép cả câu chuyện lại: máy bạn CHIA ảnh vào các gói tin và ghi địa chỉ IP của Mai — các gói rời nhà, được các ROUTER chuyền tay nhau, mỗi trạm một chặng gần hơn — đến máy Mai, PORT đưa chúng vào đúng ứng dụng — và nhờ cùng GIAO THỨC, máy Mai ráp lại thành đúng tấm ảnh. Các gói có thể đi những con đường khác nhau nên đến nơi lộn xộn: mỗi gói mang sẵn một SỐ THỨ TỰ, nhìn con số đó máy Mai xếp lại đúng trật tự ban đầu."
               },
               "deepDive": {
-                "vi": "Các gói có thể đi những con đường khác nhau và đến lộn xộn — số thứ tự trong header giúp máy nhận ráp về đúng trật tự. Đó là lý do mạng vừa nhanh vừa bền: không có con đường nào là duy nhất."
+                "vi": "Không có con đường nào là duy nhất — gói nào cũng đi lối đang thông, một trạm hỏng thì các gói sau vòng qua trạm khác. Đó là lý do mạng vừa nhanh vừa bền."
               }
             }
           ]
@@ -657,7 +657,7 @@
         {
           "type": "summary",
           "bullets": [
-            { "vi": "Một lần gửi = đóng gói, ghi địa chỉ, bưu tá chuyền tay, ráp lại ở đích." },
+            { "vi": "Một lần gửi = đóng gói, ghi địa chỉ, bưu tá chuyền tay, ráp lại ở đích theo số thứ tự từng gói." },
             { "vi": "Bạn vừa kể lại được cả hành trình bằng lời của mình — đó là thứ ở lại lâu nhất." },
             { "vi": "Bốn nhân vật chính: gói tin, địa chỉ IP, router, giao thức — sẽ theo bạn suốt khóa học." }
           ],
@@ -781,7 +781,7 @@
       "kind": "typed",
       "id": "m1-mt-6",
       "prompt": { "vi": "Máy bạn gửi yêu cầu theo đúng khuôn HTTP, server đáp lại đúng khuôn ấy — hai bên hiểu nhau nhờ cùng tuân theo thứ gì?" },
-      "accept": ["giao thức", "protocol", "quy tắc chung", "protocols"],
+      "accept": ["giao thức", "protocol", "quy tắc chung", "protocols", "bộ quy tắc"],
       "explain": { "vi": "Giao thức là luật chơi chung: cùng quy ước đóng gói và diễn giải thì hai máy mới đọc hiểu dữ liệu của nhau." }
     },
     {
@@ -812,10 +812,10 @@
     {
       "kind": "typed",
       "id": "m1-mt-9",
-      "prompt": { "vi": "Theo ẩn dụ bưu điện của khóa học, địa chỉ IP là địa chỉ tòa nhà. Vậy con số đóng vai SỐ CĂN HỘ — chỉ đúng ứng dụng nhận dữ liệu — gọi là gì?" },
+      "prompt": { "vi": "Một máy chủ vừa chạy trang web vừa chạy hộp thư. Gói tin của bạn đã tới đúng máy đó nhờ địa chỉ IP, nhưng máy chủ vẫn chưa biết nên trao gói cho bên nào — nó phải đọc thêm con số nào trong gói tin?" },
       "accept": ["port", "cổng", "số port", "số cổng", "port number"],
       "hintTopic": { "vi": "con số phân biệt các ứng dụng trên cùng một máy" },
-      "explain": { "vi": "IP đưa gói tin tới đúng tòa nhà, port gõ đúng cửa căn hộ. Thiếu port thì gói tin tới được máy nhưng không biết trao cho ứng dụng nào." }
+      "explain": { "vi": "Một máy chạy nhiều việc cùng lúc, nên IP mới đưa gói tin tới đúng máy thôi: port cho biết trang web hay hộp thư là bên đang chờ gói này. Thiếu port thì gói tới nơi mà không biết trao cho ai." }
     },
     {
       "kind": "mcq",

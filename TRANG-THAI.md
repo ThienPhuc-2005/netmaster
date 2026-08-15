@@ -31,7 +31,71 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (19) M21 capstone + màn tốt nghiệp | XONG |
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
-**KHỐI MỚI NHẤT — 21.60 (08-12), đã commit `f137cf8`:**
+**KHỐI MỚI NHẤT — 21.63 (08-15), chưa commit: VÁ 76 CHỖ CỦA BIÊN BẢN (việc B).**
+- **Chữa 76 phát hiện**, bỏ qua 11 (kèm lý do), **9 việc để lại thành khối
+  riêng** (đã cất ở mục R của `Y-TUONG.md`).
+- **Mỗi file sửa xong có một người soi lại bằng `git diff`** — và nó bắt được
+  lỗi thật ở 3 module. Nặng nhất: bản sửa Module 13 thay câu sai cũ ("cắt sai
+  thứ tự thì HẾT CHỖ") bằng một câu sai nặng hơn ("đốt mất 16 địa chỉ"). Sự
+  thật: 128+64+32+16 = 240 trong 256, nên **cắt kiểu nào cũng dư đúng 16** —
+  khác nhau ở CHỖ phần dư nằm (cuối dải, còn nối thêm được / kẹt giữa hai
+  phòng, hai bên chặn cứng). Đã viết lại 7 chỗ trong M13 theo sự thật đó.
+- **Ba chỗ nới accept quá tay** cũng do người soi bắt: "đời cũ" (M8) làm câu
+  sai "router đời cũ phải chạy theo máy mới" được chấm đúng; "quy tắc" trần
+  (M1, do chính tôi thêm ở khối trước) nuốt luôn "quy tắc đặt tên miền"; "còn"
+  trần (M15) nuốt câu dùng "còn" làm liên từ. Đã rút cả ba, thêm ca xấu khoá lại.
+- Số đo: trắc nghiệm đoán được bằng độ dài **23 → 16**, câu thi chép nguyên văn
+  **7 → 5**, tổng câu hỏi **696 → 706** (+10 câu lấp chỗ "dạy rồi không hỏi lại").
+- 1873 test xanh, typecheck sạch, build qua, bản đọc duyệt render lại.
+
+**KHỐI TRƯỚC — 21.62 (08-15), chưa commit: CỔNG CHẶN CHẤM OAN (việc A).**
+- **Dựng 3 cổng tự động** trong `content.test.ts` — xem mục 7 của sổ kỹ thuật.
+  Cổng lớn nhất: mỗi câu gõ tay trong pool đề thi phải có một ca thử "gõ thế
+  này cũng đúng". Trước lượt này 8/97 câu có, giờ **97/97**.
+- **Đo bằng chính bộ chấm của app**: viết một cách nói khác cho từng câu
+  trong 97 câu → **15 câu chấm oan người hiểu đúng**. Soi tay từng cái: 13
+  oan thật, 2 là ca thử của tôi sai (đáp án chép lại đề bài).
+- **Nới 23 câu**, kèm 18 ca xấu để không nới quá tay. Có một ca phải rút
+  lại: thêm "gói" cho m1-mt-2 làm "gói cước" được chấm đúng — cái giá cao
+  hơn cái lợi.
+- Cổng bắt lỗi ngay khi vừa dựng: tôi nới câu THI m16-mt-2 và m16-mt-7 mà
+  quên câu BÀI HỌC cùng đề — cổng thứ 3 đỏ, phải nới nốt cả hai.
+- 1873 test xanh (+2 cổng), typecheck sạch, build qua, bản đọc duyệt render lại.
+
+**BIÊN BẢN — SOÁT TOÀN BỘ 696 CÂU HỎI (08-15): `SOAT-CAU-HOI.md`.**
+78 phát hiện đã qua phản biện, 6 bị bác. Lớp lỗi lớn nhất KHÔNG phải kiến
+thức sai mà là **chấm sai người hiểu đúng** (36 câu ở 16 module — nhiều ca
+chính lời giải mẫu của app gõ vào cũng bị đánh sai). Kế đó: **kiến thức
+nhốt trong ô "Đào sâu hơn" rồi vẫn đem ra chấm** (12 câu), **lời giải nói
+ngược bài học** (11 chỗ), **đề thi chép nguyên văn câu đã làm** (14 câu).
+10 lỗ hổng kiến thức đã cất vào `Y-TUONG.md` mục Q (9 cái "phải có").
+Chưa sửa gì — chờ chủ dự án chọn việc.
+
+**KHỐI MỚI NHẤT — 21.61 (08-15), chưa commit:**
+**Ba chỗ chủ dự án chỉ ra khi tự học thật — thẻ ôn không giúp hiểu, và
+trang Hồ sơ nói chung chung.**
+- **Thẻ ôn có cửa "chưa hiểu — nói theo cách khác".** Người học quên đi
+  quên lại một thẻ thường không vì trí nhớ kém mà vì chưa hiểu; hộp ôn cũ
+  không có cửa nào ngoài "để nó quay lại sớm hơn". Chỗ chua: app VỐN đã có
+  ẩn dụ + giải nghĩa + hình cho từng khái niệm, phòng ôn tập suốt từ đầu
+  chỉ đọc mỗi `flashcard`. Đây là mở lại thứ đã có, không soạn thêm chữ nào.
+  Chỉ hiện SAU khi lật; thẻ đã quên tới ngưỡng thì app tự nói trước một câu.
+- **Bản đồ trí nhớ mở ra xem được từng thẻ** — "6 thẻ" không gọi được tên
+  thì con số ấy chẳng dẫn tới việc gì.
+- **Mục hay quên có bậc "mới quên một lần".** Ngưỡng 2 vẫn nguyên (vẫn dùng
+  chung với thẻ Hôm nay và phiên luyện), chỉ có điều app đã lấy luôn ngưỡng
+  PHÁN làm ngưỡng KỂ: người học nhìn hộp trống mà không biết mình đang
+  quên cái gì.
+- 1871 test xanh (+15), typecheck sạch, build qua. Kiểm browser thật với
+  thẻ gieo sẵn: cửa giảng lại ra đúng ẩn dụ của `magic-number` + link
+  `/bai/m3-bai-5`; mở chủ đề M3 ra đủ 4 thẻ xếp mờ nhất trước. Seed đã xóa.
+- **CÒN TREO — chủ dự án hỏi cuối lượt**: câu thi `m4-mt-11` (bảng MAC vs
+  bảng ARP) hỏi so sánh hai cuốn sổ, mà cụm "bảng ARP" KHÔNG xuất hiện ở
+  bất cứ đâu trong nội dung ngoài chính câu hỏi đó. Bài `m4-bai-3` dạy ARP
+  như một HÀNH ĐỘNG hỏi, cache chỉ được nhắc bằng một mệnh đề phụ. Đề bài
+  đang đòi thứ bài học chưa dạy — chờ duyệt cách chữa.
+
+**KHỐI TRƯỚC — 21.60 (08-12), đã commit `f137cf8`:**
 **Lượt rà soát thứ năm: BÀN PHÍM + TRÌNH ĐỌC MÀN HÌNH — 2 phát hiện, chữa cả hai.**
 - **P1 — 18 link trên trang Học đọc y hệt nhau.** 18 cửa "Mình biết phần
   này rồi — thi vượt luôn", 4 nút "Bắt đầu", 3 link "Xem lại", không cái

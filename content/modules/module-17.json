@@ -339,7 +339,13 @@
                   "cấm những gì chưa được cho phép",
                   "cam nhung gi chua duoc cho phep",
                   "deny all",
-                  "deny any"
+                  "deny any",
+                  "không được cho phép",
+                  "khong duoc cho phep",
+                  "chưa được cho phép",
+                  "chua duoc cho phep",
+                  "không khớp dòng nào",
+                  "khong khop dong nao"
                 ],
                 "hintTopic": { "vi": "mặc định của một cổng đã áp danh sách" }
               },
@@ -449,7 +455,7 @@
                 "kind": "cli",
                 "id": "m17-b2-prac-cli",
                 "prompt": {
-                  "vi": "Router R-Van-phong hiện chưa có luật nào. Hãy viết đúng ý sếp: PC-Phong-khach (192.168.1.66) không được ping tới SRV-Ke-toan (192.168.2.50), còn PC-Giam-doc (192.168.1.10) thì vẫn phải gọi được máy chủ. Đây là việc cần loại danh sách nhìn thấy cả vế đích — và đừng quên phần còn lại của văn phòng."
+                  "vi": "Trên R-Van-phong, danh sách 101 đã được treo sẵn ở cổng phía văn phòng nhưng chưa có dòng luật nào. Việc của bạn chỉ là viết các dòng ấy, đúng ý sếp: PC-Phong-khach (192.168.1.66) không được ping tới SRV-Ke-toan (192.168.2.50), còn PC-Giam-doc (192.168.1.10) thì vẫn phải gọi được máy chủ. Đây là việc cần loại danh sách nhìn thấy cả vế đích — và đừng quên phần còn lại của văn phòng."
                 },
                 "spec": {
                   "initial": {
@@ -502,7 +508,7 @@
                         "id": "r-1",
                         "hostname": "R-Van-phong",
                         "ports": [
-                          { "id": "g0", "mac": "AA:BB:CC:17:00:11", "ipConfig": { "ip": "192.168.1.1", "prefix": 24 } },
+                          { "id": "g0", "mac": "AA:BB:CC:17:00:11", "ipConfig": { "ip": "192.168.1.1", "prefix": 24 }, "aclIn": 101 },
                           { "id": "g1", "mac": "AA:BB:CC:17:00:12", "ipConfig": { "ip": "192.168.2.1", "prefix": 24 } }
                         ],
                         "staticRoutes": []
@@ -529,8 +535,6 @@
                         "configure terminal",
                         "access-list 101 deny icmp host 192.168.1.66 host 192.168.2.50",
                         "access-list 101 permit ip any any",
-                        "interface g0",
-                        "ip access-group 101 in",
                         "end"
                       ]
                     }
@@ -539,10 +543,10 @@
                 "hintTopic": { "vi": "loại danh sách nhìn được cả vế đích" }
               },
               "hint": {
-                "vi": "Ba mảnh cần gõ, theo đúng thứ tự: một dòng cấm hẹp (deny icmp host … host …), một dòng mở cho phần còn lại (permit ip any any), rồi vào interface g0 và áp danh sách vào chiều in. Số hiệu phải nằm trong khoảng 100 tới 199."
+                "vi": "Hai dòng cần gõ, theo đúng thứ tự: một dòng cấm hẹp (deny icmp host … host …), rồi một dòng mở cho phần còn lại (permit ip any any). Số hiệu phải là 101 — đúng số đang treo ở cổng — và nó nằm trong khoảng 100 tới 199 vì đây là loại nhìn được cả vế đích."
               },
               "solution": {
-                "vi": "Gõ lần lượt: enable, configure terminal, access-list 101 deny icmp host 192.168.1.66 host 192.168.2.50, access-list 101 permit ip any any, interface g0, ip access-group 101 in, end. Dòng cấm hẹp đứng trước nên nó ăn đúng gói của máy khách gửi tới máy chủ; dòng permit đứng sau giữ đường cho tất cả những gì còn lại, kể cả máy khách đi nơi khác."
+                "vi": "Gõ lần lượt: enable, configure terminal, access-list 101 deny icmp host 192.168.1.66 host 192.168.2.50, access-list 101 permit ip any any, end. Dòng cấm hẹp đứng trước nên nó ăn đúng gói của máy khách gửi tới máy chủ; dòng permit đứng sau giữ đường cho tất cả những gì còn lại, kể cả máy khách đi nơi khác. Cổng đã treo sẵn danh sách 101 từ trước, nên vừa gõ xong hai dòng là luật có hiệu lực ngay."
               },
               "conceptId": "m17-acl-mo-rong"
             },
@@ -1810,7 +1814,11 @@
         "trước khi tra bảng định tuyến",
         "truoc khi tra bang dinh tuyen",
         "gói đi vào router",
-        "goi di vao router"
+        "goi di vao router",
+        "lúc gói vào cổng",
+        "luc goi vao cong",
+        "khi gói vào cổng",
+        "khi goi vao cong"
       ],
       "hintTopic": { "vi": "chiều tính theo con mắt của router" },
       "explain": {
@@ -1889,6 +1897,23 @@
       "hintTopic": { "vi": "VLAN đi không nhãn trên trunk" },
       "explain": {
         "vi": "Đổi native VLAN sang một VLAN không ai dùng. Trò này sống nhờ cú bóc nhãn của native VLAN ở switch đầu tiên; native không chở người dùng thì khung của họ luôn mang nhãn và cú bóc ấy chẳng còn giúp gì cho kẻ tấn công. STP canh vòng lặp, còn ACL là chuyện tầng 3 — cả hai không đụng tới trò này."
+      }
+    },
+    {
+      "kind": "mcq",
+      "id": "m17-mt-12",
+      "prompt": {
+        "vi": "Một kẻ lạ cắm máy vào cổng switch rồi bơm ra hàng vạn địa chỉ MAC bịa, tới lúc bảng MAC không còn chỗ. Hắn được lợi gì?"
+      },
+      "choices": [
+        { "vi": "Switch hết chỗ tra đích nên phát tràn mọi khung ra mọi cổng, kể cả cổng hắn ngồi" },
+        { "vi": "Switch tự khởi động lại và quên sạch cấu hình VLAN mà người trực đã đặt cho từng cổng" },
+        { "vi": "Các máy còn lại mất địa chỉ IP đang dùng vì bảng MAC của switch đã bị xóa trống trơn" }
+      ],
+      "answerIndex": 0,
+      "hintTopic": { "vi": "switch làm gì khi tra bảng không ra cổng đích" },
+      "explain": {
+        "vi": "Bảng đầy thì switch không còn chỗ ghi cặp địa chỉ - cổng mới, nên khung nào tra không ra đích là nó đành phát tràn ra mọi cổng — kể cả cổng kẻ lạ đang ngồi, và thế là hắn nghe được thư từ của cả xóm. Switch không khởi động lại, cũng chẳng ai mất địa chỉ IP: thứ mất đi ở đây là sự riêng tư. Chốt chặn đúng chỗ là port security, giới hạn số MAC được phép xuất hiện trên mỗi cổng."
       }
     },
     {

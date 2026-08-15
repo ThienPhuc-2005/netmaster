@@ -237,6 +237,34 @@
               "solution": {
                 "vi": "Emergency, Alert, Critical, Error, Warning, Notice, Informational, Debug — 0 tới 7, số càng nhỏ càng nặng. Câu nhớ: Em Ăn Cơm Em Với Người Iu Đi."
               }
+            },
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m20-b1-ret-2",
+                "prompt": {
+                  "vi": "Không nhìn lại bài. Một dòng lạ vừa rơi vào sổ trực: 2026-08-07 02:47:09 rtr-bien-01 WARNING bgp neighbor down. Trong bốn câu mà một dòng nhật ký trả lời, chữ rtr-bien-01 đang trả lời câu nào?"
+                },
+                "accept": [
+                  "máy nào",
+                  "tên máy",
+                  "tên của máy",
+                  "tên thiết bị",
+                  "tên của thiết bị",
+                  "thiết bị nào",
+                  "máy nào ghi dòng này"
+                ],
+                "hintTopic": {
+                  "vi": "mảnh thứ hai của khuôn bốn mảnh"
+                }
+              },
+              "hint": {
+                "vi": "Bốn câu theo thứ tự: khi nào — ? — ? — chuyện gì. Chữ đứng ngay sau dấu thời gian là ai vừa lên tiếng?"
+              },
+              "solution": {
+                "vi": "Máy nào — rtr-bien-01 là tên thiết bị, mảnh thứ hai của khuôn. Đọc trọn dòng: khi nào (02:47:09 rạng sáng), máy nào (rtr-bien-01, router biên), nặng cỡ nào (WARNING, mức 4), chuyện gì (bgp neighbor down — mất một láng giềng định tuyến). Dòng lạ chưa gặp bao giờ vẫn mở ra được, vì bốn mảnh là khuôn chung của mọi thiết bị."
+              },
+              "conceptId": "m20-dong-syslog"
             }
           ],
           "selfExplain": {
@@ -433,7 +461,8 @@
                   "goals": [
                     {
                       "kind": "found-line",
-                      "mustContain": "link flapping on port 7"
+                      "mustContain": "link flapping on port 7",
+                      "maxMatches": 10
                     }
                   ],
                   "solution": [
@@ -835,7 +864,8 @@
                   "goals": [
                     {
                       "kind": "found-line",
-                      "mustContain": "link down on port 12"
+                      "mustContain": "link down on port 12",
+                      "maxMatches": 10
                     }
                   ],
                   "solution": [
@@ -1362,7 +1392,18 @@
                   "dữ liệu của chính mình",
                   "du lieu cua chinh minh",
                   "polling và log",
-                  "polling va log"
+                  "polling va log",
+                  "log và polling",
+                  "dữ liệu của chính hệ thống",
+                  "dữ liệu của hệ thống mình",
+                  "quá khứ của chính hệ thống",
+                  "từ chính hệ thống mình",
+                  "từ chính hệ thống của mình",
+                  "từ chính mạng của mình",
+                  "từ chính máy",
+                  "số đo của chính máy",
+                  "lịch sử của chính máy",
+                  "lịch sử của chính mình"
                 ],
                 "hintTopic": {
                   "vi": "không nằm trong sách nào"
@@ -1910,6 +1951,33 @@
       },
       "explain": {
         "vi": "Bất thường có hai phía: 4% giữa trưa nghĩa là lưu lượng thường ngày không tới được máy này — có thể một nhánh đã rơi mà người dùng chưa kịp kêu. Thấy sự cố TRƯỚC người dùng chính là toàn bộ lý do của môn giám sát."
+      }
+    },
+    {
+      "kind": "order",
+      "id": "m20-mt-14",
+      "prompt": {
+        "vi": "Bốn mảnh dưới đây rơi ra khỏi cùng một dòng nhật ký. Xếp lại theo đúng khuôn mà mọi thiết bị dùng chung:"
+      },
+      "items": [
+        {
+          "vi": "2026-08-09 04:18:52"
+        },
+        {
+          "vi": "srv-dhcp-01"
+        },
+        {
+          "vi": "CRITICAL"
+        },
+        {
+          "vi": "scope 10.20.3.0/24 exhausted"
+        }
+      ],
+      "hintTopic": {
+        "vi": "bốn câu mà một dòng log trả lời"
+      },
+      "explain": {
+        "vi": "Khuôn chung: KHI NÀO (2026-08-09 04:18:52) — MÁY NÀO (srv-dhcp-01) — NẶNG CỠ NÀO (CRITICAL, mức 2) — CHUYỆN GÌ (scope 10.20.3.0/24 exhausted: dải địa chỉ đã cạn). Thuộc thứ tự này thì sổ của switch, router hay máy chủ DHCP đều mở ra cùng một kiểu — kể cả dòng bạn chưa gặp bao giờ."
       }
     },
     {

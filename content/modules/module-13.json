@@ -158,19 +158,19 @@
             { "vi": "Chọn cỡ: số máy cộng 2, rồi lấy bậc thấp nhất còn chứa đủ." }
           ],
           "nextTeaser": {
-            "vi": "Biết cỡ của từng phòng rồi, nhưng cắt phòng nào trước? Bài sau cho bạn xem hai người cùng bộ nhu cầu, cắt hai thứ tự — một người vừa khít, một người hết chỗ giữa chừng."
+            "vi": "Biết cỡ của từng phòng rồi, nhưng cắt phòng nào trước? Bài sau cho bạn xem hai người cùng bộ nhu cầu, cắt hai thứ tự — cùng dư từng ấy chỗ, mà một người để phần dư nằm gọn cuối dải, người kia để nó kẹt giữa hai phòng."
           }
         }
       ]
     },
     {
       "id": "m13-bai-2",
-      "missionTitle": { "vi": "Xếp thứ tự cắt cho khỏi kẹt" },
+      "missionTitle": { "vi": "Xếp thứ tự cắt cho gọn dải" },
       "steps": [
         {
           "type": "hook",
           "question": {
-            "vi": "Hai người cùng nhận dải 192.168.10.0/24 và cùng bộ nhu cầu 100 / 50 / 25 / 10 máy. Người thứ nhất cắt phòng 10 máy trước, người thứ hai cắt phòng 100 máy trước. Người thứ hai xếp gọn cả bốn phòng; người thứ nhất tới phòng cuối thì hết chỗ đứng. Cùng số địa chỉ, sao lại lệch nhau?"
+            "vi": "Hai người cùng nhận dải 192.168.10.0/24 và cùng bộ nhu cầu 100 / 50 / 25 / 10 máy. Người thứ nhất cắt phòng 10 máy trước, người thứ hai cắt phòng 100 máy trước. Cả hai đều xếp đủ bốn phòng và đều dư đúng 16 chỗ — nhưng chỗ dư của người thứ hai nằm gọn ở cuối dải, còn chỗ dư của người thứ nhất kẹt cứng giữa hai phòng đã cắt. Cùng một bộ số, sao lại ra hai kiểu?"
           },
           "visualId": "vis-hook-thu-tu-cat"
         },
@@ -203,7 +203,7 @@
               "conceptId": "cat-lon-truoc",
               "visualId": "vis-cat-lon-truoc",
               "body": {
-                "vi": "Luật cắt VLSM chỉ có một câu: xếp nhu cầu giảm dần rồi cắt từ khối to nhất, lấp liên tiếp từ đầu dải. Với 100 / 50 / 25 / 10 máy: /25 nằm ở .0, /26 tiếp ngay ở .128, /27 ở .192, /28 ở .224 — không hở khe nào. Nếu cắt phòng 10 máy trước và đặt nó ở .0, thì phần còn lại bắt đầu từ .16, mà một /25 không được phép đứng ở .16 — thế là kẹt dù tổng số địa chỉ vẫn thừa."
+                "vi": "Luật cắt VLSM chỉ có một câu: xếp nhu cầu giảm dần rồi cắt từ khối to nhất, lấp liên tiếp từ đầu dải. Với 100 / 50 / 25 / 10 máy: /25 nằm ở .0, /26 tiếp ngay ở .128, /27 ở .192, /28 ở .224 — bốn khối dính liền nhau, phần dư dồn hết về cuối dải (.240 tới .255) thành một khối nguyên vẹn để dành cho phòng mới. Cắt ngược lại thì sao? Đặt phòng 10 máy ở .0, chỗ trống kế tiếp là .16, nhưng một /27 chỉ được đứng ở bội số của 32 và một /25 chỉ đứng được ở .0 hoặc .128 — mỗi khối phải nhảy tới vạch hợp lệ của nó, và mảng .16 tới .31 nằm lại giữa đường. Tổng số chỗ dư vẫn đúng 16, không ai đốt hơn ai; khác nhau ở chỗ phần dư ấy nằm đâu — cuối dải thì còn nối thêm được, kẹt giữa hai phòng thì hai bên chặn cứng, muốn nới cho ai cũng không nhích sang được."
               },
               "deepDive": {
                 "vi": "Đây chính là bài toán xếp hộp: khối càng to thì càng ít chỗ đặt hợp lệ, nên phải đặt nó trước lúc mặt bằng còn nguyên. Trong cả dải /24 có 256 địa chỉ, một khối /25 chỉ có đúng hai chỗ đứng (.0 và .128), còn một khối /28 có mười sáu chỗ. Cắt to trước là cách chắc chắn không bao giờ phải cắt đi cắt lại — và nó cũng là thứ tự mà mọi đề thi chứng chỉ mạng chấm."
@@ -242,7 +242,7 @@
                 "choices": [
                   { "vi": "Phần trống còn lại bắt đầu ở .16, mà khối /26 của phòng 60 máy không được phép đứng ở đó" },
                   { "vi": "Phòng 12 máy sẽ mất kết nối vì khối /28 luôn phải nằm ở cuối dải địa chỉ" },
-                  { "vi": "Cả ba phòng vẫn xếp vừa, chỉ là bảng định tuyến của router dài thêm một dòng" }
+                  { "vi": "Router tự dồn ba khối lại cho khít nên không mất địa chỉ nào" }
                 ],
                 "answerIndex": 0,
                 "hintTopic": { "vi": "chỗ đứng hợp lệ của một khối lớn" }
@@ -269,8 +269,12 @@
                 "accept": [
                   "đông máy nhất",
                   "phòng đông máy nhất",
+                  "đông nhất",
+                  "phòng đông nhất",
                   "nhiều máy nhất",
                   "phòng nhiều máy nhất",
+                  "nhiều nhất",
+                  "phòng nhiều nhất",
                   "to nhất",
                   "phòng to nhất",
                   "lớn nhất",
@@ -289,15 +293,15 @@
           ],
           "selfExplain": {
             "prompt": {
-              "vi": "Giải thích bằng lời của bạn: vì sao cắt khối to trước lại tránh được cảnh hết chỗ giữa chừng?"
+              "vi": "Giải thích bằng lời của bạn: vì sao cắt khối to trước lại dồn được phần dư về cuối dải?"
             },
             "keywords": [
               ["khối to", "khối lớn", "phòng to", "phòng đông", "mạng lớn"],
-              ["ít chỗ đứng", "kén chỗ", "chỗ đặt", "vạch", "ranh giới"],
-              ["cắt trước", "làm trước", "ưu tiên", "xếp trước"]
+              ["ít chỗ đứng", "kén chỗ", "chỗ đặt", "vạch", "ranh giới", "bội số"],
+              ["cuối dải", "dồn về cuối", "liền nhau", "dính liền", "một khối", "nối tiếp"]
             ],
             "exampleAnswer": {
-              "vi": "Vì khối càng to thì càng ít chỗ đứng hợp lệ — một /25 chỉ đứng được ở hai vạch trong cả dải /24. Cắt nó lúc dải còn nguyên thì luôn có chỗ; để nó lại sau cùng thì phần trống đã bị cắt vụn, có đủ địa chỉ cũng không nhét vừa."
+              "vi": "Vì khối càng to thì càng ít chỗ đứng hợp lệ — một /25 chỉ đứng được ở hai vạch trong cả dải /24. Cắt nó lúc dải còn nguyên thì nó nằm ngay đầu dải, các khối nhỏ nối tiếp liền sau, nên chỗ dư còn lại dồn hết về cuối thành một mảng nguyên. Để nó lại sau cùng thì nó phải nhảy qua mấy khối nhỏ đã cắt để tìm vạch hợp lệ, và khoảng trống bị bỏ lại nằm kẹt ở giữa — vẫn từng ấy địa chỉ, nhưng bị hai phòng chặn hai bên nên không nối thêm cho ai được."
             }
           }
         },
@@ -306,7 +310,7 @@
           "bullets": [
             { "vi": "Xếp nhu cầu giảm dần rồi cắt từ khối to nhất, lấp liên tiếp từ đầu dải." },
             { "vi": "Khối càng to càng ít chỗ đứng hợp lệ — nên nó phải được xếp trước." },
-            { "vi": "Đủ tổng số địa chỉ vẫn có thể kẹt, nếu cắt sai thứ tự." }
+            { "vi": "Cắt sai thứ tự vẫn đủ chỗ và vẫn dư từng ấy — chỉ khác là phần dư kẹt giữa dải thay vì dồn về cuối." }
           ],
           "nextTeaser": {
             "vi": "Bài sau mổ xẻ đúng cái luật vừa nhắc tới ba lần: vì sao một khối /26 chỉ được đứng ở .0, .64, .128 và .192, chứ không phải chỗ nào cũng được?"
@@ -741,7 +745,7 @@
       "term": "Cắt lớn trước",
       "glossVi": "Thứ tự cấp phát VLSM: xếp nhu cầu giảm dần rồi cắt từ khối to nhất, lấp liên tiếp từ đầu dải",
       "metaphor": {
-        "vi": "Xếp hành lý vào cốp xe: bỏ vali to xuống trước, đồ lặt vặt nhét khe sau. Làm ngược lại thì vali không còn chỗ nào đặt vừa."
+        "vi": "Xếp hành lý vào cốp xe: bỏ vali to xuống trước, đồ lặt vặt nhét khe sau. Làm ngược lại thì vali phải đẩy tít vào trong, còn mấy khe hở rải rác ở giữa chẳng nhét vừa món nào."
       },
       "iconId": "icon-cat-lon-truoc",
       "flashcard": {
@@ -824,7 +828,7 @@
       "id": "m13-mt-3",
       "prompt": { "vi": "Khi cắt VLSM, vì sao phải cấp cho phòng đông máy nhất trước?" },
       "choices": [
-        { "vi": "Vì khối lớn có rất ít chỗ đứng hợp lệ, cắt sau cùng thì thường không còn chỗ nào vừa" },
+        { "vi": "Vì khối lớn có rất ít chỗ đứng hợp lệ, cắt sau cùng thì nó nhảy đi xa và bỏ phí đất" },
         { "vi": "Vì phòng đông máy luôn phải nằm ở đầu dải, còn phòng ít máy phải nằm ở cuối dải" },
         { "vi": "Vì cấp cho phòng nhỏ trước sẽ làm tổng số địa chỉ cần dùng lớn hơn dải được giao" }
       ],
@@ -888,13 +892,13 @@
       "prompt": { "vi": "Xếp lại đúng thứ tự bốn bước làm một bài chia VLSM." },
       "items": [
         { "vi": "Liệt kê số máy của từng phòng" },
-        { "vi": "Chọn cỡ khối vừa đủ cho từng phòng" },
-        { "vi": "Xếp các phòng theo số máy giảm dần" },
-        { "vi": "Cắt từ đầu dải, khối to trước, khối nhỏ sau" }
+        { "vi": "Xếp các phòng theo số máy giảm dần rồi chọn cỡ khối vừa đủ cho từng phòng" },
+        { "vi": "Cắt từ đầu dải, khối to trước, khối nhỏ sau" },
+        { "vi": "Soi lại: các khối không giẫm lên nhau và phòng nào cũng đủ chỗ" }
       ],
       "hintTopic": { "vi": "trình tự làm một bài thiết kế dải địa chỉ" },
       "explain": {
-        "vi": "Biết nhu cầu trước, rồi mới quy ra cỡ khối, rồi mới sắp thứ tự, cuối cùng mới đặt bút cắt. Đảo hai bước cuối là nguồn gốc của cảnh hết chỗ giữa chừng."
+        "vi": "Biết nhu cầu trước, rồi mới xếp thứ tự và quy ra cỡ khối, sau đó mới đặt bút cắt, cuối cùng soi lại. Ranh giới quan trọng nhất là xếp xong mới cắt: cắt lúc chưa xếp thì khối to phải nhảy đi tìm vạch hợp lệ, và phần dư nằm kẹt giữa dải thay vì dồn gọn về cuối."
       }
     },
     {
@@ -910,14 +914,14 @@
       "id": "m13-mt-10",
       "prompt": { "vi": "Khối nào dưới đây không phải là một mạng hợp lệ?" },
       "choices": [
-        { "vi": "192.168.10.32/27" },
-        { "vi": "192.168.10.96/26" },
-        { "vi": "192.168.10.192/26" }
+        { "vi": "10.10.10.48/28" },
+        { "vi": "10.10.10.48/27" },
+        { "vi": "10.10.10.192/26" }
       ],
       "answerIndex": 1,
       "hintTopic": { "vi": "địa chỉ đầu khối phải chia hết cho cỡ khối" },
       "explain": {
-        "vi": "96 không chia hết cho 64 nên 96/26 không tồn tại. Còn 32 chia hết cho 32 và 192 chia hết cho 64 nên hai khối kia hợp lệ."
+        "vi": "Khối /27 rộng 32, mà 48 không chia hết cho 32 nên 10.10.10.48/27 không tồn tại. Cùng số 48 ấy lại hợp lệ với /28 vì 48 chia hết cho 16; còn 192 chia hết cho 64 nên 192/26 cũng hợp lệ."
       }
     },
     {

@@ -282,10 +282,10 @@
               "conceptId": "m11-ipconfig-ping",
               "visualId": "vis-ipconfig-ping",
               "body": {
-                "vi": "Hai món đồ nghề đầu tiên: ipconfig đọc \"giấy tờ tùy thân\" của máy (IP, subnet mask, gateway, DNS), còn ping là cái ống nghe — gửi gói thăm dò rồi nghe ngóng. Ba câu trả lời của ping kể ba câu chuyện khác nhau: Reply là mạch sống; \"General failure\" là gói KHÔNG RỜI NỔI máy mình; \"Destination host unreachable\" là gói rời được máy nhưng gọi không ai đáp."
+                "vi": "Hai món đồ nghề đầu tiên: ipconfig đọc \"giấy tờ tùy thân\" của máy (IP, subnet mask, gateway, DNS), còn ping là cái ống nghe — gửi gói thăm dò rồi nghe ngóng. Bốn câu trả lời của ping kể bốn câu chuyện khác nhau: Reply là mạch sống; \"General failure\" là gói KHÔNG RỜI NỔI máy mình; \"Destination host unreachable\" là gói rời được máy nhưng gọi mãi không ai nhận mình là chủ địa chỉ đó; \"Request timed out\" là gói rời máy đi trót lọt, chỉ là hết giờ chờ mà chẳng có tiếng đáp nào quay về — hoặc đích im lặng, hoặc có ai đó nuốt gói dọc đường. Riêng dòng Reply còn kèm con số TTL: máy Windows thả gói ra ở TTL 128, qua mỗi router bị trừ đi 1 — thấy TTL=126 tức là gói đã đi qua 2 router."
               },
               "deepDive": {
-                "vi": "Dòng Reply còn tặng kèm một manh mối: TTL. Máy Windows xuất phát ở TTL 128, qua mỗi router bị trừ 1 (bạn đã gặp ở Module 4). Thấy TTL=126 tức là gói đã đi qua 2 router — chưa cần tracert cũng ước được quãng đường."
+                "vi": "Mỗi hệ điều hành chọn một mốc TTL xuất phát riêng: Windows 128, còn phần lớn máy Linux và thiết bị mạng là 64. Muốn đọc TTL cho đúng thì phải biết bên kia là máy gì — TTL=62 trả về từ một máy Linux cũng là đã qua 2 router chứ không phải 66. Con số này sinh ra để gói lạc đường không quay vòng mãi mãi: trừ về 0 là router bỏ gói giữa đường."
               }
             }
           ]
@@ -575,6 +575,31 @@
               "solution": {
                 "vi": "Ở phía máy đích: mạng của bạn sống (ping máy khác vẫn Reply), nhưng máy đích không đáp lời gọi ARP — thường là nó tuột dây, tắt nguồn, hoặc tự chặn."
               },
+              "conceptId": "m11-ipconfig-ping"
+            },
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m11-b1-prac-2",
+                "prompt": {
+                  "vi": "Bạn ping một máy chủ Windows trong công ty, màn hình hiện \"Reply from 10.0.5.9: bytes=32 time=4ms TTL=125\". Gói đã đi qua mấy router trên đường giữa hai máy?"
+                },
+                "accept": [
+                  "3",
+                  "ba",
+                  "3 router",
+                  "ba router"
+                ],
+                "hintTopic": {
+                  "vi": "mốc TTL mà Windows thả gói ra"
+                }
+              },
+              "hint": {
+                "vi": "Windows thả gói ra ở TTL 128, mỗi router trên đường trừ đi 1. Vậy từ 128 tụt xuống 125 là mấy lần bị trừ?"
+              },
+              "solution": {
+                "vi": "3 router: 128 − 125 = 3. Đọc con số TTL ngay trong dòng Reply là ước được quãng đường mà chưa cần chạy tracert."
+              },
               "conceptId": "m11-ipconfig-ping"
             }
           ]
@@ -1275,6 +1300,10 @@
                   "sau gateway",
                   "sau router",
                   "sau chặng 1",
+                  "sau trạm 1",
+                  "sau trạm cuối",
+                  "từ chặng 2",
+                  "chặng 2 trở đi",
                   "ngoài router",
                   "từ router ra ngoài",
                   "sau 192.168.20.1"
@@ -2625,7 +2654,10 @@
                   "vẫn sống",
                   "sống",
                   "còn thông",
-                  "vẫn thông"
+                  "vẫn thông",
+                  "không đứt",
+                  "chưa đứt",
+                  "không phải đứt"
                 ],
                 "hintTopic": {
                   "vi": "ESTABLISHED nghĩa là gì"
@@ -2732,7 +2764,7 @@
       "term": "ipconfig & ping",
       "glossVi": "Cặp đồ nghề đầu tay: đọc giấy tờ của máy và bắt mạch đường truyền",
       "metaphor": {
-        "vi": "ipconfig là xem giấy tờ tùy thân; ping là cái ống nghe — ba kiểu đáp (Reply, General failure, unreachable) là ba nhịp mạch khác nhau."
+        "vi": "ipconfig là xem giấy tờ tùy thân; ping là cái ống nghe — bốn kiểu đáp (Reply, General failure, unreachable, Request timed out) là bốn nhịp mạch khác nhau."
       },
       "iconId": "icon-m11-ipconfig-ping",
       "flashcard": {
@@ -2886,7 +2918,7 @@
         "vi": "mỗi router trừ TTL đi một"
       },
       "explain": {
-        "vi": "128 − 126 = 2: mỗi router trên đường trừ TTL đi 1 (kiến thức định tuyến Module 4). Đọc TTL là ước được quãng đường mà chưa cần tracert."
+        "vi": "128 − 126 = 2: máy Windows thả gói ra ở TTL 128, mỗi router trên đường trừ đi 1 — đúng như dòng Reply ở bài 1 đã kể. Đọc TTL là ước được quãng đường mà chưa cần tracert."
       }
     },
     {
@@ -2950,7 +2982,7 @@
         "vi": "hai lời từ chối của ping khác nhau ở chỗ nào"
       },
       "explain": {
-        "vi": "General failure: card hoặc dây của CHÍNH máy mình có vấn đề, gói chưa rời khỏi máy. Destination host unreachable: gói đi được nhưng đường tới đích đứt. Đọc đúng hai câu này là khoanh xong nửa ca bệnh."
+        "vi": "General failure: gói chưa rời nổi máy mình — dây mình tuột, thiếu gateway, hoặc bị một luật chặn chiều đi giữ lại. Destination host unreachable: gói rời được máy nhưng lời gọi ARP không ai đáp — bệnh nằm phía trước, thường ở máy đích hoặc ở một địa chỉ không ai giữ. Đọc đúng hai câu này là khoanh xong nửa ca bệnh."
       }
     },
     {

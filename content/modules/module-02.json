@@ -194,7 +194,13 @@
                 "id": "m2-b2-prac-1",
                 "prompt": { "vi": "Điền nốt giúp mình: \"Trong làng gửi cho nhau thì khỏi cần, nhưng gói tin muốn RA Internet thì bắt buộc phải qua ___ — lối ra duy nhất của mạng nhà.\"" },
                 "accept": ["gateway", "default gateway", "cổng mặc định"],
-                "hintTopic": { "vi": "cánh cổng duy nhất của ngôi làng" }
+                "hintTopic": { "vi": "cánh cổng duy nhất của ngôi làng" },
+                "nearMisses": [
+                  {
+                    "accept": ["router", "bộ định tuyến", "cục phát wifi", "cục phát wi-fi"],
+                    "feedback": { "vi": "Đúng thiết bị rồi! Mình đang hỏi cái TÊN của lối ra đó — cánh cổng ấy gọi là gì?" }
+                  }
+                ]
               },
               "hint": { "vi": "Tên tiếng Anh của nó có chữ \"gate\" — đúng nghĩa một cánh cổng. Ở nhà bạn, nó chính là cục phát Wi-Fi." },
               "solution": {
@@ -592,7 +598,7 @@
       "kind": "typed",
       "id": "m2-mt-1",
       "prompt": { "vi": "Hệ thống \"danh bạ của Internet\" — đưa tên miền, nhận về địa chỉ IP — gọi là gì?" },
-      "accept": ["dns", "domain name system", "hệ thống tên miền", "máy chủ dns"],
+      "accept": ["dns", "domain name system", "hệ thống tên miền", "máy chủ dns", "máy chủ tên miền", "may chu ten mien"],
       "explain": { "vi": "DNS đổi cái tên cho người (google.com) thành địa chỉ IP cho máy — như tổng đài 1080 tra hộ số điện thoại từ một cái tên." }
     },
     {
@@ -626,10 +632,10 @@
       "choices": [
         { "vi": "Máy chủ DNS mà nhà mạng cấp cho bạn" },
         { "vi": "Chiếc switch nối các máy trong nhà lại" },
-        { "vi": "Chiếc router (cục phát Wi-Fi) nhà bạn" }
+        { "vi": "Cục phát Wi-Fi có dây nhà mạng cắm vào" }
       ],
       "answerIndex": 2,
-      "explain": { "vi": "Router nhà bạn đứng ngay ranh giới: một chân trong mạng nhà, một chân nối ra Internet — nên nó chính là cánh cổng mặc định." }
+      "explain": { "vi": "Cục phát Wi-Fi ấy chính là chiếc router nhà bạn: một chân trong mạng nhà, một chân nối ra Internet — đứng ngay ranh giới nên nó chính là cánh cổng mặc định." }
     },
     {
       "kind": "typed",
@@ -664,14 +670,14 @@
     {
       "kind": "mcq",
       "id": "m2-mt-8",
-      "prompt": { "vi": "Bạn mở một trang báo đầy ảnh, nặng 2MB — gấp nghìn lần câu yêu cầu bạn gửi đi. Server có được gửi cả trang về trong MỘT gói tin cho nhanh không?" },
+      "prompt": { "vi": "Bạn mở một trang báo đầy ảnh, nặng 2MB — gấp nghìn lần câu yêu cầu bạn gửi đi. Trang báo đó về máy bạn theo cách nào?" },
       "choices": [
-        { "vi": "Được — chiều về do server quyết, khỏe thì gửi cả trang một lần" },
-        { "vi": "Không — nặng mấy cũng chia thành nhiều gói, qua router như lượt đi" },
-        { "vi": "Được — miễn là đường mạng nhà bạn đủ nhanh để hứng trọn" }
+        { "vi": "Server cắt thành nhiều gói tin — nhưng chỉ khi mạng nhà bạn chậm; mạng nhanh thì nó gửi nguyên cả trang một lượt" },
+        { "vi": "Server cắt thành nhiều gói tin, các router chuyền tay từng gói, máy bạn nhận đủ rồi ráp lại" },
+        { "vi": "Server gửi nguyên cả trang trong một gói lớn, vì chiều về là chiều của server nên khỏi cắt" }
       ],
       "answerIndex": 1,
-      "explain": { "vi": "Luật chia gói áp dụng cho cả hai chiều, nặng nhẹ gì cũng vậy: server đóng trang báo vào nhiều gói tin, các router chuyền tay từng gói, máy bạn nhận đủ rồi ráp lại thành trang hoàn chỉnh." }
+      "explain": { "vi": "Chia gói là luật chung, không phải cách chữa cháy lúc mạng chậm: nặng nhẹ gì, đường nhanh hay chậm, server cũng đóng trang báo vào nhiều gói tin — các router chuyền tay từng gói, máy bạn nhận đủ rồi ráp lại. Chiều về không có đặc quyền nào." }
     },
     {
       "kind": "mcq",

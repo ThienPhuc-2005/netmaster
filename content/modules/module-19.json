@@ -195,6 +195,37 @@
                 "vi": "OU theo tổ chức (kế toán, nhân sự — dù ngồi đâu), site theo địa lý (Hà Nội, Đà Nẵng — dù phòng nào). Hai trục vuông góc: tài khoản vào OU, máy đứng trong site — AD cần cả hai."
               },
               "conceptId": "m19-site"
+            },
+            {
+              "question": {
+                "kind": "mcq",
+                "id": "m19-b1-prac-3",
+                "prompt": {
+                  "vi": "Công ty treo một chính sách cấm cài phần mềm lạ lên site DaNang. Chị Mai thuộc OU KeToan, hôm nay ngồi làm việc ở văn phòng Đà Nẵng. Máy chị có dính luật đó không?"
+                },
+                "choices": [
+                  {
+                    "vi": "Có — chính sách treo lên site áp theo chỗ máy đang đứng, không hỏi chị thuộc phòng nào"
+                  },
+                  {
+                    "vi": "Không — chị thuộc OU KeToan nên chỉ dính những chính sách treo lên OU đó"
+                  },
+                  {
+                    "vi": "Không — chính sách của site chỉ áp cho các phòng ban đặt trụ sở chính tại site đó"
+                  }
+                ],
+                "answerIndex": 0,
+                "hintTopic": {
+                  "vi": "chính sách treo lên site hỏi chỗ ngồi hay hỏi phòng ban"
+                }
+              },
+              "hint": {
+                "vi": "Site là trục địa lý. Vậy thứ treo lên site đo cái gì của chị Mai — chị làm phòng nào, hay máy chị đang đứng ở đâu?"
+              },
+              "solution": {
+                "vi": "Có dính. Chính sách gắn vào site áp cho MỌI máy đang đứng trong site đó, bất kể người dùng thuộc phòng ban nào — đây chính là tầng Site trong chuỗi LSDOU bạn học ở Module 9, tới hôm nay mới có nghĩa thật. Hai trục vẫn vuông góc: OU nói chị Mai là ai trong tổ chức, site nói chị đang ngồi ở đâu."
+              },
+              "conceptId": "m19-site"
             }
           ]
         },
@@ -646,7 +677,7 @@
                 "vi": "Nếp xếp quyền của nghề gói trong bốn chữ AGDLP — một đường ống bốn khúc: Account (con người) vào Global group (nhóm VAI — kế toán, nhân sự); Global group cắm vào Domain Local group (nhóm QUYỀN — được đọc Báo cáo, được sửa Hồ sơ); và Permission (quyền thật trên thư mục) chỉ gắn vào nhóm Domain Local. Người KHÔNG bao giờ chạm thẳng vào quyền. Nghe vòng vèo, nhưng chính các khúc nối đó làm hệ thống sống được với thay đổi: người chuyển phòng — rút khỏi một nhóm vai, cắm vào nhóm vai khác, mọi quyền tự chảy theo; thêm tài nguyên mới — dựng một nhóm quyền, cắm các nhóm vai vào, xong."
               },
               "deepDive": {
-                "vi": "Đường ống này bạn đã cầm trên tay từ khối engine: Get-ADGroupMember trên một nhóm quyền tử tế sẽ hiện ObjectClass group — thành viên của nó là NHÓM, không phải người. Còn thấy một danh sách dài ObjectClass user nằm thẳng trong nhóm quyền là dấu vết của những lối tắt năm giây chồng chất — mỗi cái tên ở đó là một câu hỏi \"ai cho vào, vì sao\" không còn ai trả lời được."
+                "vi": "Đường ống này bạn vừa cầm trên tay ở phần Đoán thử: Get-ADGroupMember trên một nhóm quyền tử tế sẽ hiện ObjectClass group — thành viên của nó là NHÓM, không phải người. Còn thấy một danh sách dài ObjectClass user nằm thẳng trong nhóm quyền là dấu vết của những lối tắt năm giây chồng chất — mỗi cái tên ở đó là một câu hỏi \"ai cho vào, vì sao\" không còn ai trả lời được."
               }
             },
             {
@@ -1733,7 +1764,7 @@
           "vi": "Giữ quyền của một tài nguyên — quyền thật trên thư mục chỉ gắn vào nó"
         },
         {
-          "vi": "Gom người của một chi nhánh để chào cờ điểm danh mỗi sáng thứ hai"
+          "vi": "Gom các nhóm vai của nhiều phòng ban để mang được sang miền khác khi sáp nhập"
         },
         {
           "vi": "Chứa các tài khoản quản trị miền được phép sửa cấu trúc thư mục AD"
@@ -1744,7 +1775,7 @@
         "vi": "nhóm đứng cạnh tài nguyên"
       },
       "explain": {
-        "vi": "Domain Local là nhóm QUYỀN: nó đứng cạnh tài nguyên và là cái tên duy nhất được gắn quyền thật. Thành viên của nó là các nhóm vai — không phải người lẻ, càng không phải chỗ chứa admin."
+        "vi": "Domain Local là nhóm QUYỀN: nó đứng cạnh tài nguyên và là cái tên duy nhất được gắn quyền thật. Thành viên của nó là các nhóm vai — không phải người lẻ, càng không phải chỗ chứa admin. Còn gom vai lại để mang sang miền khác là việc của nhóm Global; Domain Local bị neo tại miền của tài nguyên nên không đi đâu được."
       }
     },
     {
@@ -1854,10 +1885,10 @@
           "vi": "Vì mọi thay đổi nhân sự sau đó đều thành việc dọn tay từng quyền"
         },
         {
-          "vi": "Vì AD giới hạn mỗi tài khoản người dùng chỉ được nhận tối đa một quyền"
+          "vi": "Vì quyền gán thẳng cho người chỉ có hiệu lực trên đúng cái máy người đó đang ngồi"
         },
         {
-          "vi": "Vì quyền gán thẳng cho người chạy chậm hơn hẳn quyền đi qua các nhóm"
+          "vi": "Vì quyền gán thẳng cho người không kế thừa xuống các thư mục con bên trong"
         }
       ],
       "answerIndex": 0,
@@ -1865,7 +1896,7 @@
         "vi": "cái giá nằm ở ngày mai, không ở hôm nay"
       },
       "explain": {
-        "vi": "Cái giá là ngày mai: người chuyển phòng thì quyền cũ không tự rút, nửa năm sau không ai trả lời được ai-cho-vào-vì-sao. AD không giới hạn một quyền, và tốc độ chẳng khác nhau — khác nhau ở chi phí thay đổi và truy vết."
+        "vi": "Cái giá là ngày mai: người chuyển phòng thì quyền cũ không tự rút, nửa năm sau không ai trả lời được ai-cho-vào-vì-sao. Quyền gán thẳng vẫn theo tài khoản đi mọi máy, và vẫn kế thừa xuống thư mục con y như quyền chảy qua nhóm — nó chạy đúng, chỉ là mỗi thay đổi nhân sự lại thành việc dọn tay từng quyền."
       }
     },
     {
@@ -1893,7 +1924,7 @@
       "kind": "ps",
       "id": "m19-mt-ps1",
       "prompt": {
-        "vi": "Đợt kiểm toán phát hiện anh Hoang Van Nam (hvnam) đang nằm THẲNG trong nhóm quyền in ấn — sai nếp, và không rõ ai cho vào. Bạn không có lệnh gỡ, nhưng phải vá lại cho quyền chảy ĐÚNG CHUỖI: anh Nam thuộc nhóm vai, và nhóm vai nằm trong nhóm quyền. Tra kỹ bằng Get-ADGroupMember rồi bổ sung mắt xích còn thiếu."
+        "vi": "Đợt kiểm toán phát hiện anh Hoang Van Nam (hvnam) đang nằm THẲNG trong nhóm quyền in ấn — sai nếp, và không rõ ai cho vào. Bạn không có lệnh gỡ, nên lượt này chỉ làm được nửa việc: NỐI NỐT MẮT XÍCH CÒN THIẾU để quyền có đường chảy tử tế — anh Nam thuộc nhóm vai, và nhóm vai nằm trong nhóm quyền. Tra kỹ bằng Get-ADGroupMember rồi bổ sung mắt xích đó (phần dọn dấu vết cũ để lượt sau)."
       },
       "spec": {
         "world": {
@@ -1965,7 +1996,7 @@
         "vi": "mắt xích nhóm VAI đang thiếu tên anh Nam"
       },
       "explain": {
-        "vi": "Add-ADGroupMember InAn-GG -Members hvnam. Anh Nam đang có quyền nhờ nằm thẳng trong nhóm quyền — mục tiêu DL xanh sẵn nhưng mục tiêu nhóm vai đỏ. Bổ sung anh vào InAn-GG là chuỗi liền lại: về sau ai tra Get-ADGroupMember cũng đọc ra được vì-sao-anh-có-quyền, và ngày anh chuyển phòng chỉ cần rút khỏi nhóm vai."
+        "vi": "Add-ADGroupMember InAn-GG -Members hvnam. Anh Nam đang có quyền nhờ nằm thẳng trong nhóm quyền — mục tiêu DL xanh sẵn nhưng mục tiêu nhóm vai đỏ, nên mắt xích thiếu nằm ở nhóm vai. Nhưng ca này mới nối chứ chưa sạch: tra lại Get-ADGroupMember QuyenInAn-DL vẫn thấy hvnam đứng đó với ObjectClass user — đúng cái dấu vết lối tắt mà module này bảo phải dọn. Ngoài đời còn một nhịp nữa mà app chưa mô phỏng: Remove-ADGroupMember QuyenInAn-DL -Members hvnam. Gỡ xong mẩu quyền dính thẳng vào người thì câu \"chuyển phòng chỉ cần rút khỏi nhóm vai\" mới đúng với anh Nam."
       }
     },
     {

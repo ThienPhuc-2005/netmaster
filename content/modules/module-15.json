@@ -478,7 +478,10 @@
                   "dia chi mac nho hon",
                   "cái có mac nhỏ hơn",
                   "mac thấp hơn",
-                  "mac thap hon"
+                  "mac thap hon",
+                  "mac bé hơn",
+                  "mac nhỏ nhất",
+                  "mac thấp nhất"
                 ]
               },
               "hint": { "vi": "Vẫn là luật nhỏ hơn thắng, nhưng lần này so con số gắn chết vào card mạng." },
@@ -558,7 +561,7 @@
                 "vi": "Cắt vòng nghĩa là phải có ai đó ngừng phát. STP chọn ra cổng xa gốc cây nhất trên sợi dây thừa và cho nó ở trạng thái chặn: cổng vẫn nghe BPDU để biết cây có đổi không, nhưng không phát khung dữ liệu nào. Trong bảng show spanning-tree, cổng ấy hiện vai Altn và trạng thái BLK; trên sơ đồ của phòng lab, nó được vẽ rỗng ruột viền hổ phách để bạn nhận ra ngay — nó không hỏng, nó đang chờ tới lượt."
               },
               "deepDive": {
-                "vi": "Mỗi switch không phải root có đúng một root port — cổng hướng về gốc cây, luôn được phát. Trên mỗi sợi dây còn lại, đầu nào xa gốc hơn thì bị chặn. Vì thế số cổng bị chặn đúng bằng số sợi dây thừa so với một cây: ba switch nối tam giác có ba dây nhưng cây chỉ cần hai, nên đúng một cổng nằm im. Nếu bạn thấy nhiều cổng bị chặn hơn dự đoán, thường là sơ đồ có nhiều vòng hơn bạn tưởng — và đó là một manh mối chẩn đoán rất tốt."
+                "vi": "Mỗi switch không phải root có đúng một root port — cổng hướng về gốc cây, luôn được phát. Trên mỗi sợi dây còn lại, đầu nào xa gốc hơn thì bị chặn. Hai đầu cách gốc bằng nhau thì luật so tiếp chính hai switch với nhau — switch nào có bridge ID (priority trước, rồi tới MAC) nhỏ hơn thì được phát, đầu bên kia nằm im; đó là lý do trên sơ đồ tam giác của module này cổng nằm im nằm ở Switch-3 chứ không phải Switch-1. Vì thế số cổng bị chặn đúng bằng số sợi dây thừa so với một cây: ba switch nối tam giác có ba dây nhưng cây chỉ cần hai, nên đúng một cổng nằm im. Nếu bạn thấy nhiều cổng bị chặn hơn dự đoán, thường là sơ đồ có nhiều vòng hơn bạn tưởng — và đó là một manh mối chẩn đoán rất tốt."
               }
             }
           ]
@@ -614,7 +617,7 @@
                 "prompt": {
                   "vi": "Không nhìn lại bài: cổng bị STP chặn có còn nghe BPDU không?"
                 },
-                "accept": ["có", "co", "vẫn nghe", "van nghe", "có, vẫn nghe"]
+                "accept": ["có", "co", "vẫn nghe", "van nghe", "có, vẫn nghe", "còn nghe"]
               },
               "hint": { "vi": "Nếu nó điếc hẳn thì làm sao biết lúc nào đường chính đứt để mở ra?" },
               "solution": {
@@ -882,7 +885,10 @@
                   "chính switch",
                   "chinh switch",
                   "switch tự làm",
-                  "switch tu lam"
+                  "switch tu lam",
+                  "switch tự tính",
+                  "switch tự chuyển",
+                  "không cần ai"
                 ]
               },
               "hint": { "vi": "Nhớ lại cảnh máy xúc: có ai kịp chạm vào thiết bị đâu." },
@@ -1497,7 +1503,7 @@
       "accept": ["switch-2", "switch 2", "sw-2", "sw 2", "switch2", "con switch đặt 4096"],
       "hintTopic": { "vi": "luật bầu gốc cây: con số priority nào thắng" },
       "explain": {
-        "vi": "Switch-2 — priority NHỎ HƠN thắng (4096 < 32768). Tên máy hay địa chỉ MAC chỉ được đem ra phân định khi priority hòa nhau."
+        "vi": "Switch-2 — priority NHỎ HƠN thắng (4096 < 32768). Chỉ khi priority hòa nhau thì địa chỉ MAC mới được đem ra phân định — tên máy không bao giờ được tính tới."
       }
     },
     {

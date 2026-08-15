@@ -608,8 +608,7 @@
                 "hintTopic": { "vi": "phạm vi treo quyết định ai phải theo" }
               },
               "hint": { "vi": "Tự dựng lời giải từ hai bài trước: luật viết ở đâu, và khoanh vùng bằng cái gì?" },
-              "solution": { "vi": "Tạo GPO cấm USB, treo vào OU KeToan — luật tự áp cho đúng phòng đó, các OU khác không dính." },
-              "conceptId": "m9-ke-thua"
+              "solution": { "vi": "Tạo GPO cấm USB, treo vào OU KeToan — luật tự áp cho đúng phòng đó, các OU khác không dính." }
             },
             {
               "question": {
@@ -785,7 +784,7 @@
     {
       "kind": "typed",
       "id": "m9-mt-2",
-      "prompt": { "vi": "Máy chủ giữ sổ cái của miền và xác thực mọi lượt đăng nhập gọi là gì? (viết tắt được)" },
+      "prompt": { "vi": "Nhân viên chi nhánh gõ mật khẩu; máy trước mặt không tự quyết mà chạy đi hỏi máy nào trong miền? (viết tắt được)" },
       "accept": ["domain controller", "dc", "máy chủ điều khiển miền", "bộ điều khiển miền"],
       "explain": { "vi": "Domain Controller — giữ sổ cái AD (tra qua LDAP 389) và gác cổng mọi lượt đăng nhập." }
     },
@@ -804,14 +803,14 @@
     {
       "kind": "typed",
       "id": "m9-mt-4",
-      "prompt": { "vi": "Điền tầng còn thiếu vào thứ tự áp GPO: Local → ___ → Domain → OU." },
+      "prompt": { "vi": "Công ty có hai văn phòng ở hai thành phố. Muốn một luật áp cho mọi máy ngồi ở văn phòng Đà Nẵng, bất kể phòng ban nào — treo GPO ở bậc nào?" },
       "accept": ["site"],
-      "explain": { "vi": "LSDOU: Local → Site → Domain → OU — Site là bậc \"cả văn phòng một chỗ\", đứng ngay trên tầng trệt." }
+      "explain": { "vi": "Site — bậc \"cả văn phòng một chỗ\": treo ở đó thì mọi máy ngồi tại văn phòng ấy đều dính, bất kể phòng ban. Thứ tự đầy đủ vẫn là Local → Site → Domain → OU." }
     },
     {
       "kind": "mcq",
       "id": "m9-mt-5",
-      "prompt": { "vi": "GPO Domain nói A, GPO treo ở OU nói B, không ai gắn Enforced. Máy trong OU theo luật nào?" },
+      "prompt": { "vi": "GPO Domain và GPO treo ở OU cùng chỉnh MỘT thiết lập: Domain đặt A, OU đặt B, không ai gắn Enforced. Máy trong OU theo luật nào?" },
       "choices": [
         { "vi": "B — OU áp sau nên đè lên luật Domain" },
         { "vi": "A — miền to hơn nên luật miền thắng" },
@@ -823,11 +822,11 @@
     {
       "kind": "mcq",
       "id": "m9-mt-6",
-      "prompt": { "vi": "GPO miền gắn Enforced gặp OU bật Block Inheritance — kết quả?" },
+      "prompt": { "vi": "Luật mật khẩu công ty treo ở miền, có gắn Enforced. OU KeToan lại bật Block Inheritance cho khỏi dính luật chung. Máy phòng Kế toán có phải theo luật mật khẩu đó không?" },
       "choices": [
-        { "vi": "Enforced xuyên qua tấm chắn — luật miền vẫn thắng" },
-        { "vi": "Block Inheritance chặn được tất cả, kể cả Enforced" },
-        { "vi": "Máy client báo lỗi cấu hình và bỏ qua cả hai" }
+        { "vi": "Có — Enforced xuyên qua tấm chắn, luật miền vẫn áp" },
+        { "vi": "Không — tấm chắn chặn được tất cả, kể cả Enforced" },
+        { "vi": "Không — máy báo lỗi cấu hình rồi bỏ qua cả hai luật" }
       ],
       "answerIndex": 0,
       "explain": { "vi": "Enforced là mũi khoan xuyên mái che: vượt Block Inheritance và đè cả luật OU — dùng cho thứ không được có ngoại lệ." }
@@ -870,15 +869,15 @@
     {
       "kind": "mcq",
       "id": "m9-mt-12",
-      "prompt": { "vi": "Người dùng kêu luật mới không có hiệu lực trên máy họ. Việc đầu tiên bạn làm là gì?" },
+      "prompt": { "vi": "Người dùng kêu luật mới không có hiệu lực trên máy họ. Bạn đã gpupdate /force mà luật vẫn chưa ăn — trước khi sửa bất cứ thứ gì, bạn đọc bằng lệnh nào?" },
       "choices": [
-        { "vi": "Chạy gpresult trên máy đó xem GPO nào đang thật sự dính" },
+        { "vi": "gpresult /r trên máy đó — bảng kê nói GPO nào bị gạt" },
         { "vi": "Xóa GPO cũ đi rồi tạo lại từ đầu cho chắc chắn sạch sẽ" },
-        { "vi": "Khởi động lại Domain Controller để nó phát luật xuống lại" }
+        { "vi": "Gõ lại gpupdate /force thêm vài lần nữa cho chắc ăn" }
       ],
       "answerIndex": 0,
       "hintTopic": { "vi": "lệnh kê luật đang dính máy" },
-      "explain": { "vi": "Đọc trước, sửa sau: gpresult kê ra GPO đang áp và GPO bị gạt kèm lý do. Chưa biết luật nào thắng mà đã đi sửa là mò kim đáy bể." }
+      "explain": { "vi": "Đọc trước, sửa sau: gpresult /r kê ra GPO đang áp và GPO bị gạt kèm lý do — hay gặp nhất là Block Inheritance. Chưa biết luật nào thắng mà đã đi sửa là mò kim đáy bể." }
     },
     {
       "kind": "palace-walk",

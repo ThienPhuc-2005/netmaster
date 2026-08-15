@@ -420,7 +420,8 @@
                 "accept": [
                   "aaaa",
                   "a a a a",
-                  "quad a"
+                  "quad a",
+                  "aaaa record"
                 ],
                 "hintTopic": {
                   "vi": "bản anh em của bản ghi A, dành cho địa chỉ dài hơn"
@@ -995,7 +996,9 @@
                   "nửa",
                   "nua",
                   "50%",
-                  "1/2"
+                  "1/2",
+                  "một phần hai",
+                  "1 phần 2"
                 ],
                 "hintTopic": {
                   "vi": "xin sớm để còn đường thử lại"
@@ -1265,7 +1268,8 @@
       "accept": [
         "aaaa",
         "quad a",
-        "aaaa record"
+        "aaaa record",
+        "a a a a"
       ],
       "explain": {
         "vi": "AAAA — bản anh em của A, dành cho địa chỉ IPv6 dài gấp bốn lần."
@@ -1351,7 +1355,9 @@
         "nửa",
         "nua",
         "50%",
-        "1/2"
+        "1/2",
+        "một phần hai",
+        "1 phần 2"
       ],
       "explain": {
         "vi": "Một nửa — xin sớm thì hỏng một lần vẫn còn nửa hạn sau để thử lại, không mất địa chỉ giữa chừng."
@@ -1449,6 +1455,31 @@
       },
       "explain": {
         "vi": "Hết hạn thuê là hết quyền ở: máy chạy lại DORA từ nhịp Discover. Còn hạn thì nó chỉ cần xin gia hạn ở nửa chặng đường."
+      }
+    },
+    {
+      "kind": "mcq",
+      "id": "m6-mt-13",
+      "prompt": {
+        "vi": "Công ty vừa dọn trang web sang máy chủ mới. Muốn congty.com mở ra trang nằm trên máy đó, phải sửa bản ghi loại nào?"
+      },
+      "choices": [
+        {
+          "vi": "A"
+        },
+        {
+          "vi": "CNAME"
+        },
+        {
+          "vi": "MX"
+        }
+      ],
+      "answerIndex": 0,
+      "hintTopic": {
+        "vi": "dòng cơ bản nhất trong sổ danh bạ"
+      },
+      "explain": {
+        "vi": "Bản ghi A là dòng ghi thẳng \"congty.com nằm ở địa chỉ này\" — dọn máy chủ là đổi đúng dòng đó. CNAME chỉ đặt biệt danh trỏ về tên khác, MX chỉ lo đường đi của thư."
       }
     }
   ]

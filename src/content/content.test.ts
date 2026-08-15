@@ -24,6 +24,67 @@ function moduleById(id: string) {
 
 const PART_RANK = { A: 0, B: 1, C: 2, D: 3, E: 4 } as const
 
+// ---------------------------------------------------------------
+// Đồ nghề soi CÂU GÕ TAY (lượt soát 08-15)
+//
+// Chấm oan người hiểu đúng là lớp lỗi lớn nhất của cả bộ nội dung — 36
+// câu ở 16/21 module — và nó vô hình vì danh sách "Chấp nhận" viết tay,
+// không ai thử ngược bao giờ. Ba cổng bên dưới soi nó bằng máy.
+// ---------------------------------------------------------------
+
+interface CauGoTay {
+  id: string
+  de: string
+  accept: readonly string[]
+  /** Chữ chính app đưa ra làm đáp án (lời giải bước học, giải thích đề thi). */
+  dapAnCuaApp: string
+}
+
+/** Mọi câu gõ tay của app: bước Thử tay, bước Nhớ lại, và pool đề thi. */
+function moiCauGoTay(): CauGoTay[] {
+  const ds: CauGoTay[] = []
+  for (const m of modules) {
+    for (const l of m.lessons) {
+      for (const e of [...l.steps[3].exercises, ...l.steps[4].questions]) {
+        if (e.question.kind !== 'typed') continue
+        ds.push({ id: e.question.id, de: lt(e.question.prompt), accept: e.question.accept, dapAnCuaApp: lt(e.solution) })
+      }
+    }
+    for (const q of m.masteryTest) {
+      if (q.kind !== 'typed') continue
+      ds.push({ id: q.id, de: lt(q.prompt), accept: q.accept, dapAnCuaApp: q.explain === undefined ? '' : lt(q.explain) })
+    }
+  }
+  return ds
+}
+
+const acceptGoTay = new Map(moiCauGoTay().map((q) => [q.id, q.accept]))
+
+/** Mệnh đề đầu của một lời giải — chỗ app nói thẳng đáp án, trước khi kể. */
+function menhDeDau(s: string): string {
+  return (s.split(/[;:]|—|\. /)[0] ?? '').trim().replace(/\.$/, '')
+}
+
+/** Có mang từ phủ định không — so theo TỪ, cùng bộ từ với bộ chấm. */
+function coPhuDinh(s: string): boolean {
+  return /(^|[^\p{L}])(không|khong|chưa|chua|sai)([^\p{L}]|$)/iu.test(s)
+}
+
+/** Bộ chữ số trong đề, đã xếp — hai đề khác số là hai câu khác nhau. */
+function soTrongDe(de: string): string {
+  return (de.match(/\d+/g) ?? []).sort().join(',')
+}
+
+/** Độ giống nhau của hai đề bài, tính theo tỉ lệ từ dùng chung (Jaccard). */
+function giongNhau(a: string, b: string): number {
+  const tok = (s: string) => new Set(s.toLowerCase().replace(/[^\p{L}\p{N}\s]/gu, ' ').split(/\s+/).filter(Boolean))
+  const x = tok(a)
+  const y = tok(b)
+  let chung = 0
+  for (const t of x) if (y.has(t)) chung += 1
+  return chung / (x.size + y.size - chung)
+}
+
 describe('bộ nội dung', () => {
   it('order liên tục từ 1, không đứt quãng', () => {
     // Đứt quãng nghĩa là thiếu một module giữa chuỗi mở khóa — mastery
@@ -683,42 +744,222 @@ describe('bộ nội dung', () => {
   it('accept gõ tay nhận đủ các cách viết mà người thật hay gõ', () => {
     // Người học biết đáp án nhưng gõ theo thói quen khác người soạn thì
     // vẫn là NHỚ ĐƯỢC — chấm sai chỗ này là đo sai, không phải đo chặt.
-    // Mỗi dòng dưới đây là một cách gõ đã từng trượt oan (bộ chấm tách
-    // token nên "65,535" thành hai số, "dấu |" mất hẳn ký hiệu).
+    //
+    // LƯỢT SOÁT 08-15 đổi bộ này từ "vài ca đã từng trượt oan" thành CỔNG
+    // PHỦ TRỌN: mỗi câu gõ tay trong pool đề thi phải có ít nhất một cách
+    // gõ khác được thử ở đây (luật ép ở test ngay dưới). Lý do: lượt soát
+    // 696 câu tìm ra 36 câu chấm oan người hiểu đúng, ở 16/21 module —
+    // lớp lỗi lớn nhất của cả app, và nó vô hình vì accept viết tay không
+    // ai thử ngược bao giờ. Viết ca thử cho từng câu chính là động tác ép
+    // người soạn nghĩ ra "còn ai gõ kiểu nào nữa" trước khi giao bài.
     const CASES: ReadonlyArray<readonly [string, string]> = [
+      ['m1-mt-1', 'địa chỉ IP của máy'],
+      ['m1-mt-2', 'gói dữ liệu nhỏ'],
+      ['m1-mt-3', 'bộ định tuyến (router)'],
+      ['m1-mt-4', 'port number'],
+      ['m1-mt-6', 'bộ quy tắc chung mà hai bên thỏa thuận'],
+      ['m1-mt-9', 'số hiệu port'],
+      ['m2-mt-1', 'máy chủ tên miền'],
+      ['m2-mt-5', 'máy chủ (server)'],
+      ['m2-mt-7', 'gói response'],
+      ['m2-mt-10', 'router nhà mình'],
+      ['m2-mt-12', 'gói yêu cầu'],
+      ['m3-mt-2', 'từ 0 đến 255'],
+      ['m3-mt-4', 'mask 255.255.255.0'],
+      ['m3-mt-5', 'magic number là 64'],
+      ['m3-mt-6', '172.16.4.128/25'],
       ['m3-mt-9', '::'],
       ['m3-mt-9', 'dấu ::'],
       ['m3-mt-9', 'hai dấu hai chấm'],
+      ['m3-mt-10', 'mạng 10.0.5.64'],
+      ['m3-mt-12', 'prefix /26'],
+      ['m4-mt-2', 'địa chỉ MAC của máy'],
+      ['m4-mt-4', 'giao thức ARP'],
+      ['m4-mt-6', 'router (bộ định tuyến)'],
+      ['m4-mt-10', 'chia VLAN'],
+      ['m4-mt-12', 'bảng routing'],
+      ['m5-mt-2', 'SYN/ACK'],
       ['m5-mt-4', '65535'],
       ['m5-mt-4', '65,535'],
       ['m5-mt-4', '65.535'],
-      ['m12-mt-6', '|'],
-      ['m12-mt-6', 'dấu |'],
-      ['m12-mt-6', 'dấu gạch đứng'],
-      ['m12-mt-6', 'dấu ống'],
+      ['m5-mt-10', 'tới 1023'],
+      ['m5-mt-12', 'port ngẫu nhiên tạm thời'],
+      ['m6-mt-2', 'máy chủ có thẩm quyền'],
+      ['m6-mt-4', 'bản ghi AAAA'],
+      ['m6-mt-8', '50 phần trăm'],
+      ['m6-mt-9', 'bản ghi CNAME'],
+      ['m7-mt-1', 'NAT'],
+      ['m7-mt-4', 'tường lửa stateful'],
+      ['m7-mt-7', 'doublenat'],
+      ['m7-mt-7', 'NAT kép'],
+      ['m7-mt-11', 'mở cổng'],
+      ['m8-mt-2', '6 GHz'],
+      ['m8-mt-3', 'WPA3'],
+      ['m8-mt-4', 'linklocal'],
+      ['m8-mt-4', 'địa chỉ link-local'],
+      ['m8-mt-7', 'DHCP'],
+      ['m8-mt-8', 'tự cấu hình không trạng thái'],
+      ['m9-mt-2', 'DC'],
+      ['m9-mt-4', 'tầng Site'],
+      ['m9-mt-7', 'gpupdate /force'],
+      ['m9-mt-8', 'gpresult /r'],
+      ['m9-mt-11', 'OU của phòng kế toán'],
+      ['m10-mt-1', 'virtual network'],
+      ['m10-mt-4', 'VPN site to site'],
+      ['m10-mt-5', 'client VPN'],
+      ['m10-mt-7', 'danh tính người dùng'],
+      ['m11-mt-1', 'ipconfig /all'],
+      ['m11-mt-3', 'hệ thống DNS'],
+      ['m11-mt-4', '2 router'],
+      ['m11-mt-6', 'gpresult /r'],
+      ['m11-mt-10', 'tracert'],
+      ['m12-mt-1', 'động từ - danh từ'],
+      ['m12-mt-1', 'động từ và danh từ'],
+      ['m12-mt-1', 'verb-noun'],
       ['m12-mt-3', 'Get-Help'],
       ['m12-mt-3', 'get help'],
       ['m12-mt-3', 'gethelp'],
       ['m12-mt-4', '-SearchBase'],
       ['m12-mt-4', 'search base'],
-      ['m12-mt-1', 'động từ - danh từ'],
-      ['m12-mt-1', 'động từ và danh từ'],
-      ['m8-mt-4', 'linklocal'],
-      ['m7-mt-7', 'doublenat'],
+      ['m12-mt-6', '|'],
+      ['m12-mt-6', 'dấu |'],
+      ['m12-mt-6', 'dấu gạch đứng'],
+      ['m12-mt-6', 'dấu ống'],
+      ['m12-mt-7', 'Get-NetIPAddress'],
+      ['m12-mt-9', 'Select-String'],
+      ['m13-mt-2', '/26'],
+      ['m13-mt-4', '192.168.10.128'],
+      ['m13-mt-5', '0.0.0.15'],
+      ['m13-mt-7', '192.168.4.0/22'],
+      ['m13-mt-9', '126 máy'],
+      ['m13-mt-11', '10.20.30.128'],
+      ['m14-mt-2', '802.1Q'],
+      ['m14-mt-3', 'switchport mode trunk'],
+      ['m14-mt-5', 'VLAN 1'],
+      ['m14-mt-7', 'sh interfaces trunk'],
+      ['m15-mt-2', 'spanning tree'],
+      ['m15-mt-4', 'blocking'],
+      ['m15-mt-7', 'PortFast'],
+      ['m15-mt-12', 'BPDU'],
+      ['m15-mt-13', 'Switch-2'],
+      ['m16-mt-2', 'của chính nó'],
+      ['m16-mt-4', 'gói hello'],
+      ['m16-mt-7', 'mặt nạ lộn ngược'],
+      ['m16-mt-9', 'chữ O'],
+      ['m17-mt-2', 'dòng đầu tiên khớp'],
+      ['m17-mt-4', 'từ 100 đến 199'],
+      ['m17-mt-7', 'lúc gói vào cổng'],
+      ['m17-mt-9', 'cổng bị tắt bằng lệnh'],
+      ['m18-mt-2', 'trường giaddr'],
+      ['m18-mt-4', 'dải 169.254'],
+      ['m18-mt-10', 'DNS forwarder'],
+      ['m18-mt-12', 'hạ TTL xuống'],
+      ['m19-mt-2', 'DC gần nhất'],
+      ['m19-mt-10', 'ủy quyền'],
+      ['m19-mt-13', 'Get-ADGroupMember'],
+      ['m20-mt-2', 'mức 3'],
+      ['m20-mt-6', 'NTP'],
+      ['m20-mt-11', 'SNMP trap'],
+      ['m21-mt-2', '10.50.0.0/26'],
+      ['m21-mt-5', 'show ip ospf neighbors'],
+      ['m21-mt-8', 'implicit deny'],
+      ['m21-mt-stp2', 'cổng blocking'],
     ]
 
-    const acceptById = new Map<string, readonly string[]>()
-    for (const m of modules) {
-      for (const q of m.masteryTest) {
-        if (q.kind === 'typed') acceptById.set(q.id, q.accept)
-      }
-    }
+    /**
+     * CA XẤU — nới accept mà không có vế này là mở cửa cho câu trả lời
+     * sai. Bộ chấm khớp theo CỤM TỪ NGUYÊN nằm trong câu, nên một mục
+     * accept ngắn và phổ thông (kiểu "gói") biến mọi câu chứa từ đó
+     * thành đúng. Mỗi lần nới một câu thì thêm ca xấu cho chính câu đó.
+     */
+    const CA_XAU: ReadonlyArray<readonly [string, string]> = [
+      ['m1-mt-2', 'gói cước'],
+      ['m1-mt-6', 'địa chỉ IP'],
+      ['m1-mt-6', 'quy tắc đặt tên miền'],
+      ['m8-b2-ret-1', 'router đời cũ phải chạy theo máy mới'],
+      ['m15-b3-ret-1', 'nó im hẳn, còn cổng chính mới nghe BPDU'],
+      ['m2-mt-1', 'tên miền'],
+      ['m4-mt-12', 'bảng mac'],
+      ['m7-mt-11', 'mở máy chủ'],
+      ['m7-mt-11', 'đóng cổng'],
+      ['m8-mt-8', 'có trạng thái'],
+      ['m8-mt-8', 'dhcp'],
+      ['m12-b4-ret-1', 'chữ thuần'],
+      ['m14-mt-7', 'sh ip route'],
+      ['m16-mt-2', 'của nhà cung cấp'],
+      ['m16-mt-2', 'của router hàng xóm'],
+      ['m16-mt-7', 'subnet mask'],
+      ['m17-b1-ret-1', 'cho phép tất cả'],
+      ['m17-mt-7', 'lúc gói rời cổng'],
+      ['m17-mt-7', 'sau khi tra bảng định tuyến'],
+      ['m21-mt-stp2', 'cổng đang phát'],
+      ['m21-mt-stp2', 'cổng root'],
+    ]
 
     for (const [id, typed] of CASES) {
-      const accept = acceptById.get(id)
+      const accept = acceptGoTay.get(id)
       expect(accept, `không còn câu gõ tay "${id}" trong bài thi`).toBeDefined()
       expect(typedAnswerMatches(typed, accept!), `${id}: gõ "${typed}" bị chấm sai`).toBe(true)
     }
+    for (const [id, typed] of CA_XAU) {
+      const accept = acceptGoTay.get(id)
+      expect(accept, `không còn câu gõ tay "${id}"`).toBeDefined()
+      expect(typedAnswerMatches(typed, accept!), `${id}: câu SAI "${typed}" lại được chấm đúng`).toBe(false)
+    }
+
+    // Cổng ép: câu thi mới thêm mà quên viết ca thử thì đỏ ngay tại đây.
+    const thiGoTay = modules.flatMap((m) => m.masteryTest.filter((q) => q.kind === 'typed').map((q) => q.id))
+    const daCoCaThu = new Set(CASES.map(([id]) => id))
+    const thieu = thiGoTay.filter((id) => !daCoCaThu.has(id))
+    expect(thieu, 'câu gõ tay trong đề thi chưa có ca thử "gõ thế này cũng đúng"').toEqual([])
+  })
+
+  it('lá chắn phủ định không được khóa chính người trả lời đúng', () => {
+    // Bộ chấm TẮT chế độ khớp-chứa khi câu trả lời mang chữ phủ định
+    // (không/chưa/sai) — cần thiết, vì "không phải DNS" ngược nghĩa hẳn
+    // với "DNS". Nhưng có những câu mà đáp án ĐÚNG vốn là một câu phủ
+    // định ("cấm tất cả những gì CHƯA được cho phép"). Khi đó accept
+    // phải có một mục NGẮN cũng mang phủ định, nếu không người trả lời
+    // đúng bị khóa cứng: mục dài chỉ khớp khi họ chép lại gần nguyên văn.
+    // Chỉ soi MỆNH ĐỀ ĐẦU của lời giải — đó là chỗ app nói thẳng đáp án.
+    // Lấy cả câu thì dính mọi lời kể có chữ "không" ("Không phải router
+    // xếp lại, mà là máy nhận") và cổng hóa ra báo động 68 lần vô cớ.
+    const hong: string[] = []
+    for (const q of moiCauGoTay()) {
+      const nguon = [menhDeDau(q.dapAnCuaApp), ...q.accept]
+      if (!nguon.some(coPhuDinh)) continue
+      if (q.accept.some((a) => coPhuDinh(a) && a.trim().split(/\s+/).length <= 5)) continue
+      hong.push(`${q.id}: đáp án mang phủ định mà accept không có mục ngắn nào phủ định`)
+    }
+    expect(hong).toEqual([])
+  })
+
+  it('hai câu hỏi GIỐNG NHAU thì không được chấm lệch nhau', () => {
+    // Lỗi thật (lượt soát 08-15): m7-mt-11 và m10-mt-1 bê nguyên đề của
+    // câu trong bài nhưng accept bị cắt bớt — người học được BÀI dạy rằng
+    // "mở cổng" là đúng, tới PHÒNG THI gõ đúng chữ đó thì mất điểm.
+    // Cùng một câu hỏi mà hai nơi chấm hai kiểu là app tự mâu thuẫn.
+    //
+    // Chỉ so những cặp cùng bộ CHỮ SỐ: "/24 là mask nào" và "/25 là mask
+    // nào" viết gần giống hệt nhau nhưng là hai câu khác nhau.
+    const ds = moiCauGoTay()
+    const lech: string[] = []
+    for (let i = 0; i < ds.length; i++) {
+      for (let j = i + 1; j < ds.length; j++) {
+        const a = ds[i]!
+        const b = ds[j]!
+        if (soTrongDe(a.de) !== soTrongDe(b.de)) continue
+        if (giongNhau(a.de, b.de) < 0.75) continue
+        const chi = (x: typeof a, y: typeof a) =>
+          x.accept.filter((v) => !y.accept.some((w) => w.toLowerCase().trim() === v.toLowerCase().trim()))
+        const thieuA = chi(a, b)
+        const thieuB = chi(b, a)
+        if (thieuA.length + thieuB.length > 0) {
+          lech.push(`${a.id} vs ${b.id}: ${a.id} thiếu ${JSON.stringify(thieuB)}, ${b.id} thiếu ${JSON.stringify(thieuA)}`)
+        }
+      }
+    }
+    expect(lech).toEqual([])
   })
 
   it('tra cứu xuyên module hoạt động (bài học + concept đều tìm được)', () => {

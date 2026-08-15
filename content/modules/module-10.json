@@ -69,8 +69,8 @@
                 "prompt": { "vi": "VPC giống NHẤT với thứ gì bạn đã học ở on-prem?" },
                 "choices": [
                   { "vi": "VLAN + dải subnet riêng — một vùng cô lập, nhưng kẻ bằng khai báo thay vì dây và switch" },
-                  { "vi": "Một sợi cáp quang rất dài" },
-                  { "vi": "Một bản ghi DNS đặc biệt" }
+                  { "vi": "Một sợi cáp quang riêng — thuê nhà mạng kéo thẳng từ văn phòng tới tận data center" },
+                  { "vi": "Một bản ghi DNS đặc biệt — trỏ tên miền công ty về đúng máy chủ đang thuê trên mây" }
                 ],
                 "answerIndex": 0,
                 "hintTopic": { "vi": "bức tường ngăn xóm của Module 4" }
@@ -178,8 +178,8 @@
                 "prompt": { "vi": "Điền vào chỗ khác biệt: tường lửa nhà đứng ở một cổng vành đai, còn security group…" },
                 "choices": [
                   { "vi": "…bám sát từng máy ảo — mỗi máy một bộ luật riêng" },
-                  { "vi": "…đứng ở cổng data center của nhà cung cấp" },
-                  { "vi": "…chỉ hoạt động khi máy tắt" }
+                  { "vi": "…đứng ở cổng data center — một bộ luật gác chung cả VPC" },
+                  { "vi": "…nằm trong máy ảo — chỉ lọc được lưu lượng đi ra" }
                 ],
                 "answerIndex": 0,
                 "hintTopic": { "vi": "vị trí đứng của người gác" }
@@ -208,7 +208,7 @@
                 "kind": "typed",
                 "id": "m10-b2-ret-1",
                 "prompt": { "vi": "Không nhìn lại bài: security group chưa khai luật nào thì lưu lượng đi vào máy ảo ra sao?" },
-                "accept": ["chặn hết", "chan het", "bị chặn", "bi chan", "chặn", "chan", "deny", "đóng", "dong"],
+                "accept": ["chặn hết", "chan het", "bị chặn", "bi chan", "chặn", "chan", "deny", "đóng", "dong", "không ai vào được", "không ai vào", "không cho ai vào"],
                 "hintTopic": { "vi": "mặc định đóng hay mở" }
               },
               "hint": { "vi": "An toàn kiểu mây: quên khai thì mọi thứ ở trạng thái nào?" },
@@ -291,8 +291,8 @@
                 "prompt": { "vi": "Chi nhánh Đà Nẵng cần thấy VPC trên mây mọi lúc, 40 nhân viên trong đó không ai phải cài gì. Chọn kiểu nào?" },
                 "choices": [
                   { "vi": "Site-to-site — router chi nhánh bắc cầu cố định tới VPC" },
-                  { "vi": "Phát cho mỗi người một client VPN" },
-                  { "vi": "Mở hết security group cho nhanh" }
+                  { "vi": "Client VPN — phát phần mềm cho cả 40 người tự bật khi cần" },
+                  { "vi": "Mở security group ra Internet — khỏi hầm, đỡ một lớp thiết bị" }
                 ],
                 "answerIndex": 0,
                 "hintTopic": { "vi": "đường hầm nối gì với gì" }
@@ -336,8 +336,8 @@
                 "prompt": { "vi": "Vẫn từ trí nhớ: vì sao ngồi Wi-Fi quán cà phê bật client VPN thì chủ quán không đọc trộm được dữ liệu công ty?" },
                 "choices": [
                   { "vi": "Vì dữ liệu được bọc trong lớp mã hóa của đường hầm — quán chỉ thấy vỏ" },
-                  { "vi": "Vì VPN làm mạng chạy nhanh hơn" },
-                  { "vi": "Vì quán không có tường lửa" }
+                  { "vi": "Vì VPN nén dữ liệu thành khối nhỏ nên máy của quán không ghép lại được" },
+                  { "vi": "Vì quán không có tường lửa nên không thiết bị nào của quán đọc nổi gói tin" }
                 ],
                 "answerIndex": 0,
                 "hintTopic": { "vi": "ai giữ chìa của lớp khóa" }
@@ -422,8 +422,8 @@
                 "prompt": { "vi": "Kẻ tấn công lừa được MỘT nhân viên và chiếm laptop của họ. Ở mô hình lâu đài, chuyện gì xảy ra tiếp?" },
                 "choices": [
                   { "vi": "Hắn thành \"người nhà\", di chuyển ngang tự do tới các máy khác — vành đai không cản nữa" },
-                  { "vi": "Không sao, tường lửa vành đai sẽ chặn hắn lại" },
-                  { "vi": "Máy tự khóa vì phát hiện người lạ" }
+                  { "vi": "Không sao — tường lửa vành đai soi mọi lượt đi lại nên sẽ chặn hắn ngay ở máy đó" },
+                  { "vi": "Máy đó tự khóa lại vì thấy người lạ đăng nhập, phần mạng còn lại không hề hấn gì" }
                 ],
                 "answerIndex": 0,
                 "hintTopic": { "vi": "vành đai kiểm ở đâu, và sau đó thì sao" }
@@ -454,7 +454,7 @@
                 "kind": "typed",
                 "id": "m10-b4-ret-1",
                 "prompt": { "vi": "Không nhìn lại bài: Zero Trust đòi làm gì với MỌI truy cập, kể cả từ \"bên trong\"?" },
-                "accept": ["xác minh", "xac minh", "verify", "kiểm tra", "kiem tra", "chứng minh", "chung minh"],
+                "accept": ["xác minh", "xac minh", "verify", "kiểm tra", "kiem tra", "chứng minh", "chung minh", "không tin ai mặc định", "không tin ai cả", "không tin ai hết"],
                 "hintTopic": { "vi": "một động từ, làm mỗi lần chứ không phải một lần ở cổng" }
               },
               "hint": { "vi": "Trạm kiểm ở từng cánh cửa làm gì với từng người tới?" },
@@ -531,8 +531,8 @@
                 "prompt": { "vi": "Yêu cầu suông: nhân viên mới cần vào được máy văn phòng LẪN Microsoft 365, chỉ một tài khoản. Công ty đang chạy AD DS + Entra ID hybrid — bạn làm gì?" },
                 "choices": [
                   { "vi": "Tạo user trong AD (đúng OU của phòng ban) — đồng bộ tự đẩy lên Entra, một tài khoản dùng cả hai" },
-                  { "vi": "Tạo hai tài khoản riêng ở hai nơi" },
-                  { "vi": "Đưa tài khoản chung của phòng cho dùng tạm" }
+                  { "vi": "Tạo hai tài khoản riêng: một trong AD cho máy văn phòng, một trên Entra cho Microsoft 365" },
+                  { "vi": "Đưa tài khoản chung của phòng cho dùng tạm, khi nào rảnh thì lập tài khoản riêng" }
                 ],
                 "answerIndex": 0,
                 "hintTopic": { "vi": "sổ nào là gốc, sổ nào là bản đồng bộ" }
@@ -574,8 +574,8 @@
                 "prompt": { "vi": "Vẫn từ trí nhớ: vì sao trong thế giới Zero Trust, cuốn sổ danh tính thành thứ phải bảo vệ nhất?" },
                 "choices": [
                   { "vi": "Vì mọi quyết định cho/chặn đều dựa vào danh tính — chiếm được sổ là chiếm được biên giới" },
-                  { "vi": "Vì nó chứa nhiều dung lượng nhất" },
-                  { "vi": "Vì nó thay thế được tường lửa hoàn toàn" }
+                  { "vi": "Vì nó chứa nhiều dữ liệu nhất trong hệ thống — mất sổ là mất khối thông tin lớn nhất" },
+                  { "vi": "Vì nó thay được tường lửa hoàn toàn — hỏng sổ là mọi luật chặn lưu lượng biến mất" }
                 ],
                 "answerIndex": 0,
                 "hintTopic": { "vi": "biên giới mới nằm ở đâu thì kho quý nằm ở đó" }
@@ -702,7 +702,7 @@
       "kind": "typed",
       "id": "m10-mt-1",
       "prompt": { "vi": "Vùng mạng riêng bạn kẻ ra trong data center của nhà cung cấp gọi là gì? (viết tắt được)" },
-      "accept": ["vpc", "vnet", "virtual private cloud"],
+      "accept": ["vpc", "vnet", "virtual private cloud", "virtual network"],
       "explain": { "vi": "VPC (Azure: VNet) — phiên bản khai báo của VLAN + dải subnet riêng; chia subnet bằng đúng CIDR của Module 3." }
     },
     {
@@ -777,15 +777,15 @@
     {
       "kind": "mcq",
       "id": "m10-mt-9",
-      "prompt": { "vi": "Trong cloud, việc tương ứng với \"mua thêm switch cắm vào tủ rack\" là gì?" },
+      "prompt": { "vi": "Trong cloud, việc tương ứng với \"mua thêm switch cắm vào tủ thiết bị trong phòng máy chủ\" là gì?" },
       "choices": [
-        { "vi": "Khai thêm một mạng con trong VPC bằng vài dòng cấu hình" },
+        { "vi": "Khai thêm một subnet trong VPC bằng vài dòng cấu hình" },
         { "vi": "Gọi điện cho nhà cung cấp để họ lắp thêm thiết bị thật cho bạn" },
         { "vi": "Thuê thêm một máy ảo rồi cài phần mềm switch lên máy đó" }
       ],
       "answerIndex": 0,
       "hintTopic": { "vi": "thiết bị trong cloud thành dòng khai báo" },
-      "explain": { "vi": "Trong cloud, thiết bị thành cấu hình: mạng con, tường lửa, tuyến đường đều là dòng khai báo. Khái niệm thì không đổi — vẫn là mạng con, vẫn là tường lửa." }
+      "explain": { "vi": "Trong cloud, thiết bị thành cấu hình: subnet, tường lửa, tuyến đường đều là dòng khai báo. Khái niệm thì không đổi — vẫn là subnet, vẫn là tường lửa." }
     },
     {
       "kind": "mcq",
@@ -793,7 +793,7 @@
       "prompt": { "vi": "Bạn dựng máy ảo mới trong VPC rồi cài web server, nhưng từ Internet không ai vào được. Nghi ngờ đầu tiên?" },
       "choices": [
         { "vi": "Security group vẫn chặn chiều vào — chưa mở port cho ai" },
-        { "vi": "Máy ảo chưa được cấp địa chỉ IP nội bộ trong mạng con đó" },
+        { "vi": "Máy ảo chưa được cấp địa chỉ IP nội bộ trong subnet đó" },
         { "vi": "VPC chưa bật chế độ cho phép chạy web server ở bên trong" }
       ],
       "answerIndex": 0,

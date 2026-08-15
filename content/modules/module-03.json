@@ -224,7 +224,7 @@
                 "kind": "typed",
                 "id": "m3-b2-ret-1",
                 "prompt": { "vi": "Không nhìn lại bài: địa chỉ IPv4 gồm phần mạng và phần gì?" },
-                "accept": ["host", "phần host", "host id", "phần host id"]
+                "accept": ["host", "phần host", "host id", "phần host id", "số nhà"]
               },
               "hint": { "vi": "Phần mạng là khu phố — còn phần kia là \"số nhà\" của từng máy trong khu." },
               "solution": { "vi": "Phần host — số nhà của từng máy. Phần mạng chung cho cả khu phố, phần host phân biệt từng máy trong khu." }
@@ -417,7 +417,7 @@
               "conceptId": "cidr",
               "visualId": "vis-hang-rao-khu-pho",
               "body": {
-                "vi": "Viết cả dãy 255.255.255.0 thì dài dòng, nên dân làm mạng ghi gọn bằng CIDR (cách ghi /n sau địa chỉ): 192.168.1.10/24 nghĩa là 24 bit đầu là phần mạng. Quy đổi nhanh: /24 ↔ 255.255.255.0, /16 ↔ 255.255.0.0 — con số sau dấu gạch chéo chính là số bit của \"hàng rào\"."
+                "vi": "Viết cả dãy 255.255.255.0 thì dài dòng, nên dân làm mạng ghi gọn bằng CIDR (cách ghi /n sau địa chỉ): 192.168.1.10/24 nghĩa là 24 bit đầu là phần mạng. Quy đổi nhanh: /24 ↔ 255.255.255.0, /16 ↔ 255.255.0.0 — con số sau dấu gạch chéo chính là số bit của \"hàng rào\". Hàng rào không bắt buộc dừng ở mép octet: mỗi bit cắm thêm vào hàng rào là cắt đôi khu phố, nên octet bị cắt chỉ nhận đúng sáu giá trị, thuộc lòng là xong — /25 ↔ 255.255.255.128, /26 ↔ 255.255.255.192, /27 ↔ 255.255.255.224, /28 ↔ 255.255.255.240, /29 ↔ 255.255.255.248, /30 ↔ 255.255.255.252."
               },
               "deepDive": {
                 "vi": "Cùng logic: /8 ↔ 255.0.0.0. Bạn đã gặp CIDR từ bài trước mà chưa gọi tên: 10.0.0.0/8 hay 192.168.0.0/16 chính là cách ghi này. CIDR còn cho phép ranh giới rơi vào GIỮA một octet, như /26 — chuyện gay cấn của bài sau."
@@ -485,7 +485,7 @@
           "bullets": [
             { "vi": "Subnet mask kẻ ranh giới phần mạng / phần host trên địa chỉ IP." },
             { "vi": "255.255.255.0 nghĩa là 3 octet đầu là khu phố, octet cuối là số nhà." },
-            { "vi": "CIDR ghi gọn hàng rào: /24 ↔ 255.255.255.0, /16 ↔ 255.255.0.0." }
+            { "vi": "CIDR ghi gọn hàng rào: /24 ↔ 255.255.255.0, /16 ↔ 255.255.0.0; hàng rào cắm giữa octet cuối thì octet đó là 128, 192, 224, 240, 248, 252." }
           ],
           "nextTeaser": { "vi": "Nhưng khi hàng rào cắm vào GIỮA một octet — như /26 — thì đọc ranh giới kiểu gì? Dân làm mạng có mẹo nhẩm 3 giây tên là magic number. Bài sau học lỏm ngay." }
         }
@@ -558,13 +558,13 @@
               "question": {
                 "kind": "typed",
                 "id": "m3-b5-prac-2",
-                "prompt": { "vi": "Tìm network address của 10.0.5.77/27. (trả lời dạng x.x.x.x)" },
-                "accept": ["10.0.5.64"],
+                "prompt": { "vi": "Tìm network address của 10.20.30.200/27. (trả lời dạng x.x.x.x)" },
+                "accept": ["10.20.30.192"],
                 "hintTopic": { "vi": "magic number của mask 255.255.255.224" }
               },
-              "hint": { "vi": "Magic number = 256 − octet đáng chú ý của mask 255.255.255.224. Tự liệt kê các mốc rồi so với 77." },
+              "hint": { "vi": "Magic number = 256 − octet đáng chú ý của mask 255.255.255.224. Tự liệt kê các mốc rồi so với 200." },
               "solution": {
-                "vi": "10.0.5.64. Nhẩm: /27 → mask …224 → 256 − 224 = 32 → các mốc 0, 32, 64, 96. Mốc gần nhất không vượt quá 77 là 64 → network address là 10.0.5.64."
+                "vi": "10.20.30.192. Nhẩm: /27 → mask …224 → 256 − 224 = 32 → các mốc 0, 32, 64, 96, 128, 160, 192, 224. Mốc gần nhất không vượt quá 200 là 192 → network address là 10.20.30.192."
               }
             }
           ]
@@ -892,7 +892,7 @@
       "prompt": { "vi": "Tìm network address của 10.0.5.77/28. (trả lời dạng x.x.x.x)" },
       "accept": ["10.0.5.64"],
       "hintTopic": { "vi": "magic number của /28" },
-      "explain": { "vi": "/28 là mask 255.255.255.240, magic number = 256 − 240 = 16. Các mốc mạng: .64 rồi .80 — số 77 nằm trong khối mở đầu ở .64, nên network address là 10.0.5.64." }
+      "explain": { "vi": "/28 ↔ mask 255.255.255.240 → magic number = 256 − 240 = 16. Các mốc mạng nhảy theo bước 16: .0, .16, .32, .48, .64, .80… Mốc gần nhất không vượt quá 77 là 64 → network address là 10.0.5.64." }
     },
     {
       "kind": "mcq",

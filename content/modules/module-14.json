@@ -257,7 +257,7 @@
                 "vi": "Nhớ lại Module 4: một cổng access đứng tên đúng mấy VLAN? Vậy bốn VLAN cần mấy cổng như thế?"
               },
               "solution": {
-                "vi": "Vì cổng access chỉ thuộc một VLAN duy nhất — bốn VLAN là bốn sợi dây và bốn cổng ở mỗi đầu. Tốc độ cổng không liên quan gì tới chuyện này; trunk nhanh hơn không phải vì cáp mà vì nó gộp được nhiều xóm."
+                "vi": "Vì cổng access chỉ thuộc một VLAN duy nhất — bốn VLAN là bốn sợi dây và bốn cổng ở mỗi đầu. Tốc độ cổng không liên quan gì tới chuyện này: trunk và access chạy cùng tốc độ trên cùng một sợi cáp, trunk chỉ hơn ở chỗ gộp được nhiều xóm vào một dây."
               }
             }
           ]
@@ -579,7 +579,7 @@
               "conceptId": "native-vlan",
               "visualId": "vis-native-vlan",
               "body": {
-                "vi": "Trên mỗi trunk có đúng một xóm được đi trần, không nhãn — đó là native VLAN, mặc định là VLAN 1. Chuyện chỉ lành khi HAI ĐẦU khai cùng một số. Nếu Switch-1 khai native là 1 còn Switch-2 khai native là 99, thì khung đi trần từ VLAN 1 sang tới đầu kia sẽ được hiểu thành khung của VLAN 99: nó rơi sang xóm khác, im lặng, không lỗi, không cảnh báo. Khung mang nhãn thì không hề hấn gì — nên bệnh này chỉ giết nửa văn phòng, và đó là lý do nó khó tìm."
+                "vi": "Trên mỗi trunk có đúng một xóm được đi trần, không nhãn — đó là native VLAN, mặc định là VLAN 1. Chuyện chỉ lành khi HAI ĐẦU khai cùng một số. Nếu Switch-1 khai native là 1 còn Switch-2 khai native là 99, thì khung đi trần từ VLAN 1 sang tới đầu kia sẽ được hiểu thành khung của VLAN 99: nó rơi sang xóm khác, im lặng, không lỗi, không cảnh báo. Khung mang nhãn thì không hề hấn gì — nên bệnh này chỉ giết nửa văn phòng, và đó là lý do nó khó tìm. Lệnh đổi số native là switchport trunk native vlan, gõ khi đang đứng trong cổng cần sửa; bảng show interfaces trunk luôn in ra số native hiện hành của đầu đó."
               },
               "deepDive": {
                 "vi": "Vì sao chuẩn lại chừa một xóm đi trần? Vì thời trunk mới ra đời, còn nhiều thiết bị không hiểu nhãn; xóm không nhãn giúp chúng vẫn nói chuyện được. Ngày nay lời khuyên chung là đổi native sang một VLAN không ai dùng và không cắm máy nào vào đó, để tránh cả bệnh lệch native lẫn kiểu tấn công nhồi hai nhãn. Thiết bị thật có cơ chế phát hiện lệch native qua giao thức khám phá láng giềng — nhưng nó chỉ ghi vào nhật ký, và nhật ký thì phải có người đọc."
@@ -1265,17 +1265,15 @@
                 "kind": "typed",
                 "id": "m14-b5-prac-1",
                 "prompt": {
-                  "vi": "Trong kiểu router-on-a-stick, mỗi cửa logic chia ra từ một chân router được gọi là gì?"
+                  "vi": "Bên trong router-on-a-stick, một chân vật lý được chia thành nhiều phần, mỗi phần mang một số VLAN và một địa chỉ IP làm gateway cho xóm đó. Tên tiếng Anh trong nghề của mỗi phần đó là gì?"
                 },
                 "accept": [
                   "sub-interface",
                   "subinterface",
-                  "sub interface",
-                  "cửa logic",
-                  "cua logic"
+                  "sub interface"
                 ],
                 "hintTopic": {
-                  "vi": "tên gọi của cửa logic trên một chân vật lý"
+                  "vi": "tên tiếng Anh của cửa logic trên một chân vật lý"
                 }
               },
               "hint": {
@@ -1617,7 +1615,9 @@
         "show interfaces trunk",
         "show interface trunk",
         "sh int trunk",
-        "show int trunk"
+        "show int trunk",
+        "sh interfaces trunk",
+        "sh interface trunk"
       ],
       "hintTopic": {
         "vi": "bảng tra cứu của một sợi trunk"

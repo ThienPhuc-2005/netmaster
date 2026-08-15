@@ -183,15 +183,15 @@
                 "id": "m8-b2-pra-1",
                 "prompt": { "vi": "Điểm mạnh đáng tiền nhất của Wi-Fi 6 so với Wi-Fi 5 là gì?" },
                 "choices": [
-                  { "vi": "Chở nhiều thiết bị cùng lúc giỏi hơn hẳn — nhà càng đông thiết bị càng thấy khác" },
-                  { "vi": "Sóng đi xa gấp đôi" },
-                  { "vi": "Không cần mật khẩu nữa" }
+                  { "vi": "Chở nhiều thiết bị cùng lúc giỏi hơn hẳn — nhà càng đông càng thấy rõ" },
+                  { "vi": "Sóng đi xa gấp đôi nên phòng ngủ cuối nhà cũng đầy vạch" },
+                  { "vi": "Máy Wi-Fi 5 cũ trong nhà cũng được kéo lên chạy nhanh như Wi-Fi 6" }
                 ],
                 "answerIndex": 0,
                 "hintTopic": { "vi": "chuyến xe buýt nhiều ghế" }
               },
               "hint": { "vi": "Nghĩ về chuyến xe chia được nhiều ghế cho nhiều khách trong một lượt chạy." },
-              "solution": { "vi": "Wi-Fi 6 chia một lượt phát cho nhiều thiết bị cùng lúc — nhà đông thiết bị hưởng lợi rõ nhất." },
+              "solution": { "vi": "Wi-Fi 6 chia một lượt phát cho nhiều thiết bị cùng lúc — nhà đông thiết bị hưởng lợi rõ nhất. Tầm với là chuyện của băng tần chứ không phải thế hệ; còn máy Wi-Fi 5 cũ thì vẫn nói giọng Wi-Fi 5, router mới không kéo nó nhanh lên được." },
               "conceptId": "m8-chuan-wifi"
             },
             {
@@ -216,7 +216,7 @@
                 "kind": "typed",
                 "id": "m8-b2-ret-1",
                 "prompt": { "vi": "Không nhìn lại bài: router Wi-Fi 6 gặp máy Wi-Fi 7 — hai bên nói chuyện bằng thế hệ nào?" },
-                "accept": ["thấp hơn", "thap hon", "wi-fi 6", "wifi 6", "đời thấp", "doi thap", "cũ hơn", "cu hon"],
+                "accept": ["thấp hơn", "thap hon", "wi-fi 6", "wifi 6", "đời thấp", "doi thap", "cũ hơn", "cu hon", "6", "thế hệ 6"],
                 "hintTopic": { "vi": "bên nào phải chiều bên nào" }
               },
               "hint": { "vi": "Bên mới biết nói giọng cũ — cặp nào cũng chốt ở đời thấp hơn của hai bên." },
@@ -542,7 +542,7 @@
                 "kind": "typed",
                 "id": "m8-b5-pra-1",
                 "prompt": { "vi": "Cơ chế để máy IPv6 TỰ ghép địa chỉ từ lời rao của router tên là gì?" },
-                "accept": ["slaac", "stateless address autoconfiguration", "tự cấu hình địa chỉ không trạng thái"],
+                "accept": ["slaac", "stateless address autoconfiguration", "tự cấu hình địa chỉ không trạng thái", "tự cấu hình không trạng thái", "tu cau hinh khong trang thai", "không trạng thái", "khong trang thai"],
                 "hintTopic": { "vi": "năm chữ cái, mở đầu bằng chữ S của \"stateless\"" }
               },
               "hint": { "vi": "Viết tắt của Stateless Address Autoconfiguration — năm chữ cái." },
@@ -750,9 +750,9 @@
     {
       "kind": "typed",
       "id": "m8-mt-2",
-      "prompt": { "vi": "Wi-Fi 6E khác Wi-Fi 6 ở quyền chạy thêm trên băng tần nào? (con số)" },
+      "prompt": { "vi": "Trên kệ có hai router cùng đời Wi-Fi 6, nhưng một chiếc ghi thêm chữ E. Chữ E cho chiếc đó quyền chạy thêm trên băng tần nào? (con số)" },
       "accept": ["6", "6ghz", "băng 6", "bang 6"],
-      "explain": { "vi": "6E = Wi-Fi 6 cộng quyền vào băng 6 GHz — làn đường mới còn vắng." }
+      "explain": { "vi": "Băng 6 GHz — 6E vẫn đúng là Wi-Fi 6, chỉ cộng thêm quyền vào làn đường mới còn vắng đó, chứ chữ E không phải một đời cao hơn." }
     },
     {
       "kind": "typed",
@@ -783,7 +783,7 @@
     {
       "kind": "mcq",
       "id": "m8-mt-6",
-      "prompt": { "vi": "Cùng cảnh đó nhưng máy dùng 2001:db8::5 (IPv6 công cộng). Địa chỉ nguồn có phải đổi không?" },
+      "prompt": { "vi": "Một máy dùng địa chỉ IPv6 công cộng 2001:db8::5 mở trang web. Địa chỉ nguồn có phải đổi gì trước khi gói tin ra tới Internet không?" },
       "choices": [
         { "vi": "Không — đó đã là biển số công cộng thật, đi thẳng" },
         { "vi": "Có — gói tin nào ra Internet cũng phải qua NAT" },
@@ -803,7 +803,7 @@
       "kind": "typed",
       "id": "m8-mt-8",
       "prompt": { "vi": "Cơ chế để máy IPv6 tự ghép địa chỉ từ lời rao prefix của router tên là gì?" },
-      "accept": ["slaac", "stateless address autoconfiguration", "tự cấu hình địa chỉ không trạng thái"],
+      "accept": ["slaac", "stateless address autoconfiguration", "tự cấu hình địa chỉ không trạng thái", "tự cấu hình không trạng thái", "tu cau hinh khong trang thai", "không trạng thái", "khong trang thai"],
       "explain": { "vi": "SLAAC — stateless: router rao tên khu phố, máy tự chọn số nhà, không ai giữ sổ." }
     },
     {
@@ -856,6 +856,32 @@
       "answerIndex": 0,
       "hintTopic": { "vi": "64 bit đầu là khu phố, 64 bit sau là số nhà" },
       "explain": { "vi": "/64 chia đôi địa chỉ: nửa đầu là khu phố nhà mạng cấp, nửa sau là số nhà của từng máy. Số nhà nhiều tới mức không ai phải dùng NAT để tiết kiệm." }
+    },
+    {
+      "kind": "mcq",
+      "id": "m8-mt-13",
+      "prompt": { "vi": "Router mới mua là Wi-Fi 7, laptop trong nhà là Wi-Fi 5. Cặp này nói chuyện với nhau ở đời nào?" },
+      "choices": [
+        { "vi": "Wi-Fi 5 — cặp nào cũng chốt ở thế hệ thấp hơn của hai bên" },
+        { "vi": "Wi-Fi 7 — router đời mới kéo laptop chạy nhanh theo nó" },
+        { "vi": "Không đời nào cả — lệch nhau hai thế hệ thì không nối được" }
+      ],
+      "answerIndex": 0,
+      "hintTopic": { "vi": "bên nào phải chiều bên nào" },
+      "explain": { "vi": "Chuẩn Wi-Fi tương thích ngược: bên mới biết nói giọng cũ nên cặp nào cũng chốt ở đời THẤP hơn. Muốn laptop chạy như Wi-Fi 7 thì phải đổi laptop, đổi mình router không đủ." }
+    },
+    {
+      "kind": "mcq",
+      "id": "m8-mt-14",
+      "prompt": { "vi": "Nhà có 15 thiết bị cùng nối Wi-Fi. Đổi router Wi-Fi 5 sang Wi-Fi 6 thì thứ dễ thấy nhất là gì?" },
+      "choices": [
+        { "vi": "Cả nhà dùng cùng lúc bớt giật, vì một lượt phát chia cho nhiều máy" },
+        { "vi": "Sóng phủ tới được cả những góc phòng mà router cũ không với tới" },
+        { "vi": "Gói cước Internet của nhà mạng cũng được nâng nhanh lên theo router" }
+      ],
+      "answerIndex": 0,
+      "hintTopic": { "vi": "điểm mạnh của Wi-Fi 6 là chở đông" },
+      "explain": { "vi": "Wi-Fi 6 mạnh ở chỗ chở ĐÔNG: một lượt phát chia được cho nhiều thiết bị, nhà càng đông máy càng thấy rõ. Tầm phủ sóng là chuyện của băng tần, còn tốc độ ra Internet vẫn nằm trong gói cước nhà mạng." }
     }
   ]
 }

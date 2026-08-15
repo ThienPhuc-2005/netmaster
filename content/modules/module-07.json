@@ -375,7 +375,8 @@
                   "mở cổng",
                   "chuyển tiếp port",
                   "forward port",
-                  "mở port"
+                  "mở port",
+                  "port forward"
                 ],
                 "hintTopic": {
                   "vi": "việc router làm với gói tin tới đúng port đã khai"
@@ -406,7 +407,12 @@
                   "không có trong bảng nat",
                   "khong co trong bang nat",
                   "chưa ai trong nhà mở lời",
-                  "chua ai trong nha mo loi"
+                  "chua ai trong nha mo loi",
+                  "không biết đưa lên căn hộ nào",
+                  "không biết đưa gói cho ai",
+                  "chưa có dòng nào trong bảng nat",
+                  "không có dòng nào cho gói",
+                  "chưa có dòng nào cho gói"
                 ],
                 "hintTopic": {
                   "vi": "cuốn sổ chỉ có dòng khi nào"
@@ -514,10 +520,10 @@
               "conceptId": "m7-firewall-stateful",
               "visualId": "vis-gac-cua-nho-mat",
               "body": {
-                "vi": "Tường lửa có nhớ trạng thái giữ một bảng các cuộc trò chuyện đang mở: ai trong nhà vừa gọi ra đâu, bằng port nào. Gói tin từ ngoài vào chỉ được qua nếu khớp một dòng trong bảng — tức là đúng câu trả lời của một cuộc gọi có thật. Người lạ tự tới, không có dòng nào, thì mời về."
+                "vi": "Tường lửa có nhớ trạng thái giữ một bảng các cuộc trò chuyện đang mở: ai trong nhà vừa gọi ra đâu, bằng port nào. Gói tin từ ngoài vào chỉ được qua nếu khớp một dòng trong bảng — tức là đúng câu trả lời của một cuộc gọi có thật. Người lạ tự tới, không có dòng nào, thì mời về. Và mỗi dòng đều có hạn: cuộc trò chuyện im lặng quá lâu thì bị xóa khỏi bảng để lấy chỗ cho cuộc mới."
               },
               "deepDive": {
-                "vi": "Mỗi dòng còn có hạn: cuộc trò chuyện im lặng quá lâu thì bị xóa khỏi bảng để lấy chỗ. Đó là lý do vài ứng dụng phải gửi gói \"giữ nhịp\" đều đặn, nếu không kết nối tự đứt sau vài phút không nói gì."
+                "vi": "Đó là lý do vài ứng dụng phải gửi gói \"giữ nhịp\" đều đặn — vài byte chẳng nói gì, chỉ để dòng của mình trong bảng khỏi bị dọn đi. Mỗi hãng router lại đặt hạn một khác, nên cùng một ứng dụng có nhà chạy êm, có nhà cứ vài phút lại rớt."
               }
             }
           ]
@@ -576,6 +582,36 @@
               "solution": {
                 "vi": "Stateful — tường lửa có nhớ trạng thái của từng kết nối."
               }
+            },
+            {
+              "question": {
+                "kind": "mcq",
+                "id": "m7-b3-pra-3",
+                "prompt": {
+                  "vi": "Bạn mở phiên điều khiển máy ở cơ quan rồi đi ăn trưa. Quay lại thấy kết nối đã đứt, dù mạng vẫn tốt. Chuyện gì đã xảy ra?"
+                },
+                "choices": [
+                  {
+                    "vi": "Dòng của phiên đó trong bảng kết nối đã bị xóa vì im lặng quá lâu"
+                  },
+                  {
+                    "vi": "Router nhà bạn đã đổi địa chỉ công cộng giữa chừng nên phiên gãy"
+                  },
+                  {
+                    "vi": "Port 3389 chỉ mở được vài phút mỗi lượt rồi tự đóng lại"
+                  }
+                ],
+                "answerIndex": 0,
+                "hintTopic": {
+                  "vi": "chuyện xảy ra với một dòng nằm im quá lâu trong bảng"
+                }
+              },
+              "hint": {
+                "vi": "Bảng kết nối không giữ dòng nào mãi mãi — nó phải lấy chỗ cho cuộc trò chuyện mới."
+              },
+              "solution": {
+                "vi": "Dòng của phiên đó hết hạn và bị dọn khỏi bảng vì cả buổi trưa không ai nói gì; muốn giữ, ứng dụng phải đều đặn gửi gói \"giữ nhịp\"."
+              }
             }
           ]
         },
@@ -595,7 +631,11 @@
                   "khi nó là thư trả lời",
                   "khi no la thu tra loi",
                   "khi có trong bảng kết nối",
-                  "khi co trong bang ket noi"
+                  "khi co trong bang ket noi",
+                  "khớp một dòng trong bảng kết nối",
+                  "khớp một kết nối đang mở",
+                  "là thư trả lời cho",
+                  "là thư trả lời của"
                 ],
                 "hintTopic": {
                   "vi": "điều kiện duy nhất để được qua cửa"
@@ -1693,7 +1733,15 @@
         "chuyển tiếp port",
         "chuyen tiep port",
         "mở port",
-        "mo port"
+        "mo port",
+        "mở cổng",
+        "mo cong",
+        "chuyển tiếp cổng",
+        "chuyen tiep cong",
+        "forward cổng",
+        "forward cong",
+        "forward port",
+        "port forward"
       ],
       "hintTopic": {
         "vi": "khai trước một lối vào từ ngoài"
@@ -1710,13 +1758,13 @@
       },
       "choices": [
         {
-          "vi": "Có — NAT giấu địa chỉ chứ không lọc nội dung hay chặn máy trong nhà đi ra"
+          "vi": "Có — NAT chỉ tình cờ chặn khách không hẹn từ ngoài, còn máy trong nhà gọi ra đâu thì nó không quản"
+        },
+        {
+          "vi": "Có — vì NAT chỉ chặn được máy trong nhà gọi ra ngoài, còn khách lạ từ ngoài vào thì nó cho qua hết"
         },
         {
           "vi": "Không — NAT đã chặn sạch mọi thứ đi từ ngoài vào nên mạng trong nhà bạn kín rồi"
-        },
-        {
-          "vi": "Không — tường lửa chỉ cần cho công ty, mạng nhà không có gì đáng để mất"
         }
       ],
       "answerIndex": 0,
@@ -1724,7 +1772,7 @@
         "vi": "NAT khác tường lửa ở chỗ nào"
       },
       "explain": {
-        "vi": "NAT là bức tường tình cờ: nó giấu máy trong nhà nhưng không xem nội dung và không chặn máy trong nhà tự mở kết nối ra ngoài. Hai việc khác nhau."
+        "vi": "NAT là bức tường tình cờ: nó chặn được khách không hẹn từ ngoài vào chỉ vì cuốn sổ chưa có dòng nào cho họ, nhưng máy trong nhà tự mở kết nối ra ngoài thì nó không quản. Tường lửa mới là thứ đặt luật rõ ràng cho cả hai chiều."
       }
     }
   ]

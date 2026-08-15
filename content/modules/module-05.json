@@ -227,7 +227,7 @@
         ],
         "imageId": "palace-conveyor",
         "story": {
-          "vi": "Phòng 21 là quầy RA LỆNH của khu kho: người ta đứng đó hô \"lấy thùng này\", còn băng chuyền chở thùng thì chạy ở cửa bên. Không thùng nào dán kín."
+          "vi": "Phòng 21 là chỗ điều khiển băng chuyền của khu kho: đứng đó hô \"lấy thùng này\" là băng chuyền chở nguyên thùng tệp chạy qua. Không thùng nào dán kín."
         },
         "note": {
           "vi": "Chạy trên TCP"
@@ -632,10 +632,10 @@
               "conceptId": "m5-udp",
               "visualId": "vis-udp-nhanh",
               "body": {
-                "vi": "UDP là gửi thư THƯỜNG: không bắt tay, không đánh số, không đòi lại. Gói tới được thì tới, rớt thì thôi. Đổi lại, nó không có nhịp chờ nào — thứ mà cuộc gọi và trận game cần hơn là sự hoàn hảo."
+                "vi": "UDP là gửi thư THƯỜNG: không bắt tay, không đánh số, không đòi lại. Gói tới được thì tới, rớt thì thôi. Đổi lại, nó không có nhịp chờ nào — thứ mà cuộc gọi và trận game cần hơn là sự hoàn hảo. Một câu tra tên miền cũng đi lối này: hỏi một câu ngắn gọn trong một gói mà phải bắt tay ba nhịp thì phần thủ tục còn dài hơn phần nội dung."
               },
               "deepDive": {
-                "vi": "DNS cũng chọn UDP: một câu hỏi, một câu trả lời, gọn trong một gói. Bắt tay ba nhịp chỉ để hỏi một câu ngắn thì phần thủ tục còn dài hơn phần nội dung — mất công hơn là hỏi lại khi lỡ rớt."
+                "vi": "Lỡ câu hỏi tên miền rớt giữa đường thì máy chỉ việc hỏi lại — vẫn rẻ hơn là bắt tay ba nhịp cho từng lượt hỏi ngắn. Dịch vụ tra tên miền ấy tên là DNS — cái tên này sẽ trở lại ở những bài sau."
               }
             }
           ]
@@ -1414,7 +1414,7 @@
                 "m5-r-mysql"
               ],
               "deepDive": {
-                "vi": "Cả ba phòng này là mục tiêu ưa thích của kẻ tấn công, vì đằng sau chúng là dữ liệu chứ không phải giao diện. Nguyên tắc chung: đừng bao giờ để 445 và 3306 nhìn thẳng ra Internet. Một chi tiết đáng nhớ về phòng 21: cửa ấy chỉ là chỗ RA LỆNH — \"gửi tệp này\", \"liệt kê thư mục kia\" — còn thùng tệp thật lại đi qua một cửa khác mở riêng cho từng lượt. Chính chỗ tách đôi đó làm FTP hay vỡ khi có tường lửa đứng giữa: tường lửa thấy cửa lệnh thì cho qua, còn cửa chở hàng mở sau lưng nó thì không (bạn sẽ gặp lại chuyện này ở Module 7)."
+                "vi": "Cả ba phòng này là mục tiêu ưa thích của kẻ tấn công, vì đằng sau chúng là dữ liệu chứ không phải giao diện. Nguyên tắc chung: đừng bao giờ để 445 và 3306 nhìn thẳng ra Internet. Một chi tiết đáng nhớ về phòng 21: cái băng chuyền ấy thật ra chạy ở một cửa riêng. Phòng 21 chỉ là chỗ RA LỆNH — \"gửi tệp này\", \"liệt kê thư mục kia\" — còn thùng tệp thật lại đi qua một cửa khác mở riêng cho từng lượt. Chính chỗ tách đôi đó làm FTP hay vỡ khi có tường lửa đứng giữa: tường lửa thấy cửa lệnh thì cho qua, còn cửa chở hàng mở sau lưng nó thì không (bạn sẽ gặp lại chuyện này ở Module 7)."
               }
             }
           ]
@@ -1587,7 +1587,7 @@
               "conceptId": "m5-cong-thu-tu",
               "visualId": "vis-cung-dien-toa-nha",
               "body": {
-                "vi": "Tầng 4 lo hai việc: thư từ và giờ giấc. Thùng thư bưu cục nhận thư chạy giữa các máy chủ; quầy xuất trình thẻ nhận thư do chính bạn gửi đi; và cái đồng hồ to giữ nhịp cho cả tòa nhà."
+                "vi": "Tầng 4 lo hai việc: thư từ và giờ giấc. Thùng thư bưu cục nhận thư chạy giữa các máy chủ; quầy xuất trình thẻ nhận thư do chính bạn gửi đi; và cái đồng hồ to giữ nhịp cho cả tòa nhà. Tách thư làm hai cửa là để chặn thư rác: 25 chỉ dành cho bưu cục nói với bưu cục, còn thư của chính bạn phải qua 587 và phải trình thẻ — không phải ai cũng gửi bừa được."
               },
               "palaceTour": [
                 "m5-r-smtp",
@@ -1595,7 +1595,7 @@
                 "m5-r-ntp"
               ],
               "deepDive": {
-                "vi": "Tách 25 và 587 là để chống thư rác: port 25 chỉ dành cho máy chủ nói chuyện với máy chủ, còn người dùng gửi thư phải qua 587 và phải đăng nhập. Nhà mạng thường chặn thẳng port 25 đi ra từ máy người dùng."
+                "vi": "Nhà mạng thường chặn thẳng port 25 đi ra từ máy người dùng: máy nào trong nhà lỡ nhiễm mã độc rồi tự phát thư rác cũng không ra nổi khỏi cửa nhà mạng."
               }
             }
           ]
@@ -1690,7 +1690,10 @@
                 "thư rác",
                 "spam",
                 "giả mạo",
-                "chặn"
+                "chặn",
+                "gửi bừa",
+                "thư quảng cáo",
+                "gửi hàng loạt"
               ]
             ],
             "exampleAnswer": {
@@ -2150,11 +2153,14 @@
         },
         {
           "vi": "TCP — phải bảo đảm không mất khung hình nào"
+        },
+        {
+          "vi": "TCP — khung hình phải tới đúng thứ tự nên cần đánh số"
         }
       ],
       "answerIndex": 0,
       "explain": {
-        "vi": "Với cuộc gọi, dừng lại chờ gửi lại một mẩu đã rớt còn phá trải nghiệm hơn là mất luôn mẩu đó."
+        "vi": "Với cuộc gọi, dừng lại chờ gửi lại một mẩu đã rớt còn phá trải nghiệm hơn là mất luôn mẩu đó. Khung hình tới đúng thứ tự nghe cũng hợp lý, nhưng cái giá của việc đánh số rồi chờ gửi lại chính là độ trễ — thứ giết cuộc gọi trước tiên."
       }
     },
     {

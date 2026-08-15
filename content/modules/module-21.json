@@ -2892,7 +2892,11 @@
         "cong block",
         "blocked port",
         "cổng đang nằm im",
-        "cong dang nam im"
+        "cong dang nam im",
+        "blocking",
+        "blk",
+        "cổng blocking",
+        "cong blocking"
       ],
       "hintTopic": {
         "vi": "cổng đang nằm im của STP không phải cổng hỏng"
@@ -2910,7 +2914,8 @@
       "accept": [
         "show ip ospf neighbor",
         "sh ip ospf neighbor",
-        "show ip ospf neighbour"
+        "show ip ospf neighbour",
+        "show ip ospf neighbors"
       ],
       "hintTopic": {
         "vi": "bảng phải ra chữ Full"
@@ -3004,10 +3009,10 @@
           "vi": "Vì thiếu vế nào cũng có cách giải sai: rút dây đạt vế chặn, mở toang đạt thông"
         },
         {
-          "vi": "Vì hai mục tiêu giúp bài thi trông dài hơn và có vẻ khó hơn với người học"
+          "vi": "Vì vế chặn mới đo luật, còn vế thông chỉ để xác nhận dây nối và định tuyến còn sống"
         },
         {
-          "vi": "Vì router yêu cầu số mục tiêu chẵn thì phần cứng mới xử lý được luật"
+          "vi": "Vì một dòng deny phải luôn đi kèm một dòng permit mới có hiệu lực, nên đo cả hai"
         }
       ],
       "answerIndex": 0,
@@ -3015,7 +3020,7 @@
         "vi": "mỗi vế chặn một kiểu giải tủ"
       },
       "explain": {
-        "vi": "Chỉ đo phải-chặn thì cấm sạch (hay rút dây) cũng đạt; chỉ đo phải-thông thì permit any any cũng đạt. Cặp mục tiêu ép luật đúng nghĩa: chặn đúng kẻ cần chặn, giữ nguyên đường của mọi người khác."
+        "vi": "Chỉ đo phải-chặn thì cấm sạch (hay rút dây) cũng đạt; chỉ đo phải-thông thì permit any any cũng đạt. Cặp mục tiêu ép luật đúng nghĩa: chặn đúng kẻ cần chặn, giữ nguyên đường của mọi người khác. Vế thông không phải để soi dây nối, cũng không phải để chấm riêng dòng permit — nó là cái bẫy bắt luật cấm quá tay."
       }
     },
     {
@@ -3082,7 +3087,7 @@
           "vi": "Báo động ngay vì router mới dựng thì CPU phải luôn nằm dưới mức 10%"
         },
         {
-          "vi": "Bỏ qua vĩnh viễn vì chỉ số CPU không liên quan gì tới thiết bị mạng"
+          "vi": "So 55% với con số của chi nhánh cũ rồi kết luận cao hay thấp"
         }
       ],
       "answerIndex": 0,
@@ -3090,7 +3095,7 @@
         "vi": "mạng mới chưa có nếp cũ để so"
       },
       "explain": {
-        "vi": "Mạng mới dựng CHƯA có baseline — việc của tuần đầu là ghi nếp: 55% này chính là dữ liệu nền để mai kia phán 70% là bất thường hay chuyện thường. Không có chuẩn dưới-10% nào của ngành, và CPU router dĩ nhiên đáng theo dõi."
+        "vi": "Mạng mới dựng CHƯA có baseline — việc của tuần đầu là ghi nếp: 55% này chính là dữ liệu nền để mai kia phán 70% là bất thường hay chuyện thường. Không có chuẩn dưới-10% nào của ngành, còn nếp của chi nhánh cũ là nếp của MÁY KHÁC với tải khác, mượn sang đây là so nhầm gốc."
       }
     },
     {

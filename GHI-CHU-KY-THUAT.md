@@ -421,6 +421,36 @@ quan trước khi "sửa test cho xanh".
   người học đếm ra mâu thuẫn ngay trong một buổi: Hồ sơ kể 3 món, thẻ Hôm
   nay kể 5. Vì sao là 2 chứ không phải 1: quên một lần là chuyện thường
   của trí nhớ — cả cơ chế ôn ngắt quãng dựng lên là để đón đúng cú quên đó.
+- **Ba cổng chặn CHẤM OAN** (khối 21.62, `content.test.ts`). Lớp lỗi lớn
+  nhất của bộ nội dung là chấm sai người hiểu đúng — vô hình vì danh sách
+  `accept` viết tay, không ai thử ngược bao giờ.
+  1. **Mỗi câu gõ tay trong pool đề thi phải có ≥1 ca thử "gõ thế này cũng
+     đúng"** (hiện 97/97). Thêm câu thi mới mà quên viết ca thử là đỏ ngay.
+  2. **Nới `accept` thì phải kèm CA XẤU cho chính câu đó.** Bộ chấm khớp
+     theo cụm từ nằm trong câu, nên một mục accept ngắn và phổ thông biến
+     mọi câu chứa từ đó thành đúng — đã dính thật: thêm "gói" vào m1-mt-2
+     làm "gói cước" được chấm đúng, phải rút lại.
+  3. **Hai câu hỏi gần giống nhau (Jaccard ≥0.75, CÙNG bộ chữ số) thì
+     accept phải bằng nhau.** Bắt được lớp lỗi "phòng thi chấm chặt hơn
+     bài học" (m7-mt-11, m10-mt-1: bài dạy "mở cổng" là đúng, thi thì trừ
+     điểm). Vế "cùng bộ chữ số" là bắt buộc — "/24 là mask nào" và "/25 là
+     mask nào" viết gần y hệt mà là hai câu khác nhau.
+  Cổng lá chắn phủ định chỉ soi **mệnh đề đầu** của lời giải: lấy cả câu
+  thì dính mọi lời kể có chữ "không" và nó báo động 68 lần vô cớ.
+- **Cổng "lời giải phải qua bộ chấm" KHÔNG mở rộng được sang đề thi.**
+  Đã thử: `explain` của câu thi là lời KỂ, không phải cụm đáp án ("Ra khỏi
+  làng thì phải qua cổng làng"), nên soi nó đẻ ra 3 báo động giả và 0 lỗi
+  thật. Câu thi được canh bằng bộ ca thử ở trên, không bằng cổng này.
+- **Sửa file nội dung bằng script thì đọc/ghi với `newline=''`.** File nội
+  dung đang có vài ký tự CR mồ côi (dấu vết script khối 21.58); đọc kiểu
+  universal-newline sẽ lặng lẽ đổi chúng thành xuống dòng và đẻ ra diff giả
+  ở chỗ không ai sửa — đã dính một lần trong khối 21.62.
+- **Ngưỡng để PHÁN khác ngưỡng để KỂ** (khối 21.61). `theGanQuen` liệt kê
+  thẻ `lapses === 1` thành một bậc RIÊNG dưới mục hay quên, có nhãn nói rõ
+  nó chưa phải "hay quên" và KHÔNG kèm nút luyện lại. Ngưỡng 2 giữ nguyên
+  cho cả ba chỗ trên — đây không phải hạ ngưỡng. Lý do có bậc này: hộp
+  trống không trả lời được câu "vậy tôi đang hay quên cái gì", tức app
+  biết mà không nói. Hai bậc KHÔNG được chồng nhau (test khóa cả hai chiều).
 - **Nút LẶP phải mang TÊN RIÊNG trong nhãn đọc được** (P1, khối 21.60).
   Trang Học từng có 18 cửa thi vượt đọc y hệt nhau. Cứ chỗ nào một nút
   xuất hiện một-lần-mỗi-module hoặc một-lần-mỗi-bài thì `aria-label` phải
@@ -611,6 +641,18 @@ quan trước khi "sửa test cho xanh".
   hạn** (phá chính giãn cách). `calibration.ts` đối chiếu lời tự chấm với
   kết quả: "lơ mơ" luôn khớp, chỉ nói khi lệch, chỉ hỏi ở lượt chấm ĐẦU;
   cả hai KHÔNG lưu trữ, KHÔNG XP, KHÔNG đụng lịch SM-2 (test khóa).
+- **Cửa "chưa hiểu" trên thẻ ôn chỉ mở SAU KHI LẬT** (khối 21.61). Nó lấy
+  `metaphor` + `glossVi` + `iconId` của concept — thứ app vốn có sẵn từ
+  ngày đầu mà phòng ôn tập chưa bao giờ đọc tới (chỉ đọc mỗi `flashcard`).
+  Đưa ẩn dụ ra TRƯỚC lúc lật là phát gợi ý miễn phí, phá đúng động tác
+  retrieval — cùng họ luật với "không hiện độ tươi lúc ôn". Panel gắn
+  `key={cardId}` để sang thẻ mới thì tự đóng; thẻ cung điện không có ẩn
+  dụ/giải nghĩa (mặt sau vốn đã là chỗ + hình) nên chỉ còn đường về bài.
+- **Bản đồ trí nhớ mở ra được từng chủ đề** (khối 21.61, `memoryCardsOf`).
+  Hàng module giữ THỨ TỰ LỘ TRÌNH như cũ (bản đồ phải đứng yên), còn danh
+  sách thẻ BÊN TRONG xếp mờ nhất trước — bên ngoài là bản đồ, bên trong là
+  danh sách việc. Mở một chủ đề thì chủ đề đang mở đóng lại: trang Hồ sơ
+  đã dài, bung hết là bản đồ chìm mất.
 - Điều hướng: mở app còn thẻ đến hạn → vào Ôn tập trước (gate ở
   main.tsx, quyết định trong effect SAU khi zustand rehydrate). AppGate
   chặn mọi route tới khi `onboardingDone` VÀ nội dung prime xong.

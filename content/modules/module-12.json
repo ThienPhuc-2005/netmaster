@@ -289,6 +289,30 @@
               "solution": {
                 "vi": "Test-NetConnection. Gõ trần thì nó ping (PingSucceeded); thêm -Port <số> thì nó gõ đúng cánh cửa đó và trả TcpTestSucceeded."
               }
+            },
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m12-b1-ret-2",
+                "prompt": {
+                  "vi": "Vẫn không nhìn lại bài: lệnh nào đọc ra địa chỉ IP đang đặt trên các card mạng của chính máy bạn?"
+                },
+                "accept": [
+                  "get-netipaddress",
+                  "getnetipaddress",
+                  "get netipaddress",
+                  "get-netipaddress -addressfamily ipv4"
+                ],
+                "hintTopic": {
+                  "vi": "động từ \"lấy\" ghép với danh từ \"địa chỉ IP\""
+                }
+              },
+              "hint": {
+                "vi": "Vẫn khuôn Động từ - Danh từ: động từ nghĩa là \"lấy\", danh từ là \"địa chỉ IP\" viết theo lối PowerShell (NetIPAddress)."
+              },
+              "solution": {
+                "vi": "Get-NetIPAddress. Nó là ipconfig biết nói: in ra IPAddress, InterfaceAlias, PrefixLength thành từng dòng có cột, nên lọc tiếp được bằng dấu ống."
+              }
             }
           ],
           "selfExplain": {
@@ -1052,7 +1076,9 @@
                   "ban ghi co cot",
                   "đối tượng",
                   "doi tuong",
-                  "object"
+                  "object",
+                  "không phải chữ thuần",
+                  "khong phai chu thuan"
                 ],
                 "hintTopic": {
                   "vi": "vì sao New-ADUser tự nhặt được cột SamAccountName"
@@ -1376,10 +1402,10 @@
       "iconId": "icon-m12-cmdlet-mang",
       "flashcard": {
         "front": {
-          "vi": "Test-NetConnection gõ trần khác gì khi thêm -Port?"
+          "vi": "Get-NetIPAddress in ra cái gì? Còn Test-NetConnection gõ trần khác gì khi thêm -Port?"
         },
         "back": {
-          "vi": "Gõ trần thì nó ping và trả PingSucceeded (máy đích còn sống không). Thêm -Port <số> thì nó gõ đúng port đó và trả TcpTestSucceeded (dịch vụ ở port ấy có mở không). Ping True mà TcpTest False = máy sống, dịch vụ chết hoặc bị chặn."
+          "vi": "Get-NetIPAddress in ra địa chỉ IP đang đặt trên từng card mạng của chính máy bạn: IPAddress, InterfaceAlias, PrefixLength. Test-NetConnection gõ trần thì nó ping và trả PingSucceeded (máy đích còn sống không). Thêm -Port <số> thì nó gõ đúng port đó và trả TcpTestSucceeded (dịch vụ ở port ấy có mở không). Ping True mà TcpTest False = máy sống, dịch vụ chết hoặc bị chặn."
         }
       }
     },
@@ -1832,7 +1858,8 @@
         "goals": [
           {
             "kind": "found-line",
-            "mustContain": "pool exhausted"
+            "mustContain": "pool exhausted",
+            "maxMatches": 2
           }
         ],
         "solution": [

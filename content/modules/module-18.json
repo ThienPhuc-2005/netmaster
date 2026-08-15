@@ -642,7 +642,23 @@
                   "số địa chỉ đã cấp",
                   "so dia chi da cap",
                   "tỉ lệ sử dụng",
-                  "ti le su dung"
+                  "ti le su dung",
+                  "tỉ lệ đã dùng",
+                  "ti le da dung",
+                  "tỷ lệ đã dùng",
+                  "ty le da dung",
+                  "phần trăm sử dụng",
+                  "phan tram su dung",
+                  "phần trăm đã dùng",
+                  "phan tram da dung",
+                  "tỉ lệ lấp đầy",
+                  "ti le lap day",
+                  "số suất đã cấp",
+                  "so suat da cap",
+                  "tỉ lệ suất đã cấp",
+                  "ti le suat da cap",
+                  "tỉ lệ địa chỉ đã cấp",
+                  "ti le dia chi da cap"
                 ],
                 "hintTopic": {
                   "vi": "so số suất đã cho thuê với tổng số suất"
@@ -1287,7 +1303,7 @@
               "conceptId": "m18-split-dns",
               "visualId": "vis-split-dns",
               "body": {
-                "vi": "Doanh nghiệp giữ HAI cuốn sổ tên cho cùng một miền — gọi là split DNS. Cuốn NGOÀI đặt trên Internet, ai hỏi cũng đáp, nhưng chỉ ghi những tên đáng phơi ra đời: www, mail, và trỏ chúng về địa chỉ công cộng. Cuốn TRONG đặt ở phòng máy chủ, chỉ người trong mạng hỏi được: ghi đủ tên nội bộ (portal, kho file, máy in) trỏ thẳng về địa chỉ trong nhà — và với chính www, nó có thể trả địa chỉ NỘI BỘ để nhân viên đi đường tắt trong nhà thay vì vòng ra Internet rồi quay về. Cùng một cái tên, hai câu trả lời — mỗi câu đúng cho chỗ đứng của người hỏi."
+                "vi": "Doanh nghiệp giữ HAI cuốn sổ tên cho cùng một miền — gọi là split DNS. Cuốn NGOÀI đặt trên Internet, ai hỏi cũng đáp, nhưng chỉ ghi những tên đáng phơi ra đời: www, mail, và trỏ chúng về địa chỉ công cộng. Cuốn TRONG đặt ở phòng máy chủ, chỉ người trong mạng hỏi được: ghi đủ tên nội bộ (portal, kho file, máy in) trỏ thẳng về địa chỉ trong nhà — và với chính www, nó có thể trả địa chỉ NỘI BỘ để nhân viên đi đường tắt trong nhà thay vì vòng ra Internet rồi quay về. Trong nghề, mỗi cuốn sổ tên như thế gọi là một zone: sổ ngoài là zone công cộng, sổ trong là zone nội bộ. Cùng một cái tên, hai câu trả lời — mỗi câu đúng cho chỗ đứng của người hỏi."
               },
               "deepDive": {
                 "vi": "Vì sao không gộp một cuốn cho đỡ mệt? Hai lý do. Bảo mật: phơi cuốn sổ nội bộ ra Internet là phát miễn phí bản đồ phòng máy chủ cho kẻ dò la — tên máy, vai trò, địa chỉ trong nhà. Đường đi: người trong nhà mà bị trỏ ra địa chỉ công cộng sẽ đi vòng qua cửa NAT rồi quay ngược vào — chậm, và có kiến trúc còn tắc hẳn. Ca anh thực tập ở phần mở đầu là mặt còn lại của cùng đồng xu: ở nhà anh hỏi cuốn NGOÀI, mà cuốn ngoài thì cố tình không ghi tên nội bộ."
@@ -1346,7 +1362,17 @@
                   "trả ip trong nhà",
                   "tra ip trong nha",
                   "trỏ thẳng vào máy chủ trong nhà",
-                  "tro thang vao may chu trong nha"
+                  "tro thang vao may chu trong nha",
+                  "về địa chỉ nội bộ",
+                  "ve dia chi noi bo",
+                  "về ip nội bộ",
+                  "ve ip noi bo",
+                  "về địa chỉ trong nhà",
+                  "ve dia chi trong nha",
+                  "về máy chủ nội bộ",
+                  "ve may chu noi bo",
+                  "về máy chủ web nội bộ",
+                  "ve may chu web noi bo"
                 ],
                 "hintTopic": {
                   "vi": "cùng một tên nhưng câu trả lời dành cho người trong nhà"
@@ -1356,7 +1382,7 @@
                 "vi": "Đó chính là chỗ chị kế toán thấy \"nhanh hơn hẳn\" khi về bàn làm việc — sổ trong trả một địa chỉ khác sổ ngoài."
               },
               "solution": {
-                "vi": "Sổ trong trỏ www về địa chỉ NỘI BỘ của máy chủ web, nên người trong nhà đi đường tắt trong nhà. Sổ ngoài vẫn trỏ về địa chỉ công cộng cho khách Internet — hai câu trả lời cùng đúng, mỗi câu cho một chỗ đứng."
+                "vi": "Trỏ về địa chỉ nội bộ. Sổ trong trả cái tên www bằng địa chỉ trong nhà của máy chủ web, nên người trong nhà đi đường tắt; sổ ngoài vẫn trỏ về địa chỉ công cộng cho khách Internet — hai câu trả lời cùng đúng, mỗi câu cho một chỗ đứng."
               }
             }
           ]
@@ -1659,7 +1685,11 @@
                   "rút ngắn ttl",
                   "rut ngan ttl",
                   "hạ ttl xuống thật ngắn",
-                  "ha ttl xuong that ngan"
+                  "ha ttl xuong that ngan",
+                  "hạ xuống thật ngắn",
+                  "ha xuong that ngan",
+                  "giảm xuống",
+                  "giam xuong"
                 ],
                 "hintTopic": {
                   "vi": "điều khiển hạn nhớ từ trước, không xóa được lúc sau"
@@ -2197,7 +2227,11 @@
         "hạ xuống thật ngắn",
         "ha xuong that ngan",
         "giảm xuống",
-        "giam xuong"
+        "giam xuong",
+        "hạ xuống",
+        "ha xuong",
+        "hạ ttl xuống thật ngắn",
+        "ha ttl xuong that ngan"
       ],
       "hintTopic": {
         "vi": "trí nhớ ngoài kia chỉ hẹn giờ được từ trước"
