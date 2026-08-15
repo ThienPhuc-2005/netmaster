@@ -31,7 +31,7 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (19) M21 capstone + màn tốt nghiệp | XONG |
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
-**KHỐI MỚI NHẤT — 21.70 (08-15): 15 HÌNH VẼ HỎNG BỐ CỤC — chữ tràn khỏi khung, nhãn đè lên nhau.**
+**KHỐI MỚI NHẤT — 21.70 (08-15), đã commit `7bff594`: 15 HÌNH VẼ HỎNG BỐ CỤC — chữ tràn khỏi khung, nhãn đè lên nhau.**
 
 Chủ dự án chụp màn hình một hình ở Module 4 báo "chữ nhỏ, icon san sát". Quét cả
 app thì không phải một hình — **15 hình hỏng**, gần như trọn bộ hình mới của các
@@ -90,7 +90,7 @@ trắng, nên đã đọc rồi gộp về:
 dưới cỡ 8**. 1887 test xanh (chạy 4 lượt để chắc, một lượt đầu có 1 test đỏ lúc
 chạy đè lên build — ba lượt sau xanh sạch), typecheck sạch, build qua.
 
-**KHỐI TRƯỚC — 21.69 (08-15): ĐỀ THI THÔI CHÉP BÀI — 44 câu ở 15 module, và vá lỗ hổng của chính cái cổng vừa dựng.**
+**KHỐI TRƯỚC — 21.69 (08-15), đã commit `7bff594`: ĐỀ THI THÔI CHÉP BÀI — 44 câu ở 15 module, và vá lỗ hổng của chính cái cổng vừa dựng.**
 
 Việc nhận là "siết nốt độ chép của M3, M14, M15". Đo lại bằng ĐÚNG thước mà cổng
 chạy thật thì thứ hạng khác hẳn con số hôm qua: **M14 mới là module nặng nhất
@@ -125,7 +125,7 @@ ngưỡng khắt khe nhất — trước lượt này là 20 câu.
 **Sức khỏe:** 1887 test xanh, typecheck sạch, build qua, `content:review` render
 lại 21 module.
 
-**KHỐI TRƯỚC — 21.68 (08-15): BA VIỆC LỚN CÙNG LƯỢT — vá ENGINE PHÒNG KHÁM, làm Q10, dọn TRỌN mục R (9/9).**
+**KHỐI TRƯỚC — 21.68 (08-15), đã commit `7bff594`: BA VIỆC LỚN CÙNG LƯỢT — vá ENGINE PHÒNG KHÁM, làm Q10, dọn TRỌN mục R (9/9).**
 
 **① Engine phòng khám biết ĐO, không chỉ biết thông/không-thông.** Thêm độ trễ và
 rớt gói (`overlay.impairments` gắn vào SỢI DÂY, triệu chứng `ping-degraded`) — loại
