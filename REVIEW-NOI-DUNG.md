@@ -560,9 +560,9 @@ Phần A · 4 chặng · 4 bài · 5 khái niệm
 
 ## Địa chỉ — MAC, IP và Subnetting `module-3`
 
-Phần A · 6 chặng · 6 bài · 7 khái niệm · drill: subnet
+Phần A · 6 chặng · 7 bài · 9 khái niệm · drill: subnet
 
-**Chặng:** Số khung và biển số (m3-bai-1) → Đọc vị một địa chỉ IPv4 (m3-bai-2) → Nhà riêng, địa chỉ chung (m3-bai-3) → Kẻ ranh giới khu phố (m3-bai-4) → Nhẩm nhanh bằng magic number (m3-bai-5) → Biển số cho cả tương lai (m3-bai-6)
+**Chặng:** Số khung và biển số (m3-bai-1) → Đọc vị một địa chỉ IPv4 (m3-bai-2) → Nhà riêng, địa chỉ chung (m3-bai-3) → Kẻ ranh giới khu phố (m3-bai-4) → Nhẩm nhanh bằng magic number (m3-bai-5, m3-bai-7) → Biển số cho cả tương lai (m3-bai-6)
 
 ### Thư cuối module (hiện ở màn đậu bài thi)
 
@@ -769,7 +769,54 @@ Phần A · 6 chặng · 6 bài · 7 khái niệm · drill: subnet
 - Magic number = 256 − octet đáng chú ý của mask (vd /26 → 256 − 192 = 64).
 - Các mốc mạng nhảy theo bước magic number: .0, .64, .128, .192…
 - Network address = mốc gần nhất không vượt quá IP đang xét.
-- *Úp mở bài sau:* Mẹo đã nắm — giờ chỉ thiếu tốc độ. Drill "Luyện chia subnet" trong tab Học sinh đề mới mỗi ngày kèm đồng hồ đếm: ghé luyện mỗi ngày để tay nhẩm nhanh dần lên. Còn bài cuối module: chuyện IPv4… sắp hết sạch địa chỉ.
+- *Úp mở bài sau:* Mẹo đã nắm — nhưng mới ra được cái TÊN khu phố. Còn số nhà đầu, số nhà cuối, và cả khu chứa nổi mấy máy? Bài sau đọc trọn một khối.
+
+### Bài: Đọc trọn một khối `m3-bai-7`
+
+**1 · Khởi động (hook):** Bạn vừa tìm ra tên khu phố: 192.168.1.64/26. Nhưng cầm dải ấy đi cắm máy thì ba câu hỏi hiện ra ngay — số nhà đầu tiên cắm được là bao nhiêu, số nhà cuối là bao nhiêu, và cả khu chứa nổi mấy máy? Cả ba đều nằm sẵn trong khối đó.
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử: khối 192.168.1.64/26 có 64 địa chỉ. Cắm được bao nhiêu máy?
+  - **Dạng:** trắc nghiệm · 64 máy / **62 máy** ✓ / 63 máy
+  - **Vì sao:** 62. Hai địa chỉ trong khối bị giữ lại làm việc khác: một cái làm tên của cả khu, một cái để gọi chung cả khu. Bài này chỉ cho bạn chúng nằm ở đâu.
+
+**3 · Khám phá (teach):**
+- *[broadcast-addr]* Khối địa chỉ nào cũng có hai mốc bị giữ lại. Mốc ĐẦU khối là network address — tên của cả khu phố, thứ bạn vừa học cách nhẩm ở bài trước. Mốc CUỐI khối là broadcast address (địa chỉ quảng bá): gõ vào đó là gọi CẢ khu phố cùng lúc, nên không cấp cho máy nào. Tìm nó cũng bằng magic number: lấy mốc kế tiếp rồi lùi một số. Với 192.168.1.64/26, bước nhảy là 64 nên mốc kế là .128 — broadcast là 192.168.1.127.
+  - **Đào sâu hơn:** Vì sao phải có một địa chỉ gọi cả khu? Vì có lúc máy cần hỏi mà chưa biết hỏi ai — như lời xin địa chỉ lúc mới cắm dây, hay tiếng gọi tìm chủ một địa chỉ bạn sẽ gặp ở module sau. Không có địa chỉ chung thì không cách nào hô lên giữa sân làng. Đổi lại, tiếng gọi ấy chỉ lan trong đúng khu phố của nó — và đó cũng là một lý do người ta chia khu phố cho nhỏ lại.
+- *[so-may-dung-duoc]* Hai mốc bị giữ lại kéo theo một phép trừ: số máy cắm được = cỡ khối − 2. Khối /26 có 64 địa chỉ → 62 máy; /27 có 32 → 30 máy; /28 có 16 → 14 máy; /30 có 4 → 2 máy, vừa đủ hai đầu một sợi dây. Dải máy dùng được nằm gọn giữa hai mốc: từ mốc đầu cộng 1 tới mốc cuối trừ 1 — với 192.168.1.64/26 là .65 tới .126. Phép trừ này đi ngược cũng được: phòng cần 100 máy thì tìm khối nhỏ nhất có ít nhất 102 chỗ — /25 (128 địa chỉ, 126 máy) là vừa, còn /26 chỉ 62 máy nên trượt.
+  - **Đào sâu hơn:** Một ngoại lệ đáng biết trước khi đọc cấu hình thật: /31 chỉ có 2 địa chỉ, theo phép trừ thì còn 0 máy — vậy mà người ta vẫn dùng /31 cho đoạn dây nối hai router, và bỏ luôn luật trừ 2, vì đoạn dây ấy chẳng cần gọi cả khu bao giờ. Trong khóa này mình cứ dùng /30 cho đường nối, đúng luật trừ 2.
+
+**4 · Thử tay (practice, fading 2):**
+- **Đề:** Tìm địa chỉ broadcast của khối 192.168.1.64/26. (trả lời dạng x.x.x.x)
+  - **Dạng:** gõ tay · **Chấp nhận:** 192.168.1.127
+  - **Chủ đề gợi ý (tầng 1):** mốc kế tiếp rồi lùi một số
+  - **Gợi ý (tầng 2):** Bước nhảy của /26 là 64, nên mốc đứng sau .64 là .128. Broadcast nằm ngay trước mốc đó.
+  - **Lời giải (tầng 3):** 192.168.1.127. Mốc kế tiếp là .128, lùi một số là .127 — địa chỉ gọi cả khu, không cấp cho máy nào.
+- **Đề:** Một mạng /27 cắm được cho bao nhiêu máy? (trả lời một con số)
+  - **Dạng:** gõ tay · **Chấp nhận:** 30 | 30 máy | 30 host
+  - **Chủ đề gợi ý (tầng 1):** cỡ khối trừ 2
+  - **Gợi ý (tầng 2):** /27 → 256 − 224 = 32 địa chỉ một khối. Rồi nhớ hai địa chỉ bị giữ lại.
+  - **Lời giải (tầng 3):** 30. Khối /27 có 32 địa chỉ; trừ mốc đầu (tên khu phố) và mốc cuối (gọi cả khu) thì còn 30 chỗ cắm máy.
+- **Đề:** Một phòng có 100 máy. Khối nhỏ nhất đủ chỗ cho phòng đó là prefix nào? (trả lời dạng /xx)
+  - **Dạng:** gõ tay · **Chấp nhận:** /25 | 25 | 255.255.255.128
+  - **Chủ đề gợi ý (tầng 1):** đi ngược phép trừ 2
+  - **Gợi ý (tầng 2):** Cần 100 máy thì khối phải có ít nhất 102 địa chỉ. Đi từ khối nhỏ lên: 64, rồi 128.
+  - **Lời giải (tầng 3):** /25. Khối /26 có 64 địa chỉ nên chỉ được 62 máy — thiếu. Khối /25 có 128 địa chỉ, trừ 2 còn 126 máy — đủ và không phí quá nhiều.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: tìm địa chỉ broadcast của khối 10.0.5.64/28. (trả lời dạng x.x.x.x)
+  - **Dạng:** gõ tay · **Chấp nhận:** 10.0.5.79
+  - **Gợi ý (tầng 2):** /28 → bước nhảy 16. Mốc sau .64 là bao nhiêu, và broadcast đứng ở đâu so với mốc đó?
+  - **Lời giải (tầng 3):** 10.0.5.79. Bước nhảy của /28 là 16 nên mốc kế tiếp là .80; lùi một số ra .79 — địa chỉ cuối khối.
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao một khối 64 địa chỉ lại chỉ cắm được 62 máy?
+  - **Nhóm ý cần chạm:** [mốc đầu, địa chỉ đầu, đầu khối, network, tên khu] · [mốc cuối, địa chỉ cuối, cuối khối, broadcast, gọi cả khu] · [trừ 2, trừ hai, bớt 2, bớt hai, hai địa chỉ, hai cái]
+  - **Trả lời mẫu:** Vì trong 64 địa chỉ ấy có hai cái không cắm máy được: địa chỉ đầu khối là tên của cả khu phố, còn địa chỉ cuối khối là chỗ để gọi chung cả khu. Trừ hai cái đó đi thì còn 62 số nhà thật.
+
+**6 · Tổng kết:**
+- Mốc đầu khối là tên khu phố (network), mốc cuối là địa chỉ gọi cả khu (broadcast).
+- Broadcast = mốc kế tiếp lùi một số; máy cắm được nằm gọn giữa hai mốc.
+- Số máy dùng được = cỡ khối − 2; đi ngược lại thì chọn khối nhỏ nhất đủ số máy cộng 2.
+- *Úp mở bài sau:* Giờ bạn đọc được trọn một khối, nên drill "Luyện chia subnet" hỏi kiểu nào bạn cũng có đường nhẩm. Còn bài cuối module: chuyện IPv4… sắp hết sạch địa chỉ.
 
 ### Bài: Đọc biển số của tương lai `m3-bai-6`
 
@@ -811,7 +858,7 @@ Phần A · 6 chặng · 6 bài · 7 khái niệm · drill: subnet
 - Chuỗi nhóm 0 liên tiếp rút gọn bằng "::" — đúng một lần duy nhất.
 - *Úp mở bài sau:* Bạn đã cầm trọn bộ chìa khóa địa chỉ: MAC, IPv4, private/public, mask, magic number, IPv6. Bài thi Module 3 chờ ngay ngoài cửa — vượt ải là bước sang Phần B: sờ tận tay switch, router và VLAN.
 
-### Khái niệm & flashcard (7)
+### Khái niệm & flashcard (9)
 
 - **MAC address** `mac` — Địa chỉ MAC — số định danh phần cứng gắn chết vào card mạng từ nhà máy
   - Ẩn dụ: MAC như số khung xe: dập từ nhà máy, đi theo xe suốt đời — đổi chủ, đổi tỉnh cũng không đổi số khung.
@@ -831,11 +878,17 @@ Phần A · 6 chặng · 6 bài · 7 khái niệm · drill: subnet
 - **Magic number** `magic-number` — Quy tắc nhẩm chia subnet: magic number = 256 trừ octet đáng chú ý của mask
   - Ẩn dụ: Bước nhảy giữa các mốc đầu khu phố: biết bước nhảy là đọc được ranh giới mọi khu phố trên cả con đường.
   - Thẻ ôn: *Cách tìm network address của một IP bằng magic number?* → Magic number = 256 − octet đáng chú ý của mask; các mốc mạng nhảy theo bước đó; network address là mốc gần nhất KHÔNG vượt quá IP. Ví dụ 192.168.1.130/26: 256 − 192 = 64 → mốc 128 → network 192.168.1.128.
+- **Broadcast address** `broadcast-addr` — Địa chỉ cuối khối — gọi chung cả khu phố, không cấp cho máy nào
+  - Ẩn dụ: Cái loa phường treo ở cuối khu: gọi vào đó là cả khu nghe thấy, nên không nhà nào lấy nó làm số nhà.
+  - Thẻ ôn: *Địa chỉ broadcast của một khối nằm ở đâu, và tìm bằng cách nào?* → Ở mốc CUỐI khối — lấy mốc kế tiếp trừ 1. Với 192.168.1.64/26: mốc kế là .128 → broadcast .127. Gõ vào đó là gọi cả khu nên không cấp cho máy nào.
+- **Host dùng được** `so-may-dung-duoc` — Số máy cắm được trong một khối = cỡ khối trừ 2 (mốc đầu và mốc cuối)
+  - Ẩn dụ: Dãy phố có 64 số nhà, nhưng số đầu là biển tên phố còn số cuối là cái loa — chỉ 62 nhà ở thật.
+  - Thẻ ôn: *Một khối /27 cắm được bao nhiêu máy, và vì sao?* → 30 máy. Khối /27 có 32 địa chỉ, trừ 2 mốc bị giữ lại: đầu khối là tên mạng, cuối khối là địa chỉ gọi cả khu.
 - **IPv6** `ipv6` — Thế hệ địa chỉ IP mới dài 128 bit, viết hex 8 nhóm ngăn bằng dấu hai chấm
   - Ẩn dụ: Tấm biển số dài đến mức mỗi hạt cát trên Trái Đất cũng có phần — không bao giờ lo cạn kho số.
   - Thẻ ôn: *IPv6 dài bao nhiêu bit và viết thế nào?* → 128 bit; viết hex thành 8 nhóm ngăn bằng ":"; chuỗi nhóm 0 liên tiếp rút gọn bằng "::" đúng một lần — ví dụ 2001:db8::1.
 
-### Bài kiểm tra module (pool 12 câu, mỗi lượt rút 8, cần ≥ 85%)
+### Bài kiểm tra module (pool 14 câu, mỗi lượt rút 8, cần ≥ 85%)
 
 - **Đề:** Bạn mang laptop từ nhà đến quán cà phê. Điều gì xảy ra với hai địa chỉ của máy?
   - **Dạng:** trắc nghiệm · MAC đổi theo mạng mới, IP giữ nguyên / **IP đổi theo mạng mới, MAC giữ nguyên** ✓ / Cả hai cùng đổi theo mạng mới
@@ -880,6 +933,14 @@ Phần A · 6 chặng · 6 bài · 7 khái niệm · drill: subnet
   - **Dạng:** gõ tay · **Chấp nhận:** /26 | 26
   - **Chủ đề gợi ý (tầng 1):** CIDR đếm số bit thuộc phần mạng
   - **Vì sao:** 255.255.255.192 có 26 bit đầu là 1 (8 + 8 + 8 + 2), nên viết gọn là /26 — cũng chính là mask có magic number 64.
+- **Đề:** Địa chỉ broadcast của mạng 192.168.20.32/27 là gì? (trả lời dạng x.x.x.x)
+  - **Dạng:** gõ tay · **Chấp nhận:** 192.168.20.63
+  - **Chủ đề gợi ý (tầng 1):** mốc kế tiếp lùi một số
+  - **Vì sao:** 192.168.20.63. Bước nhảy của /27 là 32 nên mốc kế tiếp sau .32 là .64; lùi một số ra .63 — địa chỉ cuối khối, dành để gọi cả khu.
+- **Đề:** Một mạng /28 cắm được cho bao nhiêu máy? (trả lời một con số)
+  - **Dạng:** gõ tay · **Chấp nhận:** 14 | 14 máy | 14 host
+  - **Chủ đề gợi ý (tầng 1):** cỡ khối trừ 2
+  - **Vì sao:** 14. Khối /28 có 16 địa chỉ; trừ mốc đầu (tên mạng) và mốc cuối (broadcast) thì còn 14 chỗ cắm máy.
 
 ## Switch, Router, VLAN — Thiết bị trong làng `module-4`
 

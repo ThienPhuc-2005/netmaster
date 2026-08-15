@@ -773,6 +773,8 @@ describe('bộ nội dung', () => {
       ['m3-mt-9', 'hai dấu hai chấm'],
       ['m3-mt-10', 'mạng 10.0.5.64'],
       ['m3-mt-12', 'prefix /26'],
+      ['m3-mt-13', 'broadcast là 192.168.20.63'],
+      ['m3-mt-14', '14 máy'],
       ['m4-mt-2', 'địa chỉ MAC của máy'],
       ['m4-mt-4', 'giao thức ARP'],
       ['m4-mt-6', 'router (bộ định tuyến)'],

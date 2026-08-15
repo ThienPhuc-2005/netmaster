@@ -427,6 +427,85 @@ function MagicNumber({ title }: { title?: string }) {
   )
 }
 
+/**
+ * Trọn một khối /26: mốc đầu là tên khu phố, mốc cuối là tiếng gọi cả khu,
+ * phần giữa mới là số nhà cắm được. Vẽ đúng dải .64 → .127 của bài học.
+ */
+function BlockAnatomy({ title }: { title?: string }) {
+  const x = (v: number) => 20 + ((v - 64) / 64) * 180
+  return (
+    <Frame title={title}>
+      {/* Thân khối: phần giữa tô nhạt = chỗ cắm máy */}
+      <rect x={x(65)} y="52" width={x(126) - x(65)} height="22" rx="3" fill="var(--accent)" opacity="0.18" />
+      <path d={`M${x(64)} 63 H${x(127)}`} stroke="var(--edge)" strokeWidth="2" fill="none" />
+      {[64, 127].map((v) => (
+        <path key={v} d={`M${x(v)} 50 v26`} stroke="var(--warn)" strokeWidth="2.5" fill="none" />
+      ))}
+      <text x={x(64)} y={44} textAnchor="middle" fontSize="9" fill="var(--warn)" style={{ fontFamily: 'var(--font-mono)' }}>
+        .64
+      </text>
+      <text x={x(127)} y={44} textAnchor="middle" fontSize="9" fill="var(--warn)" style={{ fontFamily: 'var(--font-mono)' }}>
+        .127
+      </text>
+      <text x={x(64)} y={92} textAnchor="middle" fontSize="8" fill="var(--ink-muted)">
+        tên khu phố
+      </text>
+      <text x={x(127)} y={92} textAnchor="middle" fontSize="8" fill="var(--ink-muted)">
+        gọi cả khu
+      </text>
+      <text x={x(95)} y={68} textAnchor="middle" fontSize="9" fill="var(--ink)" style={{ fontFamily: 'var(--font-mono)' }}>
+        .65 → .126
+      </text>
+      <text x={x(95)} y={110} textAnchor="middle" fontSize="9" fill="var(--accent)">
+        62 số nhà cắm được
+      </text>
+      <text x={20} y={24} fontSize="10" fill="var(--ink-muted)" style={{ fontFamily: 'var(--font-mono)' }}>
+        192.168.1.0/26 · khối .64
+      </text>
+    </Frame>
+  )
+}
+
+/** Số máy dùng được = cỡ khối trừ 2 — hai đầu bị lấy mất, giữa mới là máy. */
+function UsableHosts({ title }: { title?: string }) {
+  const rows: [string, number, number][] = [
+    ['/26', 64, 62],
+    ['/27', 32, 30],
+    ['/28', 16, 14],
+    ['/30', 4, 2],
+  ]
+  return (
+    <Frame title={title}>
+      <text x={20} y={24} fontSize="10" fill="var(--ink-muted)">
+        cỡ khối − 2 = số máy
+      </text>
+      {rows.map(([name, size, usable], i) => {
+        const y = 42 + i * 20
+        return (
+          <g key={name}>
+            <text x={20} y={y + 4} fontSize="10" fill="var(--ink)" style={{ fontFamily: 'var(--font-mono)' }}>
+              {name}
+            </text>
+            <rect x="48" y={y - 7} width="12" height="12" rx="2" fill="var(--warn)" opacity="0.55" />
+            <rect x="62" y={y - 7} width={Math.max(96 * (usable / 64), 14)} height="12" rx="2" fill="var(--accent)" opacity="0.32" />
+            <rect x={62 + Math.max(96 * (usable / 64), 14)} y={y - 7} width="12" height="12" rx="2" fill="var(--warn)" opacity="0.55" />
+            <text
+              x={186}
+              y={y + 4}
+              textAnchor="end"
+              fontSize="10"
+              fill="var(--ink)"
+              style={{ fontFamily: 'var(--font-mono)' }}
+            >
+              {size} − 2 = {usable}
+            </text>
+          </g>
+        )
+      })}
+    </Frame>
+  )
+}
+
 /** IPv6: biển số dài — đặt cạnh biển IPv4 cho thấy độ chênh. */
 function Ipv6Plate({ title }: { title?: string }) {
   return (
@@ -4519,6 +4598,11 @@ const REGISTRY: Record<string, VisualComponent> = {
   'vis-nha-rieng-cong-cong': PrivatePublic,
   'vis-hang-rao-khu-pho': MaskFence,
   'vis-magic-number': MagicNumber,
+  'vis-doc-khoi': BlockAnatomy,
+  'icon-doc-khoi': BlockAnatomy,
+  'vis-hook-doc-khoi': BlockAnatomy,
+  'vis-so-may-dung-duoc': UsableHosts,
+  'icon-so-may-dung-duoc': UsableHosts,
   'vis-ipv6-bien-so-dai': Ipv6Plate,
   // Module 4 — thiết bị trong làng
   'vis-switch-nhieu-cong': SwitchHub,

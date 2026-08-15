@@ -31,7 +31,24 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (19) M21 capstone + màn tốt nghiệp | XONG |
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
-**KHỐI MỚI NHẤT — 21.63 (08-15), chưa commit: VÁ 76 CHỖ CỦA BIÊN BẢN (việc B).**
+**KHỐI MỚI NHẤT — 21.64 (08-15), chưa commit: DẠY "ĐỌC TRỌN MỘT KHỐI" (việc C, lỗ hổng Q2).**
+- Thêm bài `m3-bai-7` "Đọc trọn một khối" vào chặng 5 của Module 3 (chặng đó
+  giờ có 2 bài — chặng đã kín 6 nên không thêm chặng được). Hai khái niệm mới:
+  **Broadcast address** và **Host dùng được**, mỗi cái một hình vẽ mới, một thẻ
+  ôn, và câu luyện riêng.
+- **Không chỉ lấp kiến thức — nó chữa một tính năng đang HỎNG.** Màn luyện
+  subnet trộn 6 loại đề, trong đó 4 loại hỏi thứ Module 3 chưa dạy chữ nào
+  (broadcast, dải host dùng được, đếm host, chọn prefix cho N máy), mà bài 5
+  lại dặn "ghé luyện mỗi ngày". Giờ cả 6 loại đều có bài dạy đứng sau.
+- Câu úp mở bài 5 sửa lại để trỏ sang bài mới thay vì nhảy thẳng sang IPv6.
+- Pool đề thi M3: 12 → 14 câu (thêm câu broadcast + câu đếm máy).
+- **Cổng của khối 21.62 chặn đúng tôi**: thêm hai câu thi gõ tay mà chưa viết
+  ca thử "gõ thế này cũng đúng" → test đỏ ngay, phải viết mới qua.
+- 1873 test xanh, typecheck sạch, build qua. Kiểm browser thật: bài mới nằm
+  đúng sau bài 5 trong lộ trình, hai hình vẽ mới hiện đủ nhãn, gõ
+  `192.168.1.127` vào câu broadcast được chấm ĐÚNG. Seed đã xóa.
+
+**KHỐI TRƯỚC — 21.63 (08-15), đã commit `a463b12` (chung với 21.62): VÁ 76 CHỖ CỦA BIÊN BẢN (việc B).**
 - **Chữa 76 phát hiện**, bỏ qua 11 (kèm lý do), **9 việc để lại thành khối
   riêng** (đã cất ở mục R của `Y-TUONG.md`).
 - **Mỗi file sửa xong có một người soi lại bằng `git diff`** — và nó bắt được
@@ -48,7 +65,7 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
   **7 → 5**, tổng câu hỏi **696 → 706** (+10 câu lấp chỗ "dạy rồi không hỏi lại").
 - 1873 test xanh, typecheck sạch, build qua, bản đọc duyệt render lại.
 
-**KHỐI TRƯỚC — 21.62 (08-15), chưa commit: CỔNG CHẶN CHẤM OAN (việc A).**
+**KHỐI TRƯỚC — 21.62 (08-15), đã commit `a463b12`: CỔNG CHẶN CHẤM OAN (việc A).**
 - **Dựng 3 cổng tự động** trong `content.test.ts` — xem mục 7 của sổ kỹ thuật.
   Cổng lớn nhất: mỗi câu gõ tay trong pool đề thi phải có một ca thử "gõ thế
   này cũng đúng". Trước lượt này 8/97 câu có, giờ **97/97**.
@@ -71,7 +88,7 @@ ngược bài học** (11 chỗ), **đề thi chép nguyên văn câu đã làm*
 10 lỗ hổng kiến thức đã cất vào `Y-TUONG.md` mục Q (9 cái "phải có").
 Chưa sửa gì — chờ chủ dự án chọn việc.
 
-**KHỐI MỚI NHẤT — 21.61 (08-15), chưa commit:**
+**KHỐI TRƯỚC — 21.61 (08-15), đã commit `145eb53`:**
 **Ba chỗ chủ dự án chỉ ra khi tự học thật — thẻ ôn không giúp hiểu, và
 trang Hồ sơ nói chung chung.**
 - **Thẻ ôn có cửa "chưa hiểu — nói theo cách khác".** Người học quên đi
