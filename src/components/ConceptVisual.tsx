@@ -427,6 +427,607 @@ function MagicNumber({ title }: { title?: string }) {
   )
 }
 
+// ---------------------------------------------------------------
+// Tầng dây thật (Module 4) — thứ mà cả khóa vốn chỉ có hai trạng thái
+// "cắm" và "tuột", trong khi ngoài đời tầng thấp nhất hỏng tinh vi hơn.
+// ---------------------------------------------------------------
+
+/** Cáp đồng 100m so với cáp quang: giới hạn nào là giới hạn thật. */
+function CableCopperFiber({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <text x={18} y={20} fontSize="9" fill="var(--ink-muted)">
+        cáp đồng — tối đa 100 m
+      </text>
+      <path d="M18 34 H120" stroke="var(--accent)" strokeWidth="3" fill="none" />
+      <path d="M120 34 H190" stroke="var(--warn)" strokeWidth="3" strokeDasharray="4 3" fill="none" />
+      <path d="M120 28 v12" stroke="var(--warn)" strokeWidth="1.5" fill="none" />
+      <text x={122} y={26} fontSize="8" fill="var(--warn)">
+        100 m
+      </text>
+      <text x={124} y={48} fontSize="8" fill="var(--warn)">
+        quá vạch: tín hiệu rơi rớt
+      </text>
+      <text x={18} y={78} fontSize="9" fill="var(--ink-muted)">
+        cáp quang — hàng cây số, không sợ nhiễu
+      </text>
+      <path d="M18 92 H190" stroke="var(--accent)" strokeWidth="3" fill="none" />
+      <circle cx="18" cy="92" r="3.5" fill="var(--accent)" />
+      <circle cx="190" cy="92" r="3.5" fill="var(--accent)" />
+      <text x={18} y={116} fontSize="8" fill="var(--ink-muted)">
+        đồng dẫn điện nên ăn nhiễu; quang dẫn ánh sáng nên không
+      </text>
+    </Frame>
+  )
+}
+
+/**
+ * Mở bài "khám sợi dây": một cổng có đèn, và một dấu hỏi. Cố ý KHÁC hình
+ * dạy ngay sau nó — thấy lại y hệt bức tranh vừa xem thì bước Đoán thử
+ * mất sạch sức nặng (người soi bắt được ở khối 21.67).
+ */
+function CableHookQuestion({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <rect x="60" y="42" width="60" height="40" rx="4" fill="none" stroke="var(--ink-muted)" strokeWidth="1.8" />
+      <rect x="80" y="34" width="20" height="9" rx="2" fill="none" stroke="var(--ink-muted)" strokeWidth="1.8" />
+      <path d="M90 34 V16" stroke="var(--ink-muted)" strokeWidth="2.5" fill="none" />
+      <circle cx="70" cy="90" r="4.5" fill="var(--accent)" />
+      <circle cx="88" cy="90" r="4.5" fill="none" stroke="var(--ink-muted)" strokeWidth="1.5" />
+      <text x={132} y={62} fontSize="34" fill="var(--warn)" opacity="0.85">
+        ?
+      </text>
+      <text x={60} y={112} fontSize="8.5" fill="var(--ink)">
+        hai cái đèn này khai được những gì?
+      </text>
+    </Frame>
+  )
+}
+
+/** Ba trạng thái đèn cổng — phép chẩn đoán rẻ nhất mà ai cũng làm được. */
+function PortLeds({ title }: { title?: string }) {
+  const o: [number, string, string, string][] = [
+    [22, 'none', 'tối om', 'nghi dây, đầu bấm, cổng'],
+    [80, 'var(--accent)', 'sáng đứng yên', 'hai đầu đã bắt tay'],
+    [138, 'var(--accent)', 'nháy liên tục', 'đang có dữ liệu chạy'],
+  ]
+  return (
+    <Frame title={title}>
+      {o.map(([x, mau, ten, chu], i) => (
+        <g key={x}>
+          <rect x={x} y="30" width="46" height="30" rx="3" fill="none" stroke="var(--ink-muted)" strokeWidth="1.5" />
+          <rect x={x + 16} y="26" width="14" height="6" rx="1" fill="none" stroke="var(--ink-muted)" strokeWidth="1.5" />
+          <circle cx={x + 8} cy="66" r="4" fill={mau} stroke={mau === 'none' ? 'var(--ink-muted)' : mau} strokeWidth="1.5" />
+          {i === 2 && <circle cx={x + 8} cy="66" r="7.5" fill="none" stroke="var(--accent)" strokeWidth="1" opacity="0.6" />}
+          <text x={x + 18} y={70} fontSize="8" fill={mau === 'none' ? 'var(--warn)' : 'var(--accent)'}>
+            {ten}
+          </text>
+          <text x={x} y={88} fontSize="7.5" fill="var(--ink-muted)">
+            {chu.slice(0, 22)}
+          </text>
+        </g>
+      ))}
+      <text x={18} y={112} fontSize="8" fill="var(--ink)">
+        đèn tối là bệnh tầng 1 — chưa cần mở máy tính lên
+      </text>
+    </Frame>
+  )
+}
+
+/** Duplex lệch: một bên hai làn, một bên một làn — đường vẫn thông mà ì. */
+function DuplexMismatch({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <text x={18} y={18} fontSize="9" fill="var(--accent)">
+        full duplex — vừa nói vừa nghe
+      </text>
+      <path d="M18 32 H150" stroke="var(--accent)" strokeWidth="2" fill="none" markerEnd="url(#cv-arrow)" />
+      <path d="M150 44 H18" stroke="var(--accent)" strokeWidth="2" fill="none" markerEnd="url(#cv-arrow)" />
+      <text x={18} y={72} fontSize="9" fill="var(--warn)">
+        half duplex — nói xong mới tới lượt nghe
+      </text>
+      <path d="M18 86 H150" stroke="var(--warn)" strokeWidth="2" fill="none" markerEnd="url(#cv-arrow)" />
+      <circle cx="165" cy="86" r="6" fill="none" stroke="var(--warn)" strokeWidth="1.5" />
+      <text x={160} y={89} fontSize="7" fill="var(--warn)">
+        chờ
+      </text>
+      <text x={18} y={112} fontSize="8" fill="var(--ink)">
+        hai đầu lệch nhau: dây vẫn thông, tốc độ tụt thảm
+      </text>
+    </Frame>
+  )
+}
+
+// ---------------------------------------------------------------
+// HTTPS thật sự làm gì (Module 6)
+// ---------------------------------------------------------------
+
+/** Hai ổ khóa vàng y hệt nhau — một thật một giả. */
+function PadlockTwice({ title }: { title?: string }) {
+  const khoa = (x: number, ten: string, that: boolean) => (
+    <g>
+      <rect x={x} y="40" width="88" height="22" rx="4" fill="none" stroke="var(--edge)" strokeWidth="1.5" />
+      <path d={`M${x + 9} 51 v-4 a4 4 0 0 1 8 0 v4`} fill="none" stroke="var(--warn)" strokeWidth="1.6" />
+      <rect x={x + 7} y="50" width="12" height="9" rx="1.5" fill="var(--warn)" opacity="0.75" />
+      <text x={x + 24} y={55} fontSize="7.5" fill="var(--ink)" style={{ fontFamily: 'var(--font-mono)' }}>
+        {ten}
+      </text>
+      <text x={x + 44} y={78} textAnchor="middle" fontSize="8" fill={that ? 'var(--accent)' : 'var(--warn)'}>
+        {that ? 'trang thật' : 'trang lừa'}
+      </text>
+    </g>
+  )
+  return (
+    <Frame title={title}>
+      {khoa(14, 'nganhang-abc.vn', true)}
+      {khoa(112, 'nganhang-abc-login.xyz', false)}
+      <text x={110} y={26} textAnchor="middle" fontSize="10" fill="var(--ink-muted)">
+        cùng một ổ khóa vàng
+      </text>
+      <text x={110} y={104} textAnchor="middle" fontSize="8" fill="var(--ink)">
+        ổ khóa nói về ĐƯỜNG ỐNG, không nói về NGƯỜI ở đầu kia
+      </text>
+    </Frame>
+  )
+}
+
+/** Chứng chỉ như tờ giấy giới thiệu có bên thứ ba ký. */
+function CertLetter({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <rect x="14" y="44" width="40" height="30" rx="3" fill="none" stroke="var(--ink-muted)" strokeWidth="1.5" />
+      <text x={34} y={86} textAnchor="middle" fontSize="8" fill="var(--ink-muted)">
+        máy bạn
+      </text>
+      <rect x="150" y="44" width="42" height="30" rx="3" fill="none" stroke="var(--ink-muted)" strokeWidth="1.5" />
+      <text x={171} y={86} textAnchor="middle" fontSize="8" fill="var(--ink-muted)">
+        máy chủ
+      </text>
+      <rect x="66" y="30" width="74" height="52" rx="3" fill="var(--panel)" stroke="var(--accent)" strokeWidth="1.5" />
+      {['Tên miền: example.com', 'Hạn tới: 12/2026', 'Ký bởi: bên thứ ba'].map((d, i) => (
+        <text key={d} x={71} y={45 + i * 13} fontSize="6.5" fill="var(--ink)">
+          {d}
+        </text>
+      ))}
+      <circle cx="130" cy="72" r="7" fill="none" stroke="var(--warn)" strokeWidth="1.5" />
+      <text x={130} y={75} textAnchor="middle" fontSize="6" fill="var(--warn)">
+        dấu
+      </text>
+      <path d="M144 58 H150" stroke="var(--ink-muted)" strokeWidth="1.5" fill="none" markerEnd="url(#cv-arrow)" />
+      <text x={110} y={106} textAnchor="middle" fontSize="8" fill="var(--ink)">
+        chứng chỉ = giấy giới thiệu có người thứ ba đứng ra ký
+      </text>
+    </Frame>
+  )
+}
+
+/** Ba câu hỏi trình duyệt tự kiểm trước khi tin tấm giấy. */
+function CertThreeChecks({ title }: { title?: string }) {
+  const hang: [string, string][] = [
+    ['Còn hạn không?', 'hết hạn'],
+    ['Đúng tên miền không?', 'sai tên'],
+    ['Ai ký — có tin được không?', 'tự ký'],
+  ]
+  return (
+    <Frame title={title}>
+      <text x={16} y={18} fontSize="9" fill="var(--ink-muted)">
+        trình duyệt hỏi ba câu, trượt câu nào cũng bôi đỏ
+      </text>
+      {hang.map(([hoi, loi], i) => {
+        const y = 34 + i * 26
+        return (
+          <g key={hoi}>
+            <circle cx="24" cy={y} r="7" fill="none" stroke="var(--accent)" strokeWidth="1.5" />
+            <text x={24} y={y + 3} textAnchor="middle" fontSize="8" fill="var(--accent)">
+              {i + 1}
+            </text>
+            <text x={38} y={y + 3} fontSize="8.5" fill="var(--ink)">
+              {hoi}
+            </text>
+            <rect x="150" y={y - 8} width="46" height="16" rx="3" fill="var(--warn)" opacity="0.2" />
+            <text x={173} y={y + 3} textAnchor="middle" fontSize="7.5" fill="var(--warn)">
+              {loi}
+            </text>
+          </g>
+        )
+      })}
+      <text x={16} y={116} fontSize="8" fill="var(--ink)">
+        lỗi giờ hệ thống cũng làm chứng chỉ báo hết hạn oan
+      </text>
+    </Frame>
+  )
+}
+
+/** Mã đáp web dịch ra tiếng người. */
+function HttpCodes({ title }: { title?: string }) {
+  const ma: [string, string][] = [
+    ['200', 'trang đây'],
+    ['301', 'đã dọn sang chỗ khác'],
+    ['403', 'có trang, bạn không được vào'],
+    ['404', 'không có trang nào như vậy'],
+    ['500', 'máy chủ tự vấp, không phải lỗi bạn'],
+  ]
+  return (
+    <Frame title={title}>
+      {ma.map(([so, chu], i) => {
+        const y = 22 + i * 20
+        return (
+          <g key={so}>
+            <rect x="16" y={y - 10} width="34" height="16" rx="3" fill="var(--accent)" opacity={so === '200' ? 0.32 : 0.14} />
+            <text x={33} y={y + 2} textAnchor="middle" fontSize="9" fill="var(--ink)" style={{ fontFamily: 'var(--font-mono)' }}>
+              {so}
+            </text>
+            <text x={58} y={y + 2} fontSize="8.5" fill="var(--ink-muted)">
+              {chu}
+            </text>
+          </g>
+        )
+      })}
+      <text x={16} y={122} fontSize="8" fill="var(--ink)">
+        4xx là phía bạn · 5xx là phía máy chủ
+      </text>
+    </Frame>
+  )
+}
+
+// ---------------------------------------------------------------
+// Làm chủ mạng nhà + CGNAT (Module 7)
+// ---------------------------------------------------------------
+
+/** Default gateway chính là cửa vào trang quản trị router. */
+function RouterAdminDoor({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <rect x="14" y="26" width="80" height="40" rx="3" fill="none" stroke="var(--ink-muted)" strokeWidth="1.5" />
+      {['IPv4 . . : 192.168.1.24', 'Mask . . : 255.255.255.0', 'Gateway : 192.168.1.1'].map((d, i) => (
+        <text key={d} x={19} y={38 + i * 12} fontSize="6" fill={i === 2 ? 'var(--accent)' : 'var(--ink-muted)'} style={{ fontFamily: 'var(--font-mono)' }}>
+          {d}
+        </text>
+      ))}
+      <rect x="16" y="52" width="76" height="12" rx="2" fill="var(--accent)" opacity="0.18" />
+      <path d="M96 58 H120" stroke="var(--accent)" strokeWidth="1.5" fill="none" markerEnd="url(#cv-arrow)" />
+      <rect x="124" y="30" width="70" height="46" rx="3" fill="none" stroke="var(--accent)" strokeWidth="1.5" />
+      <rect x="124" y="30" width="70" height="10" rx="3" fill="var(--accent)" opacity="0.2" />
+      <text x={128} y={38} fontSize="6" fill="var(--ink-muted)" style={{ fontFamily: 'var(--font-mono)' }}>
+        http://192.168.1.1
+      </text>
+      <rect x="132" y="48" width="54" height="8" rx="1.5" fill="none" stroke="var(--ink-muted)" strokeWidth="1" />
+      <rect x="132" y="60" width="54" height="8" rx="1.5" fill="none" stroke="var(--ink-muted)" strokeWidth="1" />
+      <text x={110} y={102} textAnchor="middle" fontSize="8.5" fill="var(--ink)">
+        con số Gateway trên tờ ipconfig chính là địa chỉ nhà của router
+      </text>
+    </Frame>
+  )
+}
+
+/** Mật khẩu admin in dưới đáy hộp — ai cũng tra được. */
+function AdminPasswordSticker({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <rect x="20" y="38" width="76" height="34" rx="4" fill="none" stroke="var(--ink-muted)" strokeWidth="1.5" />
+      <rect x="32" y="50" width="52" height="14" rx="2" fill="var(--warn)" opacity="0.25" />
+      <text x={58} y={60} textAnchor="middle" fontSize="7.5" fill="var(--warn)" style={{ fontFamily: 'var(--font-mono)' }}>
+        admin / admin
+      </text>
+      <text x={58} y={86} textAnchor="middle" fontSize="8" fill="var(--ink-muted)">
+        tem dưới đáy hộp
+      </text>
+      <rect x="124" y="38" width="70" height="34" rx="2" fill="none" stroke="var(--ink-muted)" strokeWidth="1.5" />
+      <path d="M159 38 v34" stroke="var(--ink-muted)" strokeWidth="1" fill="none" />
+      <text x={159} y={58} textAnchor="middle" fontSize="6.5" fill="var(--warn)" style={{ fontFamily: 'var(--font-mono)' }}>
+        admin/admin
+      </text>
+      <text x={159} y={86} textAnchor="middle" fontSize="8" fill="var(--ink-muted)">
+        sách hướng dẫn trên mạng
+      </text>
+      <text x={110} y={110} textAnchor="middle" fontSize="8.5" fill="var(--ink)">
+        khóa Wi-Fi rất kỹ mà cửa chính vẫn để nguyên tem
+      </text>
+    </Frame>
+  )
+}
+
+/** Ghim địa chỉ theo MAC: máy in thôi đổi số nhà sau mỗi lần cúp điện. */
+function PinnedAddress({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <text x={16} y={18} fontSize="8.5" fill="var(--warn)">
+        không ghim — mỗi lần cúp điện một số
+      </text>
+      {['.50', '.87', '.23'].map((s, i) => (
+        <g key={s}>
+          <rect x={20 + i * 44} y="26" width="34" height="16" rx="3" fill="var(--warn)" opacity="0.2" />
+          <text x={37 + i * 44} y={38} textAnchor="middle" fontSize="8" fill="var(--warn)" style={{ fontFamily: 'var(--font-mono)' }}>
+            {s}
+          </text>
+          {i < 2 && <path d={`M${56 + i * 44} 34 h8`} stroke="var(--ink-muted)" strokeWidth="1.2" fill="none" markerEnd="url(#cv-arrow)" />}
+        </g>
+      ))}
+      <text x={158} y={38} fontSize="7.5" fill="var(--ink-muted)">
+        cả phòng
+      </text>
+      <text x={158} y={48} fontSize="7.5" fill="var(--ink-muted)">
+        không in được
+      </text>
+      <text x={16} y={72} fontSize="8.5" fill="var(--accent)">
+        có ghim — buộc số nhà vào đúng cái card mạng đó
+      </text>
+      <rect x="20" y="80" width="120" height="18" rx="3" fill="var(--accent)" opacity="0.18" />
+      <text x={26} y={92} fontSize="7" fill="var(--ink)" style={{ fontFamily: 'var(--font-mono)' }}>
+        AA:BB:CC:11:22:33 → .50
+      </text>
+      <text x={148} y={92} fontSize="7.5" fill="var(--accent)">
+        luôn là .50
+      </text>
+    </Frame>
+  )
+}
+
+/** CGNAT: còn một lớp cổng nữa nằm NGOÀI nhà bạn. */
+function CgnatLayers({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <rect x="12" y="30" width="186" height="62" rx="5" fill="none" stroke="var(--warn)" strokeWidth="1.5" />
+      <text x={16} y={26} fontSize="7.5" fill="var(--warn)">
+        NAT của nhà mạng — bạn không mở được
+      </text>
+      <rect x="24" y="42" width="120" height="40" rx="4" fill="none" stroke="var(--ink-muted)" strokeWidth="1.5" />
+      <text x={28} y={39} fontSize="7.5" fill="var(--ink-muted)">
+        NAT của bạn
+      </text>
+      <rect x="34" y="52" width="76" height="22" rx="3" fill="var(--accent)" opacity="0.16" />
+      <text x={72} y={66} textAnchor="middle" fontSize="7" fill="var(--ink)" style={{ fontFamily: 'var(--font-mono)' }}>
+        192.168.1.x
+      </text>
+      <text x={118} y={60} fontSize="6.5" fill="var(--ink-muted)" style={{ fontFamily: 'var(--font-mono)' }}>
+        WAN
+      </text>
+      <text x={118} y={70} fontSize="6.5" fill="var(--warn)" style={{ fontFamily: 'var(--font-mono)' }}>
+        100.66.4.9
+      </text>
+      <text x={152} y={60} fontSize="6.5" fill="var(--ink-muted)" style={{ fontFamily: 'var(--font-mono)' }}>
+        thật ra
+      </text>
+      <text x={152} y={70} fontSize="6.5" fill="var(--accent)" style={{ fontFamily: 'var(--font-mono)' }}>
+        42.116.7.20
+      </text>
+      <text x={110} y={110} textAnchor="middle" fontSize="8.5" fill="var(--ink)">
+        khai port forwarding đúng hết mà camera vẫn đen: cổng nằm ngoài nhà
+      </text>
+    </Frame>
+  )
+}
+
+/** Tự kiểm nhà mình có mấy lớp cổng: so hai con số. */
+function WanCompare({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <rect x="14" y="34" width="80" height="44" rx="3" fill="none" stroke="var(--ink-muted)" strokeWidth="1.5" />
+      <text x={54} y={30} textAnchor="middle" fontSize="7.5" fill="var(--ink-muted)">
+        trang quản trị · WAN
+      </text>
+      <text x={54} y={60} textAnchor="middle" fontSize="9" fill="var(--warn)" style={{ fontFamily: 'var(--font-mono)' }}>
+        100.66.4.9
+      </text>
+      <rect x="126" y="34" width="80" height="44" rx="3" fill="none" stroke="var(--ink-muted)" strokeWidth="1.5" />
+      <text x={166} y={30} textAnchor="middle" fontSize="7.5" fill="var(--ink-muted)">
+        tra "IP của tôi"
+      </text>
+      <text x={166} y={60} textAnchor="middle" fontSize="9" fill="var(--accent)" style={{ fontFamily: 'var(--font-mono)' }}>
+        42.116.7.20
+      </text>
+      <text x={110} y={60} textAnchor="middle" fontSize="14" fill="var(--warn)">
+        ≠
+      </text>
+      <text x={110} y={98} textAnchor="middle" fontSize="8.5" fill="var(--ink)">
+        hai số khác nhau = nhà bạn nằm sau CGNAT
+      </text>
+      <text x={110} y={114} textAnchor="middle" fontSize="8" fill="var(--ink-muted)">
+        giống nhau = cổng WAN đúng là của riêng bạn
+      </text>
+    </Frame>
+  )
+}
+
+// ---------------------------------------------------------------
+// Kênh Wi-Fi (Module 8)
+// ---------------------------------------------------------------
+
+/** Băng 2.4 GHz: chỉ ba làn không giẫm lên nhau. */
+function WifiChannels({ title }: { title?: string }) {
+  const x = (k: number) => 18 + ((k - 1) / 12) * 176
+  return (
+    <Frame title={title}>
+      <text x={16} y={18} fontSize="9" fill="var(--ink-muted)">
+        băng 2.4 GHz — vòm sóng rộng hơn một kênh
+      </text>
+      {[2, 3, 4, 5, 7, 8, 9, 10, 12, 13].map((k) => (
+        <path
+          key={k}
+          d={`M${x(k) - 16} 74 q16 -26 32 0`}
+          fill="none"
+          stroke="var(--edge)"
+          strokeWidth="1.2"
+          opacity="0.7"
+        />
+      ))}
+      {[1, 6, 11].map((k) => (
+        <g key={k}>
+          <path d={`M${x(k) - 16} 74 q16 -32 32 0`} fill="var(--accent)" opacity="0.22" stroke="var(--accent)" strokeWidth="1.5" />
+          <text x={x(k)} y={90} textAnchor="middle" fontSize="9" fill="var(--accent)" style={{ fontFamily: 'var(--font-mono)' }}>
+            {k}
+          </text>
+        </g>
+      ))}
+      <path d="M18 74 H194" stroke="var(--ink-muted)" strokeWidth="1" fill="none" />
+      <text x={16} y={112} fontSize="8.5" fill="var(--ink)">
+        chỉ 1, 6, 11 không đè lên nhau — chọn kênh khác là tự chen chỗ
+      </text>
+    </Frame>
+  )
+}
+
+/** Vạch sóng đo ĐỘ TO, không đo độ ồn xung quanh. */
+function SignalVsNoise({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <text x={16} y={18} fontSize="8.5" fill="var(--accent)">
+        vạch đo cái này: sóng nhà bạn to cỡ nào
+      </text>
+      {[0, 1, 2, 3].map((i) => (
+        <rect key={i} x={20 + i * 11} y={44 - i * 6} width="8" height={12 + i * 6} rx="1.5" fill="var(--accent)" opacity="0.65" />
+      ))}
+      <text x={16} y={72} fontSize="8.5" fill="var(--warn)">
+        vạch KHÔNG đo cái này: hàng xóm cùng kênh
+      </text>
+      {[0, 1, 2, 3, 4].map((i) => (
+        <path
+          key={i}
+          d={`M${20 + i * 34} 96 q10 ${i % 2 === 0 ? -12 : -18} 20 0`}
+          fill="none"
+          stroke="var(--warn)"
+          strokeWidth="1.3"
+          opacity="0.6"
+        />
+      ))}
+      <text x={16} y={118} fontSize="8" fill="var(--ink)">
+        đầy vạch mà vẫn quay vòng = to nhưng ồn, không phải yếu
+      </text>
+    </Frame>
+  )
+}
+
+/** Chỗ đặt router: giữa nhà, trên cao, tránh nước và kim loại. */
+function RouterPlacement({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <rect x="16" y="26" width="82" height="66" rx="3" fill="none" stroke="var(--warn)" strokeWidth="1.3" />
+      <circle cx="26" cy="84" r="4" fill="var(--warn)" />
+      <path d="M26 84 a26 26 0 0 1 26 -26" fill="none" stroke="var(--warn)" strokeWidth="1.2" strokeDasharray="3 3" />
+      <text x={57} y={22} textAnchor="middle" fontSize="8" fill="var(--warn)">
+        góc nhà, trong tủ
+      </text>
+      <text x={57} y={106} textAnchor="middle" fontSize="7.5" fill="var(--warn)">
+        nửa vùng phủ đổ ra ngoài
+      </text>
+      <rect x="122" y="26" width="82" height="66" rx="3" fill="none" stroke="var(--accent)" strokeWidth="1.3" />
+      <circle cx="163" cy="59" r="4" fill="var(--accent)" />
+      {[14, 24, 32].map((r) => (
+        <circle key={r} cx="163" cy="59" r={r} fill="none" stroke="var(--accent)" strokeWidth="1" opacity="0.45" />
+      ))}
+      <text x={163} y={22} textAnchor="middle" fontSize="8" fill="var(--accent)">
+        giữa nhà, trên cao
+      </text>
+      <text x={163} y={106} textAnchor="middle" fontSize="7.5" fill="var(--accent)">
+        sóng phủ đều các phòng
+      </text>
+    </Frame>
+  )
+}
+
+// ---------------------------------------------------------------
+// MAC là con số card mạng TỰ KHAI (Module 17)
+// ---------------------------------------------------------------
+
+/** Ô người gửi trên khung: mặc định chép số nhà máy, nhưng ghi đè được. */
+function MacSelfDeclared({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <rect x="60" y="34" width="126" height="56" rx="4" fill="none" stroke="var(--ink-muted)" strokeWidth="1.5" />
+      <rect x="68" y="42" width="70" height="16" rx="2" fill="var(--accent)" opacity="0.16" />
+      <text x={72} y={53} fontSize="6.5" fill="var(--ink)" style={{ fontFamily: 'var(--font-mono)' }}>
+        NGƯỜI GỬI: AA:BB…
+      </text>
+      <text x={68} y={78} fontSize="7" fill="var(--ink-muted)">
+        khung tầng 2
+      </text>
+      <rect x="14" y="48" width="32" height="24" rx="2" fill="none" stroke="var(--ink-muted)" strokeWidth="1.5" />
+      <text x={30} y={62} textAnchor="middle" fontSize="6" fill="var(--ink-muted)">
+        card
+      </text>
+      <path d="M48 56 H64" stroke="var(--ink-muted)" strokeWidth="1.2" fill="none" markerEnd="url(#cv-arrow)" />
+      <text x={50} y={50} fontSize="6.5" fill="var(--ink-muted)">
+        chép lại
+      </text>
+      <path d="M150 40 l14 -12" stroke="var(--warn)" strokeWidth="2" fill="none" />
+      <text x={140} y={104} fontSize="8.5" fill="var(--warn)">
+        một lệnh là ghi đè được ô đó
+      </text>
+      <text x={14} y={104} fontSize="8.5" fill="var(--ink)">
+        số nhà máy chỉ là mặc định
+      </text>
+    </Frame>
+  )
+}
+
+/** Lọc MAC chặn được ai, không chặn được ai. */
+function MacFilterGate({ title }: { title?: string }) {
+  const hang: [string, string, boolean][] = [
+    ['người cắm thêm switch', 'chặn được', true],
+    ['máy lạ cắm thẳng vào', 'chặn được', true],
+    ['kẻ chép đúng mã MAC', 'không chặn nổi', false],
+  ]
+  return (
+    <Frame title={title}>
+      <rect x="14" y="24" width="72" height="18" rx="3" fill="var(--accent)" opacity="0.16" />
+      <text x={18} y={36} fontSize="6.5" fill="var(--ink)" style={{ fontFamily: 'var(--font-mono)' }}>
+        cho phép: AA:BB:CC…
+      </text>
+      {hang.map(([ai, kq, duoc], i) => {
+        const y = 58 + i * 20
+        return (
+          <g key={ai}>
+            <text x={16} y={y + 3} fontSize="8" fill="var(--ink-muted)">
+              {ai}
+            </text>
+            <rect x="126" y={y - 9} width="70" height="16" rx="3" fill={duoc ? 'var(--accent)' : 'var(--warn)'} opacity="0.2" />
+            <text x={161} y={y + 3} textAnchor="middle" fontSize="7.5" fill={duoc ? 'var(--accent)' : 'var(--warn)'}>
+              {kq}
+            </text>
+          </g>
+        )
+      })}
+      <text x={16} y={122} fontSize="8" fill="var(--ink)">
+        cổng chỉ hỏi TÊN, mà tên thì khai được
+      </text>
+    </Frame>
+  )
+}
+
+/** Điện thoại đời mới đổi MAC theo từng mạng. */
+function MacRandomization({ title }: { title?: string }) {
+  const mang: [string, string][] = [
+    ['Wi-Fi công ty', '8A:1F:…'],
+    ['Wi-Fi quán cà phê', 'D6:04:…'],
+    ['Wi-Fi nhà', '32:9C:…'],
+  ]
+  return (
+    <Frame title={title}>
+      <rect x="16" y="46" width="26" height="40" rx="4" fill="none" stroke="var(--ink-muted)" strokeWidth="1.5" />
+      <text x={29} y={100} textAnchor="middle" fontSize="7.5" fill="var(--ink-muted)">
+        một máy
+      </text>
+      {mang.map(([ten, mac], i) => {
+        const y = 34 + i * 26
+        return (
+          <g key={ten}>
+            <path d={`M44 66 L110 ${y + 6}`} stroke="var(--warn)" strokeWidth="1.2" fill="none" markerEnd="url(#cv-arrow)" />
+            <text x={114} y={y + 2} fontSize="7.5" fill="var(--ink-muted)">
+              {ten}
+            </text>
+            <text x={114} y={y + 12} fontSize="7" fill="var(--warn)" style={{ fontFamily: 'var(--font-mono)' }}>
+              {mac}
+            </text>
+          </g>
+        )
+      })}
+      <text x={16} y={118} fontSize="8" fill="var(--ink)">
+        cùng một điện thoại, mỗi mạng một cái tên khác
+      </text>
+    </Frame>
+  )
+}
+
 /** Băng thông = ống RỘNG bao nhiêu, kèm phép chia 8 giữa Mbps và MB/s. */
 function Bandwidth({ title }: { title?: string }) {
   return (
@@ -4785,6 +5386,51 @@ const REGISTRY: Record<string, VisualComponent> = {
   'vis-nha-rieng-cong-cong': PrivatePublic,
   'vis-hang-rao-khu-pho': MaskFence,
   'vis-magic-number': MagicNumber,
+  // Tầng dây thật (M4)
+  'vis-cap-dong-quang': CableCopperFiber,
+  'icon-cap-mang': CableCopperFiber,
+  'vis-den-cong': PortLeds,
+  'icon-den-cong': PortLeds,
+  'vis-hook-day-va-den': CableHookQuestion,
+  'vis-duplex-lech': DuplexMismatch,
+  'icon-duplex': DuplexMismatch,
+  // HTTPS (M6)
+  'vis-hook-o-khoa-vang': PadlockTwice,
+  'vis-chung-chi-giay-gioi-thieu': CertLetter,
+  'icon-chung-chi': CertLetter,
+  'vis-ba-cau-hoi-chung-chi': CertThreeChecks,
+  'icon-loi-chung-chi': CertThreeChecks,
+  'vis-ma-dap-http': HttpCodes,
+  'icon-ma-dap': HttpCodes,
+  // Làm chủ mạng nhà + CGNAT (M7)
+  'vis-cua-vao-trang-quan-tri': RouterAdminDoor,
+  'icon-trang-quan-tri': RouterAdminDoor,
+  'vis-hook-trang-quan-tri': RouterAdminDoor,
+  'vis-mat-khau-day-hop': AdminPasswordSticker,
+  'icon-mat-khau-admin': AdminPasswordSticker,
+  'vis-ghim-dia-chi-may-in': PinnedAddress,
+  'icon-ghim-dia-chi': PinnedAddress,
+  'vis-cgnat-lop-ngoai-hang-rao': CgnatLayers,
+  'icon-cgnat': CgnatLayers,
+  'vis-hook-cgnat': CgnatLayers,
+  'vis-doi-chieu-wan': WanCompare,
+  'icon-doi-chieu-wan': WanCompare,
+  // Kênh Wi-Fi (M8)
+  'vis-kenh-1-6-11': WifiChannels,
+  'icon-kenh-wifi': WifiChannels,
+  'vis-vach-song-va-do-on': SignalVsNoise,
+  'icon-vach-song': SignalVsNoise,
+  'vis-hook-day-vach-ma-cham': SignalVsNoise,
+  'vis-cho-dat-router': RouterPlacement,
+  'icon-cho-dat-router': RouterPlacement,
+  // MAC tự khai (M17)
+  'vis-mac-tu-khai': MacSelfDeclared,
+  'icon-mac-tu-khai': MacSelfDeclared,
+  'vis-hook-mac-tu-khai': MacSelfDeclared,
+  'vis-loc-mac-chan-ai': MacFilterGate,
+  'icon-loc-mac': MacFilterGate,
+  'vis-mac-ngau-nhien': MacRandomization,
+  'icon-mac-ngau-nhien': MacRandomization,
   'vis-bang-thong': Bandwidth,
   'icon-bang-thong': Bandwidth,
   'vis-hook-do-mang': Bandwidth,

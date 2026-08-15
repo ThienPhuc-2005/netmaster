@@ -9,6 +9,7 @@
     { "id": "m17-chang-2", "title": { "vi": "Chặn cả xóm hay chặn đúng một cửa" }, "lessonIds": ["m17-bai-2"] },
     { "id": "m17-chang-3", "title": { "vi": "Đúng cửa, đúng chiều" }, "lessonIds": ["m17-bai-3"] },
     { "id": "m17-chang-4", "title": { "vi": "Khóa cổng switch lại" }, "lessonIds": ["m17-bai-4"] },
+    { "id": "m17-chang-4b", "title": { "vi": "Cái tên máy tự khai" }, "lessonIds": ["m17-bai-4b"] },
     { "id": "m17-chang-5", "title": { "vi": "Kẻ mạo danh trong xóm" }, "lessonIds": ["m17-bai-5"] }
   ],
 
@@ -1168,7 +1169,218 @@
             { "vi": "administratively down là cổng bị tắt bằng lệnh, khác hẳn down vì mất tín hiệu đầu kia." }
           ],
           "nextTeaser": {
-            "vi": "Còn một kiểu mạo danh tinh vi hơn nhồi bảng: kẻ tấn công không giành cổng, hắn giành chính cái ĐỊA CHỈ của cổng ra. Bài cuối module là một ca bệnh chập chờn mà bạn từng gặp ở phòng khám, lần này đứng dưới ánh sáng khác."
+            "vi": "Khoan mừng vội với cái chốt vừa dựng lại: nó quyết định cho ai đi qua dựa trên một con số mà chính chiếc máy kia TỰ KHAI ra. Bài sau hỏi thẳng câu khó chịu ấy — rào MAC chặn được ai, và ai thì cứ thế đi qua?"
+          }
+        }
+      ]
+    },
+    {
+      "id": "m17-bai-4b",
+      "missionTitle": { "vi": "Hỏi thẳng: rào MAC chặn được ai" },
+      "steps": [
+        {
+          "type": "hook",
+          "question": {
+            "vi": "Anh trực mạng ghim cho điện thoại của giám đốc một địa chỉ cố định, ghim theo địa chỉ MAC của máy — tuần trước còn chạy ngon lành. Sáng nay giám đốc vẫn ngồi đúng chỗ cũ, vẫn chiếc điện thoại ấy, không ai sửa gì trên switch lẫn trên máy. Thế mà nó nhận một địa chỉ lạ hoắc, và bảng thiết bị của điểm phát Wi-Fi thì báo có một máy chưa từng thấy bao giờ. Không ai đổi máy. Vậy thứ gì đã đổi?"
+          },
+          "visualId": "vis-hook-mac-tu-khai"
+        },
+        {
+          "type": "pretest",
+          "questions": [
+            {
+              "kind": "mcq",
+              "id": "m17-b4b-pre-1",
+              "prompt": {
+                "vi": "Module 3 kể MAC như số khung xe: nhà máy dập sẵn, đi theo máy suốt đời. Vậy con số nằm ở ô người gửi của một khung tin vừa rời card mạng là con số nào?"
+              },
+              "choices": [
+                { "vi": "Con số phần mềm của máy điền vào, mặc định chép lại số nhà máy ghi sẵn" },
+                { "vi": "Luôn là con số nhà máy ghi trên chip, phần mềm không với tới được nó" },
+                { "vi": "Con số switch cấp cho máy ngay lúc nó vừa cắm dây vào cổng access" }
+              ],
+              "answerIndex": 0,
+              "hintTopic": { "vi": "ai là người điền con số ấy vào khung tin" },
+              "explain": {
+                "vi": "Là con số phần mềm điền vào. Nhà máy quả có ghi sẵn một số trên chip, và mặc định máy chép đúng số ấy ra — nhưng CHÉP LẠI là một việc, BẮT BUỘC lại là việc khác. Cả bài này dựng trên khoảng cách giữa hai chữ đó."
+              }
+            }
+          ],
+          "encouragement": {
+            "vi": "Chọn phương án \"phần mềm không với tới được\" là chuyện rất tự nhiên — Module 3 dạy MAC bằng hình số khung xe, và đó là nửa đúng của câu chuyện. Màn dạy đầu tiên trả nốt nửa còn lại."
+          }
+        },
+        {
+          "type": "teach",
+          "screens": [
+            {
+              "conceptId": "m17-mac-tu-khai",
+              "visualId": "vis-mac-tu-khai",
+              "body": {
+                "vi": "Mỗi card mạng đúng là có một số ghi sẵn từ lò — chuyện Module 3 kể không hề bịa. Nhưng con số nằm ở ô NGƯỜI GỬI của từng khung tin lại là con số do phần mềm của máy điền vào, và mặc định nó chép lại số của lò. Cái mặc định ấy đổi được: Windows đổi trong thuộc tính card mạng, Linux và macOS đổi bằng một dòng lệnh, còn máy ảo thì lấy đâu ra chip nên MAC vốn do phần mềm sinh ra từ đầu. Nói gọn: MAC là cái tên máy TỰ KHAI ở đầu mỗi lá thư, không phải giấy tùy thân có ai đó soi. Nghề gọi trò khai tên khác là MAC spoofing."
+              },
+              "deepDive": {
+                "vi": "Đây không phải lỗ hổng ai đó quên vá — nó nằm sẵn trong thiết kế và có công dụng thật: cụm máy chủ dự phòng chuyền địa chỉ cho nhau khi máy chính chết, mỗi máy ảo phải có một MAC do phần mềm sinh, thay card mạng hỏng mà giữ nguyên MAC cũ thì không phải khai lại gì với hệ thống. Trong khung tin không có ô nào chứng minh quyền sở hữu cái tên cả, mà switch thì tin ngay: nghe thấy MAC nào ở cổng nào là ghi vào bảng. Đó cũng chính là chỗ trò nhồi bảng MAC ở bài trước sống được — hàng vạn cái tên bịa ra đều được ghi nhận đàng hoàng."
+              }
+            },
+            {
+              "conceptId": "m17-loc-mac",
+              "visualId": "vis-loc-mac-chan-ai",
+              "body": {
+                "vi": "Port security ở bài trước, danh sách \"chỉ máy này được cắm\" trên switch, bảng lọc MAC trong router Wi-Fi ở nhà — cùng một họ: cho qua theo cái tên máy tự khai. Vậy chúng chặn được ai? Chặn chắc cái vô ý và cái ồn ào: người tiện tay cắm thêm switch mini vào ổ, khách cắm nhầm dây sang cổng nội bộ, và trò nhồi bảng MAC — vì trò ấy phải bịa hàng vạn tên một lúc, đúng thứ mà ngưỡng đếm bắt được. Không chặn nổi kẻ chịu khó: hắn nghe một lát trên chính đoạn dây đó là biết MAC nào đang lọt, khai đúng cái tên ấy rồi đi vào bằng cửa chính, ngưỡng đếm vẫn thấy đủ một máy."
+              },
+              "deepDive": {
+                "vi": "Luật chung để tự xếp loại mọi chốt chặn: chốt dựa trên thứ người ta TỰ KHAI thì chỉ chặn được người không biết mình khai được. Cửa khóa thật đòi thứ không khai suông ra được — chuẩn 802.1X bắt mỗi máy trình chứng chỉ hoặc tài khoản trước khi cổng chịu mở, và khi ấy MAC là gì không còn quan trọng nữa. Đừng vì thế mà tháo port security: nó vẫn dập trò nhồi bảng, vẫn để lại dấu vết ai vừa cắm gì vào ổ nào, và với phần lớn văn phòng thì hai việc đó đã đáng công lắm rồi. Chỉ đừng ghi nó vào biên bản như một cái khóa."
+              }
+            },
+            {
+              "conceptId": "m17-mac-ngau-nhien",
+              "visualId": "vis-mac-ngau-nhien",
+              "body": {
+                "vi": "Điện thoại và laptop đời mới mặc định BẬT chuyện tự sinh một MAC riêng cho từng mạng Wi-Fi, thỉnh thoảng lại đổi — để quán cà phê và trung tâm thương mại không lần được một thiết bị đã đi những đâu. Người dùng được che, còn người trực mạng thì gặp ba chuyện quen thuộc: địa chỉ ghim theo MAC bỗng không dính vào máy nào, danh sách lọc MAC báo máy lạ dù vẫn đúng chiếc điện thoại cũ, và bảng thiết bị phình ra toàn những cái tên chỉ sống vài ngày. Chữa có hai lối: bảo máy dùng MAC thật riêng cho mạng công ty (iPhone tắt \"Địa chỉ Wi-Fi riêng tư\", Android chọn dùng MAC của thiết bị), hoặc thôi ghim theo MAC mà chuyển sang ghim theo tài khoản đăng nhập."
+              },
+              "deepDive": {
+                "vi": "Nhìn con số là đoán được đâu là tên tự sinh: MAC ngẫu nhiên luôn bật một bit riêng trong byte đầu, nên chữ số thứ hai của byte ấy là 2, 6, A hoặc E — còn số của lò thì ba byte đầu tra ra được tên hãng (OUI, Module 3 có nhắc ở phần đào sâu). Chuyện này đậm nhất ở Wi-Fi; trên dây thì hiếm hơn, nhưng dock và bộ chuyển đổi USB-Ethernet dùng chung ở phòng họp cũng làm cổng đổi tên như thường, vì cổng thấy MAC của cái dock chứ không phải của chiếc laptop cắm vào nó. Nên nếu port security ở phòng họp cứ sập theo chu kỳ, hãy nhìn sang chỗ này trước khi đi tìm kẻ tấn công."
+              }
+            }
+          ]
+        },
+        {
+          "type": "practice",
+          "fadingLevel": 2,
+          "exercises": [
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m17-b4b-prac-1",
+                "prompt": {
+                  "vi": "Nghề gọi trò một chiếc máy khai địa chỉ MAC khác với con số nhà máy ghi sẵn là gì? (thuật ngữ giữ tiếng Anh)"
+                },
+                "accept": [
+                  "mac spoofing",
+                  "spoofing mac",
+                  "spoof mac",
+                  "giả mạo mac",
+                  "giả mạo địa chỉ mac",
+                  "mạo danh mac"
+                ],
+                "hintTopic": { "vi": "tên tiếng Anh của trò khai tên khác" }
+              },
+              "hint": {
+                "vi": "Cùng một chữ mà bài cuối module sẽ dùng lại cho trò nhận vơ địa chỉ cổng ra. Ghép chữ ấy với chữ MAC."
+              },
+              "solution": {
+                "vi": "MAC spoofing. Card mạng vẫn là card mạng ấy, chỉ có cái tên điền vào ô người gửi của mỗi khung là đổi — một dòng lệnh hoặc một ô cấu hình trong driver là xong, không ai phải mở máy ra."
+              },
+              "conceptId": "m17-mac-tu-khai"
+            },
+            {
+              "question": {
+                "kind": "mcq",
+                "id": "m17-b4b-prac-2",
+                "prompt": {
+                  "vi": "Anh trực mạng ghim một địa chỉ cố định cho điện thoại của giám đốc, ghim theo MAC. Vài hôm sau máy lại nhận địa chỉ khác dù không ai sửa gì. Giải thích nào đứng vững nhất?"
+                },
+                "choices": [
+                  { "vi": "Điện thoại tự sinh một MAC khác cho mạng đó nên dòng ghim không khớp nữa" },
+                  { "vi": "Máy chủ cấp địa chỉ đã hết số trống nên nó đành phát cho máy một số khác" },
+                  { "vi": "Điểm phát Wi-Fi đổi sang WPA3 nên mọi máy cũ đều phải xin lại địa chỉ mới" }
+                ],
+                "answerIndex": 0,
+                "hintTopic": { "vi": "thứ mà máy đời mới tự đổi theo từng mạng" }
+              },
+              "hint": {
+                "vi": "Dòng ghim tra theo cái tên máy khai ra. Nếu máy tới với một cái tên khác thì bảng còn nhận ra ai nữa?"
+              },
+              "solution": {
+                "vi": "Điện thoại tự sinh một MAC riêng cho mạng đó, nên dòng ghim theo MAC cũ không còn khớp với ai. Hết số trống thì máy sẽ chẳng nhận được địa chỉ nào chứ không phải nhận địa chỉ khác; còn đổi cách mã hóa thì không đụng gì tới chuyện cấp địa chỉ."
+              },
+              "conceptId": "m17-mac-ngau-nhien"
+            },
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m17-b4b-prac-3",
+                "prompt": {
+                  "vi": "Một cổng đang bật port security cho đúng một máy. Kẻ tấn công cần biết được thứ gì để đi qua cổng ấy mà không làm nó sập?"
+                },
+                "accept": [
+                  "mac hợp lệ",
+                  "địa chỉ mac hợp lệ",
+                  "mac được phép",
+                  "địa chỉ mac được phép",
+                  "mac của máy được phép",
+                  "mac đang được chấp nhận",
+                  "mac mà cổng cho phép"
+                ],
+                "hintTopic": { "vi": "cái tên duy nhất mà cổng đang chịu nhận" }
+              },
+              "hint": {
+                "vi": "Cổng chỉ hỏi đúng một câu: khung này khai tên gì. Vậy hắn phải nghe cho ra cái tên nào đang lọt qua."
+              },
+              "solution": {
+                "vi": "MAC hợp lệ mà cổng đang chấp nhận — ngồi nghe một lát trên chính đoạn dây đó là đọc ra, rồi đặt đúng cái tên ấy cho card mạng của mình. Ngưỡng đếm vẫn thấy đủ một máy nên cổng không sập, và đó là lý do rào MAC nâng giá cho kẻ tấn công chứ không chặn hẳn được hắn."
+              },
+              "conceptId": "m17-loc-mac"
+            }
+          ]
+        },
+        {
+          "type": "retrieval",
+          "questions": [
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m17-b4b-ret-1",
+                "prompt": {
+                  "vi": "Đóng bài lại: vì sao địa chỉ MAC đứng ra làm bằng chứng danh tính thì yếu?"
+                },
+                "accept": [
+                  "do máy tự khai",
+                  "máy tự khai",
+                  "đổi được bằng lệnh",
+                  "phần mềm đổi được",
+                  "ai cũng khai được",
+                  "giả mạo được",
+                  "không ai kiểm lại",
+                  "không ai kiểm chứng",
+                  "không ai xác minh",
+                  "không có gì chứng minh"
+                ],
+                "hintTopic": { "vi": "ai điền con số ấy vào khung, và ai kiểm nó" }
+              },
+              "hint": {
+                "vi": "Nghĩ xem con số ấy được ai điền vào khung tin, và có ai đứng đó soi lại không."
+              },
+              "solution": {
+                "vi": "Vì con số ấy do chính máy tự khai. Không ô nào trong khung chứng minh quyền sở hữu cái tên, cũng không ai soi lại, mà đổi nó thì tốn đúng một dòng lệnh — thứ tự khai được thì không làm bằng chứng được."
+              }
+            }
+          ],
+          "selfExplain": {
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: vì sao port security dập chắc được trò nhồi bảng MAC, mà lại để lọt kẻ khai lại một MAC hợp lệ?"
+            },
+            "keywords": [
+              ["tự khai", "tu khai", "đổi được", "doi duoc", "giả mạo", "gia mao", "spoofing", "phần mềm điền", "phan mem dien"],
+              ["nghe được", "nghe duoc", "biết mac", "biet mac", "chép lại", "chep lai", "sao chép", "sao chep", "đọc được", "doc duoc"],
+              ["hàng vạn", "hang van", "quá ngưỡng", "qua nguong", "vượt ngưỡng", "vuot nguong", "nhiều mac", "nhieu mac", "đếm", "dem"],
+              ["một máy", "mot may", "đúng một mac", "dung mot mac", "không vượt", "khong vuot", "vẫn đủ", "van du"]
+            ],
+            "exampleAnswer": {
+              "vi": "Vì port security đếm số MAC trên cổng. Trò nhồi bảng phải bịa ra hàng vạn cái tên một lúc nên vượt ngưỡng ngay từ cổng đầu tiên, cổng sập, trò chết tại chỗ. Còn kẻ chịu khó thì chỉ cần nghe một lát để biết MAC nào đang được cổng chấp nhận rồi khai đúng cái tên ấy: cổng vẫn thấy đúng một máy, ngưỡng không vượt, nên nó mở cửa như thường."
+            }
+          }
+        },
+        {
+          "type": "summary",
+          "bullets": [
+            { "vi": "Số của nhà máy là thật, nhưng MAC trong mỗi khung tin là con số phần mềm tự điền." },
+            { "vi": "Rào theo MAC chặn cái vô ý và trò nhồi bảng; kẻ khai lại một MAC hợp lệ vẫn đi lọt." },
+            { "vi": "Máy đời mới tự đổi MAC theo từng mạng Wi-Fi, nên mọi thứ ghim theo MAC hay trượt." }
+          ],
+          "nextTeaser": {
+            "vi": "Đã quen chuyện thiết bị tự khai tên mình thì bài cuối module dễ vào: có kẻ không thèm khai tên máy nữa, hắn khai luôn mình là CỔNG RA của cả xóm. Một ca bệnh chập chờn bạn từng gặp ở phòng khám, lần này đứng dưới ánh sáng khác."
           }
         }
       ]
@@ -1655,6 +1867,51 @@
       }
     },
     {
+      "id": "m17-mac-tu-khai",
+      "term": "MAC spoofing",
+      "glossVi": "Máy khai một địa chỉ MAC khác số nhà máy ghi sẵn — con số trong khung tin là do phần mềm điền, đổi bằng một dòng lệnh",
+      "metaphor": {
+        "vi": "Như tên người gửi ở góc phong bì: nhà máy in sẵn một cái tên lên xấp phong bì, nhưng ai cầm bút gạch đi viết tên khác thì bưu điện vẫn chuyển như thường."
+      },
+      "iconId": "icon-mac-tu-khai",
+      "flashcard": {
+        "front": { "vi": "Con số MAC ở ô người gửi của một khung tin do ai quyết định?" },
+        "back": {
+          "vi": "Do phần mềm của chính máy gửi điền vào — mặc định chép lại số nhà máy ghi trên chip, nhưng hệ nào cũng đổi được bằng một dòng lệnh. Trò khai tên khác gọi là MAC spoofing."
+        }
+      }
+    },
+    {
+      "id": "m17-loc-mac",
+      "term": "Lọc theo MAC",
+      "glossVi": "Cho qua hay chặn thiết bị dựa trên địa chỉ MAC — chặn được cái vô ý và trò nhồi bảng, không chặn được kẻ khai lại một MAC hợp lệ",
+      "metaphor": {
+        "vi": "Như người gác cổng chỉ hỏi tên rồi dò sổ: người lạ vô tình thì bị chặn, còn kẻ đã nghe lỏm được một cái tên trong sổ thì cứ thế đi vào bằng cửa chính."
+      },
+      "iconId": "icon-loc-mac",
+      "flashcard": {
+        "front": { "vi": "Rào chắn dựa trên MAC chặn được ai, và bó tay trước ai?" },
+        "back": {
+          "vi": "Chặn được cái vô ý (cắm nhầm, cắm thêm switch mini) và trò nhồi bảng MAC vì trò ấy vượt ngưỡng đếm. Bó tay trước kẻ nghe ra một MAC hợp lệ rồi khai lại đúng tên đó."
+        }
+      }
+    },
+    {
+      "id": "m17-mac-ngau-nhien",
+      "term": "MAC randomization",
+      "glossVi": "Máy đời mới tự sinh MAC riêng cho từng mạng Wi-Fi để chống bị lần theo, nên mọi thứ ghim theo MAC hay trượt",
+      "metaphor": {
+        "vi": "Như người gửi thư dùng một bút danh khác cho mỗi bưu cục: bưu điện vẫn chuyển được thư, chỉ cuốn sổ khách quen của từng bưu cục là không nhận ra người cũ."
+      },
+      "iconId": "icon-mac-ngau-nhien",
+      "flashcard": {
+        "front": { "vi": "Điện thoại đời mới làm gì với MAC khi vào một mạng Wi-Fi, và gây phiền gì?" },
+        "back": {
+          "vi": "Mặc định tự sinh một MAC ngẫu nhiên riêng cho mạng đó để chống bị lần theo. Hệ quả: địa chỉ ghim theo MAC không dính, danh sách lọc báo máy lạ dù vẫn là máy cũ."
+        }
+      }
+    },
+    {
       "id": "m17-arp-spoofing",
       "term": "ARP spoofing",
       "glossVi": "Kẻ lạ nhận vơ địa chỉ IP của cổng ra để cả xóm gửi gói qua tay hắn trước",
@@ -1914,6 +2171,43 @@
       "hintTopic": { "vi": "switch làm gì khi tra bảng không ra cổng đích" },
       "explain": {
         "vi": "Bảng đầy thì switch không còn chỗ ghi cặp địa chỉ - cổng mới, nên khung nào tra không ra đích là nó đành phát tràn ra mọi cổng — kể cả cổng kẻ lạ đang ngồi, và thế là hắn nghe được thư từ của cả xóm. Switch không khởi động lại, cũng chẳng ai mất địa chỉ IP: thứ mất đi ở đây là sự riêng tư. Chốt chặn đúng chỗ là port security, giới hạn số MAC được phép xuất hiện trên mỗi cổng."
+      }
+    },
+    {
+      "kind": "mcq",
+      "id": "m17-mt-13",
+      "prompt": {
+        "vi": "Cổng access đã bật port security cho đúng một máy. Kẻ tấn công vẫn đi qua được mà cổng không hề sập. Hắn đã làm gì?"
+      },
+      "choices": [
+        { "vi": "Khai lại MAC của máy mình thành đúng cái MAC mà cổng đang cho phép" },
+        { "vi": "Cắm thêm một switch mini để hai máy cùng dùng chung một cổng access" },
+        { "vi": "Đợi tới lúc bảng MAC của switch đầy rồi lách vào giữa dòng khung tin" }
+      ],
+      "answerIndex": 0,
+      "hintTopic": { "vi": "con số mà cổng đem ra soi là do ai điền" },
+      "explain": {
+        "vi": "Hắn khai lại MAC. Cổng chỉ hỏi đúng một câu — khung này mang tên gì — mà cái tên ấy do chính máy gửi điền vào, nên nghe một lát là biết MAC nào đang lọt rồi đặt đúng tên đó cho card mạng của mình; ngưỡng đếm vẫn thấy đủ một máy. Cắm thêm switch mini hay nhồi bảng MAC thì ngược lại: cả hai đều làm số MAC trên cổng vượt ngưỡng, đúng thứ port security sinh ra để dập."
+      }
+    },
+    {
+      "kind": "typed",
+      "id": "m17-mt-14",
+      "prompt": {
+        "vi": "Điện thoại đời mới mặc định làm gì với địa chỉ MAC khi vào một mạng Wi-Fi mới?"
+      },
+      "accept": [
+        "mac ngẫu nhiên",
+        "sinh mac ngẫu nhiên",
+        "tạo mac ngẫu nhiên",
+        "tự sinh mac riêng",
+        "mac riêng cho từng mạng",
+        "tự đổi mac theo từng mạng",
+        "mac randomization"
+      ],
+      "hintTopic": { "vi": "thứ máy tự sinh ra cho từng mạng để khỏi bị lần theo" },
+      "explain": {
+        "vi": "Nó tự sinh một MAC ngẫu nhiên riêng cho mạng đó thay vì chìa con số của nhà máy — mặc định bật, để nơi công cộng không lần được thiết bị đã đi những đâu. Vì thế mọi thứ ghim theo MAC (địa chỉ cố định, danh sách lọc) đều hay trượt với máy đời mới; chữa bằng cách tắt riêng cho mạng công ty, hoặc bỏ hẳn lối ghim theo MAC."
       }
     },
     {

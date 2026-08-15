@@ -604,7 +604,7 @@ Phần A · 6 chặng · 7 bài · 9 khái niệm · drill: subnet
   - **Trả lời mẫu:** MAC như số khung xe: gắn chết vào card mạng từ nhà máy, không đổi khi sang mạng khác, dùng để các máy trong mạng nội bộ gọi nhau. IP như biển số: do mạng đang cắm vào cấp, đổi theo nơi "đăng ký", dùng để gói tin đi xuyên các mạng.
 
 **6 · Tổng kết:**
-- MAC address là số khung: dập trên card từ nhà máy thì không đổi.
+- MAC address là số khung: nhà máy ghi sẵn trên card, và máy cứ thế khai ra.
 - Địa chỉ IP là biển số: đổi theo mạng máy đang cắm vào.
 - MAC dùng trong mạng nội bộ, IP dẫn đường xuyên các mạng.
 - *Úp mở bài sau:* Biển số 192.168.1.10 trông như bốn ô số rời rạc — nhưng nó giấu một cấu trúc tinh tế. Bài sau mình mổ xẻ từng ô.
@@ -862,7 +862,7 @@ Phần A · 6 chặng · 7 bài · 9 khái niệm · drill: subnet
 
 - **MAC address** `mac` — Địa chỉ MAC — số định danh phần cứng gắn chết vào card mạng từ nhà máy
   - Ẩn dụ: MAC như số khung xe: dập từ nhà máy, đi theo xe suốt đời — đổi chủ, đổi tỉnh cũng không đổi số khung.
-  - Thẻ ôn: *MAC address là gì — và có đổi khi mang máy sang mạng khác không?* → Số định danh phần cứng của card mạng, gắn chết từ nhà máy như số khung xe — KHÔNG đổi khi sang mạng khác; dùng để các máy trong mạng nội bộ gọi nhau.
+  - Thẻ ôn: *MAC address là gì — và có đổi khi mang máy sang mạng khác không?* → Số định danh của card mạng, nhà máy ghi sẵn như số khung xe — đi sang mạng khác vẫn là số đó; dùng để các máy trong mạng nội bộ gọi nhau.
 - **IPv4** `ipv4` — Địa chỉ IP thế hệ 4 — 4 octet 0-255 ngăn bằng dấu chấm, gồm phần mạng và phần host
   - Ẩn dụ: Địa chỉ hai phần: phần đầu là tên khu phố (phần mạng), phần sau là số nhà trong khu (phần host).
   - Thẻ ôn: *Địa chỉ IPv4 có cấu tạo thế nào?* → 4 octet, mỗi octet từ 0 đến 255, ngăn bằng dấu chấm — chia làm phần mạng (khu phố) và phần host (số nhà).
@@ -944,13 +944,70 @@ Phần A · 6 chặng · 7 bài · 9 khái niệm · drill: subnet
 
 ## Switch, Router, VLAN — Thiết bị trong làng `module-4`
 
-Phần B · 6 chặng · 6 bài · 8 khái niệm
+Phần B · 6 chặng · 7 bài · 11 khái niệm
 
-**Chặng:** Bưu cục của làng (m4-bai-1) → Cuốn sổ nhớ mặt (m4-bai-2) → Hỏi tên trước khi trao (m4-bai-3) → Dựng tường chia xóm (m4-bai-4) → Bắc cầu qua tường (m4-bai-5) → Gọi tên cái thang (m4-bai-6)
+**Chặng:** Sợi dây, rồi tới bưu cục (m4-bai-7, m4-bai-1) → Cuốn sổ nhớ mặt (m4-bai-2) → Hỏi tên trước khi trao (m4-bai-3) → Dựng tường chia xóm (m4-bai-4) → Bắc cầu qua tường (m4-bai-5) → Gọi tên cái thang (m4-bai-6)
 
 ### Thư cuối module (hiện ở màn đậu bài thi)
 
 > Mấy dòng để lại cho ca sau. Lúc mở module, switch với router trong mắt bạn đều là cái hộp có đèn nháy; giờ bạn nói được cái nào nhớ mặt bằng địa chỉ MAC, cái nào bắc cầu giữa hai mạng, và vì sao dựng VLAN là dựng tường chứ không phải cắm thêm dây. Bạn cũng đã tự tay chia hai xóm trên cùng một switch và thấy tận mắt bức tường đó chặn thật. Nghề này bắt đầu từ đúng chỗ đó: biết thiết bị nào chịu trách nhiệm gì.
+
+### Bài: Khám sợi dây trước đã `m4-bai-7`
+
+**1 · Khởi động (hook):** Mạng ì ạch cả buổi sáng, máy vẫn chạy tốt, địa chỉ vẫn đặt đúng. Người trực lâu năm không mở máy tính lên xem trước — họ cúi xuống nhìn hai cái đèn nhỏ ở chỗ cắm dây. Hai cái đèn ấy khai được chuyện gì mà nhanh thế?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử: một sợi cáp mạng đồng kéo thẳng từ tủ mạng tới cái máy cuối hành lang. Dài tới đâu thì tín hiệu hết bảo đảm?
+  - **Dạng:** trắc nghiệm · Khoảng 30 mét, quá đó là phải nối thêm / **Khoảng 100 mét cho một đoạn cáp đồng** ✓ / Không có giới hạn, chỉ cần dây còn liền
+  - **Chủ đề gợi ý (tầng 1):** cữ chiều dài của một đoạn cáp đồng
+  - **Vì sao:** Khoảng 100 mét cho một đoạn cáp đồng — con số này nghề nào cũng thuộc. Và đó là tổng của cả đoạn chạy trong tường lẫn hai đoạn dây nhảy hai đầu, nên người ta thường chỉ đi 90 mét trong tường cho chắc.
+
+**3 · Khám phá (teach):**
+- *[cap-mang]* Con đường mà lá thư chạy trên đó, ngoài đời là một sợi cáp. Trong nhà và trong văn phòng gần như luôn là cáp đồng xoắn đôi: tám sợi đồng nhỏ xoắn từng đôi một, hai đầu bấm vào cái đầu nhựa RJ45 rồi cắm vào cổng mạng. Cáp đồng chở tín hiệu bằng điện nên càng đi xa tín hiệu càng yếu — một đoạn tối đa khoảng 100 mét, quá cữ đó thì lúc được lúc không. Đi xa hơn thì đổi sang cáp quang: ánh sáng chạy trong sợi thủy tinh, được hàng trăm mét tới hàng chục cây số, lại không bị máy móc chạy quanh làm nhiễu.
+  - **Đào sâu hơn:** Vì sao dây phải xoắn: nhiễu từ bên ngoài đánh vào hai sợi xoắn với nhau gần như bằng nhau, phía nhận trừ đi là còn lại tín hiệu sạch — mẹo cũ nhưng đến giờ vẫn là lý do cáp mạng trông như vậy. Con số 100 mét là TỔNG của một đoạn: khoảng 90 mét chạy trong tường cộng hai đoạn dây nhảy ngắn ở hai đầu; muốn xa hơn thì đặt thêm một thiết bị tiếp sức ở giữa, hoặc chuyển hẳn sang cáp quang. Cáp đồng còn chở được cả điện: PoE (Power over Ethernet) đẩy nguồn theo chính sợi dây mạng, nên camera hay bộ phát Wi-Fi treo trên trần chỉ cần một sợi, khỏi phải kéo ổ cắm lên đó.
+- *[den-cong]* Chỗ cắm dây — trên máy cũng như trên cái hộp nhiều cổng ở tủ mạng — đều có một hai cái đèn nhỏ, và đó là lời khai đầu tiên của sợi dây. Đèn link sáng nghĩa là hai đầu đã bắt tay được về điện: dây liền, đầu bấm ăn, cổng còn sống. Đèn nháy nghĩa là đang có dữ liệu chạy qua. Còn đèn tối om thì đừng đi tìm lỗi ở địa chỉ IP hay ở phần mềm — sợi dây chưa nối được thì mọi thứ ngồi trên nó đều vô nghĩa. Nhìn đèn mất hai giây, mà cắt ngay được một nửa số nghi ngờ.
+  - **Đào sâu hơn:** Khi đèn tối, đi theo thứ tự rẻ tiền trước: đổi sang một cổng khác, rồi đổi một sợi dây khác, rồi mới nghi tới card mạng của máy — và mỗi lượt chỉ đổi ĐÚNG MỘT thứ, đổi hai thứ cùng lúc thì đèn có sáng lên cũng không biết nhờ cái nào. Chỗ hay hỏng nhất không nằm ở giữa sợi dây mà ở hai đầu bấm: cái lẫy nhựa gãy làm đầu cắm lỏng dần, hoặc dây bị kéo căng ở gầm bàn. Đèn chập chờn đúng lúc ai đó đá chân vào gầm bàn là dấu hiệu kinh điển của một đầu bấm đã lỏng.
+- *[duplex]* Cắm dây xong, hai đầu tự thỏa thuận với nhau hai chuyện: chạy ở tốc độ nào, và nói kiểu gì. Full duplex là hai bên vừa nói vừa nghe cùng lúc, như con đường hai làn. Half duplex là mỗi lúc chỉ một bên được nói, như đường một làn phải nhường nhau. Phiền phức xảy ra khi hai đầu thỏa thuận lệch: đầu này chạy full, đầu kia chạy half. Lúc ấy dây vẫn liền, đèn vẫn sáng, gọi thử vẫn có tiếng trả lời — nhưng bên chạy half thấy bên kia nói chen vào liền coi là đụng độ, bỏ gói rồi gửi lại. Kết quả là một mạng 'vẫn chạy' mà chậm dai dẳng và rớt gói lai rai.
+  - **Đào sâu hơn:** Vì sao lệch được: hai đầu bắt tay tự động (auto-negotiation) chỉ ăn khớp khi CẢ HAI cùng để chế độ tự động. Ai đó đặt cứng tốc độ và duplex ở một đầu 'cho chắc' thì đầu kia không nghe thấy lời chào, đành đoán — và nó đoán half. Vì vậy luật trong nghề là để tự động cả hai đầu, hoặc đặt cứng cả hai đầu, không bao giờ nửa nọ nửa kia. Dấu vết cũng đếm được: bên chạy half đếm ra lỗi đụng độ (collision), bên chạy full đếm ra lỗi dữ liệu hỏng dọc đường (FCS error) — cùng một sợi dây mà hai đầu đếm hai loại lỗi khác nhau thì gần như chắc chắn là duplex lệch.
+
+**4 · Thử tay (practice, fading 0):**
+- **Ví dụ giải sẵn:** Máy cuối hành lang vừa được cắm mạng, người dùng báo 'không vào được gì cả'. Bạn cúi xuống nhìn chỗ cắm dây: đèn tối om. Vậy là dừng ngay, chưa cần hỏi tới địa chỉ IP. Đổi một sợi dây khác — vẫn tối. Đổi sang cổng còn trống bên cạnh ở tủ mạng — đèn sáng lên và mạng chạy. Kết luận: cổng cũ đã chết. Vì mỗi lượt chỉ đổi đúng một thứ nên bạn biết chắc thủ phạm là cái nào.
+- **Đề:** Cần kéo mạng sang tòa nhà bên kia sân, đo ra chừng 160 mét. Đoạn này phải dùng loại cáp nào?
+  - **Dạng:** gõ tay · **Chấp nhận:** cáp quang | sợi quang | fiber
+  - **Chủ đề gợi ý (tầng 1):** loại cáp dành cho đoạn dài quá cữ 100 mét
+  - **Gợi ý (tầng 2):** Cáp đồng hết cữ ở 100 mét cho một đoạn. Loại cáp còn lại chở tín hiệu bằng ánh sáng.
+  - **Lời giải (tầng 3):** Cáp quang. 160 mét vượt xa cữ 100 mét của cáp đồng, còn ánh sáng chạy trong sợi thủy tinh thì đi được hàng trăm mét trở lên.
+- **Đề:** Người dùng báo máy không vào được mạng. Bạn nhìn chỗ cắm dây ở tủ mạng: đèn không sáng chút nào. Việc đáng làm tiếp theo là gì?
+  - **Dạng:** trắc nghiệm · **Đổi sang cổng còn trống bên cạnh rồi xem đèn** ✓ / Đặt lại địa chỉ IP tĩnh cho máy đó xem sao / Khởi động lại máy rồi thử vào mạng lần nữa
+  - **Chủ đề gợi ý (tầng 1):** thứ tự khám: dây và cổng trước, phần mềm sau
+  - **Gợi ý (tầng 2):** Đèn chưa sáng nghĩa là sợi dây còn chưa nối được với nhau. Sửa thứ ngồi trên nó thì được ích gì?
+  - **Lời giải (tầng 3):** Đổi cổng rồi nhìn đèn. Đèn tối là chuyện của dây, đầu bấm và cổng — địa chỉ IP hay việc khởi động lại đều nằm phía trên, chưa tới lượt chúng.
+- **Đề:** Dây liền, đèn sáng, máy vẫn vào được mạng — nhưng chép file thì chậm dai dẳng và thỉnh thoảng rớt. Hai đầu sợi dây nhiều khả năng đang lệch nhau ở chuyện gì?
+  - **Dạng:** gõ tay · **Chấp nhận:** duplex | song công
+  - **CẢNH BÁO SOẠN BÀI:** chỉ 2 cách nói được chấp nhận (nên có >= 3) — người diễn đạt khác đi sẽ bị chấm oan.
+  - **Chủ đề gợi ý (tầng 1):** thỏa thuận nói-nghe giữa hai đầu dây
+  - **Gợi ý (tầng 2):** Lúc cắm dây, hai đầu thỏa thuận hai chuyện: chạy nhanh cỡ nào, và có được vừa nói vừa nghe không. Chuyện thứ hai tên là gì?
+  - **Lời giải (tầng 3):** Duplex. Một đầu chạy full, đầu kia chạy half thì bên half coi mọi lần nói cùng lúc là đụng độ, bỏ gói rồi gửi lại — mạng vẫn thông mà chậm và rớt.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: một đoạn cáp đồng chạy được tối đa bao nhiêu mét?
+  - **Dạng:** gõ tay · **Chấp nhận:** 100 mét | 100m | một trăm mét | 100 m | 100 met | khoảng 100 m
+  - **Gợi ý (tầng 2):** Con số tròn trịa mà người trong nghề ai cũng thuộc.
+  - **Lời giải (tầng 3):** Khoảng 100 mét cho một đoạn — tính cả dây chạy trong tường lẫn hai đoạn dây nhảy ở hai đầu.
+- **Đề:** Không nhìn lại bài: hai đầu một sợi dây thỏa thuận lệch nhau khiến mạng vẫn thông nhưng chậm và rớt gói. Chuyện lệch đó tên là gì?
+  - **Dạng:** gõ tay · **Chấp nhận:** duplex | song công
+  - **CẢNH BÁO SOẠN BÀI:** chỉ 2 cách nói được chấp nhận (nên có >= 3) — người diễn đạt khác đi sẽ bị chấm oan.
+  - **Gợi ý (tầng 2):** Đầu này chạy full, đầu kia chạy half.
+  - **Lời giải (tầng 3):** Duplex lệch nhau. Bên chạy half coi mọi lần bên kia nói cùng lúc là đụng độ nên bỏ gói rồi gửi lại.
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao gặp sự cố mạng, người trực lâu năm nhìn đèn ở chỗ cắm dây trước khi đụng tới địa chỉ IP?
+  - **Nhóm ý cần chạm:** [đèn, đèn link, link] · [dây, sợi dây, đầu bấm, cổng] · [chưa nối, vô nghĩa, phía trên, ngồi trên, mất công, nằm trên]
+  - **Trả lời mẫu:** Vì cái đèn cho biết sợi dây đã nối được với nhau hay chưa, mà mọi thứ khác đều ngồi trên sợi dây đó. Đèn tối thì địa chỉ IP có đúng tuyệt đối mạng vẫn không chạy, nên sửa ở phía trên chỉ mất công. Nhìn đèn mất hai giây và nó cắt ngay được một nửa số nghi ngờ.
+
+**6 · Tổng kết:**
+- Một đoạn cáp đồng đi tối đa khoảng 100 mét; xa hơn thì tới lượt cáp quang.
+- Đèn ở chỗ cắm dây là lời khai đầu tiên: đèn tối thì lỗi nằm ở dây, đầu bấm hoặc cổng.
+- Đèn sáng mà mạng vẫn ì ạch và rớt gói lai rai: nghi hai đầu lệch duplex.
+- *Úp mở bài sau:* Sợi dây thì có rồi, nhưng nối thẳng từng cặp cho 10 máy hết tới 45 sợi. Bài sau: cái hộp nhiều cổng ở tủ mạng tên là gì, và vì sao có nó thì 10 máy chỉ cần 10 sợi.
 
 ### Bài: Gom cả phòng về một mối `m4-bai-1`
 
@@ -1118,7 +1175,7 @@ Phần B · 6 chặng · 6 bài · 8 khái niệm
 - VLAN là bức tường vô hình trong switch: cổng chỉ nói chuyện với cổng cùng số.
 - Một switch chia VLAN hoạt động như nhiều switch riêng đặt cạnh nhau.
 - Tiếng gọi ARP dừng lại ở tường — nên hai bên không hề biết nhau tồn tại.
-- *Úp mở bài sau:* Tách xong rồi, nhưng kế toán vẫn cần gửi báo cáo cho kỹ thuật — muốn hai xóm nói lại được với nhau thì còn phải thêm một thứ nữa. Bài cuối module xem cây cầu đó làm việc thế nào; còn cách bắc cầu ngay trên một switch thì để dành phần sau.
+- *Úp mở bài sau:* Tách xong rồi, nhưng kế toán vẫn cần gửi báo cáo cho kỹ thuật — muốn hai xóm nói lại được với nhau thì còn phải thêm một thứ nữa. Bài sau xem cây cầu đó làm việc thế nào; còn cách bắc cầu ngay trên một switch thì để dành phần sau.
 
 ### Bài: Bắc cầu giữa hai mạng `m4-bai-5`
 
@@ -1157,7 +1214,7 @@ Phần B · 6 chặng · 6 bài · 8 khái niệm
 - Router là cây cầu giữa hai mạng khác dải, mỗi chân nằm ở một bên — switch không tự bắc cầu qua VLAN được, phải nhờ router.
 - Nó tra bảng định tuyến để biết nên đẩy gói ra chân nào.
 - MAC đổi ở từng chặng trao tay; IP giữ nguyên suốt chuyến.
-- *Úp mở bài sau:* Bài kiểm tra Module 4 đang đợi — và câu cuối là một phòng lab thật. Vượt qua rồi, Module 5 sẽ mở cánh cửa TCP, UDP và những con số cổng mà bạn đã gặp thoáng qua từ Module 1.
+- *Úp mở bài sau:* Bốn bậc thang bạn vừa leo — dây, switch với MAC, router với IP — hóa ra nghề có sẵn tên gọi và số hiệu cho từng bậc. Bài cuối module đặt tên cho cái thang ấy.
 
 ### Bài: Gọi tên cái thang `m4-bai-6`
 
@@ -1206,8 +1263,17 @@ Phần B · 6 chặng · 6 bài · 8 khái niệm
 - Gọi tên bằng số để nói nhanh: "chết ở tầng 2" là nghi switch và VLAN.
 - *Úp mở bài sau:* Cái thang đã có tên, và từ đây mọi module sau đều gọi bằng số bậc. Bài kiểm tra Module 4 đang đợi — câu cuối là một phòng lab thật. Vượt qua rồi, Module 5 mở cánh cửa tầng 4: TCP, UDP và những con số port.
 
-### Khái niệm & flashcard (8)
+### Khái niệm & flashcard (11)
 
+- **Cáp đồng và cáp quang** `cap-mang` — Hai loại sợi dây chở dữ liệu — cáp đồng cho đoạn ngắn trong nhà, cáp quang cho đoạn dài
+  - Ẩn dụ: Cáp đồng như con đường đất trong xóm, tiện cho quãng gần; cáp quang là đường cái quan nối hai làng, chạy xa bao nhiêu cũng được.
+  - Thẻ ôn: *Một đoạn cáp đồng đi được tối đa bao xa, và xa hơn thì dùng gì?* → Tối đa khoảng 100 mét cho một đoạn; xa hơn thì đổi sang cáp quang.
+- **Đèn cổng (link light)** `den-cong` — Đèn nhỏ ở chỗ cắm dây — báo hai đầu đã bắt tay được về điện hay chưa
+  - Ẩn dụ: Như ngọn đèn trước cửa bưu cục: đèn sáng là cửa đã mở và hai bên đã chào nhau; đèn tối thì thư còn chưa ra khỏi nhà.
+  - Thẻ ôn: *Cắm dây rồi mà đèn ở cổng không sáng thì nên nghĩ tới cái gì?* → Sợi dây chưa nối được: nghi dây, đầu bấm hoặc chính cái cổng — chưa tới lượt địa chỉ IP.
+- **Duplex** `duplex` — Thỏa thuận nói-nghe giữa hai đầu dây — full là nói nghe cùng lúc, half là thay phiên
+  - Ẩn dụ: Full duplex là con đường hai làn, hai chiều đi cùng lúc; half duplex là đường một làn, ai muốn qua phải chờ bên kia đi hết.
+  - Thẻ ôn: *Hai đầu dây lệch duplex thì mạng biểu hiện ra sao?* → Vẫn thông nhưng chậm và rớt gói lai rai: bên chạy half coi mỗi lần bên kia nói cùng lúc là đụng độ nên gửi lại.
 - **Switch** `switch` — Bộ chuyển mạch — thiết bị nối nhiều máy trong cùng một mạng
   - Ẩn dụ: Switch như bưu cục giữa làng: thay vì mỗi nhà tự chạy sang nhà kia, mọi lá thư đưa vào bưu cục rồi được chuyển tới đúng nhà.
   - Thẻ ôn: *Switch làm nhiệm vụ gì?* → Nối nhiều máy trong CÙNG một mạng và chuyển thư tới đúng cổng của máy nhận — mỗi máy chỉ cần một sợi dây cắm vào nó.
@@ -1233,7 +1299,7 @@ Phần B · 6 chặng · 6 bài · 8 khái niệm
   - Ẩn dụ: Cái bao ngoài của bưu tá: tới trạm nào bao cũ bị xé bỏ, thư bên trong vẫn nguyên phong bì cũ.
   - Thẻ ôn: *Khung khác gói tin ở chỗ nào?* → Khung là vỏ MỘT CHẶNG, mang địa chỉ MAC, qua mỗi router bị bóc ra đóng lại vỏ mới. Gói tin là ruột đi TRỌN CHUYẾN, mang địa chỉ IP, không đổi lần nào.
 
-### Bài kiểm tra module (pool 14 câu, mỗi lượt rút 8, cần ≥ 85%)
+### Bài kiểm tra module (pool 16 câu, mỗi lượt rút 8, cần ≥ 85%)
 
 - **Đề:** Văn phòng mới có 12 máy cần nói chuyện với nhau. Cách nối tiết kiệm dây nhất là gì?
   - **Dạng:** trắc nghiệm · Nối thẳng từng cặp máy với nhau / **Mỗi máy một sợi cắm vào switch** ✓ / Nối vòng tròn, máy này sang máy kia
@@ -1280,6 +1346,14 @@ Phần B · 6 chặng · 6 bài · 8 khái niệm
   - **Dạng:** gõ tay · **Chấp nhận:** khung | frame | cái khung
   - **Chủ đề gợi ý (tầng 1):** vỏ của tầng 2, mang địa chỉ MAC
   - **Vì sao:** Khung (frame) — vỏ của tầng 2, mang địa chỉ MAC nên chỉ sống đúng một chặng. Gói tin nằm trong ruột đi trọn chuyến, địa chỉ IP không đổi lần nào.
+- **Đề:** Một đoạn cáp đồng chạy được tối đa bao nhiêu mét, trước khi phải chuyển sang cáp quang hoặc đặt thêm thiết bị ở giữa?
+  - **Dạng:** gõ tay · **Chấp nhận:** 100 mét | 100m | một trăm mét | 100 m | 100 met | khoảng 100 m
+  - **Chủ đề gợi ý (tầng 1):** cữ chiều dài của một đoạn cáp đồng
+  - **Vì sao:** Khoảng 100 mét cho một đoạn, tính cả dây chạy trong tường lẫn hai đoạn dây nhảy ở hai đầu. Dài hơn nữa thì tín hiệu điện yếu dần và đường truyền lúc được lúc không.
+- **Đề:** Một máy có dây liền, đèn cổng sáng, vào mạng vẫn được — nhưng chép file thì chậm dai dẳng và thỉnh thoảng rớt. Nghi ngờ đáng đặt lên đầu là gì?
+  - **Dạng:** trắc nghiệm · **Hai đầu sợi dây đang lệch duplex với nhau** ✓ / Máy đang cắm vào một VLAN khác với máy kia / Địa chỉ IP của máy trùng với một máy khác
+  - **Chủ đề gợi ý (tầng 1):** thỏa thuận nói-nghe giữa hai đầu dây
+  - **Vì sao:** Duplex lệch: đầu này chạy full, đầu kia chạy half nên bên half coi mọi lần nói cùng lúc là đụng độ, bỏ gói rồi gửi lại. Lệch VLAN thì tắc hẳn chứ không chậm lai rai, còn trùng địa chỉ IP thì chập chờn theo kiểu khác — lúc vào được, lúc mất hẳn.
 - **Đề:** Câu cuối là một ca thật: cả ba máy đang chung một VLAN nên máy khách (Máy K) nhìn thấy luôn hai máy nội bộ. Hãy tách Máy K ra, nhưng giữ hai máy nội bộ vẫn nói chuyện được với nhau.
   - **Dạng:** phòng lab (lắp/sửa sơ đồ mạng)
     - **Sơ đồ đề bài:** Máy nội bộ A [192.168.5.10/24] · Máy nội bộ B [192.168.5.20/24] · Máy khách K [192.168.5.30/24] · Switch-1 [p1:VLAN 10, p2:VLAN 10, p3:VLAN 10] — dây: Máy nội bộ A·eth0 — Switch-1·p1 | Máy nội bộ B·eth0 — Switch-1·p2 | Máy khách K·eth0 — Switch-1·p3
@@ -1786,13 +1860,13 @@ Phần B · 5 chặng · 8 bài · 11 khái niệm
 
 ## DNS và DHCP — Hỏi đường và thuê nhà `module-6`
 
-Phần B · 5 chặng · 5 bài · 8 khái niệm
+Phần B · 6 chặng · 6 bài · 11 khái niệm
 
-**Chặng:** Hỏi đường trước khi đi (m6-bai-1) → Trong cuốn sổ có gì (m6-bai-2) → Ai nghe được câu hỏi của bạn (m6-bai-3) → Chuyện hỏi cưới bốn nhịp (m6-bai-4) → Giấy thuê có hạn (m6-bai-5)
+**Chặng:** Hỏi đường trước khi đi (m6-bai-1) → Trong cuốn sổ có gì (m6-bai-2) → Ai nghe được câu hỏi của bạn (m6-bai-3) → Ổ khóa và người cầm chìa (m6-bai-6) → Chuyện hỏi cưới bốn nhịp (m6-bai-4) → Giấy thuê có hạn (m6-bai-5)
 
 ### Thư cuối module (hiện ở màn đậu bài thi)
 
-> Vài dòng cho ca sáng. Lúc mở module, máy không vào được mạng với bạn là một cục lỗi duy nhất; giờ bạn tách được nó làm hai câu hỏi rạch ròi: máy có xin được địa chỉ không, và có ai dịch hộ cái tên miền không. Bạn nghe trọn được bốn nhịp hỏi cưới của DHCP và lần được ba tầng người biết đường của DNS. Hai cơ chế này hỏng là nửa số ca trực trên đời hỏng theo — bạn vừa cầm chìa khóa của cả hai.
+> Vài dòng cho ca sáng. Lúc mở module, máy không vào được mạng với bạn là một cục lỗi duy nhất; giờ bạn tách được nó làm hai câu hỏi rạch ròi: máy có xin được địa chỉ không, và có ai dịch hộ cái tên miền không. Bạn nghe trọn được bốn nhịp hỏi cưới của DHCP, lần được ba tầng người biết đường của DNS, và đọc được tấm giấy nằm sau cái ổ khóa vàng mà trước nay ai cũng chỉ nhìn cho yên tâm. Hai cơ chế này hỏng là nửa số ca trực trên đời hỏng theo — bạn vừa cầm chìa khóa của cả hai.
 
 ### Bài: Lần theo ba tầng người biết đường `m6-bai-1`
 
@@ -1925,7 +1999,65 @@ Phần B · 5 chặng · 5 bài · 8 khái niệm
 - Câu hỏi DNS thường đi trần — ai ngồi giữa cũng đọc được tên miền bạn hỏi.
 - DoH bọc câu hỏi đó trong HTTPS và gửi qua port 443.
 - Đổi lại: riêng tư với nhà mạng, nhưng dồn hết vào một nhà cung cấp.
-- *Úp mở bài sau:* Xong chuyện hỏi đường. Còn cái địa chỉ IP của chính máy bạn — ai phát cho bạn, và vì sao phải qua tới bốn nhịp mới xong?
+- *Úp mở bài sau:* Câu hỏi đã bọc kín, nhưng tới nơi rồi thì tin ai? Bài sau mình lật tấm giấy nằm sau cái ổ khóa vàng ra xem nó hứa gì — và tuyệt nhiên không hứa gì.
+
+### Bài: Soi tấm giấy sau ổ khóa vàng `m6-bai-6`
+
+**1 · Khởi động (hook):** Một trang lừa đảo cũng hiện ổ khóa vàng y hệt trang ngân hàng thật, chứng chỉ hợp lệ, không lỗi gì. Vậy cái ổ khóa ấy vừa hứa với bạn điều gì — và tuyệt nhiên không hứa điều gì?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử nhé: trang web hiện ổ khóa vàng nghĩa là gì?
+  - **Dạng:** trắc nghiệm · **Đường truyền được mã hóa và đúng tên miền bạn đã gõ** ✓ / Trang này đã có người kiểm tra, bảo đảm không lừa đảo / Chủ trang web đã trình giấy tờ tùy thân cho trình duyệt
+  - **Vì sao:** Ổ khóa chỉ nói về ĐƯỜNG ỐNG và CÁI TÊN: dữ liệu đi qua được mã hóa, và bạn đang nói chuyện đúng với tên miền vừa gõ. Kẻ lừa đảo cũng xin được ổ khóa ấy cho tên miền của chính họ.
+- **Đề:** Bạn mở một trang và nhận về dòng "404 Not Found". Mạng của bạn lúc đó thế nào?
+  - **Dạng:** trắc nghiệm · **Vẫn thông — máy chủ trả lời được, chỉ là không có trang đó** ✓ / Đang đứt — dòng chữ đó do trình duyệt tự bịa ra để báo lỗi / Còn thông nhưng DNS đã tra ra địa chỉ của một máy chủ khác
+  - **Vì sao:** Nhận được mã đáp nghĩa là câu hỏi của bạn đã tới nơi và máy chủ đã trả lời — mạng thông tới tận ứng dụng. 404 là chuyện của trang, không phải chuyện của mạng.
+
+**3 · Khám phá (teach):**
+- *[m6-chung-chi]* Ở Module 5 bạn đã nhớ phòng 443 treo ổ khóa vàng. Giờ mở ổ khóa ấy ra xem bên trong: trước khi gửi bất cứ thứ gì, máy chủ chìa ra một CHỨNG CHỈ — tấm giấy ghi tên miền của nó, kèm chữ ký của một tổ chức cấp chứng chỉ mà trình duyệt tin sẵn. Trình duyệt xem giấy thấy khớp thì mới dựng đường ống mã hóa. Nên ổ khóa nói đúng hai điều: đường ống kín, và bạn đang nói chuyện với đúng cái tên bạn gõ.
+  - **Đào sâu hơn:** Nó KHÔNG nói người ở đầu bên kia là người tử tế. Xin một chứng chỉ cho tên miền mình vừa mua là chuyện vài phút và miễn phí, nên trang lừa đảo cũng có ổ khóa vàng thật, hợp lệ, không lỗi gì. Mã hóa bảo vệ ĐƯỜNG ỐNG, nó không nói gì về NGƯỜI đứng ở hai đầu ống — câu này bạn sẽ gặp lại nguyên văn khi học Zero Trust.
+- *[m6-loi-chung-chi]* Trình duyệt xem giấy bằng ba câu hỏi, và mỗi câu trượt là một kiểu bôi đỏ khác nhau. Một: giấy CÒN HẠN không — chứng chỉ nào cũng có ngày hết hạn. Hai: TÊN trên giấy có khớp tên miền bạn gõ không — giấy cấp cho congty.com không dùng cho shop.congty.com được. Ba: AI KÝ giấy này — người ký phải nằm trong danh sách trình duyệt tin sẵn; giấy tự ký thì chẳng có ai bảo lãnh.
+  - **Đào sâu hơn:** Kiểu thứ nhất hay báo oan nhất. Chứng chỉ còn hạn hay hết hạn là so với ngày giờ MÁY BẠN đang tin, nên đồng hồ máy lệch vài tháng là giấy còn hạn cũng bị đọc thành hết hạn. Đó là lý do bài NTP ở Module 5 nói giờ giấc là chuyện hạ tầng: trước khi đổ lỗi cho máy chủ, nhìn lại đồng hồ máy mình đã.
+- *[m6-ma-dap]* Qua được ổ khóa rồi, máy chủ trả lời bằng một MÃ ĐÁP ba chữ số đứng ngay đầu lá thư trả lời — đúng lá thư response bạn đã gặp ở Module 2. 200 là xong, trang đây. 301 là trang đã dọn sang địa chỉ khác. 403 là có trang nhưng bạn không được vào. 404 là không có trang nào ở địa chỉ ấy. 500 là máy chủ nhận được yêu cầu rồi tự vấp lúc làm.
+  - **Đào sâu hơn:** Luật đọc nhanh: mã bắt đầu bằng 4 là chuyện phía người hỏi (gõ nhầm đường dẫn, thiếu quyền), bắt đầu bằng 5 là chuyện phía máy chủ. Và điều quý nhất lúc đi trực: hễ THẤY được mã đáp thì mạng đã thông tới tận ứng dụng — tên miền tra được, đường đi tới nơi, port mở. Lúc ấy hãy đi tìm lỗi ở máy chủ hay ở quyền, đừng quay lại bắt dây mạng.
+
+**4 · Thử tay (practice, fading 1):**
+- **Đề:** Một trang lạ có ổ khóa vàng, chứng chỉ hợp lệ, không lỗi gì. Kết luận đúng là gì?
+  - **Dạng:** trắc nghiệm · **Ống dẫn tới trang đó kín; còn trang đó tử tế hay không thì chưa rõ** ✓ / Trang đó đã qua kiểm duyệt nên gửi thông tin cá nhân vào được / Chứng chỉ hợp lệ nghĩa là chủ trang đã được xác minh danh tính
+  - **Chủ đề gợi ý (tầng 1):** ổ khóa bảo vệ đường ống hay bảo lãnh cho người
+  - **Gợi ý (tầng 2):** Hỏi lại: tấm giấy ấy chứng nhận CÁI TÊN, hay chứng nhận CON NGƯỜI?
+  - **Lời giải (tầng 3):** Ống dẫn kín và đúng tên miền bạn gõ — chỉ vậy thôi. Chứng chỉ không nói gì về việc chủ trang tử tế hay gian.
+- **Đề:** Trình duyệt báo "chứng chỉ đã hết hạn" trên một trang mà đồng nghiệp ngồi cạnh vào bình thường. Thứ đầu tiên nên kiểm trên máy bạn là gì?
+  - **Dạng:** gõ tay · **Chấp nhận:** đồng hồ | ngày giờ | giờ hệ thống | giờ trên máy | ngày tháng trên máy | ngày tháng của máy | ngày tháng máy | ntp
+  - **Chủ đề gợi ý (tầng 1):** thứ quyết định máy bạn tin hôm nay là ngày nào
+  - **Gợi ý (tầng 2):** Còn hạn hay hết hạn là so với ngày giờ mà MÁY BẠN đang tin.
+  - **Lời giải (tầng 3):** Đồng hồ máy bạn — lệch ngày giờ thì giấy còn hạn cũng bị đọc thành hết hạn.
+- **Đề:** Trang nội bộ của công ty trả về mã đáp 500. Bạn đi tìm lỗi ở đâu trước?
+  - **Dạng:** trắc nghiệm · **Ở máy chủ web — nó nhận được yêu cầu rồi tự vấp lúc xử lý** ✓ / Ở đường mạng — gói tin của bạn chưa tới được máy chủ đó / Ở DNS — tên miền nội bộ đang tra ra một địa chỉ không đúng
+  - **Chủ đề gợi ý (tầng 1):** chữ số đầu của mã đáp nói lỗi thuộc phía nào
+  - **Gợi ý (tầng 2):** Mã mở đầu bằng 5 là lời tự thú của máy chủ, không phải lời than của mạng.
+  - **Lời giải (tầng 3):** Ở máy chủ. Nhóm 5xx nghĩa là yêu cầu đã tới nơi và được nhận, chỉ là máy chủ tự vấp lúc làm — mạng thông rồi.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: máy chủ nhận được yêu cầu nhưng tự vấp lúc xử lý thì trả về mã đáp mở đầu bằng chữ số nào?
+  - **Dạng:** gõ tay · **Chấp nhận:** 5 | 5xx | 500 | chữ số 5 | nhóm 5xx
+  - **Chủ đề gợi ý (tầng 1):** nhóm mã đáp của lỗi phía máy chủ
+  - **Gợi ý (tầng 2):** Nhóm mở đầu bằng 4 là chuyện phía người hỏi; nhóm còn lại là phía kia.
+  - **Lời giải (tầng 3):** Chữ số 5 — nhóm 5xx là lỗi phía máy chủ, ví dụ 500.
+- **Đề:** Trình duyệt bôi đỏ với dòng "tên trên chứng chỉ không khớp". Nghĩa là gì?
+  - **Dạng:** trắc nghiệm · **Giấy đó cấp cho một tên miền khác, không phải tên bạn vừa gõ** ✓ / Tên miền đó chưa từng có ai xin chứng chỉ cho nó bao giờ / Chứng chỉ đã bị chính người ký thu hồi trước ngày hết hạn
+  - **Chủ đề gợi ý (tầng 1):** câu hỏi thứ hai trong ba câu trình duyệt hỏi
+  - **Gợi ý (tầng 2):** Ba câu hỏi là: còn hạn — đúng tên — ai ký. Dòng này rơi vào câu giữa.
+  - **Lời giải (tầng 3):** Chứng chỉ được cấp cho một tên miền khác với tên bạn gõ, nên trình duyệt không dám chắc mình đang nói chuyện với ai.
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao thấy ổ khóa vàng vẫn chưa đủ để yên tâm gửi tiền cho một trang?
+  - **Nhóm ý cần chạm:** [đường ống, đường truyền, mã hóa, ống dẫn, đường đi] · [người ở đầu, người kia, người ở bên kia, chủ trang, danh tính, tử tế, người bán] · [cũng xin được, kẻ lừa đảo, trang giả, ai cũng xin, dễ xin]
+  - **Trả lời mẫu:** Vì ổ khóa chỉ bảo đảm đường ống kín và đúng tên miền mình gõ; nó không nói gì về người ở đầu bên kia. Kẻ lừa đảo cũng xin được chứng chỉ cho tên miền của chính họ, nên trang giả vẫn có ổ khóa y như thật.
+
+**6 · Tổng kết:**
+- Chứng chỉ nói đúng hai điều: đường ống kín, và đúng tên miền bạn gõ.
+- Ba kiểu chứng chỉ hỏng: hết hạn, sai tên, không ai bảo lãnh.
+- Thấy được mã đáp là mạng đã thông: 4xx phía người hỏi, 5xx phía máy chủ.
+- *Úp mở bài sau:* Xong chuyện hỏi đường và tin ai. Còn cái địa chỉ IP của chính máy bạn — ai phát cho bạn, và vì sao phải qua tới bốn nhịp mới xong?
 
 ### Bài: Nghe trọn chuyện hỏi cưới bốn nhịp `m6-bai-4`
 
@@ -2015,7 +2147,7 @@ Phần B · 5 chặng · 5 bài · 8 khái niệm
 - Hạn dài cho mạng ổn định, hạn ngắn cho chỗ khách ra vào liên tục.
 - *Úp mở bài sau:* Cả nhà bạn có chục thiết bị, mỗi cái một địa chỉ riêng — vậy mà ra Internet lại chỉ thấy MỘT địa chỉ. Module sau mình mở chuyện NAT và tường lửa.
 
-### Khái niệm & flashcard (8)
+### Khái niệm & flashcard (11)
 
 - **DNS resolver** `m6-resolver` — Máy chủ phân giải — bên đi hỏi hộ rồi mang câu trả lời về cho máy bạn
   - Ẩn dụ: Như người quen rành đường: bạn hỏi một câu, anh ta chạy vòng quanh hỏi giúp rồi về báo lại.
@@ -2032,6 +2164,15 @@ Phần B · 5 chặng · 5 bài · 8 khái niệm
 - **DNS over HTTPS** `m6-doh` — Bọc câu hỏi DNS trong HTTPS và gửi qua port 443
   - Ẩn dụ: Thay vì hỏi to giữa đường, bạn viết câu hỏi vào phong bì niêm phong rồi mới gửi đi.
   - Thẻ ôn: *DNS over HTTPS giải quyết chuyện gì, và đánh đổi cái gì?* → Giấu tên miền bạn hỏi khỏi người ngồi giữa (đi qua port 443). Đổi lại, câu hỏi dồn hết về một nhà cung cấp và bộ lọc của mạng công ty khó làm việc hơn.
+- **TLS certificate** `m6-chung-chi` — Chứng chỉ — tấm giấy máy chủ chìa ra, có chữ ký bên thứ ba, chứng nhận nó đúng là tên miền bạn gõ
+  - Ẩn dụ: Giấy giới thiệu có con dấu của một phòng công chứng cả làng công nhận: bảo đảm đúng người, không bảo đảm người ấy tử tế.
+  - Thẻ ôn: *Ổ khóa vàng trên thanh địa chỉ bảo đảm điều gì?* → Đường ống được mã hóa và bạn đang nói chuyện đúng với tên miền đã gõ. Nó không nói gì về việc chủ trang tử tế hay gian.
+- **Certificate error** `m6-loi-chung-chi` — Ba kiểu chứng chỉ hỏng: hết hạn, sai tên, không ai bảo lãnh
+  - Ẩn dụ: Ba câu người bảo vệ hỏi khi cầm tờ giấy: còn hạn không, tên có đúng người không, ai ký cái này.
+  - Thẻ ôn: *Trình duyệt soi chứng chỉ bằng ba câu hỏi nào?* → Còn hạn không, tên trên giấy có khớp tên miền bạn gõ không, và người ký có nằm trong danh sách trình duyệt tin sẵn không.
+- **HTTP status code** `m6-ma-dap` — Mã đáp ba chữ số máy chủ trả về: 200 xong, 301 dọn nhà, 403 cấm cửa, 404 không có trang, 500 máy chủ vấp
+  - Ẩn dụ: Dòng chữ đóng dấu trên phong bì gửi trả: đã giao, đã chuyển địa chỉ, không cho nhận, không có người này.
+  - Thẻ ôn: *Mã đáp mở đầu bằng 4 và bằng 5 khác nhau chỗ nào?* → 4xx là chuyện phía người hỏi — sai đường dẫn hoặc thiếu quyền; 5xx là máy chủ đã nhận yêu cầu rồi tự vấp lúc làm.
 - **DHCP** `m6-dhcp` — Dịch vụ cho thuê địa chỉ IP cùng subnet mask, gateway và máy chủ DNS
   - Ẩn dụ: Như thuê nhà: có giấy, có thời hạn, hết hạn thì gia hạn hoặc trả lại chìa khóa.
   - Thẻ ôn: *Ngoài địa chỉ IP, DHCP còn cấp cho máy bạn những gì?* → Mặt nạ mạng, địa chỉ gateway và địa chỉ máy chủ DNS — đủ để ra Internet chỉ sau một lần hỏi.
@@ -2042,7 +2183,7 @@ Phần B · 5 chặng · 5 bài · 8 khái niệm
   - Ẩn dụ: Tờ giấy thuê có ngày hết hạn; đi được nửa hạn là đã đi xin gia hạn cho chắc.
   - Thẻ ôn: *Khi nào máy bạn xin gia hạn địa chỉ, và bằng mấy nhịp?* → Khi dùng hết một nửa thời hạn, bằng hai nhịp Request + Ack gửi thẳng cho máy chủ đã cấp.
 
-### Bài kiểm tra module (pool 13 câu, mỗi lượt rút 8, cần ≥ 85%)
+### Bài kiểm tra module (pool 15 câu, mỗi lượt rút 8, cần ≥ 85%)
 
 - **Đề:** Xếp lại vòng đi hỏi của một câu tra tên miền theo đúng thứ tự.
   - **Dạng:** xếp thứ tự (thứ tự đúng):
@@ -2096,12 +2237,20 @@ Phần B · 5 chặng · 5 bài · 8 khái niệm
   - **Dạng:** trắc nghiệm · **A** ✓ / CNAME / MX
   - **Chủ đề gợi ý (tầng 1):** dòng cơ bản nhất trong sổ danh bạ
   - **Vì sao:** Bản ghi A là dòng ghi thẳng "congty.com nằm ở địa chỉ này" — dọn máy chủ là đổi đúng dòng đó. CNAME chỉ đặt biệt danh trỏ về tên khác, MX chỉ lo đường đi của thư.
+- **Đề:** Một trang lạ hiện ổ khóa vàng, chứng chỉ hợp lệ. Điều đó bảo đảm được gì?
+  - **Dạng:** trắc nghiệm · **Đường truyền được mã hóa và đúng tên miền bạn đã gõ** ✓ / Trang này đã qua kiểm duyệt nên gửi tiền vào được / Chủ trang đã trình giấy tờ tùy thân cho trình duyệt
+  - **Chủ đề gợi ý (tầng 1):** ổ khóa bảo vệ đường ống hay bảo lãnh cho người
+  - **Vì sao:** Ổ khóa chỉ nói về đường ống và cái tên: dữ liệu được mã hóa, và bạn đang nói chuyện đúng với tên miền đã gõ. Xin chứng chỉ cho một tên miền vừa mua là chuyện vài phút, nên trang lừa đảo cũng có ổ khóa thật.
+- **Đề:** Nhóm mã đáp báo lỗi thuộc về phía máy chủ mở đầu bằng chữ số nào?
+  - **Dạng:** gõ tay · **Chấp nhận:** 5 | 5xx | 500 | chữ số 5 | nhóm 5xx
+  - **Chủ đề gợi ý (tầng 1):** bốn là phía người hỏi, còn lại là phía kia
+  - **Vì sao:** Nhóm 5xx (như 500) là máy chủ đã nhận yêu cầu rồi tự vấp lúc làm, còn 4xx (403, 404) là chuyện phía người hỏi. Thấy được mã đáp nghĩa là mạng đã thông tới tận ứng dụng.
 
 ## NAT, Firewall và mạng nhà bạn `module-7`
 
-Phần B · 5 chặng · 5 bài · 6 khái niệm
+Phần B · 6 chặng · 7 bài · 11 khái niệm
 
-**Chặng:** Một số nhà cho cả chung cư (m7-bai-1) → Mở một cánh cửa vào nhà (m7-bai-2) → Người gác cửa nhớ mặt (m7-bai-3) → Sơ đồ nhà bạn (m7-bai-4) → Khi nhà có hai lớp cổng (m7-bai-5)
+**Chặng:** Một số nhà cho cả chung cư (m7-bai-1) → Mở một cánh cửa vào nhà (m7-bai-2) → Người gác cửa nhớ mặt (m7-bai-3) → Sơ đồ nhà bạn (m7-bai-4) → Bước vào phòng điều khiển (m7-bai-6) → Khi nhà có hai lớp cổng (m7-bai-5, m7-bai-7)
 
 ### Thư cuối module (hiện ở màn đậu bài thi)
 
@@ -2114,7 +2263,7 @@ Phần B · 5 chặng · 5 bài · 6 khái niệm
 **2 · Đoán thử (pretest):**
 - **Đề:** Đoán thử nhé: địa chỉ công cộng mà cả nhà bạn dùng chung là địa chỉ của thiết bị nào?
   - **Dạng:** trắc nghiệm · Của máy tính đang mở / **Của router nhà bạn, ở phía quay ra Internet** ✓ / Của nhà cung cấp dịch vụ, không thuộc nhà bạn
-  - **Vì sao:** Địa chỉ công cộng nằm ở cổng WAN của router — cái chân quay ra ngoài. Mọi thiết bị trong nhà mượn chung con số đó khi ra Internet.
+  - **Vì sao:** Địa chỉ công cộng nằm ở cổng WAN của router — cái chân quay ra ngoài. Mọi thiết bị trong nhà mượn chung con số đó khi ra Internet. Nói thêm cho đủ: có nhà còn một lớp nữa, khi nhà mạng phát cho cổng WAN một địa chỉ RIÊNG rồi tự đổi địa chỉ thêm lần hai ở phía họ. Bài cuối module gỡ đúng chuyện đó.
 
 **3 · Khám phá (teach):**
 - *[m7-nat]* Ẩn dụ chung cư quay lại: mạng nhà bạn là một tòa nhà, mỗi thiết bị là một căn hộ mang địa chỉ riêng (192.168.x.x). Cả tòa chỉ có MỘT số nhà nhìn từ ngoài đường — địa chỉ công cộng ở cổng WAN của router. NAT là việc router đổi địa chỉ riêng thành số nhà chung khi gói tin đi ra.
@@ -2283,7 +2432,57 @@ Phần B · 5 chặng · 5 bài · 6 khái niệm
 - Mạng nhà là một hàng: nhà mạng → modem → router → switch/Wi-Fi → thiết bị.
 - Một cái hộp nhà mạng cho mượn thường gộp cả ba vai vào một vỏ.
 - Tách được ba vai là biết nghi đúng chặng khi mất mạng.
-- *Úp mở bài sau:* Nếu bạn cắm thêm một router thứ hai cho rộng sóng thì sao? Có nhà tự nhiên sinh ra hai lớp cổng — và nhiều thứ bắt đầu trục trặc.
+- *Úp mở bài sau:* Sơ đồ thì bạn vẽ được rồi, nhưng cái hộp vẫn đóng kín. Vào bên trong nó bằng đường nào — và ai đang giữ chìa?
+
+### Bài: Mở phòng điều khiển của router nhà `m7-bai-6`
+
+**1 · Khởi động (hook):** Ba lần rồi app bảo bạn vào router bật cái này, khai cái kia. Nhưng vào bằng đường nào, và gõ mật khẩu gì? Manh mối đã nằm trên tờ ipconfig từ Module 2 — bạn nhận ra chưa?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử nhé: muốn mở trang quản trị router nhà, bạn gõ gì vào thanh địa chỉ của trình duyệt?
+  - **Dạng:** trắc nghiệm · **Con số ở dòng Default Gateway trên tờ ipconfig** ✓ / Con số mà trang tra IP của tôi hiện ra cho bạn / Tên mạng Wi-Fi nhà bạn, viết liền và bỏ dấu đi
+  - **Vì sao:** Trang quản trị nằm ngay trên chính chiếc router, mà địa chỉ của router trong nhà chính là dòng Default Gateway — thường 192.168.1.1. Gõ con số đó vào trình duyệt là cửa mở.
+
+**3 · Khám phá (teach):**
+- *[m7-trang-quan-tri]* Router nhà bạn không chỉ chuyển gói tin: bên trong nó còn sẵn một trang web nhỏ, gọi là TRANG QUẢN TRỊ. Mở trình duyệt, gõ đúng con số ở dòng Default Gateway (thường 192.168.1.1 hoặc 192.168.0.1) rồi Enter — trang đó hiện ra và hỏi tên đăng nhập cùng mật khẩu. Mọi thứ module này nhắc tới, từ port forwarding tới tường lửa, đều được khai ở đây.
+  - **Đào sâu hơn:** Trang này chỉ mở được từ TRONG nhà: nó nghe ở cổng LAN của router, nên bạn phải đang nối Wi-Fi hoặc dây của nhà mới gõ tới được. Đó là điều lành. Nhiều router có thêm nút bật quản trị từ xa — bật lên là dựng đúng một cánh cửa thường trực ra Internet, thứ mà bài port forwarding vừa dặn bạn dè chừng.
+- *[m7-mat-khau-admin]* Trang quản trị xuất xưởng kèm một cặp tên và mật khẩu dựng sẵn: admin/admin, admin/password, hoặc dãy chữ in trên tem dưới đáy hộp. Cặp đó không phải bí mật — nó nằm trong sách hướng dẫn của hãng, ai cũng tra được theo tên model. Nghĩa là ai đã vào được mạng nhà bạn thì vào thẳng phòng điều khiển. Đổi mật khẩu admin là việc đầu tiên khi lắp router, trước cả việc đặt tên Wi-Fi.
+  - **Đào sâu hơn:** Mật khẩu Wi-Fi và mật khẩu admin là HAI thứ khác nhau, dù nhiều người tưởng là một. Mật khẩu Wi-Fi chặn người ngồi ngoài vỉa hè; mật khẩu admin chặn người đã đứng trong nhà — khách, người thuê trước, hay một cái camera rẻ tiền bị chiếm. Đổi cái này không đụng tới cái kia, và đặt hai cái trùng nhau thì ai biết Wi-Fi là biết luôn cửa điều khiển.
+- *[m7-ghim-dia-chi]* Trong trang quản trị có danh sách thiết bị đang nối: tên máy, địa chỉ đang giữ, và địa chỉ MAC. Bình thường router phát địa chỉ theo tờ giấy thuê có hạn của Module 6, nên máy in cúp điện một lần là quay lại với số khác — cả phòng vẫn in vào số cũ thì không ra tờ nào. Cách chữa là GHIM ĐỊA CHỈ theo MAC: khai với router rằng thấy đúng địa chỉ MAC này thì luôn phát 192.168.1.50. Máy in vẫn đi xin như thường, chỉ là lần nào cũng nhận đúng số đó.
+  - **Đào sâu hơn:** Ghim ở router khác với đặt cứng địa chỉ trên chính máy in. Đặt cứng thì máy in không hỏi ai cả, và hôm bạn đổi router sang dải 192.168.2.x là nó nằm lạc một mình, ai cũng quên mất vì sổ sách chẳng ghi đâu. Ghim ở router giữ được cả hai đầu: một chỗ duy nhất để tra, mà máy in vẫn đi trọn bốn nhịp DORA nên vẫn nhận subnet mask, gateway và DNS mới nếu bạn đổi.
+
+**4 · Thử tay (practice, fading 2):**
+- **Đề:** Bạn đang ngồi quán cà phê, muốn mở trang quản trị router nhà mình. Bình thường có mở được không?
+  - **Dạng:** trắc nghiệm · **Không, trang đó nghe ở cổng LAN nên phải đang trong mạng nhà** ✓ / Được, chỉ cần gõ đúng 192.168.1.1 vào trình duyệt là trang hiện / Được, vì mọi router đều mở sẵn cửa quản trị ra phía Internet
+  - **Chủ đề gợi ý (tầng 1):** trang quản trị nghe ở cổng nào của router
+  - **Gợi ý (tầng 2):** 192.168.1.1 là địa chỉ riêng — ngoài Internet không ai định tuyến tới con số đó cả.
+  - **Lời giải (tầng 3):** Không mở được, vì trang quản trị nghe ở cổng LAN nên bạn phải đang nối mạng nhà. Muốn mở từ xa thì phải bật quản trị từ xa, mà đó lại là một cánh cửa thường trực ra Internet.
+- **Đề:** Bạn vừa đổi mật khẩu Wi-Fi nhà thành một chuỗi rất khó đoán. Trang quản trị router giờ ra sao?
+  - **Dạng:** trắc nghiệm · **Vẫn mở được bằng cặp xuất xưởng, vì đó là hai ổ khóa riêng** ✓ / Cũng đổi theo, vì router chỉ giữ một mật khẩu cho cả cái hộp / Tự khóa lại tới khi bạn đăng nhập bằng mật khẩu Wi-Fi mới
+  - **Chủ đề gợi ý (tầng 1):** hai ổ khóa khác nhau trên cùng một cái hộp
+  - **Gợi ý (tầng 2):** Một ổ chặn người ngồi ngoài vỉa hè, một ổ chặn người đã đứng trong nhà.
+  - **Lời giải (tầng 3):** Vẫn mở được bằng cặp xuất xưởng: mật khẩu Wi-Fi và mật khẩu admin là hai ổ khóa riêng, đổi ổ này không đụng gì tới ổ kia.
+- **Đề:** Máy in văn phòng cứ sau mỗi lần cúp điện lại nhận một địa chỉ khác. Trong trang quản trị router, bạn khai gì để nó luôn nhận đúng một số?
+  - **Dạng:** gõ tay · **Chấp nhận:** ghim địa chỉ theo mac | ghim địa chỉ | ghim ip theo mac | đặt trước địa chỉ theo mac | đặt trước ip theo mac | dành sẵn địa chỉ theo mac | gán địa chỉ theo mac | gán ip theo mac | dhcp reservation
+  - **Chủ đề gợi ý (tầng 1):** lấy con số cố định trên card mạng làm mỏ neo
+  - **Gợi ý (tầng 2):** Router nhận ra từng thiết bị bằng con số cố định in trên card mạng — dùng chính con số đó.
+  - **Lời giải (tầng 3):** Ghim địa chỉ theo MAC — khai với router rằng thấy đúng địa chỉ MAC của máy in thì luôn phát về 192.168.1.50.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: router vừa lắp xong, việc đầu tiên bạn làm trong trang quản trị là gì?
+  - **Dạng:** gõ tay · **Chấp nhận:** đổi mật khẩu admin | đổi mật khẩu quản trị | đổi mật khẩu trang quản trị | đổi mật khẩu đăng nhập | thay mật khẩu admin | thay mật khẩu quản trị | đặt lại mật khẩu admin | đổi tài khoản admin
+  - **Chủ đề gợi ý (tầng 1):** cặp tên và mật khẩu router mang thẳng từ nhà máy ra
+  - **Gợi ý (tầng 2):** Cặp dựng sẵn ấy in trong sách hướng dẫn của hãng — ai cũng tra được theo tên model.
+  - **Lời giải (tầng 3):** Đổi mật khẩu admin — cặp xuất xưởng ai cũng tra ra, để nguyên là để ngỏ phòng điều khiển cho bất cứ ai đã vào được mạng nhà.
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao đặt mật khẩu Wi-Fi thật khó vẫn chưa đủ để yên tâm về router nhà?
+  - **Nhóm ý cần chạm:** [admin, quản trị, đăng nhập router, mật khẩu router] · [mặc định, xuất xưởng, đáy hộp, tra được, nhà máy, sẵn] · [trong nhà, vào được mạng, đã vào, khách, thiết bị bị chiếm, người trong mạng]
+  - **Trả lời mẫu:** Vì đó là hai ổ khóa khác nhau. Mật khẩu Wi-Fi chỉ chặn người ngồi ngoài vỉa hè; còn ai đã vào được mạng nhà — khách, người thuê trước, một thiết bị bị chiếm — vẫn mở được trang quản trị bằng cặp xuất xưởng mà cả Internet tra ra trong ba giây.
+
+**6 · Tổng kết:**
+- Trang quản trị mở bằng chính con số ở dòng Default Gateway, gõ vào trình duyệt.
+- Mật khẩu admin xuất xưởng ai cũng tra được — đổi ngay, và đừng đặt trùng mật khẩu Wi-Fi.
+- Ghim địa chỉ theo MAC để máy in hay camera lần nào cũng nhận đúng một số.
+- *Úp mở bài sau:* Giờ bạn mở được phòng điều khiển rồi. Nhưng nếu nhà bạn có tới HAI cái hộp cùng làm cổng, khai ở phòng nào mới ăn?
 
 ### Bài: Gỡ cái nhà có hai lớp cổng `m7-bai-5`
 
@@ -2324,9 +2523,57 @@ Phần B · 5 chặng · 5 bài · 6 khái niệm
 - Cắm router thứ hai vào cổng WAN là sinh ra hai lớp NAT, hai cuốn sổ.
 - Port forwarding khai một chỗ thì cửa chỉ mở được nửa đường.
 - Gỡ bằng cách cho router thứ hai làm điểm phát sóng, cắm vào cổng LAN.
+- *Úp mở bài sau:* Bạn vừa dẹp được lớp cổng thứ hai trong nhà. Nhưng có nhà dẹp sạch rồi mà camera vẫn đen sì — vì lớp thứ hai của họ nằm ngoài hàng rào.
+
+### Bài: Tìm lớp cổng nằm ngoài nhà bạn `m7-bai-7`
+
+**1 · Khởi động (hook):** Bạn khai port forwarding đúng từng dòng, dẹp sạch NAT thừa trong nhà, camera vẫn đen sì khi xem từ cơ quan. Nếu lỗi không nằm trong nhà bạn thì nó nằm ở đâu?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử nhé: địa chỉ ở cổng WAN của router nhà bạn có chắc là địa chỉ công cộng không?
+  - **Dạng:** trắc nghiệm · **Không chắc — nhiều nhà mạng phát cho cổng WAN một địa chỉ riêng** ✓ / Chắc chắn — cổng WAN luôn mang địa chỉ công cộng của thuê bao / Chắc chắn — địa chỉ riêng chỉ được phép nằm ở phía cổng LAN
+  - **Vì sao:** Bài đầu module nói địa chỉ công cộng nằm ở cổng WAN, và điều đó đúng với nhà được cấp địa chỉ công cộng thật. Nhưng phần lớn thuê bao cáp quang hộ gia đình ở Việt Nam nhận một địa chỉ RIÊNG ở cổng WAN, rồi nhà mạng mới gộp cả trăm nhà vào một địa chỉ công cộng ở phía họ.
+
+**3 · Khám phá (teach):**
+- *[m7-cgnat]* CGNAT (Carrier-Grade NAT) là lớp NAT do chính NHÀ MẠNG dựng. Router nhà bạn vẫn làm NAT như bài 1, nhưng địa chỉ nó nhận ở cổng WAN lại là địa chỉ riêng của nhà mạng — hay gặp là dải 100.64.x.x tới 100.127.x.x, đôi khi là 10.x.x.x — vẫn là địa chỉ riêng theo đúng nghĩa bạn học ở Module 3, chỉ khác chỗ nó nằm trong mạng của nhà mạng chứ không phải trong nhà bạn. Ra tới Internet, hàng trăm nhà như bạn mới được gộp chung vào một địa chỉ công cộng. Nhà bạn vẫn có hai lớp cổng, chỉ khác bài trước ở chỗ lớp thứ hai nằm NGOÀI hàng rào.
+  - **Đào sâu hơn:** Nhà mạng làm vậy vì địa chỉ IPv4 đã cạn: một địa chỉ công cộng nuôi cả nghìn thuê bao thì rẻ hơn hẳn mua thêm dải. Hệ quả kèm theo rất phũ — port forwarding của bạn dừng lại ngay ở cổng WAN, và cách gỡ của bài trước (tắt vai làm cổng của thiết bị thứ hai) hoàn toàn vô hiệu, vì thiết bị thứ hai lần này nằm trong phòng máy của nhà mạng.
+- *[m7-doi-chieu-wan]* Phép tự kiểm mất đúng một phút, và bạn vừa học xong đồ nghề cho nó ở bài trước. Bước 1: mở trang quản trị router, vào mục Trạng thái hoặc WAN, chép lại địa chỉ ở cổng WAN. Bước 2: mở một trang tra IP của tôi, chép lại con số nó hiện. Hai con số GIỐNG nhau thì nhà bạn đang cầm địa chỉ công cộng thật, port forwarding khai được. KHÁC nhau thì còn một lớp NAT nữa ở phía nhà mạng.
+  - **Đào sâu hơn:** Khác nhau thì có ba lối đi, và không lối nào là chỉnh router cả. Một: gọi nhà mạng xin địa chỉ công cộng, nhiều nơi bán như một dịch vụ thêm. Hai: dùng IPv6 nếu nhà mạng đã bật — IPv6 không cần NAT nên camera có địa chỉ của riêng nó. Ba: để thiết bị tự gọi ra một dịch vụ trung gian rồi bạn xem qua dịch vụ đó, đúng cách mọi camera bán sẵn đang làm.
+
+**4 · Thử tay (practice, fading 2):**
+- **Đề:** Lớp NAT do chính nhà mạng dựng, khiến cả trăm thuê bao chung một địa chỉ công cộng, gọi là gì? (viết tắt được)
+  - **Dạng:** gõ tay · **Chấp nhận:** cgnat | carrier grade nat | nat của nhà mạng | nat nhà mạng | nat cấp nhà mạng | large scale nat
+  - **Chủ đề gợi ý (tầng 1):** ai là người dựng lớp NAT thứ hai này
+  - **Gợi ý (tầng 2):** Ghép chữ viết tắt của NAT với chữ tiếng Anh chỉ cỡ nhà mạng, cỡ nhà cung cấp.
+  - **Lời giải (tầng 3):** CGNAT — Carrier-Grade NAT, lớp NAT của nhà mạng, gộp hàng trăm thuê bao vào một địa chỉ công cộng.
+- **Đề:** Trang quản trị ghi cổng WAN là 100.66.4.9, còn trang tra IP của tôi hiện 42.116.7.20. Bạn đọc ra điều gì?
+  - **Dạng:** trắc nghiệm · **Nhà bạn nằm sau CGNAT: nhà mạng còn NAT thêm một lần nữa** ✓ / Router nhà bạn đang hỏng NAT nên báo ra hai con số lệch / Máy bạn đang đi vòng qua một máy chủ trung gian nào đó
+  - **Chủ đề gợi ý (tầng 1):** hai con số ấy lẽ ra giống nhau khi nào
+  - **Gợi ý (tầng 2):** Chỉ một lớp cổng thì địa chỉ ở cổng WAN chính là con số cả Internet nhìn thấy.
+  - **Lời giải (tầng 3):** Nhà bạn nằm sau CGNAT: 100.66.4.9 là địa chỉ riêng nhà mạng phát cho router bạn, còn 42.116.7.20 là địa chỉ chung của cả một cụm thuê bao.
+- **Đề:** Đã xác định nhà bạn nằm sau CGNAT mà vẫn muốn xem camera từ xa. Việc nào có cửa?
+  - **Dạng:** trắc nghiệm · **Gọi nhà mạng xin một địa chỉ công cộng cho thuê bao nhà bạn** ✓ / Tắt NAT trên router nhà rồi khai lại port forwarding cho đúng / Đổi router nhà sang một model đời cao hơn và mạnh sóng hơn
+  - **Chủ đề gợi ý (tầng 1):** lớp cổng gây vướng đang nằm ở đâu
+  - **Gợi ý (tầng 2):** Lớp gây vướng nằm trong phòng máy của nhà mạng — thứ gì bạn làm trong nhà cũng chẳng với tới.
+  - **Lời giải (tầng 3):** Gọi nhà mạng xin địa chỉ công cộng. Lớp NAT gây vướng nằm bên họ nên mọi thao tác trong nhà đều vô hiệu; hai lối còn lại là dùng IPv6 nếu nhà mạng đã bật, hoặc để thiết bị tự gọi ra một dịch vụ trung gian.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: trang quản trị ghi cổng WAN là 100.66.4.9 nhưng trang tra IP của tôi hiện 42.116.7.20. Nhà bạn đang nằm sau cái gì? (viết tắt được)
+  - **Dạng:** gõ tay · **Chấp nhận:** cgnat | carrier grade nat | nat của nhà mạng | nat nhà mạng | nat cấp nhà mạng | large scale nat
+  - **Chủ đề gợi ý (tầng 1):** ai đang giữ lớp NAT thứ hai
+  - **Gợi ý (tầng 2):** Dải 100.64 tới 100.127 là dải nhà mạng dành riêng cho lớp NAT của chính họ.
+  - **Lời giải (tầng 3):** CGNAT của nhà mạng — hai con số khác nhau là dấu hiệu còn một lớp đổi địa chỉ nữa ở phía họ.
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao cách gỡ hai lớp cổng ở bài trước lại không dùng được cho CGNAT?
+  - **Nhóm ý cần chạm:** [nhà mạng, phía họ, bên ngoài, ngoài nhà, ngoài hàng rào] · [không đăng nhập được, không chỉnh được, không tắt được, không với tới, không sờ được, ngoài tầm]
+  - **Trả lời mẫu:** Vì lớp NAT thứ hai lần này nằm trong phòng máy của nhà mạng, không phải cái hộp thứ hai trong nhà mình. Bài trước gỡ được là nhờ mình đăng nhập vào thiết bị đó và tắt vai làm cổng của nó; thiết bị của nhà mạng thì mình chỉ còn cách gọi điện nhờ họ đổi.
+
+**6 · Tổng kết:**
+- CGNAT là lớp NAT của nhà mạng — cổng WAN nhà bạn có thể chỉ mang địa chỉ riêng.
+- So địa chỉ ở cổng WAN với con số trang tra IP của tôi hiện ra là biết ngay.
+- Khác nhau thì port forwarding vô ích: xin địa chỉ công cộng, dùng IPv6, hoặc đi qua dịch vụ trung gian.
 - *Úp mở bài sau:* Hết Phần B. Phần sau là chuyện đi làm: Wi-Fi chuyên sâu, máy chủ Windows, và một phòng khám mạng nơi bạn vào vai người chẩn đoán.
 
-### Khái niệm & flashcard (6)
+### Khái niệm & flashcard (11)
 
 - **NAT** `m7-nat` — Đổi địa chỉ riêng trong nhà thành địa chỉ công cộng khi ra Internet
   - Ẩn dụ: Cả chung cư một số nhà: thư ra ngoài đều ghi số nhà chung, không ghi số căn hộ.
@@ -2346,8 +2593,23 @@ Phần B · 5 chặng · 5 bài · 6 khái niệm
 - **Double NAT** `m7-double-nat` — Hai lớp đổi địa chỉ do hai router lồng nhau
   - Ẩn dụ: Nhà có hai lớp cổng, mỗi lớp một cuốn sổ — khai một cuốn thì khách vẫn kẹt ở giữa.
   - Thẻ ôn: *Vì sao double NAT làm hỏng port forwarding, và gỡ thế nào?* → Vì có hai bảng NAT ở hai thiết bị, khai một chỗ là chưa đủ. Gỡ bằng cách cho router thứ hai làm điểm phát sóng: tắt NAT, cắm vào cổng LAN.
+- **Trang quản trị router** `m7-trang-quan-tri` — Trang web nằm sẵn trong router, mở bằng địa chỉ Default Gateway
+  - Ẩn dụ: Phòng điều khiển của ngôi nhà: cửa vào chỉ mở được từ bên trong sân.
+  - Thẻ ôn: *Mở trang quản trị router nhà bằng cách nào?* → Gõ con số ở dòng Default Gateway (thường 192.168.1.1) vào trình duyệt, khi đang nối mạng nhà.
+- **Mật khẩu admin mặc định** `m7-mat-khau-admin` — Cặp đăng nhập xuất xưởng của router — ai cũng tra được, phải đổi ngay
+  - Ẩn dụ: Chìa khóa nhà máy phát kèm hộp: cả xóm mua cùng model là cùng một chìa.
+  - Thẻ ôn: *Mật khẩu Wi-Fi và mật khẩu admin của router khác nhau ra sao?* → Hai ổ khóa riêng: Wi-Fi chặn người ngoài vỉa hè, admin chặn người đã vào được mạng nhà.
+- **Ghim địa chỉ theo MAC** `m7-ghim-dia-chi` — Khai với router: thấy đúng MAC này thì luôn phát về đúng một địa chỉ
+  - Ẩn dụ: Chừa sẵn chỗ đỗ mang tên: xe vẫn xin chỗ như thường, nhưng chỗ ấy luôn là của nó.
+  - Thẻ ôn: *Làm sao để máy in luôn nhận đúng một địa chỉ sau mỗi lần cúp điện?* → Ghim địa chỉ theo MAC trên router: thấy đúng MAC đó thì lần nào cũng phát về cùng một địa chỉ.
+- **CGNAT** `m7-cgnat` — Lớp NAT của nhà mạng, gộp hàng trăm thuê bao vào một địa chỉ công cộng
+  - Ẩn dụ: Cổng thứ hai nằm ngoài hàng rào nhà bạn — chìa khóa cổng đó nhà mạng giữ.
+  - Thẻ ôn: *CGNAT là gì, và nó làm hỏng việc gì của bạn?* → Lớp NAT của nhà mạng: cổng WAN nhà bạn chỉ có địa chỉ riêng, nên port forwarding dừng ngay ở đó.
+- **Phép đối chiếu WAN** `m7-doi-chieu-wan` — So địa chỉ ở cổng WAN với địa chỉ mà Internet nhìn thấy
+  - Ẩn dụ: Đọc số nhà mình rồi hỏi người ngoài đường xem họ thấy số mấy.
+  - Thẻ ôn: *Làm sao biết nhà mình có nằm sau CGNAT hay không?* → So địa chỉ cổng WAN trong trang quản trị với con số trang tra IP hiện ra — khác nhau là có CGNAT.
 
-### Bài kiểm tra module (pool 12 câu, mỗi lượt rút 8, cần ≥ 85%)
+### Bài kiểm tra module (pool 16 câu, mỗi lượt rút 8, cần ≥ 85%)
 
 - **Đề:** Việc router đổi địa chỉ riêng thành địa chỉ công cộng khi gói tin ra Internet gọi là gì? (viết tắt được)
   - **Dạng:** gõ tay · **Chấp nhận:** nat | network address translation | biên dịch địa chỉ mạng | chuyển đổi địa chỉ mạng
@@ -2394,16 +2656,32 @@ Phần B · 5 chặng · 5 bài · 6 khái niệm
   - **Dạng:** trắc nghiệm · **Có — NAT chỉ tình cờ chặn khách không hẹn từ ngoài, còn máy trong nhà gọi ra đâu thì nó không quản** ✓ / Có — vì NAT chỉ chặn được máy trong nhà gọi ra ngoài, còn khách lạ từ ngoài vào thì nó cho qua hết / Không — NAT đã chặn sạch mọi thứ đi từ ngoài vào nên mạng trong nhà bạn kín rồi
   - **Chủ đề gợi ý (tầng 1):** NAT khác tường lửa ở chỗ nào
   - **Vì sao:** NAT là bức tường tình cờ: nó chặn được khách không hẹn từ ngoài vào chỉ vì cuốn sổ chưa có dòng nào cho họ, nhưng máy trong nhà tự mở kết nối ra ngoài thì nó không quản. Tường lửa mới là thứ đặt luật rõ ràng cho cả hai chiều.
+- **Đề:** Muốn mở trang quản trị router nhà, bạn gõ con số nào vào thanh địa chỉ trình duyệt?
+  - **Dạng:** trắc nghiệm · **Con số ở dòng Default Gateway của lệnh ipconfig** ✓ / Con số mà trang tra IP của tôi hiện ra cho bạn / Con số ở dòng IPv4 Address của lệnh ipconfig
+  - **Chủ đề gợi ý (tầng 1):** địa chỉ của chính chiếc router trong mạng nhà
+  - **Vì sao:** Trang quản trị nằm trên chính chiếc router, nên gõ địa chỉ của router trong nhà — đúng dòng Default Gateway, thường 192.168.1.1. Dòng IPv4 Address là địa chỉ của chính máy bạn, gõ vào chỉ quay về chỗ cũ.
+- **Đề:** Camera cửa nhà cứ vài hôm lại đổi địa chỉ, làm app xem từ xa mất kết nối. Trên router bạn khai gì để nó giữ nguyên một số?
+  - **Dạng:** gõ tay · **Chấp nhận:** ghim địa chỉ theo mac | ghim địa chỉ | ghim ip theo mac | đặt trước địa chỉ theo mac | đặt trước ip theo mac | dành sẵn địa chỉ theo mac | gán địa chỉ theo mac | gán ip theo mac | dhcp reservation
+  - **Chủ đề gợi ý (tầng 1):** lấy con số cố định trên card mạng làm mỏ neo
+  - **Vì sao:** Ghim địa chỉ theo MAC (DHCP reservation): router thấy đúng địa chỉ MAC đó thì lần nào cũng phát về một địa chỉ, mà máy in vẫn đi xin như thường nên vẫn nhận đủ subnet mask, gateway và DNS.
+- **Đề:** Nhà mạng gộp hàng trăm thuê bao vào chung một địa chỉ công cộng bằng lớp NAT của chính họ. Lớp đó tên gì? (viết tắt được)
+  - **Dạng:** gõ tay · **Chấp nhận:** cgnat | carrier grade nat | nat của nhà mạng | nat nhà mạng | nat cấp nhà mạng | large scale nat
+  - **Chủ đề gợi ý (tầng 1):** lớp NAT nằm ngoài hàng rào nhà bạn
+  - **Vì sao:** CGNAT — Carrier-Grade NAT. Khi đó địa chỉ ở cổng WAN nhà bạn chỉ là địa chỉ riêng của nhà mạng, hay gặp là dải 100.64 tới 100.127.
+- **Đề:** Cổng WAN của router nhà ghi 100.66.4.9, còn trang tra IP của tôi hiện 42.116.7.20. Kết luận gì?
+  - **Dạng:** trắc nghiệm · **Nhà bạn nằm sau CGNAT: nhà mạng còn NAT thêm lần nữa** ✓ / Router nhà bạn hỏng NAT nên báo ra hai con số lệch / Máy bạn đang đi vòng qua một máy chủ trung gian nào đó
+  - **Chủ đề gợi ý (tầng 1):** chỉ một lớp cổng thì hai con số ấy ra sao
+  - **Vì sao:** Chỉ một lớp cổng thì địa chỉ ở cổng WAN chính là con số cả Internet nhìn thấy. Khác nhau nghĩa là nhà mạng còn đổi địa chỉ thêm một lần nữa — 100.66.4.9 nằm trong dải CGNAT.
 
 ## Wi-Fi và IPv6 chuyên sâu `module-8`
 
-Phần C · 6 chặng · 6 bài · 13 khái niệm
+Phần C · 6 chặng · 7 bài · 16 khái niệm
 
-**Chặng:** Sóng thay dây (m8-bai-1) → Đọc tên thế hệ (m8-bai-2) → Đo cho ra số (m8-bai-6) → Khóa cửa cho sóng (m8-bai-3) → Biển số đời mới (m8-bai-4) → Máy tự lo liệu (m8-bai-5)
+**Chặng:** Sóng thay dây (m8-bai-1, m8-bai-7) → Đọc tên thế hệ (m8-bai-2) → Đo cho ra số (m8-bai-6) → Khóa cửa cho sóng (m8-bai-3) → Biển số đời mới (m8-bai-4) → Máy tự lo liệu (m8-bai-5)
 
 ### Thư cuối module (hiện ở màn đậu bài thi)
 
-> Mấy dòng để lại. Hai tuần trước, Wi-Fi yếu là chuyện của trời; giờ bạn biết góc nhà nào nên đi băng tần nào, tên thế hệ nào thật sự đem lại gì, và khóa cửa cho sóng nhà mình bằng cách nào cho tử tế. Bạn cũng đọc được biển số đời mới mà không vấp, kể cả cái địa chỉ dài ngoằng mở đầu bằng fe80. Hai hệ địa chỉ cùng sống trên một máy không còn làm bạn lẫn nữa — đó mới là điều đáng nói.
+> Mấy dòng để lại. Hai tuần trước, Wi-Fi yếu là chuyện của trời; giờ bạn biết góc nhà nào nên đi băng tần nào, vì sao đầy vạch mà mạng vẫn ì và nên kê router ở chỗ nào, tên thế hệ nào thật sự đem lại gì, và khóa cửa cho sóng nhà mình bằng cách nào cho tử tế. Bạn cũng đọc được biển số đời mới mà không vấp, kể cả cái địa chỉ dài ngoằng mở đầu bằng fe80. Hai hệ địa chỉ cùng sống trên một máy không còn làm bạn lẫn nữa — đó mới là điều đáng nói.
 
 ### Bài: Chọn đúng băng tần cho từng góc nhà `m8-bai-1`
 
@@ -2447,7 +2725,62 @@ Phần C · 6 chặng · 6 bài · 13 khái niệm
 - Wi-Fi là sóng radio thay dây; không khí là một sợi dây chung, càng đông càng chờ.
 - 2.4 GHz xa mà chậm; 5 GHz nhanh mà gần; 6 GHz nhanh nhất, vắng nhất, ngắn nhất.
 - Gần ưu tiên nhanh, xa ưu tiên tới — không băng nào tốt nhất cho mọi góc nhà.
-- *Úp mở bài sau:* Trên vỏ hộp còn một con số nữa: Wi-Fi 5, Wi-Fi 6, Wi-Fi 7. Số đó không phải băng tần — vậy nó là gì?
+- *Úp mở bài sau:* Nhưng chọn đúng băng rồi mà nhà vẫn ì thì sao? Sóng nhà bạn với sóng nhà hàng xóm đang giẫm lên nhau — giẫm bằng cách nào, và vì sao máy vẫn báo đầy vạch?
+
+### Bài: Giành lại kênh sóng với nhà hàng xóm `m8-bai-7`
+
+**1 · Khởi động (hook):** Điện thoại báo đầy vạch, bạn lại đang ngồi ngay cạnh router, vậy mà trang web cứ quay vòng vòng — và cứ tối đến là tệ nhất. Sóng khỏe rành rành, thế thì cái gì đang chậm?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử nhé: cả chung cư dùng Wi-Fi 2.4 GHz, nhà bạn và nhà hàng xóm cùng đặt kênh 6. Chuyện gì xảy ra?
+  - **Dạng:** trắc nghiệm · **Thiết bị hai nhà phải thay phiên nhau nói, nên cả hai cùng chậm** ✓ / Không ảnh hưởng gì tới nhau, vì mỗi nhà một mật khẩu Wi-Fi riêng / Router nào mạnh hơn sẽ lấn át, nhà kia gần như mất sóng
+  - **Vì sao:** Mật khẩu khóa NỘI DUNG chứ không chia được không khí. Chung kênh là chung một sợi dây (bài trước): thiết bị hai nhà nghe thấy nhau nên phải nhường lượt, và cả hai cùng chậm chứ chẳng ai át được ai.
+
+**3 · Khám phá (teach):**
+- *[m8-kenh-wifi]* Mỗi băng tần không phải một đường ống liền: nó chia thành nhiều KÊNH — băng tần là con phố, kênh là làn đường, và router nhà bạn chỉ phát trên một làn. Rắc rối ở chỗ băng 2.4 GHz có 13 kênh nhưng đánh số sát nhau nên chúng đè lên nhau; chỉ ba kênh 1, 6 và 11 cách đủ xa để không chồng. Cả xóm chen vào đúng ba làn ấy, nên nhà bạn và nhà hàng xóm rất dễ chung kênh — mà chung kênh là chung một sợi dây không khí (bài trước): thiết bị hai nhà phải thay phiên nhau nói.
+  - **Đào sâu hơn:** Chọn kênh nằm giữa, kiểu 3 hay 8, còn tệ hơn trùng hẳn kênh với hàng xóm: chồng một PHẦN thì hai bên nghe nhau lõm bõm, không nhận ra bên kia đang nói nên cứ phát đè lên — cả hai cùng hỏng gói, cùng phải gửi lại. Trùng hẳn thì ít ra còn nghe rõ nhau mà nhường lượt. Băng 5 GHz rộng rãi hơn nhiều: hơn hai chục kênh không đè nhau, lại ít nhà dùng.
+- *[m8-vach-song]* Vậy vì sao máy báo ĐẦY VẠCH mà vẫn ì? Vì vạch chỉ đo đúng một thứ: sóng router tới máy to hay nhỏ. Nó hoàn toàn không đo xóm quanh đang ồn cỡ nào. Giống như đứng sát loa trong quán karaoke — nghe loa nhà mình rõ mồn một, nhưng muốn nói chuyện với người bên cạnh thì vẫn chịu, vì cả quán cùng gào. Thứ quyết định tốc độ thật là CHÊNH LỆCH giữa tiếng nhà bạn và tiếng ồn xung quanh, mà mấy cái vạch kia không hé một chữ nào về vế thứ hai.
+  - **Đào sâu hơn:** Người trực đọc hai con số chứ không đọc vạch: độ to của sóng (đơn vị dBm, luôn là số âm — quanh -50 là khỏe, tới -80 là lết) và mức ồn nền quanh đó. Hiệu hai số mới là con số đáng tin. Điện thoại vẽ vạch chỉ theo vế thứ nhất, nên ở chung cư đông nó nói dối rất tự tin: bốn vạch mà chờ dài.
+- *[m8-cho-dat-router]* Còn một việc tay chân đổi được nhiều thứ hơn cả đổi kênh: đặt lại router. Sóng lan ra mọi hướng thành một quả cầu, nên router muốn nằm GIỮA nhà, TRÊN CAO (từ ngang tầm ngực trở lên) và THOÁNG. Nhét nó vào góc nhà là ném nửa quả cầu ra ngoài đường cho hàng xóm hưởng. Kẻ thù của sóng: tủ kín và tường bê tông chịu lực, gương cùng tấm kim loại (dội sóng ngược lại), bể cá và bình nước (nước nuốt sóng 2.4 GHz rất giỏi), lò vi sóng đang chạy.
+  - **Đào sâu hơn:** Nhà ống nhiều tầng thì không chỗ đặt nào cứu nổi: một điểm phát ở tầng hai vẫn để lại góc chết ở tầng trệt lẫn tầng ba. Lúc đó thứ cần thêm là một điểm phát NỮA đặt xa router, chứ không phải một router đắt tiền hơn — sóng đã bị bê tông chặn thì đắt mấy cũng không xuyên qua được.
+
+**4 · Thử tay (practice, fading 1):**
+- **Đề:** Điện thoại báo bốn vạch đầy, bạn ngồi ngay cạnh router, mà trang web vẫn quay vòng. Bốn vạch đó đang nói lên điều gì?
+  - **Dạng:** trắc nghiệm · **Sóng router tới máy rất to — nhưng nó không đo xóm quanh ồn tới đâu** ✓ / Đường ra Internet đang rộng — nhưng nó không đo router nhà đời nào / Kênh máy đang dùng còn trống — nhưng nó không đo tường dày hay mỏng
+  - **Chủ đề gợi ý (tầng 1):** thứ vạch sóng đo được và thứ nó bỏ qua
+  - **Gợi ý (tầng 2):** Vạch đo tiếng của router nhà bạn. Còn thứ gì trong không khí mà nó không hề đếm?
+  - **Lời giải (tầng 3):** Vạch chỉ nói sóng router tới máy TO — nó không biết gì về độ ồn của xóm quanh. Đường ra Internet rộng bao nhiêu là chuyện của gói cước, còn kênh có trống hay không thì vạch cũng chẳng đếm.
+- **Đề:** Băng 2.4 GHz có 13 kênh, nhưng chỉ ba kênh không đè lên nhau. Đó là ba kênh số mấy? (ba con số)
+  - **Dạng:** gõ tay · **Chấp nhận:** 1, 6, 11 | 1 6 11 | 1, 6 và 11 | 1-6-11 | 1 và 6 và 11
+  - **Chủ đề gợi ý (tầng 1):** ba làn cách nhau đủ xa
+  - **Gợi ý (tầng 2):** Ba số cách đều nhau năm bậc, bắt đầu từ kênh nhỏ nhất.
+  - **Lời giải (tầng 3):** Kênh 1, 6 và 11 — chỉ ba kênh này cách nhau đủ xa để không chồng lấn lên nhau.
+- **Đề:** Router đang nằm trong tủ giày ở góc nhà, ngay cạnh bể cá. Việc nào đáng làm trước tiên?
+  - **Dạng:** trắc nghiệm · **Dời router ra giữa nhà, đặt trên cao và để thoáng** ✓ / Nâng gói cước lên mức cao hơn cho sóng khỏe hẳn / Đổi mật khẩu Wi-Fi thật dài để hàng xóm hết ké
+  - **Chủ đề gợi ý (tầng 1):** quả cầu sóng đang bị nhốt ở đâu
+  - **Gợi ý (tầng 2):** Sóng lan thành một quả cầu — quả cầu ấy đang bị nhốt trong tủ, ở một góc, cạnh một khối nước.
+  - **Lời giải (tầng 3):** Dời router ra giữa nhà, trên cao và thoáng. Tủ kín chặn sóng, góc nhà ném nửa quả cầu ra ngoài đường, còn bể cá thì nước nuốt sóng 2.4 GHz. Gói cước không làm sóng khỏe lên, và người ké mạng cũng không làm vạch sóng đổi.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: nhà bạn và nhà hàng xóm cùng đặt một kênh trên băng 2.4 GHz — thiết bị hai bên buộc phải làm gì với nhau?
+  - **Dạng:** gõ tay · **Chấp nhận:** thay phiên | luân phiên | chờ nhau | đợi nhau | chờ tới lượt | chờ đến lượt | đợi đến lượt | thay nhau nói | nhường nhau | chia lượt | xếp hàng
+  - **Chủ đề gợi ý (tầng 1):** không khí là sợi dây dùng chung
+  - **Gợi ý (tầng 2):** Nhớ bài trước: không khí là MỘT sợi dây chung. Chung kênh nghĩa là chung đúng sợi dây đó.
+  - **Lời giải (tầng 3):** Thay phiên nhau nói — chung kênh là chung một sợi dây không khí, mỗi lúc chỉ một bên được phát, nên cả hai nhà cùng chậm.
+- **Đề:** Vẫn từ trí nhớ, nối lại với bài trước: vì sao chuyển mạng lên băng 5 GHz thường đỡ hẳn cảnh giẫm sóng ở chung cư?
+  - **Dạng:** trắc nghiệm · **Vì 5 GHz có hơn hai chục kênh không đè nhau, lại ít nhà dùng hơn** ✓ / Vì sóng 5 GHz xuyên tường giỏi hơn nên át được sóng nhà bên / Vì mỗi router chạy 5 GHz được nhà mạng cấp riêng một kênh cố định
+  - **Chủ đề gợi ý (tầng 1):** băng nào còn rộng chỗ hơn
+  - **Gợi ý (tầng 2):** Hỏi lại chính bài trước: băng nào đông đúc nhất, và băng nào còn nhiều chỗ trống?
+  - **Lời giải (tầng 3):** Vì 5 GHz nhiều kênh không đè nhau hơn hẳn và còn vắng. Thêm một may mắn nữa: sóng 5 GHz xuyên tường kém, nên sóng nhà hàng xóm cũng khó lọt sang quấy nhà bạn — đúng cái nhược điểm ở bài trước, lần này lại hóa lợi thế.
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao ở chung cư, máy báo đầy vạch mà mạng vẫn chậm vào giờ cao điểm?
+  - **Nhóm ý cần chạm:** [kênh, kenh, chung kênh, chung kenh, trùng kênh, trung kenh] · [hàng xóm, hang xom, nhà bên, nha ben, xung quanh, chung cư, chung cu, nhiều mạng, nhieu mang] · [thay phiên, thay phien, chờ, cho nhau, đợi, xếp hàng, xep hang, giẫm, dam len, ồn, tiếng ồn]
+  - **Trả lời mẫu:** Vì vạch chỉ đo tiếng router nhà mình to hay nhỏ, chứ không đo xóm quanh ồn cỡ nào. Giờ cao điểm cả chung cư cùng chen trên vài kênh 2.4 GHz ít ỏi, các nhà chung kênh phải thay phiên nhau nói — nên sóng vẫn đầy vạch mà vẫn phải chờ dài.
+
+**6 · Tổng kết:**
+- Băng tần chia thành kênh; băng 2.4 GHz chỉ có ba kênh không đè nhau: 1, 6 và 11.
+- Vạch đầy chỉ nói sóng nhà bạn TO, không nói xóm quanh có ồn hay không.
+- Đặt router giữa nhà, trên cao, thoáng — tránh tủ kín, gương, bể cá và lò vi sóng.
+- *Úp mở bài sau:* Trên vỏ hộp router còn một con số nữa: Wi-Fi 5, Wi-Fi 6, Wi-Fi 7. Số đó không phải băng tần, cũng chẳng phải kênh — vậy nó là gì?
 
 ### Bài: Đọc vanh vách tên thế hệ Wi-Fi `m8-bai-2`
 
@@ -2684,7 +3017,7 @@ Phần C · 6 chặng · 6 bài · 13 khái niệm
 - Dual-stack đeo hai biển số song song — bí quyết giúp Internet đổi hệ không sập.
 - *Úp mở bài sau:* Hết chuyện sóng và biển số. Module sau bước hẳn vào văn phòng: một máy chủ Windows cai quản mọi máy con trong công ty — và một tòa nhà ký ức bốn tầng chờ bạn leo.
 
-### Khái niệm & flashcard (13)
+### Khái niệm & flashcard (16)
 
 - **Wi-Fi** `m8-song-wifi` — Sóng radio thay cho sợi dây mạng; không khí là một sợi dây chung
   - Ẩn dụ: Cả phòng nói chuyện qua cùng một khoảng không khí — thay phiên nhau nói, càng đông càng chờ.
@@ -2692,6 +3025,15 @@ Phần C · 6 chặng · 6 bài · 13 khái niệm
 - **Băng tần** `m8-bang-tan` — Dải sóng Wi-Fi chạy trên đó: 2.4 / 5 / 6 GHz
   - Ẩn dụ: Giọng trầm vang xa qua tường; giọng cao rõ chữ nhưng phải đứng gần.
   - Thẻ ôn: *Ba băng tần Wi-Fi đánh đổi với nhau thế nào?* → 2.4 GHz xa, xuyên tường tốt nhưng chậm và đông; 5 GHz nhanh mà gần; 6 GHz nhanh nhất, vắng nhất, tầm ngắn nhất. Gần ưu tiên nhanh, xa ưu tiên tới.
+- **Kênh Wi-Fi** `m8-kenh-wifi` — Làn nhỏ bên trong một băng tần; trên 2.4 GHz chỉ có ba làn không đè nhau: 1, 6, 11
+  - Ẩn dụ: Băng tần là con phố, kênh là làn đường — hai nhà chung làn thì phải nhường nhau mà đi.
+  - Thẻ ôn: *Băng 2.4 GHz có 13 kênh, sao chỉ nên dùng kênh 1, 6 và 11?* → Vì các kênh đánh số sát nhau nên đè lên nhau; chỉ 1, 6, 11 cách đủ xa để không chồng. Chọn kênh chồng một phần còn tệ hơn trùng hẳn kênh.
+- **Vạch sóng** `m8-vach-song` — Vạch trên máy chỉ đo độ TO của sóng nhà bạn, không đo độ ồn của xóm quanh
+  - Ẩn dụ: Đứng sát loa trong quán karaoke: nghe loa rõ mồn một mà vẫn chẳng nói chuyện được với ai.
+  - Thẻ ôn: *Đầy vạch mà mạng vẫn ì — vạch sóng nói gì, và không nói gì?* → Vạch chỉ đo sóng router tới máy to hay nhỏ. Nó không đo xóm quanh ồn cỡ nào, nên ở chung cư đông vẫn đầy vạch mà phải chờ dài.
+- **Chỗ đặt router** `m8-cho-dat-router` — Sóng lan thành quả cầu, nên router muốn ở giữa nhà, trên cao và thoáng
+  - Ẩn dụ: Bóng đèn giữa trần thì sáng cả phòng; nhét vào tủ giày góc nhà thì chỉ sáng mỗi cái tủ.
+  - Thẻ ôn: *Đặt router thế nào cho sóng phủ đều, và tránh xa những gì?* → Giữa nhà, trên cao, để thoáng. Tránh tủ kín, gương và tấm kim loại, bể cá, lò vi sóng — chúng chặn, dội hoặc nuốt sóng 2.4 GHz.
 - **Thế hệ Wi-Fi** `m8-chuan-wifi` — Wi-Fi 4/5/6/7 — các đời của chuẩn 802.11, đánh số cho dễ nhớ
   - Ẩn dụ: Đời xe: xe mới vẫn chạy chung đường với xe cũ, nhưng cặp nào đi chung thì theo tốc độ xe cũ.
   - Thẻ ôn: *Hai thiết bị khác thế hệ Wi-Fi nói chuyện với nhau bằng đời nào?* → Bằng thế hệ THẤP hơn của hai bên — chuẩn mới luôn tương thích ngược (Wi-Fi 4/5/6/7 = 802.11n/ac/ax/be).
@@ -2726,7 +3068,7 @@ Phần C · 6 chặng · 6 bài · 13 khái niệm
   - Ẩn dụ: Chiếc xe đeo hai biển số — đường mới đi biển mới, đường cũ vẫn biển cũ.
   - Thẻ ôn: *Dual-stack là gì, và vì sao nó quan trọng với cả Internet?* → Máy mang song song cả IPv4 lẫn IPv6: đích có IPv6 thì ưu tiên, chưa có thì quay về IPv4 — nhờ đó Internet đổi hệ từ từ mà không sập.
 
-### Bài kiểm tra module (pool 16 câu, mỗi lượt rút 8, cần ≥ 85%)
+### Bài kiểm tra module (pool 18 câu, mỗi lượt rút 8, cần ≥ 85%)
 
 - **Đề:** Camera ở góc vườn, cách router hai bức tường, nên vào băng tần nào?
   - **Dạng:** trắc nghiệm · **2.4 GHz — tần số thấp đi xa, xuyên tường tốt** ✓ / 5 GHz — băng tần nhanh hơn thì đi xa hơn / 6 GHz — thế hệ mới nên xuyên tường tốt hơn
@@ -2783,6 +3125,14 @@ Phần C · 6 chặng · 6 bài · 13 khái niệm
   - **Dạng:** trắc nghiệm · **Mất gói hoặc jitter trên đường ra ngoài nhà** ✓ / Băng thông chưa đủ, phải nâng lên gói cước cao hơn / Độ trễ quá thấp nên gói tới sớm hơn máy kịp phát
   - **Chủ đề gợi ý (tầng 1):** thứ phép đo tốc độ không nhìn thấy
   - **Vì sao:** Mất gói hoặc jitter. Tải file nhanh đã chứng minh đường đủ rộng; tiếng vỡ là do gói rơi dọc đường hoặc tới lệch nhịp — nâng cước không chữa được. Còn độ trễ thấp là chuyện TỐT, không bao giờ là bệnh.
+- **Đề:** Chung cư đông, bạn vào trang cài đặt router chọn kênh cho băng 2.4 GHz. Ba kênh không đè lên nhau để chọn là những kênh nào? (ba con số)
+  - **Dạng:** gõ tay · **Chấp nhận:** 1, 6, 11 | 1 6 11 | 1, 6 và 11 | 1-6-11 | 1 và 6 và 11
+  - **Chủ đề gợi ý (tầng 1):** ba làn cách nhau đủ xa
+  - **Vì sao:** Kênh 1, 6 và 11 — chỉ ba kênh này cách nhau đủ xa để không chồng lấn. Chọn kênh nằm giữa (kiểu 3 hay 8) là đè lên cả hai bên hàng xóm, còn khổ hơn trùng hẳn một kênh với họ.
+- **Đề:** Chung cư, chín giờ tối: điện thoại đầy vạch, bạn ngồi ngay cạnh router mà trang web vẫn quay vòng. Nghi cái gì trước?
+  - **Dạng:** trắc nghiệm · **Hàng xóm đang chen chung kênh 2.4 GHz với nhà bạn** ✓ / Router hỏng ăng-ten nên sóng phát ra yếu hẳn đi / Mật khẩu Wi-Fi bị lộ nên cả tầng đang dùng ké mạng
+  - **Chủ đề gợi ý (tầng 1):** vạch đầy đã loại trừ được điều gì
+  - **Vì sao:** Vạch đầy đã chứng minh sóng router tới máy rất to, nên bệnh không nằm ở ăng-ten. Giờ cao điểm ở chung cư, thủ phạm số một là các nhà quanh đó cùng chen trên vài kênh 2.4 GHz — chung kênh thì phải thay phiên nhau nói. Chuyện dùng ké đã có WPA lo, và nó cũng không làm vạch sóng đổi.
 
 ## Windows Server — AD DS và GPO `module-9`
 
@@ -5465,9 +5815,9 @@ Phần D · 5 chặng · 5 bài · 10 khái niệm
 
 ## ACL và bảo mật lớp 2 — Luật chặn đúng người `module-17`
 
-Phần D · 5 chặng · 5 bài · 12 khái niệm
+Phần D · 6 chặng · 6 bài · 15 khái niệm
 
-**Chặng:** Dòng cấm không ai nhìn thấy (m17-bai-1) → Chặn cả xóm hay chặn đúng một cửa (m17-bai-2) → Đúng cửa, đúng chiều (m17-bai-3) → Khóa cổng switch lại (m17-bai-4) → Kẻ mạo danh trong xóm (m17-bai-5)
+**Chặng:** Dòng cấm không ai nhìn thấy (m17-bai-1) → Chặn cả xóm hay chặn đúng một cửa (m17-bai-2) → Đúng cửa, đúng chiều (m17-bai-3) → Khóa cổng switch lại (m17-bai-4) → Cái tên máy tự khai (m17-bai-4b) → Kẻ mạo danh trong xóm (m17-bai-5)
 
 ### Thư cuối module (hiện ở màn đậu bài thi)
 
@@ -5684,7 +6034,58 @@ Phần D · 5 chặng · 5 bài · 12 khái niệm
 - Bảng MAC đầy thì switch phát tràn — nghe lén tầng 2 lợi dụng đúng hành vi mặc định ấy.
 - Port security giới hạn số MAC trên một cổng access; vi phạm thì cổng bị đánh sập.
 - administratively down là cổng bị tắt bằng lệnh, khác hẳn down vì mất tín hiệu đầu kia.
-- *Úp mở bài sau:* Còn một kiểu mạo danh tinh vi hơn nhồi bảng: kẻ tấn công không giành cổng, hắn giành chính cái ĐỊA CHỈ của cổng ra. Bài cuối module là một ca bệnh chập chờn mà bạn từng gặp ở phòng khám, lần này đứng dưới ánh sáng khác.
+- *Úp mở bài sau:* Khoan mừng vội với cái chốt vừa dựng lại: nó quyết định cho ai đi qua dựa trên một con số mà chính chiếc máy kia TỰ KHAI ra. Bài sau hỏi thẳng câu khó chịu ấy — rào MAC chặn được ai, và ai thì cứ thế đi qua?
+
+### Bài: Hỏi thẳng: rào MAC chặn được ai `m17-bai-4b`
+
+**1 · Khởi động (hook):** Anh trực mạng ghim cho điện thoại của giám đốc một địa chỉ cố định, ghim theo địa chỉ MAC của máy — tuần trước còn chạy ngon lành. Sáng nay giám đốc vẫn ngồi đúng chỗ cũ, vẫn chiếc điện thoại ấy, không ai sửa gì trên switch lẫn trên máy. Thế mà nó nhận một địa chỉ lạ hoắc, và bảng thiết bị của điểm phát Wi-Fi thì báo có một máy chưa từng thấy bao giờ. Không ai đổi máy. Vậy thứ gì đã đổi?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Module 3 kể MAC như số khung xe: nhà máy dập sẵn, đi theo máy suốt đời. Vậy con số nằm ở ô người gửi của một khung tin vừa rời card mạng là con số nào?
+  - **Dạng:** trắc nghiệm · **Con số phần mềm của máy điền vào, mặc định chép lại số nhà máy ghi sẵn** ✓ / Luôn là con số nhà máy ghi trên chip, phần mềm không với tới được nó / Con số switch cấp cho máy ngay lúc nó vừa cắm dây vào cổng access
+  - **Chủ đề gợi ý (tầng 1):** ai là người điền con số ấy vào khung tin
+  - **Vì sao:** Là con số phần mềm điền vào. Nhà máy quả có ghi sẵn một số trên chip, và mặc định máy chép đúng số ấy ra — nhưng CHÉP LẠI là một việc, BẮT BUỘC lại là việc khác. Cả bài này dựng trên khoảng cách giữa hai chữ đó.
+
+**3 · Khám phá (teach):**
+- *[m17-mac-tu-khai]* Mỗi card mạng đúng là có một số ghi sẵn từ lò — chuyện Module 3 kể không hề bịa. Nhưng con số nằm ở ô NGƯỜI GỬI của từng khung tin lại là con số do phần mềm của máy điền vào, và mặc định nó chép lại số của lò. Cái mặc định ấy đổi được: Windows đổi trong thuộc tính card mạng, Linux và macOS đổi bằng một dòng lệnh, còn máy ảo thì lấy đâu ra chip nên MAC vốn do phần mềm sinh ra từ đầu. Nói gọn: MAC là cái tên máy TỰ KHAI ở đầu mỗi lá thư, không phải giấy tùy thân có ai đó soi. Nghề gọi trò khai tên khác là MAC spoofing.
+  - **Đào sâu hơn:** Đây không phải lỗ hổng ai đó quên vá — nó nằm sẵn trong thiết kế và có công dụng thật: cụm máy chủ dự phòng chuyền địa chỉ cho nhau khi máy chính chết, mỗi máy ảo phải có một MAC do phần mềm sinh, thay card mạng hỏng mà giữ nguyên MAC cũ thì không phải khai lại gì với hệ thống. Trong khung tin không có ô nào chứng minh quyền sở hữu cái tên cả, mà switch thì tin ngay: nghe thấy MAC nào ở cổng nào là ghi vào bảng. Đó cũng chính là chỗ trò nhồi bảng MAC ở bài trước sống được — hàng vạn cái tên bịa ra đều được ghi nhận đàng hoàng.
+- *[m17-loc-mac]* Port security ở bài trước, danh sách "chỉ máy này được cắm" trên switch, bảng lọc MAC trong router Wi-Fi ở nhà — cùng một họ: cho qua theo cái tên máy tự khai. Vậy chúng chặn được ai? Chặn chắc cái vô ý và cái ồn ào: người tiện tay cắm thêm switch mini vào ổ, khách cắm nhầm dây sang cổng nội bộ, và trò nhồi bảng MAC — vì trò ấy phải bịa hàng vạn tên một lúc, đúng thứ mà ngưỡng đếm bắt được. Không chặn nổi kẻ chịu khó: hắn nghe một lát trên chính đoạn dây đó là biết MAC nào đang lọt, khai đúng cái tên ấy rồi đi vào bằng cửa chính, ngưỡng đếm vẫn thấy đủ một máy.
+  - **Đào sâu hơn:** Luật chung để tự xếp loại mọi chốt chặn: chốt dựa trên thứ người ta TỰ KHAI thì chỉ chặn được người không biết mình khai được. Cửa khóa thật đòi thứ không khai suông ra được — chuẩn 802.1X bắt mỗi máy trình chứng chỉ hoặc tài khoản trước khi cổng chịu mở, và khi ấy MAC là gì không còn quan trọng nữa. Đừng vì thế mà tháo port security: nó vẫn dập trò nhồi bảng, vẫn để lại dấu vết ai vừa cắm gì vào ổ nào, và với phần lớn văn phòng thì hai việc đó đã đáng công lắm rồi. Chỉ đừng ghi nó vào biên bản như một cái khóa.
+- *[m17-mac-ngau-nhien]* Điện thoại và laptop đời mới mặc định BẬT chuyện tự sinh một MAC riêng cho từng mạng Wi-Fi, thỉnh thoảng lại đổi — để quán cà phê và trung tâm thương mại không lần được một thiết bị đã đi những đâu. Người dùng được che, còn người trực mạng thì gặp ba chuyện quen thuộc: địa chỉ ghim theo MAC bỗng không dính vào máy nào, danh sách lọc MAC báo máy lạ dù vẫn đúng chiếc điện thoại cũ, và bảng thiết bị phình ra toàn những cái tên chỉ sống vài ngày. Chữa có hai lối: bảo máy dùng MAC thật riêng cho mạng công ty (iPhone tắt "Địa chỉ Wi-Fi riêng tư", Android chọn dùng MAC của thiết bị), hoặc thôi ghim theo MAC mà chuyển sang ghim theo tài khoản đăng nhập.
+  - **Đào sâu hơn:** Nhìn con số là đoán được đâu là tên tự sinh: MAC ngẫu nhiên luôn bật một bit riêng trong byte đầu, nên chữ số thứ hai của byte ấy là 2, 6, A hoặc E — còn số của lò thì ba byte đầu tra ra được tên hãng (OUI, Module 3 có nhắc ở phần đào sâu). Chuyện này đậm nhất ở Wi-Fi; trên dây thì hiếm hơn, nhưng dock và bộ chuyển đổi USB-Ethernet dùng chung ở phòng họp cũng làm cổng đổi tên như thường, vì cổng thấy MAC của cái dock chứ không phải của chiếc laptop cắm vào nó. Nên nếu port security ở phòng họp cứ sập theo chu kỳ, hãy nhìn sang chỗ này trước khi đi tìm kẻ tấn công.
+
+**4 · Thử tay (practice, fading 2):**
+- **Đề:** Nghề gọi trò một chiếc máy khai địa chỉ MAC khác với con số nhà máy ghi sẵn là gì? (thuật ngữ giữ tiếng Anh)
+  - **Dạng:** gõ tay · **Chấp nhận:** mac spoofing | spoofing mac | spoof mac | giả mạo mac | giả mạo địa chỉ mac | mạo danh mac
+  - **Chủ đề gợi ý (tầng 1):** tên tiếng Anh của trò khai tên khác
+  - **Gợi ý (tầng 2):** Cùng một chữ mà bài cuối module sẽ dùng lại cho trò nhận vơ địa chỉ cổng ra. Ghép chữ ấy với chữ MAC.
+  - **Lời giải (tầng 3):** MAC spoofing. Card mạng vẫn là card mạng ấy, chỉ có cái tên điền vào ô người gửi của mỗi khung là đổi — một dòng lệnh hoặc một ô cấu hình trong driver là xong, không ai phải mở máy ra.
+- **Đề:** Anh trực mạng ghim một địa chỉ cố định cho điện thoại của giám đốc, ghim theo MAC. Vài hôm sau máy lại nhận địa chỉ khác dù không ai sửa gì. Giải thích nào đứng vững nhất?
+  - **Dạng:** trắc nghiệm · **Điện thoại tự sinh một MAC khác cho mạng đó nên dòng ghim không khớp nữa** ✓ / Máy chủ cấp địa chỉ đã hết số trống nên nó đành phát cho máy một số khác / Điểm phát Wi-Fi đổi sang WPA3 nên mọi máy cũ đều phải xin lại địa chỉ mới
+  - **Chủ đề gợi ý (tầng 1):** thứ mà máy đời mới tự đổi theo từng mạng
+  - **Gợi ý (tầng 2):** Dòng ghim tra theo cái tên máy khai ra. Nếu máy tới với một cái tên khác thì bảng còn nhận ra ai nữa?
+  - **Lời giải (tầng 3):** Điện thoại tự sinh một MAC riêng cho mạng đó, nên dòng ghim theo MAC cũ không còn khớp với ai. Hết số trống thì máy sẽ chẳng nhận được địa chỉ nào chứ không phải nhận địa chỉ khác; còn đổi cách mã hóa thì không đụng gì tới chuyện cấp địa chỉ.
+- **Đề:** Một cổng đang bật port security cho đúng một máy. Kẻ tấn công cần biết được thứ gì để đi qua cổng ấy mà không làm nó sập?
+  - **Dạng:** gõ tay · **Chấp nhận:** mac hợp lệ | địa chỉ mac hợp lệ | mac được phép | địa chỉ mac được phép | mac của máy được phép | mac đang được chấp nhận | mac mà cổng cho phép
+  - **Chủ đề gợi ý (tầng 1):** cái tên duy nhất mà cổng đang chịu nhận
+  - **Gợi ý (tầng 2):** Cổng chỉ hỏi đúng một câu: khung này khai tên gì. Vậy hắn phải nghe cho ra cái tên nào đang lọt qua.
+  - **Lời giải (tầng 3):** MAC hợp lệ mà cổng đang chấp nhận — ngồi nghe một lát trên chính đoạn dây đó là đọc ra, rồi đặt đúng cái tên ấy cho card mạng của mình. Ngưỡng đếm vẫn thấy đủ một máy nên cổng không sập, và đó là lý do rào MAC nâng giá cho kẻ tấn công chứ không chặn hẳn được hắn.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Đóng bài lại: vì sao địa chỉ MAC đứng ra làm bằng chứng danh tính thì yếu?
+  - **Dạng:** gõ tay · **Chấp nhận:** do máy tự khai | máy tự khai | đổi được bằng lệnh | phần mềm đổi được | ai cũng khai được | giả mạo được | không ai kiểm lại | không ai kiểm chứng | không ai xác minh | không có gì chứng minh
+  - **Chủ đề gợi ý (tầng 1):** ai điền con số ấy vào khung, và ai kiểm nó
+  - **Gợi ý (tầng 2):** Nghĩ xem con số ấy được ai điền vào khung tin, và có ai đứng đó soi lại không.
+  - **Lời giải (tầng 3):** Vì con số ấy do chính máy tự khai. Không ô nào trong khung chứng minh quyền sở hữu cái tên, cũng không ai soi lại, mà đổi nó thì tốn đúng một dòng lệnh — thứ tự khai được thì không làm bằng chứng được.
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao port security dập chắc được trò nhồi bảng MAC, mà lại để lọt kẻ khai lại một MAC hợp lệ?
+  - **Nhóm ý cần chạm:** [tự khai, tu khai, đổi được, doi duoc, giả mạo, gia mao, spoofing, phần mềm điền, phan mem dien] · [nghe được, nghe duoc, biết mac, biet mac, chép lại, chep lai, sao chép, sao chep, đọc được, doc duoc] · [hàng vạn, hang van, quá ngưỡng, qua nguong, vượt ngưỡng, vuot nguong, nhiều mac, nhieu mac, đếm, dem] · [một máy, mot may, đúng một mac, dung mot mac, không vượt, khong vuot, vẫn đủ, van du]
+  - **Trả lời mẫu:** Vì port security đếm số MAC trên cổng. Trò nhồi bảng phải bịa ra hàng vạn cái tên một lúc nên vượt ngưỡng ngay từ cổng đầu tiên, cổng sập, trò chết tại chỗ. Còn kẻ chịu khó thì chỉ cần nghe một lát để biết MAC nào đang được cổng chấp nhận rồi khai đúng cái tên ấy: cổng vẫn thấy đúng một máy, ngưỡng không vượt, nên nó mở cửa như thường.
+
+**6 · Tổng kết:**
+- Số của nhà máy là thật, nhưng MAC trong mỗi khung tin là con số phần mềm tự điền.
+- Rào theo MAC chặn cái vô ý và trò nhồi bảng; kẻ khai lại một MAC hợp lệ vẫn đi lọt.
+- Máy đời mới tự đổi MAC theo từng mạng Wi-Fi, nên mọi thứ ghim theo MAC hay trượt.
+- *Úp mở bài sau:* Đã quen chuyện thiết bị tự khai tên mình thì bài cuối module dễ vào: có kẻ không thèm khai tên máy nữa, hắn khai luôn mình là CỔNG RA của cả xóm. Một ca bệnh chập chờn bạn từng gặp ở phòng khám, lần này đứng dưới ánh sáng khác.
 
 ### Bài: Vạch mặt kẻ nhận vơ địa chỉ cổng ra `m17-bai-5`
 
@@ -5740,7 +6141,7 @@ Phần D · 5 chặng · 5 bài · 12 khái niệm
 - VLAN hopping sống nhờ native VLAN trùng VLAN người dùng — đặt native riêng là chặn được.
 - *Úp mở bài sau:* Vậy là bạn đã có đủ đồ nghề của người dựng hạ tầng: cắt dải, nối trunk, canh vòng lặp, để router tự hỏi đường và viết luật chặn đúng người. Phần sau của khóa bước sang phía dịch vụ — nơi mạng đã chạy rồi mà người dùng vẫn kêu, vì thứ hỏng nằm ở DHCP, DNS và những cuốn sổ của hệ thống.
 
-### Khái niệm & flashcard (12)
+### Khái niệm & flashcard (15)
 
 - **ACL (access control list)** `m17-acl` — Danh sách luật gắn lên cổng router; mỗi gói đi qua bị đem so với từng dòng để cho đi hay chặn lại
   - Ẩn dụ: Như người soát vé đứng ở một cánh cửa với tờ nội quy trong tay: ai qua cửa cũng bị đối chiếu, và tờ nội quy chỉ có tiếng nói ở đúng cánh cửa nó được dán lên.
@@ -5772,6 +6173,15 @@ Phần D · 5 chặng · 5 bài · 12 khái niệm
 - **Port security** `m17-port-security` — Giới hạn số địa chỉ MAC trên một cổng access; vi phạm thì cổng bị đánh sập và phải bật lại bằng tay
   - Ẩn dụ: Như quy định mỗi ổ cắm trong phòng chỉ đăng ký được một chiếc máy: cắm thêm cái thứ hai là ổ tự ngắt điện cho tới khi có người tới mở lại.
   - Thẻ ôn: *Port security giới hạn cái gì, và hậu quả khi vi phạm hiện ra thế nào?* → Giới hạn số địa chỉ MAC được xuất hiện trên một cổng access. Vượt ngưỡng thì switch đánh sập cổng: bảng trạng thái ghi cổng bị tắt bằng lệnh (administratively down, thiết bị thật ghi err-disabled) và phải có người gõ no shutdown mới sống lại.
+- **MAC spoofing** `m17-mac-tu-khai` — Máy khai một địa chỉ MAC khác số nhà máy ghi sẵn — con số trong khung tin là do phần mềm điền, đổi bằng một dòng lệnh
+  - Ẩn dụ: Như tên người gửi ở góc phong bì: nhà máy in sẵn một cái tên lên xấp phong bì, nhưng ai cầm bút gạch đi viết tên khác thì bưu điện vẫn chuyển như thường.
+  - Thẻ ôn: *Con số MAC ở ô người gửi của một khung tin do ai quyết định?* → Do phần mềm của chính máy gửi điền vào — mặc định chép lại số nhà máy ghi trên chip, nhưng hệ nào cũng đổi được bằng một dòng lệnh. Trò khai tên khác gọi là MAC spoofing.
+- **Lọc theo MAC** `m17-loc-mac` — Cho qua hay chặn thiết bị dựa trên địa chỉ MAC — chặn được cái vô ý và trò nhồi bảng, không chặn được kẻ khai lại một MAC hợp lệ
+  - Ẩn dụ: Như người gác cổng chỉ hỏi tên rồi dò sổ: người lạ vô tình thì bị chặn, còn kẻ đã nghe lỏm được một cái tên trong sổ thì cứ thế đi vào bằng cửa chính.
+  - Thẻ ôn: *Rào chắn dựa trên MAC chặn được ai, và bó tay trước ai?* → Chặn được cái vô ý (cắm nhầm, cắm thêm switch mini) và trò nhồi bảng MAC vì trò ấy vượt ngưỡng đếm. Bó tay trước kẻ nghe ra một MAC hợp lệ rồi khai lại đúng tên đó.
+- **MAC randomization** `m17-mac-ngau-nhien` — Máy đời mới tự sinh MAC riêng cho từng mạng Wi-Fi để chống bị lần theo, nên mọi thứ ghim theo MAC hay trượt
+  - Ẩn dụ: Như người gửi thư dùng một bút danh khác cho mỗi bưu cục: bưu điện vẫn chuyển được thư, chỉ cuốn sổ khách quen của từng bưu cục là không nhận ra người cũ.
+  - Thẻ ôn: *Điện thoại đời mới làm gì với MAC khi vào một mạng Wi-Fi, và gây phiền gì?* → Mặc định tự sinh một MAC ngẫu nhiên riêng cho mạng đó để chống bị lần theo. Hệ quả: địa chỉ ghim theo MAC không dính, danh sách lọc báo máy lạ dù vẫn là máy cũ.
 - **ARP spoofing** `m17-arp-spoofing` — Kẻ lạ nhận vơ địa chỉ IP của cổng ra để cả xóm gửi gói qua tay hắn trước
   - Ẩn dụ: Như một người lạ đứng ở đầu ngõ tự nhận mình là bác bưu tá: cả xóm đưa thư cho hắn, hắn đọc xong mới chuyển tiếp cho người thật.
   - Thẻ ôn: *ARP spoofing lợi dụng điểm yếu nào, và dấu hiệu nhìn ra được là gì?* → Lợi dụng chuyện ARP không xác thực: ai đáp cũng được tin và câu đáp sau đè câu trước. Dấu hiệu: trong sổ arp -a, địa chỉ cổng ra lúc gắn MAC này lúc gắn MAC kia, mạng chập chờn. Chặn bằng port security, Dynamic ARP Inspection, hoặc khai cứng địa chỉ cổng ra cho máy quan trọng.
@@ -5779,7 +6189,7 @@ Phần D · 5 chặng · 5 bài · 12 khái niệm
   - Ẩn dụ: Như dán hai lớp phong bì lồng nhau: người gác bóc lớp ngoài rồi chuyển tiếp, và lớp trong đưa lá thư sang một xóm mà người gửi không có quyền vào.
   - Thẻ ôn: *Trò VLAN hopping hai lớp nhãn dựa vào đâu, và chặn bằng cách nào?* → Dựa vào native VLAN: khung native đi không nhãn nên switch đầu bóc lớp nhãn ngoài, switch sau nhìn lớp còn lại và tưởng khung thuộc VLAN khác. Chặn bằng cách đặt native VLAN thành một VLAN không ai dùng và khai tường minh cổng nối máy con là access.
 
-### Bài kiểm tra module (pool 15 câu, mỗi lượt rút 8, cần ≥ 85%)
+### Bài kiểm tra module (pool 17 câu, mỗi lượt rút 8, cần ≥ 85%)
 
 - **Đề:** Bạn áp lên cổng một danh sách chỉ có đúng một dòng cấm máy 192.168.1.66. Chuyện gì xảy ra với các máy khác trong văn phòng?
   - **Dạng:** trắc nghiệm · **Chúng cũng bị chặn, vì dòng vô hình cuối danh sách cấm mọi thứ chưa được cho phép** ✓ / Chúng vẫn đi lại bình thường, vì danh sách chỉ nhắc đích danh một địa chỉ duy nhất / Chúng bị chậm lại đôi chút, vì router phải so từng gói với dòng luật vừa được thêm
@@ -5829,6 +6239,14 @@ Phần D · 5 chặng · 5 bài · 12 khái niệm
   - **Dạng:** trắc nghiệm · **Switch hết chỗ tra đích nên phát tràn mọi khung ra mọi cổng, kể cả cổng hắn ngồi** ✓ / Switch tự khởi động lại và quên sạch cấu hình VLAN mà người trực đã đặt cho từng cổng / Các máy còn lại mất địa chỉ IP đang dùng vì bảng MAC của switch đã bị xóa trống trơn
   - **Chủ đề gợi ý (tầng 1):** switch làm gì khi tra bảng không ra cổng đích
   - **Vì sao:** Bảng đầy thì switch không còn chỗ ghi cặp địa chỉ - cổng mới, nên khung nào tra không ra đích là nó đành phát tràn ra mọi cổng — kể cả cổng kẻ lạ đang ngồi, và thế là hắn nghe được thư từ của cả xóm. Switch không khởi động lại, cũng chẳng ai mất địa chỉ IP: thứ mất đi ở đây là sự riêng tư. Chốt chặn đúng chỗ là port security, giới hạn số MAC được phép xuất hiện trên mỗi cổng.
+- **Đề:** Cổng access đã bật port security cho đúng một máy. Kẻ tấn công vẫn đi qua được mà cổng không hề sập. Hắn đã làm gì?
+  - **Dạng:** trắc nghiệm · **Khai lại MAC của máy mình thành đúng cái MAC mà cổng đang cho phép** ✓ / Cắm thêm một switch mini để hai máy cùng dùng chung một cổng access / Đợi tới lúc bảng MAC của switch đầy rồi lách vào giữa dòng khung tin
+  - **Chủ đề gợi ý (tầng 1):** con số mà cổng đem ra soi là do ai điền
+  - **Vì sao:** Hắn khai lại MAC. Cổng chỉ hỏi đúng một câu — khung này mang tên gì — mà cái tên ấy do chính máy gửi điền vào, nên nghe một lát là biết MAC nào đang lọt rồi đặt đúng tên đó cho card mạng của mình; ngưỡng đếm vẫn thấy đủ một máy. Cắm thêm switch mini hay nhồi bảng MAC thì ngược lại: cả hai đều làm số MAC trên cổng vượt ngưỡng, đúng thứ port security sinh ra để dập.
+- **Đề:** Điện thoại đời mới mặc định làm gì với địa chỉ MAC khi vào một mạng Wi-Fi mới?
+  - **Dạng:** gõ tay · **Chấp nhận:** mac ngẫu nhiên | sinh mac ngẫu nhiên | tạo mac ngẫu nhiên | tự sinh mac riêng | mac riêng cho từng mạng | tự đổi mac theo từng mạng | mac randomization
+  - **Chủ đề gợi ý (tầng 1):** thứ máy tự sinh ra cho từng mạng để khỏi bị lần theo
+  - **Vì sao:** Nó tự sinh một MAC ngẫu nhiên riêng cho mạng đó thay vì chìa con số của nhà máy — mặc định bật, để nơi công cộng không lần được thiết bị đã đi những đâu. Vì thế mọi thứ ghim theo MAC (địa chỉ cố định, danh sách lọc) đều hay trượt với máy đời mới; chữa bằng cách tắt riêng cho mạng công ty, hoặc bỏ hẳn lối ghim theo MAC.
 - **Đề:** Router R-Van-phong đã có sẵn danh sách 101 (dòng 10 cấm 192.168.1.66 ping tới 192.168.2.50, dòng 20 cho phép phần còn lại) nhưng chưa gắn vào cổng nào. Hãy gắn nó vào đúng chỗ để máy phòng khách tắc đường tới máy chủ kế toán, còn máy giám đốc thì vẫn gọi được.
   - **Dạng:** console thiết bị (gõ lệnh IOS đạt mục tiêu)
     - **Sơ đồ đề bài:** PC-Giam-doc [192.168.1.10/24, gw 192.168.1.1] · PC-Phong-khach [192.168.1.66/24, gw 192.168.1.1] · SRV-Ke-toan [192.168.2.50/24, gw 192.168.2.1] · SW-Van-phong [p1:VLAN 1, p2:VLAN 1, p3:VLAN 1] · SW-May-chu [p1:VLAN 1, p2:VLAN 1] · R-Van-phong [g0:192.168.1.1/24, g1:192.168.2.1/24] — dây: PC-Giam-doc·eth0 — SW-Van-phong·p1 | PC-Phong-khach·eth0 — SW-Van-phong·p2 | SW-Van-phong·p3 — R-Van-phong·g0 | R-Van-phong·g1 — SW-May-chu·p1 | SW-May-chu·p2 — SRV-Ke-toan·eth0

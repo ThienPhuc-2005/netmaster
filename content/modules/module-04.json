@@ -5,7 +5,7 @@
   "letter": { "vi": "Mấy dòng để lại cho ca sau. Lúc mở module, switch với router trong mắt bạn đều là cái hộp có đèn nháy; giờ bạn nói được cái nào nhớ mặt bằng địa chỉ MAC, cái nào bắc cầu giữa hai mạng, và vì sao dựng VLAN là dựng tường chứ không phải cắm thêm dây. Bạn cũng đã tự tay chia hai xóm trên cùng một switch và thấy tận mắt bức tường đó chặn thật. Nghề này bắt đầu từ đúng chỗ đó: biết thiết bị nào chịu trách nhiệm gì." },
   "title": { "vi": "Switch, Router, VLAN — Thiết bị trong làng" },
   "stages": [
-    { "id": "m4-chang-1", "title": { "vi": "Bưu cục của làng" }, "lessonIds": ["m4-bai-1"] },
+    { "id": "m4-chang-1", "title": { "vi": "Sợi dây, rồi tới bưu cục" }, "lessonIds": ["m4-bai-7", "m4-bai-1"] },
     { "id": "m4-chang-2", "title": { "vi": "Cuốn sổ nhớ mặt" }, "lessonIds": ["m4-bai-2"] },
     { "id": "m4-chang-3", "title": { "vi": "Hỏi tên trước khi trao" }, "lessonIds": ["m4-bai-3"] },
     { "id": "m4-chang-4", "title": { "vi": "Dựng tường chia xóm" }, "lessonIds": ["m4-bai-4"] },
@@ -13,6 +13,190 @@
     { "id": "m4-chang-6", "title": { "vi": "Gọi tên cái thang" }, "lessonIds": ["m4-bai-6"] }
   ],
   "lessons": [
+    {
+      "id": "m4-bai-7",
+      "missionTitle": { "vi": "Khám sợi dây trước đã" },
+      "steps": [
+        {
+          "type": "hook",
+          "question": {
+            "vi": "Mạng ì ạch cả buổi sáng, máy vẫn chạy tốt, địa chỉ vẫn đặt đúng. Người trực lâu năm không mở máy tính lên xem trước — họ cúi xuống nhìn hai cái đèn nhỏ ở chỗ cắm dây. Hai cái đèn ấy khai được chuyện gì mà nhanh thế?"
+          },
+          "visualId": "vis-hook-day-va-den"
+        },
+        {
+          "type": "pretest",
+          "questions": [
+            {
+              "kind": "mcq",
+              "id": "m4-b7-pre-1",
+              "prompt": { "vi": "Đoán thử: một sợi cáp mạng đồng kéo thẳng từ tủ mạng tới cái máy cuối hành lang. Dài tới đâu thì tín hiệu hết bảo đảm?" },
+              "choices": [
+                { "vi": "Khoảng 30 mét, quá đó là phải nối thêm" },
+                { "vi": "Khoảng 100 mét cho một đoạn cáp đồng" },
+                { "vi": "Không có giới hạn, chỉ cần dây còn liền" }
+              ],
+              "answerIndex": 1,
+              "hintTopic": { "vi": "cữ chiều dài của một đoạn cáp đồng" },
+              "explain": {
+                "vi": "Khoảng 100 mét cho một đoạn cáp đồng — con số này nghề nào cũng thuộc. Và đó là tổng của cả đoạn chạy trong tường lẫn hai đoạn dây nhảy hai đầu, nên người ta thường chỉ đi 90 mét trong tường cho chắc."
+              }
+            }
+          ],
+          "encouragement": {
+            "vi": "Đoán trượt con số cũng chẳng sao — thứ đáng nhớ là sợi dây CÓ giới hạn, và giới hạn ấy đo được bằng mét."
+          }
+        },
+        {
+          "type": "teach",
+          "screens": [
+            {
+              "conceptId": "cap-mang",
+              "visualId": "vis-cap-dong-quang",
+              "body": {
+                "vi": "Con đường mà lá thư chạy trên đó, ngoài đời là một sợi cáp. Trong nhà và trong văn phòng gần như luôn là cáp đồng xoắn đôi: tám sợi đồng nhỏ xoắn từng đôi một, hai đầu bấm vào cái đầu nhựa RJ45 rồi cắm vào cổng mạng. Cáp đồng chở tín hiệu bằng điện nên càng đi xa tín hiệu càng yếu — một đoạn tối đa khoảng 100 mét, quá cữ đó thì lúc được lúc không. Đi xa hơn thì đổi sang cáp quang: ánh sáng chạy trong sợi thủy tinh, được hàng trăm mét tới hàng chục cây số, lại không bị máy móc chạy quanh làm nhiễu."
+              },
+              "deepDive": {
+                "vi": "Vì sao dây phải xoắn: nhiễu từ bên ngoài đánh vào hai sợi xoắn với nhau gần như bằng nhau, phía nhận trừ đi là còn lại tín hiệu sạch — mẹo cũ nhưng đến giờ vẫn là lý do cáp mạng trông như vậy. Con số 100 mét là TỔNG của một đoạn: khoảng 90 mét chạy trong tường cộng hai đoạn dây nhảy ngắn ở hai đầu; muốn xa hơn thì đặt thêm một thiết bị tiếp sức ở giữa, hoặc chuyển hẳn sang cáp quang. Cáp đồng còn chở được cả điện: PoE (Power over Ethernet) đẩy nguồn theo chính sợi dây mạng, nên camera hay bộ phát Wi-Fi treo trên trần chỉ cần một sợi, khỏi phải kéo ổ cắm lên đó."
+              }
+            },
+            {
+              "conceptId": "den-cong",
+              "visualId": "vis-den-cong",
+              "body": {
+                "vi": "Chỗ cắm dây — trên máy cũng như trên cái hộp nhiều cổng ở tủ mạng — đều có một hai cái đèn nhỏ, và đó là lời khai đầu tiên của sợi dây. Đèn link sáng nghĩa là hai đầu đã bắt tay được về điện: dây liền, đầu bấm ăn, cổng còn sống. Đèn nháy nghĩa là đang có dữ liệu chạy qua. Còn đèn tối om thì đừng đi tìm lỗi ở địa chỉ IP hay ở phần mềm — sợi dây chưa nối được thì mọi thứ ngồi trên nó đều vô nghĩa. Nhìn đèn mất hai giây, mà cắt ngay được một nửa số nghi ngờ."
+              },
+              "deepDive": {
+                "vi": "Khi đèn tối, đi theo thứ tự rẻ tiền trước: đổi sang một cổng khác, rồi đổi một sợi dây khác, rồi mới nghi tới card mạng của máy — và mỗi lượt chỉ đổi ĐÚNG MỘT thứ, đổi hai thứ cùng lúc thì đèn có sáng lên cũng không biết nhờ cái nào. Chỗ hay hỏng nhất không nằm ở giữa sợi dây mà ở hai đầu bấm: cái lẫy nhựa gãy làm đầu cắm lỏng dần, hoặc dây bị kéo căng ở gầm bàn. Đèn chập chờn đúng lúc ai đó đá chân vào gầm bàn là dấu hiệu kinh điển của một đầu bấm đã lỏng."
+              }
+            },
+            {
+              "conceptId": "duplex",
+              "visualId": "vis-duplex-lech",
+              "body": {
+                "vi": "Cắm dây xong, hai đầu tự thỏa thuận với nhau hai chuyện: chạy ở tốc độ nào, và nói kiểu gì. Full duplex là hai bên vừa nói vừa nghe cùng lúc, như con đường hai làn. Half duplex là mỗi lúc chỉ một bên được nói, như đường một làn phải nhường nhau. Phiền phức xảy ra khi hai đầu thỏa thuận lệch: đầu này chạy full, đầu kia chạy half. Lúc ấy dây vẫn liền, đèn vẫn sáng, gọi thử vẫn có tiếng trả lời — nhưng bên chạy half thấy bên kia nói chen vào liền coi là đụng độ, bỏ gói rồi gửi lại. Kết quả là một mạng 'vẫn chạy' mà chậm dai dẳng và rớt gói lai rai."
+              },
+              "deepDive": {
+                "vi": "Vì sao lệch được: hai đầu bắt tay tự động (auto-negotiation) chỉ ăn khớp khi CẢ HAI cùng để chế độ tự động. Ai đó đặt cứng tốc độ và duplex ở một đầu 'cho chắc' thì đầu kia không nghe thấy lời chào, đành đoán — và nó đoán half. Vì vậy luật trong nghề là để tự động cả hai đầu, hoặc đặt cứng cả hai đầu, không bao giờ nửa nọ nửa kia. Dấu vết cũng đếm được: bên chạy half đếm ra lỗi đụng độ (collision), bên chạy full đếm ra lỗi dữ liệu hỏng dọc đường (FCS error) — cùng một sợi dây mà hai đầu đếm hai loại lỗi khác nhau thì gần như chắc chắn là duplex lệch."
+              }
+            }
+          ]
+        },
+        {
+          "type": "practice",
+          "fadingLevel": 0,
+          "workedExample": {
+            "vi": "Máy cuối hành lang vừa được cắm mạng, người dùng báo 'không vào được gì cả'. Bạn cúi xuống nhìn chỗ cắm dây: đèn tối om. Vậy là dừng ngay, chưa cần hỏi tới địa chỉ IP. Đổi một sợi dây khác — vẫn tối. Đổi sang cổng còn trống bên cạnh ở tủ mạng — đèn sáng lên và mạng chạy. Kết luận: cổng cũ đã chết. Vì mỗi lượt chỉ đổi đúng một thứ nên bạn biết chắc thủ phạm là cái nào."
+          },
+          "exercises": [
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m4-b7-prac-1",
+                "prompt": { "vi": "Cần kéo mạng sang tòa nhà bên kia sân, đo ra chừng 160 mét. Đoạn này phải dùng loại cáp nào?" },
+                "accept": ["cáp quang", "sợi quang", "fiber"],
+                "hintTopic": { "vi": "loại cáp dành cho đoạn dài quá cữ 100 mét" }
+              },
+              "hint": {
+                "vi": "Cáp đồng hết cữ ở 100 mét cho một đoạn. Loại cáp còn lại chở tín hiệu bằng ánh sáng."
+              },
+              "solution": {
+                "vi": "Cáp quang. 160 mét vượt xa cữ 100 mét của cáp đồng, còn ánh sáng chạy trong sợi thủy tinh thì đi được hàng trăm mét trở lên."
+              },
+              "conceptId": "cap-mang"
+            },
+            {
+              "question": {
+                "kind": "mcq",
+                "id": "m4-b7-prac-2",
+                "prompt": { "vi": "Người dùng báo máy không vào được mạng. Bạn nhìn chỗ cắm dây ở tủ mạng: đèn không sáng chút nào. Việc đáng làm tiếp theo là gì?" },
+                "choices": [
+                  { "vi": "Đổi sang cổng còn trống bên cạnh rồi xem đèn" },
+                  { "vi": "Đặt lại địa chỉ IP tĩnh cho máy đó xem sao" },
+                  { "vi": "Khởi động lại máy rồi thử vào mạng lần nữa" }
+                ],
+                "answerIndex": 0,
+                "hintTopic": { "vi": "thứ tự khám: dây và cổng trước, phần mềm sau" }
+              },
+              "hint": { "vi": "Đèn chưa sáng nghĩa là sợi dây còn chưa nối được với nhau. Sửa thứ ngồi trên nó thì được ích gì?" },
+              "solution": {
+                "vi": "Đổi cổng rồi nhìn đèn. Đèn tối là chuyện của dây, đầu bấm và cổng — địa chỉ IP hay việc khởi động lại đều nằm phía trên, chưa tới lượt chúng."
+              },
+              "conceptId": "den-cong"
+            },
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m4-b7-prac-3",
+                "prompt": { "vi": "Dây liền, đèn sáng, máy vẫn vào được mạng — nhưng chép file thì chậm dai dẳng và thỉnh thoảng rớt. Hai đầu sợi dây nhiều khả năng đang lệch nhau ở chuyện gì?" },
+                "accept": ["duplex", "song công"],
+                "hintTopic": { "vi": "thỏa thuận nói-nghe giữa hai đầu dây" }
+              },
+              "hint": {
+                "vi": "Lúc cắm dây, hai đầu thỏa thuận hai chuyện: chạy nhanh cỡ nào, và có được vừa nói vừa nghe không. Chuyện thứ hai tên là gì?"
+              },
+              "solution": {
+                "vi": "Duplex. Một đầu chạy full, đầu kia chạy half thì bên half coi mọi lần nói cùng lúc là đụng độ, bỏ gói rồi gửi lại — mạng vẫn thông mà chậm và rớt."
+              },
+              "conceptId": "duplex"
+            }
+          ]
+        },
+        {
+          "type": "retrieval",
+          "questions": [
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m4-b7-ret-1",
+                "prompt": { "vi": "Không nhìn lại bài: một đoạn cáp đồng chạy được tối đa bao nhiêu mét?" },
+                "accept": ["100 mét", "100m", "một trăm mét", "100 m", "100 met", "khoảng 100 m"]
+              },
+              "hint": { "vi": "Con số tròn trịa mà người trong nghề ai cũng thuộc." },
+              "solution": {
+                "vi": "Khoảng 100 mét cho một đoạn — tính cả dây chạy trong tường lẫn hai đoạn dây nhảy ở hai đầu."
+              }
+            },
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m4-b7-ret-2",
+                "prompt": { "vi": "Không nhìn lại bài: hai đầu một sợi dây thỏa thuận lệch nhau khiến mạng vẫn thông nhưng chậm và rớt gói. Chuyện lệch đó tên là gì?" },
+                "accept": ["duplex", "song công"]
+              },
+              "hint": { "vi": "Đầu này chạy full, đầu kia chạy half." },
+              "solution": {
+                "vi": "Duplex lệch nhau. Bên chạy half coi mọi lần bên kia nói cùng lúc là đụng độ nên bỏ gói rồi gửi lại."
+              }
+            }
+          ],
+          "selfExplain": {
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: vì sao gặp sự cố mạng, người trực lâu năm nhìn đèn ở chỗ cắm dây trước khi đụng tới địa chỉ IP?"
+            },
+            "keywords": [
+              ["đèn", "đèn link", "link"],
+              ["dây", "sợi dây", "đầu bấm", "cổng"],
+              ["chưa nối", "vô nghĩa", "phía trên", "ngồi trên", "mất công", "nằm trên"]
+            ],
+            "exampleAnswer": {
+              "vi": "Vì cái đèn cho biết sợi dây đã nối được với nhau hay chưa, mà mọi thứ khác đều ngồi trên sợi dây đó. Đèn tối thì địa chỉ IP có đúng tuyệt đối mạng vẫn không chạy, nên sửa ở phía trên chỉ mất công. Nhìn đèn mất hai giây và nó cắt ngay được một nửa số nghi ngờ."
+            }
+          }
+        },
+        {
+          "type": "summary",
+          "bullets": [
+            { "vi": "Một đoạn cáp đồng đi tối đa khoảng 100 mét; xa hơn thì tới lượt cáp quang." },
+            { "vi": "Đèn ở chỗ cắm dây là lời khai đầu tiên: đèn tối thì lỗi nằm ở dây, đầu bấm hoặc cổng." },
+            { "vi": "Đèn sáng mà mạng vẫn ì ạch và rớt gói lai rai: nghi hai đầu lệch duplex." }
+          ],
+          "nextTeaser": {
+            "vi": "Sợi dây thì có rồi, nhưng nối thẳng từng cặp cho 10 máy hết tới 45 sợi. Bài sau: cái hộp nhiều cổng ở tủ mạng tên là gì, và vì sao có nó thì 10 máy chỉ cần 10 sợi."
+          }
+        }
+      ]
+    },
     {
       "id": "m4-bai-1",
       "missionTitle": { "vi": "Gom cả phòng về một mối" },
@@ -778,7 +962,7 @@
             { "vi": "Tiếng gọi ARP dừng lại ở tường — nên hai bên không hề biết nhau tồn tại." }
           ],
           "nextTeaser": {
-            "vi": "Tách xong rồi, nhưng kế toán vẫn cần gửi báo cáo cho kỹ thuật — muốn hai xóm nói lại được với nhau thì còn phải thêm một thứ nữa. Bài cuối module xem cây cầu đó làm việc thế nào; còn cách bắc cầu ngay trên một switch thì để dành phần sau."
+            "vi": "Tách xong rồi, nhưng kế toán vẫn cần gửi báo cáo cho kỹ thuật — muốn hai xóm nói lại được với nhau thì còn phải thêm một thứ nữa. Bài sau xem cây cầu đó làm việc thế nào; còn cách bắc cầu ngay trên một switch thì để dành phần sau."
           }
         }
       ]
@@ -914,7 +1098,7 @@
             { "vi": "MAC đổi ở từng chặng trao tay; IP giữ nguyên suốt chuyến." }
           ],
           "nextTeaser": {
-            "vi": "Bài kiểm tra Module 4 đang đợi — và câu cuối là một phòng lab thật. Vượt qua rồi, Module 5 sẽ mở cánh cửa TCP, UDP và những con số cổng mà bạn đã gặp thoáng qua từ Module 1."
+            "vi": "Bốn bậc thang bạn vừa leo — dây, switch với MAC, router với IP — hóa ra nghề có sẵn tên gọi và số hiệu cho từng bậc. Bài cuối module đặt tên cho cái thang ấy."
           }
         }
       ]
@@ -1151,6 +1335,51 @@
     }
   ],
   "concepts": [
+    {
+      "id": "cap-mang",
+      "term": "Cáp đồng và cáp quang",
+      "glossVi": "Hai loại sợi dây chở dữ liệu — cáp đồng cho đoạn ngắn trong nhà, cáp quang cho đoạn dài",
+      "metaphor": {
+        "vi": "Cáp đồng như con đường đất trong xóm, tiện cho quãng gần; cáp quang là đường cái quan nối hai làng, chạy xa bao nhiêu cũng được."
+      },
+      "iconId": "icon-cap-mang",
+      "flashcard": {
+        "front": { "vi": "Một đoạn cáp đồng đi được tối đa bao xa, và xa hơn thì dùng gì?" },
+        "back": {
+          "vi": "Tối đa khoảng 100 mét cho một đoạn; xa hơn thì đổi sang cáp quang."
+        }
+      }
+    },
+    {
+      "id": "den-cong",
+      "term": "Đèn cổng (link light)",
+      "glossVi": "Đèn nhỏ ở chỗ cắm dây — báo hai đầu đã bắt tay được về điện hay chưa",
+      "metaphor": {
+        "vi": "Như ngọn đèn trước cửa bưu cục: đèn sáng là cửa đã mở và hai bên đã chào nhau; đèn tối thì thư còn chưa ra khỏi nhà."
+      },
+      "iconId": "icon-den-cong",
+      "flashcard": {
+        "front": { "vi": "Cắm dây rồi mà đèn ở cổng không sáng thì nên nghĩ tới cái gì?" },
+        "back": {
+          "vi": "Sợi dây chưa nối được: nghi dây, đầu bấm hoặc chính cái cổng — chưa tới lượt địa chỉ IP."
+        }
+      }
+    },
+    {
+      "id": "duplex",
+      "term": "Duplex",
+      "glossVi": "Thỏa thuận nói-nghe giữa hai đầu dây — full là nói nghe cùng lúc, half là thay phiên",
+      "metaphor": {
+        "vi": "Full duplex là con đường hai làn, hai chiều đi cùng lúc; half duplex là đường một làn, ai muốn qua phải chờ bên kia đi hết."
+      },
+      "iconId": "icon-duplex",
+      "flashcard": {
+        "front": { "vi": "Hai đầu dây lệch duplex thì mạng biểu hiện ra sao?" },
+        "back": {
+          "vi": "Vẫn thông nhưng chậm và rớt gói lai rai: bên chạy half coi mỗi lần bên kia nói cùng lúc là đụng độ nên gửi lại."
+        }
+      }
+    },
     {
       "id": "switch",
       "term": "Switch",
@@ -1447,6 +1676,39 @@
       },
       "explain": {
         "vi": "Khung (frame) — vỏ của tầng 2, mang địa chỉ MAC nên chỉ sống đúng một chặng. Gói tin nằm trong ruột đi trọn chuyến, địa chỉ IP không đổi lần nào."
+      }
+    },
+    {
+      "kind": "typed",
+      "id": "m4-mt-15",
+      "prompt": {
+        "vi": "Một đoạn cáp đồng chạy được tối đa bao nhiêu mét, trước khi phải chuyển sang cáp quang hoặc đặt thêm thiết bị ở giữa?"
+      },
+      "accept": ["100 mét", "100m", "một trăm mét", "100 m", "100 met", "khoảng 100 m"],
+      "hintTopic": {
+        "vi": "cữ chiều dài của một đoạn cáp đồng"
+      },
+      "explain": {
+        "vi": "Khoảng 100 mét cho một đoạn, tính cả dây chạy trong tường lẫn hai đoạn dây nhảy ở hai đầu. Dài hơn nữa thì tín hiệu điện yếu dần và đường truyền lúc được lúc không."
+      }
+    },
+    {
+      "kind": "mcq",
+      "id": "m4-mt-16",
+      "prompt": {
+        "vi": "Một máy có dây liền, đèn cổng sáng, vào mạng vẫn được — nhưng chép file thì chậm dai dẳng và thỉnh thoảng rớt. Nghi ngờ đáng đặt lên đầu là gì?"
+      },
+      "choices": [
+        { "vi": "Hai đầu sợi dây đang lệch duplex với nhau" },
+        { "vi": "Máy đang cắm vào một VLAN khác với máy kia" },
+        { "vi": "Địa chỉ IP của máy trùng với một máy khác" }
+      ],
+      "answerIndex": 0,
+      "hintTopic": {
+        "vi": "thỏa thuận nói-nghe giữa hai đầu dây"
+      },
+      "explain": {
+        "vi": "Duplex lệch: đầu này chạy full, đầu kia chạy half nên bên half coi mọi lần nói cùng lúc là đụng độ, bỏ gói rồi gửi lại. Lệch VLAN thì tắc hẳn chứ không chậm lai rai, còn trùng địa chỉ IP thì chập chờn theo kiểu khác — lúc vào được, lúc mất hẳn."
       }
     },
     {

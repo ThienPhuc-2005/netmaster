@@ -127,7 +127,7 @@
         {
           "type": "summary",
           "bullets": [
-            { "vi": "MAC address là số khung: dập trên card từ nhà máy thì không đổi." },
+            { "vi": "MAC address là số khung: nhà máy ghi sẵn trên card, và máy cứ thế khai ra." },
             { "vi": "Địa chỉ IP là biển số: đổi theo mạng máy đang cắm vào." },
             { "vi": "MAC dùng trong mạng nội bộ, IP dẫn đường xuyên các mạng." }
           ],
@@ -950,7 +950,7 @@
       "iconId": "icon-mac",
       "flashcard": {
         "front": { "vi": "MAC address là gì — và có đổi khi mang máy sang mạng khác không?" },
-        "back": { "vi": "Số định danh phần cứng của card mạng, gắn chết từ nhà máy như số khung xe — KHÔNG đổi khi sang mạng khác; dùng để các máy trong mạng nội bộ gọi nhau." }
+        "back": { "vi": "Số định danh của card mạng, nhà máy ghi sẵn như số khung xe — đi sang mạng khác vẫn là số đó; dùng để các máy trong mạng nội bộ gọi nhau." }
       }
     },
     {

@@ -2,7 +2,7 @@
   "id": "module-6",
   "order": 6,
   "part": "B",
-  "letter": { "vi": "Vài dòng cho ca sáng. Lúc mở module, máy không vào được mạng với bạn là một cục lỗi duy nhất; giờ bạn tách được nó làm hai câu hỏi rạch ròi: máy có xin được địa chỉ không, và có ai dịch hộ cái tên miền không. Bạn nghe trọn được bốn nhịp hỏi cưới của DHCP và lần được ba tầng người biết đường của DNS. Hai cơ chế này hỏng là nửa số ca trực trên đời hỏng theo — bạn vừa cầm chìa khóa của cả hai." },
+  "letter": { "vi": "Vài dòng cho ca sáng. Lúc mở module, máy không vào được mạng với bạn là một cục lỗi duy nhất; giờ bạn tách được nó làm hai câu hỏi rạch ròi: máy có xin được địa chỉ không, và có ai dịch hộ cái tên miền không. Bạn nghe trọn được bốn nhịp hỏi cưới của DHCP, lần được ba tầng người biết đường của DNS, và đọc được tấm giấy nằm sau cái ổ khóa vàng mà trước nay ai cũng chỉ nhìn cho yên tâm. Hai cơ chế này hỏng là nửa số ca trực trên đời hỏng theo — bạn vừa cầm chìa khóa của cả hai." },
   "title": {
     "vi": "DNS và DHCP — Hỏi đường và thuê nhà"
   },
@@ -32,6 +32,15 @@
       },
       "lessonIds": [
         "m6-bai-3"
+      ]
+    },
+    {
+      "id": "m6-chang-khoa",
+      "title": {
+        "vi": "Ổ khóa và người cầm chìa"
+      },
+      "lessonIds": [
+        "m6-bai-6"
       ]
     },
     {
@@ -656,7 +665,316 @@
             }
           ],
           "nextTeaser": {
-            "vi": "Xong chuyện hỏi đường. Còn cái địa chỉ IP của chính máy bạn — ai phát cho bạn, và vì sao phải qua tới bốn nhịp mới xong?"
+            "vi": "Câu hỏi đã bọc kín, nhưng tới nơi rồi thì tin ai? Bài sau mình lật tấm giấy nằm sau cái ổ khóa vàng ra xem nó hứa gì — và tuyệt nhiên không hứa gì."
+          }
+        }
+      ]
+    },
+    {
+      "id": "m6-bai-6",
+      "missionTitle": {
+        "vi": "Soi tấm giấy sau ổ khóa vàng"
+      },
+      "steps": [
+        {
+          "type": "hook",
+          "question": {
+            "vi": "Một trang lừa đảo cũng hiện ổ khóa vàng y hệt trang ngân hàng thật, chứng chỉ hợp lệ, không lỗi gì. Vậy cái ổ khóa ấy vừa hứa với bạn điều gì — và tuyệt nhiên không hứa điều gì?"
+          },
+          "visualId": "vis-hook-o-khoa-vang"
+        },
+        {
+          "type": "pretest",
+          "questions": [
+            {
+              "kind": "mcq",
+              "id": "m6-b6-pre-1",
+              "prompt": {
+                "vi": "Đoán thử nhé: trang web hiện ổ khóa vàng nghĩa là gì?"
+              },
+              "choices": [
+                {
+                  "vi": "Đường truyền được mã hóa và đúng tên miền bạn đã gõ"
+                },
+                {
+                  "vi": "Trang này đã có người kiểm tra, bảo đảm không lừa đảo"
+                },
+                {
+                  "vi": "Chủ trang web đã trình giấy tờ tùy thân cho trình duyệt"
+                }
+              ],
+              "answerIndex": 0,
+              "explain": {
+                "vi": "Ổ khóa chỉ nói về ĐƯỜNG ỐNG và CÁI TÊN: dữ liệu đi qua được mã hóa, và bạn đang nói chuyện đúng với tên miền vừa gõ. Kẻ lừa đảo cũng xin được ổ khóa ấy cho tên miền của chính họ."
+              }
+            },
+            {
+              "kind": "mcq",
+              "id": "m6-b6-pre-2",
+              "prompt": {
+                "vi": "Bạn mở một trang và nhận về dòng \"404 Not Found\". Mạng của bạn lúc đó thế nào?"
+              },
+              "choices": [
+                {
+                  "vi": "Vẫn thông — máy chủ trả lời được, chỉ là không có trang đó"
+                },
+                {
+                  "vi": "Đang đứt — dòng chữ đó do trình duyệt tự bịa ra để báo lỗi"
+                },
+                {
+                  "vi": "Còn thông nhưng DNS đã tra ra địa chỉ của một máy chủ khác"
+                }
+              ],
+              "answerIndex": 0,
+              "explain": {
+                "vi": "Nhận được mã đáp nghĩa là câu hỏi của bạn đã tới nơi và máy chủ đã trả lời — mạng thông tới tận ứng dụng. 404 là chuyện của trang, không phải chuyện của mạng."
+              }
+            }
+          ],
+          "encouragement": {
+            "vi": "Hai chỗ này là hai chỗ hay nhầm nhất lúc đi trực: một cái làm mình quá tin, một cái làm mình đổ oan cho mạng."
+          }
+        },
+        {
+          "type": "teach",
+          "screens": [
+            {
+              "conceptId": "m6-chung-chi",
+              "visualId": "vis-chung-chi-giay-gioi-thieu",
+              "body": {
+                "vi": "Ở Module 5 bạn đã nhớ phòng 443 treo ổ khóa vàng. Giờ mở ổ khóa ấy ra xem bên trong: trước khi gửi bất cứ thứ gì, máy chủ chìa ra một CHỨNG CHỈ — tấm giấy ghi tên miền của nó, kèm chữ ký của một tổ chức cấp chứng chỉ mà trình duyệt tin sẵn. Trình duyệt xem giấy thấy khớp thì mới dựng đường ống mã hóa. Nên ổ khóa nói đúng hai điều: đường ống kín, và bạn đang nói chuyện với đúng cái tên bạn gõ."
+              },
+              "deepDive": {
+                "vi": "Nó KHÔNG nói người ở đầu bên kia là người tử tế. Xin một chứng chỉ cho tên miền mình vừa mua là chuyện vài phút và miễn phí, nên trang lừa đảo cũng có ổ khóa vàng thật, hợp lệ, không lỗi gì. Mã hóa bảo vệ ĐƯỜNG ỐNG, nó không nói gì về NGƯỜI đứng ở hai đầu ống — câu này bạn sẽ gặp lại nguyên văn khi học Zero Trust."
+              }
+            },
+            {
+              "conceptId": "m6-loi-chung-chi",
+              "visualId": "vis-ba-cau-hoi-chung-chi",
+              "body": {
+                "vi": "Trình duyệt xem giấy bằng ba câu hỏi, và mỗi câu trượt là một kiểu bôi đỏ khác nhau. Một: giấy CÒN HẠN không — chứng chỉ nào cũng có ngày hết hạn. Hai: TÊN trên giấy có khớp tên miền bạn gõ không — giấy cấp cho congty.com không dùng cho shop.congty.com được. Ba: AI KÝ giấy này — người ký phải nằm trong danh sách trình duyệt tin sẵn; giấy tự ký thì chẳng có ai bảo lãnh."
+              },
+              "deepDive": {
+                "vi": "Kiểu thứ nhất hay báo oan nhất. Chứng chỉ còn hạn hay hết hạn là so với ngày giờ MÁY BẠN đang tin, nên đồng hồ máy lệch vài tháng là giấy còn hạn cũng bị đọc thành hết hạn. Đó là lý do bài NTP ở Module 5 nói giờ giấc là chuyện hạ tầng: trước khi đổ lỗi cho máy chủ, nhìn lại đồng hồ máy mình đã."
+              }
+            },
+            {
+              "conceptId": "m6-ma-dap",
+              "visualId": "vis-ma-dap-http",
+              "body": {
+                "vi": "Qua được ổ khóa rồi, máy chủ trả lời bằng một MÃ ĐÁP ba chữ số đứng ngay đầu lá thư trả lời — đúng lá thư response bạn đã gặp ở Module 2. 200 là xong, trang đây. 301 là trang đã dọn sang địa chỉ khác. 403 là có trang nhưng bạn không được vào. 404 là không có trang nào ở địa chỉ ấy. 500 là máy chủ nhận được yêu cầu rồi tự vấp lúc làm."
+              },
+              "deepDive": {
+                "vi": "Luật đọc nhanh: mã bắt đầu bằng 4 là chuyện phía người hỏi (gõ nhầm đường dẫn, thiếu quyền), bắt đầu bằng 5 là chuyện phía máy chủ. Và điều quý nhất lúc đi trực: hễ THẤY được mã đáp thì mạng đã thông tới tận ứng dụng — tên miền tra được, đường đi tới nơi, port mở. Lúc ấy hãy đi tìm lỗi ở máy chủ hay ở quyền, đừng quay lại bắt dây mạng."
+              }
+            }
+          ]
+        },
+        {
+          "type": "practice",
+          "fadingLevel": 1,
+          "exercises": [
+            {
+              "question": {
+                "kind": "mcq",
+                "id": "m6-b6-pra-1",
+                "prompt": {
+                  "vi": "Một trang lạ có ổ khóa vàng, chứng chỉ hợp lệ, không lỗi gì. Kết luận đúng là gì?"
+                },
+                "choices": [
+                  {
+                    "vi": "Ống dẫn tới trang đó kín; còn trang đó tử tế hay không thì chưa rõ"
+                  },
+                  {
+                    "vi": "Trang đó đã qua kiểm duyệt nên gửi thông tin cá nhân vào được"
+                  },
+                  {
+                    "vi": "Chứng chỉ hợp lệ nghĩa là chủ trang đã được xác minh danh tính"
+                  }
+                ],
+                "answerIndex": 0,
+                "hintTopic": {
+                  "vi": "ổ khóa bảo vệ đường ống hay bảo lãnh cho người"
+                }
+              },
+              "hint": {
+                "vi": "Hỏi lại: tấm giấy ấy chứng nhận CÁI TÊN, hay chứng nhận CON NGƯỜI?"
+              },
+              "solution": {
+                "vi": "Ống dẫn kín và đúng tên miền bạn gõ — chỉ vậy thôi. Chứng chỉ không nói gì về việc chủ trang tử tế hay gian."
+              },
+              "conceptId": "m6-chung-chi"
+            },
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m6-b6-pra-2",
+                "prompt": {
+                  "vi": "Trình duyệt báo \"chứng chỉ đã hết hạn\" trên một trang mà đồng nghiệp ngồi cạnh vào bình thường. Thứ đầu tiên nên kiểm trên máy bạn là gì?"
+                },
+                "accept": [
+                  "đồng hồ",
+                  "ngày giờ",
+                  "giờ hệ thống",
+                  "giờ trên máy",
+                  "ngày tháng trên máy",
+                  "ngày tháng của máy",
+                  "ngày tháng máy",
+                  "ntp"
+                ],
+                "hintTopic": {
+                  "vi": "thứ quyết định máy bạn tin hôm nay là ngày nào"
+                }
+              },
+              "hint": {
+                "vi": "Còn hạn hay hết hạn là so với ngày giờ mà MÁY BẠN đang tin."
+              },
+              "solution": {
+                "vi": "Đồng hồ máy bạn — lệch ngày giờ thì giấy còn hạn cũng bị đọc thành hết hạn."
+              },
+              "conceptId": "m6-loi-chung-chi"
+            },
+            {
+              "question": {
+                "kind": "mcq",
+                "id": "m6-b6-pra-3",
+                "prompt": {
+                  "vi": "Trang nội bộ của công ty trả về mã đáp 500. Bạn đi tìm lỗi ở đâu trước?"
+                },
+                "choices": [
+                  {
+                    "vi": "Ở máy chủ web — nó nhận được yêu cầu rồi tự vấp lúc xử lý"
+                  },
+                  {
+                    "vi": "Ở đường mạng — gói tin của bạn chưa tới được máy chủ đó"
+                  },
+                  {
+                    "vi": "Ở DNS — tên miền nội bộ đang tra ra một địa chỉ không đúng"
+                  }
+                ],
+                "answerIndex": 0,
+                "hintTopic": {
+                  "vi": "chữ số đầu của mã đáp nói lỗi thuộc phía nào"
+                }
+              },
+              "hint": {
+                "vi": "Mã mở đầu bằng 5 là lời tự thú của máy chủ, không phải lời than của mạng."
+              },
+              "solution": {
+                "vi": "Ở máy chủ. Nhóm 5xx nghĩa là yêu cầu đã tới nơi và được nhận, chỉ là máy chủ tự vấp lúc làm — mạng thông rồi."
+              },
+              "conceptId": "m6-ma-dap"
+            }
+          ]
+        },
+        {
+          "type": "retrieval",
+          "questions": [
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m6-b6-ret-1",
+                "prompt": {
+                  "vi": "Không nhìn lại bài: máy chủ nhận được yêu cầu nhưng tự vấp lúc xử lý thì trả về mã đáp mở đầu bằng chữ số nào?"
+                },
+                "accept": [
+                  "5",
+                  "5xx",
+                  "500",
+                  "chữ số 5",
+                  "nhóm 5xx"
+                ],
+                "hintTopic": {
+                  "vi": "nhóm mã đáp của lỗi phía máy chủ"
+                }
+              },
+              "hint": {
+                "vi": "Nhóm mở đầu bằng 4 là chuyện phía người hỏi; nhóm còn lại là phía kia."
+              },
+              "solution": {
+                "vi": "Chữ số 5 — nhóm 5xx là lỗi phía máy chủ, ví dụ 500."
+              }
+            },
+            {
+              "question": {
+                "kind": "mcq",
+                "id": "m6-b6-ret-2",
+                "prompt": {
+                  "vi": "Trình duyệt bôi đỏ với dòng \"tên trên chứng chỉ không khớp\". Nghĩa là gì?"
+                },
+                "choices": [
+                  {
+                    "vi": "Giấy đó cấp cho một tên miền khác, không phải tên bạn vừa gõ"
+                  },
+                  {
+                    "vi": "Tên miền đó chưa từng có ai xin chứng chỉ cho nó bao giờ"
+                  },
+                  {
+                    "vi": "Chứng chỉ đã bị chính người ký thu hồi trước ngày hết hạn"
+                  }
+                ],
+                "answerIndex": 0,
+                "hintTopic": {
+                  "vi": "câu hỏi thứ hai trong ba câu trình duyệt hỏi"
+                }
+              },
+              "hint": {
+                "vi": "Ba câu hỏi là: còn hạn — đúng tên — ai ký. Dòng này rơi vào câu giữa."
+              },
+              "solution": {
+                "vi": "Chứng chỉ được cấp cho một tên miền khác với tên bạn gõ, nên trình duyệt không dám chắc mình đang nói chuyện với ai."
+              }
+            }
+          ],
+          "selfExplain": {
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: vì sao thấy ổ khóa vàng vẫn chưa đủ để yên tâm gửi tiền cho một trang?"
+            },
+            "keywords": [
+              [
+                "đường ống",
+                "đường truyền",
+                "mã hóa",
+                "ống dẫn",
+                "đường đi"
+              ],
+              [
+                "người ở đầu",
+                "người kia",
+                "người ở bên kia",
+                "chủ trang",
+                "danh tính",
+                "tử tế",
+                "người bán"
+              ],
+              [
+                "cũng xin được",
+                "kẻ lừa đảo",
+                "trang giả",
+                "ai cũng xin",
+                "dễ xin"
+              ]
+            ],
+            "exampleAnswer": {
+              "vi": "Vì ổ khóa chỉ bảo đảm đường ống kín và đúng tên miền mình gõ; nó không nói gì về người ở đầu bên kia. Kẻ lừa đảo cũng xin được chứng chỉ cho tên miền của chính họ, nên trang giả vẫn có ổ khóa y như thật."
+            }
+          }
+        },
+        {
+          "type": "summary",
+          "bullets": [
+            {
+              "vi": "Chứng chỉ nói đúng hai điều: đường ống kín, và đúng tên miền bạn gõ."
+            },
+            {
+              "vi": "Ba kiểu chứng chỉ hỏng: hết hạn, sai tên, không ai bảo lãnh."
+            },
+            {
+              "vi": "Thấy được mã đáp là mạng đã thông: 4xx phía người hỏi, 5xx phía máy chủ."
+            }
+          ],
+          "nextTeaser": {
+            "vi": "Xong chuyện hỏi đường và tin ai. Còn cái địa chỉ IP của chính máy bạn — ai phát cho bạn, và vì sao phải qua tới bốn nhịp mới xong?"
           }
         }
       ]
@@ -1144,6 +1462,57 @@
       }
     },
     {
+      "id": "m6-chung-chi",
+      "term": "TLS certificate",
+      "glossVi": "Chứng chỉ — tấm giấy máy chủ chìa ra, có chữ ký bên thứ ba, chứng nhận nó đúng là tên miền bạn gõ",
+      "metaphor": {
+        "vi": "Giấy giới thiệu có con dấu của một phòng công chứng cả làng công nhận: bảo đảm đúng người, không bảo đảm người ấy tử tế."
+      },
+      "iconId": "icon-chung-chi",
+      "flashcard": {
+        "front": {
+          "vi": "Ổ khóa vàng trên thanh địa chỉ bảo đảm điều gì?"
+        },
+        "back": {
+          "vi": "Đường ống được mã hóa và bạn đang nói chuyện đúng với tên miền đã gõ. Nó không nói gì về việc chủ trang tử tế hay gian."
+        }
+      }
+    },
+    {
+      "id": "m6-loi-chung-chi",
+      "term": "Certificate error",
+      "glossVi": "Ba kiểu chứng chỉ hỏng: hết hạn, sai tên, không ai bảo lãnh",
+      "metaphor": {
+        "vi": "Ba câu người bảo vệ hỏi khi cầm tờ giấy: còn hạn không, tên có đúng người không, ai ký cái này."
+      },
+      "iconId": "icon-loi-chung-chi",
+      "flashcard": {
+        "front": {
+          "vi": "Trình duyệt soi chứng chỉ bằng ba câu hỏi nào?"
+        },
+        "back": {
+          "vi": "Còn hạn không, tên trên giấy có khớp tên miền bạn gõ không, và người ký có nằm trong danh sách trình duyệt tin sẵn không."
+        }
+      }
+    },
+    {
+      "id": "m6-ma-dap",
+      "term": "HTTP status code",
+      "glossVi": "Mã đáp ba chữ số máy chủ trả về: 200 xong, 301 dọn nhà, 403 cấm cửa, 404 không có trang, 500 máy chủ vấp",
+      "metaphor": {
+        "vi": "Dòng chữ đóng dấu trên phong bì gửi trả: đã giao, đã chuyển địa chỉ, không cho nhận, không có người này."
+      },
+      "iconId": "icon-ma-dap",
+      "flashcard": {
+        "front": {
+          "vi": "Mã đáp mở đầu bằng 4 và bằng 5 khác nhau chỗ nào?"
+        },
+        "back": {
+          "vi": "4xx là chuyện phía người hỏi — sai đường dẫn hoặc thiếu quyền; 5xx là máy chủ đã nhận yêu cầu rồi tự vấp lúc làm."
+        }
+      }
+    },
+    {
       "id": "m6-dhcp",
       "term": "DHCP",
       "glossVi": "Dịch vụ cho thuê địa chỉ IP cùng subnet mask, gateway và máy chủ DNS",
@@ -1480,6 +1849,51 @@
       },
       "explain": {
         "vi": "Bản ghi A là dòng ghi thẳng \"congty.com nằm ở địa chỉ này\" — dọn máy chủ là đổi đúng dòng đó. CNAME chỉ đặt biệt danh trỏ về tên khác, MX chỉ lo đường đi của thư."
+      }
+    },
+    {
+      "kind": "mcq",
+      "id": "m6-mt-14",
+      "prompt": {
+        "vi": "Một trang lạ hiện ổ khóa vàng, chứng chỉ hợp lệ. Điều đó bảo đảm được gì?"
+      },
+      "choices": [
+        {
+          "vi": "Đường truyền được mã hóa và đúng tên miền bạn đã gõ"
+        },
+        {
+          "vi": "Trang này đã qua kiểm duyệt nên gửi tiền vào được"
+        },
+        {
+          "vi": "Chủ trang đã trình giấy tờ tùy thân cho trình duyệt"
+        }
+      ],
+      "answerIndex": 0,
+      "hintTopic": {
+        "vi": "ổ khóa bảo vệ đường ống hay bảo lãnh cho người"
+      },
+      "explain": {
+        "vi": "Ổ khóa chỉ nói về đường ống và cái tên: dữ liệu được mã hóa, và bạn đang nói chuyện đúng với tên miền đã gõ. Xin chứng chỉ cho một tên miền vừa mua là chuyện vài phút, nên trang lừa đảo cũng có ổ khóa thật."
+      }
+    },
+    {
+      "kind": "typed",
+      "id": "m6-mt-15",
+      "prompt": {
+        "vi": "Nhóm mã đáp báo lỗi thuộc về phía máy chủ mở đầu bằng chữ số nào?"
+      },
+      "accept": [
+        "5",
+        "5xx",
+        "500",
+        "chữ số 5",
+        "nhóm 5xx"
+      ],
+      "hintTopic": {
+        "vi": "bốn là phía người hỏi, còn lại là phía kia"
+      },
+      "explain": {
+        "vi": "Nhóm 5xx (như 500) là máy chủ đã nhận yêu cầu rồi tự vấp lúc làm, còn 4xx (403, 404) là chuyện phía người hỏi. Thấy được mã đáp nghĩa là mạng đã thông tới tận ứng dụng."
       }
     }
   ]

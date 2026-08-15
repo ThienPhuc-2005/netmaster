@@ -31,7 +31,29 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (19) M21 capstone + màn tốt nghiệp | XONG |
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
-**KHỐI MỚI NHẤT — 21.66 (08-15), đã commit `85d0e27`: TỪ VỰNG ĐO MẠNG (việc C, lỗ hổng Q3 — làm được 2/3).**
+**KHỐI MỚI NHẤT — 21.67 (08-15), chưa commit: SÁU BÀI LẤP NỐT LỖ HỔNG Q4-Q9 (việc C).**
+- Sáu bài mới, năm module: `m4-bai-7` khám sợi dây (cáp đồng 100 m, đọc đèn cổng,
+  duplex lệch) · `m6-bai-6` soi tấm giấy sau ổ khóa vàng (chứng chỉ, ba kiểu lỗi,
+  mã đáp) · `m7-bai-6` mở phòng điều khiển router nhà · `m7-bai-7` tìm lớp cổng
+  ngoài nhà (CGNAT) · `m8-bai-7` giành lại kênh sóng · `m17-bai-4b` rào MAC chặn
+  được ai. **17 khái niệm mới, 18 hình vẽ mới.**
+- **Chia việc theo FILE** để năm người soạn song song không giẫm chân nhau; hình
+  vẽ và cổng chất lượng là file dùng chung nên người điều phối làm.
+- **Người soi bắt được lỗi thật ở cả năm module** và tự chữa phần lớn. Đáng kể:
+  M7 khai "đã tự chạy bộ chấm" nhưng chạy lại thì câu sai vẫn lọt; M7 dạy sai
+  `ipconfig` trần có in Physical Address (không, phải `/all`); M6 để nhóm từ khóa
+  chỉ có chữ "người" nên chấm ĐẠT cho chính hiểu lầm bài đang chữa.
+- **Bốn việc người soi trả về cho tôi**: hình mở bài M4 trùng hình dạy (đã vẽ
+  riêng) · accept "100" trần nhận cả "100 Mbps" (đã siết) · **dây chuyền úp mở
+  Module 4 bị đứt do CHÍNH TÔI chèn bài ở khối 21.65** (bài 5 vẫn hứa "bài kiểm
+  tra đang đợi" dù sau nó còn hai bài — đã nối lại) · Module 3 vẫn dạy "MAC dập
+  chết từ nhà máy, không đổi" — đúng ngộ nhận bài M17 mới đi gỡ (đã sửa cả gạch
+  tổng kết lẫn mặt sau thẻ ôn).
+- Câu thi `m7-mt-14` chép nguyên văn câu trong bài → đã đổi vỏ tình huống.
+- **Tổng câu hỏi 696 → 773** sau cả buổi. 1873 test xanh, typecheck sạch, build
+  qua. Kiểm browser thật: các bài mới mở đúng thứ tự, 18 hình mới đều vẽ ra nét.
+
+**KHỐI TRƯỚC — 21.66 (08-15), đã commit `85d0e27`: TỪ VỰNG ĐO MẠNG (việc C, lỗ hổng Q3 — làm được 2/3).**
 - Thêm bài `m8-bai-6` "Đo cho ra số, đừng đoán bằng cảm giác" **chen giữa bài 2
   và bài 3** của Module 8 (chặng mới `m8-chang-do` cắm vào giữa mảng chặng — thứ
   tự chặng chính là thứ tự học). Ba khái niệm mới: **Băng thông** (chiều rộng),

@@ -2,10 +2,10 @@
   "id": "module-8",
   "order": 8,
   "part": "C",
-  "letter": { "vi": "Mấy dòng để lại. Hai tuần trước, Wi-Fi yếu là chuyện của trời; giờ bạn biết góc nhà nào nên đi băng tần nào, tên thế hệ nào thật sự đem lại gì, và khóa cửa cho sóng nhà mình bằng cách nào cho tử tế. Bạn cũng đọc được biển số đời mới mà không vấp, kể cả cái địa chỉ dài ngoằng mở đầu bằng fe80. Hai hệ địa chỉ cùng sống trên một máy không còn làm bạn lẫn nữa — đó mới là điều đáng nói." },
+  "letter": { "vi": "Mấy dòng để lại. Hai tuần trước, Wi-Fi yếu là chuyện của trời; giờ bạn biết góc nhà nào nên đi băng tần nào, vì sao đầy vạch mà mạng vẫn ì và nên kê router ở chỗ nào, tên thế hệ nào thật sự đem lại gì, và khóa cửa cho sóng nhà mình bằng cách nào cho tử tế. Bạn cũng đọc được biển số đời mới mà không vấp, kể cả cái địa chỉ dài ngoằng mở đầu bằng fe80. Hai hệ địa chỉ cùng sống trên một máy không còn làm bạn lẫn nữa — đó mới là điều đáng nói." },
   "title": { "vi": "Wi-Fi và IPv6 chuyên sâu" },
   "stages": [
-    { "id": "m8-chang-1", "title": { "vi": "Sóng thay dây" }, "lessonIds": ["m8-bai-1"] },
+    { "id": "m8-chang-1", "title": { "vi": "Sóng thay dây" }, "lessonIds": ["m8-bai-1", "m8-bai-7"] },
     { "id": "m8-chang-2", "title": { "vi": "Đọc tên thế hệ" }, "lessonIds": ["m8-bai-2"] },
     { "id": "m8-chang-do", "title": { "vi": "Đo cho ra số" }, "lessonIds": ["m8-bai-6"] },
     { "id": "m8-chang-3", "title": { "vi": "Khóa cửa cho sóng" }, "lessonIds": ["m8-bai-3"] },
@@ -125,7 +125,162 @@
             { "vi": "2.4 GHz xa mà chậm; 5 GHz nhanh mà gần; 6 GHz nhanh nhất, vắng nhất, ngắn nhất." },
             { "vi": "Gần ưu tiên nhanh, xa ưu tiên tới — không băng nào tốt nhất cho mọi góc nhà." }
           ],
-          "nextTeaser": { "vi": "Trên vỏ hộp còn một con số nữa: Wi-Fi 5, Wi-Fi 6, Wi-Fi 7. Số đó không phải băng tần — vậy nó là gì?" }
+          "nextTeaser": { "vi": "Nhưng chọn đúng băng rồi mà nhà vẫn ì thì sao? Sóng nhà bạn với sóng nhà hàng xóm đang giẫm lên nhau — giẫm bằng cách nào, và vì sao máy vẫn báo đầy vạch?" }
+        }
+      ]
+    },
+
+    {
+      "id": "m8-bai-7",
+      "missionTitle": { "vi": "Giành lại kênh sóng với nhà hàng xóm" },
+      "steps": [
+        {
+          "type": "hook",
+          "question": { "vi": "Điện thoại báo đầy vạch, bạn lại đang ngồi ngay cạnh router, vậy mà trang web cứ quay vòng vòng — và cứ tối đến là tệ nhất. Sóng khỏe rành rành, thế thì cái gì đang chậm?" },
+          "visualId": "vis-hook-day-vach-ma-cham"
+        },
+        {
+          "type": "pretest",
+          "questions": [
+            {
+              "kind": "mcq",
+              "id": "m8-b7-pre-1",
+              "prompt": { "vi": "Đoán thử nhé: cả chung cư dùng Wi-Fi 2.4 GHz, nhà bạn và nhà hàng xóm cùng đặt kênh 6. Chuyện gì xảy ra?" },
+              "choices": [
+                { "vi": "Thiết bị hai nhà phải thay phiên nhau nói, nên cả hai cùng chậm" },
+                { "vi": "Không ảnh hưởng gì tới nhau, vì mỗi nhà một mật khẩu Wi-Fi riêng" },
+                { "vi": "Router nào mạnh hơn sẽ lấn át, nhà kia gần như mất sóng" }
+              ],
+              "answerIndex": 0,
+              "explain": { "vi": "Mật khẩu khóa NỘI DUNG chứ không chia được không khí. Chung kênh là chung một sợi dây (bài trước): thiết bị hai nhà nghe thấy nhau nên phải nhường lượt, và cả hai cùng chậm chứ chẳng ai át được ai." }
+            }
+          ],
+          "encouragement": { "vi": "Cứ nghĩ tới hai quán karaoke sát vách cùng mở hết cỡ: chẳng ai át được ai, chỉ có cả hai cùng ồn." }
+        },
+        {
+          "type": "teach",
+          "screens": [
+            {
+              "conceptId": "m8-kenh-wifi",
+              "visualId": "vis-kenh-1-6-11",
+              "body": { "vi": "Mỗi băng tần không phải một đường ống liền: nó chia thành nhiều KÊNH — băng tần là con phố, kênh là làn đường, và router nhà bạn chỉ phát trên một làn. Rắc rối ở chỗ băng 2.4 GHz có 13 kênh nhưng đánh số sát nhau nên chúng đè lên nhau; chỉ ba kênh 1, 6 và 11 cách đủ xa để không chồng. Cả xóm chen vào đúng ba làn ấy, nên nhà bạn và nhà hàng xóm rất dễ chung kênh — mà chung kênh là chung một sợi dây không khí (bài trước): thiết bị hai nhà phải thay phiên nhau nói." },
+              "deepDive": { "vi": "Chọn kênh nằm giữa, kiểu 3 hay 8, còn tệ hơn trùng hẳn kênh với hàng xóm: chồng một PHẦN thì hai bên nghe nhau lõm bõm, không nhận ra bên kia đang nói nên cứ phát đè lên — cả hai cùng hỏng gói, cùng phải gửi lại. Trùng hẳn thì ít ra còn nghe rõ nhau mà nhường lượt. Băng 5 GHz rộng rãi hơn nhiều: hơn hai chục kênh không đè nhau, lại ít nhà dùng." }
+            },
+            {
+              "conceptId": "m8-vach-song",
+              "visualId": "vis-vach-song-va-do-on",
+              "body": { "vi": "Vậy vì sao máy báo ĐẦY VẠCH mà vẫn ì? Vì vạch chỉ đo đúng một thứ: sóng router tới máy to hay nhỏ. Nó hoàn toàn không đo xóm quanh đang ồn cỡ nào. Giống như đứng sát loa trong quán karaoke — nghe loa nhà mình rõ mồn một, nhưng muốn nói chuyện với người bên cạnh thì vẫn chịu, vì cả quán cùng gào. Thứ quyết định tốc độ thật là CHÊNH LỆCH giữa tiếng nhà bạn và tiếng ồn xung quanh, mà mấy cái vạch kia không hé một chữ nào về vế thứ hai." },
+              "deepDive": { "vi": "Người trực đọc hai con số chứ không đọc vạch: độ to của sóng (đơn vị dBm, luôn là số âm — quanh -50 là khỏe, tới -80 là lết) và mức ồn nền quanh đó. Hiệu hai số mới là con số đáng tin. Điện thoại vẽ vạch chỉ theo vế thứ nhất, nên ở chung cư đông nó nói dối rất tự tin: bốn vạch mà chờ dài." }
+            },
+            {
+              "conceptId": "m8-cho-dat-router",
+              "visualId": "vis-cho-dat-router",
+              "body": { "vi": "Còn một việc tay chân đổi được nhiều thứ hơn cả đổi kênh: đặt lại router. Sóng lan ra mọi hướng thành một quả cầu, nên router muốn nằm GIỮA nhà, TRÊN CAO (từ ngang tầm ngực trở lên) và THOÁNG. Nhét nó vào góc nhà là ném nửa quả cầu ra ngoài đường cho hàng xóm hưởng. Kẻ thù của sóng: tủ kín và tường bê tông chịu lực, gương cùng tấm kim loại (dội sóng ngược lại), bể cá và bình nước (nước nuốt sóng 2.4 GHz rất giỏi), lò vi sóng đang chạy." },
+              "deepDive": { "vi": "Nhà ống nhiều tầng thì không chỗ đặt nào cứu nổi: một điểm phát ở tầng hai vẫn để lại góc chết ở tầng trệt lẫn tầng ba. Lúc đó thứ cần thêm là một điểm phát NỮA đặt xa router, chứ không phải một router đắt tiền hơn — sóng đã bị bê tông chặn thì đắt mấy cũng không xuyên qua được." }
+            }
+          ]
+        },
+        {
+          "type": "practice",
+          "fadingLevel": 1,
+          "exercises": [
+            {
+              "question": {
+                "kind": "mcq",
+                "id": "m8-b7-pra-1",
+                "prompt": { "vi": "Điện thoại báo bốn vạch đầy, bạn ngồi ngay cạnh router, mà trang web vẫn quay vòng. Bốn vạch đó đang nói lên điều gì?" },
+                "choices": [
+                  { "vi": "Sóng router tới máy rất to — nhưng nó không đo xóm quanh ồn tới đâu" },
+                  { "vi": "Đường ra Internet đang rộng — nhưng nó không đo router nhà đời nào" },
+                  { "vi": "Kênh máy đang dùng còn trống — nhưng nó không đo tường dày hay mỏng" }
+                ],
+                "answerIndex": 0,
+                "hintTopic": { "vi": "thứ vạch sóng đo được và thứ nó bỏ qua" }
+              },
+              "hint": { "vi": "Vạch đo tiếng của router nhà bạn. Còn thứ gì trong không khí mà nó không hề đếm?" },
+              "solution": { "vi": "Vạch chỉ nói sóng router tới máy TO — nó không biết gì về độ ồn của xóm quanh. Đường ra Internet rộng bao nhiêu là chuyện của gói cước, còn kênh có trống hay không thì vạch cũng chẳng đếm." },
+              "conceptId": "m8-vach-song"
+            },
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m8-b7-pra-2",
+                "prompt": { "vi": "Băng 2.4 GHz có 13 kênh, nhưng chỉ ba kênh không đè lên nhau. Đó là ba kênh số mấy? (ba con số)" },
+                "accept": ["1, 6, 11", "1 6 11", "1, 6 và 11", "1-6-11", "1 và 6 và 11"],
+                "hintTopic": { "vi": "ba làn cách nhau đủ xa" }
+              },
+              "hint": { "vi": "Ba số cách đều nhau năm bậc, bắt đầu từ kênh nhỏ nhất." },
+              "solution": { "vi": "Kênh 1, 6 và 11 — chỉ ba kênh này cách nhau đủ xa để không chồng lấn lên nhau." },
+              "conceptId": "m8-kenh-wifi"
+            },
+            {
+              "question": {
+                "kind": "mcq",
+                "id": "m8-b7-pra-3",
+                "prompt": { "vi": "Router đang nằm trong tủ giày ở góc nhà, ngay cạnh bể cá. Việc nào đáng làm trước tiên?" },
+                "choices": [
+                  { "vi": "Dời router ra giữa nhà, đặt trên cao và để thoáng" },
+                  { "vi": "Nâng gói cước lên mức cao hơn cho sóng khỏe hẳn" },
+                  { "vi": "Đổi mật khẩu Wi-Fi thật dài để hàng xóm hết ké" }
+                ],
+                "answerIndex": 0,
+                "hintTopic": { "vi": "quả cầu sóng đang bị nhốt ở đâu" }
+              },
+              "hint": { "vi": "Sóng lan thành một quả cầu — quả cầu ấy đang bị nhốt trong tủ, ở một góc, cạnh một khối nước." },
+              "solution": { "vi": "Dời router ra giữa nhà, trên cao và thoáng. Tủ kín chặn sóng, góc nhà ném nửa quả cầu ra ngoài đường, còn bể cá thì nước nuốt sóng 2.4 GHz. Gói cước không làm sóng khỏe lên, và người ké mạng cũng không làm vạch sóng đổi." },
+              "conceptId": "m8-cho-dat-router"
+            }
+          ]
+        },
+        {
+          "type": "retrieval",
+          "questions": [
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m8-b7-ret-1",
+                "prompt": { "vi": "Không nhìn lại bài: nhà bạn và nhà hàng xóm cùng đặt một kênh trên băng 2.4 GHz — thiết bị hai bên buộc phải làm gì với nhau?" },
+                "accept": ["thay phiên", "luân phiên", "chờ nhau", "đợi nhau", "chờ tới lượt", "chờ đến lượt", "đợi đến lượt", "thay nhau nói", "nhường nhau", "chia lượt", "xếp hàng"],
+                "hintTopic": { "vi": "không khí là sợi dây dùng chung" }
+              },
+              "hint": { "vi": "Nhớ bài trước: không khí là MỘT sợi dây chung. Chung kênh nghĩa là chung đúng sợi dây đó." },
+              "solution": { "vi": "Thay phiên nhau nói — chung kênh là chung một sợi dây không khí, mỗi lúc chỉ một bên được phát, nên cả hai nhà cùng chậm." }
+            },
+            {
+              "question": {
+                "kind": "mcq",
+                "id": "m8-b7-ret-2",
+                "prompt": { "vi": "Vẫn từ trí nhớ, nối lại với bài trước: vì sao chuyển mạng lên băng 5 GHz thường đỡ hẳn cảnh giẫm sóng ở chung cư?" },
+                "choices": [
+                  { "vi": "Vì 5 GHz có hơn hai chục kênh không đè nhau, lại ít nhà dùng hơn" },
+                  { "vi": "Vì sóng 5 GHz xuyên tường giỏi hơn nên át được sóng nhà bên" },
+                  { "vi": "Vì mỗi router chạy 5 GHz được nhà mạng cấp riêng một kênh cố định" }
+                ],
+                "answerIndex": 0,
+                "hintTopic": { "vi": "băng nào còn rộng chỗ hơn" }
+              },
+              "hint": { "vi": "Hỏi lại chính bài trước: băng nào đông đúc nhất, và băng nào còn nhiều chỗ trống?" },
+              "solution": { "vi": "Vì 5 GHz nhiều kênh không đè nhau hơn hẳn và còn vắng. Thêm một may mắn nữa: sóng 5 GHz xuyên tường kém, nên sóng nhà hàng xóm cũng khó lọt sang quấy nhà bạn — đúng cái nhược điểm ở bài trước, lần này lại hóa lợi thế." }
+            }
+          ],
+          "selfExplain": {
+            "prompt": { "vi": "Giải thích bằng lời của bạn: vì sao ở chung cư, máy báo đầy vạch mà mạng vẫn chậm vào giờ cao điểm?" },
+            "keywords": [
+              ["kênh", "kenh", "chung kênh", "chung kenh", "trùng kênh", "trung kenh"],
+              ["hàng xóm", "hang xom", "nhà bên", "nha ben", "xung quanh", "chung cư", "chung cu", "nhiều mạng", "nhieu mang"],
+              ["thay phiên", "thay phien", "chờ", "cho nhau", "đợi", "xếp hàng", "xep hang", "giẫm", "dam len", "ồn", "tiếng ồn"]
+            ],
+            "exampleAnswer": { "vi": "Vì vạch chỉ đo tiếng router nhà mình to hay nhỏ, chứ không đo xóm quanh ồn cỡ nào. Giờ cao điểm cả chung cư cùng chen trên vài kênh 2.4 GHz ít ỏi, các nhà chung kênh phải thay phiên nhau nói — nên sóng vẫn đầy vạch mà vẫn phải chờ dài." }
+          }
+        },
+        {
+          "type": "summary",
+          "bullets": [
+            { "vi": "Băng tần chia thành kênh; băng 2.4 GHz chỉ có ba kênh không đè nhau: 1, 6 và 11." },
+            { "vi": "Vạch đầy chỉ nói sóng nhà bạn TO, không nói xóm quanh có ồn hay không." },
+            { "vi": "Đặt router giữa nhà, trên cao, thoáng — tránh tủ kín, gương, bể cá và lò vi sóng." }
+          ],
+          "nextTeaser": { "vi": "Trên vỏ hộp router còn một con số nữa: Wi-Fi 5, Wi-Fi 6, Wi-Fi 7. Số đó không phải băng tần, cũng chẳng phải kênh — vậy nó là gì?" }
         }
       ]
     },
@@ -887,6 +1042,39 @@
       }
     },
     {
+      "id": "m8-kenh-wifi",
+      "term": "Kênh Wi-Fi",
+      "glossVi": "Làn nhỏ bên trong một băng tần; trên 2.4 GHz chỉ có ba làn không đè nhau: 1, 6, 11",
+      "metaphor": { "vi": "Băng tần là con phố, kênh là làn đường — hai nhà chung làn thì phải nhường nhau mà đi." },
+      "iconId": "icon-kenh-wifi",
+      "flashcard": {
+        "front": { "vi": "Băng 2.4 GHz có 13 kênh, sao chỉ nên dùng kênh 1, 6 và 11?" },
+        "back": { "vi": "Vì các kênh đánh số sát nhau nên đè lên nhau; chỉ 1, 6, 11 cách đủ xa để không chồng. Chọn kênh chồng một phần còn tệ hơn trùng hẳn kênh." }
+      }
+    },
+    {
+      "id": "m8-vach-song",
+      "term": "Vạch sóng",
+      "glossVi": "Vạch trên máy chỉ đo độ TO của sóng nhà bạn, không đo độ ồn của xóm quanh",
+      "metaphor": { "vi": "Đứng sát loa trong quán karaoke: nghe loa rõ mồn một mà vẫn chẳng nói chuyện được với ai." },
+      "iconId": "icon-vach-song",
+      "flashcard": {
+        "front": { "vi": "Đầy vạch mà mạng vẫn ì — vạch sóng nói gì, và không nói gì?" },
+        "back": { "vi": "Vạch chỉ đo sóng router tới máy to hay nhỏ. Nó không đo xóm quanh ồn cỡ nào, nên ở chung cư đông vẫn đầy vạch mà phải chờ dài." }
+      }
+    },
+    {
+      "id": "m8-cho-dat-router",
+      "term": "Chỗ đặt router",
+      "glossVi": "Sóng lan thành quả cầu, nên router muốn ở giữa nhà, trên cao và thoáng",
+      "metaphor": { "vi": "Bóng đèn giữa trần thì sáng cả phòng; nhét vào tủ giày góc nhà thì chỉ sáng mỗi cái tủ." },
+      "iconId": "icon-cho-dat-router",
+      "flashcard": {
+        "front": { "vi": "Đặt router thế nào cho sóng phủ đều, và tránh xa những gì?" },
+        "back": { "vi": "Giữa nhà, trên cao, để thoáng. Tránh tủ kín, gương và tấm kim loại, bể cá, lò vi sóng — chúng chặn, dội hoặc nuốt sóng 2.4 GHz." }
+      }
+    },
+    {
       "id": "m8-chuan-wifi",
       "term": "Thế hệ Wi-Fi",
       "glossVi": "Wi-Fi 4/5/6/7 — các đời của chuẩn 802.11, đánh số cho dễ nhớ",
@@ -1218,6 +1406,27 @@
       "explain": {
         "vi": "Mất gói hoặc jitter. Tải file nhanh đã chứng minh đường đủ rộng; tiếng vỡ là do gói rơi dọc đường hoặc tới lệch nhịp — nâng cước không chữa được. Còn độ trễ thấp là chuyện TỐT, không bao giờ là bệnh."
       }
+    },
+    {
+      "kind": "typed",
+      "id": "m8-mt-17",
+      "prompt": { "vi": "Chung cư đông, bạn vào trang cài đặt router chọn kênh cho băng 2.4 GHz. Ba kênh không đè lên nhau để chọn là những kênh nào? (ba con số)" },
+      "accept": ["1, 6, 11", "1 6 11", "1, 6 và 11", "1-6-11", "1 và 6 và 11"],
+      "hintTopic": { "vi": "ba làn cách nhau đủ xa" },
+      "explain": { "vi": "Kênh 1, 6 và 11 — chỉ ba kênh này cách nhau đủ xa để không chồng lấn. Chọn kênh nằm giữa (kiểu 3 hay 8) là đè lên cả hai bên hàng xóm, còn khổ hơn trùng hẳn một kênh với họ." }
+    },
+    {
+      "kind": "mcq",
+      "id": "m8-mt-18",
+      "prompt": { "vi": "Chung cư, chín giờ tối: điện thoại đầy vạch, bạn ngồi ngay cạnh router mà trang web vẫn quay vòng. Nghi cái gì trước?" },
+      "choices": [
+        { "vi": "Hàng xóm đang chen chung kênh 2.4 GHz với nhà bạn" },
+        { "vi": "Router hỏng ăng-ten nên sóng phát ra yếu hẳn đi" },
+        { "vi": "Mật khẩu Wi-Fi bị lộ nên cả tầng đang dùng ké mạng" }
+      ],
+      "answerIndex": 0,
+      "hintTopic": { "vi": "vạch đầy đã loại trừ được điều gì" },
+      "explain": { "vi": "Vạch đầy đã chứng minh sóng router tới máy rất to, nên bệnh không nằm ở ăng-ten. Giờ cao điểm ở chung cư, thủ phạm số một là các nhà quanh đó cùng chen trên vài kênh 2.4 GHz — chung kênh thì phải thay phiên nhau nói. Chuyện dùng ké đã có WPA lo, và nó cũng không làm vạch sóng đổi." }
     }
   ]
 }

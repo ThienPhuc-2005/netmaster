@@ -44,12 +44,22 @@
       ]
     },
     {
+      "id": "m7-chang-4b",
+      "title": {
+        "vi": "Bước vào phòng điều khiển"
+      },
+      "lessonIds": [
+        "m7-bai-6"
+      ]
+    },
+    {
       "id": "m7-chang-5",
       "title": {
         "vi": "Khi nhà có hai lớp cổng"
       },
       "lessonIds": [
-        "m7-bai-5"
+        "m7-bai-5",
+        "m7-bai-7"
       ]
     }
   ],
@@ -89,7 +99,7 @@
               ],
               "answerIndex": 1,
               "explain": {
-                "vi": "Địa chỉ công cộng nằm ở cổng WAN của router — cái chân quay ra ngoài. Mọi thiết bị trong nhà mượn chung con số đó khi ra Internet."
+                "vi": "Địa chỉ công cộng nằm ở cổng WAN của router — cái chân quay ra ngoài. Mọi thiết bị trong nhà mượn chung con số đó khi ra Internet. Nói thêm cho đủ: có nhà còn một lớp nữa, khi nhà mạng phát cho cổng WAN một địa chỉ RIÊNG rồi tự đổi địa chỉ thêm lần hai ở phía họ. Bài cuối module gỡ đúng chuyện đó."
               }
             }
           ],
@@ -1209,9 +1219,284 @@
             }
           ],
           "nextTeaser": {
-            "vi": "Nếu bạn cắm thêm một router thứ hai cho rộng sóng thì sao? Có nhà tự nhiên sinh ra hai lớp cổng — và nhiều thứ bắt đầu trục trặc."
+            "vi": "Sơ đồ thì bạn vẽ được rồi, nhưng cái hộp vẫn đóng kín. Vào bên trong nó bằng đường nào — và ai đang giữ chìa?"
           },
           "visualId": "vis-iso-lab-mang-nha-m7-loi-giai"
+        }
+      ]
+    },
+    {
+      "id": "m7-bai-6",
+      "missionTitle": {
+        "vi": "Mở phòng điều khiển của router nhà"
+      },
+      "steps": [
+        {
+          "type": "hook",
+          "question": {
+            "vi": "Ba lần rồi app bảo bạn vào router bật cái này, khai cái kia. Nhưng vào bằng đường nào, và gõ mật khẩu gì? Manh mối đã nằm trên tờ ipconfig từ Module 2 — bạn nhận ra chưa?"
+          },
+          "visualId": "vis-hook-trang-quan-tri"
+        },
+        {
+          "type": "pretest",
+          "questions": [
+            {
+              "kind": "mcq",
+              "id": "m7-b6-pre-1",
+              "prompt": {
+                "vi": "Đoán thử nhé: muốn mở trang quản trị router nhà, bạn gõ gì vào thanh địa chỉ của trình duyệt?"
+              },
+              "choices": [
+                {
+                  "vi": "Con số ở dòng Default Gateway trên tờ ipconfig"
+                },
+                {
+                  "vi": "Con số mà trang tra IP của tôi hiện ra cho bạn"
+                },
+                {
+                  "vi": "Tên mạng Wi-Fi nhà bạn, viết liền và bỏ dấu đi"
+                }
+              ],
+              "answerIndex": 0,
+              "explain": {
+                "vi": "Trang quản trị nằm ngay trên chính chiếc router, mà địa chỉ của router trong nhà chính là dòng Default Gateway — thường 192.168.1.1. Gõ con số đó vào trình duyệt là cửa mở."
+              }
+            }
+          ],
+          "encouragement": {
+            "vi": "Chìa khóa nằm trong tay bạn từ Module 2, chỉ là chưa ai bảo bạn dùng nó để mở cái gì."
+          }
+        },
+        {
+          "type": "teach",
+          "screens": [
+            {
+              "conceptId": "m7-trang-quan-tri",
+              "visualId": "vis-cua-vao-trang-quan-tri",
+              "body": {
+                "vi": "Router nhà bạn không chỉ chuyển gói tin: bên trong nó còn sẵn một trang web nhỏ, gọi là TRANG QUẢN TRỊ. Mở trình duyệt, gõ đúng con số ở dòng Default Gateway (thường 192.168.1.1 hoặc 192.168.0.1) rồi Enter — trang đó hiện ra và hỏi tên đăng nhập cùng mật khẩu. Mọi thứ module này nhắc tới, từ port forwarding tới tường lửa, đều được khai ở đây."
+              },
+              "deepDive": {
+                "vi": "Trang này chỉ mở được từ TRONG nhà: nó nghe ở cổng LAN của router, nên bạn phải đang nối Wi-Fi hoặc dây của nhà mới gõ tới được. Đó là điều lành. Nhiều router có thêm nút bật quản trị từ xa — bật lên là dựng đúng một cánh cửa thường trực ra Internet, thứ mà bài port forwarding vừa dặn bạn dè chừng."
+              }
+            },
+            {
+              "conceptId": "m7-mat-khau-admin",
+              "visualId": "vis-mat-khau-day-hop",
+              "body": {
+                "vi": "Trang quản trị xuất xưởng kèm một cặp tên và mật khẩu dựng sẵn: admin/admin, admin/password, hoặc dãy chữ in trên tem dưới đáy hộp. Cặp đó không phải bí mật — nó nằm trong sách hướng dẫn của hãng, ai cũng tra được theo tên model. Nghĩa là ai đã vào được mạng nhà bạn thì vào thẳng phòng điều khiển. Đổi mật khẩu admin là việc đầu tiên khi lắp router, trước cả việc đặt tên Wi-Fi."
+              },
+              "deepDive": {
+                "vi": "Mật khẩu Wi-Fi và mật khẩu admin là HAI thứ khác nhau, dù nhiều người tưởng là một. Mật khẩu Wi-Fi chặn người ngồi ngoài vỉa hè; mật khẩu admin chặn người đã đứng trong nhà — khách, người thuê trước, hay một cái camera rẻ tiền bị chiếm. Đổi cái này không đụng tới cái kia, và đặt hai cái trùng nhau thì ai biết Wi-Fi là biết luôn cửa điều khiển."
+              }
+            },
+            {
+              "conceptId": "m7-ghim-dia-chi",
+              "visualId": "vis-ghim-dia-chi-may-in",
+              "body": {
+                "vi": "Trong trang quản trị có danh sách thiết bị đang nối: tên máy, địa chỉ đang giữ, và địa chỉ MAC. Bình thường router phát địa chỉ theo tờ giấy thuê có hạn của Module 6, nên máy in cúp điện một lần là quay lại với số khác — cả phòng vẫn in vào số cũ thì không ra tờ nào. Cách chữa là GHIM ĐỊA CHỈ theo MAC: khai với router rằng thấy đúng địa chỉ MAC này thì luôn phát 192.168.1.50. Máy in vẫn đi xin như thường, chỉ là lần nào cũng nhận đúng số đó."
+              },
+              "deepDive": {
+                "vi": "Ghim ở router khác với đặt cứng địa chỉ trên chính máy in. Đặt cứng thì máy in không hỏi ai cả, và hôm bạn đổi router sang dải 192.168.2.x là nó nằm lạc một mình, ai cũng quên mất vì sổ sách chẳng ghi đâu. Ghim ở router giữ được cả hai đầu: một chỗ duy nhất để tra, mà máy in vẫn đi trọn bốn nhịp DORA nên vẫn nhận subnet mask, gateway và DNS mới nếu bạn đổi."
+              }
+            }
+          ]
+        },
+        {
+          "type": "practice",
+          "fadingLevel": 2,
+          "exercises": [
+            {
+              "question": {
+                "kind": "mcq",
+                "id": "m7-b6-pra-1",
+                "prompt": {
+                  "vi": "Bạn đang ngồi quán cà phê, muốn mở trang quản trị router nhà mình. Bình thường có mở được không?"
+                },
+                "choices": [
+                  {
+                    "vi": "Không, trang đó nghe ở cổng LAN nên phải đang trong mạng nhà"
+                  },
+                  {
+                    "vi": "Được, chỉ cần gõ đúng 192.168.1.1 vào trình duyệt là trang hiện"
+                  },
+                  {
+                    "vi": "Được, vì mọi router đều mở sẵn cửa quản trị ra phía Internet"
+                  }
+                ],
+                "answerIndex": 0,
+                "hintTopic": {
+                  "vi": "trang quản trị nghe ở cổng nào của router"
+                }
+              },
+              "hint": {
+                "vi": "192.168.1.1 là địa chỉ riêng — ngoài Internet không ai định tuyến tới con số đó cả."
+              },
+              "solution": {
+                "vi": "Không mở được, vì trang quản trị nghe ở cổng LAN nên bạn phải đang nối mạng nhà. Muốn mở từ xa thì phải bật quản trị từ xa, mà đó lại là một cánh cửa thường trực ra Internet."
+              },
+              "conceptId": "m7-trang-quan-tri"
+            },
+            {
+              "question": {
+                "kind": "mcq",
+                "id": "m7-b6-pra-2",
+                "prompt": {
+                  "vi": "Bạn vừa đổi mật khẩu Wi-Fi nhà thành một chuỗi rất khó đoán. Trang quản trị router giờ ra sao?"
+                },
+                "choices": [
+                  {
+                    "vi": "Vẫn mở được bằng cặp xuất xưởng, vì đó là hai ổ khóa riêng"
+                  },
+                  {
+                    "vi": "Cũng đổi theo, vì router chỉ giữ một mật khẩu cho cả cái hộp"
+                  },
+                  {
+                    "vi": "Tự khóa lại tới khi bạn đăng nhập bằng mật khẩu Wi-Fi mới"
+                  }
+                ],
+                "answerIndex": 0,
+                "hintTopic": {
+                  "vi": "hai ổ khóa khác nhau trên cùng một cái hộp"
+                }
+              },
+              "hint": {
+                "vi": "Một ổ chặn người ngồi ngoài vỉa hè, một ổ chặn người đã đứng trong nhà."
+              },
+              "solution": {
+                "vi": "Vẫn mở được bằng cặp xuất xưởng: mật khẩu Wi-Fi và mật khẩu admin là hai ổ khóa riêng, đổi ổ này không đụng gì tới ổ kia."
+              },
+              "conceptId": "m7-mat-khau-admin"
+            },
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m7-b6-pra-3",
+                "prompt": {
+                  "vi": "Máy in văn phòng cứ sau mỗi lần cúp điện lại nhận một địa chỉ khác. Trong trang quản trị router, bạn khai gì để nó luôn nhận đúng một số?"
+                },
+                "accept": [
+                  "ghim địa chỉ theo mac",
+                  "ghim địa chỉ",
+                  "ghim ip theo mac",
+                  "đặt trước địa chỉ theo mac",
+                  "đặt trước ip theo mac",
+                  "dành sẵn địa chỉ theo mac",
+                  "gán địa chỉ theo mac",
+                  "gán ip theo mac",
+                  "dhcp reservation"
+                ],
+                "hintTopic": {
+                  "vi": "lấy con số cố định trên card mạng làm mỏ neo"
+                },
+                "nearMisses": [
+                  {
+                    "accept": [
+                      "đặt địa chỉ tĩnh",
+                      "đặt ip tĩnh",
+                      "cài địa chỉ tĩnh",
+                      "đặt cứng địa chỉ",
+                      "static ip",
+                      "ip tĩnh"
+                    ],
+                    "feedback": {
+                      "vi": "Đặt cứng ngay trên máy in cũng giữ được số thật, nhưng hôm bạn đổi dải địa chỉ của router thì nó nằm lạc một mình. Câu này hỏi cách khai ở PHÍA ROUTER, để máy in vẫn đi xin như thường mà lần nào cũng nhận đúng số."
+                    }
+                  }
+                ]
+              },
+              "hint": {
+                "vi": "Router nhận ra từng thiết bị bằng con số cố định in trên card mạng — dùng chính con số đó."
+              },
+              "solution": {
+                "vi": "Ghim địa chỉ theo MAC — khai với router rằng thấy đúng địa chỉ MAC của máy in thì luôn phát về 192.168.1.50."
+              },
+              "conceptId": "m7-ghim-dia-chi"
+            }
+          ]
+        },
+        {
+          "type": "retrieval",
+          "questions": [
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m7-b6-ret-1",
+                "prompt": {
+                  "vi": "Không nhìn lại bài: router vừa lắp xong, việc đầu tiên bạn làm trong trang quản trị là gì?"
+                },
+                "accept": [
+                  "đổi mật khẩu admin",
+                  "đổi mật khẩu quản trị",
+                  "đổi mật khẩu trang quản trị",
+                  "đổi mật khẩu đăng nhập",
+                  "thay mật khẩu admin",
+                  "thay mật khẩu quản trị",
+                  "đặt lại mật khẩu admin",
+                  "đổi tài khoản admin"
+                ],
+                "hintTopic": {
+                  "vi": "cặp tên và mật khẩu router mang thẳng từ nhà máy ra"
+                }
+              },
+              "hint": {
+                "vi": "Cặp dựng sẵn ấy in trong sách hướng dẫn của hãng — ai cũng tra được theo tên model."
+              },
+              "solution": {
+                "vi": "Đổi mật khẩu admin — cặp xuất xưởng ai cũng tra ra, để nguyên là để ngỏ phòng điều khiển cho bất cứ ai đã vào được mạng nhà."
+              }
+            }
+          ],
+          "selfExplain": {
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: vì sao đặt mật khẩu Wi-Fi thật khó vẫn chưa đủ để yên tâm về router nhà?"
+            },
+            "keywords": [
+              [
+                "admin",
+                "quản trị",
+                "đăng nhập router",
+                "mật khẩu router"
+              ],
+              [
+                "mặc định",
+                "xuất xưởng",
+                "đáy hộp",
+                "tra được",
+                "nhà máy",
+                "sẵn"
+              ],
+              [
+                "trong nhà",
+                "vào được mạng",
+                "đã vào",
+                "khách",
+                "thiết bị bị chiếm",
+                "người trong mạng"
+              ]
+            ],
+            "exampleAnswer": {
+              "vi": "Vì đó là hai ổ khóa khác nhau. Mật khẩu Wi-Fi chỉ chặn người ngồi ngoài vỉa hè; còn ai đã vào được mạng nhà — khách, người thuê trước, một thiết bị bị chiếm — vẫn mở được trang quản trị bằng cặp xuất xưởng mà cả Internet tra ra trong ba giây."
+            }
+          }
+        },
+        {
+          "type": "summary",
+          "bullets": [
+            {
+              "vi": "Trang quản trị mở bằng chính con số ở dòng Default Gateway, gõ vào trình duyệt."
+            },
+            {
+              "vi": "Mật khẩu admin xuất xưởng ai cũng tra được — đổi ngay, và đừng đặt trùng mật khẩu Wi-Fi."
+            },
+            {
+              "vi": "Ghim địa chỉ theo MAC để máy in hay camera lần nào cũng nhận đúng một số."
+            }
+          ],
+          "nextTeaser": {
+            "vi": "Giờ bạn mở được phòng điều khiển rồi. Nhưng nếu nhà bạn có tới HAI cái hộp cùng làm cổng, khai ở phòng nào mới ăn?"
+          }
         }
       ]
     },
@@ -1399,6 +1684,256 @@
             }
           ],
           "nextTeaser": {
+            "vi": "Bạn vừa dẹp được lớp cổng thứ hai trong nhà. Nhưng có nhà dẹp sạch rồi mà camera vẫn đen sì — vì lớp thứ hai của họ nằm ngoài hàng rào."
+          }
+        }
+      ]
+    },
+    {
+      "id": "m7-bai-7",
+      "missionTitle": {
+        "vi": "Tìm lớp cổng nằm ngoài nhà bạn"
+      },
+      "steps": [
+        {
+          "type": "hook",
+          "question": {
+            "vi": "Bạn khai port forwarding đúng từng dòng, dẹp sạch NAT thừa trong nhà, camera vẫn đen sì khi xem từ cơ quan. Nếu lỗi không nằm trong nhà bạn thì nó nằm ở đâu?"
+          },
+          "visualId": "vis-hook-cgnat"
+        },
+        {
+          "type": "pretest",
+          "questions": [
+            {
+              "kind": "mcq",
+              "id": "m7-b7-pre-1",
+              "prompt": {
+                "vi": "Đoán thử nhé: địa chỉ ở cổng WAN của router nhà bạn có chắc là địa chỉ công cộng không?"
+              },
+              "choices": [
+                {
+                  "vi": "Không chắc — nhiều nhà mạng phát cho cổng WAN một địa chỉ riêng"
+                },
+                {
+                  "vi": "Chắc chắn — cổng WAN luôn mang địa chỉ công cộng của thuê bao"
+                },
+                {
+                  "vi": "Chắc chắn — địa chỉ riêng chỉ được phép nằm ở phía cổng LAN"
+                }
+              ],
+              "answerIndex": 0,
+              "explain": {
+                "vi": "Bài đầu module nói địa chỉ công cộng nằm ở cổng WAN, và điều đó đúng với nhà được cấp địa chỉ công cộng thật. Nhưng phần lớn thuê bao cáp quang hộ gia đình ở Việt Nam nhận một địa chỉ RIÊNG ở cổng WAN, rồi nhà mạng mới gộp cả trăm nhà vào một địa chỉ công cộng ở phía họ."
+              }
+            }
+          ],
+          "encouragement": {
+            "vi": "Đây đúng chỗ đời thật lệch khỏi sách vở — và cũng là lý do nhiều người làm đúng hết mà vẫn không chạy."
+          }
+        },
+        {
+          "type": "teach",
+          "screens": [
+            {
+              "conceptId": "m7-cgnat",
+              "visualId": "vis-cgnat-lop-ngoai-hang-rao",
+              "body": {
+                "vi": "CGNAT (Carrier-Grade NAT) là lớp NAT do chính NHÀ MẠNG dựng. Router nhà bạn vẫn làm NAT như bài 1, nhưng địa chỉ nó nhận ở cổng WAN lại là địa chỉ riêng của nhà mạng — hay gặp là dải 100.64.x.x tới 100.127.x.x, đôi khi là 10.x.x.x — vẫn là địa chỉ riêng theo đúng nghĩa bạn học ở Module 3, chỉ khác chỗ nó nằm trong mạng của nhà mạng chứ không phải trong nhà bạn. Ra tới Internet, hàng trăm nhà như bạn mới được gộp chung vào một địa chỉ công cộng. Nhà bạn vẫn có hai lớp cổng, chỉ khác bài trước ở chỗ lớp thứ hai nằm NGOÀI hàng rào."
+              },
+              "deepDive": {
+                "vi": "Nhà mạng làm vậy vì địa chỉ IPv4 đã cạn: một địa chỉ công cộng nuôi cả nghìn thuê bao thì rẻ hơn hẳn mua thêm dải. Hệ quả kèm theo rất phũ — port forwarding của bạn dừng lại ngay ở cổng WAN, và cách gỡ của bài trước (tắt vai làm cổng của thiết bị thứ hai) hoàn toàn vô hiệu, vì thiết bị thứ hai lần này nằm trong phòng máy của nhà mạng."
+              }
+            },
+            {
+              "conceptId": "m7-doi-chieu-wan",
+              "visualId": "vis-doi-chieu-wan",
+              "body": {
+                "vi": "Phép tự kiểm mất đúng một phút, và bạn vừa học xong đồ nghề cho nó ở bài trước. Bước 1: mở trang quản trị router, vào mục Trạng thái hoặc WAN, chép lại địa chỉ ở cổng WAN. Bước 2: mở một trang tra IP của tôi, chép lại con số nó hiện. Hai con số GIỐNG nhau thì nhà bạn đang cầm địa chỉ công cộng thật, port forwarding khai được. KHÁC nhau thì còn một lớp NAT nữa ở phía nhà mạng."
+              },
+              "deepDive": {
+                "vi": "Khác nhau thì có ba lối đi, và không lối nào là chỉnh router cả. Một: gọi nhà mạng xin địa chỉ công cộng, nhiều nơi bán như một dịch vụ thêm. Hai: dùng IPv6 nếu nhà mạng đã bật — IPv6 không cần NAT nên camera có địa chỉ của riêng nó. Ba: để thiết bị tự gọi ra một dịch vụ trung gian rồi bạn xem qua dịch vụ đó, đúng cách mọi camera bán sẵn đang làm."
+              }
+            }
+          ]
+        },
+        {
+          "type": "practice",
+          "fadingLevel": 2,
+          "exercises": [
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m7-b7-pra-1",
+                "prompt": {
+                  "vi": "Lớp NAT do chính nhà mạng dựng, khiến cả trăm thuê bao chung một địa chỉ công cộng, gọi là gì? (viết tắt được)"
+                },
+                "accept": [
+                  "cgnat",
+                  "carrier grade nat",
+                  "nat của nhà mạng",
+                  "nat nhà mạng",
+                  "nat cấp nhà mạng",
+                  "large scale nat"
+                ],
+                "hintTopic": {
+                  "vi": "ai là người dựng lớp NAT thứ hai này"
+                },
+                "nearMisses": [
+                  {
+                    "accept": [
+                      "double nat",
+                      "nat kép",
+                      "hai lớp nat"
+                    ],
+                    "feedback": {
+                      "vi": "Double NAT là tên chung cho hai lớp đổi địa chỉ. Câu này hỏi riêng cái tên của lớp do NHÀ MẠNG dựng — lớp bạn không đăng nhập vào được."
+                    }
+                  }
+                ]
+              },
+              "hint": {
+                "vi": "Ghép chữ viết tắt của NAT với chữ tiếng Anh chỉ cỡ nhà mạng, cỡ nhà cung cấp."
+              },
+              "solution": {
+                "vi": "CGNAT — Carrier-Grade NAT, lớp NAT của nhà mạng, gộp hàng trăm thuê bao vào một địa chỉ công cộng."
+              },
+              "conceptId": "m7-cgnat"
+            },
+            {
+              "question": {
+                "kind": "mcq",
+                "id": "m7-b7-pra-2",
+                "prompt": {
+                  "vi": "Trang quản trị ghi cổng WAN là 100.66.4.9, còn trang tra IP của tôi hiện 42.116.7.20. Bạn đọc ra điều gì?"
+                },
+                "choices": [
+                  {
+                    "vi": "Nhà bạn nằm sau CGNAT: nhà mạng còn NAT thêm một lần nữa"
+                  },
+                  {
+                    "vi": "Router nhà bạn đang hỏng NAT nên báo ra hai con số lệch"
+                  },
+                  {
+                    "vi": "Máy bạn đang đi vòng qua một máy chủ trung gian nào đó"
+                  }
+                ],
+                "answerIndex": 0,
+                "hintTopic": {
+                  "vi": "hai con số ấy lẽ ra giống nhau khi nào"
+                }
+              },
+              "hint": {
+                "vi": "Chỉ một lớp cổng thì địa chỉ ở cổng WAN chính là con số cả Internet nhìn thấy."
+              },
+              "solution": {
+                "vi": "Nhà bạn nằm sau CGNAT: 100.66.4.9 là địa chỉ riêng nhà mạng phát cho router bạn, còn 42.116.7.20 là địa chỉ chung của cả một cụm thuê bao."
+              },
+              "conceptId": "m7-doi-chieu-wan"
+            },
+            {
+              "question": {
+                "kind": "mcq",
+                "id": "m7-b7-pra-3",
+                "prompt": {
+                  "vi": "Đã xác định nhà bạn nằm sau CGNAT mà vẫn muốn xem camera từ xa. Việc nào có cửa?"
+                },
+                "choices": [
+                  {
+                    "vi": "Gọi nhà mạng xin một địa chỉ công cộng cho thuê bao nhà bạn"
+                  },
+                  {
+                    "vi": "Tắt NAT trên router nhà rồi khai lại port forwarding cho đúng"
+                  },
+                  {
+                    "vi": "Đổi router nhà sang một model đời cao hơn và mạnh sóng hơn"
+                  }
+                ],
+                "answerIndex": 0,
+                "hintTopic": {
+                  "vi": "lớp cổng gây vướng đang nằm ở đâu"
+                }
+              },
+              "hint": {
+                "vi": "Lớp gây vướng nằm trong phòng máy của nhà mạng — thứ gì bạn làm trong nhà cũng chẳng với tới."
+              },
+              "solution": {
+                "vi": "Gọi nhà mạng xin địa chỉ công cộng. Lớp NAT gây vướng nằm bên họ nên mọi thao tác trong nhà đều vô hiệu; hai lối còn lại là dùng IPv6 nếu nhà mạng đã bật, hoặc để thiết bị tự gọi ra một dịch vụ trung gian."
+              },
+              "conceptId": "m7-cgnat"
+            }
+          ]
+        },
+        {
+          "type": "retrieval",
+          "questions": [
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m7-b7-ret-1",
+                "prompt": {
+                  "vi": "Không nhìn lại bài: trang quản trị ghi cổng WAN là 100.66.4.9 nhưng trang tra IP của tôi hiện 42.116.7.20. Nhà bạn đang nằm sau cái gì? (viết tắt được)"
+                },
+                "accept": [
+                  "cgnat",
+                  "carrier grade nat",
+                  "nat của nhà mạng",
+                  "nat nhà mạng",
+                  "nat cấp nhà mạng",
+                  "large scale nat"
+                ],
+                "hintTopic": {
+                  "vi": "ai đang giữ lớp NAT thứ hai"
+                }
+              },
+              "hint": {
+                "vi": "Dải 100.64 tới 100.127 là dải nhà mạng dành riêng cho lớp NAT của chính họ."
+              },
+              "solution": {
+                "vi": "CGNAT của nhà mạng — hai con số khác nhau là dấu hiệu còn một lớp đổi địa chỉ nữa ở phía họ."
+              }
+            }
+          ],
+          "selfExplain": {
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: vì sao cách gỡ hai lớp cổng ở bài trước lại không dùng được cho CGNAT?"
+            },
+            "keywords": [
+              [
+                "nhà mạng",
+                "phía họ",
+                "bên ngoài",
+                "ngoài nhà",
+                "ngoài hàng rào"
+              ],
+              [
+                "không đăng nhập được",
+                "không chỉnh được",
+                "không tắt được",
+                "không với tới",
+                "không sờ được",
+                "ngoài tầm"
+              ]
+            ],
+            "exampleAnswer": {
+              "vi": "Vì lớp NAT thứ hai lần này nằm trong phòng máy của nhà mạng, không phải cái hộp thứ hai trong nhà mình. Bài trước gỡ được là nhờ mình đăng nhập vào thiết bị đó và tắt vai làm cổng của nó; thiết bị của nhà mạng thì mình chỉ còn cách gọi điện nhờ họ đổi."
+            }
+          }
+        },
+        {
+          "type": "summary",
+          "bullets": [
+            {
+              "vi": "CGNAT là lớp NAT của nhà mạng — cổng WAN nhà bạn có thể chỉ mang địa chỉ riêng."
+            },
+            {
+              "vi": "So địa chỉ ở cổng WAN với con số trang tra IP của tôi hiện ra là biết ngay."
+            },
+            {
+              "vi": "Khác nhau thì port forwarding vô ích: xin địa chỉ công cộng, dùng IPv6, hoặc đi qua dịch vụ trung gian."
+            }
+          ],
+          "nextTeaser": {
             "vi": "Hết Phần B. Phần sau là chuyện đi làm: Wi-Fi chuyên sâu, máy chủ Windows, và một phòng khám mạng nơi bạn vào vai người chẩn đoán."
           }
         }
@@ -1505,6 +2040,91 @@
         },
         "back": {
           "vi": "Vì có hai bảng NAT ở hai thiết bị, khai một chỗ là chưa đủ. Gỡ bằng cách cho router thứ hai làm điểm phát sóng: tắt NAT, cắm vào cổng LAN."
+        }
+      }
+    },
+    {
+      "id": "m7-trang-quan-tri",
+      "term": "Trang quản trị router",
+      "glossVi": "Trang web nằm sẵn trong router, mở bằng địa chỉ Default Gateway",
+      "metaphor": {
+        "vi": "Phòng điều khiển của ngôi nhà: cửa vào chỉ mở được từ bên trong sân."
+      },
+      "iconId": "icon-trang-quan-tri",
+      "flashcard": {
+        "front": {
+          "vi": "Mở trang quản trị router nhà bằng cách nào?"
+        },
+        "back": {
+          "vi": "Gõ con số ở dòng Default Gateway (thường 192.168.1.1) vào trình duyệt, khi đang nối mạng nhà."
+        }
+      }
+    },
+    {
+      "id": "m7-mat-khau-admin",
+      "term": "Mật khẩu admin mặc định",
+      "glossVi": "Cặp đăng nhập xuất xưởng của router — ai cũng tra được, phải đổi ngay",
+      "metaphor": {
+        "vi": "Chìa khóa nhà máy phát kèm hộp: cả xóm mua cùng model là cùng một chìa."
+      },
+      "iconId": "icon-mat-khau-admin",
+      "flashcard": {
+        "front": {
+          "vi": "Mật khẩu Wi-Fi và mật khẩu admin của router khác nhau ra sao?"
+        },
+        "back": {
+          "vi": "Hai ổ khóa riêng: Wi-Fi chặn người ngoài vỉa hè, admin chặn người đã vào được mạng nhà."
+        }
+      }
+    },
+    {
+      "id": "m7-ghim-dia-chi",
+      "term": "Ghim địa chỉ theo MAC",
+      "glossVi": "Khai với router: thấy đúng MAC này thì luôn phát về đúng một địa chỉ",
+      "metaphor": {
+        "vi": "Chừa sẵn chỗ đỗ mang tên: xe vẫn xin chỗ như thường, nhưng chỗ ấy luôn là của nó."
+      },
+      "iconId": "icon-ghim-dia-chi",
+      "flashcard": {
+        "front": {
+          "vi": "Làm sao để máy in luôn nhận đúng một địa chỉ sau mỗi lần cúp điện?"
+        },
+        "back": {
+          "vi": "Ghim địa chỉ theo MAC trên router: thấy đúng MAC đó thì lần nào cũng phát về cùng một địa chỉ."
+        }
+      }
+    },
+    {
+      "id": "m7-cgnat",
+      "term": "CGNAT",
+      "glossVi": "Lớp NAT của nhà mạng, gộp hàng trăm thuê bao vào một địa chỉ công cộng",
+      "metaphor": {
+        "vi": "Cổng thứ hai nằm ngoài hàng rào nhà bạn — chìa khóa cổng đó nhà mạng giữ."
+      },
+      "iconId": "icon-cgnat",
+      "flashcard": {
+        "front": {
+          "vi": "CGNAT là gì, và nó làm hỏng việc gì của bạn?"
+        },
+        "back": {
+          "vi": "Lớp NAT của nhà mạng: cổng WAN nhà bạn chỉ có địa chỉ riêng, nên port forwarding dừng ngay ở đó."
+        }
+      }
+    },
+    {
+      "id": "m7-doi-chieu-wan",
+      "term": "Phép đối chiếu WAN",
+      "glossVi": "So địa chỉ ở cổng WAN với địa chỉ mà Internet nhìn thấy",
+      "metaphor": {
+        "vi": "Đọc số nhà mình rồi hỏi người ngoài đường xem họ thấy số mấy."
+      },
+      "iconId": "icon-doi-chieu-wan",
+      "flashcard": {
+        "front": {
+          "vi": "Làm sao biết nhà mình có nằm sau CGNAT hay không?"
+        },
+        "back": {
+          "vi": "So địa chỉ cổng WAN trong trang quản trị với con số trang tra IP hiện ra — khác nhau là có CGNAT."
         }
       }
     }
@@ -1773,6 +2393,101 @@
       },
       "explain": {
         "vi": "NAT là bức tường tình cờ: nó chặn được khách không hẹn từ ngoài vào chỉ vì cuốn sổ chưa có dòng nào cho họ, nhưng máy trong nhà tự mở kết nối ra ngoài thì nó không quản. Tường lửa mới là thứ đặt luật rõ ràng cho cả hai chiều."
+      }
+    },
+    {
+      "kind": "mcq",
+      "id": "m7-mt-13",
+      "prompt": {
+        "vi": "Muốn mở trang quản trị router nhà, bạn gõ con số nào vào thanh địa chỉ trình duyệt?"
+      },
+      "choices": [
+        {
+          "vi": "Con số ở dòng Default Gateway của lệnh ipconfig"
+        },
+        {
+          "vi": "Con số mà trang tra IP của tôi hiện ra cho bạn"
+        },
+        {
+          "vi": "Con số ở dòng IPv4 Address của lệnh ipconfig"
+        }
+      ],
+      "answerIndex": 0,
+      "hintTopic": {
+        "vi": "địa chỉ của chính chiếc router trong mạng nhà"
+      },
+      "explain": {
+        "vi": "Trang quản trị nằm trên chính chiếc router, nên gõ địa chỉ của router trong nhà — đúng dòng Default Gateway, thường 192.168.1.1. Dòng IPv4 Address là địa chỉ của chính máy bạn, gõ vào chỉ quay về chỗ cũ."
+      }
+    },
+    {
+      "kind": "typed",
+      "id": "m7-mt-14",
+      "prompt": {
+        "vi": "Camera cửa nhà cứ vài hôm lại đổi địa chỉ, làm app xem từ xa mất kết nối. Trên router bạn khai gì để nó giữ nguyên một số?"
+      },
+      "accept": [
+        "ghim địa chỉ theo mac",
+        "ghim địa chỉ",
+        "ghim ip theo mac",
+        "đặt trước địa chỉ theo mac",
+        "đặt trước ip theo mac",
+        "dành sẵn địa chỉ theo mac",
+        "gán địa chỉ theo mac",
+        "gán ip theo mac",
+        "dhcp reservation"
+      ],
+      "hintTopic": {
+        "vi": "lấy con số cố định trên card mạng làm mỏ neo"
+      },
+      "explain": {
+        "vi": "Ghim địa chỉ theo MAC (DHCP reservation): router thấy đúng địa chỉ MAC đó thì lần nào cũng phát về một địa chỉ, mà máy in vẫn đi xin như thường nên vẫn nhận đủ subnet mask, gateway và DNS."
+      }
+    },
+    {
+      "kind": "typed",
+      "id": "m7-mt-15",
+      "prompt": {
+        "vi": "Nhà mạng gộp hàng trăm thuê bao vào chung một địa chỉ công cộng bằng lớp NAT của chính họ. Lớp đó tên gì? (viết tắt được)"
+      },
+      "accept": [
+        "cgnat",
+        "carrier grade nat",
+        "nat của nhà mạng",
+        "nat nhà mạng",
+        "nat cấp nhà mạng",
+        "large scale nat"
+      ],
+      "hintTopic": {
+        "vi": "lớp NAT nằm ngoài hàng rào nhà bạn"
+      },
+      "explain": {
+        "vi": "CGNAT — Carrier-Grade NAT. Khi đó địa chỉ ở cổng WAN nhà bạn chỉ là địa chỉ riêng của nhà mạng, hay gặp là dải 100.64 tới 100.127."
+      }
+    },
+    {
+      "kind": "mcq",
+      "id": "m7-mt-16",
+      "prompt": {
+        "vi": "Cổng WAN của router nhà ghi 100.66.4.9, còn trang tra IP của tôi hiện 42.116.7.20. Kết luận gì?"
+      },
+      "choices": [
+        {
+          "vi": "Nhà bạn nằm sau CGNAT: nhà mạng còn NAT thêm lần nữa"
+        },
+        {
+          "vi": "Router nhà bạn hỏng NAT nên báo ra hai con số lệch"
+        },
+        {
+          "vi": "Máy bạn đang đi vòng qua một máy chủ trung gian nào đó"
+        }
+      ],
+      "answerIndex": 0,
+      "hintTopic": {
+        "vi": "chỉ một lớp cổng thì hai con số ấy ra sao"
+      },
+      "explain": {
+        "vi": "Chỉ một lớp cổng thì địa chỉ ở cổng WAN chính là con số cả Internet nhìn thấy. Khác nhau nghĩa là nhà mạng còn đổi địa chỉ thêm một lần nữa — 100.66.4.9 nằm trong dải CGNAT."
       }
     }
   ]
