@@ -31,7 +31,7 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (19) M21 capstone + màn tốt nghiệp | XONG |
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
-**KHỐI MỚI NHẤT — 21.67 (08-15), chưa commit: SÁU BÀI LẤP NỐT LỖ HỔNG Q4-Q9 (việc C).**
+**KHỐI MỚI NHẤT — 21.67 (08-15), đã commit `37e6ca6`: SÁU BÀI LẤP NỐT LỖ HỔNG Q4-Q9 (việc C).**
 - Sáu bài mới, năm module: `m4-bai-7` khám sợi dây (cáp đồng 100 m, đọc đèn cổng,
   duplex lệch) · `m6-bai-6` soi tấm giấy sau ổ khóa vàng (chứng chỉ, ba kiểu lỗi,
   mã đáp) · `m7-bai-6` mở phòng điều khiển router nhà · `m7-bai-7` tìm lớp cổng
