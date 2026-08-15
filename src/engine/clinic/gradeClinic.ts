@@ -88,6 +88,11 @@ export interface SymptomCheck {
   sick: boolean
   /** Lý do tầng mạng (nếu triệu chứng chạm tới ping). */
   pingFailure: PingFailure | null
+  /**
+   * Số đo của lượt ping vừa chạy — chỉ có nghĩa với ca "chậm chứ không
+   * chết", nơi bệnh nằm ở CON SỐ chứ không ở chỗ thông/không thông.
+   */
+  quality?: { rttMs: number; lossPercent: number }
 }
 
 /**
@@ -109,6 +114,25 @@ export function checkSymptom(spec: ClinicCaseSpec, topology: Topology): SymptomC
     // Bệnh trùng IP: "ốm" chừng nào còn từ hai máy giành một IP — chính
     // nguồn sự thật mà terminal dùng để luân phiên chủ IP giữa các lượt.
     return { sick: ipOwners(topology, symptom.target).length > 1, pingFailure: null }
+  }
+
+  if (symptom.kind === 'ping-degraded') {
+    // KHỎE = có tiếng đáp VÀ cả hai số đo dưới ngưỡng. Đứt hẳn cũng tính
+    // là còn ốm — không thì người học "chữa" ca mạng chậm bằng cách rút
+    // phăng sợi dây bệnh ra là qua bài, mà đó là làm bệnh nặng thêm.
+    const degradedSeat: ClinicPatient = { ...patient, seatId: symptom.from }
+    const run = runCommand(degradedSeat, initialTerminalState(), `ping ${symptom.target}`)
+    if (run.outcome.kind !== 'ping') return { sick: true, pingFailure: null }
+    const quality = run.outcome.quality
+    const sick =
+      !run.outcome.replied ||
+      quality.rttMs > symptom.maxLatencyMs ||
+      quality.lossPercent > symptom.maxLossPercent
+    return {
+      sick,
+      pingFailure: run.outcome.failure === 'no-such-host' ? null : run.outcome.failure,
+      quality,
+    }
   }
 
   const seatPatient: ClinicPatient = { ...patient, seatId: symptom.from }
@@ -182,6 +206,10 @@ export function smellsOf(spec: ClinicCaseSpec): string[] {
   for (const d of diagnose(topo)) smells.add(d)
   if (spec.patient.overlay.dns?.down === true) smells.add('dns-down')
   for (const block of spec.patient.overlay.hostBlocks ?? []) smells.add(`host-block-${block.source}`)
+  for (const imp of spec.patient.overlay.impairments ?? []) {
+    if ((imp.latencyMs ?? 0) > 0) smells.add('link-slow')
+    if ((imp.lossPercent ?? 0) > 0) smells.add('link-lossy')
+  }
   // Trùng IP nhìn từ topology (diagnose đã có 'duplicate-ip', nhưng chỉ
   // khi liên quan goal — quét thẳng cho chắc).
   const seen = new Map<string, number>()

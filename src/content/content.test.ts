@@ -11,6 +11,7 @@ import { conceptIdsInLesson } from '../engine/contentPure'
 import { typedAnswerMatches } from '../engine/grading/normalize'
 import { lt } from '../engine/ltext'
 import { MASTERY_DRAW_COUNT, isAnchorQuestion } from '../engine/masteryPool'
+import type { DrillProblemType } from '../engine/subnet/drill'
 import { findConcept, findLesson, loadModules } from './index'
 
 const modules = loadModules() // parse + validateModules ném lỗi nếu hỏng
@@ -23,6 +24,30 @@ function moduleById(id: string) {
 }
 
 const PART_RANK = { A: 0, B: 1, C: 2, D: 3, E: 4 } as const
+
+/**
+ * Gom MỌI chuỗi tiếng Việt của một module thành một khối chữ — dùng cho
+ * các cổng hỏi "module này có dạy chuyện X ở đâu đó không". Đi theo mọi
+ * khoá `vi` nên không phải liệt kê tay từng chỗ (thân bài, đào sâu, lời
+ * giải, tổng kết…), và thêm trường nội dung mới cũng không lọt lưới.
+ */
+function moiChuTiengVietCua(value: unknown): string {
+  const phan: string[] = []
+  const di = (o: unknown): void => {
+    if (Array.isArray(o)) {
+      for (const v of o) di(v)
+      return
+    }
+    if (o !== null && typeof o === 'object') {
+      for (const [k, v] of Object.entries(o)) {
+        if (k === 'vi' && typeof v === 'string') phan.push(v)
+        else di(v)
+      }
+    }
+  }
+  di(value)
+  return phan.join(' █ ')
+}
 
 // ---------------------------------------------------------------
 // Đồ nghề soi CÂU GÕ TAY (lượt soát 08-15)
@@ -38,6 +63,13 @@ interface CauGoTay {
   accept: readonly string[]
   /** Chữ chính app đưa ra làm đáp án (lời giải bước học, giải thích đề thi). */
   dapAnCuaApp: string
+  /**
+   * Những chỗ KHÁC trong cùng bài mà app cũng nói ra đáp án này: mặt sau
+   * thẻ khái niệm và gạch đầu dòng tổng kết. Người học nhớ câu chữ ở đây
+   * nhiều hơn nhớ lời giải của riêng một câu tập — nên cách nói phủ định
+   * nằm ở đây cũng là cách họ sẽ gõ vào ô trả lời.
+   */
+  noiKhacNoiCungY: readonly string[]
 }
 
 /** Mọi câu gõ tay của app: bước Thử tay, bước Nhớ lại, và pool đề thi. */
@@ -45,14 +77,34 @@ function moiCauGoTay(): CauGoTay[] {
   const ds: CauGoTay[] = []
   for (const m of modules) {
     for (const l of m.lessons) {
+      const theVaTongKet = [
+        ...l.steps[5].bullets.map((b) => lt(b)),
+        ...conceptIdsInLesson(l).flatMap((cid) => {
+          const c = m.concepts.find((x) => x.id === cid)
+          return c?.flashcard === undefined ? [] : [lt(c.flashcard.back)]
+        }),
+      ]
       for (const e of [...l.steps[3].exercises, ...l.steps[4].questions]) {
         if (e.question.kind !== 'typed') continue
-        ds.push({ id: e.question.id, de: lt(e.question.prompt), accept: e.question.accept, dapAnCuaApp: lt(e.solution) })
+        ds.push({
+          id: e.question.id,
+          de: lt(e.question.prompt),
+          accept: e.question.accept,
+          dapAnCuaApp: lt(e.solution),
+          noiKhacNoiCungY: theVaTongKet,
+        })
       }
     }
     for (const q of m.masteryTest) {
       if (q.kind !== 'typed') continue
-      ds.push({ id: q.id, de: lt(q.prompt), accept: q.accept, dapAnCuaApp: q.explain === undefined ? '' : lt(q.explain) })
+      ds.push({
+        id: q.id,
+        de: lt(q.prompt),
+        accept: q.accept,
+        dapAnCuaApp: q.explain === undefined ? '' : lt(q.explain),
+        // Câu thi không thuộc bài nào nên không có thẻ/tổng kết đi kèm.
+        noiKhacNoiCungY: [],
+      })
     }
   }
   return ds
@@ -68,6 +120,27 @@ function menhDeDau(s: string): string {
 /** Có mang từ phủ định không — so theo TỪ, cùng bộ từ với bộ chấm. */
 function coPhuDinh(s: string): boolean {
   return /(^|[^\p{L}])(không|khong|chưa|chua|sai)([^\p{L}]|$)/iu.test(s)
+}
+
+/**
+ * Độ giống nhau THEO CHUỖI KÝ TỰ của hai câu — bắt kiểu chép mà thước
+ * đếm-từ mù tịt: giữ nguyên câu, chỉ đổi vài con số hoặc cắt mấy chữ
+ * đầu. Dùng tỉ lệ khớp của thuật toán dãy con chung dài nhất, cùng ý
+ * với `difflib.SequenceMatcher`.
+ */
+function giongChuoi(a: string, b: string): number {
+  if (a.length === 0 || b.length === 0) return 0
+  // Quy hoạch động hai hàng — chuỗi đề dài nhất trong app khoảng 250 ký
+  // tự nên bảng đầy đủ cũng rẻ, nhưng hai hàng thì khỏi phải nghĩ.
+  let truoc = new Array<number>(b.length + 1).fill(0)
+  let nay = new Array<number>(b.length + 1).fill(0)
+  for (let i = 1; i <= a.length; i++) {
+    for (let j = 1; j <= b.length; j++) {
+      nay[j] = a[i - 1] === b[j - 1] ? truoc[j - 1]! + 1 : Math.max(truoc[j]!, nay[j - 1]!)
+    }
+    ;[truoc, nay] = [nay, truoc]
+  }
+  return (2 * truoc[b.length]!) / (a.length + b.length)
 }
 
 /** Bộ chữ số trong đề, đã xếp — hai đề khác số là hai câu khác nhau. */
@@ -470,6 +543,38 @@ describe('bộ nội dung', () => {
     expect(moduleById('module-13').drill).toBe('vlsm')
   })
 
+  it('màn luyện subnet: MỌI loại đề nó ra đều đã được dạy trong module bật drill', () => {
+    // R2 của lượt soát 08-15. Màn luyện trộn 6 loại đề, mà module 3 khi
+    // đó chỉ dạy 2 loại — bốn loại còn lại (broadcast, dải host, đếm
+    // host, chọn prefix) hỏi thứ chưa ai dạy một chữ nào, trong khi bài
+    // 5 vẫn dặn người học ghé luyện mỗi ngày. Khối 21.64 lấp bằng bài
+    // `m3-bai-7`; test này khoá lại để lần sau engine drill thêm loại đề
+    // mới mà nội dung chưa theo kịp thì ĐỎ NGAY, thay vì lặng lẽ ra đề
+    // ngoài chương trình.
+    //
+    // Khai kiểu `Record<DrillProblemType, …>` chứ không phải mảng chuỗi:
+    // thêm một loại đề vào union mà quên khai ở đây là `tsc` đỏ.
+    const DAY_O_DAU: Record<DrillProblemType, string[]> = {
+      'network-addr': ['network address', 'tên của cả khu phố'],
+      broadcast: ['broadcast', 'địa chỉ quảng bá'],
+      'host-range': ['dải máy dùng được', 'từ mốc đầu cộng 1'],
+      'host-count': ['số máy cắm được', 'cỡ khối'],
+      'prefix-for-hosts': ['khối nhỏ nhất'],
+      'mask-convert': ['subnet mask'],
+    }
+    const coDrill = modules.filter((m) => m.drill === 'subnet')
+    expect(coDrill.length, 'không module nào bật drill subnet — test này đang đo hư không').toBeGreaterThan(0)
+    for (const mod of coDrill) {
+      const chu = moiChuTiengVietCua(mod).toLowerCase()
+      for (const [loai, cum] of Object.entries(DAY_O_DAU)) {
+        expect(
+          cum.some((c) => chu.includes(c)),
+          `${mod.id} bật drill subnet nhưng không dạy loại đề "${loai}" (tìm: ${cum.join(' / ')})`,
+        ).toBe(true)
+      }
+    }
+  })
+
   it('Module 14: bài 1 mở màn bằng câu CLI ở bước Đoán thử (mò lệnh show TRƯỚC khi giảng)', () => {
     // Spec chỉ đích danh: người học bị thả vào Switch> và tự mò ra
     // show vlan brief trước khi đọc một chữ lý thuyết trunk nào. Dời
@@ -687,6 +792,113 @@ describe('bộ nội dung', () => {
     ).toBeLessThanOrEqual(0.45)
   })
 
+  it('đề thi không được CHÉP LẠI quá nhiều câu trong bài', () => {
+    // R3 của lượt soát 08-15. Đề thi chép nguyên câu đã có trong bài thì
+    // nó đo TRÍ NHỚ ĐỀ chứ không đo hiểu — mà ngưỡng 85% của cổng mastery
+    // chỉ có nghĩa khi phép đo trỏ vào kỹ năng.
+    //
+    // Sau lượt dọn 08-15, CẢ 21 MODULE đang ở 0 câu chép. Ngưỡng 15% ở
+    // đây không phải mức chấp nhận được, nó là quãng hở để một câu chồng
+    // lấn LÀNH MẠNH (ôn lại đúng kỹ năng cốt lõi bằng con số khác) không
+    // làm đỏ oan: pool 14 câu chịu được nhiều nhất 2 câu. Thấy con số này
+    // nhích lên là biết đề đang trôi về phía đo trí nhớ, đừng nới ngưỡng.
+    //
+    // "Chép" đo bằng HAI thước, vì mỗi thước mù một kiểu:
+    //   - ĐẾM TỪ CHUNG (Jaccard) bắt câu diễn đạt lại bằng cùng bộ từ.
+    //   - CHUỖI KÝ TỰ (Levenshtein-ish) bắt câu chép gần nguyên văn chỉ
+    //     đổi vài con số, hoặc chỉ cắt mấy chữ mở đầu — kiểu tệ nhất, và
+    //     là kiểu thước đếm-từ chấm điểm rất thấp nên bỏ lọt sạch. Lượt
+    //     08-15 dựng cổng bằng mỗi thước đếm-từ, và nó cho qua 15 câu
+    //     dạng «"Không nhìn lại bài: X?" trong bài → "X?" ở đề thi» và
+    //     «"gói cước 800 Mbps" → "gói cước 400 Mbps"».
+    // Câu TRỤ (lab/cli/ps/clinic/palace-walk) không tính — chúng LÀ kỹ
+    // năng của module, lặp lại là đúng việc.
+    const chuanHoa = (s: string) =>
+      s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^\p{L}\p{N}\s]/gu, ' ')
+    const dapAnCua = (q: { kind: string } & Record<string, unknown>): string =>
+      q.kind === 'typed'
+        ? (q.accept as string[])[0] ?? ''
+        : q.kind === 'mcq'
+          ? lt((q.choices as { vi: string }[])[q.answerIndex as number]!)
+          : ''
+    const bang: string[] = []
+    for (const m of modules) {
+      const trongBai = m.lessons.flatMap((l) => [
+        ...l.steps[1].questions,
+        ...l.steps[3].exercises.map((e) => e.question),
+        ...l.steps[4].questions.map((e) => e.question),
+      ])
+      const doDuoc = m.masteryTest.filter((q) => !isAnchorQuestion(q))
+      if (doDuoc.length === 0) continue
+      const chep = doDuoc.filter((q) =>
+        trongBai.some((b) => {
+          if (b.kind !== q.kind) return false
+          const a = chuanHoa(lt(q.prompt))
+          const c = chuanHoa(lt(b.prompt))
+          const tu = giongNhau(a, c)
+          const chuoi = giongChuoi(a, c)
+          if (tu >= 0.85 || chuoi >= 0.85) return true
+          const cungDapAn = dapAnCua(q) !== '' && chuanHoa(dapAnCua(q)) === chuanHoa(dapAnCua(b))
+          return cungDapAn && (tu >= 0.7 || chuoi >= 0.7)
+        }),
+      )
+      const ti = chep.length / doDuoc.length
+      if (ti > 0.15) {
+        bang.push(`${m.id}: chép ${chep.length}/${doDuoc.length} (${Math.round(ti * 100)}%) — ${chep.map((q) => q.id).join(', ')}`)
+      }
+    }
+    expect(bang, 'đề thi chép lại quá nhiều câu trong bài — nó đang đo trí nhớ đề').toEqual([])
+  })
+
+  it('câu MCQ TRONG BÀI cũng không được lộ đáp án bằng ĐỘ DÀI', () => {
+    // R4 của lượt soát 08-15: hàng rào cue độ-dài trước đây chỉ soi pool
+    // đề thi, nên mọi câu trắc nghiệm TRONG BÀI vẫn tái phạm tự do — và
+    // đó là chỗ đau hơn, vì bước Đoán thử sống bằng productive failure:
+    // đoán trúng nhờ bấm câu dài nhất là người học mất luôn cú vấp mà cả
+    // bài sinh ra để tạo, rồi tưởng mình đã biết.
+    //
+    // Cùng hai hàng rào với đề thi, cùng ngưỡng: (a) từng câu, đáp án
+    // nằm trong khoảng 0.7x–1.1x distractor dài nhất, miễn cho câu mà cả
+    // bộ lựa chọn chênh nhau <= 8 ký tự; (b) toàn bộ, tỉ lệ câu có đáp án
+    // dài nhất không vượt 45%.
+    const GRACE_CHARS = 8
+    let strictLongest = 0
+    let mcqCount = 0
+    for (const m of modules) {
+      for (const l of m.lessons) {
+        const trongBai = [
+          ...l.steps[1].questions,
+          ...l.steps[3].exercises.map((e) => e.question),
+          ...l.steps[4].questions.map((e) => e.question),
+        ]
+        for (const q of trongBai) {
+          if (q.kind !== 'mcq') continue
+          mcqCount++
+          const lens = q.choices.map((c) => lt(c).length)
+          const answerLen = lens[q.answerIndex]!
+          const maxD = Math.max(...lens.filter((_, i) => i !== q.answerIndex))
+          if (lens.filter((x) => x === answerLen).length === 1 && answerLen === Math.max(...lens)) {
+            strictLongest++
+          }
+          if (Math.max(...lens) - Math.min(...lens) <= GRACE_CHARS) continue
+          expect(
+            answerLen,
+            `${m.id}/${q.id}: đáp án dài vượt mồi nhử (${lens.join('/')})`,
+          ).toBeLessThanOrEqual(Math.round(maxD * 1.1))
+          expect(
+            answerLen,
+            `${m.id}/${q.id}: đáp án ngắn bất thường (${lens.join('/')})`,
+          ).toBeGreaterThanOrEqual(Math.round(maxD * 0.7))
+        }
+      }
+    }
+    expect(mcqCount, 'phải có câu MCQ trong bài để đo').toBeGreaterThan(0)
+    expect(
+      strictLongest / mcqCount,
+      `${strictLongest}/${mcqCount} câu trong bài có đáp án là lựa chọn dài nhất — bấm câu dài đang ăn điểm`,
+    ).toBeLessThanOrEqual(0.45)
+  })
+
   it('ca bệnh trong đề thi: lựa chọn chẩn đoán/hành động không lộ mình bằng độ dài hay cấu trúc bao-trùm', () => {
     // Biên bản hội đồng trung cấp: ca hai tầng của M21 từng có đúng MỘT
     // lựa chọn "HAI bệnh chồng nhau…" giữa hai distractor "Một bệnh duy
@@ -823,6 +1035,9 @@ describe('bộ nội dung', () => {
       ['m11-mt-4', '2 router'],
       ['m11-mt-6', 'gpresult /r'],
       ['m11-mt-10', 'tracert'],
+      ['m11-mt-13', 'độ trễ của đường'],
+      ['m11-mt-13', 'latency'],
+      ['m11-mt-13', 'do tre'],
       ['m12-mt-1', 'động từ - danh từ'],
       ['m12-mt-1', 'động từ và danh từ'],
       ['m12-mt-1', 'verb-noun'],
@@ -838,8 +1053,8 @@ describe('bộ nội dung', () => {
       ['m12-mt-7', 'Get-NetIPAddress'],
       ['m12-mt-9', 'Select-String'],
       ['m13-mt-2', '/26'],
-      ['m13-mt-4', '192.168.10.128'],
-      ['m13-mt-5', '0.0.0.15'],
+      ['m13-mt-4', '172.20.5.64'],
+      ['m13-mt-5', '0.0.0.7'],
       ['m13-mt-7', '192.168.4.0/22'],
       ['m13-mt-9', '126 máy'],
       ['m13-mt-11', '10.20.30.128'],
@@ -847,6 +1062,9 @@ describe('bộ nội dung', () => {
       ['m14-mt-3', 'switchport mode trunk'],
       ['m14-mt-5', 'VLAN 1'],
       ['m14-mt-7', 'sh interfaces trunk'],
+      ['m14-mt-13', 'subinterface'],
+      ['m14-mt-13', 'cổng con'],
+      ['m14-mt-15', '10.0.40.1'],
       ['m15-mt-2', 'spanning tree'],
       ['m15-mt-4', 'blocking'],
       ['m15-mt-7', 'PortFast'],
@@ -897,6 +1115,8 @@ describe('bộ nội dung', () => {
       ['m7-mt-11', 'đóng cổng'],
       ['m8-mt-8', 'có trạng thái'],
       ['m8-mt-8', 'dhcp'],
+      ['m11-mt-13', 'băng thông'],
+      ['m11-mt-13', 'trên đường truyền'],
       ['m12-b4-ret-1', 'chữ thuần'],
       ['m14-mt-7', 'sh ip route'],
       ['m16-mt-2', 'của nhà cung cấp'],
@@ -939,9 +1159,26 @@ describe('bộ nội dung', () => {
     // Chỉ soi MỆNH ĐỀ ĐẦU của lời giải — đó là chỗ app nói thẳng đáp án.
     // Lấy cả câu thì dính mọi lời kể có chữ "không" ("Không phải router
     // xếp lại, mà là máy nhận") và cổng hóa ra báo động 68 lần vô cớ.
+    //
+    // MỞ RỘNG (R4 của lượt soát 08-15): chỉ soi lời giải của riêng câu đó
+    // là bỏ sót. Người học nhớ câu chữ ở MẶT SAU THẺ ÔN và ở gạch TỔNG
+    // KẾT nhiều hơn — cách nói phủ định nằm ở đấy chính là cách họ sẽ gõ
+    // vào ô trả lời. Nên câu nào có một mệnh đề phủ định ở hai chỗ ấy mà
+    // NÓI CÙNG MỘT Ý với đáp án (đo bằng độ chồng từ) cũng phải có mục
+    // accept ngắn mang phủ định.
     const hong: string[] = []
     for (const q of moiCauGoTay()) {
-      const nguon = [menhDeDau(q.dapAnCuaApp), ...q.accept]
+      const dapAn = menhDeDau(q.dapAnCuaApp)
+      const nhacLaiCungY = q.noiKhacNoiCungY
+        .flatMap((s) => s.split(/[;.]|—/))
+        .map((s) => s.trim())
+        .filter((s) => s !== '' && coPhuDinh(s) && giongNhau(s, dapAn) >= 0.3)
+        // Mệnh đề nào đã CHỨA SẴN một cách gõ được chấp nhận thì bỏ qua:
+        // ở đó chữ "không" chỉ là lời bình thêm ("…, không chép được từ
+        // sách"), người học vẫn có đường nói đáp án bằng câu khẳng định.
+        // Cổng này chỉ nhắm ca đáp án CHỈ nói được bằng câu phủ định.
+        .filter((s) => !q.accept.some((a) => s.toLowerCase().includes(a.toLowerCase())))
+      const nguon = [dapAn, ...q.accept, ...nhacLaiCungY]
       if (!nguon.some(coPhuDinh)) continue
       if (q.accept.some((a) => coPhuDinh(a) && a.trim().split(/\s+/).length <= 5)) continue
       hong.push(`${q.id}: đáp án mang phủ định mà accept không có mục ngắn nào phủ định`)

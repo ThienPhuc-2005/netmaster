@@ -2,95 +2,226 @@
   "id": "module-9",
   "order": 9,
   "part": "C",
-  "letter": { "vi": "Ca đêm để lại lời nhắn. Lúc mở module này, domain với bạn chỉ là chữ trong ô đăng nhập; giờ bạn thăng được một máy lên làm trưởng làng, xếp cư dân vào đúng ngăn, và treo bộ luật lên đúng tầng. Bạn leo được tòa nhà bốn tầng LSDOU từ trí nhớ và phân xử được lúc các tầng cãi nhau. Đây là xương sống của mọi hệ thống Windows trong doanh nghiệp — bạn vừa đứng lên được trên đó." },
-  "title": { "vi": "Windows Server — AD DS và GPO" },
+  "letter": {
+    "vi": "Ca đêm để lại lời nhắn. Lúc mở module này, domain với bạn chỉ là chữ trong ô đăng nhập; giờ bạn thăng được một máy lên làm trưởng làng, xếp cư dân vào đúng ngăn, và treo bộ luật lên đúng tầng. Bạn leo được tòa nhà bốn tầng LSDOU từ trí nhớ và phân xử được lúc các tầng cãi nhau. Đây là xương sống của mọi hệ thống Windows trong doanh nghiệp — bạn vừa đứng lên được trên đó."
+  },
+  "title": {
+    "vi": "Windows Server — AD DS và GPO"
+  },
   "stages": [
-    { "id": "m9-chang-1", "title": { "vi": "Làng có luật" }, "lessonIds": ["m9-bai-1"] },
-    { "id": "m9-chang-2", "title": { "vi": "Xếp cư dân" }, "lessonIds": ["m9-bai-2"] },
-    { "id": "m9-chang-3", "title": { "vi": "Treo bộ luật" }, "lessonIds": ["m9-bai-3"] },
-    { "id": "m9-chang-4", "title": { "vi": "Leo tòa LSDOU" }, "lessonIds": ["m9-bai-4"] },
-    { "id": "m9-chang-5", "title": { "vi": "Phân xử và soi luật" }, "lessonIds": ["m9-bai-5"] }
+    {
+      "id": "m9-chang-1",
+      "title": {
+        "vi": "Làng có luật"
+      },
+      "lessonIds": [
+        "m9-bai-1"
+      ]
+    },
+    {
+      "id": "m9-chang-2",
+      "title": {
+        "vi": "Xếp cư dân"
+      },
+      "lessonIds": [
+        "m9-bai-2"
+      ]
+    },
+    {
+      "id": "m9-chang-3",
+      "title": {
+        "vi": "Treo bộ luật"
+      },
+      "lessonIds": [
+        "m9-bai-3"
+      ]
+    },
+    {
+      "id": "m9-chang-4",
+      "title": {
+        "vi": "Leo tòa LSDOU"
+      },
+      "lessonIds": [
+        "m9-bai-4"
+      ]
+    },
+    {
+      "id": "m9-chang-5",
+      "title": {
+        "vi": "Phân xử và soi luật"
+      },
+      "lessonIds": [
+        "m9-bai-5"
+      ]
+    }
   ],
-
   "palace": {
     "id": "m9-cung-dien-gpo",
-    "title": { "vi": "Tòa nhà 4 tầng LSDOU" },
+    "title": {
+      "vi": "Tòa nhà 4 tầng LSDOU"
+    },
     "floors": 4,
     "roomsPerFloor": 1,
     "keyStyle": "text",
-    "keyLabel": { "vi": "Bậc GPO" },
-    "nameLabel": { "vi": "Bậc này áp cho" },
-    "keyPlaceholder": { "vi": "ví dụ Local" },
-    "namePlaceholder": { "vi": "ví dụ chính máy đó" },
-    "keyHint": { "vi": "tên bậc ghi ở cầu thang" },
-    "nameHint": { "vi": "phạm vi mà luật tầng này phủ tới" },
+    "keyLabel": {
+      "vi": "Bậc GPO"
+    },
+    "nameLabel": {
+      "vi": "Bậc này áp cho"
+    },
+    "keyPlaceholder": {
+      "vi": "ví dụ Local"
+    },
+    "namePlaceholder": {
+      "vi": "ví dụ chính máy đó"
+    },
+    "keyHint": {
+      "vi": "tên bậc ghi ở cầu thang"
+    },
+    "nameHint": {
+      "vi": "phạm vi mà luật tầng này phủ tới"
+    },
     "rooms": [
       {
         "id": "m9-r-local",
         "floor": 1,
         "position": 1,
-        "keys": ["Local"],
+        "keys": [
+          "Local"
+        ],
         "name": "chính máy đó",
-        "nameAliases": ["máy cục bộ", "local computer"],
+        "nameAliases": [
+          "máy cục bộ",
+          "local computer"
+        ],
         "imageId": "gpo-house-rules",
-        "story": { "vi": "Tầng trệt Local: tấm bảng nội quy dán ngay cửa nhà — luật của riêng máy đó, chưa ai ngoài nhìn thấy." }
+        "story": {
+          "vi": "Tầng trệt Local: tấm bảng nội quy dán ngay cửa nhà — luật của riêng máy đó, chưa ai ngoài nhìn thấy."
+        }
       },
       {
         "id": "m9-r-site",
         "floor": 2,
         "position": 1,
-        "keys": ["Site"],
+        "keys": [
+          "Site"
+        ],
         "name": "cả văn phòng một chỗ",
-        "nameAliases": ["một site", "chi nhánh"],
+        "nameAliases": [
+          "một site",
+          "chi nhánh"
+        ],
         "imageId": "gpo-office-floor",
-        "story": { "vi": "Tầng hai Site: bảng tin của cả tòa văn phòng — máy nào ngồi trong tòa này đều phải đọc." }
+        "story": {
+          "vi": "Tầng hai Site: bảng tin của cả tòa văn phòng — máy nào ngồi trong tòa này đều phải đọc."
+        }
       },
       {
         "id": "m9-r-domain",
         "floor": 3,
         "position": 1,
-        "keys": ["Domain"],
+        "keys": [
+          "Domain"
+        ],
         "name": "toàn công ty",
-        "nameAliases": ["cả miền", "toàn miền"],
+        "nameAliases": [
+          "cả miền",
+          "toàn miền"
+        ],
         "imageId": "gpo-company-flag",
-        "story": { "vi": "Tầng ba Domain: lá cờ công ty treo giữa sảnh — luật chung cho mọi máy đã gia nhập miền." }
+        "story": {
+          "vi": "Tầng ba Domain: lá cờ công ty treo giữa sảnh — luật chung cho mọi máy đã gia nhập miền."
+        }
       },
       {
         "id": "m9-r-ou",
         "floor": 4,
         "position": 1,
-        "keys": ["OU"],
+        "keys": [
+          "OU"
+        ],
         "name": "từng phòng ban",
-        "nameAliases": ["đơn vị tổ chức", "organizational unit"],
+        "nameAliases": [
+          "đơn vị tổ chức",
+          "organizational unit"
+        ],
         "imageId": "gpo-department-door",
-        "story": { "vi": "Tầng nóc OU: cửa từng phòng ban có luật riêng — áp SAU CÙNG nên thắng hết các tầng dưới." }
+        "story": {
+          "vi": "Tầng nóc OU: cửa từng phòng ban có luật riêng — áp SAU CÙNG nên thắng hết các tầng dưới."
+        }
       }
     ]
   },
-
   "vmLab": {
-    "title": { "vi": "Lab thật: dựng làng AD trên VMware" },
-    "intro": { "vi": "Song song với module này, hãy dựng một miền thật trên máy bạn — AD chỉ THẬT khi tự tay bạn thăng máy chủ lên DC. App chỉ theo dõi tiến độ; việc thật diễn ra ngoài app nên không tính XP." },
+    "title": {
+      "vi": "Lab thật: dựng làng AD trên VMware"
+    },
+    "intro": {
+      "vi": "Song song với module này, hãy dựng một miền thật trên máy bạn — AD chỉ THẬT khi tự tay bạn thăng máy chủ lên DC. App chỉ theo dõi tiến độ; việc thật diễn ra ngoài app nên không tính XP."
+    },
     "steps": [
-      { "id": "m9-vm-1", "text": { "vi": "Tạo máy ảo Windows Server trên VMware Workstation (2 CPU, 4 GB RAM, 60 GB đĩa) và cài xong hệ điều hành." } },
-      { "id": "m9-vm-2", "text": { "vi": "Đặt IP tĩnh cho máy chủ, đổi tên máy thành DC01, khởi động lại." } },
-      { "id": "m9-vm-3", "text": { "vi": "Thêm role Active Directory Domain Services, thăng máy lên Domain Controller với miền mới (ví dụ lab.local)." } },
-      { "id": "m9-vm-4", "text": { "vi": "Tạo OU \"KeToan\" và một user thử nằm trong OU đó (ví dụ an.nguyen)." } },
-      { "id": "m9-vm-5", "text": { "vi": "Tạo máy ảo Windows client, trỏ DNS về địa chỉ của DC01 rồi join miền." } },
-      { "id": "m9-vm-6", "text": { "vi": "Tạo GPO đặt hình nền chung (hoặc cấm USB), treo vào OU KeToan." } },
-      { "id": "m9-vm-7", "text": { "vi": "Trên client, đăng nhập bằng user thử, chạy gpupdate /force và xác nhận luật đã ăn." } },
-      { "id": "m9-vm-8", "text": { "vi": "Chạy gpresult /r, đối chiếu danh sách GPO đang áp với những gì bạn đã treo." } }
+      {
+        "id": "m9-vm-1",
+        "text": {
+          "vi": "Tạo máy ảo Windows Server trên VMware Workstation (2 CPU, 4 GB RAM, 60 GB đĩa) và cài xong hệ điều hành."
+        }
+      },
+      {
+        "id": "m9-vm-2",
+        "text": {
+          "vi": "Đặt IP tĩnh cho máy chủ, đổi tên máy thành DC01, khởi động lại."
+        }
+      },
+      {
+        "id": "m9-vm-3",
+        "text": {
+          "vi": "Thêm role Active Directory Domain Services, thăng máy lên Domain Controller với miền mới (ví dụ lab.local)."
+        }
+      },
+      {
+        "id": "m9-vm-4",
+        "text": {
+          "vi": "Tạo OU \"KeToan\" và một user thử nằm trong OU đó (ví dụ an.nguyen)."
+        }
+      },
+      {
+        "id": "m9-vm-5",
+        "text": {
+          "vi": "Tạo máy ảo Windows client, trỏ DNS về địa chỉ của DC01 rồi join miền."
+        }
+      },
+      {
+        "id": "m9-vm-6",
+        "text": {
+          "vi": "Tạo GPO đặt hình nền chung (hoặc cấm USB), treo vào OU KeToan."
+        }
+      },
+      {
+        "id": "m9-vm-7",
+        "text": {
+          "vi": "Trên client, đăng nhập bằng user thử, chạy gpupdate /force và xác nhận luật đã ăn."
+        }
+      },
+      {
+        "id": "m9-vm-8",
+        "text": {
+          "vi": "Chạy gpresult /r, đối chiếu danh sách GPO đang áp với những gì bạn đã treo."
+        }
+      }
     ]
   },
-
   "lessons": [
     {
       "id": "m9-bai-1",
-      "missionTitle": { "vi": "Nhận chức trưởng làng máy" },
+      "missionTitle": {
+        "vi": "Nhận chức trưởng làng máy"
+      },
       "steps": [
         {
           "type": "hook",
-          "question": { "vi": "Công ty có 200 máy. Sáng mai mọi máy phải theo luật mật khẩu mới. Chẳng lẽ ôm bàn phím đi từng bàn? Phải có ai đó là \"trưởng làng\" của cả 200 máy — bằng cách nào?" },
+          "question": {
+            "vi": "Công ty có 200 máy. Sáng mai mọi máy phải theo luật mật khẩu mới. Chẳng lẽ ôm bàn phím đi từng bàn? Phải có ai đó là \"trưởng làng\" của cả 200 máy — bằng cách nào?"
+          },
           "visualId": "vis-hook-mien"
         },
         {
@@ -99,17 +230,29 @@
             {
               "kind": "mcq",
               "id": "m9-b1-pre-1",
-              "prompt": { "vi": "Đoán thử nhé: để một người quản được 200 máy như một, các máy phải làm gì?" },
+              "prompt": {
+                "vi": "Đoán thử nhé: để một người quản được 200 máy như một, các máy phải làm gì?"
+              },
               "choices": [
-                { "vi": "Cùng gia nhập một miền — chịu chung bộ luật từ máy chủ trung tâm" },
-                { "vi": "Cài chung một phần mềm diệt virus" },
-                { "vi": "Nối chung vào một switch" }
+                {
+                  "vi": "Cùng gia nhập một miền — chịu chung bộ luật từ máy chủ trung tâm"
+                },
+                {
+                  "vi": "Cùng cài chung một phần mềm diệt virus mà công ty đã mua sẵn"
+                },
+                {
+                  "vi": "Cùng nối chung vào một switch trong phòng máy chủ"
+                }
               ],
               "answerIndex": 0,
-              "explain": { "vi": "Đó là domain (miền): các máy ký giao kèo vào chung một làng, và từ đó luật chỉ cần sửa MỘT chỗ trên máy chủ." }
+              "explain": {
+                "vi": "Đó là domain (miền): các máy ký giao kèo vào chung một làng, và từ đó luật chỉ cần sửa MỘT chỗ trên máy chủ."
+              }
             }
           ],
-          "encouragement": { "vi": "Nghĩ về làng: muốn có luật làng thì trước hết phải… có làng." }
+          "encouragement": {
+            "vi": "Nghĩ về làng: muốn có luật làng thì trước hết phải… có làng."
+          }
         },
         {
           "type": "teach",
@@ -117,49 +260,86 @@
             {
               "conceptId": "m9-domain",
               "visualId": "vis-mien-lang-may",
-              "body": { "vi": "Domain (miền) là \"làng có luật\" của các máy Windows: máy nào GIA NHẬP miền là ký giao kèo chịu luật chung, và tài khoản đăng nhập từ đó là tài khoản của LÀNG chứ không của riêng máy. Trước khi gia nhập, mỗi máy là một nhà riêng tự quản — muốn gì phải tới từng bàn." },
-              "deepDive": { "vi": "Tên miền nội bộ thường dạng lab.local hay corp.congty.vn — nhìn giống tên web nhưng vai khác: nó là TÊN của làng, do DNS nội bộ phân giải. Vì thế dựng AD bao giờ cũng đi kèm máy chủ DNS — đó là lý do bạn phải học DNS (Module 6) trước khi bước vào đây." }
+              "body": {
+                "vi": "Domain (miền) là \"làng có luật\" của các máy Windows: máy nào GIA NHẬP miền là ký giao kèo chịu luật chung, và tài khoản đăng nhập từ đó là tài khoản của LÀNG chứ không của riêng máy. Trước khi gia nhập, mỗi máy là một nhà riêng tự quản — muốn gì phải tới từng bàn."
+              },
+              "deepDive": {
+                "vi": "Tên miền nội bộ thường dạng lab.local hay corp.congty.vn — nhìn giống tên web nhưng vai khác: nó là TÊN của làng, do DNS nội bộ phân giải. Vì thế dựng AD bao giờ cũng đi kèm máy chủ DNS — đó là lý do bạn phải học DNS (Module 6) trước khi bước vào đây."
+              }
             },
             {
               "conceptId": "m9-dc",
               "visualId": "vis-dc-so-cai",
-              "body": { "vi": "Domain Controller (DC) là máy chủ giữ SỔ CÁI của làng: danh sách người, máy, nhóm, luật. Bạn đăng nhập ở bất kỳ máy nào trong miền, máy đó đều chạy tới hỏi DC: \"người này có thật không, mật khẩu đúng không?\". Cuốn sổ ấy chính là sổ hộ khẩu bạn đã gặp — phòng 389 (LDAP) của tòa nhà 15 phòng." },
-              "deepDive": { "vi": "Làng nghiêm túc không bao giờ chỉ có MỘT DC: sổ cái được nhân bản sang DC thứ hai, lỡ một máy hỏng thì cả làng vẫn đăng nhập được. Sổ tra qua LDAP (389), bản niêm phong qua LDAPS (636) — đúng hai phòng tầng 5 của cung điện Module 5." }
+              "body": {
+                "vi": "Domain Controller (DC) là máy chủ giữ SỔ CÁI của làng: danh sách người, máy, nhóm, luật. Bạn đăng nhập ở bất kỳ máy nào trong miền, máy đó đều chạy tới hỏi DC: \"người này có thật không, mật khẩu đúng không?\". Cuốn sổ ấy chính là sổ hộ khẩu bạn đã gặp — phòng 389 (LDAP) của tòa nhà 15 phòng."
+              },
+              "deepDive": {
+                "vi": "Làng nghiêm túc không bao giờ chỉ có MỘT DC: sổ cái được nhân bản sang DC thứ hai, lỡ một máy hỏng thì cả làng vẫn đăng nhập được. Sổ tra qua LDAP (389), bản niêm phong qua LDAPS (636) — đúng hai phòng tầng 5 của cung điện Module 5."
+              }
             }
           ]
         },
         {
           "type": "practice",
           "fadingLevel": 0,
-          "workedExample": { "vi": "Đọc một miền đang chạy: công ty dùng miền lab.local. (1) Máy chủ DC01 giữ sổ cái và trả lời mọi lượt đăng nhập. (2) 200 máy nhân viên đã join miền — góc đăng nhập ghi LAB\\ten-nhan-vien thay vì tên máy. (3) Muốn đổi luật mật khẩu: sửa MỘT chỗ trên DC01, cả 200 máy tự nhận. Đọc lại bước (3): sửa một chỗ, áp mọi nơi — đó là toàn bộ lý do miền tồn tại." },
+          "workedExample": {
+            "vi": "Đọc một miền đang chạy: công ty dùng miền lab.local. (1) Máy chủ DC01 giữ sổ cái và trả lời mọi lượt đăng nhập. (2) 200 máy nhân viên đã join miền — góc đăng nhập ghi LAB\\ten-nhan-vien thay vì tên máy. (3) Muốn đổi luật mật khẩu: sửa MỘT chỗ trên DC01, cả 200 máy tự nhận. Đọc lại bước (3): sửa một chỗ, áp mọi nơi — đó là toàn bộ lý do miền tồn tại."
+          },
           "exercises": [
             {
               "question": {
                 "kind": "mcq",
                 "id": "m9-b1-pra-1",
-                "prompt": { "vi": "Máy đã gia nhập miền thì tài khoản đăng nhập là của ai?" },
+                "prompt": {
+                  "vi": "Máy đã gia nhập miền thì tài khoản đăng nhập là của ai?"
+                },
                 "choices": [
-                  { "vi": "Của miền — DC xác thực, ngồi máy nào trong miền cũng đăng nhập được" },
-                  { "vi": "Của riêng máy đó, như máy ở nhà" },
-                  { "vi": "Của nhà cung cấp Internet" }
+                  {
+                    "vi": "Của miền — DC xác thực, ngồi máy nào trong miền cũng đăng nhập được"
+                  },
+                  {
+                    "vi": "Của riêng từng máy đó thôi, y như tài khoản trên máy tính ở nhà"
+                  },
+                  {
+                    "vi": "Của nhà cung cấp Internet"
+                  }
                 ],
                 "answerIndex": 0,
-                "hintTopic": { "vi": "ai là người đối chiếu mật khẩu" }
+                "hintTopic": {
+                  "vi": "ai là người đối chiếu mật khẩu"
+                }
               },
-              "hint": { "vi": "Khi bạn gõ mật khẩu, máy trước mặt không tự quyết — nó chạy đi hỏi ai đó." },
-              "solution": { "vi": "Tài khoản của MIỀN: DC đối chiếu mật khẩu, nên một tài khoản dùng được ở mọi máy đã gia nhập miền." },
+              "hint": {
+                "vi": "Khi bạn gõ mật khẩu, máy trước mặt không tự quyết — nó chạy đi hỏi ai đó."
+              },
+              "solution": {
+                "vi": "Tài khoản của MIỀN: DC đối chiếu mật khẩu, nên một tài khoản dùng được ở mọi máy đã gia nhập miền."
+              },
               "conceptId": "m9-domain"
             },
             {
               "question": {
                 "kind": "typed",
                 "id": "m9-b1-pra-2",
-                "prompt": { "vi": "Máy chủ giữ sổ cái của miền và xác thực mọi lượt đăng nhập gọi là gì? (viết tắt được)" },
-                "accept": ["domain controller", "dc", "máy chủ điều khiển miền", "bộ điều khiển miền"],
-                "hintTopic": { "vi": "trưởng làng giữ sổ" }
+                "prompt": {
+                  "vi": "Máy chủ giữ sổ cái của miền và xác thực mọi lượt đăng nhập gọi là gì? (viết tắt được)"
+                },
+                "accept": [
+                  "domain controller",
+                  "dc",
+                  "máy chủ điều khiển miền",
+                  "bộ điều khiển miền"
+                ],
+                "hintTopic": {
+                  "vi": "trưởng làng giữ sổ"
+                }
               },
-              "hint": { "vi": "Hai chữ cái viết tắt — chữ đầu là Domain." },
-              "solution": { "vi": "Domain Controller (DC) — giữ sổ cái AD và gác cổng mọi lượt đăng nhập của miền." },
+              "hint": {
+                "vi": "Hai chữ cái viết tắt — chữ đầu là Domain."
+              },
+              "solution": {
+                "vi": "Domain Controller (DC) — giữ sổ cái AD và gác cổng mọi lượt đăng nhập của miền."
+              },
               "conceptId": "m9-dc"
             }
           ]
@@ -171,42 +351,86 @@
               "question": {
                 "kind": "typed",
                 "id": "m9-b1-ret-1",
-                "prompt": { "vi": "Không nhìn lại bài: sổ cái của miền được tra qua giao thức nào — phòng 389 của tòa nhà 15 phòng?" },
-                "accept": ["ldap", "lightweight directory access protocol"],
-                "hintTopic": { "vi": "sổ hộ khẩu ở tầng 5 cung điện" }
+                "prompt": {
+                  "vi": "Không nhìn lại bài: sổ cái của miền được tra qua giao thức nào — phòng 389 của tòa nhà 15 phòng?"
+                },
+                "accept": [
+                  "ldap",
+                  "lightweight directory access protocol"
+                ],
+                "hintTopic": {
+                  "vi": "sổ hộ khẩu ở tầng 5 cung điện"
+                }
               },
-              "hint": { "vi": "Bốn chữ cái, phòng 389 — cuốn sổ ghi ai làm gì, thuộc phòng ban nào." },
-              "solution": { "vi": "LDAP — giao thức tra sổ cái; bản mã hóa là LDAPS ở phòng 636. Cung điện Module 5 giờ thành kiến thức đi làm." }
+              "hint": {
+                "vi": "Bốn chữ cái, phòng 389 — cuốn sổ ghi ai làm gì, thuộc phòng ban nào."
+              },
+              "solution": {
+                "vi": "LDAP — giao thức tra sổ cái; bản mã hóa là LDAPS ở phòng 636. Cung điện Module 5 giờ thành kiến thức đi làm."
+              }
             }
           ],
           "selfExplain": {
-            "prompt": { "vi": "Giải thích bằng lời của bạn: vì sao công ty 200 máy cần miền, còn nhà bạn 5 thiết bị thì không?" },
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: vì sao công ty 200 máy cần miền, còn nhà bạn 5 thiết bị thì không?"
+            },
             "keywords": [
-              ["một chỗ", "mot cho", "trung tâm", "trung tam", "sửa một lần", "sua mot lan", "tập trung", "tap trung"],
-              ["từng máy", "tung may", "từng bàn", "tung ban", "ít máy", "it may", "tự quản", "tu quan"]
+              [
+                "một chỗ",
+                "mot cho",
+                "trung tâm",
+                "trung tam",
+                "sửa một lần",
+                "sua mot lan",
+                "tập trung",
+                "tap trung"
+              ],
+              [
+                "từng máy",
+                "tung may",
+                "từng bàn",
+                "tung ban",
+                "ít máy",
+                "it may",
+                "tự quản",
+                "tu quan"
+              ]
             ],
-            "exampleAnswer": { "vi": "Với 200 máy, sửa từng bàn là bất khả thi — miền cho phép sửa một chỗ trên DC rồi mọi máy tự theo. Nhà 5 thiết bị thì đi từng máy còn nhanh hơn dựng cả một máy chủ để quản." }
+            "exampleAnswer": {
+              "vi": "Với 200 máy, sửa từng bàn là bất khả thi — miền cho phép sửa một chỗ trên DC rồi mọi máy tự theo. Nhà 5 thiết bị thì đi từng máy còn nhanh hơn dựng cả một máy chủ để quản."
+            }
           }
         },
         {
           "type": "summary",
           "bullets": [
-            { "vi": "Domain là làng có luật: máy gia nhập là chịu luật chung, tài khoản là của làng." },
-            { "vi": "DC giữ sổ cái và xác thực mọi lượt đăng nhập — sổ tra qua LDAP 389." },
-            { "vi": "Sửa một chỗ, áp mọi nơi — toàn bộ lý do miền tồn tại." }
+            {
+              "vi": "Domain là làng có luật: máy gia nhập là chịu luật chung, tài khoản là của làng."
+            },
+            {
+              "vi": "DC giữ sổ cái và xác thực mọi lượt đăng nhập — sổ tra qua LDAP 389."
+            },
+            {
+              "vi": "Sửa một chỗ, áp mọi nơi — toàn bộ lý do miền tồn tại."
+            }
           ],
-          "nextTeaser": { "vi": "Có làng rồi thì phải xếp CƯ DÂN: nhân viên mới vào phòng Kế toán cần đúng 37 quyền như đồng nghiệp. Gõ tay 37 lần, hay có cách một lần?" }
+          "nextTeaser": {
+            "vi": "Có làng rồi thì phải xếp CƯ DÂN: nhân viên mới vào phòng Kế toán cần đúng 37 quyền như đồng nghiệp. Gõ tay 37 lần, hay có cách một lần?"
+          }
         }
       ]
     },
-
     {
       "id": "m9-bai-2",
-      "missionTitle": { "vi": "Xếp cư dân vào đúng ngăn" },
+      "missionTitle": {
+        "vi": "Xếp cư dân vào đúng ngăn"
+      },
       "steps": [
         {
           "type": "hook",
-          "question": { "vi": "Nhân viên mới vào phòng Kế toán, cần đúng 37 quyền y như đồng nghiệp cùng phòng. Cấp tay từng quyền thì vừa lâu vừa sót. Người quản trị giỏi chỉ làm MỘT thao tác — thao tác gì?" },
+          "question": {
+            "vi": "Nhân viên mới vào phòng Kế toán, cần đúng 37 quyền y như đồng nghiệp cùng phòng. Cấp tay từng quyền thì vừa lâu vừa sót. Người quản trị giỏi chỉ làm MỘT thao tác — thao tác gì?"
+          },
           "visualId": "vis-hook-user-group"
         },
         {
@@ -215,17 +439,29 @@
             {
               "kind": "mcq",
               "id": "m9-b2-pre-1",
-              "prompt": { "vi": "Đoán thử nhé: cách cấp quyền khôn ngoan trong miền là cấp cho ai?" },
+              "prompt": {
+                "vi": "Đoán thử nhé: cách cấp quyền khôn ngoan trong miền là cấp cho ai?"
+              },
               "choices": [
-                { "vi": "Cho NHÓM — ai được thả vào nhóm là tự có đủ quyền của nhóm" },
-                { "vi": "Cho từng người một, chắc chắn nhất" },
-                { "vi": "Cho từng máy tính" }
+                {
+                  "vi": "Cho NHÓM — ai được thả vào nhóm là tự có đủ quyền của nhóm"
+                },
+                {
+                  "vi": "Cho từng người một — làm vậy mới chắc chắn và an toàn nhất"
+                },
+                {
+                  "vi": "Cho từng máy tính trong miền, không cho người"
+                }
               ],
               "answerIndex": 0,
-              "explain": { "vi": "Quyền cấp cho nhóm một lần duy nhất; người vào nhóm tự có, người rời nhóm tự mất — không sót, không thừa, kiểm toán được." }
+              "explain": {
+                "vi": "Quyền cấp cho nhóm một lần duy nhất; người vào nhóm tự có, người rời nhóm tự mất — không sót, không thừa, kiểm toán được."
+              }
             }
           ],
-          "encouragement": { "vi": "Nghĩ về thẻ câu lạc bộ: có thẻ là vào được mọi phòng của câu lạc bộ, trả thẻ là hết." }
+          "encouragement": {
+            "vi": "Nghĩ về thẻ câu lạc bộ: có thẻ là vào được mọi phòng của câu lạc bộ, trả thẻ là hết."
+          }
         },
         {
           "type": "teach",
@@ -233,14 +469,22 @@
             {
               "conceptId": "m9-user-group",
               "visualId": "vis-user-group",
-              "body": { "vi": "Trong miền, mỗi người một tài khoản (user) — nhưng quyền thì KHÔNG cấp cho từng người. Ta tạo NHÓM (group) \"KeToan\", cấp 37 quyền cho nhóm đúng một lần; nhân viên mới chỉ cần được thả vào nhóm là mang đủ quyền. Người chuyển phòng? Rút khỏi nhóm — mọi quyền tự rơi theo." },
-              "deepDive": { "vi": "Cấp quyền thẳng cho cá nhân là món nợ kỹ thuật: nửa năm sau không ai còn nhớ ai đang giữ gì, kiểm toán chỉ còn cách dò từng dòng. Nguyên tắc nhà nghề: tài khoản → nhóm → quyền, không bao giờ đi tắt." }
+              "body": {
+                "vi": "Trong miền, mỗi người một tài khoản (user) — nhưng quyền thì KHÔNG cấp cho từng người. Ta tạo NHÓM (group) \"KeToan\", cấp 37 quyền cho nhóm đúng một lần; nhân viên mới chỉ cần được thả vào nhóm là mang đủ quyền. Người chuyển phòng? Rút khỏi nhóm — mọi quyền tự rơi theo."
+              },
+              "deepDive": {
+                "vi": "Cấp quyền thẳng cho cá nhân là món nợ kỹ thuật: nửa năm sau không ai còn nhớ ai đang giữ gì, kiểm toán chỉ còn cách dò từng dòng. Nguyên tắc nhà nghề: tài khoản → nhóm → quyền, không bao giờ đi tắt."
+              }
             },
             {
               "conceptId": "m9-ou",
               "visualId": "vis-ou-ngan-keo",
-              "body": { "vi": "OU (Organizational Unit) là NGĂN KÉO của cây thư mục miền: xếp người và máy theo phòng ban — KeToan, NhanSu, VanHanh. Đừng nhầm với group: GROUP để CẤP QUYỀN, còn OU để XẾP CHỖ và TREO LUẬT — bài sau bạn sẽ treo nguyên một bộ luật lên đúng một ngăn kéo." },
-              "deepDive": { "vi": "Cặp so sánh chống nhầm: một người NẰM trong đúng MỘT OU (như một hồ sơ nằm một ngăn), nhưng THAM GIA được NHIỀU group (như một người vào nhiều câu lạc bộ). Nhớ được cặp này là hết lẫn hai khái niệm." }
+              "body": {
+                "vi": "OU (Organizational Unit) là NGĂN KÉO của cây thư mục miền: xếp người và máy theo phòng ban — KeToan, NhanSu, VanHanh. Đừng nhầm với group: GROUP để CẤP QUYỀN, còn OU để XẾP CHỖ và TREO LUẬT — bài sau bạn sẽ treo nguyên một bộ luật lên đúng một ngăn kéo."
+              },
+              "deepDive": {
+                "vi": "Cặp so sánh chống nhầm: một người NẰM trong đúng MỘT OU (như một hồ sơ nằm một ngăn), nhưng THAM GIA được NHIỀU group (như một người vào nhiều câu lạc bộ). Nhớ được cặp này là hết lẫn hai khái niệm."
+              }
             }
           ]
         },
@@ -252,29 +496,56 @@
               "question": {
                 "kind": "mcq",
                 "id": "m9-b2-pra-1",
-                "prompt": { "vi": "Nhân viên mới vào phòng Kế toán. Cách chuẩn để họ có đủ quyền như đồng nghiệp?" },
+                "prompt": {
+                  "vi": "Nhân viên mới vào phòng Kế toán. Cách chuẩn để họ có đủ quyền như đồng nghiệp?"
+                },
                 "choices": [
-                  { "vi": "Thả vào group KeToan — quyền đi theo nhóm" },
-                  { "vi": "Cấp lại từng quyền một cho chắc" },
-                  { "vi": "Cho dùng chung tài khoản của đồng nghiệp" }
+                  {
+                    "vi": "Thả vào group KeToan — quyền đi theo nhóm"
+                  },
+                  {
+                    "vi": "Cấp lại từng quyền một cho chắc"
+                  },
+                  {
+                    "vi": "Cho anh ấy dùng chung tài khoản của đồng nghiệp"
+                  }
                 ],
                 "answerIndex": 0,
-                "hintTopic": { "vi": "tấm thẻ câu lạc bộ" }
+                "hintTopic": {
+                  "vi": "tấm thẻ câu lạc bộ"
+                }
               },
-              "hint": { "vi": "Một thao tác duy nhất, và quyền không bao giờ sót — vì quyền chưa từng cấp cho cá nhân." },
-              "solution": { "vi": "Thả vào group KeToan. Quyền đã cấp cho nhóm từ trước, thành viên mới tự mang đủ 37 quyền." },
+              "hint": {
+                "vi": "Một thao tác duy nhất, và quyền không bao giờ sót — vì quyền chưa từng cấp cho cá nhân."
+              },
+              "solution": {
+                "vi": "Thả vào group KeToan. Quyền đã cấp cho nhóm từ trước, thành viên mới tự mang đủ 37 quyền."
+              },
               "conceptId": "m9-user-group"
             },
             {
               "question": {
                 "kind": "typed",
                 "id": "m9-b2-pra-2",
-                "prompt": { "vi": "Điền chỗ trống: GROUP để cấp ___, còn OU để xếp chỗ và treo luật." },
-                "accept": ["quyền", "quyen", "permission", "permissions"],
-                "hintTopic": { "vi": "thứ đi theo tấm thẻ câu lạc bộ" }
+                "prompt": {
+                  "vi": "Điền chỗ trống: GROUP để cấp ___, còn OU để xếp chỗ và treo luật."
+                },
+                "accept": [
+                  "quyền",
+                  "quyen",
+                  "permission",
+                  "permissions"
+                ],
+                "hintTopic": {
+                  "vi": "thứ đi theo tấm thẻ câu lạc bộ"
+                }
               },
-              "hint": { "vi": "Thứ mà nhân viên mới cần đúng 37 cái." },
-              "solution": { "vi": "QUYỀN — group là đơn vị cấp quyền; OU là đơn vị xếp chỗ và treo luật (GPO)." }
+              "hint": {
+                "vi": "Thứ mà nhân viên mới cần đúng 37 cái."
+              },
+              "solution": {
+                "vi": "QUYỀN — group là đơn vị cấp quyền; OU là đơn vị xếp chỗ và treo luật (GPO)."
+              }
             }
           ]
         },
@@ -285,42 +556,90 @@
               "question": {
                 "kind": "typed",
                 "id": "m9-b2-ret-1",
-                "prompt": { "vi": "Không nhìn lại bài: cái ngăn kéo xếp người và máy theo phòng ban trong cây thư mục miền gọi là gì? (viết tắt được)" },
-                "accept": ["ou", "organizational unit", "đơn vị tổ chức", "don vi to chuc"],
-                "hintTopic": { "vi": "ngăn kéo hồ sơ, không phải câu lạc bộ" }
+                "prompt": {
+                  "vi": "Không nhìn lại bài: cái ngăn kéo xếp người và máy theo phòng ban trong cây thư mục miền gọi là gì? (viết tắt được)"
+                },
+                "accept": [
+                  "ou",
+                  "organizational unit",
+                  "đơn vị tổ chức",
+                  "don vi to chuc"
+                ],
+                "hintTopic": {
+                  "vi": "ngăn kéo hồ sơ, không phải câu lạc bộ"
+                }
               },
-              "hint": { "vi": "Hai chữ cái — chữ đầu là Organizational." },
-              "solution": { "vi": "OU — Organizational Unit: ngăn kéo phòng ban, mỗi hồ sơ nằm đúng một ngăn, và luật thì dán lên ngăn." }
+              "hint": {
+                "vi": "Hai chữ cái — chữ đầu là Organizational."
+              },
+              "solution": {
+                "vi": "OU — Organizational Unit: ngăn kéo phòng ban, mỗi hồ sơ nằm đúng một ngăn, và luật thì dán lên ngăn."
+              }
             }
           ],
           "selfExplain": {
-            "prompt": { "vi": "Giải thích bằng lời của bạn: vì sao cấp quyền cho nhóm lại hơn hẳn cấp cho từng người?" },
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: vì sao cấp quyền cho nhóm lại hơn hẳn cấp cho từng người?"
+            },
             "keywords": [
-              ["một lần", "mot lan", "vào nhóm", "vao nhom", "tự có", "tu co", "theo nhóm", "theo nhom"],
-              ["rời", "roi nhom", "rút", "rut khoi", "thu hồi", "thu hoi", "chuyển phòng", "chuyen phong", "kiểm toán", "kiem toan"]
+              [
+                "một lần",
+                "mot lan",
+                "vào nhóm",
+                "vao nhom",
+                "tự có",
+                "tu co",
+                "theo nhóm",
+                "theo nhom"
+              ],
+              [
+                "rời",
+                "roi nhom",
+                "rút",
+                "rut khoi",
+                "thu hồi",
+                "thu hoi",
+                "chuyển phòng",
+                "chuyen phong",
+                "kiểm toán",
+                "kiem toan"
+              ]
             ],
-            "exampleAnswer": { "vi": "Quyền cấp cho nhóm đúng một lần: ai vào nhóm tự có đủ, ai rời nhóm tự mất sạch — không sót khi vào, không quên thu hồi khi đi, và kiểm toán chỉ cần đọc danh sách nhóm." }
+            "exampleAnswer": {
+              "vi": "Quyền cấp cho nhóm đúng một lần: ai vào nhóm tự có đủ, ai rời nhóm tự mất sạch — không sót khi vào, không quên thu hồi khi đi, và kiểm toán chỉ cần đọc danh sách nhóm."
+            }
           }
         },
         {
           "type": "summary",
           "bullets": [
-            { "vi": "User là tài khoản của làng; quyền cấp cho GROUP, không cấp cho từng người." },
-            { "vi": "OU là ngăn kéo phòng ban — để xếp chỗ và treo luật, đừng nhầm với group." },
-            { "vi": "Một người nằm một OU, nhưng tham gia được nhiều group." }
+            {
+              "vi": "User là tài khoản của làng; quyền cấp cho GROUP, không cấp cho từng người."
+            },
+            {
+              "vi": "OU là ngăn kéo phòng ban — để xếp chỗ và treo luật, đừng nhầm với group."
+            },
+            {
+              "vi": "Một người nằm một OU, nhưng tham gia được nhiều group."
+            }
           ],
-          "nextTeaser": { "vi": "Ngăn kéo xếp xong rồi. Sáng thứ hai, 200 máy cùng đổi hình nền thành logo công ty — mà không ai chạm vào máy nào. Đêm qua đã xảy ra chuyện gì?" }
+          "nextTeaser": {
+            "vi": "Ngăn kéo xếp xong rồi. Sáng thứ hai, 200 máy cùng đổi hình nền thành logo công ty — mà không ai chạm vào máy nào. Đêm qua đã xảy ra chuyện gì?"
+          }
         }
       ]
     },
-
     {
       "id": "m9-bai-3",
-      "missionTitle": { "vi": "Treo bộ luật đầu tiên lên làng" },
+      "missionTitle": {
+        "vi": "Treo bộ luật đầu tiên lên làng"
+      },
       "steps": [
         {
           "type": "hook",
-          "question": { "vi": "Sáng thứ hai, cả 200 máy cùng đổi hình nền thành logo công ty — không ai đi từng bàn, không ai cài gì lên máy nào. Đêm qua, chuyện gì đã xảy ra trên máy chủ?" },
+          "question": {
+            "vi": "Sáng thứ hai, cả 200 máy cùng đổi hình nền thành logo công ty — không ai đi từng bàn, không ai cài gì lên máy nào. Đêm qua, chuyện gì đã xảy ra trên máy chủ?"
+          },
           "visualId": "vis-hook-gpo"
         },
         {
@@ -329,17 +648,29 @@
             {
               "kind": "mcq",
               "id": "m9-b3-pre-1",
-              "prompt": { "vi": "Đoán thử nhé: GPO là gì?" },
+              "prompt": {
+                "vi": "Đoán thử nhé: GPO là gì?"
+              },
               "choices": [
-                { "vi": "Một TẬP LUẬT đặt trên máy chủ, máy trong miền tự tải về áp dụng" },
-                { "vi": "Một phần mềm phải cài lên từng máy" },
-                { "vi": "Một loại bản ghi DNS" }
+                {
+                  "vi": "Một TẬP LUẬT đặt trên máy chủ, máy trong miền tự tải về áp dụng"
+                },
+                {
+                  "vi": "Một phần mềm mà quản trị viên phải đi cài tay lên từng máy"
+                },
+                {
+                  "vi": "Một loại bản ghi DNS dùng trong mạng công ty"
+                }
               ],
               "answerIndex": 0,
-              "explain": { "vi": "GPO — Group Policy Object: bộ luật viết một lần ở trung tâm; máy trong phạm vi được treo cứ đến hẹn tự tải về áp, không cần ai đụng vào máy." }
+              "explain": {
+                "vi": "GPO — Group Policy Object: bộ luật viết một lần ở trung tâm; máy trong phạm vi được treo cứ đến hẹn tự tải về áp, không cần ai đụng vào máy."
+              }
             }
           ],
-          "encouragement": { "vi": "Nghĩ về tờ cáo thị dán ở đình làng: dân không cần ai đến tận nhà đọc cho nghe." }
+          "encouragement": {
+            "vi": "Nghĩ về tờ cáo thị dán ở đình làng: dân không cần ai đến tận nhà đọc cho nghe."
+          }
         },
         {
           "type": "teach",
@@ -347,42 +678,76 @@
             {
               "conceptId": "m9-gpo",
               "visualId": "vis-gpo-treo-luat",
-              "body": { "vi": "GPO (Group Policy Object) là một TẬP LUẬT viết một lần trên máy chủ: hình nền, luật mật khẩu, cấm USB, chặn cài phần mềm… Nhưng GPO tự nó chưa làm gì cả — nó chỉ CÓ TÁC DỤNG khi được TREO (link) vào một chỗ: cả miền, một site, hay một OU. Máy trong chỗ đó cứ đến hẹn lại tải luật về và tự áp." },
-              "deepDive": { "vi": "Tên có chữ \"Group\" nhưng GPO KHÔNG treo vào group được — chỗ treo chỉ có Site, Domain, OU. Đây là cái bẫy chữ nghĩa nổi tiếng nhất của AD, và là lý do bài trước bắt bạn tách bạch group với OU. Máy client tự làm mới luật quãng mỗi 90 phút — muốn ngay lập tức thì có một câu lệnh, bài cuối sẽ đưa." }
+              "body": {
+                "vi": "GPO (Group Policy Object) là một TẬP LUẬT viết một lần trên máy chủ: hình nền, luật mật khẩu, cấm USB, chặn cài phần mềm… Nhưng GPO tự nó chưa làm gì cả — nó chỉ CÓ TÁC DỤNG khi được TREO (link) vào một chỗ: cả miền, một site, hay một OU. Máy trong chỗ đó cứ đến hẹn lại tải luật về và tự áp."
+              },
+              "deepDive": {
+                "vi": "Tên có chữ \"Group\" nhưng GPO KHÔNG treo vào group được — chỗ treo chỉ có Site, Domain, OU. Đây là cái bẫy chữ nghĩa nổi tiếng nhất của AD, và là lý do bài trước bắt bạn tách bạch group với OU. Máy client tự làm mới luật quãng mỗi 90 phút — muốn ngay lập tức thì có một câu lệnh, bài cuối sẽ đưa."
+              }
             }
           ]
         },
         {
           "type": "practice",
           "fadingLevel": 0,
-          "workedExample": { "vi": "Treo một GPO từ A tới Z: (1) Trên DC mở Group Policy Management. (2) Tạo GPO mới, đặt tên HinhNen-CongTy. (3) Mở GPO, sửa luật: User Configuration → Desktop → Wallpaper, trỏ về ảnh logo chung. (4) TREO GPO vào OU KeToan. (5) Chờ máy làm mới luật — hình nền cả phòng đổi. Đọc lại bước (4) lần nữa: quên treo thì luật nằm chết trên giấy, và treo Ở ĐÂU quyết định AI phải theo." },
+          "workedExample": {
+            "vi": "Treo một GPO từ A tới Z: (1) Trên DC mở Group Policy Management. (2) Tạo GPO mới, đặt tên HinhNen-CongTy. (3) Mở GPO, sửa luật: User Configuration → Desktop → Wallpaper, trỏ về ảnh logo chung. (4) TREO GPO vào OU KeToan. (5) Chờ máy làm mới luật — hình nền cả phòng đổi. Đọc lại bước (4) lần nữa: quên treo thì luật nằm chết trên giấy, và treo Ở ĐÂU quyết định AI phải theo."
+          },
           "exercises": [
             {
               "question": {
                 "kind": "mcq",
                 "id": "m9-b3-pra-1",
-                "prompt": { "vi": "Viết xong một GPO thật đẹp nhưng chưa treo (link) vào đâu — chuyện gì xảy ra?" },
+                "prompt": {
+                  "vi": "Viết xong một GPO thật đẹp nhưng chưa treo (link) vào đâu — chuyện gì xảy ra?"
+                },
                 "choices": [
-                  { "vi": "Không gì cả — GPO chỉ có tác dụng khi được treo vào miền, site hoặc OU" },
-                  { "vi": "Cả miền lập tức áp luật" },
-                  { "vi": "Chỉ máy chủ DC áp luật" }
+                  {
+                    "vi": "Không gì cả — GPO chỉ có tác dụng khi được treo vào miền, site hoặc OU"
+                  },
+                  {
+                    "vi": "Cả miền sẽ lập tức áp luật đó ngay từ lúc bạn bấm nút lưu nó lại"
+                  },
+                  {
+                    "vi": "Chỉ mỗi máy chủ DC áp luật, máy thường thì không"
+                  }
                 ],
                 "answerIndex": 0,
-                "hintTopic": { "vi": "bước (4) của ví dụ giải sẵn" }
+                "hintTopic": {
+                  "vi": "bước (4) của ví dụ giải sẵn"
+                }
               },
-              "hint": { "vi": "Tờ cáo thị viết xong mà cất trong ngăn kéo thì dân làng đọc kiểu gì?" },
-              "solution": { "vi": "Không gì xảy ra: GPO phải được TREO vào một chỗ (Site/Domain/OU) thì máy trong chỗ đó mới tải về áp." }
+              "hint": {
+                "vi": "Tờ cáo thị viết xong mà cất trong ngăn kéo thì dân làng đọc kiểu gì?"
+              },
+              "solution": {
+                "vi": "Không gì xảy ra: GPO phải được TREO vào một chỗ (Site/Domain/OU) thì máy trong chỗ đó mới tải về áp."
+              }
             },
             {
               "question": {
                 "kind": "typed",
                 "id": "m9-b3-pra-2",
-                "prompt": { "vi": "Muốn luật chỉ áp cho riêng phòng Kế toán, bạn treo GPO vào đâu? (viết tắt được)" },
-                "accept": ["ou", "ou ketoan", "ou kế toán", "ou ke toan", "organizational unit"],
-                "hintTopic": { "vi": "ngăn kéo của phòng đó" }
+                "prompt": {
+                  "vi": "Muốn luật chỉ áp cho riêng phòng Kế toán, bạn treo GPO vào đâu? (viết tắt được)"
+                },
+                "accept": [
+                  "ou",
+                  "ou ketoan",
+                  "ou kế toán",
+                  "ou ke toan",
+                  "organizational unit"
+                ],
+                "hintTopic": {
+                  "vi": "ngăn kéo của phòng đó"
+                }
               },
-              "hint": { "vi": "Không phải group — chỗ treo là cái ngăn kéo chứa người và máy của phòng." },
-              "solution": { "vi": "Treo vào OU KeToan — phạm vi treo quyết định ai phải theo, và OU là mức khoanh vùng theo phòng ban." }
+              "hint": {
+                "vi": "Không phải group — chỗ treo là cái ngăn kéo chứa người và máy của phòng."
+              },
+              "solution": {
+                "vi": "Treo vào OU KeToan — phạm vi treo quyết định ai phải theo, và OU là mức khoanh vùng theo phòng ban."
+              }
             }
           ]
         },
@@ -393,58 +758,117 @@
               "question": {
                 "kind": "mcq",
                 "id": "m9-b3-ret-1",
-                "prompt": { "vi": "Không nhìn lại bài: GPO treo được vào những chỗ nào?" },
+                "prompt": {
+                  "vi": "Không nhìn lại bài: GPO treo được vào những chỗ nào?"
+                },
                 "choices": [
-                  { "vi": "Site, Domain, OU" },
-                  { "vi": "Group" },
-                  { "vi": "Từng tệp tin trên máy" }
+                  {
+                    "vi": "Site, Domain, OU"
+                  },
+                  {
+                    "vi": "Group"
+                  },
+                  {
+                    "vi": "Từng tệp tin trên máy"
+                  }
                 ],
                 "answerIndex": 0,
-                "hintTopic": { "vi": "cái bẫy nằm ngay trong tên GPO" }
+                "hintTopic": {
+                  "vi": "cái bẫy nằm ngay trong tên GPO"
+                }
               },
-              "hint": { "vi": "Tên có chữ Group nhưng group KHÔNG nằm trong danh sách chỗ treo." },
-              "solution": { "vi": "Site, Domain, OU — ba loại chỗ treo duy nhất. GPO không treo vào group được, dù tên nó có chữ Group." }
+              "hint": {
+                "vi": "Tên có chữ Group nhưng group KHÔNG nằm trong danh sách chỗ treo."
+              },
+              "solution": {
+                "vi": "Site, Domain, OU — ba loại chỗ treo duy nhất. GPO không treo vào group được, dù tên nó có chữ Group."
+              }
             },
             {
               "question": {
                 "kind": "typed",
                 "id": "m9-b3-ret-2",
-                "prompt": { "vi": "Vẫn từ trí nhớ: tập luật viết một lần trên máy chủ, máy trong miền tự tải về áp, gọi là gì? (viết tắt được)" },
-                "accept": ["gpo", "group policy", "group policy object"],
-                "hintTopic": { "vi": "tờ cáo thị của đình làng" }
+                "prompt": {
+                  "vi": "Vẫn từ trí nhớ: tập luật viết một lần trên máy chủ, máy trong miền tự tải về áp, gọi là gì? (viết tắt được)"
+                },
+                "accept": [
+                  "gpo",
+                  "group policy",
+                  "group policy object"
+                ],
+                "hintTopic": {
+                  "vi": "tờ cáo thị của đình làng"
+                }
               },
-              "hint": { "vi": "Ba chữ cái, chữ cuối là Object." },
-              "solution": { "vi": "GPO — Group Policy Object: viết một lần, treo đúng chỗ, máy tự áp." }
+              "hint": {
+                "vi": "Ba chữ cái, chữ cuối là Object."
+              },
+              "solution": {
+                "vi": "GPO — Group Policy Object: viết một lần, treo đúng chỗ, máy tự áp."
+              }
             }
           ],
           "selfExplain": {
-            "prompt": { "vi": "Giải thích bằng lời của bạn: GPO hơn gì việc đi từng máy chỉnh tay?" },
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: GPO hơn gì việc đi từng máy chỉnh tay?"
+            },
             "keywords": [
-              ["một lần", "mot lan", "trung tâm", "trung tam", "tự tải", "tu tai", "tự áp", "tu ap"],
-              ["treo", "link", "phạm vi", "pham vi", "chỗ nào", "cho nao", "ai phải theo", "ai phai theo"]
+              [
+                "một lần",
+                "mot lan",
+                "trung tâm",
+                "trung tam",
+                "tự tải",
+                "tu tai",
+                "tự áp",
+                "tu ap"
+              ],
+              [
+                "treo",
+                "link",
+                "phạm vi",
+                "pham vi",
+                "chỗ nào",
+                "cho nao",
+                "ai phải theo",
+                "ai phai theo"
+              ]
             ],
-            "exampleAnswer": { "vi": "Viết một lần ở trung tâm rồi máy tự tải về áp — 200 máy hay 2000 máy cũng chỉ một thao tác. Và nhờ chuyện treo theo phạm vi, mình chọn được chính xác ai phải theo luật nào thay vì áp bừa cả công ty." }
+            "exampleAnswer": {
+              "vi": "Viết một lần ở trung tâm rồi máy tự tải về áp — 200 máy hay 2000 máy cũng chỉ một thao tác. Và nhờ chuyện treo theo phạm vi, mình chọn được chính xác ai phải theo luật nào thay vì áp bừa cả công ty."
+            }
           }
         },
         {
           "type": "summary",
           "bullets": [
-            { "vi": "GPO là tập luật viết một lần trên máy chủ; máy trong miền tự tải về áp." },
-            { "vi": "GPO chỉ có tác dụng khi được TREO — vào Site, Domain hoặc OU, không vào group." },
-            { "vi": "Treo ở đâu quyết định ai phải theo — phạm vi là một nửa của bộ luật." }
+            {
+              "vi": "GPO là tập luật viết một lần trên máy chủ; máy trong miền tự tải về áp."
+            },
+            {
+              "vi": "GPO chỉ có tác dụng khi được TREO — vào Site, Domain hoặc OU, không vào group."
+            },
+            {
+              "vi": "Treo ở đâu quyết định ai phải theo — phạm vi là một nửa của bộ luật."
+            }
           ],
-          "nextTeaser": { "vi": "Nhưng máy bạn không chỉ nhận luật từ một chỗ: chính nó, tòa nhà, công ty, phòng ban — BỐN tầng luật cùng đổ xuống. Bốn tầng cãi nhau thì ai thắng? Bài sau leo tòa nhà." }
+          "nextTeaser": {
+            "vi": "Nhưng máy bạn không chỉ nhận luật từ một chỗ: chính nó, tòa nhà, công ty, phòng ban — BỐN tầng luật cùng đổ xuống. Bốn tầng cãi nhau thì ai thắng? Bài sau leo tòa nhà."
+          }
         }
       ]
     },
-
     {
       "id": "m9-bai-4",
-      "missionTitle": { "vi": "Leo tòa nhà bốn tầng LSDOU" },
+      "missionTitle": {
+        "vi": "Leo tòa nhà bốn tầng LSDOU"
+      },
       "steps": [
         {
           "type": "hook",
-          "question": { "vi": "Một máy trong phòng Kế toán nhận luật từ BỐN nơi cùng lúc: của chính nó, của văn phòng, của công ty, của phòng ban. Bốn luật cãi nhau về cùng một thứ — máy nghe ai?" },
+          "question": {
+            "vi": "Một máy trong phòng Kế toán nhận luật từ BỐN nơi cùng lúc: của chính nó, của văn phòng, của công ty, của phòng ban. Bốn luật cãi nhau về cùng một thứ — máy nghe ai?"
+          },
           "visualId": "vis-hook-lsdou"
         },
         {
@@ -453,17 +877,29 @@
             {
               "kind": "mcq",
               "id": "m9-b4-pre-1",
-              "prompt": { "vi": "Đoán thử nhé: máy áp các bậc GPO theo thứ tự nào?" },
+              "prompt": {
+                "vi": "Đoán thử nhé: máy áp các bậc GPO theo thứ tự nào?"
+              },
               "choices": [
-                { "vi": "Local → Site → Domain → OU, bậc áp sau đè lên bậc trước" },
-                { "vi": "OU trước, Local sau cùng" },
-                { "vi": "Thứ tự ngẫu nhiên mỗi lần khởi động" }
+                {
+                  "vi": "Local → Site → Domain → OU, bậc áp sau đè lên bậc trước"
+                },
+                {
+                  "vi": "OU áp trước nhất, Local áp sau cùng và đè lên tất cả"
+                },
+                {
+                  "vi": "Thứ tự ngẫu nhiên mỗi lần khởi động"
+                }
               ],
               "answerIndex": 0,
-              "explain": { "vi": "LSDOU — leo từ tầng trệt lên nóc. Ai nói SAU người đó thắng, nên luật OU (gần người dùng nhất) là tiếng nói cuối cùng." }
+              "explain": {
+                "vi": "LSDOU — leo từ tầng trệt lên nóc. Ai nói SAU người đó thắng, nên luật OU (gần người dùng nhất) là tiếng nói cuối cùng."
+              }
             }
           ],
-          "encouragement": { "vi": "Cứ nhớ nguyên tắc mọi cuộc họp: người chốt là người nói cuối." }
+          "encouragement": {
+            "vi": "Cứ nhớ nguyên tắc mọi cuộc họp: người chốt là người nói cuối."
+          }
         },
         {
           "type": "teach",
@@ -471,9 +907,18 @@
             {
               "conceptId": "m9-lsdou",
               "visualId": "vis-toa-nha-lsdou",
-              "body": { "vi": "Thứ tự áp GPO là một TÒA NHÀ BỐN TẦNG, leo từ trệt lên nóc: Local (luật riêng máy) → Site (cả văn phòng một chỗ) → Domain (toàn công ty) → OU (từng phòng ban). Tầng áp SAU ghi đè tầng trước, nên OU — nói cuối — thắng hết. Giờ đi thăm từng tầng; nhớ CHỖ của mỗi tầng, vì chính thứ tự là thứ phải nhớ." },
-              "palaceTour": ["m9-r-local", "m9-r-site", "m9-r-domain", "m9-r-ou"],
-              "deepDive": { "vi": "Vì sao xếp vậy? Càng lên cao, luật càng GẦN người dùng: luật phòng ban hiểu công việc của phòng hơn luật toàn công ty. Khi các OU lồng nhau, OU cha áp trước OU con — vẫn đúng tinh thần \"cụ thể hơn thì nói sau\"." }
+              "body": {
+                "vi": "Thứ tự áp GPO là một TÒA NHÀ BỐN TẦNG, leo từ trệt lên nóc: Local (luật riêng máy) → Site (cả văn phòng một chỗ) → Domain (toàn công ty) → OU (từng phòng ban). Tầng áp SAU ghi đè tầng trước, nên OU — nói cuối — thắng hết. Giờ đi thăm từng tầng; nhớ CHỖ của mỗi tầng, vì chính thứ tự là thứ phải nhớ."
+              },
+              "palaceTour": [
+                "m9-r-local",
+                "m9-r-site",
+                "m9-r-domain",
+                "m9-r-ou"
+              ],
+              "deepDive": {
+                "vi": "Vì sao xếp vậy? Càng lên cao, luật càng GẦN người dùng: luật phòng ban hiểu công việc của phòng hơn luật toàn công ty. Khi các OU lồng nhau, OU cha áp trước OU con — vẫn đúng tinh thần \"cụ thể hơn thì nói sau\"."
+              }
             }
           ]
         },
@@ -485,28 +930,52 @@
               "question": {
                 "kind": "typed",
                 "id": "m9-b4-pra-1",
-                "prompt": { "vi": "Điền tầng còn thiếu: Local → ___ → Domain → OU." },
-                "accept": ["site"],
-                "hintTopic": { "vi": "tầng hai của tòa nhà" }
+                "prompt": {
+                  "vi": "Điền tầng còn thiếu: Local → ___ → Domain → OU."
+                },
+                "accept": [
+                  "site"
+                ],
+                "hintTopic": {
+                  "vi": "tầng hai của tòa nhà"
+                }
               },
-              "hint": { "vi": "Bậc của \"cả văn phòng một chỗ\" — bảng tin của tòa nhà." },
-              "solution": { "vi": "Site — bậc áp cho mọi máy ngồi cùng một chỗ vật lý, đứng giữa Local và Domain." }
+              "hint": {
+                "vi": "Bậc của \"cả văn phòng một chỗ\" — bảng tin của tòa nhà."
+              },
+              "solution": {
+                "vi": "Site — bậc áp cho mọi máy ngồi cùng một chỗ vật lý, đứng giữa Local và Domain."
+              }
             },
             {
               "question": {
                 "kind": "mcq",
                 "id": "m9-b4-pra-2",
-                "prompt": { "vi": "GPO Domain đặt hình nền XANH, GPO treo ở OU KeToan đặt hình nền ĐỎ. Máy phòng Kế toán hiện nền màu gì?" },
+                "prompt": {
+                  "vi": "GPO Domain đặt hình nền XANH, GPO treo ở OU KeToan đặt hình nền ĐỎ. Máy phòng Kế toán hiện nền màu gì?"
+                },
                 "choices": [
-                  { "vi": "Đỏ — OU áp sau nên đè lên luật Domain" },
-                  { "vi": "Xanh — Domain to hơn thì thắng" },
-                  { "vi": "Máy báo xung đột và giữ nền cũ" }
+                  {
+                    "vi": "Đỏ — OU áp sau nên đè lên luật Domain"
+                  },
+                  {
+                    "vi": "Xanh — Domain to hơn thì thắng"
+                  },
+                  {
+                    "vi": "Máy báo xung đột và giữ nền cũ"
+                  }
                 ],
                 "answerIndex": 0,
-                "hintTopic": { "vi": "ai nói cuối trong tòa nhà" }
+                "hintTopic": {
+                  "vi": "ai nói cuối trong tòa nhà"
+                }
               },
-              "hint": { "vi": "Leo tòa nhà từ trệt lên nóc — tầng nào ở trên nói sau?" },
-              "solution": { "vi": "Đỏ. OU là bậc áp cuối cùng nên khi cãi nhau, luật OU đè luật Domain (trừ khi Domain dùng vũ khí đặc biệt — bài sau)." }
+              "hint": {
+                "vi": "Leo tòa nhà từ trệt lên nóc — tầng nào ở trên nói sau?"
+              },
+              "solution": {
+                "vi": "Đỏ. OU là bậc áp cuối cùng nên khi cãi nhau, luật OU đè luật Domain (trừ khi Domain dùng vũ khí đặc biệt — bài sau)."
+              }
             }
           ]
         },
@@ -517,42 +986,89 @@
               "question": {
                 "kind": "palace-walk",
                 "id": "m9-b4-ret-1",
-                "prompt": { "vi": "Đóng sách lại và leo tòa nhà từ trí nhớ: đứng ở mỗi tầng, nói xem đó là bậc GPO nào và luật của nó áp cho ai." },
-                "rooms": ["m9-r-local", "m9-r-site", "m9-r-domain", "m9-r-ou"],
-                "hintTopic": { "vi": "leo từ tầng trệt lên nóc, đúng thứ tự áp luật" }
+                "prompt": {
+                  "vi": "Đóng sách lại và leo tòa nhà từ trí nhớ: đứng ở mỗi tầng, nói xem đó là bậc GPO nào và luật của nó áp cho ai."
+                },
+                "rooms": [
+                  "m9-r-local",
+                  "m9-r-site",
+                  "m9-r-domain",
+                  "m9-r-ou"
+                ],
+                "hintTopic": {
+                  "vi": "leo từ tầng trệt lên nóc, đúng thứ tự áp luật"
+                }
               },
-              "hint": { "vi": "Tầng trệt là luật của riêng máy; càng lên cao luật càng gần phòng ban của người dùng." },
-              "solution": { "vi": "Local (chính máy đó) → Site (cả văn phòng một chỗ) → Domain (toàn công ty) → OU (từng phòng ban)." }
+              "hint": {
+                "vi": "Tầng trệt là luật của riêng máy; càng lên cao luật càng gần phòng ban của người dùng."
+              },
+              "solution": {
+                "vi": "Local (chính máy đó) → Site (cả văn phòng một chỗ) → Domain (toàn công ty) → OU (từng phòng ban)."
+              }
             }
           ],
           "selfExplain": {
-            "prompt": { "vi": "Giải thích bằng lời của bạn: vì sao bậc OU được xếp nói CUỐI CÙNG?" },
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: vì sao bậc OU được xếp nói CUỐI CÙNG?"
+            },
             "keywords": [
-              ["gần", "gan nguoi dung", "cụ thể", "cu the", "phòng ban", "phong ban", "hiểu việc", "hieu viec"],
-              ["sau", "ghi đè", "ghi de", "thắng", "thang", "cuối", "cuoi", "chốt", "chot"]
+              [
+                "gần",
+                "gan nguoi dung",
+                "cụ thể",
+                "cu the",
+                "phòng ban",
+                "phong ban",
+                "hiểu việc",
+                "hieu viec"
+              ],
+              [
+                "sau",
+                "ghi đè",
+                "ghi de",
+                "thắng",
+                "thang",
+                "cuối",
+                "cuoi",
+                "chốt",
+                "chot"
+              ]
             ],
-            "exampleAnswer": { "vi": "Vì OU gần người dùng nhất — luật phòng ban hiểu công việc của phòng hơn luật chung toàn công ty. Xếp nó nói sau cùng nghĩa là khi cãi nhau, luật cụ thể nhất thắng." }
+            "exampleAnswer": {
+              "vi": "Vì OU gần người dùng nhất — luật phòng ban hiểu công việc của phòng hơn luật chung toàn công ty. Xếp nó nói sau cùng nghĩa là khi cãi nhau, luật cụ thể nhất thắng."
+            }
           }
         },
         {
           "type": "summary",
           "bullets": [
-            { "vi": "LSDOU: Local → Site → Domain → OU, leo từ tầng trệt lên nóc." },
-            { "vi": "Bậc áp sau đè bậc trước — OU nói cuối nên thắng khi cãi nhau." },
-            { "vi": "Càng lên cao luật càng gần người dùng: cụ thể hơn thì nói sau." }
+            {
+              "vi": "LSDOU: Local → Site → Domain → OU, leo từ tầng trệt lên nóc."
+            },
+            {
+              "vi": "Bậc áp sau đè bậc trước — OU nói cuối nên thắng khi cãi nhau."
+            },
+            {
+              "vi": "Càng lên cao luật càng gần người dùng: cụ thể hơn thì nói sau."
+            }
           ],
-          "nextTeaser": { "vi": "Nhưng có tầng không muốn nhận luật từ dưới đẩy lên, và có luật đòi xuyên thủng mọi tầng. Bài cuối: hai vũ khí đối đầu — và hai câu thần chú soi xem luật đang kẹt ở đâu." }
+          "nextTeaser": {
+            "vi": "Nhưng có tầng không muốn nhận luật từ dưới đẩy lên, và có luật đòi xuyên thủng mọi tầng. Bài cuối: hai vũ khí đối đầu — và hai câu thần chú soi xem luật đang kẹt ở đâu."
+          }
         }
       ]
     },
-
     {
       "id": "m9-bai-5",
-      "missionTitle": { "vi": "Phân xử khi các tầng cãi nhau" },
+      "missionTitle": {
+        "vi": "Phân xử khi các tầng cãi nhau"
+      },
       "steps": [
         {
           "type": "hook",
-          "question": { "vi": "Bạn treo GPO cẩn thận rồi mà máy client vẫn trơ trơ. Luật đang kẹt ở tầng nào? Bị chặn hay chưa kịp tải? Có hai câu lệnh trả lời được — và một cặp vũ khí đang đấu nhau ở giữa tòa nhà." },
+          "question": {
+            "vi": "Bạn treo GPO cẩn thận rồi mà máy client vẫn trơ trơ. Luật đang kẹt ở tầng nào? Bị chặn hay chưa kịp tải? Có hai câu lệnh trả lời được — và một cặp vũ khí đang đấu nhau ở giữa tòa nhà."
+          },
           "visualId": "vis-hook-ke-thua"
         },
         {
@@ -561,17 +1077,29 @@
             {
               "kind": "mcq",
               "id": "m9-b5-pre-1",
-              "prompt": { "vi": "Đoán thử nhé: một OU không muốn nhận luật từ trên chảy xuống thì làm gì?" },
+              "prompt": {
+                "vi": "Đoán thử nhé: một OU không muốn nhận luật từ trên chảy xuống thì làm gì?"
+              },
               "choices": [
-                { "vi": "Bật Block Inheritance — dựng tấm chắn chặn dòng kế thừa" },
-                { "vi": "Xóa GPO của miền đi" },
-                { "vi": "Rút hết máy khỏi miền" }
+                {
+                  "vi": "Bật Block Inheritance — dựng tấm chắn chặn dòng kế thừa"
+                },
+                {
+                  "vi": "Xóa hẳn GPO của miền đi cho nó khỏi chảy xuống OU nữa"
+                },
+                {
+                  "vi": "Rút hết máy trong OU đó ra khỏi miền"
+                }
               ],
               "answerIndex": 0,
-              "explain": { "vi": "Block Inheritance chặn luật thừa kế từ các bậc trên — trừ những GPO được đánh dấu Enforced, thứ xuyên qua mọi tấm chắn." }
+              "explain": {
+                "vi": "Block Inheritance chặn luật thừa kế từ các bậc trên — trừ những GPO được đánh dấu Enforced, thứ xuyên qua mọi tấm chắn."
+              }
             }
           ],
-          "encouragement": { "vi": "Hình dung thác nước chảy từ nóc xuống: có tầng dựng mái che, và có dòng nước khoan thủng cả mái." }
+          "encouragement": {
+            "vi": "Hình dung thác nước chảy từ nóc xuống: có tầng dựng mái che, và có dòng nước khoan thủng cả mái."
+          }
         },
         {
           "type": "teach",
@@ -579,14 +1107,22 @@
             {
               "conceptId": "m9-ke-thua",
               "visualId": "vis-ke-thua-chan",
-              "body": { "vi": "Luật KẾ THỪA: GPO treo ở miền tự chảy xuống mọi OU bên dưới. OU nào không muốn nhận thì bật BLOCK INHERITANCE — dựng tấm chắn, luật trên không lọt vào nữa. Nhưng quản trị miền có vũ khí sau cùng: đánh dấu một GPO là ENFORCED — luật ấy xuyên thủng mọi tấm chắn, và thắng cả luật OU khi hai bên cãi nhau." },
-              "deepDive": { "vi": "Enforced đảo cả luật \"sau thắng trước\": GPO enforced của miền đè luật OU dù OU nói sau. Nó dành cho thứ không được phép có ngoại lệ — luật mật khẩu, phần mềm bảo vệ. Lạm dụng enforced thì mô hình phân quyền theo tầng thành vô nghĩa, nên người giỏi dùng nó rất dè." }
+              "body": {
+                "vi": "Luật KẾ THỪA: GPO treo ở miền tự chảy xuống mọi OU bên dưới. OU nào không muốn nhận thì bật BLOCK INHERITANCE — dựng tấm chắn, luật trên không lọt vào nữa. Nhưng quản trị miền có vũ khí sau cùng: đánh dấu một GPO là ENFORCED — luật ấy xuyên thủng mọi tấm chắn, và thắng cả luật OU khi hai bên cãi nhau."
+              },
+              "deepDive": {
+                "vi": "Enforced đảo cả luật \"sau thắng trước\": GPO enforced của miền đè luật OU dù OU nói sau. Nó dành cho thứ không được phép có ngoại lệ — luật mật khẩu, phần mềm bảo vệ. Lạm dụng enforced thì mô hình phân quyền theo tầng thành vô nghĩa, nên người giỏi dùng nó rất dè."
+              }
             },
             {
               "conceptId": "m9-gpresult",
               "visualId": "vis-gpresult-soi",
-              "body": { "vi": "Hai câu thần chú khi luật không ăn: gpupdate /force — \"áp luật mới NGAY, đừng chờ chu kỳ 90 phút\"; và gpresult /r — \"kê ra máy này, người này đang dính những GPO nào, cái nào bị gạt\". Có gpresult, bạn không phải ĐOÁN luật kẹt ở tầng nào — tấm bảng kê nói thẳng." },
-              "deepDive": { "vi": "Trong bảng gpresult, GPO bị Block Inheritance gạt ra nằm ở mục riêng kèm lý do bị từ chối — đọc mục đó TRƯỚC khi nghi ngờ bất cứ thứ gì khác. Đây chính là thói quen \"nghi đúng chặng\" của bài mạng nhà (Module 7), áp sang thế giới AD." }
+              "body": {
+                "vi": "Hai câu thần chú khi luật không ăn: gpupdate /force — \"áp luật mới NGAY, đừng chờ chu kỳ 90 phút\"; và gpresult /r — \"kê ra máy này, người này đang dính những GPO nào, cái nào bị gạt\". Có gpresult, bạn không phải ĐOÁN luật kẹt ở tầng nào — tấm bảng kê nói thẳng."
+              },
+              "deepDive": {
+                "vi": "Trong bảng gpresult, GPO bị Block Inheritance gạt ra nằm ở mục riêng kèm lý do bị từ chối — đọc mục đó TRƯỚC khi nghi ngờ bất cứ thứ gì khác. Đây chính là thói quen \"nghi đúng chặng\" của bài mạng nhà (Module 7), áp sang thế giới AD."
+              }
             }
           ]
         },
@@ -598,28 +1134,54 @@
               "question": {
                 "kind": "mcq",
                 "id": "m9-b5-pra-1",
-                "prompt": { "vi": "Yêu cầu suông từ sếp: \"mọi máy phòng Kế toán cấm cắm USB, các phòng khác không bị ảnh hưởng\". Bạn làm gì?" },
+                "prompt": {
+                  "vi": "Yêu cầu suông từ sếp: \"mọi máy phòng Kế toán cấm cắm USB, các phòng khác không bị ảnh hưởng\". Bạn làm gì?"
+                },
                 "choices": [
-                  { "vi": "Tạo GPO cấm USB rồi treo vào OU KeToan" },
-                  { "vi": "Treo vào Domain rồi nhắn các phòng khác bỏ qua" },
-                  { "vi": "Đi khóa cổng USB từng máy của phòng Kế toán" }
+                  {
+                    "vi": "Tạo GPO cấm USB rồi treo vào OU KeToan"
+                  },
+                  {
+                    "vi": "Treo vào Domain rồi nhắn các phòng khác bỏ qua"
+                  },
+                  {
+                    "vi": "Đi khóa cổng USB từng máy của phòng Kế toán"
+                  }
                 ],
                 "answerIndex": 0,
-                "hintTopic": { "vi": "phạm vi treo quyết định ai phải theo" }
+                "hintTopic": {
+                  "vi": "phạm vi treo quyết định ai phải theo"
+                }
               },
-              "hint": { "vi": "Tự dựng lời giải từ hai bài trước: luật viết ở đâu, và khoanh vùng bằng cái gì?" },
-              "solution": { "vi": "Tạo GPO cấm USB, treo vào OU KeToan — luật tự áp cho đúng phòng đó, các OU khác không dính." }
+              "hint": {
+                "vi": "Tự dựng lời giải từ hai bài trước: luật viết ở đâu, và khoanh vùng bằng cái gì?"
+              },
+              "solution": {
+                "vi": "Tạo GPO cấm USB, treo vào OU KeToan — luật tự áp cho đúng phòng đó, các OU khác không dính."
+              }
             },
             {
               "question": {
                 "kind": "typed",
                 "id": "m9-b5-pra-2",
-                "prompt": { "vi": "Treo xong luật, muốn máy client áp NGAY để nghiệm thu — bạn gõ lệnh gì?" },
-                "accept": ["gpupdate", "gpupdate /force", "gpupdate/force"],
-                "hintTopic": { "vi": "câu thần chú giục việc" }
+                "prompt": {
+                  "vi": "Treo xong luật, muốn máy client áp NGAY để nghiệm thu — bạn gõ lệnh gì?"
+                },
+                "accept": [
+                  "gpupdate",
+                  "gpupdate /force",
+                  "gpupdate/force"
+                ],
+                "hintTopic": {
+                  "vi": "câu thần chú giục việc"
+                }
               },
-              "hint": { "vi": "Lệnh bắt đầu bằng gp, kết thúc bằng update — thêm /force cho dứt khoát." },
-              "solution": { "vi": "gpupdate /force — bắt máy tải và áp toàn bộ luật ngay, không chờ chu kỳ làm mới." },
+              "hint": {
+                "vi": "Lệnh bắt đầu bằng gp, kết thúc bằng update — thêm /force cho dứt khoát."
+              },
+              "solution": {
+                "vi": "gpupdate /force — bắt máy tải và áp toàn bộ luật ngay, không chờ chu kỳ làm mới."
+              },
               "conceptId": "m9-gpresult"
             }
           ]
@@ -631,260 +1193,481 @@
               "question": {
                 "kind": "typed",
                 "id": "m9-b5-ret-1",
-                "prompt": { "vi": "Không nhìn lại bài: lệnh nào kê ra các GPO đang áp lên máy và người đang đăng nhập?" },
-                "accept": ["gpresult", "gpresult /r", "gpresult/r"],
-                "hintTopic": { "vi": "tấm bảng kê thay cho việc đoán" }
+                "prompt": {
+                  "vi": "Không nhìn lại bài: lệnh nào kê ra các GPO đang áp lên máy và người đang đăng nhập?"
+                },
+                "accept": [
+                  "gpresult",
+                  "gpresult /r",
+                  "gpresult/r"
+                ],
+                "hintTopic": {
+                  "vi": "tấm bảng kê thay cho việc đoán"
+                }
               },
-              "hint": { "vi": "Ghép gp với \"kết quả\" tiếng Anh." },
-              "solution": { "vi": "gpresult /r — bảng kê GPO đang áp và GPO bị gạt kèm lý do; hết phải đoán luật kẹt ở đâu." }
+              "hint": {
+                "vi": "Ghép gp với \"kết quả\" tiếng Anh."
+              },
+              "solution": {
+                "vi": "gpresult /r — bảng kê GPO đang áp và GPO bị gạt kèm lý do; hết phải đoán luật kẹt ở đâu."
+              }
             },
             {
               "question": {
                 "kind": "mcq",
                 "id": "m9-b5-ret-2",
-                "prompt": { "vi": "Vẫn từ trí nhớ: GPO miền gắn Enforced gặp OU bật Block Inheritance — luật nào thắng?" },
+                "prompt": {
+                  "vi": "Vẫn từ trí nhớ: GPO miền gắn Enforced gặp OU bật Block Inheritance — luật nào thắng?"
+                },
                 "choices": [
-                  { "vi": "Enforced xuyên qua tấm chắn — luật miền thắng" },
-                  { "vi": "Block chặn được tất cả, kể cả Enforced" },
-                  { "vi": "Hai luật triệt tiêu nhau" }
+                  {
+                    "vi": "Enforced xuyên qua tấm chắn — luật miền thắng"
+                  },
+                  {
+                    "vi": "Block chặn được tất cả, kể cả luật Enforced"
+                  },
+                  {
+                    "vi": "Hai luật triệt tiêu nhau"
+                  }
                 ],
                 "answerIndex": 0,
-                "hintTopic": { "vi": "dòng nước khoan thủng mái che" }
+                "hintTopic": {
+                  "vi": "dòng nước khoan thủng mái che"
+                }
               },
-              "hint": { "vi": "Một bên là mái che, một bên là mũi khoan — mũi khoan sinh ra để làm gì?" },
-              "solution": { "vi": "Enforced thắng: nó xuyên qua Block Inheritance và đè cả luật OU khi xung đột — vũ khí sau cùng của quản trị miền." }
+              "hint": {
+                "vi": "Một bên là mái che, một bên là mũi khoan — mũi khoan sinh ra để làm gì?"
+              },
+              "solution": {
+                "vi": "Enforced thắng: nó xuyên qua Block Inheritance và đè cả luật OU khi xung đột — vũ khí sau cùng của quản trị miền."
+              }
             }
           ],
           "selfExplain": {
-            "prompt": { "vi": "Giải thích bằng lời của bạn: khi một luật không ăn xuống máy client, bạn lần theo thứ tự nào để tìm ra chỗ kẹt?" },
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: khi một luật không ăn xuống máy client, bạn lần theo thứ tự nào để tìm ra chỗ kẹt?"
+            },
             "keywords": [
-              ["gpresult", "bảng kê", "bang ke", "liệt kê", "liet ke", "đang dính", "dang dinh", "bị gạt", "bi gat"],
-              ["gpupdate", "làm mới", "lam moi", "block", "enforced", "chặn", "chan", "treo", "tầng", "tang"]
+              [
+                "gpresult",
+                "bảng kê",
+                "bang ke",
+                "liệt kê",
+                "liet ke",
+                "đang dính",
+                "dang dinh",
+                "bị gạt",
+                "bi gat"
+              ],
+              [
+                "gpupdate",
+                "làm mới",
+                "lam moi",
+                "block",
+                "enforced",
+                "chặn",
+                "chan",
+                "treo",
+                "tầng",
+                "tang"
+              ]
             ],
-            "exampleAnswer": { "vi": "Trước hết gpupdate /force để loại trừ chuyện chưa kịp tải; rồi gpresult /r xem GPO có trong bảng kê không — nếu nằm ở mục bị gạt thì đọc lý do (thường là Block Inheritance), nếu vắng hẳn thì xem lại chỗ treo. Lần theo bảng kê, không đoán mò." }
+            "exampleAnswer": {
+              "vi": "Trước hết gpupdate /force để loại trừ chuyện chưa kịp tải; rồi gpresult /r xem GPO có trong bảng kê không — nếu nằm ở mục bị gạt thì đọc lý do (thường là Block Inheritance), nếu vắng hẳn thì xem lại chỗ treo. Lần theo bảng kê, không đoán mò."
+            }
           }
         },
         {
           "type": "summary",
           "bullets": [
-            { "vi": "Luật kế thừa chảy từ miền xuống; Block Inheritance dựng tấm chắn ở OU." },
-            { "vi": "Enforced xuyên mọi tấm chắn và đè cả luật OU — dùng dè, cho thứ không có ngoại lệ." },
-            { "vi": "gpupdate /force áp ngay; gpresult /r kê luật đang dính — lần theo bảng, không đoán." }
+            {
+              "vi": "Luật kế thừa chảy từ miền xuống; Block Inheritance dựng tấm chắn ở OU."
+            },
+            {
+              "vi": "Enforced xuyên mọi tấm chắn và đè cả luật OU — dùng dè, cho thứ không có ngoại lệ."
+            },
+            {
+              "vi": "gpupdate /force áp ngay; gpresult /r kê luật đang dính — lần theo bảng, không đoán."
+            }
           ],
-          "nextTeaser": { "vi": "Lý thuyết đủ rồi — AD chỉ THẬT khi tự tay dựng: checklist lab VMware đang chờ ở trang Học, dựng làng của riêng bạn rồi hãy vào bài thi. Module sau: đem cả mạng lên mây." }
+          "nextTeaser": {
+            "vi": "Lý thuyết đủ rồi — AD chỉ THẬT khi tự tay dựng: checklist lab VMware đang chờ ở trang Học, dựng làng của riêng bạn rồi hãy vào bài thi. Module sau: đem cả mạng lên mây."
+          }
         }
       ]
     }
   ],
-
   "concepts": [
     {
       "id": "m9-domain",
       "term": "Domain",
       "glossVi": "Làng có luật của các máy Windows — gia nhập là chịu luật chung",
-      "metaphor": { "vi": "Ký giao kèo vào làng: từ nay việc làng là việc mình, sổ sách làng giữ." },
+      "metaphor": {
+        "vi": "Ký giao kèo vào làng: từ nay việc làng là việc mình, sổ sách làng giữ."
+      },
       "iconId": "icon-domain",
       "flashcard": {
-        "front": { "vi": "Máy \"gia nhập miền\" thì điều gì thay đổi?" },
-        "back": { "vi": "Nó chịu bộ luật chung của miền, và tài khoản đăng nhập là của MIỀN — DC xác thực, ngồi máy nào trong miền cũng đăng nhập được." }
+        "front": {
+          "vi": "Máy \"gia nhập miền\" thì điều gì thay đổi?"
+        },
+        "back": {
+          "vi": "Nó chịu bộ luật chung của miền, và tài khoản đăng nhập là của MIỀN — DC xác thực, ngồi máy nào trong miền cũng đăng nhập được."
+        }
       }
     },
     {
       "id": "m9-dc",
       "term": "Domain Controller",
       "glossVi": "Máy chủ giữ sổ cái của miền và xác thực mọi lượt đăng nhập",
-      "metaphor": { "vi": "Trưởng làng giữ sổ cái: ai ra vào làng cũng phải qua tay ông đối chiếu." },
+      "metaphor": {
+        "vi": "Trưởng làng giữ sổ cái: ai ra vào làng cũng phải qua tay ông đối chiếu."
+      },
       "iconId": "icon-dc",
       "flashcard": {
-        "front": { "vi": "Domain Controller làm hai việc gì?" },
-        "back": { "vi": "Giữ sổ cái AD (người, máy, nhóm, luật — tra qua LDAP 389) và xác thực mọi lượt đăng nhập trong miền." }
+        "front": {
+          "vi": "Domain Controller làm hai việc gì?"
+        },
+        "back": {
+          "vi": "Giữ sổ cái AD (người, máy, nhóm, luật — tra qua LDAP 389) và xác thực mọi lượt đăng nhập trong miền."
+        }
       }
     },
     {
       "id": "m9-user-group",
       "term": "User và Group",
       "glossVi": "Tài khoản của miền, và nhóm để cấp quyền một lần cho nhiều người",
-      "metaphor": { "vi": "Thẻ câu lạc bộ: có thẻ là vào được mọi phòng của câu lạc bộ, trả thẻ là hết." },
+      "metaphor": {
+        "vi": "Thẻ câu lạc bộ: có thẻ là vào được mọi phòng của câu lạc bộ, trả thẻ là hết."
+      },
       "iconId": "icon-user-group",
       "flashcard": {
-        "front": { "vi": "Vì sao cấp quyền cho group thay vì cho từng người?" },
-        "back": { "vi": "Cấp một lần cho nhóm: ai vào nhóm tự có, ai rời nhóm tự mất — không sót khi vào, không quên thu hồi khi đi, kiểm toán được." }
+        "front": {
+          "vi": "Vì sao cấp quyền cho group thay vì cho từng người?"
+        },
+        "back": {
+          "vi": "Cấp một lần cho nhóm: ai vào nhóm tự có, ai rời nhóm tự mất — không sót khi vào, không quên thu hồi khi đi, kiểm toán được."
+        }
       }
     },
     {
       "id": "m9-ou",
       "term": "OU",
       "glossVi": "Ngăn kéo xếp người và máy theo phòng ban — chỗ để treo GPO",
-      "metaphor": { "vi": "Ngăn kéo hồ sơ: một hồ sơ nằm đúng một ngăn, và luật thì dán lên từng ngăn." },
+      "metaphor": {
+        "vi": "Ngăn kéo hồ sơ: một hồ sơ nằm đúng một ngăn, và luật thì dán lên từng ngăn."
+      },
       "iconId": "icon-ou",
       "flashcard": {
-        "front": { "vi": "OU khác group ở chỗ nào?" },
-        "back": { "vi": "OU để XẾP CHỖ và TREO LUẬT (GPO); group để CẤP QUYỀN. Một người nằm đúng một OU nhưng tham gia được nhiều group." }
+        "front": {
+          "vi": "OU khác group ở chỗ nào?"
+        },
+        "back": {
+          "vi": "OU để XẾP CHỖ và TREO LUẬT (GPO); group để CẤP QUYỀN. Một người nằm đúng một OU nhưng tham gia được nhiều group."
+        }
       }
     },
     {
       "id": "m9-gpo",
       "term": "GPO",
       "glossVi": "Tập luật viết một lần trên máy chủ, máy trong miền tự tải về áp",
-      "metaphor": { "vi": "Tờ cáo thị dán ở đình làng: dán chỗ nào, dân chỗ đó theo." },
+      "metaphor": {
+        "vi": "Tờ cáo thị dán ở đình làng: dán chỗ nào, dân chỗ đó theo."
+      },
       "iconId": "icon-gpo",
       "flashcard": {
-        "front": { "vi": "GPO có tác dụng từ khi nào, và treo được vào đâu?" },
-        "back": { "vi": "Từ khi được TREO (link) vào Site, Domain hoặc OU — viết xong mà không treo thì nằm chết trên giấy. Không treo vào group được, dù tên có chữ Group." }
+        "front": {
+          "vi": "GPO có tác dụng từ khi nào, và treo được vào đâu?"
+        },
+        "back": {
+          "vi": "Từ khi được TREO (link) vào Site, Domain hoặc OU — viết xong mà không treo thì nằm chết trên giấy. Không treo vào group được, dù tên có chữ Group."
+        }
       }
     },
     {
       "id": "m9-lsdou",
       "term": "Thứ tự LSDOU",
       "glossVi": "Local → Site → Domain → OU; bậc áp sau đè bậc trước",
-      "metaphor": { "vi": "Tòa nhà bốn tầng leo từ trệt lên nóc — người nói cuối là người chốt." },
+      "metaphor": {
+        "vi": "Tòa nhà bốn tầng leo từ trệt lên nóc — người nói cuối là người chốt."
+      },
       "iconId": "icon-lsdou",
       "flashcard": {
-        "front": { "vi": "Bốn bậc GPO áp theo thứ tự nào, và ai thắng khi cãi nhau?" },
-        "back": { "vi": "Local → Site → Domain → OU. Bậc áp SAU ghi đè bậc trước nên OU thắng — trừ khi bậc trên gắn Enforced." }
+        "front": {
+          "vi": "Bốn bậc GPO áp theo thứ tự nào, và ai thắng khi cãi nhau?"
+        },
+        "back": {
+          "vi": "Local → Site → Domain → OU. Bậc áp SAU ghi đè bậc trước nên OU thắng — trừ khi bậc trên gắn Enforced."
+        }
       }
     },
     {
       "id": "m9-ke-thua",
       "term": "Kế thừa GPO",
       "glossVi": "Luật trên chảy xuống dưới; Block Inheritance chặn, Enforced xuyên chắn",
-      "metaphor": { "vi": "Thác nước chảy xuống các tầng: có tầng dựng mái che, và có dòng nước khoan thủng cả mái." },
+      "metaphor": {
+        "vi": "Thác nước chảy xuống các tầng: có tầng dựng mái che, và có dòng nước khoan thủng cả mái."
+      },
       "iconId": "icon-ke-thua",
       "flashcard": {
-        "front": { "vi": "Block Inheritance gặp GPO Enforced thì sao?" },
-        "back": { "vi": "Enforced xuyên qua tấm chắn và đè cả luật OU khi xung đột — vũ khí sau cùng của quản trị miền, dùng cho thứ không được có ngoại lệ." }
+        "front": {
+          "vi": "Block Inheritance gặp GPO Enforced thì sao?"
+        },
+        "back": {
+          "vi": "Enforced xuyên qua tấm chắn và đè cả luật OU khi xung đột — vũ khí sau cùng của quản trị miền, dùng cho thứ không được có ngoại lệ."
+        }
       }
     },
     {
       "id": "m9-gpresult",
       "term": "gpupdate và gpresult",
       "glossVi": "gpupdate /force áp luật ngay; gpresult /r kê luật đang dính máy",
-      "metaphor": { "vi": "Một câu giục \"áp luôn đi\", một tấm bảng kê \"đang theo những luật nào\"." },
+      "metaphor": {
+        "vi": "Một câu giục \"áp luôn đi\", một tấm bảng kê \"đang theo những luật nào\"."
+      },
       "iconId": "icon-gpresult",
       "flashcard": {
-        "front": { "vi": "Luật không ăn xuống client — hai lệnh nào cứu bạn, mỗi lệnh làm gì?" },
-        "back": { "vi": "gpupdate /force: áp toàn bộ luật ngay, không chờ chu kỳ. gpresult /r: kê GPO đang áp và GPO bị gạt kèm lý do — lần theo bảng, không đoán." }
+        "front": {
+          "vi": "Luật không ăn xuống client — hai lệnh nào cứu bạn, mỗi lệnh làm gì?"
+        },
+        "back": {
+          "vi": "gpupdate /force: áp toàn bộ luật ngay, không chờ chu kỳ. gpresult /r: kê GPO đang áp và GPO bị gạt kèm lý do — lần theo bảng, không đoán."
+        }
       }
     }
   ],
-
   "masteryTest": [
     {
       "kind": "mcq",
       "id": "m9-mt-1",
-      "prompt": { "vi": "Máy \"gia nhập miền\" nghĩa là gì?" },
+      "prompt": {
+        "vi": "Máy \"gia nhập miền\" nghĩa là gì?"
+      },
       "choices": [
-        { "vi": "Chịu luật chung của miền, đăng nhập xác thực qua DC" },
-        { "vi": "Máy được đặt vào cùng một workgroup với các máy khác" },
-        { "vi": "Máy được nối vào cùng switch với máy chủ công ty" }
+        {
+          "vi": "Chịu luật chung của miền, đăng nhập xác thực qua DC"
+        },
+        {
+          "vi": "Máy được đặt vào cùng một workgroup với các máy khác"
+        },
+        {
+          "vi": "Máy được nối vào cùng switch với máy chủ công ty"
+        }
       ],
       "answerIndex": 0,
-      "explain": { "vi": "Gia nhập miền là ký giao kèo vào làng: luật chung từ máy chủ, tài khoản là của làng, DC gác cổng đăng nhập." }
+      "explain": {
+        "vi": "Gia nhập miền là ký giao kèo vào làng: luật chung từ máy chủ, tài khoản là của làng, DC gác cổng đăng nhập."
+      }
     },
     {
       "kind": "typed",
       "id": "m9-mt-2",
-      "prompt": { "vi": "Nhân viên chi nhánh gõ mật khẩu; máy trước mặt không tự quyết mà chạy đi hỏi máy nào trong miền? (viết tắt được)" },
-      "accept": ["domain controller", "dc", "máy chủ điều khiển miền", "bộ điều khiển miền"],
-      "explain": { "vi": "Domain Controller — giữ sổ cái AD (tra qua LDAP 389) và gác cổng mọi lượt đăng nhập." }
+      "prompt": {
+        "vi": "Nhân viên chi nhánh gõ mật khẩu; máy trước mặt không tự quyết mà chạy đi hỏi máy nào trong miền? (viết tắt được)"
+      },
+      "accept": [
+        "domain controller",
+        "dc",
+        "máy chủ điều khiển miền",
+        "bộ điều khiển miền"
+      ],
+      "explain": {
+        "vi": "Domain Controller — giữ sổ cái AD (tra qua LDAP 389) và gác cổng mọi lượt đăng nhập."
+      }
     },
     {
       "kind": "mcq",
       "id": "m9-mt-3",
-      "prompt": { "vi": "GROUP và OU khác nhau thế nào?" },
+      "prompt": {
+        "vi": "GROUP và OU khác nhau thế nào?"
+      },
       "choices": [
-        { "vi": "Group để cấp quyền; OU để xếp chỗ và treo GPO" },
-        { "vi": "Là một thứ với hai tên gọi khác nhau" },
-        { "vi": "OU để cấp quyền, còn group để xếp chỗ và treo GPO" }
+        {
+          "vi": "Group để cấp quyền; OU để xếp chỗ và treo GPO"
+        },
+        {
+          "vi": "Là một thứ với hai tên gọi khác nhau"
+        },
+        {
+          "vi": "OU để cấp quyền, còn group để xếp chỗ và treo GPO"
+        }
       ],
       "answerIndex": 0,
-      "explain": { "vi": "Group = thẻ câu lạc bộ (quyền); OU = ngăn kéo hồ sơ (xếp chỗ, treo luật). Một người nằm một OU, thuộc nhiều group." }
+      "explain": {
+        "vi": "Group = thẻ câu lạc bộ (quyền); OU = ngăn kéo hồ sơ (xếp chỗ, treo luật). Một người nằm một OU, thuộc nhiều group."
+      }
     },
     {
       "kind": "typed",
       "id": "m9-mt-4",
-      "prompt": { "vi": "Công ty có hai văn phòng ở hai thành phố. Muốn một luật áp cho mọi máy ngồi ở văn phòng Đà Nẵng, bất kể phòng ban nào — treo GPO ở bậc nào?" },
-      "accept": ["site"],
-      "explain": { "vi": "Site — bậc \"cả văn phòng một chỗ\": treo ở đó thì mọi máy ngồi tại văn phòng ấy đều dính, bất kể phòng ban. Thứ tự đầy đủ vẫn là Local → Site → Domain → OU." }
+      "prompt": {
+        "vi": "Công ty có hai văn phòng ở hai thành phố. Muốn một luật áp cho mọi máy ngồi ở văn phòng Đà Nẵng, bất kể phòng ban nào — treo GPO ở bậc nào?"
+      },
+      "accept": [
+        "site"
+      ],
+      "explain": {
+        "vi": "Site — bậc \"cả văn phòng một chỗ\": treo ở đó thì mọi máy ngồi tại văn phòng ấy đều dính, bất kể phòng ban. Thứ tự đầy đủ vẫn là Local → Site → Domain → OU."
+      }
     },
     {
       "kind": "mcq",
       "id": "m9-mt-5",
-      "prompt": { "vi": "GPO Domain và GPO treo ở OU cùng chỉnh MỘT thiết lập: Domain đặt A, OU đặt B, không ai gắn Enforced. Máy trong OU theo luật nào?" },
+      "prompt": {
+        "vi": "GPO Domain và GPO treo ở OU cùng chỉnh MỘT thiết lập: Domain đặt A, OU đặt B, không ai gắn Enforced. Máy trong OU theo luật nào?"
+      },
       "choices": [
-        { "vi": "B — OU áp sau nên đè lên luật Domain" },
-        { "vi": "A — miền to hơn nên luật miền thắng" },
-        { "vi": "Cả hai luật cùng áp một lúc, không ai đè ai" }
+        {
+          "vi": "B — OU áp sau nên đè lên luật Domain"
+        },
+        {
+          "vi": "A — miền to hơn nên luật miền thắng"
+        },
+        {
+          "vi": "Cả hai luật cùng áp một lúc, không ai đè ai"
+        }
       ],
       "answerIndex": 0,
-      "explain": { "vi": "Bậc áp sau thắng: OU là tiếng nói cuối trong LSDOU nên luật B đè luật A — trừ khi A được gắn Enforced." }
+      "explain": {
+        "vi": "Bậc áp sau thắng: OU là tiếng nói cuối trong LSDOU nên luật B đè luật A — trừ khi A được gắn Enforced."
+      }
     },
     {
       "kind": "mcq",
       "id": "m9-mt-6",
-      "prompt": { "vi": "Luật mật khẩu công ty treo ở miền, có gắn Enforced. OU KeToan lại bật Block Inheritance cho khỏi dính luật chung. Máy phòng Kế toán có phải theo luật mật khẩu đó không?" },
+      "prompt": {
+        "vi": "Luật mật khẩu công ty treo ở miền, có gắn Enforced. OU KeToan lại bật Block Inheritance cho khỏi dính luật chung. Máy phòng Kế toán có phải theo luật mật khẩu đó không?"
+      },
       "choices": [
-        { "vi": "Có — Enforced xuyên qua tấm chắn, luật miền vẫn áp" },
-        { "vi": "Không — tấm chắn chặn được tất cả, kể cả Enforced" },
-        { "vi": "Không — máy báo lỗi cấu hình rồi bỏ qua cả hai luật" }
+        {
+          "vi": "Có — Enforced xuyên qua tấm chắn, luật miền vẫn áp"
+        },
+        {
+          "vi": "Không — tấm chắn chặn được tất cả, kể cả Enforced"
+        },
+        {
+          "vi": "Không — máy báo lỗi cấu hình rồi bỏ qua cả hai luật"
+        }
       ],
       "answerIndex": 0,
-      "explain": { "vi": "Enforced là mũi khoan xuyên mái che: vượt Block Inheritance và đè cả luật OU — dùng cho thứ không được có ngoại lệ." }
+      "explain": {
+        "vi": "Enforced là mũi khoan xuyên mái che: vượt Block Inheritance và đè cả luật OU — dùng cho thứ không được có ngoại lệ."
+      }
     },
     {
       "kind": "typed",
       "id": "m9-mt-7",
-      "prompt": { "vi": "Lệnh nào bắt máy áp luật mới ngay lập tức, không chờ chu kỳ làm mới?" },
-      "accept": ["gpupdate", "gpupdate /force", "gpupdate/force"],
-      "explain": { "vi": "gpupdate /force — tải và áp lại toàn bộ GPO ngay, dùng khi nghiệm thu luật vừa treo." }
+      "prompt": {
+        "vi": "Lệnh nào bắt máy áp luật mới ngay lập tức, không chờ chu kỳ làm mới?"
+      },
+      "accept": [
+        "gpupdate",
+        "gpupdate /force",
+        "gpupdate/force"
+      ],
+      "explain": {
+        "vi": "gpupdate /force — tải và áp lại toàn bộ GPO ngay, dùng khi nghiệm thu luật vừa treo."
+      }
     },
     {
       "kind": "typed",
       "id": "m9-mt-8",
-      "prompt": { "vi": "Lệnh nào kê ra các GPO đang áp lên máy và người đang đăng nhập?" },
-      "accept": ["gpresult", "gpresult /r", "gpresult/r"],
-      "explain": { "vi": "gpresult /r — bảng kê GPO đang áp và GPO bị gạt kèm lý do; công cụ chẩn đoán số một khi luật không ăn." }
+      "prompt": {
+        "vi": "Sếp khẳng định chính sách khoá cổng USB đã bật cho cả phòng, vậy mà một máy vẫn cắm USB chạy ngon. Ngồi tại chính máy đó, bạn gõ gì để xem bảng kê những chính sách thực sự đang ăn?"
+      },
+      "accept": [
+        "gpresult",
+        "gpresult /r",
+        "gpresult/r"
+      ],
+      "explain": {
+        "vi": "gpresult /r — bảng kê GPO đang áp và GPO bị gạt kèm lý do; công cụ chẩn đoán số một khi luật không ăn."
+      }
     },
     {
       "kind": "mcq",
       "id": "m9-mt-10",
-      "prompt": { "vi": "Mười người mới vào phòng kế toán, cần đúng bộ quyền như người cũ. Cách làm gọn nhất là gì?" },
+      "prompt": {
+        "vi": "Mười người mới vào phòng kế toán, cần đúng bộ quyền như người cũ. Cách làm gọn nhất là gì?"
+      },
       "choices": [
-        { "vi": "Thêm cả mười vào group của phòng kế toán, quyền cấp cho group" },
-        { "vi": "Cấp quyền bằng tay cho từng người theo đúng danh sách quyền của người cũ" },
-        { "vi": "Tạo cho mỗi người một OU riêng rồi treo quyền lên từng OU đó" }
+        {
+          "vi": "Thêm cả mười vào group của phòng kế toán, quyền cấp cho group"
+        },
+        {
+          "vi": "Cấp quyền bằng tay cho từng người theo đúng danh sách quyền của người cũ"
+        },
+        {
+          "vi": "Tạo cho mỗi người một OU riêng rồi treo quyền lên từng OU đó"
+        }
       ],
       "answerIndex": 0,
-      "hintTopic": { "vi": "group để cấp quyền, OU để xếp chỗ" },
-      "explain": { "vi": "Group là để cấp quyền một lần cho nhiều người: vào group là có quyền, rời group là mất quyền. OU là ngăn kéo xếp chỗ và treo GPO — hai việc khác nhau." }
+      "hintTopic": {
+        "vi": "group để cấp quyền, OU để xếp chỗ"
+      },
+      "explain": {
+        "vi": "Group là để cấp quyền một lần cho nhiều người: vào group là có quyền, rời group là mất quyền. OU là ngăn kéo xếp chỗ và treo GPO — hai việc khác nhau."
+      }
     },
     {
       "kind": "typed",
       "id": "m9-mt-11",
-      "prompt": { "vi": "Bạn muốn một luật chỉ áp cho riêng phòng kế toán, không đụng phòng khác. Bạn treo GPO lên đâu?" },
-      "accept": ["ou", "ou phòng kế toán", "ou kế toán", "organizational unit", "ou cua phong ke toan"],
-      "hintTopic": { "vi": "chỗ treo GPO cho một phòng ban" },
-      "explain": { "vi": "GPO treo được ở Site, Domain và OU. Muốn luật chỉ dính đúng một phòng ban thì treo lên OU của phòng đó — đó chính là lý do OU tồn tại." }
+      "prompt": {
+        "vi": "Bạn muốn một luật chỉ áp cho riêng phòng kế toán, không đụng phòng khác. Bạn treo GPO lên đâu?"
+      },
+      "accept": [
+        "ou",
+        "ou phòng kế toán",
+        "ou kế toán",
+        "organizational unit",
+        "ou cua phong ke toan"
+      ],
+      "hintTopic": {
+        "vi": "chỗ treo GPO cho một phòng ban"
+      },
+      "explain": {
+        "vi": "GPO treo được ở Site, Domain và OU. Muốn luật chỉ dính đúng một phòng ban thì treo lên OU của phòng đó — đó chính là lý do OU tồn tại."
+      }
     },
     {
       "kind": "mcq",
       "id": "m9-mt-12",
-      "prompt": { "vi": "Người dùng kêu luật mới không có hiệu lực trên máy họ. Bạn đã gpupdate /force mà luật vẫn chưa ăn — trước khi sửa bất cứ thứ gì, bạn đọc bằng lệnh nào?" },
+      "prompt": {
+        "vi": "Người dùng kêu luật mới không có hiệu lực trên máy họ. Bạn đã gpupdate /force mà luật vẫn chưa ăn — trước khi sửa bất cứ thứ gì, bạn đọc bằng lệnh nào?"
+      },
       "choices": [
-        { "vi": "gpresult /r trên máy đó — bảng kê nói GPO nào bị gạt" },
-        { "vi": "Xóa GPO cũ đi rồi tạo lại từ đầu cho chắc chắn sạch sẽ" },
-        { "vi": "Gõ lại gpupdate /force thêm vài lần nữa cho chắc ăn" }
+        {
+          "vi": "gpresult /r trên máy đó — bảng kê nói GPO nào bị gạt"
+        },
+        {
+          "vi": "Xóa GPO cũ đi rồi tạo lại từ đầu cho chắc chắn sạch sẽ"
+        },
+        {
+          "vi": "Gõ lại gpupdate /force thêm vài lần nữa cho chắc ăn"
+        }
       ],
       "answerIndex": 0,
-      "hintTopic": { "vi": "lệnh kê luật đang dính máy" },
-      "explain": { "vi": "Đọc trước, sửa sau: gpresult /r kê ra GPO đang áp và GPO bị gạt kèm lý do — hay gặp nhất là Block Inheritance. Chưa biết luật nào thắng mà đã đi sửa là mò kim đáy bể." }
+      "hintTopic": {
+        "vi": "lệnh kê luật đang dính máy"
+      },
+      "explain": {
+        "vi": "Đọc trước, sửa sau: gpresult /r kê ra GPO đang áp và GPO bị gạt kèm lý do — hay gặp nhất là Block Inheritance. Chưa biết luật nào thắng mà đã đi sửa là mò kim đáy bể."
+      }
     },
     {
       "kind": "palace-walk",
       "id": "m9-mt-9",
-      "prompt": { "vi": "Leo lại tòa nhà bốn tầng từ trí nhớ: mỗi tầng là bậc GPO nào, và luật của nó áp cho ai?" },
-      "rooms": ["m9-r-local", "m9-r-site", "m9-r-domain", "m9-r-ou"],
-      "explain": { "vi": "Local (chính máy đó) → Site (cả văn phòng một chỗ) → Domain (toàn công ty) → OU (từng phòng ban) — chính thứ tự leo là thứ tự áp luật." }
+      "prompt": {
+        "vi": "Leo lại tòa nhà bốn tầng từ trí nhớ: mỗi tầng là bậc GPO nào, và luật của nó áp cho ai?"
+      },
+      "rooms": [
+        "m9-r-local",
+        "m9-r-site",
+        "m9-r-domain",
+        "m9-r-ou"
+      ],
+      "explain": {
+        "vi": "Local (chính máy đó) → Site (cả văn phòng một chỗ) → Domain (toàn công ty) → OU (từng phòng ban) — chính thứ tự leo là thứ tự áp luật."
+      }
     }
   ]
 }

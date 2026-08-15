@@ -2,20 +2,66 @@
   "id": "module-13",
   "order": 13,
   "part": "D",
-  "letter": { "vi": "Ca đêm ghi lại. Lúc mở module, chia mạng với bạn là chia đều cho tiện; giờ bạn thấy ngay chia đều là cách nhanh nhất để một phòng chết đói còn ba phòng bỏ hoang đất. Bạn cắt được lớn trước nhỏ sau, đặt khối đúng vạch, và đọc được mặt nạ lộn ngược mà OSPF với ACL sắp bắt bạn dùng tới. Từ đây, một tờ yêu cầu bốn phòng chừng này máy là việc bạn ngồi xuống làm được, không phải việc phải đi hỏi ai." },
-  "title": { "vi": "VLSM — Cắt đất cho đúng người" },
+  "letter": {
+    "vi": "Ca đêm ghi lại. Lúc mở module, chia mạng với bạn là chia đều cho tiện; giờ bạn thấy ngay chia đều là cách nhanh nhất để một phòng chết đói còn ba phòng bỏ hoang đất. Bạn cắt được lớn trước nhỏ sau, đặt khối đúng vạch, và đọc được mặt nạ lộn ngược mà OSPF với ACL sắp bắt bạn dùng tới. Từ đây, một tờ yêu cầu bốn phòng chừng này máy là việc bạn ngồi xuống làm được, không phải việc phải đi hỏi ai."
+  },
+  "title": {
+    "vi": "VLSM — Cắt đất cho đúng người"
+  },
   "drill": "vlsm",
   "stages": [
-    { "id": "m13-chang-1", "title": { "vi": "Chia đều là phí đất" }, "lessonIds": ["m13-bai-1"] },
-    { "id": "m13-chang-2", "title": { "vi": "Cắt phòng to trước" }, "lessonIds": ["m13-bai-2"] },
-    { "id": "m13-chang-3", "title": { "vi": "Đứng đúng ranh giới" }, "lessonIds": ["m13-bai-3"] },
-    { "id": "m13-chang-4", "title": { "vi": "Mặt nạ lộn ngược" }, "lessonIds": ["m13-bai-4"] },
-    { "id": "m13-chang-5", "title": { "vi": "Gom tuyến cho gọn bảng" }, "lessonIds": ["m13-bai-5"] }
+    {
+      "id": "m13-chang-1",
+      "title": {
+        "vi": "Chia đều là phí đất"
+      },
+      "lessonIds": [
+        "m13-bai-1"
+      ]
+    },
+    {
+      "id": "m13-chang-2",
+      "title": {
+        "vi": "Cắt phòng to trước"
+      },
+      "lessonIds": [
+        "m13-bai-2"
+      ]
+    },
+    {
+      "id": "m13-chang-3",
+      "title": {
+        "vi": "Đứng đúng ranh giới"
+      },
+      "lessonIds": [
+        "m13-bai-3"
+      ]
+    },
+    {
+      "id": "m13-chang-4",
+      "title": {
+        "vi": "Mặt nạ lộn ngược"
+      },
+      "lessonIds": [
+        "m13-bai-4"
+      ]
+    },
+    {
+      "id": "m13-chang-5",
+      "title": {
+        "vi": "Gom tuyến cho gọn bảng"
+      },
+      "lessonIds": [
+        "m13-bai-5"
+      ]
+    }
   ],
   "lessons": [
     {
       "id": "m13-bai-1",
-      "missionTitle": { "vi": "Cứu dải địa chỉ bị chia đều" },
+      "missionTitle": {
+        "vi": "Cứu dải địa chỉ bị chia đều"
+      },
       "steps": [
         {
           "type": "hook",
@@ -30,8 +76,20 @@
             {
               "kind": "mcq",
               "id": "m13-b1-pre-1",
-              "prompt": { "vi": "Đoán thử: một mạng /26 cấp được cho bao nhiêu máy?" },
-              "choices": [{ "vi": "64 máy" }, { "vi": "62 máy" }, { "vi": "26 máy" }],
+              "prompt": {
+                "vi": "Đoán thử: một mạng /26 cấp được cho bao nhiêu máy?"
+              },
+              "choices": [
+                {
+                  "vi": "64 máy"
+                },
+                {
+                  "vi": "62 máy"
+                },
+                {
+                  "vi": "26 máy"
+                }
+              ],
               "answerIndex": 1,
               "explain": {
                 "vi": "/26 có 64 địa chỉ, nhưng hai địa chỉ đầu và cuối đã có chủ: một làm địa chỉ mạng, một làm broadcast. Còn lại 62 chỗ cho máy thật."
@@ -81,15 +139,21 @@
                 "prompt": {
                   "vi": "Phòng kho có 28 máy và sắp thêm 2 máy quét mã. Prefix nhỏ nhất đủ dùng cho phòng này là bao nhiêu (dạng /xx)?"
                 },
-                "accept": ["/27", "27", "255.255.255.224"],
-                "hintTopic": { "vi": "số chỗ thật của từng cỡ khối sau khi trừ 2" }
+                "accept": [
+                  "/27",
+                  "27",
+                  "255.255.255.224"
+                ],
+                "hintTopic": {
+                  "vi": "số chỗ thật của từng cỡ khối sau khi trừ 2"
+                }
               },
               "hint": {
                 "vi": "Phòng cần 30 chỗ. Đi từ bậc nhỏ lên: /28 cho 14 chỗ — thiếu; bậc kế tiếp cho 30 chỗ — vừa khít. Bậc kế tiếp đó là prefix nào?"
               },
               "solution": {
                 "vi": "Là /27: nó có 32 địa chỉ, trừ địa chỉ mạng và broadcast còn đúng 30 chỗ cho 30 máy. Lấy /26 thì chạy được nhưng bỏ phí 32 địa chỉ; lấy /28 thì thiếu hẳn 16 chỗ."
-              },
+              },
               "conceptId": "co-khoi-vua-du"
             },
             {
@@ -100,19 +164,27 @@
                   "vi": "Vì sao chia đều dải /24 thành bốn phần /26 lại hỏng với bộ nhu cầu 100 / 50 / 25 / 10 máy?"
                 },
                 "choices": [
-                  { "vi": "Vì /26 không đủ chỗ cho phòng 100 máy, trong khi phòng 10 máy bỏ không hơn năm mươi địa chỉ" },
-                  { "vi": "Vì một dải /24 chỉ được cắt thành tối đa hai mạng con, cắt bốn phần là vượt giới hạn" },
-                  { "vi": "Vì các mạng con của cùng một dải bắt buộc phải mang cùng một subnet mask" }
+                  {
+                    "vi": "Vì /26 không đủ chỗ cho phòng 100 máy, trong khi phòng 10 máy bỏ không hơn năm mươi địa chỉ"
+                  },
+                  {
+                    "vi": "Vì một dải /24 chỉ được cắt thành tối đa hai mạng con, cắt bốn phần là vượt giới hạn"
+                  },
+                  {
+                    "vi": "Vì các mạng con của cùng một dải bắt buộc phải mang cùng một subnet mask"
+                  }
                 ],
                 "answerIndex": 0,
-                "hintTopic": { "vi": "cỡ lô so với số người ở của từng phòng" }
+                "hintTopic": {
+                  "vi": "cỡ lô so với số người ở của từng phòng"
+                }
               },
               "hint": {
                 "vi": "Đếm thử: /26 có 62 chỗ. Phòng 100 máy nhét vừa không? Còn phòng 10 máy thì thừa bao nhiêu?"
               },
               "solution": {
                 "vi": "Vì cắt đều là cắt theo cái lô, không theo người ở: 62 chỗ không chứa nổi 100 máy, còn phòng 10 máy ôm 62 chỗ thì bỏ hoang 52. Một dải /24 cắt được nhiều hơn hai mạng con, và mỗi mạng con hoàn toàn được mang mask riêng — đó chính là VLSM."
-              },
+              },
               "conceptId": "vlsm"
             }
           ]
@@ -127,9 +199,15 @@
                 "prompt": {
                   "vi": "Không nhìn lại bài: phòng 100 máy cần prefix nhỏ nhất là bao nhiêu (dạng /xx)?"
                 },
-                "accept": ["/25", "25", "255.255.255.128"]
+                "accept": [
+                  "/25",
+                  "25",
+                  "255.255.255.128"
+                ]
               },
-              "hint": { "vi": "Phòng cần 102 chỗ. /26 cho 62 chỗ — thiếu. Bậc ngay trên /26 là bậc nào?" },
+              "hint": {
+                "vi": "Phòng cần 102 chỗ. /26 cho 62 chỗ — thiếu. Bậc ngay trên /26 là bậc nào?"
+              },
               "solution": {
                 "vi": "Là /25: 128 địa chỉ, còn 126 chỗ dùng được — đủ cho 100 máy và còn dư chỗ cho máy mới."
               }
@@ -140,10 +218,28 @@
               "vi": "Giải thích bằng lời của bạn: vì sao chia một dải thành các phần BẰNG NHAU lại vừa thiếu vừa thừa?"
             },
             "keywords": [
-              ["nhu cầu", "số máy", "số lượng máy", "người ở"],
-              ["khác nhau", "không giống nhau", "chênh lệch"],
-              ["thiếu chỗ", "không đủ", "hết địa chỉ"],
-              ["bỏ phí", "lãng phí", "thừa", "bỏ hoang"]
+              [
+                "nhu cầu",
+                "số máy",
+                "số lượng máy",
+                "người ở"
+              ],
+              [
+                "khác nhau",
+                "không giống nhau",
+                "chênh lệch"
+              ],
+              [
+                "thiếu chỗ",
+                "không đủ",
+                "hết địa chỉ"
+              ],
+              [
+                "bỏ phí",
+                "lãng phí",
+                "thừa",
+                "bỏ hoang"
+              ]
             ],
             "exampleAnswer": {
               "vi": "Vì các phòng có số máy khác nhau hẳn nhau. Cắt lô bằng nhau thì phòng đông máy không đủ chỗ, còn phòng ít máy ôm một đống địa chỉ bỏ hoang. Cắt theo nhu cầu từng phòng mới vừa."
@@ -153,9 +249,15 @@
         {
           "type": "summary",
           "bullets": [
-            { "vi": "VLSM là cắt mỗi phòng một cỡ lô theo số máy, không cắt đều." },
-            { "vi": "Cỡ khối nhảy theo lũy thừa 2, và mỗi khối mất 2 địa chỉ cho mạng và broadcast." },
-            { "vi": "Chọn cỡ: số máy cộng 2, rồi lấy bậc thấp nhất còn chứa đủ." }
+            {
+              "vi": "VLSM là cắt mỗi phòng một cỡ lô theo số máy, không cắt đều."
+            },
+            {
+              "vi": "Cỡ khối nhảy theo lũy thừa 2, và mỗi khối mất 2 địa chỉ cho mạng và broadcast."
+            },
+            {
+              "vi": "Chọn cỡ: số máy cộng 2, rồi lấy bậc thấp nhất còn chứa đủ."
+            }
           ],
           "nextTeaser": {
             "vi": "Biết cỡ của từng phòng rồi, nhưng cắt phòng nào trước? Bài sau cho bạn xem hai người cùng bộ nhu cầu, cắt hai thứ tự — cùng dư từng ấy chỗ, mà một người để phần dư nằm gọn cuối dải, người kia để nó kẹt giữa hai phòng."
@@ -165,7 +267,9 @@
     },
     {
       "id": "m13-bai-2",
-      "missionTitle": { "vi": "Xếp thứ tự cắt cho gọn dải" },
+      "missionTitle": {
+        "vi": "Xếp thứ tự cắt cho gọn dải"
+      },
       "steps": [
         {
           "type": "hook",
@@ -180,11 +284,19 @@
             {
               "kind": "mcq",
               "id": "m13-b2-pre-1",
-              "prompt": { "vi": "Đoán thử: khi cắt VLSM, nên bắt đầu từ phòng nào?" },
+              "prompt": {
+                "vi": "Đoán thử: khi cắt VLSM, nên bắt đầu từ phòng nào?"
+              },
               "choices": [
-                { "vi": "Phòng đông máy nhất" },
-                { "vi": "Phòng ít máy nhất" },
-                { "vi": "Phòng nào cũng như nhau" }
+                {
+                  "vi": "Phòng đông máy nhất"
+                },
+                {
+                  "vi": "Phòng ít máy nhất"
+                },
+                {
+                  "vi": "Phòng nào cũng như nhau"
+                }
               ],
               "answerIndex": 0,
               "explain": {
@@ -222,8 +334,13 @@
                 "prompt": {
                   "vi": "Dải 192.168.20.0/24, ba phòng: 60 / 12 / 28 máy. Cắt đúng thứ tự thì phòng 60 máy đứng ở địa chỉ mạng nào? Điền dạng đầy đủ, ví dụ 192.168.20.x"
                 },
-                "accept": ["192.168.20.0", "192.168.20.0/26"],
-                "hintTopic": { "vi": "khối to nhất được cắt trước, ngay từ đầu dải" }
+                "accept": [
+                  "192.168.20.0",
+                  "192.168.20.0/26"
+                ],
+                "hintTopic": {
+                  "vi": "khối to nhất được cắt trước, ngay từ đầu dải"
+                }
               },
               "hint": {
                 "vi": "Điền chỗ trống: phòng to nhất là phòng … máy, nó nhận cỡ /26, và vì cắt trước tiên nên nó đứng ngay ở đầu dải là 192.168.20.…"
@@ -240,12 +357,20 @@
                   "vi": "Vẫn dải 192.168.20.0/24 và ba phòng 60 / 12 / 28 máy, nhưng người làm cắt phòng 12 máy trước và đặt nó ở 192.168.20.0/28. Hậu quả gần nhất là gì?"
                 },
                 "choices": [
-                  { "vi": "Phần trống còn lại bắt đầu ở .16, mà khối /26 của phòng 60 máy không được phép đứng ở đó" },
-                  { "vi": "Phòng 12 máy sẽ mất kết nối vì khối /28 luôn phải nằm ở cuối dải địa chỉ" },
-                  { "vi": "Router tự dồn ba khối lại cho khít nên không mất địa chỉ nào" }
+                  {
+                    "vi": "Phần trống còn lại bắt đầu ở .16, mà khối /26 của phòng 60 máy không được phép đứng ở đó"
+                  },
+                  {
+                    "vi": "Phòng 12 máy sẽ mất kết nối vì khối /28 luôn bắt buộc phải nằm ở cuối dải địa chỉ"
+                  },
+                  {
+                    "vi": "Router tự dồn ba khối lại cho khít nên không mất địa chỉ nào"
+                  }
                 ],
                 "answerIndex": 0,
-                "hintTopic": { "vi": "chỗ đứng hợp lệ của một khối lớn" }
+                "hintTopic": {
+                  "vi": "chỗ đứng hợp lệ của một khối lớn"
+                }
               },
               "hint": {
                 "vi": "Khối /26 rộng 64 địa chỉ nên chỉ đứng được ở .0, .64, .128, .192. Sau khi .0 tới .15 đã có chủ, khối ấy còn cửa nào không mất thêm đất?"
@@ -285,7 +410,9 @@
                   "lon nhat"
                 ]
               },
-              "hint": { "vi": "Khối nào kén chỗ đứng hơn thì phải xếp lúc mặt bằng còn nguyên." },
+              "hint": {
+                "vi": "Khối nào kén chỗ đứng hơn thì phải xếp lúc mặt bằng còn nguyên."
+              },
               "solution": {
                 "vi": "Phòng đông máy nhất. Khối to có rất ít chỗ đứng hợp lệ, nên cắt nó trước là cách duy nhất chắc chắn không phải cắt lại từ đầu."
               }
@@ -296,9 +423,29 @@
               "vi": "Giải thích bằng lời của bạn: vì sao cắt khối to trước lại dồn được phần dư về cuối dải?"
             },
             "keywords": [
-              ["khối to", "khối lớn", "phòng to", "phòng đông", "mạng lớn"],
-              ["ít chỗ đứng", "kén chỗ", "chỗ đặt", "vạch", "ranh giới", "bội số"],
-              ["cuối dải", "dồn về cuối", "liền nhau", "dính liền", "một khối", "nối tiếp"]
+              [
+                "khối to",
+                "khối lớn",
+                "phòng to",
+                "phòng đông",
+                "mạng lớn"
+              ],
+              [
+                "ít chỗ đứng",
+                "kén chỗ",
+                "chỗ đặt",
+                "vạch",
+                "ranh giới",
+                "bội số"
+              ],
+              [
+                "cuối dải",
+                "dồn về cuối",
+                "liền nhau",
+                "dính liền",
+                "một khối",
+                "nối tiếp"
+              ]
             ],
             "exampleAnswer": {
               "vi": "Vì khối càng to thì càng ít chỗ đứng hợp lệ — một /25 chỉ đứng được ở hai vạch trong cả dải /24. Cắt nó lúc dải còn nguyên thì nó nằm ngay đầu dải, các khối nhỏ nối tiếp liền sau, nên chỗ dư còn lại dồn hết về cuối thành một mảng nguyên. Để nó lại sau cùng thì nó phải nhảy qua mấy khối nhỏ đã cắt để tìm vạch hợp lệ, và khoảng trống bị bỏ lại nằm kẹt ở giữa — vẫn từng ấy địa chỉ, nhưng bị hai phòng chặn hai bên nên không nối thêm cho ai được."
@@ -308,9 +455,15 @@
         {
           "type": "summary",
           "bullets": [
-            { "vi": "Xếp nhu cầu giảm dần rồi cắt từ khối to nhất, lấp liên tiếp từ đầu dải." },
-            { "vi": "Khối càng to càng ít chỗ đứng hợp lệ — nên nó phải được xếp trước." },
-            { "vi": "Cắt sai thứ tự vẫn đủ chỗ và vẫn dư từng ấy — chỉ khác là phần dư kẹt giữa dải thay vì dồn về cuối." }
+            {
+              "vi": "Xếp nhu cầu giảm dần rồi cắt từ khối to nhất, lấp liên tiếp từ đầu dải."
+            },
+            {
+              "vi": "Khối càng to càng ít chỗ đứng hợp lệ — nên nó phải được xếp trước."
+            },
+            {
+              "vi": "Cắt sai thứ tự vẫn đủ chỗ và vẫn dư từng ấy — chỉ khác là phần dư kẹt giữa dải thay vì dồn về cuối."
+            }
           ],
           "nextTeaser": {
             "vi": "Bài sau mổ xẻ đúng cái luật vừa nhắc tới ba lần: vì sao một khối /26 chỉ được đứng ở .0, .64, .128 và .192, chứ không phải chỗ nào cũng được?"
@@ -320,7 +473,9 @@
     },
     {
       "id": "m13-bai-3",
-      "missionTitle": { "vi": "Đặt khối đúng vạch" },
+      "missionTitle": {
+        "vi": "Đặt khối đúng vạch"
+      },
       "steps": [
         {
           "type": "hook",
@@ -335,8 +490,20 @@
             {
               "kind": "mcq",
               "id": "m13-b3-pre-1",
-              "prompt": { "vi": "Đoán thử: một khối /27 được phép bắt đầu ở địa chỉ nào?" },
-              "choices": [{ "vi": ".0, .32, .64, .96 …" }, { "vi": ".0, .27, .54, .81 …" }, { "vi": "Bất kỳ địa chỉ nào còn trống" }],
+              "prompt": {
+                "vi": "Đoán thử: một khối /27 được phép bắt đầu ở địa chỉ nào?"
+              },
+              "choices": [
+                {
+                  "vi": ".0, .32, .64, .96 …"
+                },
+                {
+                  "vi": ".0, .27, .54, .81 …"
+                },
+                {
+                  "vi": "Bất kỳ chỗ nào còn trống"
+                }
+              ],
               "answerIndex": 0,
               "explain": {
                 "vi": "Khối /27 rộng 32 địa chỉ, nên nó chỉ được bắt đầu ở những mốc chia hết cho 32. Con số 27 là số bit phần mạng, không phải bước nhảy của khối."
@@ -373,8 +540,12 @@
                 "prompt": {
                   "vi": "Bạn vừa cấp 192.168.10.0/25 cho phòng kinh doanh. Khối kế tiếp bắt đầu ở địa chỉ nào? Điền dạng đầy đủ."
                 },
-                "accept": ["192.168.10.128"],
-                "hintTopic": { "vi": "khối vừa cấp chiếm tới đâu thì khối sau bắt đầu từ đó" }
+                "accept": [
+                  "192.168.10.128"
+                ],
+                "hintTopic": {
+                  "vi": "khối vừa cấp chiếm tới đâu thì khối sau bắt đầu từ đó"
+                }
               },
               "hint": {
                 "vi": "Điền chỗ trống: /25 rộng … địa chỉ, chiếm từ .0 tới .127, nên chỗ trống kế tiếp bắt đầu ở .…"
@@ -387,14 +558,24 @@
               "question": {
                 "kind": "mcq",
                 "id": "m13-b3-prac-2",
-                "prompt": { "vi": "Khối nào dưới đây KHÔNG hợp lệ?" },
+                "prompt": {
+                  "vi": "Khối nào dưới đây KHÔNG hợp lệ?"
+                },
                 "choices": [
-                  { "vi": "192.168.10.96/27" },
-                  { "vi": "192.168.10.96/26" },
-                  { "vi": "192.168.10.64/26" }
+                  {
+                    "vi": "192.168.10.96/27"
+                  },
+                  {
+                    "vi": "192.168.10.96/26"
+                  },
+                  {
+                    "vi": "192.168.10.64/26"
+                  }
                 ],
                 "answerIndex": 1,
-                "hintTopic": { "vi": "địa chỉ đầu khối phải chia hết cho cỡ khối" }
+                "hintTopic": {
+                  "vi": "địa chỉ đầu khối phải chia hết cho cỡ khối"
+                }
               },
               "hint": {
                 "vi": "Với mỗi dòng, lấy số cuối chia cho cỡ khối: /27 rộng 32, /26 rộng 64. Dòng nào chia không hết?"
@@ -415,9 +596,13 @@
                 "prompt": {
                   "vi": "Không nhìn lại bài: khối /26 nằm ngay sau 192.168.10.64/26 bắt đầu ở địa chỉ nào? Điền dạng đầy đủ."
                 },
-                "accept": ["192.168.10.128"]
+                "accept": [
+                  "192.168.10.128"
+                ]
               },
-              "hint": { "vi": "Cứ cộng đúng cỡ khối vào địa chỉ đầu của khối trước." },
+              "hint": {
+                "vi": "Cứ cộng đúng cỡ khối vào địa chỉ đầu của khối trước."
+              },
               "solution": {
                 "vi": "192.168.10.128 — khối /26 rộng 64 địa chỉ, nên 64 cộng 64 là 128. Các mốc hợp lệ của /26 luôn là .0, .64, .128, .192."
               }
@@ -428,9 +613,24 @@
               "vi": "Giải thích bằng lời của bạn: vì sao 192.168.10.160/26 là một khối không tồn tại?"
             },
             "keywords": [
-              ["chia hết", "bội số", "chia được", "đúng vạch"],
-              ["cỡ khối", "64", "độ rộng", "kích thước"],
-              ["không hợp lệ", "không tồn tại", "sai", "bị hiểu thành"]
+              [
+                "chia hết",
+                "bội số",
+                "chia được",
+                "đúng vạch"
+              ],
+              [
+                "cỡ khối",
+                "64",
+                "độ rộng",
+                "kích thước"
+              ],
+              [
+                "không hợp lệ",
+                "không tồn tại",
+                "sai",
+                "bị hiểu thành"
+              ]
             ],
             "exampleAnswer": {
               "vi": "Vì khối /26 rộng 64 địa chỉ, mà 160 không chia hết cho 64. Khối chỉ được bắt đầu ở các mốc .0, .64, .128, .192; gõ 160 vào thì thiết bị tự quy về khối .128/26 chứ không tạo ra khối mới nào."
@@ -440,9 +640,15 @@
         {
           "type": "summary",
           "bullets": [
-            { "vi": "Một subnet chỉ được bắt đầu ở địa chỉ chia hết cho cỡ của chính nó." },
-            { "vi": "Cỡ khối là bước nhảy: /26 nhảy 64, /27 nhảy 32, /28 nhảy 16." },
-            { "vi": "Gõ sai vạch thì thiết bị tự quy về khối gần nhất — mạng chạy khác điều bạn nghĩ." }
+            {
+              "vi": "Một subnet chỉ được bắt đầu ở địa chỉ chia hết cho cỡ của chính nó."
+            },
+            {
+              "vi": "Cỡ khối là bước nhảy: /26 nhảy 64, /27 nhảy 32, /28 nhảy 16."
+            },
+            {
+              "vi": "Gõ sai vạch thì thiết bị tự quy về khối gần nhất — mạng chạy khác điều bạn nghĩ."
+            }
           ],
           "nextTeaser": {
             "vi": "Ba bài vừa rồi bạn luôn viết mặt nạ kiểu 255.255.255.192. Bài sau, router sẽ đòi bạn viết đúng mạng đó thành 0.0.0.63 — và đó không phải trò đánh đố."
@@ -452,7 +658,9 @@
     },
     {
       "id": "m13-bai-4",
-      "missionTitle": { "vi": "Đọc được mặt nạ lộn ngược" },
+      "missionTitle": {
+        "vi": "Đọc được mặt nạ lộn ngược"
+      },
       "steps": [
         {
           "type": "hook",
@@ -467,8 +675,20 @@
             {
               "kind": "mcq",
               "id": "m13-b4-pre-1",
-              "prompt": { "vi": "Đoán thử: wildcard mask của một mạng /24 là gì?" },
-              "choices": [{ "vi": "0.0.0.255" }, { "vi": "255.255.255.0" }, { "vi": "0.0.0.24" }],
+              "prompt": {
+                "vi": "Đoán thử: wildcard mask của một mạng /24 là gì?"
+              },
+              "choices": [
+                {
+                  "vi": "0.0.0.255"
+                },
+                {
+                  "vi": "255.255.255.0"
+                },
+                {
+                  "vi": "0.0.0.24"
+                }
+              ],
               "answerIndex": 0,
               "explain": {
                 "vi": "Wildcard là mặt nạ lộn ngược: lấy 255 trừ từng ô của subnet mask. Mạng /24 có mask 255.255.255.0 nên wildcard là 0.0.0.255."
@@ -502,9 +722,15 @@
               "question": {
                 "kind": "typed",
                 "id": "m13-b4-prac-1",
-                "prompt": { "vi": "Mạng 192.168.10.0/27 có wildcard mask là gì?" },
-                "accept": ["0.0.0.31"],
-                "hintTopic": { "vi": "255 trừ đi từng ô của subnet mask" }
+                "prompt": {
+                  "vi": "Mạng 192.168.10.0/27 có wildcard mask là gì?"
+                },
+                "accept": [
+                  "0.0.0.31"
+                ],
+                "hintTopic": {
+                  "vi": "255 trừ đi từng ô của subnet mask"
+                }
               },
               "hint": {
                 "vi": "Mask của /27 là 255.255.255.224. Lấy 255 trừ từng ô: 255 trừ 255 là 0, còn ô cuối 255 trừ 224 là bao nhiêu?"
@@ -517,14 +743,24 @@
               "question": {
                 "kind": "mcq",
                 "id": "m13-b4-prac-2",
-                "prompt": { "vi": "Trong wildcard mask, một bit mang giá trị 1 có nghĩa là gì?" },
+                "prompt": {
+                  "vi": "Trong wildcard mask, một bit mang giá trị 1 có nghĩa là gì?"
+                },
                 "choices": [
-                  { "vi": "Bit tương ứng của địa chỉ được bỏ qua khi đối chiếu" },
-                  { "vi": "Bit tương ứng của địa chỉ bắt buộc phải khớp đúng" },
-                  { "vi": "Bit tương ứng thuộc phần mạng chứ không thuộc phần máy" }
+                  {
+                    "vi": "Bit tương ứng của địa chỉ được bỏ qua khi đối chiếu"
+                  },
+                  {
+                    "vi": "Bit tương ứng của địa chỉ bắt buộc phải khớp đúng"
+                  },
+                  {
+                    "vi": "Bit tương ứng thuộc phần mạng chứ không thuộc phần máy"
+                  }
                 ],
                 "answerIndex": 0,
-                "hintTopic": { "vi": "vai trò ngược nhau của bit 0 và bit 1 trong wildcard" }
+                "hintTopic": {
+                  "vi": "vai trò ngược nhau của bit 0 và bit 1 trong wildcard"
+                }
               },
               "hint": {
                 "vi": "Wildcard là mặt nạ của bộ lọc, và cái tên của nó chính là gợi ý: wildcard nghĩa là quân bài thay được cho mọi quân khác."
@@ -542,11 +778,19 @@
               "question": {
                 "kind": "typed",
                 "id": "m13-b4-ret-1",
-                "prompt": { "vi": "Không nhìn lại bài: subnet mask 255.255.255.240 đổi sang wildcard mask là gì?" },
-                "accept": ["0.0.0.15"]
+                "prompt": {
+                  "vi": "Không nhìn lại bài: subnet mask 255.255.255.240 đổi sang wildcard mask là gì?"
+                },
+                "accept": [
+                  "0.0.0.15"
+                ]
               },
-              "hint": { "vi": "Ba ô đầu đều là 255 trừ 255. Ô cuối: 255 trừ 240." },
-              "solution": { "vi": "0.0.0.15 — tương ứng mạng /28, khối 16 địa chỉ nên wildcard là 15." }
+              "hint": {
+                "vi": "Ba ô đầu đều là 255 trừ 255. Ô cuối: 255 trừ 240."
+              },
+              "solution": {
+                "vi": "0.0.0.15 — tương ứng mạng /28, khối 16 địa chỉ nên wildcard là 15."
+              }
             }
           ],
           "selfExplain": {
@@ -554,9 +798,23 @@
               "vi": "Giải thích bằng lời của bạn: wildcard mask khác subnet mask ở chỗ nào, và tính nó thế nào?"
             },
             "keywords": [
-              ["lộn ngược", "ngược lại", "đảo", "nghịch đảo"],
-              ["255 trừ", "lấy 255", "trừ đi"],
-              ["bỏ qua", "mặc kệ", "không cần khớp", "phải khớp"]
+              [
+                "lộn ngược",
+                "ngược lại",
+                "đảo",
+                "nghịch đảo"
+              ],
+              [
+                "255 trừ",
+                "lấy 255",
+                "trừ đi"
+              ],
+              [
+                "bỏ qua",
+                "mặc kệ",
+                "không cần khớp",
+                "phải khớp"
+              ]
             ],
             "exampleAnswer": {
               "vi": "Wildcard là mặt nạ lộn ngược của subnet mask, tính bằng cách lấy 255 trừ đi từng ô. Trong wildcard, bit 0 là chỗ phải khớp đúng, bit 1 là chỗ được bỏ qua — nên router dùng nó khi cần đối chiếu một dải địa chỉ."
@@ -566,9 +824,15 @@
         {
           "type": "summary",
           "bullets": [
-            { "vi": "Wildcard mask là subnet mask lộn ngược: lấy 255 trừ từng ô." },
-            { "vi": "Bit 0 là phải khớp, bit 1 là bỏ qua — ngược hẳn subnet mask." },
-            { "vi": "Router đòi dạng này khi khai mạng cho định tuyến và khi viết luật lọc." }
+            {
+              "vi": "Wildcard mask là subnet mask lộn ngược: lấy 255 trừ từng ô."
+            },
+            {
+              "vi": "Bit 0 là phải khớp, bit 1 là bỏ qua — ngược hẳn subnet mask."
+            },
+            {
+              "vi": "Router đòi dạng này khi khai mạng cho định tuyến và khi viết luật lọc."
+            }
           ],
           "nextTeaser": {
             "vi": "Chi nhánh của bạn có bốn mạng con liền nhau, và router đang quảng bá bốn dòng tuyến. Bài cuối module cho bạn cách gộp cả bốn thành đúng một dòng."
@@ -578,7 +842,9 @@
     },
     {
       "id": "m13-bai-5",
-      "missionTitle": { "vi": "Gộp bốn dòng tuyến thành một" },
+      "missionTitle": {
+        "vi": "Gộp bốn dòng tuyến thành một"
+      },
       "steps": [
         {
           "type": "hook",
@@ -593,8 +859,20 @@
             {
               "kind": "mcq",
               "id": "m13-b5-pre-1",
-              "prompt": { "vi": "Đoán thử: gộp bốn mạng /24 liền nhau lại thì được một mạng có prefix nào?" },
-              "choices": [{ "vi": "/22" }, { "vi": "/26" }, { "vi": "/24 vẫn giữ nguyên" }],
+              "prompt": {
+                "vi": "Đoán thử: gộp bốn mạng /24 liền nhau lại thì được một mạng có prefix nào?"
+              },
+              "choices": [
+                {
+                  "vi": "/22"
+                },
+                {
+                  "vi": "/26"
+                },
+                {
+                  "vi": "/24"
+                }
+              ],
               "answerIndex": 0,
               "explain": {
                 "vi": "Gộp là đi ngược chiều cắt: mỗi lần gấp đôi số mạng thì prefix ngắn đi 1. Bốn mạng là gấp đôi hai lần, nên /24 thành /22."
@@ -631,8 +909,13 @@
                 "prompt": {
                   "vi": "Gộp hai mạng 10.1.4.0/24 và 10.1.5.0/24 thành một dòng tuyến. Viết dạng đầy đủ, ví dụ 10.1.x.x/xx"
                 },
-                "accept": ["10.1.4.0/23", "10.1.4.0 /23"],
-                "hintTopic": { "vi": "gộp gấp đôi số mạng thì prefix ngắn đi một bậc" }
+                "accept": [
+                  "10.1.4.0/23",
+                  "10.1.4.0 /23"
+                ],
+                "hintTopic": {
+                  "vi": "gộp gấp đôi số mạng thì prefix ngắn đi một bậc"
+                }
               },
               "hint": {
                 "vi": "Hai mạng /24 liền nhau gộp lại thì prefix ngắn đi 1 bậc, thành /23. Địa chỉ đầu vẫn là địa chỉ của mạng nhỏ hơn."
@@ -645,14 +928,24 @@
               "question": {
                 "kind": "mcq",
                 "id": "m13-b5-prac-2",
-                "prompt": { "vi": "Cặp mạng nào dưới đây KHÔNG gộp được thành một dòng tuyến gọn?" },
+                "prompt": {
+                  "vi": "Cặp mạng nào dưới đây KHÔNG gộp được thành một dòng tuyến gọn?"
+                },
                 "choices": [
-                  { "vi": "192.168.6.0/24 và 192.168.7.0/24" },
-                  { "vi": "192.168.5.0/24 và 192.168.6.0/24" },
-                  { "vi": "192.168.4.0/24 và 192.168.5.0/24" }
+                  {
+                    "vi": "192.168.6.0/24 và 192.168.7.0/24"
+                  },
+                  {
+                    "vi": "192.168.5.0/24 và 192.168.6.0/24"
+                  },
+                  {
+                    "vi": "192.168.4.0/24 và 192.168.5.0/24"
+                  }
                 ],
                 "answerIndex": 1,
-                "hintTopic": { "vi": "khối gộp cũng phải bắt đầu đúng vạch" }
+                "hintTopic": {
+                  "vi": "khối gộp cũng phải bắt đầu đúng vạch"
+                }
               },
               "hint": {
                 "vi": "Khối gộp của hai mạng /24 rộng 2 nên phải bắt đầu ở số chẵn. Cặp nào có mạng đầu là số lẻ?"
@@ -673,9 +966,14 @@
                 "prompt": {
                   "vi": "Không nhìn lại bài: gộp bốn mạng 172.16.12.0/24 tới 172.16.15.0/24 thành một dòng thì được gì? Viết dạng đầy đủ."
                 },
-                "accept": ["172.16.12.0/22", "172.16.12.0 /22"]
+                "accept": [
+                  "172.16.12.0/22",
+                  "172.16.12.0 /22"
+                ]
               },
-              "hint": { "vi": "Bốn mạng là hai lần gấp đôi, nên prefix ngắn đi 2 bậc từ /24." },
+              "hint": {
+                "vi": "Bốn mạng là hai lần gấp đôi, nên prefix ngắn đi 2 bậc từ /24."
+              },
               "solution": {
                 "vi": "172.16.12.0/22 — phủ từ 172.16.12.0 tới 172.16.15.255, và 12 chia hết cho 4 nên khối gộp đứng đúng vạch."
               }
@@ -686,9 +984,24 @@
               "vi": "Giải thích bằng lời của bạn: tóm tắt tuyến là gì, và cần điều kiện nào mới gộp được?"
             },
             "keywords": [
-              ["gộp", "gom", "nhập lại", "một dòng"],
-              ["liền kề", "liền nhau", "kế tiếp", "cạnh nhau"],
-              ["đúng vạch", "chia hết", "bội số", "bắt đầu đúng"]
+              [
+                "gộp",
+                "gom",
+                "nhập lại",
+                "một dòng"
+              ],
+              [
+                "liền kề",
+                "liền nhau",
+                "kế tiếp",
+                "cạnh nhau"
+              ],
+              [
+                "đúng vạch",
+                "chia hết",
+                "bội số",
+                "bắt đầu đúng"
+              ]
             ],
             "exampleAnswer": {
               "vi": "Tóm tắt tuyến là gộp nhiều mạng con thành một dòng tuyến duy nhất cho ngắn bảng định tuyến. Muốn gộp được thì các mạng phải liền kề nhau và khối gộp phải bắt đầu đúng vạch — y như luật căn khối lúc cắt, chỉ nhìn ngược chiều."
@@ -698,9 +1011,15 @@
         {
           "type": "summary",
           "bullets": [
-            { "vi": "Tóm tắt tuyến gộp nhiều mạng liền kề thành một dòng tuyến duy nhất." },
-            { "vi": "Gấp đôi số mạng thì prefix ngắn đi một bậc: bốn mạng /24 thành một /22." },
-            { "vi": "Chỉ gộp được khi các mạng liền kề và khối gộp bắt đầu đúng vạch." }
+            {
+              "vi": "Tóm tắt tuyến gộp nhiều mạng liền kề thành một dòng tuyến duy nhất."
+            },
+            {
+              "vi": "Gấp đôi số mạng thì prefix ngắn đi một bậc: bốn mạng /24 thành một /22."
+            },
+            {
+              "vi": "Chỉ gộp được khi các mạng liền kề và khối gộp bắt đầu đúng vạch."
+            }
           ],
           "nextTeaser": {
             "vi": "Bạn đã biết cắt dải cho từng phòng. Module sau đưa bạn tới sợi dây nối hai tòa nhà: một sợi cáp phải chở được nhiều xóm cùng lúc, và bạn sẽ cấu hình nó bằng lệnh gõ thẳng vào switch."
@@ -719,7 +1038,9 @@
       },
       "iconId": "icon-vlsm",
       "flashcard": {
-        "front": { "vi": "VLSM là gì, và nó khác cách chia đều ở chỗ nào?" },
+        "front": {
+          "vi": "VLSM là gì, và nó khác cách chia đều ở chỗ nào?"
+        },
         "back": {
           "vi": "Là cách chia một dải thành các mạng con khác cỡ nhau, mỗi nơi một cỡ vừa với số máy của nó. Chia đều thì nơi đông máy thiếu chỗ còn nơi ít máy bỏ hoang địa chỉ."
         }
@@ -734,7 +1055,9 @@
       },
       "iconId": "icon-co-khoi",
       "flashcard": {
-        "front": { "vi": "Phòng có N máy thì chọn cỡ khối thế nào?" },
+        "front": {
+          "vi": "Phòng có N máy thì chọn cỡ khối thế nào?"
+        },
         "back": {
           "vi": "Lấy N cộng 2 (địa chỉ mạng và broadcast), rồi chọn bậc lũy thừa 2 thấp nhất còn chứa nổi: /28 cho 14 máy, /27 cho 30, /26 cho 62, /25 cho 126."
         }
@@ -749,7 +1072,9 @@
       },
       "iconId": "icon-cat-lon-truoc",
       "flashcard": {
-        "front": { "vi": "Vì sao khi cắt VLSM phải bắt đầu từ phòng đông máy nhất?" },
+        "front": {
+          "vi": "Vì sao khi cắt VLSM phải bắt đầu từ phòng đông máy nhất?"
+        },
         "back": {
           "vi": "Vì khối càng to càng ít chỗ đứng hợp lệ — một /25 chỉ đứng được ở hai vạch trong cả dải /24. Cắt nó lúc dải còn nguyên thì luôn vừa; để sau cùng thì phần trống đã bị cắt vụn."
         }
@@ -764,7 +1089,9 @@
       },
       "iconId": "icon-can-khoi",
       "flashcard": {
-        "front": { "vi": "Một khối /26 được phép bắt đầu ở những địa chỉ nào?" },
+        "front": {
+          "vi": "Một khối /26 được phép bắt đầu ở những địa chỉ nào?"
+        },
         "back": {
           "vi": "Ở các mốc chia hết cho 64: .0, .64, .128, .192. Khối chỉ được bắt đầu ở bội số của cỡ chính nó, nên 192.168.10.160/26 là khối không tồn tại."
         }
@@ -779,7 +1106,9 @@
       },
       "iconId": "icon-wildcard",
       "flashcard": {
-        "front": { "vi": "Wildcard mask của mạng /26 là gì, và tính bằng cách nào?" },
+        "front": {
+          "vi": "Wildcard mask của mạng /26 là gì, và tính bằng cách nào?"
+        },
         "back": {
           "vi": "Là 0.0.0.63 — lấy 255 trừ đi từng ô của subnet mask 255.255.255.192. Trong wildcard, bit 0 nghĩa là phải khớp đúng, bit 1 nghĩa là bỏ qua."
         }
@@ -794,7 +1123,9 @@
       },
       "iconId": "icon-tom-tat-tuyen",
       "flashcard": {
-        "front": { "vi": "Tóm tắt tuyến là gì, và cần điều kiện nào mới gộp được?" },
+        "front": {
+          "vi": "Tóm tắt tuyến là gì, và cần điều kiện nào mới gộp được?"
+        },
         "back": {
           "vi": "Là gộp nhiều mạng liền kề thành một dòng tuyến cho gọn bảng định tuyến. Điều kiện: các mạng phải liền kề và khối gộp phải bắt đầu đúng vạch — ví dụ bốn mạng 192.168.8.0/24 tới 192.168.11.0/24 gộp thành 192.168.8.0/22."
         }
@@ -805,35 +1136,67 @@
     {
       "kind": "mcq",
       "id": "m13-mt-1",
-      "prompt": { "vi": "Một mạng /26 cấp được cho bao nhiêu máy?" },
-      "choices": [{ "vi": "62 máy" }, { "vi": "64 máy" }, { "vi": "60 máy" }],
+      "prompt": {
+        "vi": "Phòng kỹ thuật được giao đúng một khối /27. Phòng đó cắm được tối đa bao nhiêu máy thật?"
+      },
+      "choices": [
+        {
+          "vi": "30 máy"
+        },
+        {
+          "vi": "32 máy"
+        },
+        {
+          "vi": "28 máy"
+        }
+      ],
       "answerIndex": 0,
-      "hintTopic": { "vi": "hai địa chỉ bị giữ lại trong mỗi khối" },
+      "hintTopic": {
+        "vi": "hai địa chỉ bị giữ lại trong mỗi khối"
+      },
       "explain": {
-        "vi": "/26 có 64 địa chỉ, trừ địa chỉ mạng và broadcast còn 62 chỗ cho máy thật."
+        "vi": "/27 rộng 32 địa chỉ, trừ địa chỉ mạng và broadcast còn 30 chỗ cho máy thật — 32 là tổng địa chỉ chứ không phải số máy."
       }
     },
     {
       "kind": "typed",
       "id": "m13-mt-2",
-      "prompt": { "vi": "Một phòng có 50 máy. Prefix nhỏ nhất đủ dùng cho phòng đó là bao nhiêu (dạng /xx)?" },
-      "accept": ["/26", "26", "255.255.255.192"],
-      "hintTopic": { "vi": "số chỗ thật của từng bậc khối" },
+      "prompt": {
+        "vi": "Xưởng in sắp kéo dây cho 45 máy trạm nằm chung một dải, ngoài ra không có thiết bị nào khác. Bạn cấp prefix nhỏ nhất vẫn chứa đủ chỗ, đó là prefix nào (dạng /xx)?"
+      },
+      "accept": [
+        "/26",
+        "26",
+        "255.255.255.192"
+      ],
+      "hintTopic": {
+        "vi": "số chỗ thật của từng bậc khối"
+      },
       "explain": {
-        "vi": "Phòng cần 52 chỗ. /27 chỉ có 30 nên trượt; /26 có 62 nên vừa và không phí quá nhiều."
+        "vi": "Xưởng cần 45 chỗ dùng được. /27 chỉ có 30 nên trượt; /26 có 62 nên vừa và không phí quá nhiều."
       }
     },
     {
       "kind": "mcq",
       "id": "m13-mt-3",
-      "prompt": { "vi": "Khi cắt VLSM, vì sao phải cấp cho phòng đông máy nhất trước?" },
+      "prompt": {
+        "vi": "Khi cắt VLSM, vì sao phải cấp cho phòng đông máy nhất trước?"
+      },
       "choices": [
-        { "vi": "Vì khối lớn có rất ít chỗ đứng hợp lệ, cắt sau cùng thì nó nhảy đi xa và bỏ phí đất" },
-        { "vi": "Vì phòng đông máy luôn phải nằm ở đầu dải, còn phòng ít máy phải nằm ở cuối dải" },
-        { "vi": "Vì cấp cho phòng nhỏ trước sẽ làm tổng số địa chỉ cần dùng lớn hơn dải được giao" }
+        {
+          "vi": "Vì khối lớn có rất ít chỗ đứng hợp lệ, cắt sau cùng thì nó nhảy đi xa và bỏ phí đất"
+        },
+        {
+          "vi": "Vì phòng đông máy luôn phải nằm ở đầu dải, còn phòng ít máy phải nằm ở cuối dải"
+        },
+        {
+          "vi": "Vì cấp cho phòng nhỏ trước sẽ làm tổng số địa chỉ cần dùng lớn hơn dải được giao"
+        }
       ],
       "answerIndex": 0,
-      "hintTopic": { "vi": "chỗ đứng hợp lệ của khối lớn" },
+      "hintTopic": {
+        "vi": "chỗ đứng hợp lệ của khối lớn"
+      },
       "explain": {
         "vi": "Khối càng to càng kén vạch: một /25 chỉ đứng được ở .0 hoặc .128 trong cả dải /24. Cắt nó lúc dải còn nguyên thì luôn có chỗ."
       }
@@ -842,35 +1205,57 @@
       "kind": "typed",
       "id": "m13-mt-4",
       "prompt": {
-        "vi": "Bạn vừa cấp 192.168.10.0/25 cho phòng đầu tiên. Khối kế tiếp bắt đầu ở địa chỉ nào? Điền dạng đầy đủ."
+        "vi": "Phòng kế toán đang giữ 172.20.5.0/27, phòng kho giữ 172.20.5.32/27, hai khối nằm sát nhau. Khối /27 trống kế tiếp mở ở địa chỉ nào? Điền dạng đầy đủ."
       },
-      "accept": ["192.168.10.128"],
-      "hintTopic": { "vi": "độ rộng của khối vừa cấp" },
+      "accept": [
+        "172.20.5.64"
+      ],
+      "hintTopic": {
+        "vi": "cộng dồn độ rộng của những khối đã cấp"
+      },
       "explain": {
-        "vi": "/25 rộng 128 địa chỉ, chiếm từ .0 tới .127, nên chỗ trống kế tiếp bắt đầu ở .128."
+        "vi": "Mỗi khối /27 rộng 32 địa chỉ: khối đầu chiếm .0 tới .31, khối thứ hai chiếm .32 tới .63, nên chỗ trống kế tiếp mở ở .64."
       }
     },
     {
       "kind": "typed",
       "id": "m13-mt-5",
-      "prompt": { "vi": "Subnet mask 255.255.255.240 đổi sang wildcard mask là gì?" },
-      "accept": ["0.0.0.15"],
-      "hintTopic": { "vi": "cách tính mặt nạ lộn ngược" },
-      "explain": { "vi": "Lấy 255 trừ từng ô: ba ô đầu ra 0, ô cuối 255 trừ 240 bằng 15." }
+      "prompt": {
+        "vi": "Bạn đang gõ một dòng ACL trên router, ô cuối dòng bắt điền wildcard mask. Dải cần khớp mang subnet mask 255.255.255.248 — bạn điền con số nào vào ô đó?"
+      },
+      "accept": [
+        "0.0.0.7"
+      ],
+      "hintTopic": {
+        "vi": "cách tính mặt nạ lộn ngược"
+      },
+      "explain": {
+        "vi": "Lấy 255 trừ từng ô: ba ô đầu ra 0, ô cuối 255 trừ 248 bằng 7."
+      }
     },
     {
       "kind": "mcq",
       "id": "m13-mt-6",
-      "prompt": { "vi": "Trong wildcard mask, bit mang giá trị 0 có nghĩa là gì?" },
+      "prompt": {
+        "vi": "Router đối chiếu địa chỉ 10.1.4.77 với cặp 10.1.4.0 và wildcard 0.0.0.255, rồi báo là khớp. Vì sao khớp?"
+      },
       "choices": [
-        { "vi": "Bit tương ứng của địa chỉ phải khớp đúng" },
-        { "vi": "Bit tương ứng của địa chỉ được bỏ qua" },
-        { "vi": "Bit tương ứng thuộc về phần máy trong địa chỉ" }
+        {
+          "vi": "Ba ô đầu trùng nhau, ô cuối rơi vào chỗ wildcard cho bỏ qua"
+        },
+        {
+          "vi": "Ô cuối của địa chỉ nhỏ hơn 255 nên nó nằm trong dải cho phép"
+        },
+        {
+          "vi": "Wildcard 0.0.0.255 nghĩa là mọi địa chỉ đều khớp, khỏi so ô nào"
+        }
       ],
       "answerIndex": 0,
-      "hintTopic": { "vi": "vai trò ngược nhau của bit 0 và bit 1" },
+      "hintTopic": {
+        "vi": "vai trò ngược nhau của bit 0 và bit 1"
+      },
       "explain": {
-        "vi": "Wildcard ngược với subnet mask: bit 0 là chỗ phải khớp, bit 1 là chỗ bỏ qua khi đối chiếu."
+        "vi": "Wildcard ngược với subnet mask: ô 0 là chỗ bắt buộc khớp, ô 255 là chỗ bỏ qua. Nên mọi địa chỉ bắt đầu bằng 10.1.4 đều khớp, còn 10.1.5.77 thì trượt ngay ở ô thứ ba."
       }
     },
     {
@@ -880,8 +1265,13 @@
       "prompt": {
         "vi": "Gộp bốn mạng 192.168.4.0/24, 192.168.5.0/24, 192.168.6.0/24 và 192.168.7.0/24 thành một dòng tuyến. Viết dạng đầy đủ."
       },
-      "accept": ["192.168.4.0/22", "192.168.4.0 /22"],
-      "hintTopic": { "vi": "gấp đôi số mạng thì prefix ngắn đi một bậc" },
+      "accept": [
+        "192.168.4.0/22",
+        "192.168.4.0 /22"
+      ],
+      "hintTopic": {
+        "vi": "gấp đôi số mạng thì prefix ngắn đi một bậc"
+      },
       "explain": {
         "vi": "Bốn mạng là hai lần gấp đôi nên /24 thành /22; khối 192.168.4.0/22 phủ đúng từ .4.0 tới .7.255."
       }
@@ -889,14 +1279,26 @@
     {
       "kind": "order",
       "id": "m13-mt-8",
-      "prompt": { "vi": "Xếp lại đúng thứ tự bốn bước làm một bài chia VLSM." },
+      "prompt": {
+        "vi": "Xếp lại đúng thứ tự bốn bước làm một bài chia VLSM."
+      },
       "items": [
-        { "vi": "Liệt kê số máy của từng phòng" },
-        { "vi": "Xếp các phòng theo số máy giảm dần rồi chọn cỡ khối vừa đủ cho từng phòng" },
-        { "vi": "Cắt từ đầu dải, khối to trước, khối nhỏ sau" },
-        { "vi": "Soi lại: các khối không giẫm lên nhau và phòng nào cũng đủ chỗ" }
+        {
+          "vi": "Liệt kê số máy của từng phòng"
+        },
+        {
+          "vi": "Xếp các phòng theo số máy giảm dần rồi chọn cỡ khối vừa đủ cho từng phòng"
+        },
+        {
+          "vi": "Cắt từ đầu dải, khối to trước, khối nhỏ sau"
+        },
+        {
+          "vi": "Soi lại: các khối không giẫm lên nhau và phòng nào cũng đủ chỗ"
+        }
       ],
-      "hintTopic": { "vi": "trình tự làm một bài thiết kế dải địa chỉ" },
+      "hintTopic": {
+        "vi": "trình tự làm một bài thiết kế dải địa chỉ"
+      },
       "explain": {
         "vi": "Biết nhu cầu trước, rồi mới xếp thứ tự và quy ra cỡ khối, sau đó mới đặt bút cắt, cuối cùng soi lại. Ranh giới quan trọng nhất là xếp xong mới cắt: cắt lúc chưa xếp thì khối to phải nhảy đi tìm vạch hợp lệ, và phần dư nằm kẹt giữa dải thay vì dồn gọn về cuối."
       }
@@ -904,22 +1306,42 @@
     {
       "kind": "typed",
       "id": "m13-mt-9",
-      "prompt": { "vi": "Một mạng /25 cấp được cho bao nhiêu máy?" },
-      "accept": ["126", "126 máy", "126 host"],
-      "hintTopic": { "vi": "tổng địa chỉ của khối trừ đi hai" },
-      "explain": { "vi": "/25 có 128 địa chỉ, trừ địa chỉ mạng và broadcast còn 126 chỗ." }
+      "prompt": {
+        "vi": "Sếp đòi một khối đủ chỗ cho 100 máy, bạn cấp mask 255.255.255.128. Khối ấy nuôi được tối đa bao nhiêu máy?"
+      },
+      "accept": [
+        "126",
+        "126 máy",
+        "126 host"
+      ],
+      "hintTopic": {
+        "vi": "tổng địa chỉ của khối trừ đi hai"
+      },
+      "explain": {
+        "vi": "Mask 255.255.255.128 chính là /25: 128 địa chỉ, trừ địa chỉ mạng và broadcast còn 126 chỗ — vừa đủ cho 100 máy và còn dư 26."
+      }
     },
     {
       "kind": "mcq",
       "id": "m13-mt-10",
-      "prompt": { "vi": "Khối nào dưới đây không phải là một mạng hợp lệ?" },
+      "prompt": {
+        "vi": "Đồng nghiệp gửi sang danh sách dải mạng để nạp vào router, nhưng trong đó có đúng một dòng chắc chắn bị từ chối vì không tồn tại. Đó là dòng nào?"
+      },
       "choices": [
-        { "vi": "10.10.10.48/28" },
-        { "vi": "10.10.10.48/27" },
-        { "vi": "10.10.10.192/26" }
+        {
+          "vi": "10.10.10.48/28"
+        },
+        {
+          "vi": "10.10.10.48/27"
+        },
+        {
+          "vi": "10.10.10.192/26"
+        }
       ],
       "answerIndex": 1,
-      "hintTopic": { "vi": "địa chỉ đầu khối phải chia hết cho cỡ khối" },
+      "hintTopic": {
+        "vi": "địa chỉ đầu khối phải chia hết cho cỡ khối"
+      },
       "explain": {
         "vi": "Khối /27 rộng 32, mà 48 không chia hết cho 32 nên 10.10.10.48/27 không tồn tại. Cùng số 48 ấy lại hợp lệ với /28 vì 48 chia hết cho 16; còn 192 chia hết cho 64 nên 192/26 cũng hợp lệ."
       }
@@ -931,8 +1353,13 @@
       "prompt": {
         "vi": "Dải 10.20.30.0/24 chia cho ba phòng 100 / 30 / 12 máy, cắt đúng thứ tự. Phòng 30 máy nhận địa chỉ mạng nào? Điền dạng đầy đủ."
       },
-      "accept": ["10.20.30.128", "10.20.30.128/27"],
-      "hintTopic": { "vi": "khối to đứng trước thì khối sau bắt đầu ở đâu" },
+      "accept": [
+        "10.20.30.128",
+        "10.20.30.128/27"
+      ],
+      "hintTopic": {
+        "vi": "khối to đứng trước thì khối sau bắt đầu ở đâu"
+      },
       "explain": {
         "vi": "Phòng 100 máy lấy /25 từ .0 tới .127. Phòng 30 máy là phòng to kế tiếp, nhận /27 bắt đầu ngay ở .128."
       }
@@ -940,16 +1367,26 @@
     {
       "kind": "mcq",
       "id": "m13-mt-12",
-      "prompt": { "vi": "Cặp mạng nào dưới đây gộp được thành một dòng tuyến /23?" },
+      "prompt": {
+        "vi": "Bảng định tuyến của bạn đang có hai dòng và bạn muốn thay chúng bằng đúng một dòng /23. Cặp mạng nào dưới đây làm được?"
+      },
       "choices": [
-        { "vi": "10.0.9.0/24 và 10.0.10.0/24" },
-        { "vi": "10.0.6.0/24 và 10.0.7.0/24" },
-        { "vi": "10.0.7.0/24 và 10.0.9.0/24" }
+        {
+          "vi": "10.7.13.0/24 và 10.7.14.0/24"
+        },
+        {
+          "vi": "10.7.14.0/24 và 10.7.15.0/24"
+        },
+        {
+          "vi": "10.7.12.0/24 và 10.7.15.0/24"
+        }
       ],
       "answerIndex": 1,
-      "hintTopic": { "vi": "khối gộp cũng phải bắt đầu đúng vạch" },
+      "hintTopic": {
+        "vi": "khối gộp cũng phải bắt đầu đúng vạch"
+      },
       "explain": {
-        "vi": "Khối /23 rộng hai mạng nên phải bắt đầu ở số chẵn: cặp 6-7 đạt cả hai điều kiện liền kề và đúng vạch. Cặp 9-10 liền kề nhưng bắt đầu ở số lẻ; cặp 7-9 thì không liền kề."
+        "vi": "Khối /23 rộng hai mạng nên phải bắt đầu ở số chẵn: cặp 14-15 vừa liền kề vừa đúng vạch. Cặp 13-14 liền kề nhưng khởi đầu ở số lẻ; cặp 12-15 thì hở mất hai mạng ở giữa."
       }
     }
   ]

@@ -31,7 +31,154 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (19) M21 capstone + màn tốt nghiệp | XONG |
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
-**KHỐI MỚI NHẤT — 21.67 (08-15), đã commit `37e6ca6`: SÁU BÀI LẤP NỐT LỖ HỔNG Q4-Q9 (việc C).**
+**KHỐI MỚI NHẤT — 21.70 (08-15): 15 HÌNH VẼ HỎNG BỐ CỤC — chữ tràn khỏi khung, nhãn đè lên nhau.**
+
+Chủ dự án chụp màn hình một hình ở Module 4 báo "chữ nhỏ, icon san sát". Quét cả
+app thì không phải một hình — **15 hình hỏng**, gần như trọn bộ hình mới của các
+khối 21.64-21.67: chữ tràn khỏi mép tới **46px**, nhãn chồng lên nhau, và cỡ chữ
+bị bóp xuống 6-7.5 cho vừa chỗ.
+
+- **Nguyên nhân chung, không phải 15 lỗi rời**: người vẽ nhét nhiều nhãn vào một
+  hàng ngang rồi thấy chật thì hạ cỡ chữ, thay vì xếp lại bố cục. Luật mới đã ghi
+  vào sổ tay: **chật chỗ thì rút chữ hoặc đổi bố cục, cấm bóp cỡ chữ xuống dưới 8**.
+- **Không dựng được cổng tự động** cho lớp lỗi này, và đã thử: jsdom không có
+  layout nên `getBBox` trả 0; ước bề rộng chữ từ thuộc tính thì thử trên 325 hình
+  cho ra 160 báo động trong khi sự thật chỉ 16. Cổng kêu oan 144 lần thì tệ hơn
+  không có cổng. Thay bằng **đoạn quét browser chép-dán sẵn trong sổ tay**.
+- **Hai cái bẫy đo đạc đã trả giá ngay trong lượt này:**
+  - `getBBox` BỎ QUA transform của nhóm cha nên báo động giả — phải đo bằng
+    `getBoundingClientRect` (toạ độ màn hình).
+  - Bản quét đầu của tôi khử trùng lặp bằng cách cắt tiền tố tên (`vis-`,
+    `icon-`, `vis-hook-`), mà hai hình KHÁC NHAU rút về cùng một tên nên che mất
+    nhau — sót đúng 2 hình, chỉ lòi ra lúc quét lại bằng cách khử theo NỘI DUNG
+    chữ trong hình.
+- **Hệ số bề rộng chữ tôi đưa cho agent lúc đầu là SAI** (0.50/0.60) — đo thật
+  trên 1433 nhãn thì là **0.63 (chữ thường, tới 0.79 khi nhiều chữ hoa) và 0.73
+  (mono)**: tiếng Việt có dấu nên rộng hơn font Latin. May là các agent tự đo lại
+  bằng số thật. Con số đúng đã ghi vào sổ tay.
+- **Cách chạy**: 4 agent song song, mỗi con một **worktree riêng** vì cả 15 hình
+  nằm chung một file — chia file thì giẫm chân nhau. Gộp về bằng cách **bóc từng
+  hàm** chứ không gộp cả file: bản đang làm việc có 7 hình mới chưa commit, gộp
+  cả file là xoá trắng chúng.
+
+**Dọn nốt cỡ chữ (cùng khối):** nâng 14 chỗ còn cỡ 6.5-7.5 trong `ConceptVisual`
+lên >= 8, và nâng nhãn của xưởng vẽ isometric 7 → 8 **ở NGUỒN rồi sinh lại** (18
+hình từ 11 bản vẽ) chứ không sửa tay file được sinh ra. Chữ to ra thì phải nới
+hộp và rút nhãn theo, nếu không là tràn ngay: `RouterPlacement` rút "nửa vùng phủ
+đổ ra ngoài" → "nửa sóng đổ ra ngoài", `AdminPasswordSticker` bỏ nét gáy sách vì
+chữ căn giữa luôn nằm đè lên nó, `MacRandomization` giãn hai dòng từ 10px lên 13px
+vì chữ cỡ 8.5 cao ~10px.
+
+**Một hình nữa lòi ra lúc đo lại:** `vis-tracert-chang` có hai nhãn chặng đè nhau —
+nó KHÔNG nằm trong nhóm vừa sửa, mà server dev cũ chạy HMR lâu nên render bị ôi,
+bản quét trước không thấy. Bài học: **quét trên server vừa khởi động lại**, đừng
+tin trang đã HMR hàng chục lần.
+
+**Vớt được hai bản vá của phiên khác trước khi dọn worktree.** Hai worktree cũ
+nằm lại trong `.claude/worktrees/` đều có sửa đổi CHƯA COMMIT — xoá thẳng là mất
+trắng, nên đã đọc rồi gộp về:
+- `MiniPacket` vẽ quanh gốc toạ độ rồi dời bằng transform CSS, mà `getBBox` không
+  tính transform nên nó báo tràn `[-8,-6]` dù mắt nhìn không tràn. Nay vẽ thẳng
+  tại toạ độ đích, motion chỉ animate ĐỘ DỜI.
+- `VlsmDrill.test.tsx`: case "lịch sử phiên" tra ô bằng `getByRole({ name })` —
+  mỗi lần tra bắt testing-library tính accessible name cho CẢ bảng (~22ms), đi hết
+  5 đề là gần một giây chỉ để TÌM ô, đủ chạm trần 5000ms lúc `npm test` chạy cùng
+  dev server. **Đây gần như chắc chắn là cái test đỏ một lần rồi tự xanh ở trên.**
+  Nay quét `table input` một phát rồi đối chiếu `aria-label`.
+
+**Sức khỏe:** quét lại 325 hình → **0 hình tràn khung, 0 nhãn đè nhau, 0 chỗ chữ
+dưới cỡ 8**. 1887 test xanh (chạy 4 lượt để chắc, một lượt đầu có 1 test đỏ lúc
+chạy đè lên build — ba lượt sau xanh sạch), typecheck sạch, build qua.
+
+**KHỐI TRƯỚC — 21.69 (08-15): ĐỀ THI THÔI CHÉP BÀI — 44 câu ở 15 module, và vá lỗ hổng của chính cái cổng vừa dựng.**
+
+Việc nhận là "siết nốt độ chép của M3, M14, M15". Đo lại bằng ĐÚNG thước mà cổng
+chạy thật thì thứ hạng khác hẳn con số hôm qua: **M14 mới là module nặng nhất
+(35.7%)** — một phần do chính bốn câu thi thêm ở khối 21.68 — còn M3 chỉ 14.3%,
+M15 18.2%.
+
+**Lỗ hổng của cổng, tìm ra trong lúc làm:** cổng bản đầu chỉ đo bằng ĐẾM TỪ
+CHUNG, nên nó mù đúng kiểu chép nguy hiểm nhất — **chép nguyên câu, chỉ đổi con
+số hoặc cắt mấy chữ mở đầu**. Nó cho lọt 15 câu dạng «"Không nhìn lại bài: X?"
+trong bài → "X?" ở đề thi» và «"gói cước 800 Mbps" → "gói cước 400 Mbps"». Đã
+thêm thước CHUỖI KÝ TỰ vào cổng và hạ ngưỡng 40% → 15%.
+
+**Kết quả:** viết lại **44 câu thi ở 15 module** (M2 M3 M4 M5 M7 M8 M9 M10 M12
+M13 M14 M15 M16 M18 M19 M20). Cả 21 module nay ở **0 câu chép**, kể cả khi đo ở
+ngưỡng khắt khe nhất — trước lượt này là 20 câu.
+
+- Cách viết lại đã chốt: **giữ kiến thức, đổi vỏ tình huống, đổi số**. Ví dụ
+  "Số port lớn nhất là bao nhiêu?" thành "Bạn viết một dòng luật tường lửa muốn
+  phủ TRỌN dải port — con số cuối phải điền là bao nhiêu?"; "ba switch nối tam
+  giác có mấy cổng bị chặn" thành bốn switch nối vòng vuông cộng một sợi chéo
+  (đáp án đổi từ một sang hai cổng, không nhớ số cũ được).
+- **Câu gõ tay giữ nguyên `accept` tuyệt đối** — bảng ca thử trong
+  `content.test.ts` ghim sẵn cách gõ của từng câu, nên câu tính toán chỉ được
+  đổi số ĐẦU VÀO sao cho kết quả không đổi.
+- Sáu agent chạy song song, mỗi người khoá một nhóm file; ba nhóm còn tự lòi
+  thêm 20 câu ngoài danh sách giao. Hai module M5 và M10 lọt khỏi mọi danh sách
+  (rơi vào khoảng giữa hai thước) — bắt được lúc quét lại toàn bộ 21 module.
+- Đã soi tay toán của mọi câu đổi số: 400÷8 = 50 MB/s · 45 máy → /26 ·
+  255−248 = 7 · `10.10.10.48/27` đúng là mốc không tồn tại · `100.83.19.6` nằm
+  trong dải CGNAT 100.64.0.0/10 · 4 switch 5 sợi → chặn 2 cổng.
+
+**Sức khỏe:** 1887 test xanh, typecheck sạch, build qua, `content:review` render
+lại 21 module.
+
+**KHỐI TRƯỚC — 21.68 (08-15): BA VIỆC LỚN CÙNG LƯỢT — vá ENGINE PHÒNG KHÁM, làm Q10, dọn TRỌN mục R (9/9).**
+
+**① Engine phòng khám biết ĐO, không chỉ biết thông/không-thông.** Thêm độ trễ và
+rớt gói (`overlay.impairments` gắn vào SỢI DÂY, triệu chứng `ping-degraded`) — loại
+bệnh thứ tư của phòng khám: *mạng vẫn thông mà việc vẫn hỏng*.
+- Ốm gắn vào sợi dây chứ không vào máy, nên **cách chữa nằm sẵn trong tầm tay phòng
+  lab**: gỡ dây bệnh, cắm dây mới. Dây mới mang id mới nên hồ sơ bệnh không dính vào
+  nó nữa — đúng như thay dây thật.
+- **"Khỏi" đòi CẢ HAI vế**: có tiếng đáp VÀ hai số đo dưới ngưỡng. Đứt hẳn cũng tính
+  là chưa khỏi — không thì người học "chữa" ca mạng chậm bằng cách rút phăng sợi dây
+  bệnh ra là qua bài.
+- Nhiều nhất 3/4 gói được rơi: rơi cả 4 thì màn hình y hệt ca ĐỨT, mà đứt đã có cách
+  mô hình riêng và cách chữa riêng.
+- Chỉ cộng trễ trên **chuỗi hop thật sự tới đích**, không cộng cả đống hop của lượt
+  phát tán — đổ oan cho sợi dây ở nhánh cụt thì người học đi thay đúng sợi ấy mà bệnh
+  không hết.
+- `tracert` nay in thời gian **cộng dồn tới từng chặng** — ping nói cả chuyến mất bao
+  lâu, tracert nói mất ở KHÚC nào.
+- **Kiểm browser thật bắt được một lỗi mà test không bắt**: dòng đích của tracert in
+  "<1 ms" ngay dưới một dòng "180 ms" — bản đồ tự cãi nhau trước mắt người học. Nguyên
+  nhân: gói qua router đi thành NHIỀU chặng, code chỉ đọc chặng đầu. Đã sửa và thêm
+  test khóa từng dòng chặng.
+- Module 11 có **chặng 6 mới + bài `m11-bai-6` "Mạng thông mà việc vẫn hỏng"**: hai
+  khái niệm (Thông ≠ tốt · Khoanh vùng khúc chậm), hai ca bệnh — dây trong nhà dập
+  (tự thay được) và khúc chậm nằm SAU router (ngoài tầm tay, phải gọi bên giữ đoạn
+  đường đó). **Đóng nốt lỗ hổng Q3.**
+
+**② Q10 — quy hoạch VLAN + SVI (Module 14).** Hai bài mới đúng chỗ đã tính:
+- Chặng mới **"Kẻ bảng trước khi cắm dây"** (`m14-bai-6`) chen giữa bài 4 và bài 5:
+  bảng bốn cột (phòng · dải IP · số VLAN · gateway) + HAI lab tự đặt địa chỉ. Bước
+  Đoán thử là lab productive failure — hai VLAN chung một dải thì máy tưởng cùng xóm,
+  gọi thẳng bằng ARP, và không ai đáp.
+- **`m14-bai-7` "Cửa ra nằm ngay trong switch"** (SVI) đứng NGAY CẠNH router-on-a-stick
+  trong cùng chặng, để hai cách làm cùng một việc nhìn thấy nhau. Bài nói thẳng rằng
+  phòng lab của app cố ý không mô phỏng switch lớp 3 — đây là bài đọc-hiểu cấu hình
+  thật, giống phần cú pháp sub-interface ở bài trước. Chặng đổi tên thành "Cho hai xóm
+  nói chuyện với nhau" cho khớp cả hai bài.
+- Pool đề thi M14: 12 → 16 câu.
+
+**③ Mục R — TRỌN 9/9.** R1 bản duyệt in dòng "Cận đúng" · R2 cổng khóa "màn luyện
+subnet không được ra đề ngoài chương trình" · R3 cổng đo độ chép cho cả 21 module +
+18 câu thi viết lại ở M6/M7/M13/M16 · R4 cue độ-dài nay soi cả câu trong bài **(71 câu
+vi phạm đã viết lại mồi nhử, tỉ lệ "đáp án là câu dài nhất" 57.6% → 41.4%)** và lá
+chắn phủ định soi thêm thẻ ôn + tổng kết · R5/R6/R7 đổi số và thêm câu thi · R8 câu
+thi đọc log thứ hai của M20 nay có nhật ký RIÊNG 171 dòng (router biên, thiết bị lạ
+tranh địa chỉ cổng ra, cảnh báo giả làm lọc thô phình lên 27 dòng) · R9 bài nộp chặng
+2 của M21 nay bắt đủ thang kiểm chứng ba bậc.
+
+**Sức khỏe:** 1887 test xanh, typecheck sạch, build qua, `content:review` render lại
+21 module. Kiểm browser thật: bảy hình vẽ mới đều nằm gọn trong khung, bài M11 mới mở
+đúng thứ tự và terminal in ra `time=180ms` + `Lost = 1 (25% loss)`, lab M14 mới báo
+đúng "hai máy cùng dải địa chỉ nhưng đang nằm ở hai VLAN khác nhau". Seed đã xóa.
+
+**KHỐI TRƯỚC — 21.67 (08-15), đã commit `37e6ca6`: SÁU BÀI LẤP NỐT LỖ HỔNG Q4-Q9 (việc C).**
 - Sáu bài mới, năm module: `m4-bai-7` khám sợi dây (cáp đồng 100 m, đọc đèn cổng,
   duplex lệch) · `m6-bai-6` soi tấm giấy sau ổ khóa vàng (chứng chỉ, ba kiểu lỗi,
   mã đáp) · `m7-bai-6` mở phòng điều khiển router nhà · `m7-bai-7` tìm lớp cổng

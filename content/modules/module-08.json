@@ -2,25 +2,81 @@
   "id": "module-8",
   "order": 8,
   "part": "C",
-  "letter": { "vi": "Mấy dòng để lại. Hai tuần trước, Wi-Fi yếu là chuyện của trời; giờ bạn biết góc nhà nào nên đi băng tần nào, vì sao đầy vạch mà mạng vẫn ì và nên kê router ở chỗ nào, tên thế hệ nào thật sự đem lại gì, và khóa cửa cho sóng nhà mình bằng cách nào cho tử tế. Bạn cũng đọc được biển số đời mới mà không vấp, kể cả cái địa chỉ dài ngoằng mở đầu bằng fe80. Hai hệ địa chỉ cùng sống trên một máy không còn làm bạn lẫn nữa — đó mới là điều đáng nói." },
-  "title": { "vi": "Wi-Fi và IPv6 chuyên sâu" },
+  "letter": {
+    "vi": "Mấy dòng để lại. Hai tuần trước, Wi-Fi yếu là chuyện của trời; giờ bạn biết góc nhà nào nên đi băng tần nào, vì sao đầy vạch mà mạng vẫn ì và nên kê router ở chỗ nào, tên thế hệ nào thật sự đem lại gì, và khóa cửa cho sóng nhà mình bằng cách nào cho tử tế. Bạn cũng đọc được biển số đời mới mà không vấp, kể cả cái địa chỉ dài ngoằng mở đầu bằng fe80. Hai hệ địa chỉ cùng sống trên một máy không còn làm bạn lẫn nữa — đó mới là điều đáng nói."
+  },
+  "title": {
+    "vi": "Wi-Fi và IPv6 chuyên sâu"
+  },
   "stages": [
-    { "id": "m8-chang-1", "title": { "vi": "Sóng thay dây" }, "lessonIds": ["m8-bai-1", "m8-bai-7"] },
-    { "id": "m8-chang-2", "title": { "vi": "Đọc tên thế hệ" }, "lessonIds": ["m8-bai-2"] },
-    { "id": "m8-chang-do", "title": { "vi": "Đo cho ra số" }, "lessonIds": ["m8-bai-6"] },
-    { "id": "m8-chang-3", "title": { "vi": "Khóa cửa cho sóng" }, "lessonIds": ["m8-bai-3"] },
-    { "id": "m8-chang-4", "title": { "vi": "Biển số đời mới" }, "lessonIds": ["m8-bai-4"] },
-    { "id": "m8-chang-5", "title": { "vi": "Máy tự lo liệu" }, "lessonIds": ["m8-bai-5"] }
+    {
+      "id": "m8-chang-1",
+      "title": {
+        "vi": "Sóng thay dây"
+      },
+      "lessonIds": [
+        "m8-bai-1",
+        "m8-bai-7"
+      ]
+    },
+    {
+      "id": "m8-chang-2",
+      "title": {
+        "vi": "Đọc tên thế hệ"
+      },
+      "lessonIds": [
+        "m8-bai-2"
+      ]
+    },
+    {
+      "id": "m8-chang-do",
+      "title": {
+        "vi": "Đo cho ra số"
+      },
+      "lessonIds": [
+        "m8-bai-6"
+      ]
+    },
+    {
+      "id": "m8-chang-3",
+      "title": {
+        "vi": "Khóa cửa cho sóng"
+      },
+      "lessonIds": [
+        "m8-bai-3"
+      ]
+    },
+    {
+      "id": "m8-chang-4",
+      "title": {
+        "vi": "Biển số đời mới"
+      },
+      "lessonIds": [
+        "m8-bai-4"
+      ]
+    },
+    {
+      "id": "m8-chang-5",
+      "title": {
+        "vi": "Máy tự lo liệu"
+      },
+      "lessonIds": [
+        "m8-bai-5"
+      ]
+    }
   ],
-
   "lessons": [
     {
       "id": "m8-bai-1",
-      "missionTitle": { "vi": "Chọn đúng băng tần cho từng góc nhà" },
+      "missionTitle": {
+        "vi": "Chọn đúng băng tần cho từng góc nhà"
+      },
       "steps": [
         {
           "type": "hook",
-          "question": { "vi": "Đứng cạnh router thì mạng vùn vụt, vào phòng ngủ cách hai bức tường thì lết từng chút. Cùng một cái hộp phát ra — sao sóng lúc khỏe lúc yếu vậy?" },
+          "question": {
+            "vi": "Đứng cạnh router thì mạng vùn vụt, vào phòng ngủ cách hai bức tường thì lết từng chút. Cùng một cái hộp phát ra — sao sóng lúc khỏe lúc yếu vậy?"
+          },
           "visualId": "vis-hook-song-wifi"
         },
         {
@@ -29,17 +85,29 @@
             {
               "kind": "mcq",
               "id": "m8-b1-pre-1",
-              "prompt": { "vi": "Đoán thử nhé: so với băng 5 GHz, sóng Wi-Fi 2.4 GHz thì sao?" },
+              "prompt": {
+                "vi": "Đoán thử nhé: so với băng 5 GHz, sóng Wi-Fi 2.4 GHz thì sao?"
+              },
               "choices": [
-                { "vi": "Đi xa và xuyên tường tốt hơn, nhưng chậm hơn" },
-                { "vi": "Nhanh hơn nhưng yếu hơn" },
-                { "vi": "Giống hệt nhau, chỉ khác tên" }
+                {
+                  "vi": "Đi xa và xuyên tường tốt hơn, nhưng chậm hơn"
+                },
+                {
+                  "vi": "Nhanh hơn hẳn nhưng sóng lại yếu hơn nhiều"
+                },
+                {
+                  "vi": "Giống hệt nhau, chỉ khác mỗi cái tên gọi"
+                }
               ],
               "answerIndex": 0,
-              "explain": { "vi": "Tần số thấp như giọng trầm: vang xa, luồn qua tường tốt, nhưng chở được ít dữ liệu hơn. Tần số cao như giọng thanh: chở nhiều mà đuối sức nhanh." }
+              "explain": {
+                "vi": "Tần số thấp như giọng trầm: vang xa, luồn qua tường tốt, nhưng chở được ít dữ liệu hơn. Tần số cao như giọng thanh: chở nhiều mà đuối sức nhanh."
+              }
             }
           ],
-          "encouragement": { "vi": "Cứ nghĩ về giọng nói: giọng trầm vang qua tường, giọng cao rõ chữ nhưng phải đứng gần mới nghe." }
+          "encouragement": {
+            "vi": "Cứ nghĩ về giọng nói: giọng trầm vang qua tường, giọng cao rõ chữ nhưng phải đứng gần mới nghe."
+          }
         },
         {
           "type": "teach",
@@ -47,49 +115,87 @@
             {
               "conceptId": "m8-song-wifi",
               "visualId": "vis-song-thay-day",
-              "body": { "vi": "Wi-Fi là sóng radio thay cho sợi dây mạng: điểm phát Wi-Fi (thường nằm ngay trong hộp router nhà bạn — Module 7) nói chuyện với các thiết bị qua không khí. Nhưng không khí là MỘT sợi dây chung: mọi thiết bị quanh đó thay phiên nhau nói, càng đông càng phải chờ." },
-              "deepDive": { "vi": "Vì là sóng phát ra mọi hướng, Wi-Fi không dừng ở cửa nhà bạn — nó bay sang hàng xóm và ra tận vỉa hè. Hai hệ quả sẽ quay lại trong module này: ai đứng gần cũng NGHE được (nên phải khóa — bài 3), và các nhà cạnh nhau dùng chung kênh sẽ giẫm sóng nhau." }
+              "body": {
+                "vi": "Wi-Fi là sóng radio thay cho sợi dây mạng: điểm phát Wi-Fi (thường nằm ngay trong hộp router nhà bạn — Module 7) nói chuyện với các thiết bị qua không khí. Nhưng không khí là MỘT sợi dây chung: mọi thiết bị quanh đó thay phiên nhau nói, càng đông càng phải chờ."
+              },
+              "deepDive": {
+                "vi": "Vì là sóng phát ra mọi hướng, Wi-Fi không dừng ở cửa nhà bạn — nó bay sang hàng xóm và ra tận vỉa hè. Hai hệ quả sẽ quay lại trong module này: ai đứng gần cũng NGHE được (nên phải khóa — bài 3), và các nhà cạnh nhau dùng chung kênh sẽ giẫm sóng nhau."
+              }
             },
             {
               "conceptId": "m8-bang-tan",
               "visualId": "vis-bang-tan-ba-lan",
-              "body": { "vi": "Wi-Fi chạy trên ba dải sóng — gọi là băng tần. 2.4 GHz như giọng trầm: vang xa, xuyên tường tốt, nhưng chậm và đông đúc nhất. 5 GHz như giọng thanh: nhanh hơn hẳn nhưng đuối khi qua tường. 6 GHz (mới nhất) còn nhanh và vắng hơn nữa — đổi lại tầm với ngắn nhất." },
-              "deepDive": { "vi": "Băng 2.4 GHz đông vì đủ thứ cùng chen vào đó: Bluetooth, lò vi sóng, chuột không dây… Router hai băng thường phát cả hai dưới một tên mạng; máy tự chọn băng — và đôi khi chọn dở, cứ bám 2.4 GHz dù đang đứng cạnh router." }
+              "body": {
+                "vi": "Wi-Fi chạy trên ba dải sóng — gọi là băng tần. 2.4 GHz như giọng trầm: vang xa, xuyên tường tốt, nhưng chậm và đông đúc nhất. 5 GHz như giọng thanh: nhanh hơn hẳn nhưng đuối khi qua tường. 6 GHz (mới nhất) còn nhanh và vắng hơn nữa — đổi lại tầm với ngắn nhất."
+              },
+              "deepDive": {
+                "vi": "Băng 2.4 GHz đông vì đủ thứ cùng chen vào đó: Bluetooth, lò vi sóng, chuột không dây… Router hai băng thường phát cả hai dưới một tên mạng; máy tự chọn băng — và đôi khi chọn dở, cứ bám 2.4 GHz dù đang đứng cạnh router."
+              }
             }
           ]
         },
         {
           "type": "practice",
           "fadingLevel": 0,
-          "workedExample": { "vi": "Nhà hai tầng, router đặt phòng khách. (1) TV cạnh router cần xem phim nét — cho nó băng 5 GHz: nhanh, mà ngồi gần thì không sợ đuối. (2) Camera ngoài cổng cách hai bức tường — cho nó 2.4 GHz: chậm cũng được, quan trọng là sóng TỚI nơi. Quy tắc rút ra: gần ưu tiên nhanh, xa ưu tiên tới. Cầm quy tắc đó làm hai câu dưới nhé." },
+          "workedExample": {
+            "vi": "Nhà hai tầng, router đặt phòng khách. (1) TV cạnh router cần xem phim nét — cho nó băng 5 GHz: nhanh, mà ngồi gần thì không sợ đuối. (2) Camera ngoài cổng cách hai bức tường — cho nó 2.4 GHz: chậm cũng được, quan trọng là sóng TỚI nơi. Quy tắc rút ra: gần ưu tiên nhanh, xa ưu tiên tới. Cầm quy tắc đó làm hai câu dưới nhé."
+          },
           "exercises": [
             {
               "question": {
                 "kind": "mcq",
                 "id": "m8-b1-pra-1",
-                "prompt": { "vi": "Camera lắp ngoài vườn, cách router hai bức tường. Cho nó vào băng tần nào?" },
+                "prompt": {
+                  "vi": "Camera lắp ngoài vườn, cách router hai bức tường. Cho nó vào băng tần nào?"
+                },
                 "choices": [
-                  { "vi": "2.4 GHz — chậm nhưng đi xa, xuyên tường tốt" },
-                  { "vi": "5 GHz — nhanh nhất có thể" },
-                  { "vi": "6 GHz — mới nhất chắc là tốt nhất" }
+                  {
+                    "vi": "2.4 GHz — chậm nhưng đi xa, xuyên tường tốt"
+                  },
+                  {
+                    "vi": "5 GHz — cứ chọn nhanh nhất có thể là tốt nhất"
+                  },
+                  {
+                    "vi": "6 GHz — mới nhất chắc là tốt nhất"
+                  }
                 ],
                 "answerIndex": 0,
-                "hintTopic": { "vi": "đánh đổi giữa đi xa và chạy nhanh" }
+                "hintTopic": {
+                  "vi": "đánh đổi giữa đi xa và chạy nhanh"
+                }
               },
-              "hint": { "vi": "Camera cần sóng TỚI nơi trước đã — tốc độ chỉ là chuyện tính sau." },
-              "solution": { "vi": "2.4 GHz: tần số thấp vang xa, xuyên tường tốt nhất — đúng việc cho thiết bị ở xa router." },
+              "hint": {
+                "vi": "Camera cần sóng TỚI nơi trước đã — tốc độ chỉ là chuyện tính sau."
+              },
+              "solution": {
+                "vi": "2.4 GHz: tần số thấp vang xa, xuyên tường tốt nhất — đúng việc cho thiết bị ở xa router."
+              },
               "conceptId": "m8-bang-tan"
             },
             {
               "question": {
                 "kind": "typed",
                 "id": "m8-b1-pra-2",
-                "prompt": { "vi": "Ngồi làm việc ngay cạnh router và cần tốc độ cao nhất — bạn ưu tiên băng có tần số thế nào? (cao hay thấp)" },
-                "accept": ["cao", "tần số cao", "tan so cao", "5", "6"],
-                "hintTopic": { "vi": "đứng gần thì nhược điểm nào biến mất" }
+                "prompt": {
+                  "vi": "Ngồi làm việc ngay cạnh router và cần tốc độ cao nhất — bạn ưu tiên băng có tần số thế nào? (cao hay thấp)"
+                },
+                "accept": [
+                  "cao",
+                  "tần số cao",
+                  "tan so cao",
+                  "5",
+                  "6"
+                ],
+                "hintTopic": {
+                  "vi": "đứng gần thì nhược điểm nào biến mất"
+                }
               },
-              "hint": { "vi": "Đứng gần thì nhược điểm của băng tần cao biến mất, chỉ còn lại ưu điểm." },
-              "solution": { "vi": "Tần số cao (5 hoặc 6 GHz): chở được nhiều dữ liệu; ngồi gần nên không sợ sóng đuối sức." },
+              "hint": {
+                "vi": "Đứng gần thì nhược điểm của băng tần cao biến mất, chỉ còn lại ưu điểm."
+              },
+              "solution": {
+                "vi": "Tần số cao (5 hoặc 6 GHz): chở được nhiều dữ liệu; ngồi gần nên không sợ sóng đuối sức."
+              },
               "conceptId": "m8-bang-tan"
             }
           ]
@@ -101,42 +207,82 @@
               "question": {
                 "kind": "typed",
                 "id": "m8-b1-ret-1",
-                "prompt": { "vi": "Không nhìn lại bài: băng tần nào đi xa, xuyên tường tốt nhất? (con số)" },
-                "accept": ["2.4", "2,4", "2.4ghz"],
-                "hintTopic": { "vi": "giọng trầm hay giọng cao vang xa hơn" }
+                "prompt": {
+                  "vi": "Không nhìn lại bài: băng tần nào đi xa, xuyên tường tốt nhất? (con số)"
+                },
+                "accept": [
+                  "2.4",
+                  "2,4",
+                  "2.4ghz"
+                ],
+                "hintTopic": {
+                  "vi": "giọng trầm hay giọng cao vang xa hơn"
+                }
               },
-              "hint": { "vi": "Giọng trầm vang xa — tức là băng tần THẤP nhất trong ba băng." },
-              "solution": { "vi": "2.4 GHz — tần số thấp nhất nên đi xa, xuyên tường tốt nhất; đổi lại chậm và đông đúc nhất." }
+              "hint": {
+                "vi": "Giọng trầm vang xa — tức là băng tần THẤP nhất trong ba băng."
+              },
+              "solution": {
+                "vi": "2.4 GHz — tần số thấp nhất nên đi xa, xuyên tường tốt nhất; đổi lại chậm và đông đúc nhất."
+              }
             }
           ],
           "selfExplain": {
-            "prompt": { "vi": "Giải thích bằng lời của bạn: vì sao không có băng tần nào là \"tốt nhất\" cho mọi thiết bị trong nhà?" },
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: vì sao không có băng tần nào là \"tốt nhất\" cho mọi thiết bị trong nhà?"
+            },
             "keywords": [
-              ["xa", "xuyên tường", "xuyen tuong", "tới nơi", "toi noi", "phủ sóng"],
-              ["nhanh", "tốc độ", "toc do", "chậm", "cham"]
+              [
+                "xa",
+                "xuyên tường",
+                "xuyen tuong",
+                "tới nơi",
+                "toi noi",
+                "phủ sóng"
+              ],
+              [
+                "nhanh",
+                "tốc độ",
+                "toc do",
+                "chậm",
+                "cham"
+              ]
             ],
-            "exampleAnswer": { "vi": "Vì mỗi băng đánh đổi một kiểu: 2.4 GHz đi xa xuyên tường nhưng chậm, 5 và 6 GHz nhanh nhưng đuối khi qua tường — nên thiết bị ở xa cần 2.4, thiết bị ngồi gần cần 5 hoặc 6." }
+            "exampleAnswer": {
+              "vi": "Vì mỗi băng đánh đổi một kiểu: 2.4 GHz đi xa xuyên tường nhưng chậm, 5 và 6 GHz nhanh nhưng đuối khi qua tường — nên thiết bị ở xa cần 2.4, thiết bị ngồi gần cần 5 hoặc 6."
+            }
           }
         },
         {
           "type": "summary",
           "bullets": [
-            { "vi": "Wi-Fi là sóng radio thay dây; không khí là một sợi dây chung, càng đông càng chờ." },
-            { "vi": "2.4 GHz xa mà chậm; 5 GHz nhanh mà gần; 6 GHz nhanh nhất, vắng nhất, ngắn nhất." },
-            { "vi": "Gần ưu tiên nhanh, xa ưu tiên tới — không băng nào tốt nhất cho mọi góc nhà." }
+            {
+              "vi": "Wi-Fi là sóng radio thay dây; không khí là một sợi dây chung, càng đông càng chờ."
+            },
+            {
+              "vi": "2.4 GHz xa mà chậm; 5 GHz nhanh mà gần; 6 GHz nhanh nhất, vắng nhất, ngắn nhất."
+            },
+            {
+              "vi": "Gần ưu tiên nhanh, xa ưu tiên tới — không băng nào tốt nhất cho mọi góc nhà."
+            }
           ],
-          "nextTeaser": { "vi": "Nhưng chọn đúng băng rồi mà nhà vẫn ì thì sao? Sóng nhà bạn với sóng nhà hàng xóm đang giẫm lên nhau — giẫm bằng cách nào, và vì sao máy vẫn báo đầy vạch?" }
+          "nextTeaser": {
+            "vi": "Nhưng chọn đúng băng rồi mà nhà vẫn ì thì sao? Sóng nhà bạn với sóng nhà hàng xóm đang giẫm lên nhau — giẫm bằng cách nào, và vì sao máy vẫn báo đầy vạch?"
+          }
         }
       ]
     },
-
     {
       "id": "m8-bai-7",
-      "missionTitle": { "vi": "Giành lại kênh sóng với nhà hàng xóm" },
+      "missionTitle": {
+        "vi": "Giành lại kênh sóng với nhà hàng xóm"
+      },
       "steps": [
         {
           "type": "hook",
-          "question": { "vi": "Điện thoại báo đầy vạch, bạn lại đang ngồi ngay cạnh router, vậy mà trang web cứ quay vòng vòng — và cứ tối đến là tệ nhất. Sóng khỏe rành rành, thế thì cái gì đang chậm?" },
+          "question": {
+            "vi": "Điện thoại báo đầy vạch, bạn lại đang ngồi ngay cạnh router, vậy mà trang web cứ quay vòng vòng — và cứ tối đến là tệ nhất. Sóng khỏe rành rành, thế thì cái gì đang chậm?"
+          },
           "visualId": "vis-hook-day-vach-ma-cham"
         },
         {
@@ -145,17 +291,29 @@
             {
               "kind": "mcq",
               "id": "m8-b7-pre-1",
-              "prompt": { "vi": "Đoán thử nhé: cả chung cư dùng Wi-Fi 2.4 GHz, nhà bạn và nhà hàng xóm cùng đặt kênh 6. Chuyện gì xảy ra?" },
+              "prompt": {
+                "vi": "Đoán thử nhé: cả chung cư dùng Wi-Fi 2.4 GHz, nhà bạn và nhà hàng xóm cùng đặt kênh 6. Chuyện gì xảy ra?"
+              },
               "choices": [
-                { "vi": "Thiết bị hai nhà phải thay phiên nhau nói, nên cả hai cùng chậm" },
-                { "vi": "Không ảnh hưởng gì tới nhau, vì mỗi nhà một mật khẩu Wi-Fi riêng" },
-                { "vi": "Router nào mạnh hơn sẽ lấn át, nhà kia gần như mất sóng" }
+                {
+                  "vi": "Thiết bị hai nhà phải thay phiên nhau nói, nên cả hai cùng chậm"
+                },
+                {
+                  "vi": "Không ảnh hưởng gì tới nhau, vì mỗi nhà một mật khẩu Wi-Fi riêng"
+                },
+                {
+                  "vi": "Router nào mạnh hơn sẽ lấn át, nhà kia gần như mất sóng"
+                }
               ],
               "answerIndex": 0,
-              "explain": { "vi": "Mật khẩu khóa NỘI DUNG chứ không chia được không khí. Chung kênh là chung một sợi dây (bài trước): thiết bị hai nhà nghe thấy nhau nên phải nhường lượt, và cả hai cùng chậm chứ chẳng ai át được ai." }
+              "explain": {
+                "vi": "Mật khẩu khóa NỘI DUNG chứ không chia được không khí. Chung kênh là chung một sợi dây (bài trước): thiết bị hai nhà nghe thấy nhau nên phải nhường lượt, và cả hai cùng chậm chứ chẳng ai át được ai."
+              }
             }
           ],
-          "encouragement": { "vi": "Cứ nghĩ tới hai quán karaoke sát vách cùng mở hết cỡ: chẳng ai át được ai, chỉ có cả hai cùng ồn." }
+          "encouragement": {
+            "vi": "Cứ nghĩ tới hai quán karaoke sát vách cùng mở hết cỡ: chẳng ai át được ai, chỉ có cả hai cùng ồn."
+          }
         },
         {
           "type": "teach",
@@ -163,20 +321,32 @@
             {
               "conceptId": "m8-kenh-wifi",
               "visualId": "vis-kenh-1-6-11",
-              "body": { "vi": "Mỗi băng tần không phải một đường ống liền: nó chia thành nhiều KÊNH — băng tần là con phố, kênh là làn đường, và router nhà bạn chỉ phát trên một làn. Rắc rối ở chỗ băng 2.4 GHz có 13 kênh nhưng đánh số sát nhau nên chúng đè lên nhau; chỉ ba kênh 1, 6 và 11 cách đủ xa để không chồng. Cả xóm chen vào đúng ba làn ấy, nên nhà bạn và nhà hàng xóm rất dễ chung kênh — mà chung kênh là chung một sợi dây không khí (bài trước): thiết bị hai nhà phải thay phiên nhau nói." },
-              "deepDive": { "vi": "Chọn kênh nằm giữa, kiểu 3 hay 8, còn tệ hơn trùng hẳn kênh với hàng xóm: chồng một PHẦN thì hai bên nghe nhau lõm bõm, không nhận ra bên kia đang nói nên cứ phát đè lên — cả hai cùng hỏng gói, cùng phải gửi lại. Trùng hẳn thì ít ra còn nghe rõ nhau mà nhường lượt. Băng 5 GHz rộng rãi hơn nhiều: hơn hai chục kênh không đè nhau, lại ít nhà dùng." }
+              "body": {
+                "vi": "Mỗi băng tần không phải một đường ống liền: nó chia thành nhiều KÊNH — băng tần là con phố, kênh là làn đường, và router nhà bạn chỉ phát trên một làn. Rắc rối ở chỗ băng 2.4 GHz có 13 kênh nhưng đánh số sát nhau nên chúng đè lên nhau; chỉ ba kênh 1, 6 và 11 cách đủ xa để không chồng. Cả xóm chen vào đúng ba làn ấy, nên nhà bạn và nhà hàng xóm rất dễ chung kênh — mà chung kênh là chung một sợi dây không khí (bài trước): thiết bị hai nhà phải thay phiên nhau nói."
+              },
+              "deepDive": {
+                "vi": "Chọn kênh nằm giữa, kiểu 3 hay 8, còn tệ hơn trùng hẳn kênh với hàng xóm: chồng một PHẦN thì hai bên nghe nhau lõm bõm, không nhận ra bên kia đang nói nên cứ phát đè lên — cả hai cùng hỏng gói, cùng phải gửi lại. Trùng hẳn thì ít ra còn nghe rõ nhau mà nhường lượt. Băng 5 GHz rộng rãi hơn nhiều: hơn hai chục kênh không đè nhau, lại ít nhà dùng."
+              }
             },
             {
               "conceptId": "m8-vach-song",
               "visualId": "vis-vach-song-va-do-on",
-              "body": { "vi": "Vậy vì sao máy báo ĐẦY VẠCH mà vẫn ì? Vì vạch chỉ đo đúng một thứ: sóng router tới máy to hay nhỏ. Nó hoàn toàn không đo xóm quanh đang ồn cỡ nào. Giống như đứng sát loa trong quán karaoke — nghe loa nhà mình rõ mồn một, nhưng muốn nói chuyện với người bên cạnh thì vẫn chịu, vì cả quán cùng gào. Thứ quyết định tốc độ thật là CHÊNH LỆCH giữa tiếng nhà bạn và tiếng ồn xung quanh, mà mấy cái vạch kia không hé một chữ nào về vế thứ hai." },
-              "deepDive": { "vi": "Người trực đọc hai con số chứ không đọc vạch: độ to của sóng (đơn vị dBm, luôn là số âm — quanh -50 là khỏe, tới -80 là lết) và mức ồn nền quanh đó. Hiệu hai số mới là con số đáng tin. Điện thoại vẽ vạch chỉ theo vế thứ nhất, nên ở chung cư đông nó nói dối rất tự tin: bốn vạch mà chờ dài." }
+              "body": {
+                "vi": "Vậy vì sao máy báo ĐẦY VẠCH mà vẫn ì? Vì vạch chỉ đo đúng một thứ: sóng router tới máy to hay nhỏ. Nó hoàn toàn không đo xóm quanh đang ồn cỡ nào. Giống như đứng sát loa trong quán karaoke — nghe loa nhà mình rõ mồn một, nhưng muốn nói chuyện với người bên cạnh thì vẫn chịu, vì cả quán cùng gào. Thứ quyết định tốc độ thật là CHÊNH LỆCH giữa tiếng nhà bạn và tiếng ồn xung quanh, mà mấy cái vạch kia không hé một chữ nào về vế thứ hai."
+              },
+              "deepDive": {
+                "vi": "Người trực đọc hai con số chứ không đọc vạch: độ to của sóng (đơn vị dBm, luôn là số âm — quanh -50 là khỏe, tới -80 là lết) và mức ồn nền quanh đó. Hiệu hai số mới là con số đáng tin. Điện thoại vẽ vạch chỉ theo vế thứ nhất, nên ở chung cư đông nó nói dối rất tự tin: bốn vạch mà chờ dài."
+              }
             },
             {
               "conceptId": "m8-cho-dat-router",
               "visualId": "vis-cho-dat-router",
-              "body": { "vi": "Còn một việc tay chân đổi được nhiều thứ hơn cả đổi kênh: đặt lại router. Sóng lan ra mọi hướng thành một quả cầu, nên router muốn nằm GIỮA nhà, TRÊN CAO (từ ngang tầm ngực trở lên) và THOÁNG. Nhét nó vào góc nhà là ném nửa quả cầu ra ngoài đường cho hàng xóm hưởng. Kẻ thù của sóng: tủ kín và tường bê tông chịu lực, gương cùng tấm kim loại (dội sóng ngược lại), bể cá và bình nước (nước nuốt sóng 2.4 GHz rất giỏi), lò vi sóng đang chạy." },
-              "deepDive": { "vi": "Nhà ống nhiều tầng thì không chỗ đặt nào cứu nổi: một điểm phát ở tầng hai vẫn để lại góc chết ở tầng trệt lẫn tầng ba. Lúc đó thứ cần thêm là một điểm phát NỮA đặt xa router, chứ không phải một router đắt tiền hơn — sóng đã bị bê tông chặn thì đắt mấy cũng không xuyên qua được." }
+              "body": {
+                "vi": "Còn một việc tay chân đổi được nhiều thứ hơn cả đổi kênh: đặt lại router. Sóng lan ra mọi hướng thành một quả cầu, nên router muốn nằm GIỮA nhà, TRÊN CAO (từ ngang tầm ngực trở lên) và THOÁNG. Nhét nó vào góc nhà là ném nửa quả cầu ra ngoài đường cho hàng xóm hưởng. Kẻ thù của sóng: tủ kín và tường bê tông chịu lực, gương cùng tấm kim loại (dội sóng ngược lại), bể cá và bình nước (nước nuốt sóng 2.4 GHz rất giỏi), lò vi sóng đang chạy."
+              },
+              "deepDive": {
+                "vi": "Nhà ống nhiều tầng thì không chỗ đặt nào cứu nổi: một điểm phát ở tầng hai vẫn để lại góc chết ở tầng trệt lẫn tầng ba. Lúc đó thứ cần thêm là một điểm phát NỮA đặt xa router, chứ không phải một router đắt tiền hơn — sóng đã bị bê tông chặn thì đắt mấy cũng không xuyên qua được."
+              }
             }
           ]
         },
@@ -188,46 +358,88 @@
               "question": {
                 "kind": "mcq",
                 "id": "m8-b7-pra-1",
-                "prompt": { "vi": "Điện thoại báo bốn vạch đầy, bạn ngồi ngay cạnh router, mà trang web vẫn quay vòng. Bốn vạch đó đang nói lên điều gì?" },
+                "prompt": {
+                  "vi": "Điện thoại báo bốn vạch đầy, bạn ngồi ngay cạnh router, mà trang web vẫn quay vòng. Bốn vạch đó đang nói lên điều gì?"
+                },
                 "choices": [
-                  { "vi": "Sóng router tới máy rất to — nhưng nó không đo xóm quanh ồn tới đâu" },
-                  { "vi": "Đường ra Internet đang rộng — nhưng nó không đo router nhà đời nào" },
-                  { "vi": "Kênh máy đang dùng còn trống — nhưng nó không đo tường dày hay mỏng" }
+                  {
+                    "vi": "Sóng router tới máy rất to — nhưng nó không đo xóm quanh ồn tới đâu"
+                  },
+                  {
+                    "vi": "Đường ra Internet đang rộng — nhưng nó không đo router nhà đời nào"
+                  },
+                  {
+                    "vi": "Kênh máy đang dùng còn trống — nhưng nó không đo tường dày hay mỏng"
+                  }
                 ],
                 "answerIndex": 0,
-                "hintTopic": { "vi": "thứ vạch sóng đo được và thứ nó bỏ qua" }
+                "hintTopic": {
+                  "vi": "thứ vạch sóng đo được và thứ nó bỏ qua"
+                }
               },
-              "hint": { "vi": "Vạch đo tiếng của router nhà bạn. Còn thứ gì trong không khí mà nó không hề đếm?" },
-              "solution": { "vi": "Vạch chỉ nói sóng router tới máy TO — nó không biết gì về độ ồn của xóm quanh. Đường ra Internet rộng bao nhiêu là chuyện của gói cước, còn kênh có trống hay không thì vạch cũng chẳng đếm." },
+              "hint": {
+                "vi": "Vạch đo tiếng của router nhà bạn. Còn thứ gì trong không khí mà nó không hề đếm?"
+              },
+              "solution": {
+                "vi": "Vạch chỉ nói sóng router tới máy TO — nó không biết gì về độ ồn của xóm quanh. Đường ra Internet rộng bao nhiêu là chuyện của gói cước, còn kênh có trống hay không thì vạch cũng chẳng đếm."
+              },
               "conceptId": "m8-vach-song"
             },
             {
               "question": {
                 "kind": "typed",
                 "id": "m8-b7-pra-2",
-                "prompt": { "vi": "Băng 2.4 GHz có 13 kênh, nhưng chỉ ba kênh không đè lên nhau. Đó là ba kênh số mấy? (ba con số)" },
-                "accept": ["1, 6, 11", "1 6 11", "1, 6 và 11", "1-6-11", "1 và 6 và 11"],
-                "hintTopic": { "vi": "ba làn cách nhau đủ xa" }
+                "prompt": {
+                  "vi": "Băng 2.4 GHz có 13 kênh, nhưng chỉ ba kênh không đè lên nhau. Đó là ba kênh số mấy? (ba con số)"
+                },
+                "accept": [
+                  "1, 6, 11",
+                  "1 6 11",
+                  "1, 6 và 11",
+                  "1-6-11",
+                  "1 và 6 và 11"
+                ],
+                "hintTopic": {
+                  "vi": "ba làn cách nhau đủ xa"
+                }
               },
-              "hint": { "vi": "Ba số cách đều nhau năm bậc, bắt đầu từ kênh nhỏ nhất." },
-              "solution": { "vi": "Kênh 1, 6 và 11 — chỉ ba kênh này cách nhau đủ xa để không chồng lấn lên nhau." },
+              "hint": {
+                "vi": "Ba số cách đều nhau năm bậc, bắt đầu từ kênh nhỏ nhất."
+              },
+              "solution": {
+                "vi": "Kênh 1, 6 và 11 — chỉ ba kênh này cách nhau đủ xa để không chồng lấn lên nhau."
+              },
               "conceptId": "m8-kenh-wifi"
             },
             {
               "question": {
                 "kind": "mcq",
                 "id": "m8-b7-pra-3",
-                "prompt": { "vi": "Router đang nằm trong tủ giày ở góc nhà, ngay cạnh bể cá. Việc nào đáng làm trước tiên?" },
+                "prompt": {
+                  "vi": "Router đang nằm trong tủ giày ở góc nhà, ngay cạnh bể cá. Việc nào đáng làm trước tiên?"
+                },
                 "choices": [
-                  { "vi": "Dời router ra giữa nhà, đặt trên cao và để thoáng" },
-                  { "vi": "Nâng gói cước lên mức cao hơn cho sóng khỏe hẳn" },
-                  { "vi": "Đổi mật khẩu Wi-Fi thật dài để hàng xóm hết ké" }
+                  {
+                    "vi": "Dời router ra giữa nhà, đặt trên cao và để thoáng"
+                  },
+                  {
+                    "vi": "Nâng gói cước lên mức cao hơn cho sóng khỏe hẳn"
+                  },
+                  {
+                    "vi": "Đổi mật khẩu Wi-Fi thật dài để hàng xóm hết ké"
+                  }
                 ],
                 "answerIndex": 0,
-                "hintTopic": { "vi": "quả cầu sóng đang bị nhốt ở đâu" }
+                "hintTopic": {
+                  "vi": "quả cầu sóng đang bị nhốt ở đâu"
+                }
               },
-              "hint": { "vi": "Sóng lan thành một quả cầu — quả cầu ấy đang bị nhốt trong tủ, ở một góc, cạnh một khối nước." },
-              "solution": { "vi": "Dời router ra giữa nhà, trên cao và thoáng. Tủ kín chặn sóng, góc nhà ném nửa quả cầu ra ngoài đường, còn bể cá thì nước nuốt sóng 2.4 GHz. Gói cước không làm sóng khỏe lên, và người ké mạng cũng không làm vạch sóng đổi." },
+              "hint": {
+                "vi": "Sóng lan thành một quả cầu — quả cầu ấy đang bị nhốt trong tủ, ở một góc, cạnh một khối nước."
+              },
+              "solution": {
+                "vi": "Dời router ra giữa nhà, trên cao và thoáng. Tủ kín chặn sóng, góc nhà ném nửa quả cầu ra ngoài đường, còn bể cá thì nước nuốt sóng 2.4 GHz. Gói cước không làm sóng khỏe lên, và người ké mạng cũng không làm vạch sóng đổi."
+              },
               "conceptId": "m8-cho-dat-router"
             }
           ]
@@ -239,59 +451,137 @@
               "question": {
                 "kind": "typed",
                 "id": "m8-b7-ret-1",
-                "prompt": { "vi": "Không nhìn lại bài: nhà bạn và nhà hàng xóm cùng đặt một kênh trên băng 2.4 GHz — thiết bị hai bên buộc phải làm gì với nhau?" },
-                "accept": ["thay phiên", "luân phiên", "chờ nhau", "đợi nhau", "chờ tới lượt", "chờ đến lượt", "đợi đến lượt", "thay nhau nói", "nhường nhau", "chia lượt", "xếp hàng"],
-                "hintTopic": { "vi": "không khí là sợi dây dùng chung" }
+                "prompt": {
+                  "vi": "Không nhìn lại bài: nhà bạn và nhà hàng xóm cùng đặt một kênh trên băng 2.4 GHz — thiết bị hai bên buộc phải làm gì với nhau?"
+                },
+                "accept": [
+                  "thay phiên",
+                  "luân phiên",
+                  "chờ nhau",
+                  "đợi nhau",
+                  "chờ tới lượt",
+                  "chờ đến lượt",
+                  "đợi đến lượt",
+                  "thay nhau nói",
+                  "nhường nhau",
+                  "chia lượt",
+                  "xếp hàng"
+                ],
+                "hintTopic": {
+                  "vi": "không khí là sợi dây dùng chung"
+                }
               },
-              "hint": { "vi": "Nhớ bài trước: không khí là MỘT sợi dây chung. Chung kênh nghĩa là chung đúng sợi dây đó." },
-              "solution": { "vi": "Thay phiên nhau nói — chung kênh là chung một sợi dây không khí, mỗi lúc chỉ một bên được phát, nên cả hai nhà cùng chậm." }
+              "hint": {
+                "vi": "Nhớ bài trước: không khí là MỘT sợi dây chung. Chung kênh nghĩa là chung đúng sợi dây đó."
+              },
+              "solution": {
+                "vi": "Thay phiên nhau nói — chung kênh là chung một sợi dây không khí, mỗi lúc chỉ một bên được phát, nên cả hai nhà cùng chậm."
+              }
             },
             {
               "question": {
                 "kind": "mcq",
                 "id": "m8-b7-ret-2",
-                "prompt": { "vi": "Vẫn từ trí nhớ, nối lại với bài trước: vì sao chuyển mạng lên băng 5 GHz thường đỡ hẳn cảnh giẫm sóng ở chung cư?" },
+                "prompt": {
+                  "vi": "Vẫn từ trí nhớ, nối lại với bài trước: vì sao chuyển mạng lên băng 5 GHz thường đỡ hẳn cảnh giẫm sóng ở chung cư?"
+                },
                 "choices": [
-                  { "vi": "Vì 5 GHz có hơn hai chục kênh không đè nhau, lại ít nhà dùng hơn" },
-                  { "vi": "Vì sóng 5 GHz xuyên tường giỏi hơn nên át được sóng nhà bên" },
-                  { "vi": "Vì mỗi router chạy 5 GHz được nhà mạng cấp riêng một kênh cố định" }
+                  {
+                    "vi": "Vì 5 GHz có hơn hai chục kênh không đè nhau, lại ít nhà dùng hơn"
+                  },
+                  {
+                    "vi": "Vì sóng 5 GHz xuyên tường giỏi hơn nên át được sóng nhà bên"
+                  },
+                  {
+                    "vi": "Vì mỗi router chạy 5 GHz được nhà mạng cấp riêng một kênh cố định"
+                  }
                 ],
                 "answerIndex": 0,
-                "hintTopic": { "vi": "băng nào còn rộng chỗ hơn" }
+                "hintTopic": {
+                  "vi": "băng nào còn rộng chỗ hơn"
+                }
               },
-              "hint": { "vi": "Hỏi lại chính bài trước: băng nào đông đúc nhất, và băng nào còn nhiều chỗ trống?" },
-              "solution": { "vi": "Vì 5 GHz nhiều kênh không đè nhau hơn hẳn và còn vắng. Thêm một may mắn nữa: sóng 5 GHz xuyên tường kém, nên sóng nhà hàng xóm cũng khó lọt sang quấy nhà bạn — đúng cái nhược điểm ở bài trước, lần này lại hóa lợi thế." }
+              "hint": {
+                "vi": "Hỏi lại chính bài trước: băng nào đông đúc nhất, và băng nào còn nhiều chỗ trống?"
+              },
+              "solution": {
+                "vi": "Vì 5 GHz nhiều kênh không đè nhau hơn hẳn và còn vắng. Thêm một may mắn nữa: sóng 5 GHz xuyên tường kém, nên sóng nhà hàng xóm cũng khó lọt sang quấy nhà bạn — đúng cái nhược điểm ở bài trước, lần này lại hóa lợi thế."
+              }
             }
           ],
           "selfExplain": {
-            "prompt": { "vi": "Giải thích bằng lời của bạn: vì sao ở chung cư, máy báo đầy vạch mà mạng vẫn chậm vào giờ cao điểm?" },
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: vì sao ở chung cư, máy báo đầy vạch mà mạng vẫn chậm vào giờ cao điểm?"
+            },
             "keywords": [
-              ["kênh", "kenh", "chung kênh", "chung kenh", "trùng kênh", "trung kenh"],
-              ["hàng xóm", "hang xom", "nhà bên", "nha ben", "xung quanh", "chung cư", "chung cu", "nhiều mạng", "nhieu mang"],
-              ["thay phiên", "thay phien", "chờ", "cho nhau", "đợi", "xếp hàng", "xep hang", "giẫm", "dam len", "ồn", "tiếng ồn"]
+              [
+                "kênh",
+                "kenh",
+                "chung kênh",
+                "chung kenh",
+                "trùng kênh",
+                "trung kenh"
+              ],
+              [
+                "hàng xóm",
+                "hang xom",
+                "nhà bên",
+                "nha ben",
+                "xung quanh",
+                "chung cư",
+                "chung cu",
+                "nhiều mạng",
+                "nhieu mang"
+              ],
+              [
+                "thay phiên",
+                "thay phien",
+                "chờ",
+                "cho nhau",
+                "đợi",
+                "xếp hàng",
+                "xep hang",
+                "giẫm",
+                "dam len",
+                "ồn",
+                "tiếng ồn"
+              ]
             ],
-            "exampleAnswer": { "vi": "Vì vạch chỉ đo tiếng router nhà mình to hay nhỏ, chứ không đo xóm quanh ồn cỡ nào. Giờ cao điểm cả chung cư cùng chen trên vài kênh 2.4 GHz ít ỏi, các nhà chung kênh phải thay phiên nhau nói — nên sóng vẫn đầy vạch mà vẫn phải chờ dài." }
+            "exampleAnswer": {
+              "vi": "Vì vạch chỉ đo tiếng router nhà mình to hay nhỏ, chứ không đo xóm quanh ồn cỡ nào. Giờ cao điểm cả chung cư cùng chen trên vài kênh 2.4 GHz ít ỏi, các nhà chung kênh phải thay phiên nhau nói — nên sóng vẫn đầy vạch mà vẫn phải chờ dài."
+            }
           }
         },
         {
           "type": "summary",
           "bullets": [
-            { "vi": "Băng tần chia thành kênh; băng 2.4 GHz chỉ có ba kênh không đè nhau: 1, 6 và 11." },
-            { "vi": "Vạch đầy chỉ nói sóng nhà bạn TO, không nói xóm quanh có ồn hay không." },
-            { "vi": "Đặt router giữa nhà, trên cao, thoáng — tránh tủ kín, gương, bể cá và lò vi sóng." }
+            {
+              "vi": "Băng tần chia thành kênh; băng 2.4 GHz chỉ có ba kênh không đè nhau: 1, 6 và 11."
+            },
+            {
+              "vi": "Vạch đầy chỉ nói sóng nhà bạn TO, không nói xóm quanh có ồn hay không."
+            },
+            {
+              "vi": "Đặt router giữa nhà, trên cao, thoáng — tránh tủ kín, gương, bể cá và lò vi sóng."
+            }
           ],
-          "nextTeaser": { "vi": "Trên vỏ hộp router còn một con số nữa: Wi-Fi 5, Wi-Fi 6, Wi-Fi 7. Số đó không phải băng tần, cũng chẳng phải kênh — vậy nó là gì?" }
+          "nextTeaser": {
+            "vi": "Trên vỏ hộp router còn một con số nữa: Wi-Fi 5, Wi-Fi 6, Wi-Fi 7. Số đó không phải băng tần, cũng chẳng phải kênh — vậy nó là gì?"
+          }
         }
       ]
     },
-
     {
       "id": "m8-bai-2",
-      "missionTitle": { "vi": "Đọc vanh vách tên thế hệ Wi-Fi" },
+      "missionTitle": {
+        "vi": "Đọc vanh vách tên thế hệ Wi-Fi"
+      },
       "steps": [
         {
           "type": "hook",
-          "question": { "vi": "Hộp router ghi Wi-Fi 6, điện thoại mới khoe Wi-Fi 7, còn tài liệu cũ lại viết 802.11ac. Ba cách gọi rối rắm đó đang nói về cùng một chuyện gì?" },
+          "question": {
+            "vi": "Hộp router ghi Wi-Fi 6, điện thoại mới khoe Wi-Fi 7, còn tài liệu cũ lại viết 802.11ac. Ba cách gọi rối rắm đó đang nói về cùng một chuyện gì?"
+          },
           "visualId": "vis-hook-chuan-wifi"
         },
         {
@@ -300,17 +590,29 @@
             {
               "kind": "mcq",
               "id": "m8-b2-pre-1",
-              "prompt": { "vi": "Đoán thử nhé: router Wi-Fi 6 gặp điện thoại Wi-Fi 7 thì hai bên nói chuyện bằng gì?" },
+              "prompt": {
+                "vi": "Đoán thử nhé: router Wi-Fi 6 gặp điện thoại Wi-Fi 7 thì hai bên nói chuyện bằng gì?"
+              },
               "choices": [
-                { "vi": "Bằng Wi-Fi 6 — bên mới tự hạ xuống nói giọng cũ" },
-                { "vi": "Bằng Wi-Fi 7 — máy mới kéo router lên theo" },
-                { "vi": "Không kết nối được vì lệch chuẩn" }
+                {
+                  "vi": "Bằng Wi-Fi 6 — bên mới tự hạ xuống nói giọng cũ"
+                },
+                {
+                  "vi": "Bằng Wi-Fi 7 — máy mới kéo router lên theo mình"
+                },
+                {
+                  "vi": "Không kết nối được vì lệch chuẩn"
+                }
               ],
               "answerIndex": 0,
-              "explain": { "vi": "Các thế hệ Wi-Fi tương thích ngược: bên mới biết nói giọng cũ, nên cặp nào cũng chốt ở thế hệ THẤP hơn của hai bên." }
+              "explain": {
+                "vi": "Các thế hệ Wi-Fi tương thích ngược: bên mới biết nói giọng cũ, nên cặp nào cũng chốt ở thế hệ THẤP hơn của hai bên."
+              }
             }
           ],
-          "encouragement": { "vi": "Nghĩ như hai người khác đời điện thoại nhắn cho nhau: người dùng máy xịn vẫn phải nhắn kiểu mà máy cũ đọc được." }
+          "encouragement": {
+            "vi": "Nghĩ như hai người khác đời điện thoại nhắn cho nhau: người dùng máy xịn vẫn phải nhắn kiểu mà máy cũ đọc được."
+          }
         },
         {
           "type": "teach",
@@ -318,14 +620,22 @@
             {
               "conceptId": "m8-chuan-wifi",
               "visualId": "vis-the-he-wifi",
-              "body": { "vi": "Wi-Fi 4, 5, 6, 7 là các THẾ HỆ của chuẩn Wi-Fi — tên kỹ thuật lần lượt là 802.11n, ac, ax, be, nhưng người ta đánh số cho dễ nhớ. Số càng cao càng mới: nhanh hơn, chen chúc giỏi hơn. Hai thiết bị khác thế hệ vẫn nói chuyện được — chúng dùng thế hệ thấp hơn của hai bên." },
-              "deepDive": { "vi": "Cách gọi bằng số ra đời năm 2018, vì 802.11ac/ax quá khó nhớ với người mua hàng. Từ Wi-Fi 6 trở đi, con số còn được in thẳng lên logo thiết bị — liếc vỏ hộp là biết đời." }
+              "body": {
+                "vi": "Wi-Fi 4, 5, 6, 7 là các THẾ HỆ của chuẩn Wi-Fi — tên kỹ thuật lần lượt là 802.11n, ac, ax, be, nhưng người ta đánh số cho dễ nhớ. Số càng cao càng mới: nhanh hơn, chen chúc giỏi hơn. Hai thiết bị khác thế hệ vẫn nói chuyện được — chúng dùng thế hệ thấp hơn của hai bên."
+              },
+              "deepDive": {
+                "vi": "Cách gọi bằng số ra đời năm 2018, vì 802.11ac/ax quá khó nhớ với người mua hàng. Từ Wi-Fi 6 trở đi, con số còn được in thẳng lên logo thiết bị — liếc vỏ hộp là biết đời."
+              }
             },
             {
               "conceptId": "m8-wifi-6e-7",
               "visualId": "vis-lan-6ghz",
-              "body": { "vi": "Wi-Fi 6 nổi bật không phải vì nhanh hơn, mà vì chở ĐÔNG giỏi hơn: một lượt phát chia được cho nhiều thiết bị — như xe buýt nhiều ghế thay vì mỗi chuyến chở một khách. Wi-Fi 6E là đúng Wi-Fi 6 nhưng thêm quyền chạy trên băng 6 GHz — làn đường mới toanh còn vắng. Wi-Fi 7 mở kênh rộng gấp đôi và biết đi HAI băng cùng lúc." },
-              "deepDive": { "vi": "Đi hai băng cùng lúc (Wi-Fi 7 gọi là MLO) nghĩa là điện thoại vừa dùng 5 GHz vừa dùng 6 GHz như hai làn song song — làn này nghẽn thì dữ liệu dồn sang làn kia, độ trễ ổn định hẳn khi chơi game hay gọi video." }
+              "body": {
+                "vi": "Wi-Fi 6 nổi bật không phải vì nhanh hơn, mà vì chở ĐÔNG giỏi hơn: một lượt phát chia được cho nhiều thiết bị — như xe buýt nhiều ghế thay vì mỗi chuyến chở một khách. Wi-Fi 6E là đúng Wi-Fi 6 nhưng thêm quyền chạy trên băng 6 GHz — làn đường mới toanh còn vắng. Wi-Fi 7 mở kênh rộng gấp đôi và biết đi HAI băng cùng lúc."
+              },
+              "deepDive": {
+                "vi": "Đi hai băng cùng lúc (Wi-Fi 7 gọi là MLO) nghĩa là điện thoại vừa dùng 5 GHz vừa dùng 6 GHz như hai làn song song — làn này nghẽn thì dữ liệu dồn sang làn kia, độ trễ ổn định hẳn khi chơi game hay gọi video."
+              }
             }
           ]
         },
@@ -337,29 +647,56 @@
               "question": {
                 "kind": "mcq",
                 "id": "m8-b2-pra-1",
-                "prompt": { "vi": "Điểm mạnh đáng tiền nhất của Wi-Fi 6 so với Wi-Fi 5 là gì?" },
+                "prompt": {
+                  "vi": "Điểm mạnh đáng tiền nhất của Wi-Fi 6 so với Wi-Fi 5 là gì?"
+                },
                 "choices": [
-                  { "vi": "Chở nhiều thiết bị cùng lúc giỏi hơn hẳn — nhà càng đông càng thấy rõ" },
-                  { "vi": "Sóng đi xa gấp đôi nên phòng ngủ cuối nhà cũng đầy vạch" },
-                  { "vi": "Máy Wi-Fi 5 cũ trong nhà cũng được kéo lên chạy nhanh như Wi-Fi 6" }
+                  {
+                    "vi": "Chở nhiều thiết bị cùng lúc giỏi hơn hẳn — nhà càng đông càng thấy rõ"
+                  },
+                  {
+                    "vi": "Sóng đi xa gấp đôi nên phòng ngủ cuối nhà cũng đầy vạch"
+                  },
+                  {
+                    "vi": "Máy Wi-Fi 5 cũ trong nhà cũng được kéo lên chạy nhanh như Wi-Fi 6"
+                  }
                 ],
                 "answerIndex": 0,
-                "hintTopic": { "vi": "chuyến xe buýt nhiều ghế" }
+                "hintTopic": {
+                  "vi": "chuyến xe buýt nhiều ghế"
+                }
               },
-              "hint": { "vi": "Nghĩ về chuyến xe chia được nhiều ghế cho nhiều khách trong một lượt chạy." },
-              "solution": { "vi": "Wi-Fi 6 chia một lượt phát cho nhiều thiết bị cùng lúc — nhà đông thiết bị hưởng lợi rõ nhất. Tầm với là chuyện của băng tần chứ không phải thế hệ; còn máy Wi-Fi 5 cũ thì vẫn nói giọng Wi-Fi 5, router mới không kéo nó nhanh lên được." },
+              "hint": {
+                "vi": "Nghĩ về chuyến xe chia được nhiều ghế cho nhiều khách trong một lượt chạy."
+              },
+              "solution": {
+                "vi": "Wi-Fi 6 chia một lượt phát cho nhiều thiết bị cùng lúc — nhà đông thiết bị hưởng lợi rõ nhất. Tầm với là chuyện của băng tần chứ không phải thế hệ; còn máy Wi-Fi 5 cũ thì vẫn nói giọng Wi-Fi 5, router mới không kéo nó nhanh lên được."
+              },
               "conceptId": "m8-chuan-wifi"
             },
             {
               "question": {
                 "kind": "typed",
                 "id": "m8-b2-pra-2",
-                "prompt": { "vi": "Wi-Fi 6E khác Wi-Fi 6 ở quyền chạy thêm trên băng tần nào? (con số)" },
-                "accept": ["6", "6ghz", "băng 6", "bang 6"],
-                "hintTopic": { "vi": "chữ E mở thêm một làn đường" }
+                "prompt": {
+                  "vi": "Wi-Fi 6E khác Wi-Fi 6 ở quyền chạy thêm trên băng tần nào? (con số)"
+                },
+                "accept": [
+                  "6",
+                  "6ghz",
+                  "băng 6",
+                  "bang 6"
+                ],
+                "hintTopic": {
+                  "vi": "chữ E mở thêm một làn đường"
+                }
               },
-              "hint": { "vi": "Chính là băng tần mới toanh, vắng nhất trong bài trước." },
-              "solution": { "vi": "Băng 6 GHz — Wi-Fi 6E = Wi-Fi 6 cộng quyền vào làn 6 GHz còn vắng." },
+              "hint": {
+                "vi": "Chính là băng tần mới toanh, vắng nhất trong bài trước."
+              },
+              "solution": {
+                "vi": "Băng 6 GHz — Wi-Fi 6E = Wi-Fi 6 cộng quyền vào làn 6 GHz còn vắng."
+              },
               "conceptId": "m8-wifi-6e-7"
             }
           ]
@@ -371,31 +708,79 @@
               "question": {
                 "kind": "typed",
                 "id": "m8-b2-ret-1",
-                "prompt": { "vi": "Không nhìn lại bài: router Wi-Fi 6 gặp máy Wi-Fi 7 — hai bên nói chuyện bằng thế hệ nào?" },
-                "accept": ["thấp hơn", "thap hon", "wi-fi 6", "wifi 6", "đời thấp", "doi thap", "cũ hơn", "cu hon", "6", "thế hệ 6"],
-                "hintTopic": { "vi": "bên nào phải chiều bên nào" }
+                "prompt": {
+                  "vi": "Không nhìn lại bài: router Wi-Fi 6 gặp máy Wi-Fi 7 — hai bên nói chuyện bằng thế hệ nào?"
+                },
+                "accept": [
+                  "thấp hơn",
+                  "thap hon",
+                  "wi-fi 6",
+                  "wifi 6",
+                  "đời thấp",
+                  "doi thap",
+                  "cũ hơn",
+                  "cu hon",
+                  "6",
+                  "thế hệ 6"
+                ],
+                "hintTopic": {
+                  "vi": "bên nào phải chiều bên nào"
+                }
               },
-              "hint": { "vi": "Bên mới biết nói giọng cũ — cặp nào cũng chốt ở đời thấp hơn của hai bên." },
-              "solution": { "vi": "Bằng Wi-Fi 6 — thế hệ thấp hơn của hai bên; chuẩn mới luôn tương thích ngược." }
+              "hint": {
+                "vi": "Bên mới biết nói giọng cũ — cặp nào cũng chốt ở đời thấp hơn của hai bên."
+              },
+              "solution": {
+                "vi": "Bằng Wi-Fi 6 — thế hệ thấp hơn của hai bên; chuẩn mới luôn tương thích ngược."
+              }
             }
           ],
           "selfExplain": {
-            "prompt": { "vi": "Giải thích bằng lời của bạn: vì sao mua router Wi-Fi 7 xịn về mà mạng nhà chưa chắc đã nhanh lên?" },
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: vì sao mua router Wi-Fi 7 xịn về mà mạng nhà chưa chắc đã nhanh lên?"
+            },
             "keywords": [
-              ["thiết bị", "thiet bi", "máy cũ", "may cu", "hai bên", "hai ben", "thấp hơn", "thap hon"],
-              ["nhà mạng", "nha mang", "đường truyền", "duong truyen", "gói cước", "goi cuoc", "internet"]
+              [
+                "thiết bị",
+                "thiet bi",
+                "máy cũ",
+                "may cu",
+                "hai bên",
+                "hai ben",
+                "thấp hơn",
+                "thap hon"
+              ],
+              [
+                "nhà mạng",
+                "nha mang",
+                "đường truyền",
+                "duong truyen",
+                "gói cước",
+                "goi cuoc",
+                "internet"
+              ]
             ],
-            "exampleAnswer": { "vi": "Vì tốc độ chốt ở thế hệ THẤP hơn của từng cặp — điện thoại cũ vẫn nói giọng cũ với router mới; và đường ra Internet còn bị chặn bởi gói cước nhà mạng, router nhanh mấy cũng không vượt được cái ống đó." }
+            "exampleAnswer": {
+              "vi": "Vì tốc độ chốt ở thế hệ THẤP hơn của từng cặp — điện thoại cũ vẫn nói giọng cũ với router mới; và đường ra Internet còn bị chặn bởi gói cước nhà mạng, router nhanh mấy cũng không vượt được cái ống đó."
+            }
           }
         },
         {
           "type": "summary",
           "bullets": [
-            { "vi": "Wi-Fi 4/5/6/7 là thế hệ; số càng cao càng mới, và luôn tương thích ngược." },
-            { "vi": "Wi-Fi 6 chở đông giỏi; 6E thêm làn 6 GHz; Wi-Fi 7 kênh rộng và đi hai băng cùng lúc." },
-            { "vi": "Tốc độ thật chốt ở thế hệ thấp hơn của từng cặp thiết bị — và ở gói cước nhà mạng." }
+            {
+              "vi": "Wi-Fi 4/5/6/7 là thế hệ; số càng cao càng mới, và luôn tương thích ngược."
+            },
+            {
+              "vi": "Wi-Fi 6 chở đông giỏi; 6E thêm làn 6 GHz; Wi-Fi 7 kênh rộng và đi hai băng cùng lúc."
+            },
+            {
+              "vi": "Tốc độ thật chốt ở thế hệ thấp hơn của từng cặp thiết bị — và ở gói cước nhà mạng."
+            }
           ],
-          "nextTeaser": { "vi": "Sóng nhà bạn bay ra tận vỉa hè, ai đứng đó cũng \"nghe\" được từng gói tin. Vậy cái gì ngăn họ đọc trộm?" }
+          "nextTeaser": {
+            "vi": "Sóng nhà bạn bay ra tận vỉa hè, ai đứng đó cũng \"nghe\" được từng gói tin. Vậy cái gì ngăn họ đọc trộm?"
+          }
         }
       ]
     },
@@ -543,7 +928,7 @@
                     "vi": "Mất gói hoặc jitter — đường rộng nhưng gói rơi hoặc tới lệch nhịp"
                   },
                   {
-                    "vi": "Băng thông chưa đủ — nên nâng lên gói cước cao hơn"
+                    "vi": "Băng thông vẫn chưa đủ dùng — nên nâng lên gói cước cao hơn nữa"
                   },
                   {
                     "vi": "Máy tính yếu nên không mở nổi phần mềm họp"
@@ -640,14 +1025,17 @@
         }
       ]
     },
-
     {
       "id": "m8-bai-3",
-      "missionTitle": { "vi": "Khóa cửa cho sóng nhà bạn" },
+      "missionTitle": {
+        "vi": "Khóa cửa cho sóng nhà bạn"
+      },
       "steps": [
         {
           "type": "hook",
-          "question": { "vi": "Sóng Wi-Fi không dừng ở tường nhà — nó tràn ra vỉa hè. Một người ngồi ngoài đó với chiếc laptop thu được mọi gói tin đang bay trong không khí. Điều gì ngăn họ đọc trộm?" },
+          "question": {
+            "vi": "Sóng Wi-Fi không dừng ở tường nhà — nó tràn ra vỉa hè. Một người ngồi ngoài đó với chiếc laptop thu được mọi gói tin đang bay trong không khí. Điều gì ngăn họ đọc trộm?"
+          },
           "visualId": "vis-hook-wpa"
         },
         {
@@ -656,17 +1044,29 @@
             {
               "kind": "mcq",
               "id": "m8-b3-pre-1",
-              "prompt": { "vi": "Đoán thử nhé: WPA2, WPA3 trong trang cài đặt router là gì?" },
+              "prompt": {
+                "vi": "Đoán thử nhé: WPA2, WPA3 trong trang cài đặt router là gì?"
+              },
               "choices": [
-                { "vi": "Chuẩn MÃ HÓA sóng Wi-Fi — khóa nội dung trước khi phát vào không khí" },
-                { "vi": "Chuẩn tốc độ, giống Wi-Fi 5, Wi-Fi 6" },
-                { "vi": "Tên hai băng tần" }
+                {
+                  "vi": "Chuẩn MÃ HÓA sóng Wi-Fi — khóa nội dung trước khi phát vào không khí"
+                },
+                {
+                  "vi": "Chuẩn TỐC ĐỘ của sóng Wi-Fi, giống hệt Wi-Fi 5 và Wi-Fi 6 vẫn thấy"
+                },
+                {
+                  "vi": "Tên gọi của hai băng tần sóng mà router phát ra"
+                }
               ],
               "answerIndex": 0,
-              "explain": { "vi": "WPA là bộ khóa của sóng: mọi khung tin được mã hóa bằng chìa sinh từ mật khẩu Wi-Fi — người nghe lén chỉ thu được một chuỗi loạn xạ." }
+              "explain": {
+                "vi": "WPA là bộ khóa của sóng: mọi khung tin được mã hóa bằng chìa sinh từ mật khẩu Wi-Fi — người nghe lén chỉ thu được một chuỗi loạn xạ."
+              }
             }
           ],
-          "encouragement": { "vi": "Sóng thì không giấu được — nên thứ phải giấu là NỘI DUNG bên trong sóng." }
+          "encouragement": {
+            "vi": "Sóng thì không giấu được — nên thứ phải giấu là NỘI DUNG bên trong sóng."
+          }
         },
         {
           "type": "teach",
@@ -674,14 +1074,22 @@
             {
               "conceptId": "m8-wpa2",
               "visualId": "vis-khoa-wpa2",
-              "body": { "vi": "Vì ai đứng gần cũng thu được sóng, Wi-Fi phải mã hóa: WPA2 là bộ khóa phổ biến hơn cả — nội dung được khóa bằng chìa sinh từ mật khẩu mạng. Nhưng WPA2 có một điểm yếu đã thành kinh điển: kẻ xấu THU lại khoảnh khắc một thiết bị bắt tay vào mạng, đem tệp đó về nhà, rồi cho máy đoán mật khẩu hàng tỷ lần — không ai hay biết." },
-              "deepDive": { "vi": "Kiểu tấn công đó gọi là dò offline: mọi phép thử diễn ra trên máy của kẻ tấn công, router nhà bạn không nhận được gì nên không thể chặn hay báo động. Mật khẩu ngắn và phổ biến kiểu \"12345678\" rơi trong vài phút." }
+              "body": {
+                "vi": "Vì ai đứng gần cũng thu được sóng, Wi-Fi phải mã hóa: WPA2 là bộ khóa phổ biến hơn cả — nội dung được khóa bằng chìa sinh từ mật khẩu mạng. Nhưng WPA2 có một điểm yếu đã thành kinh điển: kẻ xấu THU lại khoảnh khắc một thiết bị bắt tay vào mạng, đem tệp đó về nhà, rồi cho máy đoán mật khẩu hàng tỷ lần — không ai hay biết."
+              },
+              "deepDive": {
+                "vi": "Kiểu tấn công đó gọi là dò offline: mọi phép thử diễn ra trên máy của kẻ tấn công, router nhà bạn không nhận được gì nên không thể chặn hay báo động. Mật khẩu ngắn và phổ biến kiểu \"12345678\" rơi trong vài phút."
+              }
             },
             {
               "conceptId": "m8-wpa3",
               "visualId": "vis-wpa3-cham-mat",
-              "body": { "vi": "WPA3 vá đúng chỗ đó bằng kiểu bắt tay mới: mỗi lần muốn thử một mật khẩu, kẻ tấn công buộc phải \"gõ cửa\" router MỘT lần theo thời gian thật — hết trò mang về nhà dò hàng tỷ lần. Mật khẩu yếu vẫn là mật khẩu yếu, nhưng cái giá của mỗi lần đoán đắt lên hàng triệu lần." },
-              "deepDive": { "vi": "Kiểu bắt tay mới tên là SAE. WPA3 còn kèm Enhanced Open cho mạng KHÔNG mật khẩu (quán cà phê): vẫn mã hóa riêng từng người dù chẳng cần đăng nhập. Và nhớ tòa nhà 15 phòng: trên mạng lạ, HTTPS ở phòng 443 vẫn là lớp khóa của riêng bạn — khóa của mạng và khóa của trang web là hai lớp độc lập." }
+              "body": {
+                "vi": "WPA3 vá đúng chỗ đó bằng kiểu bắt tay mới: mỗi lần muốn thử một mật khẩu, kẻ tấn công buộc phải \"gõ cửa\" router MỘT lần theo thời gian thật — hết trò mang về nhà dò hàng tỷ lần. Mật khẩu yếu vẫn là mật khẩu yếu, nhưng cái giá của mỗi lần đoán đắt lên hàng triệu lần."
+              },
+              "deepDive": {
+                "vi": "Kiểu bắt tay mới tên là SAE. WPA3 còn kèm Enhanced Open cho mạng KHÔNG mật khẩu (quán cà phê): vẫn mã hóa riêng từng người dù chẳng cần đăng nhập. Và nhớ tòa nhà 15 phòng: trên mạng lạ, HTTPS ở phòng 443 vẫn là lớp khóa của riêng bạn — khóa của mạng và khóa của trang web là hai lớp độc lập."
+              }
             }
           ]
         },
@@ -693,29 +1101,54 @@
               "question": {
                 "kind": "mcq",
                 "id": "m8-b3-pra-1",
-                "prompt": { "vi": "Điểm yếu kinh điển của WPA2 nằm ở đâu?" },
+                "prompt": {
+                  "vi": "Điểm yếu kinh điển của WPA2 nằm ở đâu?"
+                },
                 "choices": [
-                  { "vi": "Thu được cú bắt tay là đem về dò mật khẩu offline, không ai hay biết" },
-                  { "vi": "Nó không mã hóa gì cả" },
-                  { "vi": "Nó chỉ chạy được trên băng 2.4 GHz" }
+                  {
+                    "vi": "Thu được cú bắt tay là đem về dò mật khẩu offline, không ai hay biết"
+                  },
+                  {
+                    "vi": "Nó không mã hóa gì cả, sóng phát ra là chữ trần ai cũng đọc được"
+                  },
+                  {
+                    "vi": "Nó chỉ chạy được trên băng 2.4 GHz nên nhà nào cũng dính"
+                  }
                 ],
                 "answerIndex": 0,
-                "hintTopic": { "vi": "thứ kẻ xấu chỉ cần thu đúng một lần" }
+                "hintTopic": {
+                  "vi": "thứ kẻ xấu chỉ cần thu đúng một lần"
+                }
               },
-              "hint": { "vi": "Kẻ tấn công không đoán trên router — hắn đoán ở nhà hắn, trên thứ đã thu được." },
-              "solution": { "vi": "Thu lại cú bắt tay lúc thiết bị vào mạng rồi dò mật khẩu offline — router không hề biết nên không thể chặn." },
+              "hint": {
+                "vi": "Kẻ tấn công không đoán trên router — hắn đoán ở nhà hắn, trên thứ đã thu được."
+              },
+              "solution": {
+                "vi": "Thu lại cú bắt tay lúc thiết bị vào mạng rồi dò mật khẩu offline — router không hề biết nên không thể chặn."
+              },
               "conceptId": "m8-wpa2"
             },
             {
               "question": {
                 "kind": "typed",
                 "id": "m8-b3-pra-2",
-                "prompt": { "vi": "Vào trang cài đặt router, chuẩn bảo mật mới nhất bạn nên chọn là gì?" },
-                "accept": ["wpa3", "wpa 3"],
-                "hintTopic": { "vi": "đời kế tiếp của WPA2" }
+                "prompt": {
+                  "vi": "Vào trang cài đặt router, chuẩn bảo mật mới nhất bạn nên chọn là gì?"
+                },
+                "accept": [
+                  "wpa3",
+                  "wpa 3"
+                ],
+                "hintTopic": {
+                  "vi": "đời kế tiếp của WPA2"
+                }
               },
-              "hint": { "vi": "Tăng con số sau chữ WPA lên một." },
-              "solution": { "vi": "WPA3 — bắt tay kiểu mới chặn được kiểu dò offline; router và thiết bị đời mới đều hỗ trợ." },
+              "hint": {
+                "vi": "Tăng con số sau chữ WPA lên một."
+              },
+              "solution": {
+                "vi": "WPA3 — bắt tay kiểu mới chặn được kiểu dò offline; router và thiết bị đời mới đều hỗ trợ."
+              },
               "conceptId": "m8-wpa3"
             }
           ]
@@ -727,42 +1160,88 @@
               "question": {
                 "kind": "typed",
                 "id": "m8-b3-ret-1",
-                "prompt": { "vi": "Không nhìn lại bài: trên mạng Wi-Fi mở của quán cà phê, lớp khóa nào vẫn che nội dung bạn gửi cho từng trang web? (gợi ý: phòng 443)" },
-                "accept": ["https", "tls", "ssl"],
-                "hintTopic": { "vi": "ổ khóa vàng của tòa nhà 15 phòng" }
+                "prompt": {
+                  "vi": "Không nhìn lại bài: trên mạng Wi-Fi mở của quán cà phê, lớp khóa nào vẫn che nội dung bạn gửi cho từng trang web? (gợi ý: phòng 443)"
+                },
+                "accept": [
+                  "https",
+                  "tls",
+                  "ssl"
+                ],
+                "hintTopic": {
+                  "vi": "ổ khóa vàng của tòa nhà 15 phòng"
+                }
               },
-              "hint": { "vi": "Chính là dịch vụ ở phòng 443 trong cung điện ký ức." },
-              "solution": { "vi": "HTTPS (TLS) — mã hóa giữa máy bạn và từng trang web, độc lập với chuyện mạng Wi-Fi có khóa hay không." }
+              "hint": {
+                "vi": "Chính là dịch vụ ở phòng 443 trong cung điện ký ức."
+              },
+              "solution": {
+                "vi": "HTTPS (TLS) — mã hóa giữa máy bạn và từng trang web, độc lập với chuyện mạng Wi-Fi có khóa hay không."
+              }
             }
           ],
           "selfExplain": {
-            "prompt": { "vi": "Giải thích bằng lời của bạn: vì sao WPA3 làm kẻ dò mật khẩu khốn khổ hơn hẳn so với WPA2?" },
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: vì sao WPA3 làm kẻ dò mật khẩu khốn khổ hơn hẳn so với WPA2?"
+            },
             "keywords": [
-              ["gõ cửa", "go cua", "hỏi router", "hoi router", "trực tiếp", "truc tiep", "từng lần", "tung lan", "thời gian thật", "thoi gian that"],
-              ["offline", "mang về", "mang ve", "hàng tỷ", "hang ty", "tỷ lần", "ty lan"]
+              [
+                "gõ cửa",
+                "go cua",
+                "hỏi router",
+                "hoi router",
+                "trực tiếp",
+                "truc tiep",
+                "từng lần",
+                "tung lan",
+                "thời gian thật",
+                "thoi gian that"
+              ],
+              [
+                "offline",
+                "mang về",
+                "mang ve",
+                "hàng tỷ",
+                "hang ty",
+                "tỷ lần",
+                "ty lan"
+              ]
             ],
-            "exampleAnswer": { "vi": "Với WPA2, hắn thu một cú bắt tay rồi về nhà thử hàng tỷ mật khẩu offline. Với WPA3, mỗi lần đoán buộc phải gõ cửa router một lần theo thời gian thật — vừa chậm, vừa lộ mặt, và chặn được." }
+            "exampleAnswer": {
+              "vi": "Với WPA2, hắn thu một cú bắt tay rồi về nhà thử hàng tỷ mật khẩu offline. Với WPA3, mỗi lần đoán buộc phải gõ cửa router một lần theo thời gian thật — vừa chậm, vừa lộ mặt, và chặn được."
+            }
           }
         },
         {
           "type": "summary",
           "bullets": [
-            { "vi": "Sóng bay ra tận vỉa hè nên nội dung phải được mã hóa — đó là việc của WPA." },
-            { "vi": "WPA2 dính đòn dò offline: thu cú bắt tay một lần, về nhà đoán hàng tỷ lần." },
-            { "vi": "WPA3 bắt mỗi lần đoán phải gõ cửa router — cứ chọn WPA3 khi router cho phép." }
+            {
+              "vi": "Sóng bay ra tận vỉa hè nên nội dung phải được mã hóa — đó là việc của WPA."
+            },
+            {
+              "vi": "WPA2 dính đòn dò offline: thu cú bắt tay một lần, về nhà đoán hàng tỷ lần."
+            },
+            {
+              "vi": "WPA3 bắt mỗi lần đoán phải gõ cửa router — cứ chọn WPA3 khi router cho phép."
+            }
           ],
-          "nextTeaser": { "vi": "Xong phần sóng. Giờ tới phần địa chỉ: ngay lúc này trên máy bạn có sẵn một địa chỉ lạ bắt đầu bằng fe80 mà bạn chưa từng đặt — của ai vậy?" }
+          "nextTeaser": {
+            "vi": "Xong phần sóng. Giờ tới phần địa chỉ: ngay lúc này trên máy bạn có sẵn một địa chỉ lạ bắt đầu bằng fe80 mà bạn chưa từng đặt — của ai vậy?"
+          }
         }
       ]
     },
-
     {
       "id": "m8-bai-4",
-      "missionTitle": { "vi": "Đọc biển số đời mới không vấp" },
+      "missionTitle": {
+        "vi": "Đọc biển số đời mới không vấp"
+      },
       "steps": [
         {
           "type": "hook",
-          "question": { "vi": "Gõ lệnh xem địa chỉ trên máy, bạn sẽ thấy một dòng bắt đầu bằng fe80:: mà bạn chưa từng đặt, và cũng chẳng ai phát cho máy cả. Nó ở đâu ra, và để làm gì?" },
+          "question": {
+            "vi": "Gõ lệnh xem địa chỉ trên máy, bạn sẽ thấy một dòng bắt đầu bằng fe80:: mà bạn chưa từng đặt, và cũng chẳng ai phát cho máy cả. Nó ở đâu ra, và để làm gì?"
+          },
           "visualId": "vis-hook-ipv6-sau"
         },
         {
@@ -771,17 +1250,29 @@
             {
               "kind": "mcq",
               "id": "m8-b4-pre-1",
-              "prompt": { "vi": "Đoán thử nhé: IPv6 cho mỗi thiết bị một địa chỉ công cộng thật. Vậy còn cần NAT như bên IPv4 không?" },
+              "prompt": {
+                "vi": "Đoán thử nhé: IPv6 cho mỗi thiết bị một địa chỉ công cộng thật. Vậy còn cần NAT như bên IPv4 không?"
+              },
               "choices": [
-                { "vi": "Không cần — NAT sinh ra vì IPv4 thiếu địa chỉ, mà IPv6 thì thừa" },
-                { "vi": "Vẫn cần, vì NAT là lớp bảo mật" },
-                { "vi": "Cần, vì IPv6 rồi cũng sắp cạn" }
+                {
+                  "vi": "Không cần — NAT sinh ra vì IPv4 thiếu địa chỉ, mà IPv6 thì thừa"
+                },
+                {
+                  "vi": "Vẫn cần, vì NAT chính là một lớp bảo mật che máy trong nhà"
+                },
+                {
+                  "vi": "Cần, vì địa chỉ IPv6 rồi cũng sẽ cạn như IPv4 thôi"
+                }
               ],
               "answerIndex": 0,
-              "explain": { "vi": "NAT (Module 7) là giải pháp tình thế cho việc IPv4 cạn địa chỉ. IPv6 đủ địa chỉ cho mỗi hạt cát — ai cũng có biển số công cộng thật. Còn việc chặn người lạ xưa nay vẫn là của TƯỜNG LỬA; đừng nhầm hai vai." }
+              "explain": {
+                "vi": "NAT (Module 7) là giải pháp tình thế cho việc IPv4 cạn địa chỉ. IPv6 đủ địa chỉ cho mỗi hạt cát — ai cũng có biển số công cộng thật. Còn việc chặn người lạ xưa nay vẫn là của TƯỜNG LỬA; đừng nhầm hai vai."
+              }
             }
           ],
-          "encouragement": { "vi": "Câu này gài đúng chỗ nhiều người nhầm nhất: NAT che đường về chỉ là tác dụng PHỤ, không phải vai chính." }
+          "encouragement": {
+            "vi": "Câu này gài đúng chỗ nhiều người nhầm nhất: NAT che đường về chỉ là tác dụng PHỤ, không phải vai chính."
+          }
         },
         {
           "type": "teach",
@@ -789,14 +1280,22 @@
             {
               "conceptId": "m8-link-local",
               "visualId": "vis-fe80-trong-phong",
-              "body": { "vi": "Địa chỉ fe80:: là link-local: máy TỰ sinh ngay khi bật card mạng, không cần xin ai. Nó như biệt danh gọi nhau TRONG MỘT PHÒNG — chỉ có nghĩa giữa các máy chung một đường truyền, không bao giờ được đi qua router. IPv6 dùng nó cho việc nội bộ: tìm hàng xóm, nói chuyện với router." },
-              "deepDive": { "vi": "Vì luôn tồn tại kể cả khi chưa mạng nào cấp phát gì, link-local là \"đường dây nóng\" của IPv6: mọi trao đổi hạ tầng — nghe router rao, hỏi địa chỉ MAC của hàng xóm (vai của ARP ngày xưa) — đều chạy trên nó. Hai máy nối thẳng một sợi dây cũng nói chuyện được với nhau bằng fe80." }
+              "body": {
+                "vi": "Địa chỉ fe80:: là link-local: máy TỰ sinh ngay khi bật card mạng, không cần xin ai. Nó như biệt danh gọi nhau TRONG MỘT PHÒNG — chỉ có nghĩa giữa các máy chung một đường truyền, không bao giờ được đi qua router. IPv6 dùng nó cho việc nội bộ: tìm hàng xóm, nói chuyện với router."
+              },
+              "deepDive": {
+                "vi": "Vì luôn tồn tại kể cả khi chưa mạng nào cấp phát gì, link-local là \"đường dây nóng\" của IPv6: mọi trao đổi hạ tầng — nghe router rao, hỏi địa chỉ MAC của hàng xóm (vai của ARP ngày xưa) — đều chạy trên nó. Hai máy nối thẳng một sợi dây cũng nói chuyện được với nhau bằng fe80."
+              }
             },
             {
               "conceptId": "m8-global-unicast",
               "visualId": "vis-ipv6-hai-nua",
-              "body": { "vi": "Địa chỉ công cộng của IPv6 (global unicast, thường mở đầu bằng số 2 hoặc 3) chia đôi đúng ở /64: nửa đầu là TÊN KHU PHỐ do router rao — phần dẫn đường trên Internet; nửa sau là SỐ NHÀ do chính máy chọn. Mỗi thiết bị một biển số công cộng thật — hết thời cả nhà mượn chung một số như bên NAT." },
-              "deepDive": { "vi": "Nửa sau ngày nay thường là số ngẫu nhiên và đổi định kỳ — để không ai lần theo một chiếc máy qua các mạng khác nhau bằng chính địa chỉ của nó. Còn về độ lớn: không gian /64 của MỘT khu phố đã gấp hơn 4 tỷ lần toàn bộ Internet IPv4." }
+              "body": {
+                "vi": "Địa chỉ công cộng của IPv6 (global unicast, thường mở đầu bằng số 2 hoặc 3) chia đôi đúng ở /64: nửa đầu là TÊN KHU PHỐ do router rao — phần dẫn đường trên Internet; nửa sau là SỐ NHÀ do chính máy chọn. Mỗi thiết bị một biển số công cộng thật — hết thời cả nhà mượn chung một số như bên NAT."
+              },
+              "deepDive": {
+                "vi": "Nửa sau ngày nay thường là số ngẫu nhiên và đổi định kỳ — để không ai lần theo một chiếc máy qua các mạng khác nhau bằng chính địa chỉ của nó. Còn về độ lớn: không gian /64 của MỘT khu phố đã gấp hơn 4 tỷ lần toàn bộ Internet IPv4."
+              }
             }
           ]
         },
@@ -808,34 +1307,62 @@
               "question": {
                 "kind": "mcq",
                 "id": "m8-b4-pra-1",
-                "prompt": { "vi": "Địa chỉ nào sau đây là link-local IPv6 — chỉ có nghĩa trong một phòng?" },
+                "prompt": {
+                  "vi": "Địa chỉ nào sau đây là link-local IPv6 — chỉ có nghĩa trong một phòng?"
+                },
                 "choices": [
-                  { "vi": "fe80::1" },
-                  { "vi": "192.168.1.10" },
-                  { "vi": "2001:db8::5" }
+                  {
+                    "vi": "fe80::1"
+                  },
+                  {
+                    "vi": "192.168.1.10"
+                  },
+                  {
+                    "vi": "2001:db8::5"
+                  }
                 ],
                 "answerIndex": 0,
-                "hintTopic": { "vi": "cụm mở đầu của biệt danh trong phòng" }
+                "hintTopic": {
+                  "vi": "cụm mở đầu của biệt danh trong phòng"
+                }
               },
-              "hint": { "vi": "Biệt danh trong phòng luôn mở đầu bằng fe80." },
-              "solution": { "vi": "fe80::1 là link-local. Còn 192.168.1.10 là IPv4 riêng (Module 3), và 2001:db8::5 là IPv6 công cộng." },
+              "hint": {
+                "vi": "Biệt danh trong phòng luôn mở đầu bằng fe80."
+              },
+              "solution": {
+                "vi": "fe80::1 là link-local. Còn 192.168.1.10 là IPv4 riêng (Module 3), và 2001:db8::5 là IPv6 công cộng."
+              },
               "conceptId": "m8-link-local"
             },
             {
               "question": {
                 "kind": "mcq",
                 "id": "m8-b4-pra-2",
-                "prompt": { "vi": "Đổi hệ quy chiếu: máy 192.168.1.10 (IPv4 riêng) mở một trang web. Ai phải ra tay thì gói tin của nó mới ra được Internet?" },
+                "prompt": {
+                  "vi": "Đổi hệ quy chiếu: máy 192.168.1.10 (IPv4 riêng) mở một trang web. Ai phải ra tay thì gói tin của nó mới ra được Internet?"
+                },
                 "choices": [
-                  { "vi": "Router làm NAT — đổi địa chỉ riêng thành địa chỉ công cộng" },
-                  { "vi": "Không ai cả — nó tự đi thẳng như IPv6" },
-                  { "vi": "DNS đổi địa chỉ giúp nó" }
+                  {
+                    "vi": "Router làm NAT — đổi địa chỉ riêng thành địa chỉ công cộng"
+                  },
+                  {
+                    "vi": "Không ai cả — nó cứ thế tự đi thẳng ra ngoài y như máy IPv6"
+                  },
+                  {
+                    "vi": "DNS đổi địa chỉ giúp nó"
+                  }
                 ],
                 "answerIndex": 0,
-                "hintTopic": { "vi": "chuyện Module 7 — cả nhà một số nhà" }
+                "hintTopic": {
+                  "vi": "chuyện Module 7 — cả nhà một số nhà"
+                }
               },
-              "hint": { "vi": "192.168.x.x không bao giờ xuất hiện ngoài Internet — phải có ai đó đổi nó trước." },
-              "solution": { "vi": "Router làm NAT (Module 7). Đây chính là điểm khác cốt lõi giữa hai hệ: IPv4 riêng phải được đổi địa chỉ, IPv6 công cộng thì đi thẳng." }
+              "hint": {
+                "vi": "192.168.x.x không bao giờ xuất hiện ngoài Internet — phải có ai đó đổi nó trước."
+              },
+              "solution": {
+                "vi": "Router làm NAT (Module 7). Đây chính là điểm khác cốt lõi giữa hai hệ: IPv4 riêng phải được đổi địa chỉ, IPv6 công cộng thì đi thẳng."
+              }
             }
           ]
         },
@@ -846,53 +1373,117 @@
               "question": {
                 "kind": "typed",
                 "id": "m8-b4-ret-1",
-                "prompt": { "vi": "Không nhìn lại bài: địa chỉ IPv6 bắt đầu bằng fe80 là loại gì, dùng trong phạm vi nào?" },
-                "accept": ["link-local", "link local", "trong phòng", "trong phong", "nội bộ", "noi bo", "một đường truyền", "mot duong truyen", "cục bộ", "cuc bo"],
-                "hintTopic": { "vi": "biệt danh chỉ gọi được trong phòng" }
+                "prompt": {
+                  "vi": "Không nhìn lại bài: địa chỉ IPv6 bắt đầu bằng fe80 là loại gì, dùng trong phạm vi nào?"
+                },
+                "accept": [
+                  "link-local",
+                  "link local",
+                  "trong phòng",
+                  "trong phong",
+                  "nội bộ",
+                  "noi bo",
+                  "một đường truyền",
+                  "mot duong truyen",
+                  "cục bộ",
+                  "cuc bo"
+                ],
+                "hintTopic": {
+                  "vi": "biệt danh chỉ gọi được trong phòng"
+                }
               },
-              "hint": { "vi": "Tên tiếng Anh ghép \"link\" với \"local\" — phạm vi là một đường truyền." },
-              "solution": { "vi": "Link-local — máy tự sinh, chỉ có nghĩa giữa các máy chung một đường truyền, không bao giờ qua router." }
+              "hint": {
+                "vi": "Tên tiếng Anh ghép \"link\" với \"local\" — phạm vi là một đường truyền."
+              },
+              "solution": {
+                "vi": "Link-local — máy tự sinh, chỉ có nghĩa giữa các máy chung một đường truyền, không bao giờ qua router."
+              }
             },
             {
               "question": {
                 "kind": "typed",
                 "id": "m8-b4-ret-2",
-                "prompt": { "vi": "Vẫn từ trí nhớ, nhưng đổi sang hệ cũ: cơ chế nào cho phép cả nhà IPv4 dùng chung một địa chỉ công cộng? (viết tắt)" },
-                "accept": ["nat", "pat", "nat/pat"],
-                "hintTopic": { "vi": "cuốn sổ ở cổng WAN" }
+                "prompt": {
+                  "vi": "Vẫn từ trí nhớ, nhưng đổi sang hệ cũ: cơ chế nào cho phép cả nhà IPv4 dùng chung một địa chỉ công cộng? (viết tắt)"
+                },
+                "accept": [
+                  "nat",
+                  "pat",
+                  "nat/pat"
+                ],
+                "hintTopic": {
+                  "vi": "cuốn sổ ở cổng WAN"
+                }
               },
-              "hint": { "vi": "Ba chữ cái, học ở Module 7 — chữ giữa là \"address\"." },
-              "solution": { "vi": "NAT (kèm PAT) — đổi địa chỉ riêng thành địa chỉ chung và tra sổ khi thư về. IPv6 không cần tới nó." }
+              "hint": {
+                "vi": "Ba chữ cái, học ở Module 7 — chữ giữa là \"address\"."
+              },
+              "solution": {
+                "vi": "NAT (kèm PAT) — đổi địa chỉ riêng thành địa chỉ chung và tra sổ khi thư về. IPv6 không cần tới nó."
+              }
             }
           ],
           "selfExplain": {
-            "prompt": { "vi": "Giải thích bằng lời của bạn: vì sao IPv4 phải đẻ ra NAT, còn IPv6 thì không cần?" },
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: vì sao IPv4 phải đẻ ra NAT, còn IPv6 thì không cần?"
+            },
             "keywords": [
-              ["thiếu", "thieu", "cạn", "can kiet", "mượn chung", "muon chung", "4,3 tỷ", "it dia chi"],
-              ["đủ", "du dia chi", "thừa", "thua", "công cộng thật", "cong cong that", "mỗi thiết bị", "moi thiet bi"]
+              [
+                "thiếu",
+                "thieu",
+                "cạn",
+                "can kiet",
+                "mượn chung",
+                "muon chung",
+                "4,3 tỷ",
+                "it dia chi"
+              ],
+              [
+                "đủ",
+                "du dia chi",
+                "thừa",
+                "thua",
+                "công cộng thật",
+                "cong cong that",
+                "mỗi thiết bị",
+                "moi thiet bi"
+              ]
             ],
-            "exampleAnswer": { "vi": "IPv4 chỉ có khoảng 4,3 tỷ địa chỉ nên cả nhà phải mượn chung một địa chỉ công cộng qua NAT. IPv6 nhiều địa chỉ đến mức mỗi thiết bị mang một biển số công cộng thật — không phải đổi chác gì nữa, chỉ còn cần tường lửa đứng gác." }
+            "exampleAnswer": {
+              "vi": "IPv4 chỉ có khoảng 4,3 tỷ địa chỉ nên cả nhà phải mượn chung một địa chỉ công cộng qua NAT. IPv6 nhiều địa chỉ đến mức mỗi thiết bị mang một biển số công cộng thật — không phải đổi chác gì nữa, chỉ còn cần tường lửa đứng gác."
+            }
           }
         },
         {
           "type": "summary",
           "bullets": [
-            { "vi": "fe80:: là link-local — máy tự sinh, chỉ có nghĩa trong một đường truyền." },
-            { "vi": "Địa chỉ công cộng IPv6 chia đôi ở /64: khu phố do router rao + số nhà do máy tự chọn." },
-            { "vi": "IPv6 không cần NAT — đủ biển số cho tất cả; việc gác cửa là của tường lửa." }
+            {
+              "vi": "fe80:: là link-local — máy tự sinh, chỉ có nghĩa trong một đường truyền."
+            },
+            {
+              "vi": "Địa chỉ công cộng IPv6 chia đôi ở /64: khu phố do router rao + số nhà do máy tự chọn."
+            },
+            {
+              "vi": "IPv6 không cần NAT — đủ biển số cho tất cả; việc gác cửa là của tường lửa."
+            }
           ],
-          "nextTeaser": { "vi": "Nửa đầu \"router rao\", nửa sau \"máy tự chọn\" — vậy chúng ghép lại thành địa chỉ hoàn chỉnh bằng cách nào mà chẳng cần cuộc hỏi cưới 4 nhịp nào? Bài sau xem máy tự lo liệu." }
+          "nextTeaser": {
+            "vi": "Nửa đầu \"router rao\", nửa sau \"máy tự chọn\" — vậy chúng ghép lại thành địa chỉ hoàn chỉnh bằng cách nào mà chẳng cần cuộc hỏi cưới 4 nhịp nào? Bài sau xem máy tự lo liệu."
+          }
         }
       ]
     },
-
     {
       "id": "m8-bai-5",
-      "missionTitle": { "vi": "Xem máy tự lo liệu địa chỉ" },
+      "missionTitle": {
+        "vi": "Xem máy tự lo liệu địa chỉ"
+      },
       "steps": [
         {
           "type": "hook",
-          "question": { "vi": "Ở IPv4, máy phải qua đủ bốn nhịp hỏi cưới Discover–Offer–Request–Ack mới có địa chỉ. Máy IPv6 vừa bật lên đã tự có, chẳng xin ai. Nó lấy địa chỉ ở đâu ra?" },
+          "question": {
+            "vi": "Ở IPv4, máy phải qua đủ bốn nhịp hỏi cưới Discover–Offer–Request–Ack mới có địa chỉ. Máy IPv6 vừa bật lên đã tự có, chẳng xin ai. Nó lấy địa chỉ ở đâu ra?"
+          },
           "visualId": "vis-hook-slaac"
         },
         {
@@ -901,17 +1492,29 @@
             {
               "kind": "mcq",
               "id": "m8-b5-pre-1",
-              "prompt": { "vi": "Đoán thử nhé: máy IPv6 có địa chỉ công cộng bằng cách nào?" },
+              "prompt": {
+                "vi": "Đoán thử nhé: máy IPv6 có địa chỉ công cộng bằng cách nào?"
+              },
               "choices": [
-                { "vi": "Nghe router rao tên khu phố rồi TỰ ghép số nhà của mình vào" },
-                { "vi": "Vẫn phải hỏi cưới bốn nhịp như DHCP" },
-                { "vi": "Người dùng phải gõ tay từng địa chỉ" }
+                {
+                  "vi": "Nghe router rao tên khu phố rồi TỰ ghép số nhà của mình vào"
+                },
+                {
+                  "vi": "Vẫn phải hỏi cưới đủ bốn nhịp y hệt như bên DHCP của IPv4"
+                },
+                {
+                  "vi": "Người dùng phải gõ tay từng địa chỉ"
+                }
               ],
               "answerIndex": 0,
-              "explain": { "vi": "Cơ chế đó tên là SLAAC: router rao đều đặn \"khu phố này tên …/64\"; máy nghe được thì tự ghép nửa sau — có địa chỉ mà không ai phải giữ sổ." }
+              "explain": {
+                "vi": "Cơ chế đó tên là SLAAC: router rao đều đặn \"khu phố này tên …/64\"; máy nghe được thì tự ghép nửa sau — có địa chỉ mà không ai phải giữ sổ."
+              }
             }
           ],
-          "encouragement": { "vi": "So với cuộc hỏi cưới DORA ở Module 6, IPv6 chọn lối \"tự thân\" — cứ đặt hai cách cạnh nhau mà nhớ." }
+          "encouragement": {
+            "vi": "So với cuộc hỏi cưới DORA ở Module 6, IPv6 chọn lối \"tự thân\" — cứ đặt hai cách cạnh nhau mà nhớ."
+          }
         },
         {
           "type": "teach",
@@ -919,14 +1522,22 @@
             {
               "conceptId": "m8-slaac",
               "visualId": "vis-slaac-tu-ghep",
-              "body": { "vi": "SLAAC — máy tự cấu hình địa chỉ. Router rao đều đặn như loa phường: \"ai ở đây thì mang tên phố 2001:db8:1:1::/64\". Máy mới tới nghe được, lấy tên phố làm nửa đầu, tự chọn số nhà làm nửa sau — thế là có địa chỉ công cộng. Không nhịp hỏi, không ai giữ sổ, không ai phải gật đầu." },
-              "deepDive": { "vi": "Khác biệt với DHCP nằm ở cuốn SỔ: DHCP có máy chủ nhớ ai thuê địa chỉ nào, hạn bao lâu (Module 6) — quản được, nhưng phải nuôi người giữ sổ. SLAAC không ai ghi chép; máy chỉ hỏi vọng một câu \"có ai trùng số này không?\" trước khi dùng cho chắc. Mạng công ty cần sổ sách vẫn dùng DHCPv6; mạng nhà thì SLAAC là mặc định." }
+              "body": {
+                "vi": "SLAAC — máy tự cấu hình địa chỉ. Router rao đều đặn như loa phường: \"ai ở đây thì mang tên phố 2001:db8:1:1::/64\". Máy mới tới nghe được, lấy tên phố làm nửa đầu, tự chọn số nhà làm nửa sau — thế là có địa chỉ công cộng. Không nhịp hỏi, không ai giữ sổ, không ai phải gật đầu."
+              },
+              "deepDive": {
+                "vi": "Khác biệt với DHCP nằm ở cuốn SỔ: DHCP có máy chủ nhớ ai thuê địa chỉ nào, hạn bao lâu (Module 6) — quản được, nhưng phải nuôi người giữ sổ. SLAAC không ai ghi chép; máy chỉ hỏi vọng một câu \"có ai trùng số này không?\" trước khi dùng cho chắc. Mạng công ty cần sổ sách vẫn dùng DHCPv6; mạng nhà thì SLAAC là mặc định."
+              }
             },
             {
               "conceptId": "m8-dual-stack",
               "visualId": "vis-dual-stack-hai-bien",
-              "body": { "vi": "Dual-stack: một card mạng mang SONG SONG hai địa chỉ — một IPv4, một IPv6 — như chiếc xe đeo hai biển số. Với mỗi đích đến, máy chọn đường đi được: đích có IPv6 thì thường ưu tiên IPv6, chưa có thì quay về IPv4. Nhờ đó cả Internet đổi hệ TỪ TỪ suốt hai chục năm mà chưa từng phải tắt đi bật lại." },
-              "deepDive": { "vi": "\"Ưu tiên nhưng không cố chấp\": trình duyệt hiện đại cho hai đường chạy đua vài chục mili-giây rồi lấy đường về đích trước (kỹ thuật tên là Happy Eyeballs) — người dùng không bao giờ phải biết mình đang đi hệ nào. Chính chiếc máy bạn đang cầm gần như chắc chắn đang chạy dual-stack." }
+              "body": {
+                "vi": "Dual-stack: một card mạng mang SONG SONG hai địa chỉ — một IPv4, một IPv6 — như chiếc xe đeo hai biển số. Với mỗi đích đến, máy chọn đường đi được: đích có IPv6 thì thường ưu tiên IPv6, chưa có thì quay về IPv4. Nhờ đó cả Internet đổi hệ TỪ TỪ suốt hai chục năm mà chưa từng phải tắt đi bật lại."
+              },
+              "deepDive": {
+                "vi": "\"Ưu tiên nhưng không cố chấp\": trình duyệt hiện đại cho hai đường chạy đua vài chục mili-giây rồi lấy đường về đích trước (kỹ thuật tên là Happy Eyeballs) — người dùng không bao giờ phải biết mình đang đi hệ nào. Chính chiếc máy bạn đang cầm gần như chắc chắn đang chạy dual-stack."
+              }
             }
           ]
         },
@@ -938,29 +1549,59 @@
               "question": {
                 "kind": "typed",
                 "id": "m8-b5-pra-1",
-                "prompt": { "vi": "Cơ chế để máy IPv6 TỰ ghép địa chỉ từ lời rao của router tên là gì?" },
-                "accept": ["slaac", "stateless address autoconfiguration", "tự cấu hình địa chỉ không trạng thái", "tự cấu hình không trạng thái", "tu cau hinh khong trang thai", "không trạng thái", "khong trang thai"],
-                "hintTopic": { "vi": "năm chữ cái, mở đầu bằng chữ S của \"stateless\"" }
+                "prompt": {
+                  "vi": "Cơ chế để máy IPv6 TỰ ghép địa chỉ từ lời rao của router tên là gì?"
+                },
+                "accept": [
+                  "slaac",
+                  "stateless address autoconfiguration",
+                  "tự cấu hình địa chỉ không trạng thái",
+                  "tự cấu hình không trạng thái",
+                  "tu cau hinh khong trang thai",
+                  "không trạng thái",
+                  "khong trang thai"
+                ],
+                "hintTopic": {
+                  "vi": "năm chữ cái, mở đầu bằng chữ S của \"stateless\""
+                }
               },
-              "hint": { "vi": "Viết tắt của Stateless Address Autoconfiguration — năm chữ cái." },
-              "solution": { "vi": "SLAAC — Stateless (không ai giữ sổ) Address Autoconfiguration (máy tự cấu hình địa chỉ)." },
+              "hint": {
+                "vi": "Viết tắt của Stateless Address Autoconfiguration — năm chữ cái."
+              },
+              "solution": {
+                "vi": "SLAAC — Stateless (không ai giữ sổ) Address Autoconfiguration (máy tự cấu hình địa chỉ)."
+              },
               "conceptId": "m8-slaac"
             },
             {
               "question": {
                 "kind": "mcq",
                 "id": "m8-b5-pra-2",
-                "prompt": { "vi": "Đổi hệ: một máy IPv4 xin địa chỉ qua DHCP. Khác biệt CỐT LÕI so với SLAAC là gì?" },
+                "prompt": {
+                  "vi": "Đổi hệ: một máy IPv4 xin địa chỉ qua DHCP. Khác biệt CỐT LÕI so với SLAAC là gì?"
+                },
                 "choices": [
-                  { "vi": "DHCP có máy chủ giữ sổ — nhớ ai thuê địa chỉ nào, hạn bao lâu; SLAAC không ai ghi chép" },
-                  { "vi": "DHCP chạy nhanh hơn SLAAC" },
-                  { "vi": "DHCP không cần router trong mạng" }
+                  {
+                    "vi": "DHCP có máy chủ giữ sổ — nhớ ai thuê địa chỉ nào, hạn bao lâu; SLAAC không ghi chép"
+                  },
+                  {
+                    "vi": "DHCP chạy nhanh hơn SLAAC vì có máy chủ trả lời ngay chứ không phải tự mình ghép"
+                  },
+                  {
+                    "vi": "DHCP không cần router trong mạng"
+                  }
                 ],
                 "answerIndex": 0,
-                "hintTopic": { "vi": "bên nào có người giữ sổ" }
+                "hintTopic": {
+                  "vi": "bên nào có người giữ sổ"
+                }
               },
-              "hint": { "vi": "Nhớ tờ giấy thuê có thời hạn ở Module 6 — ai đang giữ tờ đó?" },
-              "solution": { "vi": "DHCP là cơ chế CÓ SỔ SÁCH: máy chủ nhớ từng hợp đồng thuê. SLAAC vô sổ — máy tự ghép, mạng nhẹ việc nhưng không ai quản danh sách." },
+              "hint": {
+                "vi": "Nhớ tờ giấy thuê có thời hạn ở Module 6 — ai đang giữ tờ đó?"
+              },
+              "solution": {
+                "vi": "DHCP là cơ chế CÓ SỔ SÁCH: máy chủ nhớ từng hợp đồng thuê. SLAAC vô sổ — máy tự ghép, mạng nhẹ việc nhưng không ai quản danh sách."
+              },
               "conceptId": "m8-slaac"
             }
           ]
@@ -972,128 +1613,226 @@
               "question": {
                 "kind": "order",
                 "id": "m8-b5-ret-1",
-                "prompt": { "vi": "Không nhìn lại bài: xếp đúng thứ tự các bước một máy IPv6 vừa bật lên cho tới khi có địa chỉ công cộng." },
+                "prompt": {
+                  "vi": "Không nhìn lại bài: xếp đúng thứ tự các bước một máy IPv6 vừa bật lên cho tới khi có địa chỉ công cộng."
+                },
                 "items": [
-                  { "vi": "Bật card mạng — tự sinh địa chỉ fe80 dùng trong phòng" },
-                  { "vi": "Nghe router rao tên khu phố /64" },
-                  { "vi": "Tự chọn số nhà, ghép vào tên khu phố" },
-                  { "vi": "Hỏi vọng \"có ai trùng số này không?\" rồi bắt đầu dùng" }
+                  {
+                    "vi": "Bật card mạng — tự sinh địa chỉ fe80 dùng trong phòng"
+                  },
+                  {
+                    "vi": "Nghe router rao tên khu phố /64"
+                  },
+                  {
+                    "vi": "Tự chọn số nhà, ghép vào tên khu phố"
+                  },
+                  {
+                    "vi": "Hỏi vọng \"có ai trùng số này không?\" rồi bắt đầu dùng"
+                  }
                 ],
-                "hintTopic": { "vi": "từ trong phòng ra tới ngoài phố" }
+                "hintTopic": {
+                  "vi": "từ trong phòng ra tới ngoài phố"
+                }
               },
-              "hint": { "vi": "Bắt đầu từ thứ máy TỰ có sẵn (bài trước), rồi mới tới thứ phải nghe từ router." },
-              "solution": { "vi": "fe80 trước (tự có), rồi nghe rao, ghép địa chỉ, kiểm trùng rồi dùng — không nhịp nào phải xin phép ai." }
+              "hint": {
+                "vi": "Bắt đầu từ thứ máy TỰ có sẵn (bài trước), rồi mới tới thứ phải nghe từ router."
+              },
+              "solution": {
+                "vi": "fe80 trước (tự có), rồi nghe rao, ghép địa chỉ, kiểm trùng rồi dùng — không nhịp nào phải xin phép ai."
+              }
             },
             {
               "question": {
                 "kind": "typed",
                 "id": "m8-b5-ret-2",
-                "prompt": { "vi": "Vẫn từ trí nhớ, đổi sang hệ cũ: cơ chế cấp địa chỉ BỐN NHỊP có người giữ sổ của IPv4 tên là gì? (viết tắt)" },
-                "accept": ["dhcp", "dora", "dynamic host configuration protocol"],
-                "hintTopic": { "vi": "cuộc hỏi cưới ở Module 6" }
+                "prompt": {
+                  "vi": "Vẫn từ trí nhớ, đổi sang hệ cũ: cơ chế cấp địa chỉ BỐN NHỊP có người giữ sổ của IPv4 tên là gì? (viết tắt)"
+                },
+                "accept": [
+                  "dhcp",
+                  "dora",
+                  "dynamic host configuration protocol"
+                ],
+                "hintTopic": {
+                  "vi": "cuộc hỏi cưới ở Module 6"
+                }
               },
-              "hint": { "vi": "Bốn nhịp Discover–Offer–Request–Ack là của giao thức nào?" },
-              "solution": { "vi": "DHCP — cấp phát có sổ sách qua bốn nhịp DORA; đối trọng của SLAAC bên IPv6." }
+              "hint": {
+                "vi": "Bốn nhịp Discover–Offer–Request–Ack là của giao thức nào?"
+              },
+              "solution": {
+                "vi": "DHCP — cấp phát có sổ sách qua bốn nhịp DORA; đối trọng của SLAAC bên IPv6."
+              }
             }
           ],
           "selfExplain": {
-            "prompt": { "vi": "Giải thích bằng lời của bạn: nhờ đâu Internet chuyển từ IPv4 sang IPv6 suốt hai chục năm mà chưa từng phải \"tắt đi bật lại\"?" },
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: nhờ đâu Internet chuyển từ IPv4 sang IPv6 suốt hai chục năm mà chưa từng phải \"tắt đi bật lại\"?"
+            },
             "keywords": [
-              ["song song", "hai địa chỉ", "hai dia chi", "cả hai", "ca hai", "cùng lúc", "cung luc", "dual"],
-              ["từ từ", "tu tu", "dần", "dan dan", "quay về", "quay ve", "ipv4"]
+              [
+                "song song",
+                "hai địa chỉ",
+                "hai dia chi",
+                "cả hai",
+                "ca hai",
+                "cùng lúc",
+                "cung luc",
+                "dual"
+              ],
+              [
+                "từ từ",
+                "tu tu",
+                "dần",
+                "dan dan",
+                "quay về",
+                "quay ve",
+                "ipv4"
+              ]
             ],
-            "exampleAnswer": { "vi": "Nhờ dual-stack: mỗi máy mang song song cả hai địa chỉ, đích nào có IPv6 thì đi IPv6, chưa có thì quay về IPv4 — từng mạng cứ thế nâng cấp dần mà không ai bị đứt." }
+            "exampleAnswer": {
+              "vi": "Nhờ dual-stack: mỗi máy mang song song cả hai địa chỉ, đích nào có IPv6 thì đi IPv6, chưa có thì quay về IPv4 — từng mạng cứ thế nâng cấp dần mà không ai bị đứt."
+            }
           }
         },
         {
           "type": "summary",
           "bullets": [
-            { "vi": "SLAAC: router rao tên khu phố, máy tự ghép số nhà — có địa chỉ mà không ai giữ sổ." },
-            { "vi": "DHCP là đối trọng có sổ sách: máy chủ nhớ từng hợp đồng thuê (DORA, Module 6)." },
-            { "vi": "Dual-stack đeo hai biển số song song — bí quyết giúp Internet đổi hệ không sập." }
+            {
+              "vi": "SLAAC: router rao tên khu phố, máy tự ghép số nhà — có địa chỉ mà không ai giữ sổ."
+            },
+            {
+              "vi": "DHCP là đối trọng có sổ sách: máy chủ nhớ từng hợp đồng thuê (DORA, Module 6)."
+            },
+            {
+              "vi": "Dual-stack đeo hai biển số song song — bí quyết giúp Internet đổi hệ không sập."
+            }
           ],
-          "nextTeaser": { "vi": "Hết chuyện sóng và biển số. Module sau bước hẳn vào văn phòng: một máy chủ Windows cai quản mọi máy con trong công ty — và một tòa nhà ký ức bốn tầng chờ bạn leo." }
+          "nextTeaser": {
+            "vi": "Hết chuyện sóng và biển số. Module sau bước hẳn vào văn phòng: một máy chủ Windows cai quản mọi máy con trong công ty — và một tòa nhà ký ức bốn tầng chờ bạn leo."
+          }
         }
       ]
     }
   ],
-
   "concepts": [
     {
       "id": "m8-song-wifi",
       "term": "Wi-Fi",
       "glossVi": "Sóng radio thay cho sợi dây mạng; không khí là một sợi dây chung",
-      "metaphor": { "vi": "Cả phòng nói chuyện qua cùng một khoảng không khí — thay phiên nhau nói, càng đông càng chờ." },
+      "metaphor": {
+        "vi": "Cả phòng nói chuyện qua cùng một khoảng không khí — thay phiên nhau nói, càng đông càng chờ."
+      },
       "iconId": "icon-song-wifi",
       "flashcard": {
-        "front": { "vi": "Wi-Fi thay sợi dây mạng bằng gì, và cái giá phải trả là gì?" },
-        "back": { "vi": "Bằng sóng radio qua không khí — nhưng không khí là MỘT dây chung: mọi thiết bị thay phiên nhau nói, và ai đứng gần cũng thu được sóng." }
+        "front": {
+          "vi": "Wi-Fi thay sợi dây mạng bằng gì, và cái giá phải trả là gì?"
+        },
+        "back": {
+          "vi": "Bằng sóng radio qua không khí — nhưng không khí là MỘT dây chung: mọi thiết bị thay phiên nhau nói, và ai đứng gần cũng thu được sóng."
+        }
       }
     },
     {
       "id": "m8-bang-tan",
       "term": "Băng tần",
       "glossVi": "Dải sóng Wi-Fi chạy trên đó: 2.4 / 5 / 6 GHz",
-      "metaphor": { "vi": "Giọng trầm vang xa qua tường; giọng cao rõ chữ nhưng phải đứng gần." },
+      "metaphor": {
+        "vi": "Giọng trầm vang xa qua tường; giọng cao rõ chữ nhưng phải đứng gần."
+      },
       "iconId": "icon-bang-tan",
       "flashcard": {
-        "front": { "vi": "Ba băng tần Wi-Fi đánh đổi với nhau thế nào?" },
-        "back": { "vi": "2.4 GHz xa, xuyên tường tốt nhưng chậm và đông; 5 GHz nhanh mà gần; 6 GHz nhanh nhất, vắng nhất, tầm ngắn nhất. Gần ưu tiên nhanh, xa ưu tiên tới." }
+        "front": {
+          "vi": "Ba băng tần Wi-Fi đánh đổi với nhau thế nào?"
+        },
+        "back": {
+          "vi": "2.4 GHz xa, xuyên tường tốt nhưng chậm và đông; 5 GHz nhanh mà gần; 6 GHz nhanh nhất, vắng nhất, tầm ngắn nhất. Gần ưu tiên nhanh, xa ưu tiên tới."
+        }
       }
     },
     {
       "id": "m8-kenh-wifi",
       "term": "Kênh Wi-Fi",
       "glossVi": "Làn nhỏ bên trong một băng tần; trên 2.4 GHz chỉ có ba làn không đè nhau: 1, 6, 11",
-      "metaphor": { "vi": "Băng tần là con phố, kênh là làn đường — hai nhà chung làn thì phải nhường nhau mà đi." },
+      "metaphor": {
+        "vi": "Băng tần là con phố, kênh là làn đường — hai nhà chung làn thì phải nhường nhau mà đi."
+      },
       "iconId": "icon-kenh-wifi",
       "flashcard": {
-        "front": { "vi": "Băng 2.4 GHz có 13 kênh, sao chỉ nên dùng kênh 1, 6 và 11?" },
-        "back": { "vi": "Vì các kênh đánh số sát nhau nên đè lên nhau; chỉ 1, 6, 11 cách đủ xa để không chồng. Chọn kênh chồng một phần còn tệ hơn trùng hẳn kênh." }
+        "front": {
+          "vi": "Băng 2.4 GHz có 13 kênh, sao chỉ nên dùng kênh 1, 6 và 11?"
+        },
+        "back": {
+          "vi": "Vì các kênh đánh số sát nhau nên đè lên nhau; chỉ 1, 6, 11 cách đủ xa để không chồng. Chọn kênh chồng một phần còn tệ hơn trùng hẳn kênh."
+        }
       }
     },
     {
       "id": "m8-vach-song",
       "term": "Vạch sóng",
       "glossVi": "Vạch trên máy chỉ đo độ TO của sóng nhà bạn, không đo độ ồn của xóm quanh",
-      "metaphor": { "vi": "Đứng sát loa trong quán karaoke: nghe loa rõ mồn một mà vẫn chẳng nói chuyện được với ai." },
+      "metaphor": {
+        "vi": "Đứng sát loa trong quán karaoke: nghe loa rõ mồn một mà vẫn chẳng nói chuyện được với ai."
+      },
       "iconId": "icon-vach-song",
       "flashcard": {
-        "front": { "vi": "Đầy vạch mà mạng vẫn ì — vạch sóng nói gì, và không nói gì?" },
-        "back": { "vi": "Vạch chỉ đo sóng router tới máy to hay nhỏ. Nó không đo xóm quanh ồn cỡ nào, nên ở chung cư đông vẫn đầy vạch mà phải chờ dài." }
+        "front": {
+          "vi": "Đầy vạch mà mạng vẫn ì — vạch sóng nói gì, và không nói gì?"
+        },
+        "back": {
+          "vi": "Vạch chỉ đo sóng router tới máy to hay nhỏ. Nó không đo xóm quanh ồn cỡ nào, nên ở chung cư đông vẫn đầy vạch mà phải chờ dài."
+        }
       }
     },
     {
       "id": "m8-cho-dat-router",
       "term": "Chỗ đặt router",
       "glossVi": "Sóng lan thành quả cầu, nên router muốn ở giữa nhà, trên cao và thoáng",
-      "metaphor": { "vi": "Bóng đèn giữa trần thì sáng cả phòng; nhét vào tủ giày góc nhà thì chỉ sáng mỗi cái tủ." },
+      "metaphor": {
+        "vi": "Bóng đèn giữa trần thì sáng cả phòng; nhét vào tủ giày góc nhà thì chỉ sáng mỗi cái tủ."
+      },
       "iconId": "icon-cho-dat-router",
       "flashcard": {
-        "front": { "vi": "Đặt router thế nào cho sóng phủ đều, và tránh xa những gì?" },
-        "back": { "vi": "Giữa nhà, trên cao, để thoáng. Tránh tủ kín, gương và tấm kim loại, bể cá, lò vi sóng — chúng chặn, dội hoặc nuốt sóng 2.4 GHz." }
+        "front": {
+          "vi": "Đặt router thế nào cho sóng phủ đều, và tránh xa những gì?"
+        },
+        "back": {
+          "vi": "Giữa nhà, trên cao, để thoáng. Tránh tủ kín, gương và tấm kim loại, bể cá, lò vi sóng — chúng chặn, dội hoặc nuốt sóng 2.4 GHz."
+        }
       }
     },
     {
       "id": "m8-chuan-wifi",
       "term": "Thế hệ Wi-Fi",
       "glossVi": "Wi-Fi 4/5/6/7 — các đời của chuẩn 802.11, đánh số cho dễ nhớ",
-      "metaphor": { "vi": "Đời xe: xe mới vẫn chạy chung đường với xe cũ, nhưng cặp nào đi chung thì theo tốc độ xe cũ." },
+      "metaphor": {
+        "vi": "Đời xe: xe mới vẫn chạy chung đường với xe cũ, nhưng cặp nào đi chung thì theo tốc độ xe cũ."
+      },
       "iconId": "icon-the-he-wifi",
       "flashcard": {
-        "front": { "vi": "Hai thiết bị khác thế hệ Wi-Fi nói chuyện với nhau bằng đời nào?" },
-        "back": { "vi": "Bằng thế hệ THẤP hơn của hai bên — chuẩn mới luôn tương thích ngược (Wi-Fi 4/5/6/7 = 802.11n/ac/ax/be)." }
+        "front": {
+          "vi": "Hai thiết bị khác thế hệ Wi-Fi nói chuyện với nhau bằng đời nào?"
+        },
+        "back": {
+          "vi": "Bằng thế hệ THẤP hơn của hai bên — chuẩn mới luôn tương thích ngược (Wi-Fi 4/5/6/7 = 802.11n/ac/ax/be)."
+        }
       }
     },
     {
       "id": "m8-wifi-6e-7",
       "term": "Wi-Fi 6E và Wi-Fi 7",
       "glossVi": "6E = Wi-Fi 6 thêm băng 6 GHz; Wi-Fi 7 kênh rộng gấp đôi, đi hai băng cùng lúc",
-      "metaphor": { "vi": "6E là tấm vé vào làn cao tốc mới còn vắng; Wi-Fi 7 cho xe chạy hai làn một lúc." },
+      "metaphor": {
+        "vi": "6E là tấm vé vào làn cao tốc mới còn vắng; Wi-Fi 7 cho xe chạy hai làn một lúc."
+      },
       "iconId": "icon-wifi-6e-7",
       "flashcard": {
-        "front": { "vi": "Wi-Fi 6E khác Wi-Fi 6 chỗ nào? Wi-Fi 7 thêm gì?" },
-        "back": { "vi": "6E = đúng Wi-Fi 6 cộng quyền chạy băng 6 GHz còn vắng. Wi-Fi 7 mở kênh rộng gấp đôi và đi hai băng cùng lúc (MLO)." }
+        "front": {
+          "vi": "Wi-Fi 6E khác Wi-Fi 6 chỗ nào? Wi-Fi 7 thêm gì?"
+        },
+        "back": {
+          "vi": "6E = đúng Wi-Fi 6 cộng quyền chạy băng 6 GHz còn vắng. Wi-Fi 7 mở kênh rộng gấp đôi và đi hai băng cùng lúc (MLO)."
+        }
       }
     },
     {
@@ -1151,224 +1890,408 @@
       "id": "m8-wpa2",
       "term": "WPA2",
       "glossVi": "Chuẩn mã hóa Wi-Fi phổ biến; yếu trước kiểu dò mật khẩu offline",
-      "metaphor": { "vi": "Khóa cửa tốt nhưng để lọt một kẽ: kẻ trộm chụp ảnh ổ khóa rồi về nhà mài chìa cả đêm." },
+      "metaphor": {
+        "vi": "Khóa cửa tốt nhưng để lọt một kẽ: kẻ trộm chụp ảnh ổ khóa rồi về nhà mài chìa cả đêm."
+      },
       "iconId": "icon-wpa2",
       "flashcard": {
-        "front": { "vi": "Điểm yếu kinh điển của WPA2 là gì?" },
-        "back": { "vi": "Kẻ xấu thu cú bắt tay lúc thiết bị vào mạng rồi dò mật khẩu OFFLINE hàng tỷ lần — router không hề biết để chặn." }
+        "front": {
+          "vi": "Điểm yếu kinh điển của WPA2 là gì?"
+        },
+        "back": {
+          "vi": "Kẻ xấu thu cú bắt tay lúc thiết bị vào mạng rồi dò mật khẩu OFFLINE hàng tỷ lần — router không hề biết để chặn."
+        }
       }
     },
     {
       "id": "m8-wpa3",
       "term": "WPA3",
       "glossVi": "Chuẩn mã hóa mới: mỗi lần đoán mật khẩu phải hỏi router một lần",
-      "metaphor": { "vi": "Ổ khóa không chụp ảnh được — muốn thử chìa nào phải tra vào cửa ngay trước mặt bảo vệ." },
+      "metaphor": {
+        "vi": "Ổ khóa không chụp ảnh được — muốn thử chìa nào phải tra vào cửa ngay trước mặt bảo vệ."
+      },
       "iconId": "icon-wpa3",
       "flashcard": {
-        "front": { "vi": "WPA3 chặn kiểu tấn công nào của thời WPA2, bằng cách gì?" },
-        "back": { "vi": "Chặn dò mật khẩu offline: bắt tay kiểu mới (SAE) buộc mỗi lần đoán phải hỏi router theo thời gian thật — chậm, lộ mặt, chặn được." }
+        "front": {
+          "vi": "WPA3 chặn kiểu tấn công nào của thời WPA2, bằng cách gì?"
+        },
+        "back": {
+          "vi": "Chặn dò mật khẩu offline: bắt tay kiểu mới (SAE) buộc mỗi lần đoán phải hỏi router theo thời gian thật — chậm, lộ mặt, chặn được."
+        }
       }
     },
     {
       "id": "m8-link-local",
       "term": "Link-local (fe80::)",
       "glossVi": "Địa chỉ IPv6 máy tự sinh, chỉ có nghĩa trong một đường truyền",
-      "metaphor": { "vi": "Biệt danh trong phòng: gọi nhau thoải mái, bước ra khỏi cửa là vô nghĩa." },
+      "metaphor": {
+        "vi": "Biệt danh trong phòng: gọi nhau thoải mái, bước ra khỏi cửa là vô nghĩa."
+      },
       "iconId": "icon-link-local",
       "flashcard": {
-        "front": { "vi": "Địa chỉ fe80:: là gì, ai cấp cho máy?" },
-        "back": { "vi": "Link-local: máy TỰ sinh khi bật card mạng, không xin ai; chỉ dùng giữa các máy chung một đường truyền, không bao giờ qua router." }
+        "front": {
+          "vi": "Địa chỉ fe80:: là gì, ai cấp cho máy?"
+        },
+        "back": {
+          "vi": "Link-local: máy TỰ sinh khi bật card mạng, không xin ai; chỉ dùng giữa các máy chung một đường truyền, không bao giờ qua router."
+        }
       }
     },
     {
       "id": "m8-global-unicast",
       "term": "Global unicast",
       "glossVi": "Địa chỉ IPv6 công cộng: /64 chia đôi khu phố + số nhà, không cần NAT",
-      "metaphor": { "vi": "Biển số công cộng thật cho từng thiết bị — hết thời cả nhà mượn chung một số." },
+      "metaphor": {
+        "vi": "Biển số công cộng thật cho từng thiết bị — hết thời cả nhà mượn chung một số."
+      },
       "iconId": "icon-global-unicast",
       "flashcard": {
-        "front": { "vi": "Địa chỉ công cộng IPv6 chia đôi ở đâu, hai nửa do ai quyết?" },
-        "back": { "vi": "Ở /64: nửa đầu là tên khu phố do router rao; nửa sau là số nhà do máy tự chọn. Mỗi thiết bị một địa chỉ công cộng thật — không cần NAT, chỉ cần tường lửa." }
+        "front": {
+          "vi": "Địa chỉ công cộng IPv6 chia đôi ở đâu, hai nửa do ai quyết?"
+        },
+        "back": {
+          "vi": "Ở /64: nửa đầu là tên khu phố do router rao; nửa sau là số nhà do máy tự chọn. Mỗi thiết bị một địa chỉ công cộng thật — không cần NAT, chỉ cần tường lửa."
+        }
       }
     },
     {
       "id": "m8-slaac",
       "term": "SLAAC",
       "glossVi": "Máy tự cấu hình địa chỉ IPv6 từ lời rao của router, không ai giữ sổ",
-      "metaphor": { "vi": "Nghe loa phường đọc tên phố rồi tự sơn số nhà — chẳng phải nộp đơn cho ai." },
+      "metaphor": {
+        "vi": "Nghe loa phường đọc tên phố rồi tự sơn số nhà — chẳng phải nộp đơn cho ai."
+      },
       "iconId": "icon-slaac",
       "flashcard": {
-        "front": { "vi": "SLAAC khác DHCP ở điểm cốt lõi nào?" },
-        "back": { "vi": "SLAAC vô sổ: router chỉ rao prefix, máy tự ghép — không ai nhớ ai dùng gì. DHCP có máy chủ giữ sổ thuê (DORA), quản được nhưng phải nuôi người giữ sổ." }
+        "front": {
+          "vi": "SLAAC khác DHCP ở điểm cốt lõi nào?"
+        },
+        "back": {
+          "vi": "SLAAC vô sổ: router chỉ rao prefix, máy tự ghép — không ai nhớ ai dùng gì. DHCP có máy chủ giữ sổ thuê (DORA), quản được nhưng phải nuôi người giữ sổ."
+        }
       }
     },
     {
       "id": "m8-dual-stack",
       "term": "Dual-stack",
       "glossVi": "Một card mạng mang song song cả địa chỉ IPv4 lẫn IPv6",
-      "metaphor": { "vi": "Chiếc xe đeo hai biển số — đường mới đi biển mới, đường cũ vẫn biển cũ." },
+      "metaphor": {
+        "vi": "Chiếc xe đeo hai biển số — đường mới đi biển mới, đường cũ vẫn biển cũ."
+      },
       "iconId": "icon-dual-stack",
       "flashcard": {
-        "front": { "vi": "Dual-stack là gì, và vì sao nó quan trọng với cả Internet?" },
-        "back": { "vi": "Máy mang song song cả IPv4 lẫn IPv6: đích có IPv6 thì ưu tiên, chưa có thì quay về IPv4 — nhờ đó Internet đổi hệ từ từ mà không sập." }
+        "front": {
+          "vi": "Dual-stack là gì, và vì sao nó quan trọng với cả Internet?"
+        },
+        "back": {
+          "vi": "Máy mang song song cả IPv4 lẫn IPv6: đích có IPv6 thì ưu tiên, chưa có thì quay về IPv4 — nhờ đó Internet đổi hệ từ từ mà không sập."
+        }
       }
     }
   ],
-
   "masteryTest": [
     {
       "kind": "mcq",
       "id": "m8-mt-1",
-      "prompt": { "vi": "Camera ở góc vườn, cách router hai bức tường, nên vào băng tần nào?" },
+      "prompt": {
+        "vi": "Máy quét mã trong kho hàng đứng cuối dãy kệ sắt, xa điểm phát sóng gần chục mét. Bạn ghim thiết bị đó vào băng tần nào?"
+      },
       "choices": [
-        { "vi": "2.4 GHz — tần số thấp đi xa, xuyên tường tốt" },
-        { "vi": "5 GHz — băng tần nhanh hơn thì đi xa hơn" },
-        { "vi": "6 GHz — thế hệ mới nên xuyên tường tốt hơn" }
+        {
+          "vi": "2.4 GHz — tần số thấp đi xa, xuyên tường tốt"
+        },
+        {
+          "vi": "5 GHz — băng tần nhanh hơn thì đi xa hơn"
+        },
+        {
+          "vi": "6 GHz — thế hệ mới nên xuyên tường tốt hơn"
+        }
       ],
       "answerIndex": 0,
-      "explain": { "vi": "Xa ưu tiên TỚI: 2.4 GHz vang xa nhất; tốc độ của 5/6 GHz vô nghĩa nếu sóng không tới nơi." }
+      "explain": {
+        "vi": "Xa ưu tiên TỚI: 2.4 GHz vang xa nhất; tốc độ của 5/6 GHz vô nghĩa nếu sóng không tới nơi."
+      }
     },
     {
       "kind": "typed",
       "id": "m8-mt-2",
-      "prompt": { "vi": "Trên kệ có hai router cùng đời Wi-Fi 6, nhưng một chiếc ghi thêm chữ E. Chữ E cho chiếc đó quyền chạy thêm trên băng tần nào? (con số)" },
-      "accept": ["6", "6ghz", "băng 6", "bang 6"],
-      "explain": { "vi": "Băng 6 GHz — 6E vẫn đúng là Wi-Fi 6, chỉ cộng thêm quyền vào làn đường mới còn vắng đó, chứ chữ E không phải một đời cao hơn." }
+      "prompt": {
+        "vi": "Trên kệ có hai router cùng đời Wi-Fi 6, nhưng một chiếc ghi thêm chữ E. Chữ E cho chiếc đó quyền chạy thêm trên băng tần nào? (con số)"
+      },
+      "accept": [
+        "6",
+        "6ghz",
+        "băng 6",
+        "bang 6"
+      ],
+      "explain": {
+        "vi": "Băng 6 GHz — 6E vẫn đúng là Wi-Fi 6, chỉ cộng thêm quyền vào làn đường mới còn vắng đó, chứ chữ E không phải một đời cao hơn."
+      }
     },
     {
       "kind": "typed",
       "id": "m8-mt-3",
-      "prompt": { "vi": "Chuẩn bảo mật Wi-Fi mới, chặn được kiểu dò mật khẩu offline, tên là gì?" },
-      "accept": ["wpa3", "wpa 3"],
-      "explain": { "vi": "WPA3: kiểu bắt tay mới buộc mỗi lần đoán mật khẩu phải hỏi router một lần theo thời gian thật." }
+      "prompt": {
+        "vi": "Chuẩn bảo mật Wi-Fi mới, chặn được kiểu dò mật khẩu offline, tên là gì?"
+      },
+      "accept": [
+        "wpa3",
+        "wpa 3"
+      ],
+      "explain": {
+        "vi": "WPA3: kiểu bắt tay mới buộc mỗi lần đoán mật khẩu phải hỏi router một lần theo thời gian thật."
+      }
     },
     {
       "kind": "typed",
       "id": "m8-mt-4",
-      "prompt": { "vi": "Địa chỉ IPv6 bắt đầu bằng fe80 là loại địa chỉ gì?" },
-      "accept": ["link-local", "link local", "linklocal", "nội bộ", "noi bo", "trong phòng", "trong phong", "cục bộ", "cuc bo"],
-      "explain": { "vi": "Link-local — máy tự sinh, chỉ có nghĩa trong một đường truyền, không bao giờ qua router." }
+      "prompt": {
+        "vi": "Địa chỉ IPv6 bắt đầu bằng fe80 là loại địa chỉ gì?"
+      },
+      "accept": [
+        "link-local",
+        "link local",
+        "linklocal",
+        "nội bộ",
+        "noi bo",
+        "trong phòng",
+        "trong phong",
+        "cục bộ",
+        "cuc bo"
+      ],
+      "explain": {
+        "vi": "Link-local — máy tự sinh, chỉ có nghĩa trong một đường truyền, không bao giờ qua router."
+      }
     },
     {
       "kind": "mcq",
       "id": "m8-mt-5",
-      "prompt": { "vi": "Máy 192.168.1.10 mở một trang web. Chuyện gì phải xảy ra với địa chỉ nguồn trước khi gói tin ra tới Internet?" },
+      "prompt": {
+        "vi": "Máy 192.168.1.10 mở một trang web. Chuyện gì phải xảy ra với địa chỉ nguồn trước khi gói tin ra tới Internet?"
+      },
       "choices": [
-        { "vi": "Router đổi nó thành địa chỉ công cộng — NAT" },
-        { "vi": "Không đổi gì cả — địa chỉ riêng vẫn đi thẳng ra ngoài" },
-        { "vi": "DNS đổi địa chỉ riêng đó thành một tên miền" }
+        {
+          "vi": "Router đổi nó thành địa chỉ công cộng — NAT"
+        },
+        {
+          "vi": "Không đổi gì cả — địa chỉ riêng vẫn đi thẳng ra ngoài"
+        },
+        {
+          "vi": "DNS đổi địa chỉ riêng đó thành một tên miền"
+        }
       ],
       "answerIndex": 0,
-      "explain": { "vi": "192.168.x.x là địa chỉ riêng IPv4 — phải qua NAT ở router (Module 7). Nhận ra \"đây là chuyện của hệ nào\" chính là kỹ năng module này luyện." }
+      "explain": {
+        "vi": "192.168.x.x là địa chỉ riêng IPv4 — phải qua NAT ở router (Module 7). Nhận ra \"đây là chuyện của hệ nào\" chính là kỹ năng module này luyện."
+      }
     },
     {
       "kind": "mcq",
       "id": "m8-mt-6",
-      "prompt": { "vi": "Một máy dùng địa chỉ IPv6 công cộng 2001:db8::5 mở trang web. Địa chỉ nguồn có phải đổi gì trước khi gói tin ra tới Internet không?" },
+      "prompt": {
+        "vi": "Một máy dùng địa chỉ IPv6 công cộng 2001:db8::5 mở trang web. Địa chỉ nguồn có phải đổi gì trước khi gói tin ra tới Internet không?"
+      },
       "choices": [
-        { "vi": "Không — đó đã là biển số công cộng thật, đi thẳng" },
-        { "vi": "Có — gói tin nào ra Internet cũng phải qua NAT" },
-        { "vi": "Có — router đổi nó thành địa chỉ fe80 của mình" }
+        {
+          "vi": "Không — đó đã là biển số công cộng thật, đi thẳng"
+        },
+        {
+          "vi": "Có — gói tin nào ra Internet cũng phải qua NAT"
+        },
+        {
+          "vi": "Có — router đổi nó thành địa chỉ fe80 của mình"
+        }
       ],
       "answerIndex": 0,
-      "explain": { "vi": "IPv6 đủ địa chỉ cho tất cả nên không cần NAT; việc chặn người lạ là của tường lửa — đừng nhầm hai vai." }
+      "explain": {
+        "vi": "IPv6 đủ địa chỉ cho tất cả nên không cần NAT; việc chặn người lạ là của tường lửa — đừng nhầm hai vai."
+      }
     },
     {
       "kind": "typed",
       "id": "m8-mt-7",
-      "prompt": { "vi": "Cơ chế cấp địa chỉ qua bốn nhịp Discover–Offer–Request–Ack là của giao thức nào? (viết tắt)" },
-      "accept": ["dhcp", "dynamic host configuration protocol"],
-      "explain": { "vi": "DHCP — cơ chế cấp phát CÓ SỔ của IPv4 (Module 6); bên IPv6 khi cần sổ sách người ta dùng DHCPv6." }
+      "prompt": {
+        "vi": "Cơ chế cấp địa chỉ qua bốn nhịp Discover–Offer–Request–Ack là của giao thức nào? (viết tắt)"
+      },
+      "accept": [
+        "dhcp",
+        "dynamic host configuration protocol"
+      ],
+      "explain": {
+        "vi": "DHCP — cơ chế cấp phát CÓ SỔ của IPv4 (Module 6); bên IPv6 khi cần sổ sách người ta dùng DHCPv6."
+      }
     },
     {
       "kind": "typed",
       "id": "m8-mt-8",
-      "prompt": { "vi": "Cơ chế để máy IPv6 tự ghép địa chỉ từ lời rao prefix của router tên là gì?" },
-      "accept": ["slaac", "stateless address autoconfiguration", "tự cấu hình địa chỉ không trạng thái", "tự cấu hình không trạng thái", "tu cau hinh khong trang thai", "không trạng thái", "khong trang thai"],
-      "explain": { "vi": "SLAAC — stateless: router rao tên khu phố, máy tự chọn số nhà, không ai giữ sổ." }
+      "prompt": {
+        "vi": "Một máy chủ IPv6 mới dựng, chưa ai khai báo gì cho nó, mà đã có sẵn địa chỉ dùng ra Internet — trong khi hạ tầng không hề chạy DHCPv6. Nó có địa chỉ đó nhờ cơ chế tên gì?"
+      },
+      "accept": [
+        "slaac",
+        "stateless address autoconfiguration",
+        "tự cấu hình địa chỉ không trạng thái",
+        "tự cấu hình không trạng thái",
+        "tu cau hinh khong trang thai",
+        "không trạng thái",
+        "khong trang thai"
+      ],
+      "explain": {
+        "vi": "SLAAC — stateless: router rao tên khu phố, máy tự chọn số nhà, không ai giữ sổ."
+      }
     },
     {
       "kind": "mcq",
       "id": "m8-mt-9",
-      "prompt": { "vi": "Máy bạn đang mang đồng thời 192.168.1.10 và 2001:db8::5. Tình trạng này gọi là gì?" },
+      "prompt": {
+        "vi": "Máy bạn đang mang đồng thời 192.168.1.10 và 2001:db8::5. Tình trạng này gọi là gì?"
+      },
       "choices": [
-        { "vi": "Dual-stack — chạy song song hai hệ địa chỉ" },
-        { "vi": "Double NAT — hai lớp đổi địa chỉ chồng lên nhau" },
-        { "vi": "Link-local — hai biệt danh chỉ dùng trong phòng" }
+        {
+          "vi": "Dual-stack — chạy song song hai hệ địa chỉ"
+        },
+        {
+          "vi": "Double NAT — hai lớp đổi địa chỉ chồng lên nhau"
+        },
+        {
+          "vi": "Link-local — hai biệt danh chỉ dùng trong phòng"
+        }
       ],
       "answerIndex": 0,
-      "explain": { "vi": "Dual-stack: hai biển số song song trên một card mạng. Double NAT (Module 7) là chuyện khác hẳn — hai lớp ĐỔI địa chỉ IPv4 lồng nhau." }
+      "explain": {
+        "vi": "Dual-stack: hai biển số song song trên một card mạng. Double NAT (Module 7) là chuyện khác hẳn — hai lớp ĐỔI địa chỉ IPv4 lồng nhau."
+      }
     },
     {
       "kind": "mcq",
       "id": "m8-mt-10",
-      "prompt": { "vi": "Ba máy cùng nối Wi-Fi vào một router. Vì sao tốc độ của mỗi máy tụt xuống khi cả ba cùng tải file?" },
+      "prompt": {
+        "vi": "Ba máy cùng nối Wi-Fi vào một router. Vì sao tốc độ của mỗi máy tụt xuống khi cả ba cùng tải file?"
+      },
       "choices": [
-        { "vi": "Vì không khí là một sợi dây chung, mỗi lúc chỉ một máy được nói" },
-        { "vi": "Vì router chia đôi băng tần 5 GHz thành ba kênh nhỏ cho ba máy" },
-        { "vi": "Vì mỗi máy phải chờ hai máy kia mã hóa xong gói tin của chúng" }
+        {
+          "vi": "Vì không khí là một sợi dây chung, mỗi lúc chỉ một máy được nói"
+        },
+        {
+          "vi": "Vì router chia đôi băng tần 5 GHz thành ba kênh nhỏ cho ba máy"
+        },
+        {
+          "vi": "Vì mỗi máy phải chờ hai máy kia mã hóa xong gói tin của chúng"
+        }
       ],
       "answerIndex": 0,
-      "hintTopic": { "vi": "không khí là sợi dây dùng chung" },
-      "explain": { "vi": "Wi-Fi là một cuộc họp: ai muốn nói phải chờ tới lượt. Dây mạng thì mỗi máy một sợi riêng nên không phải xếp hàng như vậy." }
+      "hintTopic": {
+        "vi": "không khí là sợi dây dùng chung"
+      },
+      "explain": {
+        "vi": "Wi-Fi là một cuộc họp: ai muốn nói phải chờ tới lượt. Dây mạng thì mỗi máy một sợi riêng nên không phải xếp hàng như vậy."
+      }
     },
     {
       "kind": "mcq",
       "id": "m8-mt-11",
-      "prompt": { "vi": "Vì sao mật khẩu Wi-Fi ngắn nguy hiểm hơn hẳn khi mạng còn chạy WPA2?" },
+      "prompt": {
+        "vi": "Vì sao mật khẩu Wi-Fi ngắn nguy hiểm hơn hẳn khi mạng còn chạy WPA2?"
+      },
       "choices": [
-        { "vi": "Vì kẻ tấn công bắt được gói bắt tay rồi mang về dò offline hàng triệu lần" },
-        { "vi": "Vì WPA2 gửi thẳng mật khẩu ra ngoài không khí trong mỗi lần máy kết nối lại" },
-        { "vi": "Vì WPA2 chỉ cho phép mật khẩu tối đa tám ký tự nên dò một lúc là trúng" }
+        {
+          "vi": "Vì kẻ tấn công bắt được gói bắt tay rồi mang về dò offline hàng triệu lần"
+        },
+        {
+          "vi": "Vì WPA2 gửi thẳng mật khẩu ra ngoài không khí trong mỗi lần máy kết nối lại"
+        },
+        {
+          "vi": "Vì WPA2 chỉ cho phép mật khẩu tối đa tám ký tự nên dò một lúc là trúng"
+        }
       ],
       "answerIndex": 0,
-      "hintTopic": { "vi": "vì sao WPA2 sợ mật khẩu ngắn" },
-      "explain": { "vi": "WPA2 để kẻ tấn công mang gói bắt tay về nhà dò thoải mái. WPA3 bắt mỗi lần đoán phải hỏi router một lần — dò hàng triệu lần thành bất khả thi." }
+      "hintTopic": {
+        "vi": "vì sao WPA2 sợ mật khẩu ngắn"
+      },
+      "explain": {
+        "vi": "WPA2 để kẻ tấn công mang gói bắt tay về nhà dò thoải mái. WPA3 bắt mỗi lần đoán phải hỏi router một lần — dò hàng triệu lần thành bất khả thi."
+      }
     },
     {
       "kind": "mcq",
       "id": "m8-mt-12",
-      "prompt": { "vi": "Một mạng IPv6 công cộng thường được cấp nguyên một khối /64. Điều đó nói lên gì?" },
+      "prompt": {
+        "vi": "Một mạng IPv6 công cộng thường được cấp nguyên một khối /64. Điều đó nói lên gì?"
+      },
       "choices": [
-        { "vi": "Mỗi mạng con có sẵn số nhà thoải mái nên không cần NAT" },
-        { "vi": "Mạng đó chỉ được phép có tối đa 64 máy nối vào cùng lúc" },
-        { "vi": "Địa chỉ của mọi máy trong mạng đó dài đúng 64 bit" }
+        {
+          "vi": "Mỗi mạng con có sẵn số nhà thoải mái nên không cần NAT"
+        },
+        {
+          "vi": "Mạng đó chỉ được phép có tối đa 64 máy nối vào cùng lúc"
+        },
+        {
+          "vi": "Địa chỉ của mọi máy trong mạng đó dài đúng 64 bit"
+        }
       ],
       "answerIndex": 0,
-      "hintTopic": { "vi": "64 bit đầu là khu phố, 64 bit sau là số nhà" },
-      "explain": { "vi": "/64 chia đôi địa chỉ: nửa đầu là khu phố nhà mạng cấp, nửa sau là số nhà của từng máy. Số nhà nhiều tới mức không ai phải dùng NAT để tiết kiệm." }
+      "hintTopic": {
+        "vi": "64 bit đầu là khu phố, 64 bit sau là số nhà"
+      },
+      "explain": {
+        "vi": "/64 chia đôi địa chỉ: nửa đầu là khu phố nhà mạng cấp, nửa sau là số nhà của từng máy. Số nhà nhiều tới mức không ai phải dùng NAT để tiết kiệm."
+      }
     },
     {
       "kind": "mcq",
       "id": "m8-mt-13",
-      "prompt": { "vi": "Router mới mua là Wi-Fi 7, laptop trong nhà là Wi-Fi 5. Cặp này nói chuyện với nhau ở đời nào?" },
+      "prompt": {
+        "vi": "Router mới mua là Wi-Fi 7, laptop trong nhà là Wi-Fi 5. Cặp này nói chuyện với nhau ở đời nào?"
+      },
       "choices": [
-        { "vi": "Wi-Fi 5 — cặp nào cũng chốt ở thế hệ thấp hơn của hai bên" },
-        { "vi": "Wi-Fi 7 — router đời mới kéo laptop chạy nhanh theo nó" },
-        { "vi": "Không đời nào cả — lệch nhau hai thế hệ thì không nối được" }
+        {
+          "vi": "Wi-Fi 5 — cặp nào cũng chốt ở thế hệ thấp hơn của hai bên"
+        },
+        {
+          "vi": "Wi-Fi 7 — router đời mới kéo laptop chạy nhanh theo nó"
+        },
+        {
+          "vi": "Không đời nào cả — lệch nhau hai thế hệ thì không nối được"
+        }
       ],
       "answerIndex": 0,
-      "hintTopic": { "vi": "bên nào phải chiều bên nào" },
-      "explain": { "vi": "Chuẩn Wi-Fi tương thích ngược: bên mới biết nói giọng cũ nên cặp nào cũng chốt ở đời THẤP hơn. Muốn laptop chạy như Wi-Fi 7 thì phải đổi laptop, đổi mình router không đủ." }
+      "hintTopic": {
+        "vi": "bên nào phải chiều bên nào"
+      },
+      "explain": {
+        "vi": "Chuẩn Wi-Fi tương thích ngược: bên mới biết nói giọng cũ nên cặp nào cũng chốt ở đời THẤP hơn. Muốn laptop chạy như Wi-Fi 7 thì phải đổi laptop, đổi mình router không đủ."
+      }
     },
     {
       "kind": "mcq",
       "id": "m8-mt-14",
-      "prompt": { "vi": "Nhà có 15 thiết bị cùng nối Wi-Fi. Đổi router Wi-Fi 5 sang Wi-Fi 6 thì thứ dễ thấy nhất là gì?" },
+      "prompt": {
+        "vi": "Nhà có 15 thiết bị cùng nối Wi-Fi. Đổi router Wi-Fi 5 sang Wi-Fi 6 thì thứ dễ thấy nhất là gì?"
+      },
       "choices": [
-        { "vi": "Cả nhà dùng cùng lúc bớt giật, vì một lượt phát chia cho nhiều máy" },
-        { "vi": "Sóng phủ tới được cả những góc phòng mà router cũ không với tới" },
-        { "vi": "Gói cước Internet của nhà mạng cũng được nâng nhanh lên theo router" }
+        {
+          "vi": "Cả nhà dùng cùng lúc bớt giật, vì một lượt phát chia cho nhiều máy"
+        },
+        {
+          "vi": "Sóng phủ tới được cả những góc phòng mà router cũ không với tới"
+        },
+        {
+          "vi": "Gói cước Internet của nhà mạng cũng được nâng nhanh lên theo router"
+        }
       ],
       "answerIndex": 0,
-      "hintTopic": { "vi": "điểm mạnh của Wi-Fi 6 là chở đông" },
-      "explain": { "vi": "Wi-Fi 6 mạnh ở chỗ chở ĐÔNG: một lượt phát chia được cho nhiều thiết bị, nhà càng đông máy càng thấy rõ. Tầm phủ sóng là chuyện của băng tần, còn tốc độ ra Internet vẫn nằm trong gói cước nhà mạng." }
+      "hintTopic": {
+        "vi": "điểm mạnh của Wi-Fi 6 là chở đông"
+      },
+      "explain": {
+        "vi": "Wi-Fi 6 mạnh ở chỗ chở ĐÔNG: một lượt phát chia được cho nhiều thiết bị, nhà càng đông máy càng thấy rõ. Tầm phủ sóng là chuyện của băng tần, còn tốc độ ra Internet vẫn nằm trong gói cước nhà mạng."
+      }
     },
     {
       "kind": "typed",
       "id": "m8-mt-15",
       "prompt": {
-        "vi": "Gói cước 400 Mbps thì tải file nhanh nhất khoảng bao nhiêu MB mỗi giây? (một con số)"
+        "vi": "Đường truyền văn phòng là 400 Mbps. Lúc máy sao lưu chạy hết cỡ, cửa sổ tiến trình sẽ hiện tối đa bao nhiêu MB mỗi giây? (một con số)"
       },
       "accept": [
         "50",
@@ -1386,11 +2309,11 @@
       "kind": "mcq",
       "id": "m8-mt-16",
       "prompt": {
-        "vi": "Đo tốc độ nhà khách hàng ra 300 Mbps, tải file rất nhanh, nhưng gọi video thì tiếng vỡ từng mảng. Nghi gì trước?"
+        "vi": "Quầy lễ tân dùng điện thoại IP: giọng khách nghe đứt quãng như răng cưa, dù ngay cạnh đó máy tính vẫn kéo bản cập nhật vèo vèo. Nguyên nhân đáng ngờ nhất là gì?"
       },
       "choices": [
         {
-          "vi": "Mất gói hoặc jitter trên đường ra ngoài nhà"
+          "vi": "Mất gói hoặc jitter trên đường ra ngoài công ty"
         },
         {
           "vi": "Băng thông chưa đủ, phải nâng lên gói cước cao hơn"
@@ -1404,29 +2327,53 @@
         "vi": "thứ phép đo tốc độ không nhìn thấy"
       },
       "explain": {
-        "vi": "Mất gói hoặc jitter. Tải file nhanh đã chứng minh đường đủ rộng; tiếng vỡ là do gói rơi dọc đường hoặc tới lệch nhịp — nâng cước không chữa được. Còn độ trễ thấp là chuyện TỐT, không bao giờ là bệnh."
+        "vi": "Mất gói hoặc jitter. Bản cập nhật kéo vèo vèo đã chứng minh đường đủ rộng; giọng đứt quãng là do gói rơi dọc đường hoặc tới lệch nhịp — nâng cước không chữa được. Còn độ trễ thấp là chuyện TỐT, không bao giờ là bệnh."
       }
     },
     {
       "kind": "typed",
       "id": "m8-mt-17",
-      "prompt": { "vi": "Chung cư đông, bạn vào trang cài đặt router chọn kênh cho băng 2.4 GHz. Ba kênh không đè lên nhau để chọn là những kênh nào? (ba con số)" },
-      "accept": ["1, 6, 11", "1 6 11", "1, 6 và 11", "1-6-11", "1 và 6 và 11"],
-      "hintTopic": { "vi": "ba làn cách nhau đủ xa" },
-      "explain": { "vi": "Kênh 1, 6 và 11 — chỉ ba kênh này cách nhau đủ xa để không chồng lấn. Chọn kênh nằm giữa (kiểu 3 hay 8) là đè lên cả hai bên hàng xóm, còn khổ hơn trùng hẳn một kênh với họ." }
+      "prompt": {
+        "vi": "Chung cư đông, bạn vào trang cài đặt router chọn kênh cho băng 2.4 GHz. Ba kênh không đè lên nhau để chọn là những kênh nào? (ba con số)"
+      },
+      "accept": [
+        "1, 6, 11",
+        "1 6 11",
+        "1, 6 và 11",
+        "1-6-11",
+        "1 và 6 và 11"
+      ],
+      "hintTopic": {
+        "vi": "ba làn cách nhau đủ xa"
+      },
+      "explain": {
+        "vi": "Kênh 1, 6 và 11 — chỉ ba kênh này cách nhau đủ xa để không chồng lấn. Chọn kênh nằm giữa (kiểu 3 hay 8) là đè lên cả hai bên hàng xóm, còn khổ hơn trùng hẳn một kênh với họ."
+      }
     },
     {
       "kind": "mcq",
       "id": "m8-mt-18",
-      "prompt": { "vi": "Chung cư, chín giờ tối: điện thoại đầy vạch, bạn ngồi ngay cạnh router mà trang web vẫn quay vòng. Nghi cái gì trước?" },
+      "prompt": {
+        "vi": "Chung cư, chín giờ tối: điện thoại đầy vạch, bạn ngồi ngay cạnh router mà trang web vẫn quay vòng. Nghi cái gì trước?"
+      },
       "choices": [
-        { "vi": "Hàng xóm đang chen chung kênh 2.4 GHz với nhà bạn" },
-        { "vi": "Router hỏng ăng-ten nên sóng phát ra yếu hẳn đi" },
-        { "vi": "Mật khẩu Wi-Fi bị lộ nên cả tầng đang dùng ké mạng" }
+        {
+          "vi": "Hàng xóm đang chen chung kênh 2.4 GHz với nhà bạn"
+        },
+        {
+          "vi": "Router hỏng ăng-ten nên sóng phát ra yếu hẳn đi"
+        },
+        {
+          "vi": "Mật khẩu Wi-Fi bị lộ nên cả tầng đang dùng ké mạng"
+        }
       ],
       "answerIndex": 0,
-      "hintTopic": { "vi": "vạch đầy đã loại trừ được điều gì" },
-      "explain": { "vi": "Vạch đầy đã chứng minh sóng router tới máy rất to, nên bệnh không nằm ở ăng-ten. Giờ cao điểm ở chung cư, thủ phạm số một là các nhà quanh đó cùng chen trên vài kênh 2.4 GHz — chung kênh thì phải thay phiên nhau nói. Chuyện dùng ké đã có WPA lo, và nó cũng không làm vạch sóng đổi." }
+      "hintTopic": {
+        "vi": "vạch đầy đã loại trừ được điều gì"
+      },
+      "explain": {
+        "vi": "Vạch đầy đã chứng minh sóng router tới máy rất to, nên bệnh không nằm ở ăng-ten. Giờ cao điểm ở chung cư, thủ phạm số một là các nhà quanh đó cùng chen trên vài kênh 2.4 GHz — chung kênh thì phải thay phiên nhau nói. Chuyện dùng ké đã có WPA lo, và nó cũng không làm vạch sóng đổi."
+      }
     }
   ]
 }

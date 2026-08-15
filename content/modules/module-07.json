@@ -2,7 +2,9 @@
   "id": "module-7",
   "order": 7,
   "part": "B",
-  "letter": { "vi": "Ghi lại cho bạn. Trước module này, mạng nhà bạn là một cái modem nhấp nháy; giờ bạn vẽ lại được cả nhà đang dùng chung một địa chỉ ra sao, người gác cửa lật sổ thế nào, và vì sao chơi game với bạn bè lại cần chừa sẵn một lối vào. Bạn còn gỡ được cái nhà mắc hai lớp cổng — ca kinh điển làm nhiều người loay hoay hàng tháng. Từ đây, mạng của chính bạn không còn là hộp đen nữa." },
+  "letter": {
+    "vi": "Ghi lại cho bạn. Trước module này, mạng nhà bạn là một cái modem nhấp nháy; giờ bạn vẽ lại được cả nhà đang dùng chung một địa chỉ ra sao, người gác cửa lật sổ thế nào, và vì sao chơi game với bạn bè lại cần chừa sẵn một lối vào. Bạn còn gỡ được cái nhà mắc hai lớp cổng — ca kinh điển làm nhiều người loay hoay hàng tháng. Từ đây, mạng của chính bạn không còn là hộp đen nữa."
+  },
   "title": {
     "vi": "NAT, Firewall và mạng nhà bạn"
   },
@@ -172,7 +174,7 @@
               },
               "solution": {
                 "vi": "NAT — Network Address Translation, việc đổi địa chỉ riêng thành địa chỉ công cộng ở cổng WAN."
-              },
+              },
               "conceptId": "m7-nat"
             },
             {
@@ -190,7 +192,7 @@
                     "vi": "Hỏi lại tất cả các máy trong nhà"
                   },
                   {
-                    "vi": "Dựa vào địa chỉ MAC ghi trong gói tin"
+                    "vi": "Dựa vào địa chỉ MAC của máy trong nhà ghi trong gói tin"
                   }
                 ],
                 "answerIndex": 0,
@@ -203,7 +205,7 @@
               },
               "solution": {
                 "vi": "Tra bảng NAT/PAT: mỗi dòng ghi cặp \"địa chỉ riêng + port riêng ↔ địa chỉ chung + port chung\"."
-              },
+              },
               "conceptId": "m7-pat"
             }
           ]
@@ -305,10 +307,10 @@
                   "vi": "Một dòng dặn trước: port nào từ ngoài thì đưa vào máy nào, port nào"
                 },
                 {
-                  "vi": "Đổi địa chỉ máy đó thành địa chỉ công cộng"
+                  "vi": "Đổi địa chỉ riêng của máy đó thành một địa chỉ công cộng thật sự"
                 },
                 {
-                  "vi": "Tắt NAT đi"
+                  "vi": "Tắt hẳn NAT trên router đi để gói từ ngoài vào thẳng"
                 }
               ],
               "answerIndex": 0,
@@ -352,10 +354,10 @@
                     "vi": "3389 — màn hình máy tính từ xa"
                   },
                   {
-                    "vi": "443 — trang web có khóa"
+                    "vi": "443 — trang web có khóa vàng"
                   },
                   {
-                    "vi": "123 — đồng bộ giờ"
+                    "vi": "123 — đồng bộ giờ cho máy"
                   }
                 ],
                 "answerIndex": 0,
@@ -504,13 +506,13 @@
               },
               "choices": [
                 {
-                  "vi": "Nó nhớ những kết nối do người trong nhà mở ra, và chỉ cho thư trả lời của đúng những kết nối đó vào"
+                  "vi": "Nó nhớ những kết nối do người trong nhà mở ra, chỉ cho thư trả lời của đúng chúng vào"
                 },
                 {
-                  "vi": "Nó chạy nhanh hơn"
+                  "vi": "Nó chạy nhanh hơn hẳn vì không phải xét từng gói tin một"
                 },
                 {
-                  "vi": "Nó chặn được virus trong tệp tải về"
+                  "vi": "Nó đọc được nội dung của tệp tải về nên chặn được cả virus đang nằm giấu trong tệp"
                 }
               ],
               "answerIndex": 0,
@@ -554,10 +556,10 @@
                     "vi": "Vì nó khớp một dòng trong bảng kết nối đang mở của tường lửa"
                   },
                   {
-                    "vi": "Vì máy chủ web là địa chỉ tin cậy"
+                    "vi": "Vì máy chủ web đó nằm trong danh sách địa chỉ được tin cậy"
                   },
                   {
-                    "vi": "Vì port 443 luôn được mở sẵn"
+                    "vi": "Vì port 443 luôn được mở sẵn cho mọi gói đi vào"
                   }
                 ],
                 "answerIndex": 0,
@@ -729,10 +731,10 @@
                   "vi": "Modem nối nhà bạn với nhà mạng; router chia đường cho các thiết bị trong nhà"
                 },
                 {
-                  "vi": "Modem phát Wi-Fi, router thì không"
+                  "vi": "Modem là thứ phát sóng Wi-Fi trong nhà, còn router thì không phát gì cả"
                 },
                 {
-                  "vi": "Hai từ chỉ cùng một thứ"
+                  "vi": "Hai từ chỉ cùng một thứ, gọi kiểu nào cũng được"
                 }
               ],
               "answerIndex": 0,
@@ -1571,10 +1573,10 @@
                     "vi": "Để router thứ hai làm điểm phát sóng: tắt NAT và phát địa chỉ, cắm dây vào cổng LAN"
                   },
                   {
-                    "vi": "Khai port forwarding trên cả hai thiết bị"
+                    "vi": "Khai port forwarding trên cả hai thiết bị cho khớp nhau"
                   },
                   {
-                    "vi": "Đặt cùng một dải địa chỉ cho cả hai router"
+                    "vi": "Đặt cùng một dải địa chỉ cho cả hai router để chúng nhìn thấy và hiểu được nhau"
                   }
                 ],
                 "answerIndex": 0,
@@ -2134,7 +2136,7 @@
       "kind": "typed",
       "id": "m7-mt-1",
       "prompt": {
-        "vi": "Việc router đổi địa chỉ riêng thành địa chỉ công cộng khi gói tin ra Internet gọi là gì? (viết tắt được)"
+        "vi": "Gói tin rời máy bạn mang địa chỉ nguồn 192.168.1.20, nhưng ra tới Internet nó lại mang 113.161.7.9. Việc router thay địa chỉ đó tên là gì? (viết tắt được)"
       },
       "accept": [
         "nat",
@@ -2143,43 +2145,43 @@
         "chuyển đổi địa chỉ mạng"
       ],
       "explain": {
-        "vi": "NAT — đổi địa chỉ nguồn ở cổng WAN, nhờ đó cả nhà dùng chung một địa chỉ công cộng."
+        "vi": "NAT — router đổi địa chỉ nguồn ở cổng WAN, nhờ đó 192.168.1.20 đi ra thế giới dưới tên chung 113.161.7.9 của cả nhà."
       }
     },
     {
       "kind": "mcq",
       "id": "m7-mt-2",
       "prompt": {
-        "vi": "Nhờ đâu router biết gói tin trả về thuộc máy nào trong nhà?"
+        "vi": "Hai máy trong nhà cùng mở đúng một trang web, cùng một lúc. Nhờ đâu router chia đúng hai gói trả về cho hai máy?"
       },
       "choices": [
         {
-          "vi": "Tra bảng NAT/PAT ghi cặp địa chỉ và port lúc gói đi ra"
+          "vi": "Bảng NAT ghi cho mỗi máy một số port nguồn khác nhau"
         },
         {
-          "vi": "Dựa vào địa chỉ MAC của máy nhận ghi trong gói tin"
+          "vi": "Hai gói trả về mang sẵn địa chỉ MAC của từng máy nhận"
         },
         {
-          "vi": "Phát hỏi lại tất cả thiết bị trong nhà xem của ai"
+          "vi": "Router phát cả hai gói cho cả nhà, máy nào cần thì nhặt"
         }
       ],
       "answerIndex": 0,
       "explain": {
-        "vi": "Mỗi lượt đi ra sinh một dòng trong bảng; thư về khớp dòng nào thì đưa lên máy đó."
+        "vi": "Lúc đi ra, mỗi máy được ghi một số port nguồn riêng trong bảng NAT. Gói về mang số port nào thì router tra ra đúng máy ấy — địa chỉ MAC thì không đi xa quá router."
       }
     },
     {
       "kind": "mcq",
       "id": "m7-mt-3",
       "prompt": {
-        "vi": "Port nào tuyệt đối không nên mở ra Internet bằng port forwarding?"
+        "vi": "Bạn định mở một port ra Internet để làm việc từ xa. Trong ba port này, mở port nào ra là liều nhất?"
       },
       "choices": [
         {
-          "vi": "3389"
+          "vi": "445"
         },
         {
-          "vi": "443"
+          "vi": "8080"
         },
         {
           "vi": "123"
@@ -2187,27 +2189,27 @@
       ],
       "answerIndex": 0,
       "explain": {
-        "vi": "3389 là RDP — mở ra là mời cả thế giới thử mật khẩu để ngồi thẳng vào màn hình máy bạn."
+        "vi": "445 là port chia sẻ ổ đĩa — mở ra là dí cả kho tài liệu vào mặt Internet để cả thế giới thử mật khẩu. Nó cùng họ nguy hiểm với 3389."
       }
     },
     {
       "kind": "typed",
       "id": "m7-mt-4",
       "prompt": {
-        "vi": "Tường lửa có nhớ các kết nối đang mở được gọi bằng tính từ tiếng Anh nào?"
+        "vi": "Bạn chưa mở port nào trên router, vậy mà trang web bạn vừa bấm vẫn tải về được bình thường. Tường lửa cho gói trả lời đó vào vì nó thuộc loại nào? (tính từ tiếng Anh)"
       },
       "accept": [
         "stateful"
       ],
       "explain": {
-        "vi": "Stateful — nó giữ bảng các cuộc trò chuyện đang mở và chỉ cho thư trả lời của đúng những cuộc đó đi vào."
+        "vi": "Stateful — nó giữ bảng các cuộc trò chuyện đang mở, thấy gói về khớp một cuộc do bạn mở ra thì cho vào; gói của cuộc không ai mở thì vẫn chặn."
       }
     },
     {
       "kind": "order",
       "id": "m7-mt-5",
       "prompt": {
-        "vi": "Xếp các chặng của mạng nhà từ ngoài đường vào tới máy bạn."
+        "vi": "Thợ nhà mạng kéo dây vào căn hộ mới, lắp lần lượt từng chặng bắt đầu từ ngoài đường. Xếp đúng thứ tự anh ấy lắp."
       },
       "items": [
         {
@@ -2274,7 +2276,7 @@
       "kind": "mcq",
       "id": "m7-mt-8",
       "prompt": {
-        "vi": "Cách gỡ double NAT khi vẫn muốn dùng router thứ hai cho rộng sóng?"
+        "vi": "Bạn dựng thêm một router cũ trên tầng áp mái cho sóng khỏe, xong thì camera cửa không xem từ ngoài được nữa. Chỉnh gì trên chiếc router cũ ấy?"
       },
       "choices": [
         {
@@ -2399,7 +2401,7 @@
       "kind": "mcq",
       "id": "m7-mt-13",
       "prompt": {
-        "vi": "Muốn mở trang quản trị router nhà, bạn gõ con số nào vào thanh địa chỉ trình duyệt?"
+        "vi": "Quán cà phê nhờ bạn đổi kênh Wi-Fi, muốn vậy phải vào trang cấu hình của chính chiếc router ở đó. Con số cần gõ lấy từ đâu ra?"
       },
       "choices": [
         {
@@ -2414,10 +2416,10 @@
       ],
       "answerIndex": 0,
       "hintTopic": {
-        "vi": "địa chỉ của chính chiếc router trong mạng nhà"
+        "vi": "địa chỉ của chính chiếc router trong mạng bạn đang ngồi"
       },
       "explain": {
-        "vi": "Trang quản trị nằm trên chính chiếc router, nên gõ địa chỉ của router trong nhà — đúng dòng Default Gateway, thường 192.168.1.1. Dòng IPv4 Address là địa chỉ của chính máy bạn, gõ vào chỉ quay về chỗ cũ."
+        "vi": "Trang quản trị nằm trên chính chiếc router, nên gõ địa chỉ của router trong mạng bạn đang ngồi — đúng dòng Default Gateway, thường 192.168.1.1. Dòng IPv4 Address là địa chỉ của chính máy bạn, gõ vào chỉ quay về chỗ cũ."
       }
     },
     {
@@ -2448,7 +2450,7 @@
       "kind": "typed",
       "id": "m7-mt-15",
       "prompt": {
-        "vi": "Nhà mạng gộp hàng trăm thuê bao vào chung một địa chỉ công cộng bằng lớp NAT của chính họ. Lớp đó tên gì? (viết tắt được)"
+        "vi": "Bạn muốn xem camera nhà từ ngoài đường nhưng khai port forwarding mãi vẫn không tới, và hàng xóm cùng nhà mạng cũng vậy. Thủ phạm là lớp NAT nhà mạng tự dựng thêm — nó tên gì? (viết tắt được)"
       },
       "accept": [
         "cgnat",
@@ -2469,17 +2471,17 @@
       "kind": "mcq",
       "id": "m7-mt-16",
       "prompt": {
-        "vi": "Cổng WAN của router nhà ghi 100.66.4.9, còn trang tra IP của tôi hiện 42.116.7.20. Kết luận gì?"
+        "vi": "Bạn lắp camera cho nhà bà ngoại. Router ở đó khai cổng WAN là 100.83.19.6, mà trang tra IP của tôi mở trên máy tính nhà bà lại hiện 113.185.60.77. Chuyện này nói lên điều gì?"
       },
       "choices": [
         {
-          "vi": "Nhà bạn nằm sau CGNAT: nhà mạng còn NAT thêm lần nữa"
+          "vi": "Nhà bà nằm sau CGNAT: nhà mạng còn NAT thêm lần nữa"
         },
         {
-          "vi": "Router nhà bạn hỏng NAT nên báo ra hai con số lệch"
+          "vi": "Router nhà bà hỏng NAT nên báo ra hai con số lệch"
         },
         {
-          "vi": "Máy bạn đang đi vòng qua một máy chủ trung gian nào đó"
+          "vi": "Máy tính nhà bà đang đi vòng qua một máy chủ trung gian"
         }
       ],
       "answerIndex": 0,
@@ -2487,7 +2489,7 @@
         "vi": "chỉ một lớp cổng thì hai con số ấy ra sao"
       },
       "explain": {
-        "vi": "Chỉ một lớp cổng thì địa chỉ ở cổng WAN chính là con số cả Internet nhìn thấy. Khác nhau nghĩa là nhà mạng còn đổi địa chỉ thêm một lần nữa — 100.66.4.9 nằm trong dải CGNAT."
+        "vi": "Chỉ một lớp cổng thì địa chỉ ở cổng WAN chính là con số cả Internet nhìn thấy. Khác nhau nghĩa là nhà mạng còn đổi địa chỉ thêm một lần nữa — 100.83.19.6 nằm trong dải CGNAT."
       }
     }
   ]

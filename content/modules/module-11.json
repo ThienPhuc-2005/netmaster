@@ -2,7 +2,9 @@
   "id": "module-11",
   "order": 11,
   "part": "C",
-  "letter": { "vi": "Ghi lại cho ca sáng, ca này bạn trực chính. Trước module, gặp sự cố là thử đại vài thứ cho tới lúc may mắn; giờ bạn có thứ tự để hỏi và có bằng chứng để loại trừ trước khi đụng vào bất cứ thứ gì. Năm ca vừa rồi — máy không in được, trong nhà gọi được ra ngoài thì không, tên miền chết, hai máy giành một số nhà, bệnh nằm ngay trên máy — là năm dạng chiếm phần lớn ca trực thật. Sửa được máy là giỏi; khoanh đúng bệnh trước khi sửa mới là có nghề." },
+  "letter": {
+    "vi": "Ghi lại cho ca sáng, ca này bạn trực chính. Trước module, gặp sự cố là thử đại vài thứ cho tới lúc may mắn; giờ bạn có thứ tự để hỏi và có bằng chứng để loại trừ trước khi đụng vào bất cứ thứ gì. Năm ca vừa rồi — máy không in được, trong nhà gọi được ra ngoài thì không, tên miền chết, hai máy giành một số nhà, bệnh nằm ngay trên máy — là năm dạng chiếm phần lớn ca trực thật. Sửa được máy là giỏi; khoanh đúng bệnh trước khi sửa mới là có nghề."
+  },
   "title": {
     "vi": "Phòng khám mạng — chẩn đoán sự cố"
   },
@@ -50,6 +52,15 @@
       },
       "lessonIds": [
         "m11-bai-5"
+      ]
+    },
+    {
+      "id": "m11-chang-6",
+      "title": {
+        "vi": "Ốm chứ chưa chết"
+      },
+      "lessonIds": [
+        "m11-bai-6"
       ]
     }
   ],
@@ -548,7 +559,7 @@
               },
               "solution": {
                 "vi": "Bệnh nằm ở phía máy đích: MAY-CHAM-CONG bị tuột dây nên không nghe được tiếng gọi ARP. Trong pha sửa, nối cổng eth0 của nó vào cổng trống p3 của switch — ping lại là có Reply. So với ca trước: General failure là dây MÌNH, còn unreachable với mạng-mình-vẫn-sống là dây ĐÍCH."
-              },
+              },
               "conceptId": "m11-kham-theo-tang"
             },
             {
@@ -574,7 +585,7 @@
               },
               "solution": {
                 "vi": "Ở phía máy đích: mạng của bạn sống (ping máy khác vẫn Reply), nhưng máy đích không đáp lời gọi ARP — thường là nó tuột dây, tắt nguồn, hoặc tự chặn."
-              },
+              },
               "conceptId": "m11-ipconfig-ping"
             },
             {
@@ -2200,10 +2211,10 @@
                     "vi": "Ai trả lời ARP sau cùng sẽ giành được IP — gói lúc chảy về máy này, lúc về máy kia"
                   },
                   {
-                    "vi": "Switch tự động chặn cả hai máy khi thấy trùng"
+                    "vi": "Switch tự động chặn cả hai máy lại ngay khi nó phát hiện chúng trùng địa chỉ"
                   },
                   {
-                    "vi": "Gói tin bị chia đôi cho cả hai máy nên mất một nửa"
+                    "vi": "Gói tin bị chia đôi cho cả hai máy nên mỗi bên chỉ nhận được một nửa"
                   }
                 ],
                 "answerIndex": 0,
@@ -2735,6 +2746,615 @@
             }
           ],
           "nextTeaser": {
+            "vi": "Còn một loại bệnh nữa chưa gặp, và nó là loại hay bị bỏ sót nhất: mạng vẫn thông, ping vẫn ra Reply, mà công việc thì vẫn hỏng."
+          }
+        }
+      ]
+    },
+    {
+      "id": "m11-bai-6",
+      "missionTitle": {
+        "vi": "Mạng thông mà việc vẫn hỏng"
+      },
+      "steps": [
+        {
+          "type": "hook",
+          "question": {
+            "vi": "Lần này không ai kêu mất mạng. Web mở được, file tải được, ping ra Reply đàng hoàng. Nhưng phòng họp thì gào lên: gọi video vỡ tiếng, chia sẻ màn hình giật như xem ảnh chụp. Khám kiểu gì, khi mọi lệnh đều báo \"vẫn thông\"?"
+          },
+          "visualId": "vis-hook-mang-om"
+        },
+        {
+          "type": "pretest",
+          "questions": [
+            {
+              "kind": "clinic",
+              "id": "m11-b6-pre-ca",
+              "prompt": {
+                "vi": "Phòng họp tầng 1 than: họp online với MAY-CHU-HOP (10.10.0.2) cứ vỡ tiếng, mà mở web thì vẫn được. Bạn chưa được dạy cách khám loại bệnh này — cứ ping, cứ tracert, đọc kỹ MỌI con số hiện ra rồi hẵng đoán."
+              },
+              "spec": {
+                "patient": {
+                  "topology": {
+                    "devices": [
+                      {
+                        "kind": "pc",
+                        "id": "c6a-may-hop",
+                        "hostname": "MAY-PHONG-HOP",
+                        "port": {
+                          "id": "eth0",
+                          "mac": "AA:BB:CC:B6:0A:01"
+                        },
+                        "ipConfig": {
+                          "ip": "192.168.30.10",
+                          "prefix": 24
+                        },
+                        "gateway": "192.168.30.1"
+                      },
+                      {
+                        "kind": "switch",
+                        "id": "c6a-sw",
+                        "hostname": "SW-TANG-1",
+                        "ports": [
+                          {
+                            "id": "p1",
+                            "vlan": 1
+                          },
+                          {
+                            "id": "p2",
+                            "vlan": 1
+                          }
+                        ]
+                      },
+                      {
+                        "kind": "router",
+                        "id": "c6a-rt",
+                        "hostname": "RT-VAN-PHONG",
+                        "ports": [
+                          {
+                            "id": "lan",
+                            "mac": "AA:BB:CC:B6:0A:F1",
+                            "ipConfig": {
+                              "ip": "192.168.30.1",
+                              "prefix": 24
+                            }
+                          },
+                          {
+                            "id": "wan",
+                            "mac": "AA:BB:CC:B6:0A:F2",
+                            "ipConfig": {
+                              "ip": "10.10.0.1",
+                              "prefix": 30
+                            }
+                          }
+                        ],
+                        "staticRoutes": []
+                      },
+                      {
+                        "kind": "pc",
+                        "id": "c6a-may-chu",
+                        "hostname": "MAY-CHU-HOP",
+                        "port": {
+                          "id": "eth0",
+                          "mac": "AA:BB:CC:B6:0A:09"
+                        },
+                        "ipConfig": {
+                          "ip": "10.10.0.2",
+                          "prefix": 30
+                        },
+                        "gateway": "10.10.0.1"
+                      }
+                    ],
+                    "links": [
+                      {
+                        "id": "c6a-w-seat-cu",
+                        "a": {
+                          "deviceId": "c6a-may-hop",
+                          "portId": "eth0"
+                        },
+                        "b": {
+                          "deviceId": "c6a-sw",
+                          "portId": "p1"
+                        }
+                      },
+                      {
+                        "id": "c6a-w-rt",
+                        "a": {
+                          "deviceId": "c6a-sw",
+                          "portId": "p2"
+                        },
+                        "b": {
+                          "deviceId": "c6a-rt",
+                          "portId": "lan"
+                        }
+                      },
+                      {
+                        "id": "c6a-w-chu",
+                        "a": {
+                          "deviceId": "c6a-rt",
+                          "portId": "wan"
+                        },
+                        "b": {
+                          "deviceId": "c6a-may-chu",
+                          "portId": "eth0"
+                        }
+                      }
+                    ]
+                  },
+                  "overlay": {
+                    "impairments": [
+                      {
+                        "linkId": "c6a-w-seat-cu",
+                        "latencyMs": 90,
+                        "lossPercent": 20
+                      }
+                    ]
+                  },
+                  "seatId": "c6a-may-hop"
+                },
+                "symptom": {
+                  "kind": "ping-degraded",
+                  "from": "c6a-may-hop",
+                  "target": "10.10.0.2",
+                  "maxLatencyMs": 50,
+                  "maxLossPercent": 0
+                },
+                "fix": {
+                  "kind": "edit-network",
+                  "allow": {
+                    "addDevices": [],
+                    "removeDevices": false,
+                    "addLinks": true,
+                    "removeLinks": true,
+                    "setVlan": false,
+                    "setIp": false,
+                    "setRoutes": false,
+                    "maxDevices": 4
+                  },
+                  "goals": [
+                    {
+                      "kind": "ping",
+                      "from": "c6a-may-hop",
+                      "to": "c6a-may-chu",
+                      "expect": "reach"
+                    }
+                  ],
+                  "solution": {
+                    "devices": [
+                      {
+                        "kind": "pc",
+                        "id": "c6a-may-hop",
+                        "hostname": "MAY-PHONG-HOP",
+                        "port": {
+                          "id": "eth0",
+                          "mac": "AA:BB:CC:B6:0A:01"
+                        },
+                        "ipConfig": {
+                          "ip": "192.168.30.10",
+                          "prefix": 24
+                        },
+                        "gateway": "192.168.30.1"
+                      },
+                      {
+                        "kind": "switch",
+                        "id": "c6a-sw",
+                        "hostname": "SW-TANG-1",
+                        "ports": [
+                          {
+                            "id": "p1",
+                            "vlan": 1
+                          },
+                          {
+                            "id": "p2",
+                            "vlan": 1
+                          }
+                        ]
+                      },
+                      {
+                        "kind": "router",
+                        "id": "c6a-rt",
+                        "hostname": "RT-VAN-PHONG",
+                        "ports": [
+                          {
+                            "id": "lan",
+                            "mac": "AA:BB:CC:B6:0A:F1",
+                            "ipConfig": {
+                              "ip": "192.168.30.1",
+                              "prefix": 24
+                            }
+                          },
+                          {
+                            "id": "wan",
+                            "mac": "AA:BB:CC:B6:0A:F2",
+                            "ipConfig": {
+                              "ip": "10.10.0.1",
+                              "prefix": 30
+                            }
+                          }
+                        ],
+                        "staticRoutes": []
+                      },
+                      {
+                        "kind": "pc",
+                        "id": "c6a-may-chu",
+                        "hostname": "MAY-CHU-HOP",
+                        "port": {
+                          "id": "eth0",
+                          "mac": "AA:BB:CC:B6:0A:09"
+                        },
+                        "ipConfig": {
+                          "ip": "10.10.0.2",
+                          "prefix": 30
+                        },
+                        "gateway": "10.10.0.1"
+                      }
+                    ],
+                    "links": [
+                      {
+                        "id": "c6a-w-seat-moi",
+                        "a": {
+                          "deviceId": "c6a-may-hop",
+                          "portId": "eth0"
+                        },
+                        "b": {
+                          "deviceId": "c6a-sw",
+                          "portId": "p1"
+                        }
+                      },
+                      {
+                        "id": "c6a-w-rt",
+                        "a": {
+                          "deviceId": "c6a-sw",
+                          "portId": "p2"
+                        },
+                        "b": {
+                          "deviceId": "c6a-rt",
+                          "portId": "lan"
+                        }
+                      },
+                      {
+                        "id": "c6a-w-chu",
+                        "a": {
+                          "deviceId": "c6a-rt",
+                          "portId": "wan"
+                        },
+                        "b": {
+                          "deviceId": "c6a-may-chu",
+                          "portId": "eth0"
+                        }
+                      }
+                    ]
+                  }
+                }
+              },
+              "diagnosis": {
+                "choices": [
+                  {
+                    "vi": "Đoạn dây từ máy xuống switch đã yếu: chậm và rơi gói"
+                  },
+                  {
+                    "vi": "Máy chủ họp đã tắt, không còn ai trả lời nữa"
+                  },
+                  {
+                    "vi": "Máy phòng họp đang trỏ sai địa chỉ cửa ra (gateway)"
+                  }
+                ],
+                "answerIndex": 0
+              },
+              "hintTopic": {
+                "vi": "ping có trả lời không, và trả lời bằng con số bao nhiêu"
+              },
+              "explain": {
+                "vi": "Ping vẫn ra Reply — nên ai đọc lướt sẽ kết luận \"mạng bình thường\" rồi đi đổ tội cho phần mềm họp. Nhưng dòng Reply còn hai con số nữa: time=180ms (đường khỏe trong nhà chỉ dưới 1ms) và một gói trong bốn gói bị mất. Máy chủ chưa tắt, gateway chưa sai — đường vẫn dẫn, chỉ là dẫn tệ. Thay sợi dây từ máy xuống switch là số đo về lại bình thường."
+              }
+            }
+          ],
+          "encouragement": {
+            "vi": "Nếu bạn vừa nhìn chữ Reply rồi kết luận mạng ổn thì bạn giống hệt đa số người trực thật — và đó chính là lý do bài này tồn tại. Giờ mình học cách đọc phần còn lại của dòng Reply."
+          }
+        },
+        {
+          "type": "teach",
+          "screens": [
+            {
+              "conceptId": "m11-thong-khac-tot",
+              "visualId": "vis-thong-khac-tot",
+              "body": {
+                "vi": "\"Thông\" và \"tốt\" là hai chuyện khác nhau. Một dòng Reply nói ba điều chứ không phải một: có ai đó trả lời (thông), gói đi về mất bao lâu (time=…), và trong bốn gói gửi đi thì mấy gói về (dòng Lost = … ở cuối). Đường trong nhà khỏe thì time dưới 1ms và mất 0 gói. Còn Reply mà time lên hàng trăm mili-giây, hoặc cứ vài gói lại rơi một gói, thì mạng đang ỐM chứ chưa chết: web vẫn mở được vì nó tải xong là thôi, nhưng gọi video và chia sẻ màn hình thì vỡ ngay — chúng cần dòng chảy đều đặn từng khoảnh khắc."
+              },
+              "deepDive": {
+                "vi": "Ba con số bạn học ở Module 8 giờ hiện ra ngay trong terminal: time= chính là ĐỘ TRỄ, dòng Lost chính là MẤT GÓI, còn khi độ trễ mỗi gói một khác thì đó là JITTER — thứ làm tiếng nói méo đi. Băng thông (bao nhiêu Mbps) thì ping không đo được: đó là lý do một đường \"đo tốc độ 200 Mbps\" vẫn có thể họp online vỡ tiếng. Đo tốc độ trả lời câu \"ống to bao nhiêu\", ping trả lời câu \"đi mất bao lâu và có rơi dọc đường không\"."
+              }
+            },
+            {
+              "conceptId": "m11-khoanh-khuc-cham",
+              "visualId": "vis-khoanh-khuc-cham",
+              "body": {
+                "vi": "Biết cả chuyến đi bị chậm vẫn chưa đủ để đi sửa — phải biết chậm ở KHÚC NÀO. Đó là việc của tracert: nó liệt kê từng chặng kèm thời gian cộng dồn. Đọc cột thời gian từ trên xuống, tìm chỗ con số NHẢY VỌT: khúc chậm nằm ngay trước chặng đó. Nhảy ngay ở chặng đầu là bệnh ở đoạn dây nhà mình — tự thay được. Chặng đầu vẫn đẹp mà mãi tới chặng cuối mới vọt lên thì khúc bệnh nằm ngoài tầm tay bạn: việc đúng là gọi bên giữ đoạn đường đó, không phải đi thay dây trong nhà."
+              },
+              "deepDive": {
+                "vi": "Một cái bẫy quen thuộc: đôi khi một router giữa đường trả lời chậm (con số ở chặng đó cao) nhưng các chặng SAU nó lại về bình thường. Đấy không phải bệnh — chỉ là router ấy coi việc trả lời tracert là việc phụ, làm khi rảnh. Bệnh thật là khi con số vọt lên rồi GIỮ NGUYÊN mức cao ở mọi chặng phía sau, vì mọi gói đi tiếp đều phải chịu đủ cái trễ ấy."
+              }
+            }
+          ]
+        },
+        {
+          "type": "practice",
+          "fadingLevel": 2,
+          "exercises": [
+            {
+              "question": {
+                "kind": "clinic",
+                "id": "m11-b6-prac-ca",
+                "prompt": {
+                  "vi": "Ca khác, cũng \"mạng lag\": lễ tân than mở phần mềm kho (MAY-CHU-KHO, 10.20.0.2 — đặt ở kho thuê ngoài) chậm rề và hay đứng hình. Khám cho ra khúc nào chậm, rồi chọn đúng MỘT việc để làm."
+                },
+                "spec": {
+                  "patient": {
+                    "topology": {
+                      "devices": [
+                        {
+                          "kind": "pc",
+                          "id": "c6b-may-le-tan",
+                          "hostname": "MAY-LE-TAN",
+                          "port": {
+                            "id": "eth0",
+                            "mac": "AA:BB:CC:B6:0B:01"
+                          },
+                          "ipConfig": {
+                            "ip": "192.168.30.12",
+                            "prefix": 24
+                          },
+                          "gateway": "192.168.30.1"
+                        },
+                        {
+                          "kind": "switch",
+                          "id": "c6b-sw",
+                          "hostname": "SW-TANG-1",
+                          "ports": [
+                            {
+                              "id": "p1",
+                              "vlan": 1
+                            },
+                            {
+                              "id": "p2",
+                              "vlan": 1
+                            }
+                          ]
+                        },
+                        {
+                          "kind": "router",
+                          "id": "c6b-rt",
+                          "hostname": "RT-VAN-PHONG",
+                          "ports": [
+                            {
+                              "id": "lan",
+                              "mac": "AA:BB:CC:B6:0B:F1",
+                              "ipConfig": {
+                                "ip": "192.168.30.1",
+                                "prefix": 24
+                              }
+                            },
+                            {
+                              "id": "wan",
+                              "mac": "AA:BB:CC:B6:0B:F2",
+                              "ipConfig": {
+                                "ip": "10.20.0.1",
+                                "prefix": 30
+                              }
+                            }
+                          ],
+                          "staticRoutes": []
+                        },
+                        {
+                          "kind": "pc",
+                          "id": "c6b-may-chu-kho",
+                          "hostname": "MAY-CHU-KHO",
+                          "port": {
+                            "id": "eth0",
+                            "mac": "AA:BB:CC:B6:0B:09"
+                          },
+                          "ipConfig": {
+                            "ip": "10.20.0.2",
+                            "prefix": 30
+                          },
+                          "gateway": "10.20.0.1"
+                        }
+                      ],
+                      "links": [
+                        {
+                          "id": "c6b-w-seat",
+                          "a": {
+                            "deviceId": "c6b-may-le-tan",
+                            "portId": "eth0"
+                          },
+                          "b": {
+                            "deviceId": "c6b-sw",
+                            "portId": "p1"
+                          }
+                        },
+                        {
+                          "id": "c6b-w-rt",
+                          "a": {
+                            "deviceId": "c6b-sw",
+                            "portId": "p2"
+                          },
+                          "b": {
+                            "deviceId": "c6b-rt",
+                            "portId": "lan"
+                          }
+                        },
+                        {
+                          "id": "c6b-w-thue-ngoai",
+                          "a": {
+                            "deviceId": "c6b-rt",
+                            "portId": "wan"
+                          },
+                          "b": {
+                            "deviceId": "c6b-may-chu-kho",
+                            "portId": "eth0"
+                          }
+                        }
+                      ]
+                    },
+                    "overlay": {
+                      "impairments": [
+                        {
+                          "linkId": "c6b-w-thue-ngoai",
+                          "latencyMs": 300,
+                          "lossPercent": 15
+                        }
+                      ]
+                    },
+                    "seatId": "c6b-may-le-tan"
+                  },
+                  "symptom": {
+                    "kind": "ping-degraded",
+                    "from": "c6b-may-le-tan",
+                    "target": "10.20.0.2",
+                    "maxLatencyMs": 60,
+                    "maxLossPercent": 0
+                  },
+                  "fix": {
+                    "kind": "choose-action"
+                  }
+                },
+                "diagnosis": {
+                  "choices": [
+                    {
+                      "vi": "Khúc chậm nằm sau router, trên đoạn đường ra kho thuê ngoài"
+                    },
+                    {
+                      "vi": "Dây từ máy lễ tân xuống switch tầng đã yếu, cần thay"
+                    },
+                    {
+                      "vi": "Switch tầng 1 quá tải nên giữ gói lại của mọi máy"
+                    }
+                  ],
+                  "answerIndex": 0
+                },
+                "actions": {
+                  "choices": [
+                    {
+                      "vi": "Báo bên cung cấp đường truyền kiểm tra đoạn ra kho thuê ngoài"
+                    },
+                    {
+                      "vi": "Thay sợi dây mạng nối máy lễ tân với switch tầng 1"
+                    },
+                    {
+                      "vi": "Khởi động lại switch tầng 1 cho nhẹ tải rồi đo lại"
+                    }
+                  ],
+                  "answerIndex": 0
+                },
+                "hintTopic": {
+                  "vi": "cột thời gian của tracert nhảy vọt ở chặng nào"
+                }
+              },
+              "conceptId": "m11-khoanh-khuc-cham",
+              "hint": {
+                "vi": "Chạy tracert tới 10.20.0.2 và đọc cột thời gian theo thứ tự chặng. Chặng qua router trong nhà có chậm không? Con số vọt lên ở chặng thứ mấy?"
+              },
+              "solution": {
+                "vi": "tracert cho thấy chặng qua router nhà vẫn <1 ms — đoạn dây và switch trong nhà đều lành, nên thay dây hay khởi động lại switch đều là sửa nhầm chỗ. Chỉ tới chặng cuối con số mới vọt lên 600 ms, kèm gói rơi: khúc bệnh nằm trên đoạn đường thuê ngoài, sau router. Việc đúng là báo bên giữ đoạn đường đó — kèm theo số đo bạn vừa lấy, vì có số thì họ không cãi được."
+              }
+            },
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m11-b6-prac-1",
+                "prompt": {
+                  "vi": "Ping ra Reply đủ bốn dòng, nhưng dòng nào cũng time=240ms. Đường mạng này đứt hay chưa đứt?"
+                },
+                "accept": [
+                  "chưa đứt",
+                  "không đứt",
+                  "vẫn thông",
+                  "còn thông",
+                  "chưa đứt, chỉ chậm",
+                  "không đứt, chỉ chậm",
+                  "vẫn thông nhưng chậm",
+                  "chưa đứt nhưng chậm"
+                ],
+                "hintTopic": {
+                  "vi": "có tiếng đáp nghĩa là gì"
+                }
+              },
+              "conceptId": "m11-thong-khac-tot",
+              "hint": {
+                "vi": "Có Reply nghĩa là gói đi tới nơi và về được. Con số 240ms nói về chất lượng chuyến đi, không nói đường có còn hay không."
+              },
+              "solution": {
+                "vi": "Chưa đứt — có Reply là đường vẫn dẫn được. Nhưng 240ms là chậm gấp hàng trăm lần một đường trong nhà khỏe, nên tuy chưa đứt, nó đã đủ để làm hỏng mọi việc cần thời gian thực."
+              }
+            }
+          ]
+        },
+        {
+          "type": "retrieval",
+          "questions": [
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m11-b6-ret-1",
+                "prompt": {
+                  "vi": "Không nhìn lại bài: cả chuyến đi bị chậm, muốn biết chậm ở KHÚC nào thì gõ lệnh gì?"
+                },
+                "accept": [
+                  "tracert",
+                  "traceroute",
+                  "tracert -d",
+                  "lệnh tracert"
+                ],
+                "hintTopic": {
+                  "vi": "lệnh kê từng chặng"
+                }
+              },
+              "hint": {
+                "vi": "Chính lệnh bạn học ở bài \"Lần theo đường đi\" — nó kê từng chặng một, kèm thời gian."
+              },
+              "solution": {
+                "vi": "tracert — nó kê từng chặng kèm thời gian cộng dồn. Chỗ con số nhảy vọt rồi giữ nguyên mức cao là chỗ khúc bệnh nằm ngay trước đó."
+              }
+            }
+          ],
+          "selfExplain": {
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: vì sao \"ping ra Reply\" chưa đủ để báo cáo là mạng bình thường?"
+            },
+            "keywords": [
+              [
+                "độ trễ",
+                "time",
+                "chậm",
+                "mili-giây"
+              ],
+              [
+                "mất gói",
+                "rơi gói",
+                "lost",
+                "rớt gói"
+              ]
+            ],
+            "exampleAnswer": {
+              "vi": "Vì Reply chỉ nói đường còn dẫn được, chứ không nói dẫn tốt hay tệ. Dòng Reply còn con số time — độ trễ; và cuối lượt ping còn dòng Lost — số gói rơi dọc đường. Đường ốm thì hai con số này xấu trong khi vẫn có Reply, và đúng loại bệnh đó làm gọi video vỡ tiếng dù web vẫn mở được. Muốn báo cáo \"mạng bình thường\" thì phải nhìn đủ cả ba: có đáp, trễ thấp, không rơi gói."
+            }
+          }
+        },
+        {
+          "type": "summary",
+          "bullets": [
+            {
+              "vi": "Reply chỉ nói đường CÒN DẪN. Đọc thêm time= (độ trễ) và dòng Lost (mất gói) mới biết dẫn tốt hay tệ."
+            },
+            {
+              "vi": "Mạng ốm mà chưa chết: web vẫn mở, nhưng gọi video và chia sẻ màn hình vỡ ngay."
+            },
+            {
+              "vi": "tracert khoanh vùng khúc chậm — nhảy vọt ở chặng đầu là bệnh trong nhà, vọt ở chặng cuối là bệnh ngoài tầm tay."
+            }
+          ],
+          "nextTeaser": {
             "vi": "Hết khoa khám lẻ — bài thi tổng của phòng khám sẽ trộn đủ mọi loại bệnh bạn từng gặp, không báo trước ca nào. Đúng như một buổi trực thật."
           }
         }
@@ -2841,6 +3461,40 @@
         },
         "back": {
           "vi": "netstat (còn kết nối ESTABLISHED = đường sống), capture (gói ICMP có rời máy/có hồi âm không), gpresult (máy vào miền — luật GPO nào đang chặn). Ping chỉ đo ICMP, nó chết không có nghĩa mạng chết."
+        }
+      }
+    },
+    {
+      "id": "m11-thong-khac-tot",
+      "term": "Thông ≠ tốt",
+      "glossVi": "Ping còn hai con số nữa: độ trễ và số gói rơi",
+      "metaphor": {
+        "vi": "Con đường vẫn đi được không có nghĩa là đường tốt: ổ gà và tắc đường không chặn ai lại, chỉ làm mọi chuyến đi trễ và long sòng sọc."
+      },
+      "iconId": "icon-m11-thong-khac-tot",
+      "flashcard": {
+        "front": {
+          "vi": "Ping ra Reply — còn phải đọc thêm hai con số nào trước khi kết luận mạng ổn?"
+        },
+        "back": {
+          "vi": "time= (độ trễ khứ hồi — trong nhà khỏe thì dưới 1ms) và dòng Lost ở cuối (số gói rơi trong bốn gói). Reply mà trễ cao hoặc có gói rơi là mạng ỐM chứ chưa chết: web vẫn mở được, nhưng gọi video thì vỡ tiếng."
+        }
+      }
+    },
+    {
+      "id": "m11-khoanh-khuc-cham",
+      "term": "Khoanh vùng khúc chậm",
+      "glossVi": "Đọc cột thời gian tracert, tìm chỗ con số nhảy vọt",
+      "metaphor": {
+        "vi": "Đi xe thấy trễ cả chuyến thì phải biết kẹt ở đoạn nào mới gọi đúng người — kẹt trong ngõ nhà mình khác hẳn kẹt ngoài quốc lộ."
+      },
+      "iconId": "icon-m11-khoanh-khuc-cham",
+      "flashcard": {
+        "front": {
+          "vi": "Cả chuyến đi chậm — làm sao biết khúc nào gây chậm?"
+        },
+        "back": {
+          "vi": "tracert, rồi đọc cột thời gian từ trên xuống tìm chỗ NHẢY VỌT rồi giữ nguyên mức cao: khúc bệnh nằm ngay trước chặng đó. Vọt ở chặng đầu = đoạn dây nhà mình, tự thay được; chặng đầu đẹp mà cuối mới vọt = ngoài tầm tay, phải gọi bên giữ đoạn đường đó."
         }
       }
     }
@@ -3051,6 +3705,49 @@
       },
       "explain": {
         "vi": "ESTABLISHED nghĩa là dữ liệu vẫn đi về được. Chỉ mỗi ping chết thì thủ phạm là luật chặn ICMP ngay trên máy — đúng cái bẫy \"mạng sống mà ping chết\"."
+      }
+    },
+    {
+      "kind": "typed",
+      "id": "m11-mt-13",
+      "prompt": {
+        "vi": "Ping ra Reply đủ bốn dòng, dòng nào cũng \"time=320ms\". Con số 320ms đó gọi tên là gì?"
+      },
+      "accept": [
+        "độ trễ",
+        "do tre",
+        "latency",
+        "độ trễ khứ hồi",
+        "thời gian khứ hồi",
+        "độ trễ của đường"
+      ],
+      "hintTopic": {
+        "vi": "từ vựng đo mạng của Module 8"
+      },
+      "explain": {
+        "vi": "Đó là ĐỘ TRỄ — gói đi và về mất bao lâu. Có Reply nghĩa là đường còn dẫn được, nhưng 320ms thì đã đủ làm vỡ mọi việc cần thời gian thực. Băng thông thì ping không đo được."
+      }
+    },
+    {
+      "kind": "mcq",
+      "id": "m11-mt-14",
+      "prompt": {
+        "vi": "Người dùng báo \"mạng lag\". Ping máy chủ nội bộ: bốn Reply, time<1ms, mất 0 gói. Tracert ra máy chủ ngoài: chặng 1 dưới 1 ms, tới chặng 4 vọt lên 480 ms và các chặng sau giữ nguyên mức đó. Kết luận nào đúng?"
+      },
+      "choices": [
+        {
+          "vi": "Đường trong nhà lành, khúc gây chậm nằm ngoài tầm tay bạn"
+        },
+        {
+          "vi": "Máy người dùng cần thay dây mạng vì đường trong nhà rơi gói"
+        },
+        {
+          "vi": "Máy chủ nội bộ quá tải nên mọi kết nối ra ngoài bị chậm"
+        }
+      ],
+      "answerIndex": 0,
+      "explain": {
+        "vi": "Ping nội bộ đẹp cả hai con số nên đoạn dây và switch trong nhà đều lành — thay dây là sửa nhầm chỗ. Con số chỉ vọt từ chặng 4 rồi GIỮ NGUYÊN mức cao: khúc bệnh nằm ngay trước chặng đó, ngoài phần mạng bạn cầm được. Việc đúng là gọi bên giữ đoạn đường ấy, kèm số đo."
       }
     },
     {

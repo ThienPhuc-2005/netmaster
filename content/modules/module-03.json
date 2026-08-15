@@ -2,21 +2,76 @@
   "id": "module-3",
   "order": 3,
   "part": "A",
-  "letter": { "vi": "Ghi lại cho bạn của ca sáng. Hai tuần trước, một dãy như 192.168.1.10/24 chỉ là dãy số; giờ bạn nhìn ra ngay đâu là khu phố, đâu là số nhà, và cái /24 đang kẻ hàng rào ở chỗ nào. Bạn còn nhẩm được ranh giới bằng magic number mà không cần máy tính — thứ mà nhiều người làm nghề vài năm vẫn phải mở bảng tra. Từ đây, mọi bài chia mạng chỉ còn là bài toán bạn đã biết cách đặt bút." },
-  "title": { "vi": "Địa chỉ — MAC, IP và Subnetting" },
+  "letter": {
+    "vi": "Ghi lại cho bạn của ca sáng. Hai tuần trước, một dãy như 192.168.1.10/24 chỉ là dãy số; giờ bạn nhìn ra ngay đâu là khu phố, đâu là số nhà, và cái /24 đang kẻ hàng rào ở chỗ nào. Bạn còn nhẩm được ranh giới bằng magic number mà không cần máy tính — thứ mà nhiều người làm nghề vài năm vẫn phải mở bảng tra. Từ đây, mọi bài chia mạng chỉ còn là bài toán bạn đã biết cách đặt bút."
+  },
+  "title": {
+    "vi": "Địa chỉ — MAC, IP và Subnetting"
+  },
   "drill": "subnet",
   "stages": [
-    { "id": "m3-chang-1", "title": { "vi": "Số khung và biển số" }, "lessonIds": ["m3-bai-1"] },
-    { "id": "m3-chang-2", "title": { "vi": "Đọc vị một địa chỉ IPv4" }, "lessonIds": ["m3-bai-2"] },
-    { "id": "m3-chang-3", "title": { "vi": "Nhà riêng, địa chỉ chung" }, "lessonIds": ["m3-bai-3"] },
-    { "id": "m3-chang-4", "title": { "vi": "Kẻ ranh giới khu phố" }, "lessonIds": ["m3-bai-4"] },
-    { "id": "m3-chang-5", "title": { "vi": "Nhẩm nhanh bằng magic number" }, "lessonIds": ["m3-bai-5", "m3-bai-7"] },
-    { "id": "m3-chang-6", "title": { "vi": "Biển số cho cả tương lai" }, "lessonIds": ["m3-bai-6"] }
+    {
+      "id": "m3-chang-1",
+      "title": {
+        "vi": "Số khung và biển số"
+      },
+      "lessonIds": [
+        "m3-bai-1"
+      ]
+    },
+    {
+      "id": "m3-chang-2",
+      "title": {
+        "vi": "Đọc vị một địa chỉ IPv4"
+      },
+      "lessonIds": [
+        "m3-bai-2"
+      ]
+    },
+    {
+      "id": "m3-chang-3",
+      "title": {
+        "vi": "Nhà riêng, địa chỉ chung"
+      },
+      "lessonIds": [
+        "m3-bai-3"
+      ]
+    },
+    {
+      "id": "m3-chang-4",
+      "title": {
+        "vi": "Kẻ ranh giới khu phố"
+      },
+      "lessonIds": [
+        "m3-bai-4"
+      ]
+    },
+    {
+      "id": "m3-chang-5",
+      "title": {
+        "vi": "Nhẩm nhanh bằng magic number"
+      },
+      "lessonIds": [
+        "m3-bai-5",
+        "m3-bai-7"
+      ]
+    },
+    {
+      "id": "m3-chang-6",
+      "title": {
+        "vi": "Biển số cho cả tương lai"
+      },
+      "lessonIds": [
+        "m3-bai-6"
+      ]
+    }
   ],
   "lessons": [
     {
       "id": "m3-bai-1",
-      "missionTitle": { "vi": "Phân biệt số khung và biển số" },
+      "missionTitle": {
+        "vi": "Phân biệt số khung và biển số"
+      },
       "steps": [
         {
           "type": "hook",
@@ -31,10 +86,16 @@
             {
               "kind": "mcq",
               "id": "m3-b1-pre-1",
-              "prompt": { "vi": "Đoán thử nhé: mang laptop từ nhà ra quán cà phê, MAC address của máy sẽ…" },
+              "prompt": {
+                "vi": "Đoán thử nhé: mang laptop từ nhà ra quán cà phê, MAC address của máy sẽ…"
+              },
               "choices": [
-                { "vi": "Đổi theo mạng mới của quán" },
-                { "vi": "Giữ nguyên như lúc ở nhà" }
+                {
+                  "vi": "Đổi theo mạng mới của quán"
+                },
+                {
+                  "vi": "Giữ nguyên như lúc ở nhà"
+                }
               ],
               "answerIndex": 1,
               "explain": {
@@ -42,7 +103,9 @@
               }
             }
           ],
-          "encouragement": { "vi": "Sai là bình thường — não bạn vừa được \"mồi\" để học phần tiếp theo tốt hơn." }
+          "encouragement": {
+            "vi": "Sai là bình thường — não bạn vừa được \"mồi\" để học phần tiếp theo tốt hơn."
+          }
         },
         {
           "type": "teach",
@@ -70,11 +133,21 @@
               "question": {
                 "kind": "typed",
                 "id": "m3-b1-prac-1",
-                "prompt": { "vi": "Ra quán cà phê, máy bạn nhận địa chỉ 172.20.5.9 thay cho 192.168.1.7 ở nhà — dãy vừa đổi đó là MAC hay IP?" },
-                "accept": ["ip", "địa chỉ ip", "ipv4"],
-                "hintTopic": { "vi": "địa chỉ nào đổi theo mạng đang cắm vào" }
+                "prompt": {
+                  "vi": "Ra quán cà phê, máy bạn nhận địa chỉ 172.20.5.9 thay cho 192.168.1.7 ở nhà — dãy vừa đổi đó là MAC hay IP?"
+                },
+                "accept": [
+                  "ip",
+                  "địa chỉ ip",
+                  "ipv4"
+                ],
+                "hintTopic": {
+                  "vi": "địa chỉ nào đổi theo mạng đang cắm vào"
+                }
               },
-              "hint": { "vi": "Áp câu hỏi thử của ví dụ: dãy này ĐỔI khi máy sang mạng khác — vậy nó là số khung hay biển số?" },
+              "hint": {
+                "vi": "Áp câu hỏi thử của ví dụ: dãy này ĐỔI khi máy sang mạng khác — vậy nó là số khung hay biển số?"
+              },
               "solution": {
                 "vi": "Là địa chỉ IP: nó đổi theo mạng máy đang cắm vào — biển số theo nơi \"đăng ký\". Còn MAC (số khung) dập trên card thì vẫn y nguyên."
               }
@@ -83,16 +156,28 @@
               "question": {
                 "kind": "mcq",
                 "id": "m3-b1-prac-2",
-                "prompt": { "vi": "Gói tin cần đi XUYÊN nhiều mạng tới một máy chủ ở thành phố khác. Địa chỉ nào dẫn đường cho chặng dài đó?" },
+                "prompt": {
+                  "vi": "Gói tin cần đi XUYÊN nhiều mạng tới một máy chủ ở thành phố khác. Địa chỉ nào dẫn đường cho chặng dài đó?"
+                },
                 "choices": [
-                  { "vi": "MAC address" },
-                  { "vi": "Địa chỉ IP" },
-                  { "vi": "Cả hai như nhau, dùng cái nào cũng được" }
+                  {
+                    "vi": "Địa chỉ MAC của máy đích"
+                  },
+                  {
+                    "vi": "Địa chỉ IP của máy chủ ở đích"
+                  },
+                  {
+                    "vi": "Cả hai như nhau, dùng cái nào cũng được"
+                  }
                 ],
                 "answerIndex": 1,
-                "hintTopic": { "vi": "địa chỉ dùng trong nội bộ và địa chỉ dùng xuyên mạng" }
+                "hintTopic": {
+                  "vi": "địa chỉ dùng trong nội bộ và địa chỉ dùng xuyên mạng"
+                }
               },
-              "hint": { "vi": "Router — bưu tá của Module 1 — chỉ đọc một loại địa chỉ trên phong bì. Loại nào ví như biển số?" },
+              "hint": {
+                "vi": "Router — bưu tá của Module 1 — chỉ đọc một loại địa chỉ trên phong bì. Loại nào ví như biển số?"
+              },
               "solution": {
                 "vi": "Địa chỉ IP. MAC chỉ dùng để các máy trong CÙNG mạng nội bộ gọi nhau; muốn băng qua các router tới mạng khác, gói tin dẫn đường bằng IP."
               }
@@ -106,18 +191,39 @@
               "question": {
                 "kind": "typed",
                 "id": "m3-b1-ret-1",
-                "prompt": { "vi": "Không nhìn lại bài: địa chỉ nào được ví như BIỂN SỐ xe — đổi theo nơi \"đăng ký\"?" },
-                "accept": ["ip", "địa chỉ ip", "ip address"]
+                "prompt": {
+                  "vi": "Không nhìn lại bài: địa chỉ nào được ví như BIỂN SỐ xe — đổi theo nơi \"đăng ký\"?"
+                },
+                "accept": [
+                  "ip",
+                  "địa chỉ ip",
+                  "ip address"
+                ]
               },
-              "hint": { "vi": "Là địa chỉ mà quán cà phê cấp cho máy bạn khi vừa nối Wi-Fi." },
-              "solution": { "vi": "Đó là địa chỉ IP — mạng nào cấp biển số của mạng đó; còn MAC là số khung — dập trên card thì không đổi." }
+              "hint": {
+                "vi": "Là địa chỉ mà quán cà phê cấp cho máy bạn khi vừa nối Wi-Fi."
+              },
+              "solution": {
+                "vi": "Đó là địa chỉ IP — mạng nào cấp biển số của mạng đó; còn MAC là số khung — dập trên card thì không đổi."
+              }
             }
           ],
           "selfExplain": {
-            "prompt": { "vi": "Giải thích bằng lời của bạn: MAC address và địa chỉ IP khác nhau thế nào?" },
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: MAC address và địa chỉ IP khác nhau thế nào?"
+            },
             "keywords": [
-              ["số khung", "phần cứng", "không đổi", "nhà máy"],
-              ["biển số", "thay đổi", "theo mạng"]
+              [
+                "số khung",
+                "phần cứng",
+                "không đổi",
+                "nhà máy"
+              ],
+              [
+                "biển số",
+                "thay đổi",
+                "theo mạng"
+              ]
             ],
             "exampleAnswer": {
               "vi": "MAC như số khung xe: gắn chết vào card mạng từ nhà máy, không đổi khi sang mạng khác, dùng để các máy trong mạng nội bộ gọi nhau. IP như biển số: do mạng đang cắm vào cấp, đổi theo nơi \"đăng ký\", dùng để gói tin đi xuyên các mạng."
@@ -127,17 +233,27 @@
         {
           "type": "summary",
           "bullets": [
-            { "vi": "MAC address là số khung: nhà máy ghi sẵn trên card, và máy cứ thế khai ra." },
-            { "vi": "Địa chỉ IP là biển số: đổi theo mạng máy đang cắm vào." },
-            { "vi": "MAC dùng trong mạng nội bộ, IP dẫn đường xuyên các mạng." }
+            {
+              "vi": "MAC address là số khung: nhà máy ghi sẵn trên card, và máy cứ thế khai ra."
+            },
+            {
+              "vi": "Địa chỉ IP là biển số: đổi theo mạng máy đang cắm vào."
+            },
+            {
+              "vi": "MAC dùng trong mạng nội bộ, IP dẫn đường xuyên các mạng."
+            }
           ],
-          "nextTeaser": { "vi": "Biển số 192.168.1.10 trông như bốn ô số rời rạc — nhưng nó giấu một cấu trúc tinh tế. Bài sau mình mổ xẻ từng ô." }
+          "nextTeaser": {
+            "vi": "Biển số 192.168.1.10 trông như bốn ô số rời rạc — nhưng nó giấu một cấu trúc tinh tế. Bài sau mình mổ xẻ từng ô."
+          }
         }
       ]
     },
     {
       "id": "m3-bai-2",
-      "missionTitle": { "vi": "Đọc vị bốn ô số" },
+      "missionTitle": {
+        "vi": "Đọc vị bốn ô số"
+      },
       "steps": [
         {
           "type": "hook",
@@ -152,11 +268,19 @@
             {
               "kind": "mcq",
               "id": "m3-b2-pre-1",
-              "prompt": { "vi": "Đoán thử nhé: con số lớn nhất mà một \"ô\" của địa chỉ IPv4 có thể chứa là…" },
+              "prompt": {
+                "vi": "Đoán thử nhé: con số lớn nhất mà một \"ô\" của địa chỉ IPv4 có thể chứa là…"
+              },
               "choices": [
-                { "vi": "100" },
-                { "vi": "255" },
-                { "vi": "999" }
+                {
+                  "vi": "100"
+                },
+                {
+                  "vi": "255"
+                },
+                {
+                  "vi": "999"
+                }
               ],
               "answerIndex": 1,
               "explain": {
@@ -164,7 +288,9 @@
               }
             }
           ],
-          "encouragement": { "vi": "Sai là bình thường — não bạn vừa được \"mồi\" để học phần tiếp theo tốt hơn." }
+          "encouragement": {
+            "vi": "Sai là bình thường — não bạn vừa được \"mồi\" để học phần tiếp theo tốt hơn."
+          }
         },
         {
           "type": "teach",
@@ -189,27 +315,51 @@
               "question": {
                 "kind": "typed",
                 "id": "m3-b2-prac-1",
-                "prompt": { "vi": "Địa chỉ IPv4 tổng cộng dài bao nhiêu bit? (trả lời một con số)" },
-                "accept": ["32", "32 bit", "32 bits"],
-                "hintTopic": { "vi": "4 octet, mỗi octet mấy bit" }
+                "prompt": {
+                  "vi": "Địa chỉ IPv4 tổng cộng dài bao nhiêu bit? (trả lời một con số)"
+                },
+                "accept": [
+                  "32",
+                  "32 bit",
+                  "32 bits"
+                ],
+                "hintTopic": {
+                  "vi": "4 octet, mỗi octet mấy bit"
+                }
               },
-              "hint": { "vi": "Mỗi octet là 8 bit, và địa chỉ có 4 octet — nhân lên nhé." },
-              "solution": { "vi": "32 bit — 4 octet × 8 bit. Chính vì chỉ có 32 bit nên cả thế giới chỉ có khoảng 4,3 tỷ địa chỉ IPv4." }
+              "hint": {
+                "vi": "Mỗi octet là 8 bit, và địa chỉ có 4 octet — nhân lên nhé."
+              },
+              "solution": {
+                "vi": "32 bit — 4 octet × 8 bit. Chính vì chỉ có 32 bit nên cả thế giới chỉ có khoảng 4,3 tỷ địa chỉ IPv4."
+              }
             },
             {
               "question": {
                 "kind": "mcq",
                 "id": "m3-b2-prac-2",
-                "prompt": { "vi": "Địa chỉ nào dưới đây KHÔNG THỂ tồn tại?" },
+                "prompt": {
+                  "vi": "Địa chỉ nào dưới đây KHÔNG THỂ tồn tại?"
+                },
                 "choices": [
-                  { "vi": "192.168.300.1" },
-                  { "vi": "10.0.0.1" },
-                  { "vi": "172.20.255.254" }
+                  {
+                    "vi": "192.168.300.1"
+                  },
+                  {
+                    "vi": "10.0.0.1"
+                  },
+                  {
+                    "vi": "172.20.255.254"
+                  }
                 ],
                 "answerIndex": 0,
-                "hintTopic": { "vi": "giới hạn giá trị của một octet" }
+                "hintTopic": {
+                  "vi": "giới hạn giá trị của một octet"
+                }
               },
-              "hint": { "vi": "Soi từng ô số: có ô nào vượt quá mức trần 255 không?" },
+              "hint": {
+                "vi": "Soi từng ô số: có ô nào vượt quá mức trần 255 không?"
+              },
               "solution": {
                 "vi": "192.168.300.1 không thể tồn tại — octet thứ ba là 300, vượt quá 255. Hai địa chỉ còn lại đều có cả bốn octet trong khoảng 0-255."
               }
@@ -223,18 +373,40 @@
               "question": {
                 "kind": "typed",
                 "id": "m3-b2-ret-1",
-                "prompt": { "vi": "Không nhìn lại bài: địa chỉ IPv4 gồm phần mạng và phần gì?" },
-                "accept": ["host", "phần host", "host id", "phần host id", "số nhà"]
+                "prompt": {
+                  "vi": "Không nhìn lại bài: địa chỉ IPv4 gồm phần mạng và phần gì?"
+                },
+                "accept": [
+                  "host",
+                  "phần host",
+                  "host id",
+                  "phần host id",
+                  "số nhà"
+                ]
               },
-              "hint": { "vi": "Phần mạng là khu phố — còn phần kia là \"số nhà\" của từng máy trong khu." },
-              "solution": { "vi": "Phần host — số nhà của từng máy. Phần mạng chung cho cả khu phố, phần host phân biệt từng máy trong khu." }
+              "hint": {
+                "vi": "Phần mạng là khu phố — còn phần kia là \"số nhà\" của từng máy trong khu."
+              },
+              "solution": {
+                "vi": "Phần host — số nhà của từng máy. Phần mạng chung cho cả khu phố, phần host phân biệt từng máy trong khu."
+              }
             }
           ],
           "selfExplain": {
-            "prompt": { "vi": "Giải thích bằng lời của bạn: vì sao địa chỉ IP chia làm HAI PHẦN thay vì là một dãy số vô nghĩa?" },
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: vì sao địa chỉ IP chia làm HAI PHẦN thay vì là một dãy số vô nghĩa?"
+            },
             "keywords": [
-              ["khu phố", "cùng mạng", "chung khu"],
-              ["số nhà", "từng máy", "phân biệt"]
+              [
+                "khu phố",
+                "cùng mạng",
+                "chung khu"
+              ],
+              [
+                "số nhà",
+                "từng máy",
+                "phân biệt"
+              ]
             ],
             "exampleAnswer": {
               "vi": "Chia hai phần để nhìn địa chỉ là biết máy thuộc khu phố nào: phần mạng chung cho mọi máy cùng mạng — như tên khu phố, phần host phân biệt từng máy — như số nhà. Nhờ vậy router chỉ cần nhìn \"khu phố\" để chuyển thư về đúng khu, việc tìm đúng nhà để khu đó tự lo."
@@ -244,17 +416,27 @@
         {
           "type": "summary",
           "bullets": [
-            { "vi": "IPv4 = 4 octet 0-255 ngăn bằng dấu chấm, tổng cộng 32 bit." },
-            { "vi": "Địa chỉ chia hai phần: phần mạng (khu phố) + phần host (số nhà)." },
-            { "vi": "Máy cùng mạng có phần mạng giống hệt nhau, chỉ khác phần host." }
+            {
+              "vi": "IPv4 = 4 octet 0-255 ngăn bằng dấu chấm, tổng cộng 32 bit."
+            },
+            {
+              "vi": "Địa chỉ chia hai phần: phần mạng (khu phố) + phần host (số nhà)."
+            },
+            {
+              "vi": "Máy cùng mạng có phần mạng giống hệt nhau, chỉ khác phần host."
+            }
           ],
-          "nextTeaser": { "vi": "Nhà bạn dùng 192.168.1.x — và lạ chưa, nhà hàng xóm cũng dùng đúng dải đó. Hai nhà \"trùng địa chỉ\" mà Internet không loạn. Bài sau giải mã." }
+          "nextTeaser": {
+            "vi": "Nhà bạn dùng 192.168.1.x — và lạ chưa, nhà hàng xóm cũng dùng đúng dải đó. Hai nhà \"trùng địa chỉ\" mà Internet không loạn. Bài sau giải mã."
+          }
         }
       ]
     },
     {
       "id": "m3-bai-3",
-      "missionTitle": { "vi": "Phân biệt biển số nội bộ và biển số toàn cầu" },
+      "missionTitle": {
+        "vi": "Phân biệt biển số nội bộ và biển số toàn cầu"
+      },
       "steps": [
         {
           "type": "hook",
@@ -269,11 +451,19 @@
             {
               "kind": "mcq",
               "id": "m3-b3-pre-1",
-              "prompt": { "vi": "Đoán thử nhé: hai nhà cùng dùng 192.168.1.5 mà không sao, vì…" },
+              "prompt": {
+                "vi": "Đoán thử nhé: hai nhà cùng dùng 192.168.1.5 mà không sao, vì…"
+              },
               "choices": [
-                { "vi": "Nhà cung cấp mạng chia ca cho hai nhà dùng lệch giờ nhau" },
-                { "vi": "Đó là địa chỉ private — chỉ có nghĩa trong nội bộ từng nhà" },
-                { "vi": "Internet tự động đổi địa chỉ một trong hai nhà" }
+                {
+                  "vi": "Nhà cung cấp mạng đã chia ca cho hai nhà dùng lệch giờ nhau"
+                },
+                {
+                  "vi": "Đó là địa chỉ private — chỉ có nghĩa trong nội bộ từng nhà"
+                },
+                {
+                  "vi": "Internet tự động đổi địa chỉ một trong hai nhà"
+                }
               ],
               "answerIndex": 1,
               "explain": {
@@ -281,7 +471,9 @@
               }
             }
           ],
-          "encouragement": { "vi": "Sai là bình thường — não bạn vừa được \"mồi\" để học phần tiếp theo tốt hơn." }
+          "encouragement": {
+            "vi": "Sai là bình thường — não bạn vừa được \"mồi\" để học phần tiếp theo tốt hơn."
+          }
         },
         {
           "type": "teach",
@@ -306,16 +498,28 @@
               "question": {
                 "kind": "mcq",
                 "id": "m3-b3-prac-1",
-                "prompt": { "vi": "Địa chỉ nào dưới đây là private?" },
+                "prompt": {
+                  "vi": "Địa chỉ nào dưới đây là private?"
+                },
                 "choices": [
-                  { "vi": "172.32.1.5" },
-                  { "vi": "192.168.2.10" },
-                  { "vi": "8.8.8.8" }
+                  {
+                    "vi": "172.32.1.5"
+                  },
+                  {
+                    "vi": "192.168.2.10"
+                  },
+                  {
+                    "vi": "8.8.8.8"
+                  }
                 ],
                 "answerIndex": 1,
-                "hintTopic": { "vi": "ba dải private và ranh giới chính xác của dải 172" }
+                "hintTopic": {
+                  "vi": "ba dải private và ranh giới chính xác của dải 172"
+                }
               },
-              "hint": { "vi": "Dải private của \"họ 172\" chỉ chạy từ 172.16 đến 172.31 — soi kỹ octet thứ hai." },
+              "hint": {
+                "vi": "Dải private của \"họ 172\" chỉ chạy từ 172.16 đến 172.31 — soi kỹ octet thứ hai."
+              },
               "solution": {
                 "vi": "192.168.2.10 là private (nằm trong 192.168.0.0/16). Bẫy nằm ở 172.32.1.5: dải private 172.16.0.0/12 dừng ở 172.31, nên 172.32 là public. 8.8.8.8 là DNS công cộng của Google — public."
               }
@@ -324,12 +528,26 @@
               "question": {
                 "kind": "typed",
                 "id": "m3-b3-prac-2",
-                "prompt": { "vi": "Địa chỉ 10.20.30.40 thuộc loại nào — private hay public?" },
-                "accept": ["private", "địa chỉ private", "ip private", "địa chỉ riêng", "riêng"],
-                "hintTopic": { "vi": "dải private bắt đầu bằng số 10" }
+                "prompt": {
+                  "vi": "Địa chỉ 10.20.30.40 thuộc loại nào — private hay public?"
+                },
+                "accept": [
+                  "private",
+                  "địa chỉ private",
+                  "ip private",
+                  "địa chỉ riêng",
+                  "riêng"
+                ],
+                "hintTopic": {
+                  "vi": "dải private bắt đầu bằng số 10"
+                }
               },
-              "hint": { "vi": "Cả \"họ nhà 10\" — 10.0.0.0/8, tức mọi địa chỉ bắt đầu bằng 10. — đều cùng một hạng." },
-              "solution": { "vi": "Private — 10.20.30.40 nằm trong dải 10.0.0.0/8: mọi địa chỉ bắt đầu bằng 10. đều là địa chỉ riêng dùng nội bộ." }
+              "hint": {
+                "vi": "Cả \"họ nhà 10\" — 10.0.0.0/8, tức mọi địa chỉ bắt đầu bằng 10. — đều cùng một hạng."
+              },
+              "solution": {
+                "vi": "Private — 10.20.30.40 nằm trong dải 10.0.0.0/8: mọi địa chỉ bắt đầu bằng 10. đều là địa chỉ riêng dùng nội bộ."
+              }
             }
           ]
         },
@@ -340,18 +558,42 @@
               "question": {
                 "kind": "typed",
                 "id": "m3-b3-ret-1",
-                "prompt": { "vi": "Không nhìn lại bài: các địa chỉ bắt đầu bằng 192.168. thuộc loại nào — private hay public?" },
-                "accept": ["private", "địa chỉ private", "ip private", "địa chỉ riêng", "riêng"]
+                "prompt": {
+                  "vi": "Không nhìn lại bài: các địa chỉ bắt đầu bằng 192.168. thuộc loại nào — private hay public?"
+                },
+                "accept": [
+                  "private",
+                  "địa chỉ private",
+                  "ip private",
+                  "địa chỉ riêng",
+                  "riêng"
+                ]
               },
-              "hint": { "vi": "Là loại địa chỉ mà nhà nào cũng dùng lại được — như số phòng trong tòa nhà." },
-              "solution": { "vi": "Private — 192.168.0.0/16 là một trong ba dải địa chỉ riêng, chỉ có nghĩa trong nội bộ từng mạng." }
+              "hint": {
+                "vi": "Là loại địa chỉ mà nhà nào cũng dùng lại được — như số phòng trong tòa nhà."
+              },
+              "solution": {
+                "vi": "Private — 192.168.0.0/16 là một trong ba dải địa chỉ riêng, chỉ có nghĩa trong nội bộ từng mạng."
+              }
             }
           ],
           "selfExplain": {
-            "prompt": { "vi": "Giải thích bằng lời của bạn: vì sao hàng triệu nhà cùng dùng dải 192.168.1.x mà không xung đột với nhau?" },
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: vì sao hàng triệu nhà cùng dùng dải 192.168.1.x mà không xung đột với nhau?"
+            },
             "keywords": [
-              ["nội bộ", "trong nhà", "số phòng", "dùng lại"],
-              ["không ra", "ngoài Internet", "toàn cầu", "duy nhất"]
+              [
+                "nội bộ",
+                "trong nhà",
+                "số phòng",
+                "dùng lại"
+              ],
+              [
+                "không ra",
+                "ngoài Internet",
+                "toàn cầu",
+                "duy nhất"
+              ]
             ],
             "exampleAnswer": {
               "vi": "Vì 192.168.1.x là địa chỉ private — như số phòng trong tòa nhà, chỉ có nghĩa bên trong từng nhà. Các gói tin mang địa chỉ này không bao giờ chạy thẳng ra ngoài Internet, nên triệu nhà dùng lại cùng dải vẫn không đụng nhau; chỉ địa chỉ public mới cần duy nhất toàn cầu."
@@ -361,17 +603,27 @@
         {
           "type": "summary",
           "bullets": [
-            { "vi": "Private như số phòng: dùng nội bộ, nhà nào cũng dùng lại được." },
-            { "vi": "Ba dải private: 10.0.0.0/8, 172.16.0.0/12 (đến 172.31), 192.168.0.0/16." },
-            { "vi": "Public duy nhất toàn cầu — như địa chỉ đường ngoài phố." }
+            {
+              "vi": "Private như số phòng: dùng nội bộ, nhà nào cũng dùng lại được."
+            },
+            {
+              "vi": "Ba dải private: 10.0.0.0/8, 172.16.0.0/12 (đến 172.31), 192.168.0.0/16."
+            },
+            {
+              "vi": "Public duy nhất toàn cầu — như địa chỉ đường ngoài phố."
+            }
           ],
-          "nextTeaser": { "vi": "Bạn đã nghe \"khu phố\" và \"số nhà\" mãi — nhưng chính xác thì ranh giới giữa hai phần nằm ở ĐÂU trong bốn ô số? Bài sau: kẻ hàng rào." }
+          "nextTeaser": {
+            "vi": "Bạn đã nghe \"khu phố\" và \"số nhà\" mãi — nhưng chính xác thì ranh giới giữa hai phần nằm ở ĐÂU trong bốn ô số? Bài sau: kẻ hàng rào."
+          }
         }
       ]
     },
     {
       "id": "m3-bai-4",
-      "missionTitle": { "vi": "Kẻ hàng rào cho khu phố" },
+      "missionTitle": {
+        "vi": "Kẻ hàng rào cho khu phố"
+      },
       "steps": [
         {
           "type": "hook",
@@ -386,11 +638,19 @@
             {
               "kind": "mcq",
               "id": "m3-b4-pre-1",
-              "prompt": { "vi": "Đoán thử nhé: dãy số 255.255.255.0 đứng cạnh một địa chỉ IP để làm gì?" },
+              "prompt": {
+                "vi": "Đoán thử nhé: dãy số 255.255.255.0 đứng cạnh một địa chỉ IP để làm gì?"
+              },
               "choices": [
-                { "vi": "Che giấu địa chỉ khỏi tin tặc" },
-                { "vi": "Kẻ ranh giới giữa phần mạng và phần host" },
-                { "vi": "Tăng tốc độ đường truyền" }
+                {
+                  "vi": "Che giấu địa chỉ thật của máy khỏi tin tặc"
+                },
+                {
+                  "vi": "Kẻ ranh giới giữa phần mạng và phần host"
+                },
+                {
+                  "vi": "Tăng tốc độ đường truyền"
+                }
               ],
               "answerIndex": 1,
               "explain": {
@@ -398,7 +658,9 @@
               }
             }
           ],
-          "encouragement": { "vi": "Sai là bình thường — não bạn vừa được \"mồi\" để học phần tiếp theo tốt hơn." }
+          "encouragement": {
+            "vi": "Sai là bình thường — não bạn vừa được \"mồi\" để học phần tiếp theo tốt hơn."
+          }
         },
         {
           "type": "teach",
@@ -433,24 +695,44 @@
               "question": {
                 "kind": "typed",
                 "id": "m3-b4-prac-1",
-                "prompt": { "vi": "/16 tương ứng với subnet mask nào? (trả lời dạng x.x.x.x)" },
-                "accept": ["255.255.0.0"],
-                "hintTopic": { "vi": "số bit 1 mà con số sau dấu gạch chéo mô tả" }
+                "prompt": {
+                  "vi": "/16 tương ứng với subnet mask nào? (trả lời dạng x.x.x.x)"
+                },
+                "accept": [
+                  "255.255.0.0"
+                ],
+                "hintTopic": {
+                  "vi": "số bit 1 mà con số sau dấu gạch chéo mô tả"
+                }
               },
-              "hint": { "vi": "16 bit = đúng 2 octet đầu toàn bit 1, tức hai ô 255; hai ô còn lại là 0." },
-              "solution": { "vi": "/16 ↔ 255.255.0.0 — 16 bit đầu là phần mạng, tức 2 octet đầu \"đầy\" 255, hai octet sau thuộc phần host." },
+              "hint": {
+                "vi": "16 bit = đúng 2 octet đầu toàn bit 1, tức hai ô 255; hai ô còn lại là 0."
+              },
+              "solution": {
+                "vi": "/16 ↔ 255.255.0.0 — 16 bit đầu là phần mạng, tức 2 octet đầu \"đầy\" 255, hai octet sau thuộc phần host."
+              },
               "conceptId": "cidr"
             },
             {
               "question": {
                 "kind": "typed",
                 "id": "m3-b4-prac-2",
-                "prompt": { "vi": "Với mask 255.255.255.0, mấy octet đầu của địa chỉ thuộc phần mạng (khu phố)? (trả lời một con số)" },
-                "accept": ["3"],
-                "hintTopic": { "vi": "octet nào của mask mang giá trị 255" }
+                "prompt": {
+                  "vi": "Với mask 255.255.255.0, mấy octet đầu của địa chỉ thuộc phần mạng (khu phố)? (trả lời một con số)"
+                },
+                "accept": [
+                  "3"
+                ],
+                "hintTopic": {
+                  "vi": "octet nào của mask mang giá trị 255"
+                }
               },
-              "hint": { "vi": "Đếm xem trong mask có bao nhiêu ô mang giá trị 255 — mỗi ô 255 \"khóa\" một octet vào phần mạng." },
-              "solution": { "vi": "3 octet đầu — ba ô 255 của mask đánh dấu ba octet đầu là khu phố, octet cuối là số nhà." },
+              "hint": {
+                "vi": "Đếm xem trong mask có bao nhiêu ô mang giá trị 255 — mỗi ô 255 \"khóa\" một octet vào phần mạng."
+              },
+              "solution": {
+                "vi": "3 octet đầu — ba ô 255 của mask đánh dấu ba octet đầu là khu phố, octet cuối là số nhà."
+              },
               "conceptId": "subnet-mask"
             }
           ]
@@ -462,18 +744,37 @@
               "question": {
                 "kind": "typed",
                 "id": "m3-b4-ret-1",
-                "prompt": { "vi": "Không nhìn lại bài: với địa chỉ 192.168.1.10 và mask 255.255.255.0, phần KHU PHỐ (phần mạng) là chuỗi nào? (trả lời dạng x.x.x)" },
-                "accept": ["192.168.1"]
+                "prompt": {
+                  "vi": "Không nhìn lại bài: với địa chỉ 192.168.1.10 và mask 255.255.255.0, phần KHU PHỐ (phần mạng) là chuỗi nào? (trả lời dạng x.x.x)"
+                },
+                "accept": [
+                  "192.168.1"
+                ]
               },
-              "hint": { "vi": "Mask có ba ô 255 — hàng rào dựng ngay sau octet thứ ba." },
-              "solution": { "vi": "192.168.1 — ba octet đầu là khu phố theo mask 255.255.255.0; số 10 cuối cùng là số nhà." }
+              "hint": {
+                "vi": "Mask có ba ô 255 — hàng rào dựng ngay sau octet thứ ba."
+              },
+              "solution": {
+                "vi": "192.168.1 — ba octet đầu là khu phố theo mask 255.255.255.0; số 10 cuối cùng là số nhà."
+              }
             }
           ],
           "selfExplain": {
-            "prompt": { "vi": "Giải thích bằng lời của bạn: subnet mask dùng để làm gì, và /24 nghĩa là sao?" },
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: subnet mask dùng để làm gì, và /24 nghĩa là sao?"
+            },
             "keywords": [
-              ["ranh giới", "hàng rào", "phần mạng", "khu phố"],
-              ["24 bit", "255.255.255.0", "ghi gọn"]
+              [
+                "ranh giới",
+                "hàng rào",
+                "phần mạng",
+                "khu phố"
+              ],
+              [
+                "24 bit",
+                "255.255.255.0",
+                "ghi gọn"
+              ]
             ],
             "exampleAnswer": {
               "vi": "Subnet mask là hàng rào kẻ ranh giới trên địa chỉ IP: phần bị mask \"phủ\" là phần mạng (khu phố), phần còn lại là phần host (số nhà). /24 là cách ghi gọn kiểu CIDR: 24 bit đầu là phần mạng, tương đương mask 255.255.255.0."
@@ -483,17 +784,27 @@
         {
           "type": "summary",
           "bullets": [
-            { "vi": "Subnet mask kẻ ranh giới phần mạng / phần host trên địa chỉ IP." },
-            { "vi": "255.255.255.0 nghĩa là 3 octet đầu là khu phố, octet cuối là số nhà." },
-            { "vi": "CIDR ghi gọn hàng rào: /24 ↔ 255.255.255.0, /16 ↔ 255.255.0.0; hàng rào cắm giữa octet cuối thì octet đó là 128, 192, 224, 240, 248, 252." }
+            {
+              "vi": "Subnet mask kẻ ranh giới phần mạng / phần host trên địa chỉ IP."
+            },
+            {
+              "vi": "255.255.255.0 nghĩa là 3 octet đầu là khu phố, octet cuối là số nhà."
+            },
+            {
+              "vi": "CIDR ghi gọn hàng rào: /24 ↔ 255.255.255.0, /16 ↔ 255.255.0.0; hàng rào cắm giữa octet cuối thì octet đó là 128, 192, 224, 240, 248, 252."
+            }
           ],
-          "nextTeaser": { "vi": "Nhưng khi hàng rào cắm vào GIỮA một octet — như /26 — thì đọc ranh giới kiểu gì? Dân làm mạng có mẹo nhẩm 3 giây tên là magic number. Bài sau học lỏm ngay." }
+          "nextTeaser": {
+            "vi": "Nhưng khi hàng rào cắm vào GIỮA một octet — như /26 — thì đọc ranh giới kiểu gì? Dân làm mạng có mẹo nhẩm 3 giây tên là magic number. Bài sau học lỏm ngay."
+          }
         }
       ]
     },
     {
       "id": "m3-bai-5",
-      "missionTitle": { "vi": "Nhẩm ranh giới bằng magic number" },
+      "missionTitle": {
+        "vi": "Nhẩm ranh giới bằng magic number"
+      },
       "steps": [
         {
           "type": "hook",
@@ -508,11 +819,19 @@
             {
               "kind": "mcq",
               "id": "m3-b5-pre-1",
-              "prompt": { "vi": "Đoán thử nhé: /26 có mask 255.255.255.192. Các \"khu phố\" trên octet cuối sẽ cách nhau bao nhiêu số?" },
+              "prompt": {
+                "vi": "Đoán thử nhé: /26 có mask 255.255.255.192. Các \"khu phố\" trên octet cuối sẽ cách nhau bao nhiêu số?"
+              },
               "choices": [
-                { "vi": "64" },
-                { "vi": "192" },
-                { "vi": "26" }
+                {
+                  "vi": "64"
+                },
+                {
+                  "vi": "192"
+                },
+                {
+                  "vi": "26"
+                }
               ],
               "answerIndex": 0,
               "explain": {
@@ -520,7 +839,9 @@
               }
             }
           ],
-          "encouragement": { "vi": "Sai là bình thường — não bạn vừa được \"mồi\" để học phần tiếp theo tốt hơn." }
+          "encouragement": {
+            "vi": "Sai là bình thường — não bạn vừa được \"mồi\" để học phần tiếp theo tốt hơn."
+          }
         },
         {
           "type": "teach",
@@ -545,11 +866,19 @@
               "question": {
                 "kind": "typed",
                 "id": "m3-b5-prac-1",
-                "prompt": { "vi": "Tìm network address của 192.168.1.75/26. (trả lời dạng x.x.x.x)" },
-                "accept": ["192.168.1.64"],
-                "hintTopic": { "vi": "mốc gần nhất không vượt quá octet cuối" }
+                "prompt": {
+                  "vi": "Tìm network address của 192.168.1.75/26. (trả lời dạng x.x.x.x)"
+                },
+                "accept": [
+                  "192.168.1.64"
+                ],
+                "hintTopic": {
+                  "vi": "mốc gần nhất không vượt quá octet cuối"
+                }
               },
-              "hint": { "vi": "Magic number = 256 − octet đáng chú ý của mask. Tự liệt kê các mốc rồi so với 75." },
+              "hint": {
+                "vi": "Magic number = 256 − octet đáng chú ý của mask. Tự liệt kê các mốc rồi so với 75."
+              },
               "solution": {
                 "vi": "192.168.1.64. Nhẩm: /26 → mask …192 → 256 − 192 = 64 → các mốc 0, 64, 128, 192. Mốc gần nhất không vượt quá 75 là 64 → network address là 192.168.1.64."
               }
@@ -558,11 +887,19 @@
               "question": {
                 "kind": "typed",
                 "id": "m3-b5-prac-2",
-                "prompt": { "vi": "Tìm network address của 10.20.30.200/27. (trả lời dạng x.x.x.x)" },
-                "accept": ["10.20.30.192"],
-                "hintTopic": { "vi": "magic number của mask 255.255.255.224" }
+                "prompt": {
+                  "vi": "Tìm network address của 10.20.30.200/27. (trả lời dạng x.x.x.x)"
+                },
+                "accept": [
+                  "10.20.30.192"
+                ],
+                "hintTopic": {
+                  "vi": "magic number của mask 255.255.255.224"
+                }
               },
-              "hint": { "vi": "Magic number = 256 − octet đáng chú ý của mask 255.255.255.224. Tự liệt kê các mốc rồi so với 200." },
+              "hint": {
+                "vi": "Magic number = 256 − octet đáng chú ý của mask 255.255.255.224. Tự liệt kê các mốc rồi so với 200."
+              },
               "solution": {
                 "vi": "10.20.30.192. Nhẩm: /27 → mask …224 → 256 − 224 = 32 → các mốc 0, 32, 64, 96, 128, 160, 192, 224. Mốc gần nhất không vượt quá 200 là 192 → network address là 10.20.30.192."
               }
@@ -576,18 +913,35 @@
               "question": {
                 "kind": "typed",
                 "id": "m3-b5-ret-1",
-                "prompt": { "vi": "Không nhìn lại bài: tìm network address của 172.16.9.100/26. (trả lời dạng x.x.x.x)" },
-                "accept": ["172.16.9.64"]
+                "prompt": {
+                  "vi": "Không nhìn lại bài: tìm network address của 172.16.9.100/26. (trả lời dạng x.x.x.x)"
+                },
+                "accept": [
+                  "172.16.9.64"
+                ]
               },
-              "hint": { "vi": "Magic number = 256 − octet đáng chú ý của mask. Tự liệt kê các mốc rồi so với 100." },
-              "solution": { "vi": "172.16.9.64. /26 → 256 − 192 = 64 → mốc 0, 64, 128, 192; mốc gần nhất không vượt quá 100 là 64." }
+              "hint": {
+                "vi": "Magic number = 256 − octet đáng chú ý của mask. Tự liệt kê các mốc rồi so với 100."
+              },
+              "solution": {
+                "vi": "172.16.9.64. /26 → 256 − 192 = 64 → mốc 0, 64, 128, 192; mốc gần nhất không vượt quá 100 là 64."
+              }
             }
           ],
           "selfExplain": {
-            "prompt": { "vi": "Giải thích bằng lời của bạn: cách tìm network address của một IP bằng magic number, từng bước một." },
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: cách tìm network address của một IP bằng magic number, từng bước một."
+            },
             "keywords": [
-              ["bước nhảy", "256 trừ"],
-              ["không vượt quá", "gần nhất", "mốc mạng"]
+              [
+                "bước nhảy",
+                "256 trừ"
+              ],
+              [
+                "không vượt quá",
+                "gần nhất",
+                "mốc mạng"
+              ]
             ],
             "exampleAnswer": {
               "vi": "Mình đổi prefix ra mask, lấy 256 trừ octet đáng chú ý của mask để được magic number — đó là bước nhảy giữa các khu phố. Liệt kê các mốc theo bước nhảy đó (0, 64, 128…), rồi chọn mốc gần nhất không vượt quá octet của IP — mốc đó chính là network address."
@@ -597,11 +951,19 @@
         {
           "type": "summary",
           "bullets": [
-            { "vi": "Magic number = 256 − octet đáng chú ý của mask (vd /26 → 256 − 192 = 64)." },
-            { "vi": "Các mốc mạng nhảy theo bước magic number: .0, .64, .128, .192…" },
-            { "vi": "Network address = mốc gần nhất không vượt quá IP đang xét." }
+            {
+              "vi": "Magic number = 256 − octet đáng chú ý của mask (vd /26 → 256 − 192 = 64)."
+            },
+            {
+              "vi": "Các mốc mạng nhảy theo bước magic number: .0, .64, .128, .192…"
+            },
+            {
+              "vi": "Network address = mốc gần nhất không vượt quá IP đang xét."
+            }
           ],
-          "nextTeaser": { "vi": "Mẹo đã nắm — nhưng mới ra được cái TÊN khu phố. Còn số nhà đầu, số nhà cuối, và cả khu chứa nổi mấy máy? Bài sau đọc trọn một khối." }
+          "nextTeaser": {
+            "vi": "Mẹo đã nắm — nhưng mới ra được cái TÊN khu phố. Còn số nhà đầu, số nhà cuối, và cả khu chứa nổi mấy máy? Bài sau đọc trọn một khối."
+          }
         }
       ]
     },
@@ -825,7 +1187,9 @@
     },
     {
       "id": "m3-bai-6",
-      "missionTitle": { "vi": "Đọc biển số của tương lai" },
+      "missionTitle": {
+        "vi": "Đọc biển số của tương lai"
+      },
       "steps": [
         {
           "type": "hook",
@@ -840,11 +1204,19 @@
             {
               "kind": "mcq",
               "id": "m3-b6-pre-1",
-              "prompt": { "vi": "Đoán thử nhé: địa chỉ IPv6 dài bao nhiêu bit?" },
+              "prompt": {
+                "vi": "Đoán thử nhé: địa chỉ IPv6 dài bao nhiêu bit?"
+              },
               "choices": [
-                { "vi": "32 bit" },
-                { "vi": "64 bit" },
-                { "vi": "128 bit" }
+                {
+                  "vi": "32 bit"
+                },
+                {
+                  "vi": "64 bit"
+                },
+                {
+                  "vi": "128 bit"
+                }
               ],
               "answerIndex": 2,
               "explain": {
@@ -852,7 +1224,9 @@
               }
             }
           ],
-          "encouragement": { "vi": "Sai là bình thường — não bạn vừa được \"mồi\" để học phần tiếp theo tốt hơn." }
+          "encouragement": {
+            "vi": "Sai là bình thường — não bạn vừa được \"mồi\" để học phần tiếp theo tốt hơn."
+          }
         },
         {
           "type": "teach",
@@ -877,27 +1251,51 @@
               "question": {
                 "kind": "typed",
                 "id": "m3-b6-prac-1",
-                "prompt": { "vi": "Một địa chỉ IPv6 đầy đủ gồm mấy nhóm số hex? (trả lời một con số)" },
-                "accept": ["8", "8 nhóm", "tám"],
-                "hintTopic": { "vi": "số nhóm ngăn bằng dấu hai chấm" }
+                "prompt": {
+                  "vi": "Một địa chỉ IPv6 đầy đủ gồm mấy nhóm số hex? (trả lời một con số)"
+                },
+                "accept": [
+                  "8",
+                  "8 nhóm",
+                  "tám"
+                ],
+                "hintTopic": {
+                  "vi": "số nhóm ngăn bằng dấu hai chấm"
+                }
               },
-              "hint": { "vi": "Đếm số nhóm trong 2001:0db8:0000:0000:0000:0000:0000:0001 — mỗi nhóm ngăn nhau bằng dấu \":\"." },
-              "solution": { "vi": "8 nhóm — địa chỉ IPv6 đầy đủ viết hex thành 8 nhóm ngăn bằng dấu \":\"; 128 bit chia đều, mỗi nhóm 16 bit." }
+              "hint": {
+                "vi": "Đếm số nhóm trong 2001:0db8:0000:0000:0000:0000:0000:0001 — mỗi nhóm ngăn nhau bằng dấu \":\"."
+              },
+              "solution": {
+                "vi": "8 nhóm — địa chỉ IPv6 đầy đủ viết hex thành 8 nhóm ngăn bằng dấu \":\"; 128 bit chia đều, mỗi nhóm 16 bit."
+              }
             },
             {
               "question": {
                 "kind": "mcq",
                 "id": "m3-b6-prac-2",
-                "prompt": { "vi": "Cách rút gọn nào sau đây là HỢP LỆ với IPv6?" },
+                "prompt": {
+                  "vi": "Cách rút gọn nào sau đây là HỢP LỆ với IPv6?"
+                },
                 "choices": [
-                  { "vi": "2001:db8::1" },
-                  { "vi": "2001::db8::1" },
-                  { "vi": "2001.db8.0.1" }
+                  {
+                    "vi": "2001:db8::1"
+                  },
+                  {
+                    "vi": "2001::db8::1"
+                  },
+                  {
+                    "vi": "2001.db8.0.1"
+                  }
                 ],
                 "answerIndex": 0,
-                "hintTopic": { "vi": "số lần \"::\" được phép xuất hiện" }
+                "hintTopic": {
+                  "vi": "số lần \"::\" được phép xuất hiện"
+                }
               },
-              "hint": { "vi": "Đếm số lần \"::\" xuất hiện trong từng đáp án — luật cho phép mấy lần? Và IPv6 ngăn nhóm bằng ký tự nào?" },
+              "hint": {
+                "vi": "Đếm số lần \"::\" xuất hiện trong từng đáp án — luật cho phép mấy lần? Và IPv6 ngăn nhóm bằng ký tự nào?"
+              },
               "solution": {
                 "vi": "2001:db8::1 hợp lệ. 2001::db8::1 sai vì dùng \"::\" hai lần — máy không biết mỗi chỗ giấu bao nhiêu nhóm 0. 2001.db8.0.1 sai vì IPv6 ngăn nhóm bằng dấu \":\", không phải dấu chấm."
               }
@@ -911,18 +1309,43 @@
               "question": {
                 "kind": "typed",
                 "id": "m3-b6-ret-1",
-                "prompt": { "vi": "Không nhìn lại bài: trong IPv6, ký hiệu nào dùng để rút gọn chuỗi nhóm 0 liên tiếp (chỉ được dùng một lần)?" },
-                "accept": ["::", "hai dấu hai chấm", "ký hiệu ::", "ky hieu ::", "dấu ::", "dau ::"]
+                "prompt": {
+                  "vi": "Không nhìn lại bài: trong IPv6, ký hiệu nào dùng để rút gọn chuỗi nhóm 0 liên tiếp (chỉ được dùng một lần)?"
+                },
+                "accept": [
+                  "::",
+                  "hai dấu hai chấm",
+                  "ký hiệu ::",
+                  "ky hieu ::",
+                  "dấu ::",
+                  "dau ::"
+                ]
               },
-              "hint": { "vi": "Là hai ký tự giống nhau đứng liền, chính là thứ biến 2001:0db8:0000:...:0001 thành 2001:db8::1." },
-              "solution": { "vi": "Ký hiệu \"::\" — thay cho chuỗi nhóm 0 liên tiếp, và chỉ được xuất hiện đúng một lần trong một địa chỉ." }
+              "hint": {
+                "vi": "Là hai ký tự giống nhau đứng liền, chính là thứ biến 2001:0db8:0000:...:0001 thành 2001:db8::1."
+              },
+              "solution": {
+                "vi": "Ký hiệu \"::\" — thay cho chuỗi nhóm 0 liên tiếp, và chỉ được xuất hiện đúng một lần trong một địa chỉ."
+              }
             }
           ],
           "selfExplain": {
-            "prompt": { "vi": "Giải thích bằng lời của bạn: vì sao thế giới cần IPv6 trong khi đã có IPv4?" },
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: vì sao thế giới cần IPv6 trong khi đã có IPv4?"
+            },
             "keywords": [
-              ["cạn kiệt", "không đủ", "hết địa chỉ", "4,3 tỷ"],
-              ["128 bit", "nhiều hơn", "khổng lồ", "dài hơn"]
+              [
+                "cạn kiệt",
+                "không đủ",
+                "hết địa chỉ",
+                "4,3 tỷ"
+              ],
+              [
+                "128 bit",
+                "nhiều hơn",
+                "khổng lồ",
+                "dài hơn"
+              ]
             ],
             "exampleAnswer": {
               "vi": "IPv4 chỉ có 32 bit — khoảng 4,3 tỷ địa chỉ, quá ít cho hàng chục tỷ thiết bị nên đã cạn kiệt. IPv6 dài 128 bit, không gian địa chỉ khổng lồ đến mức mỗi hạt cát cũng có phần — mỗi thiết bị có thể mang biển số public riêng mà không bao giờ lo hết."
@@ -932,11 +1355,19 @@
         {
           "type": "summary",
           "bullets": [
-            { "vi": "IPv4 32 bit ≈ 4,3 tỷ địa chỉ — đã cạn từ lâu." },
-            { "vi": "IPv6 128 bit, viết hex 8 nhóm ngăn bằng dấu \":\"." },
-            { "vi": "Chuỗi nhóm 0 liên tiếp rút gọn bằng \"::\" — đúng một lần duy nhất." }
+            {
+              "vi": "IPv4 32 bit ≈ 4,3 tỷ địa chỉ — đã cạn từ lâu."
+            },
+            {
+              "vi": "IPv6 128 bit, viết hex 8 nhóm ngăn bằng dấu \":\"."
+            },
+            {
+              "vi": "Chuỗi nhóm 0 liên tiếp rút gọn bằng \"::\" — đúng một lần duy nhất."
+            }
           ],
-          "nextTeaser": { "vi": "Bạn đã cầm trọn bộ chìa khóa địa chỉ: MAC, IPv4, private/public, mask, magic number, IPv6. Bài thi Module 3 chờ ngay ngoài cửa — vượt ải là bước sang Phần B: sờ tận tay switch, router và VLAN." }
+          "nextTeaser": {
+            "vi": "Bạn đã cầm trọn bộ chìa khóa địa chỉ: MAC, IPv4, private/public, mask, magic number, IPv6. Bài thi Module 3 chờ ngay ngoài cửa — vượt ải là bước sang Phần B: sờ tận tay switch, router và VLAN."
+          }
         }
       ]
     }
@@ -946,66 +1377,102 @@
       "id": "mac",
       "term": "MAC address",
       "glossVi": "Địa chỉ MAC — số định danh phần cứng gắn chết vào card mạng từ nhà máy",
-      "metaphor": { "vi": "MAC như số khung xe: dập từ nhà máy, đi theo xe suốt đời — đổi chủ, đổi tỉnh cũng không đổi số khung." },
+      "metaphor": {
+        "vi": "MAC như số khung xe: dập từ nhà máy, đi theo xe suốt đời — đổi chủ, đổi tỉnh cũng không đổi số khung."
+      },
       "iconId": "icon-mac",
       "flashcard": {
-        "front": { "vi": "MAC address là gì — và có đổi khi mang máy sang mạng khác không?" },
-        "back": { "vi": "Số định danh của card mạng, nhà máy ghi sẵn như số khung xe — đi sang mạng khác vẫn là số đó; dùng để các máy trong mạng nội bộ gọi nhau." }
+        "front": {
+          "vi": "MAC address là gì — và có đổi khi mang máy sang mạng khác không?"
+        },
+        "back": {
+          "vi": "Số định danh của card mạng, nhà máy ghi sẵn như số khung xe — đi sang mạng khác vẫn là số đó; dùng để các máy trong mạng nội bộ gọi nhau."
+        }
       }
     },
     {
       "id": "ipv4",
       "term": "IPv4",
       "glossVi": "Địa chỉ IP thế hệ 4 — 4 octet 0-255 ngăn bằng dấu chấm, gồm phần mạng và phần host",
-      "metaphor": { "vi": "Địa chỉ hai phần: phần đầu là tên khu phố (phần mạng), phần sau là số nhà trong khu (phần host)." },
+      "metaphor": {
+        "vi": "Địa chỉ hai phần: phần đầu là tên khu phố (phần mạng), phần sau là số nhà trong khu (phần host)."
+      },
       "iconId": "icon-ipv4",
       "flashcard": {
-        "front": { "vi": "Địa chỉ IPv4 có cấu tạo thế nào?" },
-        "back": { "vi": "4 octet, mỗi octet từ 0 đến 255, ngăn bằng dấu chấm — chia làm phần mạng (khu phố) và phần host (số nhà)." }
+        "front": {
+          "vi": "Địa chỉ IPv4 có cấu tạo thế nào?"
+        },
+        "back": {
+          "vi": "4 octet, mỗi octet từ 0 đến 255, ngăn bằng dấu chấm — chia làm phần mạng (khu phố) và phần host (số nhà)."
+        }
       }
     },
     {
       "id": "private-public",
       "term": "Private / Public IP",
       "glossVi": "Địa chỉ riêng dùng nội bộ (dùng lại được, không ra Internet) và địa chỉ công cộng duy nhất toàn cầu",
-      "metaphor": { "vi": "Private như số phòng trong tòa nhà: tòa nào cũng có phòng 101, nhưng không ai gửi thư ngoài đường bằng số phòng; public như địa chỉ đường — duy nhất toàn cầu." },
+      "metaphor": {
+        "vi": "Private như số phòng trong tòa nhà: tòa nào cũng có phòng 101, nhưng không ai gửi thư ngoài đường bằng số phòng; public như địa chỉ đường — duy nhất toàn cầu."
+      },
       "iconId": "icon-private-public",
       "flashcard": {
-        "front": { "vi": "Ba dải địa chỉ private của IPv4 là gì?" },
-        "back": { "vi": "10.0.0.0/8, 172.16.0.0/12 (172.16 đến 172.31) và 192.168.0.0/16 — chỉ dùng nội bộ, không định tuyến trên Internet." }
+        "front": {
+          "vi": "Ba dải địa chỉ private của IPv4 là gì?"
+        },
+        "back": {
+          "vi": "10.0.0.0/8, 172.16.0.0/12 (172.16 đến 172.31) và 192.168.0.0/16 — chỉ dùng nội bộ, không định tuyến trên Internet."
+        }
       }
     },
     {
       "id": "subnet-mask",
       "term": "Subnet mask",
       "glossVi": "Mặt nạ mạng — dãy số kẻ ranh giới giữa phần mạng và phần host của một địa chỉ IP",
-      "metaphor": { "vi": "Hàng rào khu phố: nhìn hàng rào là biết khu phố kết thúc ở đâu và số nhà bắt đầu từ đâu." },
+      "metaphor": {
+        "vi": "Hàng rào khu phố: nhìn hàng rào là biết khu phố kết thúc ở đâu và số nhà bắt đầu từ đâu."
+      },
       "iconId": "icon-subnet-mask",
       "flashcard": {
-        "front": { "vi": "Mask 255.255.255.0 nói gì về một địa chỉ IP?" },
-        "back": { "vi": "3 octet đầu là phần mạng (khu phố), octet cuối là phần host (số nhà) — mask là hàng rào kẻ ranh giới đó." }
+        "front": {
+          "vi": "Mask 255.255.255.0 nói gì về một địa chỉ IP?"
+        },
+        "back": {
+          "vi": "3 octet đầu là phần mạng (khu phố), octet cuối là phần host (số nhà) — mask là hàng rào kẻ ranh giới đó."
+        }
       }
     },
     {
       "id": "cidr",
       "term": "CIDR",
       "glossVi": "Cách ghi gọn subnet mask bằng /n — n là số bit đầu thuộc phần mạng",
-      "metaphor": { "vi": "Thay vì tả cả hàng rào, chỉ ghi một con số sau dấu gạch chéo: /24 nghĩa là \"hàng rào dựng ngay sau bit thứ 24\"." },
+      "metaphor": {
+        "vi": "Thay vì tả cả hàng rào, chỉ ghi một con số sau dấu gạch chéo: /24 nghĩa là \"hàng rào dựng ngay sau bit thứ 24\"."
+      },
       "iconId": "icon-cidr",
       "flashcard": {
-        "front": { "vi": "/24 và /16 tương ứng với subnet mask nào?" },
-        "back": { "vi": "/24 ↔ 255.255.255.0; /16 ↔ 255.255.0.0 — con số sau dấu gạch chéo là số bit của phần mạng." }
+        "front": {
+          "vi": "/24 và /16 tương ứng với subnet mask nào?"
+        },
+        "back": {
+          "vi": "/24 ↔ 255.255.255.0; /16 ↔ 255.255.0.0 — con số sau dấu gạch chéo là số bit của phần mạng."
+        }
       }
     },
     {
       "id": "magic-number",
       "term": "Magic number",
       "glossVi": "Quy tắc nhẩm chia subnet: magic number = 256 trừ octet đáng chú ý của mask",
-      "metaphor": { "vi": "Bước nhảy giữa các mốc đầu khu phố: biết bước nhảy là đọc được ranh giới mọi khu phố trên cả con đường." },
+      "metaphor": {
+        "vi": "Bước nhảy giữa các mốc đầu khu phố: biết bước nhảy là đọc được ranh giới mọi khu phố trên cả con đường."
+      },
       "iconId": "icon-magic-number",
       "flashcard": {
-        "front": { "vi": "Cách tìm network address của một IP bằng magic number?" },
-        "back": { "vi": "Magic number = 256 − octet đáng chú ý của mask; các mốc mạng nhảy theo bước đó; network address là mốc gần nhất KHÔNG vượt quá IP. Ví dụ 192.168.1.130/26: 256 − 192 = 64 → mốc 128 → network 192.168.1.128." }
+        "front": {
+          "vi": "Cách tìm network address của một IP bằng magic number?"
+        },
+        "back": {
+          "vi": "Magic number = 256 − octet đáng chú ý của mask; các mốc mạng nhảy theo bước đó; network address là mốc gần nhất KHÔNG vượt quá IP. Ví dụ 192.168.1.130/26: 256 − 192 = 64 → mốc 128 → network 192.168.1.128."
+        }
       }
     },
     {
@@ -1046,11 +1513,17 @@
       "id": "ipv6",
       "term": "IPv6",
       "glossVi": "Thế hệ địa chỉ IP mới dài 128 bit, viết hex 8 nhóm ngăn bằng dấu hai chấm",
-      "metaphor": { "vi": "Tấm biển số dài đến mức mỗi hạt cát trên Trái Đất cũng có phần — không bao giờ lo cạn kho số." },
+      "metaphor": {
+        "vi": "Tấm biển số dài đến mức mỗi hạt cát trên Trái Đất cũng có phần — không bao giờ lo cạn kho số."
+      },
       "iconId": "icon-ipv6",
       "flashcard": {
-        "front": { "vi": "IPv6 dài bao nhiêu bit và viết thế nào?" },
-        "back": { "vi": "128 bit; viết hex thành 8 nhóm ngăn bằng \":\"; chuỗi nhóm 0 liên tiếp rút gọn bằng \"::\" đúng một lần — ví dụ 2001:db8::1." }
+        "front": {
+          "vi": "IPv6 dài bao nhiêu bit và viết thế nào?"
+        },
+        "back": {
+          "vi": "128 bit; viết hex thành 8 nhóm ngăn bằng \":\"; chuỗi nhóm 0 liên tiếp rút gọn bằng \"::\" đúng một lần — ví dụ 2001:db8::1."
+        }
       }
     }
   ],
@@ -1058,120 +1531,225 @@
     {
       "kind": "mcq",
       "id": "m3-mt-1",
-      "prompt": { "vi": "Bạn mang laptop từ nhà đến quán cà phê. Điều gì xảy ra với hai địa chỉ của máy?" },
+      "prompt": {
+        "vi": "Bạn mang laptop từ nhà đến quán cà phê. Điều gì xảy ra với hai địa chỉ của máy?"
+      },
       "choices": [
-        { "vi": "MAC đổi theo mạng mới, IP giữ nguyên" },
-        { "vi": "IP đổi theo mạng mới, MAC giữ nguyên" },
-        { "vi": "Cả hai cùng đổi theo mạng mới" }
+        {
+          "vi": "MAC đổi theo mạng mới, IP giữ nguyên"
+        },
+        {
+          "vi": "IP đổi theo mạng mới, MAC giữ nguyên"
+        },
+        {
+          "vi": "Cả hai cùng đổi theo mạng mới"
+        }
       ],
       "answerIndex": 1,
-      "explain": { "vi": "MAC là số khung — gắn chết từ nhà máy, không đổi; IP là biển số — do mạng đang cắm vào cấp nên đổi theo nơi ngồi." }
+      "explain": {
+        "vi": "MAC là số khung — gắn chết từ nhà máy, không đổi; IP là biển số — do mạng đang cắm vào cấp nên đổi theo nơi ngồi."
+      }
     },
     {
       "kind": "typed",
       "id": "m3-mt-2",
-      "prompt": { "vi": "Mỗi octet của địa chỉ IPv4 nhận giá trị từ 0 đến bao nhiêu?" },
-      "accept": ["255"],
-      "explain": { "vi": "Mỗi octet là 8 bit — chứa được 256 giá trị, đếm từ 0 đến 255. Địa chỉ có octet vượt 255 là địa chỉ không tồn tại." }
+      "prompt": {
+        "vi": "Mỗi octet của địa chỉ IPv4 nhận giá trị từ 0 đến bao nhiêu?"
+      },
+      "accept": [
+        "255"
+      ],
+      "explain": {
+        "vi": "Mỗi octet là 8 bit — chứa được 256 giá trị, đếm từ 0 đến 255. Địa chỉ có octet vượt 255 là địa chỉ không tồn tại."
+      }
     },
     {
       "kind": "mcq",
       "id": "m3-mt-3",
-      "prompt": { "vi": "Địa chỉ nào dưới đây là private?" },
+      "prompt": {
+        "vi": "Bạn kiểm kê tủ rack tầng 2 và chép lại IP của ba thiết bị. Thiết bị nào đang mang địa chỉ nội bộ (private)?"
+      },
       "choices": [
-        { "vi": "172.32.8.1" },
-        { "vi": "203.113.5.7" },
-        { "vi": "192.168.10.5" }
+        {
+          "vi": "172.32.14.9"
+        },
+        {
+          "vi": "203.162.4.191"
+        },
+        {
+          "vi": "10.85.7.6"
+        }
       ],
       "answerIndex": 2,
-      "explain": { "vi": "192.168.10.5 nằm trong dải private 192.168.0.0/16. Bẫy ở 172.32.8.1: dải private 172.16.0.0/12 chỉ chạy đến 172.31 nên 172.32 là public; 203.113.5.7 cũng là public." }
+      "explain": {
+        "vi": "10.85.7.6 nằm trong dải private 10.0.0.0/8 nên chỉ có giá trị trong nội bộ. Bẫy ở 172.32.14.9: dải private 172.16.0.0/12 chỉ chạy đến 172.31 nên 172.32 đã là public; 203.162.4.191 cũng là public."
+      }
     },
     {
       "kind": "typed",
       "id": "m3-mt-4",
-      "prompt": { "vi": "/24 tương ứng với subnet mask nào? (trả lời dạng x.x.x.x)" },
-      "accept": ["255.255.255.0"],
-      "explain": { "vi": "/24 nghĩa là 24 bit đầu là phần mạng — đúng 3 octet \"đầy\" bit 1, tức 255.255.255.0." }
+      "prompt": {
+        "vi": "Biên bản bàn giao ghi mạng văn phòng là 10.7.3.0/24. Bạn đang điền ô \"Subnet mask\" trong phần cấu hình card mạng — điền dãy nào? (trả lời dạng x.x.x.x)"
+      },
+      "accept": [
+        "255.255.255.0"
+      ],
+      "explain": {
+        "vi": "/24 nghĩa là 24 bit đầu là phần mạng — đúng 3 octet \"đầy\" bit 1, tức 255.255.255.0."
+      }
     },
     {
       "kind": "typed",
       "id": "m3-mt-5",
-      "prompt": { "vi": "Tính magic number của /26. (trả lời một con số)" },
-      "accept": ["64"],
-      "explain": { "vi": "/26 → mask 255.255.255.192 → magic number = 256 − 192 = 64. Các mốc mạng nhảy theo bước 64: .0, .64, .128, .192." }
+      "prompt": {
+        "vi": "Tính magic number của /26. (trả lời một con số)"
+      },
+      "accept": [
+        "64"
+      ],
+      "explain": {
+        "vi": "/26 → mask 255.255.255.192 → magic number = 256 − 192 = 64. Các mốc mạng nhảy theo bước 64: .0, .64, .128, .192."
+      }
     },
     {
       "kind": "typed",
       "id": "m3-mt-6",
-      "prompt": { "vi": "Tìm network address của 172.16.4.201/25. (trả lời dạng x.x.x.x)" },
-      "accept": ["172.16.4.128"],
-      "explain": { "vi": "/25 → mask 255.255.255.128 → magic number = 256 − 128 = 128 → mốc .0 và .128. Mốc gần nhất không vượt quá 201 là 128 → network address là 172.16.4.128." }
+      "prompt": {
+        "vi": "Máy in ở kho đang chạy IP 172.16.4.245/25. Phiếu bàn giao đòi ghi tên mạng (network address) mà máy in đó thuộc về — ghi con số nào? (trả lời dạng x.x.x.x)"
+      },
+      "accept": [
+        "172.16.4.128"
+      ],
+      "explain": {
+        "vi": "/25 → mask 255.255.255.128 → magic number = 256 − 128 = 128 → hai mốc .0 và .128. Mốc gần nhất không vượt quá 245 là 128 → tên mạng của máy in là 172.16.4.128."
+      }
     },
     {
       "kind": "mcq",
       "id": "m3-mt-7",
-      "prompt": { "vi": "Điều nào sau đây đúng về IPv6?" },
+      "prompt": {
+        "vi": "Điều nào sau đây đúng về IPv6?"
+      },
       "choices": [
-        { "vi": "Dài 128 bit, viết hex 8 nhóm, rút gọn chuỗi 0 bằng ::" },
-        { "vi": "Dài 64 bit, viết thập phân ngăn bằng dấu chấm như IPv4" },
-        { "vi": "Là IPv4 nối thêm một octet thứ năm cho đỡ cạn số" }
+        {
+          "vi": "Dài 128 bit, viết hex 8 nhóm, rút gọn chuỗi 0 bằng ::"
+        },
+        {
+          "vi": "Dài 64 bit, viết thập phân ngăn bằng dấu chấm như IPv4"
+        },
+        {
+          "vi": "Là IPv4 nối thêm một octet thứ năm cho đỡ cạn số"
+        }
       ],
       "answerIndex": 0,
-      "explain": { "vi": "IPv6 dài 128 bit, viết hex thành 8 nhóm ngăn bằng \":\", và chuỗi nhóm 0 liên tiếp được rút gọn bằng \"::\" đúng một lần — một hệ địa chỉ mới hẳn, không phải IPv4 \"nối dài\"." }
+      "explain": {
+        "vi": "IPv6 dài 128 bit, viết hex thành 8 nhóm ngăn bằng \":\", và chuỗi nhóm 0 liên tiếp được rút gọn bằng \"::\" đúng một lần — một hệ địa chỉ mới hẳn, không phải IPv4 \"nối dài\"."
+      }
     },
     {
       "kind": "order",
       "id": "m3-mt-8",
-      "prompt": { "vi": "Sắp xếp các bước tìm network address của 192.168.1.130/26 bằng magic number theo đúng thứ tự." },
+      "prompt": {
+        "vi": "Sắp xếp các bước tìm network address của 192.168.1.130/26 bằng magic number theo đúng thứ tự."
+      },
       "items": [
-        { "vi": "Đổi /26 ra subnet mask: 255.255.255.192" },
-        { "vi": "Lấy 256 trừ octet đáng chú ý: 256 − 192 = 64" },
-        { "vi": "Liệt kê các mốc mạng theo bước 64: .0, .64, .128, .192" },
-        { "vi": "Chọn mốc gần nhất không vượt quá 130 → network address là 192.168.1.128" }
+        {
+          "vi": "Đổi /26 ra subnet mask: 255.255.255.192"
+        },
+        {
+          "vi": "Lấy 256 trừ octet đáng chú ý: 256 − 192 = 64"
+        },
+        {
+          "vi": "Liệt kê các mốc mạng theo bước 64: .0, .64, .128, .192"
+        },
+        {
+          "vi": "Chọn mốc gần nhất không vượt quá 130 → network address là 192.168.1.128"
+        }
       ],
-      "explain": { "vi": "Quy trình nhẩm: prefix → mask → magic number (256 trừ octet đáng chú ý) → liệt kê mốc → chọn mốc gần nhất không vượt quá IP." }
+      "explain": {
+        "vi": "Quy trình nhẩm: prefix → mask → magic number (256 trừ octet đáng chú ý) → liệt kê mốc → chọn mốc gần nhất không vượt quá IP."
+      }
     },
     {
       "kind": "typed",
       "id": "m3-mt-9",
-      "prompt": { "vi": "Ký hiệu rút gọn một chuỗi nhóm 0 liên tiếp trong địa chỉ IPv6 là gì?" },
-      "accept": ["::", "dấu ::", "dau ::", "hai dấu hai chấm", "hai dau hai cham"],
-      "explain": { "vi": "Ký hiệu \"::\" thay cho chuỗi nhóm 0 liên tiếp — và chỉ được dùng đúng MỘT lần trong một địa chỉ, vì có hai chỗ \"::\" thì máy không biết mỗi chỗ giấu bao nhiêu nhóm 0." }
+      "prompt": {
+        "vi": "Ký hiệu rút gọn một chuỗi nhóm 0 liên tiếp trong địa chỉ IPv6 là gì?"
+      },
+      "accept": [
+        "::",
+        "dấu ::",
+        "dau ::",
+        "hai dấu hai chấm",
+        "hai dau hai cham"
+      ],
+      "explain": {
+        "vi": "Ký hiệu \"::\" thay cho chuỗi nhóm 0 liên tiếp — và chỉ được dùng đúng MỘT lần trong một địa chỉ, vì có hai chỗ \"::\" thì máy không biết mỗi chỗ giấu bao nhiêu nhóm 0."
+      }
     },
     {
       "kind": "typed",
       "id": "m3-mt-10",
-      "prompt": { "vi": "Tìm network address của 10.0.5.77/28. (trả lời dạng x.x.x.x)" },
-      "accept": ["10.0.5.64"],
-      "hintTopic": { "vi": "magic number của /28" },
-      "explain": { "vi": "/28 ↔ mask 255.255.255.240 → magic number = 256 − 240 = 16. Các mốc mạng nhảy theo bước 16: .0, .16, .32, .48, .64, .80… Mốc gần nhất không vượt quá 77 là 64 → network address là 10.0.5.64." }
+      "prompt": {
+        "vi": "Đội an ninh cắm thêm camera và cấu hình cho nó 10.0.5.70/28. Camera đó thuộc mạng con nào — ghi network address. (trả lời dạng x.x.x.x)"
+      },
+      "accept": [
+        "10.0.5.64"
+      ],
+      "hintTopic": {
+        "vi": "magic number của /28"
+      },
+      "explain": {
+        "vi": "/28 ↔ mask 255.255.255.240 → magic number = 256 − 240 = 16. Các mốc mạng nhảy theo bước 16: .0, .16, .32, .48, .64, .80… Mốc gần nhất không vượt quá 70 là 64 → camera nằm trong mạng 10.0.5.64."
+      }
     },
     {
       "kind": "mcq",
       "id": "m3-mt-11",
-      "prompt": { "vi": "Hàng triệu mạng gia đình ở Việt Nam cùng dùng dải 192.168.1.x mà không loạn địa chỉ. Vì sao?" },
+      "prompt": {
+        "vi": "Hàng triệu mạng gia đình ở Việt Nam cùng dùng dải 192.168.1.x mà không loạn địa chỉ. Vì sao?"
+      },
       "choices": [
-        { "vi": "Vì địa chỉ private chỉ có giá trị trong nội bộ, không ra tới Internet" },
-        { "vi": "Vì nhà mạng đã chia sẵn cho mỗi nhà một dải 192.168 riêng, không nhà nào trùng nhà nào" },
-        { "vi": "Vì các router tự thỏa thuận với nhau để không nhà nào lấy trùng dải" }
+        {
+          "vi": "Vì địa chỉ private chỉ có giá trị trong nội bộ, không ra tới Internet"
+        },
+        {
+          "vi": "Vì nhà mạng đã chia sẵn cho mỗi nhà một dải 192.168 riêng, không nhà nào trùng nhà nào"
+        },
+        {
+          "vi": "Vì các router tự thỏa thuận với nhau để không nhà nào lấy trùng dải"
+        }
       ],
       "answerIndex": 0,
-      "hintTopic": { "vi": "vì sao địa chỉ private dùng lại được" },
-      "explain": { "vi": "Địa chỉ private là số phòng trong tòa nhà: tòa nào cũng có phòng 101 mà không loạn, vì thư từ bên ngoài chỉ ghi tới địa chỉ tòa nhà — tức IP public." }
+      "hintTopic": {
+        "vi": "vì sao địa chỉ private dùng lại được"
+      },
+      "explain": {
+        "vi": "Địa chỉ private là số phòng trong tòa nhà: tòa nào cũng có phòng 101 mà không loạn, vì thư từ bên ngoài chỉ ghi tới địa chỉ tòa nhà — tức IP public."
+      }
     },
     {
       "kind": "typed",
       "id": "m3-mt-12",
-      "prompt": { "vi": "Subnet mask 255.255.255.192 ghi gọn theo CIDR là gì? (trả lời dạng /n)" },
-      "accept": ["/26", "26"],
-      "hintTopic": { "vi": "CIDR đếm số bit thuộc phần mạng" },
-      "explain": { "vi": "255.255.255.192 có 26 bit đầu là 1 (8 + 8 + 8 + 2), nên viết gọn là /26 — cũng chính là mask có magic number 64." }
+      "prompt": {
+        "vi": "Subnet mask 255.255.255.192 ghi gọn theo CIDR là gì? (trả lời dạng /n)"
+      },
+      "accept": [
+        "/26",
+        "26"
+      ],
+      "hintTopic": {
+        "vi": "CIDR đếm số bit thuộc phần mạng"
+      },
+      "explain": {
+        "vi": "255.255.255.192 có 26 bit đầu là 1 (8 + 8 + 8 + 2), nên viết gọn là /26 — cũng chính là mask có magic number 64."
+      }
     },
     {
       "kind": "typed",
       "id": "m3-mt-13",
       "prompt": {
-        "vi": "Địa chỉ broadcast của mạng 192.168.20.32/27 là gì? (trả lời dạng x.x.x.x)"
+        "vi": "Phần mềm giám sát muốn gửi một gói tới TẤT CẢ máy trong khối chứa 192.168.20.40/27. Nó phải nhắm tới địa chỉ nào? (trả lời dạng x.x.x.x)"
       },
       "accept": [
         "192.168.20.63"
@@ -1180,14 +1758,14 @@
         "vi": "mốc kế tiếp lùi một số"
       },
       "explain": {
-        "vi": "192.168.20.63. Bước nhảy của /27 là 32 nên mốc kế tiếp sau .32 là .64; lùi một số ra .63 — địa chỉ cuối khối, dành để gọi cả khu."
+        "vi": "192.168.20.63. Bước nhảy của /27 là 32 nên khối chứa .40 chạy từ .32; mốc kế tiếp là .64, lùi một số ra .63 — địa chỉ cuối khối, dành để gọi cả khu một lượt."
       }
     },
     {
       "kind": "typed",
       "id": "m3-mt-14",
       "prompt": {
-        "vi": "Một mạng /28 cắm được cho bao nhiêu máy? (trả lời một con số)"
+        "vi": "Phòng kế toán xin cấp một khối /28. Trước khi ký duyệt, bạn cần biết: khối đó chứa được tối đa bao nhiêu thiết bị? (trả lời một con số)"
       },
       "accept": [
         "14",

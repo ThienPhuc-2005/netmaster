@@ -400,7 +400,9 @@ const isoTop = { fill: 'var(--panel)', stroke: 'currentColor', strokeWidth: 1.2,
 const isoDetail = { fill: 'none', stroke: 'currentColor', strokeWidth: 0.9, opacity: 0.75 } as const
 const isoPlate = { fill: 'var(--panel)', stroke: 'none' } as const
 const isoLabel = {
-  fontSize: 7,
+  // Cỡ 8 là sàn của cả app (luật khối 21.70: dưới 8 là không đọc nổi).
+  // Nhãn thiết bị đã có bước rút gọn riêng nên không sợ dài quá khung.
+  fontSize: 8,
   fill: 'currentColor',
   style: { fontFamily: 'var(--font-mono)' },
 } as const

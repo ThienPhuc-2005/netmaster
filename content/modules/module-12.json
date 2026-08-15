@@ -1655,7 +1655,7 @@
       "kind": "typed",
       "id": "m12-mt-7",
       "prompt": {
-        "vi": "Cmdlet nào đọc ra địa chỉ IP đang đặt trên các card mạng của chính máy bạn?"
+        "vi": "Bạn phải điền IP của máy mình vào phiếu bàn giao thiết bị, mà cửa sổ Settings thì bị chính sách khoá. Trong PowerShell, cmdlet nào lấy được con số đó?"
       },
       "accept": [
         "get-netipaddress",

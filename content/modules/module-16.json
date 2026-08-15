@@ -1612,7 +1612,7 @@
     {
       "kind": "typed",
       "id": "m16-mt-2",
-      "prompt": { "vi": "Với định tuyến động, trên mỗi router bạn khai những mạng của ai?" },
+      "prompt": { "vi": "Chi nhánh của bạn có năm router. Bạn bỏ hết tuyến tĩnh để chuyển sang OSPF, thì trên từng router chỉ còn phải khai những mạng của ai?" },
       "accept": [
         "mạng của chính nó",
         "mang cua chinh no",
@@ -1631,7 +1631,7 @@
       ],
       "hintTopic": { "vi": "chỗ khác nhau căn bản với tuyến tĩnh" },
       "explain": {
-        "vi": "Chỉ khai mạng của chính router đó. Phần còn lại các router tự kể cho nhau nghe — đó mới là cái làm nên chữ động."
+        "vi": "Chỉ khai mạng của chính router đó — bốn router kia tự kể phần của chúng cho nó nghe. Đúng chỗ này là cái làm nên chữ động."
       }
     },
     {
@@ -1662,22 +1662,22 @@
     {
       "kind": "mcq",
       "id": "m16-mt-5",
-      "prompt": { "vi": "Hai router ở trạng thái Full nghĩa là gì?" },
+      "prompt": { "vi": "Bạn gõ show ip ospf neighbor và thấy cả hai hàng xóm đều đứng ở FULL. Bạn kết luận được điều gì?" },
       "choices": [
-        { "vi": "Hai bên đã giữ cùng một bản đồ mạng, giống nhau từng dòng" },
-        { "vi": "Hai bên đã dùng hết băng thông của sợi cáp nối giữa chúng" },
-        { "vi": "Hai bên đã khai đủ mọi mạng của công ty vào câu network" }
+        { "vi": "Cơ sở dữ liệu đường đi của ba router giờ giống hệt nhau" },
+        { "vi": "Đường truyền tới hai hàng xóm đó đã chạy hết công suất" },
+        { "vi": "Mọi mạng LAN của công ty đã được khai vào câu network" }
       ],
       "answerIndex": 0,
       "hintTopic": { "vi": "thứ được chép cho đầy đủ" },
       "explain": {
-        "vi": "Full nói về BẢN ĐỒ: cơ sở dữ liệu đường đi của hai bên đã đồng bộ xong, nên từ đó hai router nhìn mạng giống hệt nhau."
+        "vi": "Full nói về BẢN ĐỒ, không nói về băng thông hay số câu lệnh: hai bên đã chép xong cơ sở dữ liệu đường đi của nhau nên từ giờ nhìn mạng giống hệt nhau."
       }
     },
     {
       "kind": "mcq",
       "id": "m16-mt-6",
-      "prompt": { "vi": "Router-A nghe được hello của hàng xóm nhưng trong đó thiếu tên mình. Đang ở bậc nào?" },
+      "prompt": { "vi": "Đấu xong đường mới, bạn bắt máy soi gói trên cổng: phía bên kia phát hello đều đặn, nhưng danh sách router-id trong gói đó chưa có ID của bạn. Quan hệ láng giềng đang dừng ở bậc nào?" },
       "choices": [
         { "vi": "Init — tiếng chào mới đi được một chiều" },
         { "vi": "2-Way — hai bên đều đã thấy tên nhau" },
@@ -1692,11 +1692,11 @@
     {
       "kind": "typed",
       "id": "m16-mt-7",
-      "prompt": { "vi": "Câu network của OSPF viết dải địa chỉ bằng loại mặt nạ đảo tên là gì?" },
+      "prompt": { "vi": "Để OSPF ôm trọn mạng 10.10.20.0/24, bạn gõ network 10.10.20.0 0.0.0.255 area 0. Cụm 0.0.0.255 trong câu đó là loại mặt nạ gì?" },
       "accept": ["wildcard", "wildcard mask", "mặt nạ đảo", "mat na dao", "mặt nạ ngược", "mat na nguoc", "mặt nạ lộn ngược", "mat na lon nguoc"],
       "hintTopic": { "vi": "loại mặt nạ đã học ở Module 13" },
       "explain": {
-        "vi": "Wildcard mask. Với 0.0.0.255 thì ba nhóm số đầu phải khớp còn nhóm cuối tùy ý, nên nó tóm gọn mọi cổng thuộc một mạng /24."
+        "vi": "Wildcard mask. Ba ô 0 đầu bắt ba nhóm số phải khớp đúng 10.10.20, ô 255 cuối thả tự do nhóm còn lại — thế là tóm gọn mọi cổng thuộc mạng /24 đó."
       }
     },
     {
@@ -1717,7 +1717,7 @@
     {
       "kind": "typed",
       "id": "m16-mt-9",
-      "prompt": { "vi": "Trong bảng show ip route, tuyến router tự học được từ OSPF mang chữ cái đầu dòng nào?" },
+      "prompt": { "vi": "Bạn xóa sạch tuyến tĩnh rồi bật OSPF, và bảng định tuyến vẫn đủ đường đi. Những dòng vừa mọc lên đó mang chữ cái đầu dòng nào?" },
       "accept": ["o", "O", "chữ o", "chu o", "mã o", "ma o"],
       "hintTopic": { "vi": "chữ cái đầu dòng của tuyến OSPF" },
       "explain": {

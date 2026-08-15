@@ -2,7 +2,9 @@
   "id": "module-5",
   "order": 5,
   "part": "B",
-  "letter": { "vi": "Ca đêm ghi lại vài dòng. Trước module này, cái đuôi 443 sau tên miền chỉ là ký tự lạ; giờ bạn biết mỗi con số đó là một cánh cửa của cùng một ngôi nhà, và bạn đi lại được cả tòa nhà mười lăm phòng từ trí nhớ. Bạn còn phân biệt được lúc nào cần bắt tay ba nhịp cho chắc, lúc nào thà mất vài gói mà nhanh. Cách nhớ bằng tòa nhà ấy sẽ còn theo bạn sang những module khó hơn nhiều." },
+  "letter": {
+    "vi": "Ca đêm ghi lại vài dòng. Trước module này, cái đuôi 443 sau tên miền chỉ là ký tự lạ; giờ bạn biết mỗi con số đó là một cánh cửa của cùng một ngôi nhà, và bạn đi lại được cả tòa nhà mười lăm phòng từ trí nhớ. Bạn còn phân biệt được lúc nào cần bắt tay ba nhịp cho chắc, lúc nào thà mất vài gói mà nhanh. Cách nhớ bằng tòa nhà ấy sẽ còn theo bạn sang những module khó hơn nhiều."
+  },
   "title": {
     "vi": "TCP, UDP và Port — Cửa nào của ngôi nhà"
   },
@@ -400,7 +402,7 @@
                   "vi": "Trao đổi vài gói tin ngắn để hai bên xác nhận đã sẵn sàng"
                 },
                 {
-                  "vi": "Hỏi router xem đường có thông không"
+                  "vi": "Hỏi router xem con đường tới đích có đang thông hay không"
                 }
               ],
               "answerIndex": 1,
@@ -678,7 +680,7 @@
                     "vi": "TCP — thiếu một mẩu là tệp hỏng, phải bảo đảm"
                   },
                   {
-                    "vi": "UDP — cho nhanh"
+                    "vi": "UDP — nhanh hơn hẳn, mất vài mẩu cũng không sao"
                   }
                 ],
                 "answerIndex": 0,
@@ -861,7 +863,7 @@
               },
               "solution": {
                 "vi": "Đó là dải port nổi tiếng (well-known): mỗi số đã có chủ theo quy ước chung, ví dụ 443 của HTTPS."
-              },
+              },
               "conceptId": "m5-cong-noi-tieng"
             },
             {
@@ -876,10 +878,10 @@
                     "vi": "Khác port TẠM THỜI phía máy bạn"
                   },
                   {
-                    "vi": "Khác port phía máy chủ"
+                    "vi": "Khác port ở phía máy chủ web"
                   },
                   {
-                    "vi": "Khác địa chỉ IP của máy bạn"
+                    "vi": "Khác địa chỉ IP mà máy bạn dùng"
                   }
                 ],
                 "answerIndex": 0,
@@ -892,7 +894,7 @@
               },
               "solution": {
                 "vi": "Ba tab dùng ba port tạm thời khác nhau ở phía máy bạn; máy chủ vẫn ở nguyên port 443."
-              },
+              },
               "conceptId": "m5-cong-tam-thoi"
             }
           ]
@@ -991,7 +993,7 @@
               },
               "choices": [
                 {
-                  "vi": "Đọc đi đọc lại danh sách cho tới khi thuộc"
+                  "vi": "Đọc đi đọc lại cả danh sách thật nhiều lần cho tới khi thuộc lòng từng mục"
                 },
                 {
                   "vi": "Gắn mỗi mẩu vào một CHỖ trong một không gian quen thuộc rồi đi lại con đường đó"
@@ -1056,7 +1058,7 @@
                     "vi": "Điều khiển máy tính ở xa"
                   },
                   {
-                    "vi": "Chia sẻ tệp trong mạng nội bộ"
+                    "vi": "Chia sẻ tệp giữa các máy trong mạng nội bộ của công ty"
                   }
                 ],
                 "answerIndex": 0,
@@ -1069,7 +1071,7 @@
               },
               "solution": {
                 "vi": "Cả ba lo chuyện mở một trang web: 53 tra tên ra địa chỉ, rồi 80 hoặc 443 tải trang về."
-              },
+              },
               "conceptId": "m5-cong-web"
             },
             {
@@ -1091,7 +1093,7 @@
               },
               "solution": {
                 "vi": "Port 443 — HTTPS, phiên bản có khóa của web."
-              },
+              },
               "conceptId": "m5-cong-web"
             }
           ]
@@ -1269,7 +1271,7 @@
                     "vi": "Nó làm máy chủ chạy chậm đi"
                   },
                   {
-                    "vi": "Nó chỉ chạy được trên mạng nội bộ"
+                    "vi": "Nó chỉ chạy được trong mạng nội bộ, còn ra ngoài Internet là không dùng được"
                   }
                 ],
                 "answerIndex": 0,
@@ -1564,7 +1566,7 @@
                   "vi": "Để nhật ký và chứng chỉ bảo mật còn khớp được với nhau"
                 },
                 {
-                  "vi": "Để màn hình hiện đúng giờ cho người dùng xem"
+                  "vi": "Để màn hình các máy hiện đúng giờ cho người dùng xem"
                 },
                 {
                   "vi": "Để tiết kiệm điện"
@@ -2130,7 +2132,7 @@
       "kind": "typed",
       "id": "m5-mt-2",
       "prompt": {
-        "vi": "Nhịp giữa của bắt tay ba bước tên là gì?"
+        "vi": "Bạn bắt gói lúc máy vừa gọi tới một máy chủ web. Gói thứ HAI của cuộc trao đổi — gói máy chủ bắn về — mang tên nhịp gì?"
       },
       "accept": [
         "syn-ack",
@@ -2167,7 +2169,7 @@
       "kind": "typed",
       "id": "m5-mt-4",
       "prompt": {
-        "vi": "Số port lớn nhất có thể là bao nhiêu?"
+        "vi": "Bạn viết một dòng luật tường lửa và muốn nó phủ TRỌN dải port. Con số cuối của dải phải điền là bao nhiêu?"
       },
       "accept": [
         "65535",
@@ -2183,17 +2185,17 @@
       "kind": "mcq",
       "id": "m5-mt-5",
       "prompt": {
-        "vi": "Bạn mở ba tab cùng vào một trang web. Thứ khác nhau giữa ba kết nối là gì?"
+        "vi": "Máy chủ web thấy ba kết nối đang mở cùng lúc, cả ba đều từ đúng một địa chỉ IP của bạn. Nó phân biệt ba kết nối ấy nhờ đâu?"
       },
       "choices": [
         {
-          "vi": "Port tạm thời phía máy bạn"
+          "vi": "Port tạm thời khác nhau ở phía máy bạn"
         },
         {
-          "vi": "Port phía máy chủ của trang web"
+          "vi": "Port khác nhau ở phía máy chủ của nó"
         },
         {
-          "vi": "Địa chỉ IP của máy chủ trang web"
+          "vi": "Địa chỉ IP khác nhau của ba tab đó"
         }
       ],
       "answerIndex": 0,

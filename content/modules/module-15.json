@@ -2,19 +2,65 @@
   "id": "module-15",
   "order": 15,
   "part": "D",
-  "letter": { "vi": "Ghi lại cho ca sáng. Lúc mở module, nối dư một sợi dây là chuyện vô hại; giờ bạn đã tự tay xem cơn bão quảng bá nhân lên và tự tay dập nó. Bạn tìm được gốc của cây, đọc đúng một cổng đang nằm im mà không tưởng nó hỏng, và chứng minh được đường dự phòng là có thật bằng cách rút phăng sợi dây chính. Từ nay, thấy một cổng không chớp đèn, câu hỏi đầu tiên của bạn sẽ là câu hỏi của người có nghề." },
-  "title": { "vi": "STP — Người canh vòng lặp" },
+  "letter": {
+    "vi": "Ghi lại cho ca sáng. Lúc mở module, nối dư một sợi dây là chuyện vô hại; giờ bạn đã tự tay xem cơn bão quảng bá nhân lên và tự tay dập nó. Bạn tìm được gốc của cây, đọc đúng một cổng đang nằm im mà không tưởng nó hỏng, và chứng minh được đường dự phòng là có thật bằng cách rút phăng sợi dây chính. Từ nay, thấy một cổng không chớp đèn, câu hỏi đầu tiên của bạn sẽ là câu hỏi của người có nghề."
+  },
+  "title": {
+    "vi": "STP — Người canh vòng lặp"
+  },
   "stages": [
-    { "id": "m15-chang-1", "title": { "vi": "Cơn bão trong ba giây" }, "lessonIds": ["m15-bai-1"] },
-    { "id": "m15-chang-2", "title": { "vi": "Bầu ra gốc cây" }, "lessonIds": ["m15-bai-2"] },
-    { "id": "m15-chang-3", "title": { "vi": "Cổng nằm im không phải cổng hỏng" }, "lessonIds": ["m15-bai-3"] },
-    { "id": "m15-chang-4", "title": { "vi": "Đứt dây chính, cây mọc lối khác" }, "lessonIds": ["m15-bai-4"] },
-    { "id": "m15-chang-5", "title": { "vi": "Cổng cắm máy khỏi phải chờ" }, "lessonIds": ["m15-bai-5"] }
+    {
+      "id": "m15-chang-1",
+      "title": {
+        "vi": "Cơn bão trong ba giây"
+      },
+      "lessonIds": [
+        "m15-bai-1"
+      ]
+    },
+    {
+      "id": "m15-chang-2",
+      "title": {
+        "vi": "Bầu ra gốc cây"
+      },
+      "lessonIds": [
+        "m15-bai-2"
+      ]
+    },
+    {
+      "id": "m15-chang-3",
+      "title": {
+        "vi": "Cổng nằm im không phải cổng hỏng"
+      },
+      "lessonIds": [
+        "m15-bai-3"
+      ]
+    },
+    {
+      "id": "m15-chang-4",
+      "title": {
+        "vi": "Đứt dây chính, cây mọc lối khác"
+      },
+      "lessonIds": [
+        "m15-bai-4"
+      ]
+    },
+    {
+      "id": "m15-chang-5",
+      "title": {
+        "vi": "Cổng cắm máy khỏi phải chờ"
+      },
+      "lessonIds": [
+        "m15-bai-5"
+      ]
+    }
   ],
   "lessons": [
     {
       "id": "m15-bai-1",
-      "missionTitle": { "vi": "Dập cơn bão quảng bá" },
+      "missionTitle": {
+        "vi": "Dập cơn bão quảng bá"
+      },
       "steps": [
         {
           "type": "hook",
@@ -40,16 +86,28 @@
                       "kind": "pc",
                       "id": "pc-a",
                       "hostname": "PC-A (tầng 1)",
-                      "port": { "id": "eth0", "mac": "AA:BB:CC:00:00:01" },
-                      "ipConfig": { "ip": "192.168.1.10", "prefix": 24 },
+                      "port": {
+                        "id": "eth0",
+                        "mac": "AA:BB:CC:00:00:01"
+                      },
+                      "ipConfig": {
+                        "ip": "192.168.1.10",
+                        "prefix": 24
+                      },
                       "gateway": null
                     },
                     {
                       "kind": "pc",
                       "id": "pc-b",
                       "hostname": "PC-B (tầng 3)",
-                      "port": { "id": "eth0", "mac": "AA:BB:CC:00:00:02" },
-                      "ipConfig": { "ip": "192.168.1.20", "prefix": 24 },
+                      "port": {
+                        "id": "eth0",
+                        "mac": "AA:BB:CC:00:00:02"
+                      },
+                      "ipConfig": {
+                        "ip": "192.168.1.20",
+                        "prefix": 24
+                      },
                       "gateway": null
                     },
                     {
@@ -58,9 +116,18 @@
                       "hostname": "Switch-1",
                       "bridgePriority": 32768,
                       "ports": [
-                        { "id": "p1", "vlan": 1 },
-                        { "id": "p2", "vlan": 1 },
-                        { "id": "p3", "vlan": 1 }
+                        {
+                          "id": "p1",
+                          "vlan": 1
+                        },
+                        {
+                          "id": "p2",
+                          "vlan": 1
+                        },
+                        {
+                          "id": "p3",
+                          "vlan": 1
+                        }
                       ]
                     },
                     {
@@ -69,9 +136,18 @@
                       "hostname": "Switch-2",
                       "bridgePriority": 4096,
                       "ports": [
-                        { "id": "p1", "vlan": 1 },
-                        { "id": "p2", "vlan": 1 },
-                        { "id": "p3", "vlan": 1 }
+                        {
+                          "id": "p1",
+                          "vlan": 1
+                        },
+                        {
+                          "id": "p2",
+                          "vlan": 1
+                        },
+                        {
+                          "id": "p3",
+                          "vlan": 1
+                        }
                       ]
                     },
                     {
@@ -80,21 +156,87 @@
                       "hostname": "Switch-3",
                       "bridgePriority": 32768,
                       "ports": [
-                        { "id": "p1", "vlan": 1 },
-                        { "id": "p2", "vlan": 1 },
-                        { "id": "p3", "vlan": 1 }
+                        {
+                          "id": "p1",
+                          "vlan": 1
+                        },
+                        {
+                          "id": "p2",
+                          "vlan": 1
+                        },
+                        {
+                          "id": "p3",
+                          "vlan": 1
+                        }
                       ]
                     }
                   ],
                   "links": [
-                    { "id": "la", "a": { "deviceId": "pc-a", "portId": "eth0" }, "b": { "deviceId": "sw-1", "portId": "p1" } },
-                    { "id": "lb", "a": { "deviceId": "pc-b", "portId": "eth0" }, "b": { "deviceId": "sw-3", "portId": "p1" } },
-                    { "id": "ring-12", "a": { "deviceId": "sw-1", "portId": "p2" }, "b": { "deviceId": "sw-2", "portId": "p2" } },
-                    { "id": "ring-23", "a": { "deviceId": "sw-2", "portId": "p3" }, "b": { "deviceId": "sw-3", "portId": "p2" } },
-                    { "id": "ring-31", "a": { "deviceId": "sw-3", "portId": "p3" }, "b": { "deviceId": "sw-1", "portId": "p3" } }
+                    {
+                      "id": "la",
+                      "a": {
+                        "deviceId": "pc-a",
+                        "portId": "eth0"
+                      },
+                      "b": {
+                        "deviceId": "sw-1",
+                        "portId": "p1"
+                      }
+                    },
+                    {
+                      "id": "lb",
+                      "a": {
+                        "deviceId": "pc-b",
+                        "portId": "eth0"
+                      },
+                      "b": {
+                        "deviceId": "sw-3",
+                        "portId": "p1"
+                      }
+                    },
+                    {
+                      "id": "ring-12",
+                      "a": {
+                        "deviceId": "sw-1",
+                        "portId": "p2"
+                      },
+                      "b": {
+                        "deviceId": "sw-2",
+                        "portId": "p2"
+                      }
+                    },
+                    {
+                      "id": "ring-23",
+                      "a": {
+                        "deviceId": "sw-2",
+                        "portId": "p3"
+                      },
+                      "b": {
+                        "deviceId": "sw-3",
+                        "portId": "p2"
+                      }
+                    },
+                    {
+                      "id": "ring-31",
+                      "a": {
+                        "deviceId": "sw-3",
+                        "portId": "p3"
+                      },
+                      "b": {
+                        "deviceId": "sw-1",
+                        "portId": "p3"
+                      }
+                    }
                   ]
                 },
-                "goals": [{ "kind": "ping", "from": "pc-a", "to": "pc-b", "expect": "reach" }],
+                "goals": [
+                  {
+                    "kind": "ping",
+                    "from": "pc-a",
+                    "to": "pc-b",
+                    "expect": "reach"
+                  }
+                ],
                 "allow": {
                   "addDevices": [],
                   "removeDevices": false,
@@ -113,16 +255,28 @@
                       "kind": "pc",
                       "id": "pc-a",
                       "hostname": "PC-A (tầng 1)",
-                      "port": { "id": "eth0", "mac": "AA:BB:CC:00:00:01" },
-                      "ipConfig": { "ip": "192.168.1.10", "prefix": 24 },
+                      "port": {
+                        "id": "eth0",
+                        "mac": "AA:BB:CC:00:00:01"
+                      },
+                      "ipConfig": {
+                        "ip": "192.168.1.10",
+                        "prefix": 24
+                      },
                       "gateway": null
                     },
                     {
                       "kind": "pc",
                       "id": "pc-b",
                       "hostname": "PC-B (tầng 3)",
-                      "port": { "id": "eth0", "mac": "AA:BB:CC:00:00:02" },
-                      "ipConfig": { "ip": "192.168.1.20", "prefix": 24 },
+                      "port": {
+                        "id": "eth0",
+                        "mac": "AA:BB:CC:00:00:02"
+                      },
+                      "ipConfig": {
+                        "ip": "192.168.1.20",
+                        "prefix": 24
+                      },
                       "gateway": null
                     },
                     {
@@ -131,9 +285,18 @@
                       "hostname": "Switch-1",
                       "bridgePriority": 32768,
                       "ports": [
-                        { "id": "p1", "vlan": 1 },
-                        { "id": "p2", "vlan": 1 },
-                        { "id": "p3", "vlan": 1 }
+                        {
+                          "id": "p1",
+                          "vlan": 1
+                        },
+                        {
+                          "id": "p2",
+                          "vlan": 1
+                        },
+                        {
+                          "id": "p3",
+                          "vlan": 1
+                        }
                       ]
                     },
                     {
@@ -142,9 +305,18 @@
                       "hostname": "Switch-2",
                       "bridgePriority": 4096,
                       "ports": [
-                        { "id": "p1", "vlan": 1 },
-                        { "id": "p2", "vlan": 1 },
-                        { "id": "p3", "vlan": 1 }
+                        {
+                          "id": "p1",
+                          "vlan": 1
+                        },
+                        {
+                          "id": "p2",
+                          "vlan": 1
+                        },
+                        {
+                          "id": "p3",
+                          "vlan": 1
+                        }
                       ]
                     },
                     {
@@ -153,22 +325,83 @@
                       "hostname": "Switch-3",
                       "bridgePriority": 32768,
                       "ports": [
-                        { "id": "p1", "vlan": 1 },
-                        { "id": "p2", "vlan": 1 },
-                        { "id": "p3", "vlan": 1 }
+                        {
+                          "id": "p1",
+                          "vlan": 1
+                        },
+                        {
+                          "id": "p2",
+                          "vlan": 1
+                        },
+                        {
+                          "id": "p3",
+                          "vlan": 1
+                        }
                       ]
                     }
                   ],
                   "links": [
-                    { "id": "la", "a": { "deviceId": "pc-a", "portId": "eth0" }, "b": { "deviceId": "sw-1", "portId": "p1" } },
-                    { "id": "lb", "a": { "deviceId": "pc-b", "portId": "eth0" }, "b": { "deviceId": "sw-3", "portId": "p1" } },
-                    { "id": "ring-12", "a": { "deviceId": "sw-1", "portId": "p2" }, "b": { "deviceId": "sw-2", "portId": "p2" } },
-                    { "id": "ring-23", "a": { "deviceId": "sw-2", "portId": "p3" }, "b": { "deviceId": "sw-3", "portId": "p2" } },
-                    { "id": "ring-31", "a": { "deviceId": "sw-3", "portId": "p3" }, "b": { "deviceId": "sw-1", "portId": "p3" } }
+                    {
+                      "id": "la",
+                      "a": {
+                        "deviceId": "pc-a",
+                        "portId": "eth0"
+                      },
+                      "b": {
+                        "deviceId": "sw-1",
+                        "portId": "p1"
+                      }
+                    },
+                    {
+                      "id": "lb",
+                      "a": {
+                        "deviceId": "pc-b",
+                        "portId": "eth0"
+                      },
+                      "b": {
+                        "deviceId": "sw-3",
+                        "portId": "p1"
+                      }
+                    },
+                    {
+                      "id": "ring-12",
+                      "a": {
+                        "deviceId": "sw-1",
+                        "portId": "p2"
+                      },
+                      "b": {
+                        "deviceId": "sw-2",
+                        "portId": "p2"
+                      }
+                    },
+                    {
+                      "id": "ring-23",
+                      "a": {
+                        "deviceId": "sw-2",
+                        "portId": "p3"
+                      },
+                      "b": {
+                        "deviceId": "sw-3",
+                        "portId": "p2"
+                      }
+                    },
+                    {
+                      "id": "ring-31",
+                      "a": {
+                        "deviceId": "sw-3",
+                        "portId": "p3"
+                      },
+                      "b": {
+                        "deviceId": "sw-1",
+                        "portId": "p3"
+                      }
+                    }
                   ]
                 }
               },
-              "hintTopic": { "vi": "thứ canh chừng vòng lặp trên sơ đồ" },
+              "hintTopic": {
+                "vi": "thứ canh chừng vòng lặp trên sơ đồ"
+              },
               "explain": {
                 "vi": "Vòng kín ở tầng 2 làm khung quảng bá quay lại chính chỗ nó vừa đi qua rồi nhân lên mãi — đó là bão quảng bá. Bật Spanning Tree lên, switch tự chặn bớt một cổng để cắt vòng, và mạng sống lại ngay mà sợi dây dự phòng vẫn còn nguyên."
               }
@@ -204,14 +437,24 @@
               "question": {
                 "kind": "mcq",
                 "id": "m15-b1-prac-1",
-                "prompt": { "vi": "Vì sao khung quảng bá đi vòng mãi không tự chết như gói tin IP?" },
+                "prompt": {
+                  "vi": "Vì sao khung quảng bá đi vòng mãi không tự chết như gói tin IP?"
+                },
                 "choices": [
-                  { "vi": "Vì khung tầng 2 không có bộ đếm chặng, nên không có gì bảo nó dừng lại" },
-                  { "vi": "Vì switch cố tình giữ lại bản sao của mọi khung quảng bá để tra cứu sau" },
-                  { "vi": "Vì khung quảng bá luôn được ưu tiên hơn khung thường nên không bị bỏ" }
+                  {
+                    "vi": "Vì khung tầng 2 không có bộ đếm chặng, nên không có gì bảo nó dừng lại"
+                  },
+                  {
+                    "vi": "Vì switch cố tình giữ lại bản sao của mọi khung quảng bá để tra cứu sau"
+                  },
+                  {
+                    "vi": "Vì khung quảng bá luôn được ưu tiên hơn khung thường nên không bị bỏ"
+                  }
                 ],
                 "answerIndex": 0,
-                "hintTopic": { "vi": "thứ mà gói tin IP có còn khung tầng 2 thì không" }
+                "hintTopic": {
+                  "vi": "thứ mà gói tin IP có còn khung tầng 2 thì không"
+                }
               },
               "hint": {
                 "vi": "Nhớ lại Module 4: cái gì làm gói tin IP tự chết sau một số chặng? Khung tầng 2 có thứ tương đương không?"
@@ -227,8 +470,15 @@
                 "prompt": {
                   "vi": "Mạng có vòng kín đang bão. Bạn muốn giữ nguyên sợi dây dự phòng mà mạng vẫn sống — phải bật thứ gì lên?"
                 },
-                "accept": ["stp", "spanning tree", "spanning-tree", "giao thức spanning tree"],
-                "hintTopic": { "vi": "tên giao thức đứng canh vòng lặp" }
+                "accept": [
+                  "stp",
+                  "spanning tree",
+                  "spanning-tree",
+                  "giao thức spanning tree"
+                ],
+                "hintTopic": {
+                  "vi": "tên giao thức đứng canh vòng lặp"
+                }
               },
               "hint": {
                 "vi": "Điền chỗ trống: tên tiếng Anh của nó là Spanning Tree Protocol, viết tắt ba chữ cái."
@@ -257,7 +507,9 @@
                   "bao broadcast"
                 ]
               },
-              "hint": { "vi": "Hai chữ: một chữ chỉ hiện tượng thời tiết dữ dội, một chữ là kiểu gửi cho cả phòng." },
+              "hint": {
+                "vi": "Hai chữ: một chữ chỉ hiện tượng thời tiết dữ dội, một chữ là kiểu gửi cho cả phòng."
+              },
               "solution": {
                 "vi": "Bão quảng bá — tiếng Anh là broadcast storm. Mỗi vòng lại nhân đôi số bản sao, nên chỉ vài giây là mạng tắc nghẽn hoàn toàn."
               }
@@ -268,10 +520,28 @@
               "vi": "Giải thích bằng lời của bạn: vì sao thêm một sợi dây dự phòng lại làm sập cả mạng?"
             },
             "keywords": [
-              ["vòng", "vòng kín", "vòng lặp", "tam giác"],
-              ["quảng bá", "broadcast", "khung phát cho cả phòng"],
-              ["nhân lên", "quay lại", "lặp mãi", "không dừng"],
-              ["không có ttl", "không tự chết", "không có bộ đếm"]
+              [
+                "vòng",
+                "vòng kín",
+                "vòng lặp",
+                "tam giác"
+              ],
+              [
+                "quảng bá",
+                "broadcast",
+                "khung phát cho cả phòng"
+              ],
+              [
+                "nhân lên",
+                "quay lại",
+                "lặp mãi",
+                "không dừng"
+              ],
+              [
+                "không có ttl",
+                "không tự chết",
+                "không có bộ đếm"
+              ]
             ],
             "exampleAnswer": {
               "vi": "Vì sợi dây thứ hai tạo ra một vòng kín. Khung quảng bá đi hết vòng lại quay về chỗ cũ, switch phát tiếp ra mọi cổng, và vì khung tầng 2 không có bộ đếm chặng nào để tự chết nên số bản sao cứ nhân lên tới khi mạng tắc."
@@ -281,9 +551,15 @@
         {
           "type": "summary",
           "bullets": [
-            { "vi": "Vòng kín ở tầng 2 sinh ra bão quảng bá: khung nhân lên mãi vì không có TTL." },
-            { "vi": "Chữa bằng cách bật STP, không phải bằng cách rút dây dự phòng." },
-            { "vi": "STP chặn bớt một cổng để cắt vòng, sợi dây vẫn nằm đó chờ tới lượt." }
+            {
+              "vi": "Vòng kín ở tầng 2 sinh ra bão quảng bá: khung nhân lên mãi vì không có TTL."
+            },
+            {
+              "vi": "Chữa bằng cách bật STP, không phải bằng cách rút dây dự phòng."
+            },
+            {
+              "vi": "STP chặn bớt một cổng để cắt vòng, sợi dây vẫn nằm đó chờ tới lượt."
+            }
           ],
           "nextTeaser": {
             "vi": "STP chặn một cổng — nhưng cổng nào, trên switch nào? Bài sau cho bạn xem cuộc bầu cử mà các switch tự tổ chức với nhau, và luật thắng cử hơi ngược đời."
@@ -293,7 +569,9 @@
     },
     {
       "id": "m15-bai-2",
-      "missionTitle": { "vi": "Tìm ra gốc của cây" },
+      "missionTitle": {
+        "vi": "Tìm ra gốc của cây"
+      },
       "steps": [
         {
           "type": "hook",
@@ -308,11 +586,19 @@
             {
               "kind": "mcq",
               "id": "m15-b2-pre-1",
-              "prompt": { "vi": "Đoán thử: switch nào được bầu làm root bridge?" },
+              "prompt": {
+                "vi": "Đoán thử: switch nào được bầu làm root bridge?"
+              },
               "choices": [
-                { "vi": "Switch có số priority NHỎ nhất" },
-                { "vi": "Switch có số priority LỚN nhất" },
-                { "vi": "Switch được cắm điện sớm nhất trong cả nhóm" }
+                {
+                  "vi": "Switch có số priority NHỎ nhất"
+                },
+                {
+                  "vi": "Switch có số priority LỚN nhất"
+                },
+                {
+                  "vi": "Switch được cắm điện sớm nhất trong cả nhóm"
+                }
               ],
               "answerIndex": 0,
               "explain": {
@@ -368,16 +654,28 @@
                         "kind": "pc",
                         "id": "pc-a",
                         "hostname": "PC-A (tầng 1)",
-                        "port": { "id": "eth0", "mac": "AA:BB:CC:00:00:01" },
-                        "ipConfig": { "ip": "192.168.1.10", "prefix": 24 },
+                        "port": {
+                          "id": "eth0",
+                          "mac": "AA:BB:CC:00:00:01"
+                        },
+                        "ipConfig": {
+                          "ip": "192.168.1.10",
+                          "prefix": 24
+                        },
                         "gateway": null
                       },
                       {
                         "kind": "pc",
                         "id": "pc-b",
                         "hostname": "PC-B (tầng 3)",
-                        "port": { "id": "eth0", "mac": "AA:BB:CC:00:00:02" },
-                        "ipConfig": { "ip": "192.168.1.20", "prefix": 24 },
+                        "port": {
+                          "id": "eth0",
+                          "mac": "AA:BB:CC:00:00:02"
+                        },
+                        "ipConfig": {
+                          "ip": "192.168.1.20",
+                          "prefix": 24
+                        },
                         "gateway": null
                       },
                       {
@@ -386,9 +684,18 @@
                         "hostname": "Switch-1",
                         "bridgePriority": 32768,
                         "ports": [
-                          { "id": "p1", "vlan": 1 },
-                          { "id": "p2", "vlan": 1 },
-                          { "id": "p3", "vlan": 1 }
+                          {
+                            "id": "p1",
+                            "vlan": 1
+                          },
+                          {
+                            "id": "p2",
+                            "vlan": 1
+                          },
+                          {
+                            "id": "p3",
+                            "vlan": 1
+                          }
                         ]
                       },
                       {
@@ -397,9 +704,18 @@
                         "hostname": "Switch-2",
                         "bridgePriority": 4096,
                         "ports": [
-                          { "id": "p1", "vlan": 1 },
-                          { "id": "p2", "vlan": 1 },
-                          { "id": "p3", "vlan": 1 }
+                          {
+                            "id": "p1",
+                            "vlan": 1
+                          },
+                          {
+                            "id": "p2",
+                            "vlan": 1
+                          },
+                          {
+                            "id": "p3",
+                            "vlan": 1
+                          }
                         ]
                       },
                       {
@@ -408,32 +724,106 @@
                         "hostname": "Switch-3",
                         "bridgePriority": 32768,
                         "ports": [
-                          { "id": "p1", "vlan": 1 },
-                          { "id": "p2", "vlan": 1 },
-                          { "id": "p3", "vlan": 1 }
+                          {
+                            "id": "p1",
+                            "vlan": 1
+                          },
+                          {
+                            "id": "p2",
+                            "vlan": 1
+                          },
+                          {
+                            "id": "p3",
+                            "vlan": 1
+                          }
                         ]
                       }
                     ],
                     "links": [
-                      { "id": "la", "a": { "deviceId": "pc-a", "portId": "eth0" }, "b": { "deviceId": "sw-1", "portId": "p1" } },
-                      { "id": "lb", "a": { "deviceId": "pc-b", "portId": "eth0" }, "b": { "deviceId": "sw-3", "portId": "p1" } },
-                      { "id": "ring-12", "a": { "deviceId": "sw-1", "portId": "p2" }, "b": { "deviceId": "sw-2", "portId": "p2" } },
-                      { "id": "ring-23", "a": { "deviceId": "sw-2", "portId": "p3" }, "b": { "deviceId": "sw-3", "portId": "p2" } },
-                      { "id": "ring-31", "a": { "deviceId": "sw-3", "portId": "p3" }, "b": { "deviceId": "sw-1", "portId": "p3" } }
+                      {
+                        "id": "la",
+                        "a": {
+                          "deviceId": "pc-a",
+                          "portId": "eth0"
+                        },
+                        "b": {
+                          "deviceId": "sw-1",
+                          "portId": "p1"
+                        }
+                      },
+                      {
+                        "id": "lb",
+                        "a": {
+                          "deviceId": "pc-b",
+                          "portId": "eth0"
+                        },
+                        "b": {
+                          "deviceId": "sw-3",
+                          "portId": "p1"
+                        }
+                      },
+                      {
+                        "id": "ring-12",
+                        "a": {
+                          "deviceId": "sw-1",
+                          "portId": "p2"
+                        },
+                        "b": {
+                          "deviceId": "sw-2",
+                          "portId": "p2"
+                        }
+                      },
+                      {
+                        "id": "ring-23",
+                        "a": {
+                          "deviceId": "sw-2",
+                          "portId": "p3"
+                        },
+                        "b": {
+                          "deviceId": "sw-3",
+                          "portId": "p2"
+                        }
+                      },
+                      {
+                        "id": "ring-31",
+                        "a": {
+                          "deviceId": "sw-3",
+                          "portId": "p3"
+                        },
+                        "b": {
+                          "deviceId": "sw-1",
+                          "portId": "p3"
+                        }
+                      }
                     ]
                   },
                   "deviceId": "sw-1",
-                  "goals": [{ "kind": "viewed", "command": "show spanning-tree", "deviceId": "sw-1" }],
-                  "solution": [{ "deviceId": "sw-1", "lines": ["show spanning-tree"] }]
+                  "goals": [
+                    {
+                      "kind": "viewed",
+                      "command": "show spanning-tree",
+                      "deviceId": "sw-1"
+                    }
+                  ],
+                  "solution": [
+                    {
+                      "deviceId": "sw-1",
+                      "lines": [
+                        "show spanning-tree"
+                      ]
+                    }
+                  ]
                 },
-                "hintTopic": { "vi": "lệnh xem trạng thái cây STP" }
+                "hintTopic": {
+                  "vi": "lệnh xem trạng thái cây STP"
+                }
               },
               "hint": {
                 "vi": "Cú pháp khuyết: show … — phần còn thiếu chính là tên tiếng Anh của cây, viết có dấu gạch nối ở giữa."
               },
               "solution": {
                 "vi": "show spanning-tree. Bảng in ra dòng Root bridge: Switch-2 — vì Switch-2 mang priority 4096, nhỏ hơn 32768 của hai switch còn lại nên nó thắng cuộc bầu."
-              },
+              },
               "conceptId": "root-bridge"
             },
             {
@@ -444,19 +834,27 @@
                   "vi": "Ba switch đều để nguyên priority mặc định 32768. Ai sẽ thành root bridge?"
                 },
                 "choices": [
-                  { "vi": "Switch có địa chỉ MAC nhỏ nhất, thường là thiết bị cũ nhất trong phòng máy" },
-                  { "vi": "Switch nằm ở giữa sơ đồ vì nó có nhiều đường nối tới các switch khác nhất" },
-                  { "vi": "Không switch nào cả, vì hòa priority thì cây STP sẽ không dựng được" }
+                  {
+                    "vi": "Switch có địa chỉ MAC nhỏ nhất, thường là thiết bị cũ nhất trong phòng máy"
+                  },
+                  {
+                    "vi": "Switch nằm ở chính giữa sơ đồ, vì nó có nhiều đường nối tới các switch khác nhất"
+                  },
+                  {
+                    "vi": "Không switch nào cả, vì hòa priority thì cây STP sẽ không dựng được"
+                  }
                 ],
                 "answerIndex": 0,
-                "hintTopic": { "vi": "cái được đem ra so khi priority hòa nhau" }
+                "hintTopic": {
+                  "vi": "cái được đem ra so khi priority hòa nhau"
+                }
               },
               "hint": {
                 "vi": "Hòa priority thì luật chuyển sang so một con số gắn chết vào phần cứng từ nhà máy — Module 3 gọi nó là số khung."
               },
               "solution": {
                 "vi": "Switch có MAC nhỏ nhất thắng — và MAC nhỏ thường thuộc thiết bị cũ nhất, thường cũng là cái yếu nhất. Vị trí trong sơ đồ không được tính tới, còn hòa priority thì cây vẫn dựng được vì luôn còn MAC để phân định."
-              },
+              },
               "conceptId": "root-bridge"
             }
           ]
@@ -484,7 +882,9 @@
                   "mac thấp nhất"
                 ]
               },
-              "hint": { "vi": "Vẫn là luật nhỏ hơn thắng, nhưng lần này so con số gắn chết vào card mạng." },
+              "hint": {
+                "vi": "Vẫn là luật nhỏ hơn thắng, nhưng lần này so con số gắn chết vào card mạng."
+              },
               "solution": {
                 "vi": "Cái có địa chỉ MAC nhỏ hơn. Vì thế để mặc định là giao cây cho lô sản xuất quyết định — nên người làm nghề luôn tự hạ priority của switch trung tâm xuống."
               }
@@ -495,10 +895,28 @@
               "vi": "Giải thích bằng lời của bạn: các switch bầu root bridge theo luật nào, và vì sao không nên để mặc định?"
             },
             "keywords": [
-              ["priority", "độ ưu tiên", "số ưu tiên"],
-              ["nhỏ hơn", "thấp hơn", "bé hơn"],
-              ["mac", "địa chỉ mac", "số khung"],
-              ["thiết bị cũ", "máy cũ", "may rủi", "ngẫu nhiên", "không kiểm soát"]
+              [
+                "priority",
+                "độ ưu tiên",
+                "số ưu tiên"
+              ],
+              [
+                "nhỏ hơn",
+                "thấp hơn",
+                "bé hơn"
+              ],
+              [
+                "mac",
+                "địa chỉ mac",
+                "số khung"
+              ],
+              [
+                "thiết bị cũ",
+                "máy cũ",
+                "may rủi",
+                "ngẫu nhiên",
+                "không kiểm soát"
+              ]
             ],
             "exampleAnswer": {
               "vi": "Ai có priority nhỏ hơn thì thắng; hòa priority thì so MAC, cũng nhỏ hơn thắng. Để mặc định thì mọi switch cùng 32768 nên kết cục do MAC quyết định, mà MAC nhỏ thường là thiết bị cũ nhất — cây sẽ lấy đúng cái yếu nhất làm trung tâm."
@@ -508,9 +926,15 @@
         {
           "type": "summary",
           "bullets": [
-            { "vi": "Switch nói chuyện với nhau bằng BPDU để tự dựng cây, không cần ai chỉ huy." },
-            { "vi": "Bầu root: priority nhỏ hơn thắng; hòa thì MAC nhỏ hơn thắng." },
-            { "vi": "Để mặc định là giao cây cho lô sản xuất chọn — hãy tự chỉ định switch trung tâm." }
+            {
+              "vi": "Switch nói chuyện với nhau bằng BPDU để tự dựng cây, không cần ai chỉ huy."
+            },
+            {
+              "vi": "Bầu root: priority nhỏ hơn thắng; hòa thì MAC nhỏ hơn thắng."
+            },
+            {
+              "vi": "Để mặc định là giao cây cho lô sản xuất chọn — hãy tự chỉ định switch trung tâm."
+            }
           ],
           "nextTeaser": {
             "vi": "Cây đã có gốc, và đâu đó trong sơ đồ có một cổng đang nằm im. Bài sau nói về cái cổng ấy — thứ mà người mới nhìn thấy là tưởng hỏng và đi thay dây."
@@ -520,7 +944,9 @@
     },
     {
       "id": "m15-bai-3",
-      "missionTitle": { "vi": "Đọc đúng một cổng đang nằm im" },
+      "missionTitle": {
+        "vi": "Đọc đúng một cổng đang nằm im"
+      },
       "steps": [
         {
           "type": "hook",
@@ -535,11 +961,19 @@
             {
               "kind": "mcq",
               "id": "m15-b3-pre-1",
-              "prompt": { "vi": "Đoán thử: một cổng bị STP chặn nghĩa là gì?" },
+              "prompt": {
+                "vi": "Đoán thử: một cổng bị STP chặn nghĩa là gì?"
+              },
               "choices": [
-                { "vi": "Nó đang được giữ làm dự phòng, không phát khung để tránh vòng lặp" },
-                { "vi": "Nó đã hỏng phần cứng và cần được thay bằng cổng khác trên switch" },
-                { "vi": "Nó đang bị quản trị viên tắt bằng lệnh nên không hoạt động nữa" }
+                {
+                  "vi": "Nó đang được giữ làm dự phòng, không phát khung để tránh vòng lặp"
+                },
+                {
+                  "vi": "Nó đã hỏng phần cứng và cần được thay bằng một cổng khác trên switch"
+                },
+                {
+                  "vi": "Nó đang bị quản trị viên tắt bằng lệnh nên không hoạt động nữa"
+                }
               ],
               "answerIndex": 0,
               "explain": {
@@ -577,8 +1011,14 @@
                 "prompt": {
                   "vi": "Trong bảng show spanning-tree, cổng đang bị chặn hiện trạng thái viết tắt là gì? (ba chữ cái)"
                 },
-                "accept": ["blk", "BLK", "blocking"],
-                "hintTopic": { "vi": "cột trạng thái của bảng spanning-tree" }
+                "accept": [
+                  "blk",
+                  "BLK",
+                  "blocking"
+                ],
+                "hintTopic": {
+                  "vi": "cột trạng thái của bảng spanning-tree"
+                }
               },
               "hint": {
                 "vi": "Điền chỗ trống: cổng đang phát ghi FWD (forwarding), còn cổng nằm im ghi … — viết tắt của blocking."
@@ -594,9 +1034,21 @@
                 "prompt": {
                   "vi": "Ba switch nối thành tam giác và đã bật STP. Có bao nhiêu cổng bị chặn?"
                 },
-                "choices": [{ "vi": "Đúng một cổng" }, { "vi": "Đúng ba cổng" }, { "vi": "Không cổng nào" }],
+                "choices": [
+                  {
+                    "vi": "Đúng một cổng"
+                  },
+                  {
+                    "vi": "Đúng ba cổng"
+                  },
+                  {
+                    "vi": "Không cổng nào"
+                  }
+                ],
                 "answerIndex": 0,
-                "hintTopic": { "vi": "số dây thừa so với một cây không vòng" }
+                "hintTopic": {
+                  "vi": "số dây thừa so với một cây không vòng"
+                }
               },
               "hint": {
                 "vi": "Ba switch muốn nối liền nhau mà không có vòng thì cần mấy sợi dây? Tam giác đang có mấy sợi?"
@@ -617,9 +1069,18 @@
                 "prompt": {
                   "vi": "Không nhìn lại bài: cổng bị STP chặn có còn nghe BPDU không?"
                 },
-                "accept": ["có", "co", "vẫn nghe", "van nghe", "có, vẫn nghe", "còn nghe"]
+                "accept": [
+                  "có",
+                  "co",
+                  "vẫn nghe",
+                  "van nghe",
+                  "có, vẫn nghe",
+                  "còn nghe"
+                ]
               },
-              "hint": { "vi": "Nếu nó điếc hẳn thì làm sao biết lúc nào đường chính đứt để mở ra?" },
+              "hint": {
+                "vi": "Nếu nó điếc hẳn thì làm sao biết lúc nào đường chính đứt để mở ra?"
+              },
               "solution": {
                 "vi": "Có. Cổng chặn vẫn nghe BPDU để theo dõi cây — nhờ vậy nó biết khi nào đường chính hỏng và tới lượt mình phát."
               }
@@ -630,9 +1091,24 @@
               "vi": "Giải thích bằng lời của bạn: vì sao cổng bị chặn là tính năng chứ không phải sự cố?"
             },
             "keywords": [
-              ["cắt vòng", "chống vòng lặp", "tránh bão", "chặn vòng"],
-              ["dự phòng", "chờ tới lượt", "để dành", "thay thế"],
-              ["vẫn nghe", "vẫn theo dõi", "bpdu", "mở ra khi đứt"]
+              [
+                "cắt vòng",
+                "chống vòng lặp",
+                "tránh bão",
+                "chặn vòng"
+              ],
+              [
+                "dự phòng",
+                "chờ tới lượt",
+                "để dành",
+                "thay thế"
+              ],
+              [
+                "vẫn nghe",
+                "vẫn theo dõi",
+                "bpdu",
+                "mở ra khi đứt"
+              ]
             ],
             "exampleAnswer": {
               "vi": "Vì phải có một cổng ngừng phát thì vòng mới bị cắt và mạng mới hết bão. Cổng ấy không hỏng: nó vẫn nghe BPDU, và khi đường chính đứt thì nó mở ra gánh lưu lượng — đó chính là lý do người ta kéo sợi dây thứ hai."
@@ -642,9 +1118,15 @@
         {
           "type": "summary",
           "bullets": [
-            { "vi": "Cổng bị chặn không phát khung dữ liệu nhưng vẫn nghe BPDU." },
-            { "vi": "Bảng show spanning-tree ghi vai Altn, trạng thái BLK cho cổng ấy." },
-            { "vi": "Số cổng bị chặn đúng bằng số sợi dây thừa so với một cây không vòng." }
+            {
+              "vi": "Cổng bị chặn không phát khung dữ liệu nhưng vẫn nghe BPDU."
+            },
+            {
+              "vi": "Bảng show spanning-tree ghi vai Altn, trạng thái BLK cho cổng ấy."
+            },
+            {
+              "vi": "Số cổng bị chặn đúng bằng số sợi dây thừa so với một cây không vòng."
+            }
           ],
           "nextTeaser": {
             "vi": "Vậy cái cổng nằm im ấy bao giờ mới tới lượt? Bài sau cắt đứt sợi dây chính ngay trước mắt bạn — và bạn sẽ tự kiểm chứng lưu lượng đi lối nào."
@@ -654,7 +1136,9 @@
     },
     {
       "id": "m15-bai-4",
-      "missionTitle": { "vi": "Chứng minh đường dự phòng có thật" },
+      "missionTitle": {
+        "vi": "Chứng minh đường dự phòng có thật"
+      },
       "steps": [
         {
           "type": "hook",
@@ -669,11 +1153,19 @@
             {
               "kind": "mcq",
               "id": "m15-b4-pre-1",
-              "prompt": { "vi": "Đoán thử: đường chính đứt thì cổng đang bị chặn sẽ ra sao?" },
+              "prompt": {
+                "vi": "Đoán thử: đường chính đứt thì cổng đang bị chặn sẽ ra sao?"
+              },
               "choices": [
-                { "vi": "Tự mở ra và bắt đầu phát khung" },
-                { "vi": "Vẫn nằm im cho tới khi có người vào bật lại bằng lệnh" },
-                { "vi": "Bị đánh dấu hỏng luôn vì cây STP đã tính xong từ trước" }
+                {
+                  "vi": "Tự mở ra và bắt đầu phát khung"
+                },
+                {
+                  "vi": "Vẫn nằm im cho tới khi có người bật lại"
+                },
+                {
+                  "vi": "Bị đánh dấu hỏng luôn, không dùng nữa"
+                }
               ],
               "answerIndex": 0,
               "explain": {
@@ -719,16 +1211,28 @@
                         "kind": "pc",
                         "id": "pc-a",
                         "hostname": "PC-A (tầng 1)",
-                        "port": { "id": "eth0", "mac": "AA:BB:CC:00:00:01" },
-                        "ipConfig": { "ip": "192.168.1.10", "prefix": 24 },
+                        "port": {
+                          "id": "eth0",
+                          "mac": "AA:BB:CC:00:00:01"
+                        },
+                        "ipConfig": {
+                          "ip": "192.168.1.10",
+                          "prefix": 24
+                        },
                         "gateway": null
                       },
                       {
                         "kind": "pc",
                         "id": "pc-b",
                         "hostname": "PC-B (tầng 3)",
-                        "port": { "id": "eth0", "mac": "AA:BB:CC:00:00:02" },
-                        "ipConfig": { "ip": "192.168.1.20", "prefix": 24 },
+                        "port": {
+                          "id": "eth0",
+                          "mac": "AA:BB:CC:00:00:02"
+                        },
+                        "ipConfig": {
+                          "ip": "192.168.1.20",
+                          "prefix": 24
+                        },
                         "gateway": null
                       },
                       {
@@ -737,9 +1241,18 @@
                         "hostname": "Switch-1",
                         "bridgePriority": 32768,
                         "ports": [
-                          { "id": "p1", "vlan": 1 },
-                          { "id": "p2", "vlan": 1 },
-                          { "id": "p3", "vlan": 1 }
+                          {
+                            "id": "p1",
+                            "vlan": 1
+                          },
+                          {
+                            "id": "p2",
+                            "vlan": 1
+                          },
+                          {
+                            "id": "p3",
+                            "vlan": 1
+                          }
                         ]
                       },
                       {
@@ -748,9 +1261,18 @@
                         "hostname": "Switch-2",
                         "bridgePriority": 4096,
                         "ports": [
-                          { "id": "p1", "vlan": 1 },
-                          { "id": "p2", "vlan": 1 },
-                          { "id": "p3", "vlan": 1 }
+                          {
+                            "id": "p1",
+                            "vlan": 1
+                          },
+                          {
+                            "id": "p2",
+                            "vlan": 1
+                          },
+                          {
+                            "id": "p3",
+                            "vlan": 1
+                          }
                         ]
                       },
                       {
@@ -759,22 +1281,86 @@
                         "hostname": "Switch-3",
                         "bridgePriority": 32768,
                         "ports": [
-                          { "id": "p1", "vlan": 1 },
-                          { "id": "p2", "vlan": 1 },
-                          { "id": "p3", "vlan": 1 }
+                          {
+                            "id": "p1",
+                            "vlan": 1
+                          },
+                          {
+                            "id": "p2",
+                            "vlan": 1
+                          },
+                          {
+                            "id": "p3",
+                            "vlan": 1
+                          }
                         ]
                       }
                     ],
                     "links": [
-                      { "id": "la", "a": { "deviceId": "pc-a", "portId": "eth0" }, "b": { "deviceId": "sw-1", "portId": "p1" } },
-                      { "id": "lb", "a": { "deviceId": "pc-b", "portId": "eth0" }, "b": { "deviceId": "sw-3", "portId": "p1" } },
-                      { "id": "ring-12", "a": { "deviceId": "sw-1", "portId": "p2" }, "b": { "deviceId": "sw-2", "portId": "p2" } },
-                      { "id": "ring-23", "a": { "deviceId": "sw-2", "portId": "p3" }, "b": { "deviceId": "sw-3", "portId": "p2" } },
-                      { "id": "ring-31", "a": { "deviceId": "sw-3", "portId": "p3" }, "b": { "deviceId": "sw-1", "portId": "p3" } }
+                      {
+                        "id": "la",
+                        "a": {
+                          "deviceId": "pc-a",
+                          "portId": "eth0"
+                        },
+                        "b": {
+                          "deviceId": "sw-1",
+                          "portId": "p1"
+                        }
+                      },
+                      {
+                        "id": "lb",
+                        "a": {
+                          "deviceId": "pc-b",
+                          "portId": "eth0"
+                        },
+                        "b": {
+                          "deviceId": "sw-3",
+                          "portId": "p1"
+                        }
+                      },
+                      {
+                        "id": "ring-12",
+                        "a": {
+                          "deviceId": "sw-1",
+                          "portId": "p2"
+                        },
+                        "b": {
+                          "deviceId": "sw-2",
+                          "portId": "p2"
+                        }
+                      },
+                      {
+                        "id": "ring-23",
+                        "a": {
+                          "deviceId": "sw-2",
+                          "portId": "p3"
+                        },
+                        "b": {
+                          "deviceId": "sw-3",
+                          "portId": "p2"
+                        }
+                      },
+                      {
+                        "id": "ring-31",
+                        "a": {
+                          "deviceId": "sw-3",
+                          "portId": "p3"
+                        },
+                        "b": {
+                          "deviceId": "sw-1",
+                          "portId": "p3"
+                        }
+                      }
                     ]
                   },
                   "goals": [
-                    { "kind": "ping", "from": "pc-a", "to": "pc-b", "expect": "reach" },
+                    {
+                      "kind": "ping",
+                      "from": "pc-a",
+                      "to": "pc-b",
+                      "expect": "reach"
+                    },
                     {
                       "kind": "macLearned",
                       "switchId": "sw-3",
@@ -801,16 +1387,28 @@
                         "kind": "pc",
                         "id": "pc-a",
                         "hostname": "PC-A (tầng 1)",
-                        "port": { "id": "eth0", "mac": "AA:BB:CC:00:00:01" },
-                        "ipConfig": { "ip": "192.168.1.10", "prefix": 24 },
+                        "port": {
+                          "id": "eth0",
+                          "mac": "AA:BB:CC:00:00:01"
+                        },
+                        "ipConfig": {
+                          "ip": "192.168.1.10",
+                          "prefix": 24
+                        },
                         "gateway": null
                       },
                       {
                         "kind": "pc",
                         "id": "pc-b",
                         "hostname": "PC-B (tầng 3)",
-                        "port": { "id": "eth0", "mac": "AA:BB:CC:00:00:02" },
-                        "ipConfig": { "ip": "192.168.1.20", "prefix": 24 },
+                        "port": {
+                          "id": "eth0",
+                          "mac": "AA:BB:CC:00:00:02"
+                        },
+                        "ipConfig": {
+                          "ip": "192.168.1.20",
+                          "prefix": 24
+                        },
                         "gateway": null
                       },
                       {
@@ -819,9 +1417,18 @@
                         "hostname": "Switch-1",
                         "bridgePriority": 32768,
                         "ports": [
-                          { "id": "p1", "vlan": 1 },
-                          { "id": "p2", "vlan": 1 },
-                          { "id": "p3", "vlan": 1 }
+                          {
+                            "id": "p1",
+                            "vlan": 1
+                          },
+                          {
+                            "id": "p2",
+                            "vlan": 1
+                          },
+                          {
+                            "id": "p3",
+                            "vlan": 1
+                          }
                         ]
                       },
                       {
@@ -830,9 +1437,18 @@
                         "hostname": "Switch-2",
                         "bridgePriority": 4096,
                         "ports": [
-                          { "id": "p1", "vlan": 1 },
-                          { "id": "p2", "vlan": 1 },
-                          { "id": "p3", "vlan": 1 }
+                          {
+                            "id": "p1",
+                            "vlan": 1
+                          },
+                          {
+                            "id": "p2",
+                            "vlan": 1
+                          },
+                          {
+                            "id": "p3",
+                            "vlan": 1
+                          }
                         ]
                       },
                       {
@@ -841,21 +1457,72 @@
                         "hostname": "Switch-3",
                         "bridgePriority": 32768,
                         "ports": [
-                          { "id": "p1", "vlan": 1 },
-                          { "id": "p2", "vlan": 1 },
-                          { "id": "p3", "vlan": 1 }
+                          {
+                            "id": "p1",
+                            "vlan": 1
+                          },
+                          {
+                            "id": "p2",
+                            "vlan": 1
+                          },
+                          {
+                            "id": "p3",
+                            "vlan": 1
+                          }
                         ]
                       }
                     ],
                     "links": [
-                      { "id": "la", "a": { "deviceId": "pc-a", "portId": "eth0" }, "b": { "deviceId": "sw-1", "portId": "p1" } },
-                      { "id": "lb", "a": { "deviceId": "pc-b", "portId": "eth0" }, "b": { "deviceId": "sw-3", "portId": "p1" } },
-                      { "id": "ring-23", "a": { "deviceId": "sw-2", "portId": "p3" }, "b": { "deviceId": "sw-3", "portId": "p2" } },
-                      { "id": "ring-31", "a": { "deviceId": "sw-3", "portId": "p3" }, "b": { "deviceId": "sw-1", "portId": "p3" } }
+                      {
+                        "id": "la",
+                        "a": {
+                          "deviceId": "pc-a",
+                          "portId": "eth0"
+                        },
+                        "b": {
+                          "deviceId": "sw-1",
+                          "portId": "p1"
+                        }
+                      },
+                      {
+                        "id": "lb",
+                        "a": {
+                          "deviceId": "pc-b",
+                          "portId": "eth0"
+                        },
+                        "b": {
+                          "deviceId": "sw-3",
+                          "portId": "p1"
+                        }
+                      },
+                      {
+                        "id": "ring-23",
+                        "a": {
+                          "deviceId": "sw-2",
+                          "portId": "p3"
+                        },
+                        "b": {
+                          "deviceId": "sw-3",
+                          "portId": "p2"
+                        }
+                      },
+                      {
+                        "id": "ring-31",
+                        "a": {
+                          "deviceId": "sw-3",
+                          "portId": "p3"
+                        },
+                        "b": {
+                          "deviceId": "sw-1",
+                          "portId": "p3"
+                        }
+                      }
                     ]
                   }
                 },
-                "hintTopic": { "vi": "lối đi mới khi đường chính không còn" }
+                "hintTopic": {
+                  "vi": "lối đi mới khi đường chính không còn"
+                }
               },
               "hint": {
                 "vi": "Chọn sợi dây nối Switch-1 với Switch-2 rồi gỡ nó ra, sau đó bấm Gửi thử và đọc nhật ký chặng xem khung của PC-A đi qua những cổng nào."
@@ -891,7 +1558,9 @@
                   "không cần ai"
                 ]
               },
-              "hint": { "vi": "Nhớ lại cảnh máy xúc: có ai kịp chạm vào thiết bị đâu." },
+              "hint": {
+                "vi": "Nhớ lại cảnh máy xúc: có ai kịp chạm vào thiết bị đâu."
+              },
               "solution": {
                 "vi": "Không ai cả — chính các switch tự tính lại cây nhờ dòng BPDU, rồi cổng đang chặn tự chuyển sang phát."
               }
@@ -902,10 +1571,28 @@
               "vi": "Giải thích bằng lời của bạn: chuyện gì diễn ra bên trong mạng trong vài giây sau khi sợi cáp chính bị cắt?"
             },
             "keywords": [
-              ["bpdu", "tin nhắn giữa switch", "phát hiện", "nhận ra"],
-              ["tính lại", "dựng lại cây", "bầu lại", "cây đổi"],
-              ["cổng chặn", "cổng dự phòng", "cổng nằm im"],
-              ["mở ra", "chuyển sang phát", "gánh lưu lượng"]
+              [
+                "bpdu",
+                "tin nhắn giữa switch",
+                "phát hiện",
+                "nhận ra"
+              ],
+              [
+                "tính lại",
+                "dựng lại cây",
+                "bầu lại",
+                "cây đổi"
+              ],
+              [
+                "cổng chặn",
+                "cổng dự phòng",
+                "cổng nằm im"
+              ],
+              [
+                "mở ra",
+                "chuyển sang phát",
+                "gánh lưu lượng"
+              ]
             ],
             "exampleAnswer": {
               "vi": "Các switch không còn nhận được BPDU trên sợi vừa đứt nên biết cây đã đổi và tính lại. Cổng vốn bị chặn thấy đường về gốc mất rồi liền chuyển sang phát, lưu lượng đi theo lối vòng còn lại — tất cả tự động, không ai chạm vào thiết bị."
@@ -915,9 +1602,15 @@
         {
           "type": "summary",
           "bullets": [
-            { "vi": "Cây STP được tính lại mỗi khi sơ đồ đổi, nhờ dòng BPDU chạy đều đặn." },
-            { "vi": "Đường chính đứt thì cổng đang chặn tự mở ra và gánh lưu lượng." },
-            { "vi": "Sợi cáp dự phòng nằm im tới đúng cái ngày cần tới — đó là lý do người ta kéo nó." }
+            {
+              "vi": "Cây STP được tính lại mỗi khi sơ đồ đổi, nhờ dòng BPDU chạy đều đặn."
+            },
+            {
+              "vi": "Đường chính đứt thì cổng đang chặn tự mở ra và gánh lưu lượng."
+            },
+            {
+              "vi": "Sợi cáp dự phòng nằm im tới đúng cái ngày cần tới — đó là lý do người ta kéo nó."
+            }
           ],
           "nextTeaser": {
             "vi": "Còn một chỗ mà cái cẩn thận của STP lại thành phiền phức: cổng cắm máy nhân viên. Bài cuối module cho bạn cách bỏ qua quãng chờ ở đúng những cổng ấy."
@@ -928,7 +1621,9 @@
     },
     {
       "id": "m15-bai-5",
-      "missionTitle": { "vi": "Cho cổng máy con vào việc ngay" },
+      "missionTitle": {
+        "vi": "Cho cổng máy con vào việc ngay"
+      },
       "steps": [
         {
           "type": "hook",
@@ -943,11 +1638,19 @@
             {
               "kind": "mcq",
               "id": "m15-b5-pre-1",
-              "prompt": { "vi": "Đoán thử: vì sao cổng vừa cắm dây lại phải chờ trước khi cho dữ liệu đi?" },
+              "prompt": {
+                "vi": "Đoán thử: vì sao cổng vừa cắm dây lại phải chờ trước khi cho dữ liệu đi?"
+              },
               "choices": [
-                { "vi": "Vì STP phải nghe ngóng xem cổng này có tạo ra vòng lặp không" },
-                { "vi": "Vì switch cần thời gian cấp một địa chỉ IP mới cho máy vừa cắm" },
-                { "vi": "Vì card mạng của máy phải tự kiểm tra dây trước khi gửi khung" }
+                {
+                  "vi": "Vì STP phải nghe ngóng xem cổng này có tạo ra vòng lặp không"
+                },
+                {
+                  "vi": "Vì switch cần thời gian cấp một địa chỉ IP mới cho máy vừa cắm"
+                },
+                {
+                  "vi": "Vì card mạng của máy phải tự kiểm tra dây trước khi gửi khung"
+                }
               ],
               "answerIndex": 0,
               "explain": {
@@ -985,10 +1688,18 @@
                 "prompt": {
                   "vi": "Tính năng cho phép một cổng bỏ qua quãng chờ của STP và phát ngay tên là gì?"
                 },
-                "accept": ["portfast", "port fast", "port-fast"],
-                "hintTopic": { "vi": "tên tính năng dành cho cổng cắm máy con" }
+                "accept": [
+                  "portfast",
+                  "port fast",
+                  "port-fast"
+                ],
+                "hintTopic": {
+                  "vi": "tên tính năng dành cho cổng cắm máy con"
+                }
               },
-              "hint": { "vi": "Ghép hai từ tiếng Anh: cổng và nhanh." },
+              "hint": {
+                "vi": "Ghép hai từ tiếng Anh: cổng và nhanh."
+              },
               "solution": {
                 "vi": "PortFast. Chỉ bật nó trên cổng chắc chắn nối tới máy con — cắm switch vào cổng đã bật PortFast là mời vòng lặp vào nhà."
               }
@@ -997,14 +1708,24 @@
               "question": {
                 "kind": "mcq",
                 "id": "m15-b5-prac-2",
-                "prompt": { "vi": "Bật PortFast trên cổng nối sang một switch khác thì rủi ro là gì?" },
+                "prompt": {
+                  "vi": "Bật PortFast trên cổng nối sang một switch khác thì rủi ro là gì?"
+                },
                 "choices": [
-                  { "vi": "Cổng phát ngay nên vòng lặp kịp hình thành trước khi STP nhận ra" },
-                  { "vi": "Cổng sẽ mất khả năng nhận BPDU nên switch kia không bao giờ thấy nó" },
-                  { "vi": "Switch sẽ tự hạ priority của mình xuống và giành làm root bridge" }
+                  {
+                    "vi": "Cổng phát ngay nên vòng lặp kịp hình thành trước khi STP nhận ra"
+                  },
+                  {
+                    "vi": "Cổng sẽ mất khả năng nhận BPDU nên switch kia không bao giờ thấy nó"
+                  },
+                  {
+                    "vi": "Switch sẽ tự hạ priority của mình xuống và giành làm root bridge"
+                  }
                 ],
                 "answerIndex": 0,
-                "hintTopic": { "vi": "cái mà quãng chờ của STP vốn dùng để ngăn" }
+                "hintTopic": {
+                  "vi": "cái mà quãng chờ của STP vốn dùng để ngăn"
+                }
               },
               "hint": {
                 "vi": "Quãng chờ ấy sinh ra để làm gì? Bỏ nó đi ở đúng chỗ nối switch-switch thì thứ đó có cơ hội xảy ra."
@@ -1044,7 +1765,9 @@
                   "cong noi may con cua nguoi dung"
                 ]
               },
-              "hint": { "vi": "Cổng nối XUỐNG thứ gì thì an toàn, còn nối NGANG thì nguy hiểm?" },
+              "hint": {
+                "vi": "Cổng nối XUỐNG thứ gì thì an toàn, còn nối NGANG thì nguy hiểm?"
+              },
               "solution": {
                 "vi": "Cổng nối tới máy con của người dùng. Cổng nối sang switch khác thì tuyệt đối không — đó là mời vòng lặp vào nhà."
               }
@@ -1055,9 +1778,25 @@
               "vi": "Giải thích bằng lời của bạn: PortFast giải quyết chuyện gì, và vì sao nó nguy hiểm nếu đặt nhầm chỗ?"
             },
             "keywords": [
-              ["chờ", "quãng chờ", "chậm", "ba mươi giây", "vài chục giây"],
-              ["máy con", "máy người dùng", "cổng access", "cắm máy"],
-              ["vòng lặp", "bão", "switch khác", "nối switch"]
+              [
+                "chờ",
+                "quãng chờ",
+                "chậm",
+                "ba mươi giây",
+                "vài chục giây"
+              ],
+              [
+                "máy con",
+                "máy người dùng",
+                "cổng access",
+                "cắm máy"
+              ],
+              [
+                "vòng lặp",
+                "bão",
+                "switch khác",
+                "nối switch"
+              ]
             ],
             "exampleAnswer": {
               "vi": "PortFast bỏ quãng chờ nghe ngóng của STP để máy vừa cắm dây là có mạng ngay. Nhưng nếu bật nhầm trên cổng nối sang switch khác thì cổng phát ngay lập tức, vòng lặp kịp hình thành và bão nổ ra trước khi cây kịp tính lại."
@@ -1067,9 +1806,15 @@
         {
           "type": "summary",
           "bullets": [
-            { "vi": "STP bắt cổng mới cắm chờ vài chục giây vì không biết đầu kia là máy hay switch." },
-            { "vi": "PortFast là lời khai cổng này nối máy con — cho phát ngay, khỏi chờ." },
-            { "vi": "Bật nhầm trên cổng nối switch là mở đường cho vòng lặp và bão." }
+            {
+              "vi": "STP bắt cổng mới cắm chờ vài chục giây vì không biết đầu kia là máy hay switch."
+            },
+            {
+              "vi": "PortFast là lời khai cổng này nối máy con — cho phát ngay, khỏi chờ."
+            },
+            {
+              "vi": "Bật nhầm trên cổng nối switch là mở đường cho vòng lặp và bão."
+            }
           ],
           "nextTeaser": {
             "vi": "Tầng 2 đã có người canh vòng lặp. Nhưng khi mạng lớn tới mức có hàng chục router, việc chỉ đường bằng tay sẽ sụp — module sau cho các router tự hỏi đường nhau."
@@ -1088,7 +1833,9 @@
       },
       "iconId": "icon-bao-quang-ba",
       "flashcard": {
-        "front": { "vi": "Bão quảng bá xảy ra khi nào, và vì sao nó không tự dừng?" },
+        "front": {
+          "vi": "Bão quảng bá xảy ra khi nào, và vì sao nó không tự dừng?"
+        },
         "back": {
           "vi": "Khi mạng tầng 2 có vòng kín. Khung quảng bá đi hết vòng lại quay về switch cũ và được phát tiếp; khung tầng 2 không có TTL nên không có gì bảo nó dừng, số bản sao nhân lên tới khi mạng tắc."
         }
@@ -1103,7 +1850,9 @@
       },
       "iconId": "icon-bpdu",
       "flashcard": {
-        "front": { "vi": "BPDU là gì và dùng để làm gì?" },
+        "front": {
+          "vi": "BPDU là gì và dùng để làm gì?"
+        },
         "back": {
           "vi": "Là khung riêng của các switch, phát đều đặn vài giây một lần để khoe mình là ai và cách gốc cây bao xa. Nhờ nó cả nhóm tự dựng được cây STP và biết ngay khi có dây đứt để tính lại."
         }
@@ -1118,7 +1867,9 @@
       },
       "iconId": "icon-root-bridge",
       "flashcard": {
-        "front": { "vi": "Luật bầu root bridge là gì, và vì sao không nên để mặc định?" },
+        "front": {
+          "vi": "Luật bầu root bridge là gì, và vì sao không nên để mặc định?"
+        },
         "back": {
           "vi": "Priority nhỏ hơn thắng; hòa thì MAC nhỏ hơn thắng. Để mặc định thì mọi switch cùng 32768 nên MAC quyết định, mà MAC nhỏ thường là thiết bị cũ nhất — cây lấy đúng cái yếu nhất làm trung tâm."
         }
@@ -1133,7 +1884,9 @@
       },
       "iconId": "icon-cong-chan",
       "flashcard": {
-        "front": { "vi": "Cổng bị STP chặn khác cổng hỏng ở chỗ nào?" },
+        "front": {
+          "vi": "Cổng bị STP chặn khác cổng hỏng ở chỗ nào?"
+        },
         "back": {
           "vi": "Cổng chặn vẫn nghe BPDU và sẽ tự mở khi đường chính đứt; nó chỉ không phát khung dữ liệu để cắt vòng. Bảng show spanning-tree ghi vai Altn, trạng thái BLK."
         }
@@ -1148,7 +1901,9 @@
       },
       "iconId": "icon-hoi-tu-lai",
       "flashcard": {
-        "front": { "vi": "Đường chính đứt thì ai ra lệnh cho cổng dự phòng mở ra?" },
+        "front": {
+          "vi": "Đường chính đứt thì ai ra lệnh cho cổng dự phòng mở ra?"
+        },
         "back": {
           "vi": "Không ai cả. Các switch mất BPDU trên sợi vừa đứt, tự tính lại cây, và cổng đang chặn chuyển sang phát. Thiết bị thật mất khoảng 30 tới 50 giây với STP đời đầu."
         }
@@ -1163,7 +1918,9 @@
       },
       "iconId": "icon-portfast",
       "flashcard": {
-        "front": { "vi": "PortFast dùng để làm gì, và cấm bật ở đâu?" },
+        "front": {
+          "vi": "PortFast dùng để làm gì, và cấm bật ở đâu?"
+        },
         "back": {
           "vi": "Cho cổng phát ngay khỏi chờ STP nghe ngóng, để máy vừa cắm dây là có mạng. Cấm bật trên cổng nối sang switch khác — cổng phát ngay thì vòng lặp kịp hình thành trước khi cây tính lại."
         }
@@ -1174,14 +1931,24 @@
     {
       "kind": "mcq",
       "id": "m15-mt-1",
-      "prompt": { "vi": "Vì sao vòng kín ở tầng 2 lại sinh ra bão quảng bá?" },
+      "prompt": {
+        "vi": "Vì sao vòng kín ở tầng 2 lại sinh ra bão quảng bá?"
+      },
       "choices": [
-        { "vi": "Vì khung tầng 2 không có bộ đếm chặng nên đi vòng mãi không tự chết" },
-        { "vi": "Vì switch phải giữ lại một bản sao của mỗi khung quảng bá để tra cứu" },
-        { "vi": "Vì hai sợi dây song song luôn nhân đôi băng thông của đường truyền" }
+        {
+          "vi": "Vì khung tầng 2 không có bộ đếm chặng nên đi vòng mãi không tự chết"
+        },
+        {
+          "vi": "Vì switch phải giữ lại một bản sao của mỗi khung quảng bá để tra cứu"
+        },
+        {
+          "vi": "Vì hai sợi dây song song luôn nhân đôi băng thông của đường truyền"
+        }
       ],
       "answerIndex": 0,
-      "hintTopic": { "vi": "thứ mà gói tin IP có còn khung tầng 2 thì không" },
+      "hintTopic": {
+        "vi": "thứ mà gói tin IP có còn khung tầng 2 thì không"
+      },
       "explain": {
         "vi": "Khung tầng 2 không có TTL. Đi hết vòng nó quay về switch cũ, được phát tiếp, và số bản sao nhân lên tới khi mạng tắc."
       }
@@ -1189,9 +1956,18 @@
     {
       "kind": "typed",
       "id": "m15-mt-2",
-      "prompt": { "vi": "Giao thức đứng canh vòng lặp ở tầng 2 tên viết tắt là gì?" },
-      "accept": ["stp", "spanning tree", "spanning-tree", "spanning tree protocol"],
-      "hintTopic": { "vi": "tên giao thức dựng cây không vòng" },
+      "prompt": {
+        "vi": "Giao thức đứng canh vòng lặp ở tầng 2 tên viết tắt là gì?"
+      },
+      "accept": [
+        "stp",
+        "spanning tree",
+        "spanning-tree",
+        "spanning tree protocol"
+      ],
+      "hintTopic": {
+        "vi": "tên giao thức dựng cây không vòng"
+      },
       "explain": {
         "vi": "STP — Spanning Tree Protocol. Nó chặn bớt cổng để cắt vòng chứ không đòi bạn rút dây dự phòng."
       }
@@ -1199,14 +1975,24 @@
     {
       "kind": "mcq",
       "id": "m15-mt-3",
-      "prompt": { "vi": "Switch nào thắng cuộc bầu root bridge?" },
+      "prompt": {
+        "vi": "Switch nào thắng cuộc bầu root bridge?"
+      },
       "choices": [
-        { "vi": "Switch có priority nhỏ nhất; hòa thì switch có MAC nhỏ hơn" },
-        { "vi": "Switch có priority lớn nhất; hòa thì switch có MAC lớn hơn" },
-        { "vi": "Switch có nhiều cổng đang cắm dây nhất trong cả nhóm" }
+        {
+          "vi": "Switch có priority nhỏ nhất; hòa thì switch có MAC nhỏ hơn"
+        },
+        {
+          "vi": "Switch có priority lớn nhất; hòa thì switch có MAC lớn hơn"
+        },
+        {
+          "vi": "Switch có nhiều cổng đang cắm dây nhất trong cả nhóm"
+        }
       ],
       "answerIndex": 0,
-      "hintTopic": { "vi": "hướng so sánh của cuộc bầu" },
+      "hintTopic": {
+        "vi": "hướng so sánh của cuộc bầu"
+      },
       "explain": {
         "vi": "Nhỏ hơn là mạnh hơn — cả với priority lẫn với MAC. Số cổng đang dùng không được tính tới."
       }
@@ -1214,22 +2000,42 @@
     {
       "kind": "typed",
       "id": "m15-mt-4",
-      "prompt": { "vi": "Trong bảng show spanning-tree, cổng đang bị chặn mang trạng thái viết tắt là gì?" },
-      "accept": ["blk", "BLK", "blocking"],
-      "hintTopic": { "vi": "cột trạng thái của bảng spanning-tree" },
-      "explain": { "vi": "BLK, viết tắt của blocking; cột vai của nó ghi Altn — cổng thay thế." }
+      "prompt": {
+        "vi": "Ca trực đêm nhắn: Switch-7 có một cổng bị STP giữ im để chống vòng lặp. Bạn dò tới cổng đó trong bảng trạng thái thì đọc được ba chữ cái nào?"
+      },
+      "accept": [
+        "blk",
+        "BLK",
+        "blocking"
+      ],
+      "hintTopic": {
+        "vi": "cột trạng thái của bảng spanning-tree"
+      },
+      "explain": {
+        "vi": "BLK, viết tắt của blocking; cột vai của nó ghi Altn — cổng thay thế."
+      }
     },
     {
       "kind": "mcq",
       "id": "m15-mt-5",
-      "prompt": { "vi": "Một cổng bị STP chặn có còn nghe BPDU không?" },
+      "prompt": {
+        "vi": "Một cổng bị STP chặn có còn nghe BPDU không?"
+      },
       "choices": [
-        { "vi": "Có, nhờ vậy nó biết lúc nào cây đổi để tự mở ra" },
-        { "vi": "Không, cổng bị chặn ngừng hẳn mọi hoạt động thu và phát" },
-        { "vi": "Không, trừ khi quản trị viên bật riêng chế độ nghe cho nó" }
+        {
+          "vi": "Có, nhờ vậy nó biết lúc nào cây đổi để tự mở ra"
+        },
+        {
+          "vi": "Không, cổng bị chặn ngừng hẳn mọi hoạt động thu và phát"
+        },
+        {
+          "vi": "Không, trừ khi quản trị viên bật riêng chế độ nghe cho nó"
+        }
       ],
       "answerIndex": 0,
-      "hintTopic": { "vi": "cách cổng dự phòng biết tới lượt mình" },
+      "hintTopic": {
+        "vi": "cách cổng dự phòng biết tới lượt mình"
+      },
       "explain": {
         "vi": "Cổng chặn chỉ ngừng phát khung dữ liệu; nó vẫn nghe BPDU, nếu không thì chẳng bao giờ biết đường chính đã đứt."
       }
@@ -1237,20 +2043,42 @@
     {
       "kind": "mcq",
       "id": "m15-mt-6",
-      "prompt": { "vi": "Ba switch nối thành tam giác và đã bật STP thì có mấy cổng bị chặn?" },
-      "choices": [{ "vi": "Một" }, { "vi": "Hai" }, { "vi": "Ba" }],
-      "answerIndex": 0,
-      "hintTopic": { "vi": "số dây thừa so với một cây không vòng" },
+      "prompt": {
+        "vi": "Phòng máy tầng hai có bốn switch nối thành một vòng vuông; sau đó có người kéo thêm một sợi chéo từ Switch-1 sang Switch-3. Cả nhóm đều đã bật STP. Vậy có mấy cổng nằm ở trạng thái chặn?"
+      },
+      "choices": [
+        {
+          "vi": "Một cổng"
+        },
+        {
+          "vi": "Hai cổng"
+        },
+        {
+          "vi": "Bốn cổng"
+        }
+      ],
+      "answerIndex": 1,
+      "hintTopic": {
+        "vi": "số sợi thừa so với một cây không vòng"
+      },
       "explain": {
-        "vi": "Ba switch chỉ cần hai sợi để liền mạch, tam giác có ba nên thừa một — STP chặn đúng một cổng."
+        "vi": "Bốn switch chỉ cần ba sợi là liền mạch mà không có vòng; sơ đồ này có năm sợi nên thừa hai — STP chặn hai cổng, mỗi sợi thừa một đầu."
       }
     },
     {
       "kind": "typed",
       "id": "m15-mt-7",
-      "prompt": { "vi": "Tính năng cho cổng bỏ qua quãng chờ của STP và phát ngay tên là gì?" },
-      "accept": ["portfast", "port fast", "port-fast"],
-      "hintTopic": { "vi": "tính năng dành cho cổng cắm máy con" },
+      "prompt": {
+        "vi": "Máy ở quầy lễ tân khởi động xong còn phải đứng chờ gần nửa phút mới vào được mạng nội bộ. Bạn bật tính năng nào trên cổng switch cắm máy đó để hết cảnh chờ?"
+      },
+      "accept": [
+        "portfast",
+        "port fast",
+        "port-fast"
+      ],
+      "hintTopic": {
+        "vi": "tính năng dành cho cổng cắm máy con"
+      },
       "explain": {
         "vi": "PortFast — chỉ bật trên cổng nối tới máy con; cắm switch vào cổng đã bật PortFast là mời vòng lặp vào nhà."
       }
@@ -1258,14 +2086,26 @@
     {
       "kind": "order",
       "id": "m15-mt-8",
-      "prompt": { "vi": "Xếp lại đúng trình tự những gì xảy ra khi sợi cáp chính giữa hai switch bị cắt." },
+      "prompt": {
+        "vi": "Xếp lại đúng trình tự những gì xảy ra khi sợi cáp chính giữa hai switch bị cắt."
+      },
       "items": [
-        { "vi": "Switch không còn nhận BPDU trên sợi vừa đứt" },
-        { "vi": "Các switch tính lại cây STP" },
-        { "vi": "Cổng đang bị chặn chuyển sang trạng thái phát" },
-        { "vi": "Lưu lượng đi theo lối vòng còn lại" }
+        {
+          "vi": "Switch không còn nhận BPDU trên sợi vừa đứt"
+        },
+        {
+          "vi": "Các switch tính lại cây STP"
+        },
+        {
+          "vi": "Cổng đang bị chặn chuyển sang trạng thái phát"
+        },
+        {
+          "vi": "Lưu lượng đi theo lối vòng còn lại"
+        }
       ],
-      "hintTopic": { "vi": "chuỗi phản ứng sau khi một sợi dây đứt" },
+      "hintTopic": {
+        "vi": "chuỗi phản ứng sau khi một sợi dây đứt"
+      },
       "explain": {
         "vi": "Mất tín hiệu BPDU là dấu hiệu đầu tiên; từ đó cả nhóm tính lại cây, cổng dự phòng mở ra, rồi lưu lượng mới đổi lối."
       }
@@ -1284,16 +2124,28 @@
               "kind": "pc",
               "id": "pc-a",
               "hostname": "PC-A (tầng 1)",
-              "port": { "id": "eth0", "mac": "AA:BB:CC:00:00:01" },
-              "ipConfig": { "ip": "192.168.1.10", "prefix": 24 },
+              "port": {
+                "id": "eth0",
+                "mac": "AA:BB:CC:00:00:01"
+              },
+              "ipConfig": {
+                "ip": "192.168.1.10",
+                "prefix": 24
+              },
               "gateway": null
             },
             {
               "kind": "pc",
               "id": "pc-b",
               "hostname": "PC-B (tầng 3)",
-              "port": { "id": "eth0", "mac": "AA:BB:CC:00:00:02" },
-              "ipConfig": { "ip": "192.168.1.20", "prefix": 24 },
+              "port": {
+                "id": "eth0",
+                "mac": "AA:BB:CC:00:00:02"
+              },
+              "ipConfig": {
+                "ip": "192.168.1.20",
+                "prefix": 24
+              },
               "gateway": null
             },
             {
@@ -1302,9 +2154,18 @@
               "hostname": "Switch-1",
               "bridgePriority": 32768,
               "ports": [
-                { "id": "p1", "vlan": 1 },
-                { "id": "p2", "vlan": 1 },
-                { "id": "p3", "vlan": 1 }
+                {
+                  "id": "p1",
+                  "vlan": 1
+                },
+                {
+                  "id": "p2",
+                  "vlan": 1
+                },
+                {
+                  "id": "p3",
+                  "vlan": 1
+                }
               ]
             },
             {
@@ -1313,9 +2174,18 @@
               "hostname": "Switch-2",
               "bridgePriority": 4096,
               "ports": [
-                { "id": "p1", "vlan": 1 },
-                { "id": "p2", "vlan": 1 },
-                { "id": "p3", "vlan": 1 }
+                {
+                  "id": "p1",
+                  "vlan": 1
+                },
+                {
+                  "id": "p2",
+                  "vlan": 1
+                },
+                {
+                  "id": "p3",
+                  "vlan": 1
+                }
               ]
             },
             {
@@ -1324,21 +2194,87 @@
               "hostname": "Switch-3",
               "bridgePriority": 32768,
               "ports": [
-                { "id": "p1", "vlan": 1 },
-                { "id": "p2", "vlan": 1 },
-                { "id": "p3", "vlan": 1 }
+                {
+                  "id": "p1",
+                  "vlan": 1
+                },
+                {
+                  "id": "p2",
+                  "vlan": 1
+                },
+                {
+                  "id": "p3",
+                  "vlan": 1
+                }
               ]
             }
           ],
           "links": [
-            { "id": "la", "a": { "deviceId": "pc-a", "portId": "eth0" }, "b": { "deviceId": "sw-1", "portId": "p1" } },
-            { "id": "lb", "a": { "deviceId": "pc-b", "portId": "eth0" }, "b": { "deviceId": "sw-3", "portId": "p1" } },
-            { "id": "ring-12", "a": { "deviceId": "sw-1", "portId": "p2" }, "b": { "deviceId": "sw-2", "portId": "p2" } },
-            { "id": "ring-23", "a": { "deviceId": "sw-2", "portId": "p3" }, "b": { "deviceId": "sw-3", "portId": "p2" } },
-            { "id": "ring-31", "a": { "deviceId": "sw-3", "portId": "p3" }, "b": { "deviceId": "sw-1", "portId": "p3" } }
+            {
+              "id": "la",
+              "a": {
+                "deviceId": "pc-a",
+                "portId": "eth0"
+              },
+              "b": {
+                "deviceId": "sw-1",
+                "portId": "p1"
+              }
+            },
+            {
+              "id": "lb",
+              "a": {
+                "deviceId": "pc-b",
+                "portId": "eth0"
+              },
+              "b": {
+                "deviceId": "sw-3",
+                "portId": "p1"
+              }
+            },
+            {
+              "id": "ring-12",
+              "a": {
+                "deviceId": "sw-1",
+                "portId": "p2"
+              },
+              "b": {
+                "deviceId": "sw-2",
+                "portId": "p2"
+              }
+            },
+            {
+              "id": "ring-23",
+              "a": {
+                "deviceId": "sw-2",
+                "portId": "p3"
+              },
+              "b": {
+                "deviceId": "sw-3",
+                "portId": "p2"
+              }
+            },
+            {
+              "id": "ring-31",
+              "a": {
+                "deviceId": "sw-3",
+                "portId": "p3"
+              },
+              "b": {
+                "deviceId": "sw-1",
+                "portId": "p3"
+              }
+            }
           ]
         },
-        "goals": [{ "kind": "ping", "from": "pc-a", "to": "pc-b", "expect": "reach" }],
+        "goals": [
+          {
+            "kind": "ping",
+            "from": "pc-a",
+            "to": "pc-b",
+            "expect": "reach"
+          }
+        ],
         "allow": {
           "addDevices": [],
           "removeDevices": false,
@@ -1357,16 +2293,28 @@
               "kind": "pc",
               "id": "pc-a",
               "hostname": "PC-A (tầng 1)",
-              "port": { "id": "eth0", "mac": "AA:BB:CC:00:00:01" },
-              "ipConfig": { "ip": "192.168.1.10", "prefix": 24 },
+              "port": {
+                "id": "eth0",
+                "mac": "AA:BB:CC:00:00:01"
+              },
+              "ipConfig": {
+                "ip": "192.168.1.10",
+                "prefix": 24
+              },
               "gateway": null
             },
             {
               "kind": "pc",
               "id": "pc-b",
               "hostname": "PC-B (tầng 3)",
-              "port": { "id": "eth0", "mac": "AA:BB:CC:00:00:02" },
-              "ipConfig": { "ip": "192.168.1.20", "prefix": 24 },
+              "port": {
+                "id": "eth0",
+                "mac": "AA:BB:CC:00:00:02"
+              },
+              "ipConfig": {
+                "ip": "192.168.1.20",
+                "prefix": 24
+              },
               "gateway": null
             },
             {
@@ -1375,9 +2323,18 @@
               "hostname": "Switch-1",
               "bridgePriority": 32768,
               "ports": [
-                { "id": "p1", "vlan": 1 },
-                { "id": "p2", "vlan": 1 },
-                { "id": "p3", "vlan": 1 }
+                {
+                  "id": "p1",
+                  "vlan": 1
+                },
+                {
+                  "id": "p2",
+                  "vlan": 1
+                },
+                {
+                  "id": "p3",
+                  "vlan": 1
+                }
               ]
             },
             {
@@ -1386,9 +2343,18 @@
               "hostname": "Switch-2",
               "bridgePriority": 4096,
               "ports": [
-                { "id": "p1", "vlan": 1 },
-                { "id": "p2", "vlan": 1 },
-                { "id": "p3", "vlan": 1 }
+                {
+                  "id": "p1",
+                  "vlan": 1
+                },
+                {
+                  "id": "p2",
+                  "vlan": 1
+                },
+                {
+                  "id": "p3",
+                  "vlan": 1
+                }
               ]
             },
             {
@@ -1397,22 +2363,83 @@
               "hostname": "Switch-3",
               "bridgePriority": 32768,
               "ports": [
-                { "id": "p1", "vlan": 1 },
-                { "id": "p2", "vlan": 1 },
-                { "id": "p3", "vlan": 1 }
+                {
+                  "id": "p1",
+                  "vlan": 1
+                },
+                {
+                  "id": "p2",
+                  "vlan": 1
+                },
+                {
+                  "id": "p3",
+                  "vlan": 1
+                }
               ]
             }
           ],
           "links": [
-            { "id": "la", "a": { "deviceId": "pc-a", "portId": "eth0" }, "b": { "deviceId": "sw-1", "portId": "p1" } },
-            { "id": "lb", "a": { "deviceId": "pc-b", "portId": "eth0" }, "b": { "deviceId": "sw-3", "portId": "p1" } },
-            { "id": "ring-12", "a": { "deviceId": "sw-1", "portId": "p2" }, "b": { "deviceId": "sw-2", "portId": "p2" } },
-            { "id": "ring-23", "a": { "deviceId": "sw-2", "portId": "p3" }, "b": { "deviceId": "sw-3", "portId": "p2" } },
-            { "id": "ring-31", "a": { "deviceId": "sw-3", "portId": "p3" }, "b": { "deviceId": "sw-1", "portId": "p3" } }
+            {
+              "id": "la",
+              "a": {
+                "deviceId": "pc-a",
+                "portId": "eth0"
+              },
+              "b": {
+                "deviceId": "sw-1",
+                "portId": "p1"
+              }
+            },
+            {
+              "id": "lb",
+              "a": {
+                "deviceId": "pc-b",
+                "portId": "eth0"
+              },
+              "b": {
+                "deviceId": "sw-3",
+                "portId": "p1"
+              }
+            },
+            {
+              "id": "ring-12",
+              "a": {
+                "deviceId": "sw-1",
+                "portId": "p2"
+              },
+              "b": {
+                "deviceId": "sw-2",
+                "portId": "p2"
+              }
+            },
+            {
+              "id": "ring-23",
+              "a": {
+                "deviceId": "sw-2",
+                "portId": "p3"
+              },
+              "b": {
+                "deviceId": "sw-3",
+                "portId": "p2"
+              }
+            },
+            {
+              "id": "ring-31",
+              "a": {
+                "deviceId": "sw-3",
+                "portId": "p3"
+              },
+              "b": {
+                "deviceId": "sw-1",
+                "portId": "p3"
+              }
+            }
           ]
         }
       },
-      "hintTopic": { "vi": "thứ canh chừng vòng lặp trên sơ đồ" },
+      "hintTopic": {
+        "vi": "thứ canh chừng vòng lặp trên sơ đồ"
+      },
       "explain": {
         "vi": "Bật Spanning Tree là đủ: switch tự chặn một cổng để cắt vòng, mạng sống lại mà sợi dây dự phòng vẫn nằm nguyên chờ ngày cần tới."
       }
@@ -1431,16 +2458,28 @@
               "kind": "pc",
               "id": "pc-a",
               "hostname": "PC-A (tầng 1)",
-              "port": { "id": "eth0", "mac": "AA:BB:CC:00:00:01" },
-              "ipConfig": { "ip": "192.168.1.10", "prefix": 24 },
+              "port": {
+                "id": "eth0",
+                "mac": "AA:BB:CC:00:00:01"
+              },
+              "ipConfig": {
+                "ip": "192.168.1.10",
+                "prefix": 24
+              },
               "gateway": null
             },
             {
               "kind": "pc",
               "id": "pc-b",
               "hostname": "PC-B (tầng 3)",
-              "port": { "id": "eth0", "mac": "AA:BB:CC:00:00:02" },
-              "ipConfig": { "ip": "192.168.1.20", "prefix": 24 },
+              "port": {
+                "id": "eth0",
+                "mac": "AA:BB:CC:00:00:02"
+              },
+              "ipConfig": {
+                "ip": "192.168.1.20",
+                "prefix": 24
+              },
               "gateway": null
             },
             {
@@ -1449,9 +2488,18 @@
               "hostname": "Switch-1",
               "bridgePriority": 32768,
               "ports": [
-                { "id": "p1", "vlan": 1 },
-                { "id": "p2", "vlan": 1 },
-                { "id": "p3", "vlan": 1 }
+                {
+                  "id": "p1",
+                  "vlan": 1
+                },
+                {
+                  "id": "p2",
+                  "vlan": 1
+                },
+                {
+                  "id": "p3",
+                  "vlan": 1
+                }
               ]
             },
             {
@@ -1460,9 +2508,18 @@
               "hostname": "Switch-2",
               "bridgePriority": 4096,
               "ports": [
-                { "id": "p1", "vlan": 1 },
-                { "id": "p2", "vlan": 1 },
-                { "id": "p3", "vlan": 1 }
+                {
+                  "id": "p1",
+                  "vlan": 1
+                },
+                {
+                  "id": "p2",
+                  "vlan": 1
+                },
+                {
+                  "id": "p3",
+                  "vlan": 1
+                }
               ]
             },
             {
@@ -1471,25 +2528,99 @@
               "hostname": "Switch-3",
               "bridgePriority": 32768,
               "ports": [
-                { "id": "p1", "vlan": 1 },
-                { "id": "p2", "vlan": 1 },
-                { "id": "p3", "vlan": 1 }
+                {
+                  "id": "p1",
+                  "vlan": 1
+                },
+                {
+                  "id": "p2",
+                  "vlan": 1
+                },
+                {
+                  "id": "p3",
+                  "vlan": 1
+                }
               ]
             }
           ],
           "links": [
-            { "id": "la", "a": { "deviceId": "pc-a", "portId": "eth0" }, "b": { "deviceId": "sw-1", "portId": "p1" } },
-            { "id": "lb", "a": { "deviceId": "pc-b", "portId": "eth0" }, "b": { "deviceId": "sw-3", "portId": "p1" } },
-            { "id": "ring-12", "a": { "deviceId": "sw-1", "portId": "p2" }, "b": { "deviceId": "sw-2", "portId": "p2" } },
-            { "id": "ring-23", "a": { "deviceId": "sw-2", "portId": "p3" }, "b": { "deviceId": "sw-3", "portId": "p2" } },
-            { "id": "ring-31", "a": { "deviceId": "sw-3", "portId": "p3" }, "b": { "deviceId": "sw-1", "portId": "p3" } }
+            {
+              "id": "la",
+              "a": {
+                "deviceId": "pc-a",
+                "portId": "eth0"
+              },
+              "b": {
+                "deviceId": "sw-1",
+                "portId": "p1"
+              }
+            },
+            {
+              "id": "lb",
+              "a": {
+                "deviceId": "pc-b",
+                "portId": "eth0"
+              },
+              "b": {
+                "deviceId": "sw-3",
+                "portId": "p1"
+              }
+            },
+            {
+              "id": "ring-12",
+              "a": {
+                "deviceId": "sw-1",
+                "portId": "p2"
+              },
+              "b": {
+                "deviceId": "sw-2",
+                "portId": "p2"
+              }
+            },
+            {
+              "id": "ring-23",
+              "a": {
+                "deviceId": "sw-2",
+                "portId": "p3"
+              },
+              "b": {
+                "deviceId": "sw-3",
+                "portId": "p2"
+              }
+            },
+            {
+              "id": "ring-31",
+              "a": {
+                "deviceId": "sw-3",
+                "portId": "p3"
+              },
+              "b": {
+                "deviceId": "sw-1",
+                "portId": "p3"
+              }
+            }
           ]
         },
         "deviceId": "sw-3",
-        "goals": [{ "kind": "viewed", "command": "show spanning-tree", "deviceId": "sw-3" }],
-        "solution": [{ "deviceId": "sw-3", "lines": ["show spanning-tree"] }]
+        "goals": [
+          {
+            "kind": "viewed",
+            "command": "show spanning-tree",
+            "deviceId": "sw-3"
+          }
+        ],
+        "solution": [
+          {
+            "deviceId": "sw-3",
+            "lines": [
+              "show spanning-tree"
+            ]
+          }
+        ]
       },
-      "hintTopic": { "vi": "lệnh xem trạng thái cây STP" },
+      "hintTopic": {
+        "vi": "lệnh xem trạng thái cây STP"
+      },
       "explain": {
         "vi": "show spanning-tree. Bảng cho biết gốc cây là Switch-2 (priority 4096) và cổng p3 của Switch-3 đang mang vai Altn, trạng thái BLK."
       }
@@ -1500,8 +2631,17 @@
       "prompt": {
         "vi": "Đọc bảng: ba switch nối tam giác, Switch-1 và Switch-3 giữ priority mặc định 32768, Switch-2 được đặt 4096. Switch nào làm root bridge?"
       },
-      "accept": ["switch-2", "switch 2", "sw-2", "sw 2", "switch2", "con switch đặt 4096"],
-      "hintTopic": { "vi": "luật bầu gốc cây: con số priority nào thắng" },
+      "accept": [
+        "switch-2",
+        "switch 2",
+        "sw-2",
+        "sw 2",
+        "switch2",
+        "con switch đặt 4096"
+      ],
+      "hintTopic": {
+        "vi": "luật bầu gốc cây: con số priority nào thắng"
+      },
       "explain": {
         "vi": "Switch-2 — priority NHỎ HƠN thắng (4096 < 32768). Chỉ khi priority hòa nhau thì địa chỉ MAC mới được đem ra phân định — tên máy không bao giờ được tính tới."
       }
@@ -1509,24 +2649,43 @@
     {
       "kind": "mcq",
       "id": "m15-mt-11",
-      "prompt": { "vi": "Bật PortFast trên cổng nối sang một switch khác thì chuyện gì có thể xảy ra?" },
+      "prompt": {
+        "vi": "Một nhân viên tự cắm chiếc switch mini dưới bàn vào ổ mạng tường, mà cổng switch tương ứng đã bật PortFast từ lâu. Điều gì có thể ập tới ngay sau đó?"
+      },
       "choices": [
-        { "vi": "Cổng phát ngay nên vòng lặp kịp hình thành trước khi STP nhận ra" },
-        { "vi": "Cổng ngừng nhận BPDU nên switch bên kia không bao giờ thấy nó" },
-        { "vi": "Switch tự hạ priority của mình xuống để giành làm root bridge" }
+        {
+          "vi": "Cổng cho khung đi ngay, vòng lặp kịp thành hình trước khi cây tính lại"
+        },
+        {
+          "vi": "Switch mini bị khoá vì PortFast chỉ cho đúng một địa chỉ MAC qua cổng"
+        },
+        {
+          "vi": "Cả hai switch cùng ngừng gửi BPDU nên cây STP đứng nguyên trạng thái cũ"
+        }
       ],
       "answerIndex": 0,
-      "hintTopic": { "vi": "công dụng của quãng chờ mà PortFast bỏ đi" },
+      "hintTopic": {
+        "vi": "công dụng của quãng chờ mà PortFast bỏ đi"
+      },
       "explain": {
-        "vi": "Quãng chờ sinh ra chính để phát hiện vòng lặp. Bỏ nó ở cổng nối switch là mở đường cho bão nổ ra trước khi cây kịp tính lại."
+        "vi": "Quãng chờ sinh ra chính để phát hiện vòng lặp. Bỏ nó ở cổng có switch cắm vào là mở đường cho bão nổ ra trước khi cây kịp tính lại."
       }
     },
     {
       "kind": "typed",
       "id": "m15-mt-12",
-      "prompt": { "vi": "Các switch trao đổi với nhau bằng loại khung nào để dựng và cập nhật cây STP? (viết tắt bốn chữ cái)" },
-      "accept": ["bpdu", "BPDU", "bridge protocol data unit", "khung bpdu"],
-      "hintTopic": { "vi": "tiếng điểm danh giữa các switch" },
+      "prompt": {
+        "vi": "Các switch trao đổi với nhau bằng loại khung nào để dựng và cập nhật cây STP? (viết tắt bốn chữ cái)"
+      },
+      "accept": [
+        "bpdu",
+        "BPDU",
+        "bridge protocol data unit",
+        "khung bpdu"
+      ],
+      "hintTopic": {
+        "vi": "tiếng điểm danh giữa các switch"
+      },
       "explain": {
         "vi": "BPDU — Bridge Protocol Data Unit, phát đều đặn vài giây một lần; im tiếng trên một hướng là cả nhóm biết có dây đứt."
       }

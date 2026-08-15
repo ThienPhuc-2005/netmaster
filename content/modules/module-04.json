@@ -2,20 +2,75 @@
   "id": "module-4",
   "order": 4,
   "part": "B",
-  "letter": { "vi": "Mấy dòng để lại cho ca sau. Lúc mở module, switch với router trong mắt bạn đều là cái hộp có đèn nháy; giờ bạn nói được cái nào nhớ mặt bằng địa chỉ MAC, cái nào bắc cầu giữa hai mạng, và vì sao dựng VLAN là dựng tường chứ không phải cắm thêm dây. Bạn cũng đã tự tay chia hai xóm trên cùng một switch và thấy tận mắt bức tường đó chặn thật. Nghề này bắt đầu từ đúng chỗ đó: biết thiết bị nào chịu trách nhiệm gì." },
-  "title": { "vi": "Switch, Router, VLAN — Thiết bị trong làng" },
+  "letter": {
+    "vi": "Mấy dòng để lại cho ca sau. Lúc mở module, switch với router trong mắt bạn đều là cái hộp có đèn nháy; giờ bạn nói được cái nào nhớ mặt bằng địa chỉ MAC, cái nào bắc cầu giữa hai mạng, và vì sao dựng VLAN là dựng tường chứ không phải cắm thêm dây. Bạn cũng đã tự tay chia hai xóm trên cùng một switch và thấy tận mắt bức tường đó chặn thật. Nghề này bắt đầu từ đúng chỗ đó: biết thiết bị nào chịu trách nhiệm gì."
+  },
+  "title": {
+    "vi": "Switch, Router, VLAN — Thiết bị trong làng"
+  },
   "stages": [
-    { "id": "m4-chang-1", "title": { "vi": "Sợi dây, rồi tới bưu cục" }, "lessonIds": ["m4-bai-7", "m4-bai-1"] },
-    { "id": "m4-chang-2", "title": { "vi": "Cuốn sổ nhớ mặt" }, "lessonIds": ["m4-bai-2"] },
-    { "id": "m4-chang-3", "title": { "vi": "Hỏi tên trước khi trao" }, "lessonIds": ["m4-bai-3"] },
-    { "id": "m4-chang-4", "title": { "vi": "Dựng tường chia xóm" }, "lessonIds": ["m4-bai-4"] },
-    { "id": "m4-chang-5", "title": { "vi": "Bắc cầu qua tường" }, "lessonIds": ["m4-bai-5"] },
-    { "id": "m4-chang-6", "title": { "vi": "Gọi tên cái thang" }, "lessonIds": ["m4-bai-6"] }
+    {
+      "id": "m4-chang-1",
+      "title": {
+        "vi": "Sợi dây, rồi tới bưu cục"
+      },
+      "lessonIds": [
+        "m4-bai-7",
+        "m4-bai-1"
+      ]
+    },
+    {
+      "id": "m4-chang-2",
+      "title": {
+        "vi": "Cuốn sổ nhớ mặt"
+      },
+      "lessonIds": [
+        "m4-bai-2"
+      ]
+    },
+    {
+      "id": "m4-chang-3",
+      "title": {
+        "vi": "Hỏi tên trước khi trao"
+      },
+      "lessonIds": [
+        "m4-bai-3"
+      ]
+    },
+    {
+      "id": "m4-chang-4",
+      "title": {
+        "vi": "Dựng tường chia xóm"
+      },
+      "lessonIds": [
+        "m4-bai-4"
+      ]
+    },
+    {
+      "id": "m4-chang-5",
+      "title": {
+        "vi": "Bắc cầu qua tường"
+      },
+      "lessonIds": [
+        "m4-bai-5"
+      ]
+    },
+    {
+      "id": "m4-chang-6",
+      "title": {
+        "vi": "Gọi tên cái thang"
+      },
+      "lessonIds": [
+        "m4-bai-6"
+      ]
+    }
   ],
   "lessons": [
     {
       "id": "m4-bai-7",
-      "missionTitle": { "vi": "Khám sợi dây trước đã" },
+      "missionTitle": {
+        "vi": "Khám sợi dây trước đã"
+      },
       "steps": [
         {
           "type": "hook",
@@ -30,14 +85,24 @@
             {
               "kind": "mcq",
               "id": "m4-b7-pre-1",
-              "prompt": { "vi": "Đoán thử: một sợi cáp mạng đồng kéo thẳng từ tủ mạng tới cái máy cuối hành lang. Dài tới đâu thì tín hiệu hết bảo đảm?" },
+              "prompt": {
+                "vi": "Đoán thử: một sợi cáp mạng đồng kéo thẳng từ tủ mạng tới cái máy cuối hành lang. Dài tới đâu thì tín hiệu hết bảo đảm?"
+              },
               "choices": [
-                { "vi": "Khoảng 30 mét, quá đó là phải nối thêm" },
-                { "vi": "Khoảng 100 mét cho một đoạn cáp đồng" },
-                { "vi": "Không có giới hạn, chỉ cần dây còn liền" }
+                {
+                  "vi": "Khoảng 30 mét, quá đó là phải nối thêm"
+                },
+                {
+                  "vi": "Khoảng 100 mét cho một đoạn cáp đồng"
+                },
+                {
+                  "vi": "Không có giới hạn, chỉ cần dây còn liền"
+                }
               ],
               "answerIndex": 1,
-              "hintTopic": { "vi": "cữ chiều dài của một đoạn cáp đồng" },
+              "hintTopic": {
+                "vi": "cữ chiều dài của một đoạn cáp đồng"
+              },
               "explain": {
                 "vi": "Khoảng 100 mét cho một đoạn cáp đồng — con số này nghề nào cũng thuộc. Và đó là tổng của cả đoạn chạy trong tường lẫn hai đoạn dây nhảy hai đầu, nên người ta thường chỉ đi 90 mét trong tường cho chắc."
               }
@@ -93,9 +158,17 @@
               "question": {
                 "kind": "typed",
                 "id": "m4-b7-prac-1",
-                "prompt": { "vi": "Cần kéo mạng sang tòa nhà bên kia sân, đo ra chừng 160 mét. Đoạn này phải dùng loại cáp nào?" },
-                "accept": ["cáp quang", "sợi quang", "fiber"],
-                "hintTopic": { "vi": "loại cáp dành cho đoạn dài quá cữ 100 mét" }
+                "prompt": {
+                  "vi": "Cần kéo mạng sang tòa nhà bên kia sân, đo ra chừng 160 mét. Đoạn này phải dùng loại cáp nào?"
+                },
+                "accept": [
+                  "cáp quang",
+                  "sợi quang",
+                  "fiber"
+                ],
+                "hintTopic": {
+                  "vi": "loại cáp dành cho đoạn dài quá cữ 100 mét"
+                }
               },
               "hint": {
                 "vi": "Cáp đồng hết cữ ở 100 mét cho một đoạn. Loại cáp còn lại chở tín hiệu bằng ánh sáng."
@@ -109,16 +182,28 @@
               "question": {
                 "kind": "mcq",
                 "id": "m4-b7-prac-2",
-                "prompt": { "vi": "Người dùng báo máy không vào được mạng. Bạn nhìn chỗ cắm dây ở tủ mạng: đèn không sáng chút nào. Việc đáng làm tiếp theo là gì?" },
+                "prompt": {
+                  "vi": "Người dùng báo máy không vào được mạng. Bạn nhìn chỗ cắm dây ở tủ mạng: đèn không sáng chút nào. Việc đáng làm tiếp theo là gì?"
+                },
                 "choices": [
-                  { "vi": "Đổi sang cổng còn trống bên cạnh rồi xem đèn" },
-                  { "vi": "Đặt lại địa chỉ IP tĩnh cho máy đó xem sao" },
-                  { "vi": "Khởi động lại máy rồi thử vào mạng lần nữa" }
+                  {
+                    "vi": "Đổi sang cổng còn trống bên cạnh rồi xem đèn"
+                  },
+                  {
+                    "vi": "Đặt lại một địa chỉ IP tĩnh cho máy đó xem sao"
+                  },
+                  {
+                    "vi": "Khởi động lại máy rồi thử vào mạng lần nữa"
+                  }
                 ],
                 "answerIndex": 0,
-                "hintTopic": { "vi": "thứ tự khám: dây và cổng trước, phần mềm sau" }
+                "hintTopic": {
+                  "vi": "thứ tự khám: dây và cổng trước, phần mềm sau"
+                }
               },
-              "hint": { "vi": "Đèn chưa sáng nghĩa là sợi dây còn chưa nối được với nhau. Sửa thứ ngồi trên nó thì được ích gì?" },
+              "hint": {
+                "vi": "Đèn chưa sáng nghĩa là sợi dây còn chưa nối được với nhau. Sửa thứ ngồi trên nó thì được ích gì?"
+              },
               "solution": {
                 "vi": "Đổi cổng rồi nhìn đèn. Đèn tối là chuyện của dây, đầu bấm và cổng — địa chỉ IP hay việc khởi động lại đều nằm phía trên, chưa tới lượt chúng."
               },
@@ -128,9 +213,16 @@
               "question": {
                 "kind": "typed",
                 "id": "m4-b7-prac-3",
-                "prompt": { "vi": "Dây liền, đèn sáng, máy vẫn vào được mạng — nhưng chép file thì chậm dai dẳng và thỉnh thoảng rớt. Hai đầu sợi dây nhiều khả năng đang lệch nhau ở chuyện gì?" },
-                "accept": ["duplex", "song công"],
-                "hintTopic": { "vi": "thỏa thuận nói-nghe giữa hai đầu dây" }
+                "prompt": {
+                  "vi": "Dây liền, đèn sáng, máy vẫn vào được mạng — nhưng chép file thì chậm dai dẳng và thỉnh thoảng rớt. Hai đầu sợi dây nhiều khả năng đang lệch nhau ở chuyện gì?"
+                },
+                "accept": [
+                  "duplex",
+                  "song công"
+                ],
+                "hintTopic": {
+                  "vi": "thỏa thuận nói-nghe giữa hai đầu dây"
+                }
               },
               "hint": {
                 "vi": "Lúc cắm dây, hai đầu thỏa thuận hai chuyện: chạy nhanh cỡ nào, và có được vừa nói vừa nghe không. Chuyện thứ hai tên là gì?"
@@ -149,10 +241,21 @@
               "question": {
                 "kind": "typed",
                 "id": "m4-b7-ret-1",
-                "prompt": { "vi": "Không nhìn lại bài: một đoạn cáp đồng chạy được tối đa bao nhiêu mét?" },
-                "accept": ["100 mét", "100m", "một trăm mét", "100 m", "100 met", "khoảng 100 m"]
+                "prompt": {
+                  "vi": "Không nhìn lại bài: một đoạn cáp đồng chạy được tối đa bao nhiêu mét?"
+                },
+                "accept": [
+                  "100 mét",
+                  "100m",
+                  "một trăm mét",
+                  "100 m",
+                  "100 met",
+                  "khoảng 100 m"
+                ]
               },
-              "hint": { "vi": "Con số tròn trịa mà người trong nghề ai cũng thuộc." },
+              "hint": {
+                "vi": "Con số tròn trịa mà người trong nghề ai cũng thuộc."
+              },
               "solution": {
                 "vi": "Khoảng 100 mét cho một đoạn — tính cả dây chạy trong tường lẫn hai đoạn dây nhảy ở hai đầu."
               }
@@ -161,10 +264,17 @@
               "question": {
                 "kind": "typed",
                 "id": "m4-b7-ret-2",
-                "prompt": { "vi": "Không nhìn lại bài: hai đầu một sợi dây thỏa thuận lệch nhau khiến mạng vẫn thông nhưng chậm và rớt gói. Chuyện lệch đó tên là gì?" },
-                "accept": ["duplex", "song công"]
+                "prompt": {
+                  "vi": "Không nhìn lại bài: hai đầu một sợi dây thỏa thuận lệch nhau khiến mạng vẫn thông nhưng chậm và rớt gói. Chuyện lệch đó tên là gì?"
+                },
+                "accept": [
+                  "duplex",
+                  "song công"
+                ]
               },
-              "hint": { "vi": "Đầu này chạy full, đầu kia chạy half." },
+              "hint": {
+                "vi": "Đầu này chạy full, đầu kia chạy half."
+              },
               "solution": {
                 "vi": "Duplex lệch nhau. Bên chạy half coi mọi lần bên kia nói cùng lúc là đụng độ nên bỏ gói rồi gửi lại."
               }
@@ -175,9 +285,25 @@
               "vi": "Giải thích bằng lời của bạn: vì sao gặp sự cố mạng, người trực lâu năm nhìn đèn ở chỗ cắm dây trước khi đụng tới địa chỉ IP?"
             },
             "keywords": [
-              ["đèn", "đèn link", "link"],
-              ["dây", "sợi dây", "đầu bấm", "cổng"],
-              ["chưa nối", "vô nghĩa", "phía trên", "ngồi trên", "mất công", "nằm trên"]
+              [
+                "đèn",
+                "đèn link",
+                "link"
+              ],
+              [
+                "dây",
+                "sợi dây",
+                "đầu bấm",
+                "cổng"
+              ],
+              [
+                "chưa nối",
+                "vô nghĩa",
+                "phía trên",
+                "ngồi trên",
+                "mất công",
+                "nằm trên"
+              ]
             ],
             "exampleAnswer": {
               "vi": "Vì cái đèn cho biết sợi dây đã nối được với nhau hay chưa, mà mọi thứ khác đều ngồi trên sợi dây đó. Đèn tối thì địa chỉ IP có đúng tuyệt đối mạng vẫn không chạy, nên sửa ở phía trên chỉ mất công. Nhìn đèn mất hai giây và nó cắt ngay được một nửa số nghi ngờ."
@@ -187,9 +313,15 @@
         {
           "type": "summary",
           "bullets": [
-            { "vi": "Một đoạn cáp đồng đi tối đa khoảng 100 mét; xa hơn thì tới lượt cáp quang." },
-            { "vi": "Đèn ở chỗ cắm dây là lời khai đầu tiên: đèn tối thì lỗi nằm ở dây, đầu bấm hoặc cổng." },
-            { "vi": "Đèn sáng mà mạng vẫn ì ạch và rớt gói lai rai: nghi hai đầu lệch duplex." }
+            {
+              "vi": "Một đoạn cáp đồng đi tối đa khoảng 100 mét; xa hơn thì tới lượt cáp quang."
+            },
+            {
+              "vi": "Đèn ở chỗ cắm dây là lời khai đầu tiên: đèn tối thì lỗi nằm ở dây, đầu bấm hoặc cổng."
+            },
+            {
+              "vi": "Đèn sáng mà mạng vẫn ì ạch và rớt gói lai rai: nghi hai đầu lệch duplex."
+            }
           ],
           "nextTeaser": {
             "vi": "Sợi dây thì có rồi, nhưng nối thẳng từng cặp cho 10 máy hết tới 45 sợi. Bài sau: cái hộp nhiều cổng ở tủ mạng tên là gì, và vì sao có nó thì 10 máy chỉ cần 10 sợi."
@@ -199,7 +331,9 @@
     },
     {
       "id": "m4-bai-1",
-      "missionTitle": { "vi": "Gom cả phòng về một mối" },
+      "missionTitle": {
+        "vi": "Gom cả phòng về một mối"
+      },
       "steps": [
         {
           "type": "hook",
@@ -214,11 +348,19 @@
             {
               "kind": "mcq",
               "id": "m4-b1-pre-1",
-              "prompt": { "vi": "Đoán thử: cái hộp mà mọi máy trong phòng đều cắm dây vào, nó làm gì với dữ liệu đi qua?" },
+              "prompt": {
+                "vi": "Đoán thử: cái hộp mà mọi máy trong phòng đều cắm dây vào, nó làm gì với dữ liệu đi qua?"
+              },
               "choices": [
-                { "vi": "Phát mọi thứ cho mọi máy, máy nào không phải của mình thì tự bỏ qua" },
-                { "vi": "Nhìn địa chỉ rồi chuyển đúng cho một máy" },
-                { "vi": "Lưu lại toàn bộ rồi gửi vào cuối ngày" }
+                {
+                  "vi": "Phát mọi thứ cho mọi máy, máy nào không phải của mình thì tự bỏ qua"
+                },
+                {
+                  "vi": "Nhìn địa chỉ trên thư rồi chuyển đúng cho một máy"
+                },
+                {
+                  "vi": "Lưu lại toàn bộ rồi gửi vào cuối ngày"
+                }
               ],
               "answerIndex": 1,
               "explain": {
@@ -256,9 +398,17 @@
               "question": {
                 "kind": "typed",
                 "id": "m4-b1-prac-1",
-                "prompt": { "vi": "Thiết bị đóng vai bưu cục — nối nhiều máy trong CÙNG một mạng lại với nhau — gọi là gì?" },
-                "accept": ["switch", "bộ chuyển mạch", "switches"],
-                "hintTopic": { "vi": "cái hộp nhiều cổng mà mọi máy trong phòng cắm dây vào" }
+                "prompt": {
+                  "vi": "Thiết bị đóng vai bưu cục — nối nhiều máy trong CÙNG một mạng lại với nhau — gọi là gì?"
+                },
+                "accept": [
+                  "switch",
+                  "bộ chuyển mạch",
+                  "switches"
+                ],
+                "hintTopic": {
+                  "vi": "cái hộp nhiều cổng mà mọi máy trong phòng cắm dây vào"
+                }
               },
               "hint": {
                 "vi": "Nó là hộp có nhiều cổng, mỗi máy cắm một sợi. Tên tiếng Anh của nó cũng là từ mình vẫn dùng cho công tắc điện."
@@ -271,11 +421,25 @@
               "question": {
                 "kind": "mcq",
                 "id": "m4-b1-prac-2",
-                "prompt": { "vi": "Phòng đang có 6 máy nối qua switch. Thêm máy thứ 7 thì phải kéo thêm mấy sợi dây?" },
-                "choices": [{ "vi": "6 sợi — nối tới từng máy cũ" }, { "vi": "1 sợi — cắm vào switch là xong" }, { "vi": "7 sợi" }],
+                "prompt": {
+                  "vi": "Phòng đang có 6 máy nối qua switch. Thêm máy thứ 7 thì phải kéo thêm mấy sợi dây?"
+                },
+                "choices": [
+                  {
+                    "vi": "6 sợi — nối tới từng máy cũ"
+                  },
+                  {
+                    "vi": "1 sợi — cắm vào switch là xong"
+                  },
+                  {
+                    "vi": "7 sợi"
+                  }
+                ],
                 "answerIndex": 1
               },
-              "hint": { "vi": "Máy mới cần nói chuyện với ai? Và nó cần chạm tới ai để làm được điều đó?" },
+              "hint": {
+                "vi": "Máy mới cần nói chuyện với ai? Và nó cần chạm tới ai để làm được điều đó?"
+              },
               "solution": {
                 "vi": "Đúng một sợi. Máy mới chỉ cần chạm tới switch, còn switch đã chạm tới mọi máy khác rồi — đó chính là cái lợi của hình sao."
               }
@@ -289,19 +453,45 @@
               "question": {
                 "kind": "typed",
                 "id": "m4-b1-ret-1",
-                "prompt": { "vi": "Không nhìn lại bài: tên thiết bị nối nhiều máy trong cùng một mạng là gì?" },
-                "accept": ["switch", "bộ chuyển mạch", "switches"]
+                "prompt": {
+                  "vi": "Không nhìn lại bài: tên thiết bị nối nhiều máy trong cùng một mạng là gì?"
+                },
+                "accept": [
+                  "switch",
+                  "bộ chuyển mạch",
+                  "switches"
+                ]
               },
-              "hint": { "vi": "Hộp nhiều cổng, đóng vai bưu cục của làng." },
-              "solution": { "vi": "Switch — mỗi máy một sợi dây, nó lo việc chuyển thư giữa các cổng." }
+              "hint": {
+                "vi": "Hộp nhiều cổng, đóng vai bưu cục của làng."
+              },
+              "solution": {
+                "vi": "Switch — mỗi máy một sợi dây, nó lo việc chuyển thư giữa các cổng."
+              }
             }
           ],
           "selfExplain": {
-            "prompt": { "vi": "Giải thích bằng lời của bạn: vì sao dùng switch lại đỡ dây hơn nhiều so với nối thẳng từng cặp máy?" },
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: vì sao dùng switch lại đỡ dây hơn nhiều so với nối thẳng từng cặp máy?"
+            },
             "keywords": [
-              ["một sợi", "1 sợi", "một dây", "mỗi máy một"],
-              ["switch", "bưu cục", "hộp"],
-              ["từng cặp", "nối thẳng", "nối trực tiếp", "mọi máy khác"]
+              [
+                "một sợi",
+                "1 sợi",
+                "một dây",
+                "mỗi máy một"
+              ],
+              [
+                "switch",
+                "bưu cục",
+                "hộp"
+              ],
+              [
+                "từng cặp",
+                "nối thẳng",
+                "nối trực tiếp",
+                "mọi máy khác"
+              ]
             ],
             "exampleAnswer": {
               "vi": "Nối thẳng từng cặp thì mỗi máy phải có dây tới mọi máy còn lại, càng đông càng rối. Có switch thì mỗi máy chỉ cần một sợi cắm vào nó, còn switch chạm tới tất cả — thêm máy mới cũng chỉ thêm đúng một sợi."
@@ -311,9 +501,15 @@
         {
           "type": "summary",
           "bullets": [
-            { "vi": "Switch là bưu cục của làng: mọi máy cắm vào nó, nó chuyển thư giữa các cổng." },
-            { "vi": "Mỗi máy chỉ cần một sợi dây, thay vì nối chằng chịt tới từng máy khác." },
-            { "vi": "Nó chuyển đúng cho một máy chứ không phát bừa cho cả phòng." }
+            {
+              "vi": "Switch là bưu cục của làng: mọi máy cắm vào nó, nó chuyển thư giữa các cổng."
+            },
+            {
+              "vi": "Mỗi máy chỉ cần một sợi dây, thay vì nối chằng chịt tới từng máy khác."
+            },
+            {
+              "vi": "Nó chuyển đúng cho một máy chứ không phát bừa cho cả phòng."
+            }
           ],
           "nextTeaser": {
             "vi": "Nhưng khoan — switch làm sao biết máy nào đang ngồi ở cổng nào? Không ai khai báo với nó cả. Bài sau mình mở cuốn sổ mà nó tự ghi."
@@ -323,7 +519,9 @@
     },
     {
       "id": "m4-bai-2",
-      "missionTitle": { "vi": "Mở cuốn sổ nhớ mặt của switch" },
+      "missionTitle": {
+        "vi": "Mở cuốn sổ nhớ mặt của switch"
+      },
       "steps": [
         {
           "type": "hook",
@@ -338,11 +536,19 @@
             {
               "kind": "mcq",
               "id": "m4-b2-pre-1",
-              "prompt": { "vi": "Đoán thử: switch vừa bật, chưa biết gì. Máy A gửi thư cho máy B. Switch làm gì?" },
+              "prompt": {
+                "vi": "Đoán thử: switch vừa bật, chưa biết gì. Máy A gửi thư cho máy B. Switch làm gì?"
+              },
               "choices": [
-                { "vi": "Vứt lá thư đi vì chưa biết B ở đâu" },
-                { "vi": "Đẩy ra tất cả các cổng còn lại, ai đúng thì nhận" },
-                { "vi": "Hỏi máy A xem B cắm ở cổng nào" }
+                {
+                  "vi": "Vứt luôn lá thư đi vì nó chưa biết B đang nằm ở cổng nào"
+                },
+                {
+                  "vi": "Đẩy ra tất cả các cổng còn lại, ai đúng thì nhận"
+                },
+                {
+                  "vi": "Hỏi máy A xem B cắm ở cổng nào"
+                }
               ],
               "answerIndex": 1,
               "explain": {
@@ -387,16 +593,28 @@
                         "kind": "pc",
                         "id": "pc-a",
                         "hostname": "Máy A",
-                        "port": { "id": "eth0", "mac": "AA:BB:CC:00:04:01" },
-                        "ipConfig": { "ip": "192.168.1.10", "prefix": 24 },
+                        "port": {
+                          "id": "eth0",
+                          "mac": "AA:BB:CC:00:04:01"
+                        },
+                        "ipConfig": {
+                          "ip": "192.168.1.10",
+                          "prefix": 24
+                        },
                         "gateway": null
                       },
                       {
                         "kind": "pc",
                         "id": "pc-b",
                         "hostname": "Máy B",
-                        "port": { "id": "eth0", "mac": "AA:BB:CC:00:04:02" },
-                        "ipConfig": { "ip": "192.168.1.20", "prefix": 24 },
+                        "port": {
+                          "id": "eth0",
+                          "mac": "AA:BB:CC:00:04:02"
+                        },
+                        "ipConfig": {
+                          "ip": "192.168.1.20",
+                          "prefix": 24
+                        },
                         "gateway": null
                       },
                       {
@@ -404,18 +622,42 @@
                         "id": "sw-1",
                         "hostname": "Switch-1",
                         "ports": [
-                          { "id": "p1", "vlan": 1 },
-                          { "id": "p2", "vlan": 1 },
-                          { "id": "p3", "vlan": 1 },
-                          { "id": "p4", "vlan": 1 }
+                          {
+                            "id": "p1",
+                            "vlan": 1
+                          },
+                          {
+                            "id": "p2",
+                            "vlan": 1
+                          },
+                          {
+                            "id": "p3",
+                            "vlan": 1
+                          },
+                          {
+                            "id": "p4",
+                            "vlan": 1
+                          }
                         ]
                       }
                     ],
                     "links": []
                   },
                   "goals": [
-                    { "kind": "ping", "from": "pc-a", "to": "pc-b", "expect": "reach" },
-                    { "kind": "pathThrough", "from": "pc-a", "to": "pc-b", "via": ["sw-1"] }
+                    {
+                      "kind": "ping",
+                      "from": "pc-a",
+                      "to": "pc-b",
+                      "expect": "reach"
+                    },
+                    {
+                      "kind": "pathThrough",
+                      "from": "pc-a",
+                      "to": "pc-b",
+                      "via": [
+                        "sw-1"
+                      ]
+                    }
                   ],
                   "allow": {
                     "addDevices": [],
@@ -433,16 +675,28 @@
                         "kind": "pc",
                         "id": "pc-a",
                         "hostname": "Máy A",
-                        "port": { "id": "eth0", "mac": "AA:BB:CC:00:04:01" },
-                        "ipConfig": { "ip": "192.168.1.10", "prefix": 24 },
+                        "port": {
+                          "id": "eth0",
+                          "mac": "AA:BB:CC:00:04:01"
+                        },
+                        "ipConfig": {
+                          "ip": "192.168.1.10",
+                          "prefix": 24
+                        },
                         "gateway": null
                       },
                       {
                         "kind": "pc",
                         "id": "pc-b",
                         "hostname": "Máy B",
-                        "port": { "id": "eth0", "mac": "AA:BB:CC:00:04:02" },
-                        "ipConfig": { "ip": "192.168.1.20", "prefix": 24 },
+                        "port": {
+                          "id": "eth0",
+                          "mac": "AA:BB:CC:00:04:02"
+                        },
+                        "ipConfig": {
+                          "ip": "192.168.1.20",
+                          "prefix": 24
+                        },
                         "gateway": null
                       },
                       {
@@ -450,20 +704,54 @@
                         "id": "sw-1",
                         "hostname": "Switch-1",
                         "ports": [
-                          { "id": "p1", "vlan": 1 },
-                          { "id": "p2", "vlan": 1 },
-                          { "id": "p3", "vlan": 1 },
-                          { "id": "p4", "vlan": 1 }
+                          {
+                            "id": "p1",
+                            "vlan": 1
+                          },
+                          {
+                            "id": "p2",
+                            "vlan": 1
+                          },
+                          {
+                            "id": "p3",
+                            "vlan": 1
+                          },
+                          {
+                            "id": "p4",
+                            "vlan": 1
+                          }
                         ]
                       }
                     ],
                     "links": [
-                      { "id": "w1", "a": { "deviceId": "pc-a", "portId": "eth0" }, "b": { "deviceId": "sw-1", "portId": "p1" } },
-                      { "id": "w2", "a": { "deviceId": "pc-b", "portId": "eth0" }, "b": { "deviceId": "sw-1", "portId": "p2" } }
+                      {
+                        "id": "w1",
+                        "a": {
+                          "deviceId": "pc-a",
+                          "portId": "eth0"
+                        },
+                        "b": {
+                          "deviceId": "sw-1",
+                          "portId": "p1"
+                        }
+                      },
+                      {
+                        "id": "w2",
+                        "a": {
+                          "deviceId": "pc-b",
+                          "portId": "eth0"
+                        },
+                        "b": {
+                          "deviceId": "sw-1",
+                          "portId": "p2"
+                        }
+                      }
                     ]
                   }
                 },
-                "hintTopic": { "vi": "đường mà thư phải đi để tới được máy kia" }
+                "hintTopic": {
+                  "vi": "đường mà thư phải đi để tới được máy kia"
+                }
               },
               "hint": {
                 "vi": "Mỗi máy cần đúng một sợi dây nối tới một cổng còn trống của switch. Chọn thiết bị trên sơ đồ rồi bấm Nối dây ở bảng bên phải."
@@ -481,21 +769,58 @@
               "question": {
                 "kind": "typed",
                 "id": "m4-b2-ret-1",
-                "prompt": { "vi": "Không nhìn lại bài: switch nhìn vào địa chỉ NÀO trong lá thư để học ra 'máy này đang ở cổng nào'?" },
-                "accept": ["Địa chỉ MAC của người gửi", "địa chỉ nguồn", "mac nguồn", "địa chỉ người gửi", "mac người gửi", "địa chỉ gửi", "nguồn", "dia chi mac cua nguoi gui", "mac của người gửi", "mac cua nguoi gui", "địa chỉ mac của máy gửi", "dia chi mac cua may gui", "địa chỉ mac nguồn", "dia chi mac nguon"]
+                "prompt": {
+                  "vi": "Không nhìn lại bài: switch nhìn vào địa chỉ NÀO trong lá thư để học ra 'máy này đang ở cổng nào'?"
+                },
+                "accept": [
+                  "Địa chỉ MAC của người gửi",
+                  "địa chỉ nguồn",
+                  "mac nguồn",
+                  "địa chỉ người gửi",
+                  "mac người gửi",
+                  "địa chỉ gửi",
+                  "nguồn",
+                  "dia chi mac cua nguoi gui",
+                  "mac của người gửi",
+                  "mac cua nguoi gui",
+                  "địa chỉ mac của máy gửi",
+                  "dia chi mac cua may gui",
+                  "địa chỉ mac nguồn",
+                  "dia chi mac nguon"
+                ]
               },
-              "hint": { "vi": "Nó không đoán từ nơi thư định đến, mà từ nơi thư vừa đi ra." },
+              "hint": {
+                "vi": "Nó không đoán từ nơi thư định đến, mà từ nơi thư vừa đi ra."
+              },
               "solution": {
                 "vi": "Địa chỉ MAC của người GỬI. Thư đi vào cổng nào thì máy gửi đang ở cổng đó — switch ghi cặp đó vào sổ."
               }
             }
           ],
           "selfExplain": {
-            "prompt": { "vi": "Bằng lời của bạn: vì sao lá thư ĐẦU TIÊN gửi tới một máy thường bị switch phát ra mọi cổng, còn các lá sau thì không?" },
+            "prompt": {
+              "vi": "Bằng lời của bạn: vì sao lá thư ĐẦU TIÊN gửi tới một máy thường bị switch phát ra mọi cổng, còn các lá sau thì không?"
+            },
             "keywords": [
-              ["chưa biết", "chưa học", "chưa có trong sổ", "chưa nhớ"],
-              ["phát ra mọi cổng", "phát rộng", "flood", "tất cả các cổng"],
-              ["địa chỉ nguồn", "người gửi", "mac nguồn", "khi trả lời", "khi máy kia gửi"]
+              [
+                "chưa biết",
+                "chưa học",
+                "chưa có trong sổ",
+                "chưa nhớ"
+              ],
+              [
+                "phát ra mọi cổng",
+                "phát rộng",
+                "flood",
+                "tất cả các cổng"
+              ],
+              [
+                "địa chỉ nguồn",
+                "người gửi",
+                "mac nguồn",
+                "khi trả lời",
+                "khi máy kia gửi"
+              ]
             ],
             "exampleAnswer": {
               "vi": "Lúc đầu cuốn sổ của switch chưa có tên máy nhận, nên nó không biết đẩy ra cổng nào và đành phát ra mọi cổng. Nhưng khi máy nhận trả lời, thư của máy đó đi qua switch và nó nhìn địa chỉ người gửi để ghi vào sổ. Từ đó trở đi nó gửi thẳng đúng một cổng."
@@ -505,9 +830,15 @@
         {
           "type": "summary",
           "bullets": [
-            { "vi": "Switch tự học bằng cách nhìn địa chỉ NGƯỜI GỬI của mỗi lá thư đi qua." },
-            { "vi": "Cuốn sổ đó ghi hai cột: địa chỉ MAC và cổng mà máy đó đang cắm." },
-            { "vi": "Chưa có trong sổ thì nó phát ra mọi cổng — chỉ tốn đúng lần đầu." }
+            {
+              "vi": "Switch tự học bằng cách nhìn địa chỉ NGƯỜI GỬI của mỗi lá thư đi qua."
+            },
+            {
+              "vi": "Cuốn sổ đó ghi hai cột: địa chỉ MAC và cổng mà máy đó đang cắm."
+            },
+            {
+              "vi": "Chưa có trong sổ thì nó phát ra mọi cổng — chỉ tốn đúng lần đầu."
+            }
           ],
           "nextTeaser": {
             "vi": "Có điều máy gửi lấy đâu ra địa chỉ MAC của máy nhận để ghi lên thư? Nó mới chỉ biết địa chỉ IP thôi. Bài sau: tiếng gọi giữa sân làng."
@@ -518,7 +849,9 @@
     },
     {
       "id": "m4-bai-3",
-      "missionTitle": { "vi": "Hỏi tên người giữ địa chỉ" },
+      "missionTitle": {
+        "vi": "Hỏi tên người giữ địa chỉ"
+      },
       "steps": [
         {
           "type": "hook",
@@ -533,11 +866,19 @@
             {
               "kind": "mcq",
               "id": "m4-b3-pre-1",
-              "prompt": { "vi": "Đoán thử: máy A muốn gửi cho địa chỉ 192.168.1.20 nhưng chưa biết MAC của máy đó. Nó làm gì?" },
+              "prompt": {
+                "vi": "Đoán thử: máy A muốn gửi cho địa chỉ 192.168.1.20 nhưng chưa biết MAC của máy đó. Nó làm gì?"
+              },
               "choices": [
-                { "vi": "Hỏi to cả mạng: ai đang giữ 192.168.1.20?" },
-                { "vi": "Gửi thư đi rồi hy vọng máy nào đó chuyển hộ" },
-                { "vi": "Tra một danh sách có sẵn trong máy từ lúc cài đặt" }
+                {
+                  "vi": "Hỏi to cả mạng: ai đang giữ 192.168.1.20?"
+                },
+                {
+                  "vi": "Gửi thư đi rồi hy vọng máy nào đó chuyển hộ"
+                },
+                {
+                  "vi": "Tra một danh sách có sẵn trong máy từ lúc cài đặt"
+                }
               ],
               "answerIndex": 0,
               "explain": {
@@ -545,7 +886,9 @@
               }
             }
           ],
-          "encouragement": { "vi": "Không đoán ra cũng không sao — cách làm này đơn giản đến bất ngờ." }
+          "encouragement": {
+            "vi": "Không đoán ra cũng không sao — cách làm này đơn giản đến bất ngờ."
+          }
         },
         {
           "type": "teach",
@@ -570,12 +913,21 @@
               "question": {
                 "kind": "typed",
                 "id": "m4-b3-prac-1",
-                "prompt": { "vi": "Giao thức đi hỏi 'ai đang giữ địa chỉ IP này?' để lấy về địa chỉ MAC tên là gì?" },
-                "accept": ["arp", "address resolution protocol"],
-                "hintTopic": { "vi": "tiếng gọi giữa sân làng để tìm chủ của một địa chỉ" },
+                "prompt": {
+                  "vi": "Giao thức đi hỏi 'ai đang giữ địa chỉ IP này?' để lấy về địa chỉ MAC tên là gì?"
+                },
+                "accept": [
+                  "arp",
+                  "address resolution protocol"
+                ],
+                "hintTopic": {
+                  "vi": "tiếng gọi giữa sân làng để tìm chủ của một địa chỉ"
+                },
                 "nearMisses": [
                   {
-                    "accept": ["dns"],
+                    "accept": [
+                      "dns"
+                    ],
                     "feedback": {
                       "vi": "Gần đúng kiểu việc rồi — DNS cũng là đi hỏi. Nhưng DNS đổi TÊN thành địa chỉ IP; ở đây mình đang cần đổi địa chỉ IP thành địa chỉ vật lý trong cùng một mạng."
                     }
@@ -593,15 +945,25 @@
               "question": {
                 "kind": "mcq",
                 "id": "m4-b3-prac-2",
-                "prompt": { "vi": "Máy A vừa hỏi ARP xong và đã biết MAC của máy B. Lát sau A gửi tiếp cho B thì sao?" },
+                "prompt": {
+                  "vi": "Máy A vừa hỏi ARP xong và đã biết MAC của máy B. Lát sau A gửi tiếp cho B thì sao?"
+                },
                 "choices": [
-                  { "vi": "Phải hỏi lại từ đầu mỗi lần gửi" },
-                  { "vi": "Dùng luôn địa chỉ đã nhớ, không cần hỏi nữa" },
-                  { "vi": "Hỏi switch thay vì hỏi cả mạng" }
+                  {
+                    "vi": "Phải hỏi lại cả mạng từ đầu trước mỗi lần gửi"
+                  },
+                  {
+                    "vi": "Dùng luôn địa chỉ đã nhớ, không cần hỏi nữa"
+                  },
+                  {
+                    "vi": "Hỏi switch thay vì hỏi cả mạng"
+                  }
                 ],
                 "answerIndex": 1
               },
-              "hint": { "vi": "Hỏi xong rồi thì người ta thường làm gì với câu trả lời?" },
+              "hint": {
+                "vi": "Hỏi xong rồi thì người ta thường làm gì với câu trả lời?"
+              },
               "solution": {
                 "vi": "Dùng luôn cái đã nhớ. Máy giữ một bộ nhớ tạm các cặp IP–MAC, nên chỉ lần đầu mới phải hỏi."
               }
@@ -615,19 +977,44 @@
               "question": {
                 "kind": "typed",
                 "id": "m4-b3-ret-1",
-                "prompt": { "vi": "Không nhìn lại bài: ARP dùng để tìm ra thứ gì?" },
-                "accept": ["địa chỉ mac", "mac", "địa chỉ vật lý"]
+                "prompt": {
+                  "vi": "Không nhìn lại bài: ARP dùng để tìm ra thứ gì?"
+                },
+                "accept": [
+                  "địa chỉ mac",
+                  "mac",
+                  "địa chỉ vật lý"
+                ]
               },
-              "hint": { "vi": "Nó bắt đầu từ địa chỉ IP và cần lấy về địa chỉ gắn cứng với card mạng." },
-              "solution": { "vi": "Địa chỉ MAC — địa chỉ vật lý của máy đang giữ địa chỉ IP mà mình hỏi." }
+              "hint": {
+                "vi": "Nó bắt đầu từ địa chỉ IP và cần lấy về địa chỉ gắn cứng với card mạng."
+              },
+              "solution": {
+                "vi": "Địa chỉ MAC — địa chỉ vật lý của máy đang giữ địa chỉ IP mà mình hỏi."
+              }
             }
           ],
           "selfExplain": {
-            "prompt": { "vi": "Bằng lời của bạn: vì sao biết địa chỉ IP thôi vẫn chưa đủ để gửi thư trong cùng một mạng?" },
+            "prompt": {
+              "vi": "Bằng lời của bạn: vì sao biết địa chỉ IP thôi vẫn chưa đủ để gửi thư trong cùng một mạng?"
+            },
             "keywords": [
-              ["mac", "địa chỉ vật lý", "card mạng"],
-              ["ip", "địa chỉ logic", "số nhà"],
-              ["arp", "hỏi", "hỏi to", "tìm ra"]
+              [
+                "mac",
+                "địa chỉ vật lý",
+                "card mạng"
+              ],
+              [
+                "ip",
+                "địa chỉ logic",
+                "số nhà"
+              ],
+              [
+                "arp",
+                "hỏi",
+                "hỏi to",
+                "tìm ra"
+              ]
             ],
             "exampleAnswer": {
               "vi": "Trong cùng một mạng, thư được trao tay theo địa chỉ MAC chứ không phải IP. Biết IP mới là biết số nhà, còn muốn trao tận tay thì phải biết tên chủ nhà. ARP chính là bước hỏi để đổi từ IP sang MAC, và máy nhớ lại câu trả lời cho những lần sau."
@@ -637,9 +1024,15 @@
         {
           "type": "summary",
           "bullets": [
-            { "vi": "ARP hỏi cả mạng 'ai giữ địa chỉ IP này?' và nhận về địa chỉ MAC." },
-            { "vi": "Chỉ đúng máy giữ địa chỉ đó lên tiếng; các máy khác im lặng bỏ qua." },
-            { "vi": "Hỏi một lần rồi nhớ, những lần sau khỏi hỏi lại." }
+            {
+              "vi": "ARP hỏi cả mạng 'ai giữ địa chỉ IP này?' và nhận về địa chỉ MAC."
+            },
+            {
+              "vi": "Chỉ đúng máy giữ địa chỉ đó lên tiếng; các máy khác im lặng bỏ qua."
+            },
+            {
+              "vi": "Hỏi một lần rồi nhớ, những lần sau khỏi hỏi lại."
+            }
           ],
           "nextTeaser": {
             "vi": "Tiếng gọi ARP lan tới mọi máy trong mạng. Nhưng nếu công ty muốn kế toán và kỹ thuật không nghe thấy nhau, dù cắm chung một switch, thì làm thế nào? Bài sau mình dựng một bức tường."
@@ -649,7 +1042,9 @@
     },
     {
       "id": "m4-bai-4",
-      "missionTitle": { "vi": "Dựng tường ngăn giữa hai xóm" },
+      "missionTitle": {
+        "vi": "Dựng tường ngăn giữa hai xóm"
+      },
       "steps": [
         {
           "type": "hook",
@@ -674,16 +1069,28 @@
                       "kind": "pc",
                       "id": "pc-a",
                       "hostname": "Máy A",
-                      "port": { "id": "eth0", "mac": "AA:BB:CC:00:14:01" },
-                      "ipConfig": { "ip": "192.168.1.10", "prefix": 24 },
+                      "port": {
+                        "id": "eth0",
+                        "mac": "AA:BB:CC:00:14:01"
+                      },
+                      "ipConfig": {
+                        "ip": "192.168.1.10",
+                        "prefix": 24
+                      },
                       "gateway": null
                     },
                     {
                       "kind": "pc",
                       "id": "pc-b",
                       "hostname": "Máy B",
-                      "port": { "id": "eth0", "mac": "AA:BB:CC:00:14:02" },
-                      "ipConfig": { "ip": "192.168.1.20", "prefix": 24 },
+                      "port": {
+                        "id": "eth0",
+                        "mac": "AA:BB:CC:00:14:02"
+                      },
+                      "ipConfig": {
+                        "ip": "192.168.1.20",
+                        "prefix": 24
+                      },
                       "gateway": null
                     },
                     {
@@ -691,17 +1098,50 @@
                       "id": "sw-1",
                       "hostname": "Switch-1",
                       "ports": [
-                        { "id": "p1", "vlan": 10 },
-                        { "id": "p2", "vlan": 20 }
+                        {
+                          "id": "p1",
+                          "vlan": 10
+                        },
+                        {
+                          "id": "p2",
+                          "vlan": 20
+                        }
                       ]
                     }
                   ],
                   "links": [
-                    { "id": "l1", "a": { "deviceId": "pc-a", "portId": "eth0" }, "b": { "deviceId": "sw-1", "portId": "p1" } },
-                    { "id": "l2", "a": { "deviceId": "pc-b", "portId": "eth0" }, "b": { "deviceId": "sw-1", "portId": "p2" } }
+                    {
+                      "id": "l1",
+                      "a": {
+                        "deviceId": "pc-a",
+                        "portId": "eth0"
+                      },
+                      "b": {
+                        "deviceId": "sw-1",
+                        "portId": "p1"
+                      }
+                    },
+                    {
+                      "id": "l2",
+                      "a": {
+                        "deviceId": "pc-b",
+                        "portId": "eth0"
+                      },
+                      "b": {
+                        "deviceId": "sw-1",
+                        "portId": "p2"
+                      }
+                    }
                   ]
                 },
-                "goals": [{ "kind": "ping", "from": "pc-a", "to": "pc-b", "expect": "reach" }],
+                "goals": [
+                  {
+                    "kind": "ping",
+                    "from": "pc-a",
+                    "to": "pc-b",
+                    "expect": "reach"
+                  }
+                ],
                 "allow": {
                   "addDevices": [],
                   "removeDevices": false,
@@ -718,16 +1158,28 @@
                       "kind": "pc",
                       "id": "pc-a",
                       "hostname": "Máy A",
-                      "port": { "id": "eth0", "mac": "AA:BB:CC:00:14:01" },
-                      "ipConfig": { "ip": "192.168.1.10", "prefix": 24 },
+                      "port": {
+                        "id": "eth0",
+                        "mac": "AA:BB:CC:00:14:01"
+                      },
+                      "ipConfig": {
+                        "ip": "192.168.1.10",
+                        "prefix": 24
+                      },
                       "gateway": null
                     },
                     {
                       "kind": "pc",
                       "id": "pc-b",
                       "hostname": "Máy B",
-                      "port": { "id": "eth0", "mac": "AA:BB:CC:00:14:02" },
-                      "ipConfig": { "ip": "192.168.1.20", "prefix": 24 },
+                      "port": {
+                        "id": "eth0",
+                        "mac": "AA:BB:CC:00:14:02"
+                      },
+                      "ipConfig": {
+                        "ip": "192.168.1.20",
+                        "prefix": 24
+                      },
                       "gateway": null
                     },
                     {
@@ -735,14 +1187,40 @@
                       "id": "sw-1",
                       "hostname": "Switch-1",
                       "ports": [
-                        { "id": "p1", "vlan": 10 },
-                        { "id": "p2", "vlan": 10 }
+                        {
+                          "id": "p1",
+                          "vlan": 10
+                        },
+                        {
+                          "id": "p2",
+                          "vlan": 10
+                        }
                       ]
                     }
                   ],
                   "links": [
-                    { "id": "l1", "a": { "deviceId": "pc-a", "portId": "eth0" }, "b": { "deviceId": "sw-1", "portId": "p1" } },
-                    { "id": "l2", "a": { "deviceId": "pc-b", "portId": "eth0" }, "b": { "deviceId": "sw-1", "portId": "p2" } }
+                    {
+                      "id": "l1",
+                      "a": {
+                        "deviceId": "pc-a",
+                        "portId": "eth0"
+                      },
+                      "b": {
+                        "deviceId": "sw-1",
+                        "portId": "p1"
+                      }
+                    },
+                    {
+                      "id": "l2",
+                      "a": {
+                        "deviceId": "pc-b",
+                        "portId": "eth0"
+                      },
+                      "b": {
+                        "deviceId": "sw-1",
+                        "portId": "p2"
+                      }
+                    }
                   ]
                 }
               },
@@ -798,32 +1276,56 @@
                         "kind": "pc",
                         "id": "pc-a",
                         "hostname": "Máy A (kế toán)",
-                        "port": { "id": "eth0", "mac": "AA:BB:CC:00:24:01" },
-                        "ipConfig": { "ip": "192.168.1.10", "prefix": 24 },
+                        "port": {
+                          "id": "eth0",
+                          "mac": "AA:BB:CC:00:24:01"
+                        },
+                        "ipConfig": {
+                          "ip": "192.168.1.10",
+                          "prefix": 24
+                        },
                         "gateway": null
                       },
                       {
                         "kind": "pc",
                         "id": "pc-b",
                         "hostname": "Máy B (kế toán)",
-                        "port": { "id": "eth0", "mac": "AA:BB:CC:00:24:02" },
-                        "ipConfig": { "ip": "192.168.1.20", "prefix": 24 },
+                        "port": {
+                          "id": "eth0",
+                          "mac": "AA:BB:CC:00:24:02"
+                        },
+                        "ipConfig": {
+                          "ip": "192.168.1.20",
+                          "prefix": 24
+                        },
                         "gateway": null
                       },
                       {
                         "kind": "pc",
                         "id": "pc-c",
                         "hostname": "Máy C (kỹ thuật)",
-                        "port": { "id": "eth0", "mac": "AA:BB:CC:00:24:03" },
-                        "ipConfig": { "ip": "192.168.1.30", "prefix": 24 },
+                        "port": {
+                          "id": "eth0",
+                          "mac": "AA:BB:CC:00:24:03"
+                        },
+                        "ipConfig": {
+                          "ip": "192.168.1.30",
+                          "prefix": 24
+                        },
                         "gateway": null
                       },
                       {
                         "kind": "pc",
                         "id": "pc-d",
                         "hostname": "Máy D (kỹ thuật)",
-                        "port": { "id": "eth0", "mac": "AA:BB:CC:00:24:04" },
-                        "ipConfig": { "ip": "192.168.1.40", "prefix": 24 },
+                        "port": {
+                          "id": "eth0",
+                          "mac": "AA:BB:CC:00:24:04"
+                        },
+                        "ipConfig": {
+                          "ip": "192.168.1.40",
+                          "prefix": 24
+                        },
                         "gateway": null
                       },
                       {
@@ -831,23 +1333,85 @@
                         "id": "sw-1",
                         "hostname": "Switch-1",
                         "ports": [
-                          { "id": "p1", "vlan": 10 },
-                          { "id": "p2", "vlan": 20 },
-                          { "id": "p3", "vlan": 20 },
-                          { "id": "p4", "vlan": 20 }
+                          {
+                            "id": "p1",
+                            "vlan": 10
+                          },
+                          {
+                            "id": "p2",
+                            "vlan": 20
+                          },
+                          {
+                            "id": "p3",
+                            "vlan": 20
+                          },
+                          {
+                            "id": "p4",
+                            "vlan": 20
+                          }
                         ]
                       }
                     ],
                     "links": [
-                      { "id": "l1", "a": { "deviceId": "pc-a", "portId": "eth0" }, "b": { "deviceId": "sw-1", "portId": "p1" } },
-                      { "id": "l2", "a": { "deviceId": "pc-b", "portId": "eth0" }, "b": { "deviceId": "sw-1", "portId": "p2" } },
-                      { "id": "l3", "a": { "deviceId": "pc-c", "portId": "eth0" }, "b": { "deviceId": "sw-1", "portId": "p3" } },
-                      { "id": "l4", "a": { "deviceId": "pc-d", "portId": "eth0" }, "b": { "deviceId": "sw-1", "portId": "p4" } }
+                      {
+                        "id": "l1",
+                        "a": {
+                          "deviceId": "pc-a",
+                          "portId": "eth0"
+                        },
+                        "b": {
+                          "deviceId": "sw-1",
+                          "portId": "p1"
+                        }
+                      },
+                      {
+                        "id": "l2",
+                        "a": {
+                          "deviceId": "pc-b",
+                          "portId": "eth0"
+                        },
+                        "b": {
+                          "deviceId": "sw-1",
+                          "portId": "p2"
+                        }
+                      },
+                      {
+                        "id": "l3",
+                        "a": {
+                          "deviceId": "pc-c",
+                          "portId": "eth0"
+                        },
+                        "b": {
+                          "deviceId": "sw-1",
+                          "portId": "p3"
+                        }
+                      },
+                      {
+                        "id": "l4",
+                        "a": {
+                          "deviceId": "pc-d",
+                          "portId": "eth0"
+                        },
+                        "b": {
+                          "deviceId": "sw-1",
+                          "portId": "p4"
+                        }
+                      }
                     ]
                   },
                   "goals": [
-                    { "kind": "ping", "from": "pc-a", "to": "pc-b", "expect": "reach" },
-                    { "kind": "ping", "from": "pc-a", "to": "pc-c", "expect": "blocked" }
+                    {
+                      "kind": "ping",
+                      "from": "pc-a",
+                      "to": "pc-b",
+                      "expect": "reach"
+                    },
+                    {
+                      "kind": "ping",
+                      "from": "pc-a",
+                      "to": "pc-c",
+                      "expect": "blocked"
+                    }
                   ],
                   "allow": {
                     "addDevices": [],
@@ -865,32 +1429,56 @@
                         "kind": "pc",
                         "id": "pc-a",
                         "hostname": "Máy A (kế toán)",
-                        "port": { "id": "eth0", "mac": "AA:BB:CC:00:24:01" },
-                        "ipConfig": { "ip": "192.168.1.10", "prefix": 24 },
+                        "port": {
+                          "id": "eth0",
+                          "mac": "AA:BB:CC:00:24:01"
+                        },
+                        "ipConfig": {
+                          "ip": "192.168.1.10",
+                          "prefix": 24
+                        },
                         "gateway": null
                       },
                       {
                         "kind": "pc",
                         "id": "pc-b",
                         "hostname": "Máy B (kế toán)",
-                        "port": { "id": "eth0", "mac": "AA:BB:CC:00:24:02" },
-                        "ipConfig": { "ip": "192.168.1.20", "prefix": 24 },
+                        "port": {
+                          "id": "eth0",
+                          "mac": "AA:BB:CC:00:24:02"
+                        },
+                        "ipConfig": {
+                          "ip": "192.168.1.20",
+                          "prefix": 24
+                        },
                         "gateway": null
                       },
                       {
                         "kind": "pc",
                         "id": "pc-c",
                         "hostname": "Máy C (kỹ thuật)",
-                        "port": { "id": "eth0", "mac": "AA:BB:CC:00:24:03" },
-                        "ipConfig": { "ip": "192.168.1.30", "prefix": 24 },
+                        "port": {
+                          "id": "eth0",
+                          "mac": "AA:BB:CC:00:24:03"
+                        },
+                        "ipConfig": {
+                          "ip": "192.168.1.30",
+                          "prefix": 24
+                        },
                         "gateway": null
                       },
                       {
                         "kind": "pc",
                         "id": "pc-d",
                         "hostname": "Máy D (kỹ thuật)",
-                        "port": { "id": "eth0", "mac": "AA:BB:CC:00:24:04" },
-                        "ipConfig": { "ip": "192.168.1.40", "prefix": 24 },
+                        "port": {
+                          "id": "eth0",
+                          "mac": "AA:BB:CC:00:24:04"
+                        },
+                        "ipConfig": {
+                          "ip": "192.168.1.40",
+                          "prefix": 24
+                        },
                         "gateway": null
                       },
                       {
@@ -898,22 +1486,76 @@
                         "id": "sw-1",
                         "hostname": "Switch-1",
                         "ports": [
-                          { "id": "p1", "vlan": 10 },
-                          { "id": "p2", "vlan": 10 },
-                          { "id": "p3", "vlan": 20 },
-                          { "id": "p4", "vlan": 20 }
+                          {
+                            "id": "p1",
+                            "vlan": 10
+                          },
+                          {
+                            "id": "p2",
+                            "vlan": 10
+                          },
+                          {
+                            "id": "p3",
+                            "vlan": 20
+                          },
+                          {
+                            "id": "p4",
+                            "vlan": 20
+                          }
                         ]
                       }
                     ],
                     "links": [
-                      { "id": "l1", "a": { "deviceId": "pc-a", "portId": "eth0" }, "b": { "deviceId": "sw-1", "portId": "p1" } },
-                      { "id": "l2", "a": { "deviceId": "pc-b", "portId": "eth0" }, "b": { "deviceId": "sw-1", "portId": "p2" } },
-                      { "id": "l3", "a": { "deviceId": "pc-c", "portId": "eth0" }, "b": { "deviceId": "sw-1", "portId": "p3" } },
-                      { "id": "l4", "a": { "deviceId": "pc-d", "portId": "eth0" }, "b": { "deviceId": "sw-1", "portId": "p4" } }
+                      {
+                        "id": "l1",
+                        "a": {
+                          "deviceId": "pc-a",
+                          "portId": "eth0"
+                        },
+                        "b": {
+                          "deviceId": "sw-1",
+                          "portId": "p1"
+                        }
+                      },
+                      {
+                        "id": "l2",
+                        "a": {
+                          "deviceId": "pc-b",
+                          "portId": "eth0"
+                        },
+                        "b": {
+                          "deviceId": "sw-1",
+                          "portId": "p2"
+                        }
+                      },
+                      {
+                        "id": "l3",
+                        "a": {
+                          "deviceId": "pc-c",
+                          "portId": "eth0"
+                        },
+                        "b": {
+                          "deviceId": "sw-1",
+                          "portId": "p3"
+                        }
+                      },
+                      {
+                        "id": "l4",
+                        "a": {
+                          "deviceId": "pc-d",
+                          "portId": "eth0"
+                        },
+                        "b": {
+                          "deviceId": "sw-1",
+                          "portId": "p4"
+                        }
+                      }
                     ]
                   }
                 },
-                "hintTopic": { "vi": "con số VLAN trên từng cổng, và yêu cầu THỨ HAI của đề" }
+                "hintTopic": {
+                  "vi": "con số VLAN trên từng cổng, và yêu cầu THỨ HAI của đề"
+                }
               },
               "hint": {
                 "vi": "Máy A đang ở VLAN 10 một mình. Kéo cổng của Máy B về cùng số với A. Nhưng coi chừng: nếu gộp luôn cả C và D vào đó thì yêu cầu 'kế toán và kỹ thuật không được thấy nhau' sẽ hỏng."
@@ -931,10 +1573,18 @@
               "question": {
                 "kind": "typed",
                 "id": "m4-b4-ret-1",
-                "prompt": { "vi": "Không nhìn lại bài: cách chia một switch thành nhiều mạng tách biệt bằng phần mềm gọi là gì?" },
-                "accept": ["vlan", "mạng lan ảo", "lan ảo"]
+                "prompt": {
+                  "vi": "Không nhìn lại bài: cách chia một switch thành nhiều mạng tách biệt bằng phần mềm gọi là gì?"
+                },
+                "accept": [
+                  "vlan",
+                  "mạng lan ảo",
+                  "lan ảo"
+                ]
               },
-              "hint": { "vi": "Bốn chữ cái, chữ đầu là chữ V — nghĩa là 'ảo'." },
+              "hint": {
+                "vi": "Bốn chữ cái, chữ đầu là chữ V — nghĩa là 'ảo'."
+              },
               "solution": {
                 "vi": "VLAN. Mỗi cổng mang một số VLAN, và switch chỉ chuyển thư giữa các cổng cùng số."
               }
@@ -945,9 +1595,26 @@
               "vi": "Bằng lời của bạn: vì sao hai máy cùng dải địa chỉ, cắm chung một switch, mà vẫn không gọi được nhau?"
             },
             "keywords": [
-              ["vlan", "số vlan", "hai xóm", "bức tường"],
-              ["khác nhau", "hai số", "không cùng", "khác vlan"],
-              ["tách", "hai mạng riêng", "không thấy", "không tới", "chặn", "không nghe"]
+              [
+                "vlan",
+                "số vlan",
+                "hai xóm",
+                "bức tường"
+              ],
+              [
+                "khác nhau",
+                "hai số",
+                "không cùng",
+                "khác vlan"
+              ],
+              [
+                "tách",
+                "hai mạng riêng",
+                "không thấy",
+                "không tới",
+                "chặn",
+                "không nghe"
+              ]
             ],
             "exampleAnswer": {
               "vi": "Vì hai cổng của chúng được gán hai số VLAN khác nhau. Switch coi mỗi số là một mạng riêng, nên nó không chuyển thư qua lại giữa hai bên — kể cả tiếng gọi ARP cũng dừng ở bức tường đó. Địa chỉ IP nhìn có vẻ hợp lý nhưng không cứu được, vì rào cản nằm ở tầng dưới."
@@ -957,9 +1624,15 @@
         {
           "type": "summary",
           "bullets": [
-            { "vi": "VLAN là bức tường vô hình trong switch: cổng chỉ nói chuyện với cổng cùng số." },
-            { "vi": "Một switch chia VLAN hoạt động như nhiều switch riêng đặt cạnh nhau." },
-            { "vi": "Tiếng gọi ARP dừng lại ở tường — nên hai bên không hề biết nhau tồn tại." }
+            {
+              "vi": "VLAN là bức tường vô hình trong switch: cổng chỉ nói chuyện với cổng cùng số."
+            },
+            {
+              "vi": "Một switch chia VLAN hoạt động như nhiều switch riêng đặt cạnh nhau."
+            },
+            {
+              "vi": "Tiếng gọi ARP dừng lại ở tường — nên hai bên không hề biết nhau tồn tại."
+            }
           ],
           "nextTeaser": {
             "vi": "Tách xong rồi, nhưng kế toán vẫn cần gửi báo cáo cho kỹ thuật — muốn hai xóm nói lại được với nhau thì còn phải thêm một thứ nữa. Bài sau xem cây cầu đó làm việc thế nào; còn cách bắc cầu ngay trên một switch thì để dành phần sau."
@@ -969,7 +1642,9 @@
     },
     {
       "id": "m4-bai-5",
-      "missionTitle": { "vi": "Bắc cầu giữa hai mạng" },
+      "missionTitle": {
+        "vi": "Bắc cầu giữa hai mạng"
+      },
       "steps": [
         {
           "type": "hook",
@@ -984,11 +1659,19 @@
             {
               "kind": "mcq",
               "id": "m4-b5-pre-1",
-              "prompt": { "vi": "Đoán thử: gói tin đi từ mạng 192.168.1.x sang mạng 10.0.0.x qua router. Cái gì thay đổi trên đường đi?" },
+              "prompt": {
+                "vi": "Đoán thử: gói tin đi từ mạng 192.168.1.x sang mạng 10.0.0.x qua router. Cái gì thay đổi trên đường đi?"
+              },
               "choices": [
-                { "vi": "Địa chỉ IP đích đổi theo từng chặng" },
-                { "vi": "Địa chỉ MAC đổi từng chặng, còn IP giữ nguyên" },
-                { "vi": "Không có gì đổi cả" }
+                {
+                  "vi": "Địa chỉ IP đích được đổi lại theo từng chặng"
+                },
+                {
+                  "vi": "Địa chỉ MAC đổi từng chặng, còn IP giữ nguyên"
+                },
+                {
+                  "vi": "Không có gì đổi, gói giữ nguyên từ đầu tới cuối"
+                }
               ],
               "answerIndex": 1,
               "explain": {
@@ -996,7 +1679,9 @@
               }
             }
           ],
-          "encouragement": { "vi": "Chỗ này rất nhiều người nhớ ngược — đoán sai bây giờ để nhớ đúng về sau." }
+          "encouragement": {
+            "vi": "Chỗ này rất nhiều người nhớ ngược — đoán sai bây giờ để nhớ đúng về sau."
+          }
         },
         {
           "type": "teach",
@@ -1021,12 +1706,23 @@
               "question": {
                 "kind": "typed",
                 "id": "m4-b5-prac-1",
-                "prompt": { "vi": "Thiết bị nối HAI mạng khác dải địa chỉ với nhau và chuyển gói giữa chúng gọi là gì?" },
-                "accept": ["router", "bộ định tuyến", "thiết bị định tuyến", "routers"],
-                "hintTopic": { "vi": "cây cầu giữa hai dải địa chỉ khác nhau" },
+                "prompt": {
+                  "vi": "Thiết bị nối HAI mạng khác dải địa chỉ với nhau và chuyển gói giữa chúng gọi là gì?"
+                },
+                "accept": [
+                  "router",
+                  "bộ định tuyến",
+                  "thiết bị định tuyến",
+                  "routers"
+                ],
+                "hintTopic": {
+                  "vi": "cây cầu giữa hai dải địa chỉ khác nhau"
+                },
                 "nearMisses": [
                   {
-                    "accept": ["switch"],
+                    "accept": [
+                      "switch"
+                    ],
                     "feedback": {
                       "vi": "Switch là thiết bị đúng của bài trước, nhưng nó chỉ chuyển thư TRONG một mạng. Ở đây mình cần thứ nối hai dải địa chỉ khác nhau."
                     }
@@ -1044,15 +1740,25 @@
               "question": {
                 "kind": "mcq",
                 "id": "m4-b5-prac-2",
-                "prompt": { "vi": "Gói tin vừa được router chuyển sang mạng bên kia. So với lúc mới rời máy gửi, cái gì đã khác?" },
+                "prompt": {
+                  "vi": "Gói tin vừa được router chuyển sang mạng bên kia. So với lúc mới rời máy gửi, cái gì đã khác?"
+                },
                 "choices": [
-                  { "vi": "Địa chỉ IP đích" },
-                  { "vi": "Địa chỉ MAC nguồn và đích" },
-                  { "vi": "Cả IP lẫn MAC đều đổi" }
+                  {
+                    "vi": "Địa chỉ IP đích của gói"
+                  },
+                  {
+                    "vi": "Địa chỉ MAC nguồn và đích"
+                  },
+                  {
+                    "vi": "Cả IP lẫn MAC đều đổi hết"
+                  }
                 ],
                 "answerIndex": 1
               },
-              "hint": { "vi": "Cái nào là địa chỉ của chặng trước mắt, cái nào là địa chỉ của cả chuyến đi?" },
+              "hint": {
+                "vi": "Cái nào là địa chỉ của chặng trước mắt, cái nào là địa chỉ của cả chuyến đi?"
+              },
               "solution": {
                 "vi": "Chỉ cặp địa chỉ MAC đổi — vì mỗi chặng là một lần trao tay giữa hai thiết bị cạnh nhau. Địa chỉ IP giữ nguyên suốt chuyến để gói không quên đích đến."
               }
@@ -1066,10 +1772,19 @@
               "question": {
                 "kind": "typed",
                 "id": "m4-b5-ret-1",
-                "prompt": { "vi": "Không nhìn lại bài: khi gói tin đi qua router, địa chỉ nào GIỮ NGUYÊN suốt chuyến?" },
-                "accept": ["địa chỉ ip", "ip", "ip nguồn và đích", "địa chỉ ip đích"]
+                "prompt": {
+                  "vi": "Không nhìn lại bài: khi gói tin đi qua router, địa chỉ nào GIỮ NGUYÊN suốt chuyến?"
+                },
+                "accept": [
+                  "địa chỉ ip",
+                  "ip",
+                  "ip nguồn và đích",
+                  "địa chỉ ip đích"
+                ]
               },
-              "hint": { "vi": "Địa chỉ của cả chuyến đi, không phải của từng chặng trao tay." },
+              "hint": {
+                "vi": "Địa chỉ của cả chuyến đi, không phải của từng chặng trao tay."
+              },
               "solution": {
                 "vi": "Địa chỉ IP. MAC đổi ở từng chặng vì nó chỉ dùng để trao tay giữa hai thiết bị cạnh nhau."
               }
@@ -1080,10 +1795,27 @@
               "vi": "Bằng lời của bạn: vì sao qua mỗi router thì địa chỉ MAC đổi mà địa chỉ IP lại không?"
             },
             "keywords": [
-              ["mac", "địa chỉ vật lý"],
-              ["từng chặng", "trao tay", "hai thiết bị cạnh nhau", "mỗi chặng"],
-              ["ip", "địa chỉ ip"],
-              ["đầu cuối", "giữ nguyên", "đích cuối", "cả chuyến", "không đổi"]
+              [
+                "mac",
+                "địa chỉ vật lý"
+              ],
+              [
+                "từng chặng",
+                "trao tay",
+                "hai thiết bị cạnh nhau",
+                "mỗi chặng"
+              ],
+              [
+                "ip",
+                "địa chỉ ip"
+              ],
+              [
+                "đầu cuối",
+                "giữ nguyên",
+                "đích cuối",
+                "cả chuyến",
+                "không đổi"
+              ]
             ],
             "exampleAnswer": {
               "vi": "MAC chỉ có nghĩa giữa hai thiết bị nằm cạnh nhau trên cùng một chặng, nên mỗi lần trao tay là một cặp MAC mới. Còn IP là địa chỉ của cả chuyến đi từ máy gửi tới máy nhận — nếu router sửa nó thì gói sẽ quên mất mình đang đi đâu."
@@ -1093,9 +1825,15 @@
         {
           "type": "summary",
           "bullets": [
-            { "vi": "Router là cây cầu giữa hai mạng khác dải, mỗi chân nằm ở một bên — switch không tự bắc cầu qua VLAN được, phải nhờ router." },
-            { "vi": "Nó tra bảng định tuyến để biết nên đẩy gói ra chân nào." },
-            { "vi": "MAC đổi ở từng chặng trao tay; IP giữ nguyên suốt chuyến." }
+            {
+              "vi": "Router là cây cầu giữa hai mạng khác dải, mỗi chân nằm ở một bên — switch không tự bắc cầu qua VLAN được, phải nhờ router."
+            },
+            {
+              "vi": "Nó tra bảng định tuyến để biết nên đẩy gói ra chân nào."
+            },
+            {
+              "vi": "MAC đổi ở từng chặng trao tay; IP giữ nguyên suốt chuyến."
+            }
           ],
           "nextTeaser": {
             "vi": "Bốn bậc thang bạn vừa leo — dây, switch với MAC, router với IP — hóa ra nghề có sẵn tên gọi và số hiệu cho từng bậc. Bài cuối module đặt tên cho cái thang ấy."
@@ -1344,7 +2082,9 @@
       },
       "iconId": "icon-cap-mang",
       "flashcard": {
-        "front": { "vi": "Một đoạn cáp đồng đi được tối đa bao xa, và xa hơn thì dùng gì?" },
+        "front": {
+          "vi": "Một đoạn cáp đồng đi được tối đa bao xa, và xa hơn thì dùng gì?"
+        },
         "back": {
           "vi": "Tối đa khoảng 100 mét cho một đoạn; xa hơn thì đổi sang cáp quang."
         }
@@ -1359,7 +2099,9 @@
       },
       "iconId": "icon-den-cong",
       "flashcard": {
-        "front": { "vi": "Cắm dây rồi mà đèn ở cổng không sáng thì nên nghĩ tới cái gì?" },
+        "front": {
+          "vi": "Cắm dây rồi mà đèn ở cổng không sáng thì nên nghĩ tới cái gì?"
+        },
         "back": {
           "vi": "Sợi dây chưa nối được: nghi dây, đầu bấm hoặc chính cái cổng — chưa tới lượt địa chỉ IP."
         }
@@ -1374,7 +2116,9 @@
       },
       "iconId": "icon-duplex",
       "flashcard": {
-        "front": { "vi": "Hai đầu dây lệch duplex thì mạng biểu hiện ra sao?" },
+        "front": {
+          "vi": "Hai đầu dây lệch duplex thì mạng biểu hiện ra sao?"
+        },
         "back": {
           "vi": "Vẫn thông nhưng chậm và rớt gói lai rai: bên chạy half coi mỗi lần bên kia nói cùng lúc là đụng độ nên gửi lại."
         }
@@ -1389,7 +2133,9 @@
       },
       "iconId": "icon-switch",
       "flashcard": {
-        "front": { "vi": "Switch làm nhiệm vụ gì?" },
+        "front": {
+          "vi": "Switch làm nhiệm vụ gì?"
+        },
         "back": {
           "vi": "Nối nhiều máy trong CÙNG một mạng và chuyển thư tới đúng cổng của máy nhận — mỗi máy chỉ cần một sợi dây cắm vào nó."
         }
@@ -1404,7 +2150,9 @@
       },
       "iconId": "icon-mac-table",
       "flashcard": {
-        "front": { "vi": "Switch học bảng MAC bằng cách nào?" },
+        "front": {
+          "vi": "Switch học bảng MAC bằng cách nào?"
+        },
         "back": {
           "vi": "Nhìn địa chỉ MAC NGƯỜI GỬI của mỗi lá thư đi qua rồi ghi lại 'máy này ở cổng đó'. Chưa có trong sổ thì nó phát ra mọi cổng."
         }
@@ -1419,7 +2167,9 @@
       },
       "iconId": "icon-arp",
       "flashcard": {
-        "front": { "vi": "ARP dùng để làm gì?" },
+        "front": {
+          "vi": "ARP dùng để làm gì?"
+        },
         "back": {
           "vi": "Hỏi cả mạng 'ai đang giữ địa chỉ IP này?' để lấy về địa chỉ MAC của máy đó — vì trong cùng một mạng, thư được trao tay theo MAC."
         }
@@ -1434,7 +2184,9 @@
       },
       "iconId": "icon-vlan",
       "flashcard": {
-        "front": { "vi": "VLAN là gì?" },
+        "front": {
+          "vi": "VLAN là gì?"
+        },
         "back": {
           "vi": "Cách chia một switch thành nhiều mạng tách biệt bằng phần mềm: mỗi cổng mang một số VLAN, và switch chỉ chuyển thư giữa các cổng cùng số."
         }
@@ -1449,7 +2201,9 @@
       },
       "iconId": "icon-broadcast",
       "flashcard": {
-        "front": { "vi": "Miền quảng bá là gì, và VLAN ảnh hưởng thế nào tới nó?" },
+        "front": {
+          "vi": "Miền quảng bá là gì, và VLAN ảnh hưởng thế nào tới nó?"
+        },
         "back": {
           "vi": "Là vùng mà một tiếng gọi chung (như ARP) lan tới được. Mỗi VLAN là một miền quảng bá riêng — tiếng gọi dừng ở ranh giới VLAN."
         }
@@ -1464,7 +2218,9 @@
       },
       "iconId": "icon-routing",
       "flashcard": {
-        "front": { "vi": "Khi gói tin đi qua router, địa chỉ nào đổi và địa chỉ nào giữ nguyên?" },
+        "front": {
+          "vi": "Khi gói tin đi qua router, địa chỉ nào đổi và địa chỉ nào giữ nguyên?"
+        },
         "back": {
           "vi": "MAC đổi ở từng chặng (nó chỉ dùng để trao tay giữa hai thiết bị cạnh nhau), còn IP nguồn và đích giữ nguyên suốt chuyến."
         }
@@ -1509,11 +2265,19 @@
     {
       "kind": "mcq",
       "id": "m4-mt-1",
-      "prompt": { "vi": "Văn phòng mới có 12 máy cần nói chuyện với nhau. Cách nối tiết kiệm dây nhất là gì?" },
+      "prompt": {
+        "vi": "Văn phòng mới có 12 máy cần nói chuyện với nhau. Cách nối tiết kiệm dây nhất là gì?"
+      },
       "choices": [
-        { "vi": "Nối thẳng từng cặp máy với nhau" },
-        { "vi": "Mỗi máy một sợi cắm vào switch" },
-        { "vi": "Nối vòng tròn, máy này sang máy kia" }
+        {
+          "vi": "Nối thẳng từng cặp máy với nhau"
+        },
+        {
+          "vi": "Mỗi máy một sợi cắm vào switch"
+        },
+        {
+          "vi": "Nối vòng tròn, máy này sang máy kia"
+        }
       ],
       "answerIndex": 1,
       "explain": {
@@ -1523,8 +2287,14 @@
     {
       "kind": "typed",
       "id": "m4-mt-2",
-      "prompt": { "vi": "Switch ghi vào cuốn sổ của nó hai thứ: cổng, và cái gì nữa?" },
-      "accept": ["địa chỉ mac", "mac", "địa chỉ vật lý"],
+      "prompt": {
+        "vi": "Switch ghi vào cuốn sổ của nó hai thứ: cổng, và cái gì nữa?"
+      },
+      "accept": [
+        "địa chỉ mac",
+        "mac",
+        "địa chỉ vật lý"
+      ],
       "explain": {
         "vi": "Địa chỉ MAC. Cuốn sổ đó tên là bảng MAC, ghi cặp 'địa chỉ MAC — cổng đang cắm'."
       }
@@ -1532,11 +2302,19 @@
     {
       "kind": "mcq",
       "id": "m4-mt-3",
-      "prompt": { "vi": "Switch nhận một lá thư gửi tới địa chỉ MAC mà nó CHƯA có trong sổ. Nó làm gì?" },
+      "prompt": {
+        "vi": "Switch nhận một lá thư gửi tới địa chỉ MAC mà nó CHƯA có trong sổ. Nó làm gì?"
+      },
       "choices": [
-        { "vi": "Bỏ lá thư đi" },
-        { "vi": "Đẩy ra mọi cổng còn lại" },
-        { "vi": "Giữ lại chờ tới khi biết đường" }
+        {
+          "vi": "Bỏ lá thư đi"
+        },
+        {
+          "vi": "Đẩy ra mọi cổng còn lại"
+        },
+        {
+          "vi": "Giữ lại chờ tới khi biết đường"
+        }
       ],
       "answerIndex": 1,
       "explain": {
@@ -1546,8 +2324,13 @@
     {
       "kind": "typed",
       "id": "m4-mt-4",
-      "prompt": { "vi": "Máy biết địa chỉ IP của máy kia nhưng chưa biết địa chỉ MAC. Nó dùng giao thức nào để hỏi?" },
-      "accept": ["arp", "address resolution protocol"],
+      "prompt": {
+        "vi": "Máy biết địa chỉ IP của máy kia nhưng chưa biết địa chỉ MAC. Nó dùng giao thức nào để hỏi?"
+      },
+      "accept": [
+        "arp",
+        "address resolution protocol"
+      ],
       "explain": {
         "vi": "ARP — nó hỏi to cả mạng 'ai đang giữ địa chỉ IP này?' và đúng máy đó trả lời kèm MAC của mình."
       }
@@ -1559,9 +2342,15 @@
         "vi": "Hai máy cắm chung một switch, địa chỉ đều thuộc dải 192.168.1.x, dây cắm tốt. Chúng vẫn không ping được nhau. Nghi ngờ đầu tiên nên là gì?"
       },
       "choices": [
-        { "vi": "Hai cổng đang ở hai VLAN khác nhau" },
-        { "vi": "Switch hỏng nên không chuyển được khung" },
-        { "vi": "Hai máy chưa cùng một workgroup Windows" }
+        {
+          "vi": "Hai cổng đang ở hai VLAN khác nhau"
+        },
+        {
+          "vi": "Switch hỏng nên không chuyển được khung"
+        },
+        {
+          "vi": "Hai máy chưa cùng một workgroup Windows"
+        }
       ],
       "answerIndex": 0,
       "explain": {
@@ -1571,8 +2360,15 @@
     {
       "kind": "typed",
       "id": "m4-mt-6",
-      "prompt": { "vi": "Thiết bị nối hai mạng khác dải địa chỉ và chuyển gói giữa chúng tên là gì?" },
-      "accept": ["router", "bộ định tuyến", "thiết bị định tuyến", "routers"],
+      "prompt": {
+        "vi": "Tầng 1 công ty dùng dải 192.168.10.x, tầng 2 dùng 192.168.20.x, vậy mà hai bên vẫn gửi file qua lại được. Cái máy đứng giữa làm được chuyện đó tên là gì?"
+      },
+      "accept": [
+        "router",
+        "bộ định tuyến",
+        "thiết bị định tuyến",
+        "routers"
+      ],
       "explain": {
         "vi": "Router. Mỗi chân của nó nằm ở một mạng, và nó tra bảng định tuyến để biết đẩy gói sang chân nào."
       }
@@ -1580,11 +2376,19 @@
     {
       "kind": "mcq",
       "id": "m4-mt-7",
-      "prompt": { "vi": "Gói tin đi từ máy A qua hai router rồi tới máy B. Trên đường đi, thứ gì KHÔNG đổi?" },
+      "prompt": {
+        "vi": "Gói tin đi từ máy A qua hai router rồi tới máy B. Trên đường đi, thứ gì KHÔNG đổi?"
+      },
       "choices": [
-        { "vi": "Địa chỉ MAC nguồn" },
-        { "vi": "Địa chỉ MAC đích" },
-        { "vi": "Địa chỉ IP nguồn và đích" }
+        {
+          "vi": "Địa chỉ MAC nguồn"
+        },
+        {
+          "vi": "Địa chỉ MAC đích"
+        },
+        {
+          "vi": "Địa chỉ IP nguồn và đích"
+        }
       ],
       "answerIndex": 2,
       "explain": {
@@ -1594,14 +2398,24 @@
     {
       "kind": "mcq",
       "id": "m4-mt-9",
-      "prompt": { "vi": "Một switch không chia VLAN, 20 máy cắm chung. Một máy phát tiếng gọi ARP hỏi cả phòng. Ai nghe thấy tiếng gọi đó?" },
+      "prompt": {
+        "vi": "Một switch không chia VLAN, 20 máy cắm chung. Một máy phát tiếng gọi ARP hỏi cả phòng. Ai nghe thấy tiếng gọi đó?"
+      },
       "choices": [
-        { "vi": "Cả 19 máy còn lại — chúng nằm chung một miền quảng bá" },
-        { "vi": "Chỉ máy có địa chỉ IP được hỏi, switch biết đường gửi riêng cho nó" },
-        { "vi": "Không máy nào, vì switch chặn mọi tiếng gọi chung cho đỡ nghẽn đường" }
+        {
+          "vi": "Cả 19 máy còn lại — chúng nằm chung một miền quảng bá"
+        },
+        {
+          "vi": "Chỉ máy có địa chỉ IP được hỏi, switch biết đường gửi riêng cho nó"
+        },
+        {
+          "vi": "Không máy nào, vì switch chặn mọi tiếng gọi chung cho đỡ nghẽn đường"
+        }
       ],
       "answerIndex": 0,
-      "hintTopic": { "vi": "miền quảng bá — tiếng gọi chung lan tới đâu" },
+      "hintTopic": {
+        "vi": "miền quảng bá — tiếng gọi chung lan tới đâu"
+      },
       "explain": {
         "vi": "Tiếng gọi chung lan tới đâu, miền quảng bá rộng tới đó. Switch chưa biết ai giữ địa chỉ IP ấy nên phải hỏi cả phòng — chia VLAN chính là dựng tường cho tiếng gọi khỏi lan sang xóm khác."
       }
@@ -1609,9 +2423,18 @@
     {
       "kind": "typed",
       "id": "m4-mt-10",
-      "prompt": { "vi": "Hai máy cắm chung một switch nhưng bạn muốn chúng không nhìn thấy nhau, mà không mua thêm thiết bị. Bạn chia switch bằng thứ gì?" },
-      "accept": ["vlan", "virtual lan", "mạng lan ảo", "mang lan ao"],
-      "hintTopic": { "vi": "cách chia một switch thành nhiều mạng" },
+      "prompt": {
+        "vi": "Hai máy cắm chung một switch nhưng bạn muốn chúng không nhìn thấy nhau, mà không mua thêm thiết bị. Bạn chia switch bằng thứ gì?"
+      },
+      "accept": [
+        "vlan",
+        "virtual lan",
+        "mạng lan ảo",
+        "mang lan ao"
+      ],
+      "hintTopic": {
+        "vi": "cách chia một switch thành nhiều mạng"
+      },
       "explain": {
         "vi": "VLAN chia một switch vật lý thành nhiều mạng tách biệt: hai cổng khác VLAN thì như cắm vào hai switch khác nhau, dù chung một cái hộp."
       }
@@ -1619,14 +2442,24 @@
     {
       "kind": "mcq",
       "id": "m4-mt-11",
-      "prompt": { "vi": "Bảng MAC của switch và bảng ARP của máy tính khác nhau ở chỗ nào?" },
+      "prompt": {
+        "vi": "Bảng MAC của switch và bảng ARP của máy tính khác nhau ở chỗ nào?"
+      },
       "choices": [
-        { "vi": "Bảng MAC ghi máy nào ở cổng nào; bảng ARP ghi IP nào ứng với MAC nào" },
-        { "vi": "Bảng MAC ghi IP nào ứng với MAC nào; bảng ARP ghi máy nào ở cổng nào" },
-        { "vi": "Hai bảng ghi cùng một thứ, chỉ khác chỗ cất là switch hay máy tính" }
+        {
+          "vi": "Bảng MAC ghi máy nào ở cổng nào; bảng ARP ghi IP nào ứng với MAC nào"
+        },
+        {
+          "vi": "Bảng MAC ghi IP nào ứng với MAC nào; bảng ARP ghi máy nào ở cổng nào"
+        },
+        {
+          "vi": "Hai bảng ghi cùng một thứ, chỉ khác chỗ cất là switch hay máy tính"
+        }
       ],
       "answerIndex": 0,
-      "hintTopic": { "vi": "hai cuốn sổ: bảng MAC và bảng ARP" },
+      "hintTopic": {
+        "vi": "hai cuốn sổ: bảng MAC và bảng ARP"
+      },
       "explain": {
         "vi": "Hai cuốn sổ khác nhau: switch nhớ CỔNG của từng địa chỉ MAC, còn máy tính nhớ địa chỉ MAC ứng với từng địa chỉ IP nó vừa hỏi bằng ARP."
       }
@@ -1634,9 +2467,20 @@
     {
       "kind": "typed",
       "id": "m4-mt-12",
-      "prompt": { "vi": "Router nhận gói tin gửi tới một mạng nó không nối trực tiếp. Nó tra cuốn sổ nào để biết đẩy gói đi đâu?" },
-      "accept": ["bảng định tuyến", "bang dinh tuyen", "routing table", "bảng route", "bảng routing", "bang routing"],
-      "hintTopic": { "vi": "cuốn sổ đường đi của router" },
+      "prompt": {
+        "vi": "Router nhận gói tin gửi tới một mạng nó không nối trực tiếp. Nó tra cuốn sổ nào để biết đẩy gói đi đâu?"
+      },
+      "accept": [
+        "bảng định tuyến",
+        "bang dinh tuyen",
+        "routing table",
+        "bảng route",
+        "bảng routing",
+        "bang routing"
+      ],
+      "hintTopic": {
+        "vi": "cuốn sổ đường đi của router"
+      },
       "explain": {
         "vi": "Router tra bảng định tuyến: mỗi dòng nói \"muốn tới mạng này thì giao cho ai\". Không dòng nào khớp thì gói bị bỏ — đúng cái lỗi thiếu tuyến bạn gặp trong phòng lab."
       }
@@ -1645,7 +2489,7 @@
       "kind": "typed",
       "id": "m4-mt-13",
       "prompt": {
-        "vi": "Switch đọc địa chỉ MAC để chuyển khung — nó làm việc ở tầng số mấy?"
+        "vi": "Một hộp thiết bị bốn cổng chỉ nhìn địa chỉ MAC in trên card mạng để quyết định đẩy khung ra cổng nào, hoàn toàn không đụng tới IP. Hộp ấy đang làm việc ở tầng mấy?"
       },
       "accept": [
         "2",
@@ -1684,7 +2528,14 @@
       "prompt": {
         "vi": "Một đoạn cáp đồng chạy được tối đa bao nhiêu mét, trước khi phải chuyển sang cáp quang hoặc đặt thêm thiết bị ở giữa?"
       },
-      "accept": ["100 mét", "100m", "một trăm mét", "100 m", "100 met", "khoảng 100 m"],
+      "accept": [
+        "100 mét",
+        "100m",
+        "một trăm mét",
+        "100 m",
+        "100 met",
+        "khoảng 100 m"
+      ],
       "hintTopic": {
         "vi": "cữ chiều dài của một đoạn cáp đồng"
       },
@@ -1699,9 +2550,15 @@
         "vi": "Một máy có dây liền, đèn cổng sáng, vào mạng vẫn được — nhưng chép file thì chậm dai dẳng và thỉnh thoảng rớt. Nghi ngờ đáng đặt lên đầu là gì?"
       },
       "choices": [
-        { "vi": "Hai đầu sợi dây đang lệch duplex với nhau" },
-        { "vi": "Máy đang cắm vào một VLAN khác với máy kia" },
-        { "vi": "Địa chỉ IP của máy trùng với một máy khác" }
+        {
+          "vi": "Hai đầu sợi dây đang lệch duplex với nhau"
+        },
+        {
+          "vi": "Máy đang cắm vào một VLAN khác với máy kia"
+        },
+        {
+          "vi": "Địa chỉ IP của máy trùng với một máy khác"
+        }
       ],
       "answerIndex": 0,
       "hintTopic": {
@@ -1724,24 +2581,42 @@
               "kind": "pc",
               "id": "pc-a",
               "hostname": "Máy nội bộ A",
-              "port": { "id": "eth0", "mac": "AA:BB:CC:00:34:01" },
-              "ipConfig": { "ip": "192.168.5.10", "prefix": 24 },
+              "port": {
+                "id": "eth0",
+                "mac": "AA:BB:CC:00:34:01"
+              },
+              "ipConfig": {
+                "ip": "192.168.5.10",
+                "prefix": 24
+              },
               "gateway": null
             },
             {
               "kind": "pc",
               "id": "pc-b",
               "hostname": "Máy nội bộ B",
-              "port": { "id": "eth0", "mac": "AA:BB:CC:00:34:02" },
-              "ipConfig": { "ip": "192.168.5.20", "prefix": 24 },
+              "port": {
+                "id": "eth0",
+                "mac": "AA:BB:CC:00:34:02"
+              },
+              "ipConfig": {
+                "ip": "192.168.5.20",
+                "prefix": 24
+              },
               "gateway": null
             },
             {
               "kind": "pc",
               "id": "pc-k",
               "hostname": "Máy khách K",
-              "port": { "id": "eth0", "mac": "AA:BB:CC:00:34:03" },
-              "ipConfig": { "ip": "192.168.5.30", "prefix": 24 },
+              "port": {
+                "id": "eth0",
+                "mac": "AA:BB:CC:00:34:03"
+              },
+              "ipConfig": {
+                "ip": "192.168.5.30",
+                "prefix": 24
+              },
               "gateway": null
             },
             {
@@ -1749,21 +2624,70 @@
               "id": "sw-1",
               "hostname": "Switch-1",
               "ports": [
-                { "id": "p1", "vlan": 10 },
-                { "id": "p2", "vlan": 10 },
-                { "id": "p3", "vlan": 10 }
+                {
+                  "id": "p1",
+                  "vlan": 10
+                },
+                {
+                  "id": "p2",
+                  "vlan": 10
+                },
+                {
+                  "id": "p3",
+                  "vlan": 10
+                }
               ]
             }
           ],
           "links": [
-            { "id": "l1", "a": { "deviceId": "pc-a", "portId": "eth0" }, "b": { "deviceId": "sw-1", "portId": "p1" } },
-            { "id": "l2", "a": { "deviceId": "pc-b", "portId": "eth0" }, "b": { "deviceId": "sw-1", "portId": "p2" } },
-            { "id": "l3", "a": { "deviceId": "pc-k", "portId": "eth0" }, "b": { "deviceId": "sw-1", "portId": "p3" } }
+            {
+              "id": "l1",
+              "a": {
+                "deviceId": "pc-a",
+                "portId": "eth0"
+              },
+              "b": {
+                "deviceId": "sw-1",
+                "portId": "p1"
+              }
+            },
+            {
+              "id": "l2",
+              "a": {
+                "deviceId": "pc-b",
+                "portId": "eth0"
+              },
+              "b": {
+                "deviceId": "sw-1",
+                "portId": "p2"
+              }
+            },
+            {
+              "id": "l3",
+              "a": {
+                "deviceId": "pc-k",
+                "portId": "eth0"
+              },
+              "b": {
+                "deviceId": "sw-1",
+                "portId": "p3"
+              }
+            }
           ]
         },
         "goals": [
-          { "kind": "ping", "from": "pc-a", "to": "pc-b", "expect": "reach" },
-          { "kind": "ping", "from": "pc-a", "to": "pc-k", "expect": "blocked" }
+          {
+            "kind": "ping",
+            "from": "pc-a",
+            "to": "pc-b",
+            "expect": "reach"
+          },
+          {
+            "kind": "ping",
+            "from": "pc-a",
+            "to": "pc-k",
+            "expect": "blocked"
+          }
         ],
         "allow": {
           "addDevices": [],
@@ -1781,24 +2705,42 @@
               "kind": "pc",
               "id": "pc-a",
               "hostname": "Máy nội bộ A",
-              "port": { "id": "eth0", "mac": "AA:BB:CC:00:34:01" },
-              "ipConfig": { "ip": "192.168.5.10", "prefix": 24 },
+              "port": {
+                "id": "eth0",
+                "mac": "AA:BB:CC:00:34:01"
+              },
+              "ipConfig": {
+                "ip": "192.168.5.10",
+                "prefix": 24
+              },
               "gateway": null
             },
             {
               "kind": "pc",
               "id": "pc-b",
               "hostname": "Máy nội bộ B",
-              "port": { "id": "eth0", "mac": "AA:BB:CC:00:34:02" },
-              "ipConfig": { "ip": "192.168.5.20", "prefix": 24 },
+              "port": {
+                "id": "eth0",
+                "mac": "AA:BB:CC:00:34:02"
+              },
+              "ipConfig": {
+                "ip": "192.168.5.20",
+                "prefix": 24
+              },
               "gateway": null
             },
             {
               "kind": "pc",
               "id": "pc-k",
               "hostname": "Máy khách K",
-              "port": { "id": "eth0", "mac": "AA:BB:CC:00:34:03" },
-              "ipConfig": { "ip": "192.168.5.30", "prefix": 24 },
+              "port": {
+                "id": "eth0",
+                "mac": "AA:BB:CC:00:34:03"
+              },
+              "ipConfig": {
+                "ip": "192.168.5.30",
+                "prefix": 24
+              },
               "gateway": null
             },
             {
@@ -1806,16 +2748,55 @@
               "id": "sw-1",
               "hostname": "Switch-1",
               "ports": [
-                { "id": "p1", "vlan": 10 },
-                { "id": "p2", "vlan": 10 },
-                { "id": "p3", "vlan": 99 }
+                {
+                  "id": "p1",
+                  "vlan": 10
+                },
+                {
+                  "id": "p2",
+                  "vlan": 10
+                },
+                {
+                  "id": "p3",
+                  "vlan": 99
+                }
               ]
             }
           ],
           "links": [
-            { "id": "l1", "a": { "deviceId": "pc-a", "portId": "eth0" }, "b": { "deviceId": "sw-1", "portId": "p1" } },
-            { "id": "l2", "a": { "deviceId": "pc-b", "portId": "eth0" }, "b": { "deviceId": "sw-1", "portId": "p2" } },
-            { "id": "l3", "a": { "deviceId": "pc-k", "portId": "eth0" }, "b": { "deviceId": "sw-1", "portId": "p3" } }
+            {
+              "id": "l1",
+              "a": {
+                "deviceId": "pc-a",
+                "portId": "eth0"
+              },
+              "b": {
+                "deviceId": "sw-1",
+                "portId": "p1"
+              }
+            },
+            {
+              "id": "l2",
+              "a": {
+                "deviceId": "pc-b",
+                "portId": "eth0"
+              },
+              "b": {
+                "deviceId": "sw-1",
+                "portId": "p2"
+              }
+            },
+            {
+              "id": "l3",
+              "a": {
+                "deviceId": "pc-k",
+                "portId": "eth0"
+              },
+              "b": {
+                "deviceId": "sw-1",
+                "portId": "p3"
+              }
+            }
           ]
         }
       },

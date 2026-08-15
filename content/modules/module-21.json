@@ -754,7 +754,7 @@
                 "kind": "cli",
                 "id": "m21-b2-prac-cli",
                 "prompt": {
-                  "vi": "CHẶNG 2 — nộp riêng. Hiện trạng: sợi dây giữa SW-1 và SW-2 còn là access mặc định nên VLAN 10 (kinh doanh) và VLAN 20 (khách) không qua nổi; R-ChiNhanh chưa bật OSPF nên chưa biết đường về trụ sở (trụ sở ĐÃ bật sẵn). Việc của bạn: dựng trunk hai đầu dây liên switch (cổng p3 mỗi bên, cho đúng VLAN 10 và 20 đi), bật OSPF trên R-ChiNhanh khai đủ ba mạng của nó, rồi KIỂM CHỨNG láng giềng ra Full trước khi nộp."
+                  "vi": "CHẶNG 2 — nộp riêng. Hiện trạng: sợi dây giữa SW-1 và SW-2 còn là access mặc định nên VLAN 10 (kinh doanh) và VLAN 20 (khách) không qua nổi; R-ChiNhanh chưa bật OSPF nên chưa biết đường về trụ sở (trụ sở ĐÃ bật sẵn). Việc của bạn: dựng trunk hai đầu dây liên switch (cổng p3 mỗi bên, cho đúng VLAN 10 và 20 đi), bật OSPF trên R-ChiNhanh khai đủ ba mạng của nó. Kiểm chứng đủ thang ba bậc TRƯỚC KHI NỘP: xem bảng trunk trên CẢ HAI switch, rồi xem láng giềng OSPF ra Full, rồi mới ping xuyên site — nộp mà thiếu bậc nào cũng chưa tính là xong."
                 },
                 "spec": {
                   "initial": {
@@ -1115,6 +1115,16 @@
                     },
                     {
                       "kind": "viewed",
+                      "command": "show interfaces trunk",
+                      "deviceId": "sw-1"
+                    },
+                    {
+                      "kind": "viewed",
+                      "command": "show interfaces trunk",
+                      "deviceId": "sw-2"
+                    },
+                    {
+                      "kind": "viewed",
                       "command": "show ip ospf neighbor",
                       "deviceId": "r-cn",
                       "requireOspfFull": true
@@ -1147,7 +1157,8 @@
                         "interface p3",
                         "switchport mode trunk",
                         "switchport trunk allowed vlan 10,20",
-                        "end"
+                        "end",
+                        "show interfaces trunk"
                       ]
                     },
                     {
@@ -1158,7 +1169,8 @@
                         "interface p3",
                         "switchport mode trunk",
                         "switchport trunk allowed vlan 10,20",
-                        "end"
+                        "end",
+                        "show interfaces trunk"
                       ]
                     },
                     {
@@ -1177,14 +1189,14 @@
                   ]
                 },
                 "hintTopic": {
-                  "vi": "trunk hai đầu p3, rồi router ospf 1 với ba câu network wildcard"
+                  "vi": "trunk hai đầu p3 rồi soi bảng trunk hai đầu, sau đó router ospf 1 với ba câu network wildcard"
                 }
               },
               "hint": {
-                "vi": "Ba khối việc: trên MỖI switch vào interface p3 gõ switchport mode trunk + switchport trunk allowed vlan 10,20; trên R-ChiNhanh vào router ospf 1 rồi khai ba câu network với wildcard ĐẢO của từng dải (/26 → 0.0.0.63, /28 → 0.0.0.15, /30 → 0.0.0.3); cuối cùng show ip ospf neighbor phải ra Full."
+                "vi": "Ba khối việc rồi mới tới ba bậc kiểm chứng. Việc: trên MỖI switch vào interface p3 gõ switchport mode trunk + switchport trunk allowed vlan 10,20; trên R-ChiNhanh vào router ospf 1 rồi khai ba câu network với wildcard ĐẢO của từng dải (/26 → 0.0.0.63, /28 → 0.0.0.15, /30 → 0.0.0.3). Kiểm chứng: show interfaces trunk trên CẢ HAI switch (bậc 1), show ip ospf neighbor ra Full (bậc 2), rồi ping xuyên site (bậc 3)."
               },
               "solution": {
-                "vi": "SW-1 và SW-2: interface p3 → switchport mode trunk → switchport trunk allowed vlan 10,20. R-ChiNhanh: router ospf 1 → network 10.40.0.0 0.0.0.63 area 0 → network 10.40.0.96 0.0.0.15 area 0 → network 10.40.0.112 0.0.0.3 area 0 → end → show ip ospf neighbor thấy FULL. Trunk sống thì hai xóm qua được dây liên switch; OSPF lên thì hai router tự kể đường cho nhau — ping xuyên site tự thông, không một tuyến tĩnh nào phải gõ."
+                "vi": "SW-1 và SW-2: interface p3 → switchport mode trunk → switchport trunk allowed vlan 10,20 → end → show interfaces trunk, thấy p3 nằm trong bảng và cột VLAN cho phép có 10,20. R-ChiNhanh: router ospf 1 → network 10.40.0.0 0.0.0.63 area 0 → network 10.40.0.96 0.0.0.15 area 0 → network 10.40.0.112 0.0.0.3 area 0 → end → show ip ospf neighbor thấy FULL. Rồi mới ping xuyên site. Thang ba bậc đi từ dưới lên: tầng 2 sống chưa (bảng trunk) → tầng 3 quen nhau chưa (láng giềng Full) → việc thật chạy chưa (ping). Bỏ bậc dưới mà nhảy thẳng lên bậc trên thì lúc hỏng bạn không biết hỏng ở đâu."
               }
             },
             {

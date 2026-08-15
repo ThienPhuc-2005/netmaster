@@ -13,7 +13,10 @@
 //     render lời tiếng Việt.
 //
 // Technical contract: thuần và tất định — không đồng hồ, không random.
-// Thời gian trong output là hằng ("time<1ms"); TTL suy từ số router đã
+// Đường khỏe in "time<1ms"; con số trễ và số gói rơi CHỈ sinh ra từ các
+// sợi dây khai ốm trong hồ sơ bệnh (`overlay.impairments`), cộng dồn
+// theo đúng chặng gói đã đi — không có nhiễu ngẫu nhiên, chạy lại bao
+// nhiêu lần cũng ra đúng một kết quả. TTL suy từ số router đã
 // qua. Ca "trùng IP" cần hiện tượng hai máy GIÀNH nhau trả lời: engine
 // luân phiên chủ IP theo SỐ LẦN PING đã chạy trong phiên (tất định) —
 // chạy ping hai lần thấy MAC đổi trong `arp -a`, đúng bài chẩn đoán
@@ -35,7 +38,8 @@ import {
   type PingResult,
   type SimStage,
 } from '../lab/simulate'
-import { hostBlockOf, ipOwners, type ClinicPatient, type HostBlock, type NetstatRow, type AppliedGpo } from './patient'
+import type { PacketHop } from '../lab/simulate'
+import { hostBlockOf, impairmentOf, ipOwners, type ClinicPatient, type HostBlock, type NetstatRow, type AppliedGpo } from './patient'
 
 // ---------------------------------------------------------------
 // Trạng thái phiên terminal
@@ -83,6 +87,11 @@ export type CommandOutcome =
       blockedBy: HostBlock | null
       /** Nhiều thiết bị cùng giữ IP đích — ca trùng IP. */
       conflictOwners: DeviceId[]
+      /**
+       * Số đo của lượt ping — trễ khứ hồi và tỉ lệ rơi gói do các sợi
+       * dây ốm trên đường. Mạng khỏe thì cả hai bằng 0.
+       */
+      quality: PathQuality
     }
   | {
       kind: 'tracert'
@@ -189,6 +198,136 @@ function runSim(patient: ClinicPatient, state: TerminalState, ip: Ipv4, count: n
   }
 }
 
+// ---------------------------------------------------------------
+// Chất lượng đường đi: trễ và rớt gói (bệnh "chậm chứ không chết")
+// ---------------------------------------------------------------
+
+/**
+ * Nhiều nhất 3 trong 4 gói được phép rơi.
+ *
+ * Không phải làm tròn cho đẹp: rơi trọn 4 gói thì màn hình y hệt ca ĐỨT,
+ * mà đứt đã có cách mô hình riêng (bỏ hẳn sợi dây) và có cách chữa riêng.
+ * Để một sợi dây "ốm" biến thành "chết" là xóa mất đúng bài học của loại
+ * bệnh này: mạng vẫn thông mà công việc vẫn hỏng.
+ */
+const LOSS_CAP = 3
+
+/** Chất lượng đo được của một lượt ping. */
+export interface PathQuality {
+  /** Trễ khứ hồi cộng dồn từ các sợi dây ốm trên đường đi (ms). */
+  rttMs: number
+  /** Tỉ lệ gói rơi cả lượt đi lẫn lượt về (%), đã làm tròn. */
+  lossPercent: number
+}
+
+/**
+ * Chuỗi hop THẬT SỰ đưa gói tới nơi, lần ngược từ `arrivedAt` về nguồn.
+ *
+ * Vì sao không lấy đại mọi hop của chặng: lượt ping đầu tiên switch còn
+ * chưa thuộc bài nên nó PHÁT TÁN khung ra mọi cổng — trong đống hop đó
+ * có cả những nhánh cụt không liên quan. Cộng trễ của một sợi dây nằm ở
+ * nhánh cụt vào kết quả ping là đổ oan cho sợi dây vô can, và tệ hơn:
+ * người học đi thay đúng sợi dây ấy thì bệnh không hết.
+ */
+function hopsOnArrivalPath(stage: SimStage): PacketHop[] {
+  if (stage.arrivedAt === null) return []
+  const chain: PacketHop[] = []
+  const remaining = [...stage.hops]
+  let target: DeviceId | null = stage.arrivedAt
+  for (let guard = stage.hops.length; guard > 0 && target !== null; guard--) {
+    let found = -1
+    for (let i = remaining.length - 1; i >= 0; i--) {
+      if (remaining[i]!.to.deviceId === target) {
+        found = i
+        break
+      }
+    }
+    if (found === -1) break
+    const hop = remaining[found]!
+    remaining.splice(found, 1)
+    chain.unshift(hop)
+    target = hop.from.deviceId
+  }
+  return chain
+}
+
+/**
+ * Cộng trễ và nhân xác suất qua được của các sợi dây ốm trên đường đi.
+ *
+ * Gói phải qua sợi dây bệnh HAI LẦN (đi và về) nên hai chiều đều được
+ * tính — đó cũng là lý do một sợi dây rớt 20% làm ping mất tới ~36% gói.
+ */
+export function pathQuality(patient: ClinicPatient, stages: SimStage[]): PathQuality {
+  if ((patient.overlay.impairments ?? []).length === 0) return { rttMs: 0, lossPercent: 0 }
+  let rttMs = 0
+  let keep = 1
+  for (const stage of stages) {
+    if (stage.phase !== 'echo-request' && stage.phase !== 'echo-reply') continue
+    for (const hop of hopsOnArrivalPath(stage)) {
+      const imp = impairmentOf(patient.overlay, hop.linkId)
+      if (imp === null) continue
+      rttMs += imp.latencyMs ?? 0
+      keep *= 1 - (imp.lossPercent ?? 0) / 100
+    }
+  }
+  return { rttMs, lossPercent: Math.round((1 - keep) * 100) }
+}
+
+/**
+ * Số đo của một đường KHÔNG ốm — cũng là số đo dùng cho mọi lượt ping
+ * hỏng hẳn: khi không có gói nào về thì không có gì để đo, và báo một
+ * con số trễ nào đó ở đấy là bịa.
+ */
+const MANG_KHOE: PathQuality = { rttMs: 0, lossPercent: 0 }
+
+/**
+ * Trễ khứ hồi CỘNG DỒN tới từng thiết bị trên đường đi — nguyên liệu cho
+ * tracert.
+ *
+ * Đây là chỗ tracert đáng giá nhất trong ca "mạng chậm": nhìn cột thời
+ * gian nhảy vọt ở chặng nào thì đoạn dây bệnh nằm ngay trước chặng đó.
+ * Ping chỉ nói "cả chuyến đi mất bao lâu", tracert nói "mất ở khúc nào".
+ */
+function rttToEachHop(patient: ClinicPatient, stages: SimStage[]): Map<DeviceId, number> {
+  const table = new Map<DeviceId, number>()
+  if ((patient.overlay.impairments ?? []).length === 0) return table
+  // Gói qua router được mô phỏng thành NHIỀU chặng echo-request nối
+  // nhau, mỗi đoạn mạng một chặng. Chỉ đọc chặng đầu là bảng thiếu đúng
+  // cái đích — và tracert in ra "<1 ms" ở dòng cuối ngay sau một dòng
+  // 180 ms, tức là bản đồ tự mâu thuẫn ngay trước mắt người học.
+  let oneWay = 0
+  for (const stage of stages) {
+    if (stage.phase !== 'echo-request') continue
+    for (const hop of hopsOnArrivalPath(stage)) {
+      oneWay += impairmentOf(patient.overlay, hop.linkId)?.latencyMs ?? 0
+      if (!table.has(hop.to.deviceId)) table.set(hop.to.deviceId, oneWay * 2)
+    }
+  }
+  return table
+}
+
+/** Một ô thời gian của tracert, đúng lối Windows in. */
+function tracertField(rttMs: number): string {
+  return rttMs < 1 ? '<1 ms' : `${rttMs} ms`
+}
+
+/** Bao nhiêu gói trong 4 gói bị rơi — tất định, và không bao giờ rơi cả 4. */
+function lostCount(lossPercent: number): number {
+  return Math.min(LOSS_CAP, Math.round((4 * lossPercent) / 100))
+}
+
+/**
+ * Gói thứ mấy bị rơi, khai thành bảng cho tất định và ĐỌC RA GIỐNG ĐỜI
+ * THẬT: gói rơi nằm xen kẽ giữa các gói có đáp, chứ không dồn cục một
+ * đầu — dồn cục thì trông như mạng vừa đứt vừa nối lại, một bệnh khác.
+ */
+const LOSS_SLOTS: Record<number, number[]> = { 0: [], 1: [1], 2: [1, 3], 3: [0, 1, 3] }
+
+/** Cách Windows in một con số thời gian trong dòng Reply. */
+function timeField(rttMs: number): string {
+  return rttMs < 1 ? 'time<1ms' : `time=${rttMs}ms`
+}
+
 /** IP của seat (null khi máy chưa cấu hình). */
 function seatIp(patient: ClinicPatient): Ipv4 | null {
   const seat = findDevice(patient.topology, patient.seatId)
@@ -256,11 +395,11 @@ function cmdIpconfig(patient: ClinicPatient, state: TerminalState): CommandResul
  */
 function pingBodyLines(
   kind: 'reply' | 'timeout' | 'unreachable-local' | 'unreachable-via',
-  ctx: { ip: Ipv4; ttl?: number; via?: Ipv4; from?: Ipv4 | null },
+  ctx: { ip: Ipv4; ttl?: number; via?: Ipv4; from?: Ipv4 | null; rttMs?: number },
 ): string[] {
   const one =
     kind === 'reply'
-      ? `Reply from ${ctx.ip}: bytes=32 time<1ms TTL=${ctx.ttl ?? 128}`
+      ? `Reply from ${ctx.ip}: bytes=32 ${timeField(ctx.rttMs ?? 0)} TTL=${ctx.ttl ?? 128}`
       : kind === 'timeout'
         ? 'Request timed out.'
         : kind === 'unreachable-local'
@@ -287,6 +426,29 @@ function pingStats(received: number): string[] {
   return ['', `    Packets: Sent = 4, Received = ${received}, Lost = ${lost} (${lost * 25}% loss)`]
 }
 
+/**
+ * Trọn phần thân của một lượt ping CÓ tiếng đáp: bốn dòng (gói nào rơi
+ * thì thành "Request timed out."), thống kê mất gói, rồi khối thời gian.
+ *
+ * Khối thời gian là chỗ người học đọc ra "chậm chứ không chết" — mạng
+ * vẫn trả lời, nhưng con số nói mạch đang yếu. Chỉ in khi có ít nhất
+ * một gói về, đúng như Windows.
+ */
+function replyBlock(ip: Ipv4, ttl: number, quality: PathQuality): string[] {
+  const lost = lostCount(quality.lossPercent)
+  const slots = LOSS_SLOTS[lost] ?? []
+  const body = [0, 1, 2, 3].map((i) =>
+    slots.includes(i) ? 'Request timed out.' : `Reply from ${ip}: bytes=32 ${timeField(quality.rttMs)} TTL=${ttl}`,
+  )
+  const t = Math.max(0, Math.round(quality.rttMs))
+  return [
+    ...body,
+    ...pingStats(4 - lost),
+    'Approximate round trip times in milli-seconds:',
+    `    Minimum = ${t}ms, Maximum = ${t}ms, Average = ${t}ms`,
+  ]
+}
+
 function cmdPing(patient: ClinicPatient, state: TerminalState, target: string): CommandResult {
   if (target === '') return { outcome: { kind: 'usage', command: 'ping' }, lines: ['Usage: ping <address | name>'], state }
 
@@ -301,7 +463,7 @@ function cmdPing(patient: ClinicPatient, state: TerminalState, target: string): 
       return {
         outcome: {
           kind: 'ping', target, resolvedIp: null, resolveFailure,
-          replied: false, failure: null, blockedBy: null, conflictOwners: [],
+          replied: false, failure: null, blockedBy: null, conflictOwners: [], quality: MANG_KHOE,
         },
         lines: [`Ping request could not find host ${target}. Please check the name and try again.`],
         state,
@@ -322,7 +484,7 @@ function cmdPing(patient: ClinicPatient, state: TerminalState, target: string): 
   const seatBlock = hostBlockOf(patient.overlay, patient.seatId)
   if (seatBlock !== null && seatBlock.direction === 'outbound') {
     return {
-      outcome: { kind: 'ping', target, resolvedIp: ip, resolveFailure, replied: false, failure: null, blockedBy: seatBlock, conflictOwners: [] },
+      outcome: { kind: 'ping', target, resolvedIp: ip, resolveFailure, replied: false, failure: null, blockedBy: seatBlock, conflictOwners: [], quality: MANG_KHOE },
       lines: [`Pinging ${ip} with 32 bytes of data:`, 'PING: transmit failed. General failure.', ...pingStats(0)],
       state: { ...nextState, lastCapture: [] },
     }
@@ -331,7 +493,7 @@ function cmdPing(patient: ClinicPatient, state: TerminalState, target: string): 
   // Tự ping mình: trả lời tại chỗ, không cần mô phỏng.
   if (ip === seatIp(patient)) {
     return {
-      outcome: { kind: 'ping', target, resolvedIp: ip, resolveFailure: null, replied: true, failure: null, blockedBy: null, conflictOwners: ipOwners(patient.topology, ip).length > 1 ? ipOwners(patient.topology, ip) : [] },
+      outcome: { kind: 'ping', target, resolvedIp: ip, resolveFailure: null, replied: true, failure: null, blockedBy: null, conflictOwners: ipOwners(patient.topology, ip).length > 1 ? ipOwners(patient.topology, ip) : [], quality: MANG_KHOE },
       lines: [`Pinging ${ip} with 32 bytes of data:`, ...pingBodyLines('reply', { ip, ttl: 128 }), ...pingStats(4)],
       state: nextState,
     }
@@ -343,7 +505,7 @@ function cmdPing(patient: ClinicPatient, state: TerminalState, target: string): 
   if (sim.result === null) {
     // Không thiết bị nào giữ IP này — với người học, hệt như máy tắt.
     return {
-      outcome: { kind: 'ping', target, resolvedIp: ip, resolveFailure, replied: false, failure: 'no-such-host', blockedBy: null, conflictOwners: [] },
+      outcome: { kind: 'ping', target, resolvedIp: ip, resolveFailure, replied: false, failure: 'no-such-host', blockedBy: null, conflictOwners: [], quality: MANG_KHOE },
       lines: [header, ...pingBodyLines('timeout', { ip }), ...pingStats(0)],
       state: nextState,
     }
@@ -358,7 +520,7 @@ function cmdPing(patient: ClinicPatient, state: TerminalState, target: string): 
     // capture cho thấy echo-request TỚI mà không có echo-reply.
     const stagesWithoutReply = sim.result.stages.filter((s) => s.phase !== 'echo-reply')
     return {
-      outcome: { kind: 'ping', target, resolvedIp: ip, resolveFailure, replied: false, failure: null, blockedBy, conflictOwners: sim.conflictOwners },
+      outcome: { kind: 'ping', target, resolvedIp: ip, resolveFailure, replied: false, failure: null, blockedBy, conflictOwners: sim.conflictOwners, quality: MANG_KHOE },
       lines: [header, ...pingBodyLines('timeout', { ip }), ...pingStats(0)],
       state: { ...stateAfter, lastCapture: stagesWithoutReply },
     }
@@ -366,9 +528,10 @@ function cmdPing(patient: ClinicPatient, state: TerminalState, target: string): 
 
   if (sim.result.replied) {
     const routers = routersOnPath(patient.topology, sim.result.stages)
+    const quality = pathQuality(patient, sim.result.stages)
     return {
-      outcome: { kind: 'ping', target, resolvedIp: ip, resolveFailure, replied: true, failure: null, blockedBy: null, conflictOwners: sim.conflictOwners },
-      lines: [header, ...pingBodyLines('reply', { ip, ttl: 128 - routers.length }), ...pingStats(4)],
+      outcome: { kind: 'ping', target, resolvedIp: ip, resolveFailure, replied: true, failure: null, blockedBy: null, conflictOwners: sim.conflictOwners, quality },
+      lines: [header, ...replyBlock(ip, 128 - routers.length, quality)],
       state: stateAfter,
     }
   }
@@ -396,7 +559,7 @@ function cmdPing(patient: ClinicPatient, state: TerminalState, target: string): 
         ? pingBodyLines('unreachable-via', { ip, via: seatGateway(patient)! })
         : pingBodyLines('timeout', { ip })
   return {
-    outcome: { kind: 'ping', target, resolvedIp: ip, resolveFailure, replied: false, failure, blockedBy: null, conflictOwners: sim.conflictOwners },
+    outcome: { kind: 'ping', target, resolvedIp: ip, resolveFailure, replied: false, failure, blockedBy: null, conflictOwners: sim.conflictOwners, quality: MANG_KHOE },
     // Lời từ chối unreachable là gói NHẬN ĐƯỢC — xem chú thích pingStats.
     lines: [header, ...body, ...pingStats(unreachable ? 4 : 0)],
     state: stateAfter,
@@ -445,12 +608,17 @@ function cmdTracert(patient: ClinicPatient, state: TerminalState, target: string
 
   const stateAfter: TerminalState = { ...state, net: sim.net, lastCapture: sim.result.stages }
   const routers = routersOnPath(patient.topology, sim.result.stages)
-  const rows = routers.map((r, i) => `  ${i + 1}    <1 ms    <1 ms    <1 ms  ${r.ip}`)
+  const rttTable = rttToEachHop(patient, sim.result.stages)
+  const cell = (deviceId: DeviceId | null): string => {
+    const field = tracertField(deviceId === null ? 0 : (rttTable.get(deviceId) ?? 0))
+    return `${field.padStart(6)}  ${field.padStart(6)}  ${field.padStart(6)}`
+  }
+  const rows = routers.map((r, i) => `  ${i + 1}  ${cell(r.deviceId)}  ${r.ip}`)
   const targetBlock = sim.result.replied ? hostBlockOf(patient.overlay, sim.targetDeviceId!) : null
   const blocked = targetBlock !== null && targetBlock.direction === 'inbound'
 
   if (sim.result.replied && !blocked) {
-    rows.push(`  ${routers.length + 1}    <1 ms    <1 ms    <1 ms  ${ip}`)
+    rows.push(`  ${routers.length + 1}  ${cell(sim.targetDeviceId)}  ${ip}`)
     return {
       outcome: { kind: 'tracert', target, resolvedIp: ip, resolveFailure: null, routerIps: routers.map((r) => r.ip), reachedDest: true },
       lines: [...header, ...rows, '', 'Trace complete.'],

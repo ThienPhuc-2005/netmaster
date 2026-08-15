@@ -2,21 +2,74 @@
   "id": "module-17",
   "order": 17,
   "part": "D",
-  "letter": { "vi": "Vài dòng cho ca sau. Lúc mở module, một danh sách luật chỉ là mấy dòng chữ; giờ bạn biết dòng đầu tiên khớp là dòng quyết định, và biết cái dòng cấm vô hình nằm ở cuối đã hạ bao nhiêu người trước bạn. Bạn gắn được luật vào đúng cửa đúng chiều, dựng lại được cổng switch vừa bị đánh sập, và vạch mặt được kẻ nhận vơ địa chỉ cổng ra. Chặn đúng người mà không chặn nhầm cả văn phòng — cả nghề nằm trong một câu đó." },
-  "title": { "vi": "ACL và bảo mật lớp 2 — Luật chặn đúng người" },
+  "letter": {
+    "vi": "Vài dòng cho ca sau. Lúc mở module, một danh sách luật chỉ là mấy dòng chữ; giờ bạn biết dòng đầu tiên khớp là dòng quyết định, và biết cái dòng cấm vô hình nằm ở cuối đã hạ bao nhiêu người trước bạn. Bạn gắn được luật vào đúng cửa đúng chiều, dựng lại được cổng switch vừa bị đánh sập, và vạch mặt được kẻ nhận vơ địa chỉ cổng ra. Chặn đúng người mà không chặn nhầm cả văn phòng — cả nghề nằm trong một câu đó."
+  },
+  "title": {
+    "vi": "ACL và bảo mật lớp 2 — Luật chặn đúng người"
+  },
   "stages": [
-    { "id": "m17-chang-1", "title": { "vi": "Dòng cấm không ai nhìn thấy" }, "lessonIds": ["m17-bai-1"] },
-    { "id": "m17-chang-2", "title": { "vi": "Chặn cả xóm hay chặn đúng một cửa" }, "lessonIds": ["m17-bai-2"] },
-    { "id": "m17-chang-3", "title": { "vi": "Đúng cửa, đúng chiều" }, "lessonIds": ["m17-bai-3"] },
-    { "id": "m17-chang-4", "title": { "vi": "Khóa cổng switch lại" }, "lessonIds": ["m17-bai-4"] },
-    { "id": "m17-chang-4b", "title": { "vi": "Cái tên máy tự khai" }, "lessonIds": ["m17-bai-4b"] },
-    { "id": "m17-chang-5", "title": { "vi": "Kẻ mạo danh trong xóm" }, "lessonIds": ["m17-bai-5"] }
+    {
+      "id": "m17-chang-1",
+      "title": {
+        "vi": "Dòng cấm không ai nhìn thấy"
+      },
+      "lessonIds": [
+        "m17-bai-1"
+      ]
+    },
+    {
+      "id": "m17-chang-2",
+      "title": {
+        "vi": "Chặn cả xóm hay chặn đúng một cửa"
+      },
+      "lessonIds": [
+        "m17-bai-2"
+      ]
+    },
+    {
+      "id": "m17-chang-3",
+      "title": {
+        "vi": "Đúng cửa, đúng chiều"
+      },
+      "lessonIds": [
+        "m17-bai-3"
+      ]
+    },
+    {
+      "id": "m17-chang-4",
+      "title": {
+        "vi": "Khóa cổng switch lại"
+      },
+      "lessonIds": [
+        "m17-bai-4"
+      ]
+    },
+    {
+      "id": "m17-chang-4b",
+      "title": {
+        "vi": "Cái tên máy tự khai"
+      },
+      "lessonIds": [
+        "m17-bai-4b"
+      ]
+    },
+    {
+      "id": "m17-chang-5",
+      "title": {
+        "vi": "Kẻ mạo danh trong xóm"
+      },
+      "lessonIds": [
+        "m17-bai-5"
+      ]
+    }
   ],
-
   "lessons": [
     {
       "id": "m17-bai-1",
-      "missionTitle": { "vi": "Tìm ra dòng luật đang chặn cả sếp" },
+      "missionTitle": {
+        "vi": "Tìm ra dòng luật đang chặn cả sếp"
+      },
       "steps": [
         {
           "type": "hook",
@@ -41,24 +94,42 @@
                       "kind": "pc",
                       "id": "pc-sep",
                       "hostname": "PC-Giam-doc",
-                      "port": { "id": "eth0", "mac": "AA:BB:CC:17:00:01" },
-                      "ipConfig": { "ip": "192.168.1.10", "prefix": 24 },
+                      "port": {
+                        "id": "eth0",
+                        "mac": "AA:BB:CC:17:00:01"
+                      },
+                      "ipConfig": {
+                        "ip": "192.168.1.10",
+                        "prefix": 24
+                      },
                       "gateway": "192.168.1.1"
                     },
                     {
                       "kind": "pc",
                       "id": "pc-khach",
                       "hostname": "PC-Phong-khach",
-                      "port": { "id": "eth0", "mac": "AA:BB:CC:17:00:02" },
-                      "ipConfig": { "ip": "192.168.1.66", "prefix": 24 },
+                      "port": {
+                        "id": "eth0",
+                        "mac": "AA:BB:CC:17:00:02"
+                      },
+                      "ipConfig": {
+                        "ip": "192.168.1.66",
+                        "prefix": 24
+                      },
                       "gateway": "192.168.1.1"
                     },
                     {
                       "kind": "pc",
                       "id": "srv-ke-toan",
                       "hostname": "SRV-Ke-toan",
-                      "port": { "id": "eth0", "mac": "AA:BB:CC:17:00:03" },
-                      "ipConfig": { "ip": "192.168.2.50", "prefix": 24 },
+                      "port": {
+                        "id": "eth0",
+                        "mac": "AA:BB:CC:17:00:03"
+                      },
+                      "ipConfig": {
+                        "ip": "192.168.2.50",
+                        "prefix": 24
+                      },
                       "gateway": "192.168.2.1"
                     },
                     {
@@ -66,9 +137,18 @@
                       "id": "sw-1",
                       "hostname": "SW-Van-phong",
                       "ports": [
-                        { "id": "p1", "vlan": 1 },
-                        { "id": "p2", "vlan": 1 },
-                        { "id": "p3", "vlan": 1 }
+                        {
+                          "id": "p1",
+                          "vlan": 1
+                        },
+                        {
+                          "id": "p2",
+                          "vlan": 1
+                        },
+                        {
+                          "id": "p3",
+                          "vlan": 1
+                        }
                       ]
                     },
                     {
@@ -76,8 +156,14 @@
                       "id": "sw-2",
                       "hostname": "SW-May-chu",
                       "ports": [
-                        { "id": "p1", "vlan": 1 },
-                        { "id": "p2", "vlan": 1 }
+                        {
+                          "id": "p1",
+                          "vlan": 1
+                        },
+                        {
+                          "id": "p2",
+                          "vlan": 1
+                        }
                       ]
                     },
                     {
@@ -88,10 +174,20 @@
                         {
                           "id": "g0",
                           "mac": "AA:BB:CC:17:00:11",
-                          "ipConfig": { "ip": "192.168.1.1", "prefix": 24 },
+                          "ipConfig": {
+                            "ip": "192.168.1.1",
+                            "prefix": 24
+                          },
                           "aclIn": 101
                         },
-                        { "id": "g1", "mac": "AA:BB:CC:17:00:12", "ipConfig": { "ip": "192.168.2.1", "prefix": 24 } }
+                        {
+                          "id": "g1",
+                          "mac": "AA:BB:CC:17:00:12",
+                          "ipConfig": {
+                            "ip": "192.168.2.1",
+                            "prefix": 24
+                          }
+                        }
                       ],
                       "staticRoutes": [],
                       "accessLists": [
@@ -102,8 +198,14 @@
                               "seq": 10,
                               "action": "deny",
                               "protocol": "icmp",
-                              "src": { "ip": "192.168.1.66", "wildcard": "0.0.0.0" },
-                              "dst": { "ip": "0.0.0.0", "wildcard": "255.255.255.255" }
+                              "src": {
+                                "ip": "192.168.1.66",
+                                "wildcard": "0.0.0.0"
+                              },
+                              "dst": {
+                                "ip": "0.0.0.0",
+                                "wildcard": "255.255.255.255"
+                              }
                             }
                           ]
                         }
@@ -111,18 +213,83 @@
                     }
                   ],
                   "links": [
-                    { "id": "l1", "a": { "deviceId": "pc-sep", "portId": "eth0" }, "b": { "deviceId": "sw-1", "portId": "p1" } },
-                    { "id": "l2", "a": { "deviceId": "pc-khach", "portId": "eth0" }, "b": { "deviceId": "sw-1", "portId": "p2" } },
-                    { "id": "l3", "a": { "deviceId": "sw-1", "portId": "p3" }, "b": { "deviceId": "r-1", "portId": "g0" } },
-                    { "id": "l4", "a": { "deviceId": "r-1", "portId": "g1" }, "b": { "deviceId": "sw-2", "portId": "p1" } },
-                    { "id": "l5", "a": { "deviceId": "sw-2", "portId": "p2" }, "b": { "deviceId": "srv-ke-toan", "portId": "eth0" } }
+                    {
+                      "id": "l1",
+                      "a": {
+                        "deviceId": "pc-sep",
+                        "portId": "eth0"
+                      },
+                      "b": {
+                        "deviceId": "sw-1",
+                        "portId": "p1"
+                      }
+                    },
+                    {
+                      "id": "l2",
+                      "a": {
+                        "deviceId": "pc-khach",
+                        "portId": "eth0"
+                      },
+                      "b": {
+                        "deviceId": "sw-1",
+                        "portId": "p2"
+                      }
+                    },
+                    {
+                      "id": "l3",
+                      "a": {
+                        "deviceId": "sw-1",
+                        "portId": "p3"
+                      },
+                      "b": {
+                        "deviceId": "r-1",
+                        "portId": "g0"
+                      }
+                    },
+                    {
+                      "id": "l4",
+                      "a": {
+                        "deviceId": "r-1",
+                        "portId": "g1"
+                      },
+                      "b": {
+                        "deviceId": "sw-2",
+                        "portId": "p1"
+                      }
+                    },
+                    {
+                      "id": "l5",
+                      "a": {
+                        "deviceId": "sw-2",
+                        "portId": "p2"
+                      },
+                      "b": {
+                        "deviceId": "srv-ke-toan",
+                        "portId": "eth0"
+                      }
+                    }
                   ]
                 },
                 "deviceId": "r-1",
-                "goals": [{ "kind": "viewed", "command": "show access-lists", "deviceId": "r-1" }],
-                "solution": [{ "deviceId": "r-1", "lines": ["show access-lists"] }]
+                "goals": [
+                  {
+                    "kind": "viewed",
+                    "command": "show access-lists",
+                    "deviceId": "r-1"
+                  }
+                ],
+                "solution": [
+                  {
+                    "deviceId": "r-1",
+                    "lines": [
+                      "show access-lists"
+                    ]
+                  }
+                ]
               },
-              "hintTopic": { "vi": "lệnh mở các danh sách lọc trên router" },
+              "hintTopic": {
+                "vi": "lệnh mở các danh sách lọc trên router"
+              },
               "explain": {
                 "vi": "Bảng in ra đúng một dòng: 10 deny icmp host 192.168.1.66 any. Không dòng nào nhắc tới 192.168.1.10, mà sếp vẫn tắc. Lý do nằm ở chỗ máy không in ra: cuối MỌI danh sách còn một dòng vô hình — cấm tất cả những gì chưa được cho phép. Máy khách chết ở dòng 10; cả văn phòng còn lại chết ở dòng vô hình ấy."
               }
@@ -188,24 +355,42 @@
                         "kind": "pc",
                         "id": "pc-sep",
                         "hostname": "PC-Giam-doc",
-                        "port": { "id": "eth0", "mac": "AA:BB:CC:17:00:01" },
-                        "ipConfig": { "ip": "192.168.1.10", "prefix": 24 },
+                        "port": {
+                          "id": "eth0",
+                          "mac": "AA:BB:CC:17:00:01"
+                        },
+                        "ipConfig": {
+                          "ip": "192.168.1.10",
+                          "prefix": 24
+                        },
                         "gateway": "192.168.1.1"
                       },
                       {
                         "kind": "pc",
                         "id": "pc-khach",
                         "hostname": "PC-Phong-khach",
-                        "port": { "id": "eth0", "mac": "AA:BB:CC:17:00:02" },
-                        "ipConfig": { "ip": "192.168.1.66", "prefix": 24 },
+                        "port": {
+                          "id": "eth0",
+                          "mac": "AA:BB:CC:17:00:02"
+                        },
+                        "ipConfig": {
+                          "ip": "192.168.1.66",
+                          "prefix": 24
+                        },
                         "gateway": "192.168.1.1"
                       },
                       {
                         "kind": "pc",
                         "id": "srv-ke-toan",
                         "hostname": "SRV-Ke-toan",
-                        "port": { "id": "eth0", "mac": "AA:BB:CC:17:00:03" },
-                        "ipConfig": { "ip": "192.168.2.50", "prefix": 24 },
+                        "port": {
+                          "id": "eth0",
+                          "mac": "AA:BB:CC:17:00:03"
+                        },
+                        "ipConfig": {
+                          "ip": "192.168.2.50",
+                          "prefix": 24
+                        },
                         "gateway": "192.168.2.1"
                       },
                       {
@@ -213,9 +398,18 @@
                         "id": "sw-1",
                         "hostname": "SW-Van-phong",
                         "ports": [
-                          { "id": "p1", "vlan": 1 },
-                          { "id": "p2", "vlan": 1 },
-                          { "id": "p3", "vlan": 1 }
+                          {
+                            "id": "p1",
+                            "vlan": 1
+                          },
+                          {
+                            "id": "p2",
+                            "vlan": 1
+                          },
+                          {
+                            "id": "p3",
+                            "vlan": 1
+                          }
                         ]
                       },
                       {
@@ -223,8 +417,14 @@
                         "id": "sw-2",
                         "hostname": "SW-May-chu",
                         "ports": [
-                          { "id": "p1", "vlan": 1 },
-                          { "id": "p2", "vlan": 1 }
+                          {
+                            "id": "p1",
+                            "vlan": 1
+                          },
+                          {
+                            "id": "p2",
+                            "vlan": 1
+                          }
                         ]
                       },
                       {
@@ -235,10 +435,20 @@
                           {
                             "id": "g0",
                             "mac": "AA:BB:CC:17:00:11",
-                            "ipConfig": { "ip": "192.168.1.1", "prefix": 24 },
+                            "ipConfig": {
+                              "ip": "192.168.1.1",
+                              "prefix": 24
+                            },
                             "aclIn": 101
                           },
-                          { "id": "g1", "mac": "AA:BB:CC:17:00:12", "ipConfig": { "ip": "192.168.2.1", "prefix": 24 } }
+                          {
+                            "id": "g1",
+                            "mac": "AA:BB:CC:17:00:12",
+                            "ipConfig": {
+                              "ip": "192.168.2.1",
+                              "prefix": 24
+                            }
+                          }
                         ],
                         "staticRoutes": [],
                         "accessLists": [
@@ -249,8 +459,14 @@
                                 "seq": 10,
                                 "action": "deny",
                                 "protocol": "icmp",
-                                "src": { "ip": "192.168.1.66", "wildcard": "0.0.0.0" },
-                                "dst": { "ip": "0.0.0.0", "wildcard": "255.255.255.255" }
+                                "src": {
+                                  "ip": "192.168.1.66",
+                                  "wildcard": "0.0.0.0"
+                                },
+                                "dst": {
+                                  "ip": "0.0.0.0",
+                                  "wildcard": "255.255.255.255"
+                                }
                               }
                             ]
                           }
@@ -258,18 +474,88 @@
                       }
                     ],
                     "links": [
-                      { "id": "l1", "a": { "deviceId": "pc-sep", "portId": "eth0" }, "b": { "deviceId": "sw-1", "portId": "p1" } },
-                      { "id": "l2", "a": { "deviceId": "pc-khach", "portId": "eth0" }, "b": { "deviceId": "sw-1", "portId": "p2" } },
-                      { "id": "l3", "a": { "deviceId": "sw-1", "portId": "p3" }, "b": { "deviceId": "r-1", "portId": "g0" } },
-                      { "id": "l4", "a": { "deviceId": "r-1", "portId": "g1" }, "b": { "deviceId": "sw-2", "portId": "p1" } },
-                      { "id": "l5", "a": { "deviceId": "sw-2", "portId": "p2" }, "b": { "deviceId": "srv-ke-toan", "portId": "eth0" } }
+                      {
+                        "id": "l1",
+                        "a": {
+                          "deviceId": "pc-sep",
+                          "portId": "eth0"
+                        },
+                        "b": {
+                          "deviceId": "sw-1",
+                          "portId": "p1"
+                        }
+                      },
+                      {
+                        "id": "l2",
+                        "a": {
+                          "deviceId": "pc-khach",
+                          "portId": "eth0"
+                        },
+                        "b": {
+                          "deviceId": "sw-1",
+                          "portId": "p2"
+                        }
+                      },
+                      {
+                        "id": "l3",
+                        "a": {
+                          "deviceId": "sw-1",
+                          "portId": "p3"
+                        },
+                        "b": {
+                          "deviceId": "r-1",
+                          "portId": "g0"
+                        }
+                      },
+                      {
+                        "id": "l4",
+                        "a": {
+                          "deviceId": "r-1",
+                          "portId": "g1"
+                        },
+                        "b": {
+                          "deviceId": "sw-2",
+                          "portId": "p1"
+                        }
+                      },
+                      {
+                        "id": "l5",
+                        "a": {
+                          "deviceId": "sw-2",
+                          "portId": "p2"
+                        },
+                        "b": {
+                          "deviceId": "srv-ke-toan",
+                          "portId": "eth0"
+                        }
+                      }
                     ]
                   },
                   "deviceId": "r-1",
                   "goals": [
-                    { "kind": "behavior", "goal": { "kind": "ping", "from": "pc-sep", "to": "srv-ke-toan", "expect": "reach" } },
-                    { "kind": "behavior", "goal": { "kind": "ping", "from": "pc-khach", "to": "srv-ke-toan", "expect": "blocked" } },
-                    { "kind": "viewed", "command": "show access-lists", "deviceId": "r-1" }
+                    {
+                      "kind": "behavior",
+                      "goal": {
+                        "kind": "ping",
+                        "from": "pc-sep",
+                        "to": "srv-ke-toan",
+                        "expect": "reach"
+                      }
+                    },
+                    {
+                      "kind": "behavior",
+                      "goal": {
+                        "kind": "ping",
+                        "from": "pc-khach",
+                        "to": "srv-ke-toan",
+                        "expect": "blocked"
+                      }
+                    },
+                    {
+                      "kind": "viewed",
+                      "command": "show access-lists",
+                      "deviceId": "r-1"
+                    }
                   ],
                   "solution": [
                     {
@@ -284,7 +570,9 @@
                     }
                   ]
                 },
-                "hintTopic": { "vi": "dòng dành cho phần còn lại" }
+                "hintTopic": {
+                  "vi": "dòng dành cho phần còn lại"
+                }
               },
               "hint": {
                 "vi": "Danh sách đang thiếu câu nói cho phần còn lại đi qua. ACL đánh số chỉ thêm được vào CUỐI — mà cuối lại đúng là chỗ câu ấy cần nằm."
@@ -301,19 +589,27 @@
                   "vi": "Một người gõ hai dòng theo thứ tự này: trước là permit ip any any, sau là deny icmp host 192.168.1.66 any. Kết quả ra sao?"
                 },
                 "choices": [
-                  { "vi": "Máy 192.168.1.66 vẫn đi được, vì dòng cho phép đứng trên đã ăn gói trước" },
-                  { "vi": "Máy 192.168.1.66 bị chặn, vì dòng cấm nào cũng mạnh hơn dòng cho phép" },
-                  { "vi": "Cả hai dòng cùng vô hiệu, vì trong một danh sách không được trộn cho phép với cấm" }
+                  {
+                    "vi": "Máy 192.168.1.66 vẫn đi được, vì dòng cho phép đứng trên đã ăn gói trước"
+                  },
+                  {
+                    "vi": "Máy 192.168.1.66 bị chặn, vì dòng cấm nào cũng mạnh hơn dòng cho phép"
+                  },
+                  {
+                    "vi": "Cả hai dòng cùng vô hiệu, vì trong một danh sách không được trộn cho phép với cấm"
+                  }
                 ],
                 "answerIndex": 0,
-                "hintTopic": { "vi": "dòng nào được đọc trước" }
+                "hintTopic": {
+                  "vi": "dòng nào được đọc trước"
+                }
               },
               "hint": {
                 "vi": "Router dừng ở dòng khớp ĐẦU TIÊN. Gói của .66 gặp dòng nào trước?"
               },
               "solution": {
                 "vi": "Nó vẫn đi được. Gói của .66 khớp ngay dòng permit ip any any ở trên, router quyết định xong và dừng — dòng cấm phía dưới không bao giờ được hỏi tới. Trong ACL không có chuyện cấm mạnh hơn cho phép; chỉ có trên mạnh hơn dưới."
-              },
+              },
               "conceptId": "m17-thu-tu-dong"
             }
           ]
@@ -348,7 +644,9 @@
                   "không khớp dòng nào",
                   "khong khop dong nao"
                 ],
-                "hintTopic": { "vi": "mặc định của một cổng đã áp danh sách" }
+                "hintTopic": {
+                  "vi": "mặc định của một cổng đã áp danh sách"
+                }
               },
               "hint": {
                 "vi": "Gói tin đọc hết các dòng viết ra mà không khớp dòng nào thì chuyện gì xảy ra với nó?"
@@ -363,10 +661,40 @@
               "vi": "Giải thích bằng lời của bạn: vì sao viết đúng một dòng cấm mà cả văn phòng lại mất đường đi?"
             },
             "keywords": [
-              ["vô hình", "vo hinh", "không in ra", "khong in ra", "ngầm", "ngam", "implicit"],
-              ["cấm tất cả", "cam tat ca", "cấm hết", "cam het", "chặn tất cả", "chan tat ca", "deny all"],
-              ["cuối danh sách", "cuoi danh sach", "dòng cuối", "dong cuoi", "sau cùng", "sau cung"],
-              ["không khớp", "khong khop", "không có dòng nào cho phép", "khong co dong nao cho phep", "thiếu permit", "thieu permit"]
+              [
+                "vô hình",
+                "vo hinh",
+                "không in ra",
+                "khong in ra",
+                "ngầm",
+                "ngam",
+                "implicit"
+              ],
+              [
+                "cấm tất cả",
+                "cam tat ca",
+                "cấm hết",
+                "cam het",
+                "chặn tất cả",
+                "chan tat ca",
+                "deny all"
+              ],
+              [
+                "cuối danh sách",
+                "cuoi danh sach",
+                "dòng cuối",
+                "dong cuoi",
+                "sau cùng",
+                "sau cung"
+              ],
+              [
+                "không khớp",
+                "khong khop",
+                "không có dòng nào cho phép",
+                "khong co dong nao cho phep",
+                "thiếu permit",
+                "thieu permit"
+              ]
             ],
             "exampleAnswer": {
               "vi": "Vì cuối danh sách có một dòng vô hình cấm tất cả. Dòng tôi gõ chỉ nói về máy phòng khách, nên gói của mọi máy khác không khớp dòng nào và rơi thẳng vào dòng cấm cuối cùng. Áp danh sách lên cổng là bật cái mặc định cấm tất cả lên, muốn giữ đường cho phần còn lại thì phải viết thêm một dòng permit."
@@ -376,9 +704,15 @@
         {
           "type": "summary",
           "bullets": [
-            { "vi": "ACL là danh sách luật gắn lên cổng router; viết ra thôi chưa lọc ai, phải áp lên cổng theo một chiều." },
-            { "vi": "Router đọc từ trên xuống và dừng ở dòng khớp đầu tiên — hẹp viết trước, rộng viết sau." },
-            { "vi": "Cuối mọi danh sách có dòng vô hình cấm tất cả; nó là thủ phạm quen mặt của những ca chặn nhầm." }
+            {
+              "vi": "ACL là danh sách luật gắn lên cổng router; viết ra thôi chưa lọc ai, phải áp lên cổng theo một chiều."
+            },
+            {
+              "vi": "Router đọc từ trên xuống và dừng ở dòng khớp đầu tiên — hẹp viết trước, rộng viết sau."
+            },
+            {
+              "vi": "Cuối mọi danh sách có dòng vô hình cấm tất cả; nó là thủ phạm quen mặt của những ca chặn nhầm."
+            }
           ],
           "nextTeaser": {
             "vi": "Nhưng dòng luật ban nãy chặn máy khách đi MỌI nơi, kể cả ra Internet — trong khi sếp chỉ muốn cấm nó vào máy chủ kế toán. Bài sau: hai họ danh sách, một họ chỉ nhìn được người gửi, họ kia nhìn được cả người nhận."
@@ -388,7 +722,9 @@
     },
     {
       "id": "m17-bai-2",
-      "missionTitle": { "vi": "Chọn đúng loại danh sách cho việc mình cần" },
+      "missionTitle": {
+        "vi": "Chọn đúng loại danh sách cho việc mình cần"
+      },
       "steps": [
         {
           "type": "hook",
@@ -407,12 +743,20 @@
                 "vi": "Đoán thử: một danh sách lọc CHUẨN (số 1 tới 99) nhìn được thông tin nào của gói tin?"
               },
               "choices": [
-                { "vi": "Chỉ địa chỉ người gửi" },
-                { "vi": "Cả người gửi lẫn người nhận" },
-                { "vi": "Người gửi, người nhận và cả port dịch vụ" }
+                {
+                  "vi": "Chỉ địa chỉ người gửi"
+                },
+                {
+                  "vi": "Cả người gửi lẫn người nhận"
+                },
+                {
+                  "vi": "Người gửi, người nhận và port"
+                }
               ],
               "answerIndex": 0,
-              "hintTopic": { "vi": "chữ chuẩn ở đây nghĩa là đơn giản nhất" },
+              "hintTopic": {
+                "vi": "chữ chuẩn ở đây nghĩa là đơn giản nhất"
+              },
               "explain": {
                 "vi": "Chỉ nhìn được địa chỉ nguồn. Đó vừa là ưu điểm (viết một dòng là xong) vừa là cái bẫy: đã chặn một nguồn thì chặn nó đi mọi nơi, không tách được nơi nào cấm nơi nào cho."
               }
@@ -465,24 +809,42 @@
                         "kind": "pc",
                         "id": "pc-sep",
                         "hostname": "PC-Giam-doc",
-                        "port": { "id": "eth0", "mac": "AA:BB:CC:17:00:01" },
-                        "ipConfig": { "ip": "192.168.1.10", "prefix": 24 },
+                        "port": {
+                          "id": "eth0",
+                          "mac": "AA:BB:CC:17:00:01"
+                        },
+                        "ipConfig": {
+                          "ip": "192.168.1.10",
+                          "prefix": 24
+                        },
                         "gateway": "192.168.1.1"
                       },
                       {
                         "kind": "pc",
                         "id": "pc-khach",
                         "hostname": "PC-Phong-khach",
-                        "port": { "id": "eth0", "mac": "AA:BB:CC:17:00:02" },
-                        "ipConfig": { "ip": "192.168.1.66", "prefix": 24 },
+                        "port": {
+                          "id": "eth0",
+                          "mac": "AA:BB:CC:17:00:02"
+                        },
+                        "ipConfig": {
+                          "ip": "192.168.1.66",
+                          "prefix": 24
+                        },
                         "gateway": "192.168.1.1"
                       },
                       {
                         "kind": "pc",
                         "id": "srv-ke-toan",
                         "hostname": "SRV-Ke-toan",
-                        "port": { "id": "eth0", "mac": "AA:BB:CC:17:00:03" },
-                        "ipConfig": { "ip": "192.168.2.50", "prefix": 24 },
+                        "port": {
+                          "id": "eth0",
+                          "mac": "AA:BB:CC:17:00:03"
+                        },
+                        "ipConfig": {
+                          "ip": "192.168.2.50",
+                          "prefix": 24
+                        },
                         "gateway": "192.168.2.1"
                       },
                       {
@@ -490,9 +852,18 @@
                         "id": "sw-1",
                         "hostname": "SW-Van-phong",
                         "ports": [
-                          { "id": "p1", "vlan": 1 },
-                          { "id": "p2", "vlan": 1 },
-                          { "id": "p3", "vlan": 1 }
+                          {
+                            "id": "p1",
+                            "vlan": 1
+                          },
+                          {
+                            "id": "p2",
+                            "vlan": 1
+                          },
+                          {
+                            "id": "p3",
+                            "vlan": 1
+                          }
                         ]
                       },
                       {
@@ -500,8 +871,14 @@
                         "id": "sw-2",
                         "hostname": "SW-May-chu",
                         "ports": [
-                          { "id": "p1", "vlan": 1 },
-                          { "id": "p2", "vlan": 1 }
+                          {
+                            "id": "p1",
+                            "vlan": 1
+                          },
+                          {
+                            "id": "p2",
+                            "vlan": 1
+                          }
                         ]
                       },
                       {
@@ -509,24 +886,105 @@
                         "id": "r-1",
                         "hostname": "R-Van-phong",
                         "ports": [
-                          { "id": "g0", "mac": "AA:BB:CC:17:00:11", "ipConfig": { "ip": "192.168.1.1", "prefix": 24 }, "aclIn": 101 },
-                          { "id": "g1", "mac": "AA:BB:CC:17:00:12", "ipConfig": { "ip": "192.168.2.1", "prefix": 24 } }
+                          {
+                            "id": "g0",
+                            "mac": "AA:BB:CC:17:00:11",
+                            "ipConfig": {
+                              "ip": "192.168.1.1",
+                              "prefix": 24
+                            },
+                            "aclIn": 101
+                          },
+                          {
+                            "id": "g1",
+                            "mac": "AA:BB:CC:17:00:12",
+                            "ipConfig": {
+                              "ip": "192.168.2.1",
+                              "prefix": 24
+                            }
+                          }
                         ],
                         "staticRoutes": []
                       }
                     ],
                     "links": [
-                      { "id": "l1", "a": { "deviceId": "pc-sep", "portId": "eth0" }, "b": { "deviceId": "sw-1", "portId": "p1" } },
-                      { "id": "l2", "a": { "deviceId": "pc-khach", "portId": "eth0" }, "b": { "deviceId": "sw-1", "portId": "p2" } },
-                      { "id": "l3", "a": { "deviceId": "sw-1", "portId": "p3" }, "b": { "deviceId": "r-1", "portId": "g0" } },
-                      { "id": "l4", "a": { "deviceId": "r-1", "portId": "g1" }, "b": { "deviceId": "sw-2", "portId": "p1" } },
-                      { "id": "l5", "a": { "deviceId": "sw-2", "portId": "p2" }, "b": { "deviceId": "srv-ke-toan", "portId": "eth0" } }
+                      {
+                        "id": "l1",
+                        "a": {
+                          "deviceId": "pc-sep",
+                          "portId": "eth0"
+                        },
+                        "b": {
+                          "deviceId": "sw-1",
+                          "portId": "p1"
+                        }
+                      },
+                      {
+                        "id": "l2",
+                        "a": {
+                          "deviceId": "pc-khach",
+                          "portId": "eth0"
+                        },
+                        "b": {
+                          "deviceId": "sw-1",
+                          "portId": "p2"
+                        }
+                      },
+                      {
+                        "id": "l3",
+                        "a": {
+                          "deviceId": "sw-1",
+                          "portId": "p3"
+                        },
+                        "b": {
+                          "deviceId": "r-1",
+                          "portId": "g0"
+                        }
+                      },
+                      {
+                        "id": "l4",
+                        "a": {
+                          "deviceId": "r-1",
+                          "portId": "g1"
+                        },
+                        "b": {
+                          "deviceId": "sw-2",
+                          "portId": "p1"
+                        }
+                      },
+                      {
+                        "id": "l5",
+                        "a": {
+                          "deviceId": "sw-2",
+                          "portId": "p2"
+                        },
+                        "b": {
+                          "deviceId": "srv-ke-toan",
+                          "portId": "eth0"
+                        }
+                      }
                     ]
                   },
                   "deviceId": "r-1",
                   "goals": [
-                    { "kind": "behavior", "goal": { "kind": "ping", "from": "pc-khach", "to": "srv-ke-toan", "expect": "blocked" } },
-                    { "kind": "behavior", "goal": { "kind": "ping", "from": "pc-sep", "to": "srv-ke-toan", "expect": "reach" } }
+                    {
+                      "kind": "behavior",
+                      "goal": {
+                        "kind": "ping",
+                        "from": "pc-khach",
+                        "to": "srv-ke-toan",
+                        "expect": "blocked"
+                      }
+                    },
+                    {
+                      "kind": "behavior",
+                      "goal": {
+                        "kind": "ping",
+                        "from": "pc-sep",
+                        "to": "srv-ke-toan",
+                        "expect": "reach"
+                      }
+                    }
                   ],
                   "solution": [
                     {
@@ -541,14 +999,16 @@
                     }
                   ]
                 },
-                "hintTopic": { "vi": "loại danh sách nhìn được cả vế đích" }
+                "hintTopic": {
+                  "vi": "loại danh sách nhìn được cả vế đích"
+                }
               },
               "hint": {
                 "vi": "Hai dòng cần gõ, theo đúng thứ tự: một dòng cấm hẹp (deny icmp host … host …), rồi một dòng mở cho phần còn lại (permit ip any any). Số hiệu phải là 101 — đúng số đang treo ở cổng — và nó nằm trong khoảng 100 tới 199 vì đây là loại nhìn được cả vế đích."
               },
               "solution": {
                 "vi": "Gõ lần lượt: enable, configure terminal, access-list 101 deny icmp host 192.168.1.66 host 192.168.2.50, access-list 101 permit ip any any, end. Dòng cấm hẹp đứng trước nên nó ăn đúng gói của máy khách gửi tới máy chủ; dòng permit đứng sau giữ đường cho tất cả những gì còn lại, kể cả máy khách đi nơi khác. Cổng đã treo sẵn danh sách 101 từ trước, nên vừa gõ xong hai dòng là luật có hiệu lực ngay."
-              },
+              },
               "conceptId": "m17-acl-mo-rong"
             },
             {
@@ -572,14 +1032,16 @@
                   "acl mo rong",
                   "extended"
                 ],
-                "hintTopic": { "vi": "dải số của họ danh sách mở rộng" }
+                "hintTopic": {
+                  "vi": "dải số của họ danh sách mở rộng"
+                }
               },
               "hint": {
                 "vi": "Một họ chiếm dải số nhỏ, họ kia chiếm dải số lớn hơn. Họ nào nhìn được nhiều thứ hơn?"
               },
               "solution": {
                 "vi": "Từ 100 tới 199 — dải của danh sách mở rộng. Dải 1 tới 99 là danh sách chuẩn, chỉ soi được nguồn nên không tách được đích này với đích kia."
-              },
+              },
               "conceptId": "m17-acl-mo-rong"
             }
           ]
@@ -605,7 +1067,9 @@
                   "may gui",
                   "source"
                 ],
-                "hintTopic": { "vi": "một trong hai vế địa chỉ" }
+                "hintTopic": {
+                  "vi": "một trong hai vế địa chỉ"
+                }
               },
               "hint": {
                 "vi": "Nếu nó biết được vế kia thì đã chẳng có chuyện chặn một máy là chặn nó đi khắp nơi."
@@ -620,10 +1084,39 @@
               "vi": "Giải thích bằng lời của bạn: vì sao yêu cầu kiểu \"cấm phòng khách vào máy chủ kế toán nhưng vẫn cho lướt web\" bắt buộc phải dùng danh sách mở rộng?"
             },
             "keywords": [
-              ["đích", "dich", "nơi đến", "noi den", "người nhận", "nguoi nhan", "máy chủ", "may chu"],
-              ["chuẩn", "chuan", "1 đến 99", "1 den 99", "standard"],
-              ["mở rộng", "mo rong", "100", "extended"],
-              ["chặn hết", "chan het", "cấm mọi nơi", "cam moi noi", "mất mạng", "mat mang", "tất cả các đích", "tat ca cac dich"]
+              [
+                "đích",
+                "dich",
+                "nơi đến",
+                "noi den",
+                "người nhận",
+                "nguoi nhan",
+                "máy chủ",
+                "may chu"
+              ],
+              [
+                "chuẩn",
+                "chuan",
+                "1 đến 99",
+                "1 den 99",
+                "standard"
+              ],
+              [
+                "mở rộng",
+                "mo rong",
+                "100",
+                "extended"
+              ],
+              [
+                "chặn hết",
+                "chan het",
+                "cấm mọi nơi",
+                "cam moi noi",
+                "mất mạng",
+                "mat mang",
+                "tất cả các đích",
+                "tat ca cac dich"
+              ]
             ],
             "exampleAnswer": {
               "vi": "Vì yêu cầu đó phân biệt theo NƠI ĐẾN, mà danh sách chuẩn chỉ nhìn được người gửi. Dùng chuẩn thì cấm máy phòng khách là cấm nó đi mọi nơi, mất luôn cả đường ra web. Danh sách mở rộng số 100 tới 199 nhìn được cả đích nên viết được đúng câu: cấm máy đó tới máy chủ kế toán, còn các đích khác vẫn cho đi."
@@ -633,9 +1126,15 @@
         {
           "type": "summary",
           "bullets": [
-            { "vi": "Danh sách chuẩn (1 tới 99) chỉ soi được nguồn: cấm một nguồn là cấm nó đi mọi nơi." },
-            { "vi": "Danh sách mở rộng (100 tới 199) soi được giao thức, nguồn, đích và port dịch vụ." },
-            { "vi": "Địa chỉ trong luật viết bằng wildcard: any là mặc kệ tất, host là khớp từng bit." }
+            {
+              "vi": "Danh sách chuẩn (1 tới 99) chỉ soi được nguồn: cấm một nguồn là cấm nó đi mọi nơi."
+            },
+            {
+              "vi": "Danh sách mở rộng (100 tới 199) soi được giao thức, nguồn, đích và port dịch vụ."
+            },
+            {
+              "vi": "Địa chỉ trong luật viết bằng wildcard: any là mặc kệ tất, host là khớp từng bit."
+            }
           ],
           "nextTeaser": {
             "vi": "Luật đã viết đúng chữ rồi. Nhưng cùng một danh sách, gắn vào cổng này thay vì cổng kia, hoặc chiều vào thay vì chiều ra, sẽ cho ra hai kết quả khác hẳn nhau — bài sau là chuyện đặt luật đứng ở đâu."
@@ -645,7 +1144,9 @@
     },
     {
       "id": "m17-bai-3",
-      "missionTitle": { "vi": "Gắn luật vào đúng cửa, đúng chiều" },
+      "missionTitle": {
+        "vi": "Gắn luật vào đúng cửa, đúng chiều"
+      },
       "steps": [
         {
           "type": "hook",
@@ -664,12 +1165,20 @@
                 "vi": "Bạn vừa gõ xong hai dòng access-list trên router và thoát ra. Chưa gõ thêm gì nữa. Lúc này mạng ra sao?"
               },
               "choices": [
-                { "vi": "Chưa có gì đổi, vì danh sách chưa được gắn vào cổng nào" },
-                { "vi": "Luật đã có hiệu lực ngay trên mọi cổng của router đó" },
-                { "vi": "Router chặn sạch mọi hướng cho tới khi bạn gõ lệnh mở lại" }
+                {
+                  "vi": "Chưa có gì đổi, vì danh sách chưa được gắn vào cổng nào"
+                },
+                {
+                  "vi": "Luật đã có hiệu lực ngay trên mọi cổng của router đó"
+                },
+                {
+                  "vi": "Router chặn sạch mọi hướng cho tới khi bạn gõ lệnh mở lại"
+                }
               ],
               "answerIndex": 0,
-              "hintTopic": { "vi": "quãng giữa viết luật và luật có hiệu lực" },
+              "hintTopic": {
+                "vi": "quãng giữa viết luật và luật có hiệu lực"
+              },
               "explain": {
                 "vi": "Chưa có gì đổi. Viết danh sách mới chỉ là soạn nội quy để trong ngăn kéo; phải dán nó lên một cánh cửa cụ thể theo một chiều cụ thể bằng ip access-group thì người gác mới bắt đầu đọc."
               }
@@ -732,24 +1241,42 @@
                         "kind": "pc",
                         "id": "pc-sep",
                         "hostname": "PC-Giam-doc",
-                        "port": { "id": "eth0", "mac": "AA:BB:CC:17:00:01" },
-                        "ipConfig": { "ip": "192.168.1.10", "prefix": 24 },
+                        "port": {
+                          "id": "eth0",
+                          "mac": "AA:BB:CC:17:00:01"
+                        },
+                        "ipConfig": {
+                          "ip": "192.168.1.10",
+                          "prefix": 24
+                        },
                         "gateway": "192.168.1.1"
                       },
                       {
                         "kind": "pc",
                         "id": "pc-khach",
                         "hostname": "PC-Phong-khach",
-                        "port": { "id": "eth0", "mac": "AA:BB:CC:17:00:02" },
-                        "ipConfig": { "ip": "192.168.1.66", "prefix": 24 },
+                        "port": {
+                          "id": "eth0",
+                          "mac": "AA:BB:CC:17:00:02"
+                        },
+                        "ipConfig": {
+                          "ip": "192.168.1.66",
+                          "prefix": 24
+                        },
                         "gateway": "192.168.1.1"
                       },
                       {
                         "kind": "pc",
                         "id": "srv-ke-toan",
                         "hostname": "SRV-Ke-toan",
-                        "port": { "id": "eth0", "mac": "AA:BB:CC:17:00:03" },
-                        "ipConfig": { "ip": "192.168.2.50", "prefix": 24 },
+                        "port": {
+                          "id": "eth0",
+                          "mac": "AA:BB:CC:17:00:03"
+                        },
+                        "ipConfig": {
+                          "ip": "192.168.2.50",
+                          "prefix": 24
+                        },
                         "gateway": "192.168.2.1"
                       },
                       {
@@ -757,9 +1284,18 @@
                         "id": "sw-1",
                         "hostname": "SW-Van-phong",
                         "ports": [
-                          { "id": "p1", "vlan": 1 },
-                          { "id": "p2", "vlan": 1 },
-                          { "id": "p3", "vlan": 1 }
+                          {
+                            "id": "p1",
+                            "vlan": 1
+                          },
+                          {
+                            "id": "p2",
+                            "vlan": 1
+                          },
+                          {
+                            "id": "p3",
+                            "vlan": 1
+                          }
                         ]
                       },
                       {
@@ -767,8 +1303,14 @@
                         "id": "sw-2",
                         "hostname": "SW-May-chu",
                         "ports": [
-                          { "id": "p1", "vlan": 1 },
-                          { "id": "p2", "vlan": 1 }
+                          {
+                            "id": "p1",
+                            "vlan": 1
+                          },
+                          {
+                            "id": "p2",
+                            "vlan": 1
+                          }
                         ]
                       },
                       {
@@ -776,8 +1318,22 @@
                         "id": "r-1",
                         "hostname": "R-Van-phong",
                         "ports": [
-                          { "id": "g0", "mac": "AA:BB:CC:17:00:11", "ipConfig": { "ip": "192.168.1.1", "prefix": 24 } },
-                          { "id": "g1", "mac": "AA:BB:CC:17:00:12", "ipConfig": { "ip": "192.168.2.1", "prefix": 24 } }
+                          {
+                            "id": "g0",
+                            "mac": "AA:BB:CC:17:00:11",
+                            "ipConfig": {
+                              "ip": "192.168.1.1",
+                              "prefix": 24
+                            }
+                          },
+                          {
+                            "id": "g1",
+                            "mac": "AA:BB:CC:17:00:12",
+                            "ipConfig": {
+                              "ip": "192.168.2.1",
+                              "prefix": 24
+                            }
+                          }
                         ],
                         "staticRoutes": [],
                         "accessLists": [
@@ -788,15 +1344,27 @@
                                 "seq": 10,
                                 "action": "deny",
                                 "protocol": "icmp",
-                                "src": { "ip": "192.168.1.66", "wildcard": "0.0.0.0" },
-                                "dst": { "ip": "192.168.2.50", "wildcard": "0.0.0.0" }
+                                "src": {
+                                  "ip": "192.168.1.66",
+                                  "wildcard": "0.0.0.0"
+                                },
+                                "dst": {
+                                  "ip": "192.168.2.50",
+                                  "wildcard": "0.0.0.0"
+                                }
                               },
                               {
                                 "seq": 20,
                                 "action": "permit",
                                 "protocol": "ip",
-                                "src": { "ip": "0.0.0.0", "wildcard": "255.255.255.255" },
-                                "dst": { "ip": "0.0.0.0", "wildcard": "255.255.255.255" }
+                                "src": {
+                                  "ip": "0.0.0.0",
+                                  "wildcard": "255.255.255.255"
+                                },
+                                "dst": {
+                                  "ip": "0.0.0.0",
+                                  "wildcard": "255.255.255.255"
+                                }
                               }
                             ]
                           }
@@ -804,18 +1372,88 @@
                       }
                     ],
                     "links": [
-                      { "id": "l1", "a": { "deviceId": "pc-sep", "portId": "eth0" }, "b": { "deviceId": "sw-1", "portId": "p1" } },
-                      { "id": "l2", "a": { "deviceId": "pc-khach", "portId": "eth0" }, "b": { "deviceId": "sw-1", "portId": "p2" } },
-                      { "id": "l3", "a": { "deviceId": "sw-1", "portId": "p3" }, "b": { "deviceId": "r-1", "portId": "g0" } },
-                      { "id": "l4", "a": { "deviceId": "r-1", "portId": "g1" }, "b": { "deviceId": "sw-2", "portId": "p1" } },
-                      { "id": "l5", "a": { "deviceId": "sw-2", "portId": "p2" }, "b": { "deviceId": "srv-ke-toan", "portId": "eth0" } }
+                      {
+                        "id": "l1",
+                        "a": {
+                          "deviceId": "pc-sep",
+                          "portId": "eth0"
+                        },
+                        "b": {
+                          "deviceId": "sw-1",
+                          "portId": "p1"
+                        }
+                      },
+                      {
+                        "id": "l2",
+                        "a": {
+                          "deviceId": "pc-khach",
+                          "portId": "eth0"
+                        },
+                        "b": {
+                          "deviceId": "sw-1",
+                          "portId": "p2"
+                        }
+                      },
+                      {
+                        "id": "l3",
+                        "a": {
+                          "deviceId": "sw-1",
+                          "portId": "p3"
+                        },
+                        "b": {
+                          "deviceId": "r-1",
+                          "portId": "g0"
+                        }
+                      },
+                      {
+                        "id": "l4",
+                        "a": {
+                          "deviceId": "r-1",
+                          "portId": "g1"
+                        },
+                        "b": {
+                          "deviceId": "sw-2",
+                          "portId": "p1"
+                        }
+                      },
+                      {
+                        "id": "l5",
+                        "a": {
+                          "deviceId": "sw-2",
+                          "portId": "p2"
+                        },
+                        "b": {
+                          "deviceId": "srv-ke-toan",
+                          "portId": "eth0"
+                        }
+                      }
                     ]
                   },
                   "deviceId": "r-1",
                   "goals": [
-                    { "kind": "behavior", "goal": { "kind": "ping", "from": "pc-khach", "to": "srv-ke-toan", "expect": "blocked" } },
-                    { "kind": "behavior", "goal": { "kind": "ping", "from": "pc-sep", "to": "srv-ke-toan", "expect": "reach" } },
-                    { "kind": "viewed", "command": "show access-lists", "deviceId": "r-1" }
+                    {
+                      "kind": "behavior",
+                      "goal": {
+                        "kind": "ping",
+                        "from": "pc-khach",
+                        "to": "srv-ke-toan",
+                        "expect": "blocked"
+                      }
+                    },
+                    {
+                      "kind": "behavior",
+                      "goal": {
+                        "kind": "ping",
+                        "from": "pc-sep",
+                        "to": "srv-ke-toan",
+                        "expect": "reach"
+                      }
+                    },
+                    {
+                      "kind": "viewed",
+                      "command": "show access-lists",
+                      "deviceId": "r-1"
+                    }
                   ],
                   "solution": [
                     {
@@ -831,7 +1469,9 @@
                     }
                   ]
                 },
-                "hintTopic": { "vi": "cổng phía văn phòng và chiều gói tin đi vào" }
+                "hintTopic": {
+                  "vi": "cổng phía văn phòng và chiều gói tin đi vào"
+                }
               },
               "hint": {
                 "vi": "Danh sách này là loại mở rộng nên đặt gần nguồn: cổng g0 quay về phía văn phòng. Luồng cần chặn đi VÀO cổng ấy, nên chiều cần chọn là in. Vào interface g0 rồi gắn bằng ip access-group."
@@ -848,19 +1488,27 @@
                   "vi": "Trộn lại kiến thức Module 7: ở nhà, bạn mở một trang web và lời đáp về được dù chẳng ai viết luật cho chiều về. Nếu đường đi ấy chỉ có ACL đánh số canh gác thì sao?"
                 },
                 "choices": [
-                  { "vi": "Chiều về phải có luật riêng cho phép, vì ACL không nhớ cuộc gọi nào vừa mở" },
-                  { "vi": "Chiều về vẫn tự lọt, vì ACL ghi sổ cuộc gọi giống hệt tường lửa stateful" },
-                  { "vi": "Chiều về bị chặn hẳn, vì ACL cấm mọi gói tin không do router tự sinh ra" }
+                  {
+                    "vi": "Chiều về phải có luật riêng cho phép, vì ACL không nhớ cuộc gọi nào vừa mở"
+                  },
+                  {
+                    "vi": "Chiều về vẫn tự lọt được, vì ACL ghi sổ cuộc gọi giống hệt tường lửa stateful"
+                  },
+                  {
+                    "vi": "Chiều về bị chặn hẳn, vì ACL cấm mọi gói tin không do router tự sinh ra"
+                  }
                 ],
                 "answerIndex": 0,
-                "hintTopic": { "vi": "cuốn sổ nhớ cuộc gọi mà ACL không có" }
+                "hintTopic": {
+                  "vi": "cuốn sổ nhớ cuộc gọi mà ACL không có"
+                }
               },
               "hint": {
                 "vi": "Thứ làm nên chữ stateful ở Module 7 là gì? ACL đánh số có thứ đó không?"
               },
               "solution": {
                 "vi": "Chiều về phải được cho phép tường minh. Tường lửa stateful nhớ cuộc gọi bạn vừa mở nên lời đáp tự được vào; ACL đánh số xét từng gói rời rạc, không có trí nhớ, nên nếu bạn chặn nhầm chiều về thì cuộc trò chuyện đứt dù chiều đi vẫn thông."
-              },
+              },
               "conceptId": "m17-acl-vs-stateful"
             }
           ]
@@ -875,8 +1523,18 @@
                 "prompt": {
                   "vi": "Không nhìn lại bài: danh sách mở rộng nên đặt gần đầu nào của đường đi — nguồn hay đích?"
                 },
-                "accept": ["nguồn", "nguon", "gần nguồn", "gan nguon", "gần máy gửi", "gan may gui", "source"],
-                "hintTopic": { "vi": "loại nào biết đủ thông tin để chặn sớm" }
+                "accept": [
+                  "nguồn",
+                  "nguon",
+                  "gần nguồn",
+                  "gan nguon",
+                  "gần máy gửi",
+                  "gan may gui",
+                  "source"
+                ],
+                "hintTopic": {
+                  "vi": "loại nào biết đủ thông tin để chặn sớm"
+                }
               },
               "hint": {
                 "vi": "Nó biết cả vế đích, nên chặn sớm cũng không sợ chặn nhầm đích khác."
@@ -891,10 +1549,42 @@
               "vi": "Giải thích bằng lời của bạn: vì sao danh sách chuẩn lại phải đặt gần đích, trong khi mở rộng thì đặt gần nguồn?"
             },
             "keywords": [
-              ["chỉ biết nguồn", "chi biet nguon", "mù đích", "mu dich", "không biết đích", "khong biet dich"],
-              ["chặn nhầm", "chan nham", "chặn hết", "chan het", "mọi nơi", "moi noi", "mọi đích", "moi dich"],
-              ["gần đích", "gan dich", "sát đích", "sat dich", "cuối đường", "cuoi duong"],
-              ["mở rộng", "mo rong", "biết đích", "biet dich", "chặn sớm", "chan som", "gần nguồn", "gan nguon"]
+              [
+                "chỉ biết nguồn",
+                "chi biet nguon",
+                "mù đích",
+                "mu dich",
+                "không biết đích",
+                "khong biet dich"
+              ],
+              [
+                "chặn nhầm",
+                "chan nham",
+                "chặn hết",
+                "chan het",
+                "mọi nơi",
+                "moi noi",
+                "mọi đích",
+                "moi dich"
+              ],
+              [
+                "gần đích",
+                "gan dich",
+                "sát đích",
+                "sat dich",
+                "cuối đường",
+                "cuoi duong"
+              ],
+              [
+                "mở rộng",
+                "mo rong",
+                "biết đích",
+                "biet dich",
+                "chặn sớm",
+                "chan som",
+                "gần nguồn",
+                "gan nguon"
+              ]
             ],
             "exampleAnswer": {
               "vi": "Vì danh sách chuẩn chỉ biết người gửi. Đặt nó gần nguồn thì nó chặn kẻ đó đi tất cả mọi nơi, kể cả những nơi lẽ ra vẫn được đi, nên phải mang xuống sát đích cần bảo vệ để chặn nguồn ấy đúng bằng chặn nguồn ấy tới đích ấy. Danh sách mở rộng biết cả vế đích nên chặn ngay gần nguồn vẫn đúng người đúng việc, lại đỡ tốn đường truyền."
@@ -904,9 +1594,15 @@
         {
           "type": "summary",
           "bullets": [
-            { "vi": "Viết luật xong chưa lọc gì — phải gắn vào một cổng theo một chiều bằng ip access-group." },
-            { "vi": "Chiều tính theo mắt router: in là gói vừa vào cổng, out là gói sắp rời cổng." },
-            { "vi": "Mở rộng đặt gần nguồn, chuẩn đặt gần đích; ACL không nhớ chiều về như tường lửa stateful." }
+            {
+              "vi": "Viết luật xong chưa lọc gì — phải gắn vào một cổng theo một chiều bằng ip access-group."
+            },
+            {
+              "vi": "Chiều tính theo mắt router: in là gói vừa vào cổng, out là gói sắp rời cổng."
+            },
+            {
+              "vi": "Mở rộng đặt gần nguồn, chuẩn đặt gần đích; ACL không nhớ chiều về như tường lửa stateful."
+            }
           ],
           "nextTeaser": {
             "vi": "Tới đây bạn đã canh được cửa của router. Nhưng kẻ phá đám nguy hiểm nhất lại không đi qua router: nó cắm thẳng vào một cổng switch trong xóm. Bài sau xuống tầng 2 khóa cổng lại."
@@ -916,7 +1612,9 @@
     },
     {
       "id": "m17-bai-4",
-      "missionTitle": { "vi": "Dựng lại cổng switch vừa bị đánh sập" },
+      "missionTitle": {
+        "vi": "Dựng lại cổng switch vừa bị đánh sập"
+      },
       "steps": [
         {
           "type": "hook",
@@ -935,12 +1633,20 @@
                 "vi": "Bảng MAC của switch bị nhồi đầy bằng hàng vạn địa chỉ giả. Switch xử sự thế nào với khung tiếp theo mà nó không tra ra cổng đích?"
               },
               "choices": [
-                { "vi": "Phát khung đó ra mọi cổng còn lại, như hồi chưa học được ai ngồi đâu" },
-                { "vi": "Vứt bỏ khung đó và ghi một dòng cảnh báo vào nhật ký của thiết bị" },
-                { "vi": "Tự xóa sạch bảng MAC rồi dựng lại từ đầu trước khi chuyển tiếp khung" }
+                {
+                  "vi": "Phát khung đó ra mọi cổng còn lại, như hồi chưa học được ai ngồi đâu"
+                },
+                {
+                  "vi": "Vứt bỏ khung đó và ghi một dòng cảnh báo vào nhật ký của thiết bị"
+                },
+                {
+                  "vi": "Tự xóa sạch bảng MAC rồi dựng lại từ đầu trước khi chuyển tiếp khung"
+                }
               ],
               "answerIndex": 0,
-              "hintTopic": { "vi": "việc switch làm khi không biết đích ngồi cổng nào" },
+              "hintTopic": {
+                "vi": "việc switch làm khi không biết đích ngồi cổng nào"
+              },
               "explain": {
                 "vi": "Nó phát tràn ra mọi cổng — đúng hành vi mặc định của switch khi chưa học được đích, như bạn thấy từ Module 4. Kẻ tấn công nhồi bảng chính là để ép switch rơi lại vào trạng thái đó, vì lúc ấy mọi khung đều chạy qua chỗ hắn ngồi."
               }
@@ -993,24 +1699,42 @@
                         "kind": "pc",
                         "id": "pc-sep",
                         "hostname": "PC-Giam-doc",
-                        "port": { "id": "eth0", "mac": "AA:BB:CC:17:00:01" },
-                        "ipConfig": { "ip": "192.168.1.10", "prefix": 24 },
+                        "port": {
+                          "id": "eth0",
+                          "mac": "AA:BB:CC:17:00:01"
+                        },
+                        "ipConfig": {
+                          "ip": "192.168.1.10",
+                          "prefix": 24
+                        },
                         "gateway": "192.168.1.1"
                       },
                       {
                         "kind": "pc",
                         "id": "pc-khach",
                         "hostname": "PC-Phong-khach",
-                        "port": { "id": "eth0", "mac": "AA:BB:CC:17:00:02" },
-                        "ipConfig": { "ip": "192.168.1.66", "prefix": 24 },
+                        "port": {
+                          "id": "eth0",
+                          "mac": "AA:BB:CC:17:00:02"
+                        },
+                        "ipConfig": {
+                          "ip": "192.168.1.66",
+                          "prefix": 24
+                        },
                         "gateway": "192.168.1.1"
                       },
                       {
                         "kind": "pc",
                         "id": "srv-ke-toan",
                         "hostname": "SRV-Ke-toan",
-                        "port": { "id": "eth0", "mac": "AA:BB:CC:17:00:03" },
-                        "ipConfig": { "ip": "192.168.2.50", "prefix": 24 },
+                        "port": {
+                          "id": "eth0",
+                          "mac": "AA:BB:CC:17:00:03"
+                        },
+                        "ipConfig": {
+                          "ip": "192.168.2.50",
+                          "prefix": 24
+                        },
                         "gateway": "192.168.2.1"
                       },
                       {
@@ -1018,9 +1742,19 @@
                         "id": "sw-1",
                         "hostname": "SW-Van-phong",
                         "ports": [
-                          { "id": "p1", "vlan": 1 },
-                          { "id": "p2", "vlan": 1, "shutdown": true },
-                          { "id": "p3", "vlan": 1 }
+                          {
+                            "id": "p1",
+                            "vlan": 1
+                          },
+                          {
+                            "id": "p2",
+                            "vlan": 1,
+                            "shutdown": true
+                          },
+                          {
+                            "id": "p3",
+                            "vlan": 1
+                          }
                         ]
                       },
                       {
@@ -1028,8 +1762,14 @@
                         "id": "sw-2",
                         "hostname": "SW-May-chu",
                         "ports": [
-                          { "id": "p1", "vlan": 1 },
-                          { "id": "p2", "vlan": 1 }
+                          {
+                            "id": "p1",
+                            "vlan": 1
+                          },
+                          {
+                            "id": "p2",
+                            "vlan": 1
+                          }
                         ]
                       },
                       {
@@ -1037,25 +1777,105 @@
                         "id": "r-1",
                         "hostname": "R-Van-phong",
                         "ports": [
-                          { "id": "g0", "mac": "AA:BB:CC:17:00:11", "ipConfig": { "ip": "192.168.1.1", "prefix": 24 } },
-                          { "id": "g1", "mac": "AA:BB:CC:17:00:12", "ipConfig": { "ip": "192.168.2.1", "prefix": 24 } }
+                          {
+                            "id": "g0",
+                            "mac": "AA:BB:CC:17:00:11",
+                            "ipConfig": {
+                              "ip": "192.168.1.1",
+                              "prefix": 24
+                            }
+                          },
+                          {
+                            "id": "g1",
+                            "mac": "AA:BB:CC:17:00:12",
+                            "ipConfig": {
+                              "ip": "192.168.2.1",
+                              "prefix": 24
+                            }
+                          }
                         ],
                         "staticRoutes": []
                       }
                     ],
                     "links": [
-                      { "id": "l1", "a": { "deviceId": "pc-sep", "portId": "eth0" }, "b": { "deviceId": "sw-1", "portId": "p1" } },
-                      { "id": "l2", "a": { "deviceId": "pc-khach", "portId": "eth0" }, "b": { "deviceId": "sw-1", "portId": "p2" } },
-                      { "id": "l3", "a": { "deviceId": "sw-1", "portId": "p3" }, "b": { "deviceId": "r-1", "portId": "g0" } },
-                      { "id": "l4", "a": { "deviceId": "r-1", "portId": "g1" }, "b": { "deviceId": "sw-2", "portId": "p1" } },
-                      { "id": "l5", "a": { "deviceId": "sw-2", "portId": "p2" }, "b": { "deviceId": "srv-ke-toan", "portId": "eth0" } }
+                      {
+                        "id": "l1",
+                        "a": {
+                          "deviceId": "pc-sep",
+                          "portId": "eth0"
+                        },
+                        "b": {
+                          "deviceId": "sw-1",
+                          "portId": "p1"
+                        }
+                      },
+                      {
+                        "id": "l2",
+                        "a": {
+                          "deviceId": "pc-khach",
+                          "portId": "eth0"
+                        },
+                        "b": {
+                          "deviceId": "sw-1",
+                          "portId": "p2"
+                        }
+                      },
+                      {
+                        "id": "l3",
+                        "a": {
+                          "deviceId": "sw-1",
+                          "portId": "p3"
+                        },
+                        "b": {
+                          "deviceId": "r-1",
+                          "portId": "g0"
+                        }
+                      },
+                      {
+                        "id": "l4",
+                        "a": {
+                          "deviceId": "r-1",
+                          "portId": "g1"
+                        },
+                        "b": {
+                          "deviceId": "sw-2",
+                          "portId": "p1"
+                        }
+                      },
+                      {
+                        "id": "l5",
+                        "a": {
+                          "deviceId": "sw-2",
+                          "portId": "p2"
+                        },
+                        "b": {
+                          "deviceId": "srv-ke-toan",
+                          "portId": "eth0"
+                        }
+                      }
                     ]
                   },
                   "deviceId": "sw-1",
                   "goals": [
-                    { "kind": "viewed", "command": "show ip interface brief", "deviceId": "sw-1" },
-                    { "kind": "port-up", "deviceId": "sw-1", "portId": "p2" },
-                    { "kind": "behavior", "goal": { "kind": "ping", "from": "pc-khach", "to": "srv-ke-toan", "expect": "reach" } }
+                    {
+                      "kind": "viewed",
+                      "command": "show ip interface brief",
+                      "deviceId": "sw-1"
+                    },
+                    {
+                      "kind": "port-up",
+                      "deviceId": "sw-1",
+                      "portId": "p2"
+                    },
+                    {
+                      "kind": "behavior",
+                      "goal": {
+                        "kind": "ping",
+                        "from": "pc-khach",
+                        "to": "srv-ke-toan",
+                        "expect": "reach"
+                      }
+                    }
                   ],
                   "solution": [
                     {
@@ -1071,14 +1891,16 @@
                     }
                   ]
                 },
-                "hintTopic": { "vi": "bảng trạng thái các cổng và lệnh bật cổng" }
+                "hintTopic": {
+                  "vi": "bảng trạng thái các cổng và lệnh bật cổng"
+                }
               },
               "hint": {
                 "vi": "Bảng show ip interface brief phân biệt hai kiểu chết: administratively down là mình tự tắt, còn down là mất tín hiệu đầu kia. Tìm dòng kiểu thứ nhất, rồi vào đúng cổng đó trong chế độ cấu hình."
               },
               "solution": {
                 "vi": "Gõ show ip interface brief, đọc thấy cổng p2 ghi administratively down. Rồi enable, configure terminal, interface p2, no shutdown, end. Cổng sống lại và máy phòng khách gọi được máy chủ. Nhớ rằng dựng cổng dậy chỉ là nửa việc — nửa còn lại là tìm xem ai đã cắm thiết bị lạ vào đó."
-              },
+              },
               "conceptId": "m17-port-security"
             },
             {
@@ -1102,14 +1924,16 @@
                   "tự tắt",
                   "tu tat"
                 ],
-                "hintTopic": { "vi": "khác nhau giữa cổng bị tắt và cổng mất tín hiệu" }
+                "hintTopic": {
+                  "vi": "khác nhau giữa cổng bị tắt và cổng mất tín hiệu"
+                }
               },
               "hint": {
                 "vi": "Nếu là dây lỏng thì cột đó chỉ ghi down trơn. Thêm chữ administratively nghĩa là có bàn tay ai đó, hoặc một cơ chế bảo vệ, đã ra lệnh."
               },
               "solution": {
                 "vi": "Cổng đang bị tắt bằng lệnh — do người trực gõ shutdown, hoặc do một cơ chế như port security đánh sập. Khác hẳn dòng chỉ ghi down: đó là cổng đang bật nhưng không thấy tín hiệu ở đầu kia, tức là đi tìm sợi dây."
-              },
+              },
               "conceptId": "m17-port-security"
             }
           ]
@@ -1136,7 +1960,9 @@
                   "số thiết bị",
                   "so thiet bi"
                 ],
-                "hintTopic": { "vi": "thứ mà kẻ nhồi bảng tạo ra thật nhiều" }
+                "hintTopic": {
+                  "vi": "thứ mà kẻ nhồi bảng tạo ra thật nhiều"
+                }
               },
               "hint": {
                 "vi": "Trò tấn công là bơm thật nhiều địa chỉ giả. Vậy chốt chặn phải đếm cái gì?"
@@ -1151,10 +1977,43 @@
               "vi": "Giải thích bằng lời của bạn: vì sao nhồi đầy bảng MAC lại giúp kẻ tấn công nghe lén được cả xóm?"
             },
             "keywords": [
-              ["bảng mac", "bang mac", "đầy", "day", "hết chỗ", "het cho", "tràn bảng", "tran bang"],
-              ["không tra ra", "khong tra ra", "không biết đích", "khong biet dich", "không học được", "khong hoc duoc"],
-              ["phát tràn", "phat tran", "phát ra mọi cổng", "phat ra moi cong", "gửi ra tất cả", "gui ra tat ca", "flood"],
-              ["nghe lén", "nghe len", "đọc được", "doc duoc", "nhìn thấy", "nhin thay", "bắt được", "bat duoc"]
+              [
+                "bảng mac",
+                "bang mac",
+                "đầy",
+                "day",
+                "hết chỗ",
+                "het cho",
+                "tràn bảng",
+                "tran bang"
+              ],
+              [
+                "không tra ra",
+                "khong tra ra",
+                "không biết đích",
+                "khong biet dich",
+                "không học được",
+                "khong hoc duoc"
+              ],
+              [
+                "phát tràn",
+                "phat tran",
+                "phát ra mọi cổng",
+                "phat ra moi cong",
+                "gửi ra tất cả",
+                "gui ra tat ca",
+                "flood"
+              ],
+              [
+                "nghe lén",
+                "nghe len",
+                "đọc được",
+                "doc duoc",
+                "nhìn thấy",
+                "nhin thay",
+                "bắt được",
+                "bat duoc"
+              ]
             ],
             "exampleAnswer": {
               "vi": "Vì bảng MAC có sức chứa hữu hạn. Khi nó đầy những địa chỉ giả, switch không còn ghi được ai ngồi cổng nào, nên mỗi khung tra không ra đích đều bị phát tràn ra mọi cổng. Kẻ ngồi ở cổng trống vì thế nhận được cả những khung không gửi cho hắn, mà mạng thì vẫn chạy bình thường nên không ai nghi ngờ gì."
@@ -1164,9 +2023,15 @@
         {
           "type": "summary",
           "bullets": [
-            { "vi": "Bảng MAC đầy thì switch phát tràn — nghe lén tầng 2 lợi dụng đúng hành vi mặc định ấy." },
-            { "vi": "Port security giới hạn số MAC trên một cổng access; vi phạm thì cổng bị đánh sập." },
-            { "vi": "administratively down là cổng bị tắt bằng lệnh, khác hẳn down vì mất tín hiệu đầu kia." }
+            {
+              "vi": "Bảng MAC đầy thì switch phát tràn — nghe lén tầng 2 lợi dụng đúng hành vi mặc định ấy."
+            },
+            {
+              "vi": "Port security giới hạn số MAC trên một cổng access; vi phạm thì cổng bị đánh sập."
+            },
+            {
+              "vi": "administratively down là cổng bị tắt bằng lệnh, khác hẳn down vì mất tín hiệu đầu kia."
+            }
           ],
           "nextTeaser": {
             "vi": "Khoan mừng vội với cái chốt vừa dựng lại: nó quyết định cho ai đi qua dựa trên một con số mà chính chiếc máy kia TỰ KHAI ra. Bài sau hỏi thẳng câu khó chịu ấy — rào MAC chặn được ai, và ai thì cứ thế đi qua?"
@@ -1176,7 +2041,9 @@
     },
     {
       "id": "m17-bai-4b",
-      "missionTitle": { "vi": "Hỏi thẳng: rào MAC chặn được ai" },
+      "missionTitle": {
+        "vi": "Hỏi thẳng: rào MAC chặn được ai"
+      },
       "steps": [
         {
           "type": "hook",
@@ -1195,12 +2062,20 @@
                 "vi": "Module 3 kể MAC như số khung xe: nhà máy dập sẵn, đi theo máy suốt đời. Vậy con số nằm ở ô người gửi của một khung tin vừa rời card mạng là con số nào?"
               },
               "choices": [
-                { "vi": "Con số phần mềm của máy điền vào, mặc định chép lại số nhà máy ghi sẵn" },
-                { "vi": "Luôn là con số nhà máy ghi trên chip, phần mềm không với tới được nó" },
-                { "vi": "Con số switch cấp cho máy ngay lúc nó vừa cắm dây vào cổng access" }
+                {
+                  "vi": "Con số phần mềm của máy điền vào, mặc định chép lại số nhà máy ghi sẵn"
+                },
+                {
+                  "vi": "Luôn luôn là con số nhà máy ghi trên chip, phần mềm không với tới được nó"
+                },
+                {
+                  "vi": "Con số switch cấp cho máy ngay lúc nó vừa cắm dây vào cổng access"
+                }
               ],
               "answerIndex": 0,
-              "hintTopic": { "vi": "ai là người điền con số ấy vào khung tin" },
+              "hintTopic": {
+                "vi": "ai là người điền con số ấy vào khung tin"
+              },
               "explain": {
                 "vi": "Là con số phần mềm điền vào. Nhà máy quả có ghi sẵn một số trên chip, và mặc định máy chép đúng số ấy ra — nhưng CHÉP LẠI là một việc, BẮT BUỘC lại là việc khác. Cả bài này dựng trên khoảng cách giữa hai chữ đó."
               }
@@ -1264,7 +2139,9 @@
                   "giả mạo địa chỉ mac",
                   "mạo danh mac"
                 ],
-                "hintTopic": { "vi": "tên tiếng Anh của trò khai tên khác" }
+                "hintTopic": {
+                  "vi": "tên tiếng Anh của trò khai tên khác"
+                }
               },
               "hint": {
                 "vi": "Cùng một chữ mà bài cuối module sẽ dùng lại cho trò nhận vơ địa chỉ cổng ra. Ghép chữ ấy với chữ MAC."
@@ -1282,12 +2159,20 @@
                   "vi": "Anh trực mạng ghim một địa chỉ cố định cho điện thoại của giám đốc, ghim theo MAC. Vài hôm sau máy lại nhận địa chỉ khác dù không ai sửa gì. Giải thích nào đứng vững nhất?"
                 },
                 "choices": [
-                  { "vi": "Điện thoại tự sinh một MAC khác cho mạng đó nên dòng ghim không khớp nữa" },
-                  { "vi": "Máy chủ cấp địa chỉ đã hết số trống nên nó đành phát cho máy một số khác" },
-                  { "vi": "Điểm phát Wi-Fi đổi sang WPA3 nên mọi máy cũ đều phải xin lại địa chỉ mới" }
+                  {
+                    "vi": "Điện thoại tự sinh một MAC khác cho mạng đó nên dòng ghim không khớp nữa"
+                  },
+                  {
+                    "vi": "Máy chủ cấp địa chỉ đã hết số trống nên nó đành phát cho máy một số khác"
+                  },
+                  {
+                    "vi": "Điểm phát Wi-Fi đổi sang WPA3 nên mọi máy cũ đều phải xin lại địa chỉ mới"
+                  }
                 ],
                 "answerIndex": 0,
-                "hintTopic": { "vi": "thứ mà máy đời mới tự đổi theo từng mạng" }
+                "hintTopic": {
+                  "vi": "thứ mà máy đời mới tự đổi theo từng mạng"
+                }
               },
               "hint": {
                 "vi": "Dòng ghim tra theo cái tên máy khai ra. Nếu máy tới với một cái tên khác thì bảng còn nhận ra ai nữa?"
@@ -1313,7 +2198,9 @@
                   "mac đang được chấp nhận",
                   "mac mà cổng cho phép"
                 ],
-                "hintTopic": { "vi": "cái tên duy nhất mà cổng đang chịu nhận" }
+                "hintTopic": {
+                  "vi": "cái tên duy nhất mà cổng đang chịu nhận"
+                }
               },
               "hint": {
                 "vi": "Cổng chỉ hỏi đúng một câu: khung này khai tên gì. Vậy hắn phải nghe cho ra cái tên nào đang lọt qua."
@@ -1347,7 +2234,9 @@
                   "không ai xác minh",
                   "không có gì chứng minh"
                 ],
-                "hintTopic": { "vi": "ai điền con số ấy vào khung, và ai kiểm nó" }
+                "hintTopic": {
+                  "vi": "ai điền con số ấy vào khung, và ai kiểm nó"
+                }
               },
               "hint": {
                 "vi": "Nghĩ xem con số ấy được ai điền vào khung tin, và có ai đứng đó soi lại không."
@@ -1362,10 +2251,51 @@
               "vi": "Giải thích bằng lời của bạn: vì sao port security dập chắc được trò nhồi bảng MAC, mà lại để lọt kẻ khai lại một MAC hợp lệ?"
             },
             "keywords": [
-              ["tự khai", "tu khai", "đổi được", "doi duoc", "giả mạo", "gia mao", "spoofing", "phần mềm điền", "phan mem dien"],
-              ["nghe được", "nghe duoc", "biết mac", "biet mac", "chép lại", "chep lai", "sao chép", "sao chep", "đọc được", "doc duoc"],
-              ["hàng vạn", "hang van", "quá ngưỡng", "qua nguong", "vượt ngưỡng", "vuot nguong", "nhiều mac", "nhieu mac", "đếm", "dem"],
-              ["một máy", "mot may", "đúng một mac", "dung mot mac", "không vượt", "khong vuot", "vẫn đủ", "van du"]
+              [
+                "tự khai",
+                "tu khai",
+                "đổi được",
+                "doi duoc",
+                "giả mạo",
+                "gia mao",
+                "spoofing",
+                "phần mềm điền",
+                "phan mem dien"
+              ],
+              [
+                "nghe được",
+                "nghe duoc",
+                "biết mac",
+                "biet mac",
+                "chép lại",
+                "chep lai",
+                "sao chép",
+                "sao chep",
+                "đọc được",
+                "doc duoc"
+              ],
+              [
+                "hàng vạn",
+                "hang van",
+                "quá ngưỡng",
+                "qua nguong",
+                "vượt ngưỡng",
+                "vuot nguong",
+                "nhiều mac",
+                "nhieu mac",
+                "đếm",
+                "dem"
+              ],
+              [
+                "một máy",
+                "mot may",
+                "đúng một mac",
+                "dung mot mac",
+                "không vượt",
+                "khong vuot",
+                "vẫn đủ",
+                "van du"
+              ]
             ],
             "exampleAnswer": {
               "vi": "Vì port security đếm số MAC trên cổng. Trò nhồi bảng phải bịa ra hàng vạn cái tên một lúc nên vượt ngưỡng ngay từ cổng đầu tiên, cổng sập, trò chết tại chỗ. Còn kẻ chịu khó thì chỉ cần nghe một lát để biết MAC nào đang được cổng chấp nhận rồi khai đúng cái tên ấy: cổng vẫn thấy đúng một máy, ngưỡng không vượt, nên nó mở cửa như thường."
@@ -1375,9 +2305,15 @@
         {
           "type": "summary",
           "bullets": [
-            { "vi": "Số của nhà máy là thật, nhưng MAC trong mỗi khung tin là con số phần mềm tự điền." },
-            { "vi": "Rào theo MAC chặn cái vô ý và trò nhồi bảng; kẻ khai lại một MAC hợp lệ vẫn đi lọt." },
-            { "vi": "Máy đời mới tự đổi MAC theo từng mạng Wi-Fi, nên mọi thứ ghim theo MAC hay trượt." }
+            {
+              "vi": "Số của nhà máy là thật, nhưng MAC trong mỗi khung tin là con số phần mềm tự điền."
+            },
+            {
+              "vi": "Rào theo MAC chặn cái vô ý và trò nhồi bảng; kẻ khai lại một MAC hợp lệ vẫn đi lọt."
+            },
+            {
+              "vi": "Máy đời mới tự đổi MAC theo từng mạng Wi-Fi, nên mọi thứ ghim theo MAC hay trượt."
+            }
           ],
           "nextTeaser": {
             "vi": "Đã quen chuyện thiết bị tự khai tên mình thì bài cuối module dễ vào: có kẻ không thèm khai tên máy nữa, hắn khai luôn mình là CỔNG RA của cả xóm. Một ca bệnh chập chờn bạn từng gặp ở phòng khám, lần này đứng dưới ánh sáng khác."
@@ -1387,7 +2323,9 @@
     },
     {
       "id": "m17-bai-5",
-      "missionTitle": { "vi": "Vạch mặt kẻ nhận vơ địa chỉ cổng ra" },
+      "missionTitle": {
+        "vi": "Vạch mặt kẻ nhận vơ địa chỉ cổng ra"
+      },
       "steps": [
         {
           "type": "hook",
@@ -1413,24 +2351,42 @@
                         "kind": "pc",
                         "id": "c17-nv",
                         "hostname": "MAY-NHAN-VIEN",
-                        "port": { "id": "eth0", "mac": "AA:BB:CC:17:1A:01" },
-                        "ipConfig": { "ip": "192.168.30.15", "prefix": 24 },
+                        "port": {
+                          "id": "eth0",
+                          "mac": "AA:BB:CC:17:1A:01"
+                        },
+                        "ipConfig": {
+                          "ip": "192.168.30.15",
+                          "prefix": 24
+                        },
                         "gateway": "192.168.30.1"
                       },
                       {
                         "kind": "pc",
                         "id": "c17-laptop-la",
                         "hostname": "LAPTOP-LA",
-                        "port": { "id": "eth0", "mac": "AA:BB:CC:17:1A:66" },
-                        "ipConfig": { "ip": "192.168.30.1", "prefix": 24 },
+                        "port": {
+                          "id": "eth0",
+                          "mac": "AA:BB:CC:17:1A:66"
+                        },
+                        "ipConfig": {
+                          "ip": "192.168.30.1",
+                          "prefix": 24
+                        },
                         "gateway": "192.168.30.1"
                       },
                       {
                         "kind": "pc",
                         "id": "c17-srv",
                         "hostname": "SRV-NOI-BO",
-                        "port": { "id": "eth0", "mac": "AA:BB:CC:17:1A:09" },
-                        "ipConfig": { "ip": "10.30.0.9", "prefix": 24 },
+                        "port": {
+                          "id": "eth0",
+                          "mac": "AA:BB:CC:17:1A:09"
+                        },
+                        "ipConfig": {
+                          "ip": "10.30.0.9",
+                          "prefix": 24
+                        },
                         "gateway": "10.30.0.1"
                       },
                       {
@@ -1438,9 +2394,18 @@
                         "id": "c17-sw",
                         "hostname": "SW-TANG-3",
                         "ports": [
-                          { "id": "p1", "vlan": 1 },
-                          { "id": "p2", "vlan": 1 },
-                          { "id": "p3", "vlan": 1 }
+                          {
+                            "id": "p1",
+                            "vlan": 1
+                          },
+                          {
+                            "id": "p2",
+                            "vlan": 1
+                          },
+                          {
+                            "id": "p3",
+                            "vlan": 1
+                          }
                         ]
                       },
                       {
@@ -1448,8 +2413,14 @@
                         "id": "c17-sw-srv",
                         "hostname": "SW-MAY-CHU",
                         "ports": [
-                          { "id": "p1", "vlan": 1 },
-                          { "id": "p2", "vlan": 1 }
+                          {
+                            "id": "p1",
+                            "vlan": 1
+                          },
+                          {
+                            "id": "p2",
+                            "vlan": 1
+                          }
                         ]
                       },
                       {
@@ -1457,24 +2428,92 @@
                         "id": "c17-r",
                         "hostname": "R-CONG-RA",
                         "ports": [
-                          { "id": "g0", "mac": "AA:BB:CC:17:1A:11", "ipConfig": { "ip": "192.168.30.1", "prefix": 24 } },
-                          { "id": "g1", "mac": "AA:BB:CC:17:1A:12", "ipConfig": { "ip": "10.30.0.1", "prefix": 24 } }
+                          {
+                            "id": "g0",
+                            "mac": "AA:BB:CC:17:1A:11",
+                            "ipConfig": {
+                              "ip": "192.168.30.1",
+                              "prefix": 24
+                            }
+                          },
+                          {
+                            "id": "g1",
+                            "mac": "AA:BB:CC:17:1A:12",
+                            "ipConfig": {
+                              "ip": "10.30.0.1",
+                              "prefix": 24
+                            }
+                          }
                         ],
                         "staticRoutes": []
                       }
                     ],
                     "links": [
-                      { "id": "w1", "a": { "deviceId": "c17-nv", "portId": "eth0" }, "b": { "deviceId": "c17-sw", "portId": "p1" } },
-                      { "id": "w2", "a": { "deviceId": "c17-laptop-la", "portId": "eth0" }, "b": { "deviceId": "c17-sw", "portId": "p2" } },
-                      { "id": "w3", "a": { "deviceId": "c17-sw", "portId": "p3" }, "b": { "deviceId": "c17-r", "portId": "g0" } },
-                      { "id": "w4", "a": { "deviceId": "c17-r", "portId": "g1" }, "b": { "deviceId": "c17-sw-srv", "portId": "p1" } },
-                      { "id": "w5", "a": { "deviceId": "c17-sw-srv", "portId": "p2" }, "b": { "deviceId": "c17-srv", "portId": "eth0" } }
+                      {
+                        "id": "w1",
+                        "a": {
+                          "deviceId": "c17-nv",
+                          "portId": "eth0"
+                        },
+                        "b": {
+                          "deviceId": "c17-sw",
+                          "portId": "p1"
+                        }
+                      },
+                      {
+                        "id": "w2",
+                        "a": {
+                          "deviceId": "c17-laptop-la",
+                          "portId": "eth0"
+                        },
+                        "b": {
+                          "deviceId": "c17-sw",
+                          "portId": "p2"
+                        }
+                      },
+                      {
+                        "id": "w3",
+                        "a": {
+                          "deviceId": "c17-sw",
+                          "portId": "p3"
+                        },
+                        "b": {
+                          "deviceId": "c17-r",
+                          "portId": "g0"
+                        }
+                      },
+                      {
+                        "id": "w4",
+                        "a": {
+                          "deviceId": "c17-r",
+                          "portId": "g1"
+                        },
+                        "b": {
+                          "deviceId": "c17-sw-srv",
+                          "portId": "p1"
+                        }
+                      },
+                      {
+                        "id": "w5",
+                        "a": {
+                          "deviceId": "c17-sw-srv",
+                          "portId": "p2"
+                        },
+                        "b": {
+                          "deviceId": "c17-srv",
+                          "portId": "eth0"
+                        }
+                      }
                     ]
                   },
                   "overlay": {},
                   "seatId": "c17-nv"
                 },
-                "symptom": { "kind": "ping-flaps", "from": "c17-nv", "target": "192.168.30.1" },
+                "symptom": {
+                  "kind": "ping-flaps",
+                  "from": "c17-nv",
+                  "target": "192.168.30.1"
+                },
                 "fix": {
                   "kind": "edit-network",
                   "allow": {
@@ -1487,32 +2526,59 @@
                     "setRoutes": false,
                     "maxDevices": 8
                   },
-                  "goals": [{ "kind": "ping", "from": "c17-nv", "to": "c17-srv", "expect": "reach" }],
-                  "mustClearDiagnoses": ["duplicate-ip"],
+                  "goals": [
+                    {
+                      "kind": "ping",
+                      "from": "c17-nv",
+                      "to": "c17-srv",
+                      "expect": "reach"
+                    }
+                  ],
+                  "mustClearDiagnoses": [
+                    "duplicate-ip"
+                  ],
                   "solution": {
                     "devices": [
                       {
                         "kind": "pc",
                         "id": "c17-nv",
                         "hostname": "MAY-NHAN-VIEN",
-                        "port": { "id": "eth0", "mac": "AA:BB:CC:17:1A:01" },
-                        "ipConfig": { "ip": "192.168.30.15", "prefix": 24 },
+                        "port": {
+                          "id": "eth0",
+                          "mac": "AA:BB:CC:17:1A:01"
+                        },
+                        "ipConfig": {
+                          "ip": "192.168.30.15",
+                          "prefix": 24
+                        },
                         "gateway": "192.168.30.1"
                       },
                       {
                         "kind": "pc",
                         "id": "c17-laptop-la",
                         "hostname": "LAPTOP-LA",
-                        "port": { "id": "eth0", "mac": "AA:BB:CC:17:1A:66" },
-                        "ipConfig": { "ip": "192.168.30.77", "prefix": 24 },
+                        "port": {
+                          "id": "eth0",
+                          "mac": "AA:BB:CC:17:1A:66"
+                        },
+                        "ipConfig": {
+                          "ip": "192.168.30.77",
+                          "prefix": 24
+                        },
                         "gateway": "192.168.30.1"
                       },
                       {
                         "kind": "pc",
                         "id": "c17-srv",
                         "hostname": "SRV-NOI-BO",
-                        "port": { "id": "eth0", "mac": "AA:BB:CC:17:1A:09" },
-                        "ipConfig": { "ip": "10.30.0.9", "prefix": 24 },
+                        "port": {
+                          "id": "eth0",
+                          "mac": "AA:BB:CC:17:1A:09"
+                        },
+                        "ipConfig": {
+                          "ip": "10.30.0.9",
+                          "prefix": 24
+                        },
                         "gateway": "10.30.0.1"
                       },
                       {
@@ -1520,9 +2586,18 @@
                         "id": "c17-sw",
                         "hostname": "SW-TANG-3",
                         "ports": [
-                          { "id": "p1", "vlan": 1 },
-                          { "id": "p2", "vlan": 1 },
-                          { "id": "p3", "vlan": 1 }
+                          {
+                            "id": "p1",
+                            "vlan": 1
+                          },
+                          {
+                            "id": "p2",
+                            "vlan": 1
+                          },
+                          {
+                            "id": "p3",
+                            "vlan": 1
+                          }
                         ]
                       },
                       {
@@ -1530,8 +2605,14 @@
                         "id": "c17-sw-srv",
                         "hostname": "SW-MAY-CHU",
                         "ports": [
-                          { "id": "p1", "vlan": 1 },
-                          { "id": "p2", "vlan": 1 }
+                          {
+                            "id": "p1",
+                            "vlan": 1
+                          },
+                          {
+                            "id": "p2",
+                            "vlan": 1
+                          }
                         ]
                       },
                       {
@@ -1539,31 +2620,103 @@
                         "id": "c17-r",
                         "hostname": "R-CONG-RA",
                         "ports": [
-                          { "id": "g0", "mac": "AA:BB:CC:17:1A:11", "ipConfig": { "ip": "192.168.30.1", "prefix": 24 } },
-                          { "id": "g1", "mac": "AA:BB:CC:17:1A:12", "ipConfig": { "ip": "10.30.0.1", "prefix": 24 } }
+                          {
+                            "id": "g0",
+                            "mac": "AA:BB:CC:17:1A:11",
+                            "ipConfig": {
+                              "ip": "192.168.30.1",
+                              "prefix": 24
+                            }
+                          },
+                          {
+                            "id": "g1",
+                            "mac": "AA:BB:CC:17:1A:12",
+                            "ipConfig": {
+                              "ip": "10.30.0.1",
+                              "prefix": 24
+                            }
+                          }
                         ],
                         "staticRoutes": []
                       }
                     ],
                     "links": [
-                      { "id": "w1", "a": { "deviceId": "c17-nv", "portId": "eth0" }, "b": { "deviceId": "c17-sw", "portId": "p1" } },
-                      { "id": "w2", "a": { "deviceId": "c17-laptop-la", "portId": "eth0" }, "b": { "deviceId": "c17-sw", "portId": "p2" } },
-                      { "id": "w3", "a": { "deviceId": "c17-sw", "portId": "p3" }, "b": { "deviceId": "c17-r", "portId": "g0" } },
-                      { "id": "w4", "a": { "deviceId": "c17-r", "portId": "g1" }, "b": { "deviceId": "c17-sw-srv", "portId": "p1" } },
-                      { "id": "w5", "a": { "deviceId": "c17-sw-srv", "portId": "p2" }, "b": { "deviceId": "c17-srv", "portId": "eth0" } }
+                      {
+                        "id": "w1",
+                        "a": {
+                          "deviceId": "c17-nv",
+                          "portId": "eth0"
+                        },
+                        "b": {
+                          "deviceId": "c17-sw",
+                          "portId": "p1"
+                        }
+                      },
+                      {
+                        "id": "w2",
+                        "a": {
+                          "deviceId": "c17-laptop-la",
+                          "portId": "eth0"
+                        },
+                        "b": {
+                          "deviceId": "c17-sw",
+                          "portId": "p2"
+                        }
+                      },
+                      {
+                        "id": "w3",
+                        "a": {
+                          "deviceId": "c17-sw",
+                          "portId": "p3"
+                        },
+                        "b": {
+                          "deviceId": "c17-r",
+                          "portId": "g0"
+                        }
+                      },
+                      {
+                        "id": "w4",
+                        "a": {
+                          "deviceId": "c17-r",
+                          "portId": "g1"
+                        },
+                        "b": {
+                          "deviceId": "c17-sw-srv",
+                          "portId": "p1"
+                        }
+                      },
+                      {
+                        "id": "w5",
+                        "a": {
+                          "deviceId": "c17-sw-srv",
+                          "portId": "p2"
+                        },
+                        "b": {
+                          "deviceId": "c17-srv",
+                          "portId": "eth0"
+                        }
+                      }
                     ]
                   }
                 }
               },
               "diagnosis": {
                 "choices": [
-                  { "vi": "Một máy lạ trong xóm đang giữ đúng địa chỉ của cổng ra" },
-                  { "vi": "Cổng ra của router đã bị tắt bằng lệnh nên gói tin không qua được" },
-                  { "vi": "Máy chủ nội bộ trả lời chậm nên trang trong công ty lúc mở được lúc không" }
+                  {
+                    "vi": "Một máy lạ trong xóm đang giữ đúng địa chỉ của cổng ra"
+                  },
+                  {
+                    "vi": "Cổng ra của router đã bị tắt bằng lệnh nên gói tin không qua được"
+                  },
+                  {
+                    "vi": "Máy chủ nội bộ trả lời chậm nên trang trong công ty lúc mở được lúc không"
+                  }
                 ],
                 "answerIndex": 0
               },
-              "hintTopic": { "vi": "cuốn sổ ARP và địa chỉ của cổng ra" },
+              "hintTopic": {
+                "vi": "cuốn sổ ARP và địa chỉ của cổng ra"
+              },
               "explain": {
                 "vi": "Ping 192.168.30.1 hai lượt rồi mở arp -a: cùng một địa chỉ mà lần này gắn MAC …:11 của router, lần sau đã thành …:66 của LAPTOP-LA. Một cổng ra, hai kẻ nhận vơ, ai đáp sau thì thắng — nên mạng chập chờn theo vận may. Đây chính là hình dạng của một cú mạo danh ARP: kẻ đứng giữa nhận mình là cổng ra để cả xóm phải đi qua tay hắn. Chữa trước mắt: lấy lại địa chỉ .1 cho router, đẩy máy lạ sang một địa chỉ khác."
               }
@@ -1610,19 +2763,27 @@
                   "vi": "Máy của bạn ping cổng ra rất tốt, nhưng sổ ARP cho thấy địa chỉ cổng ra lúc gắn MAC này lúc gắn MAC kia. Kết luận nào đứng vững nhất?"
                 },
                 "choices": [
-                  { "vi": "Có hai thiết bị cùng nhận là chủ địa chỉ đó, dù do nhầm hay do cố ý" },
-                  { "vi": "Router đang quá tải nên nó phải đổi địa chỉ MAC của cổng ra liên tục" },
-                  { "vi": "Sổ ARP của máy bạn đã hỏng và cần được xóa sạch rồi dựng lại từ đầu" }
+                  {
+                    "vi": "Có hai thiết bị cùng nhận là chủ địa chỉ đó, dù do nhầm hay do cố ý"
+                  },
+                  {
+                    "vi": "Router đang quá tải nên nó phải đổi địa chỉ MAC của cổng ra liên tục"
+                  },
+                  {
+                    "vi": "Sổ ARP của máy bạn đã hỏng và cần được xóa sạch rồi dựng lại từ đầu"
+                  }
                 ],
                 "answerIndex": 0,
-                "hintTopic": { "vi": "một địa chỉ IP mà hai MAC thay nhau trả lời" }
+                "hintTopic": {
+                  "vi": "một địa chỉ IP mà hai MAC thay nhau trả lời"
+                }
               },
               "hint": {
                 "vi": "MAC là số khung đóng chết vào máy, không đổi theo tải. Vậy hai MAC khác nhau nghĩa là mấy cái máy?"
               },
               "solution": {
                 "vi": "Có hai thiết bị cùng nhận là chủ của địa chỉ đó. MAC không đổi theo tải, và sổ ARP chỉ ghi lại điều nó nghe được. Còn chuyện do gõ nhầm hay do mạo danh thì phải đi tìm tiếp — nhưng bằng chứng một địa chỉ hai chủ thì đã chắc rồi."
-              },
+              },
               "conceptId": "m17-arp-spoofing"
             },
             {
@@ -1642,14 +2803,16 @@
                   "native vlan không dùng",
                   "native vlan khong dung"
                 ],
-                "hintTopic": { "vi": "cái VLAN đi không nhãn trên trunk" }
+                "hintTopic": {
+                  "vi": "cái VLAN đi không nhãn trên trunk"
+                }
               },
               "hint": {
                 "vi": "Trò này sống nhờ cú bóc nhãn ở switch đầu tiên. Cú bóc ấy xảy ra với VLAN nào?"
               },
               "solution": {
                 "vi": "Native VLAN. Đặt nó thành một VLAN không ai dùng để khung của người dùng luôn mang nhãn, thế là cú bóc nhãn đầu tiên chẳng còn giúp gì cho kẻ tấn công. Kèm theo: khai tường minh cổng nối máy con là access."
-              },
+              },
               "conceptId": "m17-vlan-hopping"
             }
           ]
@@ -1675,7 +2838,9 @@
                   "dia chi cong ra",
                   "default gateway"
                 ],
-                "hintTopic": { "vi": "thiết bị mà cả xóm phải đi qua để ra ngoài" }
+                "hintTopic": {
+                  "vi": "thiết bị mà cả xóm phải đi qua để ra ngoài"
+                }
               },
               "hint": {
                 "vi": "Muốn đọc thư của cả xóm thì nên đứng ở chỗ nào trên đường đi của họ?"
@@ -1690,10 +2855,44 @@
               "vi": "Giải thích bằng lời của bạn: vì sao cùng một dấu hiệu \"một IP hai MAC\" mà lần này lại nguy hiểm hơn ca gõ nhầm ở Module 11?"
             },
             "keywords": [
-              ["cổng ra", "cong ra", "gateway", "router", "cổng mặc định", "cong mac dinh"],
-              ["cố ý", "co y", "mạo danh", "mao danh", "tấn công", "tan cong", "kẻ lạ", "ke la"],
-              ["đứng giữa", "dung giua", "đi qua tay", "di qua tay", "nghe lén", "nghe len", "đọc trộm", "doc trom"],
-              ["cả xóm", "ca xom", "mọi máy", "moi may", "toàn bộ", "toan bo", "lưu lượng", "luu luong"]
+              [
+                "cổng ra",
+                "cong ra",
+                "gateway",
+                "router",
+                "cổng mặc định",
+                "cong mac dinh"
+              ],
+              [
+                "cố ý",
+                "co y",
+                "mạo danh",
+                "mao danh",
+                "tấn công",
+                "tan cong",
+                "kẻ lạ",
+                "ke la"
+              ],
+              [
+                "đứng giữa",
+                "dung giua",
+                "đi qua tay",
+                "di qua tay",
+                "nghe lén",
+                "nghe len",
+                "đọc trộm",
+                "doc trom"
+              ],
+              [
+                "cả xóm",
+                "ca xom",
+                "mọi máy",
+                "moi may",
+                "toàn bộ",
+                "toan bo",
+                "lưu lượng",
+                "luu luong"
+              ]
             ],
             "exampleAnswer": {
               "vi": "Vì địa chỉ bị giành lần này là địa chỉ cổng ra, thứ mà cả xóm phải dùng để đi ra ngoài. Ca ở Module 11 chỉ là hai máy in gõ trùng số nên hỏng đúng một dịch vụ; còn ở đây kẻ lạ cố ý nhận vơ để mọi gói tin của mọi máy đều đi qua tay hắn trước, đọc xong mới chuyển tiếp. Người dùng chỉ thấy mạng hơi chập chờn, trong khi dữ liệu của cả tầng đã đi qua một chỗ không ai kiểm soát."
@@ -1703,9 +2902,15 @@
         {
           "type": "summary",
           "bullets": [
-            { "vi": "ARP tin bất kỳ ai đáp và câu sau đè câu trước — nền móng của trò mạo danh cổng ra." },
-            { "vi": "Một IP hai MAC trong sổ ARP là bằng chứng thép; động cơ nhầm hay cố ý thì phải đi tìm tiếp." },
-            { "vi": "VLAN hopping sống nhờ native VLAN trùng VLAN người dùng — đặt native riêng là chặn được." }
+            {
+              "vi": "ARP tin bất kỳ ai đáp và câu sau đè câu trước — nền móng của trò mạo danh cổng ra."
+            },
+            {
+              "vi": "Một IP hai MAC trong sổ ARP là bằng chứng thép; động cơ nhầm hay cố ý thì phải đi tìm tiếp."
+            },
+            {
+              "vi": "VLAN hopping sống nhờ native VLAN trùng VLAN người dùng — đặt native riêng là chặn được."
+            }
           ],
           "nextTeaser": {
             "vi": "Vậy là bạn đã có đủ đồ nghề của người dựng hạ tầng: cắt dải, nối trunk, canh vòng lặp, để router tự hỏi đường và viết luật chặn đúng người. Phần sau của khóa bước sang phía dịch vụ — nơi mạng đã chạy rồi mà người dùng vẫn kêu, vì thứ hỏng nằm ở DHCP, DNS và những cuốn sổ của hệ thống."
@@ -1714,7 +2919,6 @@
       ]
     }
   ],
-
   "concepts": [
     {
       "id": "m17-acl",
@@ -1725,7 +2929,9 @@
       },
       "iconId": "icon-acl",
       "flashcard": {
-        "front": { "vi": "Một ACL gồm những gì, và viết xong đã lọc được gói tin chưa?" },
+        "front": {
+          "vi": "Một ACL gồm những gì, và viết xong đã lọc được gói tin chưa?"
+        },
         "back": {
           "vi": "Một danh sách là dãy dòng luật có thứ tự, mỗi dòng gồm cho phép hay cấm, giao thức, nguồn và đích. Viết xong CHƯA lọc gì cả: phải gắn nó lên một cổng cụ thể theo một chiều cụ thể bằng ip access-group thì mới có hiệu lực."
         }
@@ -1740,7 +2946,9 @@
       },
       "iconId": "icon-thu-tu-acl",
       "flashcard": {
-        "front": { "vi": "Vì sao luật hẹp phải viết trước luật rộng trong một ACL?" },
+        "front": {
+          "vi": "Vì sao luật hẹp phải viết trước luật rộng trong một ACL?"
+        },
         "back": {
           "vi": "Vì router dừng ở dòng khớp đầu tiên. Dòng rộng đặt trên sẽ ăn hết gói tin và dòng hẹp phía dưới không bao giờ được hỏi tới. ACL đánh số lại chỉ thêm được vào cuối danh sách, nên phải nghĩ thứ tự trước khi gõ."
         }
@@ -1755,7 +2963,9 @@
       },
       "iconId": "icon-implicit-deny",
       "flashcard": {
-        "front": { "vi": "Áp một danh sách lọc lên cổng thì mặc định của cổng đó đổi thế nào?" },
+        "front": {
+          "vi": "Áp một danh sách lọc lên cổng thì mặc định của cổng đó đổi thế nào?"
+        },
         "back": {
           "vi": "Từ cho tất cả đi thành cấm tất cả, vì cuối danh sách luôn có dòng vô hình cấm mọi thứ chưa được cho phép tường minh. Muốn giữ đường cho phần còn lại thì phải viết thêm một dòng permit, thường là permit ip any any ở cuối."
         }
@@ -1770,7 +2980,9 @@
       },
       "iconId": "icon-acl-chuan",
       "flashcard": {
-        "front": { "vi": "ACL chuẩn mang dải số nào, so được vế nào, và vì thế phải đặt ở đâu?" },
+        "front": {
+          "vi": "ACL chuẩn mang dải số nào, so được vế nào, và vì thế phải đặt ở đâu?"
+        },
         "back": {
           "vi": "Số 1 tới 99, chỉ so được địa chỉ nguồn. Vì mù vế đích nên đặt nó gần nguồn sẽ chặn kẻ đó đi mọi nơi; phải đặt gần ĐÍCH cần bảo vệ thì việc chặn mới đúng phạm vi mong muốn."
         }
@@ -1785,7 +2997,9 @@
       },
       "iconId": "icon-acl-mo-rong",
       "flashcard": {
-        "front": { "vi": "ACL mở rộng mang dải số nào, nhìn được những gì, và đặt ở đâu?" },
+        "front": {
+          "vi": "ACL mở rộng mang dải số nào, nhìn được những gì, và đặt ở đâu?"
+        },
         "back": {
           "vi": "Số 100 tới 199; nhìn được giao thức, nguồn, đích và cả port dịch vụ với tcp hay udp. Vì biết đủ để chặn đúng nên đặt gần NGUỒN: gói chết sớm, không tốn đường truyền của cả chặng sau."
         }
@@ -1800,7 +3014,9 @@
       },
       "iconId": "icon-chieu-acl",
       "flashcard": {
-        "front": { "vi": "Chiều in và out của một ACL được tính theo cái gì, và chặn ở chiều nào thì rẻ hơn?" },
+        "front": {
+          "vi": "Chiều in và out của một ACL được tính theo cái gì, và chặn ở chiều nào thì rẻ hơn?"
+        },
         "back": {
           "vi": "Tính theo con mắt của router: in là gói vừa đi vào cổng, trước khi tra bảng định tuyến; out là gói đã chọn xong đường và sắp rời cổng. Chặn ở chiều in rẻ hơn vì gói bị loại trước cả bước tra bảng."
         }
@@ -1815,7 +3031,9 @@
       },
       "iconId": "icon-dat-acl",
       "flashcard": {
-        "front": { "vi": "Quy tắc đặt ACL của nghề nói gì, và lý do đằng sau là gì?" },
+        "front": {
+          "vi": "Quy tắc đặt ACL của nghề nói gì, và lý do đằng sau là gì?"
+        },
         "back": {
           "vi": "ACL mở rộng đặt gần nguồn, ACL chuẩn đặt gần đích. Lý do chung: chặn ở chỗ gần nhất mà luật còn đủ thông tin để chặn ĐÚNG. Mở rộng biết cả đích nên chặn sớm vẫn đúng; chuẩn mù đích nên chặn sớm là chặn nhầm cả những nơi lẽ ra được đi."
         }
@@ -1830,7 +3048,9 @@
       },
       "iconId": "icon-acl-stateful",
       "flashcard": {
-        "front": { "vi": "Khác nhau căn bản giữa ACL đánh số và tường lửa stateful của Module 7 là gì?" },
+        "front": {
+          "vi": "Khác nhau căn bản giữa ACL đánh số và tường lửa stateful của Module 7 là gì?"
+        },
         "back": {
           "vi": "Tường lửa stateful nhớ cuộc gọi đã mở nên lời đáp về được vào mà không cần luật riêng. ACL đánh số không có trí nhớ: nó xét từng gói một cách rời rạc, nên chiều về phải được cho phép tường minh, nếu không cuộc trò chuyện đứt dù chiều đi vẫn thông."
         }
@@ -1845,7 +3065,9 @@
       },
       "iconId": "icon-mac-flooding",
       "flashcard": {
-        "front": { "vi": "Nhồi bảng MAC khiến switch làm gì, và vì sao kẻ tấn công có lợi?" },
+        "front": {
+          "vi": "Nhồi bảng MAC khiến switch làm gì, và vì sao kẻ tấn công có lợi?"
+        },
         "back": {
           "vi": "Bảng đầy thì switch không tra ra đích nên phát tràn khung ra mọi cổng, đúng hành vi mặc định của nó. Kẻ ngồi ở một cổng bất kỳ vì thế nhận được cả khung không gửi cho mình, trong khi mạng vẫn chạy nên không ai nghi ngờ."
         }
@@ -1860,7 +3082,9 @@
       },
       "iconId": "icon-port-security",
       "flashcard": {
-        "front": { "vi": "Port security giới hạn cái gì, và hậu quả khi vi phạm hiện ra thế nào?" },
+        "front": {
+          "vi": "Port security giới hạn cái gì, và hậu quả khi vi phạm hiện ra thế nào?"
+        },
         "back": {
           "vi": "Giới hạn số địa chỉ MAC được xuất hiện trên một cổng access. Vượt ngưỡng thì switch đánh sập cổng: bảng trạng thái ghi cổng bị tắt bằng lệnh (administratively down, thiết bị thật ghi err-disabled) và phải có người gõ no shutdown mới sống lại."
         }
@@ -1875,7 +3099,9 @@
       },
       "iconId": "icon-mac-tu-khai",
       "flashcard": {
-        "front": { "vi": "Con số MAC ở ô người gửi của một khung tin do ai quyết định?" },
+        "front": {
+          "vi": "Con số MAC ở ô người gửi của một khung tin do ai quyết định?"
+        },
         "back": {
           "vi": "Do phần mềm của chính máy gửi điền vào — mặc định chép lại số nhà máy ghi trên chip, nhưng hệ nào cũng đổi được bằng một dòng lệnh. Trò khai tên khác gọi là MAC spoofing."
         }
@@ -1890,7 +3116,9 @@
       },
       "iconId": "icon-loc-mac",
       "flashcard": {
-        "front": { "vi": "Rào chắn dựa trên MAC chặn được ai, và bó tay trước ai?" },
+        "front": {
+          "vi": "Rào chắn dựa trên MAC chặn được ai, và bó tay trước ai?"
+        },
         "back": {
           "vi": "Chặn được cái vô ý (cắm nhầm, cắm thêm switch mini) và trò nhồi bảng MAC vì trò ấy vượt ngưỡng đếm. Bó tay trước kẻ nghe ra một MAC hợp lệ rồi khai lại đúng tên đó."
         }
@@ -1905,7 +3133,9 @@
       },
       "iconId": "icon-mac-ngau-nhien",
       "flashcard": {
-        "front": { "vi": "Điện thoại đời mới làm gì với MAC khi vào một mạng Wi-Fi, và gây phiền gì?" },
+        "front": {
+          "vi": "Điện thoại đời mới làm gì với MAC khi vào một mạng Wi-Fi, và gây phiền gì?"
+        },
         "back": {
           "vi": "Mặc định tự sinh một MAC ngẫu nhiên riêng cho mạng đó để chống bị lần theo. Hệ quả: địa chỉ ghim theo MAC không dính, danh sách lọc báo máy lạ dù vẫn là máy cũ."
         }
@@ -1920,7 +3150,9 @@
       },
       "iconId": "icon-arp-spoofing",
       "flashcard": {
-        "front": { "vi": "ARP spoofing lợi dụng điểm yếu nào, và dấu hiệu nhìn ra được là gì?" },
+        "front": {
+          "vi": "ARP spoofing lợi dụng điểm yếu nào, và dấu hiệu nhìn ra được là gì?"
+        },
         "back": {
           "vi": "Lợi dụng chuyện ARP không xác thực: ai đáp cũng được tin và câu đáp sau đè câu trước. Dấu hiệu: trong sổ arp -a, địa chỉ cổng ra lúc gắn MAC này lúc gắn MAC kia, mạng chập chờn. Chặn bằng port security, Dynamic ARP Inspection, hoặc khai cứng địa chỉ cổng ra cho máy quan trọng."
         }
@@ -1935,14 +3167,15 @@
       },
       "iconId": "icon-vlan-hopping",
       "flashcard": {
-        "front": { "vi": "Trò VLAN hopping hai lớp nhãn dựa vào đâu, và chặn bằng cách nào?" },
+        "front": {
+          "vi": "Trò VLAN hopping hai lớp nhãn dựa vào đâu, và chặn bằng cách nào?"
+        },
         "back": {
           "vi": "Dựa vào native VLAN: khung native đi không nhãn nên switch đầu bóc lớp nhãn ngoài, switch sau nhìn lớp còn lại và tưởng khung thuộc VLAN khác. Chặn bằng cách đặt native VLAN thành một VLAN không ai dùng và khai tường minh cổng nối máy con là access."
         }
       }
     }
   ],
-
   "masteryTest": [
     {
       "kind": "mcq",
@@ -1951,12 +3184,20 @@
         "vi": "Bạn áp lên cổng một danh sách chỉ có đúng một dòng cấm máy 192.168.1.66. Chuyện gì xảy ra với các máy khác trong văn phòng?"
       },
       "choices": [
-        { "vi": "Chúng cũng bị chặn, vì dòng vô hình cuối danh sách cấm mọi thứ chưa được cho phép" },
-        { "vi": "Chúng vẫn đi lại bình thường, vì danh sách chỉ nhắc đích danh một địa chỉ duy nhất" },
-        { "vi": "Chúng bị chậm lại đôi chút, vì router phải so từng gói với dòng luật vừa được thêm" }
+        {
+          "vi": "Chúng cũng bị chặn, vì dòng vô hình cuối danh sách cấm mọi thứ chưa được cho phép"
+        },
+        {
+          "vi": "Chúng vẫn đi lại bình thường, vì danh sách chỉ nhắc đích danh một địa chỉ duy nhất"
+        },
+        {
+          "vi": "Chúng bị chậm lại đôi chút, vì router phải so từng gói với dòng luật vừa được thêm"
+        }
       ],
       "answerIndex": 0,
-      "hintTopic": { "vi": "dòng không được in ra ở cuối danh sách" },
+      "hintTopic": {
+        "vi": "dòng không được in ra ở cuối danh sách"
+      },
       "explain": {
         "vi": "Chúng cũng tắc. Áp một danh sách lên cổng là đổi mặc định của cổng từ cho tất cả thành cấm tất cả — gói không khớp dòng nào sẽ rơi vào dòng vô hình ở cuối. Muốn giữ đường cho phần còn lại thì phải viết thêm một dòng permit."
       }
@@ -1978,7 +3219,9 @@
         "dong dau tien trung khop",
         "first match"
       ],
-      "hintTopic": { "vi": "quy tắc dừng khi so luật" },
+      "hintTopic": {
+        "vi": "quy tắc dừng khi so luật"
+      },
       "explain": {
         "vi": "Dòng khớp đầu tiên. Quyết định xong là router gấp danh sách lại, các dòng phía dưới không bao giờ được hỏi tới — nên thứ tự chính là luật, và luật hẹp phải viết trước luật rộng."
       }
@@ -1990,12 +3233,20 @@
         "vi": "Sếp muốn cấm phòng khách vào máy chủ kế toán nhưng vẫn cho họ lướt web. Bạn phải dùng loại danh sách nào, và vì sao?"
       },
       "choices": [
-        { "vi": "Mở rộng, vì yêu cầu phân biệt theo đích mà danh sách chuẩn không nhìn thấy đích" },
-        { "vi": "Chuẩn, vì yêu cầu chỉ nhắc tới một nguồn duy nhất là dải máy của phòng khách" },
-        { "vi": "Loại nào cũng được, miễn là đặt danh sách ấy đúng chiều trên cổng phía văn phòng" }
+        {
+          "vi": "Mở rộng, vì yêu cầu phân biệt theo đích mà danh sách chuẩn không nhìn thấy đích"
+        },
+        {
+          "vi": "Chuẩn, vì yêu cầu chỉ nhắc tới một nguồn duy nhất là dải máy của phòng khách"
+        },
+        {
+          "vi": "Loại nào cũng được, miễn là đặt danh sách ấy đúng chiều trên cổng phía văn phòng"
+        }
       ],
       "answerIndex": 0,
-      "hintTopic": { "vi": "vế địa chỉ mà danh sách chuẩn không thấy" },
+      "hintTopic": {
+        "vi": "vế địa chỉ mà danh sách chuẩn không thấy"
+      },
       "explain": {
         "vi": "Phải là mở rộng (100 tới 199). Yêu cầu này phân biệt theo NƠI ĐẾN, mà danh sách chuẩn chỉ soi được người gửi — dùng chuẩn thì cấm phòng khách là cấm họ đi mọi nơi, mất luôn đường ra web."
       }
@@ -2016,7 +3267,9 @@
         "100 den 199",
         "100 đến 199"
       ],
-      "hintTopic": { "vi": "hai dải số của hai họ danh sách" },
+      "hintTopic": {
+        "vi": "hai dải số của hai họ danh sách"
+      },
       "explain": {
         "vi": "Từ 100 tới 199. Dải 1 tới 99 dành cho danh sách chuẩn — loại chỉ soi được nguồn."
       }
@@ -2028,12 +3281,20 @@
         "vi": "Vì sao quy tắc nghề bảo đặt ACL mở rộng gần nguồn, còn ACL chuẩn thì gần đích?"
       },
       "choices": [
-        { "vi": "Vì chuẩn mù vế đích nên chặn sớm là chặn nhầm cả những đích lẽ ra được đi" },
-        { "vi": "Vì router gần đích có nhiều bộ nhớ hơn nên nó chứa được danh sách dài hơn" },
-        { "vi": "Vì danh sách chuẩn chỉ chạy được ở chiều out, còn mở rộng chỉ chạy ở chiều in" }
+        {
+          "vi": "Vì chuẩn mù vế đích nên chặn sớm là chặn nhầm cả những đích lẽ ra được đi"
+        },
+        {
+          "vi": "Vì router gần đích có nhiều bộ nhớ hơn nên nó chứa được danh sách dài hơn"
+        },
+        {
+          "vi": "Vì danh sách chuẩn chỉ chạy được ở chiều out, còn mở rộng chỉ chạy ở chiều in"
+        }
       ],
       "answerIndex": 0,
-      "hintTopic": { "vi": "chặn ở chỗ gần nhất mà luật còn chặn đúng" },
+      "hintTopic": {
+        "vi": "chặn ở chỗ gần nhất mà luật còn chặn đúng"
+      },
       "explain": {
         "vi": "Vì chuẩn chỉ biết người gửi. Đặt nó gần nguồn thì nó cấm kẻ đó đi tất cả mọi nơi, nên phải mang xuống sát đích cần bảo vệ. Mở rộng biết cả đích nên chặn ngay gần nguồn vẫn đúng người đúng việc, lại đỡ tốn đường truyền."
       }
@@ -2045,12 +3306,20 @@
         "vi": "Trên đường đi chỉ có ACL đánh số canh gác. Bạn cho phép chiều đi nhưng quên chiều về. Kết quả?"
       },
       "choices": [
-        { "vi": "Cuộc trò chuyện đứt, vì ACL không nhớ cuộc gọi nào vừa mở để tự cho lời đáp vào" },
-        { "vi": "Vẫn chạy bình thường, vì lời đáp của một cuộc gọi hợp lệ luôn được miễn xét luật" },
-        { "vi": "Vẫn chạy nhưng chậm, vì mỗi lời đáp phải chờ router hỏi lại bên gửi một lượt" }
+        {
+          "vi": "Cuộc trò chuyện đứt, vì ACL không nhớ cuộc gọi nào vừa mở để tự cho lời đáp vào"
+        },
+        {
+          "vi": "Vẫn chạy bình thường, vì lời đáp của một cuộc gọi hợp lệ luôn được miễn xét luật"
+        },
+        {
+          "vi": "Vẫn chạy nhưng chậm, vì mỗi lời đáp phải chờ router hỏi lại bên gửi một lượt"
+        }
       ],
       "answerIndex": 0,
-      "hintTopic": { "vi": "thứ tường lửa stateful có mà ACL không có" },
+      "hintTopic": {
+        "vi": "thứ tường lửa stateful có mà ACL không có"
+      },
       "explain": {
         "vi": "Đứt. Tường lửa stateful của Module 7 ghi sổ cuộc gọi nên lời đáp tự được vào; ACL đánh số xét từng gói rời rạc, không có trí nhớ, nên chiều về phải được cho phép tường minh."
       }
@@ -2077,7 +3346,9 @@
         "khi gói vào cổng",
         "khi goi vao cong"
       ],
-      "hintTopic": { "vi": "chiều tính theo con mắt của router" },
+      "hintTopic": {
+        "vi": "chiều tính theo con mắt của router"
+      },
       "explain": {
         "vi": "Lúc gói vừa đi VÀO cổng đó, trước cả bước tra bảng định tuyến. Chiều out thì ngược lại: gói đã chọn xong đường và sắp rời cổng. Cùng một luồng gói sẽ là in ở cổng này nhưng out ở cổng kia."
       }
@@ -2089,12 +3360,20 @@
         "vi": "Port security trên một cổng access thật ra đang đếm và giới hạn cái gì?"
       },
       "choices": [
-        { "vi": "Số địa chỉ MAC được phép xuất hiện trên cổng đó" },
-        { "vi": "Số gói tin đi qua cổng đó trong mỗi giây đồng hồ" },
-        { "vi": "Số VLAN mà cổng đó được phép chở qua một lúc" }
+        {
+          "vi": "Số địa chỉ MAC được phép xuất hiện trên cổng đó"
+        },
+        {
+          "vi": "Số gói tin đi qua cổng đó trong mỗi giây đồng hồ"
+        },
+        {
+          "vi": "Số VLAN mà cổng đó được phép chở qua một lúc"
+        }
       ],
       "answerIndex": 0,
-      "hintTopic": { "vi": "thứ mà trò nhồi bảng tạo ra thật nhiều" },
+      "hintTopic": {
+        "vi": "thứ mà trò nhồi bảng tạo ra thật nhiều"
+      },
       "explain": {
         "vi": "Số địa chỉ MAC. Trò nhồi bảng MAC sống nhờ việc bịa ra thật nhiều địa chỉ, nên chốt chặn phải đếm đúng thứ đó. Vượt ngưỡng thì cổng bị đánh sập và cần người bật lại bằng tay."
       }
@@ -2103,7 +3382,7 @@
       "kind": "typed",
       "id": "m17-mt-9",
       "prompt": {
-        "vi": "Bảng trạng thái cổng ghi administratively down. Nguyên nhân thuộc loại nào?"
+        "vi": "Người trực báo một máy mất mạng. Bạn soi console switch, cổng cắm máy đó ghi \"administratively down\". Vậy chuyện gì đã xảy ra với cái cổng ấy?"
       },
       "accept": [
         "bị tắt bằng lệnh",
@@ -2117,7 +3396,9 @@
         "tắt chủ động",
         "tat chu dong"
       ],
-      "hintTopic": { "vi": "khác nhau giữa cổng bị tắt và cổng mất tín hiệu" },
+      "hintTopic": {
+        "vi": "khác nhau giữa cổng bị tắt và cổng mất tín hiệu"
+      },
       "explain": {
         "vi": "Cổng đang bị tắt bằng lệnh — người trực gõ shutdown, hoặc một cơ chế như port security đánh sập nó. Dòng chỉ ghi down trơn thì lại là chuyện khác: cổng vẫn bật nhưng không thấy tín hiệu đầu kia, tức là đi tìm sợi dây."
       }
@@ -2129,12 +3410,20 @@
         "vi": "Sổ arp -a trên máy bạn cho thấy địa chỉ cổng ra lúc gắn MAC này lúc gắn MAC kia. Điều gì chắc chắn đúng?"
       },
       "choices": [
-        { "vi": "Có hai thiết bị cùng nhận là chủ của địa chỉ đó trong xóm" },
-        { "vi": "Router đang đổi địa chỉ MAC của cổng ra theo từng phiên làm việc" },
-        { "vi": "Máy bạn đã mất đường tới cổng ra và đang hỏi lại địa chỉ liên tục" }
+        {
+          "vi": "Có hai thiết bị cùng nhận là chủ của địa chỉ đó trong xóm"
+        },
+        {
+          "vi": "Router đang đổi địa chỉ MAC của cổng ra theo từng phiên làm việc"
+        },
+        {
+          "vi": "Máy bạn đã mất đường tới cổng ra và đang hỏi lại địa chỉ liên tục"
+        }
       ],
       "answerIndex": 0,
-      "hintTopic": { "vi": "một địa chỉ IP mà hai MAC thay nhau trả lời" },
+      "hintTopic": {
+        "vi": "một địa chỉ IP mà hai MAC thay nhau trả lời"
+      },
       "explain": {
         "vi": "Có hai thiết bị cùng nhận là chủ địa chỉ đó — MAC đóng chết vào phần cứng nên không đổi theo phiên. Còn do gõ nhầm hay do mạo danh ARP thì phải đi tìm tiếp, nhưng chuyện một địa chỉ hai chủ thì đã chắc."
       }
@@ -2146,12 +3435,20 @@
         "vi": "Cách chặn gọn nhất cho trò VLAN hopping kiểu dán hai lớp nhãn là gì?"
       },
       "choices": [
-        { "vi": "Đặt native VLAN của trunk thành một VLAN không ai dùng" },
-        { "vi": "Bật lại STP trên toàn bộ các switch đang nối vòng với nhau" },
-        { "vi": "Gắn một danh sách lọc mở rộng lên cổng trunk theo chiều in" }
+        {
+          "vi": "Đặt native VLAN của trunk thành một VLAN không ai dùng"
+        },
+        {
+          "vi": "Bật lại STP trên toàn bộ các switch đang nối vòng với nhau"
+        },
+        {
+          "vi": "Gắn một danh sách lọc mở rộng lên cổng trunk theo chiều in"
+        }
       ],
       "answerIndex": 0,
-      "hintTopic": { "vi": "VLAN đi không nhãn trên trunk" },
+      "hintTopic": {
+        "vi": "VLAN đi không nhãn trên trunk"
+      },
       "explain": {
         "vi": "Đổi native VLAN sang một VLAN không ai dùng. Trò này sống nhờ cú bóc nhãn của native VLAN ở switch đầu tiên; native không chở người dùng thì khung của họ luôn mang nhãn và cú bóc ấy chẳng còn giúp gì cho kẻ tấn công. STP canh vòng lặp, còn ACL là chuyện tầng 3 — cả hai không đụng tới trò này."
       }
@@ -2163,12 +3460,20 @@
         "vi": "Một kẻ lạ cắm máy vào cổng switch rồi bơm ra hàng vạn địa chỉ MAC bịa, tới lúc bảng MAC không còn chỗ. Hắn được lợi gì?"
       },
       "choices": [
-        { "vi": "Switch hết chỗ tra đích nên phát tràn mọi khung ra mọi cổng, kể cả cổng hắn ngồi" },
-        { "vi": "Switch tự khởi động lại và quên sạch cấu hình VLAN mà người trực đã đặt cho từng cổng" },
-        { "vi": "Các máy còn lại mất địa chỉ IP đang dùng vì bảng MAC của switch đã bị xóa trống trơn" }
+        {
+          "vi": "Switch hết chỗ tra đích nên phát tràn mọi khung ra mọi cổng, kể cả cổng hắn ngồi"
+        },
+        {
+          "vi": "Switch tự khởi động lại và quên sạch cấu hình VLAN mà người trực đã đặt cho từng cổng"
+        },
+        {
+          "vi": "Các máy còn lại mất địa chỉ IP đang dùng vì bảng MAC của switch đã bị xóa trống trơn"
+        }
       ],
       "answerIndex": 0,
-      "hintTopic": { "vi": "switch làm gì khi tra bảng không ra cổng đích" },
+      "hintTopic": {
+        "vi": "switch làm gì khi tra bảng không ra cổng đích"
+      },
       "explain": {
         "vi": "Bảng đầy thì switch không còn chỗ ghi cặp địa chỉ - cổng mới, nên khung nào tra không ra đích là nó đành phát tràn ra mọi cổng — kể cả cổng kẻ lạ đang ngồi, và thế là hắn nghe được thư từ của cả xóm. Switch không khởi động lại, cũng chẳng ai mất địa chỉ IP: thứ mất đi ở đây là sự riêng tư. Chốt chặn đúng chỗ là port security, giới hạn số MAC được phép xuất hiện trên mỗi cổng."
       }
@@ -2180,12 +3485,20 @@
         "vi": "Cổng access đã bật port security cho đúng một máy. Kẻ tấn công vẫn đi qua được mà cổng không hề sập. Hắn đã làm gì?"
       },
       "choices": [
-        { "vi": "Khai lại MAC của máy mình thành đúng cái MAC mà cổng đang cho phép" },
-        { "vi": "Cắm thêm một switch mini để hai máy cùng dùng chung một cổng access" },
-        { "vi": "Đợi tới lúc bảng MAC của switch đầy rồi lách vào giữa dòng khung tin" }
+        {
+          "vi": "Khai lại MAC của máy mình thành đúng cái MAC mà cổng đang cho phép"
+        },
+        {
+          "vi": "Cắm thêm một switch mini để hai máy cùng dùng chung một cổng access"
+        },
+        {
+          "vi": "Đợi tới lúc bảng MAC của switch đầy rồi lách vào giữa dòng khung tin"
+        }
       ],
       "answerIndex": 0,
-      "hintTopic": { "vi": "con số mà cổng đem ra soi là do ai điền" },
+      "hintTopic": {
+        "vi": "con số mà cổng đem ra soi là do ai điền"
+      },
       "explain": {
         "vi": "Hắn khai lại MAC. Cổng chỉ hỏi đúng một câu — khung này mang tên gì — mà cái tên ấy do chính máy gửi điền vào, nên nghe một lát là biết MAC nào đang lọt rồi đặt đúng tên đó cho card mạng của mình; ngưỡng đếm vẫn thấy đủ một máy. Cắm thêm switch mini hay nhồi bảng MAC thì ngược lại: cả hai đều làm số MAC trên cổng vượt ngưỡng, đúng thứ port security sinh ra để dập."
       }
@@ -2205,7 +3518,9 @@
         "tự đổi mac theo từng mạng",
         "mac randomization"
       ],
-      "hintTopic": { "vi": "thứ máy tự sinh ra cho từng mạng để khỏi bị lần theo" },
+      "hintTopic": {
+        "vi": "thứ máy tự sinh ra cho từng mạng để khỏi bị lần theo"
+      },
       "explain": {
         "vi": "Nó tự sinh một MAC ngẫu nhiên riêng cho mạng đó thay vì chìa con số của nhà máy — mặc định bật, để nơi công cộng không lần được thiết bị đã đi những đâu. Vì thế mọi thứ ghim theo MAC (địa chỉ cố định, danh sách lọc) đều hay trượt với máy đời mới; chữa bằng cách tắt riêng cho mạng công ty, hoặc bỏ hẳn lối ghim theo MAC."
       }
@@ -2223,24 +3538,42 @@
               "kind": "pc",
               "id": "pc-sep",
               "hostname": "PC-Giam-doc",
-              "port": { "id": "eth0", "mac": "AA:BB:CC:17:00:01" },
-              "ipConfig": { "ip": "192.168.1.10", "prefix": 24 },
+              "port": {
+                "id": "eth0",
+                "mac": "AA:BB:CC:17:00:01"
+              },
+              "ipConfig": {
+                "ip": "192.168.1.10",
+                "prefix": 24
+              },
               "gateway": "192.168.1.1"
             },
             {
               "kind": "pc",
               "id": "pc-khach",
               "hostname": "PC-Phong-khach",
-              "port": { "id": "eth0", "mac": "AA:BB:CC:17:00:02" },
-              "ipConfig": { "ip": "192.168.1.66", "prefix": 24 },
+              "port": {
+                "id": "eth0",
+                "mac": "AA:BB:CC:17:00:02"
+              },
+              "ipConfig": {
+                "ip": "192.168.1.66",
+                "prefix": 24
+              },
               "gateway": "192.168.1.1"
             },
             {
               "kind": "pc",
               "id": "srv-ke-toan",
               "hostname": "SRV-Ke-toan",
-              "port": { "id": "eth0", "mac": "AA:BB:CC:17:00:03" },
-              "ipConfig": { "ip": "192.168.2.50", "prefix": 24 },
+              "port": {
+                "id": "eth0",
+                "mac": "AA:BB:CC:17:00:03"
+              },
+              "ipConfig": {
+                "ip": "192.168.2.50",
+                "prefix": 24
+              },
               "gateway": "192.168.2.1"
             },
             {
@@ -2248,9 +3581,18 @@
               "id": "sw-1",
               "hostname": "SW-Van-phong",
               "ports": [
-                { "id": "p1", "vlan": 1 },
-                { "id": "p2", "vlan": 1 },
-                { "id": "p3", "vlan": 1 }
+                {
+                  "id": "p1",
+                  "vlan": 1
+                },
+                {
+                  "id": "p2",
+                  "vlan": 1
+                },
+                {
+                  "id": "p3",
+                  "vlan": 1
+                }
               ]
             },
             {
@@ -2258,8 +3600,14 @@
               "id": "sw-2",
               "hostname": "SW-May-chu",
               "ports": [
-                { "id": "p1", "vlan": 1 },
-                { "id": "p2", "vlan": 1 }
+                {
+                  "id": "p1",
+                  "vlan": 1
+                },
+                {
+                  "id": "p2",
+                  "vlan": 1
+                }
               ]
             },
             {
@@ -2267,8 +3615,22 @@
               "id": "r-1",
               "hostname": "R-Van-phong",
               "ports": [
-                { "id": "g0", "mac": "AA:BB:CC:17:00:11", "ipConfig": { "ip": "192.168.1.1", "prefix": 24 } },
-                { "id": "g1", "mac": "AA:BB:CC:17:00:12", "ipConfig": { "ip": "192.168.2.1", "prefix": 24 } }
+                {
+                  "id": "g0",
+                  "mac": "AA:BB:CC:17:00:11",
+                  "ipConfig": {
+                    "ip": "192.168.1.1",
+                    "prefix": 24
+                  }
+                },
+                {
+                  "id": "g1",
+                  "mac": "AA:BB:CC:17:00:12",
+                  "ipConfig": {
+                    "ip": "192.168.2.1",
+                    "prefix": 24
+                  }
+                }
               ],
               "staticRoutes": [],
               "accessLists": [
@@ -2279,15 +3641,27 @@
                       "seq": 10,
                       "action": "deny",
                       "protocol": "icmp",
-                      "src": { "ip": "192.168.1.66", "wildcard": "0.0.0.0" },
-                      "dst": { "ip": "192.168.2.50", "wildcard": "0.0.0.0" }
+                      "src": {
+                        "ip": "192.168.1.66",
+                        "wildcard": "0.0.0.0"
+                      },
+                      "dst": {
+                        "ip": "192.168.2.50",
+                        "wildcard": "0.0.0.0"
+                      }
                     },
                     {
                       "seq": 20,
                       "action": "permit",
                       "protocol": "ip",
-                      "src": { "ip": "0.0.0.0", "wildcard": "255.255.255.255" },
-                      "dst": { "ip": "0.0.0.0", "wildcard": "255.255.255.255" }
+                      "src": {
+                        "ip": "0.0.0.0",
+                        "wildcard": "255.255.255.255"
+                      },
+                      "dst": {
+                        "ip": "0.0.0.0",
+                        "wildcard": "255.255.255.255"
+                      }
                     }
                   ]
                 }
@@ -2295,26 +3669,100 @@
             }
           ],
           "links": [
-            { "id": "l1", "a": { "deviceId": "pc-sep", "portId": "eth0" }, "b": { "deviceId": "sw-1", "portId": "p1" } },
-            { "id": "l2", "a": { "deviceId": "pc-khach", "portId": "eth0" }, "b": { "deviceId": "sw-1", "portId": "p2" } },
-            { "id": "l3", "a": { "deviceId": "sw-1", "portId": "p3" }, "b": { "deviceId": "r-1", "portId": "g0" } },
-            { "id": "l4", "a": { "deviceId": "r-1", "portId": "g1" }, "b": { "deviceId": "sw-2", "portId": "p1" } },
-            { "id": "l5", "a": { "deviceId": "sw-2", "portId": "p2" }, "b": { "deviceId": "srv-ke-toan", "portId": "eth0" } }
+            {
+              "id": "l1",
+              "a": {
+                "deviceId": "pc-sep",
+                "portId": "eth0"
+              },
+              "b": {
+                "deviceId": "sw-1",
+                "portId": "p1"
+              }
+            },
+            {
+              "id": "l2",
+              "a": {
+                "deviceId": "pc-khach",
+                "portId": "eth0"
+              },
+              "b": {
+                "deviceId": "sw-1",
+                "portId": "p2"
+              }
+            },
+            {
+              "id": "l3",
+              "a": {
+                "deviceId": "sw-1",
+                "portId": "p3"
+              },
+              "b": {
+                "deviceId": "r-1",
+                "portId": "g0"
+              }
+            },
+            {
+              "id": "l4",
+              "a": {
+                "deviceId": "r-1",
+                "portId": "g1"
+              },
+              "b": {
+                "deviceId": "sw-2",
+                "portId": "p1"
+              }
+            },
+            {
+              "id": "l5",
+              "a": {
+                "deviceId": "sw-2",
+                "portId": "p2"
+              },
+              "b": {
+                "deviceId": "srv-ke-toan",
+                "portId": "eth0"
+              }
+            }
           ]
         },
         "deviceId": "r-1",
         "goals": [
-          { "kind": "behavior", "goal": { "kind": "ping", "from": "pc-khach", "to": "srv-ke-toan", "expect": "blocked" } },
-          { "kind": "behavior", "goal": { "kind": "ping", "from": "pc-sep", "to": "srv-ke-toan", "expect": "reach" } }
+          {
+            "kind": "behavior",
+            "goal": {
+              "kind": "ping",
+              "from": "pc-khach",
+              "to": "srv-ke-toan",
+              "expect": "blocked"
+            }
+          },
+          {
+            "kind": "behavior",
+            "goal": {
+              "kind": "ping",
+              "from": "pc-sep",
+              "to": "srv-ke-toan",
+              "expect": "reach"
+            }
+          }
         ],
         "solution": [
           {
             "deviceId": "r-1",
-            "lines": ["enable", "configure terminal", "interface g0", "ip access-group 101 in", "end"]
+            "lines": [
+              "enable",
+              "configure terminal",
+              "interface g0",
+              "ip access-group 101 in",
+              "end"
+            ]
           }
         ]
       },
-      "hintTopic": { "vi": "cổng phía văn phòng và chiều gói đi vào" },
+      "hintTopic": {
+        "vi": "cổng phía văn phòng và chiều gói đi vào"
+      },
       "explain": {
         "vi": "Danh sách mở rộng thì đặt gần nguồn: vào interface g0 rồi gõ ip access-group 101 in. Gói của máy phòng khách bị loại ngay tại cửa vào, trước cả bước tra bảng định tuyến, còn mọi máy khác gặp dòng 20 và đi tiếp bình thường."
       }
@@ -2332,24 +3780,42 @@
               "kind": "pc",
               "id": "pc-sep",
               "hostname": "PC-Giam-doc",
-              "port": { "id": "eth0", "mac": "AA:BB:CC:17:00:01" },
-              "ipConfig": { "ip": "192.168.1.10", "prefix": 24 },
+              "port": {
+                "id": "eth0",
+                "mac": "AA:BB:CC:17:00:01"
+              },
+              "ipConfig": {
+                "ip": "192.168.1.10",
+                "prefix": 24
+              },
               "gateway": "192.168.1.1"
             },
             {
               "kind": "pc",
               "id": "pc-khach",
               "hostname": "PC-Phong-khach",
-              "port": { "id": "eth0", "mac": "AA:BB:CC:17:00:02" },
-              "ipConfig": { "ip": "192.168.1.66", "prefix": 24 },
+              "port": {
+                "id": "eth0",
+                "mac": "AA:BB:CC:17:00:02"
+              },
+              "ipConfig": {
+                "ip": "192.168.1.66",
+                "prefix": 24
+              },
               "gateway": "192.168.1.1"
             },
             {
               "kind": "pc",
               "id": "srv-ke-toan",
               "hostname": "SRV-Ke-toan",
-              "port": { "id": "eth0", "mac": "AA:BB:CC:17:00:03" },
-              "ipConfig": { "ip": "192.168.2.50", "prefix": 24 },
+              "port": {
+                "id": "eth0",
+                "mac": "AA:BB:CC:17:00:03"
+              },
+              "ipConfig": {
+                "ip": "192.168.2.50",
+                "prefix": 24
+              },
               "gateway": "192.168.2.1"
             },
             {
@@ -2357,9 +3823,18 @@
               "id": "sw-1",
               "hostname": "SW-Van-phong",
               "ports": [
-                { "id": "p1", "vlan": 1 },
-                { "id": "p2", "vlan": 1 },
-                { "id": "p3", "vlan": 1 }
+                {
+                  "id": "p1",
+                  "vlan": 1
+                },
+                {
+                  "id": "p2",
+                  "vlan": 1
+                },
+                {
+                  "id": "p3",
+                  "vlan": 1
+                }
               ]
             },
             {
@@ -2367,8 +3842,14 @@
               "id": "sw-2",
               "hostname": "SW-May-chu",
               "ports": [
-                { "id": "p1", "vlan": 1 },
-                { "id": "p2", "vlan": 1 }
+                {
+                  "id": "p1",
+                  "vlan": 1
+                },
+                {
+                  "id": "p2",
+                  "vlan": 1
+                }
               ]
             },
             {
@@ -2379,10 +3860,20 @@
                 {
                   "id": "g0",
                   "mac": "AA:BB:CC:17:00:11",
-                  "ipConfig": { "ip": "192.168.1.1", "prefix": 24 },
+                  "ipConfig": {
+                    "ip": "192.168.1.1",
+                    "prefix": 24
+                  },
                   "aclIn": 101
                 },
-                { "id": "g1", "mac": "AA:BB:CC:17:00:12", "ipConfig": { "ip": "192.168.2.1", "prefix": 24 } }
+                {
+                  "id": "g1",
+                  "mac": "AA:BB:CC:17:00:12",
+                  "ipConfig": {
+                    "ip": "192.168.2.1",
+                    "prefix": 24
+                  }
+                }
               ],
               "staticRoutes": [],
               "accessLists": [
@@ -2393,8 +3884,14 @@
                       "seq": 10,
                       "action": "deny",
                       "protocol": "icmp",
-                      "src": { "ip": "192.168.1.66", "wildcard": "0.0.0.0" },
-                      "dst": { "ip": "0.0.0.0", "wildcard": "255.255.255.255" }
+                      "src": {
+                        "ip": "192.168.1.66",
+                        "wildcard": "0.0.0.0"
+                      },
+                      "dst": {
+                        "ip": "0.0.0.0",
+                        "wildcard": "255.255.255.255"
+                      }
                     }
                   ]
                 }
@@ -2402,18 +3899,88 @@
             }
           ],
           "links": [
-            { "id": "l1", "a": { "deviceId": "pc-sep", "portId": "eth0" }, "b": { "deviceId": "sw-1", "portId": "p1" } },
-            { "id": "l2", "a": { "deviceId": "pc-khach", "portId": "eth0" }, "b": { "deviceId": "sw-1", "portId": "p2" } },
-            { "id": "l3", "a": { "deviceId": "sw-1", "portId": "p3" }, "b": { "deviceId": "r-1", "portId": "g0" } },
-            { "id": "l4", "a": { "deviceId": "r-1", "portId": "g1" }, "b": { "deviceId": "sw-2", "portId": "p1" } },
-            { "id": "l5", "a": { "deviceId": "sw-2", "portId": "p2" }, "b": { "deviceId": "srv-ke-toan", "portId": "eth0" } }
+            {
+              "id": "l1",
+              "a": {
+                "deviceId": "pc-sep",
+                "portId": "eth0"
+              },
+              "b": {
+                "deviceId": "sw-1",
+                "portId": "p1"
+              }
+            },
+            {
+              "id": "l2",
+              "a": {
+                "deviceId": "pc-khach",
+                "portId": "eth0"
+              },
+              "b": {
+                "deviceId": "sw-1",
+                "portId": "p2"
+              }
+            },
+            {
+              "id": "l3",
+              "a": {
+                "deviceId": "sw-1",
+                "portId": "p3"
+              },
+              "b": {
+                "deviceId": "r-1",
+                "portId": "g0"
+              }
+            },
+            {
+              "id": "l4",
+              "a": {
+                "deviceId": "r-1",
+                "portId": "g1"
+              },
+              "b": {
+                "deviceId": "sw-2",
+                "portId": "p1"
+              }
+            },
+            {
+              "id": "l5",
+              "a": {
+                "deviceId": "sw-2",
+                "portId": "p2"
+              },
+              "b": {
+                "deviceId": "srv-ke-toan",
+                "portId": "eth0"
+              }
+            }
           ]
         },
         "deviceId": "r-1",
         "goals": [
-          { "kind": "behavior", "goal": { "kind": "ping", "from": "pc-sep", "to": "srv-ke-toan", "expect": "reach" } },
-          { "kind": "behavior", "goal": { "kind": "ping", "from": "pc-khach", "to": "srv-ke-toan", "expect": "blocked" } },
-          { "kind": "viewed", "command": "show access-lists", "deviceId": "r-1" }
+          {
+            "kind": "behavior",
+            "goal": {
+              "kind": "ping",
+              "from": "pc-sep",
+              "to": "srv-ke-toan",
+              "expect": "reach"
+            }
+          },
+          {
+            "kind": "behavior",
+            "goal": {
+              "kind": "ping",
+              "from": "pc-khach",
+              "to": "srv-ke-toan",
+              "expect": "blocked"
+            }
+          },
+          {
+            "kind": "viewed",
+            "command": "show access-lists",
+            "deviceId": "r-1"
+          }
         ],
         "solution": [
           {
@@ -2428,7 +3995,9 @@
           }
         ]
       },
-      "hintTopic": { "vi": "dòng dành cho phần còn lại" },
+      "hintTopic": {
+        "vi": "dòng dành cho phần còn lại"
+      },
       "explain": {
         "vi": "Thêm access-list 101 permit ip any any. Nó rơi xuống thành dòng 20, đứng SAU dòng cấm máy khách, nên máy khách vẫn chết ở dòng 10 còn mọi máy khác gặp dòng 20 và đi được. Đây chính là thuốc chữa cho dòng cấm vô hình."
       }
@@ -2447,24 +4016,42 @@
                 "kind": "pc",
                 "id": "c17b-kd",
                 "hostname": "MAY-KINH-DOANH",
-                "port": { "id": "eth0", "mac": "AA:BB:CC:17:2B:01" },
-                "ipConfig": { "ip": "192.168.40.20", "prefix": 24 },
+                "port": {
+                  "id": "eth0",
+                  "mac": "AA:BB:CC:17:2B:01"
+                },
+                "ipConfig": {
+                  "ip": "192.168.40.20",
+                  "prefix": 24
+                },
                 "gateway": "192.168.40.1"
               },
               {
                 "kind": "pc",
                 "id": "c17b-may-la",
                 "hostname": "MAY-KHONG-RO",
-                "port": { "id": "eth0", "mac": "AA:BB:CC:17:2B:66" },
-                "ipConfig": { "ip": "192.168.40.1", "prefix": 24 },
+                "port": {
+                  "id": "eth0",
+                  "mac": "AA:BB:CC:17:2B:66"
+                },
+                "ipConfig": {
+                  "ip": "192.168.40.1",
+                  "prefix": 24
+                },
                 "gateway": "192.168.40.1"
               },
               {
                 "kind": "pc",
                 "id": "c17b-srv",
                 "hostname": "SRV-NOI-BO",
-                "port": { "id": "eth0", "mac": "AA:BB:CC:17:2B:09" },
-                "ipConfig": { "ip": "10.40.0.9", "prefix": 24 },
+                "port": {
+                  "id": "eth0",
+                  "mac": "AA:BB:CC:17:2B:09"
+                },
+                "ipConfig": {
+                  "ip": "10.40.0.9",
+                  "prefix": 24
+                },
                 "gateway": "10.40.0.1"
               },
               {
@@ -2472,9 +4059,18 @@
                 "id": "c17b-sw",
                 "hostname": "SW-TANG-4",
                 "ports": [
-                  { "id": "p1", "vlan": 1 },
-                  { "id": "p2", "vlan": 1 },
-                  { "id": "p3", "vlan": 1 }
+                  {
+                    "id": "p1",
+                    "vlan": 1
+                  },
+                  {
+                    "id": "p2",
+                    "vlan": 1
+                  },
+                  {
+                    "id": "p3",
+                    "vlan": 1
+                  }
                 ]
               },
               {
@@ -2482,8 +4078,14 @@
                 "id": "c17b-sw-srv",
                 "hostname": "SW-MAY-CHU-4",
                 "ports": [
-                  { "id": "p1", "vlan": 1 },
-                  { "id": "p2", "vlan": 1 }
+                  {
+                    "id": "p1",
+                    "vlan": 1
+                  },
+                  {
+                    "id": "p2",
+                    "vlan": 1
+                  }
                 ]
               },
               {
@@ -2491,24 +4093,92 @@
                 "id": "c17b-r",
                 "hostname": "R-CONG-RA-4",
                 "ports": [
-                  { "id": "g0", "mac": "AA:BB:CC:17:2B:11", "ipConfig": { "ip": "192.168.40.1", "prefix": 24 } },
-                  { "id": "g1", "mac": "AA:BB:CC:17:2B:12", "ipConfig": { "ip": "10.40.0.1", "prefix": 24 } }
+                  {
+                    "id": "g0",
+                    "mac": "AA:BB:CC:17:2B:11",
+                    "ipConfig": {
+                      "ip": "192.168.40.1",
+                      "prefix": 24
+                    }
+                  },
+                  {
+                    "id": "g1",
+                    "mac": "AA:BB:CC:17:2B:12",
+                    "ipConfig": {
+                      "ip": "10.40.0.1",
+                      "prefix": 24
+                    }
+                  }
                 ],
                 "staticRoutes": []
               }
             ],
             "links": [
-              { "id": "x1", "a": { "deviceId": "c17b-kd", "portId": "eth0" }, "b": { "deviceId": "c17b-sw", "portId": "p1" } },
-              { "id": "x2", "a": { "deviceId": "c17b-may-la", "portId": "eth0" }, "b": { "deviceId": "c17b-sw", "portId": "p2" } },
-              { "id": "x3", "a": { "deviceId": "c17b-sw", "portId": "p3" }, "b": { "deviceId": "c17b-r", "portId": "g0" } },
-              { "id": "x4", "a": { "deviceId": "c17b-r", "portId": "g1" }, "b": { "deviceId": "c17b-sw-srv", "portId": "p1" } },
-              { "id": "x5", "a": { "deviceId": "c17b-sw-srv", "portId": "p2" }, "b": { "deviceId": "c17b-srv", "portId": "eth0" } }
+              {
+                "id": "x1",
+                "a": {
+                  "deviceId": "c17b-kd",
+                  "portId": "eth0"
+                },
+                "b": {
+                  "deviceId": "c17b-sw",
+                  "portId": "p1"
+                }
+              },
+              {
+                "id": "x2",
+                "a": {
+                  "deviceId": "c17b-may-la",
+                  "portId": "eth0"
+                },
+                "b": {
+                  "deviceId": "c17b-sw",
+                  "portId": "p2"
+                }
+              },
+              {
+                "id": "x3",
+                "a": {
+                  "deviceId": "c17b-sw",
+                  "portId": "p3"
+                },
+                "b": {
+                  "deviceId": "c17b-r",
+                  "portId": "g0"
+                }
+              },
+              {
+                "id": "x4",
+                "a": {
+                  "deviceId": "c17b-r",
+                  "portId": "g1"
+                },
+                "b": {
+                  "deviceId": "c17b-sw-srv",
+                  "portId": "p1"
+                }
+              },
+              {
+                "id": "x5",
+                "a": {
+                  "deviceId": "c17b-sw-srv",
+                  "portId": "p2"
+                },
+                "b": {
+                  "deviceId": "c17b-srv",
+                  "portId": "eth0"
+                }
+              }
             ]
           },
           "overlay": {},
           "seatId": "c17b-kd"
         },
-        "symptom": { "kind": "ping-flaps", "from": "c17b-kd", "target": "192.168.40.1" },
+        "symptom": {
+          "kind": "ping-flaps",
+          "from": "c17b-kd",
+          "target": "192.168.40.1"
+        },
         "fix": {
           "kind": "edit-network",
           "allow": {
@@ -2521,32 +4191,59 @@
             "setRoutes": false,
             "maxDevices": 8
           },
-          "goals": [{ "kind": "ping", "from": "c17b-kd", "to": "c17b-srv", "expect": "reach" }],
-          "mustClearDiagnoses": ["duplicate-ip"],
+          "goals": [
+            {
+              "kind": "ping",
+              "from": "c17b-kd",
+              "to": "c17b-srv",
+              "expect": "reach"
+            }
+          ],
+          "mustClearDiagnoses": [
+            "duplicate-ip"
+          ],
           "solution": {
             "devices": [
               {
                 "kind": "pc",
                 "id": "c17b-kd",
                 "hostname": "MAY-KINH-DOANH",
-                "port": { "id": "eth0", "mac": "AA:BB:CC:17:2B:01" },
-                "ipConfig": { "ip": "192.168.40.20", "prefix": 24 },
+                "port": {
+                  "id": "eth0",
+                  "mac": "AA:BB:CC:17:2B:01"
+                },
+                "ipConfig": {
+                  "ip": "192.168.40.20",
+                  "prefix": 24
+                },
                 "gateway": "192.168.40.1"
               },
               {
                 "kind": "pc",
                 "id": "c17b-may-la",
                 "hostname": "MAY-KHONG-RO",
-                "port": { "id": "eth0", "mac": "AA:BB:CC:17:2B:66" },
-                "ipConfig": { "ip": "192.168.40.88", "prefix": 24 },
+                "port": {
+                  "id": "eth0",
+                  "mac": "AA:BB:CC:17:2B:66"
+                },
+                "ipConfig": {
+                  "ip": "192.168.40.88",
+                  "prefix": 24
+                },
                 "gateway": "192.168.40.1"
               },
               {
                 "kind": "pc",
                 "id": "c17b-srv",
                 "hostname": "SRV-NOI-BO",
-                "port": { "id": "eth0", "mac": "AA:BB:CC:17:2B:09" },
-                "ipConfig": { "ip": "10.40.0.9", "prefix": 24 },
+                "port": {
+                  "id": "eth0",
+                  "mac": "AA:BB:CC:17:2B:09"
+                },
+                "ipConfig": {
+                  "ip": "10.40.0.9",
+                  "prefix": 24
+                },
                 "gateway": "10.40.0.1"
               },
               {
@@ -2554,9 +4251,18 @@
                 "id": "c17b-sw",
                 "hostname": "SW-TANG-4",
                 "ports": [
-                  { "id": "p1", "vlan": 1 },
-                  { "id": "p2", "vlan": 1 },
-                  { "id": "p3", "vlan": 1 }
+                  {
+                    "id": "p1",
+                    "vlan": 1
+                  },
+                  {
+                    "id": "p2",
+                    "vlan": 1
+                  },
+                  {
+                    "id": "p3",
+                    "vlan": 1
+                  }
                 ]
               },
               {
@@ -2564,8 +4270,14 @@
                 "id": "c17b-sw-srv",
                 "hostname": "SW-MAY-CHU-4",
                 "ports": [
-                  { "id": "p1", "vlan": 1 },
-                  { "id": "p2", "vlan": 1 }
+                  {
+                    "id": "p1",
+                    "vlan": 1
+                  },
+                  {
+                    "id": "p2",
+                    "vlan": 1
+                  }
                 ]
               },
               {
@@ -2573,31 +4285,103 @@
                 "id": "c17b-r",
                 "hostname": "R-CONG-RA-4",
                 "ports": [
-                  { "id": "g0", "mac": "AA:BB:CC:17:2B:11", "ipConfig": { "ip": "192.168.40.1", "prefix": 24 } },
-                  { "id": "g1", "mac": "AA:BB:CC:17:2B:12", "ipConfig": { "ip": "10.40.0.1", "prefix": 24 } }
+                  {
+                    "id": "g0",
+                    "mac": "AA:BB:CC:17:2B:11",
+                    "ipConfig": {
+                      "ip": "192.168.40.1",
+                      "prefix": 24
+                    }
+                  },
+                  {
+                    "id": "g1",
+                    "mac": "AA:BB:CC:17:2B:12",
+                    "ipConfig": {
+                      "ip": "10.40.0.1",
+                      "prefix": 24
+                    }
+                  }
                 ],
                 "staticRoutes": []
               }
             ],
             "links": [
-              { "id": "x1", "a": { "deviceId": "c17b-kd", "portId": "eth0" }, "b": { "deviceId": "c17b-sw", "portId": "p1" } },
-              { "id": "x2", "a": { "deviceId": "c17b-may-la", "portId": "eth0" }, "b": { "deviceId": "c17b-sw", "portId": "p2" } },
-              { "id": "x3", "a": { "deviceId": "c17b-sw", "portId": "p3" }, "b": { "deviceId": "c17b-r", "portId": "g0" } },
-              { "id": "x4", "a": { "deviceId": "c17b-r", "portId": "g1" }, "b": { "deviceId": "c17b-sw-srv", "portId": "p1" } },
-              { "id": "x5", "a": { "deviceId": "c17b-sw-srv", "portId": "p2" }, "b": { "deviceId": "c17b-srv", "portId": "eth0" } }
+              {
+                "id": "x1",
+                "a": {
+                  "deviceId": "c17b-kd",
+                  "portId": "eth0"
+                },
+                "b": {
+                  "deviceId": "c17b-sw",
+                  "portId": "p1"
+                }
+              },
+              {
+                "id": "x2",
+                "a": {
+                  "deviceId": "c17b-may-la",
+                  "portId": "eth0"
+                },
+                "b": {
+                  "deviceId": "c17b-sw",
+                  "portId": "p2"
+                }
+              },
+              {
+                "id": "x3",
+                "a": {
+                  "deviceId": "c17b-sw",
+                  "portId": "p3"
+                },
+                "b": {
+                  "deviceId": "c17b-r",
+                  "portId": "g0"
+                }
+              },
+              {
+                "id": "x4",
+                "a": {
+                  "deviceId": "c17b-r",
+                  "portId": "g1"
+                },
+                "b": {
+                  "deviceId": "c17b-sw-srv",
+                  "portId": "p1"
+                }
+              },
+              {
+                "id": "x5",
+                "a": {
+                  "deviceId": "c17b-sw-srv",
+                  "portId": "p2"
+                },
+                "b": {
+                  "deviceId": "c17b-srv",
+                  "portId": "eth0"
+                }
+              }
             ]
           }
         }
       },
       "diagnosis": {
         "choices": [
-          { "vi": "Một máy lạ trong xóm đang giữ đúng địa chỉ của cổng ra" },
-          { "vi": "Danh sách lọc trên router chặn nhầm dải máy của phòng kinh doanh" },
-          { "vi": "Cổng nối switch với router đang bị tắt bằng lệnh nên gói không qua" }
+          {
+            "vi": "Một máy lạ trong xóm đang giữ đúng địa chỉ của cổng ra"
+          },
+          {
+            "vi": "Danh sách lọc trên router chặn nhầm dải máy của phòng kinh doanh"
+          },
+          {
+            "vi": "Cổng nối switch với router đang bị tắt bằng lệnh nên gói không qua"
+          }
         ],
         "answerIndex": 0
       },
-      "hintTopic": { "vi": "cuốn sổ ARP và địa chỉ cổng ra" },
+      "hintTopic": {
+        "vi": "cuốn sổ ARP và địa chỉ cổng ra"
+      },
       "explain": {
         "vi": "Ping 192.168.40.1 vài lượt rồi mở arp -a: địa chỉ cổng ra lúc gắn MAC …:11 của router, lúc gắn …:66 của MAY-KHONG-RO. Một cổng ra, hai kẻ nhận vơ — đúng hình dạng của cú mạo danh ARP. Chữa trước mắt là trả lại địa chỉ .1 cho router và đẩy máy lạ sang địa chỉ khác; chữa lâu dài là port security và Dynamic ARP Inspection ở cổng đó."
       }

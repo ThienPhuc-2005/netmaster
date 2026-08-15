@@ -2,24 +2,71 @@
   "id": "module-10",
   "order": 10,
   "part": "C",
-  "letter": { "vi": "Vài dòng cho ca sau. Trước module, cloud là một chữ trong quảng cáo; giờ bạn kẻ được một mạng riêng trên đó bằng đúng kỹ năng chia subnet học từ Phần A, đặt người gác sát từng máy, và đào hầm nối về văn phòng. Bạn còn hiểu vì sao người ta bỏ dần mô hình lâu đài với hào nước để đi kiểm từng cánh cửa một. Đám mây với nhà mình giờ là hai cách sắp xếp của cùng những khái niệm bạn đã nắm." },
-  "title": { "vi": "Cloud Networking và Zero Trust" },
+  "letter": {
+    "vi": "Vài dòng cho ca sau. Trước module, cloud là một chữ trong quảng cáo; giờ bạn kẻ được một mạng riêng trên đó bằng đúng kỹ năng chia subnet học từ Phần A, đặt người gác sát từng máy, và đào hầm nối về văn phòng. Bạn còn hiểu vì sao người ta bỏ dần mô hình lâu đài với hào nước để đi kiểm từng cánh cửa một. Đám mây với nhà mình giờ là hai cách sắp xếp của cùng những khái niệm bạn đã nắm."
+  },
+  "title": {
+    "vi": "Cloud Networking và Zero Trust"
+  },
   "stages": [
-    { "id": "m10-chang-1", "title": { "vi": "Thuê góc đám mây" }, "lessonIds": ["m10-bai-1"] },
-    { "id": "m10-chang-2", "title": { "vi": "Gác sát từng máy" }, "lessonIds": ["m10-bai-2"] },
-    { "id": "m10-chang-3", "title": { "vi": "Cầu và hầm" }, "lessonIds": ["m10-bai-3"] },
-    { "id": "m10-chang-4", "title": { "vi": "Không tin ai mặc định" }, "lessonIds": ["m10-bai-4"] },
-    { "id": "m10-chang-5", "title": { "vi": "Một danh tính hai thế giới" }, "lessonIds": ["m10-bai-5"] }
+    {
+      "id": "m10-chang-1",
+      "title": {
+        "vi": "Thuê góc đám mây"
+      },
+      "lessonIds": [
+        "m10-bai-1"
+      ]
+    },
+    {
+      "id": "m10-chang-2",
+      "title": {
+        "vi": "Gác sát từng máy"
+      },
+      "lessonIds": [
+        "m10-bai-2"
+      ]
+    },
+    {
+      "id": "m10-chang-3",
+      "title": {
+        "vi": "Cầu và hầm"
+      },
+      "lessonIds": [
+        "m10-bai-3"
+      ]
+    },
+    {
+      "id": "m10-chang-4",
+      "title": {
+        "vi": "Không tin ai mặc định"
+      },
+      "lessonIds": [
+        "m10-bai-4"
+      ]
+    },
+    {
+      "id": "m10-chang-5",
+      "title": {
+        "vi": "Một danh tính hai thế giới"
+      },
+      "lessonIds": [
+        "m10-bai-5"
+      ]
+    }
   ],
-
   "lessons": [
     {
       "id": "m10-bai-1",
-      "missionTitle": { "vi": "Thuê một góc đám mây và kẻ mạng lên đó" },
+      "missionTitle": {
+        "vi": "Thuê một góc đám mây và kẻ mạng lên đó"
+      },
       "steps": [
         {
           "type": "hook",
-          "question": { "vi": "Công ty bạn vừa \"lên mây\": không mua switch, không kéo một sợi dây nào, không có phòng máy chủ — vậy mà vẫn có một mạng riêng với các dải địa chỉ y như ở nhà. Mạng đó nằm ở đâu, và ai kẻ ra nó?" },
+          "question": {
+            "vi": "Công ty bạn vừa \"lên mây\": không mua switch, không kéo một sợi dây nào, không có phòng máy chủ — vậy mà vẫn có một mạng riêng với các dải địa chỉ y như ở nhà. Mạng đó nằm ở đâu, và ai kẻ ra nó?"
+          },
           "visualId": "vis-hook-cloud"
         },
         {
@@ -28,17 +75,29 @@
             {
               "kind": "mcq",
               "id": "m10-b1-pre-1",
-              "prompt": { "vi": "Đoán thử nhé: \"đám mây\" thực chất là gì?" },
+              "prompt": {
+                "vi": "Đoán thử nhé: \"đám mây\" thực chất là gì?"
+              },
               "choices": [
-                { "vi": "Máy chủ trong data center của người khác — bạn thuê qua Internet và tự phục vụ bằng phần mềm" },
-                { "vi": "Một công nghệ mạng hoàn toàn mới, không liên quan gì mạng thường" },
-                { "vi": "Một loại Wi-Fi tầm xa" }
+                {
+                  "vi": "Máy chủ trong data center của người khác — bạn thuê qua Internet và tự phục vụ bằng phần mềm"
+                },
+                {
+                  "vi": "Một công nghệ mạng hoàn toàn mới, chẳng liên quan gì tới mạng thường mà bạn đang học"
+                },
+                {
+                  "vi": "Một loại sóng Wi-Fi tầm xa phủ được cả một thành phố"
+                }
               ],
               "answerIndex": 0,
-              "explain": { "vi": "Không có phép màu nào cả: đám mây là data center khổng lồ của nhà cung cấp. Cái mới là cách dùng — mọi thứ từng là THIẾT BỊ nay thành PHẦN MỀM bạn tự khai báo." }
+              "explain": {
+                "vi": "Không có phép màu nào cả: đám mây là data center khổng lồ của nhà cung cấp. Cái mới là cách dùng — mọi thứ từng là THIẾT BỊ nay thành PHẦN MỀM bạn tự khai báo."
+              }
             }
           ],
-          "encouragement": { "vi": "Cả module này chỉ có một mẹo học: mỗi thứ trên mây đều là một thứ bạn ĐÃ học, đổi lớp áo." }
+          "encouragement": {
+            "vi": "Cả module này chỉ có một mẹo học: mỗi thứ trên mây đều là một thứ bạn ĐÃ học, đổi lớp áo."
+          }
         },
         {
           "type": "teach",
@@ -46,49 +105,86 @@
             {
               "conceptId": "m10-cloud",
               "visualId": "vis-cloud-may-chu-nguoi-khac",
-              "body": { "vi": "Đám mây là data center của nhà cung cấp (AWS, Azure, Google), bạn thuê một phần qua Internet. Điểm khác căn bản với phòng máy chủ ở nhà: mọi thứ từng là THIẾT BỊ phải mua và cắm — switch, router, tường lửa — nay thành PHẦN MỀM bạn khai trên màn hình, có trong vài giây, trả tiền theo lượng dùng." },
-              "deepDive": { "vi": "Vì hạ tầng là phần mềm, người ta khai nó bằng… tệp văn bản (infrastructure as code): cả một mạng công ty nằm gọn trong vài trang khai báo, xóa đi dựng lại trong một buổi trưa. Đó là điều phòng máy chủ vật lý không bao giờ làm được." }
+              "body": {
+                "vi": "Đám mây là data center của nhà cung cấp (AWS, Azure, Google), bạn thuê một phần qua Internet. Điểm khác căn bản với phòng máy chủ ở nhà: mọi thứ từng là THIẾT BỊ phải mua và cắm — switch, router, tường lửa — nay thành PHẦN MỀM bạn khai trên màn hình, có trong vài giây, trả tiền theo lượng dùng."
+              },
+              "deepDive": {
+                "vi": "Vì hạ tầng là phần mềm, người ta khai nó bằng… tệp văn bản (infrastructure as code): cả một mạng công ty nằm gọn trong vài trang khai báo, xóa đi dựng lại trong một buổi trưa. Đó là điều phòng máy chủ vật lý không bao giờ làm được."
+              }
             },
             {
               "conceptId": "m10-vpc",
               "visualId": "vis-vpc-goc-rieng",
-              "body": { "vi": "SO SÁNH SONG SONG — mạng nhà (đã học) ↔ VPC (mới): ở nhà bạn có dải địa chỉ riêng và VLAN ngăn cách hàng xóm (Module 3-4). Trên mây, thứ tương ứng là VPC/VNet: một vùng mạng RIÊNG kẻ ra trong data center của họ, có dải địa chỉ bạn tự chọn, chia subnet y hệt. GIỐNG: cô lập, dải riêng, chia subnet bằng CIDR. KHÁC: không dây, không switch — ranh giới kẻ hoàn toàn bằng khai báo." },
-              "deepDive": { "vi": "AWS gọi là VPC, Azure gọi là VNet — cùng một ý. Hai VPC khác nhau mặc định không thấy nhau dù nằm chung một tòa data center, hệt như hai VLAN trên cùng một switch ở Module 4. Kỹ năng chia subnet và magic number của Module 3 dùng NGUYÊN, không đổi một ly." }
+              "body": {
+                "vi": "SO SÁNH SONG SONG — mạng nhà (đã học) ↔ VPC (mới): ở nhà bạn có dải địa chỉ riêng và VLAN ngăn cách hàng xóm (Module 3-4). Trên mây, thứ tương ứng là VPC/VNet: một vùng mạng RIÊNG kẻ ra trong data center của họ, có dải địa chỉ bạn tự chọn, chia subnet y hệt. GIỐNG: cô lập, dải riêng, chia subnet bằng CIDR. KHÁC: không dây, không switch — ranh giới kẻ hoàn toàn bằng khai báo."
+              },
+              "deepDive": {
+                "vi": "AWS gọi là VPC, Azure gọi là VNet — cùng một ý. Hai VPC khác nhau mặc định không thấy nhau dù nằm chung một tòa data center, hệt như hai VLAN trên cùng một switch ở Module 4. Kỹ năng chia subnet và magic number của Module 3 dùng NGUYÊN, không đổi một ly."
+              }
             }
           ]
         },
         {
           "type": "practice",
           "fadingLevel": 0,
-          "workedExample": { "vi": "Đọc một VPC đang chạy: công ty khai VPC 10.0.0.0/16. (1) Subnet 10.0.1.0/24 đặt tên \"public\" — chứa máy chủ web cần nhìn ra Internet. (2) Subnet 10.0.2.0/24 đặt tên \"private\" — chứa cơ sở dữ liệu, không lối ra ngoài. (3) Toàn bộ là địa chỉ riêng lớp 10.x — đúng bảng private của Module 3. Để ý: bạn vừa đọc hiểu một mạng cloud bằng kiến thức subnet cũ, không cần học phép chia nào mới." },
+          "workedExample": {
+            "vi": "Đọc một VPC đang chạy: công ty khai VPC 10.0.0.0/16. (1) Subnet 10.0.1.0/24 đặt tên \"public\" — chứa máy chủ web cần nhìn ra Internet. (2) Subnet 10.0.2.0/24 đặt tên \"private\" — chứa cơ sở dữ liệu, không lối ra ngoài. (3) Toàn bộ là địa chỉ riêng lớp 10.x — đúng bảng private của Module 3. Để ý: bạn vừa đọc hiểu một mạng cloud bằng kiến thức subnet cũ, không cần học phép chia nào mới."
+          },
           "exercises": [
             {
               "question": {
                 "kind": "mcq",
                 "id": "m10-b1-pra-1",
-                "prompt": { "vi": "VPC giống NHẤT với thứ gì bạn đã học ở on-prem?" },
+                "prompt": {
+                  "vi": "VPC giống NHẤT với thứ gì bạn đã học ở on-prem?"
+                },
                 "choices": [
-                  { "vi": "VLAN + dải subnet riêng — một vùng cô lập, nhưng kẻ bằng khai báo thay vì dây và switch" },
-                  { "vi": "Một sợi cáp quang riêng — thuê nhà mạng kéo thẳng từ văn phòng tới tận data center" },
-                  { "vi": "Một bản ghi DNS đặc biệt — trỏ tên miền công ty về đúng máy chủ đang thuê trên mây" }
+                  {
+                    "vi": "VLAN + dải subnet riêng — một vùng cô lập, nhưng kẻ bằng khai báo thay vì dây và switch"
+                  },
+                  {
+                    "vi": "Một sợi cáp quang riêng — thuê nhà mạng kéo thẳng từ văn phòng tới tận data center"
+                  },
+                  {
+                    "vi": "Một bản ghi DNS đặc biệt — trỏ tên miền công ty về đúng máy chủ đang thuê trên mây"
+                  }
                 ],
                 "answerIndex": 0,
-                "hintTopic": { "vi": "bức tường ngăn xóm của Module 4" }
+                "hintTopic": {
+                  "vi": "bức tường ngăn xóm của Module 4"
+                }
               },
-              "hint": { "vi": "Thứ gì ở Module 4 tạo ra một vùng mạng cô lập trên hạ tầng dùng chung?" },
-              "solution": { "vi": "VLAN + subnet: cùng là vùng cô lập có dải địa chỉ riêng — VPC chỉ đổi cách dựng ranh giới từ thiết bị sang khai báo." },
+              "hint": {
+                "vi": "Thứ gì ở Module 4 tạo ra một vùng mạng cô lập trên hạ tầng dùng chung?"
+              },
+              "solution": {
+                "vi": "VLAN + subnet: cùng là vùng cô lập có dải địa chỉ riêng — VPC chỉ đổi cách dựng ranh giới từ thiết bị sang khai báo."
+              },
               "conceptId": "m10-vpc"
             },
             {
               "question": {
                 "kind": "typed",
                 "id": "m10-b1-pra-2",
-                "prompt": { "vi": "Vùng mạng riêng bạn kẻ ra trong data center của nhà cung cấp gọi là gì? (viết tắt được)" },
-                "accept": ["vpc", "vnet", "virtual private cloud", "virtual network"],
-                "hintTopic": { "vi": "ba chữ cái, chữ giữa là private" }
+                "prompt": {
+                  "vi": "Vùng mạng riêng bạn kẻ ra trong data center của nhà cung cấp gọi là gì? (viết tắt được)"
+                },
+                "accept": [
+                  "vpc",
+                  "vnet",
+                  "virtual private cloud",
+                  "virtual network"
+                ],
+                "hintTopic": {
+                  "vi": "ba chữ cái, chữ giữa là private"
+                }
               },
-              "hint": { "vi": "Virtual Private Cloud — bên Azure gọi là VNet." },
-              "solution": { "vi": "VPC (Azure: VNet) — mạng riêng ảo trong data center của nhà cung cấp, chia subnet y như mạng nhà." },
+              "hint": {
+                "vi": "Virtual Private Cloud — bên Azure gọi là VNet."
+              },
+              "solution": {
+                "vi": "VPC (Azure: VNet) — mạng riêng ảo trong data center của nhà cung cấp, chia subnet y như mạng nhà."
+              },
               "conceptId": "m10-vpc"
             }
           ]
@@ -100,42 +196,91 @@
               "question": {
                 "kind": "typed",
                 "id": "m10-b1-ret-1",
-                "prompt": { "vi": "Không nhìn lại bài: kỹ năng nào của Module 3 được dùng NGUYÊN khi kẻ subnet trong VPC?" },
-                "accept": ["chia subnet", "subnet", "subnetting", "cidr", "magic number"],
-                "hintTopic": { "vi": "thứ bạn từng luyện bằng drill mỗi ngày" }
+                "prompt": {
+                  "vi": "Không nhìn lại bài: kỹ năng nào của Module 3 được dùng NGUYÊN khi kẻ subnet trong VPC?"
+                },
+                "accept": [
+                  "chia subnet",
+                  "subnet",
+                  "subnetting",
+                  "cidr",
+                  "magic number"
+                ],
+                "hintTopic": {
+                  "vi": "thứ bạn từng luyện bằng drill mỗi ngày"
+                }
               },
-              "hint": { "vi": "Chính là thứ có chế độ luyện riêng với đồng hồ bấm giờ." },
-              "solution": { "vi": "Chia subnet / CIDR — 10.0.0.0/16 cắt thành các /24 đúng bằng magic number của Module 3, không có phép chia mới nào." }
+              "hint": {
+                "vi": "Chính là thứ có chế độ luyện riêng với đồng hồ bấm giờ."
+              },
+              "solution": {
+                "vi": "Chia subnet / CIDR — 10.0.0.0/16 cắt thành các /24 đúng bằng magic number của Module 3, không có phép chia mới nào."
+              }
             }
           ],
           "selfExplain": {
-            "prompt": { "vi": "Giải thích bằng lời của bạn: vì sao đã học VLAN và subnet thì học VPC nhanh hơn hẳn?" },
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: vì sao đã học VLAN và subnet thì học VPC nhanh hơn hẳn?"
+            },
             "keywords": [
-              ["giống", "giong", "tương ứng", "tuong ung", "móc vào", "moc vao", "cái cũ", "cai cu", "đã học", "da hoc"],
-              ["khai báo", "khai bao", "phần mềm", "phan mem", "không dây", "khong day", "cô lập", "co lap"]
+              [
+                "giống",
+                "giong",
+                "tương ứng",
+                "tuong ung",
+                "móc vào",
+                "moc vao",
+                "cái cũ",
+                "cai cu",
+                "đã học",
+                "da hoc"
+              ],
+              [
+                "khai báo",
+                "khai bao",
+                "phần mềm",
+                "phan mem",
+                "không dây",
+                "khong day",
+                "cô lập",
+                "co lap"
+              ]
             ],
-            "exampleAnswer": { "vi": "Vì VPC là cùng một Ý TƯỞNG với VLAN + subnet: vùng cô lập có dải địa chỉ riêng. Cái mới chỉ là ranh giới kẻ bằng khai báo thay vì dây và switch — não móc cái mới vào cái cũ nên nhớ nhanh hơn học từ số không." }
+            "exampleAnswer": {
+              "vi": "Vì VPC là cùng một Ý TƯỞNG với VLAN + subnet: vùng cô lập có dải địa chỉ riêng. Cái mới chỉ là ranh giới kẻ bằng khai báo thay vì dây và switch — não móc cái mới vào cái cũ nên nhớ nhanh hơn học từ số không."
+            }
           }
         },
         {
           "type": "summary",
           "bullets": [
-            { "vi": "Đám mây = data center của người khác; thiết bị thành phần mềm khai báo." },
-            { "vi": "VPC/VNet ↔ VLAN + subnet: cùng là vùng cô lập có dải địa chỉ riêng." },
-            { "vi": "Kỹ năng CIDR của Module 3 dùng nguyên trên mây, không đổi một ly." }
+            {
+              "vi": "Đám mây = data center của người khác; thiết bị thành phần mềm khai báo."
+            },
+            {
+              "vi": "VPC/VNet ↔ VLAN + subnet: cùng là vùng cô lập có dải địa chỉ riêng."
+            },
+            {
+              "vi": "Kỹ năng CIDR của Module 3 dùng nguyên trên mây, không đổi một ly."
+            }
           ],
-          "nextTeaser": { "vi": "Ở nhà, MỘT tường lửa đứng ở cổng che cả mạng. Trên mây, mỗi máy ảo lại có một người gác của riêng nó — vì sao phải cầu kỳ vậy?" }
+          "nextTeaser": {
+            "vi": "Ở nhà, MỘT tường lửa đứng ở cổng che cả mạng. Trên mây, mỗi máy ảo lại có một người gác của riêng nó — vì sao phải cầu kỳ vậy?"
+          }
         }
       ]
     },
-
     {
       "id": "m10-bai-2",
-      "missionTitle": { "vi": "Đặt người gác sát từng máy" },
+      "missionTitle": {
+        "vi": "Đặt người gác sát từng máy"
+      },
       "steps": [
         {
           "type": "hook",
-          "question": { "vi": "Ở mạng nhà, một tường lửa đứng ở cổng là che được cả nhà (Module 7). Trên mây, người ta không làm vậy: MỖI máy ảo mang một người gác của riêng nó. Cầu kỳ thế để làm gì?" },
+          "question": {
+            "vi": "Ở mạng nhà, một tường lửa đứng ở cổng là che được cả nhà (Module 7). Trên mây, người ta không làm vậy: MỖI máy ảo mang một người gác của riêng nó. Cầu kỳ thế để làm gì?"
+          },
           "visualId": "vis-hook-sg"
         },
         {
@@ -144,17 +289,29 @@
             {
               "kind": "mcq",
               "id": "m10-b2-pre-1",
-              "prompt": { "vi": "Đoán thử nhé: security group trên mây mặc định xử lý lưu lượng ĐI VÀO máy ảo thế nào?" },
+              "prompt": {
+                "vi": "Đoán thử nhé: security group trên mây mặc định xử lý lưu lượng ĐI VÀO máy ảo thế nào?"
+              },
               "choices": [
-                { "vi": "Chặn hết — bạn phải tự mở từng luật cho thứ mình cần" },
-                { "vi": "Cho hết vào, chặn dần về sau" },
-                { "vi": "Chỉ chặn ban đêm" }
+                {
+                  "vi": "Chặn hết — bạn phải tự mở từng luật cho thứ mình cần"
+                },
+                {
+                  "vi": "Cho hết vào trước, rồi chặn dần về sau khi nào thấy cần"
+                },
+                {
+                  "vi": "Chỉ chặn vào ban đêm, ban ngày thì mở"
+                }
               ],
               "answerIndex": 0,
-              "explain": { "vi": "Mặc định của security group là ĐÓNG: chưa khai luật nào thì không ai vào được. Muốn mở port 443 cho web? Tự tay thêm một dòng. An toàn nằm ở chỗ quên thì ĐÓNG chứ không phải quên thì mở." }
+              "explain": {
+                "vi": "Mặc định của security group là ĐÓNG: chưa khai luật nào thì không ai vào được. Muốn mở port 443 cho web? Tự tay thêm một dòng. An toàn nằm ở chỗ quên thì ĐÓNG chứ không phải quên thì mở."
+              }
             }
           ],
-          "encouragement": { "vi": "So với người gác cửa nhớ mặt của Module 7 — giờ mỗi máy có một người gác riêng." }
+          "encouragement": {
+            "vi": "So với người gác cửa nhớ mặt của Module 7 — giờ mỗi máy có một người gác riêng."
+          }
         },
         {
           "type": "teach",
@@ -162,8 +319,12 @@
             {
               "conceptId": "m10-security-group",
               "visualId": "vis-sg-tung-may",
-              "body": { "vi": "SO SÁNH SONG SONG — tường lửa nhà (đã học) ↔ security group (mới): GIỐNG nhau ở chỗ cùng là stateful — nhớ kết nối đang mở, thư trả lời tự được vào (Module 7). KHÁC ở vị trí đứng: tường lửa nhà đứng ở MỘT cái cổng che cả mạng; security group bám SÁT TỪNG máy ảo, mỗi máy một bộ luật riêng, và mặc định chặn hết chiều vào." },
-              "deepDive": { "vi": "Vì sao phải bám từng máy? Vì trên mây không có \"bên trong\" đáng tin: hai máy ảo nằm cùng VPC vẫn phải qua security group của nhau mới nói chuyện được. Kẻ xấu chiếm một máy không có nghĩa là được tự do đi ngang — bạn sẽ gặp lại ý này ở bài Zero Trust, nó chính là mầm mống của cả triết lý đó." }
+              "body": {
+                "vi": "SO SÁNH SONG SONG — tường lửa nhà (đã học) ↔ security group (mới): GIỐNG nhau ở chỗ cùng là stateful — nhớ kết nối đang mở, thư trả lời tự được vào (Module 7). KHÁC ở vị trí đứng: tường lửa nhà đứng ở MỘT cái cổng che cả mạng; security group bám SÁT TỪNG máy ảo, mỗi máy một bộ luật riêng, và mặc định chặn hết chiều vào."
+              },
+              "deepDive": {
+                "vi": "Vì sao phải bám từng máy? Vì trên mây không có \"bên trong\" đáng tin: hai máy ảo nằm cùng VPC vẫn phải qua security group của nhau mới nói chuyện được. Kẻ xấu chiếm một máy không có nghĩa là được tự do đi ngang — bạn sẽ gặp lại ý này ở bài Zero Trust, nó chính là mầm mống của cả triết lý đó."
+              }
             }
           ]
         },
@@ -175,28 +336,52 @@
               "question": {
                 "kind": "mcq",
                 "id": "m10-b2-pra-1",
-                "prompt": { "vi": "Điền vào chỗ khác biệt: tường lửa nhà đứng ở một cổng vành đai, còn security group…" },
+                "prompt": {
+                  "vi": "Điền vào chỗ khác biệt: tường lửa nhà đứng ở một cổng vành đai, còn security group…"
+                },
                 "choices": [
-                  { "vi": "…bám sát từng máy ảo — mỗi máy một bộ luật riêng" },
-                  { "vi": "…đứng ở cổng data center — một bộ luật gác chung cả VPC" },
-                  { "vi": "…nằm trong máy ảo — chỉ lọc được lưu lượng đi ra" }
+                  {
+                    "vi": "…bám sát từng máy ảo — mỗi máy một bộ luật riêng"
+                  },
+                  {
+                    "vi": "…đứng ở cổng data center — một bộ luật gác chung cả VPC"
+                  },
+                  {
+                    "vi": "…nằm trong máy ảo — chỉ lọc được lưu lượng đi ra"
+                  }
                 ],
                 "answerIndex": 0,
-                "hintTopic": { "vi": "vị trí đứng của người gác" }
+                "hintTopic": {
+                  "vi": "vị trí đứng của người gác"
+                }
               },
-              "hint": { "vi": "Nhìn lại hình so sánh: bên trái một người gác ở cổng, bên phải thì sao?" },
-              "solution": { "vi": "Bám sát từng máy ảo: mỗi máy một security group, hai máy chung VPC vẫn phải qua luật của nhau." }
+              "hint": {
+                "vi": "Nhìn lại hình so sánh: bên trái một người gác ở cổng, bên phải thì sao?"
+              },
+              "solution": {
+                "vi": "Bám sát từng máy ảo: mỗi máy một security group, hai máy chung VPC vẫn phải qua luật của nhau."
+              }
             },
             {
               "question": {
                 "kind": "typed",
                 "id": "m10-b2-pra-2",
-                "prompt": { "vi": "Security group giống tường lửa Module 7 ở tính chất nào — nhớ các kết nối đang mở? (tính từ tiếng Anh)" },
-                "accept": ["stateful"],
-                "hintTopic": { "vi": "tính từ đã học ở bài người gác cửa nhớ mặt" }
+                "prompt": {
+                  "vi": "Security group giống tường lửa Module 7 ở tính chất nào — nhớ các kết nối đang mở? (tính từ tiếng Anh)"
+                },
+                "accept": [
+                  "stateful"
+                ],
+                "hintTopic": {
+                  "vi": "tính từ đã học ở bài người gác cửa nhớ mặt"
+                }
               },
-              "hint": { "vi": "Ghép \"state\" với đuôi \"-ful\" — đúng chữ của Module 7." },
-              "solution": { "vi": "Stateful — cùng cơ chế nhớ kết nối: bạn mở lời thì thư trả lời tự được vào, không cần khai luật chiều về." }
+              "hint": {
+                "vi": "Ghép \"state\" với đuôi \"-ful\" — đúng chữ của Module 7."
+              },
+              "solution": {
+                "vi": "Stateful — cùng cơ chế nhớ kết nối: bạn mở lời thì thư trả lời tự được vào, không cần khai luật chiều về."
+              }
             }
           ]
         },
@@ -207,42 +392,95 @@
               "question": {
                 "kind": "typed",
                 "id": "m10-b2-ret-1",
-                "prompt": { "vi": "Không nhìn lại bài: security group chưa khai luật nào thì lưu lượng đi vào máy ảo ra sao?" },
-                "accept": ["chặn hết", "chan het", "bị chặn", "bi chan", "chặn", "chan", "deny", "đóng", "dong", "không ai vào được", "không ai vào", "không cho ai vào"],
-                "hintTopic": { "vi": "mặc định đóng hay mở" }
+                "prompt": {
+                  "vi": "Không nhìn lại bài: security group chưa khai luật nào thì lưu lượng đi vào máy ảo ra sao?"
+                },
+                "accept": [
+                  "chặn hết",
+                  "chan het",
+                  "bị chặn",
+                  "bi chan",
+                  "chặn",
+                  "chan",
+                  "deny",
+                  "đóng",
+                  "dong",
+                  "không ai vào được",
+                  "không ai vào",
+                  "không cho ai vào"
+                ],
+                "hintTopic": {
+                  "vi": "mặc định đóng hay mở"
+                }
               },
-              "hint": { "vi": "An toàn kiểu mây: quên khai thì mọi thứ ở trạng thái nào?" },
-              "solution": { "vi": "Chặn hết — mặc định đóng; muốn gì phải tự mở từng luật. Quên là đóng, không phải quên là hở." }
+              "hint": {
+                "vi": "An toàn kiểu mây: quên khai thì mọi thứ ở trạng thái nào?"
+              },
+              "solution": {
+                "vi": "Chặn hết — mặc định đóng; muốn gì phải tự mở từng luật. Quên là đóng, không phải quên là hở."
+              }
             }
           ],
           "selfExplain": {
-            "prompt": { "vi": "Giải thích bằng lời của bạn: vì sao trên mây người ta đặt người gác sát từng máy thay vì một người gác ở cổng?" },
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: vì sao trên mây người ta đặt người gác sát từng máy thay vì một người gác ở cổng?"
+            },
             "keywords": [
-              ["bên trong", "ben trong", "đi ngang", "di ngang", "chiếm một máy", "chiem mot may", "tin nhau"],
-              ["từng máy", "tung may", "riêng", "rieng", "mỗi máy", "moi may", "sát máy", "sat may"]
+              [
+                "bên trong",
+                "ben trong",
+                "đi ngang",
+                "di ngang",
+                "chiếm một máy",
+                "chiem mot may",
+                "tin nhau"
+              ],
+              [
+                "từng máy",
+                "tung may",
+                "riêng",
+                "rieng",
+                "mỗi máy",
+                "moi may",
+                "sát máy",
+                "sat may"
+              ]
             ],
-            "exampleAnswer": { "vi": "Vì trên mây không có \"bên trong\" đáng tin: một cổng vành đai mà thủng thì kẻ xấu đi ngang tự do. Gác sát từng máy thì chiếm được một máy cũng chỉ dừng ở đó — mỗi bước đi tiếp lại vấp một bộ luật khác." }
+            "exampleAnswer": {
+              "vi": "Vì trên mây không có \"bên trong\" đáng tin: một cổng vành đai mà thủng thì kẻ xấu đi ngang tự do. Gác sát từng máy thì chiếm được một máy cũng chỉ dừng ở đó — mỗi bước đi tiếp lại vấp một bộ luật khác."
+            }
           }
         },
         {
           "type": "summary",
           "bullets": [
-            { "vi": "Security group ↔ tường lửa nhà: cùng stateful, thư trả lời tự vào." },
-            { "vi": "Khác chỗ đứng: không ở cổng vành đai mà bám sát từng máy ảo." },
-            { "vi": "Mặc định chặn hết chiều vào — quên là đóng, không phải quên là hở." }
+            {
+              "vi": "Security group ↔ tường lửa nhà: cùng stateful, thư trả lời tự vào."
+            },
+            {
+              "vi": "Khác chỗ đứng: không ở cổng vành đai mà bám sát từng máy ảo."
+            },
+            {
+              "vi": "Mặc định chặn hết chiều vào — quên là đóng, không phải quên là hở."
+            }
           ],
-          "nextTeaser": { "vi": "VPC ở trên mây, văn phòng ở dưới đất — hai mạng hai thế giới. Kế toán ngồi văn phòng muốn đọc máy chủ trên mây như máy trong nhà thì nối bằng gì?" }
+          "nextTeaser": {
+            "vi": "VPC ở trên mây, văn phòng ở dưới đất — hai mạng hai thế giới. Kế toán ngồi văn phòng muốn đọc máy chủ trên mây như máy trong nhà thì nối bằng gì?"
+          }
         }
       ]
     },
-
     {
       "id": "m10-bai-3",
-      "missionTitle": { "vi": "Bắc cầu và đào hầm về văn phòng" },
+      "missionTitle": {
+        "vi": "Bắc cầu và đào hầm về văn phòng"
+      },
       "steps": [
         {
           "type": "hook",
-          "question": { "vi": "Văn phòng có mạng riêng dưới đất, công ty lại có VPC trên mây — hai thế giới cách nhau cả một Internet công cộng đầy người lạ. Làm sao nối chúng thành một mà không ai đọc trộm được?" },
+          "question": {
+            "vi": "Văn phòng có mạng riêng dưới đất, công ty lại có VPC trên mây — hai thế giới cách nhau cả một Internet công cộng đầy người lạ. Làm sao nối chúng thành một mà không ai đọc trộm được?"
+          },
           "visualId": "vis-hook-vpn"
         },
         {
@@ -251,17 +489,29 @@
             {
               "kind": "mcq",
               "id": "m10-b3-pre-1",
-              "prompt": { "vi": "Đoán thử nhé: VPN nghĩa là gì?" },
+              "prompt": {
+                "vi": "Đoán thử nhé: VPN nghĩa là gì?"
+              },
               "choices": [
-                { "vi": "Đường hầm MÃ HÓA đi xuyên qua Internet công cộng — bên ngoài chỉ thấy vỏ, không đọc được ruột" },
-                { "vi": "Một đường cáp riêng phải thuê kéo tận nơi" },
-                { "vi": "Phần mềm đổi quốc gia để xem phim" }
+                {
+                  "vi": "Đường hầm MÃ HÓA đi xuyên qua Internet công cộng — bên ngoài chỉ thấy vỏ, không đọc được ruột"
+                },
+                {
+                  "vi": "Một đường cáp riêng phải thuê nhà mạng kéo tận nơi, hoàn toàn không đi chung với ai khác"
+                },
+                {
+                  "vi": "Phần mềm đổi quốc gia để xem phim nước ngoài"
+                }
               ],
               "answerIndex": 0,
-              "explain": { "vi": "VPN dựng một đường hầm mã hóa giữa hai đầu: gói tin thật được bọc trong lớp vỏ mã hóa rồi mới đi qua Internet — ai bắt được dọc đường cũng chỉ thấy chuỗi loạn xạ, như WPA làm với sóng Wi-Fi (Module 8)." }
+              "explain": {
+                "vi": "VPN dựng một đường hầm mã hóa giữa hai đầu: gói tin thật được bọc trong lớp vỏ mã hóa rồi mới đi qua Internet — ai bắt được dọc đường cũng chỉ thấy chuỗi loạn xạ, như WPA làm với sóng Wi-Fi (Module 8)."
+              }
             }
           ],
-          "encouragement": { "vi": "Nghĩ về đường ống kín chạy xuyên qua một quảng trường đông người." }
+          "encouragement": {
+            "vi": "Nghĩ về đường ống kín chạy xuyên qua một quảng trường đông người."
+          }
         },
         {
           "type": "teach",
@@ -269,14 +519,22 @@
             {
               "conceptId": "m10-vpn-s2s",
               "visualId": "vis-vpn-s2s-cau",
-              "body": { "vi": "SO SÁNH SONG SONG — cây cầu router (đã học) ↔ VPN site-to-site (mới): ở Module 4, router là cây cầu nối hai xóm trong cùng tòa nhà. Site-to-site VPN cũng là cây cầu ấy, nhưng bắc giữa HAI MẠNG cách nhau cả Internet: router văn phòng và cổng VPN của VPC bắt tay, dựng đường hầm mã hóa cố định. Từ đó hai mạng như một — máy văn phòng gọi 10.0.2.5 trên mây tự nhiên như gọi máy cùng phòng, người dùng không phải cài gì." },
-              "deepDive": { "vi": "Cầu nối MẠNG với MẠNG, dựng một lần chạy cả năm — đó là dấu hiệu nhận biết site-to-site. Khi cần băng thông lớn và độ trễ ổn định hơn nữa, công ty thuê hẳn đường riêng vào data center (Direct Connect / ExpressRoute) — vẫn ý tưởng cây cầu, chỉ đổi vật liệu." }
+              "body": {
+                "vi": "SO SÁNH SONG SONG — cây cầu router (đã học) ↔ VPN site-to-site (mới): ở Module 4, router là cây cầu nối hai xóm trong cùng tòa nhà. Site-to-site VPN cũng là cây cầu ấy, nhưng bắc giữa HAI MẠNG cách nhau cả Internet: router văn phòng và cổng VPN của VPC bắt tay, dựng đường hầm mã hóa cố định. Từ đó hai mạng như một — máy văn phòng gọi 10.0.2.5 trên mây tự nhiên như gọi máy cùng phòng, người dùng không phải cài gì."
+              },
+              "deepDive": {
+                "vi": "Cầu nối MẠNG với MẠNG, dựng một lần chạy cả năm — đó là dấu hiệu nhận biết site-to-site. Khi cần băng thông lớn và độ trễ ổn định hơn nữa, công ty thuê hẳn đường riêng vào data center (Direct Connect / ExpressRoute) — vẫn ý tưởng cây cầu, chỉ đổi vật liệu."
+              }
             },
             {
               "conceptId": "m10-vpn-client",
               "visualId": "vis-vpn-client-ham",
-              "body": { "vi": "Còn nhân viên ngồi quán cà phê thì không có router văn phòng nào bên cạnh. Họ dùng CLIENT VPN: phần mềm trên laptop tự đào một đường hầm riêng về mạng công ty — nối MỘT NGƯỜI vào mạng, chứ không phải mạng vào mạng. Wi-Fi quán có xấu bụng cỡ nào cũng chỉ thấy vỏ hầm, vì lớp mã hóa là của riêng bạn — đúng bài học mạng lạ của Module 8." },
-              "deepDive": { "vi": "Cách phân biệt không bao giờ lẫn: đếm xem đường hầm nối GÌ với GÌ. Mạng ↔ mạng, dựng sẵn, người dùng vô cảm = site-to-site. Người ↔ mạng, bật khi cần, phải cài phần mềm = client. Một công ty thường dùng cả hai cùng lúc." }
+              "body": {
+                "vi": "Còn nhân viên ngồi quán cà phê thì không có router văn phòng nào bên cạnh. Họ dùng CLIENT VPN: phần mềm trên laptop tự đào một đường hầm riêng về mạng công ty — nối MỘT NGƯỜI vào mạng, chứ không phải mạng vào mạng. Wi-Fi quán có xấu bụng cỡ nào cũng chỉ thấy vỏ hầm, vì lớp mã hóa là của riêng bạn — đúng bài học mạng lạ của Module 8."
+              },
+              "deepDive": {
+                "vi": "Cách phân biệt không bao giờ lẫn: đếm xem đường hầm nối GÌ với GÌ. Mạng ↔ mạng, dựng sẵn, người dùng vô cảm = site-to-site. Người ↔ mạng, bật khi cần, phải cài phần mềm = client. Một công ty thường dùng cả hai cùng lúc."
+              }
             }
           ]
         },
@@ -288,29 +546,53 @@
               "question": {
                 "kind": "mcq",
                 "id": "m10-b3-pra-1",
-                "prompt": { "vi": "Chi nhánh Đà Nẵng cần thấy VPC trên mây mọi lúc, 40 nhân viên trong đó không ai phải cài gì. Chọn kiểu nào?" },
+                "prompt": {
+                  "vi": "Chi nhánh Đà Nẵng cần thấy VPC trên mây mọi lúc, 40 nhân viên trong đó không ai phải cài gì. Chọn kiểu nào?"
+                },
                 "choices": [
-                  { "vi": "Site-to-site — router chi nhánh bắc cầu cố định tới VPC" },
-                  { "vi": "Client VPN — phát phần mềm cho cả 40 người tự bật khi cần" },
-                  { "vi": "Mở security group ra Internet — khỏi hầm, đỡ một lớp thiết bị" }
+                  {
+                    "vi": "Site-to-site — router chi nhánh bắc cầu cố định tới VPC"
+                  },
+                  {
+                    "vi": "Client VPN — phát phần mềm cho cả 40 người tự bật khi cần"
+                  },
+                  {
+                    "vi": "Mở security group ra Internet — khỏi hầm, đỡ một lớp thiết bị"
+                  }
                 ],
                 "answerIndex": 0,
-                "hintTopic": { "vi": "đường hầm nối gì với gì" }
+                "hintTopic": {
+                  "vi": "đường hầm nối gì với gì"
+                }
               },
-              "hint": { "vi": "Cả một MẠNG cần nối, và người dùng phải vô cảm — đó là dấu hiệu của kiểu nào?" },
-              "solution": { "vi": "Site-to-site: cầu mạng-nối-mạng dựng một lần, mọi máy trong chi nhánh tự nhiên thấy VPC, không ai phải cài gì." },
+              "hint": {
+                "vi": "Cả một MẠNG cần nối, và người dùng phải vô cảm — đó là dấu hiệu của kiểu nào?"
+              },
+              "solution": {
+                "vi": "Site-to-site: cầu mạng-nối-mạng dựng một lần, mọi máy trong chi nhánh tự nhiên thấy VPC, không ai phải cài gì."
+              },
               "conceptId": "m10-vpn-s2s"
             },
             {
               "question": {
                 "kind": "typed",
                 "id": "m10-b3-pra-2",
-                "prompt": { "vi": "Điền chỗ trống: site-to-site nối mạng với mạng, còn ___ VPN nối một người với mạng." },
-                "accept": ["client"],
-                "hintTopic": { "vi": "phần mềm cài trên laptop" }
+                "prompt": {
+                  "vi": "Điền chỗ trống: site-to-site nối mạng với mạng, còn ___ VPN nối một người với mạng."
+                },
+                "accept": [
+                  "client"
+                ],
+                "hintTopic": {
+                  "vi": "phần mềm cài trên laptop"
+                }
               },
-              "hint": { "vi": "Chữ tiếng Anh chỉ máy của người dùng cuối." },
-              "solution": { "vi": "Client VPN — laptop tự đào hầm riêng về mạng công ty, bật khi cần." },
+              "hint": {
+                "vi": "Chữ tiếng Anh chỉ máy của người dùng cuối."
+              },
+              "solution": {
+                "vi": "Client VPN — laptop tự đào hầm riêng về mạng công ty, bật khi cần."
+              },
               "conceptId": "m10-vpn-client"
             }
           ]
@@ -322,58 +604,116 @@
               "question": {
                 "kind": "typed",
                 "id": "m10-b3-ret-1",
-                "prompt": { "vi": "Không nhìn lại bài: kiểu VPN nào nối trọn HAI MẠNG thành một qua Internet, người dùng không phải cài gì?" },
-                "accept": ["site-to-site", "site to site", "s2s"],
-                "hintTopic": { "vi": "cây cầu của Module 4, bắc xa hơn" }
+                "prompt": {
+                  "vi": "Không nhìn lại bài: kiểu VPN nào nối trọn HAI MẠNG thành một qua Internet, người dùng không phải cài gì?"
+                },
+                "accept": [
+                  "site-to-site",
+                  "site to site",
+                  "s2s"
+                ],
+                "hintTopic": {
+                  "vi": "cây cầu của Module 4, bắc xa hơn"
+                }
               },
-              "hint": { "vi": "Tên tiếng Anh có chữ \"site\" xuất hiện hai lần." },
-              "solution": { "vi": "Site-to-site — hai thiết bị đầu mạng bắt tay dựng hầm cố định, hai mạng như một." }
+              "hint": {
+                "vi": "Tên tiếng Anh có chữ \"site\" xuất hiện hai lần."
+              },
+              "solution": {
+                "vi": "Site-to-site — hai thiết bị đầu mạng bắt tay dựng hầm cố định, hai mạng như một."
+              }
             },
             {
               "question": {
                 "kind": "mcq",
                 "id": "m10-b3-ret-2",
-                "prompt": { "vi": "Vẫn từ trí nhớ: vì sao ngồi Wi-Fi quán cà phê bật client VPN thì chủ quán không đọc trộm được dữ liệu công ty?" },
+                "prompt": {
+                  "vi": "Vẫn từ trí nhớ: vì sao ngồi Wi-Fi quán cà phê bật client VPN thì chủ quán không đọc trộm được dữ liệu công ty?"
+                },
                 "choices": [
-                  { "vi": "Vì dữ liệu được bọc trong lớp mã hóa của đường hầm — quán chỉ thấy vỏ" },
-                  { "vi": "Vì VPN nén dữ liệu thành khối nhỏ nên máy của quán không ghép lại được" },
-                  { "vi": "Vì quán không có tường lửa nên không thiết bị nào của quán đọc nổi gói tin" }
+                  {
+                    "vi": "Vì dữ liệu được bọc trong lớp mã hóa của đường hầm — quán chỉ thấy vỏ"
+                  },
+                  {
+                    "vi": "Vì VPN nén dữ liệu thành khối nhỏ nên máy của quán không ghép lại được"
+                  },
+                  {
+                    "vi": "Vì quán không có tường lửa nên không thiết bị nào của quán đọc nổi gói tin"
+                  }
                 ],
                 "answerIndex": 0,
-                "hintTopic": { "vi": "ai giữ chìa của lớp khóa" }
+                "hintTopic": {
+                  "vi": "ai giữ chìa của lớp khóa"
+                }
               },
-              "hint": { "vi": "Giống HTTPS và WPA: nội dung bị khóa trước khi rời máy bạn." },
-              "solution": { "vi": "Lớp mã hóa của hầm là của riêng bạn và công ty — mạng quán chỉ chuyển hộ cái vỏ, không mở được ruột." }
+              "hint": {
+                "vi": "Giống HTTPS và WPA: nội dung bị khóa trước khi rời máy bạn."
+              },
+              "solution": {
+                "vi": "Lớp mã hóa của hầm là của riêng bạn và công ty — mạng quán chỉ chuyển hộ cái vỏ, không mở được ruột."
+              }
             }
           ],
           "selfExplain": {
-            "prompt": { "vi": "Giải thích bằng lời của bạn: làm sao phân biệt site-to-site với client VPN mà không bao giờ lẫn?" },
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: làm sao phân biệt site-to-site với client VPN mà không bao giờ lẫn?"
+            },
             "keywords": [
-              ["mạng với mạng", "mang voi mang", "hai mạng", "hai mang", "cố định", "co dinh", "dựng sẵn", "dung san"],
-              ["một người", "mot nguoi", "laptop", "cài", "cai phan mem", "khi cần", "khi can"]
+              [
+                "mạng với mạng",
+                "mang voi mang",
+                "hai mạng",
+                "hai mang",
+                "cố định",
+                "co dinh",
+                "dựng sẵn",
+                "dung san"
+              ],
+              [
+                "một người",
+                "mot nguoi",
+                "laptop",
+                "cài",
+                "cai phan mem",
+                "khi cần",
+                "khi can"
+              ]
             ],
-            "exampleAnswer": { "vi": "Đếm xem hầm nối gì với gì: nối mạng với mạng, dựng sẵn chạy quanh năm, người dùng không cài gì — là site-to-site; nối một người với mạng, phải cài phần mềm và bật khi cần — là client VPN." }
+            "exampleAnswer": {
+              "vi": "Đếm xem hầm nối gì với gì: nối mạng với mạng, dựng sẵn chạy quanh năm, người dùng không cài gì — là site-to-site; nối một người với mạng, phải cài phần mềm và bật khi cần — là client VPN."
+            }
           }
         },
         {
           "type": "summary",
           "bullets": [
-            { "vi": "VPN = đường hầm mã hóa xuyên Internet — ngoài thấy vỏ, không đọc được ruột." },
-            { "vi": "Site-to-site ↔ cây cầu router: mạng nối mạng, cố định, người dùng vô cảm." },
-            { "vi": "Client VPN: một người nối vào mạng, cài phần mềm, bật khi cần." }
+            {
+              "vi": "VPN = đường hầm mã hóa xuyên Internet — ngoài thấy vỏ, không đọc được ruột."
+            },
+            {
+              "vi": "Site-to-site ↔ cây cầu router: mạng nối mạng, cố định, người dùng vô cảm."
+            },
+            {
+              "vi": "Client VPN: một người nối vào mạng, cài phần mềm, bật khi cần."
+            }
           ],
-          "nextTeaser": { "vi": "Cầu với hầm đều dẫn về một giả định cũ: \"vào được bên trong là người nhà\". Bài sau chính giả định đó bị đập bỏ — và cả cách phòng thủ mạng thay đổi theo." }
+          "nextTeaser": {
+            "vi": "Cầu với hầm đều dẫn về một giả định cũ: \"vào được bên trong là người nhà\". Bài sau chính giả định đó bị đập bỏ — và cả cách phòng thủ mạng thay đổi theo."
+          }
         }
       ]
     },
-
     {
       "id": "m10-bai-4",
-      "missionTitle": { "vi": "Đập bỏ tường thành, kiểm từng cánh cửa" },
+      "missionTitle": {
+        "vi": "Đập bỏ tường thành, kiểm từng cánh cửa"
+      },
       "steps": [
         {
           "type": "hook",
-          "question": { "vi": "Mô hình cũ: vượt qua tường lửa là thành \"người nhà\", muốn đi đâu thì đi. Một kẻ trộm lọt vào là khoắng cả kho. Zero Trust tuyên bố một câu nghe rất lạnh lùng: không ai là người nhà cả. Vì sao ngành bảo mật lại đi đến nước đó?" },
+          "question": {
+            "vi": "Mô hình cũ: vượt qua tường lửa là thành \"người nhà\", muốn đi đâu thì đi. Một kẻ trộm lọt vào là khoắng cả kho. Zero Trust tuyên bố một câu nghe rất lạnh lùng: không ai là người nhà cả. Vì sao ngành bảo mật lại đi đến nước đó?"
+          },
           "visualId": "vis-hook-zero-trust"
         },
         {
@@ -382,17 +722,29 @@
             {
               "kind": "mcq",
               "id": "m10-b4-pre-1",
-              "prompt": { "vi": "Đoán thử nhé: nguyên tắc cốt lõi của Zero Trust là gì?" },
+              "prompt": {
+                "vi": "Đoán thử nhé: nguyên tắc cốt lõi của Zero Trust là gì?"
+              },
               "choices": [
-                { "vi": "Không tin ai mặc định — xác minh MỌI truy cập, dù đến từ \"bên trong\"" },
-                { "vi": "Mua tường lửa đắt tiền hơn" },
-                { "vi": "Cấm nhân viên làm việc từ xa" }
+                {
+                  "vi": "Không tin ai mặc định — xác minh MỌI truy cập, dù đến từ \"bên trong\""
+                },
+                {
+                  "vi": "Mua tường lửa đắt tiền hơn rồi đặt nó ngay ở vành đai của mạng"
+                },
+                {
+                  "vi": "Cấm hẳn nhân viên làm việc từ xa ngoài văn phòng"
+                }
               ],
               "answerIndex": 0,
-              "explain": { "vi": "Zero Trust bỏ hẳn khái niệm \"bên trong an toàn\": mọi truy cập đều phải chứng minh bạn là ai, máy có sạch không, có quyền với đúng thứ đó không — mỗi lần, chứ không phải một lần ở cổng." }
+              "explain": {
+                "vi": "Zero Trust bỏ hẳn khái niệm \"bên trong an toàn\": mọi truy cập đều phải chứng minh bạn là ai, máy có sạch không, có quyền với đúng thứ đó không — mỗi lần, chứ không phải một lần ở cổng."
+              }
             }
           ],
-          "encouragement": { "vi": "Nghe khắc nghiệt, nhưng hãy nghĩ xem \"bên trong\" của một công ty thời nay nằm ở đâu — văn phòng, quán cà phê, hay trên mây?" }
+          "encouragement": {
+            "vi": "Nghe khắc nghiệt, nhưng hãy nghĩ xem \"bên trong\" của một công ty thời nay nằm ở đâu — văn phòng, quán cà phê, hay trên mây?"
+          }
         },
         {
           "type": "teach",
@@ -400,14 +752,22 @@
             {
               "conceptId": "m10-perimeter",
               "visualId": "vis-vanh-dai-lau-dai",
-              "body": { "vi": "Mô hình cũ bạn đã sống trong nó suốt Phần B: LÂU ĐÀI VÀ HÀO NƯỚC. Mọi phòng thủ dồn ở vành đai — tường lửa đứng ở cổng (Module 7), NAT che bên trong, ai vượt qua được là \"người nhà\", đi ngang tự do. Nó chạy tốt khi mọi thứ đáng giá đều nằm trong một tòa nhà và nhân viên ngồi cả trong đó." },
-              "deepDive": { "vi": "Điểm chết của lâu đài nằm ở chính chữ \"trong\": chỉ cần MỘT lần lọt — một email lừa, một mật khẩu lộ, một laptop nhiễm mang từ nhà vào — kẻ tấn công thành người nhà và di chuyển ngang (lateral movement) tới kho quý nhất. Các vụ rò rỉ lớn nhất thập kỷ đều đi đúng kịch bản đó." }
+              "body": {
+                "vi": "Mô hình cũ bạn đã sống trong nó suốt Phần B: LÂU ĐÀI VÀ HÀO NƯỚC. Mọi phòng thủ dồn ở vành đai — tường lửa đứng ở cổng (Module 7), NAT che bên trong, ai vượt qua được là \"người nhà\", đi ngang tự do. Nó chạy tốt khi mọi thứ đáng giá đều nằm trong một tòa nhà và nhân viên ngồi cả trong đó."
+              },
+              "deepDive": {
+                "vi": "Điểm chết của lâu đài nằm ở chính chữ \"trong\": chỉ cần MỘT lần lọt — một email lừa, một mật khẩu lộ, một laptop nhiễm mang từ nhà vào — kẻ tấn công thành người nhà và di chuyển ngang (lateral movement) tới kho quý nhất. Các vụ rò rỉ lớn nhất thập kỷ đều đi đúng kịch bản đó."
+              }
             },
             {
               "conceptId": "m10-zero-trust",
               "visualId": "vis-zero-trust-moi-cua",
-              "body": { "vi": "SO SÁNH SONG SONG — lâu đài (cũ) ↔ Zero Trust (mới): ngày nay dữ liệu ở trên mây, nhân viên ở quán cà phê — vành đai nào bao cho xuể? Zero Trust trả lời: bỏ tường thành, đặt trạm kiểm ở TỪNG cánh cửa. Không tin ai mặc định; mọi truy cập đều xác minh: bạn LÀ AI, máy có sạch không, có quyền với đúng thứ này không. Biên giới mới của mạng không còn là tường lửa — mà là DANH TÍNH." },
-              "deepDive": { "vi": "Bạn đã gặp tinh thần này hai lần mà chưa gọi tên: security group bám từng máy (bài 2) là Zero Trust cho máy chủ; văn phòng hiện đại bỏ VPN, cho ứng dụng tự kiểm danh tính từng lượt, là Zero Trust cho con người. \"Verify, then trust — every time\" thay cho \"trust the inside\"." }
+              "body": {
+                "vi": "SO SÁNH SONG SONG — lâu đài (cũ) ↔ Zero Trust (mới): ngày nay dữ liệu ở trên mây, nhân viên ở quán cà phê — vành đai nào bao cho xuể? Zero Trust trả lời: bỏ tường thành, đặt trạm kiểm ở TỪNG cánh cửa. Không tin ai mặc định; mọi truy cập đều xác minh: bạn LÀ AI, máy có sạch không, có quyền với đúng thứ này không. Biên giới mới của mạng không còn là tường lửa — mà là DANH TÍNH."
+              },
+              "deepDive": {
+                "vi": "Bạn đã gặp tinh thần này hai lần mà chưa gọi tên: security group bám từng máy (bài 2) là Zero Trust cho máy chủ; văn phòng hiện đại bỏ VPN, cho ứng dụng tự kiểm danh tính từng lượt, là Zero Trust cho con người. \"Verify, then trust — every time\" thay cho \"trust the inside\"."
+              }
             }
           ]
         },
@@ -419,29 +779,56 @@
               "question": {
                 "kind": "mcq",
                 "id": "m10-b4-pra-1",
-                "prompt": { "vi": "Kẻ tấn công lừa được MỘT nhân viên và chiếm laptop của họ. Ở mô hình lâu đài, chuyện gì xảy ra tiếp?" },
+                "prompt": {
+                  "vi": "Kẻ tấn công lừa được MỘT nhân viên và chiếm laptop của họ. Ở mô hình lâu đài, chuyện gì xảy ra tiếp?"
+                },
                 "choices": [
-                  { "vi": "Hắn thành \"người nhà\", di chuyển ngang tự do tới các máy khác — vành đai không cản nữa" },
-                  { "vi": "Không sao — tường lửa vành đai soi mọi lượt đi lại nên sẽ chặn hắn ngay ở máy đó" },
-                  { "vi": "Máy đó tự khóa lại vì thấy người lạ đăng nhập, phần mạng còn lại không hề hấn gì" }
+                  {
+                    "vi": "Hắn thành \"người nhà\", di chuyển ngang tự do tới các máy khác — vành đai không cản nữa"
+                  },
+                  {
+                    "vi": "Không sao — tường lửa vành đai soi mọi lượt đi lại nên sẽ chặn hắn ngay ở máy đó"
+                  },
+                  {
+                    "vi": "Máy đó tự khóa lại vì thấy người lạ đăng nhập, phần mạng còn lại không hề hấn gì"
+                  }
                 ],
                 "answerIndex": 0,
-                "hintTopic": { "vi": "vành đai kiểm ở đâu, và sau đó thì sao" }
+                "hintTopic": {
+                  "vi": "vành đai kiểm ở đâu, và sau đó thì sao"
+                }
               },
-              "hint": { "vi": "Lâu đài chỉ kiểm MỘT lần ở cổng — mà hắn thì đã ở trong cổng rồi." },
-              "solution": { "vi": "Di chuyển ngang tự do: vành đai chỉ kiểm ở cổng, bên trong tin nhau — đó chính là điểm chết khiến Zero Trust ra đời." },
+              "hint": {
+                "vi": "Lâu đài chỉ kiểm MỘT lần ở cổng — mà hắn thì đã ở trong cổng rồi."
+              },
+              "solution": {
+                "vi": "Di chuyển ngang tự do: vành đai chỉ kiểm ở cổng, bên trong tin nhau — đó chính là điểm chết khiến Zero Trust ra đời."
+              },
               "conceptId": "m10-perimeter"
             },
             {
               "question": {
                 "kind": "typed",
                 "id": "m10-b4-pra-2",
-                "prompt": { "vi": "Trong Zero Trust, biên giới mới của mạng là gì?" },
-                "accept": ["danh tính", "danh tinh", "identity", "danh tính người dùng"],
-                "hintTopic": { "vi": "câu hỏi đổi từ \"bạn đứng đâu\" sang…" }
+                "prompt": {
+                  "vi": "Trong Zero Trust, biên giới mới của mạng là gì?"
+                },
+                "accept": [
+                  "danh tính",
+                  "danh tinh",
+                  "identity",
+                  "danh tính người dùng"
+                ],
+                "hintTopic": {
+                  "vi": "câu hỏi đổi từ \"bạn đứng đâu\" sang…"
+                }
               },
-              "hint": { "vi": "Không còn là chỗ đứng hay tường lửa — mà là câu hỏi \"bạn LÀ AI\"." },
-              "solution": { "vi": "Danh tính (identity) — mọi quyết định cho/chặn xoay quanh bạn là ai và máy bạn có sạch không, không phải bạn đang đứng trong hay ngoài." },
+              "hint": {
+                "vi": "Không còn là chỗ đứng hay tường lửa — mà là câu hỏi \"bạn LÀ AI\"."
+              },
+              "solution": {
+                "vi": "Danh tính (identity) — mọi quyết định cho/chặn xoay quanh bạn là ai và máy bạn có sạch không, không phải bạn đang đứng trong hay ngoài."
+              },
               "conceptId": "m10-zero-trust"
             }
           ]
@@ -453,42 +840,97 @@
               "question": {
                 "kind": "typed",
                 "id": "m10-b4-ret-1",
-                "prompt": { "vi": "Không nhìn lại bài: Zero Trust đòi làm gì với MỌI truy cập, kể cả từ \"bên trong\"?" },
-                "accept": ["xác minh", "xac minh", "verify", "kiểm tra", "kiem tra", "chứng minh", "chung minh", "không tin ai mặc định", "không tin ai cả", "không tin ai hết"],
-                "hintTopic": { "vi": "một động từ, làm mỗi lần chứ không phải một lần ở cổng" }
+                "prompt": {
+                  "vi": "Không nhìn lại bài: Zero Trust đòi làm gì với MỌI truy cập, kể cả từ \"bên trong\"?"
+                },
+                "accept": [
+                  "xác minh",
+                  "xac minh",
+                  "verify",
+                  "kiểm tra",
+                  "kiem tra",
+                  "chứng minh",
+                  "chung minh",
+                  "không tin ai mặc định",
+                  "không tin ai cả",
+                  "không tin ai hết"
+                ],
+                "hintTopic": {
+                  "vi": "một động từ, làm mỗi lần chứ không phải một lần ở cổng"
+                }
               },
-              "hint": { "vi": "Trạm kiểm ở từng cánh cửa làm gì với từng người tới?" },
-              "solution": { "vi": "Xác minh — mỗi truy cập, mỗi lần: bạn là ai, máy có sạch không, có quyền với đúng thứ này không." }
+              "hint": {
+                "vi": "Trạm kiểm ở từng cánh cửa làm gì với từng người tới?"
+              },
+              "solution": {
+                "vi": "Xác minh — mỗi truy cập, mỗi lần: bạn là ai, máy có sạch không, có quyền với đúng thứ này không."
+              }
             }
           ],
           "selfExplain": {
-            "prompt": { "vi": "Giải thích bằng lời của bạn: vì sao mô hình lâu đài hết thời khi công ty lên mây và nhân viên làm việc từ xa?" },
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: vì sao mô hình lâu đài hết thời khi công ty lên mây và nhân viên làm việc từ xa?"
+            },
             "keywords": [
-              ["bên trong", "ben trong", "vành đai", "vanh dai", "tường", "tuong thanh", "bao", "cổng", "cong"],
-              ["mây", "may", "từ xa", "tu xa", "quán", "quan ca phe", "khắp nơi", "khap noi", "danh tính", "danh tinh"]
+              [
+                "bên trong",
+                "ben trong",
+                "vành đai",
+                "vanh dai",
+                "tường",
+                "tuong thanh",
+                "bao",
+                "cổng",
+                "cong"
+              ],
+              [
+                "mây",
+                "may",
+                "từ xa",
+                "tu xa",
+                "quán",
+                "quan ca phe",
+                "khắp nơi",
+                "khap noi",
+                "danh tính",
+                "danh tinh"
+              ]
             ],
-            "exampleAnswer": { "vi": "Lâu đài chỉ có nghĩa khi mọi thứ quý nằm gọn trong một vành đai. Giờ dữ liệu ở trên mây, người làm ở quán cà phê — chẳng còn \"bên trong\" nào để bao. Nên phòng thủ chuyển sang xác minh từng truy cập theo danh tính, thay vì tin theo chỗ đứng." }
+            "exampleAnswer": {
+              "vi": "Lâu đài chỉ có nghĩa khi mọi thứ quý nằm gọn trong một vành đai. Giờ dữ liệu ở trên mây, người làm ở quán cà phê — chẳng còn \"bên trong\" nào để bao. Nên phòng thủ chuyển sang xác minh từng truy cập theo danh tính, thay vì tin theo chỗ đứng."
+            }
           }
         },
         {
           "type": "summary",
           "bullets": [
-            { "vi": "Lâu đài–hào nước: kiểm một lần ở cổng, bên trong tin nhau — lọt một lần là đi ngang tự do." },
-            { "vi": "Zero Trust: không tin ai mặc định, xác minh mọi truy cập, mọi lần." },
-            { "vi": "Biên giới mới là danh tính — bạn là ai, không phải bạn đứng đâu." }
+            {
+              "vi": "Lâu đài–hào nước: kiểm một lần ở cổng, bên trong tin nhau — lọt một lần là đi ngang tự do."
+            },
+            {
+              "vi": "Zero Trust: không tin ai mặc định, xác minh mọi truy cập, mọi lần."
+            },
+            {
+              "vi": "Biên giới mới là danh tính — bạn là ai, không phải bạn đứng đâu."
+            }
           ],
-          "nextTeaser": { "vi": "Danh tính là biên giới — vậy ai đang GIỮ danh tính? Ở văn phòng là AD DS của Module 9; trên mây lại có một cuốn sổ khác. Hai cuốn sổ, một con người — gỡ thế nào?" }
+          "nextTeaser": {
+            "vi": "Danh tính là biên giới — vậy ai đang GIỮ danh tính? Ở văn phòng là AD DS của Module 9; trên mây lại có một cuốn sổ khác. Hai cuốn sổ, một con người — gỡ thế nào?"
+          }
         }
       ]
     },
-
     {
       "id": "m10-bai-5",
-      "missionTitle": { "vi": "Gộp hai cuốn sổ danh tính làm một" },
+      "missionTitle": {
+        "vi": "Gộp hai cuốn sổ danh tính làm một"
+      },
       "steps": [
         {
           "type": "hook",
-          "question": { "vi": "Công ty có AD DS giữ sổ nhân sự cho mọi máy trong văn phòng (Module 9), rồi lại dùng cả chục ứng dụng trên mây. Chẳng lẽ mỗi người hai bộ tài khoản, hai mật khẩu — và quên gấp đôi?" },
+          "question": {
+            "vi": "Công ty có AD DS giữ sổ nhân sự cho mọi máy trong văn phòng (Module 9), rồi lại dùng cả chục ứng dụng trên mây. Chẳng lẽ mỗi người hai bộ tài khoản, hai mật khẩu — và quên gấp đôi?"
+          },
           "visualId": "vis-hook-entra"
         },
         {
@@ -497,17 +939,29 @@
             {
               "kind": "mcq",
               "id": "m10-b5-pre-1",
-              "prompt": { "vi": "Đoán thử nhé: cách gọn nhất để một người dùng được cả hệ trong nhà lẫn ứng dụng trên mây là gì?" },
+              "prompt": {
+                "vi": "Đoán thử nhé: cách gọn nhất để một người dùng được cả hệ trong nhà lẫn ứng dụng trên mây là gì?"
+              },
               "choices": [
-                { "vi": "Đồng bộ sổ danh tính trong nhà với sổ trên mây — một danh tính dùng cả hai thế giới" },
-                { "vi": "Mỗi người tự nhớ hai bộ tài khoản" },
-                { "vi": "Bỏ hẳn AD, ai thích đặt mật khẩu gì thì đặt" }
+                {
+                  "vi": "Đồng bộ sổ danh tính trong nhà với sổ trên mây — một danh tính dùng cả hai thế giới"
+                },
+                {
+                  "vi": "Mỗi người tự nhớ hai bộ tài khoản riêng biệt, một bộ cho trong nhà một bộ cho trên mây"
+                },
+                {
+                  "vi": "Bỏ hẳn AD đi, ai thích đặt mật khẩu kiểu gì thì đặt"
+                }
               ],
               "answerIndex": 0,
-              "explain": { "vi": "Đó là mô hình hybrid: sổ AD trong nhà đồng bộ với sổ trên mây (Entra ID) — một con người, một danh tính, đăng nhập được cả hai thế giới." }
+              "explain": {
+                "vi": "Đó là mô hình hybrid: sổ AD trong nhà đồng bộ với sổ trên mây (Entra ID) — một con người, một danh tính, đăng nhập được cả hai thế giới."
+              }
             }
           ],
-          "encouragement": { "vi": "Cuốn sổ cái của trưởng làng Module 9 sắp có một người anh em trên mây." }
+          "encouragement": {
+            "vi": "Cuốn sổ cái của trưởng làng Module 9 sắp có một người anh em trên mây."
+          }
         },
         {
           "type": "teach",
@@ -515,8 +969,12 @@
             {
               "conceptId": "m10-entra-hybrid",
               "visualId": "vis-entra-hai-so",
-              "body": { "vi": "SO SÁNH SONG SONG — AD DS (đã học) ↔ Entra ID (mới): AD DS là sổ cái TRONG NHÀ — xác thực cho máy join miền, GPO, thư mục nội bộ. Entra ID là sổ cái TRÊN MÂY — xác thực cho ứng dụng web: Microsoft 365, và hàng nghìn dịch vụ khác. HYBRID là cầu đồng bộ giữa hai sổ: tài khoản tạo trong AD tự chảy lên Entra — một con người, MỘT danh tính, đăng nhập cả hai thế giới." },
-              "deepDive": { "vi": "Đây chính là hạ tầng của Zero Trust bài trước: khi mọi truy cập đều phải xác minh danh tính, cuốn sổ danh tính thành trái tim của cả hệ thống — nên nó phải là MỘT cuốn (đồng bộ), và đăng nhập được bồi thêm lớp xác nhận qua điện thoại (MFA). Chiếm được mật khẩu mà không có máy điện thoại thì vẫn đứng ngoài." }
+              "body": {
+                "vi": "SO SÁNH SONG SONG — AD DS (đã học) ↔ Entra ID (mới): AD DS là sổ cái TRONG NHÀ — xác thực cho máy join miền, GPO, thư mục nội bộ. Entra ID là sổ cái TRÊN MÂY — xác thực cho ứng dụng web: Microsoft 365, và hàng nghìn dịch vụ khác. HYBRID là cầu đồng bộ giữa hai sổ: tài khoản tạo trong AD tự chảy lên Entra — một con người, MỘT danh tính, đăng nhập cả hai thế giới."
+              },
+              "deepDive": {
+                "vi": "Đây chính là hạ tầng của Zero Trust bài trước: khi mọi truy cập đều phải xác minh danh tính, cuốn sổ danh tính thành trái tim của cả hệ thống — nên nó phải là MỘT cuốn (đồng bộ), và đăng nhập được bồi thêm lớp xác nhận qua điện thoại (MFA). Chiếm được mật khẩu mà không có máy điện thoại thì vẫn đứng ngoài."
+              }
             }
           ]
         },
@@ -528,28 +986,55 @@
               "question": {
                 "kind": "mcq",
                 "id": "m10-b5-pra-1",
-                "prompt": { "vi": "Yêu cầu suông: nhân viên mới cần vào được máy văn phòng LẪN Microsoft 365, chỉ một tài khoản. Công ty đang chạy AD DS + Entra ID hybrid — bạn làm gì?" },
+                "prompt": {
+                  "vi": "Yêu cầu suông: nhân viên mới cần vào được máy văn phòng LẪN Microsoft 365, chỉ một tài khoản. Công ty đang chạy AD DS + Entra ID hybrid — bạn làm gì?"
+                },
                 "choices": [
-                  { "vi": "Tạo user trong AD (đúng OU của phòng ban) — đồng bộ tự đẩy lên Entra, một tài khoản dùng cả hai" },
-                  { "vi": "Tạo hai tài khoản riêng: một trong AD cho máy văn phòng, một trên Entra cho Microsoft 365" },
-                  { "vi": "Đưa tài khoản chung của phòng cho dùng tạm, khi nào rảnh thì lập tài khoản riêng" }
+                  {
+                    "vi": "Tạo user trong AD (đúng OU của phòng ban) — đồng bộ tự đẩy lên Entra, một tài khoản dùng cả hai"
+                  },
+                  {
+                    "vi": "Tạo hai tài khoản riêng: một trong AD cho máy văn phòng, một trên Entra cho Microsoft 365"
+                  },
+                  {
+                    "vi": "Đưa tài khoản chung của phòng cho dùng tạm, khi nào rảnh thì lập tài khoản riêng"
+                  }
                 ],
                 "answerIndex": 0,
-                "hintTopic": { "vi": "sổ nào là gốc, sổ nào là bản đồng bộ" }
+                "hintTopic": {
+                  "vi": "sổ nào là gốc, sổ nào là bản đồng bộ"
+                }
               },
-              "hint": { "vi": "Trong mô hình hybrid, tài khoản sinh ở sổ trong nhà rồi tự chảy lên mây — bạn chỉ phải làm đúng một việc của Module 9." },
-              "solution": { "vi": "Tạo user trong AD, đặt vào đúng OU (kỹ năng Module 9) — cầu đồng bộ tự đưa danh tính lên Entra ID, một tài khoản đăng nhập cả hai thế giới." }
+              "hint": {
+                "vi": "Trong mô hình hybrid, tài khoản sinh ở sổ trong nhà rồi tự chảy lên mây — bạn chỉ phải làm đúng một việc của Module 9."
+              },
+              "solution": {
+                "vi": "Tạo user trong AD, đặt vào đúng OU (kỹ năng Module 9) — cầu đồng bộ tự đưa danh tính lên Entra ID, một tài khoản đăng nhập cả hai thế giới."
+              }
             },
             {
               "question": {
                 "kind": "typed",
                 "id": "m10-b5-pra-2",
-                "prompt": { "vi": "Sổ danh tính TRÊN MÂY của Microsoft, anh em đồng bộ với AD DS, tên là gì?" },
-                "accept": ["entra", "entra id", "azure ad", "azure active directory"],
-                "hintTopic": { "vi": "tên mới của Azure AD" }
+                "prompt": {
+                  "vi": "Sổ danh tính TRÊN MÂY của Microsoft, anh em đồng bộ với AD DS, tên là gì?"
+                },
+                "accept": [
+                  "entra",
+                  "entra id",
+                  "azure ad",
+                  "azure active directory"
+                ],
+                "hintTopic": {
+                  "vi": "tên mới của Azure AD"
+                }
               },
-              "hint": { "vi": "Tên hiện nay bắt đầu bằng E — tên cũ là Azure AD." },
-              "solution": { "vi": "Entra ID (tên cũ: Azure AD) — sổ danh tính trên mây, xác thực cho ứng dụng web." }
+              "hint": {
+                "vi": "Tên hiện nay bắt đầu bằng E — tên cũ là Azure AD."
+              },
+              "solution": {
+                "vi": "Entra ID (tên cũ: Azure AD) — sổ danh tính trên mây, xác thực cho ứng dụng web."
+              }
             }
           ]
         },
@@ -560,271 +1045,496 @@
               "question": {
                 "kind": "typed",
                 "id": "m10-b5-ret-1",
-                "prompt": { "vi": "Không nhìn lại bài: mô hình đồng bộ sổ AD trong nhà với sổ trên mây, cho một danh tính dùng cả hai thế giới, gọi là gì?" },
-                "accept": ["hybrid", "lai", "hybrid identity", "entra hybrid"],
-                "hintTopic": { "vi": "từ tiếng Anh nghĩa là \"lai\" giữa hai thế giới" }
+                "prompt": {
+                  "vi": "Không nhìn lại bài: mô hình đồng bộ sổ AD trong nhà với sổ trên mây, cho một danh tính dùng cả hai thế giới, gọi là gì?"
+                },
+                "accept": [
+                  "hybrid",
+                  "lai",
+                  "hybrid identity",
+                  "entra hybrid"
+                ],
+                "hintTopic": {
+                  "vi": "từ tiếng Anh nghĩa là \"lai\" giữa hai thế giới"
+                }
               },
-              "hint": { "vi": "Một từ tiếng Anh, chỉ xe vừa chạy xăng vừa chạy điện cũng dùng từ này." },
-              "solution": { "vi": "Hybrid — AD DS trong nhà đồng bộ với Entra ID trên mây; tài khoản sinh một nơi, dùng mọi nơi." }
+              "hint": {
+                "vi": "Một từ tiếng Anh, chỉ xe vừa chạy xăng vừa chạy điện cũng dùng từ này."
+              },
+              "solution": {
+                "vi": "Hybrid — AD DS trong nhà đồng bộ với Entra ID trên mây; tài khoản sinh một nơi, dùng mọi nơi."
+              }
             },
             {
               "question": {
                 "kind": "mcq",
                 "id": "m10-b5-ret-2",
-                "prompt": { "vi": "Vẫn từ trí nhớ: vì sao trong thế giới Zero Trust, cuốn sổ danh tính thành thứ phải bảo vệ nhất?" },
+                "prompt": {
+                  "vi": "Vẫn từ trí nhớ: vì sao trong thế giới Zero Trust, cuốn sổ danh tính thành thứ phải bảo vệ nhất?"
+                },
                 "choices": [
-                  { "vi": "Vì mọi quyết định cho/chặn đều dựa vào danh tính — chiếm được sổ là chiếm được biên giới" },
-                  { "vi": "Vì nó chứa nhiều dữ liệu nhất trong hệ thống — mất sổ là mất khối thông tin lớn nhất" },
-                  { "vi": "Vì nó thay được tường lửa hoàn toàn — hỏng sổ là mọi luật chặn lưu lượng biến mất" }
+                  {
+                    "vi": "Vì mọi quyết định cho/chặn đều dựa vào danh tính — chiếm được sổ là chiếm được biên giới"
+                  },
+                  {
+                    "vi": "Vì nó chứa nhiều dữ liệu nhất trong hệ thống — mất sổ là mất khối thông tin lớn nhất"
+                  },
+                  {
+                    "vi": "Vì nó thay được tường lửa hoàn toàn — hỏng sổ là mọi luật chặn lưu lượng biến mất"
+                  }
                 ],
                 "answerIndex": 0,
-                "hintTopic": { "vi": "biên giới mới nằm ở đâu thì kho quý nằm ở đó" }
+                "hintTopic": {
+                  "vi": "biên giới mới nằm ở đâu thì kho quý nằm ở đó"
+                }
               },
-              "hint": { "vi": "Bài 4 nói biên giới mới là gì? Vậy thứ GIỮ biên giới đó quan trọng cỡ nào?" },
-              "solution": { "vi": "Danh tính là biên giới mới, nên sổ danh tính là cánh cổng của mọi thứ — vì thế mới cần MFA bồi thêm sau mật khẩu." }
+              "hint": {
+                "vi": "Bài 4 nói biên giới mới là gì? Vậy thứ GIỮ biên giới đó quan trọng cỡ nào?"
+              },
+              "solution": {
+                "vi": "Danh tính là biên giới mới, nên sổ danh tính là cánh cổng của mọi thứ — vì thế mới cần MFA bồi thêm sau mật khẩu."
+              }
             }
           ],
           "selfExplain": {
-            "prompt": { "vi": "Giải thích bằng lời của bạn: Entra ID hybrid giải quyết nỗi khổ nào của người dùng lẫn người quản trị?" },
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: Entra ID hybrid giải quyết nỗi khổ nào của người dùng lẫn người quản trị?"
+            },
             "keywords": [
-              ["hai tài khoản", "hai tai khoan", "hai mật khẩu", "hai mat khau", "một danh tính", "mot danh tinh", "một tài khoản", "mot tai khoan"],
-              ["đồng bộ", "dong bo", "tạo một nơi", "tao mot noi", "quản một chỗ", "quan mot cho", "thu hồi", "thu hoi"]
+              [
+                "hai tài khoản",
+                "hai tai khoan",
+                "hai mật khẩu",
+                "hai mat khau",
+                "một danh tính",
+                "mot danh tinh",
+                "một tài khoản",
+                "mot tai khoan"
+              ],
+              [
+                "đồng bộ",
+                "dong bo",
+                "tạo một nơi",
+                "tao mot noi",
+                "quản một chỗ",
+                "quan mot cho",
+                "thu hồi",
+                "thu hoi"
+              ]
             ],
-            "exampleAnswer": { "vi": "Người dùng khỏi nhớ hai bộ mật khẩu — một danh tính đăng nhập cả văn phòng lẫn mây. Người quản trị tạo và thu hồi tài khoản ở đúng MỘT chỗ (AD, như Module 9 đã học), đồng bộ lo phần còn lại — nghỉ việc là khóa được cả hai thế giới trong một thao tác." }
+            "exampleAnswer": {
+              "vi": "Người dùng khỏi nhớ hai bộ mật khẩu — một danh tính đăng nhập cả văn phòng lẫn mây. Người quản trị tạo và thu hồi tài khoản ở đúng MỘT chỗ (AD, như Module 9 đã học), đồng bộ lo phần còn lại — nghỉ việc là khóa được cả hai thế giới trong một thao tác."
+            }
           }
         },
         {
           "type": "summary",
           "bullets": [
-            { "vi": "AD DS giữ sổ trong nhà; Entra ID giữ sổ trên mây; hybrid đồng bộ hai sổ làm một." },
-            { "vi": "Một danh tính cho cả hai thế giới — tạo và thu hồi ở đúng một chỗ." },
-            { "vi": "Danh tính là biên giới mới nên sổ danh tính là thứ phải bảo vệ nhất — MFA bồi thêm." }
+            {
+              "vi": "AD DS giữ sổ trong nhà; Entra ID giữ sổ trên mây; hybrid đồng bộ hai sổ làm một."
+            },
+            {
+              "vi": "Một danh tính cho cả hai thế giới — tạo và thu hồi ở đúng một chỗ."
+            },
+            {
+              "vi": "Danh tính là biên giới mới nên sổ danh tính là thứ phải bảo vệ nhất — MFA bồi thêm."
+            }
           ],
-          "nextTeaser": { "vi": "Bạn đã có đủ đồ nghề của người đi làm: từ sợi dây đồng tới đám mây. Phía trước là Phòng khám mạng — nơi các bệnh nhân là những mạng hỏng thật sự chờ bạn chẩn đoán." }
+          "nextTeaser": {
+            "vi": "Bạn đã có đủ đồ nghề của người đi làm: từ sợi dây đồng tới đám mây. Phía trước là Phòng khám mạng — nơi các bệnh nhân là những mạng hỏng thật sự chờ bạn chẩn đoán."
+          }
         }
       ]
     }
   ],
-
   "concepts": [
     {
       "id": "m10-cloud",
       "term": "Cloud",
       "glossVi": "Data center của nhà cung cấp — thiết bị thành phần mềm tự khai báo",
-      "metaphor": { "vi": "Thuê một góc nhà kho khổng lồ của người khác, kê đồ bằng cách điền phiếu." },
+      "metaphor": {
+        "vi": "Thuê một góc nhà kho khổng lồ của người khác, kê đồ bằng cách điền phiếu."
+      },
       "iconId": "icon-cloud",
       "flashcard": {
-        "front": { "vi": "\"Đám mây\" thực chất là gì, và điểm khác căn bản với phòng máy chủ ở nhà?" },
-        "back": { "vi": "Data center của nhà cung cấp, thuê qua Internet. Khác căn bản: mọi thứ từng là thiết bị (switch, router, tường lửa) thành phần mềm khai báo, có trong vài giây, trả theo lượng dùng." }
+        "front": {
+          "vi": "\"Đám mây\" thực chất là gì, và điểm khác căn bản với phòng máy chủ ở nhà?"
+        },
+        "back": {
+          "vi": "Data center của nhà cung cấp, thuê qua Internet. Khác căn bản: mọi thứ từng là thiết bị (switch, router, tường lửa) thành phần mềm khai báo, có trong vài giây, trả theo lượng dùng."
+        }
       }
     },
     {
       "id": "m10-vpc",
       "term": "VPC / VNet",
       "glossVi": "Mạng riêng kẻ trong data center của nhà cung cấp — VLAN + subnet phiên bản khai báo",
-      "metaphor": { "vi": "Một khoảnh đất riêng có rào, kẻ trong trang trại của người khác." },
+      "metaphor": {
+        "vi": "Một khoảnh đất riêng có rào, kẻ trong trang trại của người khác."
+      },
       "iconId": "icon-vpc",
       "flashcard": {
-        "front": { "vi": "VPC tương ứng với thứ gì đã học ở on-prem — giống và khác chỗ nào?" },
-        "back": { "vi": "↔ VLAN + dải subnet riêng. Giống: vùng cô lập, dải địa chỉ riêng, chia bằng CIDR. Khác: không dây không switch — ranh giới kẻ hoàn toàn bằng khai báo." }
+        "front": {
+          "vi": "VPC tương ứng với thứ gì đã học ở on-prem — giống và khác chỗ nào?"
+        },
+        "back": {
+          "vi": "↔ VLAN + dải subnet riêng. Giống: vùng cô lập, dải địa chỉ riêng, chia bằng CIDR. Khác: không dây không switch — ranh giới kẻ hoàn toàn bằng khai báo."
+        }
       }
     },
     {
       "id": "m10-security-group",
       "term": "Security group",
       "glossVi": "Tường lửa stateful bám sát từng máy ảo, mặc định chặn chiều vào",
-      "metaphor": { "vi": "Mỗi máy một vệ sĩ riêng kè kè bên cạnh, thay vì một bảo vệ chung ở cổng khu phố." },
+      "metaphor": {
+        "vi": "Mỗi máy một vệ sĩ riêng kè kè bên cạnh, thay vì một bảo vệ chung ở cổng khu phố."
+      },
       "iconId": "icon-security-group",
       "flashcard": {
-        "front": { "vi": "Security group giống và khác tường lửa nhà (Module 7) thế nào?" },
-        "back": { "vi": "Giống: stateful — nhớ kết nối, thư trả lời tự vào. Khác: bám sát TỪNG máy ảo thay vì đứng một cổng vành đai, và mặc định chặn hết chiều vào." }
+        "front": {
+          "vi": "Security group giống và khác tường lửa nhà (Module 7) thế nào?"
+        },
+        "back": {
+          "vi": "Giống: stateful — nhớ kết nối, thư trả lời tự vào. Khác: bám sát TỪNG máy ảo thay vì đứng một cổng vành đai, và mặc định chặn hết chiều vào."
+        }
       }
     },
     {
       "id": "m10-vpn-s2s",
       "term": "VPN site-to-site",
       "glossVi": "Đường hầm mã hóa cố định nối trọn hai mạng qua Internet",
-      "metaphor": { "vi": "Cây cầu router của Module 4, bắc xuyên qua quảng trường đông người, có mái che kín." },
+      "metaphor": {
+        "vi": "Cây cầu router của Module 4, bắc xuyên qua quảng trường đông người, có mái che kín."
+      },
       "iconId": "icon-vpn-s2s",
       "flashcard": {
-        "front": { "vi": "Dấu hiệu nhận biết VPN site-to-site?" },
-        "back": { "vi": "Nối MẠNG với MẠNG: hai thiết bị đầu mạng dựng hầm cố định chạy quanh năm, mọi máy hai bên thấy nhau, người dùng không phải cài gì." }
+        "front": {
+          "vi": "Dấu hiệu nhận biết VPN site-to-site?"
+        },
+        "back": {
+          "vi": "Nối MẠNG với MẠNG: hai thiết bị đầu mạng dựng hầm cố định chạy quanh năm, mọi máy hai bên thấy nhau, người dùng không phải cài gì."
+        }
       }
     },
     {
       "id": "m10-vpn-client",
       "term": "Client VPN",
       "glossVi": "Đường hầm mã hóa nối MỘT người vào mạng công ty",
-      "metaphor": { "vi": "Ống kín riêng của một người, đào từ bàn quán cà phê về tới văn phòng." },
+      "metaphor": {
+        "vi": "Ống kín riêng của một người, đào từ bàn quán cà phê về tới văn phòng."
+      },
       "iconId": "icon-vpn-client",
       "flashcard": {
-        "front": { "vi": "Client VPN khác site-to-site chỗ nào?" },
-        "back": { "vi": "Nối NGƯỜI với mạng: cài phần mềm trên laptop, bật khi cần. Site-to-site nối mạng với mạng, cố định, người dùng vô cảm." }
+        "front": {
+          "vi": "Client VPN khác site-to-site chỗ nào?"
+        },
+        "back": {
+          "vi": "Nối NGƯỜI với mạng: cài phần mềm trên laptop, bật khi cần. Site-to-site nối mạng với mạng, cố định, người dùng vô cảm."
+        }
       }
     },
     {
       "id": "m10-perimeter",
       "term": "Mô hình vành đai",
       "glossVi": "Lâu đài–hào nước: phòng thủ dồn ở cổng, bên trong tin nhau",
-      "metaphor": { "vi": "Lâu đài có hào sâu và một cổng đá — nhưng vượt được cổng thì mọi cánh cửa bên trong đều mở." },
+      "metaphor": {
+        "vi": "Lâu đài có hào sâu và một cổng đá — nhưng vượt được cổng thì mọi cánh cửa bên trong đều mở."
+      },
       "iconId": "icon-perimeter",
       "flashcard": {
-        "front": { "vi": "Điểm chết của mô hình vành đai (lâu đài–hào nước)?" },
-        "back": { "vi": "Chỉ kiểm MỘT lần ở cổng, bên trong tin nhau — kẻ tấn công lọt một lần là di chuyển ngang tự do tới kho quý nhất." }
+        "front": {
+          "vi": "Điểm chết của mô hình vành đai (lâu đài–hào nước)?"
+        },
+        "back": {
+          "vi": "Chỉ kiểm MỘT lần ở cổng, bên trong tin nhau — kẻ tấn công lọt một lần là di chuyển ngang tự do tới kho quý nhất."
+        }
       }
     },
     {
       "id": "m10-zero-trust",
       "term": "Zero Trust",
       "glossVi": "Không tin ai mặc định — xác minh mọi truy cập; danh tính là biên giới mới",
-      "metaphor": { "vi": "Bỏ tường thành, đặt trạm kiểm ở từng cánh cửa — ai tới cũng phải trình mặt, mỗi lần." },
+      "metaphor": {
+        "vi": "Bỏ tường thành, đặt trạm kiểm ở từng cánh cửa — ai tới cũng phải trình mặt, mỗi lần."
+      },
       "iconId": "icon-zero-trust",
       "flashcard": {
-        "front": { "vi": "Zero Trust thay đổi câu hỏi phòng thủ từ gì sang gì?" },
-        "back": { "vi": "Từ \"bạn đứng trong hay ngoài?\" sang \"bạn LÀ AI, máy có sạch không, có quyền với đúng thứ này không?\" — xác minh mọi truy cập, mọi lần; danh tính là biên giới mới." }
+        "front": {
+          "vi": "Zero Trust thay đổi câu hỏi phòng thủ từ gì sang gì?"
+        },
+        "back": {
+          "vi": "Từ \"bạn đứng trong hay ngoài?\" sang \"bạn LÀ AI, máy có sạch không, có quyền với đúng thứ này không?\" — xác minh mọi truy cập, mọi lần; danh tính là biên giới mới."
+        }
       }
     },
     {
       "id": "m10-entra-hybrid",
       "term": "Entra ID hybrid",
       "glossVi": "Sổ danh tính trên mây đồng bộ với AD DS — một danh tính cho hai thế giới",
-      "metaphor": { "vi": "Sổ cái của trưởng làng có bản sao trên mây, hai sổ tự chép cho nhau từng dòng." },
+      "metaphor": {
+        "vi": "Sổ cái của trưởng làng có bản sao trên mây, hai sổ tự chép cho nhau từng dòng."
+      },
       "iconId": "icon-entra-hybrid",
       "flashcard": {
-        "front": { "vi": "Entra ID hybrid là gì, giải quyết chuyện gì?" },
-        "back": { "vi": "Cầu đồng bộ giữa AD DS (sổ trong nhà) và Entra ID (sổ trên mây): tài khoản tạo một nơi dùng cả hai thế giới, thu hồi một thao tác khóa được cả hai." }
+        "front": {
+          "vi": "Entra ID hybrid là gì, giải quyết chuyện gì?"
+        },
+        "back": {
+          "vi": "Cầu đồng bộ giữa AD DS (sổ trong nhà) và Entra ID (sổ trên mây): tài khoản tạo một nơi dùng cả hai thế giới, thu hồi một thao tác khóa được cả hai."
+        }
       }
     }
   ],
-
   "masteryTest": [
     {
       "kind": "typed",
       "id": "m10-mt-1",
-      "prompt": { "vi": "Vùng mạng riêng bạn kẻ ra trong data center của nhà cung cấp gọi là gì? (viết tắt được)" },
-      "accept": ["vpc", "vnet", "virtual private cloud", "virtual network"],
-      "explain": { "vi": "VPC (Azure: VNet) — phiên bản khai báo của VLAN + dải subnet riêng; chia subnet bằng đúng CIDR của Module 3." }
+      "prompt": {
+        "vi": "Hai máy ảo trên mây phải nói chuyện được với nhau mà không hở ra Internet, nên chúng phải nằm chung một vùng mạng bạn tự kẻ trong hạ tầng nhà cung cấp. Vùng đó tên là gì? (viết tắt được)"
+      },
+      "accept": [
+        "vpc",
+        "vnet",
+        "virtual private cloud",
+        "virtual network"
+      ],
+      "explain": {
+        "vi": "VPC (Azure: VNet) — phiên bản khai báo của VLAN + dải subnet riêng; chia subnet bằng đúng CIDR của Module 3."
+      }
     },
     {
       "kind": "mcq",
       "id": "m10-mt-2",
-      "prompt": { "vi": "VPC tương ứng với cặp khái niệm on-prem nào bạn đã học?" },
+      "prompt": {
+        "vi": "VPC tương ứng với cặp khái niệm on-prem nào bạn đã học?"
+      },
       "choices": [
-        { "vi": "VLAN + subnet riêng — vùng cô lập có dải riêng" },
-        { "vi": "Bảng MAC + ARP — cách switch nhớ máy nào ở cổng nào" },
-        { "vi": "DHCP + DNS — cấp địa chỉ và phân giải tên trong mạng" }
+        {
+          "vi": "VLAN + subnet riêng — vùng cô lập có dải riêng"
+        },
+        {
+          "vi": "Bảng MAC + ARP — cách switch nhớ máy nào ở cổng nào"
+        },
+        {
+          "vi": "DHCP + DNS — cấp địa chỉ và phân giải tên trong mạng"
+        }
       ],
       "answerIndex": 0,
-      "explain": { "vi": "Cùng một ý tưởng cô lập vùng mạng — VPC chỉ đổi cách dựng ranh giới từ dây và switch sang khai báo." }
+      "explain": {
+        "vi": "Cùng một ý tưởng cô lập vùng mạng — VPC chỉ đổi cách dựng ranh giới từ dây và switch sang khai báo."
+      }
     },
     {
       "kind": "mcq",
       "id": "m10-mt-3",
-      "prompt": { "vi": "Security group khác tường lửa nhà (Module 7) ở điểm nào?" },
+      "prompt": {
+        "vi": "Security group khác tường lửa nhà (Module 7) ở điểm nào?"
+      },
       "choices": [
-        { "vi": "Bám sát từng máy ảo, mặc định chặn hết chiều vào" },
-        { "vi": "Không nhớ được kết nối, phải khai luật cả hai chiều" },
-        { "vi": "Chỉ lọc được theo địa chỉ IP, không theo port" }
+        {
+          "vi": "Bám sát từng máy ảo, mặc định chặn hết chiều vào"
+        },
+        {
+          "vi": "Không nhớ được kết nối, phải khai luật cả hai chiều"
+        },
+        {
+          "vi": "Chỉ lọc được theo địa chỉ IP, không theo port"
+        }
       ],
       "answerIndex": 0,
-      "explain": { "vi": "Cùng là stateful, nhưng chỗ đứng khác hẳn: mỗi máy một bộ luật riêng — hai máy chung VPC vẫn phải qua luật của nhau." }
+      "explain": {
+        "vi": "Cùng là stateful, nhưng chỗ đứng khác hẳn: mỗi máy một bộ luật riêng — hai máy chung VPC vẫn phải qua luật của nhau."
+      }
     },
     {
       "kind": "typed",
       "id": "m10-mt-4",
-      "prompt": { "vi": "Nối trọn hai mạng (văn phòng ↔ VPC) qua Internet, người dùng không phải cài gì — kiểu VPN nào?" },
-      "accept": ["site-to-site", "site to site", "s2s"],
-      "explain": { "vi": "Site-to-site: hai thiết bị đầu mạng dựng đường hầm mã hóa cố định — cây cầu router của Module 4 bắc xuyên Internet." }
+      "prompt": {
+        "vi": "Chi nhánh mới mở, giám đốc muốn nhân viên ở đó mở file trên máy chủ trụ sở y như đang ngồi tại trụ sở — không ai phải cài thêm phần mềm nào lên máy mình. Dựng kiểu VPN nào?"
+      },
+      "accept": [
+        "site-to-site",
+        "site to site",
+        "s2s"
+      ],
+      "explain": {
+        "vi": "Site-to-site: hai thiết bị đầu mạng dựng đường hầm mã hóa cố định — cây cầu router của Module 4 bắc xuyên Internet."
+      }
     },
     {
       "kind": "typed",
       "id": "m10-mt-5",
-      "prompt": { "vi": "Laptop ở quán cà phê muốn chui vào mạng công ty — kiểu VPN nào?" },
-      "accept": ["client", "client vpn", "vpn client"],
-      "explain": { "vi": "Client VPN — nối MỘT người vào mạng: cài phần mềm, bật khi cần, lớp mã hóa riêng bất chấp Wi-Fi quán." }
+      "prompt": {
+        "vi": "Laptop ở quán cà phê muốn chui vào mạng công ty — kiểu VPN nào?"
+      },
+      "accept": [
+        "client",
+        "client vpn",
+        "vpn client"
+      ],
+      "explain": {
+        "vi": "Client VPN — nối MỘT người vào mạng: cài phần mềm, bật khi cần, lớp mã hóa riêng bất chấp Wi-Fi quán."
+      }
     },
     {
       "kind": "mcq",
       "id": "m10-mt-6",
-      "prompt": { "vi": "Điểm chết của mô hình vành đai (lâu đài–hào nước) là gì?" },
+      "prompt": {
+        "vi": "Điểm chết của mô hình vành đai (lâu đài–hào nước) là gì?"
+      },
       "choices": [
-        { "vi": "Kiểm một lần ở cổng, lọt vào là đi ngang tự do" },
-        { "vi": "Tường lửa vành đai không lọc được lưu lượng mã hóa" },
-        { "vi": "Chỉ áp dụng được cho mạng dùng IPv4 đời cũ" }
+        {
+          "vi": "Kiểm một lần ở cổng, lọt vào là đi ngang tự do"
+        },
+        {
+          "vi": "Tường lửa vành đai không lọc được lưu lượng mã hóa"
+        },
+        {
+          "vi": "Chỉ áp dụng được cho mạng dùng IPv4 đời cũ"
+        }
       ],
       "answerIndex": 0,
-      "explain": { "vi": "Chữ \"trong\" chính là điểm chết: một email lừa hay một mật khẩu lộ biến kẻ tấn công thành \"người nhà\"." }
+      "explain": {
+        "vi": "Chữ \"trong\" chính là điểm chết: một email lừa hay một mật khẩu lộ biến kẻ tấn công thành \"người nhà\"."
+      }
     },
     {
       "kind": "typed",
       "id": "m10-mt-7",
-      "prompt": { "vi": "Trong Zero Trust, biên giới mới của mạng là gì?" },
-      "accept": ["danh tính", "danh tinh", "identity", "danh tính người dùng"],
-      "explain": { "vi": "Danh tính — mọi quyết định cho/chặn dựa trên bạn là ai và máy có sạch không, thay vì bạn đứng trong hay ngoài tường lửa." }
+      "prompt": {
+        "vi": "Zero Trust bỏ hẳn quan niệm \"đứng trong nhà là tin được\". Vậy thứ gì thay tường lửa vành đai làm chỗ dựa để quyết định cho qua hay chặn lại?"
+      },
+      "accept": [
+        "danh tính",
+        "danh tinh",
+        "identity",
+        "danh tính người dùng"
+      ],
+      "explain": {
+        "vi": "Danh tính — mọi quyết định cho/chặn dựa trên bạn là ai và máy có sạch không, thay vì bạn đứng trong hay ngoài tường lửa."
+      }
     },
     {
       "kind": "mcq",
       "id": "m10-mt-8",
-      "prompt": { "vi": "Entra ID hybrid nghĩa là gì?" },
+      "prompt": {
+        "vi": "Entra ID hybrid nghĩa là gì?"
+      },
       "choices": [
-        { "vi": "Đồng bộ sổ AD DS trong nhà với sổ Entra ID trên mây" },
-        { "vi": "Thay Domain Controller trong nhà bằng máy chủ trên mây" },
-        { "vi": "Một loại VPN nối văn phòng với đám mây Microsoft" }
+        {
+          "vi": "Đồng bộ sổ AD DS trong nhà với sổ Entra ID trên mây"
+        },
+        {
+          "vi": "Thay Domain Controller trong nhà bằng máy chủ trên mây"
+        },
+        {
+          "vi": "Một loại VPN nối văn phòng với đám mây Microsoft"
+        }
       ],
       "answerIndex": 0,
-      "explain": { "vi": "Tài khoản tạo trong AD (đúng kỹ năng Module 9) tự chảy lên Entra ID — người dùng một mật khẩu, quản trị một chỗ tạo và thu hồi." }
+      "explain": {
+        "vi": "Tài khoản tạo trong AD (đúng kỹ năng Module 9) tự chảy lên Entra ID — người dùng một mật khẩu, quản trị một chỗ tạo và thu hồi."
+      }
     },
     {
       "kind": "mcq",
       "id": "m10-mt-9",
-      "prompt": { "vi": "Trong cloud, việc tương ứng với \"mua thêm switch cắm vào tủ thiết bị trong phòng máy chủ\" là gì?" },
+      "prompt": {
+        "vi": "Trong cloud, việc tương ứng với \"mua thêm switch cắm vào tủ thiết bị trong phòng máy chủ\" là gì?"
+      },
       "choices": [
-        { "vi": "Khai thêm một subnet trong VPC bằng vài dòng cấu hình" },
-        { "vi": "Gọi điện cho nhà cung cấp để họ lắp thêm thiết bị thật cho bạn" },
-        { "vi": "Thuê thêm một máy ảo rồi cài phần mềm switch lên máy đó" }
+        {
+          "vi": "Khai thêm một subnet trong VPC bằng vài dòng cấu hình"
+        },
+        {
+          "vi": "Gọi điện cho nhà cung cấp để họ lắp thêm thiết bị thật cho bạn"
+        },
+        {
+          "vi": "Thuê thêm một máy ảo rồi cài phần mềm switch lên máy đó"
+        }
       ],
       "answerIndex": 0,
-      "hintTopic": { "vi": "thiết bị trong cloud thành dòng khai báo" },
-      "explain": { "vi": "Trong cloud, thiết bị thành cấu hình: subnet, tường lửa, tuyến đường đều là dòng khai báo. Khái niệm thì không đổi — vẫn là subnet, vẫn là tường lửa." }
+      "hintTopic": {
+        "vi": "thiết bị trong cloud thành dòng khai báo"
+      },
+      "explain": {
+        "vi": "Trong cloud, thiết bị thành cấu hình: subnet, tường lửa, tuyến đường đều là dòng khai báo. Khái niệm thì không đổi — vẫn là subnet, vẫn là tường lửa."
+      }
     },
     {
       "kind": "mcq",
       "id": "m10-mt-10",
-      "prompt": { "vi": "Bạn dựng máy ảo mới trong VPC rồi cài web server, nhưng từ Internet không ai vào được. Nghi ngờ đầu tiên?" },
+      "prompt": {
+        "vi": "Bạn dựng máy ảo mới trong VPC rồi cài web server, nhưng từ Internet không ai vào được. Nghi ngờ đầu tiên?"
+      },
       "choices": [
-        { "vi": "Security group vẫn chặn chiều vào — chưa mở port cho ai" },
-        { "vi": "Máy ảo chưa được cấp địa chỉ IP nội bộ trong subnet đó" },
-        { "vi": "VPC chưa bật chế độ cho phép chạy web server ở bên trong" }
+        {
+          "vi": "Security group vẫn chặn chiều vào — chưa mở port cho ai"
+        },
+        {
+          "vi": "Máy ảo chưa được cấp địa chỉ IP nội bộ trong subnet đó"
+        },
+        {
+          "vi": "VPC chưa bật chế độ cho phép chạy web server ở bên trong"
+        }
       ],
       "answerIndex": 0,
-      "hintTopic": { "vi": "mặc định của security group" },
-      "explain": { "vi": "Security group mặc định chặn hết chiều vào — đúng nếp Zero Trust: không mở sẵn thứ gì. Đây là ca thường gặp nhất của người mới dựng máy ảo." }
+      "hintTopic": {
+        "vi": "mặc định của security group"
+      },
+      "explain": {
+        "vi": "Security group mặc định chặn hết chiều vào — đúng nếp Zero Trust: không mở sẵn thứ gì. Đây là ca thường gặp nhất của người mới dựng máy ảo."
+      }
     },
     {
       "kind": "mcq",
       "id": "m10-mt-11",
-      "prompt": { "vi": "Chi nhánh 30 người cần dùng ứng dụng nội bộ chạy trong VPC, không muốn ai phải bật phần mềm gì. Chọn cách nào?" },
+      "prompt": {
+        "vi": "Chi nhánh 30 người cần dùng ứng dụng nội bộ chạy trong VPC, không muốn ai phải bật phần mềm gì. Chọn cách nào?"
+      },
       "choices": [
-        { "vi": "VPN site-to-site nối trọn mạng chi nhánh với VPC" },
-        { "vi": "Client VPN, cài lên từng máy trong ba mươi máy đó" },
-        { "vi": "Mở port ứng dụng ra Internet rồi đặt mật khẩu thật dài" }
+        {
+          "vi": "VPN site-to-site nối trọn mạng chi nhánh với VPC"
+        },
+        {
+          "vi": "Client VPN, cài lên từng máy trong ba mươi máy đó"
+        },
+        {
+          "vi": "Mở port ứng dụng ra Internet rồi đặt mật khẩu thật dài"
+        }
       ],
       "answerIndex": 0,
-      "hintTopic": { "vi": "hai kiểu VPN dùng vào việc gì" },
-      "explain": { "vi": "Nối trọn hai mạng thì đường hầm dựng một lần ở hai đầu, người dùng không biết nó tồn tại. Client VPN là đường cho từng người đi lẻ." }
+      "hintTopic": {
+        "vi": "hai kiểu VPN dùng vào việc gì"
+      },
+      "explain": {
+        "vi": "Nối trọn hai mạng thì đường hầm dựng một lần ở hai đầu, người dùng không biết nó tồn tại. Client VPN là đường cho từng người đi lẻ."
+      }
     },
     {
       "kind": "mcq",
       "id": "m10-mt-12",
-      "prompt": { "vi": "Nhân viên đã đăng nhập tài khoản công ty và đang ngồi trong văn phòng. Theo Zero Trust, họ mở được kho dữ liệu kế toán chưa?" },
+      "prompt": {
+        "vi": "Nhân viên đã đăng nhập tài khoản công ty và đang ngồi trong văn phòng. Theo Zero Trust, họ mở được kho dữ liệu kế toán chưa?"
+      },
       "choices": [
-        { "vi": "Chưa — mỗi lần truy cập vẫn phải xác minh danh tính và quyền" },
-        { "vi": "Rồi — ngồi trong mạng nội bộ nghĩa là đã qua vòng kiểm tra rồi" },
-        { "vi": "Rồi — miễn là máy của họ đã gia nhập miền của công ty" }
+        {
+          "vi": "Chưa — mỗi lần truy cập vẫn phải xác minh danh tính và quyền"
+        },
+        {
+          "vi": "Rồi — ngồi trong mạng nội bộ nghĩa là đã qua vòng kiểm tra rồi"
+        },
+        {
+          "vi": "Rồi — miễn là máy của họ đã gia nhập miền của công ty"
+        }
       ],
       "answerIndex": 0,
-      "hintTopic": { "vi": "Zero Trust xác minh từng lượt truy cập" },
-      "explain": { "vi": "Vị trí không còn là bằng chứng. Zero Trust hỏi lại ở mỗi lượt truy cập: ai, máy nào, quyền gì — ngồi trong văn phòng cũng không được miễn." }
+      "hintTopic": {
+        "vi": "Zero Trust xác minh từng lượt truy cập"
+      },
+      "explain": {
+        "vi": "Vị trí không còn là bằng chứng. Zero Trust hỏi lại ở mỗi lượt truy cập: ai, máy nào, quyền gì — ngồi trong văn phòng cũng không được miễn."
+      }
     }
   ]
 }

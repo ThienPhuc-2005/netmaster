@@ -289,6 +289,24 @@ quan trước khi "sửa test cho xanh".
     xanh thành lời hứa sai ngay giữa ca dạy "đếm đủ dấu chân".
   - Cross-check nội dung: `edit-and-act` BẮT BUỘC có `actions`;
     `edit-network` vẫn CẤM `actions` (muốn hai nửa thì khai đúng kiểu).
+- **Bệnh "CHẬM CHỨ KHÔNG CHẾT" (`overlay.impairments`, khối 21.68)** — loại
+  bệnh thứ tư của phòng khám, cho ca "mạng vẫn thông mà việc vẫn hỏng":
+  - Ốm gắn vào **SỢI DÂY** (`linkId`), không gắn vào máy. Nhờ vậy cách chữa
+    nằm sẵn trong tầm tay phòng lab: gỡ dây bệnh, cắm dây mới — dây mới mang
+    `id` mới nên hồ sơ bệnh không dính vào nó nữa, đúng như thay dây thật.
+  - `latencyMs` cộng **một chiều**, `lossPercent` nhân theo xác suất qua
+    được; gói đi qua dây bệnh HAI lượt (đi + về) nên cả hai vế tính hai lần.
+    Trần rơi gói là **3/4 gói** (`LOSS_CAP`): rơi cả 4 thì màn hình y hệt ca
+    ĐỨT, mà đứt đã có cách mô hình riêng (bỏ hẳn link) và cách chữa riêng.
+  - Chỉ cộng trên **chuỗi hop THẬT SỰ tới đích** (`hopsOnArrivalPath`), không
+    cộng cả đống hop của lượt phát tán: đổ oan cho sợi dây ở nhánh cụt thì
+    người học đi thay đúng sợi ấy mà bệnh không hết.
+  - Triệu chứng `ping-degraded` khai luôn NGƯỠNG KHỎE (`maxLatencyMs`,
+    `maxLossPercent`) vì "bao nhiêu là chậm" tùy việc. **Khỏi = có tiếng đáp
+    VÀ hai số đo dưới ngưỡng** — đứt hẳn cũng tính là chưa khỏi, không thì
+    người học "chữa" ca mạng chậm bằng cách rút phăng dây bệnh là qua bài.
+  - `tracert` in thời gian **cộng dồn tới từng chặng** — đó là chỗ nó đáng
+    giá hơn ping: ping nói cả chuyến mất bao lâu, tracert nói mất ở KHÚC nào.
 - **Bằng chứng của ca phải HỢP VẬT LÝ**: nslookup chỉ được trả lời khi
   đường tới DNS server đi được (terminal không kiểm reachability — nên
   đặt DNS server CÙNG segment với ghế ngồi khi đường xa đang đứt; hai ca
@@ -309,6 +327,33 @@ quan trước khi "sửa test cho xanh".
   Test thường trực gác lớp lỗi này: `content.test.ts` bắt mọi câu gõ tay có
   lời giải ngắn mà accept của chính nó từ chối. `accept[0]` là chữ hiện ở
   dòng "Đáp án:" — để nó khớp với lời giải, đừng để hai câu khác nhau.
+
+- **Đề thi không được CHÉP câu trong bài (khối 21.68-21.69)**: cổng đo bằng
+  HAI thước, vì mỗi thước mù một kiểu — ĐẾM TỪ CHUNG bắt câu diễn đạt lại bằng
+  cùng bộ từ, CHUỖI KÝ TỰ bắt câu chép gần nguyên văn chỉ đổi vài con số hoặc
+  cắt mấy chữ mở đầu. Bản đầu chỉ có thước đếm-từ và nó cho lọt 15 câu kiểu
+  «"Không nhìn lại bài: X?" trong bài → "X?" ở đề thi». Cả 21 module hiện ở
+  **0 câu chép**; ngưỡng 15% chỉ là quãng hở cho một câu chồng lấn lành mạnh,
+  KHÔNG phải mức chấp nhận được — thấy con số nhích lên thì sửa đề, đừng nới
+  ngưỡng. Cách viết lại đúng: **giữ kiến thức, đổi vỏ tình huống và đổi số**;
+  câu gõ tay phải GIỮ NGUYÊN `accept` vì bảng ca thử trong `content.test.ts`
+  ghim sẵn cách gõ của từng câu.
+- **Cue độ-dài áp cho CẢ câu trong bài, không riêng đề thi (khối 21.68)**:
+  đáp án MCQ phải nằm trong 0.7x–1.1x mồi nhử dài nhất (miễn cho câu mà cả
+  bộ lựa chọn chênh nhau ≤ 8 ký tự), và toàn app không quá 45% câu có đáp án
+  là lựa chọn dài nhất. Chỗ đau nhất là bước ĐOÁN THỬ: nó sống bằng
+  productive failure, đoán trúng nhờ bấm câu dài là người học mất luôn cú
+  vấp mà cả bài sinh ra để tạo. Viết mồi nhử thì viết thành HIỂU NHẦM ĐẦY
+  ĐỦ, đừng viết cụt cho xong.
+- **Lá chắn phủ định soi cả THẺ ÔN và TỔNG KẾT (khối 21.68)**: người học nhớ
+  câu chữ ở mặt sau thẻ và ở gạch tổng kết hơn là nhớ lời giải của riêng một
+  câu tập. Cổng chỉ tính mệnh đề phủ định nào KHÔNG chứa sẵn một cách gõ đã
+  được chấp nhận — có đường nói khẳng định thì chữ "không" ở đó chỉ là lời
+  bình thêm, không phải đáp án.
+- **Màn luyện subnet không được ra đề ngoài chương trình (khối 21.68)**: mọi
+  `DrillProblemType` đều phải có bài dạy trong module bật drill đó, test khoá
+  bằng bảng `Record<DrillProblemType, …>` nên thêm loại đề mới mà nội dung
+  chưa theo kịp là `tsc` đỏ ngay.
 
 ## 7. Nội dung & bài thi mastery
 
@@ -392,6 +437,11 @@ quan trước khi "sửa test cho xanh".
   `vmLabDone`, tick KHÔNG XP (việc ngoài app không kiểm chứng được).
 - Sửa nội dung xong: `npm run content:review` render lại
   REVIEW-NOI-DUNG.md (bản đọc duyệt — KHÔNG phải nguồn chân lý).
+  **Bản duyệt phải in ĐỦ mọi thứ bộ chấm dùng, kể cả `nearMisses`** (dòng
+  "Cận đúng: …", khối 21.68). Lượt soát 08-15 từng báo một câu "đánh sai
+  trắng người học" trong khi câu đó đã có lời đón tử tế — người soát không
+  thấy vì bản in bỏ mất phần ấy. Bản duyệt in thiếu là mời người duyệt đuổi
+  theo lỗi ma.
 - Quy trình viết một module mới: mục "Cách làm một module nội dung" ở
   đầu `TRANG-THAI.md`.
 - **HAI sổ góp ý, đừng gộp** (khối 21.54): `disputedAnswers` là khiếu nại
@@ -949,6 +999,41 @@ chỉ bỏ điều kiện "học hết bài trước đã".
 - Nhãn trong hình SVG là VI-only, đã tuyên bố (hình đi kèm NỘI DUNG, mà
   nội dung mới có tiếng Việt; có bản EN thật thì nhãn qua LText, KHÔNG
   qua i18n). `/design` là ngoại lệ hardcode VI có khai.
+- **VẼ HÌNH XONG PHẢI QUÉT TRÊN BROWSER (khối 21.70)** — không có cổng tự động
+  nào canh được việc này, và đã trả giá: 15 hình của khối 21.64-21.67 lọt ra bản
+  chạy với chữ tràn khỏi khung tới 46px hoặc nhãn đè chồng lên nhau, chủ dự án
+  phải tự nhìn thấy rồi báo về.
+  - **Vì sao không tự động hoá được**: jsdom KHÔNG có layout nên `getBBox` trả 0;
+    còn ước bề rộng chữ từ thuộc tính thì sai quá xa để làm cổng — thử trên 325
+    hình, sự thật 16 hình tràn mà công thức báo 160. Cổng kêu oan 144 lần thì tệ
+    hơn không có cổng.
+  - **Cách quét**: mở `/design`, chạy đoạn dưới trong console. Nó đo bằng
+    `getBoundingClientRect` (toạ độ MÀN HÌNH) chứ KHÔNG dùng `getBBox` —
+    `getBBox` bỏ qua transform của nhóm cha nên báo động giả.
+    ```js
+    for (const el of document.querySelectorAll('svg[viewBox="0 0 220 130"]')) {
+      const b = el.getBoundingClientRect(), sx = 220 / b.width, sy = 130 / b.height
+      const u = r => ({x1:(r.left-b.left)*sx, x2:(r.right-b.left)*sx, y1:(r.top-b.top)*sy, y2:(r.bottom-b.top)*sy})
+      let tran = 0
+      for (const g of el.querySelectorAll('text,rect,circle,path,line')) {
+        const k = u(g.getBoundingClientRect()); tran = Math.max(tran, -k.x1, -k.y1, k.x2-220, k.y2-130)
+      }
+      const t = [...el.querySelectorAll('text')].map(x => ({s:x.textContent.trim(), ...u(x.getBoundingClientRect())}))
+      const de = t.some((a,i) => t.slice(i+1).some(c =>
+        Math.min(a.x2,c.x2)-Math.max(a.x1,c.x1) > 1.5 && Math.min(a.y2,c.y2)-Math.max(a.y1,c.y1) > 1.5))
+      if (tran > 2 || de) console.log(el.getAttribute('aria-label'), Math.round(tran), de)
+    }
+    ```
+  - **Ba luật của một hình lành**: nằm gọn trong 0..220 x 0..130 · không nhãn nào
+    đè nhãn nào · **không chữ nào nhỏ hơn fontSize 8** (nhãn chính 9-10). Chật chỗ
+    thì RÚT NGẮN CHỮ hoặc XẾP LẠI BỐ CỤC — bóp cỡ chữ xuống 6.5 cho vừa chính là
+    cách 15 hình kia hỏng.
+  - **Bề rộng chữ đo thật trong app này**: khoảng `số ký tự x fontSize x 0.63`
+    (chữ thường; lên tới 0.79 khi nhiều chữ hoa và gạch ngang dài) và `x 0.73`
+    (mono). Đừng tin con số 0.5 quen thuộc của font Latin — tiếng Việt có dấu nên
+    rộng hơn, và ước thấp là cách chắc chắn để vẽ ra hình tràn.
+  - Nhãn ghép hai vế ("tên - nghĩa") thì dùng MỘT `<text>` với hai `<tspan>` để vế
+    sau tự nối tiếp; đoán bề rộng vế trước bằng phép nhân là sai ngay khi đổi chữ.
 - `ConceptVisual`: đầu mũi tên `cv-arrow` khai ở `Frame` nên mọi hình
   dùng được; hình mới không tràn viewBox 220×130 (soi `getBBox` ở
   `/design`); registry thiếu visualId là `ConceptVisual.test` đỏ. Bản đồ
@@ -1270,6 +1355,16 @@ chỉ bỏ điều kiện "học hết bài trước đã".
 - **Enter giữa bảng còn ô trống là NO-OP** (8 ô chung một form, phản xạ
   Enter đốt oan một bậc thang gợi ý); nộp bằng nút "Kiểm tra". Ba tiêu
   chí hiện trạng thái bằng CHỮ (đạt/chưa đạt) cạnh ký hiệu, nếp CLI/lab.
+- **Test đi HẾT phiên VLSM thì đừng tra ô bằng `getByRole({ name })`**
+  (khối 21.52, chữa một flake có sẵn). Tra theo tên đọc được bắt
+  testing-library tính accessible name cho cả bảng — đo được ~22ms một
+  lần tra, mà đi hết 5 đề là 40 lần, tức gần một giây chỉ để TÌM ô. Case
+  "lịch sử phiên" vì thế thỉnh thoảng chạm trần 5000ms lúc `npm test`
+  chạy cùng dev server, còn chạy riêng file thì luôn xanh — dạng đỏ oan
+  tốn cả buổi truy. Cách làm: quét `table input` MỘT phát rồi đối chiếu
+  thuộc tính `aria-label`, giữ nguyên lời hứa về nhãn với giá ~0,5ms
+  (`designCells` trong `VlsmDrill.test.tsx`). Case đó còn có trần thời
+  gian RIÊNG 15s làm đệm cho cơn tải — đừng chữa kiểu nới trần chung.
 
 ## 12. Launcher trên máy (scripts/launch-app.mjs + staticHandler.mjs)
 

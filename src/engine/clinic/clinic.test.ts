@@ -8,6 +8,7 @@ import {
   CASE_RUT_DAY,
   CASE_SAI_GATEWAY,
   CASE_TRUNG_IP,
+  CASE_DAY_OM,
   ALL_CLINIC_CASES,
 } from '../../../tests/fixtures/clinicFixture'
 import { validatePatient } from './patient'
@@ -289,5 +290,119 @@ describe('ca liên tầng — nửa mạng vẫn qua đủ cổng cũ', () => {
 
   it('ca liên tầng hợp lệ thì parse trót lọt', () => {
     expect(() => parseClinicCase(CASE_HAI_NUA)).not.toThrow()
+  })
+})
+
+// ---------------------------------------------------------------
+// Bệnh "CHẬM CHỨ KHÔNG CHẾT" — độ trễ và rớt gói (lỗ hổng Q3)
+// ---------------------------------------------------------------
+//
+// Loại bệnh này khác mọi ca cũ ở một điểm quyết định: mạng THÔNG. Mọi
+// lệnh đọc lướt đều xanh, chỉ CON SỐ là xấu. Vì thế bất biến file này
+// canh là "khỏi" phải đòi cả hai vế — có tiếng đáp VÀ số đo đẹp — chứ
+// không phải chỉ ping ra Reply là qua bài.
+
+describe('dây ốm — chậm chứ không chết', () => {
+  it('ping vẫn có tiếng đáp nhưng con số xấu: trễ cộng dồn cả hai chiều', () => {
+    const { last } = type(CASE_DAY_OM, 'ping 10.0.0.2')
+    if (last.outcome.kind !== 'ping') throw new Error('không phải kết quả ping')
+    expect(last.outcome.replied).toBe(true)
+    // 90ms mỗi chiều, gói qua sợi dây bệnh hai lượt đi-về.
+    expect(last.outcome.quality.rttMs).toBe(180)
+    // Rơi 20% mỗi lượt qua dây, hai lượt: 1 - 0.8*0.8 = 36%.
+    expect(last.outcome.quality.lossPercent).toBe(36)
+    const out = last.lines.join('\n')
+    expect(out).toContain('time=180ms')
+    expect(out).toContain('Request timed out.')
+    expect(out).toContain('Approximate round trip times in milli-seconds:')
+  })
+
+  it('không bao giờ rơi trọn 4 gói — ốm không được phép trông y hệt chết', () => {
+    const nang: ClinicCaseSpec = {
+      ...CASE_DAY_OM,
+      patient: {
+        ...CASE_DAY_OM.patient,
+        overlay: { impairments: [{ linkId: 'cl6-w-seat-cu', latencyMs: 90, lossPercent: 90 }] },
+      },
+    }
+    const { last } = type(nang, 'ping 10.0.0.2')
+    if (last.outcome.kind !== 'ping') throw new Error('không phải kết quả ping')
+    expect(last.outcome.replied).toBe(true)
+    expect(last.lines.join('\n')).toContain('Received = 1')
+  })
+
+  it('mạng khỏe thì không có con số nào bịa ra', () => {
+    const { last } = type(CASE_RUT_DAY, 'ping 192.168.10.20')
+    if (last.outcome.kind !== 'ping') throw new Error('không phải kết quả ping')
+    expect(last.outcome.quality).toEqual({ rttMs: 0, lossPercent: 0 })
+  })
+
+  it('tracert chỉ đúng KHÚC nào chậm, không chỉ nói cả chuyến chậm', () => {
+    const { last } = type(CASE_DAY_OM, 'tracert 10.0.0.2')
+    const rows = last.lines.filter((l) => /^\s+\d+\s/.test(l))
+    expect(rows.length).toBe(2)
+    // Sợi dây bệnh nằm ngay chặng đầu nên MỌI chặng sau đều gánh 180ms.
+    // Đã đỏ mặt ở browser một lần: chỉ đọc chặng echo-request ĐẦU TIÊN thì
+    // dòng đích in "<1 ms" ngay dưới một dòng "180 ms" — bản đồ tự cãi
+    // nhau ngay trước mắt người học. Gói qua router đi thành NHIỀU chặng.
+    for (const row of rows) expect(row, `chặng này mất số đo: ${row}`).toContain('180 ms')
+  })
+
+  it('sợi dây ốm ở NHÁNH CỤT không được tính vào ping của đường khác', () => {
+    // Máy chủ nằm sau router; dây ốm cắm ở nhánh không dính đường đi.
+    const lac: ClinicCaseSpec = {
+      ...CASE_DAY_OM,
+      patient: {
+        ...CASE_DAY_OM.patient,
+        overlay: { impairments: [{ linkId: 'cl6-w-server', latencyMs: 300 }] },
+        seatId: 'cl6-may-phong-hop',
+      },
+    }
+    const { last } = type(lac, 'ping 192.168.30.1')
+    if (last.outcome.kind !== 'ping') throw new Error('không phải kết quả ping')
+    expect(last.outcome.replied).toBe(true)
+    expect(last.outcome.quality.rttMs).toBe(0)
+  })
+
+  it('"khỏi" đòi cả hai vế: thay dây thì đạt, rút phăng dây thì KHÔNG', () => {
+    if (CASE_DAY_OM.fix.kind !== 'edit-network') throw new Error('fixture đổi kiểu fix?')
+    expect(gradeClinicFix(CASE_DAY_OM, CASE_DAY_OM.fix.solution).passed).toBe(true)
+    expect(gradeClinicFix(CASE_DAY_OM, CASE_DAY_OM.patient.topology).passed).toBe(false)
+    // Rút dây bệnh mà không cắm dây mới: hết chậm vì hết mạng luôn.
+    const rutPhang = {
+      ...CASE_DAY_OM.patient.topology,
+      links: CASE_DAY_OM.patient.topology.links.filter((l) => l.id !== 'cl6-w-seat-cu'),
+    }
+    expect(checkSymptom(CASE_DAY_OM, rutPhang).sick).toBe(true)
+    expect(gradeClinicFix(CASE_DAY_OM, rutPhang).passed).toBe(false)
+  })
+
+  it('smellsOf kể đúng hai mùi bệnh mới', () => {
+    expect(smellsOf(CASE_DAY_OM)).toEqual(expect.arrayContaining(['link-slow', 'link-lossy']))
+  })
+
+  it('khai dây ốm trỏ vào link không có thật — chặn ở kiểm cấu trúc', () => {
+    const broken = {
+      ...CASE_DAY_OM.patient,
+      overlay: { impairments: [{ linkId: 'khong-co-day-nay', latencyMs: 50 }] },
+    }
+    expect(validatePatient(broken).map((p) => p.code)).toContain('impair-link-not-found')
+  })
+
+  it('khai dây ốm mà không xấu ở con số nào — chặn ở kiểm cấu trúc', () => {
+    const broken = {
+      ...CASE_DAY_OM.patient,
+      overlay: { impairments: [{ linkId: 'cl6-w-seat-cu' }] },
+    }
+    expect(validatePatient(broken).map((p) => p.code)).toContain('impair-empty')
+  })
+
+  it('triệu chứng khai "chậm" mà hồ sơ không có dây ốm nào — schema chặn', () => {
+    const bogus = { ...CASE_DAY_OM, patient: { ...CASE_DAY_OM.patient, overlay: {} } }
+    expect(() => parseClinicCase(bogus)).toThrow(/không khai sợi dây ốm nào/)
+  })
+
+  it('ca dây ốm hợp lệ thì parse trót lọt', () => {
+    expect(() => parseClinicCase(CASE_DAY_OM)).not.toThrow()
   })
 })

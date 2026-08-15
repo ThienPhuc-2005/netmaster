@@ -2,7 +2,9 @@
   "id": "module-18",
   "order": 18,
   "part": "E",
-  "letter": { "vi": "Ghi lại cho bạn. Trước module này, DHCP với DNS là hai dịch vụ cứ chạy là được; giờ bạn biết chúng ngã thì cả tầng câm lặng, và biết dựng người thứ hai đỡ việc mà không giẫm chân nhau. Bạn đưa được lời hỏi cưới vượt ranh giới xóm, giải nghĩa được cái tên có hai câu trả lời tùy người đứng ở đâu, và điều khiển được trí nhớ của cả hệ thống tên. Sáng thứ hai của một công ty sống hay chết là ở mấy thứ bạn vừa nắm." },
+  "letter": {
+    "vi": "Ghi lại cho bạn. Trước module này, DHCP với DNS là hai dịch vụ cứ chạy là được; giờ bạn biết chúng ngã thì cả tầng câm lặng, và biết dựng người thứ hai đỡ việc mà không giẫm chân nhau. Bạn đưa được lời hỏi cưới vượt ranh giới xóm, giải nghĩa được cái tên có hai câu trả lời tùy người đứng ở đâu, và điều khiển được trí nhớ của cả hệ thống tên. Sáng thứ hai của một công ty sống hay chết là ở mấy thứ bạn vừa nắm."
+  },
   "title": {
     "vi": "DHCP và DNS doanh nghiệp — Dịch vụ không được chết"
   },
@@ -165,7 +167,7 @@
               },
               "solution": {
                 "vi": "Hét trong xóm → relay nghe và ghi giaddr → thư đích danh vượt router → máy chủ đọc giaddr chọn dải → OFFER quay về qua relay. Mấu chốt là hai chặng giữa: đổi tiếng hét thành thư, và ghi rõ xóm nào đang hỏi."
-              },
+              },
               "conceptId": "m18-relay"
             },
             {
@@ -183,7 +185,7 @@
                     "vi": "Đoán theo địa chỉ MAC của máy xin, vì MAC có ghi mã tòa nhà"
                   },
                   {
-                    "vi": "Cấp lần lượt từng dải theo thứ tự lời xin gửi tới trong ngày"
+                    "vi": "Cấp lần lượt từng dải theo đúng thứ tự lời xin gửi tới trong ngày"
                   }
                 ],
                 "answerIndex": 0,
@@ -196,7 +198,7 @@
               },
               "solution": {
                 "vi": "Nhờ ô giaddr. Relay ghi địa chỉ xóm mình vào đó trước khi chuyển lời, nên máy chủ chỉ cần đối chiếu giaddr với danh sách scope là chọn đúng dải. Không có giaddr thì mười xóm trông giống hệt nhau."
-              },
+              },
               "conceptId": "m18-relay"
             }
           ]
@@ -620,7 +622,7 @@
               },
               "solution": {
                 "vi": "Được. Hai máy cùng nằm trong dải 169.254.0.0/16 và cùng xóm nên gọi nhau không cần gateway. Cái chúng mất là đường RA KHỎI xóm — vì gateway và DNS đều trống. APIPA là phao cứu sinh trong xóm, không phải mạng thật."
-              },
+              },
               "conceptId": "m18-apipa"
             },
             {
@@ -669,7 +671,7 @@
               },
               "solution": {
                 "vi": "Tỉ lệ cấp phát — số địa chỉ đã cho thuê trên tổng số suất của scope. Chạm ngưỡng 90% là lúc hành động (mở rộng dải, rút lease), chứ không đợi sáng thứ hai chuông reo dồn dập."
-              },
+              },
               "conceptId": "m18-scope"
             },
             {
@@ -704,7 +706,7 @@
               },
               "solution": {
                 "vi": "Tối đa 2 ngày. Máy rời mạng chiều thứ sáu thì lease 2 ngày hết hạn chiều chủ nhật, kịp trả suất về kho trước giờ làm; để 3 ngày là mãi chiều thứ hai mới hết, sáng thứ hai vẫn còn nguyên 197 suất bị giữ và người đến sau vẫn nhận 169.254. Rút lease là cách rẻ nhất chữa scope cạn khi chưa mở rộng được dải — đổi lại máy phải xin gia hạn dày hơn, nên đừng rút quá tay ở scope máy để bàn ngồi yên cả tuần."
-              },
+              },
               "conceptId": "m18-scope"
             }
           ]
@@ -911,7 +913,7 @@
               },
               "solution": {
                 "vi": "Chia kho tách bạch hoặc chung sổ failover. Bê nguyên cấu hình là hai cuốn sổ rời cùng phát một dải — máy nào cũng tưởng số còn trống, và bệnh trùng IP được hạ tầng sản xuất đều đặn. Phát theo giờ cũng chung một lỗi: hai sổ vẫn chẳng biết gì về nhau."
-              },
+              },
               "conceptId": "m18-failover"
             },
             {
@@ -942,7 +944,7 @@
               },
               "solution": {
                 "vi": "Hai máy DHCP cùng phát một dải. Lỗi con người thì lẻ tẻ và dính một máy; lỗi lặp có hệ thống với nạn nhân ngẫu nhiên là chữ ký của hạ tầng cấp phát đôi. Switch thì không gán địa chỉ IP cho ai bao giờ — nó sống ở tầng 2."
-              },
+              },
               "conceptId": "m18-trung-dai"
             }
           ]
@@ -1660,7 +1662,7 @@
               },
               "solution": {
                 "vi": "Thiếu conditional forwarder. Ping số thông chứng tỏ đường VPN ổn — tuyến tĩnh không thiếu; còn tên nội bộ của đối tác thì Internet không biết nên đưa lên DNS công cộng là vô ích. Phải có luật hỏi đúng nhà: tên doitac.vn chuyển thẳng tới DNS của đối tác."
-              },
+              },
               "conceptId": "m18-cond-forwarder"
             }
           ]
@@ -2021,7 +2023,7 @@
       "kind": "typed",
       "id": "m18-mt-4",
       "prompt": {
-        "vi": "Máy xin DHCP mà không ai trả lời sẽ tự cấp cho mình một địa chỉ bắt đầu bằng cặp số nào?"
+        "vi": "Máy của kế toán mất mạng; bạn chạy ipconfig thì thấy Windows đã tự đặt cho nó một địa chỉ vì chẳng ai cấp. Hai số mở đầu của địa chỉ đó là gì?"
       },
       "accept": [
         "169.254",
@@ -2142,17 +2144,17 @@
       "kind": "mcq",
       "id": "m18-mt-9",
       "prompt": {
-        "vi": "Máy trong công ty không phân giải được tên nội bộ, một người bèn đổi DNS của máy sang máy chủ công cộng ngoài Internet. Vì sao cách này thất bại?"
+        "vi": "Nhân viên mang laptop về nhà, ở đó máy nhận DNS của nhà mạng. Mọi trang Internet vào bình thường, riêng tên máy chủ nội bộ của công ty thì báo không tìm thấy. Vì đâu?"
       },
       "choices": [
         {
-          "vi": "Vì tên nội bộ chỉ nằm trong sổ DNS trong — ngoài Internet không ai giữ nó"
+          "vi": "Vì tên nội bộ chỉ nằm trong sổ DNS trong — DNS nhà mạng không giữ nó"
         },
         {
-          "vi": "Vì máy chủ DNS công cộng luôn chặn mọi câu hỏi phát ra từ mạng doanh nghiệp"
+          "vi": "Vì laptop ở ngoài văn phòng phải khởi động lại card mạng mới hỏi được"
         },
         {
-          "vi": "Vì đổi DNS trên máy trạm bắt buộc phải khởi động lại toàn bộ hệ thống mạng"
+          "vi": "Vì DNS của nhà mạng chặn mọi câu hỏi nhắc tới tên của doanh nghiệp"
         }
       ],
       "answerIndex": 0,
@@ -2160,7 +2162,7 @@
         "vi": "cuốn sổ nào giữ tên trong nhà"
       },
       "explain": {
-        "vi": "Tên nội bộ sống duy nhất trong sổ trong — DNS công cộng không có và không bao giờ có. Đổi ra ngoài là tự cắt mình khỏi mọi tên trong nhà, kể cả những tên đang chạy tốt. Đây là phản xạ sai kinh điển của người mới trực."
+        "vi": "Tên nội bộ sống duy nhất trong sổ DNS trong của công ty — máy chủ DNS ngoài kia không có và không bao giờ có. Rời khỏi mạng công ty là rời khỏi cuốn sổ ấy, nên tên trong nhà tắt ngóm dù Internet vẫn chạy ngon. Muốn gọi lại tên đó thì phải quay về sổ trong, thường là qua VPN."
       }
     },
     {
@@ -2215,7 +2217,7 @@
       "kind": "typed",
       "id": "m18-mt-12",
       "prompt": {
-        "vi": "Vài ngày trước khi đổi địa chỉ một máy chủ, người vận hành làm gì với TTL của bản ghi sắp đổi?"
+        "vi": "Thứ Bảy tuần sau công ty dời web nội bộ sang máy chủ mới, tức bản ghi A sẽ trỏ sang IP khác. Ngay hôm nay người trực cần làm gì với TTL của bản ghi đó?"
       },
       "accept": [
         "hạ ttl",
@@ -2238,6 +2240,28 @@
       },
       "explain": {
         "vi": "Hạ TTL xuống thật ngắn từ trước — đợi trọn vòng hạn cũ trôi qua để mọi bộ đệm cầm bản hạn ngắn, rồi mới đổi địa chỉ; ổn định xong nâng TTL về như cũ. Không hạ trước thì bản cũ sống lởn vởn tới hết hạn dài, chẳng lệnh nào xóa hộ được."
+      }
+    },
+    {
+      "kind": "mcq",
+      "id": "m18-mt-15",
+      "prompt": {
+        "vi": "Máy cấp phát địa chỉ duy nhất của công ty sắp phải bảo trì hằng tháng. Cách dựng máy thứ hai nào đứng vững?"
+      },
+      "choices": [
+        {
+          "vi": "Chia kho suất tách bạch 80/20, hoặc bắt cặp hai máy dùng chung một cuốn sổ có đồng bộ"
+        },
+        {
+          "vi": "Đặt máy thứ hai trả lời chậm hơn máy thứ nhất một nhịp để nó chỉ đáp khi máy kia im"
+        },
+        {
+          "vi": "Cho máy thứ hai chỉ bật lên vào đúng những ngày máy thứ nhất nằm bảo trì"
+        }
+      ],
+      "answerIndex": 0,
+      "explain": {
+        "vi": "Hai cách đứng vững đều dựa trên một điều: hai máy không được cấp trùng số nhà. Chia kho 80/20 thì mỗi máy có phần riêng, không chồng lấn; bắt cặp failover thì hai máy dùng chung một cuốn sổ và kể cho nhau nghe từng hợp đồng. Trả lời chậm hơn không ngăn được trùng cấp — cả hai vẫn giữ hai cuốn sổ rời. Còn bật theo lịch thì lúc máy một chết ngoài kế hoạch, không có ai đỡ."
       }
     },
     {

@@ -50,12 +50,39 @@ function submit() {
   fireEvent.click(screen.getByRole('button', { name: 'Kiểm tra' }))
 }
 
+/**
+ * Tám ô của bảng thiết kế, lấy MỘT PHÁT theo thứ tự DOM (mỗi dòng: ô địa
+ * chỉ rồi ô prefix), kèm đối chiếu nhãn để thứ tự đó không phải là niềm tin.
+ *
+ * Vì sao không tra từng ô bằng `getByRole({ name })` như `fillRow`: mỗi lần
+ * tra theo tên đọc được, testing-library phải tính accessible name cho MỌI
+ * ô của bảng — đo được ~22ms một lần. Case "lịch sử phiên" đi hết phiên 5
+ * đề × 4 phòng × 2 ô = 40 lần tra, tức ~0,9 giây chỉ để TÌM ô; đủ để case
+ * đó chạm trần 5000ms của Vitest những lúc máy đang bận (dev server +
+ * browser chạy song song) và đỏ oan. Đọc thẳng `aria-label` thay vì tính
+ * accessible name giữ nguyên lời hứa "mỗi ô có nhãn đúng phòng ban" mà gần
+ * như không tốn gì (~0,5ms cho cả bảng).
+ */
+function designCells(needCount: number): HTMLInputElement[] {
+  const cells = [...document.querySelectorAll<HTMLInputElement>('table input')]
+  expect(cells).toHaveLength(needCount * 2)
+  cells.forEach((cell, i) => {
+    const dept = `Phòng ban ${Math.floor(i / 2) + 1}`
+    expect(cell.getAttribute('aria-label')).toBe(
+      i % 2 === 0 ? `Địa chỉ mạng cho ${dept}` : `Prefix cho ${dept}`,
+    )
+  })
+  return cells
+}
+
 /** Điền trọn lời giải tham chiếu của một đề. */
 function fillSolution(problem: VlsmProblem) {
   const solution = solveVlsm(problem)!
+  const cells = designCells(problem.needs.length)
   problem.needs.forEach((need, i) => {
     const assignment = solution.find((a) => a.needId === need.id)!
-    fillRow(i, assignment.ip, assignment.prefix)
+    fireEvent.change(cells[i * 2]!, { target: { value: assignment.ip } })
+    fireEvent.change(cells[i * 2 + 1]!, { target: { value: String(assignment.prefix) } })
   })
 }
 
@@ -119,6 +146,22 @@ describe('thang 3 tầng bám ba tiêu chí', () => {
 })
 
 describe('lịch sử phiên', () => {
+  /**
+   * Trần thời gian RIÊNG cho case này, KHÔNG nới trần chung của cả bộ.
+   *
+   * Đây là case nặng nhất file: nó phải đi HẾT phiên 5 đề (điền 40 ô, nộp
+   * 5 lần) mới có một dòng lịch sử để soi — bốn case kia chỉ chạm một đề.
+   * Không rút ngắn được: `SESSION_SIZE` là hằng của màn hình, và lời hứa
+   * cần kiểm chính là "phiên XONG thì ghi gì".
+   * Bình thường case chạy ~0,3-0,8 giây. Nhưng lúc máy bận (dev server +
+   * browser chạy song song) đã đo được nó phình 3-4 lần, và từng chạm trần
+   * mặc định 5000ms → đỏ oan giữa lượt `npm test`, chạy riêng file lại
+   * xanh. Nới riêng ở đây là mua đệm cho cơn tải, không phải che bài chậm:
+   * Vitest vẫn in thời gian từng case, nên nếu case này tự dưng leo lên
+   * nhiều giây thì vẫn nhìn thấy ngay ở dòng báo cáo.
+   */
+  const TRAN_THOI_GIAN_MS = 15_000
+
   it('phiên xong ghi ĐÚNG loại vlsm, không lẫn vào biểu đồ drill subnet', () => {
     startSession()
     const problems = generateVlsmSession(
@@ -133,5 +176,5 @@ describe('lịch sử phiên', () => {
     expect(history).toHaveLength(1)
     expect(history[0]).toMatchObject({ mode: 'vlsm', correct: 5, total: 5 })
     expect(screen.getByText('Xong phiên luyện hôm nay!')).toBeTruthy()
-  })
+  }, TRAN_THOI_GIAN_MS)
 })

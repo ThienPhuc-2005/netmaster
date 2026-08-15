@@ -71,7 +71,7 @@ describe('LessonPlayer — đi trọn bài đầu Module 1 (nội dung thật)',
     fireEvent.click(screen.getByRole('button', { name: /Bắt đầu/ }))
 
     // Bước 2 — Pretest: đoán SAI vẫn đi tiếp; luôn thấy đáp án + vì sao
-    fireEvent.click(screen.getByRole('button', { name: /Đi nguyên tấm tới máy Mai/ }))
+    fireEvent.click(screen.getByRole('button', { name: /Đi nguyên tấm/ }))
     expect(screen.getByText(/não bạn vừa được "mồi"/)).toBeTruthy()
     expect(screen.getByText(/^Đáp án/)).toBeTruthy()
     expect(screen.getByText(/mỗi gói tự mang địa chỉ/)).toBeTruthy()

@@ -62,6 +62,29 @@ export interface HostBlock {
   ruleName: string
 }
 
+/**
+ * Sợi dây ĐANG ỐM: vẫn dẫn được, nhưng chậm và rơi rớt.
+ *
+ * Vì sao gắn vào SỢI DÂY chứ không vào máy: mạng chậm là bệnh của một
+ * ĐOẠN đường, và ngoài đời người ta chữa nó bằng cách thay đúng đoạn đó
+ * (thay dây, đổi cổng, dời sang đường khác). Gắn vào dây thì cách chữa
+ * cũng tự nhiên nằm trong tầm tay phòng lab: gỡ sợi dây bệnh ra, cắm
+ * sợi mới — dây mới mang `id` mới nên hồ sơ bệnh không còn dính vào nó
+ * nữa, đúng như thay dây thật.
+ *
+ * Đây là bệnh "còn thở nhưng thoi thóp", khác hẳn dây ĐỨT (mô hình bằng
+ * cách bỏ hẳn link). Muốn dựng ca đứt hẳn thì rút link ra, đừng khai
+ * `lossPercent: 100` — xem chú thích `LOSS_CAP` ở terminal.
+ */
+export interface LinkImpairment {
+  /** Dây bệnh — phải là `id` của một link có thật trong topology. */
+  linkId: string
+  /** Độ trễ MỘT CHIỀU sợi dây này cộng thêm, tính bằng mili-giây. */
+  latencyMs?: number
+  /** Tỉ lệ gói rơi trên sợi dây này (0-90). */
+  lossPercent?: number
+}
+
 /** GPO đang áp trên một máy (cho lệnh gpresult của ca liên quan Module 9). */
 export interface AppliedGpo {
   name: string
@@ -87,6 +110,8 @@ export interface ClinicOverlay {
   connections?: Record<DeviceId, NetstatRow[]>
   /** GPO đang áp theo máy — cho gpresult. */
   gpos?: Record<DeviceId, AppliedGpo[]>
+  /** Các sợi dây còn dẫn được nhưng chậm/rớt gói — bệnh "chậm chứ không chết". */
+  impairments?: LinkImpairment[]
 }
 
 /**
@@ -105,6 +130,26 @@ export type ClinicSymptom =
    * còn từ hai chủ trở lên cùng giữ IP đó.
    */
   | { kind: 'ping-flaps'; from: DeviceId; target: string }
+  /**
+   * "Chậm chứ không chết": ping VẪN CÓ tiếng đáp, nhưng số đo xấu — trễ
+   * quá ngưỡng hoặc rơi gói. Đây là lời than phổ biến nhất ngoài đời
+   * ("mạng lag", "họp online vỡ tiếng") mà một mô hình chỉ biết
+   * thông/không-thông thì không dựng nổi.
+   *
+   * Ngưỡng KHỎE khai ngay trong triệu chứng, vì "bao nhiêu là chậm" tùy
+   * việc: gọi video khác tải file. Khỏi = ping có đáp VÀ cả hai số đo
+   * đều nằm dưới ngưỡng — đứt hẳn cũng bị tính là CHƯA khỏi, không thì
+   * người học "chữa" bằng cách rút phăng sợi dây bệnh là qua bài.
+   */
+  | {
+      kind: 'ping-degraded'
+      from: DeviceId
+      target: string
+      /** Trễ khứ hồi tối đa còn coi là khỏe (ms). */
+      maxLatencyMs: number
+      /** Tỉ lệ rơi gói tối đa còn coi là khỏe (%). */
+      maxLossPercent: number
+    }
 
 /** Bệnh nhân: mạng + hồ sơ bệnh + chỗ ngồi của người học. */
 export interface ClinicPatient {
@@ -128,6 +173,9 @@ export interface PatientProblem {
     | 'block-device-not-found'
     | 'gpo-device-not-found'
     | 'block-gpo-unlisted'
+    | 'impair-link-not-found'
+    | 'impair-empty'
+    | 'impair-out-of-range'
   where: string
 }
 
@@ -175,6 +223,23 @@ export function validatePatient(patient: ClinicPatient): PatientProblem[] {
     }
   }
 
+  for (const imp of overlay.impairments ?? []) {
+    if (!topology.links.some((l) => l.id === imp.linkId)) {
+      problems.push({ code: 'impair-link-not-found', where: imp.linkId })
+      continue
+    }
+    const latency = imp.latencyMs ?? 0
+    const loss = imp.lossPercent ?? 0
+    // Dây khai là ốm mà không xấu ở con số nào thì nó đang khỏe — hồ sơ
+    // bệnh nói dối, và ca sẽ không bao giờ ốm thật.
+    if (latency <= 0 && loss <= 0) {
+      problems.push({ code: 'impair-empty', where: imp.linkId })
+    }
+    if (latency < 0 || latency > 5000 || loss < 0 || loss > 90) {
+      problems.push({ code: 'impair-out-of-range', where: `${imp.linkId} (${latency}ms / ${loss}%)` })
+    }
+  }
+
   for (const deviceId of Object.keys(overlay.gpos ?? {})) {
     if (findDevice(topology, deviceId) === null) {
       problems.push({ code: 'gpo-device-not-found', where: deviceId })
@@ -195,6 +260,11 @@ export function ipOwners(topology: Topology, ip: Ipv4): DeviceId[] {
     }
   }
   return owners
+}
+
+/** Sợi dây này có đang ốm không? Trả hồ sơ để terminal cộng trễ/rớt. */
+export function impairmentOf(overlay: ClinicOverlay, linkId: string): LinkImpairment | null {
+  return (overlay.impairments ?? []).find((i) => i.linkId === linkId) ?? null
 }
 
 /** Máy đang bị luật chặn ICMP? Trả về luật để terminal kể đúng nguồn. */

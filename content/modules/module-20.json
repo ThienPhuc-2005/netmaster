@@ -2,7 +2,9 @@
   "id": "module-20",
   "order": 20,
   "part": "E",
-  "letter": { "vi": "Mấy dòng cho ca sáng. Trước module, log là đống chữ chỉ mở ra khi đã có chuyện; giờ bạn đọc một dòng nhật ký ra được bốn điều: khi nào, máy nào, nặng cỡ nào, chuyện gì. Bạn gom được ba chục cuốn sổ về một chỗ, biết đồng hồ lệch làm đảo ngược nhân quả ra sao, và vẽ được đường bình thường để nhìn ra điều bất thường. Thấy sự cố trước người dùng — đó là lằn ranh giữa trực ca và chữa cháy." },
+  "letter": {
+    "vi": "Mấy dòng cho ca sáng. Trước module, log là đống chữ chỉ mở ra khi đã có chuyện; giờ bạn đọc một dòng nhật ký ra được bốn điều: khi nào, máy nào, nặng cỡ nào, chuyện gì. Bạn gom được ba chục cuốn sổ về một chỗ, biết đồng hồ lệch làm đảo ngược nhân quả ra sao, và vẽ được đường bình thường để nhìn ra điều bất thường. Thấy sự cố trước người dùng — đó là lằn ranh giữa trực ca và chữa cháy."
+  },
   "title": {
     "vi": "Giám sát và nhật ký — Nhìn thấy sự cố trước người dùng"
   },
@@ -155,7 +157,7 @@
               },
               "solution": {
                 "vi": "Số 3. Em Ăn Cơm Em Với Người Iu Đi — Emergency 0, Alert 1, Critical 2, Error 3. Ranh giới có-chuyện-thật nằm ngay tại đây: từ 3 trở xuống là lỗi thật."
-              },
+              },
               "conceptId": "m20-severity"
             },
             {
@@ -186,7 +188,7 @@
               },
               "solution": {
                 "vi": "Các mức 4-7 (Warning trở lên về phía nhẹ) bị ẩn. Ngưỡng lọc là công cụ sống còn của ca đêm: giữ lại 0-3 để một dòng Error biết nói không bị trận lụt Warning vô hại nhấn chìm."
-              },
+              },
               "conceptId": "m20-severity"
             }
           ]
@@ -478,7 +480,7 @@
               },
               "solution": {
                 "vi": "Get-Content tap-trung.log | Select-String ERROR — lọc theo mức có-chuyện-thật là dòng sự cố nổi lên ngay: sw-tang-3 báo link flapping on port 7 (cổng chập chờn), khớp hẳn với lời than của người dùng. Lọc theo tên máy sw-tang-3 cũng tới đích — nhiều đường đúng, miễn là ĐỪNG đọc tuần tự từ dòng một."
-              },
+              },
               "conceptId": "m20-log-tap-trung"
             },
             {
@@ -493,7 +495,7 @@
                     "vi": "Chỉ khi hai thiết bị đang chung một nguồn giờ NTP — không thì thứ tự là chuyện bịa"
                   },
                   {
-                    "vi": "Luôn luôn — dấu thời gian trong log là thứ không bao giờ nói dối người đọc"
+                    "vi": "Luôn luôn — dấu thời gian trong log là thứ không bao giờ nói dối người đọc nó"
                   },
                   {
                     "vi": "Chỉ khi hai thiết bị cùng một hãng sản xuất để khuôn log giống hệt nhau"
@@ -509,7 +511,7 @@
               },
               "solution": {
                 "vi": "Chỉ khi hai máy chung nguồn giờ. Đồng hồ router mà chậm 6 phút thì sự thật đảo ngược — bão nổ trước, tuyến rơi là hậu quả. Dấu thời gian chỉ đáng tin bằng cái đồng hồ đẻ ra nó; khuôn log giống nhau chẳng cứu được điều đó."
-              },
+              },
               "conceptId": "m20-gio-lech"
             }
           ]
@@ -1116,7 +1118,7 @@
               },
               "solution": {
                 "vi": "Polling. Xu hướng chỉ hiện ra từ chuỗi số đo đều — trap chỉ reo khi có biến cố rời rạc (và sắp-nghẽn chưa phải biến cố), log ghi chuyện xảy ra chứ không ghi nhịp tim từng phút. Đây chính là cái polling nhìn thấy mà trap mù."
-              },
+              },
               "conceptId": "m20-snmp-polling"
             },
             {
@@ -1143,7 +1145,7 @@
               },
               "solution": {
                 "vi": "Trap — thiết bị tự gửi gói báo động về hệ giám sát ngay khi có biến, không đợi lượt polling. Tức thì là cái quý của nó; không vẽ được xu hướng là cái nó thiếu — nên nghề dùng cả hai."
-              },
+              },
               "conceptId": "m20-snmp-trap"
             }
           ]
@@ -1325,7 +1327,7 @@
                     "vi": "Đáng ngờ — im ắng khác nếp cũng là bất thường, có thể lưu lượng đang không tới được nó"
                   },
                   {
-                    "vi": "Tin tốt — tải càng thấp thiết bị càng nhàn, mạng đang khỏe hơn mọi ngày"
+                    "vi": "Tin tốt — tải càng thấp thì thiết bị càng nhàn, mạng hôm nay khỏe hơn mọi ngày"
                   },
                   {
                     "vi": "Không có gì đáng nói, vì chỉ số vượt LÊN mới được tính là bất thường"
@@ -1660,7 +1662,7 @@
       "kind": "typed",
       "id": "m20-mt-2",
       "prompt": {
-        "vi": "Mức ERROR trong thang syslog mang số mấy?"
+        "vi": "Máy thu log cho lọc theo con số: chỉ giữ những dòng từ Error trở lên nặng. Bạn điền số nào vào ô ngưỡng?"
       },
       "accept": [
         "3",
@@ -1680,7 +1682,7 @@
       "kind": "order",
       "id": "m20-mt-3",
       "prompt": {
-        "vi": "Xếp tám mức syslog từ 0 (nặng nhất) tới 7 (nhẹ nhất):"
+        "vi": "Bảng chọn mức trên máy thu log đang liệt kê tám tên này lộn xộn. Kéo về đúng thứ hạng: nặng nhất lên trên cùng, nhẹ nhất xuống dưới cùng."
       },
       "items": [
         {
@@ -1888,7 +1890,7 @@
       "kind": "typed",
       "id": "m20-mt-11",
       "prompt": {
-        "vi": "Cơ chế nào cho hệ giám sát biết nguồn điện switch vừa hỏng NGAY trong giây đầu tiên, không đợi lượt hỏi thăm?"
+        "vi": "Đường uplink của tổng đài rớt lúc 2 giờ sáng, màn hình trực đỏ lên trước cả khi vòng quét 5 phút kế tiếp tới hạn. Thiết bị đã báo tin bằng cách nào?"
       },
       "accept": [
         "trap",
@@ -1932,7 +1934,7 @@
       "kind": "mcq",
       "id": "m20-mt-13",
       "prompt": {
-        "vi": "Router biên mọi trưa chạy 45% băng thông, trưa nay im ắng ở 4%. Người trực có baseline làm gì?"
+        "vi": "Máy chủ file mọi sáng thứ Hai nhận chừng 300 phiên đăng nhập, sáng nay mới đếm được 12 phiên và chưa ai gọi lên hỏi han. Người trực có baseline làm gì?"
       },
       "choices": [
         {
@@ -1950,7 +1952,7 @@
         "vi": "bất thường có hai phía"
       },
       "explain": {
-        "vi": "Bất thường có hai phía: 4% giữa trưa nghĩa là lưu lượng thường ngày không tới được máy này — có thể một nhánh đã rơi mà người dùng chưa kịp kêu. Thấy sự cố TRƯỚC người dùng chính là toàn bộ lý do của môn giám sát."
+        "vi": "Bất thường có hai phía: 12 phiên vào sáng thứ Hai nghĩa là phần lớn người dùng không tới được máy chủ này — có thể một nhánh đã rơi mà chưa ai kịp kêu. Thấy sự cố TRƯỚC người dùng chính là toàn bộ lý do của môn giám sát."
       }
     },
     {
@@ -2178,7 +2180,7 @@
       "kind": "ps",
       "id": "m20-mt-ps2",
       "prompt": {
-        "vi": "Camera tầng bốn mất hình lúc rạng sáng; sw-core.log ghi nguyên đêm của switch trục — hơn 160 dòng, thừa mứa cảnh báo giả. Tìm đúng dòng sự cố. Đây là đống rơm bạn từng gặp trong bài học — nhưng lần này không còn gợi ý cú pháp nào nữa."
+        "vi": "Chi nhánh miền Trung chiều nay mất mạng ra ngoài ba đợt, mỗi đợt vài phút rồi tự khỏi; trong mạng nội bộ thì mọi máy vẫn thấy nhau. Trong tay bạn là rt-bien.log — nguyên buổi chiều của router biên chi nhánh, hơn 160 dòng không cắt gọt. Lôi đúng dòng sự cố ra. Lưu ý: chiều đó thứ gì cũng kêu to, chỉ một nhát dao theo mức nặng thì lưới còn quá rộng."
       },
       "spec": {
         "world": {
@@ -2193,188 +2195,197 @@
           "targets": [],
           "ad": null,
           "files": {
-            "sw-core.log": [
-              "2026-08-08 22:02:06 sw-core-01 INFO mac learned AA:BB:CC:27:76:4B on port 8",
-              "2026-08-08 22:03:53 sw-core-01 INFO mac learned AA:BB:CC:54:6D:96 on port 1",
-              "2026-08-08 22:06:43 sw-core-01 INFO mac learned AA:BB:CC:11:8D:4B on port 3",
-              "2026-08-08 22:08:50 sw-core-01 WARNING broadcast ratio 14% on vlan 20",
-              "2026-08-08 22:10:25 sw-core-01 WARNING broadcast ratio 11% on vlan 20",
-              "2026-08-08 22:12:24 sw-core-01 INFO dhcp snooping binding renewed on port 18",
-              "2026-08-08 22:15:48 sw-core-01 WARNING ntp drift 43ms",
-              "2026-08-08 22:18:38 sw-core-01 WARNING fan 2 speed high",
-              "2026-08-08 22:20:08 sw-core-01 INFO mac learned AA:BB:CC:31:E5:45 on port 15",
-              "2026-08-08 22:23:01 sw-core-01 INFO dhcp snooping binding renewed on port 10",
-              "2026-08-08 22:24:52 sw-core-01 INFO mac learned AA:BB:CC:3D:81:BE on port 15",
-              "2026-08-08 22:26:59 sw-core-01 INFO dhcp snooping binding renewed on port 13",
-              "2026-08-08 22:28:32 sw-core-01 INFO dhcp snooping binding renewed on port 18",
-              "2026-08-08 22:30:32 sw-core-01 INFO dhcp snooping binding renewed on port 7",
-              "2026-08-08 22:33:05 sw-core-01 INFO mac learned AA:BB:CC:47:ED:C7 on port 1",
-              "2026-08-08 22:35:53 sw-core-01 NOTICE configuration saved by admin",
-              "2026-08-08 22:37:04 sw-core-01 INFO mac learned AA:BB:CC:4F:E3:81 on port 6",
-              "2026-08-08 22:39:49 sw-core-01 WARNING fan 2 speed high",
-              "2026-08-08 22:41:53 sw-core-01 DEBUG stp hello sent on vlan 20",
-              "2026-08-08 22:43:44 sw-core-01 WARNING fan 2 speed high",
-              "2026-08-08 22:46:19 sw-core-01 INFO dhcp snooping binding renewed on port 22",
-              "2026-08-08 22:47:54 sw-core-01 DEBUG stp hello sent on vlan 30",
-              "2026-08-08 22:49:54 sw-core-01 WARNING fan 2 speed high",
-              "2026-08-08 22:51:48 sw-core-01 DEBUG stp hello sent on vlan 10",
-              "2026-08-08 22:55:16 sw-core-01 WARNING fan 2 speed high",
-              "2026-08-08 22:56:25 sw-core-01 INFO mac learned AA:BB:CC:58:AE:5D on port 10",
-              "2026-08-08 22:58:14 sw-core-01 INFO mac learned AA:BB:CC:57:39:73 on port 6",
-              "2026-08-08 22:59:31 sw-core-01 INFO dhcp snooping binding renewed on port 20",
-              "2026-08-08 23:02:53 sw-core-01 WARNING broadcast ratio 14% on vlan 10",
-              "2026-08-08 23:05:45 sw-core-01 WARNING broadcast ratio 14% on vlan 10",
-              "2026-08-08 23:08:59 sw-core-01 INFO mac learned AA:BB:CC:37:3E:D0 on port 10",
-              "2026-08-08 23:11:07 sw-core-01 INFO dhcp snooping binding renewed on port 23",
-              "2026-08-08 23:12:26 sw-core-01 NOTICE configuration saved by admin",
-              "2026-08-08 23:15:39 sw-core-01 INFO mac learned AA:BB:CC:14:02:A3 on port 11",
-              "2026-08-08 23:17:18 sw-core-01 INFO dhcp snooping binding renewed on port 18",
-              "2026-08-08 23:20:30 sw-core-01 WARNING broadcast ratio 10% on vlan 30",
-              "2026-08-08 23:22:23 sw-core-01 INFO mac learned AA:BB:CC:14:C0:50 on port 24",
-              "2026-08-08 23:24:00 sw-core-01 INFO mac learned AA:BB:CC:2B:84:D9 on port 19",
-              "2026-08-08 23:26:00 sw-core-01 INFO mac learned AA:BB:CC:2F:93:DB on port 7",
-              "2026-08-08 23:28:29 sw-core-01 INFO dhcp snooping binding renewed on port 11",
-              "2026-08-08 23:31:10 sw-core-01 INFO dhcp snooping binding renewed on port 3",
-              "2026-08-08 23:32:21 sw-core-01 INFO dhcp snooping binding renewed on port 1",
-              "2026-08-08 23:34:39 sw-core-01 INFO mac learned AA:BB:CC:4D:C7:AA on port 2",
-              "2026-08-08 23:36:53 sw-core-01 INFO dhcp snooping binding renewed on port 5",
-              "2026-08-08 23:38:30 sw-core-01 DEBUG stp hello sent on vlan 10",
-              "2026-08-08 23:41:04 sw-core-01 WARNING broadcast ratio 10% on vlan 20",
-              "2026-08-08 23:43:21 sw-core-01 INFO dhcp snooping binding renewed on port 10",
-              "2026-08-08 23:44:29 sw-core-01 INFO mac learned AA:BB:CC:1C:B8:FB on port 15",
-              "2026-08-08 23:47:58 sw-core-01 DEBUG stp hello sent on vlan 20",
-              "2026-08-08 23:49:09 sw-core-01 INFO mac learned AA:BB:CC:35:42:19 on port 11",
-              "2026-08-08 23:50:51 sw-core-01 DEBUG stp hello sent on vlan 30",
-              "2026-08-08 23:52:23 sw-core-01 DEBUG stp hello sent on vlan 10",
-              "2026-08-08 23:54:01 sw-core-01 INFO mac learned AA:BB:CC:3F:24:B0 on port 9",
-              "2026-08-08 23:55:55 sw-core-01 INFO mac learned AA:BB:CC:2E:7A:E1 on port 7",
-              "2026-08-08 23:59:21 sw-core-01 INFO mac learned AA:BB:CC:16:1A:3B on port 20",
-              "2026-08-09 00:00:56 sw-core-01 NOTICE configuration saved by admin",
-              "2026-08-09 00:03:30 sw-core-01 INFO dhcp snooping binding renewed on port 10",
-              "2026-08-09 00:05:08 sw-core-01 NOTICE configuration saved by admin",
-              "2026-08-09 00:07:24 sw-core-01 INFO mac learned AA:BB:CC:3F:1A:0F on port 6",
-              "2026-08-09 00:08:27 sw-core-01 INFO mac learned AA:BB:CC:32:2E:AA on port 21",
-              "2026-08-09 00:11:15 sw-core-01 INFO mac learned AA:BB:CC:35:14:38 on port 4",
-              "2026-08-09 00:13:33 sw-core-01 INFO mac learned AA:BB:CC:41:F1:C7 on port 9",
-              "2026-08-09 00:15:11 sw-core-01 WARNING broadcast ratio 12% on vlan 20",
-              "2026-08-09 00:16:11 sw-core-01 INFO dhcp snooping binding renewed on port 18",
-              "2026-08-09 00:18:17 sw-core-01 INFO mac learned AA:BB:CC:2C:7E:BF on port 14",
-              "2026-08-09 00:19:57 sw-core-01 WARNING ntp drift 50ms",
-              "2026-08-09 00:22:41 sw-core-01 INFO mac learned AA:BB:CC:4B:ED:63 on port 13",
-              "2026-08-09 00:25:42 sw-core-01 WARNING broadcast ratio 9% on vlan 30",
-              "2026-08-09 00:26:50 sw-core-01 INFO dhcp snooping binding renewed on port 17",
-              "2026-08-09 00:28:35 sw-core-01 INFO mac learned AA:BB:CC:10:44:9D on port 3",
-              "2026-08-09 00:31:42 sw-core-01 INFO dhcp snooping binding renewed on port 24",
-              "2026-08-09 00:32:56 sw-core-01 INFO mac learned AA:BB:CC:46:0D:0B on port 22",
-              "2026-08-09 00:34:32 sw-core-01 INFO mac learned AA:BB:CC:23:1B:DB on port 9",
-              "2026-08-09 00:36:29 sw-core-01 INFO dhcp snooping binding renewed on port 20",
-              "2026-08-09 00:37:53 sw-core-01 INFO mac learned AA:BB:CC:53:04:E6 on port 11",
-              "2026-08-09 00:39:49 sw-core-01 INFO dhcp snooping binding renewed on port 17",
-              "2026-08-09 00:42:38 sw-core-01 INFO mac learned AA:BB:CC:51:06:33 on port 12",
-              "2026-08-09 00:44:15 sw-core-01 NOTICE configuration saved by admin",
-              "2026-08-09 00:46:45 sw-core-01 WARNING broadcast ratio 14% on vlan 20",
-              "2026-08-09 00:48:43 sw-core-01 WARNING fan 2 speed high",
-              "2026-08-09 00:50:06 sw-core-01 INFO mac learned AA:BB:CC:21:40:5B on port 20",
-              "2026-08-09 00:51:32 sw-core-01 INFO mac learned AA:BB:CC:22:0D:EC on port 12",
-              "2026-08-09 00:54:09 sw-core-01 INFO dhcp snooping binding renewed on port 19",
-              "2026-08-09 00:57:16 sw-core-01 WARNING broadcast ratio 13% on vlan 20",
-              "2026-08-09 00:58:33 sw-core-01 NOTICE configuration saved by admin",
-              "2026-08-09 01:01:26 sw-core-01 INFO dhcp snooping binding renewed on port 9",
-              "2026-08-09 01:03:52 sw-core-01 INFO mac learned AA:BB:CC:1F:69:A7 on port 13",
-              "2026-08-09 01:07:20 sw-core-01 INFO mac learned AA:BB:CC:4D:D4:99 on port 1",
-              "2026-08-09 01:10:14 sw-core-01 INFO mac learned AA:BB:CC:4D:1F:28 on port 9",
-              "2026-08-09 01:12:09 sw-core-01 INFO mac learned AA:BB:CC:54:A6:99 on port 17",
-              "2026-08-09 01:14:02 sw-core-01 INFO dhcp snooping binding renewed on port 18",
-              "2026-08-09 01:16:17 sw-core-01 INFO mac learned AA:BB:CC:1B:39:41 on port 3",
-              "2026-08-09 01:19:38 sw-core-01 INFO mac learned AA:BB:CC:2B:A0:51 on port 1",
-              "2026-08-09 01:21:18 sw-core-01 WARNING fan 2 speed high",
-              "2026-08-09 01:22:30 sw-core-01 INFO mac learned AA:BB:CC:47:5B:D1 on port 23",
-              "2026-08-09 01:23:50 sw-core-01 WARNING broadcast ratio 13% on vlan 10",
-              "2026-08-09 01:25:18 sw-core-01 INFO mac learned AA:BB:CC:16:59:2E on port 23",
-              "2026-08-09 01:28:07 sw-core-01 INFO mac learned AA:BB:CC:36:7D:86 on port 10",
-              "2026-08-09 01:31:35 sw-core-01 WARNING fan 2 speed high",
-              "2026-08-09 01:34:21 sw-core-01 DEBUG stp hello sent on vlan 20",
-              "2026-08-09 01:36:15 sw-core-01 INFO mac learned AA:BB:CC:1A:52:18 on port 4",
-              "2026-08-09 01:38:20 sw-core-01 INFO mac learned AA:BB:CC:2C:9C:33 on port 4",
-              "2026-08-09 01:41:26 sw-core-01 INFO dhcp snooping binding renewed on port 4",
-              "2026-08-09 01:42:37 sw-core-01 WARNING fan 2 speed high",
-              "2026-08-09 01:46:04 sw-core-01 INFO dhcp snooping binding renewed on port 5",
-              "2026-08-09 01:49:06 sw-core-01 INFO mac learned AA:BB:CC:3A:BA:3F on port 1",
-              "2026-08-09 01:52:11 sw-core-01 INFO mac learned AA:BB:CC:1C:89:E5 on port 1",
-              "2026-08-09 01:54:58 sw-core-01 NOTICE configuration saved by admin",
-              "2026-08-09 01:55:58 sw-core-01 WARNING fan 2 speed high",
-              "2026-08-09 01:57:33 sw-core-01 INFO mac learned AA:BB:CC:23:DB:DF on port 1",
-              "2026-08-09 02:00:04 sw-core-01 INFO mac learned AA:BB:CC:3C:62:36 on port 5",
-              "2026-08-09 02:01:44 sw-core-01 INFO dhcp snooping binding renewed on port 21",
-              "2026-08-09 02:04:33 sw-core-01 NOTICE configuration saved by admin",
-              "2026-08-09 02:07:23 sw-core-01 WARNING broadcast ratio 12% on vlan 20",
-              "2026-08-09 02:10:44 sw-core-01 INFO mac learned AA:BB:CC:23:C0:0A on port 13",
-              "2026-08-09 02:13:24 sw-core-01 INFO mac learned AA:BB:CC:46:CC:93 on port 3",
-              "2026-08-09 02:16:46 sw-core-01 INFO mac learned AA:BB:CC:25:19:EC on port 15",
-              "2026-08-09 02:18:12 sw-core-01 INFO dhcp snooping binding renewed on port 17",
-              "2026-08-09 02:21:07 sw-core-01 WARNING broadcast ratio 13% on vlan 10",
-              "2026-08-09 02:24:29 sw-core-01 WARNING fan 2 speed high",
-              "2026-08-09 02:25:35 sw-core-01 INFO mac learned AA:BB:CC:47:16:FF on port 9",
-              "2026-08-09 02:28:23 sw-core-01 INFO mac learned AA:BB:CC:3C:61:EA on port 13",
-              "2026-08-09 02:30:03 sw-core-01 INFO dhcp snooping binding renewed on port 7",
-              "2026-08-09 02:32:53 sw-core-01 WARNING broadcast ratio 12% on vlan 10",
-              "2026-08-09 02:35:33 sw-core-01 INFO mac learned AA:BB:CC:28:D8:68 on port 2",
-              "2026-08-09 02:36:42 sw-core-01 WARNING fan 2 speed high",
-              "2026-08-09 02:39:36 sw-core-01 INFO dhcp snooping binding renewed on port 22",
-              "2026-08-09 02:42:16 sw-core-01 INFO mac learned AA:BB:CC:50:43:E8 on port 3",
-              "2026-08-09 02:45:22 sw-core-01 NOTICE configuration saved by admin",
-              "2026-08-09 02:48:52 sw-core-01 WARNING fan 2 speed high",
-              "2026-08-09 02:50:12 sw-core-01 NOTICE configuration saved by admin",
-              "2026-08-09 02:53:23 sw-core-01 WARNING fan 2 speed high",
-              "2026-08-09 02:54:26 sw-core-01 INFO mac learned AA:BB:CC:4E:5A:7A on port 24",
-              "2026-08-09 02:55:55 sw-core-01 INFO mac learned AA:BB:CC:57:68:EE on port 16",
-              "2026-08-09 02:57:04 sw-core-01 INFO mac learned AA:BB:CC:15:67:8D on port 24",
-              "2026-08-09 03:00:11 sw-core-01 INFO dhcp snooping binding renewed on port 5",
-              "2026-08-09 03:01:48 sw-core-01 INFO mac learned AA:BB:CC:12:5A:22 on port 10",
-              "2026-08-09 03:03:31 sw-core-01 WARNING fan 2 speed high",
-              "2026-08-09 03:05:20 sw-core-01 WARNING fan 2 speed high",
-              "2026-08-09 03:08:26 sw-core-01 INFO mac learned AA:BB:CC:2F:22:EF on port 4",
-              "2026-08-09 03:09:42 sw-core-01 WARNING fan 2 speed high",
-              "2026-08-09 03:10:58 sw-core-01 INFO mac learned AA:BB:CC:26:62:1C on port 24",
-              "2026-08-09 03:12:05 sw-core-01 INFO mac learned AA:BB:CC:2A:E6:A8 on port 5",
-              "2026-08-09 03:14:59 sw-core-01 WARNING fan 2 speed high",
-              "2026-08-09 03:16:43 sw-core-01 DEBUG stp hello sent on vlan 10",
-              "2026-08-09 03:20:11 sw-core-01 INFO dhcp snooping binding renewed on port 23",
-              "2026-08-09 03:23:37 sw-core-01 WARNING fan 2 speed high",
-              "2026-08-09 03:26:45 sw-core-01 WARNING fan 2 speed high",
-              "2026-08-09 03:29:56 sw-core-01 WARNING broadcast ratio 12% on vlan 30",
-              "2026-08-09 03:32:41 sw-core-01 INFO mac learned AA:BB:CC:37:92:E7 on port 1",
-              "2026-08-09 03:34:08 sw-core-01 WARNING broadcast ratio 12% on vlan 10",
-              "2026-08-09 03:35:55 sw-core-01 INFO mac learned AA:BB:CC:4B:6F:8D on port 20",
-              "2026-08-09 03:39:12 sw-core-01 DEBUG stp hello sent on vlan 30",
-              "2026-08-09 03:40:12 sw-core-01 WARNING fan 2 speed high",
-              "2026-08-09 03:41:17 sw-core-01 ERROR link down on port 12",
-              "2026-08-09 03:42:02 sw-core-01 INFO port 12 removed from vlan 30 forwarding set",
-              "2026-08-09 03:43:40 sw-core-01 INFO mac learned AA:BB:CC:3A:7B:E1 on port 1",
-              "2026-08-09 03:46:22 sw-core-01 INFO mac learned AA:BB:CC:21:12:A8 on port 15",
-              "2026-08-09 03:47:29 sw-core-01 INFO mac learned AA:BB:CC:19:38:BA on port 3",
-              "2026-08-09 03:49:14 sw-core-01 WARNING broadcast ratio 12% on vlan 30",
-              "2026-08-09 03:52:13 sw-core-01 INFO dhcp snooping binding renewed on port 1",
-              "2026-08-09 03:55:12 sw-core-01 INFO dhcp snooping binding renewed on port 1"
+            "rt-bien.log": [
+              "2026-08-11 12:02:45 rt-bien-02 INFO arp entry learned 10.30.0.77 at AA:BB:CC:11:1B:10 on Gi0/1",
+              "2026-08-11 12:04:11 rt-bien-02 NOTICE user quantri logged in from 10.30.0.34",
+              "2026-08-11 12:07:26 rt-bien-02 NOTICE interface Gi0/3 description set to spare-not-in-use by quantri",
+              "2026-08-11 12:07:39 rt-bien-02 DEBUG icmp echo request from 10.20.0.9 answered",
+              "2026-08-11 12:08:30 rt-bien-02 DEBUG ospf hello sent on Gi0/0",
+              "2026-08-11 12:11:15 rt-bien-02 WARNING arp table 58% full",
+              "2026-08-11 12:12:37 rt-bien-02 DEBUG ospf hello sent on Gi0/0",
+              "2026-08-11 12:14:55 rt-bien-02 INFO arp entry learned 10.30.0.95 at AA:BB:CC:37:50:44 on Gi0/1",
+              "2026-08-11 12:18:44 rt-bien-02 WARNING cpu 5-minute average 84%",
+              "2026-08-11 12:24:47 rt-bien-02 WARNING cpu 5-minute average 79%",
+              "2026-08-11 12:26:24 rt-bien-02 WARNING memory usage 86%",
+              "2026-08-11 12:31:22 rt-bien-02 DEBUG ospf hello sent on Gi0/0",
+              "2026-08-11 12:33:05 rt-bien-02 INFO route 10.20.0.0/16 via 10.255.0.1 refreshed",
+              "2026-08-11 12:34:25 rt-bien-02 DEBUG icmp echo request from 10.20.0.9 answered",
+              "2026-08-11 12:34:59 rt-bien-02 DEBUG snmp poll ok for sw-chi-nhanh-01",
+              "2026-08-11 12:38:02 rt-bien-02 WARNING cpu 5-minute average 80%",
+              "2026-08-11 12:43:02 rt-bien-02 INFO arp entry learned 10.30.0.91 at AA:BB:CC:54:35:34 on Gi0/1",
+              "2026-08-11 12:50:56 rt-bien-02 INFO arp entry learned 10.30.0.77 at AA:BB:CC:5A:55:1A on Gi0/1",
+              "2026-08-11 12:51:20 rt-bien-02 DEBUG ospf hello sent on Gi0/0",
+              "2026-08-11 12:51:43 rt-bien-02 INFO arp entry learned 10.30.0.77 at AA:BB:CC:27:46:4D on Gi0/1",
+              "2026-08-11 12:52:44 rt-bien-02 INFO ospf neighbor 10.255.0.1 on Gi0/0 state FULL",
+              "2026-08-11 12:52:45 rt-bien-02 DEBUG ospf hello sent on Gi0/0",
+              "2026-08-11 12:55:29 rt-bien-02 INFO ospf neighbor 10.255.0.1 on Gi0/0 state FULL",
+              "2026-08-11 12:57:59 rt-bien-02 INFO route 10.20.0.0/16 via 10.255.0.1 refreshed",
+              "2026-08-11 12:58:08 rt-bien-02 DEBUG snmp poll ok for sw-chi-nhanh-01",
+              "2026-08-11 12:59:59 rt-bien-02 INFO dhcp relay forwarded request from 10.30.0.29 to 10.20.0.20",
+              "2026-08-11 13:05:40 rt-bien-02 INFO arp entry learned 10.30.0.45 at AA:BB:CC:31:4E:4B on Gi0/1",
+              "2026-08-11 13:06:22 rt-bien-02 ERROR snmp poll timeout for ups-chi-nhanh",
+              "2026-08-11 13:07:16 rt-bien-02 DEBUG ospf hello sent on Gi0/0",
+              "2026-08-11 13:10:36 rt-bien-02 WARNING arp table 69% full",
+              "2026-08-11 13:12:30 rt-bien-02 INFO ospf neighbor 10.255.0.1 on Gi0/0 state FULL",
+              "2026-08-11 13:15:17 rt-bien-02 WARNING arp table 67% full",
+              "2026-08-11 13:24:07 rt-bien-02 ERROR snmp poll timeout for ups-chi-nhanh",
+              "2026-08-11 13:25:41 rt-bien-02 INFO dhcp relay forwarded request from 10.30.0.39 to 10.20.0.20",
+              "2026-08-11 13:27:40 rt-bien-02 WARNING interface Gi0/1 input errors 4 in last minute",
+              "2026-08-11 13:28:13 rt-bien-02 DEBUG icmp echo request from 10.20.0.9 answered",
+              "2026-08-11 13:33:19 rt-bien-02 ERROR snmp poll timeout for ups-chi-nhanh",
+              "2026-08-11 13:33:37 rt-bien-02 INFO route 10.20.0.0/16 via 10.255.0.1 refreshed",
+              "2026-08-11 13:34:45 rt-bien-02 WARNING cpu 5-minute average 79%",
+              "2026-08-11 13:35:29 rt-bien-02 INFO arp entry learned 10.30.0.84 at AA:BB:CC:5C:4E:42 on Gi0/1",
+              "2026-08-11 13:36:43 rt-bien-02 INFO arp entry learned 10.30.0.52 at AA:BB:CC:57:43:37 on Gi0/1",
+              "2026-08-11 13:39:43 rt-bien-02 INFO arp entry learned 10.30.0.30 at AA:BB:CC:45:24:21 on Gi0/1",
+              "2026-08-11 13:41:23 rt-bien-02 INFO route 10.20.0.0/16 via 10.255.0.1 refreshed",
+              "2026-08-11 13:41:40 rt-bien-02 WARNING interface Gi0/1 input errors 4 in last minute",
+              "2026-08-11 13:42:19 rt-bien-02 INFO arp entry learned 10.30.0.74 at AA:BB:CC:1B:43:5A on Gi0/1",
+              "2026-08-11 13:43:02 rt-bien-02 WARNING memory usage 78%",
+              "2026-08-11 13:46:50 rt-bien-02 WARNING cpu 5-minute average 73%",
+              "2026-08-11 13:47:02 rt-bien-02 ERROR duplicate address 10.30.0.1 detected on Gi0/1, source mac AA:BB:CC:0D:44:71",
+              "2026-08-11 13:47:06 rt-bien-02 INFO arp entry for 10.30.0.1 moved to AA:BB:CC:0D:44:71 on Gi0/1",
+              "2026-08-11 13:49:33 rt-bien-02 WARNING icmp echo request from 10.30.0.62 to 10.20.0.9 unanswered",
+              "2026-08-11 13:52:41 rt-bien-02 INFO arp entry for 10.30.0.1 moved back to AA:BB:CC:00:11:01 on Gi0/1",
+              "2026-08-11 13:53:07 rt-bien-02 ERROR ntp sync failed with 10.20.0.53",
+              "2026-08-11 13:57:08 rt-bien-02 INFO arp entry learned 10.30.0.28 at AA:BB:CC:32:4F:3F on Gi0/1",
+              "2026-08-11 13:57:11 rt-bien-02 INFO dhcp relay forwarded request from 10.30.0.61 to 10.20.0.20",
+              "2026-08-11 13:58:20 rt-bien-02 INFO dhcp relay forwarded request from 10.30.0.69 to 10.20.0.20",
+              "2026-08-11 13:59:32 rt-bien-02 WARNING arp table 65% full",
+              "2026-08-11 14:02:18 rt-bien-02 WARNING interface Gi0/3 line protocol down",
+              "2026-08-11 14:06:25 rt-bien-02 INFO arp entry learned 10.30.0.32 at AA:BB:CC:28:44:22 on Gi0/1",
+              "2026-08-11 14:07:30 rt-bien-02 WARNING cpu 5-minute average 75%",
+              "2026-08-11 14:08:32 rt-bien-02 DEBUG ospf hello sent on Gi0/0",
+              "2026-08-11 14:19:57 rt-bien-02 DEBUG icmp echo request from 10.20.0.9 answered",
+              "2026-08-11 14:20:27 rt-bien-02 DEBUG icmp echo request from 10.20.0.9 answered",
+              "2026-08-11 14:22:32 rt-bien-02 DEBUG icmp echo request from 10.20.0.9 answered",
+              "2026-08-11 14:23:57 rt-bien-02 INFO arp entry learned 10.30.0.87 at AA:BB:CC:31:45:58 on Gi0/1",
+              "2026-08-11 14:24:06 rt-bien-02 INFO ospf neighbor 10.255.0.1 on Gi0/0 state FULL",
+              "2026-08-11 14:26:30 rt-bien-02 INFO ospf neighbor 10.255.0.1 on Gi0/0 state FULL",
+              "2026-08-11 14:29:04 rt-bien-02 WARNING interface Gi0/1 input errors 6 in last minute",
+              "2026-08-11 14:29:37 rt-bien-02 INFO arp entry learned 10.30.0.32 at AA:BB:CC:48:51:31 on Gi0/1",
+              "2026-08-11 14:31:14 rt-bien-02 DEBUG snmp poll ok for sw-chi-nhanh-01",
+              "2026-08-11 14:33:15 rt-bien-02 INFO dhcp relay forwarded request from 10.30.0.65 to 10.20.0.20",
+              "2026-08-11 14:37:11 rt-bien-02 INFO arp entry learned 10.30.0.80 at AA:BB:CC:22:4D:2D on Gi0/1",
+              "2026-08-11 14:39:01 rt-bien-02 DEBUG snmp poll ok for sw-chi-nhanh-01",
+              "2026-08-11 14:41:01 rt-bien-02 INFO ospf neighbor 10.255.0.1 on Gi0/0 state FULL",
+              "2026-08-11 14:46:36 rt-bien-02 INFO arp entry learned 10.30.0.23 at AA:BB:CC:3F:3E:4B on Gi0/1",
+              "2026-08-11 14:49:20 rt-bien-02 DEBUG ospf hello sent on Gi0/0",
+              "2026-08-11 14:51:19 rt-bien-02 DEBUG snmp poll ok for sw-chi-nhanh-01",
+              "2026-08-11 14:51:53 rt-bien-02 DEBUG snmp poll ok for sw-chi-nhanh-01",
+              "2026-08-11 14:52:06 rt-bien-02 NOTICE user quantri logged in from 10.30.0.34",
+              "2026-08-11 14:58:00 rt-bien-02 INFO arp entry learned 10.30.0.90 at AA:BB:CC:50:4D:43 on Gi0/1",
+              "2026-08-11 14:58:08 rt-bien-02 ERROR snmp poll timeout for ups-chi-nhanh",
+              "2026-08-11 15:00:32 rt-bien-02 INFO arp entry learned 10.30.0.65 at AA:BB:CC:23:10:38 on Gi0/1",
+              "2026-08-11 15:03:48 rt-bien-02 ERROR ntp sync failed with 10.20.0.53",
+              "2026-08-11 15:07:59 rt-bien-02 INFO arp entry learned 10.30.0.90 at AA:BB:CC:4F:1E:46 on Gi0/1",
+              "2026-08-11 15:11:23 rt-bien-02 NOTICE user quantri logged in from 10.30.0.34",
+              "2026-08-11 15:12:09 rt-bien-02 INFO dhcp relay forwarded request from 10.30.0.86 to 10.20.0.20",
+              "2026-08-11 15:12:17 rt-bien-02 INFO dhcp relay forwarded request from 10.30.0.69 to 10.20.0.20",
+              "2026-08-11 15:14:38 rt-bien-02 INFO route 10.20.0.0/16 via 10.255.0.1 refreshed",
+              "2026-08-11 15:19:47 rt-bien-02 ERROR duplicate address 10.30.0.1 detected on Gi0/1, source mac AA:BB:CC:0D:44:71",
+              "2026-08-11 15:19:52 rt-bien-02 INFO arp entry for 10.30.0.1 moved to AA:BB:CC:0D:44:71 on Gi0/1",
+              "2026-08-11 15:22:08 rt-bien-02 WARNING icmp echo request from 10.30.0.41 to 10.20.0.9 unanswered",
+              "2026-08-11 15:24:09 rt-bien-02 INFO arp entry for 10.30.0.1 moved back to AA:BB:CC:00:11:01 on Gi0/1",
+              "2026-08-11 15:29:21 rt-bien-02 INFO arp entry learned 10.30.0.78 at AA:BB:CC:22:59:37 on Gi0/1",
+              "2026-08-11 15:33:03 rt-bien-02 WARNING interface Gi0/1 input errors 5 in last minute",
+              "2026-08-11 15:38:04 rt-bien-02 WARNING cpu 5-minute average 71%",
+              "2026-08-11 15:42:54 rt-bien-02 INFO arp entry learned 10.30.0.94 at AA:BB:CC:59:4E:21 on Gi0/1",
+              "2026-08-11 15:44:53 rt-bien-02 DEBUG icmp echo request from 10.20.0.9 answered",
+              "2026-08-11 15:46:13 rt-bien-02 WARNING interface Gi0/1 input errors 2 in last minute",
+              "2026-08-11 15:46:28 rt-bien-02 DEBUG icmp echo request from 10.20.0.9 answered",
+              "2026-08-11 15:47:07 rt-bien-02 INFO arp entry learned 10.30.0.86 at AA:BB:CC:1D:5F:46 on Gi0/1",
+              "2026-08-11 15:52:23 rt-bien-02 WARNING interface Gi0/1 input errors 2 in last minute",
+              "2026-08-11 15:56:53 rt-bien-02 ERROR ntp sync failed with 10.20.0.53",
+              "2026-08-11 15:58:13 rt-bien-02 INFO ospf neighbor 10.255.0.1 on Gi0/0 state FULL",
+              "2026-08-11 16:02:53 rt-bien-02 INFO arp entry learned 10.30.0.78 at AA:BB:CC:52:4E:3E on Gi0/1",
+              "2026-08-11 16:05:55 rt-bien-02 ERROR snmp poll timeout for ups-chi-nhanh",
+              "2026-08-11 16:06:50 rt-bien-02 WARNING memory usage 85%",
+              "2026-08-11 16:08:05 rt-bien-02 INFO arp entry learned 10.30.0.98 at AA:BB:CC:29:2F:1F on Gi0/1",
+              "2026-08-11 16:10:39 rt-bien-02 ERROR ntp sync failed with 10.20.0.53",
+              "2026-08-11 16:11:35 rt-bien-02 WARNING duplicate address 10.30.0.88 detected on Gi0/1, source mac AA:BB:CC:36:9A:20",
+              "2026-08-11 16:13:26 rt-bien-02 INFO arp entry learned 10.30.0.81 at AA:BB:CC:51:52:13 on Gi0/1",
+              "2026-08-11 16:14:53 rt-bien-02 ERROR snmp poll timeout for ups-chi-nhanh",
+              "2026-08-11 16:15:30 rt-bien-02 INFO arp entry learned 10.30.0.35 at AA:BB:CC:4A:4C:55 on Gi0/1",
+              "2026-08-11 16:23:20 rt-bien-02 INFO arp entry learned 10.30.0.21 at AA:BB:CC:14:23:5C on Gi0/1",
+              "2026-08-11 16:24:19 rt-bien-02 WARNING memory usage 79%",
+              "2026-08-11 16:31:49 rt-bien-02 ERROR snmp poll timeout for ups-chi-nhanh",
+              "2026-08-11 16:31:50 rt-bien-02 INFO arp entry learned 10.30.0.93 at AA:BB:CC:2C:20:16 on Gi0/1",
+              "2026-08-11 16:36:46 rt-bien-02 DEBUG snmp poll ok for sw-chi-nhanh-01",
+              "2026-08-11 16:42:21 rt-bien-02 WARNING arp table 61% full",
+              "2026-08-11 16:43:42 rt-bien-02 INFO arp entry learned 10.30.0.75 at AA:BB:CC:29:35:32 on Gi0/1",
+              "2026-08-11 16:43:51 rt-bien-02 ERROR snmp poll timeout for ups-chi-nhanh",
+              "2026-08-11 16:46:38 rt-bien-02 INFO arp entry learned 10.30.0.24 at AA:BB:CC:35:38:4A on Gi0/1",
+              "2026-08-11 16:48:01 rt-bien-02 INFO arp entry learned 10.30.0.85 at AA:BB:CC:4F:47:57 on Gi0/1",
+              "2026-08-11 16:49:29 rt-bien-02 WARNING arp table 70% full",
+              "2026-08-11 16:51:10 rt-bien-02 WARNING interface Gi0/1 input errors 4 in last minute",
+              "2026-08-11 16:54:06 rt-bien-02 INFO dhcp relay forwarded request from 10.30.0.33 to 10.20.0.20",
+              "2026-08-11 16:57:35 rt-bien-02 WARNING cpu 5-minute average 76%",
+              "2026-08-11 16:57:45 rt-bien-02 INFO arp entry learned 10.30.0.89 at AA:BB:CC:2C:4C:5B on Gi0/1",
+              "2026-08-11 16:58:24 rt-bien-02 ERROR duplicate address 10.30.0.1 detected on Gi0/1, source mac AA:BB:CC:0D:44:71",
+              "2026-08-11 16:58:29 rt-bien-02 INFO arp entry for 10.30.0.1 moved to AA:BB:CC:0D:44:71 on Gi0/1",
+              "2026-08-11 16:59:00 rt-bien-02 WARNING cpu 5-minute average 83%",
+              "2026-08-11 17:03:12 rt-bien-02 INFO arp entry for 10.30.0.1 moved back to AA:BB:CC:00:11:01 on Gi0/1",
+              "2026-08-11 17:03:35 rt-bien-02 INFO ospf neighbor 10.255.0.1 on Gi0/0 state FULL",
+              "2026-08-11 17:03:37 rt-bien-02 INFO dhcp relay forwarded request from 10.30.0.23 to 10.20.0.20",
+              "2026-08-11 17:06:33 rt-bien-02 DEBUG ospf hello sent on Gi0/0",
+              "2026-08-11 17:07:00 rt-bien-02 INFO dhcp relay forwarded request from 10.30.0.45 to 10.20.0.20",
+              "2026-08-11 17:07:27 rt-bien-02 INFO ospf neighbor 10.255.0.1 on Gi0/0 state FULL",
+              "2026-08-11 17:10:18 rt-bien-02 INFO dhcp relay forwarded request from 10.30.0.85 to 10.20.0.20",
+              "2026-08-11 17:11:17 rt-bien-02 INFO dhcp relay forwarded request from 10.30.0.58 to 10.20.0.20",
+              "2026-08-11 17:12:15 rt-bien-02 ERROR snmp poll timeout for ups-chi-nhanh",
+              "2026-08-11 17:12:39 rt-bien-02 INFO dhcp relay forwarded request from 10.30.0.21 to 10.20.0.20",
+              "2026-08-11 17:14:55 rt-bien-02 NOTICE user quantri logged in from 10.30.0.34",
+              "2026-08-11 17:21:16 rt-bien-02 DEBUG snmp poll ok for sw-chi-nhanh-01",
+              "2026-08-11 17:22:59 rt-bien-02 ERROR snmp poll timeout for ups-chi-nhanh",
+              "2026-08-11 17:26:47 rt-bien-02 WARNING cpu 5-minute average 71%",
+              "2026-08-11 17:31:50 rt-bien-02 WARNING interface Gi0/3 line protocol down",
+              "2026-08-11 17:37:55 rt-bien-02 ERROR snmp poll timeout for ups-chi-nhanh",
+              "2026-08-11 17:39:06 rt-bien-02 INFO dhcp relay forwarded request from 10.30.0.26 to 10.20.0.20",
+              "2026-08-11 17:40:30 rt-bien-02 ERROR ntp sync failed with 10.20.0.53",
+              "2026-08-11 17:44:11 rt-bien-02 DEBUG snmp poll ok for sw-chi-nhanh-01",
+              "2026-08-11 17:50:04 rt-bien-02 WARNING memory usage 81%",
+              "2026-08-11 17:52:41 rt-bien-02 WARNING arp table 55% full",
+              "2026-08-11 17:52:42 rt-bien-02 INFO arp entry learned 10.30.0.99 at AA:BB:CC:15:55:32 on Gi0/1",
+              "2026-08-11 17:52:51 rt-bien-02 DEBUG snmp poll ok for sw-chi-nhanh-01",
+              "2026-08-11 17:53:33 rt-bien-02 WARNING cpu 5-minute average 84%",
+              "2026-08-11 17:54:06 rt-bien-02 WARNING cpu 5-minute average 78%",
+              "2026-08-11 18:01:11 rt-bien-02 WARNING interface Gi0/1 input errors 4 in last minute",
+              "2026-08-11 18:06:09 rt-bien-02 INFO ospf neighbor 10.255.0.1 on Gi0/0 state FULL",
+              "2026-08-11 18:06:12 rt-bien-02 INFO arp entry learned 10.30.0.36 at AA:BB:CC:5C:50:35 on Gi0/1",
+              "2026-08-11 18:10:38 rt-bien-02 WARNING cpu 5-minute average 78%",
+              "2026-08-11 18:10:42 rt-bien-02 WARNING memory usage 82%",
+              "2026-08-11 18:13:56 rt-bien-02 INFO route 10.20.0.0/16 via 10.255.0.1 refreshed",
+              "2026-08-11 18:14:38 rt-bien-02 DEBUG ospf hello sent on Gi0/0",
+              "2026-08-11 18:15:21 rt-bien-02 INFO dhcp relay forwarded request from 10.30.0.68 to 10.20.0.20",
+              "2026-08-11 18:22:04 rt-bien-02 NOTICE configuration saved by quantri",
+              "2026-08-11 18:28:19 rt-bien-02 WARNING cpu 5-minute average 78%",
+              "2026-08-11 18:28:21 rt-bien-02 WARNING memory usage 79%",
+              "2026-08-11 18:31:07 rt-bien-02 INFO dhcp relay forwarded request from 10.30.0.64 to 10.20.0.20",
+              "2026-08-11 18:34:35 rt-bien-02 INFO route 10.20.0.0/16 via 10.255.0.1 refreshed",
+              "2026-08-11 18:39:17 rt-bien-02 INFO dhcp relay forwarded request from 10.30.0.80 to 10.20.0.20",
+              "2026-08-11 18:50:21 rt-bien-02 INFO dhcp relay forwarded request from 10.30.0.23 to 10.20.0.20",
+              "2026-08-11 18:52:15 rt-bien-02 WARNING memory usage 85%",
+              "2026-08-11 18:54:39 rt-bien-02 INFO route 10.20.0.0/16 via 10.255.0.1 refreshed"
             ]
           }
         },
         "goals": [
           {
             "kind": "found-line",
-            "mustContain": "link down on port 12",
+            "mustContain": "duplicate address 10.30.0.1",
             "maxMatches": 10
           }
         ],
         "solution": [
-          "Get-Content sw-core.log | Select-String ERROR"
+          "Get-Content rt-bien.log | Select-String duplicate"
         ]
       },
       "hintTopic": {
-        "vi": "lọc trước, đọc sau"
+        "vi": "nhát dao thứ hai: lọc hẹp theo từ khóa của triệu chứng"
       },
       "explain": {
-        "vi": "Get-Content sw-core.log | Select-String ERROR — một nhát dao theo mức nặng và dòng 03:41:17 ERROR link down on port 12 nổi lên giữa 160 dòng. Mấy chục WARNING quạt và quảng bá là nền quen mặt của mọi đêm; camera tầng bốn cắm ở cổng 12 — thời gian và vị trí khớp trọn."
+        "vi": "Get-Content rt-bien.log | Select-String duplicate — và ba dòng ERROR duplicate address 10.30.0.1 detected on Gi0/1, source mac AA:BB:CC:0D:44:71 lộ ra đúng ba đợt mất mạng: có thiết bị lạ nhận trùng địa chỉ cổng ra 10.30.0.1, mỗi lần nó trả lời ARP là cả chi nhánh gửi gói ra ngoài vào máy ma, ARP trở về MAC thật thì mạng tự khỏi. Lọc thô Select-String ERROR ra tới mười chín dòng vì cả buổi chiều máy nào cũng kêu — snmp poll timeout của bộ lưu điện hỏng từ lâu và ntp sync failed là nền quen mặt. Hai dòng interface Gi0/3 line protocol down là cổng dự phòng bỏ trống (chính nhật ký ghi description set to spare-not-in-use lúc 12:07), còn duplicate address 10.30.0.88 là hai máy trạm đụng nhau, không phải cổng ra."
       }
     }
   ]

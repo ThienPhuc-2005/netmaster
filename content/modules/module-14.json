@@ -2,7 +2,9 @@
   "id": "module-14",
   "order": 14,
   "part": "D",
-  "letter": { "vi": "Vài dòng cho bạn. Trước module này, bạn chưa từng ngồi trước dấu nhắc của một thiết bị thật; giờ bạn gõ được, đọc được bảng nó in ra, và sửa được cấu hình bằng chính tay mình. Bạn còn chữa được ca native VLAN lệch — ca kinh điển mà người mới hay ngồi nhìn nửa buổi vì mọi thứ trông vẫn như bình thường. Một sợi dây chở nhiều xóm không còn là phép màu, nó chỉ là cái nhãn dán trên khung." },
+  "letter": {
+    "vi": "Vài dòng cho bạn. Trước module này, bạn chưa từng ngồi trước dấu nhắc của một thiết bị thật; giờ bạn gõ được, đọc được bảng nó in ra, và sửa được cấu hình bằng chính tay mình. Bạn còn chữa được ca native VLAN lệch — ca kinh điển mà người mới hay ngồi nhìn nửa buổi vì mọi thứ trông vẫn như bình thường. Một sợi dây chở nhiều xóm không còn là phép màu, nó chỉ là cái nhãn dán trên khung."
+  },
   "title": {
     "vi": "Trunk 802.1Q — Một sợi dây chở nhiều xóm"
   },
@@ -44,12 +46,22 @@
       ]
     },
     {
-      "id": "m14-chang-5",
+      "id": "m14-chang-quy-hoach",
       "title": {
-        "vi": "Một chân router cho nhiều xóm"
+        "vi": "Kẻ bảng trước khi cắm dây"
       },
       "lessonIds": [
-        "m14-bai-5"
+        "m14-bai-6"
+      ]
+    },
+    {
+      "id": "m14-chang-5",
+      "title": {
+        "vi": "Cho hai xóm nói chuyện với nhau"
+      },
+      "lessonIds": [
+        "m14-bai-5",
+        "m14-bai-7"
       ]
     }
   ],
@@ -242,7 +254,7 @@
                     "vi": "Vì một cổng access chỉ thuộc đúng một VLAN, nên mỗi VLAN muốn qua phải có một sợi riêng"
                   },
                   {
-                    "vi": "Vì cổng access chạy chậm hơn cổng trunk nên phải chia tải ra nhiều sợi dây"
+                    "vi": "Vì cổng access chạy chậm hơn hẳn cổng trunk nên phải chia tải ra thành nhiều sợi dây"
                   },
                   {
                     "vi": "Vì switch chỉ cho phép mỗi sợi cáp mang tối đa một trăm khung tin mỗi giây"
@@ -556,10 +568,10 @@
                   "vi": "Đi trần, không mang nhãn nào cả"
                 },
                 {
-                  "vi": "Mang nhãn ghi số 0 để đánh dấu là xóm mặc định"
+                  "vi": "Mang nhãn ghi số 0 để đánh dấu xóm mặc định"
                 },
                 {
-                  "vi": "Mang hai nhãn chồng lên nhau để phân biệt với xóm khác"
+                  "vi": "Mang hai nhãn chồng lên nhau"
                 }
               ],
               "answerIndex": 0,
@@ -864,7 +876,7 @@
                   "vi": "Chỉ VLAN 1"
                 },
                 {
-                  "vi": "Không VLAN nào, phải khai từng cái một"
+                  "vi": "Không VLAN nào cả"
                 }
               ],
               "answerIndex": 0,
@@ -1193,7 +1205,742 @@
             }
           ],
           "nextTeaser": {
-            "vi": "Bốn xóm đã đi chung một dây giữa hai switch. Nhưng muốn kế toán gọi sang kỹ thuật thì vẫn phải qua router — và bài cuối module cho bạn xem cách cắm router bằng đúng MỘT sợi cáp."
+            "vi": "Bốn xóm đã đi chung một dây giữa hai switch. Nhưng nhìn kỹ sơ đồ mà xem: cả bốn máy vẫn mang địa chỉ của cùng một dải — bài sau kẻ cái bảng lẽ ra phải điền trước khi cắm sợi dây đầu tiên."
+          }
+        }
+      ]
+    },
+    {
+      "id": "m14-bai-6",
+      "missionTitle": {
+        "vi": "Kẻ bảng trước khi cắm dây"
+      },
+      "steps": [
+        {
+          "type": "hook",
+          "question": {
+            "vi": "Xóm đã chia trên switch, trunk đã dựng, danh sách khách đã mở. Nhưng cả bốn máy trong sơ đồ vẫn mang địa chỉ 192.168.1.x y như hồi chưa chia. Chia xóm ở tầng khung mà không chia số nhà ở tầng địa chỉ thì được gì?"
+          },
+          "visualId": "vis-hook-bang-quy-hoach"
+        },
+        {
+          "type": "pretest",
+          "questions": [
+            {
+              "kind": "lab",
+              "id": "m14-b6-pre-lab",
+              "prompt": {
+                "vi": "Chưa ai dạy bạn bước này — cứ mò. Kế toán ở VLAN 10, kho ở VLAN 20, router đã có sẵn hai chân làm cửa ra cho hai xóm. Vậy mà MAY-KE-TOAN gọi MAY-KHO vẫn không tới. Sửa cho hai máy nói chuyện được, chỉ bằng cách đặt lại địa chỉ."
+              },
+              "spec": {
+                "initial": {
+                  "devices": [
+                    {
+                      "kind": "pc",
+                      "id": "q6a-kt",
+                      "hostname": "MAY-KE-TOAN",
+                      "port": {
+                        "id": "eth0",
+                        "mac": "AA:BB:CC:E6:0A:01"
+                      },
+                      "ipConfig": {
+                        "ip": "192.168.10.10",
+                        "prefix": 24
+                      },
+                      "gateway": "192.168.10.1"
+                    },
+                    {
+                      "kind": "pc",
+                      "id": "q6a-kho",
+                      "hostname": "MAY-KHO",
+                      "port": {
+                        "id": "eth0",
+                        "mac": "AA:BB:CC:E6:0A:02"
+                      },
+                      "ipConfig": {
+                        "ip": "192.168.10.30",
+                        "prefix": 24
+                      },
+                      "gateway": "192.168.10.1"
+                    },
+                    {
+                      "kind": "switch",
+                      "id": "q6a-sw",
+                      "hostname": "SW-LOI",
+                      "ports": [
+                        {
+                          "id": "p1",
+                          "vlan": 10
+                        },
+                        {
+                          "id": "p2",
+                          "vlan": 20
+                        },
+                        {
+                          "id": "p3",
+                          "vlan": 10
+                        },
+                        {
+                          "id": "p4",
+                          "vlan": 20
+                        }
+                      ]
+                    },
+                    {
+                      "kind": "router",
+                      "id": "q6a-rt",
+                      "hostname": "RT-VAN-PHONG",
+                      "ports": [
+                        {
+                          "id": "g0",
+                          "mac": "AA:BB:CC:E6:0A:F1",
+                          "ipConfig": {
+                            "ip": "192.168.10.1",
+                            "prefix": 24
+                          }
+                        },
+                        {
+                          "id": "g1",
+                          "mac": "AA:BB:CC:E6:0A:F2",
+                          "ipConfig": {
+                            "ip": "192.168.20.1",
+                            "prefix": 24
+                          }
+                        }
+                      ],
+                      "staticRoutes": []
+                    }
+                  ],
+                  "links": [
+                    {
+                      "id": "q6a-w-kt",
+                      "a": {
+                        "deviceId": "q6a-kt",
+                        "portId": "eth0"
+                      },
+                      "b": {
+                        "deviceId": "q6a-sw",
+                        "portId": "p1"
+                      }
+                    },
+                    {
+                      "id": "q6a-w-kho",
+                      "a": {
+                        "deviceId": "q6a-kho",
+                        "portId": "eth0"
+                      },
+                      "b": {
+                        "deviceId": "q6a-sw",
+                        "portId": "p2"
+                      }
+                    },
+                    {
+                      "id": "q6a-w-rt10",
+                      "a": {
+                        "deviceId": "q6a-rt",
+                        "portId": "g0"
+                      },
+                      "b": {
+                        "deviceId": "q6a-sw",
+                        "portId": "p3"
+                      }
+                    },
+                    {
+                      "id": "q6a-w-rt20",
+                      "a": {
+                        "deviceId": "q6a-rt",
+                        "portId": "g1"
+                      },
+                      "b": {
+                        "deviceId": "q6a-sw",
+                        "portId": "p4"
+                      }
+                    }
+                  ]
+                },
+                "goals": [
+                  {
+                    "kind": "ping",
+                    "from": "q6a-kt",
+                    "to": "q6a-kho",
+                    "expect": "reach"
+                  }
+                ],
+                "allow": {
+                  "addDevices": [],
+                  "removeDevices": false,
+                  "addLinks": false,
+                  "removeLinks": false,
+                  "setVlan": false,
+                  "setIp": true,
+                  "setRoutes": false,
+                  "maxDevices": 4
+                },
+                "solution": {
+                  "devices": [
+                    {
+                      "kind": "pc",
+                      "id": "q6a-kt",
+                      "hostname": "MAY-KE-TOAN",
+                      "port": {
+                        "id": "eth0",
+                        "mac": "AA:BB:CC:E6:0A:01"
+                      },
+                      "ipConfig": {
+                        "ip": "192.168.10.10",
+                        "prefix": 24
+                      },
+                      "gateway": "192.168.10.1"
+                    },
+                    {
+                      "kind": "pc",
+                      "id": "q6a-kho",
+                      "hostname": "MAY-KHO",
+                      "port": {
+                        "id": "eth0",
+                        "mac": "AA:BB:CC:E6:0A:02"
+                      },
+                      "ipConfig": {
+                        "ip": "192.168.20.30",
+                        "prefix": 24
+                      },
+                      "gateway": "192.168.20.1"
+                    },
+                    {
+                      "kind": "switch",
+                      "id": "q6a-sw",
+                      "hostname": "SW-LOI",
+                      "ports": [
+                        {
+                          "id": "p1",
+                          "vlan": 10
+                        },
+                        {
+                          "id": "p2",
+                          "vlan": 20
+                        },
+                        {
+                          "id": "p3",
+                          "vlan": 10
+                        },
+                        {
+                          "id": "p4",
+                          "vlan": 20
+                        }
+                      ]
+                    },
+                    {
+                      "kind": "router",
+                      "id": "q6a-rt",
+                      "hostname": "RT-VAN-PHONG",
+                      "ports": [
+                        {
+                          "id": "g0",
+                          "mac": "AA:BB:CC:E6:0A:F1",
+                          "ipConfig": {
+                            "ip": "192.168.10.1",
+                            "prefix": 24
+                          }
+                        },
+                        {
+                          "id": "g1",
+                          "mac": "AA:BB:CC:E6:0A:F2",
+                          "ipConfig": {
+                            "ip": "192.168.20.1",
+                            "prefix": 24
+                          }
+                        }
+                      ],
+                      "staticRoutes": []
+                    }
+                  ],
+                  "links": [
+                    {
+                      "id": "q6a-w-kt",
+                      "a": {
+                        "deviceId": "q6a-kt",
+                        "portId": "eth0"
+                      },
+                      "b": {
+                        "deviceId": "q6a-sw",
+                        "portId": "p1"
+                      }
+                    },
+                    {
+                      "id": "q6a-w-kho",
+                      "a": {
+                        "deviceId": "q6a-kho",
+                        "portId": "eth0"
+                      },
+                      "b": {
+                        "deviceId": "q6a-sw",
+                        "portId": "p2"
+                      }
+                    },
+                    {
+                      "id": "q6a-w-rt10",
+                      "a": {
+                        "deviceId": "q6a-rt",
+                        "portId": "g0"
+                      },
+                      "b": {
+                        "deviceId": "q6a-sw",
+                        "portId": "p3"
+                      }
+                    },
+                    {
+                      "id": "q6a-w-rt20",
+                      "a": {
+                        "deviceId": "q6a-rt",
+                        "portId": "g1"
+                      },
+                      "b": {
+                        "deviceId": "q6a-sw",
+                        "portId": "p4"
+                      }
+                    }
+                  ]
+                }
+              },
+              "hintTopic": {
+                "vi": "hai máy này đang tưởng mình ở chung một xóm hay khác xóm"
+              },
+              "explain": {
+                "vi": "MAY-KHO nằm ở VLAN 20 nhưng lại mang địa chỉ 192.168.10.30 — tức là địa chỉ của xóm kế toán. Kế toán so dải, thấy \"cùng 192.168.10.x\", nên gọi thẳng bằng ARP thay vì nhờ router; mà ARP không vượt được ranh giới VLAN nên không ai đáp. Đưa MAY-KHO về đúng dải của xóm mình (192.168.20.30, gateway 192.168.20.1) là hai máy nói chuyện được qua router ngay."
+              }
+            }
+          ],
+          "encouragement": {
+            "vi": "Đây là bước mà người mới bỏ qua nhiều nhất, vì trên sơ đồ trông như đã xong việc. Bài ngay sau đây kẻ hẳn cái bảng phải điền trước khi cắm sợi dây đầu tiên."
+          }
+        },
+        {
+          "type": "teach",
+          "screens": [
+            {
+              "conceptId": "bang-quy-hoach-vlan",
+              "visualId": "vis-bang-quy-hoach",
+              "body": {
+                "vi": "Trước khi cắm sợi dây nào, người làm mạng kẻ một cái bảng bốn cột: PHÒNG · DẢI IP · SỐ VLAN · ĐỊA CHỈ GATEWAY. Luật của bảng chỉ có một câu: mỗi VLAN một dải riêng, và mỗi dải một gateway riêng nằm trong chính dải đó (quy ước phổ biến là địa chỉ đầu dải, kết thúc bằng .1). Ví dụ: Kế toán · 192.168.10.0/24 · VLAN 10 · 192.168.10.1 — rồi Kho · 192.168.20.0/24 · VLAN 20 · 192.168.20.1. Mẹo nhớ mà cả nghề dùng: cho số VLAN trùng với octet thứ ba của dải, nhìn địa chỉ là đoán ra xóm."
+              },
+              "deepDive": {
+                "vi": "Vì sao hai VLAN dùng chung một dải là hỏng: máy quyết định \"gọi thẳng hay nhờ gateway\" bằng cách so subnet mask. Thấy đích cùng dải, nó gọi thẳng bằng ARP — mà ARP là khung tầng 2, không qua nổi ranh giới VLAN, nên tiếng gọi rơi vào im lặng và máy không bao giờ nghĩ tới chuyện nhờ router. Ngược lại, để hai dải khác nhau trong CÙNG một VLAN cũng hỏng theo kiểu ngược lại: chung một xóm mà vẫn phải nhờ router, trong khi chẳng có router nào đứng giữa. Cột DẢI IP còn phải đủ chỗ cho số máy của phòng đó — đúng phép cắt VLSM bạn làm ở Module 13."
+              }
+            }
+          ]
+        },
+        {
+          "type": "practice",
+          "fadingLevel": 2,
+          "exercises": [
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m14-b6-prac-1",
+                "prompt": {
+                  "vi": "Một dòng trong bảng quy hoạch: phòng Kinh doanh · VLAN 30 · dải 192.168.30.0/24. Theo quy ước đặt gateway ở địa chỉ đầu dải, máy phòng Kinh doanh phải khai Default Gateway là địa chỉ nào?"
+                },
+                "accept": [
+                  "192.168.30.1"
+                ],
+                "hintTopic": {
+                  "vi": "địa chỉ đầu tiên dùng được của dải đó"
+                }
+              },
+              "conceptId": "bang-quy-hoach-vlan",
+              "hint": {
+                "vi": "Dải 192.168.30.0/24 có địa chỉ mạng là .0. Địa chỉ dùng được đầu tiên ngay sau nó là bao nhiêu?"
+              },
+              "solution": {
+                "vi": "192.168.30.1 — địa chỉ dùng được đầu tiên của chính dải đó. Gateway phải nằm TRONG dải mà nó phục vụ, không thì máy trong xóm không gọi nổi cửa ra của mình."
+              }
+            },
+            {
+              "question": {
+                "kind": "mcq",
+                "id": "m14-b6-prac-2",
+                "prompt": {
+                  "vi": "Hai xóm đã tách VLAN đàng hoàng, nhưng cả hai vẫn dùng chung dải 192.168.1.0/24. Máy ở VLAN 10 gọi máy ở VLAN 20, chuyện gì xảy ra?"
+                },
+                "choices": [
+                  {
+                    "vi": "Máy tưởng cùng xóm nên gọi thẳng bằng ARP, và không ai đáp"
+                  },
+                  {
+                    "vi": "Máy nhờ gateway chuyển hộ, router đọc nhãn rồi giao đúng nơi"
+                  },
+                  {
+                    "vi": "Switch tự bỏ nhãn VLAN đi cho hai máy nói chuyện được"
+                  }
+                ],
+                "answerIndex": 0,
+                "hintTopic": {
+                  "vi": "máy dựa vào đâu để quyết định gọi thẳng hay nhờ gateway"
+                }
+              },
+              "conceptId": "bang-quy-hoach-vlan",
+              "hint": {
+                "vi": "Máy so địa chỉ đích với subnet mask của mình. Cùng dải thì nó kết luận gì?"
+              },
+              "solution": {
+                "vi": "Cùng dải nghĩa là — theo cách máy hiểu — cùng xóm, nên nó gọi thẳng bằng ARP thay vì nhờ gateway. Nhưng ARP là khung tầng 2, không vượt được ranh giới VLAN, nên tiếng gọi rơi vào im lặng. Đó là lý do chia VLAN xong bắt buộc phải chia dải."
+              }
+            },
+            {
+              "question": {
+                "kind": "lab",
+                "id": "m14-b6-prac-lab",
+                "prompt": {
+                  "vi": "Bảng quy hoạch của công ty ghi: Lễ tân · VLAN 10 · 192.168.10.0/24 · gateway 192.168.10.1; Kho · VLAN 20 · 192.168.20.0/24 · gateway 192.168.20.1. MAY-LE-TAN vừa cắm vào còn trắng chưa cấu hình, còn MAY-KHO thì đang mang địa chỉ của xóm bên. Điền địa chỉ cho cả hai đúng bảng, rồi thử gọi."
+                },
+                "spec": {
+                  "initial": {
+                    "devices": [
+                      {
+                        "kind": "pc",
+                        "id": "q6b-le-tan",
+                        "hostname": "MAY-LE-TAN",
+                        "port": {
+                          "id": "eth0",
+                          "mac": "AA:BB:CC:E6:0B:01"
+                        },
+                        "ipConfig": null,
+                        "gateway": null
+                      },
+                      {
+                        "kind": "pc",
+                        "id": "q6b-kho",
+                        "hostname": "MAY-KHO",
+                        "port": {
+                          "id": "eth0",
+                          "mac": "AA:BB:CC:E6:0B:02"
+                        },
+                        "ipConfig": {
+                          "ip": "192.168.10.50",
+                          "prefix": 24
+                        },
+                        "gateway": "192.168.10.1"
+                      },
+                      {
+                        "kind": "switch",
+                        "id": "q6b-sw",
+                        "hostname": "SW-LOI",
+                        "ports": [
+                          {
+                            "id": "p1",
+                            "vlan": 10
+                          },
+                          {
+                            "id": "p2",
+                            "vlan": 20
+                          },
+                          {
+                            "id": "p3",
+                            "vlan": 10
+                          },
+                          {
+                            "id": "p4",
+                            "vlan": 20
+                          }
+                        ]
+                      },
+                      {
+                        "kind": "router",
+                        "id": "q6b-rt",
+                        "hostname": "RT-VAN-PHONG",
+                        "ports": [
+                          {
+                            "id": "g0",
+                            "mac": "AA:BB:CC:E6:0B:F1",
+                            "ipConfig": {
+                              "ip": "192.168.10.1",
+                              "prefix": 24
+                            }
+                          },
+                          {
+                            "id": "g1",
+                            "mac": "AA:BB:CC:E6:0B:F2",
+                            "ipConfig": {
+                              "ip": "192.168.20.1",
+                              "prefix": 24
+                            }
+                          }
+                        ],
+                        "staticRoutes": []
+                      }
+                    ],
+                    "links": [
+                      {
+                        "id": "q6b-w-le-tan",
+                        "a": {
+                          "deviceId": "q6b-le-tan",
+                          "portId": "eth0"
+                        },
+                        "b": {
+                          "deviceId": "q6b-sw",
+                          "portId": "p1"
+                        }
+                      },
+                      {
+                        "id": "q6b-w-kho",
+                        "a": {
+                          "deviceId": "q6b-kho",
+                          "portId": "eth0"
+                        },
+                        "b": {
+                          "deviceId": "q6b-sw",
+                          "portId": "p2"
+                        }
+                      },
+                      {
+                        "id": "q6b-w-rt10",
+                        "a": {
+                          "deviceId": "q6b-rt",
+                          "portId": "g0"
+                        },
+                        "b": {
+                          "deviceId": "q6b-sw",
+                          "portId": "p3"
+                        }
+                      },
+                      {
+                        "id": "q6b-w-rt20",
+                        "a": {
+                          "deviceId": "q6b-rt",
+                          "portId": "g1"
+                        },
+                        "b": {
+                          "deviceId": "q6b-sw",
+                          "portId": "p4"
+                        }
+                      }
+                    ]
+                  },
+                  "goals": [
+                    {
+                      "kind": "ping",
+                      "from": "q6b-le-tan",
+                      "to": "q6b-kho",
+                      "expect": "reach"
+                    }
+                  ],
+                  "allow": {
+                    "addDevices": [],
+                    "removeDevices": false,
+                    "addLinks": false,
+                    "removeLinks": false,
+                    "setVlan": false,
+                    "setIp": true,
+                    "setRoutes": false,
+                    "maxDevices": 4
+                  },
+                  "solution": {
+                    "devices": [
+                      {
+                        "kind": "pc",
+                        "id": "q6b-le-tan",
+                        "hostname": "MAY-LE-TAN",
+                        "port": {
+                          "id": "eth0",
+                          "mac": "AA:BB:CC:E6:0B:01"
+                        },
+                        "ipConfig": {
+                          "ip": "192.168.10.11",
+                          "prefix": 24
+                        },
+                        "gateway": "192.168.10.1"
+                      },
+                      {
+                        "kind": "pc",
+                        "id": "q6b-kho",
+                        "hostname": "MAY-KHO",
+                        "port": {
+                          "id": "eth0",
+                          "mac": "AA:BB:CC:E6:0B:02"
+                        },
+                        "ipConfig": {
+                          "ip": "192.168.20.50",
+                          "prefix": 24
+                        },
+                        "gateway": "192.168.20.1"
+                      },
+                      {
+                        "kind": "switch",
+                        "id": "q6b-sw",
+                        "hostname": "SW-LOI",
+                        "ports": [
+                          {
+                            "id": "p1",
+                            "vlan": 10
+                          },
+                          {
+                            "id": "p2",
+                            "vlan": 20
+                          },
+                          {
+                            "id": "p3",
+                            "vlan": 10
+                          },
+                          {
+                            "id": "p4",
+                            "vlan": 20
+                          }
+                        ]
+                      },
+                      {
+                        "kind": "router",
+                        "id": "q6b-rt",
+                        "hostname": "RT-VAN-PHONG",
+                        "ports": [
+                          {
+                            "id": "g0",
+                            "mac": "AA:BB:CC:E6:0B:F1",
+                            "ipConfig": {
+                              "ip": "192.168.10.1",
+                              "prefix": 24
+                            }
+                          },
+                          {
+                            "id": "g1",
+                            "mac": "AA:BB:CC:E6:0B:F2",
+                            "ipConfig": {
+                              "ip": "192.168.20.1",
+                              "prefix": 24
+                            }
+                          }
+                        ],
+                        "staticRoutes": []
+                      }
+                    ],
+                    "links": [
+                      {
+                        "id": "q6b-w-le-tan",
+                        "a": {
+                          "deviceId": "q6b-le-tan",
+                          "portId": "eth0"
+                        },
+                        "b": {
+                          "deviceId": "q6b-sw",
+                          "portId": "p1"
+                        }
+                      },
+                      {
+                        "id": "q6b-w-kho",
+                        "a": {
+                          "deviceId": "q6b-kho",
+                          "portId": "eth0"
+                        },
+                        "b": {
+                          "deviceId": "q6b-sw",
+                          "portId": "p2"
+                        }
+                      },
+                      {
+                        "id": "q6b-w-rt10",
+                        "a": {
+                          "deviceId": "q6b-rt",
+                          "portId": "g0"
+                        },
+                        "b": {
+                          "deviceId": "q6b-sw",
+                          "portId": "p3"
+                        }
+                      },
+                      {
+                        "id": "q6b-w-rt20",
+                        "a": {
+                          "deviceId": "q6b-rt",
+                          "portId": "g1"
+                        },
+                        "b": {
+                          "deviceId": "q6b-sw",
+                          "portId": "p4"
+                        }
+                      }
+                    ]
+                  }
+                },
+                "hintTopic": {
+                  "vi": "mỗi máy phải nằm trong dải của xóm mình và trỏ về gateway của chính dải đó"
+                }
+              },
+              "conceptId": "bang-quy-hoach-vlan",
+              "hint": {
+                "vi": "MAY-LE-TAN ở VLAN 10 nên địa chỉ phải bắt đầu bằng 192.168.10. và gateway là 192.168.10.1. MAY-KHO ở VLAN 20 thì đổi cả hai sang dải 20 — địa chỉ máy có thể giữ nguyên số cuối."
+              },
+              "solution": {
+                "vi": "MAY-LE-TAN: một địa chỉ bất kỳ còn trống trong 192.168.10.0/24 (ví dụ 192.168.10.11), gateway 192.168.10.1. MAY-KHO: 192.168.20.50, gateway 192.168.20.1. Số cuối đặt bao nhiêu cũng được — cái phải đúng là DẢI và GATEWAY, vì đó mới là thứ quyết định máy gọi thẳng hay nhờ cửa ra."
+              }
+            }
+          ]
+        },
+        {
+          "type": "retrieval",
+          "questions": [
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m14-b6-ret-1",
+                "prompt": {
+                  "vi": "Không nhìn lại bài: theo quy ước của bảng quy hoạch, gateway của một VLAN đặt ở địa chỉ thứ mấy trong dải của chính nó?"
+                },
+                "accept": [
+                  "đầu tiên",
+                  "địa chỉ đầu",
+                  "đầu dải",
+                  "thứ nhất",
+                  "số 1",
+                  "dùng được đầu tiên"
+                ],
+                "hintTopic": {
+                  "vi": "chỗ dễ nhớ nhất của một dải"
+                }
+              },
+              "hint": {
+                "vi": "Trong ví dụ của bài, dải 192.168.10.0/24 có gateway là 192.168.10.1."
+              },
+              "solution": {
+                "vi": "Địa chỉ dùng được đầu tiên của dải (kết thúc bằng .1). Đây chỉ là quy ước cho dễ nhớ — điều BẮT BUỘC là gateway phải nằm trong đúng dải mà nó phục vụ."
+              }
+            }
+          ],
+          "selfExplain": {
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: chia VLAN trên switch rồi thì còn phải chia gì nữa, và vì sao?"
+            },
+            "keywords": [
+              [
+                "dải",
+                "subnet",
+                "mạng con",
+                "địa chỉ riêng"
+              ],
+              [
+                "gateway",
+                "cửa ra",
+                "router"
+              ]
+            ],
+            "exampleAnswer": {
+              "vi": "Còn phải chia DẢI IP: mỗi VLAN một dải riêng, và mỗi dải một gateway riêng nằm trong chính dải đó. Vì máy quyết định gọi thẳng hay nhờ gateway bằng cách so dải — hai VLAN chung một dải thì máy tưởng cùng xóm, gọi thẳng bằng ARP, mà ARP không qua được ranh giới VLAN nên không ai đáp. Chia xóm ở tầng khung phải đi kèm chia số nhà ở tầng địa chỉ thì mới thành mạng dùng được."
+            }
+          }
+        },
+        {
+          "type": "summary",
+          "bullets": [
+            {
+              "vi": "Bảng quy hoạch bốn cột: phòng · dải IP · số VLAN · địa chỉ gateway. Kẻ bảng trước khi cắm dây."
+            },
+            {
+              "vi": "Mỗi VLAN một dải riêng, mỗi dải một gateway riêng nằm trong chính dải đó."
+            },
+            {
+              "vi": "Hai VLAN chung một dải: máy gọi thẳng bằng ARP, không ai đáp — mà nhìn sơ đồ thì tưởng đã xong."
+            }
+          ],
+          "nextTeaser": {
+            "vi": "Bảng đã điền, mỗi xóm đã có cửa ra riêng. Nhưng router bạn đang có chỉ còn đúng MỘT chân trống — bài sau cho xem cách một chân phục vụ cả bốn xóm."
           }
         }
       ]
@@ -1298,7 +2045,7 @@
                     "vi": "Router bắt buộc phải có ít nhất bốn chân vật lý mới chia được cửa logic"
                   },
                   {
-                    "vi": "Các VLAN đi qua kiểu này sẽ mất nhãn nên switch không phân biệt được nữa"
+                    "vi": "Các VLAN đi qua kiểu này sẽ mất nhãn nên switch không còn phân biệt được nữa"
                   }
                 ],
                 "answerIndex": 0,
@@ -1378,6 +2125,225 @@
             },
             {
               "vi": "Cái giá phải trả: lưu lượng liên VLAN đi vào và ra trên cùng một sợi."
+            }
+          ],
+          "nextTeaser": {
+            "vi": "Router-on-a-stick không phải cách duy nhất. Mở cấu hình switch lõi của một công ty thật ra, bạn sẽ thấy cửa ra nằm ở chỗ mà module này vừa bảo là không thể có."
+          }
+        }
+      ]
+    },
+    {
+      "id": "m14-bai-7",
+      "missionTitle": {
+        "vi": "Cửa ra nằm ngay trong switch"
+      },
+      "steps": [
+        {
+          "type": "hook",
+          "question": {
+            "vi": "Mở cấu hình switch lõi của một công ty thật, bạn sẽ gặp mấy dòng lạ: \"interface Vlan10\" kèm một địa chỉ IP. Nhưng cả module này vừa dạy switch không có IP và không định tuyến. Vậy cái đang chạy trong switch đó là gì?"
+          },
+          "visualId": "vis-hook-svi"
+        },
+        {
+          "type": "pretest",
+          "questions": [
+            {
+              "kind": "mcq",
+              "id": "m14-b7-pre-1",
+              "prompt": {
+                "vi": "Đoán thử. Switch lõi có hai đoạn cấu hình: \"interface Vlan10 / ip address 192.168.10.1\" và \"interface Vlan20 / ip address 192.168.20.1\". Máy trong VLAN 10 khai Default Gateway đúng bằng 192.168.10.1. Vậy ai đang làm cửa ra cho VLAN 10?"
+              },
+              "choices": [
+                {
+                  "vi": "Chính switch lõi — cửa ra nằm ngay bên trong nó"
+                },
+                {
+                  "vi": "Router phía sau switch, switch chỉ chuyển tiếp hộ"
+                },
+                {
+                  "vi": "Máy chủ DHCP, vì nó là nơi cấp phát địa chỉ đó ra"
+                }
+              ],
+              "answerIndex": 0,
+              "explain": {
+                "vi": "Máy trỏ gateway về một địa chỉ, mà địa chỉ ấy nằm ngay trên switch — nên chính switch là cửa ra. Loại switch làm được việc này gọi là switch lớp 3, và cái cổng ảo mang địa chỉ đó có tên riêng: SVI."
+              }
+            }
+          ],
+          "encouragement": {
+            "vi": "Đoán \"router phía sau\" là đoán rất hợp lý — đó đúng là điều module này dạy tới giờ. Bài ngay đây bổ sung cách làm thứ hai, thứ mà mạng doanh nghiệp thật gần như luôn dùng."
+          }
+        },
+        {
+          "type": "teach",
+          "screens": [
+            {
+              "conceptId": "svi-switch-lop-3",
+              "visualId": "vis-svi",
+              "body": {
+                "vi": "SVI (Switch Virtual Interface) là một cổng ẢO nằm bên trong switch: nó không cắm dây được, nó mang một số VLAN và một địa chỉ IP, và địa chỉ ấy làm gateway cho chính VLAN đó. Switch khai nhiều SVI rồi bật lệnh \"ip routing\" thì nó tự định tuyến giữa các VLAN — người ta gọi đó là switch lớp 3. So với router-on-a-stick ở bài trước: cùng làm một việc (cho hai xóm nói chuyện), nhưng gói không phải chạy lên router rồi chạy ngược xuống trên cùng một sợi trunk nữa; nó quay đầu ngay trong switch."
+              },
+              "deepDive": {
+                "vi": "Hai chỗ hay nhầm. MỘT: switch tầng truy cập (lớp 2) cũng thường có đúng MỘT interface VLAN kèm IP — nhưng cái đó chỉ để quản trị viên vào cấu hình switch từ xa, nó không định tuyến gì cả. Nhiều SVI cộng với \"ip routing\" mới là switch lớp 3. HAI: một SVI chỉ sống khi VLAN của nó còn ít nhất một cổng đang hoạt động — rút hết dây của VLAN 10 thì interface Vlan10 tắt theo, và cả xóm mất cửa ra dù cấu hình vẫn còn nguyên chữ. Phòng lab của app này cố ý KHÔNG mô phỏng switch lớp 3 (switch ở đây trong suốt hoàn toàn ở tầng 2), nên bài này là bài đọc-hiểu cấu hình thật — giống phần cú pháp sub-interface ở bài trước."
+              }
+            }
+          ]
+        },
+        {
+          "type": "practice",
+          "fadingLevel": 2,
+          "exercises": [
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m14-b7-prac-1",
+                "prompt": {
+                  "vi": "Cổng ảo nằm trong switch, mang một số VLAN và một địa chỉ IP làm gateway cho xóm đó — tên viết tắt ba chữ trong nghề của nó là gì?"
+                },
+                "accept": [
+                  "svi",
+                  "switch virtual interface",
+                  "interface vlan"
+                ],
+                "hintTopic": {
+                  "vi": "viết tắt của Switch Virtual Interface"
+                }
+              },
+              "conceptId": "svi-switch-lop-3",
+              "hint": {
+                "vi": "Ba chữ cái đầu của Switch Virtual Interface."
+              },
+              "solution": {
+                "vi": "SVI — Switch Virtual Interface. Trên dòng cấu hình nó hiện ra dưới dạng \"interface Vlan10\"."
+              }
+            },
+            {
+              "question": {
+                "kind": "mcq",
+                "id": "m14-b7-prac-2",
+                "prompt": {
+                  "vi": "Mạng lớn chuộng switch lớp 3 hơn router-on-a-stick. Lý do chính là gì?"
+                },
+                "choices": [
+                  {
+                    "vi": "Gói giữa hai VLAN quay đầu ngay trong switch, không phải lên rồi xuống trên một sợi"
+                  },
+                  {
+                    "vi": "Switch lớp 3 không cần khai VLAN nữa nên cấu hình ngắn hơn hẳn"
+                  },
+                  {
+                    "vi": "Router-on-a-stick chỉ chạy được với nhiều nhất là hai VLAN nên không đủ dùng"
+                  }
+                ],
+                "answerIndex": 0,
+                "hintTopic": {
+                  "vi": "đường đi của gói khi hai VLAN nói chuyện"
+                }
+              },
+              "conceptId": "svi-switch-lop-3",
+              "hint": {
+                "vi": "Nhớ lại nhược điểm của router-on-a-stick ở bài trước: sợi trunk gánh mấy chiều?"
+              },
+              "solution": {
+                "vi": "Router-on-a-stick bắt mọi gói liên-VLAN đi lên router rồi quay xuống trên đúng sợi trunk ấy, nên sợi đó gánh gấp đôi. SVI cho gói quay đầu ngay trong switch. VLAN vẫn phải khai như thường, và router-on-a-stick chạy được với rất nhiều VLAN — chỉ là tốn băng thông sợi trunk."
+              }
+            },
+            {
+              "question": {
+                "kind": "mcq",
+                "id": "m14-b7-prac-3",
+                "prompt": {
+                  "vi": "Một switch tầng truy cập có đúng MỘT dòng \"interface Vlan99\" kèm địa chỉ IP, và không có lệnh ip routing. Địa chỉ đó dùng để làm gì?"
+                },
+                "choices": [
+                  {
+                    "vi": "Để quản trị viên vào cấu hình switch từ xa, không định tuyến gì cả"
+                  },
+                  {
+                    "vi": "Để làm gateway cho mọi VLAN đang có cổng trên switch đó"
+                  },
+                  {
+                    "vi": "Để switch tự đăng ký tên của mình với máy chủ DNS của công ty"
+                  }
+                ],
+                "answerIndex": 0,
+                "hintTopic": {
+                  "vi": "một SVI khác nhiều SVI cộng ip routing"
+                }
+              },
+              "hint": {
+                "vi": "Bài vừa nói: nhiều SVI CỘNG lệnh ip routing mới là switch lớp 3. Ở đây thiếu cả hai vế."
+              },
+              "solution": {
+                "vi": "Đây là SVI quản trị: cho switch một địa chỉ để người ta SSH vào, chỉ vậy thôi. Không có ip routing thì switch không định tuyến, và một SVI thì cũng chẳng có xóm thứ hai nào để định tuyến sang."
+              }
+            }
+          ]
+        },
+        {
+          "type": "retrieval",
+          "questions": [
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m14-b7-ret-1",
+                "prompt": {
+                  "vi": "Không nhìn lại bài: switch đã khai nhiều SVI, còn thiếu lệnh nào nữa thì nó mới thật sự định tuyến giữa các VLAN?"
+                },
+                "accept": [
+                  "ip routing",
+                  "lệnh ip routing",
+                  "iprouting"
+                ],
+                "hintTopic": {
+                  "vi": "hai chữ tiếng Anh bật khả năng định tuyến"
+                }
+              },
+              "hint": {
+                "vi": "Hai chữ: \"ip\" và một danh từ nghĩa là định tuyến."
+              },
+              "solution": {
+                "vi": "ip routing. Thiếu nó thì các SVI chỉ là những địa chỉ để quản trị, switch vẫn chỉ chuyển khung ở tầng 2."
+              }
+            }
+          ],
+          "selfExplain": {
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: router-on-a-stick và switch lớp 3 cùng làm một việc — chúng khác nhau ở chỗ nào?"
+            },
+            "keywords": [
+              [
+                "trunk",
+                "một sợi",
+                "lên rồi xuống",
+                "gấp đôi",
+                "lên router"
+              ],
+              [
+                "trong switch",
+                "ngay trong",
+                "svi",
+                "lớp 3"
+              ]
+            ],
+            "exampleAnswer": {
+              "vi": "Cả hai đều cho hai VLAN nói chuyện được. Router-on-a-stick đặt cửa ra ở router: gói phải đi lên trên sợi trunk rồi quay xuống cũng trên sợi ấy, nên sợi gánh cả hai chiều. Switch lớp 3 đặt cửa ra ngay trong switch bằng các SVI — mỗi SVI mang một VLAN và một IP gateway — nên gói quay đầu tại chỗ, không phải ra sợi trunk. Đổi lại, switch lớp 3 là thiết bị đắt hơn, và phải bật ip routing thì nó mới định tuyến."
+            }
+          }
+        },
+        {
+          "type": "summary",
+          "bullets": [
+            {
+              "vi": "SVI là cổng ảo trong switch: một số VLAN + một địa chỉ IP làm gateway cho xóm đó."
+            },
+            {
+              "vi": "Nhiều SVI + lệnh ip routing = switch lớp 3, gói liên-VLAN quay đầu ngay trong switch."
+            },
+            {
+              "vi": "Một SVI đơn lẻ trên switch tầng truy cập chỉ là địa chỉ quản trị — nó không định tuyến."
             }
           ],
           "nextTeaser": {
@@ -1472,6 +2438,40 @@
           "vi": "Dây nối switch với router là trunk; chân router chia thành các sub-interface, mỗi cửa mang một VLAN và một IP gateway. Cái giá: lưu lượng liên VLAN đi vào rồi ra trên cùng một sợi nên sợi đó gánh gấp đôi."
         }
       }
+    },
+    {
+      "id": "bang-quy-hoach-vlan",
+      "term": "Bảng quy hoạch VLAN",
+      "glossVi": "Bốn cột phải điền trước khi cắm dây: phòng · dải IP · số VLAN · địa chỉ gateway",
+      "metaphor": {
+        "vi": "Chia khu dân cư thì phải đặt tên đường và đánh số nhà cho từng khu, mỗi khu một cổng ra riêng — không thì hai khu vẫn dùng chung số nhà và bưu tá đi lạc."
+      },
+      "iconId": "icon-bang-quy-hoach-vlan",
+      "flashcard": {
+        "front": {
+          "vi": "Bảng quy hoạch VLAN gồm bốn cột nào, và luật của nó là gì?"
+        },
+        "back": {
+          "vi": "Phòng · dải IP · số VLAN · địa chỉ gateway. Luật: mỗi VLAN một dải riêng, mỗi dải một gateway riêng nằm trong chính dải đó (quy ước là địa chỉ đầu dải). Hai VLAN chung một dải thì máy gọi thẳng bằng ARP và không ai đáp."
+        }
+      }
+    },
+    {
+      "id": "svi-switch-lop-3",
+      "term": "SVI & switch lớp 3",
+      "glossVi": "Cổng ảo mang IP ngay trong switch, làm gateway cho một VLAN",
+      "metaphor": {
+        "vi": "Thay vì bắt mọi người ra tận cổng khu phố để sang khu bên, người ta mở luôn một cửa thông ngay trong tòa nhà."
+      },
+      "iconId": "icon-svi-switch-lop-3",
+      "flashcard": {
+        "front": {
+          "vi": "SVI là gì, và cần thêm gì nữa thì switch mới định tuyến được giữa các VLAN?"
+        },
+        "back": {
+          "vi": "SVI (Switch Virtual Interface) là cổng ảo trong switch mang một số VLAN và một IP làm gateway cho xóm đó — trên cấu hình hiện ra là \"interface Vlan10\". Nhiều SVI CỘNG lệnh ip routing mới thành switch lớp 3; một SVI đơn lẻ chỉ là địa chỉ để quản trị từ xa."
+        }
+      }
     }
   ],
   "masteryTest": [
@@ -1504,7 +2504,7 @@
       "kind": "typed",
       "id": "m14-mt-2",
       "prompt": {
-        "vi": "Tên chuẩn dán nhãn VLAN lên khung là gì? (viết dạng số hiệu chuẩn)"
+        "vi": "Tờ thông số của lô switch mới chỉ ghi vỏn vẹn: có hỗ trợ dán nhãn VLAN theo chuẩn IEEE. Gọi lại cho bên bán, bạn cần họ xác nhận số hiệu đầy đủ nào của chuẩn ấy?"
       },
       "accept": [
         "802.1q",
@@ -1524,7 +2524,7 @@
       "kind": "typed",
       "id": "m14-mt-3",
       "prompt": {
-        "vi": "Đang ở dấu nhắc Switch-1(config-if)#, gõ lệnh gì để biến cổng đang chọn thành trunk?"
+        "vi": "Bạn vừa chọn cổng p2 trên Switch-Kho, màn hình đang đứng ở dấu nhắc Switch-Kho(config-if)#. Sợi cắm ở cổng đó sắp phải chở cả VLAN 50 lẫn VLAN 60 sang nhà kho. Lệnh gõ ngay lúc này là gì?"
       },
       "accept": [
         "switchport mode trunk",
@@ -1566,7 +2566,7 @@
       "kind": "typed",
       "id": "m14-mt-5",
       "prompt": {
-        "vi": "Native VLAN mặc định của một trunk là VLAN số mấy?"
+        "vi": "Bàn giao ca trực: sợi trunk vừa dựng xong, chưa ai gõ dòng khai native. Khung đi qua nó mà không mang nhãn thì rơi vào VLAN nào? (ghi số)"
       },
       "accept": [
         "1",
@@ -1584,17 +2584,17 @@
       "kind": "mcq",
       "id": "m14-mt-6",
       "prompt": {
-        "vi": "Một trunk chưa khai allowed list thì cho VLAN nào đi qua?"
+        "vi": "Anh kỹ thuật vừa nối trunk giữa Switch-Tầng1 và Switch-Tầng2 rồi dừng tay, chưa gõ thêm dòng nào. Sếp hỏi: VLAN 70 vừa lập cho phòng kế toán đã đi qua sợi đó được chưa?"
       },
       "choices": [
         {
-          "vi": "Tất cả các VLAN"
+          "vi": "Được rồi — trunk chưa ai thu hẹp thì mặc định cho mọi VLAN đi qua"
         },
         {
-          "vi": "Chỉ native VLAN"
+          "vi": "Chưa — phải thêm VLAN 70 vào danh sách allowed thì trunk mới chở nó"
         },
         {
-          "vi": "Chỉ VLAN 10 và 20"
+          "vi": "Chưa — trunk chỉ chở được native VLAN cho tới khi có người khai thêm"
         }
       ],
       "answerIndex": 0,
@@ -1602,7 +2602,7 @@
         "vi": "mặc định rộng hay hẹp của một trunk"
       },
       "explain": {
-        "vi": "Mặc định trunk cho tất cả VLAN qua. Danh sách allowed là do người quản trị thu hẹp lại, và cũng từ đó mới có bệnh thiếu tên trong danh sách."
+        "vi": "Mặc định trunk cho tất cả VLAN qua, nên VLAN 70 chạy được ngay mà không phải khai gì thêm. Danh sách allowed là do người quản trị thu hẹp lại, và cũng từ đó mới có bệnh thiếu tên trong danh sách."
       }
     },
     {
@@ -2026,17 +3026,17 @@
       "kind": "mcq",
       "id": "m14-mt-11",
       "prompt": {
-        "vi": "Máy tính cắm vào cổng access có nhìn thấy nhãn 802.1Q không?"
+        "vi": "Đồng nghiệp khăng khăng phải vào Windows bật tùy chọn VLAN tagging trên card mạng thì máy kế toán mới vào đúng VLAN 30 được. Bạn đáp lại thế nào?"
       },
       "choices": [
         {
-          "vi": "Không, switch đã gỡ nhãn trước khi giao khung xuống cổng access"
+          "vi": "Không cần — switch gỡ nhãn trước khi giao khung xuống cổng access"
         },
         {
-          "vi": "Có, card mạng phải tự đọc nhãn mới biết mình thuộc VLAN nào"
+          "vi": "Đúng vậy — card mạng phải đọc được nhãn 802.1Q mới biết mình ở xóm nào"
         },
         {
-          "vi": "Có, nhưng chỉ khi máy chạy hệ điều hành hỗ trợ chuẩn 802.1Q"
+          "vi": "Đúng vậy — không bật thì khung xuống tới máy vẫn còn nguyên nhãn VLAN"
         }
       ],
       "answerIndex": 0,
@@ -2070,6 +3070,86 @@
       },
       "explain": {
         "vi": "Phải là trunk. Chân router sau đó chia thành các sub-interface, mỗi cửa một VLAN và một IP gateway."
+      }
+    },
+    {
+      "kind": "typed",
+      "id": "m14-mt-13",
+      "prompt": {
+        "vi": "Bàn giao mạng cũ: router chỉ có ĐÚNG một chân cắm lên switch, vậy mà nó đang giữ bốn địa chỉ gateway cho bốn xóm khác nhau. Thứ đã được khai bốn lần trên cái chân ấy tên nghề là gì?"
+      },
+      "accept": [
+        "sub-interface",
+        "subinterface",
+        "sub interface",
+        "cổng con",
+        "giao diện con"
+      ],
+      "hintTopic": {
+        "vi": "tên tiếng Anh, cùng tiền tố với subnet"
+      },
+      "explain": {
+        "vi": "Sub-interface. Một chân vật lý, nhiều cửa logic — mỗi cửa đứng tên một VLAN và giữ địa chỉ gateway của xóm ấy."
+      }
+    },
+    {
+      "kind": "mcq",
+      "id": "m14-mt-14",
+      "prompt": {
+        "vi": "Bảng quy hoạch của tòa nhà cấp cùng một dải 172.16.5.0/24 cho cả tầng 3 lẫn tầng 4, dù hai tầng đã nằm ở hai VLAN riêng. Máy tầng 3 gọi máy tầng 4 thì hỏng ở đâu?"
+      },
+      "choices": [
+        {
+          "vi": "Máy thấy đích cùng dải nên hỏi ARP thẳng, mà ARP không qua nổi VLAN"
+        },
+        {
+          "vi": "Router vẫn chuyển hộ được nên hai tầng chỉ chậm đi một chút thôi"
+        },
+        {
+          "vi": "Switch thấy trùng dải nên tự gộp hai VLAN lại làm một cho hết cãi nhau"
+        }
+      ],
+      "answerIndex": 0,
+      "explain": {
+        "vi": "Máy so dải để quyết định gọi thẳng hay nhờ gateway. Cùng dải thì nó gọi thẳng bằng ARP — mà ARP không vượt được ranh giới VLAN. Chia VLAN phải đi kèm chia dải."
+      }
+    },
+    {
+      "kind": "typed",
+      "id": "m14-mt-15",
+      "prompt": {
+        "vi": "Máy in mạng của xưởng nằm trong VLAN 40, dải 10.0.40.0/24, và công ty luôn để router giữ địa chỉ dùng được đầu tiên của mỗi dải. Ô Default Gateway trên máy in phải điền gì?"
+      },
+      "accept": [
+        "10.0.40.1"
+      ],
+      "hintTopic": {
+        "vi": "cách suy ra gateway từ dải của một VLAN"
+      },
+      "explain": {
+        "vi": "10.0.40.1 — địa chỉ dùng được đầu tiên của chính dải ấy. Gateway phải nằm TRONG dải mà nó phục vụ."
+      }
+    },
+    {
+      "kind": "mcq",
+      "id": "m14-mt-16",
+      "prompt": {
+        "vi": "Switch lõi có \"interface Vlan10\" và \"interface Vlan20\", mỗi cái một địa chỉ IP, cộng lệnh ip routing. Nó đang làm gì?"
+      },
+      "choices": [
+        {
+          "vi": "Định tuyến giữa hai VLAN ngay trong switch, không cần router"
+        },
+        {
+          "vi": "Giữ hai địa chỉ dự phòng để dùng khi router chính hỏng"
+        },
+        {
+          "vi": "Chuyển tiếp mọi gói liên-VLAN lên router qua sợi trunk"
+        }
+      ],
+      "answerIndex": 0,
+      "explain": {
+        "vi": "Nhiều SVI cộng ip routing chính là switch lớp 3: mỗi SVI là gateway của một VLAN, và gói liên-VLAN quay đầu ngay trong switch thay vì chạy lên router rồi chạy xuống."
       }
     }
   ]

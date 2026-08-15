@@ -361,6 +361,97 @@ export const CASE_GPO_CHAN: ClinicCaseSpec = {
   fix: { kind: 'choose-action' },
 }
 
+// ---------------------------------------------------------------
+// Ca 6 — DÂY ỐM: mạng vẫn thông, nhưng chậm và rơi gói ("chậm chứ không
+// chết"). Bệnh nằm ở CON SỐ, không ở chỗ thông/không thông — nên nó là
+// ca duy nhất mà bốn lệnh cũ đọc lướt sẽ báo "mọi thứ bình thường".
+// ---------------------------------------------------------------
+
+const DAY_OM_INITIAL: Topology = {
+  devices: [
+    {
+      kind: 'pc',
+      id: 'cl6-may-phong-hop',
+      hostname: 'MAY-PHONG-HOP',
+      port: { id: 'eth0', mac: 'AA:BB:CC:C6:00:01' },
+      ipConfig: { ip: '192.168.30.10', prefix: 24 },
+      gateway: '192.168.30.1',
+    },
+    {
+      kind: 'switch',
+      id: 'cl6-switch',
+      hostname: 'SW-TANG-1',
+      ports: [
+        { id: 'p1', vlan: 1 },
+        { id: 'p2', vlan: 1 },
+      ],
+    },
+    {
+      kind: 'router',
+      id: 'cl6-router',
+      hostname: 'RT-VAN-PHONG',
+      ports: [
+        { id: 'lan', mac: 'AA:BB:CC:C6:01:01', ipConfig: { ip: '192.168.30.1', prefix: 24 } },
+        { id: 'wan', mac: 'AA:BB:CC:C6:01:02', ipConfig: { ip: '10.0.0.1', prefix: 30 } },
+      ],
+      staticRoutes: [],
+    },
+    {
+      kind: 'pc',
+      id: 'cl6-may-chu-hop',
+      hostname: 'MAY-CHU-HOP',
+      port: { id: 'eth0', mac: 'AA:BB:CC:C6:00:09' },
+      ipConfig: { ip: '10.0.0.2', prefix: 30 },
+      gateway: '10.0.0.1',
+    },
+  ],
+  links: [
+    { id: 'cl6-w-seat-cu', a: { deviceId: 'cl6-may-phong-hop', portId: 'eth0' }, b: { deviceId: 'cl6-switch', portId: 'p1' } },
+    { id: 'cl6-w-rt', a: { deviceId: 'cl6-switch', portId: 'p2' }, b: { deviceId: 'cl6-router', portId: 'lan' } },
+    { id: 'cl6-w-server', a: { deviceId: 'cl6-router', portId: 'wan' }, b: { deviceId: 'cl6-may-chu-hop', portId: 'eth0' } },
+  ],
+}
+
+export const CASE_DAY_OM: ClinicCaseSpec = {
+  patient: {
+    topology: DAY_OM_INITIAL,
+    // Sợi dây từ máy xuống switch đã dập: vẫn dẫn, nhưng cộng 90ms mỗi
+    // chiều và đánh rơi 1/5 số gói đi qua.
+    overlay: { impairments: [{ linkId: 'cl6-w-seat-cu', latencyMs: 90, lossPercent: 20 }] },
+    seatId: 'cl6-may-phong-hop',
+  },
+  symptom: {
+    kind: 'ping-degraded',
+    from: 'cl6-may-phong-hop',
+    target: '10.0.0.2',
+    maxLatencyMs: 50,
+    maxLossPercent: 0,
+  },
+  fix: {
+    kind: 'edit-network',
+    allow: {
+      addDevices: [],
+      removeDevices: false,
+      addLinks: true,
+      removeLinks: true,
+      setVlan: false,
+      setIp: false,
+      setRoutes: false,
+      maxDevices: 4,
+    },
+    goals: [{ kind: 'ping', from: 'cl6-may-phong-hop', to: 'cl6-may-chu-hop', expect: 'reach' }],
+    // Chữa = THAY sợi dây: gỡ dây cũ ra, cắm dây mới vào đúng hai đầu ấy.
+    // Dây mới mang id mới nên hồ sơ bệnh không còn dính vào nó.
+    solution: {
+      ...DAY_OM_INITIAL,
+      links: [
+        { id: 'cl6-w-seat-moi', a: { deviceId: 'cl6-may-phong-hop', portId: 'eth0' }, b: { deviceId: 'cl6-switch', portId: 'p1' } },
+        ...DAY_OM_INITIAL.links.filter((l) => l.id !== 'cl6-w-seat-cu'),
+      ],
+    },
+  },
+}
+
 /**
  * Bản sao sâu của một ca — cho fixture khác (moduleFixture) nhét ca vào
  * nội dung mẫu mà không chia sẻ object graph với các test engine.
@@ -375,4 +466,5 @@ export const ALL_CLINIC_CASES: ClinicCaseSpec[] = [
   CASE_DNS_CHET,
   CASE_TRUNG_IP,
   CASE_GPO_CHAN,
+  CASE_DAY_OM,
 ]

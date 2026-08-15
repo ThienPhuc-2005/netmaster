@@ -45,6 +45,12 @@ const AppliedGpoSchema = z.object({
   blocking: z.literal(true).optional(),
 })
 
+const LinkImpairmentSchema = z.object({
+  linkId: idSchema,
+  latencyMs: z.number().int().min(0).max(5000).optional(),
+  lossPercent: z.number().int().min(0).max(90).optional(),
+})
+
 export const ClinicOverlaySchema = z.object({
   dns: z
     .object({
@@ -56,12 +62,20 @@ export const ClinicOverlaySchema = z.object({
   hostBlocks: z.array(HostBlockSchema).optional(),
   connections: z.record(z.string(), z.array(NetstatRowSchema)).optional(),
   gpos: z.record(z.string(), z.array(AppliedGpoSchema)).optional(),
+  impairments: z.array(LinkImpairmentSchema).optional(),
 })
 
 export const ClinicSymptomSchema = z.discriminatedUnion('kind', [
   z.object({ kind: z.literal('ping-fails'), from: idSchema, target: z.string().min(1) }),
   z.object({ kind: z.literal('resolve-fails'), from: idSchema, name: z.string().min(1) }),
   z.object({ kind: z.literal('ping-flaps'), from: idSchema, target: ipSchema }),
+  z.object({
+    kind: z.literal('ping-degraded'),
+    from: idSchema,
+    target: z.string().min(1),
+    maxLatencyMs: z.number().int().min(0).max(5000),
+    maxLossPercent: z.number().int().min(0).max(90),
+  }),
 ])
 
 /**
@@ -139,6 +153,12 @@ function clinicCrossChecks(spec: ClinicCaseSpec, ctx: z.RefinementCtx): void {
   const complainer = findDevice(patient.topology, spec.symptom.from)
   if (complainer === null || complainer.kind !== 'pc') {
     issue(`Triệu chứng khai từ "${spec.symptom.from}" — không phải PC trong sơ đồ`, ['symptom'])
+  }
+
+  // Ca "chậm chứ không chết" phải có thứ gì đó làm nó chậm. Thiếu, thì
+  // lời than là bịa và bệnh nhân sẽ khỏe re ngay từ trạng thái đầu.
+  if (spec.symptom.kind === 'ping-degraded' && (patient.overlay.impairments ?? []).length === 0) {
+    issue('Triệu chứng khai "chậm chứ không chết" nhưng hồ sơ bệnh không khai sợi dây ốm nào', ['symptom'])
   }
 
   // Các phép kiểm dưới đây chạy mô phỏng — chỉ an toàn khi cấu trúc sạch.

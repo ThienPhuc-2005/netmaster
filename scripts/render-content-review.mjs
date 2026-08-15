@@ -195,6 +195,13 @@ export function renderQuestion(q, indent = '', palace = null) {
     lines.push(`${indent}  - **Dạng:** gõ tay · **Chấp nhận:** ${q.accept.join(' | ')}`)
     const warning = acceptWarning(q)
     if (warning !== null) lines.push(`${indent}  - ${warning}`)
+    // CẬN ĐÚNG phải in ra, không thì bản duyệt nói dối về độ khắt khe của
+    // bộ chấm: lượt soát 08-15 từng báo một câu "đánh sai trắng người
+    // học" trong khi câu đó đã có lời đón tử tế khai sẵn ngay dưới accept
+    // — người soát không thấy vì bản in bỏ mất phần này.
+    for (const nm of q.nearMisses ?? []) {
+      lines.push(`${indent}  - **Cận đúng:** ${nm.accept.join(' | ')} → “${vi(nm.feedback)}”`)
+    }
   } else if (q.kind === 'mcq') {
     const choices = q.choices.map((c, i) => (i === q.answerIndex ? `**${vi(c)}** ✓` : vi(c)))
     lines.push(`${indent}  - **Dạng:** trắc nghiệm · ${choices.join(' / ')}`)

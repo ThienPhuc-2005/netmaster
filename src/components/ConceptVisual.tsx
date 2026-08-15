@@ -167,16 +167,19 @@ function MatchingLetters({ title }: { title?: string }) {
 
 type JourneyLeg = 'dns' | 'gateway' | 'routers' | 've-dich' | 'tong-quan'
 
+// Hình học vẽ ngay tại (x, y) đích; motion chỉ animate ĐỘ DỜI −16 → 0.
+// Vẽ quanh gốc rồi dời bằng transform CSS thì getBBox không tính transform,
+// box đo trên /design sẽ tràn [-8,-6] dù mắt nhìn không tràn.
 function MiniPacket({ x, y }: { x: number; y: number }) {
   return (
     <m.g
-      initial={{ x: x - 16, y, opacity: 0 }}
-      animate={{ x, y, opacity: 1 }}
+      initial={{ x: -16, opacity: 0 }}
+      animate={{ x: 0, opacity: 1 }}
       transition={{ duration: 0.24, ease: 'easeOut' }}
       className="text-accent"
     >
-      <rect x="-8" y="-6" width="16" height="12" rx="2" fill="var(--panel)" stroke="currentColor" strokeWidth="1.8" />
-      <path d="M-8 -3.5 0 3 8 -3.5" fill="none" stroke="currentColor" strokeWidth="1.3" />
+      <rect x={x - 8} y={y - 6} width="16" height="12" rx="2" fill="var(--panel)" stroke="currentColor" strokeWidth="1.8" />
+      <path d={`M${x - 8} ${y - 3.5} ${x} ${y + 3} ${x + 8} ${y - 3.5}`} fill="none" stroke="currentColor" strokeWidth="1.3" />
     </m.g>
   )
 }
@@ -436,26 +439,33 @@ function MagicNumber({ title }: { title?: string }) {
 function CableCopperFiber({ title }: { title?: string }) {
   return (
     <Frame title={title}>
-      <text x={18} y={20} fontSize="9" fill="var(--ink-muted)">
-        cáp đồng — tối đa 100 m
+      {/* Hai băng ngang: băng trên là cáp đồng có vạch 100 m, băng dưới là
+          cáp quang chạy trọn bề ngang. Nhãn "tối đa 100 m" ĐỘI trên vạch
+          (không nằm cạnh nhãn "cáp đồng" nữa), còn lời giải thích nhiễu
+          tách làm hai dòng đáy — một dòng thì tràn mép. */}
+      <text x={6} y={18} fontSize="9" fill="var(--ink-muted)">
+        cáp đồng
       </text>
-      <path d="M18 34 H120" stroke="var(--accent)" strokeWidth="3" fill="none" />
-      <path d="M120 34 H190" stroke="var(--warn)" strokeWidth="3" strokeDasharray="4 3" fill="none" />
-      <path d="M120 28 v12" stroke="var(--warn)" strokeWidth="1.5" fill="none" />
-      <text x={122} y={26} fontSize="8" fill="var(--warn)">
-        100 m
+      <text x={120} y={20} textAnchor="middle" fontSize="9" fill="var(--warn)">
+        tối đa 100 m
       </text>
-      <text x={124} y={48} fontSize="8" fill="var(--warn)">
+      <path d="M8 32 H120" stroke="var(--accent)" strokeWidth="3" fill="none" />
+      <path d="M120 32 H196" stroke="var(--warn)" strokeWidth="3" strokeDasharray="4 3" fill="none" />
+      <path d="M120 24 v16" stroke="var(--warn)" strokeWidth="1.5" fill="none" />
+      <text x={92} y={50} fontSize="9" fill="var(--warn)">
         quá vạch: tín hiệu rơi rớt
       </text>
-      <text x={18} y={78} fontSize="9" fill="var(--ink-muted)">
-        cáp quang — hàng cây số, không sợ nhiễu
+      <text x={6} y={74} fontSize="9" fill="var(--ink-muted)">
+        cáp quang — hàng cây số
       </text>
-      <path d="M18 92 H190" stroke="var(--accent)" strokeWidth="3" fill="none" />
-      <circle cx="18" cy="92" r="3.5" fill="var(--accent)" />
-      <circle cx="190" cy="92" r="3.5" fill="var(--accent)" />
-      <text x={18} y={116} fontSize="8" fill="var(--ink-muted)">
-        đồng dẫn điện nên ăn nhiễu; quang dẫn ánh sáng nên không
+      <path d="M8 88 H196" stroke="var(--accent)" strokeWidth="3" fill="none" />
+      <circle cx="8" cy="88" r="3.5" fill="var(--accent)" />
+      <circle cx="196" cy="88" r="3.5" fill="var(--accent)" />
+      <text x={6} y={108} fontSize="9" fill="var(--ink-muted)">
+        đồng dẫn điện nên ăn nhiễu
+      </text>
+      <text x={6} y={122} fontSize="9" fill="var(--ink-muted)">
+        quang dẫn ánh sáng nên không
       </text>
     </Frame>
   )
@@ -486,29 +496,38 @@ function CableHookQuestion({ title }: { title?: string }) {
 
 /** Ba trạng thái đèn cổng — phép chẩn đoán rẻ nhất mà ai cũng làm được. */
 function PortLeds({ title }: { title?: string }) {
-  const o: [number, string, string, string][] = [
-    [22, 'none', 'tối om', 'nghi dây, đầu bấm, cổng'],
-    [80, 'var(--accent)', 'sáng đứng yên', 'hai đầu đã bắt tay'],
-    [138, 'var(--accent)', 'nháy liên tục', 'đang có dữ liệu chạy'],
+  // Ba trạng thái xếp thành ba HÀNG chứ không ba cột: mỗi nhãn cần gần
+  // 60px mà khung chỉ rộng 220, nên ba cột là nhãn đè lên nhau và phải
+  // bóp chữ xuống cỡ 7.5 mới nhét vừa — vừa chật vừa không đọc nổi.
+  // Hàng ngang cho mỗi nhãn trọn chiều rộng, chữ về lại cỡ đọc được.
+  const hang: [number, boolean, string, string][] = [
+    [40, false, 'tối om', 'chưa có tín hiệu'],
+    [66, true, 'sáng đứng yên', 'đã bắt tay'],
+    [92, true, 'nháy liên tục', 'đang có dữ liệu'],
   ]
   return (
     <Frame title={title}>
-      {o.map(([x, mau, ten, chu], i) => (
-        <g key={x}>
-          <rect x={x} y="30" width="46" height="30" rx="3" fill="none" stroke="var(--ink-muted)" strokeWidth="1.5" />
-          <rect x={x + 16} y="26" width="14" height="6" rx="1" fill="none" stroke="var(--ink-muted)" strokeWidth="1.5" />
-          <circle cx={x + 8} cy="66" r="4" fill={mau} stroke={mau === 'none' ? 'var(--ink-muted)' : mau} strokeWidth="1.5" />
-          {i === 2 && <circle cx={x + 8} cy="66" r="7.5" fill="none" stroke="var(--accent)" strokeWidth="1" opacity="0.6" />}
-          <text x={x + 18} y={70} fontSize="8" fill={mau === 'none' ? 'var(--warn)' : 'var(--accent)'}>
-            {ten}
-          </text>
-          <text x={x} y={88} fontSize="7.5" fill="var(--ink-muted)">
-            {chu.slice(0, 22)}
-          </text>
-        </g>
-      ))}
-      <text x={18} y={112} fontSize="8" fill="var(--ink)">
-        đèn tối là bệnh tầng 1 — chưa cần mở máy tính lên
+      {hang.map(([y, sang, ten, nghia], i) => {
+        const mau = sang ? 'var(--accent)' : 'var(--warn)'
+        return (
+          <g key={y}>
+            {/* Ổ cắm mạng nhìn từ trước: thân vuông + mấu gài phía trên. */}
+            <rect x="14" y={y - 13} width="22" height="15" rx="2" fill="none" stroke="var(--ink-muted)" strokeWidth="1.5" />
+            <rect x="21" y={y - 17} width="8" height="5" rx="1" fill="none" stroke="var(--ink-muted)" strokeWidth="1.5" />
+            <circle cx="47" cy={y - 5} r="4.5" fill={sang ? 'var(--accent)' : 'none'} stroke={sang ? 'var(--accent)' : 'var(--ink-muted)'} strokeWidth="1.5" />
+            {i === 2 && <circle cx="47" cy={y - 5} r="8.5" fill="none" stroke="var(--accent)" strokeWidth="1" opacity="0.6" />}
+            {/* Một <text> hai <tspan>: vế sau TỰ nối tiếp vế trước, khỏi
+                phải đoán bề rộng chữ bằng phép nhân — kiểu đoán đó sai
+                ngay khi đổi font hoặc đổi chữ. */}
+            <text x="60" y={y} fontSize="10">
+              <tspan fill={mau}>{ten}</tspan>
+              <tspan fill="var(--ink-muted)">{` — ${nghia}`}</tspan>
+            </text>
+          </g>
+        )
+      })}
+      <text x="14" y="120" fontSize="9" fill="var(--ink)">
+        đèn tối là bệnh tầng 1 — chưa cần mở máy lên
       </text>
     </Frame>
   )
@@ -527,8 +546,8 @@ function DuplexMismatch({ title }: { title?: string }) {
         half duplex — nói xong mới tới lượt nghe
       </text>
       <path d="M18 86 H150" stroke="var(--warn)" strokeWidth="2" fill="none" markerEnd="url(#cv-arrow)" />
-      <circle cx="165" cy="86" r="6" fill="none" stroke="var(--warn)" strokeWidth="1.5" />
-      <text x={160} y={89} fontSize="7" fill="var(--warn)">
+      <circle cx="165" cy="86" r="9" fill="none" stroke="var(--warn)" strokeWidth="1.5" />
+      <text x={165} y={89} textAnchor="middle" fontSize="8" fill="var(--warn)">
         chờ
       </text>
       <text x={18} y={112} fontSize="8" fill="var(--ink)">
@@ -544,28 +563,40 @@ function DuplexMismatch({ title }: { title?: string }) {
 
 /** Hai ổ khóa vàng y hệt nhau — một thật một giả. */
 function PadlockTwice({ title }: { title?: string }) {
-  const khoa = (x: number, ten: string, that: boolean) => (
+  // Hai ổ khóa xếp DỌC, mỗi cái chiếm trọn bề ngang. Xếp cạnh nhau theo
+  // chiều ngang thì tên miền giả (22 ký tự mono) tràn hẳn ra ngoài mép
+  // khung, và chữ phải bóp xuống 7.5 mới gần vừa — cả hai đều hỏng.
+  const khoa = (y: number, ten: string, phan: string, that: boolean) => (
     <g>
-      <rect x={x} y="40" width="88" height="22" rx="4" fill="none" stroke="var(--edge)" strokeWidth="1.5" />
-      <path d={`M${x + 9} 51 v-4 a4 4 0 0 1 8 0 v4`} fill="none" stroke="var(--warn)" strokeWidth="1.6" />
-      <rect x={x + 7} y="50" width="12" height="9" rx="1.5" fill="var(--warn)" opacity="0.75" />
-      <text x={x + 24} y={55} fontSize="7.5" fill="var(--ink)" style={{ fontFamily: 'var(--font-mono)' }}>
+      <rect x="14" y={y} width="192" height="24" rx="4" fill="none" stroke="var(--edge)" strokeWidth="1.5" />
+      <path d={`M23 ${y + 11} v-4 a4 4 0 0 1 8 0 v4`} fill="none" stroke="var(--warn)" strokeWidth="1.6" />
+      <rect x="21" y={y + 10} width="12" height="9" rx="1.5" fill="var(--warn)" opacity="0.75" />
+      <text x={40} y={y + 15} fontSize="9" fill="var(--ink)" style={{ fontFamily: 'var(--font-mono)' }}>
         {ten}
       </text>
-      <text x={x + 44} y={78} textAnchor="middle" fontSize="8" fill={that ? 'var(--accent)' : 'var(--warn)'}>
-        {that ? 'trang thật' : 'trang lừa'}
+      <text
+        x={203}
+        y={y + 15}
+        textAnchor="end"
+        fontSize="9"
+        fill={that ? 'var(--accent)' : 'var(--warn)'}
+      >
+        {phan}
       </text>
     </g>
   )
   return (
     <Frame title={title}>
-      {khoa(14, 'nganhang-abc.vn', true)}
-      {khoa(112, 'nganhang-abc-login.xyz', false)}
-      <text x={110} y={26} textAnchor="middle" fontSize="10" fill="var(--ink-muted)">
+      <text x={110} y={20} textAnchor="middle" fontSize="10" fill="var(--ink-muted)">
         cùng một ổ khóa vàng
       </text>
-      <text x={110} y={104} textAnchor="middle" fontSize="8" fill="var(--ink)">
-        ổ khóa nói về ĐƯỜNG ỐNG, không nói về NGƯỜI ở đầu kia
+      {khoa(32, 'nganhang-abc.vn', 'trang thật', true)}
+      {khoa(62, 'nganhang-abc-login.xyz', 'trang lừa', false)}
+      <text x={110} y={102} textAnchor="middle" fontSize="9" fill="var(--ink)">
+        ổ khóa nói về ĐƯỜNG ỐNG,
+      </text>
+      <text x={110} y={116} textAnchor="middle" fontSize="9" fill="var(--ink)">
+        không nói về NGƯỜI ở đầu kia
       </text>
     </Frame>
   )
@@ -575,27 +606,32 @@ function PadlockTwice({ title }: { title?: string }) {
 function CertLetter({ title }: { title?: string }) {
   return (
     <Frame title={title}>
-      <rect x="14" y="44" width="40" height="30" rx="3" fill="none" stroke="var(--ink-muted)" strokeWidth="1.5" />
-      <text x={34} y={86} textAnchor="middle" fontSize="8" fill="var(--ink-muted)">
+      {/* Hai đầu dây đẩy lên hai góc trên, tấm giấy chiếm cả dải giữa: ba
+          dòng chữ + con dấu không còn tranh nhau 74px như bố cục cũ (dòng
+          "Ký bởi" đè lên chữ trong con dấu). */}
+      <rect x="8" y="10" width="44" height="22" rx="3" fill="none" stroke="var(--ink-muted)" strokeWidth="1.5" />
+      <text x={30} y={24} textAnchor="middle" fontSize="8.5" fill="var(--ink-muted)">
         máy bạn
       </text>
-      <rect x="150" y="44" width="42" height="30" rx="3" fill="none" stroke="var(--ink-muted)" strokeWidth="1.5" />
-      <text x={171} y={86} textAnchor="middle" fontSize="8" fill="var(--ink-muted)">
+      <rect x="168" y="10" width="44" height="22" rx="3" fill="none" stroke="var(--ink-muted)" strokeWidth="1.5" />
+      <text x={190} y={24} textAnchor="middle" fontSize="8.5" fill="var(--ink-muted)">
         máy chủ
       </text>
-      <rect x="66" y="30" width="74" height="52" rx="3" fill="var(--panel)" stroke="var(--accent)" strokeWidth="1.5" />
+      <rect x="48" y="40" width="124" height="58" rx="3" fill="var(--panel)" stroke="var(--accent)" strokeWidth="1.5" />
       {['Tên miền: example.com', 'Hạn tới: 12/2026', 'Ký bởi: bên thứ ba'].map((d, i) => (
-        <text key={d} x={71} y={45 + i * 13} fontSize="6.5" fill="var(--ink)">
+        <text key={d} x={55} y={56 + i * 16} fontSize="8.5" fill="var(--ink)">
           {d}
         </text>
       ))}
-      <circle cx="130" cy="72" r="7" fill="none" stroke="var(--warn)" strokeWidth="1.5" />
-      <text x={130} y={75} textAnchor="middle" fontSize="6" fill="var(--warn)">
+      <circle cx="157" cy="78" r="11" fill="none" stroke="var(--warn)" strokeWidth="1.5" />
+      <text x={157} y={81} textAnchor="middle" fontSize="8.5" fill="var(--warn)">
         dấu
       </text>
-      <path d="M144 58 H150" stroke="var(--ink-muted)" strokeWidth="1.5" fill="none" markerEnd="url(#cv-arrow)" />
-      <text x={110} y={106} textAnchor="middle" fontSize="8" fill="var(--ink)">
-        chứng chỉ = giấy giới thiệu có người thứ ba đứng ra ký
+      {/* máy chủ chìa tấm giấy ra, máy bạn cầm lấy rồi mới soi */}
+      <path d="M190 32 V38 H178" stroke="var(--ink-muted)" strokeWidth="1.5" fill="none" markerEnd="url(#cv-arrow)" />
+      <path d="M48 58 H32 V38" stroke="var(--ink-muted)" strokeWidth="1.5" fill="none" markerEnd="url(#cv-arrow)" />
+      <text x={110} y={116} textAnchor="middle" fontSize="9" fill="var(--ink)">
+        chứng chỉ = giấy giới thiệu có bên thứ ba ký
       </text>
     </Frame>
   )
@@ -606,33 +642,38 @@ function CertThreeChecks({ title }: { title?: string }) {
   const hang: [string, string][] = [
     ['Còn hạn không?', 'hết hạn'],
     ['Đúng tên miền không?', 'sai tên'],
-    ['Ai ký — có tin được không?', 'tự ký'],
+    ['Ai ký có đáng tin?', 'tự ký'],
   ]
   return (
     <Frame title={title}>
-      <text x={16} y={18} fontSize="9" fill="var(--ink-muted)">
-        trình duyệt hỏi ba câu, trượt câu nào cũng bôi đỏ
+      {/* Hai câu chú thích cũ dài gần 50 ký tự nên chạy quá mép phải; cắt
+          làm hai dòng ngắn ở đáy, câu hỏi thứ ba rút lại cho khỏi chạm ô đỏ. */}
+      <text x={14} y={16} fontSize="9" fill="var(--ink-muted)">
+        trình duyệt hỏi ba câu:
       </text>
       {hang.map(([hoi, loi], i) => {
-        const y = 34 + i * 26
+        const y = 36 + i * 22
         return (
           <g key={hoi}>
-            <circle cx="24" cy={y} r="7" fill="none" stroke="var(--accent)" strokeWidth="1.5" />
-            <text x={24} y={y + 3} textAnchor="middle" fontSize="8" fill="var(--accent)">
+            <circle cx="22" cy={y} r="7" fill="none" stroke="var(--accent)" strokeWidth="1.5" />
+            <text x={22} y={y + 3} textAnchor="middle" fontSize="9" fill="var(--accent)">
               {i + 1}
             </text>
-            <text x={38} y={y + 3} fontSize="8.5" fill="var(--ink)">
+            <text x={36} y={y + 3} fontSize="9" fill="var(--ink)">
               {hoi}
             </text>
-            <rect x="150" y={y - 8} width="46" height="16" rx="3" fill="var(--warn)" opacity="0.2" />
-            <text x={173} y={y + 3} textAnchor="middle" fontSize="7.5" fill="var(--warn)">
+            <rect x="140" y={y - 8} width="54" height="16" rx="3" fill="var(--warn)" opacity="0.2" />
+            <text x={167} y={y + 3} textAnchor="middle" fontSize="8.5" fill="var(--warn)">
               {loi}
             </text>
           </g>
         )
       })}
-      <text x={16} y={116} fontSize="8" fill="var(--ink)">
-        lỗi giờ hệ thống cũng làm chứng chỉ báo hết hạn oan
+      <text x={14} y={106} fontSize="9" fill="var(--ink)">
+        trượt một câu là báo đỏ
+      </text>
+      <text x={14} y={120} fontSize="9" fill="var(--ink-muted)">
+        giờ máy sai cũng báo hết hạn oan
       </text>
     </Frame>
   )
@@ -678,23 +719,37 @@ function HttpCodes({ title }: { title?: string }) {
 function RouterAdminDoor({ title }: { title?: string }) {
   return (
     <Frame title={title}>
-      <rect x="14" y="26" width="80" height="40" rx="3" fill="none" stroke="var(--ink-muted)" strokeWidth="1.5" />
-      {['IPv4 . . : 192.168.1.24', 'Mask . . : 255.255.255.0', 'Gateway : 192.168.1.1'].map((d, i) => (
-        <text key={d} x={19} y={38 + i * 12} fontSize="6" fill={i === 2 ? 'var(--accent)' : 'var(--ink-muted)'} style={{ fontFamily: 'var(--font-mono)' }}>
-          {d}
-        </text>
-      ))}
-      <rect x="16" y="52" width="76" height="12" rx="2" fill="var(--accent)" opacity="0.18" />
-      <path d="M96 58 H120" stroke="var(--accent)" strokeWidth="1.5" fill="none" markerEnd="url(#cv-arrow)" />
-      <rect x="124" y="30" width="70" height="46" rx="3" fill="none" stroke="var(--accent)" strokeWidth="1.5" />
-      <rect x="124" y="30" width="70" height="10" rx="3" fill="var(--accent)" opacity="0.2" />
-      <text x={128} y={38} fontSize="6" fill="var(--ink-muted)" style={{ fontFamily: 'var(--font-mono)' }}>
-        http://192.168.1.1
+      {/* Trái: tờ ipconfig, chỉ giữ ĐÚNG dòng đang dạy. Nhồi cả IPv4 lẫn Mask
+          vào thì ba dòng mono phải co xuống cỡ 6 — trên máy thật không đọc nổi,
+          mà bài này chỉ hỏi một con số. */}
+      <text x={54} y={22} textAnchor="middle" fontSize="9" fill="var(--ink-muted)">
+        kết quả ipconfig
       </text>
-      <rect x="132" y="48" width="54" height="8" rx="1.5" fill="none" stroke="var(--ink-muted)" strokeWidth="1" />
-      <rect x="132" y="60" width="54" height="8" rx="1.5" fill="none" stroke="var(--ink-muted)" strokeWidth="1" />
-      <text x={110} y={102} textAnchor="middle" fontSize="8.5" fill="var(--ink)">
-        con số Gateway trên tờ ipconfig chính là địa chỉ nhà của router
+      <rect x="8" y="26" width="92" height="52" rx="3" fill="none" stroke="var(--ink-muted)" strokeWidth="1.5" />
+      <text x={14} y={42} fontSize="8" fill="var(--ink-muted)">
+        Default Gateway
+      </text>
+      <rect x="12" y="48" width="84" height="18" rx="2" fill="var(--accent)" opacity="0.18" />
+      <text x={54} y={61} textAnchor="middle" fontSize="10" fill="var(--accent)" style={{ fontFamily: 'var(--font-mono)' }}>
+        192.168.1.1
+      </text>
+      <path d="M104 52 H118" stroke="var(--accent)" strokeWidth="1.5" fill="none" markerEnd="url(#cv-arrow)" />
+      {/* Phải: chính con số đó gõ vào thanh địa chỉ trình duyệt. */}
+      <text x={168} y={22} textAnchor="middle" fontSize="9" fill="var(--ink-muted)">
+        trang quản trị
+      </text>
+      <rect x="124" y="26" width="88" height="52" rx="3" fill="none" stroke="var(--accent)" strokeWidth="1.5" />
+      <rect x="124" y="26" width="88" height="14" rx="3" fill="var(--accent)" opacity="0.2" />
+      <text x={130} y={37} fontSize="8" fill="var(--ink)" style={{ fontFamily: 'var(--font-mono)' }}>
+        192.168.1.1
+      </text>
+      <rect x="132" y="50" width="72" height="8" rx="1.5" fill="none" stroke="var(--ink-muted)" strokeWidth="1" />
+      <rect x="132" y="64" width="72" height="8" rx="1.5" fill="none" stroke="var(--ink-muted)" strokeWidth="1" />
+      <text x={110} y={96} textAnchor="middle" fontSize="9" fill="var(--ink)">
+        con số Gateway chính là địa chỉ của router
+      </text>
+      <text x={110} y={112} textAnchor="middle" fontSize="9" fill="var(--ink-muted)">
+        gõ vào trình duyệt là mở được trang ấy
       </text>
     </Frame>
   )
@@ -704,20 +759,19 @@ function RouterAdminDoor({ title }: { title?: string }) {
 function AdminPasswordSticker({ title }: { title?: string }) {
   return (
     <Frame title={title}>
-      <rect x="20" y="38" width="76" height="34" rx="4" fill="none" stroke="var(--ink-muted)" strokeWidth="1.5" />
-      <rect x="32" y="50" width="52" height="14" rx="2" fill="var(--warn)" opacity="0.25" />
-      <text x={58} y={60} textAnchor="middle" fontSize="7.5" fill="var(--warn)" style={{ fontFamily: 'var(--font-mono)' }}>
+      <rect x="14" y="38" width="90" height="34" rx="4" fill="none" stroke="var(--ink-muted)" strokeWidth="1.5" />
+      <rect x="20" y="50" width="78" height="16" rx="2" fill="var(--warn)" opacity="0.25" />
+      <text x={59} y={62} textAnchor="middle" fontSize="8" fill="var(--warn)" style={{ fontFamily: 'var(--font-mono)' }}>
         admin / admin
       </text>
-      <text x={58} y={86} textAnchor="middle" fontSize="8" fill="var(--ink-muted)">
+      <text x={59} y={86} textAnchor="middle" fontSize="8" fill="var(--ink-muted)">
         tem dưới đáy hộp
       </text>
-      <rect x="124" y="38" width="70" height="34" rx="2" fill="none" stroke="var(--ink-muted)" strokeWidth="1.5" />
-      <path d="M159 38 v34" stroke="var(--ink-muted)" strokeWidth="1" fill="none" />
-      <text x={159} y={58} textAnchor="middle" fontSize="6.5" fill="var(--warn)" style={{ fontFamily: 'var(--font-mono)' }}>
+      <rect x="122" y="38" width="84" height="34" rx="2" fill="none" stroke="var(--ink-muted)" strokeWidth="1.5" />
+      <text x={164} y={62} textAnchor="middle" fontSize="8" fill="var(--warn)" style={{ fontFamily: 'var(--font-mono)' }}>
         admin/admin
       </text>
-      <text x={159} y={86} textAnchor="middle" fontSize="8" fill="var(--ink-muted)">
+      <text x={164} y={86} textAnchor="middle" fontSize="8" fill="var(--ink-muted)">
         sách hướng dẫn trên mạng
       </text>
       <text x={110} y={110} textAnchor="middle" fontSize="8.5" fill="var(--ink)">
@@ -731,33 +785,35 @@ function AdminPasswordSticker({ title }: { title?: string }) {
 function PinnedAddress({ title }: { title?: string }) {
   return (
     <Frame title={title}>
-      <text x={16} y={18} fontSize="8.5" fill="var(--warn)">
-        không ghim — mỗi lần cúp điện một số
+      {/* Hàng trên: chưa ghim — mỗi lần cúp điện máy in mang một số khác. */}
+      <text x={6} y={16} fontSize="9" fill="var(--warn)">
+        không ghim: mỗi lần cúp điện một số
       </text>
       {['.50', '.87', '.23'].map((s, i) => (
         <g key={s}>
-          <rect x={20 + i * 44} y="26" width="34" height="16" rx="3" fill="var(--warn)" opacity="0.2" />
-          <text x={37 + i * 44} y={38} textAnchor="middle" fontSize="8" fill="var(--warn)" style={{ fontFamily: 'var(--font-mono)' }}>
+          <rect x={8 + i * 40} y="22" width="32" height="18" rx="3" fill="var(--warn)" opacity="0.2" />
+          <text x={24 + i * 40} y={35} textAnchor="middle" fontSize="9" fill="var(--warn)" style={{ fontFamily: 'var(--font-mono)' }}>
             {s}
           </text>
-          {i < 2 && <path d={`M${56 + i * 44} 34 h8`} stroke="var(--ink-muted)" strokeWidth="1.2" fill="none" markerEnd="url(#cv-arrow)" />}
+          {i < 2 && <path d={`M${41 + i * 40} 31 h5`} stroke="var(--ink-muted)" strokeWidth="1.2" fill="none" markerEnd="url(#cv-arrow)" />}
         </g>
       ))}
-      <text x={158} y={38} fontSize="7.5" fill="var(--ink-muted)">
+      <text x={126} y={29} fontSize="8" fill="var(--ink-muted)">
         cả phòng
       </text>
-      <text x={158} y={48} fontSize="7.5" fill="var(--ink-muted)">
+      <text x={126} y={41} fontSize="8" fill="var(--ink-muted)">
         không in được
       </text>
-      <text x={16} y={72} fontSize="8.5" fill="var(--accent)">
-        có ghim — buộc số nhà vào đúng cái card mạng đó
+      {/* Hàng dưới: ghim theo MAC — số nhà buộc vào đúng cái card mạng đó. */}
+      <text x={6} y={64} fontSize="9" fill="var(--accent)">
+        có ghim: buộc số nhà vào đúng card mạng
       </text>
-      <rect x="20" y="80" width="120" height="18" rx="3" fill="var(--accent)" opacity="0.18" />
-      <text x={26} y={92} fontSize="7" fill="var(--ink)" style={{ fontFamily: 'var(--font-mono)' }}>
+      <rect x="8" y="72" width="160" height="22" rx="3" fill="var(--accent)" opacity="0.18" />
+      <text x={88} y={87} textAnchor="middle" fontSize="9" fill="var(--ink)" style={{ fontFamily: 'var(--font-mono)' }}>
         AA:BB:CC:11:22:33 → .50
       </text>
-      <text x={148} y={92} fontSize="7.5" fill="var(--accent)">
-        luôn là .50
+      <text x={110} y={112} textAnchor="middle" fontSize="9" fill="var(--ink-muted)">
+        cúp điện bao nhiêu lần vẫn là .50
       </text>
     </Frame>
   )
@@ -767,32 +823,34 @@ function PinnedAddress({ title }: { title?: string }) {
 function CgnatLayers({ title }: { title?: string }) {
   return (
     <Frame title={title}>
-      <rect x="12" y="30" width="186" height="62" rx="5" fill="none" stroke="var(--warn)" strokeWidth="1.5" />
-      <text x={16} y={26} fontSize="7.5" fill="var(--warn)">
-        NAT của nhà mạng — bạn không mở được
+      {/* Hai lớp NAT LỒNG NHAU: hộp ngoài là nhà mạng, hộp trong là router
+          nhà bạn. Bản cũ xếp cả hai địa chỉ trên CÙNG một dòng nên chúng đè
+          lên nhau; giờ số WAN nằm TRONG hộp nhà mạng, còn số Internet nhìn
+          thấy nằm HẲN ngoài hộp — chính chỗ đứng đã kể ra ý của bài. */}
+      <text x={110} y={14} textAnchor="middle" fontSize="9" fill="var(--warn)">
+        lớp 2 — NAT nhà mạng, bạn không mở được
       </text>
-      <rect x="24" y="42" width="120" height="40" rx="4" fill="none" stroke="var(--ink-muted)" strokeWidth="1.5" />
-      <text x={28} y={39} fontSize="7.5" fill="var(--ink-muted)">
-        NAT của bạn
+      <rect x="8" y="18" width="204" height="70" rx="5" fill="none" stroke="var(--warn)" strokeWidth="1.5" />
+      <text x={72} y={32} textAnchor="middle" fontSize="9" fill="var(--ink-muted)">
+        lớp 1 — NAT nhà bạn
       </text>
-      <rect x="34" y="52" width="76" height="22" rx="3" fill="var(--accent)" opacity="0.16" />
-      <text x={72} y={66} textAnchor="middle" fontSize="7" fill="var(--ink)" style={{ fontFamily: 'var(--font-mono)' }}>
+      <rect x="16" y="36" width="112" height="46" rx="4" fill="none" stroke="var(--ink-muted)" strokeWidth="1.5" />
+      <rect x="24" y="46" width="96" height="26" rx="3" fill="var(--accent)" opacity="0.16" />
+      <text x={72} y={63} textAnchor="middle" fontSize="10" fill="var(--ink)" style={{ fontFamily: 'var(--font-mono)' }}>
         192.168.1.x
       </text>
-      <text x={118} y={60} fontSize="6.5" fill="var(--ink-muted)" style={{ fontFamily: 'var(--font-mono)' }}>
-        WAN
+      <path d="M132 59 H142" stroke="var(--ink-muted)" strokeWidth="1.2" fill="none" markerEnd="url(#cv-arrow)" />
+      <text x={176} y={50} textAnchor="middle" fontSize="9" fill="var(--ink-muted)">
+        cổng WAN
       </text>
-      <text x={118} y={70} fontSize="6.5" fill="var(--warn)" style={{ fontFamily: 'var(--font-mono)' }}>
+      <text x={176} y={66} textAnchor="middle" fontSize="10" fill="var(--warn)" style={{ fontFamily: 'var(--font-mono)' }}>
         100.66.4.9
       </text>
-      <text x={152} y={60} fontSize="6.5" fill="var(--ink-muted)" style={{ fontFamily: 'var(--font-mono)' }}>
-        thật ra
+      <text x={110} y={103} textAnchor="middle" fontSize="9" fill="var(--ink-muted)">
+        ra tới Internet thì thành số khác
       </text>
-      <text x={152} y={70} fontSize="6.5" fill="var(--accent)" style={{ fontFamily: 'var(--font-mono)' }}>
+      <text x={110} y={120} textAnchor="middle" fontSize="10" fill="var(--accent)" style={{ fontFamily: 'var(--font-mono)' }}>
         42.116.7.20
-      </text>
-      <text x={110} y={110} textAnchor="middle" fontSize="8.5" fill="var(--ink)">
-        khai port forwarding đúng hết mà camera vẫn đen: cổng nằm ngoài nhà
       </text>
     </Frame>
   )
@@ -803,14 +861,14 @@ function WanCompare({ title }: { title?: string }) {
   return (
     <Frame title={title}>
       <rect x="14" y="34" width="80" height="44" rx="3" fill="none" stroke="var(--ink-muted)" strokeWidth="1.5" />
-      <text x={54} y={30} textAnchor="middle" fontSize="7.5" fill="var(--ink-muted)">
+      <text x={54} y={30} textAnchor="middle" fontSize="8" fill="var(--ink-muted)">
         trang quản trị · WAN
       </text>
       <text x={54} y={60} textAnchor="middle" fontSize="9" fill="var(--warn)" style={{ fontFamily: 'var(--font-mono)' }}>
         100.66.4.9
       </text>
       <rect x="126" y="34" width="80" height="44" rx="3" fill="none" stroke="var(--ink-muted)" strokeWidth="1.5" />
-      <text x={166} y={30} textAnchor="middle" fontSize="7.5" fill="var(--ink-muted)">
+      <text x={166} y={30} textAnchor="middle" fontSize="8" fill="var(--ink-muted)">
         tra "IP của tôi"
       </text>
       <text x={166} y={60} textAnchor="middle" fontSize="9" fill="var(--accent)" style={{ fontFamily: 'var(--font-mono)' }}>
@@ -838,8 +896,10 @@ function WifiChannels({ title }: { title?: string }) {
   const x = (k: number) => 18 + ((k - 1) / 12) * 176
   return (
     <Frame title={title}>
+      {/* Bỏ chữ "vòm": đo trên browser thì bản cũ chạm x=212.8, sát mép 220
+          tới mức một font khác là tràn. Bản này dừng ở 191.8. */}
       <text x={16} y={18} fontSize="9" fill="var(--ink-muted)">
-        băng 2.4 GHz — vòm sóng rộng hơn một kênh
+        băng 2.4 GHz — sóng rộng hơn một kênh
       </text>
       {[2, 3, 4, 5, 7, 8, 9, 10, 12, 13].map((k) => (
         <path
@@ -860,8 +920,14 @@ function WifiChannels({ title }: { title?: string }) {
         </g>
       ))}
       <path d="M18 74 H194" stroke="var(--ink-muted)" strokeWidth="1" fill="none" />
-      <text x={16} y={112} fontSize="8.5" fill="var(--ink)">
-        chỉ 1, 6, 11 không đè lên nhau — chọn kênh khác là tự chen chỗ
+      {/* Kết luận tách LÀM HAI DÒNG: một dòng 62 ký tự ở cỡ 8.5 chạy tới
+          x≈266, tràn hẳn khung 220. Cắt đôi câu giữ nguyên ý mà không phải
+          bóp cỡ chữ xuống dưới ngưỡng đọc được. */}
+      <text x={16} y={106} fontSize="9" fill="var(--accent)">
+        chỉ 1, 6, 11 không đè lên nhau
+      </text>
+      <text x={16} y={120} fontSize="9" fill="var(--ink)">
+        chọn kênh khác là tự chen chỗ
       </text>
     </Frame>
   )
@@ -871,27 +937,33 @@ function WifiChannels({ title }: { title?: string }) {
 function SignalVsNoise({ title }: { title?: string }) {
   return (
     <Frame title={title}>
-      <text x={16} y={18} fontSize="8.5" fill="var(--accent)">
-        vạch đo cái này: sóng nhà bạn to cỡ nào
+      {/* Ba cụm chữ đều rút ngắn và nâng lên cỡ 9: bản cũ để 8-8.5 mà dòng
+          kết vẫn dài 55 ký tự nên chạy quá mép phải. Cột mốc dọc dời lên 4px
+          để chừa chỗ cho dòng kết hai dòng. */}
+      <text x={16} y={14} fontSize="9" fill="var(--accent)">
+        vạch đo: sóng nhà bạn to cỡ nào
       </text>
       {[0, 1, 2, 3].map((i) => (
-        <rect key={i} x={20 + i * 11} y={44 - i * 6} width="8" height={12 + i * 6} rx="1.5" fill="var(--accent)" opacity="0.65" />
+        <rect key={i} x={20 + i * 11} y={40 - i * 6} width="8" height={12 + i * 6} rx="1.5" fill="var(--accent)" opacity="0.65" />
       ))}
-      <text x={16} y={72} fontSize="8.5" fill="var(--warn)">
-        vạch KHÔNG đo cái này: hàng xóm cùng kênh
+      <text x={16} y={68} fontSize="9" fill="var(--warn)">
+        vạch KHÔNG đo: hàng xóm cùng kênh
       </text>
       {[0, 1, 2, 3, 4].map((i) => (
         <path
           key={i}
-          d={`M${20 + i * 34} 96 q10 ${i % 2 === 0 ? -12 : -18} 20 0`}
+          d={`M${20 + i * 34} 90 q10 ${i % 2 === 0 ? -12 : -18} 20 0`}
           fill="none"
           stroke="var(--warn)"
           strokeWidth="1.3"
           opacity="0.6"
         />
       ))}
-      <text x={16} y={118} fontSize="8" fill="var(--ink)">
-        đầy vạch mà vẫn quay vòng = to nhưng ồn, không phải yếu
+      <text x={16} y={106} fontSize="9" fill="var(--ink)">
+        đầy vạch mà vẫn quay vòng
+      </text>
+      <text x={16} y={120} fontSize="9" fill="var(--ink)">
+        = to nhưng ồn, không phải yếu
       </text>
     </Frame>
   )
@@ -907,8 +979,8 @@ function RouterPlacement({ title }: { title?: string }) {
       <text x={57} y={22} textAnchor="middle" fontSize="8" fill="var(--warn)">
         góc nhà, trong tủ
       </text>
-      <text x={57} y={106} textAnchor="middle" fontSize="7.5" fill="var(--warn)">
-        nửa vùng phủ đổ ra ngoài
+      <text x={57} y={106} textAnchor="middle" fontSize="8" fill="var(--warn)">
+        nửa sóng đổ ra ngoài
       </text>
       <rect x="122" y="26" width="82" height="66" rx="3" fill="none" stroke="var(--accent)" strokeWidth="1.3" />
       <circle cx="163" cy="59" r="4" fill="var(--accent)" />
@@ -918,8 +990,8 @@ function RouterPlacement({ title }: { title?: string }) {
       <text x={163} y={22} textAnchor="middle" fontSize="8" fill="var(--accent)">
         giữa nhà, trên cao
       </text>
-      <text x={163} y={106} textAnchor="middle" fontSize="7.5" fill="var(--accent)">
-        sóng phủ đều các phòng
+      <text x={163} y={106} textAnchor="middle" fontSize="8" fill="var(--accent)">
+        phủ đều các phòng
       </text>
     </Frame>
   )
@@ -933,28 +1005,36 @@ function RouterPlacement({ title }: { title?: string }) {
 function MacSelfDeclared({ title }: { title?: string }) {
   return (
     <Frame title={title}>
-      <rect x="60" y="34" width="126" height="56" rx="4" fill="none" stroke="var(--ink-muted)" strokeWidth="1.5" />
-      <rect x="68" y="42" width="70" height="16" rx="2" fill="var(--accent)" opacity="0.16" />
-      <text x={72} y={53} fontSize="6.5" fill="var(--ink)" style={{ fontFamily: 'var(--font-mono)' }}>
+      {/* Bố cục ba dải: card mạng bên trái → mũi tên "chép lại" → khung
+          tầng 2 bên phải, hai câu chốt xuống hẳn hai dòng đáy. Trước đây
+          nhãn "chép lại" đứng ĐÈ lên ô NGƯỜI GỬI vì hai thứ chen chung
+          một chỗ; giờ mũi tên có hẳn khoảng trống 42px của riêng nó. */}
+      <rect x="86" y="30" width="128" height="58" rx="4" fill="none" stroke="var(--ink-muted)" strokeWidth="1.5" />
+      <rect x="92" y="40" width="116" height="18" rx="2" fill="var(--accent)" opacity="0.16" />
+      <text x={96} y={53} fontSize="9" fill="var(--ink)" style={{ fontFamily: 'var(--font-mono)' }}>
         NGƯỜI GỬI: AA:BB…
       </text>
-      <text x={68} y={78} fontSize="7" fill="var(--ink-muted)">
+      <text x={96} y={78} fontSize="9" fill="var(--ink-muted)">
         khung tầng 2
       </text>
-      <rect x="14" y="48" width="32" height="24" rx="2" fill="none" stroke="var(--ink-muted)" strokeWidth="1.5" />
-      <text x={30} y={62} textAnchor="middle" fontSize="6" fill="var(--ink-muted)">
+      <rect x="6" y="36" width="38" height="32" rx="2" fill="none" stroke="var(--ink-muted)" strokeWidth="1.5" />
+      <text x={25} y={49} textAnchor="middle" fontSize="9" fill="var(--ink-muted)">
         card
       </text>
-      <path d="M48 56 H64" stroke="var(--ink-muted)" strokeWidth="1.2" fill="none" markerEnd="url(#cv-arrow)" />
-      <text x={50} y={50} fontSize="6.5" fill="var(--ink-muted)">
+      <text x={25} y={61} textAnchor="middle" fontSize="9" fill="var(--ink-muted)">
+        mạng
+      </text>
+      <text x={46} y={42} fontSize="9" fill="var(--ink-muted)">
         chép lại
       </text>
-      <path d="M150 40 l14 -12" stroke="var(--warn)" strokeWidth="2" fill="none" />
-      <text x={140} y={104} fontSize="8.5" fill="var(--warn)">
-        một lệnh là ghi đè được ô đó
-      </text>
-      <text x={14} y={104} fontSize="8.5" fill="var(--ink)">
+      <path d="M46 49 H84" stroke="var(--ink-muted)" strokeWidth="1.2" fill="none" markerEnd="url(#cv-arrow)" />
+      {/* Mũi tên cảnh báo chọc ngược lên ô NGƯỜI GỬI: ô đó ghi đè được */}
+      <path d="M196 84 V64" stroke="var(--warn)" strokeWidth="2" fill="none" markerEnd="url(#cv-arrow)" />
+      <text x={8} y={106} fontSize="9" fill="var(--ink)">
         số nhà máy chỉ là mặc định
+      </text>
+      <text x={8} y={122} fontSize="9" fill="var(--warn)">
+        một lệnh là ghi đè được ô này
       </text>
     </Frame>
   )
@@ -969,8 +1049,8 @@ function MacFilterGate({ title }: { title?: string }) {
   ]
   return (
     <Frame title={title}>
-      <rect x="14" y="24" width="72" height="18" rx="3" fill="var(--accent)" opacity="0.16" />
-      <text x={18} y={36} fontSize="6.5" fill="var(--ink)" style={{ fontFamily: 'var(--font-mono)' }}>
+      <rect x="14" y="22" width="132" height="20" rx="3" fill="var(--accent)" opacity="0.16" />
+      <text x={18} y={36} fontSize="8.5" fill="var(--ink)" style={{ fontFamily: 'var(--font-mono)' }}>
         cho phép: AA:BB:CC…
       </text>
       {hang.map(([ai, kq, duoc], i) => {
@@ -980,8 +1060,8 @@ function MacFilterGate({ title }: { title?: string }) {
             <text x={16} y={y + 3} fontSize="8" fill="var(--ink-muted)">
               {ai}
             </text>
-            <rect x="126" y={y - 9} width="70" height="16" rx="3" fill={duoc ? 'var(--accent)' : 'var(--warn)'} opacity="0.2" />
-            <text x={161} y={y + 3} textAnchor="middle" fontSize="7.5" fill={duoc ? 'var(--accent)' : 'var(--warn)'}>
+            <rect x="126" y={y - 10} width="78" height="18" rx="3" fill={duoc ? 'var(--accent)' : 'var(--warn)'} opacity="0.2" />
+            <text x={165} y={y + 3} textAnchor="middle" fontSize="8.5" fill={duoc ? 'var(--accent)' : 'var(--warn)'}>
               {kq}
             </text>
           </g>
@@ -1004,7 +1084,7 @@ function MacRandomization({ title }: { title?: string }) {
   return (
     <Frame title={title}>
       <rect x="16" y="46" width="26" height="40" rx="4" fill="none" stroke="var(--ink-muted)" strokeWidth="1.5" />
-      <text x={29} y={100} textAnchor="middle" fontSize="7.5" fill="var(--ink-muted)">
+      <text x={29} y={100} textAnchor="middle" fontSize="8.5" fill="var(--ink-muted)">
         một máy
       </text>
       {mang.map(([ten, mac], i) => {
@@ -1012,10 +1092,10 @@ function MacRandomization({ title }: { title?: string }) {
         return (
           <g key={ten}>
             <path d={`M44 66 L110 ${y + 6}`} stroke="var(--warn)" strokeWidth="1.2" fill="none" markerEnd="url(#cv-arrow)" />
-            <text x={114} y={y + 2} fontSize="7.5" fill="var(--ink-muted)">
+            <text x={114} y={y - 2} fontSize="8.5" fill="var(--ink-muted)">
               {ten}
             </text>
-            <text x={114} y={y + 12} fontSize="7" fill="var(--warn)" style={{ fontFamily: 'var(--font-mono)' }}>
+            <text x={114} y={y + 11} fontSize="8.5" fill="var(--warn)" style={{ fontFamily: 'var(--font-mono)' }}>
               {mac}
             </text>
           </g>
@@ -1064,26 +1144,35 @@ function Latency({ title }: { title?: string }) {
   ]
   return (
     <Frame title={title}>
-      <text x={20} y={20} fontSize="9" fill="var(--ink-muted)">
-        độ trễ = ống dài bao nhiêu (ping đo cái này)
+      <text x={14} y={18} fontSize="9" fill="var(--ink-muted)">
+        độ trễ = ống dài bao nhiêu (ping đo)
       </text>
       {hang.map(([ten, dai, ms], i) => {
         const y = 40 + i * 26
         return (
           <g key={ten}>
+            {/* Số ms xếp thành CỘT bên phải. Đặt sát mũi tên như trước thì
+                ở hàng ngắn nhất nó rơi đúng vào tên máy chủ phía trên. */}
+            <text x={26} y={y - 8} fontSize="9" fill="var(--ink-muted)">
+              {ten}
+            </text>
             <circle cx="22" cy={y} r="3" fill="var(--accent)" />
             <path d={`M26 ${y} H${dai}`} stroke="var(--accent)" strokeWidth="2" fill="none" markerEnd="url(#cv-arrow)" />
-            <text x={dai + 8} y={y + 3} fontSize="9" fill="var(--ink)" style={{ fontFamily: 'var(--font-mono)' }}>
+            <text
+              x={206}
+              y={y + 3}
+              textAnchor="end"
+              fontSize="9"
+              fill="var(--ink)"
+              style={{ fontFamily: 'var(--font-mono)' }}
+            >
               {ms}
-            </text>
-            <text x={26} y={y - 6} fontSize="8" fill="var(--ink-muted)">
-              {ten}
             </text>
           </g>
         )
       })}
-      <text x={20} y={118} fontSize="8" fill="var(--warn)">
-        ống rộng thêm không rút ngắn được quãng đường
+      <text x={14} y={116} fontSize="9" fill="var(--warn)">
+        ống rộng thêm không rút ngắn quãng đường
       </text>
     </Frame>
   )
@@ -1142,8 +1231,10 @@ function LayerLadder({ title }: { title?: string }) {
   ]
   return (
     <Frame title={title}>
+      {/* Thang dồn lên trên (bậc đầu ở y=10, bước 19) để chừa hẳn một dòng
+          trống dưới đáy cho lời chú — trước đây chú thích đè lên bậc cuối. */}
       {bac.map(([so, chu], i) => {
-        const y = 16 + i * 21
+        const y = 10 + i * 19
         const nhan = i === 2 || i === 3
         return (
           <g key={so}>
@@ -1151,22 +1242,22 @@ function LayerLadder({ title }: { title?: string }) {
               x="26"
               y={y}
               width="168"
-              height="17"
+              height="16"
               rx="3"
               fill={nhan ? 'var(--accent)' : 'var(--edge)'}
               opacity={nhan ? 0.22 : 0.35}
             />
-            <text x={34} y={y + 12} fontSize="10" fill="var(--ink)" style={{ fontFamily: 'var(--font-mono)' }}>
+            <text x={34} y={y + 11.5} fontSize="10" fill="var(--ink)" style={{ fontFamily: 'var(--font-mono)' }}>
               {so}
             </text>
-            <text x={50} y={y + 12} fontSize="9" fill={nhan ? 'var(--accent)' : 'var(--ink-muted)'}>
+            <text x={50} y={y + 11.5} fontSize="9" fill={nhan ? 'var(--accent)' : 'var(--ink-muted)'}>
               {chu}
             </text>
           </g>
         )
       })}
-      <text x={26} y={122} fontSize="8" fill="var(--ink-muted)">
-        tầng 5 và 6 gộp vào 7 khi nói chuyện hằng ngày
+      <text x={26} y={118} fontSize="9" fill="var(--ink-muted)">
+        tầng 5 và 6 gộp vào 7 khi nói hằng ngày
       </text>
     </Frame>
   )
@@ -1189,18 +1280,18 @@ function FrameVsPacket({ title }: { title?: string }) {
           <text x={x + 26} y={30} textAnchor="middle" fontSize="8" fill="var(--warn)">
             khung {i + 1}
           </text>
-          <rect x={x + 9} y="44" width="34" height="19" rx="2" fill="var(--accent)" opacity="0.28" />
+          <rect x={x + 6} y="43" width="40" height="21" rx="2" fill="var(--accent)" opacity="0.28" />
           <text
             x={x + 26}
             y={57}
             textAnchor="middle"
-            fontSize="7"
+            fontSize="8.5"
             fill="var(--accent)"
             style={{ fontFamily: 'var(--font-mono)' }}
           >
             gói IP
           </text>
-          <text x={x + 26} y={84} textAnchor="middle" fontSize="7" fill="var(--ink-muted)">
+          <text x={x + 26} y={84} textAnchor="middle" fontSize="8" fill="var(--ink-muted)">
             MAC {i === 0 ? 'A→R1' : i === 1 ? 'R1→R2' : 'R2→B'}
           </text>
         </g>
@@ -1220,31 +1311,34 @@ function FrameVsPacket({ title }: { title?: string }) {
  * phần giữa mới là số nhà cắm được. Vẽ đúng dải .64 → .127 của bài học.
  */
 function BlockAnatomy({ title }: { title?: string }) {
-  const x = (v: number) => 20 + ((v - 64) / 64) * 180
+  // Dải hẹp lại (34 → 186) để hai nhãn canh giữa ở hai đầu mốc còn chỗ
+  // đổ sang hai bên mà không thò khỏi mép trái/phải.
+  const x = (v: number) => 34 + ((v - 64) / 64) * 152
   return (
     <Frame title={title}>
       {/* Thân khối: phần giữa tô nhạt = chỗ cắm máy */}
-      <rect x={x(65)} y="52" width={x(126) - x(65)} height="22" rx="3" fill="var(--accent)" opacity="0.18" />
-      <path d={`M${x(64)} 63 H${x(127)}`} stroke="var(--edge)" strokeWidth="2" fill="none" />
+      <rect x={x(65)} y="50" width={x(126) - x(65)} height="26" rx="3" fill="var(--accent)" opacity="0.18" />
+      <path d={`M${x(64)} 57 H${x(127)}`} stroke="var(--edge)" strokeWidth="2" fill="none" />
       {[64, 127].map((v) => (
-        <path key={v} d={`M${x(v)} 50 v26`} stroke="var(--warn)" strokeWidth="2.5" fill="none" />
+        <path key={v} d={`M${x(v)} 46 v34`} stroke="var(--warn)" strokeWidth="2.5" fill="none" />
       ))}
-      <text x={x(64)} y={44} textAnchor="middle" fontSize="9" fill="var(--warn)" style={{ fontFamily: 'var(--font-mono)' }}>
+      <text x={x(64)} y={40} textAnchor="middle" fontSize="9" fill="var(--warn)" style={{ fontFamily: 'var(--font-mono)' }}>
         .64
       </text>
-      <text x={x(127)} y={44} textAnchor="middle" fontSize="9" fill="var(--warn)" style={{ fontFamily: 'var(--font-mono)' }}>
+      <text x={x(127)} y={40} textAnchor="middle" fontSize="9" fill="var(--warn)" style={{ fontFamily: 'var(--font-mono)' }}>
         .127
       </text>
-      <text x={x(64)} y={92} textAnchor="middle" fontSize="8" fill="var(--ink-muted)">
+      <text x={x(64)} y={94} textAnchor="middle" fontSize="9" fill="var(--ink-muted)">
         tên khu phố
       </text>
-      <text x={x(127)} y={92} textAnchor="middle" fontSize="8" fill="var(--ink-muted)">
+      <text x={x(127)} y={94} textAnchor="middle" fontSize="9" fill="var(--ink-muted)">
         gọi cả khu
       </text>
-      <text x={x(95)} y={68} textAnchor="middle" fontSize="9" fill="var(--ink)" style={{ fontFamily: 'var(--font-mono)' }}>
+      {/* Dải số nhà nằm DƯỚI nét thân khối (y=57), không cắt ngang chữ */}
+      <text x={x(95)} y={72} textAnchor="middle" fontSize="9" fill="var(--ink)" style={{ fontFamily: 'var(--font-mono)' }}>
         .65 → .126
       </text>
-      <text x={x(95)} y={110} textAnchor="middle" fontSize="9" fill="var(--accent)">
+      <text x={x(95)} y={112} textAnchor="middle" fontSize="9" fill="var(--accent)">
         62 số nhà cắm được
       </text>
       <text x={20} y={24} fontSize="10" fill="var(--ink-muted)" style={{ fontFamily: 'var(--font-mono)' }}>
@@ -1905,7 +1999,9 @@ function DhcpLease({ title }: { title?: string }) {
       <g className="text-ink-muted">
         <rect x="112" y="26" width="80" height="76" rx="4" {...stroke} />
         <path d="M124 46 h56 M124 62 h56 M124 78 h36" {...stroke} strokeWidth={1.2} />
-        <text x="110" y="112" textAnchor="middle" {...monoText}>
+        {/* Hai dòng phải cách nhau ÍT NHẤT 1.2x cỡ chữ, không thì hộp
+            bao của chúng chạm nhau — cỡ 10 thì 12px là vừa đúng chạm. */}
+        <text x="110" y="108" textAnchor="middle" {...monoText}>
           IP · mặt nạ
         </text>
         <text x="110" y="124" textAnchor="middle" {...monoText}>
@@ -2942,18 +3038,21 @@ function TracertChang({ title }: { title?: string }) {
   return (
     <Frame title={title}>
       <g className="text-ink-muted">
-        <path d="M36 58 H186" {...stroke} strokeWidth={1.2} />
+        <path d="M36 64 H186" {...stroke} strokeWidth={1.2} />
         {stops.map((x, i) => (
-          <circle key={x} cx={x} cy="58" r={i === 0 || i === stops.length - 1 ? 8 : 10} {...stroke} strokeWidth={1.5} />
+          <circle key={x} cx={x} cy="64" r={i === 0 || i === stops.length - 1 ? 8 : 10} {...stroke} strokeWidth={1.5} />
         ))}
       </g>
+      {/* Hai nhãn chặng xếp SO LE hai dòng: để chung một dòng thì hai cụm
+          mono cỡ 10 chạm nhau ở giữa (trạm 2 và 3 chỉ cách 52px, mà mỗi
+          nhãn đã rộng gần 60px). So le còn đọc ra đúng thứ tự chặng. */}
       <g className="text-accent">
-        <text x="88" y="36" textAnchor="middle" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+        <text x="88" y="28" textAnchor="middle" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
           1 · &lt;1ms
         </text>
       </g>
       <g className="text-warn">
-        <text x="140" y="36" textAnchor="middle" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+        <text x="140" y="44" textAnchor="middle" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
           2 · * * *
         </text>
       </g>
@@ -3046,6 +3145,103 @@ function ManhMoiTaiCho({ title }: { title?: string }) {
       </g>
       <text x="110" y="124" textAnchor="middle" {...monoText}>
         ping chết, web chạy — soi tại máy
+      </text>
+    </Frame>
+  )
+}
+
+/**
+ * Mở bài "mạng ốm": cùng một đường mạng, hai loại việc chịu đựng khác
+ * hẳn nhau — trang web tải xong là thôi nên vẫn ổn, còn cuộc gọi cần
+ * dòng chảy đều từng khoảnh khắc nên vỡ ngay.
+ */
+function MangOm({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ok">
+        <rect x="18" y="26" width="82" height="54" rx="4" {...stroke} strokeWidth={1.5} />
+        <path d="M28 44 H90 M28 56 H82 M28 68 H70" {...stroke} strokeWidth={1.2} />
+        <text x="59" y="96" textAnchor="middle" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          web: vẫn mở
+        </text>
+      </g>
+      <g className="text-warn">
+        <rect x="120" y="26" width="82" height="54" rx="4" {...stroke} strokeWidth={1.5} />
+        {/* Khung hình vỡ: những mảng lệch nhau thay cho một mặt phẳng liền. */}
+        <path d="M130 40 H162 M170 46 H194 M130 58 H154 M164 52 H192 M130 70 H148 M158 66 H186" {...stroke} strokeWidth={1.2} />
+        <text x="161" y="96" textAnchor="middle" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          họp: vỡ tiếng
+        </text>
+      </g>
+      <text x="110" y="116" textAnchor="middle" {...monoText}>
+        cùng một đường, chưa ai mất mạng
+      </text>
+    </Frame>
+  )
+}
+
+/** Dòng Reply nói BA điều: có đáp, trễ bao nhiêu, rơi mấy gói. */
+function ThongKhacTot({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ok">
+        <circle cx="30" cy="30" r="9" {...stroke} strokeWidth={1.5} />
+        <path d="M25 30 29 34 35 25" {...stroke} strokeWidth={1.5} />
+        <text x="48" y="34" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          có tiếng đáp
+        </text>
+      </g>
+      <g className="text-warn">
+        <circle cx="30" cy="62" r="9" {...stroke} strokeWidth={1.5} />
+        <path d="M30 56 v6 h5" {...stroke} strokeWidth={1.5} />
+        <text x="48" y="66" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          trễ 180 ms
+        </text>
+        {[0, 1, 2, 3].map((i) => (
+          <rect key={i} x={22 + i * 16} y="86" width="12" height="12" rx="2" {...stroke} strokeWidth={1.5} />
+        ))}
+        <path d="M40 88 48 96 M48 88 40 96" {...stroke} strokeWidth={1.5} />
+        <text x="94" y="96" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          rơi 1 trong 4 gói
+        </text>
+      </g>
+      <text x="110" y="118" textAnchor="middle" {...monoText}>
+        thông rồi vẫn chưa chắc là tốt
+      </text>
+    </Frame>
+  )
+}
+
+/** Cột thời gian của tracert: chỗ con số nhảy vọt là chỗ khúc bệnh. */
+function KhoanhKhucCham({ title }: { title?: string }) {
+  const rows = [
+    { hop: '1', time: '<1 ms', node: 'router nhà' },
+    { hop: '2', time: '<1 ms', node: 'cửa ra' },
+    { hop: '3', time: '600 ms', node: 'đích' },
+  ]
+  return (
+    <Frame title={title}>
+      {rows.map((r, i) => (
+        <g key={r.hop} className={i === 2 ? 'text-warn' : 'text-ink-muted'}>
+          <text x="20" y={38 + i * 24} fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+            {r.hop}
+          </text>
+          <text x="38" y={38 + i * 24} fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+            {r.time}
+          </text>
+          <text x="96" y={38 + i * 24} fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+            {r.node}
+          </text>
+        </g>
+      ))}
+      <g className="text-warn">
+        <path d="M180 58 v26" {...stroke} strokeWidth={1.5} markerEnd="url(#cv-arrow)" />
+        <text x="190" y="74" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          vọt
+        </text>
+      </g>
+      <text x="110" y="112" textAnchor="middle" {...monoText}>
+        khúc bệnh nằm ngay trước chặng vọt
       </text>
     </Frame>
   )
@@ -3634,13 +3830,135 @@ function AllowedVlanList({ title }: { title?: string }) {
 }
 
 /** Router-on-a-stick: một chân, nhiều cửa logic. */
+/**
+ * Mở bài quy hoạch: xóm đã chia trên switch, nhưng số nhà thì vẫn chung
+ * một dải — hai máy khác VLAN cùng mang 192.168.1.x.
+ */
+function ChiaXomChuaChiaSo({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-accent">
+        <rect x="18" y="24" width="80" height="52" rx="4" {...stroke} strokeWidth={1.5} />
+        <text x="58" y="44" textAnchor="middle" {...monoText}>vlan 10</text>
+        <rect x="122" y="24" width="80" height="52" rx="4" {...stroke} strokeWidth={1.5} />
+        <text x="162" y="44" textAnchor="middle" {...monoText}>vlan 20</text>
+      </g>
+      <g className="text-warn">
+        <text x="58" y="64" textAnchor="middle" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          192.168.1.10
+        </text>
+        <text x="162" y="64" textAnchor="middle" fontSize="10" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          192.168.1.30
+        </text>
+        <path d="M100 92 H120" {...stroke} strokeWidth={1.5} />
+        <path d="M104 86 116 98 M116 86 104 98" {...stroke} strokeWidth={1.5} />
+      </g>
+      <text x="110" y="118" textAnchor="middle" {...monoText}>
+        chia xóm mà số nhà vẫn chung dải
+      </text>
+    </Frame>
+  )
+}
+
+/** Bảng quy hoạch bốn cột — thứ phải điền trước khi cắm sợi dây đầu tiên. */
+function BangQuyHoachVlan({ title }: { title?: string }) {
+  const rows = [
+    ['Kế toán', '10.0/24', '10', '.10.1'],
+    ['Kho', '20.0/24', '20', '.20.1'],
+  ]
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <text x="18" y="32" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>phòng</text>
+        <text x="72" y="32" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>dải IP</text>
+        <text x="128" y="32" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>vlan</text>
+        <text x="162" y="32" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>gateway</text>
+        <path d="M14 38 H206" {...stroke} strokeWidth={1.2} />
+      </g>
+      {rows.map((r, i) => (
+        <g key={r[0]} className="text-accent">
+          {r.map((cell, c) => (
+            <text
+              key={c}
+              x={[18, 72, 128, 162][c]}
+              y={56 + i * 20}
+              fontSize="9"
+              fill="currentColor"
+              style={{ fontFamily: 'var(--font-mono)' }}
+            >
+              {cell}
+            </text>
+          ))}
+        </g>
+      ))}
+      <text x="110" y="106" textAnchor="middle" {...monoText}>
+        mỗi xóm một dải, mỗi dải một cửa ra
+      </text>
+      <text x="110" y="120" textAnchor="middle" {...monoText}>
+        điền bảng xong mới cắm dây
+      </text>
+    </Frame>
+  )
+}
+
+/** Mở bài SVI: dòng cấu hình lạ trên switch lõi. */
+function DongCauHinhLa({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <rect x="16" y="24" width="188" height="60" rx="4" {...stroke} strokeWidth={1.2} />
+        <text x="26" y="42" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          SW-LOI# show run
+        </text>
+      </g>
+      <g className="text-warn">
+        <text x="26" y="58" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          interface Vlan10
+        </text>
+        <text x="26" y="74" fontSize="9" fill="currentColor" style={{ fontFamily: 'var(--font-mono)' }}>
+          ip address 192.168.10.1
+        </text>
+      </g>
+      <text x="110" y="102" textAnchor="middle" {...monoText}>
+        switch mà lại có địa chỉ IP?
+      </text>
+      <text x="110" y="118" textAnchor="middle" {...monoText}>
+        và máy trong xóm trỏ gateway về đó
+      </text>
+    </Frame>
+  )
+}
+
+/** SVI: cửa ra nằm ngay trong switch, gói quay đầu tại chỗ. */
+function SviSwitchLop3({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <g className="text-ink-muted">
+        <rect x="40" y="26" width="140" height="60" rx="4" {...stroke} strokeWidth={1.5} />
+        <text x="110" y="100" textAnchor="middle" {...monoText}>switch lớp 3</text>
+      </g>
+      <g className="text-accent">
+        <rect x="54" y="40" width="52" height="18" rx="2" {...stroke} strokeWidth={1.2} />
+        <text x="80" y="53" textAnchor="middle" {...monoText}>vlan 10</text>
+        <rect x="114" y="40" width="52" height="18" rx="2" {...stroke} strokeWidth={1.2} />
+        <text x="140" y="53" textAnchor="middle" {...monoText}>vlan 20</text>
+        {/* Gói quay đầu NGAY trong switch, không ra sợi trunk. */}
+        <path d="M80 62 v8 H140 v-8" {...stroke} strokeWidth={1.5} markerEnd="url(#cv-arrow)" />
+      </g>
+      <text x="110" y="118" textAnchor="middle" {...monoText}>
+        gói quay đầu ngay trong switch
+      </text>
+    </Frame>
+  )
+}
+
 function RouterOnAStick({ title }: { title?: string }) {
   const doors = [34, 52, 70]
   return (
     <Frame title={title}>
       <g className="text-ink-muted">
         <rect x="16" y="30" width="26" height="60" rx="3" {...stroke} strokeWidth={1.2} />
-        <text x="29" y="106" textAnchor="middle" {...monoText}>switch</text>
+        <text x="29" y="102" textAnchor="middle" {...monoText}>switch</text>
       </g>
       <g className="text-accent">
         <path d="M44 60 H120" {...stroke} strokeWidth={2.5} />
@@ -3658,9 +3976,9 @@ function RouterOnAStick({ title }: { title?: string }) {
             </text>
           </g>
         ))}
-        <text x="162" y="106" textAnchor="middle" {...monoText}>router</text>
+        <text x="162" y="102" textAnchor="middle" {...monoText}>router</text>
       </g>
-      <text x="110" y="118" textAnchor="middle" {...monoText}>
+      <text x="110" y="122" textAnchor="middle" {...monoText}>
         một chân, nhiều cửa logic
       </text>
     </Frame>
@@ -5075,25 +5393,40 @@ function SyslogLine({ title }: { title?: string }) {
 
 /** Thang severity 0-7: số nhỏ nóng, số lớn nguội. */
 function SeverityLadder({ title }: { title?: string }) {
+  // Tám mức xếp thành MỘT hàng ngang thì mỗi mức chỉ được 24px, nhãn phải
+  // bóp còn 6.5 mà vẫn đè lên nhau. Chia HAI CỘT bốn mức: đọc hết cột trái
+  // từ trên xuống rồi sang cột phải, thứ tự 0→7 vẫn liền, chữ lên cỡ 9.
   const levels = ['0 Emerg', '1 Alert', '2 Crit', '3 Error', '4 Warn', '5 Notice', '6 Info', '7 Debug']
   return (
     <Frame title={title}>
-      {levels.map((l, i) => (
-        <g key={l} className={i <= 3 ? 'text-warn' : 'text-ink-muted'}>
-          <rect x={14 + i * 24} y={30 + i * 6} width="22" height={64 - i * 6} rx="2" {...stroke} strokeWidth={i <= 3 ? 1.6 : 1.1} />
-          <text
-            x={25 + i * 24}
-            y={104}
-            textAnchor="middle"
-            fontSize="6.5"
-            fill="currentColor"
-            style={{ fontFamily: 'var(--font-mono)' }}
-          >
-            {l}
-          </text>
-        </g>
-      ))}
-      <text x="110" y="122" textAnchor="middle" {...monoText}>
+      <text x={12} y={16} fontSize="9" fill="var(--warn)">
+        nóng
+      </text>
+      <text x={114} y={16} fontSize="9" fill="var(--ink-muted)">
+        nguội
+      </text>
+      {levels.map((l, i) => {
+        const x = i < 4 ? 12 : 114
+        const y = 34 + (i % 4) * 22
+        // Bề ngang hụt dần đều qua cả tám mức, không reset ở đầu cột phải:
+        // cột phải nhìn là biết nó nối tiếp cột trái chứ không bắt đầu lại.
+        const rong = 40 - i * 4
+        return (
+          <g key={l} className={i <= 3 ? 'text-warn' : 'text-ink-muted'}>
+            <rect x={x} y={y - 9} width={rong} height="14" rx="2" {...stroke} strokeWidth={i <= 3 ? 1.6 : 1.1} />
+            <text
+              x={x + 46}
+              y={y + 1}
+              fontSize="9"
+              fill="currentColor"
+              style={{ fontFamily: 'var(--font-mono)' }}
+            >
+              {l}
+            </text>
+          </g>
+        )
+      })}
+      <text x="110" y="120" textAnchor="middle" {...monoText}>
         số càng NHỎ chuyện càng lớn
       </text>
     </Frame>
@@ -5553,6 +5886,9 @@ const REGISTRY: Record<string, VisualComponent> = {
   'vis-hook-doi-chu': ArpDoiChu,
   'vis-manh-moi-tai-cho': ManhMoiTaiCho,
   'vis-hook-manh-moi': ManhMoiTaiCho,
+  'vis-hook-mang-om': MangOm,
+  'vis-thong-khac-tot': ThongKhacTot,
+  'vis-khoanh-khuc-cham': KhoanhKhucCham,
   // Module 12 — PowerShell cho người quản trị mạng
   'vis-cmdlet-dong-tu-danh-tu': CmdletVerbNoun,
   'vis-hook-cmdlet': CmdletVerbNoun,
@@ -5594,6 +5930,10 @@ const REGISTRY: Record<string, VisualComponent> = {
   // Hook bày HIỆN TRƯỜNG (bốn xóm, một chân trống), màn Dạy giữ hình ẩn dụ
   // giải cách làm — hai màn hai việc khác nhau thì đừng chung một hình.
   'vis-hook-router-mot-chan': (p) => <IsoScene id="vis-iso-router-mot-chan-m14" {...p} />,
+  'vis-hook-bang-quy-hoach': ChiaXomChuaChiaSo,
+  'vis-bang-quy-hoach': BangQuyHoachVlan,
+  'vis-hook-svi': DongCauHinhLa,
+  'vis-svi': SviSwitchLop3,
   // Module 15 — STP
   'vis-bao-quang-ba': BroadcastStorm,
   // BA NHỊP CỦA CÙNG MỘT PHÒNG MÁY (bài 1 → 2 → 4): cùng ba switch, cùng

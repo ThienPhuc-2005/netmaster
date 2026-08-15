@@ -83,7 +83,7 @@
                   "vi": "Địa chỉ IP của chính nó — nếu có ai đó đã khai dải nào thuộc nơi nào"
                 },
                 {
-                  "vi": "Đo thời gian ping tới từng DC trong miền rồi tự chọn máy nhanh nhất"
+                  "vi": "Đo thời gian ping tới từng DC trong miền rồi tự chọn lấy máy nhanh nhất"
                 },
                 {
                   "vi": "Không cần biết — DC nào nhận được yêu cầu trước thì trả lời trước"
@@ -162,7 +162,7 @@
               },
               "solution": {
                 "vi": "Thiếu lời khai subnet-thuộc-site. Máy nhìn IP để tra site — dải chưa gắn site thì máy mù vị trí và hỏi vu vơ. Dựng DC tại chỗ mới là một nửa việc; ba dòng khai báo kia là nửa còn lại."
-              },
+              },
               "conceptId": "m19-subnet-site"
             },
             {
@@ -193,7 +193,7 @@
               },
               "solution": {
                 "vi": "OU theo tổ chức (kế toán, nhân sự — dù ngồi đâu), site theo địa lý (Hà Nội, Đà Nẵng — dù phòng nào). Hai trục vuông góc: tài khoản vào OU, máy đứng trong site — AD cần cả hai."
-              },
+              },
               "conceptId": "m19-site"
             },
             {
@@ -356,7 +356,7 @@
                   "vi": "Mỗi DC giữ một bản đầy đủ, và chúng phải chép thay đổi cho nhau"
                 },
                 {
-                  "vi": "Chỉ DC đầu tiên giữ sổ gốc, các DC còn lại hỏi nó từng câu một"
+                  "vi": "Chỉ có DC đầu tiên giữ sổ gốc, các DC còn lại hỏi nó từng câu một"
                 },
                 {
                   "vi": "Sổ được cắt đôi: mỗi DC giữ nửa danh sách tài khoản của miền"
@@ -416,7 +416,7 @@
                     "vi": "Đối chiếu lịch chép giữa hai site rồi đợi hết một chuyến trước khi kết luận"
                   },
                   {
-                    "vi": "Thêm user vào nhóm lần nữa ngay trên DC Đà Nẵng cho chắc chắn ăn"
+                    "vi": "Thêm user vào nhóm lần nữa ngay trên DC Đà Nẵng cho chắc chắn ăn chắc"
                   },
                   {
                     "vi": "Khởi động lại DC Đà Nẵng để nó tải lại cuốn sổ mới nhất từ Hà Nội"
@@ -432,7 +432,7 @@
               },
               "solution": {
                 "vi": "Đối chiếu lịch chép và đợi hết một chuyến. Ghi đè lần nữa hay khởi động lại DC đều là sửa loạn trong khe trễ — thứ tự nhiên sẽ tự lành lại còn bị tay người khuấy thành bệnh thật."
-              },
+              },
               "conceptId": "m19-do-tre"
             },
             {
@@ -463,7 +463,7 @@
               },
               "solution": {
                 "vi": "Vì đường WAN giữa site vừa chậm vừa đắt — nên thay đổi được gom, nén và gửi theo chuyến. Hai site vẫn chung một miền, và chẳng có luật một-lần-mỗi-giờ nào: lịch chép là thứ người vận hành tự đặt theo túi tiền đường truyền."
-              },
+              },
               "conceptId": "m19-do-tre"
             }
           ]
@@ -727,7 +727,7 @@
               },
               "solution": {
                 "vi": "ObjectClass group. Nhóm quyền chứa các nhóm vai — thấy một dãy user nằm thẳng trong đó là dấu vết lối tắt chồng chất, mỗi tên là một câu hỏi không ai còn trả lời được."
-              },
+              },
               "conceptId": "m19-agdlp"
             },
             {
@@ -756,7 +756,7 @@
               },
               "solution": {
                 "vi": "Nhóm Domain Local — nhóm quyền đứng cạnh tài nguyên. Người vào nhóm vai (Global), vai cắm vào quyền (Domain Local), quyền gắn vào tài nguyên: ba khúc nối của một đường ống."
-              },
+              },
               "conceptId": "m19-gg-dl"
             }
           ]
@@ -1027,7 +1027,7 @@
                     "vi": "Rút anh khỏi nhóm vai kế toán và thêm vào nhóm vai kinh doanh — hết"
                   },
                   {
-                    "vi": "Soát từng nhóm quyền của kế toán để gỡ tên anh rồi cấp lại từ đầu"
+                    "vi": "Soát lại từng nhóm quyền của kế toán để gỡ tên anh rồi cấp lại từ đầu"
                   },
                   {
                     "vi": "Khóa tài khoản cũ và tạo cho anh một tài khoản mới bên kinh doanh"
@@ -1630,7 +1630,7 @@
       "kind": "typed",
       "id": "m19-mt-2",
       "prompt": {
-        "vi": "Khai subnet gắn site giúp máy trạm tự tìm được cái gì ở gần mình?"
+        "vi": "Chi nhánh Cần Thơ vừa mở: đăng nhập chậm bất thường, máy trạm cứ chạy sang tận trụ sở để xác thực. Dải IP của chi nhánh chưa được khai vào site nào, nên máy trạm không nhận ra thứ gì đang đứng ngay cạnh mình?"
       },
       "accept": [
         "dc",
@@ -1680,7 +1680,7 @@
       "kind": "mcq",
       "id": "m19-mt-4",
       "prompt": {
-        "vi": "Vì sao replication GIỮA site không chạy tức thì như TRONG site?"
+        "vi": "Tài khoản vừa tạo ở trụ sở: hai DC cùng phòng máy thấy nhau gần như lập tức, còn chi nhánh mươi lăm phút sau mới thấy. Vì đâu có khoảng chờ đó?"
       },
       "choices": [
         {
@@ -1832,7 +1832,7 @@
       "kind": "typed",
       "id": "m19-mt-10",
       "prompt": {
-        "vi": "Cơ chế trao một bộ thao tác hẹp trên một nhánh OU cho một nhóm — không phát admin toàn miền — gọi là gì?"
+        "vi": "Phòng nhân sự muốn tự đặt lại mật khẩu cho người của phòng mình mà không đụng tới phần còn lại của miền. Việc cấp đúng bấy nhiêu quyền trên nhánh OU của họ gọi là gì?"
       },
       "accept": [
         "delegation",

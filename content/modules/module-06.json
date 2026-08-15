@@ -2,7 +2,9 @@
   "id": "module-6",
   "order": 6,
   "part": "B",
-  "letter": { "vi": "Vài dòng cho ca sáng. Lúc mở module, máy không vào được mạng với bạn là một cục lỗi duy nhất; giờ bạn tách được nó làm hai câu hỏi rạch ròi: máy có xin được địa chỉ không, và có ai dịch hộ cái tên miền không. Bạn nghe trọn được bốn nhịp hỏi cưới của DHCP, lần được ba tầng người biết đường của DNS, và đọc được tấm giấy nằm sau cái ổ khóa vàng mà trước nay ai cũng chỉ nhìn cho yên tâm. Hai cơ chế này hỏng là nửa số ca trực trên đời hỏng theo — bạn vừa cầm chìa khóa của cả hai." },
+  "letter": {
+    "vi": "Vài dòng cho ca sáng. Lúc mở module, máy không vào được mạng với bạn là một cục lỗi duy nhất; giờ bạn tách được nó làm hai câu hỏi rạch ròi: máy có xin được địa chỉ không, và có ai dịch hộ cái tên miền không. Bạn nghe trọn được bốn nhịp hỏi cưới của DHCP, lần được ba tầng người biết đường của DNS, và đọc được tấm giấy nằm sau cái ổ khóa vàng mà trước nay ai cũng chỉ nhìn cho yên tâm. Hai cơ chế này hỏng là nửa số ca trực trên đời hỏng theo — bạn vừa cầm chìa khóa của cả hai."
+  },
   "title": {
     "vi": "DNS và DHCP — Hỏi đường và thuê nhà"
   },
@@ -87,13 +89,13 @@
               },
               "choices": [
                 {
-                  "vi": "Hỏi thẳng máy chủ của trang web đó"
+                  "vi": "Hỏi thẳng máy chủ của chính trang web đó, không qua ai"
                 },
                 {
                   "vi": "Hỏi một máy chủ chuyên đi hỏi hộ, thường là của nhà mạng"
                 },
                 {
-                  "vi": "Hỏi Google"
+                  "vi": "Hỏi Google, vì Google thì biết mọi trang web"
                 }
               ],
               "answerIndex": 1,
@@ -380,7 +382,7 @@
               },
               "solution": {
                 "vi": "Bản ghi MX — nó chỉ ra máy chủ nhận thư cho tên miền đó."
-              },
+              },
               "conceptId": "m6-ban-ghi-cname-mx"
             },
             {
@@ -411,7 +413,7 @@
               },
               "solution": {
                 "vi": "CNAME — biệt danh trỏ về một tên khác, rồi tên đó mới có bản ghi A thật."
-              },
+              },
               "conceptId": "m6-ban-ghi-cname-mx"
             }
           ]
@@ -515,7 +517,7 @@
                   "vi": "Chữ trần — ai chặn được gói tin là đọc được tên miền bạn hỏi"
                 },
                 {
-                  "vi": "Đã mã hóa sẵn từ đầu"
+                  "vi": "Đã được mã hóa sẵn từ đầu nên không ai ngồi giữa đọc trộm được"
                 }
               ],
               "answerIndex": 0,
@@ -580,10 +582,10 @@
                     "vi": "Toàn bộ câu hỏi dồn về một nhà cung cấp, và mạng công ty khó lọc tên miền độc hại hơn"
                   },
                   {
-                    "vi": "Tốc độ mạng giảm một nửa"
+                    "vi": "Tốc độ mạng giảm đi một nửa vì phải mã hóa mọi câu hỏi tên miền"
                   },
                   {
-                    "vi": "Không vào được trang web dùng HTTP"
+                    "vi": "Không vào được các trang web còn dùng HTTP, vì chúng không hiểu giao thức mới"
                   }
                 ],
                 "answerIndex": 0,
@@ -1003,7 +1005,7 @@
               },
               "choices": [
                 {
-                  "vi": "Gửi cho router — nó biết địa chỉ router mà"
+                  "vi": "Gửi thẳng cho router — nó biết địa chỉ của router mà"
                 },
                 {
                   "vi": "Hét cho cả mạng nghe, vì chưa biết ai là người phát địa chỉ"
@@ -1078,7 +1080,7 @@
               },
               "solution": {
                 "vi": "Discover → Offer → Request → Ack."
-              },
+              },
               "conceptId": "m6-dora"
             },
             {
@@ -1102,7 +1104,7 @@
               },
               "solution": {
                 "vi": "Request — và nó cố tình nói to để những máy chủ không được chọn rút lời."
-              },
+              },
               "conceptId": "m6-dora"
             }
           ]
@@ -1207,13 +1209,13 @@
               },
               "choices": [
                 {
-                  "vi": "Đúng lúc hết hạn"
+                  "vi": "Đúng lúc thời hạn vừa hết, không sớm hơn"
                 },
                 {
                   "vi": "Khi mới đi được nửa thời hạn — xin sớm cho chắc"
                 },
                 {
-                  "vi": "Chỉ khi mất mạng"
+                  "vi": "Chỉ khi nào máy phát hiện mình đã mất mạng"
                 }
               ],
               "answerIndex": 1,
@@ -1257,7 +1259,7 @@
                     "vi": "Ngắn — khách vào ra liên tục, phải trả địa chỉ về kho sớm"
                   },
                   {
-                    "vi": "Dài — cho khách khỏi phải xin lại"
+                    "vi": "Dài — cho khách khỏi phải xin lại địa chỉ nhiều lần"
                   }
                 ],
                 "answerIndex": 0,
@@ -1593,7 +1595,7 @@
       "kind": "typed",
       "id": "m6-mt-2",
       "prompt": {
-        "vi": "Máy chủ giữ câu trả lời thật cho một tên miền gọi là máy chủ gì?"
+        "vi": "Công ty vừa dọn trang web sang máy chủ mới nên bạn phải sửa địa chỉ IP mà tên miền đang trỏ tới. Chỗ DUY NHẤT sửa được nằm ở máy chủ loại nào?"
       },
       "accept": [
         "có thẩm quyền",
@@ -1603,14 +1605,14 @@
         "authoritative"
       ],
       "explain": {
-        "vi": "Máy chủ có thẩm quyền (authoritative) — nơi chủ tên miền khai địa chỉ thật; hai tầng trên chỉ chỉ đường."
+        "vi": "Máy chủ có thẩm quyền (authoritative) — nơi chủ tên miền khai địa chỉ thật. Gõ vào resolver hay máy chủ gốc đều vô ích: hai tầng ấy chỉ đường chứ không giữ câu trả lời."
       }
     },
     {
       "kind": "mcq",
       "id": "m6-mt-3",
       "prompt": {
-        "vi": "Bạn muốn thư gửi tới tên miền công ty rơi đúng vào máy chủ thư. Khai bản ghi loại nào?"
+        "vi": "Trang congty.vn mở bình thường, nhưng thư gửi tới hòm thư @congty.vn thì bị trả về. Bản ghi loại nào đang thiếu hoặc sai?"
       },
       "choices": [
         {
@@ -1625,14 +1627,14 @@
       ],
       "answerIndex": 0,
       "explain": {
-        "vi": "MX chỉ ra máy chủ nhận thư cho tên miền, nhờ đó web và hòm thư nằm hai nơi vẫn chạy."
+        "vi": "MX chỉ ra máy chủ nhận thư. Bản ghi A vẫn đúng nên web mở được — web sống mà thư chết chính là dấu hiệu của MX."
       }
     },
     {
       "kind": "typed",
       "id": "m6-mt-4",
       "prompt": {
-        "vi": "Bản ghi trỏ tên miền tới một địa chỉ IPv6 tên là gì?"
+        "vi": "Máy chủ mới thuê chỉ có đúng một địa chỉ 2001:db8::25, chưa xin địa chỉ IPv4 nào. Muốn tên miền trỏ được tới nó, bạn khai bản ghi loại nào?"
       },
       "accept": [
         "aaaa",
@@ -1641,7 +1643,7 @@
         "a a a a"
       ],
       "explain": {
-        "vi": "AAAA — bản anh em của A, dành cho địa chỉ IPv6 dài gấp bốn lần."
+        "vi": "AAAA — bản anh em của A, dành cho địa chỉ IPv6 dài gấp bốn lần. Khai bản ghi A cho máy chỉ có IPv6 thì không có gì để điền vào."
       }
     },
     {
@@ -1670,24 +1672,24 @@
       "kind": "order",
       "id": "m6-mt-6",
       "prompt": {
-        "vi": "Xếp bốn nhịp DHCP theo đúng thứ tự."
+        "vi": "Bạn ngồi xem màn bắt gói đúng lúc một máy in mới vừa được cắm dây vào mạng. Xếp bốn gói DHCP theo thứ tự chúng hiện lên màn hình."
       },
       "items": [
         {
-          "vi": "Discover"
+          "vi": "Máy in phát cho cả mạng nghe: có ai cấp địa chỉ không"
         },
         {
-          "vi": "Offer"
+          "vi": "Một máy chủ đáp lại, kèm địa chỉ nó định cho mượn"
         },
         {
-          "vi": "Request"
+          "vi": "Máy in phát tiếp lời chốt: tôi lấy địa chỉ của máy chủ ấy"
         },
         {
-          "vi": "Ack"
+          "vi": "Máy chủ được chọn xác nhận, kèm thời hạn thuê"
         }
       ],
       "explain": {
-        "vi": "DORA: hỏi to giữa sân — nhà có thì đánh tiếng — chốt một nhà trước cả làng — nhà ấy gật đầu."
+        "vi": "Bốn gói đó là DORA: Discover — Offer — Request — Ack. Gói thứ ba vẫn phát cho cả mạng nghe, để những máy chủ không được chọn thả địa chỉ đã giữ về kho."
       }
     },
     {
@@ -1716,7 +1718,7 @@
       "kind": "typed",
       "id": "m6-mt-8",
       "prompt": {
-        "vi": "Máy bạn bắt đầu xin gia hạn địa chỉ khi đã dùng hết bao nhiêu phần thời hạn thuê?"
+        "vi": "Máy bạn nhận địa chỉ lúc 8h sáng với thời hạn thuê 8 tiếng, và đúng 12h trưa nó đã gửi lời xin gia hạn. Vậy nó xin khi đã dùng hết bao nhiêu phần thời hạn?"
       },
       "accept": [
         "một nửa",
@@ -1729,7 +1731,7 @@
         "1 phần 2"
       ],
       "explain": {
-        "vi": "Một nửa — xin sớm thì hỏng một lần vẫn còn nửa hạn sau để thử lại, không mất địa chỉ giữa chừng."
+        "vi": "Một nửa: 4 tiếng trên hạn 8 tiếng. Xin sớm thì hỏng một lần vẫn còn nửa hạn sau để thử lại, không mất địa chỉ giữa chừng."
       }
     },
     {
