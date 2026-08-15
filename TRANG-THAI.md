@@ -31,7 +31,7 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (19) M21 capstone + màn tốt nghiệp | XONG |
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
-**KHỐI MỚI NHẤT — 21.66 (08-15), chưa commit: TỪ VỰNG ĐO MẠNG (việc C, lỗ hổng Q3 — làm được 2/3).**
+**KHỐI MỚI NHẤT — 21.66 (08-15), đã commit `85d0e27`: TỪ VỰNG ĐO MẠNG (việc C, lỗ hổng Q3 — làm được 2/3).**
 - Thêm bài `m8-bai-6` "Đo cho ra số, đừng đoán bằng cảm giác" **chen giữa bài 2
   và bài 3** của Module 8 (chặng mới `m8-chang-do` cắm vào giữa mảng chặng — thứ
   tự chặng chính là thứ tự học). Ba khái niệm mới: **Băng thông** (chiều rộng),
