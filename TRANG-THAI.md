@@ -31,7 +31,7 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (19) M21 capstone + màn tốt nghiệp | XONG |
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
-**KHỐI MỚI NHẤT — 21.64 (08-15), chưa commit: DẠY "ĐỌC TRỌN MỘT KHỐI" (việc C, lỗ hổng Q2).**
+**KHỐI MỚI NHẤT — 21.64 (08-15), đã commit `796a2b9`: DẠY "ĐỌC TRỌN MỘT KHỐI" (việc C, lỗ hổng Q2).**
 - Thêm bài `m3-bai-7` "Đọc trọn một khối" vào chặng 5 của Module 3 (chặng đó
   giờ có 2 bài — chặng đã kín 6 nên không thêm chặng được). Hai khái niệm mới:
   **Broadcast address** và **Host dùng được**, mỗi cái một hình vẽ mới, một thẻ
