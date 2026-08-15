@@ -427,6 +427,105 @@ function MagicNumber({ title }: { title?: string }) {
   )
 }
 
+/** Băng thông = ống RỘNG bao nhiêu, kèm phép chia 8 giữa Mbps và MB/s. */
+function Bandwidth({ title }: { title?: string }) {
+  return (
+    <Frame title={title}>
+      <text x={20} y={20} fontSize="9" fill="var(--ink-muted)">
+        băng thông = ống rộng bao nhiêu
+      </text>
+      {/* Ống hẹp */}
+      <rect x="20" y="32" width="76" height="12" rx="3" fill="var(--edge)" opacity="0.5" />
+      <text x={20} y={56} fontSize="9" fill="var(--ink-muted)" style={{ fontFamily: 'var(--font-mono)' }}>
+        30 Mbps
+      </text>
+      {/* Ống rộng */}
+      <rect x="20" y="66" width="176" height="26" rx="4" fill="var(--accent)" opacity="0.25" />
+      <text x={20} y={106} fontSize="9" fill="var(--accent)" style={{ fontFamily: 'var(--font-mono)' }}>
+        100 Mbps
+      </text>
+      <text x={196} y={106} textAnchor="end" fontSize="9" fill="var(--ink)" style={{ fontFamily: 'var(--font-mono)' }}>
+        ÷ 8 = 12,5 MB/giây
+      </text>
+      <text x={196} y={56} textAnchor="end" fontSize="8" fill="var(--warn)">
+        b nhỏ = bit · B lớn = byte
+      </text>
+    </Frame>
+  )
+}
+
+/** Độ trễ = ống DÀI bao nhiêu — cùng bề rộng, khác quãng đường đi về. */
+function Latency({ title }: { title?: string }) {
+  const hang: [string, number, string][] = [
+    ['máy chủ trong nước', 60, '8ms'],
+    ['máy chủ Singapore', 110, '35ms'],
+    ['máy chủ châu Âu', 168, '220ms'],
+  ]
+  return (
+    <Frame title={title}>
+      <text x={20} y={20} fontSize="9" fill="var(--ink-muted)">
+        độ trễ = ống dài bao nhiêu (ping đo cái này)
+      </text>
+      {hang.map(([ten, dai, ms], i) => {
+        const y = 40 + i * 26
+        return (
+          <g key={ten}>
+            <circle cx="22" cy={y} r="3" fill="var(--accent)" />
+            <path d={`M26 ${y} H${dai}`} stroke="var(--accent)" strokeWidth="2" fill="none" markerEnd="url(#cv-arrow)" />
+            <text x={dai + 8} y={y + 3} fontSize="9" fill="var(--ink)" style={{ fontFamily: 'var(--font-mono)' }}>
+              {ms}
+            </text>
+            <text x={26} y={y - 6} fontSize="8" fill="var(--ink-muted)">
+              {ten}
+            </text>
+          </g>
+        )
+      })}
+      <text x={20} y={118} fontSize="8" fill="var(--warn)">
+        ống rộng thêm không rút ngắn được quãng đường
+      </text>
+    </Frame>
+  )
+}
+
+/** Mất gói và jitter: cùng một chuỗi gói, một cái thủng, một cái đến lệch nhịp. */
+function LossAndJitter({ title }: { title?: string }) {
+  const deu = [0, 1, 2, 3, 4, 5, 6, 7]
+  const lech = [0, 1.4, 2, 3.6, 4, 5.8, 6, 7.2]
+  return (
+    <Frame title={title}>
+      <text x={20} y={18} fontSize="8" fill="var(--ink-muted)">
+        mất gói — vài gói không bao giờ tới
+      </text>
+      {deu.map((v) => (
+        <rect
+          key={v}
+          x={22 + v * 22}
+          y="26"
+          width="14"
+          height="14"
+          rx="2"
+          fill={v === 2 || v === 5 ? 'none' : 'var(--accent)'}
+          opacity={v === 2 || v === 5 ? 1 : 0.45}
+          stroke={v === 2 || v === 5 ? 'var(--warn)' : 'none'}
+          strokeDasharray={v === 2 || v === 5 ? '2 2' : undefined}
+          strokeWidth="1.5"
+        />
+      ))}
+      <text x={20} y={66} fontSize="8" fill="var(--ink-muted)">
+        jitter — tới đủ, nhưng lệch nhịp
+      </text>
+      {lech.map((v, i) => (
+        <rect key={i} x={22 + v * 22} y="74" width="14" height="14" rx="2" fill="var(--warn)" opacity="0.5" />
+      ))}
+      <path d="M22 98 H196" stroke="var(--edge)" strokeWidth="1" fill="none" />
+      <text x={20} y={116} fontSize="8" fill="var(--ink)">
+        cả hai làm vỡ tiếng dù tốc độ vẫn cao
+      </text>
+    </Frame>
+  )
+}
+
 /**
  * Cái thang phân tầng — mỗi bậc dán nhãn bằng thứ người học ĐÃ gặp, không
  * phải bằng tên hàn lâm. Đây là advance organizer: bậc thang có sẵn trong
@@ -4686,6 +4785,13 @@ const REGISTRY: Record<string, VisualComponent> = {
   'vis-nha-rieng-cong-cong': PrivatePublic,
   'vis-hang-rao-khu-pho': MaskFence,
   'vis-magic-number': MagicNumber,
+  'vis-bang-thong': Bandwidth,
+  'icon-bang-thong': Bandwidth,
+  'vis-hook-do-mang': Bandwidth,
+  'vis-do-tre': Latency,
+  'icon-do-tre': Latency,
+  'vis-mat-goi-jitter': LossAndJitter,
+  'icon-mat-goi-jitter': LossAndJitter,
   'vis-thang-tang': LayerLadder,
   'icon-thang-tang': LayerLadder,
   'vis-hook-thang-tang': LayerLadder,

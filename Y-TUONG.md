@@ -652,9 +652,15 @@ tròn hơn · **có thì tốt**.
   đang HỎNG. Màn luyện subnet trộn 6 loại đề mà 4 loại hỏi thứ chưa dạy
   (broadcast, dải host, đếm host, chọn prefix); bài 5 lại dặn ghé luyện mỗi
   ngày. Giờ cả 6 loại đều có bài dạy đứng sau.
-- ☐ **Q3. Từ vựng đo mạng và ca bệnh "mạng chậm": băng thông, độ trễ, mất gói, jitter — và chuyện 100 Mbps không phải 100 MB mỗi giây** — *PHẢI CÓ*.
-  Ba lăng kính cùng gọi tên, thêm một lăng kính nữa chỉ vào họ hàng gần của nó ("đầy vạch sóng mà không có Internet"). "Mạng chậm" là lời than phổ biến nhất ở mọi nhà và mọi văn phòng, mà học xong app người học không có một chữ nào để nói về nó: cả khóa không có khái niệm nào tên là băng thông hay độ trễ, dù Module 20 vẽ biểu đồ "45% băng thông" và Module 16 tính chi phí đường theo băng thông. Năm ca của phòng khám đều là bệnh chết hẳn, chưa ca nào chạm tới bệnh "tới mà ì". Hệ quả thật: người học không giải thích nổi vì sao gói 100 Mbps mà tải chỉ 12 MB/s, không biết đo tốc độ đẹp mà họp online vẫn giật là bệnh gì, nên phản xạ mãi là rút điện modem cắm lại rồi cầu may.
-  **Đặt ở đâu:** Hai khái niệm mới (băng thông = ống rộng, độ trễ = ống dài) chen giữa m8-bai-2 và m8-bai-3, đúng lúc đang bàn tốc độ Wi-Fi và gói cước. Rồi một ca bệnh "không chết mà chậm" thêm vào cuối Module 11, và Module 20 dùng lại để con số baseline có đơn vị.
+- ◐ **Q3. Từ vựng đo mạng** — LÀM ĐƯỢC 2/3 (khối 21.66): thêm bài `m8-bai-6`
+  "Đo cho ra số, đừng đoán bằng cảm giác" chen giữa bài 2 và bài 3 của Module 8,
+  ba khái niệm mới (Băng thông, Độ trễ, Mất gói và jitter) kèm ba hình vẽ và ba
+  thẻ ôn; Module 20 nay nối con số baseline về đúng đơn vị vừa học.
+  **CÒN TREO — cần khối riêng, và cần ENGINE:** ca bệnh "chậm chứ không chết" ở
+  Module 11 chưa làm được. Engine phòng khám chỉ mô phỏng được ping tắt hẳn hoặc
+  lúc được lúc mất (`ping-flaps`); nó KHÔNG có độ trễ, không có tỉ lệ rớt gói,
+  nên không dựng nổi ca "đo tốc độ đẹp mà họp online vẫn vỡ tiếng". Muốn có ca
+  đó thì phải thêm hai con số ấy vào engine trước.
 - ☐ **Q4. Tầng dây thật: cáp đồng và cáp quang, giới hạn 100 mét, tốc độ và duplex, PoE, đọc đèn cổng và đèn modem** — *PHẢI CÓ*.
   Ba nguồn cùng chỉ vào (hai lăng kính gọi tên "sợi dây thật", một chỉ riêng phần đèn modem). Module 11 dựng cả bài trên câu "khám từ tầng dây lên", nhưng sợi dây trong app chỉ có hai trạng thái: cắm hoặc tuột. Ngoài đời tầng thấp nhất hỏng tinh vi hơn nhiều và đó là nhóm sự cố chiếm nhiều ca trực nhất. Riêng phần đèn modem còn quyết định việc lớn nhất khi mất mạng — gọi tổng đài nhà mạng hay tự khám tiếp trong nhà — mà đây là phép chẩn đoán duy nhất người không rành máy tính cũng làm được; app hiện chỉ có đúng một câu bỏ lửng trong ô Đào sâu của m7-bai-4.
   **Đặt ở đâu:** Một bài mới trong Module 4, đặt trước bài switch (có dây rồi mới có thiết bị cắm vào). Phần đèn modem mở rộng câu Đào sâu đang bỏ lửng ở m7-bai-4 thành một màn dạy có khái niệm và thẻ ôn. Thêm một ca bệnh tầng thấp vào Module 11 (ping vẫn trả lời nhưng rớt gói và chậm).

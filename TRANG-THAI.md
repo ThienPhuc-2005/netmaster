@@ -31,7 +31,29 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (19) M21 capstone + màn tốt nghiệp | XONG |
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
-**KHỐI MỚI NHẤT — 21.65 (08-15), đã commit `aa3c37a`: GỌI TÊN CÁI THANG (việc C, lỗ hổng Q1).**
+**KHỐI MỚI NHẤT — 21.66 (08-15), chưa commit: TỪ VỰNG ĐO MẠNG (việc C, lỗ hổng Q3 — làm được 2/3).**
+- Thêm bài `m8-bai-6` "Đo cho ra số, đừng đoán bằng cảm giác" **chen giữa bài 2
+  và bài 3** của Module 8 (chặng mới `m8-chang-do` cắm vào giữa mảng chặng — thứ
+  tự chặng chính là thứ tự học). Ba khái niệm mới: **Băng thông** (chiều rộng),
+  **Độ trễ** (chiều dài), **Mất gói và jitter**; ba hình vẽ mới, ba thẻ ôn.
+- **Lỗ hổng này rát nhất trong 9 cái**: "mạng chậm" là lời than phổ biến nhất ở
+  mọi nhà, mà học xong cả khóa người học không có một chữ nào để nói về nó —
+  trong khi Module 16 tính chi phí đường theo băng thông 8 lần và Module 20 vẽ
+  biểu đồ "45% băng thông", tức dùng chữ mà chưa ai định nghĩa. Nay M20 nối
+  thẳng con số baseline về đúng đơn vị vừa học.
+- Bài cũng gỡ cái bẫy Mbps ≠ MB/s (chia 8) — chỗ khiến nhiều người tưởng mình bị
+  nhà mạng bán thiếu tốc độ.
+- **CÒN TREO, và vướng ENGINE**: ca bệnh "chậm chứ không chết" ở Module 11 chưa
+  làm được. Engine phòng khám chỉ có ping tắt hẳn hoặc lúc được lúc mất; nó
+  KHÔNG có độ trễ, không có tỉ lệ rớt gói — nên không dựng nổi ca "đo tốc độ đẹp
+  mà họp online vẫn vỡ tiếng". Muốn có thì phải thêm hai con số đó vào engine.
+- Pool đề thi M8: 14 → 16 câu. **Cổng có sẵn của app bắt được một cue tôi vừa
+  tạo**: đáp án đúng NGẮN bất thường so với mồi nhử cũng là một kiểu lộ đề.
+- 1873 test xanh, typecheck sạch, build qua. Kiểm browser thật: chặng mới nằm
+  đúng giữa "Đọc tên thế hệ" và "Khóa cửa cho sóng", ba hình vẽ hiện đủ nhãn,
+  gõ `100` và `độ trễ` đều chấm ĐÚNG. Seed đã xóa.
+
+**KHỐI TRƯỚC — 21.65 (08-15), đã commit `aa3c37a`: GỌI TÊN CÁI THANG (việc C, lỗ hổng Q1).**
 - Thêm bài `m4-bai-6` "Gọi tên cái thang" thành **chặng 6** của Module 4 (module
   đang có 5 chặng, trần là 6 — vừa đủ chỗ). Hai khái niệm mới: **Mô hình phân
   tầng** và **Frame (khung)**, mỗi cái một hình vẽ mới và một thẻ ôn.

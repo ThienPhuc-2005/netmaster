@@ -7,6 +7,7 @@
   "stages": [
     { "id": "m8-chang-1", "title": { "vi": "Sóng thay dây" }, "lessonIds": ["m8-bai-1"] },
     { "id": "m8-chang-2", "title": { "vi": "Đọc tên thế hệ" }, "lessonIds": ["m8-bai-2"] },
+    { "id": "m8-chang-do", "title": { "vi": "Đo cho ra số" }, "lessonIds": ["m8-bai-6"] },
     { "id": "m8-chang-3", "title": { "vi": "Khóa cửa cho sóng" }, "lessonIds": ["m8-bai-3"] },
     { "id": "m8-chang-4", "title": { "vi": "Biển số đời mới" }, "lessonIds": ["m8-bai-4"] },
     { "id": "m8-chang-5", "title": { "vi": "Máy tự lo liệu" }, "lessonIds": ["m8-bai-5"] }
@@ -240,6 +241,247 @@
             { "vi": "Tốc độ thật chốt ở thế hệ thấp hơn của từng cặp thiết bị — và ở gói cước nhà mạng." }
           ],
           "nextTeaser": { "vi": "Sóng nhà bạn bay ra tận vỉa hè, ai đứng đó cũng \"nghe\" được từng gói tin. Vậy cái gì ngăn họ đọc trộm?" }
+        }
+      ]
+    },
+    {
+      "id": "m8-bai-6",
+      "missionTitle": {
+        "vi": "Đo cho ra số, đừng đoán bằng cảm giác"
+      },
+      "steps": [
+        {
+          "type": "hook",
+          "question": {
+            "vi": "\"Mạng nhà mình chậm quá!\" — câu than phổ biến nhất, và cũng mơ hồ nhất. Chậm là đường hẹp, hay đường xa, hay đường có mà gói rơi dọc đường? Ba bệnh khác hẳn nhau, ba cách chữa khác hẳn nhau, mà cùng một câu than."
+          },
+          "visualId": "vis-hook-do-mang"
+        },
+        {
+          "type": "pretest",
+          "questions": [
+            {
+              "kind": "mcq",
+              "id": "m8-b6-pre-1",
+              "prompt": {
+                "vi": "Đoán thử: nhà lắp gói 100 Mbps. Tải một file về, tốc độ hiện trên máy khoảng bao nhiêu mỗi giây?"
+              },
+              "choices": [
+                {
+                  "vi": "Khoảng 12 MB"
+                },
+                {
+                  "vi": "Khoảng 100 MB"
+                },
+                {
+                  "vi": "Khoảng 800 MB"
+                }
+              ],
+              "answerIndex": 0,
+              "explain": {
+                "vi": "Khoảng 12,5 MB mỗi giây. Nhà mạng đếm bằng bit, máy tính đếm bằng byte, mà 1 byte = 8 bit — nên lấy con số gói cước chia 8. Đây là chỗ hiểu nhầm khiến nhiều người tưởng mình bị bán thiếu tốc độ."
+              }
+            }
+          ],
+          "encouragement": {
+            "vi": "Rất nhiều người dùng lâu năm cũng trượt câu này — cái bẫy nằm ở một chữ viết hoa."
+          }
+        },
+        {
+          "type": "teach",
+          "screens": [
+            {
+              "conceptId": "m8-bang-thong",
+              "visualId": "vis-bang-thong",
+              "body": {
+                "vi": "Băng thông là chiều RỘNG của đường: mỗi giây chở lọt bao nhiêu dữ liệu, đo bằng Mbps (megabit mỗi giây). Đây là con số nhà mạng in trên gói cước, và cũng là con số bạn sẽ gặp lại ở những module sau khi đọc biểu đồ giám sát. Một cái bẫy phải nhớ đời: nhà mạng đếm bằng BIT (chữ b nhỏ), còn máy tính hiển thị tốc độ tải bằng BYTE (chữ B lớn), mà 1 byte = 8 bit. Gói 100 Mbps tải nhanh nhất khoảng 12,5 MB mỗi giây — không phải 100. Không biết chỗ chia 8 này thì lúc nào cũng thấy như mình bị bán thiếu."
+              },
+              "deepDive": {
+                "vi": "Vì sao hai bên đếm hai kiểu? Vì đường truyền vốn đẩy từng bit một, nên kỹ thuật truyền dẫn đếm bit là tự nhiên; còn tệp trong máy đo bằng byte vì mỗi ký tự chiếm một byte. Con số trên gói cước còn là mức TỐI ĐA lý thuyết: thực tế còn hao vì phần vỏ gói tin, vì sóng Wi-Fi phải chia lượt cho nhiều máy, và vì đoạn đường ngoài nhà mạng bạn không kiểm soát được."
+              }
+            },
+            {
+              "conceptId": "m8-do-tre",
+              "visualId": "vis-do-tre",
+              "body": {
+                "vi": "Độ trễ là chiều DÀI của đường: một gói đi tới đích rồi quay về mất bao nhiêu mili-giây. Bạn đã đo nó từ Module 1 mà chưa gọi tên — chính là con số time= trong kết quả ping. Máy chủ trong nước chừng vài mili-giây, Singapore vài chục, châu Âu hai trăm. Điều quan trọng nhất: rộng và dài là HAI CHUYỆN KHÁC NHAU. Nâng gói cước là mở rộng đường, không rút ngắn được một cây số nào — nên trò chơi hay cuộc họp đặt máy chủ ở xa thì đổi gói cước không cứu được."
+              },
+              "deepDive": {
+                "vi": "Có một sàn không ai vượt được: ánh sáng trong sợi quang đi khoảng 200 nghìn km mỗi giây, nên riêng quãng Việt Nam – châu Âu đã tốn cỡ trăm mili-giây cho một vòng đi về, chưa kể thời gian mỗi router trên đường dừng lại đọc địa chỉ. Đó là lý do các dịch vụ lớn đặt máy chủ ở nhiều nơi thay vì một chỗ: không phải để đường rộng hơn, mà để đường ngắn lại."
+              }
+            },
+            {
+              "conceptId": "m8-mat-goi-jitter",
+              "visualId": "vis-mat-goi-jitter",
+              "body": {
+                "vi": "Còn hai thứ nữa, và chúng mới là thủ phạm của cảnh \"đo tốc độ đẹp mà họp online vẫn vỡ tiếng\". MẤT GÓI: vài gói không bao giờ tới nơi — với tệp thì gửi lại là xong, nhưng với tiếng nói thì mẩu âm thanh ấy mất luôn. JITTER: gói tới đủ nhưng lệch nhịp, lúc dồn cục lúc thưa, nên máy bên kia lúc thiếu tiếng để phát lúc lại phải bỏ bớt. Cuộc gọi cần ĐỀU ĐẶN hơn là cần nhanh — đó là lý do bài trước nói UDP hợp với cuộc gọi hơn TCP."
+              },
+              "deepDive": {
+                "vi": "Mất gói vài phần trăm nghe thì nhỏ nhưng đủ làm vỡ tiếng, vì mỗi mẩu âm thanh chỉ đi trong một gói và không kịp gửi lại. Nguyên nhân hay gặp trong nhà: sóng Wi-Fi yếu hoặc bị nhiễu, đường ra ngoài đã đầy nên router phải bỏ bớt gói, hay một sợi dây mạng ép cong lâu ngày. Người trực đo ba con số này cùng lúc — rộng, dài, và tỉ lệ rơi — rồi mới kết luận, chứ không nhìn mỗi tốc độ."
+              }
+            }
+          ]
+        },
+        {
+          "type": "practice",
+          "fadingLevel": 2,
+          "exercises": [
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m8-b6-prac-1",
+                "prompt": {
+                  "vi": "Gói cước ghi 800 Mbps. Tải file nhanh nhất được khoảng bao nhiêu MB mỗi giây? (một con số)"
+                },
+                "accept": [
+                  "100",
+                  "100 mb",
+                  "khoảng 100"
+                ],
+                "hintTopic": {
+                  "vi": "phép chia giữa bit và byte"
+                }
+              },
+              "hint": {
+                "vi": "Nhà mạng đếm bit, máy tính đếm byte. Một byte gồm mấy bit?"
+              },
+              "solution": {
+                "vi": "Khoảng 100 MB mỗi giây: 800 chia 8. Con số gói cước là megaBIT, tốc độ tải trên máy là megaBYTE."
+              },
+              "conceptId": "m8-bang-thong"
+            },
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m8-b6-prac-2",
+                "prompt": {
+                  "vi": "Ping trả về \"time=28ms\". Con số 28ms đó đang đo thứ gì? (tên gọi)"
+                },
+                "accept": [
+                  "độ trễ",
+                  "do tre",
+                  "latency",
+                  "thời gian đi về",
+                  "thoi gian di ve"
+                ],
+                "hintTopic": {
+                  "vi": "chiều dài của đường, không phải chiều rộng"
+                }
+              },
+              "hint": {
+                "vi": "Ping gửi một gói đi rồi chờ nó quay về. Con số ấy là chiều nào của con đường?"
+              },
+              "solution": {
+                "vi": "Độ trễ — thời gian gói đi tới đích và quay về. Nó là chiều DÀI của đường; băng thông mới là chiều rộng."
+              },
+              "conceptId": "m8-do-tre"
+            },
+            {
+              "question": {
+                "kind": "mcq",
+                "id": "m8-b6-prac-3",
+                "prompt": {
+                  "vi": "Đo tốc độ ra 200 Mbps, tải file rất nhanh, nhưng họp online thì tiếng lúc được lúc mất. Nghi cái gì trước?"
+                },
+                "choices": [
+                  {
+                    "vi": "Mất gói hoặc jitter — đường rộng nhưng gói rơi hoặc tới lệch nhịp"
+                  },
+                  {
+                    "vi": "Băng thông chưa đủ — nên nâng lên gói cước cao hơn"
+                  },
+                  {
+                    "vi": "Máy tính yếu nên không mở nổi phần mềm họp"
+                  }
+                ],
+                "answerIndex": 0,
+                "hintTopic": {
+                  "vi": "thứ mà phép đo tốc độ không nhìn thấy"
+                }
+              },
+              "hint": {
+                "vi": "Phép đo tốc độ chỉ nói đường RỘNG bao nhiêu. Cuộc gọi cần thêm điều gì nữa?"
+              },
+              "solution": {
+                "vi": "Mất gói hoặc jitter. Tải file nhanh đã chứng minh đường đủ rộng, nên nâng gói cước không chữa được gì — bệnh nằm ở chỗ gói rơi dọc đường hoặc tới lệch nhịp."
+              },
+              "conceptId": "m8-mat-goi-jitter"
+            }
+          ]
+        },
+        {
+          "type": "retrieval",
+          "questions": [
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m8-b6-ret-1",
+                "prompt": {
+                  "vi": "Không nhìn lại bài: đổi từ con số Mbps của gói cước sang MB mỗi giây thì chia cho mấy?"
+                },
+                "accept": [
+                  "8",
+                  "chia 8",
+                  "cho 8",
+                  "chia cho 8"
+                ]
+              },
+              "hint": {
+                "vi": "Một byte gồm mấy bit?"
+              },
+              "solution": {
+                "vi": "Chia 8, vì 1 byte = 8 bit. Gói 100 Mbps ra khoảng 12,5 MB mỗi giây."
+              }
+            }
+          ],
+          "selfExplain": {
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: vì sao nâng gói cước lên gấp đôi mà cuộc họp online vẫn giật?"
+            },
+            "keywords": [
+              [
+                "băng thông",
+                "gói cước",
+                "rộng",
+                "tốc độ"
+              ],
+              [
+                "độ trễ",
+                "jitter",
+                "mất gói",
+                "lệch nhịp",
+                "rơi",
+                "dài"
+              ],
+              [
+                "khác nhau",
+                "không chữa",
+                "không cứu",
+                "hai chuyện",
+                "không liên quan"
+              ]
+            ],
+            "exampleAnswer": {
+              "vi": "Vì nâng gói cước chỉ làm đường RỘNG thêm, mà cuộc họp giật là do đường DÀI hoặc do gói rơi và tới lệch nhịp. Ba thứ đó đo bằng ba con số khác nhau, nên chữa cái này không đụng gì tới cái kia."
+            }
+          }
+        },
+        {
+          "type": "summary",
+          "bullets": [
+            {
+              "vi": "Băng thông là chiều RỘNG (Mbps); độ trễ là chiều DÀI (ms, chính là số ping)."
+            },
+            {
+              "vi": "Gói cước tính bằng bit, máy tính hiện bằng byte — chia 8 mới ra MB mỗi giây."
+            },
+            {
+              "vi": "Mất gói và jitter làm vỡ cuộc gọi dù tốc độ vẫn cao — nâng cước không chữa được."
+            }
+          ],
+          "nextTeaser": {
+            "vi": "Đo được rồi thì nói chuyện với nhà mạng cũng khác hẳn. Nhưng sóng nhà bạn vẫn bay ra tận vỉa hè, ai đứng đó cũng \"nghe\" được từng gói tin — cái gì ngăn họ đọc trộm?"
+          }
         }
       ]
     },
@@ -667,6 +909,57 @@
       }
     },
     {
+      "id": "m8-bang-thong",
+      "term": "Băng thông",
+      "glossVi": "Đường rộng bao nhiêu — chở được bao nhiêu dữ liệu mỗi giây, đo bằng Mbps",
+      "metaphor": {
+        "vi": "Bề rộng con đường: đường càng rộng càng nhiều xe đi lọt cùng lúc, nhưng không xe nào vì thế mà chạy nhanh hơn."
+      },
+      "iconId": "icon-bang-thong",
+      "flashcard": {
+        "front": {
+          "vi": "Gói cước 100 Mbps thì tải file được khoảng bao nhiêu MB mỗi giây, và vì sao?"
+        },
+        "back": {
+          "vi": "Khoảng 12,5 MB/giây — chia 8. Nhà mạng đếm bằng bit (b nhỏ), máy tính đếm bằng byte (B lớn), mà 1 byte = 8 bit."
+        }
+      }
+    },
+    {
+      "id": "m8-do-tre",
+      "term": "Độ trễ",
+      "glossVi": "Đường dài bao nhiêu — một gói đi và về mất mấy mili-giây, chính là con số ping trả về",
+      "metaphor": {
+        "vi": "Quãng đường tới nơi: mở thêm làn xe không rút ngắn được một cây số nào."
+      },
+      "iconId": "icon-do-tre",
+      "flashcard": {
+        "front": {
+          "vi": "Con số ping trả về (time=28ms) đang đo cái gì?"
+        },
+        "back": {
+          "vi": "Độ trễ — thời gian một gói đi tới đích rồi quay về, tính bằng mili-giây. Đó là chiều DÀI của đường, không phải chiều rộng."
+        }
+      }
+    },
+    {
+      "id": "m8-mat-goi-jitter",
+      "term": "Mất gói và jitter",
+      "glossVi": "Hai thứ làm vỡ cuộc gọi dù tốc độ vẫn cao: gói không tới, và gói tới lệch nhịp",
+      "metaphor": {
+        "vi": "Đoàn xe chở hàng: vài xe rơi mất giữa đường là mất gói; xe tới đủ nhưng lúc dồn cục lúc thưa thớt là jitter."
+      },
+      "iconId": "icon-mat-goi-jitter",
+      "flashcard": {
+        "front": {
+          "vi": "Đo tốc độ vẫn cao mà cuộc gọi cứ vỡ tiếng — nghi hai thứ nào?"
+        },
+        "back": {
+          "vi": "Mất gói (vài gói không bao giờ tới) và jitter (gói tới đủ nhưng lệch nhịp). Cuộc gọi cần đều đặn hơn là cần nhanh."
+        }
+      }
+    },
+    {
       "id": "m8-wpa2",
       "term": "WPA2",
       "glossVi": "Chuẩn mã hóa Wi-Fi phổ biến; yếu trước kiểu dò mật khẩu offline",
@@ -882,6 +1175,49 @@
       "answerIndex": 0,
       "hintTopic": { "vi": "điểm mạnh của Wi-Fi 6 là chở đông" },
       "explain": { "vi": "Wi-Fi 6 mạnh ở chỗ chở ĐÔNG: một lượt phát chia được cho nhiều thiết bị, nhà càng đông máy càng thấy rõ. Tầm phủ sóng là chuyện của băng tần, còn tốc độ ra Internet vẫn nằm trong gói cước nhà mạng." }
+    },
+    {
+      "kind": "typed",
+      "id": "m8-mt-15",
+      "prompt": {
+        "vi": "Gói cước 400 Mbps thì tải file nhanh nhất khoảng bao nhiêu MB mỗi giây? (một con số)"
+      },
+      "accept": [
+        "50",
+        "50 mb",
+        "khoảng 50"
+      ],
+      "hintTopic": {
+        "vi": "phép chia giữa bit và byte"
+      },
+      "explain": {
+        "vi": "Khoảng 50 MB mỗi giây: 400 chia 8. Nhà mạng đếm bằng megabit, máy tính hiện bằng megabyte, mà 1 byte = 8 bit."
+      }
+    },
+    {
+      "kind": "mcq",
+      "id": "m8-mt-16",
+      "prompt": {
+        "vi": "Đo tốc độ nhà khách hàng ra 300 Mbps, tải file rất nhanh, nhưng gọi video thì tiếng vỡ từng mảng. Nghi gì trước?"
+      },
+      "choices": [
+        {
+          "vi": "Mất gói hoặc jitter trên đường ra ngoài nhà"
+        },
+        {
+          "vi": "Băng thông chưa đủ, phải nâng lên gói cước cao hơn"
+        },
+        {
+          "vi": "Độ trễ quá thấp nên gói tới sớm hơn máy kịp phát"
+        }
+      ],
+      "answerIndex": 0,
+      "hintTopic": {
+        "vi": "thứ phép đo tốc độ không nhìn thấy"
+      },
+      "explain": {
+        "vi": "Mất gói hoặc jitter. Tải file nhanh đã chứng minh đường đủ rộng; tiếng vỡ là do gói rơi dọc đường hoặc tới lệch nhịp — nâng cước không chữa được. Còn độ trễ thấp là chuyện TỐT, không bao giờ là bệnh."
+      }
     }
   ]
 }

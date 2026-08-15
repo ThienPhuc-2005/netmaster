@@ -2397,9 +2397,9 @@ Phần B · 5 chặng · 5 bài · 6 khái niệm
 
 ## Wi-Fi và IPv6 chuyên sâu `module-8`
 
-Phần C · 5 chặng · 5 bài · 10 khái niệm
+Phần C · 6 chặng · 6 bài · 13 khái niệm
 
-**Chặng:** Sóng thay dây (m8-bai-1) → Đọc tên thế hệ (m8-bai-2) → Khóa cửa cho sóng (m8-bai-3) → Biển số đời mới (m8-bai-4) → Máy tự lo liệu (m8-bai-5)
+**Chặng:** Sóng thay dây (m8-bai-1) → Đọc tên thế hệ (m8-bai-2) → Đo cho ra số (m8-bai-6) → Khóa cửa cho sóng (m8-bai-3) → Biển số đời mới (m8-bai-4) → Máy tự lo liệu (m8-bai-5)
 
 ### Thư cuối module (hiện ở màn đậu bài thi)
 
@@ -2491,6 +2491,55 @@ Phần C · 5 chặng · 5 bài · 10 khái niệm
 - Wi-Fi 6 chở đông giỏi; 6E thêm làn 6 GHz; Wi-Fi 7 kênh rộng và đi hai băng cùng lúc.
 - Tốc độ thật chốt ở thế hệ thấp hơn của từng cặp thiết bị — và ở gói cước nhà mạng.
 - *Úp mở bài sau:* Sóng nhà bạn bay ra tận vỉa hè, ai đứng đó cũng "nghe" được từng gói tin. Vậy cái gì ngăn họ đọc trộm?
+
+### Bài: Đo cho ra số, đừng đoán bằng cảm giác `m8-bai-6`
+
+**1 · Khởi động (hook):** "Mạng nhà mình chậm quá!" — câu than phổ biến nhất, và cũng mơ hồ nhất. Chậm là đường hẹp, hay đường xa, hay đường có mà gói rơi dọc đường? Ba bệnh khác hẳn nhau, ba cách chữa khác hẳn nhau, mà cùng một câu than.
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử: nhà lắp gói 100 Mbps. Tải một file về, tốc độ hiện trên máy khoảng bao nhiêu mỗi giây?
+  - **Dạng:** trắc nghiệm · **Khoảng 12 MB** ✓ / Khoảng 100 MB / Khoảng 800 MB
+  - **Vì sao:** Khoảng 12,5 MB mỗi giây. Nhà mạng đếm bằng bit, máy tính đếm bằng byte, mà 1 byte = 8 bit — nên lấy con số gói cước chia 8. Đây là chỗ hiểu nhầm khiến nhiều người tưởng mình bị bán thiếu tốc độ.
+
+**3 · Khám phá (teach):**
+- *[m8-bang-thong]* Băng thông là chiều RỘNG của đường: mỗi giây chở lọt bao nhiêu dữ liệu, đo bằng Mbps (megabit mỗi giây). Đây là con số nhà mạng in trên gói cước, và cũng là con số bạn sẽ gặp lại ở những module sau khi đọc biểu đồ giám sát. Một cái bẫy phải nhớ đời: nhà mạng đếm bằng BIT (chữ b nhỏ), còn máy tính hiển thị tốc độ tải bằng BYTE (chữ B lớn), mà 1 byte = 8 bit. Gói 100 Mbps tải nhanh nhất khoảng 12,5 MB mỗi giây — không phải 100. Không biết chỗ chia 8 này thì lúc nào cũng thấy như mình bị bán thiếu.
+  - **Đào sâu hơn:** Vì sao hai bên đếm hai kiểu? Vì đường truyền vốn đẩy từng bit một, nên kỹ thuật truyền dẫn đếm bit là tự nhiên; còn tệp trong máy đo bằng byte vì mỗi ký tự chiếm một byte. Con số trên gói cước còn là mức TỐI ĐA lý thuyết: thực tế còn hao vì phần vỏ gói tin, vì sóng Wi-Fi phải chia lượt cho nhiều máy, và vì đoạn đường ngoài nhà mạng bạn không kiểm soát được.
+- *[m8-do-tre]* Độ trễ là chiều DÀI của đường: một gói đi tới đích rồi quay về mất bao nhiêu mili-giây. Bạn đã đo nó từ Module 1 mà chưa gọi tên — chính là con số time= trong kết quả ping. Máy chủ trong nước chừng vài mili-giây, Singapore vài chục, châu Âu hai trăm. Điều quan trọng nhất: rộng và dài là HAI CHUYỆN KHÁC NHAU. Nâng gói cước là mở rộng đường, không rút ngắn được một cây số nào — nên trò chơi hay cuộc họp đặt máy chủ ở xa thì đổi gói cước không cứu được.
+  - **Đào sâu hơn:** Có một sàn không ai vượt được: ánh sáng trong sợi quang đi khoảng 200 nghìn km mỗi giây, nên riêng quãng Việt Nam – châu Âu đã tốn cỡ trăm mili-giây cho một vòng đi về, chưa kể thời gian mỗi router trên đường dừng lại đọc địa chỉ. Đó là lý do các dịch vụ lớn đặt máy chủ ở nhiều nơi thay vì một chỗ: không phải để đường rộng hơn, mà để đường ngắn lại.
+- *[m8-mat-goi-jitter]* Còn hai thứ nữa, và chúng mới là thủ phạm của cảnh "đo tốc độ đẹp mà họp online vẫn vỡ tiếng". MẤT GÓI: vài gói không bao giờ tới nơi — với tệp thì gửi lại là xong, nhưng với tiếng nói thì mẩu âm thanh ấy mất luôn. JITTER: gói tới đủ nhưng lệch nhịp, lúc dồn cục lúc thưa, nên máy bên kia lúc thiếu tiếng để phát lúc lại phải bỏ bớt. Cuộc gọi cần ĐỀU ĐẶN hơn là cần nhanh — đó là lý do bài trước nói UDP hợp với cuộc gọi hơn TCP.
+  - **Đào sâu hơn:** Mất gói vài phần trăm nghe thì nhỏ nhưng đủ làm vỡ tiếng, vì mỗi mẩu âm thanh chỉ đi trong một gói và không kịp gửi lại. Nguyên nhân hay gặp trong nhà: sóng Wi-Fi yếu hoặc bị nhiễu, đường ra ngoài đã đầy nên router phải bỏ bớt gói, hay một sợi dây mạng ép cong lâu ngày. Người trực đo ba con số này cùng lúc — rộng, dài, và tỉ lệ rơi — rồi mới kết luận, chứ không nhìn mỗi tốc độ.
+
+**4 · Thử tay (practice, fading 2):**
+- **Đề:** Gói cước ghi 800 Mbps. Tải file nhanh nhất được khoảng bao nhiêu MB mỗi giây? (một con số)
+  - **Dạng:** gõ tay · **Chấp nhận:** 100 | 100 mb | khoảng 100
+  - **Chủ đề gợi ý (tầng 1):** phép chia giữa bit và byte
+  - **Gợi ý (tầng 2):** Nhà mạng đếm bit, máy tính đếm byte. Một byte gồm mấy bit?
+  - **Lời giải (tầng 3):** Khoảng 100 MB mỗi giây: 800 chia 8. Con số gói cước là megaBIT, tốc độ tải trên máy là megaBYTE.
+- **Đề:** Ping trả về "time=28ms". Con số 28ms đó đang đo thứ gì? (tên gọi)
+  - **Dạng:** gõ tay · **Chấp nhận:** độ trễ | do tre | latency | thời gian đi về | thoi gian di ve
+  - **Chủ đề gợi ý (tầng 1):** chiều dài của đường, không phải chiều rộng
+  - **Gợi ý (tầng 2):** Ping gửi một gói đi rồi chờ nó quay về. Con số ấy là chiều nào của con đường?
+  - **Lời giải (tầng 3):** Độ trễ — thời gian gói đi tới đích và quay về. Nó là chiều DÀI của đường; băng thông mới là chiều rộng.
+- **Đề:** Đo tốc độ ra 200 Mbps, tải file rất nhanh, nhưng họp online thì tiếng lúc được lúc mất. Nghi cái gì trước?
+  - **Dạng:** trắc nghiệm · **Mất gói hoặc jitter — đường rộng nhưng gói rơi hoặc tới lệch nhịp** ✓ / Băng thông chưa đủ — nên nâng lên gói cước cao hơn / Máy tính yếu nên không mở nổi phần mềm họp
+  - **Chủ đề gợi ý (tầng 1):** thứ mà phép đo tốc độ không nhìn thấy
+  - **Gợi ý (tầng 2):** Phép đo tốc độ chỉ nói đường RỘNG bao nhiêu. Cuộc gọi cần thêm điều gì nữa?
+  - **Lời giải (tầng 3):** Mất gói hoặc jitter. Tải file nhanh đã chứng minh đường đủ rộng, nên nâng gói cước không chữa được gì — bệnh nằm ở chỗ gói rơi dọc đường hoặc tới lệch nhịp.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: đổi từ con số Mbps của gói cước sang MB mỗi giây thì chia cho mấy?
+  - **Dạng:** gõ tay · **Chấp nhận:** 8 | chia 8 | cho 8 | chia cho 8
+  - **Gợi ý (tầng 2):** Một byte gồm mấy bit?
+  - **Lời giải (tầng 3):** Chia 8, vì 1 byte = 8 bit. Gói 100 Mbps ra khoảng 12,5 MB mỗi giây.
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao nâng gói cước lên gấp đôi mà cuộc họp online vẫn giật?
+  - **Nhóm ý cần chạm:** [băng thông, gói cước, rộng, tốc độ] · [độ trễ, jitter, mất gói, lệch nhịp, rơi, dài] · [khác nhau, không chữa, không cứu, hai chuyện, không liên quan]
+  - **Trả lời mẫu:** Vì nâng gói cước chỉ làm đường RỘNG thêm, mà cuộc họp giật là do đường DÀI hoặc do gói rơi và tới lệch nhịp. Ba thứ đó đo bằng ba con số khác nhau, nên chữa cái này không đụng gì tới cái kia.
+
+**6 · Tổng kết:**
+- Băng thông là chiều RỘNG (Mbps); độ trễ là chiều DÀI (ms, chính là số ping).
+- Gói cước tính bằng bit, máy tính hiện bằng byte — chia 8 mới ra MB mỗi giây.
+- Mất gói và jitter làm vỡ cuộc gọi dù tốc độ vẫn cao — nâng cước không chữa được.
+- *Úp mở bài sau:* Đo được rồi thì nói chuyện với nhà mạng cũng khác hẳn. Nhưng sóng nhà bạn vẫn bay ra tận vỉa hè, ai đứng đó cũng "nghe" được từng gói tin — cái gì ngăn họ đọc trộm?
 
 ### Bài: Khóa cửa cho sóng nhà bạn `m8-bai-3`
 
@@ -2635,7 +2684,7 @@ Phần C · 5 chặng · 5 bài · 10 khái niệm
 - Dual-stack đeo hai biển số song song — bí quyết giúp Internet đổi hệ không sập.
 - *Úp mở bài sau:* Hết chuyện sóng và biển số. Module sau bước hẳn vào văn phòng: một máy chủ Windows cai quản mọi máy con trong công ty — và một tòa nhà ký ức bốn tầng chờ bạn leo.
 
-### Khái niệm & flashcard (10)
+### Khái niệm & flashcard (13)
 
 - **Wi-Fi** `m8-song-wifi` — Sóng radio thay cho sợi dây mạng; không khí là một sợi dây chung
   - Ẩn dụ: Cả phòng nói chuyện qua cùng một khoảng không khí — thay phiên nhau nói, càng đông càng chờ.
@@ -2649,6 +2698,15 @@ Phần C · 5 chặng · 5 bài · 10 khái niệm
 - **Wi-Fi 6E và Wi-Fi 7** `m8-wifi-6e-7` — 6E = Wi-Fi 6 thêm băng 6 GHz; Wi-Fi 7 kênh rộng gấp đôi, đi hai băng cùng lúc
   - Ẩn dụ: 6E là tấm vé vào làn cao tốc mới còn vắng; Wi-Fi 7 cho xe chạy hai làn một lúc.
   - Thẻ ôn: *Wi-Fi 6E khác Wi-Fi 6 chỗ nào? Wi-Fi 7 thêm gì?* → 6E = đúng Wi-Fi 6 cộng quyền chạy băng 6 GHz còn vắng. Wi-Fi 7 mở kênh rộng gấp đôi và đi hai băng cùng lúc (MLO).
+- **Băng thông** `m8-bang-thong` — Đường rộng bao nhiêu — chở được bao nhiêu dữ liệu mỗi giây, đo bằng Mbps
+  - Ẩn dụ: Bề rộng con đường: đường càng rộng càng nhiều xe đi lọt cùng lúc, nhưng không xe nào vì thế mà chạy nhanh hơn.
+  - Thẻ ôn: *Gói cước 100 Mbps thì tải file được khoảng bao nhiêu MB mỗi giây, và vì sao?* → Khoảng 12,5 MB/giây — chia 8. Nhà mạng đếm bằng bit (b nhỏ), máy tính đếm bằng byte (B lớn), mà 1 byte = 8 bit.
+- **Độ trễ** `m8-do-tre` — Đường dài bao nhiêu — một gói đi và về mất mấy mili-giây, chính là con số ping trả về
+  - Ẩn dụ: Quãng đường tới nơi: mở thêm làn xe không rút ngắn được một cây số nào.
+  - Thẻ ôn: *Con số ping trả về (time=28ms) đang đo cái gì?* → Độ trễ — thời gian một gói đi tới đích rồi quay về, tính bằng mili-giây. Đó là chiều DÀI của đường, không phải chiều rộng.
+- **Mất gói và jitter** `m8-mat-goi-jitter` — Hai thứ làm vỡ cuộc gọi dù tốc độ vẫn cao: gói không tới, và gói tới lệch nhịp
+  - Ẩn dụ: Đoàn xe chở hàng: vài xe rơi mất giữa đường là mất gói; xe tới đủ nhưng lúc dồn cục lúc thưa thớt là jitter.
+  - Thẻ ôn: *Đo tốc độ vẫn cao mà cuộc gọi cứ vỡ tiếng — nghi hai thứ nào?* → Mất gói (vài gói không bao giờ tới) và jitter (gói tới đủ nhưng lệch nhịp). Cuộc gọi cần đều đặn hơn là cần nhanh.
 - **WPA2** `m8-wpa2` — Chuẩn mã hóa Wi-Fi phổ biến; yếu trước kiểu dò mật khẩu offline
   - Ẩn dụ: Khóa cửa tốt nhưng để lọt một kẽ: kẻ trộm chụp ảnh ổ khóa rồi về nhà mài chìa cả đêm.
   - Thẻ ôn: *Điểm yếu kinh điển của WPA2 là gì?* → Kẻ xấu thu cú bắt tay lúc thiết bị vào mạng rồi dò mật khẩu OFFLINE hàng tỷ lần — router không hề biết để chặn.
@@ -2668,7 +2726,7 @@ Phần C · 5 chặng · 5 bài · 10 khái niệm
   - Ẩn dụ: Chiếc xe đeo hai biển số — đường mới đi biển mới, đường cũ vẫn biển cũ.
   - Thẻ ôn: *Dual-stack là gì, và vì sao nó quan trọng với cả Internet?* → Máy mang song song cả IPv4 lẫn IPv6: đích có IPv6 thì ưu tiên, chưa có thì quay về IPv4 — nhờ đó Internet đổi hệ từ từ mà không sập.
 
-### Bài kiểm tra module (pool 14 câu, mỗi lượt rút 8, cần ≥ 85%)
+### Bài kiểm tra module (pool 16 câu, mỗi lượt rút 8, cần ≥ 85%)
 
 - **Đề:** Camera ở góc vườn, cách router hai bức tường, nên vào băng tần nào?
   - **Dạng:** trắc nghiệm · **2.4 GHz — tần số thấp đi xa, xuyên tường tốt** ✓ / 5 GHz — băng tần nhanh hơn thì đi xa hơn / 6 GHz — thế hệ mới nên xuyên tường tốt hơn
@@ -2717,6 +2775,14 @@ Phần C · 5 chặng · 5 bài · 10 khái niệm
   - **Dạng:** trắc nghiệm · **Cả nhà dùng cùng lúc bớt giật, vì một lượt phát chia cho nhiều máy** ✓ / Sóng phủ tới được cả những góc phòng mà router cũ không với tới / Gói cước Internet của nhà mạng cũng được nâng nhanh lên theo router
   - **Chủ đề gợi ý (tầng 1):** điểm mạnh của Wi-Fi 6 là chở đông
   - **Vì sao:** Wi-Fi 6 mạnh ở chỗ chở ĐÔNG: một lượt phát chia được cho nhiều thiết bị, nhà càng đông máy càng thấy rõ. Tầm phủ sóng là chuyện của băng tần, còn tốc độ ra Internet vẫn nằm trong gói cước nhà mạng.
+- **Đề:** Gói cước 400 Mbps thì tải file nhanh nhất khoảng bao nhiêu MB mỗi giây? (một con số)
+  - **Dạng:** gõ tay · **Chấp nhận:** 50 | 50 mb | khoảng 50
+  - **Chủ đề gợi ý (tầng 1):** phép chia giữa bit và byte
+  - **Vì sao:** Khoảng 50 MB mỗi giây: 400 chia 8. Nhà mạng đếm bằng megabit, máy tính hiện bằng megabyte, mà 1 byte = 8 bit.
+- **Đề:** Đo tốc độ nhà khách hàng ra 300 Mbps, tải file rất nhanh, nhưng gọi video thì tiếng vỡ từng mảng. Nghi gì trước?
+  - **Dạng:** trắc nghiệm · **Mất gói hoặc jitter trên đường ra ngoài nhà** ✓ / Băng thông chưa đủ, phải nâng lên gói cước cao hơn / Độ trễ quá thấp nên gói tới sớm hơn máy kịp phát
+  - **Chủ đề gợi ý (tầng 1):** thứ phép đo tốc độ không nhìn thấy
+  - **Vì sao:** Mất gói hoặc jitter. Tải file nhanh đã chứng minh đường đủ rộng; tiếng vỡ là do gói rơi dọc đường hoặc tới lệch nhịp — nâng cước không chữa được. Còn độ trễ thấp là chuyện TỐT, không bao giờ là bệnh.
 
 ## Windows Server — AD DS và GPO `module-9`
 
@@ -6733,7 +6799,7 @@ Phần E · 5 chặng · 5 bài · 8 khái niệm
   - **Vì sao:** Phải so với BÌNH THƯỜNG CỦA CHÍNH NÓ: máy này, khung giờ này, thường chạy bao nhiêu? 60% là báo động nếu mọi thứ tư nó chỉ chạy 20%, và là chuyện thường nếu tuần nào giờ này cũng thế. Khuyến cáo nhà sản xuất hay số của công ty khác không nói được điều đó.
 
 **3 · Khám phá (teach):**
-- *[m20-baseline]* BASELINE là đường bình thường của chính hệ thống bạn: CPU giờ cao điểm quanh mức nào, băng thông trưa thứ hai thường bao nhiêu, đêm có bao nhiêu dòng Warning quen mặt. Nó không nằm trong sách nào — nó được VẼ từ chính dữ liệu polling và log của bạn, tích lũy qua tuần qua tháng. Có baseline, con số 60% mới có nghĩa: nằm trong nếp cũ thì rót cà phê, nhảy vọt khỏi nếp thì báo động — kể cả khi con số tuyệt đối trông vô hại. Không có baseline, mọi đồ thị chỉ là con số trôi nổi và mọi ngưỡng báo động chỉ là đoán mò.
+- *[m20-baseline]* BASELINE là đường bình thường của chính hệ thống bạn: CPU giờ cao điểm quanh mức nào, băng thông trưa thứ hai thường bao nhiêu — chiều RỘNG của đường mà bạn đã học đo ở Module 8 — đêm có bao nhiêu dòng Warning quen mặt. Nó không nằm trong sách nào — nó được VẼ từ chính dữ liệu polling và log của bạn, tích lũy qua tuần qua tháng. Có baseline, con số 60% mới có nghĩa: nằm trong nếp cũ thì rót cà phê, nhảy vọt khỏi nếp thì báo động — kể cả khi con số tuyệt đối trông vô hại. Không có baseline, mọi đồ thị chỉ là con số trôi nổi và mọi ngưỡng báo động chỉ là đoán mò.
   - **Đào sâu hơn:** Baseline chính là mảnh ghép còn thiếu của hai bài trước. Câu vặn cảnh-báo-giả "dòng này có xuất hiện mỗi đêm không?" là baseline của log. Đồ thị polling chỉ thành công cụ khi có nếp cũ để so. Và tinh tế nhất: bất thường không chỉ là VƯỢT LÊN — máy mọi ngày 40% nay im ắng ở 5% cũng là chuông báo, vì có khi cả tầng đã mất đường tới nó mà chưa ai kêu. Baseline cho bạn thấy sự cố từ cả hai phía, trước khi người dùng thấy.
 
 **4 · Thử tay (practice, fading 2):**

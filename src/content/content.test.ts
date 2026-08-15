@@ -803,6 +803,7 @@ describe('bộ nội dung', () => {
       ['m8-mt-4', 'địa chỉ link-local'],
       ['m8-mt-7', 'DHCP'],
       ['m8-mt-8', 'tự cấu hình không trạng thái'],
+      ['m8-mt-15', 'khoảng 50 MB'],
       ['m9-mt-2', 'DC'],
       ['m9-mt-4', 'tầng Site'],
       ['m9-mt-7', 'gpupdate /force'],

@@ -1301,7 +1301,7 @@
               "conceptId": "m20-baseline",
               "visualId": "vis-baseline",
               "body": {
-                "vi": "BASELINE là đường bình thường của chính hệ thống bạn: CPU giờ cao điểm quanh mức nào, băng thông trưa thứ hai thường bao nhiêu, đêm có bao nhiêu dòng Warning quen mặt. Nó không nằm trong sách nào — nó được VẼ từ chính dữ liệu polling và log của bạn, tích lũy qua tuần qua tháng. Có baseline, con số 60% mới có nghĩa: nằm trong nếp cũ thì rót cà phê, nhảy vọt khỏi nếp thì báo động — kể cả khi con số tuyệt đối trông vô hại. Không có baseline, mọi đồ thị chỉ là con số trôi nổi và mọi ngưỡng báo động chỉ là đoán mò."
+                "vi": "BASELINE là đường bình thường của chính hệ thống bạn: CPU giờ cao điểm quanh mức nào, băng thông trưa thứ hai thường bao nhiêu — chiều RỘNG của đường mà bạn đã học đo ở Module 8 — đêm có bao nhiêu dòng Warning quen mặt. Nó không nằm trong sách nào — nó được VẼ từ chính dữ liệu polling và log của bạn, tích lũy qua tuần qua tháng. Có baseline, con số 60% mới có nghĩa: nằm trong nếp cũ thì rót cà phê, nhảy vọt khỏi nếp thì báo động — kể cả khi con số tuyệt đối trông vô hại. Không có baseline, mọi đồ thị chỉ là con số trôi nổi và mọi ngưỡng báo động chỉ là đoán mò."
               },
               "deepDive": {
                 "vi": "Baseline chính là mảnh ghép còn thiếu của hai bài trước. Câu vặn cảnh-báo-giả \"dòng này có xuất hiện mỗi đêm không?\" là baseline của log. Đồ thị polling chỉ thành công cụ khi có nếp cũ để so. Và tinh tế nhất: bất thường không chỉ là VƯỢT LÊN — máy mọi ngày 40% nay im ắng ở 5% cũng là chuông báo, vì có khi cả tầng đã mất đường tới nó mà chưa ai kêu. Baseline cho bạn thấy sự cố từ cả hai phía, trước khi người dùng thấy."
