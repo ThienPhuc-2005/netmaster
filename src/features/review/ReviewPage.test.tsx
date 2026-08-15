@@ -13,6 +13,7 @@ import { loadModules } from '../../content'
 import { createCard } from '../../engine/sm2'
 import { todayIso, useProgress } from '../../store/progress'
 import { addDays } from '../../engine/dates'
+import { NGUONG_HAY_QUEN } from '../../engine/mistakeLog'
 
 const INITIAL = useProgress.getInitialState()
 
@@ -343,5 +344,76 @@ describe('K1 — phiên ôn không bao giờ ra màn trắng vì thẻ mồ côi
     )
     expect(container.textContent?.trim().length).toBeGreaterThan(0)
     expect(screen.getByText('Hôm nay không có thẻ đến hạn')).toBeTruthy()
+  })
+})
+
+describe('cửa "chưa hiểu" trên thẻ ôn (chủ dự án hỏi 08-15)', () => {
+  /** Một thẻ duy nhất, sinh từ concept thật để có ẩn dụ + hình + bài gốc. */
+  function seedMotThe(lapses = 0) {
+    const m1 = loadModules()[0]!
+    const concept = m1.concepts.find((c) => c.flashcard !== undefined)!
+    useProgress.setState({
+      reviewCards: [{ ...createCard(concept.id, m1.id, addDays(todayIso(), -1)), lapses }],
+    })
+    return concept
+  }
+
+  /** Chữ đang hiện trên màn — so nguyên văn, khỏi phải thoát regex. */
+  function chuTrenMan(): string {
+    return document.body.textContent ?? ''
+  }
+
+  it('KHÔNG hiện trước khi lật — ẩn dụ đọc trước là gợi ý miễn phí', () => {
+    const concept = seedMotThe()
+    render(
+      <MemoryRouter>
+        <ReviewPage />
+      </MemoryRouter>,
+    )
+    expect(screen.queryByRole('button', { name: /Chưa hiểu chỗ này/ })).toBeNull()
+    expect(chuTrenMan()).not.toContain(concept.glossVi)
+    expect(chuTrenMan()).not.toContain(concept.metaphor.vi)
+  })
+
+  it('lật xong, bấm vào là có CÁCH NÓI KHÁC: ẩn dụ, giải nghĩa, và đường về bài', () => {
+    const concept = seedMotThe()
+    render(
+      <MemoryRouter>
+        <ReviewPage />
+      </MemoryRouter>,
+    )
+    reveal()
+    fireEvent.click(screen.getByRole('button', { name: /Chưa hiểu chỗ này/ }))
+    expect(chuTrenMan()).toContain(concept.metaphor.vi)
+    expect(chuTrenMan()).toContain(concept.glossVi)
+    const link = screen.getByRole('link', { name: /Mở lại bài/ })
+    expect(link.getAttribute('href')).toMatch(/^\/bai\//)
+  })
+
+  it('thẻ đã quên tới ngưỡng thì app tự nói ra rằng có thể là chưa hiểu', () => {
+    seedMotThe(NGUONG_HAY_QUEN)
+    render(
+      <MemoryRouter>
+        <ReviewPage />
+      </MemoryRouter>,
+    )
+    reveal()
+    expect(screen.getByText(/chưa hiểu hẳn/)).toBeTruthy()
+  })
+
+  it('sang thẻ khác thì cửa tự đóng lại', () => {
+    seedTwoDueCards()
+    render(
+      <MemoryRouter>
+        <ReviewPage />
+      </MemoryRouter>,
+    )
+    reveal()
+    fireEvent.click(screen.getByRole('button', { name: /Chưa hiểu chỗ này/ }))
+    expect(screen.getByRole('button', { name: /Thu gọn/ })).toBeTruthy()
+    answer(true)
+    reveal()
+    expect(screen.queryByRole('button', { name: /Thu gọn/ })).toBeNull()
+    expect(screen.getByRole('button', { name: /Chưa hiểu chỗ này/ })).toBeTruthy()
   })
 })

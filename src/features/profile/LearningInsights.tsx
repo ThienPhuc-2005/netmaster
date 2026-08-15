@@ -8,8 +8,8 @@
 // mọi cảnh báo mềm khác của app, và câu dẫn nói rõ vì sao nó đáng xem.
 
 import { Link } from 'react-router'
-import { useId } from 'react'
-import { AlertCircle, Brain, CalendarRange, ChartNoAxesColumn, Lightbulb, MessageSquareWarning, RotateCcw, Target, TrendingUp } from 'lucide-react'
+import { useId, useState } from 'react'
+import { AlertCircle, Brain, CalendarRange, ChartNoAxesColumn, ChevronRight, Lightbulb, MessageSquareWarning, RotateCcw, Target, TrendingUp } from 'lucide-react'
 import { lt } from '../../engine/ltext'
 import type { MistakeAnalysis, MistakeBucket, WeakSpot, WeekActivity } from '../../engine/mistakeLog'
 import type { ModuleMemory } from '../../engine/freshness'
@@ -26,9 +26,21 @@ export interface DisputedRow extends DisputedAnswer {
   prompt: Question['prompt'] | null
 }
 
+/** Một thẻ nằm trong bản đồ trí nhớ, đã tra ra tên đọc được. */
+export interface TheTrongTriNho {
+  cardId: string
+  /** Thuật ngữ / tên phòng; null khi nội dung đã đổi và không còn thẻ đó. */
+  ten: string | null
+  /** 0 = đến hạn hôm nay hoặc quá hạn. */
+  daysLeft: number
+  lapses: number
+}
+
 /** Một hàng của bản đồ trí nhớ: module + độ tươi trung bình của thẻ. */
 export interface MemoryRow extends ModuleMemory {
   title: Module['title']
+  /** Danh sách thẻ bên trong, mờ nhất trước — mở ra mới hiện. */
+  the: TheTrongTriNho[]
 }
 
 /** dd/mm — cùng cách rút gọn với biểu đồ drill. */
@@ -262,6 +274,14 @@ export function WeeklyRhythm({
  */
 export function MemoryMap({ rows }: { rows: MemoryRow[] }) {
   const t = useT()
+  // MỞ TỪNG CHỦ ĐỀ MỘT (chủ dự án hỏi 08-15). Trước đây hàng chỉ có thanh
+  // mờ và chữ "6 thẻ" — trả lời được "chủ đề này còn đậm không" nhưng
+  // KHÔNG trả lời được câu người học thật sự hỏi: "sáu thẻ đó là thẻ nào?".
+  // Không gọi được tên thì con số ấy chẳng dẫn tới việc gì.
+  //
+  // Mở một chủ đề thì chủ đề đang mở đóng lại: trang Hồ sơ vốn đã dài,
+  // bung hết ra là bản đồ biến mất dưới một danh sách trăm dòng.
+  const [dangMo, setDangMo] = useState<string | null>(null)
   if (rows.length === 0) return null
 
   return (
@@ -276,26 +296,67 @@ export function MemoryMap({ rows }: { rows: MemoryRow[] }) {
       <ul className="flex flex-col gap-2">
         {rows.map((row) => {
           const pct = Math.round(row.freshness * 100)
+          const mo = dangMo === row.moduleId
+          const dsId = `memory-the-${row.moduleId}`
           return (
-            <li key={row.moduleId} className="flex flex-wrap items-center gap-x-3 gap-y-1">
-              <span className="min-w-[9rem] flex-1 text-sm text-ink">{lt(row.title)}</span>
-              <span
-                className="h-2 w-32 shrink-0 rounded-full bg-panel-hover"
-                role="img"
-                aria-label={t('profile.memoryRowAria', { module: lt(row.title), pct, cards: row.cards })}
-              >
+            <li key={row.moduleId} className="flex flex-col gap-2">
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+                {/* Tên chủ đề nằm TRONG nút, nên trình đọc màn hình nghe
+                    "Xem 6 thẻ của Địa chỉ — MAC, IP…" chứ không phải năm
+                    lần "Xem thẻ" giống hệt nhau (luật P1, khối 21.60). */}
+                <button
+                  onClick={() => setDangMo(mo ? null : row.moduleId)}
+                  aria-expanded={mo}
+                  aria-controls={dsId}
+                  aria-label={t('profile.memoryOpenAria', { module: lt(row.title), count: row.cards })}
+                  className={`flex min-w-[9rem] flex-1 items-center gap-1.5 text-left text-sm text-ink hover:underline ${LOP_CHAM_DUOC}`}
+                >
+                  <ChevronRight
+                    size={14}
+                    aria-hidden
+                    className={`shrink-0 text-ink-muted transition-transform duration-(--dur) ${mo ? 'rotate-90' : ''}`}
+                  />
+                  {lt(row.title)}
+                </button>
                 <span
-                  className="block h-full rounded-full bg-accent"
-                  style={{ width: `${Math.max(pct, 3)}%`, opacity: 0.35 + row.freshness * 0.65 }}
-                />
-              </span>
-              <span className="w-24 shrink-0 text-right font-mono text-xs text-ink-muted">
-                {row.due > 0 ? (
-                  <span className="text-warn">{t('profile.memoryDue', { count: row.due })}</span>
-                ) : (
-                  t('profile.memoryCards', { count: row.cards })
-                )}
-              </span>
+                  className="h-2 w-32 shrink-0 rounded-full bg-panel-hover"
+                  role="img"
+                  aria-label={t('profile.memoryRowAria', { module: lt(row.title), pct, cards: row.cards })}
+                >
+                  <span
+                    className="block h-full rounded-full bg-accent"
+                    style={{ width: `${Math.max(pct, 3)}%`, opacity: 0.35 + row.freshness * 0.65 }}
+                  />
+                </span>
+                <span className="w-24 shrink-0 text-right font-mono text-xs text-ink-muted">
+                  {row.due > 0 ? (
+                    <span className="text-warn">{t('profile.memoryDue', { count: row.due })}</span>
+                  ) : (
+                    t('profile.memoryCards', { count: row.cards })
+                  )}
+                </span>
+              </div>
+              {mo && (
+                <ul id={dsId} className="flex flex-col gap-1 border-l border-edge pl-4">
+                  {row.the.map((the) => (
+                    <li key={the.cardId} className="flex flex-wrap items-baseline gap-x-3 gap-y-0.5 text-xs">
+                      <span className="min-w-[8rem] flex-1 text-ink">{the.ten ?? the.cardId}</span>
+                      <span className={`shrink-0 font-mono ${the.daysLeft === 0 ? 'text-warn' : 'text-ink-muted'}`}>
+                        {the.daysLeft === 0
+                          ? t('profile.memoryCardDue')
+                          : t('profile.memoryCardDays', { count: the.daysLeft })}
+                      </span>
+                      {/* Số lần quên chỉ hiện khi CÓ: thẻ chưa trượt lần
+                          nào mà treo "đã quên 0 lần" là bịa ra một nỗi lo. */}
+                      {the.lapses > 0 && (
+                        <span className="shrink-0 font-mono text-warn">
+                          {t('profile.memoryCardLapses', { count: the.lapses })}
+                        </span>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              )}
             </li>
           )
         })}
@@ -622,7 +683,7 @@ export interface HayQuenHienThi {
  * chuyện đã xảy ra. Một hộp trống nói rõ "chưa có gì" vẫn trả lời được
  * câu hỏi "app có chỗ này không"; một hộp vắng mặt thì không.
  */
-export function HayQuenList({ rows }: { rows: HayQuenHienThi[] }) {
+export function HayQuenList({ rows, ganQuen }: { rows: HayQuenHienThi[]; ganQuen: HayQuenHienThi[] }) {
   const t = useT()
   return (
     <section
@@ -636,9 +697,10 @@ export function HayQuenList({ rows }: { rows: HayQuenHienThi[] }) {
         </h2>
       </div>
       <p className="text-xs leading-relaxed text-ink-muted">{t('profile.hayQuenIntro')}</p>
-      {rows.length === 0 ? (
+      {rows.length === 0 && ganQuen.length === 0 && (
         <p className="text-xs text-ink-muted">{t('profile.hayQuenEmpty')}</p>
-      ) : (
+      )}
+      {rows.length > 0 && (
         <>
           {/* Đường HÀNH ĐỘNG của mục này (khối 21.52). Danh sách nói ra
               chỗ chưa bám; nút này cho gặp lại đúng chúng ngay, khỏi phải
@@ -652,32 +714,55 @@ export function HayQuenList({ rows }: { rows: HayQuenHienThi[] }) {
             {t('profile.hayQuenLuyen')}
           </Link>
           <ol className="flex flex-col gap-2">
-          {rows.map((row) => (
-            <li
-              key={row.cardId}
-              className="flex flex-wrap items-center gap-x-3 gap-y-1 rounded-md border border-edge bg-panel-hover px-4 py-3"
-            >
-              <span className="min-w-[10rem] flex-1 text-sm text-ink">{row.ten ?? row.cardId}</span>
-              {row.moduleTitle !== null && (
-                <span className="shrink-0 text-xs text-ink-muted">{lt(row.moduleTitle)}</span>
-              )}
-              <span className="shrink-0 font-mono text-xs text-warn">
-                {t('profile.hayQuenLan', { count: row.soLanQuen })}
-              </span>
-              {row.lessonId !== null && (
-                <Link
-                  to={`/bai/${row.lessonId}`}
-                  className={`shrink-0 text-xs font-medium text-accent hover:underline ${LOP_CHAM_DUOC}`}
-                >
-                  {t('profile.hayQuenMoBai')}
-                </Link>
-              )}
-            </li>
+            {rows.map((row) => (
+              <HayQuenRow key={row.cardId} row={row} />
             ))}
           </ol>
         </>
       )}
+      {/* MỚI TRƯỢT MỘT LẦN — chưa đủ gọi là "hay quên", nhưng gọi được
+          TÊN. Chủ dự án nhìn cái hộp trống và hỏi đúng một câu: "vậy làm
+          sao biết câu nào đang hay quên?". Ngưỡng 2 vẫn là ngưỡng để
+          PHÁN, chỉ có điều app đã lấy luôn nó làm ngưỡng để KỂ — biết mà
+          không nói. Danh sách này đứng riêng, có nhãn nói rõ nó chưa phải
+          "hay quên", nên hai con số không bao giờ lẫn vào nhau. */}
+      {ganQuen.length > 0 && (
+        <div className="flex flex-col gap-2 border-t border-edge pt-3">
+          <h3 className="text-xs font-semibold uppercase tracking-wide text-ink-muted">
+            {t('profile.hayQuenGanTitle')}
+          </h3>
+          <p className="text-xs leading-relaxed text-ink-muted">{t('profile.hayQuenGanIntro')}</p>
+          <ol className="flex flex-col gap-2">
+            {ganQuen.map((row) => (
+              <HayQuenRow key={row.cardId} row={row} />
+            ))}
+          </ol>
+        </div>
+      )}
     </section>
+  )
+}
+
+/** Một dòng của mục hay quên — dùng chung cho cả hai bậc, khỏi lệch nhau. */
+function HayQuenRow({ row }: { row: HayQuenHienThi }) {
+  const t = useT()
+  return (
+    <li className="flex flex-wrap items-center gap-x-3 gap-y-1 rounded-md border border-edge bg-panel-hover px-4 py-3">
+      <span className="min-w-[10rem] flex-1 text-sm text-ink">{row.ten ?? row.cardId}</span>
+      {row.moduleTitle !== null && <span className="shrink-0 text-xs text-ink-muted">{lt(row.moduleTitle)}</span>}
+      <span className="shrink-0 font-mono text-xs text-warn">{t('profile.hayQuenLan', { count: row.soLanQuen })}</span>
+      {row.lessonId !== null && (
+        <Link
+          to={`/bai/${row.lessonId}`}
+          className={`shrink-0 text-xs font-medium text-accent hover:underline ${LOP_CHAM_DUOC}`}
+          // Tên bài đi vào nhãn đọc được: danh sách này giờ có hai bậc,
+          // tức nhiều dòng "Mở lại bài" giống hệt nhau hơn trước.
+          aria-label={t('profile.hayQuenMoBaiAria', { the: row.ten ?? row.cardId })}
+        >
+          {t('profile.hayQuenMoBai')}
+        </Link>
+      )}
+    </li>
   )
 }
 

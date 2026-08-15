@@ -10,12 +10,12 @@ import type { LucideIcon } from 'lucide-react'
 import { useT } from '../../i18n'
 import { PROGRESS_PERSIST_VERSION, todayIso, useProgress } from '../../store/progress'
 import { baiDayKhaiNiem, findConcept, findPalaceRoom, loadModules } from '../../content'
-import { analyzeMistakes, aoGiacHayGap, theHayQuen, weakSpotDrill, weakSpots, weeklyActivity } from '../../engine/mistakeLog'
+import { analyzeMistakes, aoGiacHayGap, theGanQuen, theHayQuen, weakSpotDrill, weakSpots, weeklyActivity } from '../../engine/mistakeLog'
 import { roomIdFromCardId } from '../../engine/palace'
 import { Button } from '../../components/Button'
 import { milestones } from '../graduation/milestones'
 import { AoGiacList, ChuaLotList, DisputedList, HayQuenList, MemoryMap, MistakeAnalysisCard, SoSanhThangCard, WeakSpotList, WeeklyRhythm } from './LearningInsights'
-import { memoryByModule } from '../../engine/freshness'
+import { memoryByModule, memoryCardsOf } from '../../engine/freshness'
 import { theLanh } from '../../engine/reviewQueue'
 import { freezesAvailable } from '../../engine/streak'
 import { mocDeSo, soSanhDang, thangCua } from '../../engine/soSanhThang'
@@ -160,6 +160,19 @@ function AnhChupList() {
   )
 }
 
+/**
+ * Tên đọc được của một thẻ ôn. Phải hỏi ĐÚNG HAI NGUỒN vì thẻ cung điện
+ * mang tiền tố riêng (`palace:<roomId>`); nội dung đổi mà thẻ cũ không
+ * còn thì trả null — nơi gọi hiện tạm cardId chứ không giấu dòng đi, vì
+ * chuyện người học quên nó vẫn là chuyện có thật.
+ */
+function tenThe(cardId: string): string | null {
+  const roomId = roomIdFromCardId(cardId)
+  return roomId === null
+    ? (findConcept(cardId)?.concept.term ?? null)
+    : (findPalaceRoom(roomId)?.room.name ?? null)
+}
+
 function StatCard({
   icon: Icon,
   label,
@@ -241,9 +254,15 @@ export function ProfilePage() {
         .find((q) => q.id === row.questionId)?.prompt ?? null,
   }))
   // Bản đồ trí nhớ (kho A1): độ tươi theo module, chỉ đọc dữ liệu SM-2.
+  // Kèm luôn TỪNG THẺ bên trong để mở ra xem được (chủ dự án hỏi 08-15):
+  // "6 thẻ" không gọi được tên thì không dẫn tới việc gì.
   const memoryRows = memoryByModule(reviewCards, todayIso(), modules.map((m) => m.id)).map((row) => ({
     ...row,
     title: modules.find((m) => m.id === row.moduleId)?.title ?? { vi: row.moduleId },
+    the: memoryCardsOf(reviewCards, row.moduleId, todayIso()).map((the) => ({
+      ...the,
+      ten: tenThe(the.cardId),
+    })),
   }))
   const weeks = weeklyActivity(completedLessons, drillHistory, todayIso())
   // Quãng ngồi liền dài nhất tuần này — bề SÂU của một lần ngồi, đi kèm
@@ -268,31 +287,24 @@ export function ProfilePage() {
   // Thẻ cung điện có tiền tố riêng nên phải hỏi đúng hai nguồn — nội dung
   // đổi mà thẻ cũ không còn thì để `null`, UI hiện tạm cardId chứ không
   // giấu dòng đi (số lần hụt vẫn là chuyện thật đã xảy ra).
-  const aoGiacRows = aoGiacHayGap(aoGiacQuenMat).map((row) => {
-    const roomId = roomIdFromCardId(row.cardId)
-    const ten =
-      roomId === null
-        ? (findConcept(row.cardId)?.concept.term ?? null)
-        : (findPalaceRoom(roomId)?.room.name ?? null)
-    return { ...row, ten }
-  })
+  const aoGiacRows = aoGiacHayGap(aoGiacQuenMat).map((row) => ({ ...row, ten: tenThe(row.cardId) }))
   // "Thứ bạn hay quên" — cùng lối tra cardId ra tên đọc được như trên,
   // thêm đường mở lại BÀI đã dạy nó: người học hỏi mục này chính là để
   // biết nên quay lại học lại chỗ nào.
-  const hayQuenRows = theHayQuen(reviewCards).map((row) => {
-    const roomId = roomIdFromCardId(row.cardId)
-    const ten =
-      roomId === null
-        ? (findConcept(row.cardId)?.concept.term ?? null)
-        : (findPalaceRoom(roomId)?.room.name ?? null)
+  const doc = (row: { cardId: string; moduleId: string; soLanQuen: number }) => {
     const bai = baiDayKhaiNiem(row.cardId)
     return {
       ...row,
-      ten,
+      ten: tenThe(row.cardId),
       lessonId: bai?.lesson.id ?? null,
       moduleTitle: bai?.module.title ?? modules.find((m) => m.id === row.moduleId)?.title ?? null,
     }
-  })
+  }
+  const hayQuenRows = theHayQuen(reviewCards).map(doc)
+  // Bậc thứ hai: mới trượt MỘT lần. Ngưỡng "hay quên" không đổi (vẫn là
+  // 2, vẫn dùng chung với thẻ Hôm nay và phiên luyện) — đây chỉ là cửa
+  // sổ nhìn sớm, đứng riêng và có nhãn riêng.
+  const ganQuenRows = theGanQuen(reviewCards).map(doc)
 
   const onImportFile = (file: File | undefined) => {
     if (file === undefined) return
@@ -324,7 +336,7 @@ export function ProfilePage() {
       {/* Đặt NGAY SAU bản đồ trí nhớ, tức gần đầu trang: đây là mục người
           học chủ động đi tìm ("cho tôi xem những câu hay quên"), nên nó
           không được nằm lẫn ở cuối trang. */}
-      <HayQuenList rows={hayQuenRows} />
+      <HayQuenList rows={hayQuenRows} ganQuen={ganQuenRows} />
       <MistakeAnalysisCard analysis={analysis} moduleTitles={moduleTitles} drillSize={drillSize} />
       <SoSanhThangCard moc={mocThang} rows={dongSoSanh} dangCho={latCatThang.length > 0} />
       <DisputedList rows={disputedRows} onClear={clearDisputed} />

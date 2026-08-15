@@ -100,6 +100,46 @@ export interface ModuleMemory {
   due: number
 }
 
+/** Một thẻ trong bản đồ trí nhớ, đủ để kể ra thành một dòng đọc được. */
+export interface CardMemory {
+  /** conceptId, hoặc `palace:<roomId>` với thẻ cung điện. */
+  cardId: string
+  freshness: number
+  /** Số ngày còn lại tới hạn; 0 = đến hạn hôm nay hoặc đã quá hạn. */
+  daysLeft: number
+  lapses: number
+}
+
+/**
+ * Các thẻ CỦA MỘT MODULE, mờ nhất lên trước — phần "mở ra xem" của bản
+ * đồ trí nhớ (chủ dự án hỏi 08-15).
+ *
+ * VÌ SAO CẦN, dù bản đồ theo module đã có: một thanh và chữ "6 thẻ" trả
+ * lời được "chủ đề này còn đậm không", nhưng KHÔNG trả lời được câu người
+ * học thật sự hỏi — "sáu thẻ đó là những thẻ nào?". Không tra ra được tên
+ * thì con số kia không đi đến một hành động nào cả.
+ *
+ * Xếp theo độ tươi TĂNG DẦN chứ không theo thứ tự lộ trình như hàng
+ * module bên ngoài: bên ngoài là bản đồ, phải đứng yên để nhận ra chỗ nào
+ * là chỗ nào; bên trong là DANH SÁCH VIỆC, thứ mờ nhất mới là thứ đáng
+ * đọc trước. Bằng nhau thì theo id cho tất định.
+ */
+export function memoryCardsOf(
+  cards: readonly ReviewCard[],
+  moduleId: string,
+  today: ISODate,
+): CardMemory[] {
+  return cards
+    .filter((c) => c.moduleId === moduleId)
+    .map((c) => ({
+      cardId: c.conceptId,
+      freshness: cardFreshness(c, today),
+      daysLeft: daysUntilDue(c, today),
+      lapses: c.lapses,
+    }))
+    .sort((a, b) => a.freshness - b.freshness || (a.cardId < b.cardId ? -1 : a.cardId > b.cardId ? 1 : 0))
+}
+
 /**
  * Trí nhớ theo TỪNG MODULE — bản đồ "mình đang giữ được những gì".
  * Thứ tự đầu ra theo `moduleOrder` truyền vào (thứ tự lộ trình), không

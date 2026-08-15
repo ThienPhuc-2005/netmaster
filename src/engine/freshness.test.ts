@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { cardFreshness, daysUntilDue, fadingCards, memoryByModule, memoryOverview } from './freshness'
+import { cardFreshness, daysUntilDue, fadingCards, memoryByModule, memoryCardsOf, memoryOverview } from './freshness'
 import { createCard, reviewCard } from './sm2'
 import type { ReviewCard } from './types'
 
@@ -88,5 +88,31 @@ describe('memoryByModule — bản đồ trí nhớ theo module', () => {
   it('module lạ (nội dung đổi sau khi thẻ đã sinh) vẫn có mặt, xếp cuối', () => {
     const rows = memoryByModule([longCard('a', '2026-03-01', 'module-cu')], '2026-03-02', ['module-1'])
     expect(rows.map((r) => r.moduleId)).toEqual(['module-cu'])
+  })
+})
+
+describe('memoryCardsOf — mở một module ra xem từng thẻ', () => {
+  it('chỉ lấy thẻ của module đó, MỜ NHẤT lên trước', () => {
+    const cards = [
+      longCard('tuoi', '2026-03-20', 'module-1'),
+      longCard('mo', '2026-03-01', 'module-1'),
+      longCard('khac', '2026-03-01', 'module-3'),
+    ]
+    const rows = memoryCardsOf(cards, 'module-1', '2026-03-26')
+    expect(rows.map((r) => r.cardId)).toEqual(['mo', 'tuoi'])
+    expect(rows[0]!.freshness).toBeLessThan(rows[1]!.freshness)
+  })
+
+  it('kể luôn số ngày còn lại và số lần đã quên — dữ liệu để đọc thành một dòng', () => {
+    let card = createCard('a', 'module-1', '2026-03-01')
+    card = reviewCard(card, false, '2026-03-02') // quên một lần
+    const [row] = memoryCardsOf([card], 'module-1', '2026-03-02')
+    expect(row!.lapses).toBe(1)
+    expect(row!.daysLeft).toBe(1)
+  })
+
+  it('cùng độ tươi thì xếp theo id — thứ tự tất định giữa hai lần mở', () => {
+    const cards = [longCard('b', '2026-03-01'), longCard('a', '2026-03-01')]
+    expect(memoryCardsOf(cards, 'module-1', '2026-03-10').map((r) => r.cardId)).toEqual(['a', 'b'])
   })
 })

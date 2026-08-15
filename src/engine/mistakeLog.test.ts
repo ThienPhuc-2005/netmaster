@@ -8,6 +8,7 @@ import {
   analyzeMistakes,
   MIN_SAMPLE,
   luyenThuHayQuen,
+  theGanQuen,
   theHayQuen,
   weakSpotDrill,
   weakSpots,
@@ -338,6 +339,42 @@ describe('theHayQuen — thứ quên đi quên lại (chủ dự án hỏi 08-12
 
   it('hộp rỗng thì rỗng, không ném', () => {
     expect(theHayQuen([])).toEqual([])
+  })
+})
+
+describe('theGanQuen — mới trượt một lần, chưa gọi là hay quên (08-15)', () => {
+  const the = (id: string, lapses: number, dueDate = '2026-08-20') => ({
+    conceptId: id,
+    moduleId: 'module-1',
+    intervalIndex: 1 as const,
+    dueDate,
+    lapses,
+    createdOn: '2026-06-01',
+    lastReviewedOn: null,
+  })
+
+  it('lấy đúng thẻ trượt một lần — thẻ chưa trượt và thẻ đã hay quên đều đứng ngoài', () => {
+    // Hai danh sách KHÔNG được chồng nhau: một thẻ kể ở cả hai chỗ là
+    // người học đếm ra mâu thuẫn ngay trên cùng một màn hình.
+    const ds = theGanQuen([the('chua', 0), the('mot', 1), the('hay', 3)])
+    expect(ds.map((r) => r.cardId)).toEqual(['mot'])
+  })
+
+  it('không thẻ nào lọt cả hai danh sách, với mọi số lần quên', () => {
+    const cards = [the('a', 0), the('b', 1), the('c', 2), the('d', 5)]
+    const gan = new Set(theGanQuen(cards).map((r) => r.cardId))
+    for (const row of theHayQuen(cards)) expect(gan.has(row.cardId)).toBe(false)
+  })
+
+  it('thẻ ĐẾN HẠN SỚM HƠN đứng trước, cắt theo trần, tất định', () => {
+    const cards = [the('sau', 1, '2026-09-01'), the('truoc', 1, '2026-08-01')]
+    expect(theGanQuen(cards).map((r) => r.cardId)).toEqual(['truoc', 'sau'])
+    expect(theGanQuen(cards)).toEqual(theGanQuen([...cards].reverse()))
+    expect(theGanQuen([the('a', 1), the('b', 1), the('c', 1), the('d', 1), the('e', 1), the('f', 1)]).length).toBe(5)
+  })
+
+  it('hộp rỗng thì rỗng, không ném', () => {
+    expect(theGanQuen([])).toEqual([])
   })
 })
 

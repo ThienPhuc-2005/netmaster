@@ -14,9 +14,9 @@
 import { useMemo, useRef, useState } from 'react'
 import { lt } from '../../engine/ltext'
 import { Link } from 'react-router'
-import { BookOpen, Eye, Layers, RotateCcw, ThumbsDown, ThumbsUp } from 'lucide-react'
+import { BookOpen, Eye, HelpCircle, Layers, RotateCcw, ThumbsDown, ThumbsUp } from 'lucide-react'
 import { SESSION_CAP, buildReviewSession, dueCards, flashcardAskIndex, flashcardTurn } from '../../engine/reviewQueue'
-import { conceptStumbles } from '../../engine/mistakeLog'
+import { NGUONG_HAY_QUEN, conceptStumbles } from '../../engine/mistakeLog'
 import {
   calibrationSummary,
   calibrationVerdict,
@@ -25,13 +25,15 @@ import {
   type Confidence,
 } from '../../engine/calibration'
 import { roomIdFromCardId } from '../../engine/palace'
-import { findConcept, findPalaceRoom, loadModules } from '../../content'
+import { baiDayKhaiNiem, findConcept, findPalaceRoom, loadModules } from '../../content'
 import { shouldReviewFirst, todayIso, useProgress } from '../../store/progress'
 import { useT, type TFunc } from '../../i18n'
 import { RoomGlyph } from '../palace/RoomGlyph'
 import { playEarcon } from '../../audio/earcons'
 import { Button } from '../../components/Button'
+import { ConceptVisual } from '../../components/ConceptVisual'
 import { EmptyState } from '../../components/EmptyState'
+import { LOP_CHAM_DUOC } from '../../components/lopChamDuoc'
 
 interface CardFace {
   /** Nhãn nhỏ phía trên: thuật ngữ, hoặc vị trí phòng trong tòa nhà. */
@@ -40,6 +42,38 @@ interface CardFace {
   back: string
   /** Hình gợi nhớ — chỉ thẻ cung điện mới có (chỗ + hình là gợi ý). */
   imageId?: string
+  /** Lớp giảng lại, chỉ mở khi người học xin — xem `GiangLai`. */
+  giangLai: GiangLai
+}
+
+/**
+ * CÁCH NÓI KHÁC về đúng thứ trên thẻ (chủ dự án hỏi 08-15).
+ *
+ * Vấn đề nó chữa: mặt sau của thẻ là một câu duy nhất, và người học quên
+ * đi quên lại một thẻ thường KHÔNG phải vì trí nhớ kém mà vì chưa hiểu
+ * hẳn. Với người đó, gặp lại đúng câu chữ ấy lần thứ năm cũng chỉ là gặp
+ * lại một bức tường: hộp ôn tập cũ không có cửa nào khác ngoài "để nó
+ * quay lại sớm hơn".
+ *
+ * Chỗ chua nhất: app VỐN ĐÃ có sẵn cách nói khác cho từng khái niệm —
+ * `metaphor` (ẩn dụ đời thường), `glossVi` (giải nghĩa một câu) và
+ * `iconId` (hình cố định toàn app) — mà phòng ôn tập suốt từ đầu chỉ đọc
+ * mỗi `flashcard`. Đây là mở lại thứ đã có, không phải soạn thêm nội dung.
+ *
+ * LUẬT ĐẶT CHỖ: chỉ hiện SAU KHI ĐÃ LẬT. Ẩn dụ đọc trước lúc cố nhớ là
+ * một cái gợi ý miễn phí, mà cả hộp ôn tập dựng lên để tạo đúng động tác
+ * tự lấy lại từ trí nhớ (cùng họ luật với "không hiện độ tươi lúc ôn").
+ */
+interface GiangLai {
+  /** Ẩn dụ đời thường; null với thẻ cung điện (mặt sau vốn đã là chỗ + hình). */
+  anDu: string | null
+  /** Giải nghĩa một câu. */
+  nghia: string | null
+  /** Hình khái niệm cố định toàn app. */
+  iconId: string | null
+  /** Bài đã dạy thứ này; null thì không dựng link chết. */
+  lessonId: string | null
+  lessonTitle: string | null
 }
 
 /**
@@ -49,6 +83,9 @@ interface CardFace {
  * trước" không cần biết gì về chuyện đó.
  */
 function cardFace(cardId: string, t: TFunc, turn: number): CardFace | null {
+  // Đường về bài dạy thứ này — dùng chung cho cả hai loại thẻ.
+  const bai = baiDayKhaiNiem(cardId)
+  const duongVeBai = { lessonId: bai?.lesson.id ?? null, lessonTitle: bai === null ? null : lt(bai.lesson.missionTitle) }
   const roomId = roomIdFromCardId(cardId)
   if (roomId !== null) {
     const ref = findPalaceRoom(roomId)
@@ -59,6 +96,10 @@ function cardFace(cardId: string, t: TFunc, turn: number): CardFace | null {
       front: t('palace.cardFrontHint'),
       back: t('palace.cardBack', { keys: room.keys.join(', '), name: room.name }),
       imageId: room.imageId,
+      // Thẻ cung điện KHÔNG có ẩn dụ hay giải nghĩa: mặt sau của nó vốn
+      // đã là chỗ + hình, tức đã là cách nói bằng hình ảnh rồi. Cửa duy
+      // nhất còn nghĩa là quay lại chính chuyến đi trong bài.
+      giangLai: { anDu: null, nghia: null, iconId: null, ...duongVeBai },
     }
   }
   const ref = findConcept(cardId)
@@ -74,7 +115,86 @@ function cardFace(cardId: string, t: TFunc, turn: number): CardFace | null {
     label: ref.concept.term,
     front: lt(asks[flashcardAskIndex(turn, asks.length)] ?? front),
     back: lt(ref.concept.flashcard.back),
+    giangLai: {
+      anDu: lt(ref.concept.metaphor),
+      nghia: ref.concept.glossVi,
+      iconId: ref.concept.iconId,
+      ...duongVeBai,
+    },
   }
+}
+
+/**
+ * Cửa "chưa hiểu" của một thẻ — đóng lại thành một dòng chữ khi chưa mở.
+ *
+ * Vì sao là một cửa phải TỰ BẤM chứ không hiện sẵn: hiện sẵn thì mỗi thẻ
+ * dài thêm ba đoạn, và người đang nhớ tốt phải cuộn qua chúng mỗi lượt.
+ * Thứ này là phao, và phao chỉ có nghĩa khi người ta với tay lấy.
+ */
+function GiangLaiPanel({ giangLai, lapses }: { giangLai: GiangLai; lapses: number }) {
+  const t = useT()
+  const [mo, setMo] = useState(false)
+  const coGiNoi = giangLai.anDu !== null || giangLai.nghia !== null || giangLai.lessonId !== null
+  if (!coGiNoi) return null
+  // Thẻ đã quên tới ngưỡng "hay quên" thì app nói trước một câu, thay vì
+  // đợi người học tự đoán ra rằng vấn đề nằm ở chỗ hiểu chứ không ở trí nhớ.
+  const cungDau = lapses >= NGUONG_HAY_QUEN
+
+  return (
+    <div className="flex flex-col gap-3">
+      {/* KHÔNG nhắc lại số lần quên: dòng "bạn từng quên N lần" đã nói ở
+          đầu thẻ và vẫn còn trên màn hình — nói hai lần thành cằn nhằn. */}
+      {cungDau && <p className="text-xs leading-relaxed text-warn">{t('review.giangLaiCungDau')}</p>}
+      <button
+        onClick={() => setMo((v) => !v)}
+        aria-expanded={mo}
+        className={`inline-flex w-fit items-center gap-2 self-center rounded-md border px-4 py-2 text-sm font-medium transition-colors duration-(--dur) hover:bg-panel-hover ${
+          cungDau ? 'border-accent/40 text-accent' : 'border-edge text-ink-muted'
+        }`}
+      >
+        <HelpCircle size={15} aria-hidden />
+        {mo ? t('review.giangLaiDong') : t('review.giangLaiMo')}
+      </button>
+
+      {mo && (
+        <div className="flex flex-col gap-3 rounded-md border border-edge bg-panel px-5 py-4">
+          {giangLai.iconId !== null && <ConceptVisual visualId={giangLai.iconId} />}
+          {giangLai.anDu !== null && (
+            <p className="text-sm leading-relaxed text-ink">
+              <span className="font-semibold">{t('review.giangLaiAnDu')}: </span>
+              {giangLai.anDu}
+            </p>
+          )}
+          {giangLai.nghia !== null && (
+            <p className="text-sm leading-relaxed text-ink-muted">
+              <span className="font-semibold">{t('review.giangLaiNghia')}: </span>
+              {giangLai.nghia}
+            </p>
+          )}
+          {giangLai.lessonId !== null && (
+            <div className="flex flex-col gap-1">
+              <Link
+                to={`/bai/${giangLai.lessonId}`}
+                className={`inline-flex w-fit items-center gap-2 text-sm font-semibold text-accent hover:underline ${LOP_CHAM_DUOC}`}
+                aria-label={
+                  giangLai.lessonTitle === null
+                    ? undefined
+                    : t('review.giangLaiMoBaiAria', { lesson: giangLai.lessonTitle })
+                }
+              >
+                <BookOpen size={15} aria-hidden />
+                {t('review.giangLaiMoBai')}
+              </Link>
+              {/* Nói trước cái giá: bấm là rời phiên. Thẻ chưa ôn vẫn đến
+                  hạn nguyên đó nên KHÔNG mất gì — nhưng người học không
+                  biết điều đó thì họ không dám bấm. */}
+              <p className="text-xs leading-relaxed text-ink-muted">{t('review.giangLaiRoiPhien')}</p>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  )
 }
 
 export function ReviewPage() {
@@ -364,6 +484,10 @@ export function ReviewPage() {
               </Button>
             </div>
             <p className="text-xs text-ink-muted">{t('review.selfGradeHint')}</p>
+            {/* Cửa "chưa hiểu" — CHỈ sau khi đã lật, và `key` theo thẻ để
+                sang thẻ mới thì nó tự đóng lại (mở sẵn cho thẻ sau là hé
+                lời giảng trước lúc người học kịp cố nhớ). */}
+            <GiangLaiPanel key={cardId} giangLai={face.giangLai} lapses={lapses} />
           </div>
         )}
 

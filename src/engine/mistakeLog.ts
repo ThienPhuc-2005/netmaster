@@ -571,6 +571,37 @@ export function theHayQuen(cards: readonly ReviewCard[], limit = 5): TheHayQuen[
 }
 
 /**
+ * Thẻ MỚI TRƯỢT MỘT LẦN — chưa đủ gọi là "hay quên", nhưng gọi được TÊN.
+ *
+ * Sinh ra từ một câu hỏi rất cụ thể của chủ dự án (08-15): "nhìn cái hộp
+ * hay quên trống trơn thì làm sao biết câu nào đang hay quên?". Câu đó
+ * chỉ ra một chỗ hỏng thật của thiết kế cũ: ngưỡng 2 là ngưỡng ĐÚNG để
+ * phán ("quên một lần là chuyện thường của trí nhớ" — xem `NGUONG_HAY_QUEN`),
+ * nhưng app đã lấy ngưỡng phán làm luôn ngưỡng KỂ. Người học trượt vài
+ * thẻ rồi mở Hồ sơ ra chỉ gặp một câu "chưa có gì" — app biết mà không nói.
+ *
+ * Nên: ngưỡng giữ nguyên, danh sách "hay quên" giữ nguyên, và ba chỗ đọc
+ * `NGUONG_HAY_QUEN` vẫn đếm ra cùng một con số. Đây là một danh sách KHÁC
+ * đứng cạnh, có nhãn riêng nói rõ nó chưa phải "hay quên" — cửa sổ nhìn
+ * sớm, không phải lời phán sớm.
+ *
+ * Xếp cùng lối với `theHayQuen` để hai danh sách đọc như một mạch.
+ */
+export function theGanQuen(cards: readonly ReviewCard[], limit = 5): TheHayQuen[] {
+  return cards
+    .filter((c) => c.lapses > 0 && c.lapses < NGUONG_HAY_QUEN)
+    .slice()
+    .sort(
+      (a, b) =>
+        b.lapses - a.lapses ||
+        (a.dueDate < b.dueDate ? -1 : a.dueDate > b.dueDate ? 1 : 0) ||
+        (a.conceptId < b.conceptId ? -1 : a.conceptId > b.conceptId ? 1 : 0),
+    )
+    .slice(0, limit)
+    .map((c) => ({ cardId: c.conceptId, moduleId: c.moduleId, soLanQuen: c.lapses }))
+}
+
+/**
  * Soạn phiên luyện lại từ NHỮNG THỨ HAY QUÊN (ý sinh khi làm mục "thứ
  * bạn hay quên", khối 21.52).
  *

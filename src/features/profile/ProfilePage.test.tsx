@@ -486,13 +486,36 @@ describe('thứ bạn hay quên', () => {
     expect(within(muc).getByRole('link', { name: /Mở lại bài/ }).getAttribute('href')).toMatch(/^\/bai\//)
   })
 
-  it('quên MỘT lần thì không kể tên — chuyện thường của trí nhớ', () => {
+  it('quên MỘT lần: KHÔNG vào danh sách hay quên, nhưng vẫn được gọi tên ở bậc dưới', () => {
+    // Đổi so với luật cũ (chủ dự án hỏi 08-15). Ngưỡng phán giữ nguyên là
+    // 2 — thẻ này không được gọi là "hay quên", không được mời luyện lại.
+    // Nhưng im hẳn thì người học nhìn hộp trống và không biết mình đang
+    // quên cái gì; app biết mà không nói mới là chỗ hỏng.
     useProgress.setState({ reviewCards: [the('goi-tin', 'module-1', 1)] })
     renderProfile()
     const muc = screen.getByRole('region', { name: /Thứ bạn hay quên/ })
-    // Soi DANH SÁCH chứ không dò chữ: câu báo trống cũng chứa cụm "quên
-    // tới hai lần", nên dò chữ thì test tự bắt trúng chính nó.
+    expect(within(muc).getByText('Mới quên một lần')).toBeTruthy()
+    expect(within(muc).getByText(/quên 1 lần/)).toBeTruthy()
+    expect(within(muc).queryByRole('link', { name: /Luyện lại đúng mấy thứ này/ })).toBeNull()
+  })
+
+  it('chưa trượt lần nào thì mới nói câu "chưa có gì", và không dựng bậc dưới', () => {
+    useProgress.setState({ reviewCards: [the('goi-tin', 'module-1', 0)] })
+    renderProfile()
+    const muc = screen.getByRole('region', { name: /Thứ bạn hay quên/ })
     expect(within(muc).queryAllByRole('listitem')).toHaveLength(0)
+    expect(within(muc).queryByText('Mới quên một lần')).toBeNull()
+  })
+
+  it('một thẻ KHÔNG bao giờ nằm ở cả hai bậc cùng lúc', () => {
+    // Hai danh sách chồng nhau là người học đếm ra mâu thuẫn ngay trên
+    // một màn hình — cùng nỗi lo với luật "ngưỡng hay quên dùng chung".
+    useProgress.setState({ reviewCards: [the('goi-tin', 'module-1', 3), the('mac', 'module-1', 1)] })
+    renderProfile()
+    const muc = screen.getByRole('region', { name: /Thứ bạn hay quên/ })
+    expect(within(muc).getAllByRole('listitem')).toHaveLength(2)
+    expect(within(muc).getAllByText(/quên 3 lần/)).toHaveLength(1)
+    expect(within(muc).getAllByText(/quên 1 lần/)).toHaveLength(1)
   })
 
   it('có thứ để luyện thì mục đưa luôn đường LUYỆN LẠI đúng mấy thứ đó', () => {
@@ -555,5 +578,60 @@ describe('sổ "giải thích chưa lọt" ở trang Hồ sơ (ý N6)', () => {
   it('chưa khai lần nào thì KHÔNG dựng mục rỗng', () => {
     renderProfile()
     expect(screen.queryByText('Chỗ bạn thấy giải thích chưa lọt')).toBeNull()
+  })
+})
+
+// Bản đồ trí nhớ mở ra xem được (chủ dự án hỏi 08-15: "bạn chỉ ghi chung
+// chung không ghi rõ ra"). Một thanh mờ và chữ "6 thẻ" nói được chủ đề
+// còn đậm tới đâu, nhưng không gọi được tên thẻ nào — mà gọi tên mới là
+// thứ dẫn tới việc làm tiếp theo.
+describe('bản đồ trí nhớ — mở một chủ đề ra xem từng thẻ', () => {
+  const the = (id: string, lapses = 0) => ({
+    conceptId: id,
+    moduleId: 'module-1',
+    intervalIndex: 1 as const,
+    dueDate: todayIso(),
+    lapses,
+    createdOn: '2026-06-01',
+    lastReviewedOn: null,
+  })
+
+  /** Hai khái niệm THẬT của module 1 — để tra ra được thuật ngữ. */
+  function haiKhaiNiem() {
+    return loadModules()[0]!.concepts.filter((c) => c.flashcard !== undefined).slice(0, 2)
+  }
+
+  it('chưa mở thì không kể tên thẻ; bấm vào tên chủ đề mới hiện', () => {
+    const [a, b] = haiKhaiNiem()
+    useProgress.setState({ reviewCards: [the(a!.id), the(b!.id)] })
+    renderProfile()
+    const muc = screen.getByRole('region', { name: /Trí nhớ bạn đang giữ những gì/ })
+    expect(within(muc).queryByText(a!.term)).toBeNull()
+    fireEvent.click(within(muc).getByRole('button', { name: /Xem 2 thẻ của/ }))
+    expect(within(muc).getByText(a!.term)).toBeTruthy()
+    expect(within(muc).getByText(b!.term)).toBeTruthy()
+  })
+
+  it('mỗi thẻ nói rõ đang đến hạn hay còn mấy ngày, và đã quên mấy lần', () => {
+    const [a] = haiKhaiNiem()
+    useProgress.setState({ reviewCards: [{ ...the(a!.id, 2), dueDate: addDays(todayIso(), 3) }] })
+    renderProfile()
+    const muc = screen.getByRole('region', { name: /Trí nhớ bạn đang giữ những gì/ })
+    fireEvent.click(within(muc).getByRole('button', { name: /Xem 1 thẻ của/ }))
+    expect(within(muc).getByText('còn 3 ngày')).toBeTruthy()
+    expect(within(muc).getByText('đã quên 2 lần')).toBeTruthy()
+  })
+
+  it('bấm lần nữa là đóng lại', () => {
+    const [a] = haiKhaiNiem()
+    useProgress.setState({ reviewCards: [the(a!.id)] })
+    renderProfile()
+    const muc = screen.getByRole('region', { name: /Trí nhớ bạn đang giữ những gì/ })
+    const nut = within(muc).getByRole('button', { name: /Xem 1 thẻ của/ })
+    fireEvent.click(nut)
+    expect(nut.getAttribute('aria-expanded')).toBe('true')
+    fireEvent.click(nut)
+    expect(nut.getAttribute('aria-expanded')).toBe('false')
+    expect(within(muc).queryByText(a!.term)).toBeNull()
   })
 })
