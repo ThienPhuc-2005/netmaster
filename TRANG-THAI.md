@@ -31,7 +31,27 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (19) M21 capstone + màn tốt nghiệp | XONG |
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
-**KHỐI MỚI NHẤT — 21.64 (08-15), đã commit `796a2b9`: DẠY "ĐỌC TRỌN MỘT KHỐI" (việc C, lỗ hổng Q2).**
+**KHỐI MỚI NHẤT — 21.65 (08-15), chưa commit: GỌI TÊN CÁI THANG (việc C, lỗ hổng Q1).**
+- Thêm bài `m4-bai-6` "Gọi tên cái thang" thành **chặng 6** của Module 4 (module
+  đang có 5 chặng, trần là 6 — vừa đủ chỗ). Hai khái niệm mới: **Mô hình phân
+  tầng** và **Frame (khung)**, mỗi cái một hình vẽ mới và một thẻ ôn.
+- **Vì sao đúng chỗ này:** cuối Module 4 người học vừa có đủ mọi bậc để dán nhãn
+  — dây, MAC/switch/VLAN, IP/router, port (M1), web/DNS (M2). Và từ Module 15 trở
+  đi nội dung ĐÃ nói "khung tầng 2", "tầng 3" như thể người học biết rồi; ngay
+  tên Module 17 ghi "bảo mật lớp 2" mà chưa chỗ nào định nghĩa lớp 2.
+- **Chốt chữ: dùng "tầng", không dùng "lớp"** — vì M15 một mình đã nói "tầng 2"
+  18 lần. Chỗ khó: app cũng dùng "tầng" cho TẦNG NHÀ rất nhiều (cung điện M5,
+  "chị kế toán tầng 2" ở M11, hostname "PC-B (tầng 3)" ở M15). Bài nói thẳng
+  cách phân biệt thay vì giả vờ không có va chạm.
+- **Bài cũng vá một chỗ để lửng của m4-bai-5**: câu "MAC đổi từng chặng, IP giữ
+  nguyên" nay có tên cho cả hai lớp vỏ — khung và gói tin.
+- Pool đề thi M4: 12 → 14 câu, và **cổng bắt tôi hai lần**: thiếu ca thử, rồi
+  chèn câu mới xuống sau câu lab (luật của app: lab phải khép bài thi M4).
+- 1873 test xanh, typecheck sạch, build qua. Kiểm browser thật: bài nằm đúng
+  chặng 6, hai hình vẽ hiện đủ nhãn, chọn "Khung" và gõ "tầng 2" đều chấm ĐÚNG.
+  Seed đã xóa.
+
+**KHỐI TRƯỚC — 21.64 (08-15), đã commit `796a2b9`: DẠY "ĐỌC TRỌN MỘT KHỐI" (việc C, lỗ hổng Q2).**
 - Thêm bài `m3-bai-7` "Đọc trọn một khối" vào chặng 5 của Module 3 (chặng đó
   giờ có 2 bài — chặng đã kín 6 nên không thêm chặng được). Hai khái niệm mới:
   **Broadcast address** và **Host dùng được**, mỗi cái một hình vẽ mới, một thẻ

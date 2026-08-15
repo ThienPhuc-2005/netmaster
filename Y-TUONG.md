@@ -635,9 +635,15 @@ không trộn vào đây.
 Mức: **phải có** = học xong app mà thiếu nó là thiếu thật · **nên có** = làm app
 tròn hơn · **có thì tốt**.
 
-- ☐ **Q1. Đặt tên cho cái thang đã dạy: mô hình phân tầng (tầng 2, tầng 3, tầng 7) và phân biệt khung với gói tin** — *PHẢI CÓ*.
-  Hai lăng kính độc lập cùng chỉ vào đây. App đã dạy đủ mọi bậc của cái thang này — MAC ở dưới, IP ở giữa, port ở trên, khám bệnh từ dây lên — nhưng chưa một lần đặt tên, chữ OSI không có ở đâu trong 21 module. Ra ngoài thì cả nghề nói bằng số tầng, phỏng vấn nhập môn hỏi câu này đầu tiên, mở giáo trình nào ra cũng vấp ngay chương 1. Ngay trong app cũng đã lỗi nhịp: tên Module 17 ghi "bảo mật lớp 2" mà chưa chỗ nào định nghĩa lớp 2. Đi kèm là chữ "khung": từ Module 14 trở đi nó xuất hiện hàng chục lần mỗi module, còn Module 1 đến 13 chỉ biết mỗi "gói tin" — người tự học sẽ đinh ninh hai thứ là một.
-  **Đặt ở đâu:** Một bài xen ngay sau Module 4, lúc người học vừa có đủ MAC, IP, port, switch, router để dán nhãn; khái niệm khung/gói gắn vào m4-bai-5 (chỗ app đã dạy "MAC đổi từng chặng, IP giữ nguyên" mà chưa đặt tên cho hai lớp vỏ). Rồi Module 11 gọi thang khám bằng số tầng, Module 14 và 17 dùng lại đúng chữ đó.
+- ✅ **Q1. Đặt tên cho cái thang đã dạy** — ĐÃ LÀM (khối 21.65): thêm bài
+  `m4-bai-6` "Gọi tên cái thang" thành chặng 6 của Module 4, hai khái niệm mới
+  (Mô hình phân tầng, Frame/khung) kèm hai hình vẽ và hai thẻ ôn.
+  **Chốt cách gọi:** dùng chữ "tầng" chứ không phải "lớp", vì nội dung từ M15
+  trở đi đã nói "khung tầng 2" hàng chục lần rồi. Bài nói thẳng chỗ chữ này
+  đụng nhau: tầng nhà đi kèm chỗ chốn ("chị kế toán tầng 2"), bậc thang đi kèm
+  thứ nó chở ("khung tầng 2") — và nhắc luôn rằng tài liệu khác gọi là "lớp".
+  **Còn treo:** cho Module 11 gọi thang khám bệnh bằng số bậc, và soi lại tên
+  Module 17 ("bảo mật lớp 2") cho khớp một chữ.
 - ✅ **Q2. Đọc trọn một khối subnet** — ĐÃ LÀM (khối 21.64): thêm bài
   `m3-bai-7` "Đọc trọn một khối" vào chặng 5 của Module 3, hai khái niệm mới
   (Broadcast address, Host dùng được) kèm hai hình vẽ mới và hai thẻ ôn.

@@ -428,6 +428,94 @@ function MagicNumber({ title }: { title?: string }) {
 }
 
 /**
+ * Cái thang phân tầng — mỗi bậc dán nhãn bằng thứ người học ĐÃ gặp, không
+ * phải bằng tên hàn lâm. Đây là advance organizer: bậc thang có sẵn trong
+ * đầu rồi, hình này chỉ đặt tên cho từng bậc.
+ */
+function LayerLadder({ title }: { title?: string }) {
+  const bac: [string, string][] = [
+    ['7', 'web · mail · DNS'],
+    ['4', 'port · TCP/UDP'],
+    ['3', 'gói tin · IP · router'],
+    ['2', 'khung · MAC · switch'],
+    ['1', 'dây · sóng'],
+  ]
+  return (
+    <Frame title={title}>
+      {bac.map(([so, chu], i) => {
+        const y = 16 + i * 21
+        const nhan = i === 2 || i === 3
+        return (
+          <g key={so}>
+            <rect
+              x="26"
+              y={y}
+              width="168"
+              height="17"
+              rx="3"
+              fill={nhan ? 'var(--accent)' : 'var(--edge)'}
+              opacity={nhan ? 0.22 : 0.35}
+            />
+            <text x={34} y={y + 12} fontSize="10" fill="var(--ink)" style={{ fontFamily: 'var(--font-mono)' }}>
+              {so}
+            </text>
+            <text x={50} y={y + 12} fontSize="9" fill={nhan ? 'var(--accent)' : 'var(--ink-muted)'}>
+              {chu}
+            </text>
+          </g>
+        )
+      })}
+      <text x={26} y={122} fontSize="8" fill="var(--ink-muted)">
+        tầng 5 và 6 gộp vào 7 khi nói chuyện hằng ngày
+      </text>
+    </Frame>
+  )
+}
+
+/**
+ * Hai lớp vỏ: khung (ngoài, đổi từng chặng) bọc gói tin (trong, giữ nguyên).
+ * Vẽ đúng ba chặng để thấy vỏ ngoài thay ba lần, ruột chỉ có một.
+ */
+function FrameVsPacket({ title }: { title?: string }) {
+  const chang = [22, 84, 146]
+  return (
+    <Frame title={title}>
+      <text x={22} y={20} fontSize="9" fill="var(--ink-muted)">
+        vỏ ngoài đổi mỗi chặng · ruột đi trọn chuyến
+      </text>
+      {chang.map((x, i) => (
+        <g key={x}>
+          <rect x={x} y="34" width="52" height="38" rx="4" fill="none" stroke="var(--warn)" strokeWidth="2" />
+          <text x={x + 26} y={30} textAnchor="middle" fontSize="8" fill="var(--warn)">
+            khung {i + 1}
+          </text>
+          <rect x={x + 9} y="44" width="34" height="19" rx="2" fill="var(--accent)" opacity="0.28" />
+          <text
+            x={x + 26}
+            y={57}
+            textAnchor="middle"
+            fontSize="7"
+            fill="var(--accent)"
+            style={{ fontFamily: 'var(--font-mono)' }}
+          >
+            gói IP
+          </text>
+          <text x={x + 26} y={84} textAnchor="middle" fontSize="7" fill="var(--ink-muted)">
+            MAC {i === 0 ? 'A→R1' : i === 1 ? 'R1→R2' : 'R2→B'}
+          </text>
+        </g>
+      ))}
+      {[74, 136].map((x) => (
+        <path key={x} d={`M${x} 53 h10`} stroke="var(--ink-muted)" strokeWidth="1.5" fill="none" markerEnd="url(#cv-arrow)" />
+      ))}
+      <text x={110} y={106} textAnchor="middle" fontSize="8" fill="var(--accent)">
+        địa chỉ IP trong ruột: không đổi lần nào
+      </text>
+    </Frame>
+  )
+}
+
+/**
  * Trọn một khối /26: mốc đầu là tên khu phố, mốc cuối là tiếng gọi cả khu,
  * phần giữa mới là số nhà cắm được. Vẽ đúng dải .64 → .127 của bài học.
  */
@@ -4598,6 +4686,11 @@ const REGISTRY: Record<string, VisualComponent> = {
   'vis-nha-rieng-cong-cong': PrivatePublic,
   'vis-hang-rao-khu-pho': MaskFence,
   'vis-magic-number': MagicNumber,
+  'vis-thang-tang': LayerLadder,
+  'icon-thang-tang': LayerLadder,
+  'vis-hook-thang-tang': LayerLadder,
+  'vis-khung-goi': FrameVsPacket,
+  'icon-khung-goi': FrameVsPacket,
   'vis-doc-khoi': BlockAnatomy,
   'icon-doc-khoi': BlockAnatomy,
   'vis-hook-doc-khoi': BlockAnatomy,

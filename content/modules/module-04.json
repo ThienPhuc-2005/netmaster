@@ -9,7 +9,8 @@
     { "id": "m4-chang-2", "title": { "vi": "Cuốn sổ nhớ mặt" }, "lessonIds": ["m4-bai-2"] },
     { "id": "m4-chang-3", "title": { "vi": "Hỏi tên trước khi trao" }, "lessonIds": ["m4-bai-3"] },
     { "id": "m4-chang-4", "title": { "vi": "Dựng tường chia xóm" }, "lessonIds": ["m4-bai-4"] },
-    { "id": "m4-chang-5", "title": { "vi": "Bắc cầu qua tường" }, "lessonIds": ["m4-bai-5"] }
+    { "id": "m4-chang-5", "title": { "vi": "Bắc cầu qua tường" }, "lessonIds": ["m4-bai-5"] },
+    { "id": "m4-chang-6", "title": { "vi": "Gọi tên cái thang" }, "lessonIds": ["m4-bai-6"] }
   ],
   "lessons": [
     {
@@ -917,6 +918,236 @@
           }
         }
       ]
+    },
+    {
+      "id": "m4-bai-6",
+      "missionTitle": {
+        "vi": "Gọi tên cái thang"
+      },
+      "steps": [
+        {
+          "type": "hook",
+          "question": {
+            "vi": "Bốn module vừa rồi bạn đã leo hết một cái thang mà chưa ai gọi tên: dây → địa chỉ MAC và switch → địa chỉ IP và router → port. Người trong nghề không kể dài như thế, họ nói gọn \"chết ở tầng 2\" rồi hiểu nhau ngay. Cái thang ấy là gì, và mỗi bậc ứng với thứ nào bạn đã học?"
+          },
+          "visualId": "vis-hook-thang-tang"
+        },
+        {
+          "type": "pretest",
+          "questions": [
+            {
+              "kind": "mcq",
+              "id": "m4-b6-pre-1",
+              "prompt": {
+                "vi": "Đoán thử: một người trực nói \"máy này chết ở tầng 2\". Họ đang nghi cái gì?"
+              },
+              "choices": [
+                {
+                  "vi": "Chuyện của switch, VLAN, địa chỉ MAC"
+                },
+                {
+                  "vi": "Chuyện của tên miền — DNS trả sai địa chỉ"
+                },
+                {
+                  "vi": "Chuyện của trình duyệt trên máy người dùng"
+                }
+              ],
+              "answerIndex": 0,
+              "explain": {
+                "vi": "Tầng 2 là bậc của switch, VLAN và địa chỉ MAC — đúng những thứ bạn vừa học cả module này. DNS và trình duyệt nằm mãi trên tầng 7."
+              }
+            }
+          ],
+          "encouragement": {
+            "vi": "Chưa đoán ra là bình thường — chính vì chưa ai gọi tên cái thang cho bạn."
+          }
+        },
+        {
+          "type": "teach",
+          "screens": [
+            {
+              "conceptId": "mo-hinh-phan-tang",
+              "visualId": "vis-thang-tang",
+              "body": {
+                "vi": "Việc của mạng được chia thành các bậc chồng lên nhau, mỗi bậc lo đúng một chuyện và nhờ bậc dưới chở đi. Bậc nào cũng có sẵn trong đầu bạn rồi, chỉ thiếu cái tên: tầng 1 là dây và sóng; tầng 2 là khung, địa chỉ MAC, switch và VLAN; tầng 3 là gói tin, địa chỉ IP và router; tầng 4 là port, chọn đúng ứng dụng nhận; tầng 7 là thứ người dùng thấy — trang web, hộp thư, tên miền. Đánh số như vậy để nói cho nhanh: \"chết ở tầng 2\" là nghi switch và VLAN, \"tắc ở tầng 3\" là nghi đường đi và router."
+              },
+              "deepDive": {
+                "vi": "Bảng đầy đủ có bảy tầng (tên gọi OSI), thêm tầng 5 và 6 lo chuyện phiên làm việc và định dạng dữ liệu — đời thường ít ai gọi tên hai bậc đó, nên người ta hay gộp chúng vào tầng 7. Một chuyện về CHỮ NGHĨA đáng nhớ ngay: tiếng Việt dùng chữ \"tầng\" cho cả tầng nhà lẫn bậc của cái thang này, và bạn sẽ gặp cả hai trong khóa. Cách phân biệt: tầng nhà luôn đi kèm chỗ chốn (\"chị kế toán tầng 2\"), còn bậc thang luôn đi kèm thứ nó chở (\"khung tầng 2\", \"gói tầng 3\"). Nhiều tài liệu gọi là \"lớp 2\", \"lớp 3\" — cùng một thứ."
+              }
+            },
+            {
+              "conceptId": "khung",
+              "visualId": "vis-khung-goi",
+              "body": {
+                "vi": "Bậc thang giải thích luôn một chuyện bài trước để lửng. Gói tin (packet) là vỏ của tầng 3: nó mang địa chỉ IP nguồn và đích, đi TRỌN chuyến từ máy gửi tới máy nhận. Khung (frame) là vỏ của tầng 2: nó mang địa chỉ MAC và chỉ sống đúng MỘT CHẶNG giữa hai thiết bị cạnh nhau. Qua mỗi router, khung cũ bị bóc ra rồi đóng lại bằng khung mới cho chặng kế, còn gói tin nằm trong ruột thì giữ nguyên. Đó chính là câu \"MAC đổi ở từng chặng trao tay, IP giữ nguyên suốt chuyến\" — giờ cả hai lớp vỏ đều có tên."
+              },
+              "deepDive": {
+                "vi": "Vì sao phải hai lớp vỏ? Vì mỗi chặng là một đoạn đường có luật riêng: đoạn cáp Ethernet trong nhà, đoạn cáp quang của nhà mạng, đoạn sóng Wi-Fi — mỗi loại có cách đóng gói khác nhau. Địa chỉ IP nói ĐI ĐÂU, còn khung nói TRAO CHO AI NGAY TRƯỚC MẶT. Nhờ tách đôi như thế mà đổi hạ tầng đường truyền không phải đổi gì ở lớp địa chỉ — Internet sống được mấy chục năm qua nhiều đời công nghệ dây là nhờ đúng chỗ tách này."
+              }
+            }
+          ]
+        },
+        {
+          "type": "practice",
+          "fadingLevel": 2,
+          "exercises": [
+            {
+              "question": {
+                "kind": "mcq",
+                "id": "m4-b6-prac-1",
+                "prompt": {
+                  "vi": "Gói tin đi từ máy A qua hai router rồi tới máy B. Cái vỏ nào bị bóc ra và đóng lại mới ở mỗi chặng?"
+                },
+                "choices": [
+                  {
+                    "vi": "Khung — vỏ tầng 2 mang địa chỉ MAC"
+                  },
+                  {
+                    "vi": "Gói tin — vỏ tầng 3 mang địa chỉ IP"
+                  },
+                  {
+                    "vi": "Cả hai đều được đóng lại ở mỗi chặng"
+                  }
+                ],
+                "answerIndex": 0,
+                "hintTopic": {
+                  "vi": "vỏ một chặng và ruột trọn chuyến"
+                }
+              },
+              "hint": {
+                "vi": "Cái nào mang địa chỉ MAC? Và địa chỉ MAC thì đổi ở đâu — từng chặng hay cả chuyến?"
+              },
+              "solution": {
+                "vi": "Khung. Nó là vỏ của một chặng nên qua mỗi router phải thay mới; gói tin nằm trong ruột đi trọn chuyến, địa chỉ IP không đổi lần nào."
+              },
+              "conceptId": "khung"
+            },
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m4-b6-prac-2",
+                "prompt": {
+                  "vi": "Switch đọc địa chỉ MAC để chuyển khung. Nó làm việc ở tầng số mấy?"
+                },
+                "accept": [
+                  "2",
+                  "tầng 2",
+                  "lớp 2",
+                  "layer 2"
+                ],
+                "hintTopic": {
+                  "vi": "bậc của khung và địa chỉ MAC"
+                }
+              },
+              "hint": {
+                "vi": "Bậc nào lo khung, MAC, switch và VLAN?"
+              },
+              "solution": {
+                "vi": "Tầng 2. Đó là bậc của khung, địa chỉ MAC, switch và VLAN — trọn phần đầu module này."
+              },
+              "conceptId": "mo-hinh-phan-tang"
+            },
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m4-b6-prac-3",
+                "prompt": {
+                  "vi": "Router tra bảng định tuyến theo địa chỉ IP. Nó làm việc ở tầng số mấy?"
+                },
+                "accept": [
+                  "3",
+                  "tầng 3",
+                  "lớp 3",
+                  "layer 3"
+                ],
+                "hintTopic": {
+                  "vi": "bậc của gói tin và địa chỉ IP"
+                }
+              },
+              "hint": {
+                "vi": "Bậc nào lo gói tin và địa chỉ IP?"
+              },
+              "solution": {
+                "vi": "Tầng 3. Đó là bậc của gói tin, địa chỉ IP và router — cây cầu bạn vừa học ở bài trước."
+              },
+              "conceptId": "mo-hinh-phan-tang"
+            }
+          ]
+        },
+        {
+          "type": "retrieval",
+          "questions": [
+            {
+              "question": {
+                "kind": "typed",
+                "id": "m4-b6-ret-1",
+                "prompt": {
+                  "vi": "Không nhìn lại bài: vỏ nào chỉ sống đúng một chặng rồi bị thay — khung hay gói tin?"
+                },
+                "accept": [
+                  "khung",
+                  "frame",
+                  "cái khung"
+                ]
+              },
+              "hint": {
+                "vi": "Vỏ nào mang địa chỉ MAC? Địa chỉ đó đổi ở từng chặng trao tay."
+              },
+              "solution": {
+                "vi": "Khung. Nó mang địa chỉ MAC của đúng chặng đang đi; qua router là bóc ra đóng lại vỏ mới, còn gói tin bên trong giữ nguyên."
+              }
+            }
+          ],
+          "selfExplain": {
+            "prompt": {
+              "vi": "Giải thích bằng lời của bạn: vì sao qua mỗi router thì địa chỉ MAC đổi mà địa chỉ IP thì không?"
+            },
+            "keywords": [
+              [
+                "khung",
+                "vỏ ngoài",
+                "frame",
+                "tầng 2"
+              ],
+              [
+                "một chặng",
+                "từng chặng",
+                "chặng kế",
+                "trao tay",
+                "hàng xóm"
+              ],
+              [
+                "gói tin",
+                "ruột",
+                "trọn chuyến",
+                "cả chuyến",
+                "tầng 3",
+                "ip"
+              ]
+            ],
+            "exampleAnswer": {
+              "vi": "Vì địa chỉ MAC nằm ở lớp vỏ ngoài — cái khung — mà khung chỉ dùng cho đúng một chặng giữa hai thiết bị cạnh nhau. Qua mỗi router, khung cũ bị bóc ra và đóng lại bằng khung mới cho chặng kế. Còn địa chỉ IP nằm trong ruột, tức gói tin, và ruột ấy đi trọn chuyến nên không ai đụng vào."
+            }
+          }
+        },
+        {
+          "type": "summary",
+          "bullets": [
+            {
+              "vi": "Tầng 1 dây, tầng 2 khung và MAC, tầng 3 gói tin và IP, tầng 4 port, tầng 7 ứng dụng."
+            },
+            {
+              "vi": "Khung là vỏ MỘT CHẶNG (địa chỉ MAC); gói tin là ruột đi TRỌN CHUYẾN (địa chỉ IP)."
+            },
+            {
+              "vi": "Gọi tên bằng số để nói nhanh: \"chết ở tầng 2\" là nghi switch và VLAN."
+            }
+          ],
+          "nextTeaser": {
+            "vi": "Cái thang đã có tên, và từ đây mọi module sau đều gọi bằng số bậc. Bài kiểm tra Module 4 đang đợi — câu cuối là một phòng lab thật. Vượt qua rồi, Module 5 mở cánh cửa tầng 4: TCP, UDP và những con số port."
+          }
+        }
+      ]
     }
   ],
   "concepts": [
@@ -1007,6 +1238,40 @@
         "front": { "vi": "Khi gói tin đi qua router, địa chỉ nào đổi và địa chỉ nào giữ nguyên?" },
         "back": {
           "vi": "MAC đổi ở từng chặng (nó chỉ dùng để trao tay giữa hai thiết bị cạnh nhau), còn IP nguồn và đích giữ nguyên suốt chuyến."
+        }
+      }
+    },
+    {
+      "id": "mo-hinh-phan-tang",
+      "term": "Mô hình phân tầng",
+      "glossVi": "Cách nghề chia việc của mạng thành các bậc chồng lên nhau và gọi tên bằng số — tầng 2, tầng 3…",
+      "metaphor": {
+        "vi": "Dây chuyền bưu điện: người khuân vác, người phân tuyến, người viết địa chỉ — ai lo bậc nấy, không ai làm hộ ai."
+      },
+      "iconId": "icon-thang-tang",
+      "flashcard": {
+        "front": {
+          "vi": "Switch, router và port lần lượt nằm ở tầng nào?"
+        },
+        "back": {
+          "vi": "Switch tầng 2 (đọc địa chỉ MAC), router tầng 3 (đọc địa chỉ IP), port tầng 4 (chọn đúng ứng dụng). Dưới cùng là tầng 1: dây và sóng."
+        }
+      }
+    },
+    {
+      "id": "khung",
+      "term": "Frame (khung)",
+      "glossVi": "Vỏ của tầng 2 — mang địa chỉ MAC, chỉ sống đúng một chặng rồi bị thay vỏ mới",
+      "metaphor": {
+        "vi": "Cái bao ngoài của bưu tá: tới trạm nào bao cũ bị xé bỏ, thư bên trong vẫn nguyên phong bì cũ."
+      },
+      "iconId": "icon-khung-goi",
+      "flashcard": {
+        "front": {
+          "vi": "Khung khác gói tin ở chỗ nào?"
+        },
+        "back": {
+          "vi": "Khung là vỏ MỘT CHẶNG, mang địa chỉ MAC, qua mỗi router bị bóc ra đóng lại vỏ mới. Gói tin là ruột đi TRỌN CHUYẾN, mang địa chỉ IP, không đổi lần nào."
         }
       }
     }
@@ -1145,6 +1410,43 @@
       "hintTopic": { "vi": "cuốn sổ đường đi của router" },
       "explain": {
         "vi": "Router tra bảng định tuyến: mỗi dòng nói \"muốn tới mạng này thì giao cho ai\". Không dòng nào khớp thì gói bị bỏ — đúng cái lỗi thiếu tuyến bạn gặp trong phòng lab."
+      }
+    },
+    {
+      "kind": "typed",
+      "id": "m4-mt-13",
+      "prompt": {
+        "vi": "Switch đọc địa chỉ MAC để chuyển khung — nó làm việc ở tầng số mấy?"
+      },
+      "accept": [
+        "2",
+        "tầng 2",
+        "lớp 2",
+        "layer 2"
+      ],
+      "hintTopic": {
+        "vi": "bậc của khung và địa chỉ MAC"
+      },
+      "explain": {
+        "vi": "Tầng 2 — bậc của khung, địa chỉ MAC, switch và VLAN. Router đứng cao hơn một bậc, ở tầng 3 với gói tin và địa chỉ IP."
+      }
+    },
+    {
+      "kind": "typed",
+      "id": "m4-mt-14",
+      "prompt": {
+        "vi": "Qua mỗi router, lớp vỏ ngoài bị bóc ra rồi đóng lại bằng vỏ mới cho chặng kế. Vỏ đó tên là gì?"
+      },
+      "accept": [
+        "khung",
+        "frame",
+        "cái khung"
+      ],
+      "hintTopic": {
+        "vi": "vỏ của tầng 2, mang địa chỉ MAC"
+      },
+      "explain": {
+        "vi": "Khung (frame) — vỏ của tầng 2, mang địa chỉ MAC nên chỉ sống đúng một chặng. Gói tin nằm trong ruột đi trọn chuyến, địa chỉ IP không đổi lần nào."
       }
     },
     {

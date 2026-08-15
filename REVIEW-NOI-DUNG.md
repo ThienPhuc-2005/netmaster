@@ -944,9 +944,9 @@ Phần A · 6 chặng · 7 bài · 9 khái niệm · drill: subnet
 
 ## Switch, Router, VLAN — Thiết bị trong làng `module-4`
 
-Phần B · 5 chặng · 5 bài · 6 khái niệm
+Phần B · 6 chặng · 6 bài · 8 khái niệm
 
-**Chặng:** Bưu cục của làng (m4-bai-1) → Cuốn sổ nhớ mặt (m4-bai-2) → Hỏi tên trước khi trao (m4-bai-3) → Dựng tường chia xóm (m4-bai-4) → Bắc cầu qua tường (m4-bai-5)
+**Chặng:** Bưu cục của làng (m4-bai-1) → Cuốn sổ nhớ mặt (m4-bai-2) → Hỏi tên trước khi trao (m4-bai-3) → Dựng tường chia xóm (m4-bai-4) → Bắc cầu qua tường (m4-bai-5) → Gọi tên cái thang (m4-bai-6)
 
 ### Thư cuối module (hiện ở màn đậu bài thi)
 
@@ -1159,7 +1159,54 @@ Phần B · 5 chặng · 5 bài · 6 khái niệm
 - MAC đổi ở từng chặng trao tay; IP giữ nguyên suốt chuyến.
 - *Úp mở bài sau:* Bài kiểm tra Module 4 đang đợi — và câu cuối là một phòng lab thật. Vượt qua rồi, Module 5 sẽ mở cánh cửa TCP, UDP và những con số cổng mà bạn đã gặp thoáng qua từ Module 1.
 
-### Khái niệm & flashcard (6)
+### Bài: Gọi tên cái thang `m4-bai-6`
+
+**1 · Khởi động (hook):** Bốn module vừa rồi bạn đã leo hết một cái thang mà chưa ai gọi tên: dây → địa chỉ MAC và switch → địa chỉ IP và router → port. Người trong nghề không kể dài như thế, họ nói gọn "chết ở tầng 2" rồi hiểu nhau ngay. Cái thang ấy là gì, và mỗi bậc ứng với thứ nào bạn đã học?
+
+**2 · Đoán thử (pretest):**
+- **Đề:** Đoán thử: một người trực nói "máy này chết ở tầng 2". Họ đang nghi cái gì?
+  - **Dạng:** trắc nghiệm · **Chuyện của switch, VLAN, địa chỉ MAC** ✓ / Chuyện của tên miền — DNS trả sai địa chỉ / Chuyện của trình duyệt trên máy người dùng
+  - **Vì sao:** Tầng 2 là bậc của switch, VLAN và địa chỉ MAC — đúng những thứ bạn vừa học cả module này. DNS và trình duyệt nằm mãi trên tầng 7.
+
+**3 · Khám phá (teach):**
+- *[mo-hinh-phan-tang]* Việc của mạng được chia thành các bậc chồng lên nhau, mỗi bậc lo đúng một chuyện và nhờ bậc dưới chở đi. Bậc nào cũng có sẵn trong đầu bạn rồi, chỉ thiếu cái tên: tầng 1 là dây và sóng; tầng 2 là khung, địa chỉ MAC, switch và VLAN; tầng 3 là gói tin, địa chỉ IP và router; tầng 4 là port, chọn đúng ứng dụng nhận; tầng 7 là thứ người dùng thấy — trang web, hộp thư, tên miền. Đánh số như vậy để nói cho nhanh: "chết ở tầng 2" là nghi switch và VLAN, "tắc ở tầng 3" là nghi đường đi và router.
+  - **Đào sâu hơn:** Bảng đầy đủ có bảy tầng (tên gọi OSI), thêm tầng 5 và 6 lo chuyện phiên làm việc và định dạng dữ liệu — đời thường ít ai gọi tên hai bậc đó, nên người ta hay gộp chúng vào tầng 7. Một chuyện về CHỮ NGHĨA đáng nhớ ngay: tiếng Việt dùng chữ "tầng" cho cả tầng nhà lẫn bậc của cái thang này, và bạn sẽ gặp cả hai trong khóa. Cách phân biệt: tầng nhà luôn đi kèm chỗ chốn ("chị kế toán tầng 2"), còn bậc thang luôn đi kèm thứ nó chở ("khung tầng 2", "gói tầng 3"). Nhiều tài liệu gọi là "lớp 2", "lớp 3" — cùng một thứ.
+- *[khung]* Bậc thang giải thích luôn một chuyện bài trước để lửng. Gói tin (packet) là vỏ của tầng 3: nó mang địa chỉ IP nguồn và đích, đi TRỌN chuyến từ máy gửi tới máy nhận. Khung (frame) là vỏ của tầng 2: nó mang địa chỉ MAC và chỉ sống đúng MỘT CHẶNG giữa hai thiết bị cạnh nhau. Qua mỗi router, khung cũ bị bóc ra rồi đóng lại bằng khung mới cho chặng kế, còn gói tin nằm trong ruột thì giữ nguyên. Đó chính là câu "MAC đổi ở từng chặng trao tay, IP giữ nguyên suốt chuyến" — giờ cả hai lớp vỏ đều có tên.
+  - **Đào sâu hơn:** Vì sao phải hai lớp vỏ? Vì mỗi chặng là một đoạn đường có luật riêng: đoạn cáp Ethernet trong nhà, đoạn cáp quang của nhà mạng, đoạn sóng Wi-Fi — mỗi loại có cách đóng gói khác nhau. Địa chỉ IP nói ĐI ĐÂU, còn khung nói TRAO CHO AI NGAY TRƯỚC MẶT. Nhờ tách đôi như thế mà đổi hạ tầng đường truyền không phải đổi gì ở lớp địa chỉ — Internet sống được mấy chục năm qua nhiều đời công nghệ dây là nhờ đúng chỗ tách này.
+
+**4 · Thử tay (practice, fading 2):**
+- **Đề:** Gói tin đi từ máy A qua hai router rồi tới máy B. Cái vỏ nào bị bóc ra và đóng lại mới ở mỗi chặng?
+  - **Dạng:** trắc nghiệm · **Khung — vỏ tầng 2 mang địa chỉ MAC** ✓ / Gói tin — vỏ tầng 3 mang địa chỉ IP / Cả hai đều được đóng lại ở mỗi chặng
+  - **Chủ đề gợi ý (tầng 1):** vỏ một chặng và ruột trọn chuyến
+  - **Gợi ý (tầng 2):** Cái nào mang địa chỉ MAC? Và địa chỉ MAC thì đổi ở đâu — từng chặng hay cả chuyến?
+  - **Lời giải (tầng 3):** Khung. Nó là vỏ của một chặng nên qua mỗi router phải thay mới; gói tin nằm trong ruột đi trọn chuyến, địa chỉ IP không đổi lần nào.
+- **Đề:** Switch đọc địa chỉ MAC để chuyển khung. Nó làm việc ở tầng số mấy?
+  - **Dạng:** gõ tay · **Chấp nhận:** 2 | tầng 2 | lớp 2 | layer 2
+  - **Chủ đề gợi ý (tầng 1):** bậc của khung và địa chỉ MAC
+  - **Gợi ý (tầng 2):** Bậc nào lo khung, MAC, switch và VLAN?
+  - **Lời giải (tầng 3):** Tầng 2. Đó là bậc của khung, địa chỉ MAC, switch và VLAN — trọn phần đầu module này.
+- **Đề:** Router tra bảng định tuyến theo địa chỉ IP. Nó làm việc ở tầng số mấy?
+  - **Dạng:** gõ tay · **Chấp nhận:** 3 | tầng 3 | lớp 3 | layer 3
+  - **Chủ đề gợi ý (tầng 1):** bậc của gói tin và địa chỉ IP
+  - **Gợi ý (tầng 2):** Bậc nào lo gói tin và địa chỉ IP?
+  - **Lời giải (tầng 3):** Tầng 3. Đó là bậc của gói tin, địa chỉ IP và router — cây cầu bạn vừa học ở bài trước.
+
+**5 · Nhớ lại (retrieval):**
+- **Đề:** Không nhìn lại bài: vỏ nào chỉ sống đúng một chặng rồi bị thay — khung hay gói tin?
+  - **Dạng:** gõ tay · **Chấp nhận:** khung | frame | cái khung
+  - **Gợi ý (tầng 2):** Vỏ nào mang địa chỉ MAC? Địa chỉ đó đổi ở từng chặng trao tay.
+  - **Lời giải (tầng 3):** Khung. Nó mang địa chỉ MAC của đúng chặng đang đi; qua router là bóc ra đóng lại vỏ mới, còn gói tin bên trong giữ nguyên.
+- **Tự giải thích:** Giải thích bằng lời của bạn: vì sao qua mỗi router thì địa chỉ MAC đổi mà địa chỉ IP thì không?
+  - **Nhóm ý cần chạm:** [khung, vỏ ngoài, frame, tầng 2] · [một chặng, từng chặng, chặng kế, trao tay, hàng xóm] · [gói tin, ruột, trọn chuyến, cả chuyến, tầng 3, ip]
+  - **Trả lời mẫu:** Vì địa chỉ MAC nằm ở lớp vỏ ngoài — cái khung — mà khung chỉ dùng cho đúng một chặng giữa hai thiết bị cạnh nhau. Qua mỗi router, khung cũ bị bóc ra và đóng lại bằng khung mới cho chặng kế. Còn địa chỉ IP nằm trong ruột, tức gói tin, và ruột ấy đi trọn chuyến nên không ai đụng vào.
+
+**6 · Tổng kết:**
+- Tầng 1 dây, tầng 2 khung và MAC, tầng 3 gói tin và IP, tầng 4 port, tầng 7 ứng dụng.
+- Khung là vỏ MỘT CHẶNG (địa chỉ MAC); gói tin là ruột đi TRỌN CHUYẾN (địa chỉ IP).
+- Gọi tên bằng số để nói nhanh: "chết ở tầng 2" là nghi switch và VLAN.
+- *Úp mở bài sau:* Cái thang đã có tên, và từ đây mọi module sau đều gọi bằng số bậc. Bài kiểm tra Module 4 đang đợi — câu cuối là một phòng lab thật. Vượt qua rồi, Module 5 mở cánh cửa tầng 4: TCP, UDP và những con số port.
+
+### Khái niệm & flashcard (8)
 
 - **Switch** `switch` — Bộ chuyển mạch — thiết bị nối nhiều máy trong cùng một mạng
   - Ẩn dụ: Switch như bưu cục giữa làng: thay vì mỗi nhà tự chạy sang nhà kia, mọi lá thư đưa vào bưu cục rồi được chuyển tới đúng nhà.
@@ -1179,8 +1226,14 @@ Phần B · 5 chặng · 5 bài · 6 khái niệm
 - **Routing** `dinh-tuyen` — Định tuyến — việc router chọn đường đẩy gói sang mạng khác
   - Ẩn dụ: Như cây cầu giữa hai bờ: mỗi chân cầu đặt ở một bờ, và người gác cầu quyết định cho đi hướng nào.
   - Thẻ ôn: *Khi gói tin đi qua router, địa chỉ nào đổi và địa chỉ nào giữ nguyên?* → MAC đổi ở từng chặng (nó chỉ dùng để trao tay giữa hai thiết bị cạnh nhau), còn IP nguồn và đích giữ nguyên suốt chuyến.
+- **Mô hình phân tầng** `mo-hinh-phan-tang` — Cách nghề chia việc của mạng thành các bậc chồng lên nhau và gọi tên bằng số — tầng 2, tầng 3…
+  - Ẩn dụ: Dây chuyền bưu điện: người khuân vác, người phân tuyến, người viết địa chỉ — ai lo bậc nấy, không ai làm hộ ai.
+  - Thẻ ôn: *Switch, router và port lần lượt nằm ở tầng nào?* → Switch tầng 2 (đọc địa chỉ MAC), router tầng 3 (đọc địa chỉ IP), port tầng 4 (chọn đúng ứng dụng). Dưới cùng là tầng 1: dây và sóng.
+- **Frame (khung)** `khung` — Vỏ của tầng 2 — mang địa chỉ MAC, chỉ sống đúng một chặng rồi bị thay vỏ mới
+  - Ẩn dụ: Cái bao ngoài của bưu tá: tới trạm nào bao cũ bị xé bỏ, thư bên trong vẫn nguyên phong bì cũ.
+  - Thẻ ôn: *Khung khác gói tin ở chỗ nào?* → Khung là vỏ MỘT CHẶNG, mang địa chỉ MAC, qua mỗi router bị bóc ra đóng lại vỏ mới. Gói tin là ruột đi TRỌN CHUYẾN, mang địa chỉ IP, không đổi lần nào.
 
-### Bài kiểm tra module (pool 12 câu, mỗi lượt rút 8, cần ≥ 85%)
+### Bài kiểm tra module (pool 14 câu, mỗi lượt rút 8, cần ≥ 85%)
 
 - **Đề:** Văn phòng mới có 12 máy cần nói chuyện với nhau. Cách nối tiết kiệm dây nhất là gì?
   - **Dạng:** trắc nghiệm · Nối thẳng từng cặp máy với nhau / **Mỗi máy một sợi cắm vào switch** ✓ / Nối vòng tròn, máy này sang máy kia
@@ -1219,6 +1272,14 @@ Phần B · 5 chặng · 5 bài · 6 khái niệm
   - **Dạng:** gõ tay · **Chấp nhận:** bảng định tuyến | bang dinh tuyen | routing table | bảng route | bảng routing | bang routing
   - **Chủ đề gợi ý (tầng 1):** cuốn sổ đường đi của router
   - **Vì sao:** Router tra bảng định tuyến: mỗi dòng nói "muốn tới mạng này thì giao cho ai". Không dòng nào khớp thì gói bị bỏ — đúng cái lỗi thiếu tuyến bạn gặp trong phòng lab.
+- **Đề:** Switch đọc địa chỉ MAC để chuyển khung — nó làm việc ở tầng số mấy?
+  - **Dạng:** gõ tay · **Chấp nhận:** 2 | tầng 2 | lớp 2 | layer 2
+  - **Chủ đề gợi ý (tầng 1):** bậc của khung và địa chỉ MAC
+  - **Vì sao:** Tầng 2 — bậc của khung, địa chỉ MAC, switch và VLAN. Router đứng cao hơn một bậc, ở tầng 3 với gói tin và địa chỉ IP.
+- **Đề:** Qua mỗi router, lớp vỏ ngoài bị bóc ra rồi đóng lại bằng vỏ mới cho chặng kế. Vỏ đó tên là gì?
+  - **Dạng:** gõ tay · **Chấp nhận:** khung | frame | cái khung
+  - **Chủ đề gợi ý (tầng 1):** vỏ của tầng 2, mang địa chỉ MAC
+  - **Vì sao:** Khung (frame) — vỏ của tầng 2, mang địa chỉ MAC nên chỉ sống đúng một chặng. Gói tin nằm trong ruột đi trọn chuyến, địa chỉ IP không đổi lần nào.
 - **Đề:** Câu cuối là một ca thật: cả ba máy đang chung một VLAN nên máy khách (Máy K) nhìn thấy luôn hai máy nội bộ. Hãy tách Máy K ra, nhưng giữ hai máy nội bộ vẫn nói chuyện được với nhau.
   - **Dạng:** phòng lab (lắp/sửa sơ đồ mạng)
     - **Sơ đồ đề bài:** Máy nội bộ A [192.168.5.10/24] · Máy nội bộ B [192.168.5.20/24] · Máy khách K [192.168.5.30/24] · Switch-1 [p1:VLAN 10, p2:VLAN 10, p3:VLAN 10] — dây: Máy nội bộ A·eth0 — Switch-1·p1 | Máy nội bộ B·eth0 — Switch-1·p2 | Máy khách K·eth0 — Switch-1·p3
