@@ -13,6 +13,19 @@ quan trước khi "sửa test cho xanh".
 
 - `src/engine/` thuần TS: KHÔNG import React, KHÔNG đọc localStorage,
   KHÔNG tự lấy giờ hệ thống — thời gian bơm từ ngoài vào.
+- **Test ĐỎ MỘT LẦN RỒI TỰ XANH: soi xem nó đang chờ VIỆC THẬT hay chờ một
+  nhịp render** (đã trả giá hai lần, khối 21.70). `findBy*` của
+  testing-library có trần mặc định 1000ms; case nào chờ một việc thật sự tốn
+  thời gian thì cho hẳn trần RIÊNG rộng rãi + một dòng nói vì sao, **đừng nới
+  trần chung** (nới chung là che mất flake thật ở chỗ khác) và **đừng mock cho
+  nhanh** nếu chính "làm thật" là lời hứa của case đó. Hai ca đã gặp:
+  - `gatesNoiDungHut.test.tsx` — lượt "Thử lại" gọi `primeModules` THẬT, parse
+    cả 21 module qua zod.
+  - `VlsmDrill.test.tsx` — tra ô bằng `getByRole({ name })` bắt tính accessible
+    name cho cả bảng (~22ms một lần, 40 lần một phiên); chữa bằng cách quét
+    `table input` một phát rồi đối chiếu `aria-label`.
+  Cả hai chỉ đỏ lúc `npm test` chạy CÙNG build/dev server — chạy riêng file thì
+  luôn xanh, nên muốn tái hiện thì phải cố tình làm máy bận.
 - `lessonMachine.ts` KHÔNG biết dạng câu hỏi nào tồn tại và không được
   sửa vì bất kỳ dạng nào. Hiện có 8 kind: typed, mcq, order, lab,
   palace-walk, clinic, ps, cli — mỗi kind là một nhánh của

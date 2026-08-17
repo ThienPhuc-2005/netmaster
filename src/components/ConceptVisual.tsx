@@ -518,8 +518,11 @@ function PortLeds({ title }: { title?: string }) {
             {i === 2 && <circle cx="47" cy={y - 5} r="8.5" fill="none" stroke="var(--accent)" strokeWidth="1" opacity="0.6" />}
             {/* Một <text> hai <tspan>: vế sau TỰ nối tiếp vế trước, khỏi
                 phải đoán bề rộng chữ bằng phép nhân — kiểu đoán đó sai
-                ngay khi đổi font hoặc đổi chữ. */}
-            <text x="60" y={y} fontSize="10">
+                ngay khi đổi font hoặc đổi chữ.
+                Thẻ cha PHẢI khai fill: tspan nào lỡ quên màu thì kế thừa
+                một màu theo nền, thay vì rơi về đen tịt của SVG mặc định
+                — trên nền tối đó là chữ vô hình, mà không test nào thấy. */}
+            <text x="60" y={y} fontSize="10" fill="var(--ink-muted)">
               <tspan fill={mau}>{ten}</tspan>
               <tspan fill="var(--ink-muted)">{` — ${nghia}`}</tspan>
             </text>

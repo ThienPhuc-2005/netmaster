@@ -99,17 +99,28 @@ describe('AppGate — kho nội dung kéo hụt', () => {
     expect(await screen.findByText(/Tiến độ học của bạn vẫn nằm nguyên trong máy/)).toBeTruthy()
   })
 
-  it('bấm Thử lại mà mạng đã về thì vào thẳng app, không cần tải lại trang', async () => {
-    keo.mockRejectedValueOnce(new Error('offline'))
-    await renderApp()
-    const nut = await screen.findByRole('button', { name: 'Thử lại' })
+  it(
+    'bấm Thử lại mà mạng đã về thì vào thẳng app, không cần tải lại trang',
+    async () => {
+      keo.mockRejectedValueOnce(new Error('offline'))
+      await renderApp()
+      const nut = await screen.findByRole('button', { name: 'Thử lại' })
 
-    // Mạng về: lượt kéo sau nạp nội dung thật, đúng như app chạy.
-    keo.mockImplementation(() => keoThat())
-    nut.click()
+      // Mạng về: lượt kéo sau nạp nội dung thật, đúng như app chạy.
+      keo.mockImplementation(() => keoThat())
+      nut.click()
 
-    expect(await screen.findByRole('navigation')).toBeTruthy()
-    expect(screen.queryByText(/Chưa tải được bài học về máy/)).toBeNull()
-    expect(keo, 'Thử lại phải kéo lại thật, không dùng lại promise đã hụt').toHaveBeenCalledTimes(2)
-  })
+      // Trần thời gian RIÊNG, không phải nới trần chung (khối 21.70, chữa
+      // một flake có sẵn). Lượt kéo này parse THẬT cả 21 module qua zod —
+      // vài trăm ms lúc máy rảnh, quá một giây lúc `npm test` chạy cùng
+      // build/dev server, tức vượt trần 1000ms mặc định của findBy* và đỏ
+      // oan. Đây là chờ VIỆC THẬT chứ không phải chờ một nhịp render, nên
+      // cách đúng là cho nó đủ giờ, không phải mock cho nhanh: chính lời
+      // hứa của test là "mạng về thì kéo lại THẬT".
+      expect(await screen.findByRole('navigation', {}, { timeout: 15_000 })).toBeTruthy()
+      expect(screen.queryByText(/Chưa tải được bài học về máy/)).toBeNull()
+      expect(keo, 'Thử lại phải kéo lại thật, không dùng lại promise đã hụt').toHaveBeenCalledTimes(2)
+    },
+    20_000,
+  )
 })

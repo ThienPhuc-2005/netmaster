@@ -31,6 +31,34 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (19) M21 capstone + màn tốt nghiệp | XONG |
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
+**KHỐI MỚI NHẤT — 21.71 (08-15): DỌN NỐT — bắt được test flaky, và hai bài soát ra kết quả ÂM.**
+
+Kho ý tưởng đã sạch trơn (94/94 ý xong), việc duy nhất còn treo là hai buổi test
+người thật. Nên lượt này đi tìm việc bằng hai bài soát chưa ai làm:
+
+- **Soi hai câu trùng nhau trong CÙNG một bài** — tìm được 4 cặp, và cả 4 đều
+  KHÔNG phải lỗi: đó là *Thử tay → Nhớ lại* hỏi lại một kỹ năng bằng con số
+  khác, tức đúng cơ chế retrieval mà nguyên tắc 1 bắt buộc. Ý này (tôi đề xuất ở
+  khối trước) là ý SAI, ghi lại để đừng ai đi lại.
+- **Tương phản chữ trong hình ở CẢ HAI NỀN** — 0 chỗ dưới 4.5:1. Không màu cứng
+  nào trong 325 hình, kỷ luật dùng biến màu còn nguyên. Bẫy của phép đo: đọc màu
+  ở thẻ `<text>` cha trong khi màu nằm ở `<tspan>` con thì ra 6 báo động giả —
+  phải đọc ở cấp LÁ.
+
+**Bắt được cái test flaky mà hai khối trước không gọi ra tên.** Nó là
+`gatesNoiDungHut.test.tsx` (không phải `VlsmDrill` như tôi đoán — cái đó là ca
+thứ hai, phiên khác đã chữa): case "bấm Thử lại mà mạng đã về" gọi `primeModules`
+THẬT, parse cả 21 module qua zod, vượt trần 1000ms mặc định của `findBy*`. Chữa
+bằng trần RIÊNG 15s kèm lý do, không nới trần chung và không mock cho nhanh — vì
+"kéo lại THẬT" chính là lời hứa của case đó. Chạy 3 lượt có build đè lên: xanh cả ba.
+
+Kèm hai việc nhỏ: thẻ `<text>` cha của `<tspan>` nay khai fill (tspan nào lỡ quên
+màu thì kế thừa màu theo nền thay vì rơi về đen tịt), và **bài quét hình vào hẳn
+quy trình soạn nội dung** ở mục 5b, kèm ba cái bẫy đo đạc đã trả giá.
+
+**Sức khỏe:** 1887 test xanh (3 lượt liên tiếp có build chạy song song),
+typecheck sạch, build qua.
+
 **KHỐI MỚI NHẤT — 21.70 (08-15), đã commit `7bff594`: 15 HÌNH VẼ HỎNG BỐ CỤC — chữ tràn khỏi khung, nhãn đè lên nhau.**
 
 Chủ dự án chụp màn hình một hình ở Module 4 báo "chữ nhỏ, icon san sát". Quét cả
@@ -1291,10 +1319,20 @@ Còn lại duy nhất:
    vào REGISTRY (kèm alias `vis-hook-*`).
 4. `npm run typecheck` → `npm test` → `npm run content:review` →
    `npm run build`.
-5. Kiểm browser thật: mở `/bai/mXX-bai-1`, đi vài bước, soi `getBBox`
-   không hình nào tràn viewBox 220×130, mobile 375px không cuộn ngang.
-   (Muốn mở khóa để kiểm thì sửa `passedModules` trong localStorage key
-   `netmaster-progress`, **nhớ xóa sau khi xong**.)
+5. Kiểm browser thật: mở `/bai/mXX-bai-1`, đi vài bước, mobile 375px không
+   cuộn ngang. (Muốn mở khóa để kiểm thì sửa `passedModules` **và**
+   `completedLessons` trong localStorage key `netmaster-progress`, **nhớ xóa
+   sau khi xong**.)
+5b. **VẼ HÌNH MỚI thì BẮT BUỘC chạy bài quét `/design`** — đoạn chép-dán ở
+   mục 10 của `GHI-CHU-KY-THUAT.md`. Ba luật: nằm gọn trong 220×130 · không
+   nhãn nào đè nhãn nào · không chữ nào dưới cỡ 8. Ba cái bẫy đã trả giá ở
+   khối 21.70, đọc trước khi tin số đo:
+   - **KHÔNG dùng `getBBox`** — nó bỏ qua transform của nhóm cha nên báo động
+     giả. Dùng `getBoundingClientRect`.
+   - **Quét trên server VỪA KHỞI ĐỘNG LẠI** — trang đã HMR hàng chục lần cho
+     ra render ôi, bản quét nói "sạch" trong khi thật ra còn hỏng.
+   - **Khử trùng lặp theo NỘI DUNG chữ, đừng theo tên hình** — hai hình khác
+     nhau rút về cùng tên (`vis-`/`icon-`/`vis-hook-`) sẽ che mất nhau.
 6. Ghi lại vào file này + in mục "Sai lệch so với spec" cuối lượt.
 
 ## NHẬT KÝ CÁC KHỐI ĐÃ LÀM (trung cấp)
