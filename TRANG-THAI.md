@@ -31,7 +31,7 @@ mục 5.1, drill VLSM, ACL, OSPF-lite.
 | (19) M21 capstone + màn tốt nghiệp | XONG |
 | (20) DoD toàn phần + kịch bản test người thật + hội đồng chấm D/E | XONG phần máy làm được — còn 2 dòng DoD cần NGƯỜI |
 
-**KHỐI MỚI NHẤT — 21.71 (08-15): DỌN NỐT — bắt được test flaky, và hai bài soát ra kết quả ÂM.**
+**KHỐI MỚI NHẤT — 21.71 (08-15), đã commit `4be9cfe`: DỌN NỐT — bắt được test flaky, và hai bài soát ra kết quả ÂM.**
 
 Kho ý tưởng đã sạch trơn (94/94 ý xong), việc duy nhất còn treo là hai buổi test
 người thật. Nên lượt này đi tìm việc bằng hai bài soát chưa ai làm:
@@ -59,7 +59,7 @@ quy trình soạn nội dung** ở mục 5b, kèm ba cái bẫy đo đạc đã 
 **Sức khỏe:** 1887 test xanh (3 lượt liên tiếp có build chạy song song),
 typecheck sạch, build qua.
 
-**KHỐI MỚI NHẤT — 21.70 (08-15), đã commit `7bff594`: 15 HÌNH VẼ HỎNG BỐ CỤC — chữ tràn khỏi khung, nhãn đè lên nhau.**
+**KHỐI TRƯỚC — 21.70 (08-15), đã commit `7bff594`: 15 HÌNH VẼ HỎNG BỐ CỤC — chữ tràn khỏi khung, nhãn đè lên nhau.**
 
 Chủ dự án chụp màn hình một hình ở Module 4 báo "chữ nhỏ, icon san sát". Quét cả
 app thì không phải một hình — **15 hình hỏng**, gần như trọn bộ hình mới của các
